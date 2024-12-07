@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 22.1-22.5 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 22.1-22.5 Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter-22.1" onclick="highlightSection(this, 'chapter-22.1')">22.1</a></td>
+                    <td>Journey to the Dwarven Gates</td>
+                    <td>The group travels to the Dwarven Gates with Thrain's help, navigating the wilderness and overcoming obstacles.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-22.2" onclick="highlightSection(this, 'chapter-22.2')">22.2</a></td>
+                    <td>The Clerical Dwarves (Part 2)</td>
+                    <td>The group faces betrayal and encounters with dangerous enemies as they journey to a hidden temple.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-22.3" onclick="highlightSection(this, 'chapter-22.3')">22.3</a></td>
+                    <td>The Sent Ones</td>
+                    <td>The group learns of the Sent Ones and their role in dwarven history, discovering their connection to this ancient order.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-22.4" onclick="highlightSection(this, 'chapter-22.4')">22.4</a></td>
+                    <td>The Assassin’s Challenge</td>
+                    <td>The group faces an assassin's threat and struggles with trust as Lucas fights to protect the team.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-22.5" onclick="highlightSection(this, 'chapter-22.5')">22.5</a></td>
+                    <td>The Hidden Passage</td>
+                    <td>The group discovers a hidden passage leading deeper into the Dwarven Mountains and uncovers more secrets.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-22.1">
+            <h2>Chapter 22.1: Journey to the Dwarven Gates</h2>
+            <p>The group, equipped with $2,000, uses a magic-powered transport pod to journey through plains and forests towards the Dwarven Gates. Along the way, they cross the Great River, contend with cold conditions, and Lucas struggles with his pyrokinesis. They rescue Thrain Ironfoot, a dwarven merchant, from bandits. In gratitude, Thrain becomes their guide, leading them towards the Dwarven Mountains, signaling an important step in their journey.</p>
+            <p><strong>Key Themes & Moments:</strong> 
+                <ul>
+                    <li>The group's resourcefulness with their funds</li>
+                    <li>Lucas's struggles with his powers</li>
+                    <li>Thrain's rescue and becoming a new guide</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="chapter-22.2">
+            <h2>Chapter 22.2: The Clerical Dwarves (Part 2)</h2>
+            <p>The group agrees to follow Durnak, Torgar, and Grimbar to a hidden temple. After a tense conversation in a tavern, they set off and face dangerous wilderness, including a monstrous creature. Grimbar attempts to betray Lucas by pushing him off a cliff, but Mina intervenes. The group learns of Grimbar's cult affiliation, but they continue their journey, now filled with even more uncertainty.</p>
+            <p><strong>Key Themes & Moments:</strong> 
+                <ul>
+                    <li>The group's decision to pursue the hidden temple</li>
+                    <li>Grimbar's betrayal and cult ties</li>
+                    <li>The growing tension and mystery surrounding the temple</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="chapter-22.3">
+            <h2>Chapter 22.3: The Sent Ones</h2>
+            <p>Torgar reveals the history of the Sent Ones, an order of immense power that protected the dwarves from past disasters. The group learns that Lucas, Mina, and Thomas are key to their return, which could have profound consequences. Torgar warns that some will welcome the Sent Ones, while others will fight them, and the group must now face their new roles in this unfolding mystery.</p>
+            <p><strong>Key Themes & Moments:</strong> 
+                <ul>
+                    <li>The Sent Ones' legacy and power</li>
+                    <li>Lucas and Mina's connection to the Sent Ones</li>
+                    <li>Grimbar’s opposition to the Sent Ones</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="chapter-22.4">
+            <h2>Chapter 22.4: The Assassin’s Challenge</h2>
+            <p>As the group waits for Thrain, tensions rise when Lucas, still recovering from poisoning, senses the presence of both the Cultists of the Unbound and the Sent Ones. After Mina is abducted by a dwarf assassin, Lucas confronts the captor, ultimately defeating the assassin with help from Mina and Thomas. The group survives, but the sense of danger persists.</p>
+            <p><strong>Key Themes & Moments:</strong> 
+                <ul>
+                    <li>The group's paranoia and growing distrust</li>
+                    <li>Lucas’s fight against his weakened state</li>
+                    <li>The teamwork between Lucas, Mina, and Thomas</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="chapter-22.5">
+            <h2>Chapter 22.5: The Hidden Passage</h2>
+            <p>After the assassination attempt, the group follows Thrain to a hidden passage that leads them deeper into the Dwarven Mountains. This secret network of tunnels and chambers brings them closer to the truth about the Sent Ones, but Torgar’s cryptic warnings and Grimbar's betrayal leave the group uneasy. Lucas continues to struggle with his unstable powers as the mystery surrounding the Sent Ones deepens.</p>
+            <p><strong>Key Themes & Moments:</strong> 
+                <ul>
+                    <li>The hidden dwarven network and its secrets</li>
+                    <li>Torgar’s cryptic role in the journey</li>
+                    <li>Lucas’s struggles with his unstable powers</li>
+                </ul>
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>

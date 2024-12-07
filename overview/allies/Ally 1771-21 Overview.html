@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ally Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Ally Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#erika" onclick="highlightSection(this, 'erika')">Erika</a></td>
+                    <td>Commandant of Cleya, Fiery magic</td>
+                </tr>
+                <tr>
+                    <td><a href="#john" onclick="highlightSection(this, 'john')">John</a></td>
+                    <td>Mentor figure, Protector</td>
+                </tr>
+                <tr>
+                    <td><a href="#candice" onclick="highlightSection(this, 'candice')">Candice</a></td>
+                    <td>Martial artist, Nythari tribe member</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="erika">
+            <h2>Erika</h2>
+            <p>Born in 1719, Erika is the Commandant of Cleya, known for her fiery magical abilities and battle memory channeling. Charismatic but slightly aloof, she is driven by a strong desire to prove her strength, defend her people, and challenge powerful figures like Lucas. Despite her leadership, her past remains a mystery.</p>
+        </div>
+
+        <div class="section-content" id="john">
+            <h2>John</h2>
+            <p>John, born in 1728, serves as a mentor figure and protector. A patient and wise guide, he specializes in teaching and nurturing young talent. John has vast experience with combat and magic, although his full abilities remain largely untapped. He seeks to protect those at the Institute from hidden dangers, ensuring the survival of the next generation.</p>
+        </div>
+
+        <div class="section-content" id="candice">
+            <h2>Candice</h2>
+            <p>Candice, a skilled martial artist and member of the Nythari tribe, possesses unparalleled jungle survival skills. Her duty to the tribe drives her inquisitive nature, and she seeks to uncover the truth behind Kingston’s disaster. Tall and slender, Candice wears dark braids and leather armor, her eyes glowing with determination. She carries the weight of her mentor’s request as she uncovers the mysteries of her world.</p>
+        </div>
+    </div>
+</body>
+</html>

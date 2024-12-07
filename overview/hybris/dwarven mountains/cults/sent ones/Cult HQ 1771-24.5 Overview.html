@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent Ones HQ - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Sent Ones HQ - Location Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location" onclick="highlightSection(this, 'location')">Location</a></td>
+                    <td>In the heart of Brum'karoth, concealed within towering structures, shrouded by high walls.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Imposing gothic architecture with high spires, dark stone, and eerie candlelit interiors.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>A mix of power, reverence, and tension, with a growing sense of unease as dark secrets unravel.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Narrow corridors, high vaulted ceilings, secret doors, and hidden chambers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Carvings of celestial bodies and sacred geometry, linked to ancient rites and prophecies.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inner-sanctum" onclick="highlightSection(this, 'inner-sanctum')">Inner Sanctum</a></td>
+                    <td>A solemn chamber with an altar, lit by candles, filled with a constant hum of energy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#entrance" onclick="highlightSection(this, 'entrance')">Entrance</a></td>
+                    <td>Massive iron doors, engraved with symbols, heavily guarded and vibrating with ancient power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Magical wards, hidden traps, and sentries empowered with dangerous magic.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret-chambers" onclick="highlightSection(this, 'secret-chambers')">Secret Chambers/Rooms</a></td>
+                    <td>Hidden rooms filled with forbidden texts and dark rituals, some linked to Lucas’s powers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Prophecies of the "chosen one" and Lucas’s potential role in the cult’s destiny.</td>
+                </tr>
+                <tr>
+                    <td><a href="#spiritual-significance" onclick="highlightSection(this, 'spiritual-significance')">Spiritual Significance</a></td>
+                    <td>The HQ is a sacred center for the Cult of the Sent Ones, where divine rituals are performed.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Rumors of bound creatures and dark secrets that threaten the city’s stability.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-lucas-cult" onclick="highlightSection(this, 'link-lucas-cult')">Link to Lucas & the Cult</a></td>
+                    <td>The HQ holds key information on Lucas’s powers and his role in the cult’s future plans.</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Winding streets and alleys, with the cult exerting control over the surrounding areas.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Overcast skies, frequent storms, adding to the eerie presence of the HQ.</td>
+                </tr>
+                <tr>
+                    <td><a href="#other-groups" onclick="highlightSection(this, 'other-groups')">Other Groups Interested</a></td>
+                    <td>Rival cults, political factions, and figures like Grimbar are eyeing the HQ for influence and secrets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The cult prepares for war, with growing tensions and skirmishes near the HQ.</td>
+                </tr>
+                <tr>
+                    <td><a href="#cult-leadership" onclick="highlightSection(this, 'cult-leadership')">Cult Leadership</a></td>
+                    <td>Internal strife within the cult as Torgar’s authority is challenged.</td>
+                </tr>
+                <tr>
+                    <td><a href="#internal-strife" onclick="highlightSection(this, 'internal-strife')">Internal Strife & Division</a></td>
+                    <td>The cult faces deepening divisions, weakening its preparation for war.</td>
+                </tr>
+                <tr>
+                    <td><a href="#new-developments" onclick="highlightSection(this, 'new-developments')">New Developments</a></td>
+                    <td>The arrival of the Disciple forces the cult to reconsider its priorities and ancient prophecies.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location">
+            <h2>Location</h2>
+            <p>Located in the heart of Brum'karoth, the Sent Ones HQ is hidden within towering, ancient structures. It is isolated from the outside world by high walls and guarded entrances, making it extremely difficult for outsiders to enter.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Sent Ones HQ is an imposing structure with gothic spires and stained-glass windows that depict celestial and mystical beings. The dark stone is etched with arcane symbols, and the interior is cold, silent, and haunting. Flickering candlelight casts shadows throughout, adding to the mysterious ambiance.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The building exudes an atmosphere of control and power. There is a constant, oppressive sense that one is being watched by unseen forces. The air is thick with the energy of dark rituals and impending war, creating an unsettling feeling of both reverence and tension.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture is designed for both intimidation and function. The long, narrow corridors are lined with vaulted ceilings and dark passageways, many of which lead to hidden chambers and secret rooms that enhance the sense of mystery.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The walls of the headquarters are covered in symbols that reflect the beliefs of the Sent Ones. Celestial motifs and sacred geometric patterns are carved into the stone, and some images are eerily prophetic, alluding to the arrival of a chosen one—possibly tied to Lucas’s fate.</p>
+        </div>
+
+        <div class="section-content" id="inner-sanctum">
+            <h2>Inner Sanctum</h2>
+            <p>At the heart of the headquarters lies the Inner Sanctum, a large chamber where sacred rituals are performed. An ancient altar stands in the center, and the room hums with energy. It is perpetually lit by candles, contributing to its somber, ritualistic atmosphere.</p>
+        </div>
+
+        <div class="section-content" id="entrance">
+            <h2>Entrance</h2>
+            <p>The entrance to the HQ is marked by a massive iron door engraved with cult symbols. It is heavily guarded and vibrates with an ancient, arcane power. Only those of high rank within the cult are allowed to pass through.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The headquarters is surrounded by powerful magical wards and guarded by a disciplined force of sentries. The building is filled with hidden traps, ensuring that only trusted individuals can navigate its complex layout. Some cult members possess enhanced magical abilities that serve as an additional layer of defense.</p>
+        </div>
+
+        <div class="section-content" id="secret-chambers">
+            <h2>Secret Chambers/Rooms</h2>
+            <p>Secret chambers beneath the headquarters contain ancient texts, scrolls, and arcane artifacts. These rooms are crucial to the cult’s rituals, with some holding powerful secrets tied to Lucas’s abilities and the cult’s mysterious future.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The Sent Ones HQ is at the center of ancient prophecies regarding a "chosen one" who will shape the cult’s future. These prophecies intertwine with the life of Lucas, who may either fulfill or disrupt the cult’s ultimate plans.</p>
+        </div>
+
+        <div class="section-content" id="spiritual-significance">
+            <h2>Spiritual Significance</h2>
+            <p>For the Sent Ones, the HQ is a sacred place where they commune with divine or otherworldly forces. Rituals conducted within its walls are believed to channel cosmic energies, and only the highest-ranking members are allowed to perform certain sacred ceremonies.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The headquarters is filled with hidden threats—creatures bound to the building as part of dark rituals, and dangerous secrets buried deep within its walls. If these secrets were revealed, they could bring ruin to the entire city.</p>
+        </div>
+
+        <div class="section-content" id="link-lucas-cult">
+            <h2>Link to Lucas & the Cult</h2>
+            <p>The Sent Ones HQ is integral to the mystery of Lucas’s powers. The cult believes that Lucas is the key to fulfilling their prophecies, but his arrival will either solidify their vision or disrupt their plans entirely.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The area surrounding the HQ is filled with narrow streets, hidden alleys, and high walls, giving the cult full control over who enters and exits. There are signs of the cult’s influence in the nearby neighborhoods, with an atmosphere of fear and oppression growing stronger.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather around the headquarters is often gloomy, with dark clouds and frequent storms. The oppressive atmosphere seems to mirror the mood of the cult and its impending conflict, with fog and rain adding to the eerie vibe of the building.</p>
+        </div>
+
+        <div class="section-content" id="other-groups">
+            <h2>Other Groups Interested</h2>
+            <p>Rival factions, including political groups and other cults, are taking an interest in the Sent Ones HQ. Their desire for power and knowledge has led them to spy on or infiltrate the cult’s activities, further complicating the conflict.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The cult is gearing up for war, with skirmishes and growing tension surrounding the HQ. Lucas, Mina, and Thomas are beginning to uncover the cult’s deep involvement in these conflicts, realizing that the fate of the city could hinge on their actions.</p>
+        </div>
+
+        <div class="section-content" id="cult-leadership">
+            <h2>Cult Leadership</h2>
+            <p>The leadership of the Sent Ones is under strain, with Torgar’s authority being challenged by internal factions. This tension threatens to undermine their preparations for war, creating divisions that may prove costly.</p>
+        </div>
+
+        <div class="section-content" id="internal-strife">
+            <h2>Internal Strife & Division</h2>
+            <p>The cult’s internal conflicts have deepened, weakening their ability to unite for the coming war. Torgar’s leadership is in question, and factions within the cult have begun to form around differing ideologies.</p>
+        </div>
+
+        <div class="section-content" id="new-developments">
+            <h2>New Developments</h2>
+            <p>The arrival of the Disciple in Brum'karoth has forced the cult to rethink its goals. Torgar and his followers are now considering whether the Disciple’s arrival is tied to the ancient prophecies that have guided their actions for centuries.</p>
+        </div>
+
+    </div>
+</body>
+</html>

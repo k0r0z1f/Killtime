@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Profiles</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f4f4f9;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .container {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+      padding: 20px;
+      max-width: 1200px;
+    }
+
+    .card {
+      background-color: #ffffff;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      text-align: center;
+      transition: transform 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-10px);
+    }
+
+    .card img {
+      width: 150px;
+      height: 150px;
+      object-fit: cover;
+      border-radius: 50%;
+      margin-bottom: 20px;
+    }
+
+    .card h3 {
+      font-size: 24px;
+      margin: 10px 0;
+      color: #333;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #666;
+      margin-bottom: 10px;
+    }
+
+    .card .button {
+      padding: 8px 16px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s;
+    }
+
+    .card .button:hover {
+      background-color: #0056b3;
+    }
+
+    .details {
+      display: none;
+      text-align: left;
+      margin-top: 20px;
+    }
+
+    .details p {
+      font-size: 13px;
+      color: #555;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <div class="card">
+      <img src="http://maptool.temis.qc.ca:8000/Temporary/img/lucasface.jpg" alt="Lucas">
+      <h3>Lucas</h3>
+      <p><strong>Birth Year:</strong> 1754</p>
+      <p><strong>Role:</strong> Aspiring college student; escapee from medi-laboratory experiments</p>
+      <button class="button" onclick="toggleDetails('lucas-details')">View Details</button>
+      <div id="lucas-details" class="details">
+        <p><strong>Personality Traits:</strong> Brave, analytical, self-doubting</p>
+        <p><strong>Abilities/Magic:</strong> High intelligence, telepathy, telekinesis; can control others’ minds to an extent; struggles with pyrokinesis due to past trauma</p>
+        <p><strong>Alliances:</strong> Core</p>
+        <p><strong>Character Arc:</strong> Overcoming insecurity to embrace his potential and confront his mysterious past</p>
+        <p><strong>Secret:</strong> Laboratory researcher hunting him holds knowledge about his abilities and origin</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="http://maptool.temis.qc.ca:8000/Temporary/img/minaface.jpg" alt="Mina">
+      <h3>Mina</h3>
+      <p><strong>Birth Year:</strong> 1754</p>
+      <p><strong>Role:</strong> Celebrity and college student, upper class</p>
+      <button class="button" onclick="toggleDetails('mina-details')">View Details</button>
+      <div id="mina-details" class="details">
+        <p><strong>Personality Traits:</strong> Loyal, resilient, ambitious yet caring</p>
+        <p><strong>Abilities/Magic:</strong> Superhuman speed, agility (due to magical growth incident); powers fully restored</p>
+        <p><strong>Alliances:</strong> Core</p>
+        <p><strong>Character Arc:</strong> Achieving autonomy while balancing public image and personal needs; assisting Lucas' quest</p>
+        <p><strong>Secret:</strong> Strong intuition; feels uneasy about Lucas’ encounter with the researcher</p>
+      </div>
+    </div>
+
+    <div class="card">
+      <img src="http://maptool.temis.qc.ca:8000/Temporary/img/thomasface.jpg" alt="Thomas">
+      <h3>Thomas</h3>
+      <p><strong>Birth Year:</strong> 1753</p>
+      <p><strong>Role:</strong> Friend and ally of Lucas and Mina</p>
+      <button class="button" onclick="toggleDetails('thomas-details')">View Details</button>
+      <div id="thomas-details" class="details">
+        <p><strong>Personality Traits:</strong> Strategic, level-headed, protective</p>
+        <p><strong>Abilities/Magic:</strong> Limited magical abilities; combat training</p>
+        <p><strong>Alliances:</strong> Core</p>
+        <p><strong>Character Arc:</strong> Protecting friends while managing his own doubts; often a grounding force within the group</p>
+        <p><strong>Secret:</strong> None</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function toggleDetails(id) {
+      var details = document.getElementById(id);
+      details.style.display = (details.style.display === 'none' || details.style.display === '') ? 'block' : 'none';
+    }
+  </script>
+
+</body>
+</html>

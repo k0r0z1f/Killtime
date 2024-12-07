@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cultists 1771-24.5 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Cultists 1771-24.5 Overview</h1>
+
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Character</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#torger" onclick="highlightSection(this, 'torger')">Torgar</a></td>
+                    <td>Rockbinder Kharf, Primary Cleric, Stern, deeply spiritual, controlling elemental magic, hiding secret Cult purpose.</td>
+                </tr>
+                <tr>
+                    <td><a href="#durnak" onclick="highlightSection(this, 'durnak')">Durnak</a></td>
+                    <td>Earthbinder Rornok, Cleric, Methodical, wise, doubts Cult’s righteousness, hiding important truths about the Cult's mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#grimbar" onclick="highlightSection(this, 'grimbar')">Grimbar</a></td>
+                    <td>Stonefist Groln, Cleric, Gruff, loyal, double agent for opposing Cult, torn between loyalties.</td>
+                </tr>
+                <tr>
+                    <td><a href="#sent-ones" onclick="highlightSection(this, 'sent-ones')">Cult of the Sent Ones (Collective)</a></td>
+                    <td>Religious Order, Stone-based magic, internal collapse, concealing true motives to gain control over mystical forces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#unbound" onclick="highlightSection(this, 'unbound')">Cult of the Unbound</a></td>
+                    <td>Rival religious order, hidden agenda to disrupt Sent Ones' prophecy, leader *Thrainor Blackstone*.</td>
+                </tr>
+                <tr>
+                    <td><a href="#thrainor" onclick="highlightSection(this, 'thrainor')">Thrainor Blackstone</a></td>
+                    <td>Leader of the Cult of the Unbound, calculating, manipulating events to destabilize the Sent Ones.</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>Guide to the Sent Ones, hiding the true nature of the temple, linked to the Cult of the Unbound.</td>
+                </tr>
+                <tr>
+                    <td><a href="#goldar" onclick="highlightSection(this, 'goldar')">Goldar</a></td>
+                    <td>High Leader, struggling with growing challenges, using Lucas and Mina’s powers for larger Cult goals.</td>
+                </tr>
+                <tr>
+                    <td><a href="#gorla" onclick="highlightSection(this, 'gorla')">Gorla</a></td>
+                    <td>Dwarf Council member, exploring Mina's powers for her own purposes, quietly scheming within the Cult.</td>
+                </tr>
+                <tr>
+                    <td><a href="#serina" onclick="highlightSection(this, 'serina')">Serina</a></td>
+                    <td>Freelance fighter, personal vendetta against the Cult, becoming more involved with the group’s goals.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="torger">
+            <h2>Torgar</h2>
+            <p>Torgar is the primary cleric and leader of the Cult’s religious order. Stern and deeply spiritual, he uses weak earth and stone manipulation powers, alongside his clerical magic. His internal struggle grows as many of the Cult’s followers lose faith in him, while he is forced to conceal the true, darker purpose of the Cult’s mission to manipulate mystical forces for his own gain.</p>
+        </div>
+
+        <div class="section-content" id="durnak">
+            <h2>Durnak</h2>
+            <p>Durnak is a wise Earthbinder who begins to distance himself from Torgar as he grows disillusioned with the Cult's practices. His belief in the righteousness of their mission falters, and he quietly harbors knowledge that could turn the tide against Torgar. As the Cult unravels, Durnak faces the difficult decision of whether to remain or abandon the Cult.</p>
+        </div>
+
+        <div class="section-content" id="grimbar">
+            <h2>Grimbar</h2>
+            <p>Grimbar, a loyal but gruff member of the Cult, is secretly a double agent for the rival Cult of the Unbound. As the Cult faces internal fractures, Grimbar is forced to confront his divided loyalties. His betrayal becomes pivotal as the Disciple’s rampage tests his allegiance and his mission's success.</p>
+        </div>
+
+        <div class="section-content" id="sent-ones">
+            <h2>Cult of the Sent Ones (Collective)</h2>
+            <p>The Cult of the Sent Ones is an ancient religious order with strong ties to earth and stone magic. Their leadership is currently faltering as key figures lose faith and internal conflicts rise. Beneath the surface, the Cult may be hiding a far darker agenda—manipulating powerful forces under the guise of spiritual enlightenment and seeking control over the world’s mystical powers.</p>
+        </div>
+
+        <div class="section-content" id="unbound">
+            <h2>Cult of the Unbound</h2>
+            <p>The Cult of the Unbound is a secretive rival faction that is attempting to disrupt the Sent Ones’ prophecy. Their leader, Thrainor Blackstone, seeks to manipulate the Cult’s downfall to fulfill his own ambitions, including subverting the Sent Ones’ power for his personal use.</p>
+        </div>
+
+        <div class="section-content" id="thrainor">
+            <h2>Thrainor Blackstone</h2>
+            <p>Thrainor Blackstone is the cold and calculating leader of the Cult of the Unbound. Manipulating events behind the scenes, he seeks to destabilize the Sent Ones by targeting their leadership. His ultimate goal is to control the mystical powers of the Sent Ones, using them for his own gain.</p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>Dira is a guide within the Cult, but she hides crucial information about the true nature of the temple. She may also have secret links to the Cult of the Unbound, and her actions are motivated by unclear personal goals. As the Cult faces collapse, she may choose a side that could drastically alter the outcome.</p>
+        </div>
+
+        <div class="section-content" id="goldar">
+            <h2>Goldar</h2>
+            <p>Goldar is the high leader of the Cult of the Sent Ones, facing increasing pressure as his control wanes. His long-term plans for Lucas and Mina remain a mystery, but it is clear that he intends to use their powers for the Cult's larger ambitions, even if it means manipulation and deceit.</p>
+        </div>
+
+        <div class="section-content" id="gorla">
+            <h2>Gorla</h2>
+            <p>Gorla, a Dwarf council member, grows increasingly interested in Mina’s powers. She begins to play a more active role in the Cult's manipulation of her abilities, quietly exploring ways to use her powers for the Cult's survival and success. Her true motives remain hidden.</p>
+        </div>
+
+        <div class="section-content" id="serina">
+            <h2>Serina</h2>
+            <p>Serina, a skilled mercenary, has a personal vendetta against the Cult of the Sent Ones due to past tragedies. As she spends more time with the group, she bonds with Lucas and Mina, and her mistrust of magic only grows stronger. Her role becomes pivotal as the Cult’s influence over them intensifies.</p>
+        </div>
+    </div>
+</body>
+</html>

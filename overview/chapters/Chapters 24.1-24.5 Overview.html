@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 24.1-24.5 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 24.1-24.5 Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter-24-1" onclick="highlightSection(this, 'chapter-24-1')">24.1</a></td>
+                    <td>Leadership Struggles (Part 1)</td>
+                    <td>A divided cult struggles under Torgar’s leadership, while the party begins preparing for battle.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-24-2" onclick="highlightSection(this, 'chapter-24-2')">24.2</a></td>
+                    <td>The Disciple’s Arrival (Part 2)</td>
+                    <td>The Disciple’s arrival devastates Brum'karoth, forcing the cult to confront the imminent threat.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-24-3" onclick="highlightSection(this, 'chapter-24-3')">24.3</a></td>
+                    <td>Fractured Fronts (Part 3)</td>
+                    <td>The group exploits the Disciple's vulnerability in a battle, but Mina pursues it alone.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-24-4" onclick="highlightSection(this, 'chapter-24-4')">24.4</a></td>
+                    <td>Wallace Joins the Fray (Part 4)</td>
+                    <td>Wallace aids in the battle but is injured, forcing the group to rethink their strategy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-24-5" onclick="highlightSection(this, 'chapter-24-5')">24.5</a></td>
+                    <td>The Final Showdown (Part 5)</td>
+                    <td>After a hard-fought battle, the Disciple is defeated, but the cost of victory is great.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-24-1">
+            <h2>Chapter 24.1 - Leadership Struggles (Part 1)</h2>
+            <p>With Goldar captured, the cult is thrown into disarray under Torgar’s leadership. His attempts to rally the cultists are met with distrust and skepticism. Lucas, Mina, and Thomas realize they cannot rely on the cult for protection. They begin training on their own, preparing for the upcoming war. Meanwhile, Dira reveals important secrets about the relics in the temple and their potential as weapons, urging Mina to consider her role in the prophecy of the Sent Ones.</p>
+        </div>
+
+        <div class="section-content" id="chapter-24-2">
+            <h2>Chapter 24.2 - The Disciple’s Arrival (Part 2)</h2>
+            <p>The Disciple arrives at Brum'karoth, devastating the city with his overwhelming power. His cryptic demand for a weapon against the Empire throws the city into chaos, with the cult forced to confront this new threat. Lucas, Mina, and Thomas decide to take matters into their own hands, preparing to face the Disciple head-on. As they delve deeper into the mystery of the hidden weapon, they prepare for a confrontation that will decide the city’s fate.</p>
+        </div>
+
+        <div class="section-content" id="chapter-24-3">
+            <h2>Chapter 24.3 - Fractured Fronts (Part 3)</h2>
+            <p>The group executes a daring plan to exploit the Disciple’s vulnerability, using thermal shock to weaken its rocky armor. As they succeed, Mina refuses to let the creature recover and pursues it, despite the risks. Lucas, weakened but determined, follows her. The battle escalates, and the group must push themselves beyond their limits to prevent the Disciple from recovering.</p>
+        </div>
+
+        <div class="section-content" id="chapter-24-4">
+            <h2>Chapter 24.4 - Wallace Joins the Fray (Part 4)</h2>
+            <p>Wallace arrives to aid the group, providing a much-needed tactical advantage. However, the Disciple adapts to their strategy, and the battle grows increasingly difficult. Wallace is injured, and the group retreats to regroup and plan their next move. With time running out, they finalize a strategy to target the Disciple’s core. Lucas, though exhausted, resolves to continue the fight.</p>
+        </div>
+
+        <div class="section-content" id="chapter-24-5">
+            <h2>Chapter 24.5 - The Final Showdown (Part 5)</h2>
+            <p>After a fierce battle, the Disciple is finally defeated, but at great cost. Lucas is unconscious, his strength spent, while Mina fights recklessly, driven by her determination. It is only when Thomas intervenes that the Disciple is truly vanquished. The city lies in ruins, and the group surveys the aftermath, dealing with the toll of the battle on both their bodies and spirits. Their journey, however, is far from over, and the future remains uncertain.</p>
+        </div>
+    </div>
+</body>
+</html>

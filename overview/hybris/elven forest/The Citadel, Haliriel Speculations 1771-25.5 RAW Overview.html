@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Citadel, Haliriel - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Citadel, Haliriel (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>A diverse and refined populace, consisting mainly of nobles, scholars, and elite warriors.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A majestic city perched high on the cliffs, with towering spires and intricate architecture.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Calm, yet oppressive, a feeling of power and ancient knowledge mixed with looming threats.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>A blend of ancient stonework and arcane-infused structures, surrounded by cascading waterfalls.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Symbols of wisdom, fate, and arcane power are etched throughout the citadel.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Arcane barriers, skilled wardens, and a vast network of secret tunnels.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Stories of the Citadel's founders and its role in maintaining balance in the world.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Ancient, sealed chambers that are rumored to hold powerful, forgotten artifacts.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party becomes entwined with the Citadel’s internal politics and secrets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Cliffs, deep forests, and hidden valleys surround the Citadel.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold, misty winds swirl around the citadel, with brief sunny spells and heavy rain.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Growing internal strife, as factions vie for power within the Citadel.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The population of the Citadel consists mainly of high-born nobles, arcane scholars, and elite warriors. The city is a cultural hub, attracting the most powerful and influential figures from across the world.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Haliriel’s architecture rises majestically against the backdrop of high cliffs, with grand towers reaching towards the sky. Waterfalls cascade down from the upper spires, and the air smells of fresh mountain herbs. The city combines elegant stone structures with mystical, arcane-infused elements that glow faintly at night.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The energy of Haliriel is calm but heavy, as though the city is constantly holding its breath. There is a palpable sense of ancient wisdom, tempered by a foreboding unease. Factions within the citadel hold power, but the stability of their dominance is increasingly questioned.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The city’s architecture is a stunning blend of ancient dwarven craftsmanship and elven elegance. Magnificent spires, many of which are enchanted, create an otherworldly skyline. Below, the ground level houses open courtyards, connected by intricate walkways and hidden chambers.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The Citadel is filled with intricate carvings of powerful symbols, including depictions of the ancient deities and arcane forces. Many of these carvings hold deeper, hidden meanings, influencing the actions and beliefs of the people who reside here.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Citadel is guarded by powerful arcane wards and skilled wardens. Its magical defenses are complemented by ancient stone fortifications, some of which date back to the Citadel’s founding. Hidden tunnels beneath the city serve as escape routes or places for secretive operations.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Haliriel’s history is rich with tales of its founding by powerful sorcerers and warriors. The Citadel is said to hold the key to an ancient power that could change the fate of the world. The most prominent legend revolves around the enigmatic Seers who predicted the rise and fall of Haliriel.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The Citadel holds many secrets, including sealed chambers filled with long-forgotten magic. There are whispers of a hidden faction within the Citadel that seeks to unlock these powers, regardless of the cost. The underground tunnels hold their own perils, from ancient beasts to lost spells.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party finds themselves deeply involved in the political machinations of the Citadel, as they uncover hidden truths and navigate factional struggles. They are key players in the Citadel’s unfolding story, seeking out ancient knowledge that could either save or doom Haliriel.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Haliriel is nestled atop a series of towering cliffs, surrounded by dense forests and steep valleys. The terrain is both an asset and a challenge, as the surrounding wilderness is both breathtaking and treacherous, with few paths leading in or out.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather is often cold and misty, with winds sweeping across the cliffs. Rainstorms are frequent, especially in the colder months, adding to the moody and mysterious atmosphere of the Citadel. The sun occasionally breaks through the clouds, but the shadows of the Citadel are long and ever-present.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Political tensions within Haliriel are on the rise, with various factions vying for control. There are murmurs of a growing movement to unlock the Citadel’s long-hidden secrets, and recent events suggest that the ancient powers within the city may soon stir once more. The party’s actions could significantly impact these developments.</p>
+        </div>
+    </div>
+</body>
+</html>

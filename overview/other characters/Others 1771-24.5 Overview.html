@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Others 1771-24.5 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Others 1771-24.5 Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Character</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#proctor-amara" onclick="highlightSection(this, 'proctor-amara')">Proctor Amara</a></td>
+                    <td>Central Institute administrator, stern and professional.</td>
+                </tr>
+                <tr>
+                    <td><a href="#minas-father" onclick="highlightSection(this, 'minas-father')">Mina’s Father</a></td>
+                    <td>Influential, protective figure; possibly controlling.</td>
+                </tr>
+                <tr>
+                    <td><a href="#minas-butler" onclick="highlightSection(this, 'minas-butler')">Mina’s Butler (Sir Wallace)</a></td>
+                    <td>Loyal servant, battle-hardened protector.</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas-foster-parents" onclick="highlightSection(this, 'lucas-foster-parents')">Lucas’s Foster Parents</a></td>
+                    <td>Distant, emotionally absent guardians.</td>
+                </tr>
+                <tr>
+                    <td><a href="#ceylan" onclick="highlightSection(this, 'ceylan')">Ceylan</a></td>
+                    <td>Mentor to Candice, nature-bending abilities.</td>
+                </tr>
+                <tr>
+                    <td><a href="#jarek" onclick="highlightSection(this, 'jarek')">Jarek</a></td>
+                    <td>Protector and guide from the Nythari tribe.</td>
+                </tr>
+                <tr>
+                    <td><a href="#elder-aria" onclick="highlightSection(this, 'elder-aria')">Elder Aria</a></td>
+                    <td>Wise Nythari elder with foresight abilities.</td>
+                </tr>
+                <tr>
+                    <td><a href="#researcher" onclick="highlightSection(this, 'researcher')">Researcher</a></td>
+                    <td>Scholar studying magical phenomena and disasters.</td>
+                </tr>
+                <tr>
+                    <td><a href="#guardians-of-the-law" onclick="highlightSection(this, 'guardians-of-the-law')">Guardians of the Law</a></td>
+                    <td>Enforcers of magical and societal laws.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="proctor-amara">
+            <h2>Proctor Amara</h2>
+            <p>Born in 1700, Proctor Amara is the stern and professional administrator of the Central Institute. While she does not appear to possess any magical abilities, her deep intrigue in the talents of others drives her actions. Amara is seen as an unwavering figure in the institution, balancing her duty with personal interest in certain individuals' potential.</p>
+        </div>
+
+        <div class="section-content" id="minas-father">
+            <h2>Mina’s Father</h2>
+            <p>Born in 1712, Mina’s father is a powerful and influential figure in society. He is deeply protective of Mina, though his controlling nature often comes into conflict with her growing independence. His latent political power and high social status add to his complex relationship with his daughter.</p>
+        </div>
+
+        <div class="section-content" id="minas-butler">
+            <h2>Mina’s Butler (Sir Wallace)</h2>
+            <p>Sir Wallace, Mina’s loyal butler, was trained as a protector and has become an essential strategist in the ongoing conflict. His battle-hardened nature, combined with advanced espionage skills, makes him an invaluable ally. Recently injured, he remains determined to aid in the battle and protect Mina, revealing his true depth beyond his original role.</p>
+        </div>
+
+        <div class="section-content" id="lucas-foster-parents">
+            <h2>Lucas’s Foster Parents</h2>
+            <p>Lucas’s foster parents, while guardians of the young boy, are emotionally distant and largely uninvolved in his life. Their minimal interaction with Lucas creates emotional instability for him, especially as he navigates his personal journey.</p>
+        </div>
+
+        <div class="section-content" id="ceylan">
+            <h2>Ceylan</h2>
+            <p>Ceylan, an eccentric mentor from a distant past, trains Candice in nature-bending abilities. Despite appearing slightly senile, Ceylan’s wisdom and guidance prepare Candice for an important mission across the continent. His shapeshifting origins add to his mystique and power.</p>
+        </div>
+
+        <div class="section-content" id="jarek">
+            <h2>Jarek</h2>
+            <p>A member of the Nythari tribe, Jarek serves as a protector and guide for Candice during her dangerous journey through various landscapes. His resourcefulness and compassion are crucial, although his connection to Nythari heritage and possible agenda regarding Candice’s role remain hidden.</p>
+        </div>
+
+        <div class="section-content" id="elder-aria">
+            <h2>Elder Aria</h2>
+            <p>Elder Aria, a wise and strong-willed elder of the Nythari tribe, possesses the rare ability of foresight. Although her guidance is invaluable to Candice, Aria keeps certain visions of the future hidden from her tribe for their protection. Her deep connection to the Nythari people and their culture defines her role.</p>
+        </div>
+
+        <div class="section-content" id="researcher">
+            <h2>Researcher</h2>
+            <p>The Researcher, an inquisitive scholar from the Central Institute, is dedicated to studying magical phenomena, particularly those connected to the disasters in Kingston. With possibly hidden knowledge regarding the catastrophic events, their research could hold the key to unraveling much of the ongoing mysteries.</p>
+        </div>
+
+        <div class="section-content" id="guardians-of-the-law">
+            <h2>Guardians of the Law</h2>
+            <p>The Guardians of the Law are elite enforcers dedicated to upholding magical and societal laws in Kingston. Their unwavering discipline masks internal conflicts, as their authority is constantly challenged. They may hold hidden agendas, manipulating the law for personal or organizational gain.</p>
+        </div>
+    </div>
+</body>
+</html>

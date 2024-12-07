@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybris, Year 0 - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Hybris, Year 0 (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>3,000 deported individuals and Dereks (underground, grey dwarf-like creatures).</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Harsh, rugged landscapes with diverse ecosystems in flux, marked by mountains, caverns, forests, and rare biomes.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Chaotic energy fluctuations affect both land and inhabitants, creating instability.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Made from metal alloys, wood, and stone, with magical elements and subterranean fortifications.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Tribal symbols, magical runes, and earth-based sigils carved for protection and balance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Impromptu fortifications and earth-based magic, with sophisticated underground defenses by the Dereks.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Legends of the Dereks’ world-shaping earth magic, tied to the planet’s core.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Unstable ecosystem with magical beasts, hostile fauna, and shifting terrain.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Unknown connection between the people and the planet, surrounded by mysterious legends.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Mountains, forests, scattered settlements. Dereks live beneath the surface.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Harsh, unpredictable storms, floods, and temperature shifts.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Power struggles, ecological changes, and tensions between the Dereks and deported factions.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The population of Hybris includes 3,000 deported individuals, mostly humans, elves, dwarves, and a few unique individuals from other species, as well as the Dereks, an underground, grey dwarf-like species native to the planet. The settlers are scattered across the landscape, while the Dereks primarily live beneath the surface.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Hybris is marked by a volatile and rugged landscape with mountains, caverns, dense forests, and rare biomes. The land is ever-changing due to magical fluctuations, and cages made of rare metal alloys mark the initial landing site. The environment is both wild and beautiful, yet unforgiving, with chaotic energy ripples that shape the landscape.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere of Hybris is volatile, with chaotic energy fluctuations that affect both the environment and its inhabitants. The planet is in ecological stabilization, but magical interference and unstable weather patterns cause significant instability. The only beings who can control earth-based magic are the Dereks, making them an essential part of the planet's balance.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture in Hybris is primarily constructed from metal alloys, wood, and stone, with occasional magical elements integrated into the structures. Settlements are often built within natural landscapes, such as caves and tunnels that the Dereks control. Fortifications are common, with crude defenses built by the deported and sophisticated underground structures created by the Dereks.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The people of Hybris carve symbols and runes into buildings, trees, and the earth itself to maintain balance between nature and magic. These carvings include tribal symbols, magical runes, geometric patterns, and animal motifs, all meant to ward off danger, honor deities, and maintain the harmony between the inhabitants and the land.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Defensive structures are improvised, with the deported building crude fortifications using available resources. However, the Dereks have sophisticated underground defenses and access to earth-based magic, allowing them to control underground passages and mountaineer pathways. These defenses are key to controlling the land's most dangerous areas.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Local legends speak of the Dereks’ immense power, which is tied to the planet’s core. These stories suggest that the Dereks possess world-shaping earth magic, a force that could alter the very fabric of the planet. However, much of this remains speculation, as the Dereks are secretive and few outsiders have ever seen the true extent of their power.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The unstable ecosystem of Hybris is home to dangerous wildlife, including magical beasts, hostile fauna, and unpredictable weather. The magical interference can also lead to sudden shifts in terrain, aurora-like events, or violent storms. Those unprepared for these dangers face the risk of being overwhelmed by the unpredictable forces of the planet.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The connection between the people of Hybris and the planet’s mysterious forces remains unclear. While the deported individuals have their own myths and beliefs about the planet's magic, much of their history is wrapped in mystery. The party may be drawn into these legends and uncover long-buried secrets that could change the course of Hybris’ future.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Hybris is surrounded by harsh, unforgiving terrain: mountains to the west, dense forests to the south, and scattered settlements of deported individuals across the land. The Dereks live underground, with few visible settlements above the surface. The environment is dangerous and difficult to navigate, with shifting terrains and unpredictable weather.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>Weather in Hybris is harsh and unpredictable, with sudden storms, intense floods, and temperature shifts. These changes occur without warning, and are tied to the magical flux affecting the planet. While the weather can be beautiful, it is often violent, and only those familiar with the land's unstable magic can predict its patterns.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recently, ecological changes have led to increasing tensions between the various factions on Hybris. Power struggles among the deported individuals, combined with the Dereks’ growing influence, have led to conflicts over technology, resources, and the secrets of the underground world. Some factions seek to exploit the Dereks’ earth magic, risking the delicate balance that keeps the planet in check.</p>
+        </div>
+    </div>
+</body>
+</html>

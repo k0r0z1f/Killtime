@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Character Table</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/sortable/1.14.0/js/Sortable.min.js"></script>
+  <style>
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+    th, td {
+      border: 1px solid black;
+      padding: 8px;
+      text-align: left;
+    }
+    th {
+      background-color: #f2f2f2;
+      cursor: pointer;
+    }
+    th:hover {
+      background-color: #ddd;
+    }
+  </style>
+</head>
+<body>
+
+<table id="characterTable">
+  <thead>
+    <tr>
+      <th>Character</th>
+      <th>Birth Year</th>
+      <th>Role/Background</th>
+      <th>Personality Traits</th>
+      <th>Abilities/Magic</th>
+      <th>Alliances/Clans/Factions</th>
+      <th>Appearance</th>
+      <th>Character Arc/Goal</th>
+      <th>Secret</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Torgar</td>
+      <td>TBD</td>
+      <td>Rockbinder Kharf, Primary Cleric</td>
+      <td>Stern, authoritative, deeply spiritual</td>
+      <td>Earth and stone manipulation, high clerical magic</td>
+      <td>Cult of the Sent Ones</td>
+      <td>Tall, muscular build; adorned with ritualistic symbols and dark robes</td>
+      <td>Serving as a spiritual guide for his followers, Torgar’s goal is to control the direction of the group, using his influence to further his hidden agenda.</td>
+      <td>Hiding the true purpose of the Cult’s mission, manipulating others' beliefs to serve his personal spiritual goals.</td>
+    </tr>
+    <tr>
+      <td>Durnak</td>
+      <td>TBD</td>
+      <td>Earthbinder Rornok, Cleric</td>
+      <td>Methodical, reserved, wise</td>
+      <td>Earth manipulation, protective magic</td>
+      <td>Cult of the Sent Ones</td>
+      <td>Broad-shouldered, rough features, simple functional robes</td>
+      <td>Durnak seeks to support Torgar but grows increasingly disillusioned with the group’s methods, leading him to question his loyalty and make difficult decisions.</td>
+      <td>Doubts the Cult’s righteousness and knows secret truths that could turn the tide against Torgar and the Cult’s mission.</td>
+    </tr>
+    <tr>
+      <td>Grimbar</td>
+      <td>TBD</td>
+      <td>Stonefist Groln, Cleric</td>
+      <td>Gruff, blunt, loyal</td>
+      <td>Stone manipulation, physical enhancement magic</td>
+      <td>Cult of the Sent Ones, double agent for an opposing cult</td>
+      <td>Stocky, intimidating, solid build, heavy robes with armor-like adornments</td>
+      <td>A loyal muscle of the Cult, Grimbar questions their methods. His arc involves protecting those he cares about, even if it means betraying the Cult to do so.</td>
+      <td>Double agent working for a rival cult, torn between loyalties. His betrayal is a critical turning point for the group.</td>
+    </tr>
+    <tr>
+      <td>Cult of the Sent Ones (Collective)</td>
+      <td>TBD</td>
+      <td>Religious Order and Mystical Guardians</td>
+      <td>Stern, secretive, zealous</td>
+      <td>Earth and stone-based magic, spiritual rituals</td>
+      <td>Various branches, secretive and far-reaching</td>
+      <td>Cloaked figures, robed in dark fabrics, adorned with runic symbols and totems</td>
+      <td>The Cult aims to awaken ancient powers, guiding the world toward spiritual enlightenment. However, their methods may involve manipulation, raising questions about their true purpose.</td>
+      <td>The Cult's leadership may be concealing their true motives, aiming to manipulate world events to gain control over mystical forces, rather than promoting spiritual enlightenment.</td>
+    </tr>
+  </tbody>
+</table>
+
+<script>
+  document.querySelectorAll("th").forEach(function(th) {
+    th.addEventListener("click", function() {
+      let table = th.parentElement.parentElement.parentElement;
+      let rows = Array.from(table.querySelector("tbody").rows);
+      let index = Array.from(th.parentElement.children).indexOf(th);
+      let isAscending = th.classList.contains("asc");
+      
+      rows.sort((rowA, rowB) => {
+        let cellA = rowA.cells[index].textContent.trim();
+        let cellB = rowB.cells[index].textContent.trim();
+        
+        return (isAscending ? cellA < cellB : cellA > cellB) ? -1 : 1;
+      });
+      
+      rows.forEach(row => table.querySelector("tbody").appendChild(row));
+      th.classList.toggle("asc", !isAscending);
+      th.classList.toggle("desc", isAscending);
+    });
+  });
+</script>
+
+</body>
+</html>

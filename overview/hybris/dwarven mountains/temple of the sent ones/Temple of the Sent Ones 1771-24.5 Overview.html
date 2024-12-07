@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Temple of the Sent Ones - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Hidden Temple of the Sent Ones (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location" onclick="highlightSection(this, 'location')">Location</a></td>
+                    <td>Hidden in the mountains, difficult to find unless guided. Obscured by foliage.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Ancient stonework with ominous carvings. Barely noticeable from a distance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>A sense of awe and danger, constantly feeling watched.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Labyrinthine, with narrow walkways and dark corridors leading deep within.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Depictions of the Sent Ones, symbols of celestial influence and powerful rites.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inner-sanctum" onclick="highlightSection(this, 'inner-sanctum')">Inner Sanctum</a></td>
+                    <td>Labyrinthine corridors, hiding dark practices and secrets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#entrance" onclick="highlightSection(this, 'entrance')">Entrance</a></td>
+                    <td>A dark, forbidding doorway, a threshold to the unknown.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Magical or spiritual protection, traps, and guardians to ward off intruders.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret-chambers" onclick="highlightSection(this, 'secret-chambers')">Secret Chambers/Rooms</a></td>
+                    <td>Hidden areas of ancient knowledge, tangled with Lucas’s fate.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Ancient prophecy tying the Sent Ones to chosen individuals like Lucas.</td>
+                </tr>
+                <tr>
+                    <td><a href="#spiritual-significance" onclick="highlightSection(this, 'spiritual-significance')">Spiritual Significance</a></td>
+                    <td>Sacred to the Cult of the Sent Ones, center of their faith and origin.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Malevolent entities, magical wards, and internal cult conflicts.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-lucas" onclick="highlightSection(this, 'link-lucas')">Link to Lucas & the Cult</a></td>
+                    <td>Lucas’s presence triggers events, awakening dormant forces tied to his fate.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-thomas" onclick="highlightSection(this, 'link-thomas')">Link to Thomas & the Cult</a></td>
+                    <td>Thomas unravels his connection to the temple and the cult's prophecies.</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Wild, jagged rocks, deep crevices, and dense forests create a natural defense.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Unpredictable weather with fierce winds and sudden storms.</td>
+                </tr>
+                <tr>
+                    <td><a href="#other-groups" onclick="highlightSection(this, 'other-groups')">Other Groups Interested</a></td>
+                    <td>Other factions, including Grimbar's cult and explorers, seek the temple’s secrets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#connection-dwarves" onclick="highlightSection(this, 'connection-dwarves')">Connection to the Dwarves</a></td>
+                    <td>The dwarves, Torgar and Durnak, have ties to the temple’s history and guardianship.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location">
+            <h2>Location</h2>
+            <p>The Hidden Temple of the Sent Ones is nestled high in the mountains, so difficult to find that only those with knowledge of its location or a guide can reach it. The temple is tucked away in a large stone clearing, partially concealed by thick, untamed foliage. There’s an overwhelming sense of foreboding that hangs in the air, making it an uneasy place to approach.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The temple appears ancient, weathered by the harsh passage of time. Its stonework, though strong, is marred by the elements, and the intricate carvings on the walls seem to depict both sacred rites and ominous symbols. From a distance, the temple blends into the mountain’s natural landscape, almost invisible until you are upon it. The architecture and carvings radiate a sense of mystery, making it clear that this place has a deep, unspoken power.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>A heavy, palpable energy surrounds the temple. It is as though the air itself feels thicker, laden with both awe and danger. There’s a feeling of being constantly watched, as if the temple is alive in some way, holding something ancient and powerful within. The deeper one ventures, the more oppressive and tense the atmosphere becomes, growing stronger the closer you come to the heart of the temple.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The temple is built directly into the side of the mountain, its high, imposing walls and grand entrance contributing to its sense of awe and danger. Inside, narrow walkways and steep staircases wind deeper into the temple, making it feel labyrinthine and disorienting. The structure is filled with twists and turns, echoing with the sounds of ancient rituals and secrets long forgotten.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>Carvings of the “Sent Ones,” mysterious beings or divine figures, are seen throughout the temple. These symbols speak of celestial influence, powerful rites, and the connection between the Sent Ones and the forces that shape fate. The temple is not just a place of worship but a powerful marker of the forces that govern the temple’s history, possibly linking it to both the Cult of the Sent Ones and the Cult of the Unbound.</p>
+        </div>
+
+        <div class="section-content" id="inner-sanctum">
+            <h2>Inner Sanctum</h2>
+            <p>The deeper sections of the temple grow darker, with labyrinthine corridors that twist and turn in seemingly random directions. The inner sanctum is where the most sacred rituals would have taken place, but now it holds a more sinister air. These chambers are filled with secrets, rituals long abandoned, and hints of darker practices. Whatever lies in the heart of the temple is even more mysterious and potentially dangerous.</p>
+        </div>
+
+        <div class="section-content" id="entrance">
+            <h2>Entrance</h2>
+            <p>The entrance to the temple is dark and imposing, a doorway that feels like a maw ready to swallow those who dare enter. Despite its forbidding nature, there is an undeniable allure to it, calling out to those who seek answers. It stands as a threshold, marking the line between the known and the unknown, a place where one can never return quite the same.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The temple is not merely a physical structure—it is protected by both mystical and spiritual forces. The air feels charged, and traps or guardians may still be hidden within, protecting the temple from intruders. As the party ventures deeper, there is an increasing sense of danger from both the environment and the growing tension between the various factions connected to the temple’s power. The discovery of the relic and its connection to the guardians suggests the temple is more than just a place—it is alive with purpose.</p>
+        </div>
+
+        <div class="section-content" id="secret-chambers">
+            <h2>Secret Chambers/Rooms</h2>
+            <p>Hidden chambers within the temple are said to contain ancient knowledge, forgotten rituals, and powerful artifacts. These rooms, however, are not easily accessible. Passages lead to long-forgotten corners of the temple, where the secrets of the Sent Ones lie dormant. These chambers are likely linked to Lucas’s fate, as his presence seems to unravel the mysteries of the temple more and more.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The Hidden Temple of the Sent Ones is tied to an ancient prophecy that speaks of the rise of certain chosen individuals. These individuals, like Lucas, seem destined to play a part in the larger balance of power. The temple is a central place in understanding this prophecy, its connection to Lucas and other key figures growing clearer as the party ventures deeper into the mysteries that surround it.</p>
+        </div>
+
+        <div class="section-content" id="spiritual-significance">
+            <h2>Spiritual Significance</h2>
+            <p>The temple is the heart of the faith for the Cult of the Sent Ones, who view it as the origin of their order’s beliefs and practices. Within its walls, sacred rituals are conducted, but these rites are growing more cryptic. The Sent Ones, once enigmatic, are now increasingly elusive. Their true purpose is shrouded in mystery, especially as Lucas’s involvement seems to deepen their significance in a way none can fully understand.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The temple is filled with dangers, both physical and magical. These can range from malevolent spirits or magical wards to ancient traps left by the Sent Ones themselves. As the party delves deeper into the temple, the dangers grow more acute, and it seems there may be enemies lurking not only from the external factions but from within the Cult itself.</p>
+        </div>
+
+        <div class="section-content" id="link-lucas">
+            <h2>Link to Lucas & the Cult</h2>
+            <p>The temple plays a central role in the mystery surrounding Lucas. His presence there triggers events that awaken dormant forces and link him more closely to the Sent Ones. The fusion of the relic with Lucas intensifies his connection to the temple’s power, and the decisions he makes here will have significant consequences for his fate and the fate of the Cult itself.</p>
+        </div>
+
+        <div class="section-content" id="link-thomas">
+            <h2>Link to Thomas & the Cult</h2>
+            <p>Thomas, like Lucas, is becoming more aware of his own connection to the temple. The revelations made within its walls may reveal long-hidden truths about his personal history with the Cult. As the prophecies unfold, Thomas's involvement will become a key piece of the puzzle in the battle for control over the temple's power.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The terrain surrounding the temple is treacherous and harsh, characterized by jagged rocks, deep crevices, and dense forests. The wild nature of the area provides a natural defense to anyone seeking to find the temple, ensuring its isolation from the outside world. This rugged wilderness is also a mirror to the growing chaos unfolding within the temple and city.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather around the temple is unpredictable, with fierce winds and sudden storms that seem to converge on the mountain. One moment it may be calm, and the next, dangerous forces may be unleashed. The changes in the weather echo the turbulent and unpredictable events unfolding around the party, as they too struggle with the forces of fate that converge here.</p>
+        </div>
+
+        <div class="section-content" id="other-groups">
+            <h2>Other Groups Interested</h2>
+            <p>While the Cult of the Sent Ones holds the most sway over the temple, other factions are also vying for control of its secrets. Grimbar’s opposing cult, explorers, and others all seek the power hidden within. The dwarves, particularly Torgar and Durnak, have their own connection to the temple, possibly tied to guardianship or ancient knowledge, and their role may provide a crucial key to understanding the temple’s mysteries.</p>
+        </div>
+
+        <div class="section-content" id="connection-dwarves">
+            <h2>Connection to the Dwarves</h2>
+            <p>The dwarves, especially Torgar and Durnak, have a long history with the Hidden Temple. Whether through guardianship, exploration, or ancient knowledge, their connection to the temple is vital. They may hold the key to unlocking the temple’s defenses and uncovering the secrets behind Lucas’s heritage. Their role in the larger story may become more significant as the party learns more about the temple’s power.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City of Brum'korath - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">City of Brum'korath (Location Overview)</h1>
+
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>A large dwarven population with a focus on military presence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A layered city with tight streets, divided into districts. The upper city is military-focused.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense, oppressive, filled with an undercurrent of danger and paranoia.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Dark stone buildings, narrow alleys, and a military feel in the upper city. The lower districts are more industrial.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Ominous carvings, shadowy figures, and signs of past conflicts in the stonework.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Outer patrols, specialized units in central districts, possibly magical or surveillance-based security.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Whispers of an assassin guild operating within and past conflicts with an unknown enemy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Assassin groups, secret underground networks, and hostile factions are hiding in the shadows.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party is being watched by the Sent Ones, while cultists and assassins have their own designs.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>The city is built on layered districts, surrounded by dense mountains and rugged terrain.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Overcast skies with frequent rain and fog. The political climate mirrors this uncertainty.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Cultists active, Sent Ones tracking the party. Thrain is gathering more information. Recent ambush by assassins.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The City of Brum'korath is home to a large dwarven population, renowned for their strength and military prowess. Most inhabitants belong to various guilds, some tied to the city’s security, while others are involved in the black market and underground dealings.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The city is divided into layers, with tight streets and stone buildings that give the city an imposing and claustrophobic feel. The upper districts have a stronger military presence, with tall watchtowers and fortified walls. The lower city is more industrial, with smoke rising from forges and factories. It’s a city that looks as if it’s always on edge.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The city exudes a tense, oppressive atmosphere. There is an undercurrent of danger and paranoia, as if everyone is watching their back. While the city is bustling with activity, the constant threat of political intrigue and hidden enemies keeps its people on edge.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>Brum'korath’s architecture is designed for defense and function. In the upper city, military stone structures rise from the ground, with narrow passageways and dark alleys. The lower city is more industrial, with smoke-stained buildings and workshops. The city’s design is meant to keep enemies out and its people under control.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The architecture of Brum'korath is etched with ominous carvings. Shadows, skulls, and ominous figures adorn many buildings, marking the city’s long history of conflict and war. Some carvings are said to be magical wards, while others tell the dark history of the city’s founders.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The city is heavily fortified with outer patrols and specialized security forces near key districts. It’s rumored that magical wards or surveillance-based security are in place, although these are not confirmed. The city’s defenses are constantly on alert due to the potential for internal conflict and external threats.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Brum'korath has long been the site of secretive operations, including a legendary assassin guild that operates within its walls. There are rumors of past conflicts with an unknown enemy, whose presence may still linger in the shadows, waiting for the right moment to strike.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The city is filled with hidden dangers. Assassin groups operate in the shadows, and underground networks move freely within its labyrinthine tunnels. Rival factions constantly vie for control, and some believe there are darker forces at play, including cults and other shadowy organizations.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party finds themselves being watched by the Sent Ones, mysterious figures whose motives remain unclear. Cultists and assassins seem to have their own designs on the party, drawing them deeper into the city’s intrigue. The party's actions could tip the balance of power in the city.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Brum'korath is built on layered districts, each offering a different vantage point over the surrounding mountains. The city is surrounded by rugged terrain, steep cliffs, and dense forests, making it a natural fortress. Few paths lead into the city, adding to its isolation and security.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in Brum'korath is often overcast, with periods of rain and fog that add to the city’s dark and oppressive atmosphere. The social and political climate is similarly charged, with an air of uncertainty and mistrust hanging over everything.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The Cultists of the Unbound are active in the city, and the Sent Ones are watching the party closely. Thrain is gathering more information, while the city’s political landscape grows more unstable. A recent ambush by an assassin and the disappearance of a party member have escalated tensions.</p>
+        </div>
+    </div>
+</body>
+</html>
