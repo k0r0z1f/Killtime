@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windstrider - Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Windstrider - Overview</h1>
+
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#design" onclick="highlightSection(this, 'design')">Design</a></td>
+                    <td>Sleek, flowing shape reflecting natural forms, emphasizing both beauty and functionality.</td>
+                </tr>
+                <tr>
+                    <td><a href="#materials" onclick="highlightSection(this, 'materials')">Materials</a></td>
+                    <td>Enchanted wood, lightweight air-magic-infused crystals, and natural fabric elements.</td>
+                </tr>
+                <tr>
+                    <td><a href="#size" onclick="highlightSection(this, 'size')">Size</a></td>
+                    <td>15 meters in length, 6 meters in width—compact for agility and large enough for passengers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#sails" onclick="highlightSection(this, 'sails')">Sails/Membranes</a></td>
+                    <td>Translucent, enchanted sails that harness wind currents and add to the vehicle’s grace.</td>
+                </tr>
+                <tr>
+                    <td><a href="#levitation" onclick="highlightSection(this, 'levitation')">Levitation Mechanism</a></td>
+                    <td>Air-magic runes and levitation crystals allow for effortless gliding and minimal energy use.</td>
+                </tr>
+                <tr>
+                    <td><a href="#propulsion" onclick="highlightSection(this, 'propulsion')">Propulsion</a></td>
+                    <td>Propelled by wind and air-magic channeled through the sails and levitation crystals.</td>
+                </tr>
+                <tr>
+                    <td><a href="#interior" onclick="highlightSection(this, 'interior')">Interior Design</a></td>
+                    <td>Elegant, minimalist design with natural materials and bioluminescent plants for ambient lighting.</td>
+                </tr>
+                <tr>
+                    <td><a href="#cockpit" onclick="highlightSection(this, 'cockpit')">Cockpit</a></td>
+                    <td>Crystal dome providing panoramic views and glowing runes for navigation.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-source" onclick="highlightSection(this, 'energy-source')">Energy Source</a></td>
+                    <td>Wind-infused crystals and arcane energy from natural air currents for sustainable power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#navigation" onclick="highlightSection(this, 'navigation')">Navigation</a></td>
+                    <td>Celestial signs, ancient maps, and air-magic intuition guide the Windstrider’s course.</td>
+                </tr>
+                <tr>
+                    <td><a href="#speed" onclick="highlightSection(this, 'speed')">Speed</a></td>
+                    <td>Reaches speeds up to 250 km/h while maintaining a smooth, graceful flight path.</td>
+                </tr>
+                <tr>
+                    <td><a href="#range" onclick="highlightSection(this, 'range')">Range</a></td>
+                    <td>Can travel up to 500 km without needing to land, utilizing efficient air-magic systems.</td>
+                </tr>
+                <tr>
+                    <td><a href="#stealth" onclick="highlightSection(this, 'stealth')">Stealth</a></td>
+                    <td>Nearly silent with an invisibility cloak powered by air-magic for covert operations.</td>
+                </tr>
+                <tr>
+                    <td><a href="#altitude-limitations" onclick="highlightSection(this, 'altitude-limitations')">Altitude Limitations</a></td>
+                    <td>Max altitude is 1000 feet above terrain, ideal for low-altitude, graceful flights.</td>
+                </tr>
+                <tr>
+                    <td><a href="#special-features" onclick="highlightSection(this, 'special-features')">Special Features</a></td>
+                    <td>Magical shielding, invisibility cloak, and bioluminescent plants with magical energy properties.</td>
+                </tr>
+                <tr>
+                    <td><a href="#passenger-capacity" onclick="highlightSection(this, 'passenger-capacity')">Passenger Capacity</a></td>
+                    <td>Comfortably carries 1-4 passengers, with space for additional cargo or passengers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#exterior" onclick="highlightSection(this, 'exterior')">Exterior Appearance</a></td>
+                    <td>Wood-like shimmer with silver-blue accents and glowing runes that pulse with energy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#flight-control" onclick="highlightSection(this, 'flight-control')">Flight Control</a></td>
+                    <td>Intuitive control through gestures or thought-based guidance, with a telepathic link to the vehicle.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="design">
+            <h2>Design</h2>
+            <p>The Windstrider maintains its sleek, flowing shape, reflecting the organic forms found in nature. Its aerodynamic curves give it an effortless appearance as though it’s gliding through the air. The design emphasizes natural beauty combined with functionality, ensuring that every inch serves both a magical and practical purpose.</p>
+        </div>
+
+        <div class="section-content" id="materials">
+            <h2>Materials</h2>
+            <p>Crafted from enchanted wood and lightweight air-magic-infused crystals, the Windstrider is built for both durability and efficiency. These materials are lightweight yet robust, with the wood carrying a natural resilience and the magical crystals providing the levitation and propulsion systems needed for flight. The natural fabric covering certain parts of the vehicle is both functional and aesthetic, changing colors with the wind.</p>
+        </div>
+
+        <div class="section-content" id="size">
+            <h2>Size</h2>
+            <p>The Windstrider measures 15 meters in length and 6 meters in width, making it compact for maneuverability while large enough to carry multiple passengers or cargo. Its dimensions are optimized for both comfort and agility.</p>
+        </div>
+
+        <div class="section-content" id="sails">
+            <h2>Sails/Membranes</h2>
+            <p>The translucent, enchanted sails change color based on wind direction and intensity, allowing for efficient harnessing of wind currents. These sails not only enable levitation but also provide the necessary propulsion for movement. The sails are also key to the Windstrider’s distinctive beauty and graceful movement.</p>
+        </div>
+
+        <div class="section-content" id="levitation">
+            <h2>Levitation Mechanism</h2>
+            <p>The vehicle’s levitation comes from air-magic runes embedded in its frame, connected to levitation crystals that harness the flow of air. These magical systems allow the Windstrider to glide effortlessly through the air, relying on the power of natural wind currents to remain airborne.</p>
+        </div>
+
+        <div class="section-content" id="propulsion">
+            <h2>Propulsion</h2>
+            <p>Propelled by the wind itself, the Windstrider utilizes air-magic channeled through the sails and levitation crystals. This unique form of propulsion ensures that the vehicle can navigate with minimal energy loss and no need for conventional fuel sources.</p>
+        </div>
+
+        <div class="section-content" id="interior">
+            <h2>Interior Design</h2>
+            <p>The interior reflects elven aesthetics: elegant and minimalist, with the use of natural materials like polished wood and leather. Soft, glowing bioluminescent plants provide ambient lighting, creating a calm and peaceful atmosphere that aligns with the serene flight experience.</p>
+        </div>
+
+        <div class="section-content" id="cockpit">
+            <h2>Cockpit</h2>
+            <p>The cockpit is housed beneath a crystal dome, providing panoramic views of the surrounding environment. The cockpit is open, allowing passengers to feel the wind as they fly. Glowing runes etched into the dome not only provide magical illumination but also serve as navigation aids, showing vital flight information.</p>
+        </div>
+
+        <div class="section-content" id="energy-source">
+            <h2>Energy Source</h2>
+            <p>The Windstrider’s energy comes from wind-infused crystals and arcane energy harnessed from natural air currents. These energy sources are stable and sustainable, allowing the vehicle to travel long distances without the need for conventional fuel.</p>
+        </div>
+
+        <div class="section-content" id="navigation">
+            <h2>Navigation</h2>
+            <p>The vehicle navigates using a combination of celestial signs, ancient elven maps, and air-magic intuition. Elven pilots rely on their magical connection with the environment to sense the direction of the wind and determine their course.</p>
+        </div>
+
+        <div class="section-content" id="speed">
+            <h2>Speed</h2>
+            <p>The Windstrider is capable of reaching speeds up to 250 km/h, allowing it to travel swiftly over long distances. Despite its speed, the craft maintains a smooth, graceful flight path, offering a calm and controlled experience.</p>
+        </div>
+
+        <div class="section-content" id="range">
+            <h2>Range</h2>
+            <p>It has a range of up to 500 km without needing to land, making it ideal for long journeys through both peaceful and turbulent environments. This extended range is due to the efficiency of the air-magic system and the ability to harness wind currents for continuous flight.</p>
+        </div>
+
+        <div class="section-content" id="stealth">
+            <h2>Stealth</h2>
+            <p>In terms of stealth, the Windstrider is nearly silent, thanks to its efficient air-magic propulsion system. The vehicle also has an invisibility cloak activated by air-magic, which renders it almost undetectable to both sight and sound.</p>
+        </div>
+
+        <div class="section-content" id="altitude-limitations">
+            <h2>Altitude Limitations</h2>
+            <p>Though it is a high-performance flying vehicle, the Windstrider is not designed for high-altitude flight. Its maximum altitude above terrain is around 1000 feet, and it can reach a maximum of 3000 feet above sea level. This is ideal for low-altitude travel, where the vehicle can easily glide with minimal atmospheric interference.</p>
+        </div>
+
+        <div class="section-content" id="special-features">
+            <h2>Special Features</h2>
+            <p>The Windstrider is equipped with several special features:
+                <ul>
+                    <li>Magical shielding provides protection from both physical and magical attacks.</li>
+                    <li>The invisibility cloak powered by air-magic can make the vehicle undetectable, perfect for covert operations or scouting.</li>
+                    <li>The bioluminescent plants inside the craft provide gentle, natural light that also serves as a source of magical energy.</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="passenger-capacity">
+            <h2>Passenger Capacity</h2>
+            <p>The Windstrider is designed to comfortably carry 1-4 passengers. However, adjustments can be made for additional cargo or more passengers, making it versatile for different kinds of expeditions.</p>
+        </div>
+
+        <div class="section-content" id="exterior">
+            <h2>Exterior Appearance</h2>
+            <p>The exterior of the Windstrider has a wood-like shimmer, with silver-blue accents along its body. The vehicle is also adorned with glowing runes, which pulse with energy, giving the craft a mystical and otherworldly glow as it soars through the sky.</p>
+        </div>
+
+        <div class="section-content" id="flight-control">
+            <h2>Flight Control</h2>
+            <p>The flight control of the Windstrider is intuitive. The pilot can navigate using light, fluid gestures or through thought-based guidance, with a telepathic link to the vehicle for more precise control. This makes flying the Windstrider a deeply connected and immersive experience.</p>
+        </div>
+    </div>
+</body>
+</html>
