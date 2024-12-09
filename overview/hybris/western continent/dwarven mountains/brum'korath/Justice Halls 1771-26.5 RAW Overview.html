@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justice Halls, Brum'korath - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Justice Halls, Brum'korath (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>High-ranking officials and council members</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Heavy stone walls, polished long tables, formal trial chamber, adjacent to the castle, towering and gilded, part of Brum'korath's political heart.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Silent, tense, charged with authority and scrutiny, political, tense, formal, a place of governance and law.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Stone-built, imposing, ceremonial design with large chambers, grand, imposing architecture with high arches and pillars.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Ceremonial symbols, carvings reflecting justice, power, law, governance, or history.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>A place of significant authority, well-guarded as it is a hub for political power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Known for hosting the trial of important figures like Goldar, connected to Brum'korath's leadership, historical importance tied to justice.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Political tension, scrutiny of actions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Central to the trial of Goldar, decision for the party's fate, central to Brum'korath's political and judicial systems.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Located within Brum'korath, the city itself, urban setting with bustling streets around the castle.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Likely controlled by the city’s weather patterns, consistent with Brum'korath's urban climate—mild but controlled.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Recent trial of Goldar, party’s conditional release and surveillance imposed on them, host of a significant event.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Justice Halls are frequented by high-ranking officials, council members, and those in power in Brum'korath. The political elite gather here to decide the fate of those brought to trial and to discuss matters of law and governance.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Justice Halls stand tall next to Brum'korath Castle, with imposing stone walls that tower above the surrounding area. Polished long tables fill the formal trial chambers, while gilded arches and pillars dominate the space, symbolizing the grandeur and authority of the trials that take place here.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere within the Justice Halls is one of unyielding tension, charged with the weight of authority. There is an air of solemnity and formal governance that permeates the chambers, where every action is scrutinized and every decision holds significant weight.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of the Justice Halls is grand and ceremonial. Stone-built, with high arches and pillars, the design is meant to awe and intimidate. Large chambers provide space for formal trials and hearings, with the structure of the building emphasizing both power and order.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The Justice Halls are filled with ceremonial symbols and carvings that reflect the core principles of justice, power, and law. Many of these markings tell the story of Brum'korath's judicial history and emphasize the importance of governance and leadership.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Justice Halls are heavily guarded, with both physical and magical defenses in place. Being the political heart of Brum'korath, it is well-guarded by elite forces, ensuring that the halls remain secure and that any political influence can be kept in check.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The Justice Halls are steeped in history, known for the famous trial of Goldar, among others. The halls hold a key role in the political and judicial processes of Brum'korath, and it is said that significant historical figures were once tried here, leaving behind their legacies.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Behind the formalities of the Justice Halls, there lies a deep political tension. The scrutiny of actions here can lead to dangerous consequences, especially for those who cross the lines of Brum'korath's powerful elite. It's a place where alliances are tested and where the fate of many hangs in the balance.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The Justice Halls were central to the trial of Goldar, which had a direct impact on the party’s fate. As the party faces potential scrutiny, the halls symbolize both their challenges and opportunities for political negotiation.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The Justice Halls are located within the bustling city of Brum'korath, with the urban landscape surrounding the castle. The atmosphere of constant political activity and governance echoes through the streets, creating a charged environment that influences the trials held here.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in Brum'korath tends to be mild and controlled, influenced by the city's strategic location and architecture. While the city has a more temperate climate, the energy within the Justice Halls remains intense and unpredictable.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recently, the Justice Halls hosted the trial of Goldar, where the party’s conditional release was decided. Since then, tensions have risen, with the party under increased surveillance. The halls continue to serve as a focal point for major political events in the city.</p>
+        </div>
+    </div>
+</body>
+</html>
+

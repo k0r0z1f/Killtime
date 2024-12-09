@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Queen of Elves - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Queen of Elves (Character Overview)</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>929</td>
+                </tr>
+                <tr>
+                    <td><a href="#role" onclick="highlightSection(this, 'role')">Role/Background</a></td>
+                    <td>Ruler of Haliriel, Queen of Elves</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Concerned, cautious, wise, deeply protective of her people</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Mastery over Air Magic</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Haliriel (City of Elves), elven royalty</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall, regal, silver hair, crown of leaves and jewels, piercing green eyes</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Protecting Haliriel, guiding the city through a time of great change</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>—</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>—</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>The Queen of Elves was born in the year 929, a long time ago, during a period of relative peace for the elven race.</p>
+        </div>
+
+        <div class="section-content" id="role">
+            <h2>Role/Background</h2>
+            <p>As the Queen of Elves, she rules over the city of Haliriel, guiding her people through tumultuous times. She holds the throne with wisdom and grace, navigating the delicate balance between tradition and progress.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>The Queen is deeply concerned for the future of her people. Cautious but wise, she carefully weighs every decision, always placing the welfare of her city and subjects above all else. She is fiercely protective of her realm and its way of life.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>The Queen possesses mastery over Air Magic, using it to protect her city, command the winds, and maintain the delicate balance of nature around Haliriel.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>She is the sovereign ruler of Haliriel and holds the allegiance of the elven royalty and nobility. Her power is entrenched in both political and mystical realms.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Queen is tall and regal, with long, silver hair that cascades down her back. She wears a crown made of leaves and jewels, symbolizing her connection to both the natural world and her royal heritage. Her piercing green eyes reflect the wisdom and experience she has gained over the centuries.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Her goal is to protect Haliriel and guide it through a period of great upheaval, as the city faces internal strife and external threats. She is also concerned with the future of the elves and ensuring the survival of their culture in an ever-changing world.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>The Queen of Elves has yet to reveal any major secrets, though it is suspected that she harbors knowledge about the ancient forces surrounding Haliriel that could change the fate of the city.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Although she does not engage directly in combat, the Queen has been trained in elven combat techniques, and her mastery over Air Magic gives her an advantage in defending her people and city.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>The Queen’s inventory is not publicly known, but it is believed that she carries an array of magical artifacts that help protect her and Haliriel from external threats.</p>
+        </div>
+    </div>
+</body>
+</html>

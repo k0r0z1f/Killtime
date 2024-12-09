@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Justice Halls, Brum'korath - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Justice Halls, Brum'korath (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Dwarves of Brum'korath, council members, guards, spectators, lawkeepers, and civilians associated with Brum'korath's judicial system.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A cavernous space carved into the heart of the mountain, with large, imposing stone walls. The Council Chamber is adorned with intricate carvings of legendary judgments.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense and charged with judgment. A solemn, heavy atmosphere, filled with expectation and scrutiny.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Carved directly into the mountain, vast with high ceilings. Cold stone walls in the cells contrast with the grandeur of the Council Chamber.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Etched with symbols of dwarven law—scales, hammers, and unbroken chains. Carvings of legendary judgments and lawgivers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Guards and council members ensure a tight grip on proceedings. High security with warding mechanisms and heavy surveillance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Legends of monumental judgments, lawgivers, and those who sought justice in the Hall.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Political intrigue, manipulation, and the possible influence of the Cult of the Sent Ones within the Council.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party is directly involved through their imprisonment and trial, which plays a crucial role in their fate.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Located in Brum'korath's central district, surrounded by roads, markets, and other governmental structures.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cool and dark, with gemstone chandeliers illuminating the Hall. Internal atmosphere is metaphorically heavy rather than physically oppressive.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The city is divided, with political tensions rising. The trial of Goldar and the growing influence of factions are central to the city's future.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The population of the Justice Hall includes the dwarves of Brum'korath, council members, lawkeepers, guards, and civilians associated with the judicial system. Spectators often crowd the halls during important trials, further increasing the significance of each judgment passed.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Justice Hall is a cavernous space, carved into the heart of the mountain. The cold stone walls and imposing structure create a sense of solemnity and reverence. The cells where the party is imprisoned are stark and simple, contrasting with the grandeur of the Council Chamber, which features intricate carvings of legendary judgments and dwarven lawgivers. The dome above glimmers with veins of gold and silver, adding an ethereal quality to the otherwise dark space.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere within the Justice Halls is tense and charged with an unspoken weight of judgment. There is a palpable sense of impending fate, with every action scrutinized and every word weighed carefully. The air is thick with solemnity, as individuals await the outcome of high-stakes decisions that could alter the course of their lives.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>Carved directly into the mountain, the Justice Hall has vast, high-ceilinged chambers meant to inspire awe. The cold stone walls of the cells contrast sharply with the grandeur of the Council Chamber, where elevated seating and towering stone columns add to the sense of importance. The architecture is designed to evoke reverence for the law and to remind all who enter of the power of justice.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The Hall is rich with carvings that represent dwarven values of justice, including scales, hammers, and unbroken chains. These symbols are reminders of the strength and fairness of dwarven law. The carvings tell stories of legendary judgments, lawgivers, and significant moments in Brum'korath’s history, solidifying the Hall as the heart of justice in the city.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Hall is heavily guarded, with both physical and magical defenses in place. Guards patrol the corridors, and council members maintain a firm grip on proceedings. Warding mechanisms and heavy surveillance ensure that any disruption is swiftly contained, protecting the Hall's reputation and maintaining order within.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Legends abound surrounding the Justice Halls, often focusing on moments of monumental judgment and the figures who shaped Brum'korath’s legal history. The Hall is revered as the ultimate arbiter of justice, with many claiming that some individuals sought sanctuary or fought for justice within its walls, hoping that the Hall would serve as a final judge in their favor.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Political intrigue is rife within the council chambers, where factions vie for control over the legal and political future of Brum'korath. The Cult of the Sent Ones may have their own influence in the Hall, manipulating judgments and outcomes. Strict and harsh decisions are often made, with far-reaching consequences for those involved.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party is directly linked to the Justice Hall through their imprisonment and upcoming trial. Their actions, including their involvement with the Disciple of Earth and the Cult of the Sent Ones, have ignited political unrest in the city. The outcome of their trial could determine their fate, with some seeing them as heroes and others as scapegoats.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The Justice Hall is centrally located within Brum'korath's government district, surrounded by roads, markets, and other critical administrative buildings. Its position at the heart of the city makes it a focal point for political and legal activities.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The subterranean location of the Hall means the weather outside is irrelevant, but the Hall is illuminated by gemstone chandeliers, casting a soft, ethereal glow. The cool and dark conditions add to the Hall's oppressive, yet reverent, atmosphere.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Brum'korath is in turmoil after the events surrounding the Disciple of Earth. The city's politics are fractured, with several factions trying to influence the legal system. The trial of Goldar, the fate of the Sent Ones, and the changing leadership dynamics are contributing to the growing unrest.</p>
+        </div>
+    </div>
+</body>
+</html>

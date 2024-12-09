@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dwarven Halls - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Dwarven Halls (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Dwarves, with limited guests</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Resplendent with glimmering tapestries, massive hearths casting flickering shadows, gilded high arches, and stone pillars.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Festive atmosphere but undercurrent of unease, celebratory yet tense, both a feast and an interrogation.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Massive stone structures with long tables, hearths, towering grand designs, stone construction, and gilded features.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Carvings likely related to dwarven history and heritage, particularly about governance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Surveillance and guards throughout the halls.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Links to dwarven lore and power, rich history of governance and control.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Unseen forces of political intrigue, surveillance, and subtle political tension.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party is hosted for a feast but reminded of their precarious position, with temporary freedom under close watch.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Stone walls, part of the city of Brum'korath, within castle walls, surrounded by the city itself.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Indoor setting with controlled temperature in line with dwarven architecture.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Recent invitation to the feast, with the party under scrutiny and feeling trapped in a web of politics and propaganda.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Dwarven Halls are primarily populated by dwarves, with only a select few outsiders or guests allowed. The halls are a mix of ancient dwarven nobility and modern generations. Visitors are usually guests of importance or political allies, though their presence is closely monitored.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Dwarven Halls are adorned with intricate tapestries and massive hearths, casting flickering shadows throughout the cavernous space. Gilded high arches and stone pillars create a majestic atmosphere, with an opulent yet sturdy design reflective of dwarven culture. The halls feel both welcoming and imposing, with the stonework echoing centuries of history.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere within the halls is festive yet charged with an undercurrent of tension. There is a sense of celebration, but it feels more like a carefully orchestrated event than a casual gathering. The dwarves are proud, but their power dynamics simmer beneath the surface, adding an element of quiet interrogation to every interaction.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture is massive, with towering stone walls and grand designs built for both aesthetics and function. Long tables line the great halls, with hearths scattered throughout to keep the vast spaces warm. The use of stone and gilded accents reflects the dwarven love of strength and beauty combined.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>Throughout the halls, intricate carvings can be found, depicting ancient dwarven history, governance, and the proud legacy of their people. These carvings are more than decorative; they hold meaning related to power, tradition, and the deep-seated values that govern dwarven society.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Dwarven Halls are heavily guarded, with surveillance and trained guards ensuring the safety of the halls and its occupants. The dwarves are fiercely protective of their land and people, and their defenses are both physical and magical, blending security with ancient traditions of protection.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>In dwarven culture, legends play a central role in maintaining a sense of unity and identity. The halls are steeped in lore, especially about their governing traditions and the powerful rulers who established the city. These tales are often shared during feasts, and their influence is seen in the political landscape of the halls.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Despite the outward grandeur, the Dwarven Halls are not without their dangers. Subtle political intrigue runs deep, with factions vying for influence. Surveillance is constant, and some believe that unseen forces manipulate events from the shadows, controlling the fate of those who enter.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party has been invited to a grand feast within the halls, but their freedom is far from guaranteed. While they enjoy temporary respite, they are keenly aware of the political web that surrounds them. They are not guests without strings attached, and their every move is being watched closely.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The Dwarven Halls are situated within the city of Brum'korath, surrounded by imposing stone walls that both protect and isolate them. The halls are embedded in the heart of the city, and their influence stretches outward. The terrain is urban, with towering structures forming a dense and busy environment.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The Dwarven Halls are entirely indoors, with a controlled temperature that remains constant in line with the dwarven architectural style. The weather outside is irrelevant, as the halls are self-sustaining and designed to endure through any external conditions.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent events within the Dwarven Halls have added to the growing political tension. The party's presence has sparked scrutiny, and their every move is under the watchful eye of the dwarven elites. The feast may be a mere distraction from the larger schemes at play, and the party must tread carefully to avoid falling into a trap.</p>
+        </div>
+    </div>
+</body>
+</html>
+

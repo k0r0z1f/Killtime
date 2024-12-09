@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Dwarven Mountains - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Dwarven Mountains (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Dwarves (few outsiders); 12 cities, small settlements</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Rugged, harsh, towering peaks; rocky, snow-covered terrain; ancient stone structures, mines, and fortresses; steep cliffs, jagged peaks, and caves</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Isolated, sovereign, cold, tense; stoic and disciplined, with an underlying sense of deep-rooted power</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Stone fortresses, mining tunnels, ancient ruins, and caves carved into the mountains; underground and out in the sky, functional and robust designs</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Ancient runes and symbols related to their history; clan symbols; carvings on the mountainsides signifying power and protection; Dwarven runes and engravings, particularly around gates and tunnels</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Strong natural defenses, including high cliffs, mountain passes, underground fortresses, and a strong dwarven military presence; natural cave defenses; watchtowers along key passes</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Ancient stories of legendary heroes, powerful artifacts, and conflicts with dereks; rich in ancient dwarven history and craftsmanship</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Treacherous terrain, dangerous wildlife, unstable cave systems, potential cave-ins, territorial beasts, and political intrigue among clans</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Important as a home to the dwarven council, a symbol of resilience; the party may encounter resistance or sanctuary, but remains outside World Police jurisdiction</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Rocky, mountainous terrain with high altitudes, steep cliffs, caves, snowfields, forests at lower altitudes</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Harsh winters, snowstorms, cold temperatures, high winds, and occasional thunderstorms; often cold, with wind and precipitation; snowy winters</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Recent tensions with the World Police and neighboring regions, though largely autonomous; growing mistrust of outsiders, including elves, with growing tension as the party may travel through it</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Dwarven Mountains are home to a few outsiders and a predominantly dwarven population. There are 12 cities and numerous small settlements scattered throughout the mountains, with the dwarves leading the way in mining and craftsmanship.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Dwarven Mountains are known for their towering, jagged peaks and steep cliffs. The rocky terrain is snow-covered, with ancient stone structures, mines, and fortresses scattered throughout. Deep caves and tunnels cut through the mountains, leading to hidden chambers and dwarven settlements.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The energy of the Dwarven Mountains is isolated and cold. The atmosphere is tense, with a deep-rooted sense of power, stoicism, and discipline. The region remains sovereign, and while the dwarves are fiercely proud, there is an underlying unease as the world beyond the mountains presses in.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of the Dwarven Mountains is a blend of functional robustness and ancient design. Stone fortresses and mining tunnels dot the landscape, while underground and skyward structures show off dwarven craftsmanship. The ruins and caves carved into the mountains tell stories of a long, proud history.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The mountains are rich with ancient runes and carvings. These include clan symbols, protective runes, and powerful engravings on the mountainsides and around key gates and tunnels. The carvings signify strength, power, and protection, often tied to their history and mythology.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Dwarven Mountains are heavily fortified with natural defenses. High cliffs and mountain passes make access difficult, while underground fortresses and watchtowers along key passes provide additional protection. The dwarven military is formidable, and cave systems provide natural defense routes that are hard to penetrate.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Legendary stories of dwarven heroes and ancient artifacts abound in the Dwarven Mountains. There are tales of powerful conflicts with dereks, and the ruins scattered around the mountains are rich in dwarven history and craftsmanship, with many ancient secrets still hidden within the stone.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The terrain of the Dwarven Mountains is treacherous, with unstable cave systems, dangerous wildlife, and territorial beasts. Political intrigue among the dwarven clans adds a layer of danger for those who wander too far into the wrong areas. Cave-ins and deadly wildlife are not uncommon.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The Dwarven Mountains play a crucial role for the party, particularly with the dwarven council. However, outsiders often face resistance, and the party's movements will be restricted by the growing tension between the dwarves and outside forces, including the World Police and the elves.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The surrounding terrain is rocky and mountainous, with high altitudes and steep cliffs. Snowfields dominate the higher elevations, while forests appear at lower altitudes. Dangerous wildlife, from territorial beasts to massive mountain predators, roam the land.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in the Dwarven Mountains is harsh, characterized by long, cold winters and frequent snowstorms. High winds and occasional thunderstorms make travel difficult, especially during the colder months. Snow and precipitation are a constant threat, with the weather remaining cold and unforgiving.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent tensions have surfaced between the Dwarven Mountains and neighboring regions, including the World Police. The dwarves remain largely autonomous, but their growing mistrust of outsiders, particularly elves, has led to heightened tensions. This has created a volatile environment for the party as they navigate the region.</p>
+        </div>
+    </div>
+</body>
+</html>
+

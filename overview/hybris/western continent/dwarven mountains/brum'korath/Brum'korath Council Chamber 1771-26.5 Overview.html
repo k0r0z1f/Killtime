@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brum'korath Council Chamber - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Brum'korath Council Chamber (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>The chamber is populated by a Dwarven council of elders and those involved in the trial, including defendants and other attendees.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>The chamber features awe-inspiring carvings and a dome decorated with glowing veins of gold and silver.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>The atmosphere is tense, serious, and foreboding, shifting to growing alarm as critical information is revealed.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>The chamber is a marvel of dwarven engineering, with towering columns, intricate stonework, and a grand circular table.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Carvings depicting legendary judgments and epic battles are etched throughout the chamber, showcasing dwarven history.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>The chamber is well-guarded with physical barriers and security measures to protect the council’s work.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>The chamber holds deep ties to ancient prophecies and past judgments that have shaped dwarven society.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Political tensions and the potential for shifting alliances and betrayals threaten the stability of the council.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party’s future depends on the outcome of the trial, marking the chamber as a critical location for their fate.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>The chamber is carved into the heart of Brum'korath, surrounded by other dwarven structures and chambers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>The weather outside is cold and oppressive, matching the grim atmosphere inside the chamber.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The chamber has seen recent political and judicial upheaval, including a trial involving Goldar and the party's conditional freedom.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Council Chamber is home to the Dwarven council, consisting of about 10–15 members, including the influential elders Aria and Gorla. The chamber also hosts those involved in the trial, such as the defendants and various attendees.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The chamber is an awe-inspiring space, with carvings that depict legendary judgments and epic battles. The dome above is adorned with glowing veins of gold and silver, giving the room a sacred and powerful aura.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere in the chamber is tense and serious, especially as deliberations become more critical. The mood shifts dramatically when Thomas reveals crucial information, creating a growing sense of alarm and urgency.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of the Council Chamber is a marvel of dwarven engineering, with towering columns, intricate stonework, and a grand circular table where decisions are made. The glowing veins in the dome represent the balance of power in the chamber.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The carvings in the chamber tell stories of dwarven law, including past judgments that have shaped the political and judicial landscape. These symbols serve as reminders of the chamber’s central role in preserving dwarven history and justice.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The chamber is well-guarded with physical barriers and security measures, ensuring that proceedings remain free from external interference. The importance of the council’s decisions makes its protection vital.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The chamber is tied to ancient prophecies and past judgments that have defined dwarven society. Elder Aria represents a line of revered leaders who have helped guide the dwarves through turbulent times.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The hidden dangers within the council chamber are primarily political in nature. Shifting alliances, betrayals, and outside interference—especially from the World Police—threaten the stability of the chamber and the council’s decisions.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party’s fate hinges on the outcome of their trial in the chamber. Their future is tied to the political and judicial decisions made here, and they must navigate the complex dynamics at play to secure their freedom.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The Council Chamber is located deep within Brum'korath, a dwarven stronghold carved into the heart of the mountain. It is surrounded by other chambers and structures, which add to the chamber’s sense of isolation and security.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather outside Brum'korath is cold and oppressive, mirroring the grim mood inside the chamber. The harsh environment reflects the weight of the trial and the uncertainties facing the dwarves.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recently, the chamber has hosted major events, including the trial of Goldar from the Sent Ones. The party’s conditional freedom hinges on the outcome of their trial, and tensions surrounding the fallout from the Disciple's destruction continue to rise.</p>
+        </div>
+    </div>
+</body>
+</html>
