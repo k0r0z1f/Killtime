@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 26.3 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 26.3 Overview</h1>
+        
+        <!-- Chapter Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                    <th>Important Events in Order</th>
+                    <th>Locations</th>
+                    <th>Characters Present</th>
+                    <th>Keywords</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>26.3.1</td>
+                    <td><a href="#shadows-of-justice" onclick="highlightSection(this, 'shadows-of-justice')">Shadows of Justice and Light of Discovery (Part 3)</a></td>
+                    <td>The World Police delivers an ultimatum to Lucas and his group, demanding their surrender. The tension between the party and the World Police reaches a boiling point, leading to a declaration of war.</td>
+                    <td>1. The World Police demands Lucas and his companions' immediate surrender. <br> 2. Thomas challenges the WP’s accusations. <br> 3. Mina disputes the claim about the explosion in Kingston. <br> 4. The officers issue a final warning, marking the group as enemies of the state. <br> 5. Lucas, Thomas, and Mina resolve to continue their mission and reject the World Police’s demands.</td>
+                    <td>Unknown location (communication with the World Police)</td>
+                    <td>Lucas, Thomas, Mina, World Police Officers</td>
+                    <td>Surrender, enemies of the state, declaration of war, defiance, Kingston explosion, tension, resistance, choice, authority</td>
+                </tr>
+                <tr>
+                    <td>26.3.2</td>
+                    <td><a href="#ultimatum" onclick="highlightSection(this, 'ultimatum')">The Ultimatum</a></td>
+                    <td>The World Police delivers an ultimatum to the party, demanding their surrender. The party stands firm, refusing to back down and asserting their mission's importance.</td>
+                    <td>1. The World Police issues an ultimatum, demanding the party's surrender. <br> 2. Thomas steps forward, defending the group's innocence and explaining their mission. <br> 3. Mina supports Thomas, asserting their defiance against the World Police's control. <br> 4. Lucas remains quietly observant, processing the situation and considering the World Police's true intentions. <br> 5. The World Police officers respond with a threat of pursuing the group relentlessly. <br> 6. The screen cuts off, leaving the party in silence, but unified in their resolve.</td>
+                    <td>Virtual meeting room, clinical lighting</td>
+                    <td>Thomas, Mina, Lucas, World Police Officers</td>
+                    <td>Defiance, World Police, ultimatum, unity, mission, survival, resistance, leadership, tension</td>
+                </tr>
+                <tr>
+                    <td>26.3.3</td>
+                    <td><a href="#enemies-of-the-state" onclick="highlightSection(this, 'enemies-of-the-state')">Enemies of the State</a></td>
+                    <td>The group receives the official declaration from the World Police branding them as enemies of the state. The party realizes their defiance has pushed them into a dangerous and larger conflict. They discuss the implications of their new status and the forces at play against them.</td>
+                    <td>1. The virtual meeting with the World Police ends. <br> 2. The group is officially branded as enemies of the state. <br> 3. Tension rises as they realize the gravity of their situation. <br> 4. Lucas reflects on the bigger game involving the Sent Ones prophecy and external factions. <br> 5. They decide to keep moving forward, staying united and prepared for inevitable conflict.</td>
+                    <td>A dimly lit room, possibly within their temporary hideout or base of operations.</td>
+                    <td>Lucas, Mina, Thomas</td>
+                    <td>Prophecy, Enemies of the State, World Police, Treason, Sent Ones, Political Intrigue, Survival</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Chapter Details -->
+        <div class="section-content" id="shadows-of-justice">
+            <h2>Shadows of Justice and Light of Discovery (Part 3)</h2>
+            <p>The World Police delivers an ultimatum to Lucas and his group, demanding their surrender. The tension between the party and the World Police reaches a boiling point, leading to a declaration of war.</p>
+        </div>
+
+        <div class="section-content" id="ultimatum">
+            <h2>The Ultimatum</h2>
+            <p>The World Police delivers an ultimatum to the party, demanding their surrender. The party stands firm, refusing to back down and asserting their mission's importance.</p>
+        </div>
+
+        <div class="section-content" id="enemies-of-the-state">
+            <h2>Enemies of the State</h2>
+            <p>The group receives the official declaration from the World Police branding them as enemies of the state. The party realizes their defiance has pushed them into a dangerous and larger conflict. They discuss the implications of their new status and the forces at play against them.</p>
+        </div>
+    </div>
+</body>
+</html>
+

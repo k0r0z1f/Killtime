@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 26.1 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 26.1 Overview</h1>
+        
+        <!-- Chapter Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                    <th>Important Events in Order</th>
+                    <th>Locations</th>
+                    <th>Characters Present</th>
+                    <th>Keywords</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>26.1.1</td>
+                    <td><a href="#26-1-1" onclick="highlightSection(this, '26-1-1')">The Verdict and a Hero's Surveillance (Part 1)</a></td>
+                    <td>The party faces a trial, with Goldar’s fate decided by the dwarven council. The council grants him parole under strict supervision. The party is also granted conditional freedom but will be monitored closely. They wrestle with the implications of surveillance and the challenges ahead.</td>
+                    <td>1. Goldar is tried and granted parole with strict supervision. <br> 2. The party's conditional freedom is granted, with surveillance. <br> 3. Thomas requests assurances for their mission's success. <br> 4. The council agrees to meet the party's terms. <br> 5. The party exits the trial, facing a future under constant surveillance.</td>
+                    <td>Justice Halls, Brum'korath, Dwarven Council Chamber, Brum'korath streets</td>
+                    <td>Lucas, Mina, Thomas, Goldar, Dwarven Council Chief, Council Members</td>
+                    <td>Trial, Conditional Freedom, Surveillance, Parole, Sent Ones, Political Tension, Guilt, Dwarven Council, Brum'korath, Kingston Explosion</td>
+                </tr>
+                <tr>
+                    <td>26.1.2</td>
+                    <td><a href="#26-1-2" onclick="highlightSection(this, '26-1-2')">The Dwarven Feast</a></td>
+                    <td>The party attends a lavish feast in their honor, though it is a complex mix of celebration and scrutiny. Tension runs high as they are treated as both heroes and potential threats.</td>
+                    <td>1. The party walks through the streets of Brum'korath, drawing mixed reactions from the crowd. <br> 2. They arrive at the castle and are ushered into the grand hall. <br> 3. The feast begins with an elaborate display of wealth and hospitality. <br> 4. A prominent dwarf welcomes them, acknowledging their heroism but hinting at the suspicion surrounding them. <br> 5. Lucas feels the underlying tension as the party exchanges pleasantries, aware that they are being watched.</td>
+                    <td>Brum'korath – Castle adjacent to the Justice Halls</td>
+                    <td>Lucas, Mina, Thomas, Dwarven servant, Prominent dwarf, Dwarven guests</td>
+                    <td>Feast, Dwarven politics, Suspicion, Heroes and threats, Celebration, Intrigue, Tension</td>
+                </tr>
+                <tr>
+                    <td>26.1.3</td>
+                    <td><a href="#26-1-3" onclick="highlightSection(this, '26-1-3')">The Dwarven Feast (Continued)</a></td>
+                    <td>The party attends a grand feast in the dwarven halls, but the celebration feels hollow due to the underlying tension and surveillance. They reflect on their uncertain place in Brum'korath and the growing unease about their role in the larger political and prophetic schemes.</td>
+                    <td>1. The party enters the dwarven halls for a feast. <br> 2. Despite the festive atmosphere, a sense of unease settles over the group. <br> 3. Mina expresses doubt about being pawns in the larger game. <br> 4. Lucas and Thomas discuss their distrust of the dwarves’ intentions. <br> 5. Tensions rise as the feast continues, each character reflecting on their uncertain future. <br> 6. The party recognizes their position is not one of true freedom, but one under close watch. <br> 7. They leave the feast, still uncertain and wary.</td>
+                    <td>Dwarven Halls, Brum'korath</td>
+                    <td>Lucas, Mina, Thomas</td>
+                    <td>Feast, Dwarven Politics, Surveillance, Prophecy, Trust, Uncertainty, Strategy</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Chapter Details -->
+        <div class="section-content" id="26-1-1">
+            <h2>The Verdict and a Hero's Surveillance (Part 1)</h2>
+            <p>The party faces a trial, with Goldar’s fate decided by the dwarven council. The council grants him parole under strict supervision. The party is also granted conditional freedom but will be monitored closely. They wrestle with the implications of surveillance and the challenges ahead.</p>
+        </div>
+
+        <div class="section-content" id="26-1-2">
+            <h2>The Dwarven Feast</h2>
+            <p>The party attends a lavish feast in their honor, though it is a complex mix of celebration and scrutiny. Tension runs high as they are treated as both heroes and potential threats.</p>
+        </div>
+
+        <div class="section-content" id="26-1-3">
+            <h2>The Dwarven Feast (Continued)</h2>
+            <p>The party attends a grand feast in the dwarven halls, but the celebration feels hollow due to the underlying tension and surveillance. They reflect on their uncertain place in Brum'korath and the growing unease about their role in the larger political and prophetic schemes.</p>
+        </div>
+    </div>
+</body>
+</html>
+

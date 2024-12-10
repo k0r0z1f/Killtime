@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 26.2 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 26.2 Overview</h1>
+        
+        <!-- Chapter Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                    <th>Important Events in Order</th>
+                    <th>Locations</th>
+                    <th>Characters Present</th>
+                    <th>Keywords</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>26.2.1</td>
+                    <td><a href="#discovery-lab" onclick="highlightSection(this, 'discovery-lab')">Discovery in the Lab (Part 2)</a></td>
+                    <td>Lucas explores the relics further in the Brum'korath research lab, trying to understand their mysterious nature and connection to his mind, feeling both a sense of awe and unease.</td>
+                    <td>1. Lucas enters Brum'korath's high-tech research lab.<br>2. He places his relic on a table for further examination.<br>3. Lucas connects telepathically with the relic, probing its essence.<br>4. The relic reveals a complex, chaotic neural web but no clear intelligence.<br>5. Lucas senses distant memories and ancient, fragmented images tied to the relic.<br>6. The relic warns Lucas with a sharp pulse, preventing further exploration.<br>7. Lucas begins to question the relics' origins and their potential power.</td>
+                    <td>Brum'korath Research Lab</td>
+                    <td>Lucas</td>
+                    <td>Brum'korath, relics, telepathy, neural web, ancient civilization, danger, power, mystery</td>
+                </tr>
+                <tr>
+                    <td>26.2.2</td>
+                    <td><a href="#relic-awakening" onclick="highlightSection(this, 'relic-awakening')">The Relic’s Awakening</a></td>
+                    <td>Lucas explores the relic’s depths, only to trigger a defensive response. He realizes that the relics are sentient and may not recognize him, leading to an unexpected and dangerous surge of energy.</td>
+                    <td>1. Lucas touches the relic, trying to unlock its mysteries.<br>2. The relic reacts to his intrusion, glowing and pulsing with energy.<br>3. The relic scans Lucas’s environment and DNA.<br>4. A mismatch in DNA is detected, triggering a defense mechanism.<br>5. The relic goes into dormant mode, leaving Lucas shaken and more aware of its potential danger.</td>
+                    <td>Laboratory or research facility</td>
+                    <td>Lucas</td>
+                    <td>Relic, sentient technology, DNA mismatch, energy surge, defensive mechanism, dormant mode, scanning, intrusion</td>
+                </tr>
+                <tr>
+                    <td>26.2.3</td>
+                    <td><a href="#relic-pulse" onclick="highlightSection(this, 'relic-pulse')">The Relic’s Pulse</a></td>
+                    <td>Lucas uncovers unsettling truths about the relics and their connection to him and the others. Doubts about the prophecy and the relics' true purpose begin to surface.</td>
+                    <td>1. Lucas continues analyzing the relics’ data and genetic tests.<br>2. Discovers the minor genetic mismatch with the relics.<br>3. Questions the true purpose of the relics and their activation.<br>4. Wonders if they are truly the chosen ones or a result of a mistake.<br>5. Resolves to uncover the relics' secrets and continue his role despite doubts.</td>
+                    <td>High-tech lab with data consoles and equipment</td>
+                    <td>Lucas</td>
+                    <td>Relics, Prophecy, Genetic Mismatch, Doubt, Activation, Uncertainty, Technology, Destiny</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="discovery-lab">
+            <h2>Discovery in the Lab (Part 2)</h2>
+            <p>Lucas explores the relics further in the Brum'korath research lab, trying to understand their mysterious nature and connection to his mind, feeling both a sense of awe and unease.</p>
+        </div>
+
+        <div class="section-content" id="relic-awakening">
+            <h2>The Relic’s Awakening</h2>
+            <p>Lucas explores the relic’s depths, only to trigger a defensive response. He realizes that the relics are sentient and may not recognize him, leading to an unexpected and dangerous surge of energy.</p>
+        </div>
+
+        <div class="section-content" id="relic-pulse">
+            <h2>The Relic’s Pulse</h2>
+            <p>Lucas uncovers unsettling truths about the relics and their connection to him and the others. Doubts about the prophecy and the relics' true purpose begin to surface.</p>
+        </div>
+    </div>
+</body>
+</html>
+

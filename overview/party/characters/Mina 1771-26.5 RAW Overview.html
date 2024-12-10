@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Mina - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>[To be determined]</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Hero of Brum'korath, Party Member, Adventurer, Protector, Prophecy Bearer, Ally to Lucas and Thomas</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Independent, skeptical, optimistic, protective, determined, brave, defiant, empathetic, intuitive, introspective</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Telepathic connection with Lucas, Speed</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Allied with Lucas and Thomas</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Green eyes, strong but worn demeanor, fierce posture</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>To protect her friends and navigate the prophecy, finding her path, and preventing a catastrophic event</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Unsure about her role in the prophecy and her doubts about trust</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Trained in hand-to-hand combat and strategy</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>[To be determined]</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Information to be determined.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Mina is a key member of the group, a hero of Brum'korath, an adventurer, and a protector. She holds the important role of a Prophecy Bearer, and is an ally to Lucas and Thomas. As part of the group, Mina has become a central figure in their journey, facing challenges that tie her fate to a larger, mysterious prophecy.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Mina is fiercely independent, yet deeply protective of those she cares about. She is skeptical and cautious, with a mind that tends to overanalyze situations. Despite her reservations, she remains optimistic and brave, often leading with her heart. Her inner strength is matched by her vulnerability, and she is unafraid of challenging authority when necessary.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Mina has a unique telepathic connection with Lucas, allowing them to communicate and share thoughts over great distances. Additionally, she possesses remarkable speed, enabling her to react quickly in combat and evade threats with ease.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Mina is an ally of Lucas and Thomas, working alongside them to navigate the challenges presented by the prophecy and the forces working against them. Their bond is one of trust and shared goals, though the future remains uncertain.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Mina has striking green eyes that seem to reflect both her strength and the burdens she carries. Her posture is fierce and confident, yet her demeanor reveals the toll of the trials she has endured. Despite her strong appearance, there is a softness in her that draws others to her, creating a magnetic presence wherever she goes.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Mina's goal is to protect her friends and navigate the complexities of the prophecy she is bound to. She seeks to balance her autonomy with the growing pressures of politics, war, and the weight of the prophecy itself. As she uncovers hidden truths and struggles with her own doubts, Mina's journey is one of self-discovery, bravery, and sacrifice.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Mina's biggest secret is her uncertainty about her role in the prophecy. She is torn between her desire to trust her allies and her fear that the prophecy may not unfold the way she expects. Her doubts about trust and her place in the grand scheme of things weigh heavily on her.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Mina has undergone rigorous training in hand-to-hand combat, and her strategic mind allows her to excel in battle situations. She is well-versed in tactics and can adapt to ever-changing circumstances on the battlefield. Her physical abilities and strategic thinking make her a formidable opponent.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Details of Mina’s inventory are yet to be determined. It is likely to include a variety of weapons, tools, and items for survival and combat, tailored to her adventurous lifestyle.</p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Lucas - Character Overview</h1>
+
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Hero, former Brum'korath prisoner, member of the party, connected to ancient relics, strategist, outlaw, telepathic link to Candice; victim of medi-laboratory experiments as a child; aspiring college student as a teen; escapee since Kingston incident</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Brave, analytical, self-doubting, burdened by hidden truths, determined, calm, protective, intense, frustrated, burdened by guilt, feels the weight of scrutiny, cautious, introspective, practical, calculating, doubtful, inquisitive, anxious, resolute, thoughtful, skeptical, calm under pressure, empathetic, observant, curious, uncertain, brave</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Telepathy (Stage 1: Surface Thought Reading - DMN-Focused, Stage 2: Deeper Thought Access and Emotional Sensory Tuning, Stage 3: Memory Access and Short-Term Influence), Entry-level Clairvoyance (Unconscious or Basic Vision), Basic Telekinesis (Multiple Small Object Movement), Pyrokinesis: Entry - Small Heat Control, Basic - Flame Creation, Intermediate - Fire Manipulation; senses chaotic thoughts and mental presences, permanent telepathic link with Mina; connection to the Sent Ones prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Aligned with Mina and Thomas; *Cult of the Sent Ones* (indirectly, through prophecy); Dwarven Council, Brum'korath, World Police (now enemy), Haliriel (temporary alliance)</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", brown eyes, short light-brown hair, serious look; lean</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Overcoming insecurity to embrace his potential and confront his mysterious past; grappling with his role as one of the Sent Ones; feeling the growing pressure of the coming war, beginning to understand the depth of his connection to the Sent Ones prophecy; seeking redemption, navigating the weight of being monitored, uncover the truth behind the explosion in Kingston, discover the origin and purpose of the relics, unlock their mysteries and powers, manage the dangers they present, stand firm against the World Police, protect his companions, prepare for the coming war, survive, uncover hidden motives, protect the group, seeking safety but conflicted over political and personal motivations, discover his role in the prophecy and the magic that flows through the world, understand his connection to Candice, unravel the mysteries that bind him to her and the others</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Struggling with memory of the explosion, feeling guilt over its consequences, relics are fused with him and the others (unable to be removed), possibly misled about being the chosen one for the relics, holds resentment toward being caught up in political conflict, deep mistrust of both the elves and the dwarves due to past manipulation</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Strategic and warfare knowledge; telekinetic defense; basic weapon training; basic pyrokinesis and intermediate telekinesis; skilled with basic weaponry, moderate combat training, skilled with tactics, strategic thinker (from deep study)</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>1,000 doumis; rare battery hybrid magic-tech (worth 20,000 doumis); new travel clothes; backpack with survival gear; dry food; change of clothes; Relic(s) tied to his wrist</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>1754</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Hero, former Brum'korath prisoner, member of the party, connected to ancient relics, strategist, outlaw, telepathic link to Candice; victim of medi-laboratory experiments as a child; aspiring college student as a teen; escapee since Kingston incident.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Brave, analytical, self-doubting, burdened by hidden truths, determined, calm, protective, intense, frustrated, burdened by guilt, feels the weight of scrutiny, cautious, introspective, practical, calculating, doubtful, inquisitive, anxious, resolute, thoughtful, skeptical, calm under pressure, empathetic, observant, curious, uncertain, brave.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>Telepathy (Stage 1: Surface Thought Reading - DMN-Focused, Stage 2: Deeper Thought Access and Emotional Sensory Tuning, Stage 3: Memory Access and Short-Term Influence), Entry-level Clairvoyance (Unconscious or Basic Vision), Basic Telekinesis (Multiple Small Object Movement), Pyrokinesis: Entry - Small Heat Control, Basic - Flame Creation, Intermediate - Fire Manipulation; senses chaotic thoughts and mental presences, permanent telepathic link with Mina; connection to the Sent Ones prophecy.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Aligned with Mina and Thomas; *Cult of the Sent Ones* (indirectly, through prophecy); Dwarven Council, Brum'korath, World Police (now enemy), Haliriel (temporary alliance).</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>5'10", brown eyes, short light-brown hair, serious look; lean.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Lucas' arc revolves around overcoming insecurities, embracing his potential, and coming to terms with his connection to the Sent Ones prophecy. He faces increasing pressure from his role, the growing war, and the dangerous relics he is bound to.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Lucas harbors guilt over the Kingston explosion and struggles with the consequences. His connection to the relics is more complex than he initially believed, and his role in the prophecy is under question. He also feels betrayed by both the elves and dwarves, whose manipulation has left deep scars.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Lucas is a skilled strategist with moderate combat training. He is capable of telekinetic defense, basic pyrokinesis, and strategic warfare knowledge. His training makes him a valuable asset in tactical operations.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Lucas carries a mix of personal and magical items: 1,000 doumis, a rare battery hybrid magic-tech worth 20,000 doumis, new travel clothes, a backpack with survival gear, dry food, a change of clothes, and relics tied to his wrist.</p>
+        </div>
+    </div>
+</body>
+</html>
+
