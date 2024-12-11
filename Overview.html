@@ -1,194 +1,125 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Overview Navigation</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f4f4f4;
-    }
-    header {
-      background-color: #333;
-      color: white;
-      padding: 1rem;
-      text-align: center;
-    }
-    nav {
-      display: flex;
-      flex-wrap: wrap;
-      background-color: #fff;
-      padding: 1rem;
-      justify-content: center;
-    }
-    .overview-category {
-      margin: 0.5rem;
-      padding: 0.5rem;
-      background-color: #444;
-      color: white;
-      border-radius: 4px;
-      text-align: center;
-      width: 20%;
-      cursor: pointer;
-    }
-    .overview-category:hover {
-      background-color: #555;
-    }
-    .overview-list {
-      padding: 2rem;
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-      gap: 1rem;
-    }
-    .overview-file {
-      background-color: white;
-      padding: 1rem;
-      border-radius: 4px;
-      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-      text-align: center;
-      cursor: pointer;
-      transition: all 0.3s ease;
-    }
-    .overview-file:hover {
-      background-color: #f0f0f0;
-    }
-    footer {
-      text-align: center;
-      padding: 1rem;
-      background-color: #333;
-      color: white;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Overview Navigation</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        #overview-sidebar {
+            width: 250px;
+            background-color: #2c3e50;
+            color: white;
+            padding: 20px;
+            position: fixed;
+            height: 100%;
+            overflow-y: auto;
+        }
+        #overview-sidebar ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        #overview-sidebar li {
+            margin: 10px 0;
+        }
+        #overview-sidebar a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+        }
+        #overview-sidebar a:hover {
+            background-color: #34495e;
+            padding-left: 10px;
+        }
+        #overview-main-content {
+            margin-left: 270px;
+            padding: 20px;
+        }
+        .overview-folder {
+            font-weight: bold;
+            cursor: pointer;
+        }
+        .overview-file {
+            padding-left: 20px;
+        }
+    </style>
 </head>
 <body>
 
-  <header>
-    <h1>Overview Navigation</h1>
-  </header>
+    <div id="overview-sidebar">
+        <h2>Overview Navigation</h2>
+        <ul id="overview-file-tree">
+            <!-- Example navigation tree structure -->
+            <li class="overview-folder" id="overview-allies">Allies
+                <ul>
+                    <li class="overview-folder" id="overview-allies-characters">Characters
+                        <ul>
+                            <li class="overview-file"><a href="./overview/allies/characters/Dira%201771-24.5%20Overview.html">Dira 1771-24.5 Overview</a></li>
+                            <li class="overview-file"><a href="./overview/allies/characters/Dira%201771-25.5%20Overview.html">Dira 1771-25.5 Overview</a></li>
+                            <li class="overview-file"><a href="./overview/allies/characters/Dira%201771-25.5%20RAW%20Overview.html">Dira 1771-25.5 RAW Overview</a></li>
+                        </ul>
+                    </li>
+                    <li class="overview-file"><a href="./overview/allies/Ally%201771-21%20Overview.html">Ally 1771-21 Overview</a></li>
+                </ul>
+            </li>
+            <li class="overview-folder" id="overview-chapters">Chapters
+                <ul>
+                    <li class="overview-file"><a href="./overview/chapters/Chapters%2023.5.1-23.5.5%20Overview.html">Chapters 23.5.1-23.5.5 Overview</a></li>
+                    <li class="overview-file"><a href="./overview/chapters/Chapter%2026.5%20Overview.html">Chapter 26.5 Overview</a></li>
+                    <li class="overview-file"><a href="./overview/chapters/Chapter%2026.1%20Overview.html">Chapter 26.1 Overview</a></li>
+                    <li class="overview-file"><a href="./overview/chapters/Chapters%2011-17%20Overview.html">Chapters 11-17 Overview</a></li>
+                    <!-- Add more chapter entries here -->
+                </ul>
+            </li>
+            <li class="overview-folder" id="overview-hybris">Hybris
+                <ul>
+                    <li class="overview-folder" id="overview-hybris-western-continent">Western Continent
+                        <ul>
+                            <li class="overview-folder" id="overview-hybris-western-continent-dwarven-mountains">Dwarven Mountains
+                                <ul>
+                                    <li class="overview-folder" id="overview-hybris-western-continent-dwarven-mountains-cults">Cults
+                                        <ul>
+                                            <li class="overview-file"><a href="./overview/hybris/western%20continent/dwarven%20mountains/cults/Cults%201771-23.3%20Overview.html">Cults 1771-23.3 Overview</a></li>
+                                            <li class="overview-file"><a href="./overview/hybris/western%20continent/dwarven%20mountains/cults/Cultists%201771-24.5%20Overview.html">Cultists 1771-24.5 Overview</a></li>
+                                            <!-- Add more cult entries here -->
+                                        </ul>
+                                    </li>
+                                    <li class="overview-folder" id="overview-hybris-western-continent-dwarven-mountains-brumkorath">Brum'korath
+                                        <ul>
+                                            <li class="overview-file"><a href="./overview/hybris/western%20continent/dwarven%20mountains/brum'korath/City%20of%20Brum'korath%201771-23.5%20RAW%20Overview.html">City of Brum'korath 1771-23.5 RAW Overview</a></li>
+                                            <li class="overview-file"><a href="./overview/hybris/western%20continent/dwarven%20mountains/brum'korath/The%20Streets%20of%20Brum'korath%201771-26.5%20Overview.html">The Streets of Brum'korath 1771-26.5 Overview</a></li>
+                                            <!-- Add more Brum'korath entries here -->
+                                        </ul>
+                                    </li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </li>
+                    <!-- Add more Hybris entries here -->
+                </ul>
+            </li>
+            <li class="overview-folder" id="overview-party">Party
+                <ul>
+                    <li class="overview-file"><a href="./overview/party/characters/Thomas%201771-25.5%20Overview.html">Thomas 1771-25.5 Overview</a></li>
+                    <li class="overview-file"><a href="./overview/party/characters/Lucas%201771-26.5%20Overview.html">Lucas 1771-26.5 Overview</a></li>
+                    <li class="overview-file"><a href="./overview/party/characters/Lucas%201771-26.5%20RAW%20Overview.html">Lucas 1771-26.5 RAW Overview</a></li>
+                    <!-- Add more party entries here -->
+                </ul>
+            </li>
+            <!-- Add more root-level entries here -->
+        </ul>
+    </div>
 
-  <nav class="overview-nav">
-    <div class="overview-category" id="overview-allies">Allies</div>
-    <div class="overview-category" id="overview-chapters">Chapters</div>
-    <div class="overview-category" id="overview-hybris">Hybris</div>
-    <div class="overview-category" id="overview-party">Party</div>
-    <div class="overview-category" id="overview-empire">Empire</div>
-    <div class="overview-category" id="overview-magic">Magic</div>
-    <div class="overview-category" id="overview-other-characters">Other Characters</div>
-  </nav>
-
-  <div id="overview-allies-files" class="overview-list">
-    <h2>Allies Overview</h2>
-    <div class="overview-file"><a href="./overview/allies/characters/Dira 1771-24.5 Overview.html">Dira 1771-24.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/allies/characters/Dira 1771-25.5 Overview.html">Dira 1771-25.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/allies/characters/Dira 1771-25.5 RAW Overview.html">Dira 1771-25.5 RAW Overview</a></div>
-    <div class="overview-file"><a href="./overview/allies/Ally 1771-21 Overview.html">Ally 1771-21 Overview</a></div>
-    <!-- Add more ally files here -->
-  </div>
-
-  <div id="overview-chapters-files" class="overview-list">
-    <h2>Chapters Overview</h2>
-    <div class="overview-file"><a href="./overview/chapters/Chapters 23.5.1-23.5.5 Overview.html">Chapters 23.5.1-23.5.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/chapters/Chapter 26.5 Overview.html">Chapter 26.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/chapters/Chapter 26.1 Overview.html">Chapter 26.1 Overview</a></div>
-    <div class="overview-file"><a href="./overview/chapters/Chapters 11-17 Overview.html">Chapters 11-17 Overview</a></div>
-    <!-- Add more chapter files here -->
-  </div>
-
-  <div id="overview-hybris-files" class="overview-list">
-    <h2>Hybris Overview</h2>
-    <div class="overview-file"><a href="./overview/hybris/eastern continent/Eastern Continent 1771-26.5 Overview.html">Eastern Continent 1771-26.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/hybris/Hybris 1771-25.5 RAW Overview.html">Hybris 1771-25.5 RAW Overview</a></div>
-    <div class="overview-file"><a href="./overview/hybris/Hybris 0-Prelude Overview.html">Hybris 0-Prelude Overview</a></div>
-    <div class="overview-file"><a href="./overview/hybris/western continent/dwarven mountains/Dwarven Mountains 1771-26.5 Overview.html">Dwarven Mountains 1771-26.5 Overview</a></div>
-    <!-- Add more hybris files here -->
-  </div>
-
-  <div id="overview-party-files" class="overview-list">
-    <h2>Party Overview</h2>
-    <div class="overview-file"><a href="./overview/party/Lucas Clairvoyance Evolution.html">Lucas Clairvoyance Evolution</a></div>
-    <div class="overview-file"><a href="./overview/party/characters/Thomas 1771-25.5 Overview.html">Thomas 1771-25.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/party/characters/Lucas 1771-26.5 Overview.html">Lucas 1771-26.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/party/characters/Mina 1771-26.5 Overview.html">Mina 1771-26.5 Overview</a></div>
-    <!-- Add more party files here -->
-  </div>
-
-  <div id="overview-empire-files" class="overview-list">
-    <h2>Empire Overview</h2>
-    <div class="overview-file"><a href="./overview/empire/Disciples of the Empire 1771-24.5 Overview.html">Disciples of the Empire 1771-24.5 Overview</a></div>
-    <div class="overview-file"><a href="./overview/empire/characters/Disciples of Earth 1771-24.5 Overview.html">Disciples of Earth 1771-24.5 Overview</a></div>
-    <!-- Add more empire files here -->
-  </div>
-
-  <div id="overview-magic-files" class="overview-list">
-    <h2>Magic Overview</h2>
-    <div class="overview-file"><a href="./overview/magic/The Principles of the Fifth Force in Magical Engine Design.html">The Principles of the Fifth Force in Magical Engine Design</a></div>
-    <div class="overview-file"><a href="./overview/magic/Magic as Fifth Force.html">Magic as Fifth Force</a></div>
-  </div>
-
-  <div id="overview-other-characters-files" class="overview-list">
-    <h2>Other Characters Overview</h2>
-    <div class="overview-file"><a href="./overview/other characters/Others 1771-23.4 Overview.html">Others 1771-23.4 Overview</a></div>
-    <div class="overview-file"><a href="./overview/other characters/characters/The Relics 1771-26.5 Overview.html">The Relics 1771-26.5 Overview</a></div>
-    <!-- Add more other characters files here -->
-  </div>
-
-  <footer>
-    <p>Navigation Page - All Rights Reserved &copy; 2024</p>
-  </footer>
-
-  <script>
-    document.getElementById('overview-allies').addEventListener('click', function() {
-      document.querySelectorAll('.overview-list').forEach(function(list) {
-        list.style.display = 'none';
-      });
-      document.getElementById('overview-allies-files').style.display = 'block';
-    });
-
-    document.getElementById('overview-chapters').addEventListener('click', function() {
-      document.querySelectorAll('.overview-list').forEach(function(list) {
-        list.style.display = 'none';
-      });
-      document.getElementById('overview-chapters-files').style.display = 'block';
-    });
-
-    document.getElementById('overview-hybris').addEventListener('click', function() {
-      document.querySelectorAll('.overview-list').forEach(function(list) {
-        list.style.display = 'none';
-      });
-      document.getElementById('overview-hybris-files').style.display = 'block';
-    });
-
-    document.getElementById('overview-party').addEventListener('click', function() {
-      document.querySelectorAll('.overview-list').forEach(function(list) {
-        list.style.display = 'none';
-      });
-      document.getElementById('overview-party-files').style.display = 'block';
-    });
-
-    document.getElementById('overview-empire').addEventListener('click', function() {
-      document.querySelectorAll('.overview-list').forEach(function(list) {
-        list.style.display = 'none';
-      });
-      document.getElementById('overview-empire-files').style.display = 'block';
-    });
-
-    document.getElementById('overview-magic').addEventListener('click', function() {
-      document.querySelectorAll('.overview-list').forEach(function(list) {
-        list.style.display = 'none';
-      });
-      document.getElementById('overview-magic-files').style.display = 'block';
-    });
-
-    document.getElementById('overview-other-characters').addEventListener('click', function() {
-      document.querySelectorAll('.overview-list').forEach(function(list) {
-        list.style.display = 'none';
-      });
-      document.getElementById('overview-other-characters-files').style.display = 'block';
-    });
-  </script>
+    <div id="overview-main-content">
+        <h1>Welcome to the Overview</h1>
+        <p>Select a file from the navigation panel to view its details.</p>
+    </div>
 
 </body>
 </html>

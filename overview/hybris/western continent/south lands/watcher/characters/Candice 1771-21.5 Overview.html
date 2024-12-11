@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candice - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Candice - Character Overview</h1>
+
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Tribe Member, Nythari Warrior, Mentor's Apprentice, Seeker, Adventurer, Looking for Lucas and Mina (Children of Hybris), Traveler, Outsider, Potential Key to Prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Agile, confident, resilient, curious, protective of nature, loyal, resourceful, uneasy, optimistic, skeptical, observant, compassionate, intuitive, brave, sensitive, introspective, strong-willed, empathetic</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>None listed (Skilled in survival, climbing, and agile combat)</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Nythari Tribe, Mentor: Ceylan, *Cult of the Sent Ones* (indirectly, through prophecy)</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall, slender, warm earthy tone skin, long dark hair in a braid, amber eyes, light fitted leather armor in forest tones, woven cloak with mountain hawk brooch, strong but worn demeanor, athletic build</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Find and bring back two "children of Hybris" to protect the worlds, follow mentor's guidance, face unknown challenges, prevent future threats from the Empire</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Unaware of full significance of the task ahead</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Skilled in survival, climbing, and agile combat, trained by her tribe in the ways of the Nythari; Meditation with Ceylan</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Cloak with mountain hawk brooch, leather armor, sarbacane, tribal blade, bow, small stone fragment from Nythari ruins, quiver with arrows, blowdart with sleeping darts, pouch of iridescent stones, basic survival gear</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>1754</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Candice is a Nythari warrior, apprentice to the esteemed mentor Ceylan. She has embarked on a journey to find two "children of Hybris" (Lucas and Mina), believing that they hold the key to preventing future catastrophes. She is both an adventurer and an outsider, navigating a world she doesn't entirely belong to while fulfilling her mentor's guidance and discovering her own path.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Candice is confident, resilient, and deeply connected to nature. She is compassionate, resourceful, and protective of her tribe's traditions. Despite her strength, she carries a sense of unease about her future task, balanced by optimism and strong intuition. She is empathetic to others' struggles and introspective about her role in the world, making her both grounded and deeply thoughtful.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>Candice does not possess overt magical abilities, but she is highly skilled in survival techniques, climbing, and agile combat, having been trained in the ways of the Nythari tribe. Her connection to nature enhances her abilities, and her agility allows her to navigate difficult terrain with ease.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Candice is part of the Nythari Tribe and is deeply connected to her mentor, Ceylan, who has guided her throughout her journey. She is also indirectly tied to the *Cult of the Sent Ones*, through the prophecy that links her to the children of Hybris.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Candice is tall with a slender build, her earthy-toned skin complementing the natural hues of her environment. She has long dark hair that she wears in a braid, and amber eyes that reflect the depth of her thoughts. Her attire consists of light, fitted leather armor in forest tones, and she wears a woven cloak with a mountain hawk brooch, symbolizing her tribe. Her overall appearance is both strong and worn, indicative of the trials she has faced.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Candice’s mission is to locate and bring back two "children of Hybris" (Lucas and Mina) to ensure the survival of the world and fulfill her mentor's prophecy. Along the way, she faces numerous challenges, from external threats to the unknown truths of her destiny. As she ventures through uncharted territories, Candice will grapple with her role in the grand scheme of things and how her path intertwines with that of the children she seeks to protect.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Candice is unaware of the full significance of her mission and the depth of her connection to Lucas and Mina. She does not yet understand the weight of the prophecy that binds her fate to theirs, or the challenges that await her.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Candice is highly skilled in survival, climbing, and agile combat, all honed through her training with the Nythari tribe. She has also learned the art of meditation from her mentor, Ceylan, which allows her to connect with the natural world and gain insight into her path.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Candice carries several items crucial to her journey, including a cloak adorned with a mountain hawk brooch, her leather armor, a tribal blade, a bow with arrows, and a sarbacane. She also has a blowdart with sleeping darts, a small stone fragment from Nythari ruins, and a pouch of iridescent stones. All of these items are essential for survival and fulfilling her mission.</p>
+        </div>
+    </div>
+</body>
+</html>
+

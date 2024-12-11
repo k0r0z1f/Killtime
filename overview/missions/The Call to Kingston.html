@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Call to Kingston - Mission Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Call to Kingston - Mission Overview</h1>
+
+        <!-- Mission Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Mission Aspect</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#mission-name" onclick="highlightSection(this, 'mission-name')">Mission Name</a></td>
+                    <td>The Call to Kingston</td>
+                </tr>
+                <tr>
+                    <td><a href="#primary-objective" onclick="highlightSection(this, 'primary-objective')">Primary Objective</a></td>
+                    <td>Find the two children of Hybris in Kingston and bring them back to The Watcher.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mission-background" onclick="highlightSection(this, 'mission-background')">Mission Background</a></td>
+                    <td>A mysterious explosion in Kingston has been linked to arcane forces and a demonic presence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#task-objective" onclick="highlightSection(this, 'task-objective')">Task Objective</a></td>
+                    <td>1. Travel to Kingston.<br> 2. Locate the two children of Hybris.<br> 3. Return them to The Watcher.</td>
+                </tr>
+                <tr>
+                    <td><a href="#special-instructions" onclick="highlightSection(this, 'special-instructions')">Special Instructions</a></td>
+                    <td>Do not bring back the *Empire’s Champion*, a figure tied to the Empire who poses an even greater danger.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mission-scope" onclick="highlightSection(this, 'mission-scope')">Mission Scope</a></td>
+                    <td>Kingston, a distant city known for its recent explosion. The journey will take Candice beyond her homeland.</td>
+                </tr>
+                <tr>
+                    <td><a href="#key-players" onclick="highlightSection(this, 'key-players')">Key Players</a></td>
+                    <td>Candice, Ceylan, The Children of Hybris, The Empire's Champion.</td>
+                </tr>
+                <tr>
+                    <td><a href="#critical-details" onclick="highlightSection(this, 'critical-details')">Critical Details</a></td>
+                    <td>The explosion in Kingston has left a demonic presence, suggesting a powerful magical force at play.</td>
+                </tr>
+                <tr>
+                    <td><a href="#potential-risks" onclick="highlightSection(this, 'potential-risks')">Potential Risks</a></td>
+                    <td>The children may not be aware of their significance. The Empire may actively be searching for them.</td>
+                </tr>
+                <tr>
+                    <td><a href="#final-objective" onclick="highlightSection(this, 'final-objective')">Final Objective</a></td>
+                    <td>Safely return the children to The Watcher, avoiding the Empire’s interference.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Mission Breakdown -->
+        <div class="section-content" id="mission-name">
+            <h2>Mission Name</h2>
+            <p>The Call to Kingston</p>
+        </div>
+
+        <div class="section-content" id="primary-objective">
+            <h2>Primary Objective</h2>
+            <p>Find the two children of Hybris in Kingston and bring them back to The Watcher.</p>
+        </div>
+
+        <div class="section-content" id="mission-background">
+            <h2>Mission Background</h2>
+            <p>
+                - A mysterious explosion in Kingston has been linked to arcane forces and a demonic presence.<br>
+                - The children of Hybris are identified as key figures who may hold the power to protect their world.<br>
+                - The Empire, an ancient and dangerous force, may be seeking these children for unknown purposes.
+            </p>
+        </div>
+
+        <div class="section-content" id="task-objective">
+            <h2>Task Objective</h2>
+            <p>1. Travel to Kingston.<br> 2. Locate the two children of Hybris.<br> 3. Return them to The Watcher.</p>
+        </div>
+
+        <div class="section-content" id="special-instructions">
+            <h2>Special Instructions</h2>
+            <p>- Do not bring back the *Empire’s Champion*, a figure tied to the Empire who poses an even greater danger.<br>
+               - The children of Hybris are linked to Hybris's magic and are central to preventing an impending threat.</p>
+        </div>
+
+        <div class="section-content" id="mission-scope">
+            <h2>Mission Scope</h2>
+            <p>- Kingston, a distant city known for its recent explosion.<br> 
+               - The journey will likely take Candice beyond her homeland and into unknown territories.<br>
+               - The danger involves both external threats (The Empire) and internal dangers (the unknown nature of the children).</p>
+        </div>
+
+        <div class="section-content" id="key-players">
+            <h2>Key Players</h2>
+            <p>- **Candice**: The protagonist tasked with the mission.<br>
+               - **Ceylan**: The mentor, guiding Candice and providing cryptic warnings.<br>
+               - **The Children of Hybris**: The two unknown figures whose presence caused the explosion in Kingston. They might not be children as they are referred to metaphorically.<br>
+               - **The Empire's Champion**: A dangerous individual tied to the Empire that Candice must avoid.</p>
+        </div>
+
+        <div class="section-content" id="critical-details">
+            <h2>Critical Details</h2>
+            <p>- The explosion in Kingston has left a demonic presence, suggesting a powerful magical force at play.<br>
+               - Candice is expected to find the children without specific descriptions but will recognize them through an innate feeling (which is untrue, but even Ceylan believes this to be true).<br>
+               - The stakes are high: the safety of The Watcher, the jungle, and the wider world depend on the success of the mission.</p>
+        </div>
+
+        <div class="section-content" id="potential-risks">
+            <h2>Potential Risks</h2>
+            <p>- The children may not be fully aware of their significance or powers.<br>
+               - The Empire may be actively searching for them, complicating Candice's task.<br>
+               - Candice is entering unfamiliar territory, where both magical and political dangers abound.</p>
+        </div>
+
+        <div class="section-content" id="final-objective">
+            <h2>Final Objective</h2>
+            <p>- Safely return the children to The Watcher, avoiding the Empire’s interference, and uncover the role they play in the greater conflict involving Hybris.</p>
+        </div>
+    </div>
+</body>
+</html>
+

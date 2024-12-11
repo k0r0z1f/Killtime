@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windfighter - Vehicle Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Windfighter - Vehicle Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#design" onclick="highlightSection(this, 'design')">Design</a></td>
+                    <td>Sleek, flowing shape with reinforced edges and added angular features for aerodynamics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#materials" onclick="highlightSection(this, 'materials')">Materials</a></td>
+                    <td>Enchanted wood, reinforced with magi-tech alloys, air-magic-infused crystals, and energy-shielding plating.</td>
+                </tr>
+                <tr>
+                    <td><a href="#size" onclick="highlightSection(this, 'size')">Size</a></td>
+                    <td>Length: 16 meters; Width: 7 meters.</td>
+                </tr>
+                <tr>
+                    <td><a href="#sails" onclick="highlightSection(this, 'sails')">Sails/Membranes</a></td>
+                    <td>Enchanted sails with kinetic energy flow patterns, now with armored reinforcements.</td>
+                </tr>
+                <tr>
+                    <td><a href="#levitation" onclick="highlightSection(this, 'levitation')">Levitation Mechanism</a></td>
+                    <td>Air-magic runes embedded in the vehicle’s frame and reinforced crystals, supporting levitation and propulsion.</td>
+                </tr>
+                <tr>
+                    <td><a href="#propulsion" onclick="highlightSection(this, 'propulsion')">Propulsion</a></td>
+                    <td>Powered by air-magic channeled through enchanted sails, levitation crystals, and auxiliary magi-tech turbines.</td>
+                </tr>
+                <tr>
+                    <td><a href="#interior" onclick="highlightSection(this, 'interior')">Interior Design</a></td>
+                    <td>Minimalist interior with tactical enhancements, like adjustable seats and reinforced walls for safety; bioluminescent maps, magical control interfaces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#cockpit" onclick="highlightSection(this, 'cockpit')">Cockpit</a></td>
+                    <td>Crystal dome with reinforced shielding, panoramic views, HUD for targeting and tactical overlay.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-source" onclick="highlightSection(this, 'energy-source')">Energy Source</a></td>
+                    <td>Wind-infused crystals, magi-tech battery fusion harnessing elemental power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#navigation" onclick="highlightSection(this, 'navigation')">Navigation</a></td>
+                    <td>Navigation through celestial signs, ancient elven maps, tactical magic grid, air-magic intuition, and GPS-based magical mapping.</td>
+                </tr>
+                <tr>
+                    <td><a href="#speed" onclick="highlightSection(this, 'speed')">Speed</a></td>
+                    <td>High-speed: up to 250 km/h in standard mode, up to 300 km/h with overdrive.</td>
+                </tr>
+                <tr>
+                    <td><a href="#range" onclick="highlightSection(this, 'range')">Range</a></td>
+                    <td>500 km without needing to land, can be extended with additional energy stores.</td>
+                </tr>
+                <tr>
+                    <td><a href="#stealth" onclick="highlightSection(this, 'stealth')">Stealth</a></td>
+                    <td>Low noise with added magical dampeners for stealth, but slightly more pronounced in battle mode.</td>
+                </tr>
+                <tr>
+                    <td><a href="#altitude" onclick="highlightSection(this, 'altitude')">Altitude Limitations</a></td>
+                    <td>Maximum altitude of 1200 feet above terrain; 3500 feet above sea level.</td>
+                </tr>
+                <tr>
+                    <td><a href="#special-features" onclick="highlightSection(this, 'special-features')">Special Features</a></td>
+                    <td>Combat Shielding, Invisibility Cloak, and small energy cannons, energy harpoons, and magic-infused projectile launchers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#passenger-capacity" onclick="highlightSection(this, 'passenger-capacity')">Passenger Capacity</a></td>
+                    <td>1-3 passengers comfortably (additional room for limited equipment or supplies).</td>
+                </tr>
+                <tr>
+                    <td><a href="#exterior" onclick="highlightSection(this, 'exterior')">Exterior Appearance</a></td>
+                    <td>Sleek wood-like shimmer with darkened, matte silver-blue accents and faint, glowing runes; additional plating with a slightly angular form.</td>
+                </tr>
+                <tr>
+                    <td><a href="#flight-control" onclick="highlightSection(this, 'flight-control')">Flight Control</a></td>
+                    <td>Pilot controls with fluid gestures or thought-based guidance (telepathic link possible); Combat Mode with tactical controls.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="design">
+            <h2>Design</h2>
+            <p>The Windfighter has a sleek, flowing shape, reinforced with angular features to enhance its aerodynamics and improve its handling in the sky.</p>
+        </div>
+
+        <div class="section-content" id="materials">
+            <h2>Materials</h2>
+            <p>The vehicle is crafted from enchanted wood and reinforced with magi-tech alloys. Air-magic-infused crystals are integrated into its structure, providing power and levitation, with energy-shielding plating for protection.</p>
+        </div>
+
+        <div class="section-content" id="size">
+            <h2>Size</h2>
+            <p>The Windfighter spans 16 meters in length and 7 meters in width, providing a balanced size for maneuverability and speed.</p>
+        </div>
+
+        <div class="section-content" id="sails">
+            <h2>Sails/Membranes</h2>
+            <p>The Windfighter's sails are enchanted to follow kinetic energy flow patterns, further reinforced for durability during combat and long-range flight.</p>
+        </div>
+
+        <div class="section-content" id="levitation">
+            <h2>Levitation Mechanism</h2>
+            <p>Air-magic runes embedded in the frame, along with reinforced crystals, create an efficient levitation mechanism that allows the Windfighter to stay airborne with minimal energy loss.</p>
+        </div>
+
+        <div class="section-content" id="propulsion">
+            <h2>Propulsion</h2>
+            <p>The propulsion system is powered by air-magic, channeled through the enchanted sails, levitation crystals, and auxiliary magi-tech turbines, which ensure swift flight even in harsh conditions.</p>
+        </div>
+
+        <div class="section-content" id="interior">
+            <h2>Interior Design</h2>
+            <p>The Windfighter’s interior is minimalist, yet tactical. It includes adjustable seats for comfort, reinforced walls for safety, bioluminescent maps, and magical control interfaces for ease of operation.</p>
+        </div>
+
+        <div class="section-content" id="cockpit">
+            <h2>Cockpit</h2>
+            <p>The cockpit is housed within a crystal dome with reinforced shielding, offering panoramic views and a HUD for targeting and tactical overlays.</p>
+        </div>
+
+        <div class="section-content" id="energy-source">
+            <h2>Energy Source</h2>
+            <p>The Windfighter is powered by a fusion of wind-infused crystals and magi-tech batteries, allowing it to harness elemental power for both propulsion and energy weapons.</p>
+        </div>
+
+        <div class="section-content" id="navigation">
+            <h2>Navigation</h2>
+            <p>Navigation is managed through celestial signs, ancient elven maps, a tactical magic grid, and GPS-based magical mapping, with intuitive air-magic adjustments for precision flight.</p>
+        </div>
+
+        <div class="section-content" id="speed">
+            <h2>Speed</h2>
+            <p>The Windfighter can reach up to 250 km/h in standard mode, with the ability to overdrive its systems for bursts of 300 km/h.</p>
+        </div>
+
+        <div class="section-content" id="range">
+            <h2>Range</h2>
+            <p>The Windfighter can travel up to 500 km on a single energy load, extendable by adding extra energy stores for longer trips.</p>
+        </div>
+
+        <div class="section-content" id="stealth">
+            <h2>Stealth</h2>
+            <p>The Windfighter is equipped with magical dampeners that reduce noise levels, making it ideal for stealth operations. However, its noise level increases slightly when in battle mode.</p>
+        </div>
+
+        <div class="section-content" id="altitude">
+            <h2>Altitude Limitations</h2>
+            <p>The Windfighter’s maximum altitude is 1200 feet above terrain or 3500 feet above sea level, designed for swift travel through both dense and high-altitude environments.</p>
+        </div>
+
+        <div class="section-content" id="special-features">
+            <h2>Special Features</h2>
+            <p>Special features include Combat Shielding for short bursts of protection, an Invisibility Cloak for stealth operations, and an array of small energy cannons, energy harpoons, and magic-infused projectile launchers for offense.</p>
+        </div>
+
+        <div class="section-content" id="passenger-capacity">
+            <h2>Passenger Capacity</h2>
+            <p>The Windfighter comfortably seats 1-3 passengers, with additional room for equipment or supplies as needed.</p>
+        </div>
+
+        <div class="section-content" id="exterior">
+            <h2>Exterior Appearance</h2>
+            <p>The Windfighter's exterior features a sleek, wood-like shimmer with matte silver-blue accents and faint, glowing runes, giving it an elegant yet formidable look. Additional plating and angular features enhance its combat readiness.</p>
+        </div>
+
+        <div class="section-content" id="flight-control">
+            <h2>Flight Control</h2>
+            <p>Flight controls are intuitive, based on fluid gestures or thought-based guidance. In Combat Mode, tactical controls are used for targeting energy cannons, harpoons, and stabilization during battle.</p>
+        </div>
+    </div>
+</body>
+</html>
+
