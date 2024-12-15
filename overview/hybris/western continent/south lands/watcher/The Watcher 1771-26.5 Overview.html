@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Watcher - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Watcher - Location Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Nythari Tribe (small, isolated elven community), Ceylan (an old man, lives in a cave high in the mountain), a few reclusive guardians and worshipers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A jagged, solitary mountain peak rising above lush jungles and valleys. Its slopes are steep and rugged, with an exposed upper region. Towering, jagged peak surrounded by elvish figures, ceremonial and worshipful.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Quiet, ancient, and spiritually charged. The land holds a deep, almost reverent atmosphere. Sacred, reverent, protective, mysterious.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Small villages scattered around the mountains, with primitive huts made from natural materials. Caves are sometimes used by the tribe. Natural, towering mountain, a place of pilgrimage.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Cave walls adorned with Nythari-style paintings and carvings. The Nythari consider the mountain a spirit guardian. Mountain hawk brooch worn by warriors. Figures depicting worship or guardianship, connected to elves.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Natural defenses: steep, rugged terrain; difficult to access. Various natural defenses.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>The Nythari believe the mountain is a guardian spirit, open and sacred to those who understand its secrets. Legends speak of an ancient watcher, guarding the mountain against intruders or those seeking forbidden knowledge. Linked to the ancestors of the Nythari people, symbol of strength and resilience. A symbol of both guidance and protection, possibly linked to ancient legacies. Worshipped by elves as a protector against evil, standing against bad omens.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Unknown arcane threats—Ceylan warns of the Empire’s potential interest in the region in the future. The presence of hidden magical forces or unseen envoyees whose intentions are unknown. Possibly tied to forces seeking to corrupt the Guardian (Watcher).</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Represents protection and guidance for Candice, a spiritual link. Could play a role in the party’s quest.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Dense jungles, rivers, and valleys surrounding the mountain. The mountain itself looms high above the land. Surrounded by the South Lands.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Morning mist and the occasional east wind; clear, crisp days reveal the sea to the east. Cold, misty, frequent storms, winds howl during colder months.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>An explosion in Kingston, potentially connected to arcane forces, has raised tensions. Ceylan believes the Empire may be involved. Potentially crucial in protecting against evil.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Watcher is inhabited by a small and isolated community of Nythari elves, with a few reclusive guardians and worshipers. The mountain is also home to Ceylan, an old man who resides in a cave high in the mountain, guarding its secrets.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Watcher is a towering, jagged mountain that rises above lush jungles and deep valleys. Its rugged, steep slopes are difficult to traverse, and its exposed upper region looms as a sacred site, surrounded by elvish figures who venerate the mountain’s significance.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere of The Watcher is quiet, ancient, and spiritually charged. There is a deep, reverent feeling in the air, as if the mountain itself holds power. It is a sacred place that inspires a sense of protection and mystery, where the land feels alive with spiritual significance.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>Small villages are scattered around the base of the mountain, with primitive huts constructed from natural materials. The Nythari tribe has built their homes with respect for the mountain, often using caves as living spaces. The mountain itself serves as a pilgrimage site for those seeking spiritual enlightenment.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>Cave walls are adorned with Nythari-style paintings and carvings, many of which depict the mountain as a guardian spirit. The Nythari believe the mountain to be a living, protective force. Warriors wear a mountain hawk brooch, symbolizing the watchful guardianship of the mountain.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The mountain’s steep, rugged terrain serves as a natural defense against intruders. The Nythari rely on the harsh landscape to keep unwanted visitors away, as the region is difficult to access and navigate.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The Watcher is believed to be a guardian spirit of the Nythari, connected to their ancestors. Legends speak of an ancient watcher who has stood guard over the mountain for centuries, protecting it from those who seek forbidden knowledge or wish to corrupt its power. The Nythari worship the mountain as a protector against evil forces.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Ceylan warns of unknown arcane threats lurking in the region. The Empire may take an interest in the area in the future, and there may be unseen forces trying to corrupt the Guardian, the Watcher, or even the very spiritual forces that protect the region.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The Watcher is a significant spiritual link for Candice. It represents protection, guidance, and possibly a crucial role in the party’s quest. As the party uncovers the truth about the mountain, they may find themselves entwined in its mysteries.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The mountain is surrounded by dense jungles, rivers, and valleys. Its towering peak stands high above the surrounding land, with the South Lands stretching out beneath it. The surrounding terrain is wild and difficult to navigate, offering little respite to those who attempt to reach the Watcher.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather around The Watcher is cold and misty, with frequent storms and howling winds during the colder months. Occasionally, the east wind brings clear, crisp days, offering a fleeting view of the sea to the east.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent events, such as the explosion in Kingston, have raised tensions in the region. Ceylan believes that the Empire may be interested in the area, and that the Watcher may play a critical role in protecting the world from evil forces.</p>
+        </div>
+    </div>
+</body>
+</html>
+
