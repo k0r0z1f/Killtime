@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queen of Elves - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Queen of Elves - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>929 (842 years old, current year 1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Ruler of Haliriel, Queen of Elves, Leader of the High Elves Council, Ruler of the Elven Realm</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Commanding, regal, authoritative, wise, diplomatic, protective of her people, calm, warm, calculated, cryptic</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Mastery over Air Magic (Nature-based, healing, control over plant life, enhanced senses), arcane knowledge</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Haliriel (City of Elves), elven royalty, High Elves, involved in ancient prophecies, Elven Realm</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall, regal, silver hair, intricate braids, crown of leaves and jewels, circlet of entwined leaves and gemstones, robe woven from the essence of the forest, piercing green eyes, dignified</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Leading the Elven people with wisdom and strength, navigating political tensions, seeking to protect her people, ensure the prosperity of the elves, and safeguard Haliriel. Guiding Lucas and Mina, establishing alliances for future challenges, to guide Candice, test her resolve, and reveal truths about the prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Potential hidden knowledge about the prophecy, secret alliances, deception of Candice, Jarek, and others for the greater good of the Elven cause. Unknown deeper knowledge of the prophecy and the Watcher</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>High combat training in elven warfare, archery, defensive and offensive magic</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Elaborate ceremonial robes, an enchanted staff, a collection of elven relics, a small pouch of rare healing herbs</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Born in 929, the Queen of Elves is 842 years old in the current year of 1771. Her long lifespan is a testament to the ancient power and grace of her people.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>The Queen of Elves, ruler of Haliriel, is the leader of the High Elves Council and commands the loyalty of her people. She is responsible for maintaining peace and prosperity within the Elven Realm, often balancing diplomacy and strength.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Regal and commanding, the Queen is both a wise and diplomatic leader, fiercely protective of her people. Her calm demeanor hides a calculated mind and cryptic nature, always thinking several steps ahead.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Mastery over Air Magic allows the Queen to heal, control plant life, enhance her senses, and communicate with nature. She also possesses ancient arcane knowledge, making her a formidable and wise leader.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The Queen is deeply intertwined with Haliriel and the Elven Realm, leading her people and forming key alliances with other factions. She is also involved in ancient prophecies that shape the future of her world.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Queen is tall and regal, with long silver hair intricately braided and adorned with a crown of leaves and jewels. Her circlet is made of entwined leaves and gemstones, symbolizing her connection to the natural world. She wears a robe woven from the essence of the forest, and her piercing green eyes convey both strength and wisdom.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>The Queen's goal is to lead her people through times of political tension, ensuring the prosperity of the Elven realm. She also plays a crucial role in guiding key individuals, including Lucas, Mina, and Candice, towards uncovering the deeper truths of a looming prophecy.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Unknown to many, the Queen harbors secret knowledge of an ancient prophecy, and she has made hidden alliances to secure the future of her people. Her actions are often shrouded in mystery, as she deceives even those closest to her for the greater good.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Highly trained in elven warfare, archery, and both defensive and offensive magic, the Queen is a formidable opponent in battle. She is as skilled with a bow as she is with her magical abilities, making her a leader in both peace and war.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>The Queen carries elaborate ceremonial robes, an enchanted staff that enhances her magical abilities, a collection of ancient elven relics, and a small pouch of rare healing herbs used for both magical and physical restoration.</p>
+        </div>
+    </div>
+</body>
+</html>
+

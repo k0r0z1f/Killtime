@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candice - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Candice - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Member of the Nythari Tribe, sent to bring Lucas and Mina to the Watcher, part of a larger game involving the Elven Council, integral to the prophecy’s unfolding, concerned about the mission's risks, advocates for consulting the Watcher for guidance, seeking to uncover the truth about the Children of Hybris and the disciples.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Composed under pressure, wary, insightful, quiet, firm, sincere, burdened by her mission, curious, open, thoughtful, awe-inspired, steady, firm, frustrated at Altheris' dismissal of the Watcher, urgent, determined, desperate at times, strong-willed.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Chaotic presence she struggles to control, likely tied to Nythari heritage, possibly has knowledge of the Watcher and its importance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Nythari Tribe, Elven Council (under temporary protection), aligned with the Watcher, part of a faction (Nythari Tribe) that values the Watcher's guidance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Amber eyes, elegant, striking due to her awe and pride in the Nythari culture, firm demeanor.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>To fulfill her mission and ensure Lucas and Mina’s return to the Watcher, navigating her role in the prophecy and supporting the group, believes that consulting the Watcher is crucial for the mission’s success, wants to divert the group to the Watcher to uncover vital truths, has an internal conflict about the prophecy and her role.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Believes in the prophecy regarding Lucas and Mina, her mission is tied to it, chaotic presence that lays dormant in her mind.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Some due to her mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Special pass granted by the Elven Council.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Candice is a member of the Nythari Tribe, tasked with bringing Lucas and Mina to the Watcher as part of a larger game involving the Elven Council. She is a key figure in the unfolding prophecy, and her mission's success is crucial for the balance of events. She is concerned about the risks involved and advocates for consulting the Watcher for guidance on the uncertain path ahead.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Candice remains composed under pressure but is wary and insightful. She is often quiet, firm, and sincere, carrying the burden of her mission. Her personality also reflects a deep curiosity and openness, though she can become frustrated when others, like Altheris, dismiss the importance of the Watcher. Her determination and strong will make her a steadfast ally in the face of adversity.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Candice’s abilities are tied to a chaotic presence she struggles to control, possibly linked to her Nythari heritage. She may also have knowledge of the Watcher and its importance, which is central to the unfolding events of the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Candice is part of the Nythari Tribe, and although she is under the temporary protection of the Elven Council, her allegiance lies with the Watcher. She also belongs to a faction within the Nythari Tribe that values the Watcher's guidance in the unfolding prophecy.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Candice has striking amber eyes and a graceful, elegant appearance, reflecting the pride she takes in her Nythari heritage. Her firm demeanor conveys her sense of purpose and determination in fulfilling her mission.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Her primary goal is to ensure Lucas and Mina’s safe return to the Watcher. Candice believes the Watcher holds the key to solving the mystery of the prophecy and wants to guide the group to it. She faces an internal conflict about her role in the prophecy and the uncertain future of the world.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Candice believes deeply in the prophecy concerning Lucas and Mina, and her mission is intrinsically tied to it. However, she harbors a chaotic presence within her that remains dormant, suggesting she might play an unexpected role in the events to come.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Candice has received some combat training due to the nature of her mission, preparing her to face both physical and magical challenges in the course of her journey.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Candice carries a special pass granted by the Elven Council, which provides her with certain privileges and protections during her travels.</p>
+        </div>
+
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Elves Council - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">High Elves Council - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>A group of high-ranking elves who oversee the affairs of Haliriel and the Elven realm. They are deeply involved in matters of prophecy and magic, particularly regarding Lucas and Mina.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Wise, authoritative, cautious, secretive</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Likely skilled in ancient elven magic, divination, and diplomacy</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Elven Kingdom, allied with the Queen of Elves</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>---</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>To protect Haliriel, ensure the prophecy is fulfilled, and guide the Children of Hybris.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Knowledge of the prophecy and its implications.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>---</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>---</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>The High Elves Council is a group of esteemed and powerful figures who oversee the elven realm of Haliriel. They are deeply intertwined in the fate of the realm, particularly in relation to the prophecy surrounding Lucas and Mina. Their influence extends to matters of magic and diplomacy, and they are key players in shaping the future of the elven people.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>The High Elves Council is composed of individuals who embody wisdom, authority, and caution. They are secretive and prefer to work behind the scenes to maintain control over the future of Haliriel. Their decisions are often calculated and deliberate, ensuring the longevity and stability of the realm.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>The members of the High Elves Council are highly skilled in ancient elven magic, which allows them to manipulate the forces of nature, time, and fate. They likely have knowledge of divination and are adept in the art of diplomacy, making them formidable in both magical and political matters.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The High Elves Council is closely allied with the Elven Kingdom and shares a strong bond with the Queen of Elves. This alliance helps maintain peace and stability within the realm, while also ensuring that the ancient prophecy is upheld.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>---</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>The ultimate goal of the High Elves Council is to protect Haliriel and ensure the fulfillment of the prophecy. They are dedicated to guiding the Children of Hybris, whose role is pivotal in the fate of the world. Their actions aim to maintain balance and avert potential disasters.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>The High Elves Council possesses knowledge of the prophecy and its implications. They understand the weight of their responsibility and the dangers that accompany their knowledge, often keeping it hidden from the public eye.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>---</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>---</p>
+        </div>
+    </div>
+</body>
+</html>
+

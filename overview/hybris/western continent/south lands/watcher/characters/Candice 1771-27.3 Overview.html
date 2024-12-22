@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candice - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Candice - Character Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1721 (49 years old, current year 1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role" onclick="highlightSection(this, 'role')">Role/Background</a></td>
+                    <td>Member of the Nythari tribe, nythari warrior, Seeker, apprentice to Ceylan, sent to bring Lucas and Mina to the Watcher, part of a larger game involving the Elven Council, integral to the prophecy’s unfolding.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Agile, confident, curious, protective of nature, determined, introspective, loyal, torn, internally conflicted, composed under pressure, wary, insightful, quiet, firm, sincere, burdened by her mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Expert in survival, climbing, stealth, archery, blow darts, and short blades. Chaotic presence she struggles to control, tied to Ceylan, has knowledge of the Watcher and its importance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-clans" onclick="highlightSection(this, 'alliances-clans')">Alliances/Clans/Factions</a></td>
+                    <td>Nythari Tribe, Elven Council (under temporary protection), aligned with the Watcher, part of a faction that values the Watcher's guidance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Athletic build, bright amber eyes, long brown treaded hair, elegant, striking due to her awe and pride in the Nythari culture.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>To fulfill her mission and ensure Lucas and Mina’s return to the Watcher, navigating her role in the prophecy and supporting the group.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Believes in the prophecy regarding Lucas and Mina, her mission is tied to it, chaotic presence that lays dormant in her mind (possibly Ceylan).</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Skilled in survival, climbing, stealth, archery, blow darts, and short blades.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Pouch of iridescent stones (Derek's currency), small stone fragment from Nythari ruins, sarbacane, 4 poison darts, 1 normal dart, nythari survival gear, special pass granted by the Elven Council.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Candice was born in 1721 and is 49 years old as of the current year, 1771.</p>
+        </div>
+
+        <div class="section-content" id="role">
+            <h2>Role/Background</h2>
+            <p>Candice is a member of the Nythari tribe, a skilled warrior and Seeker. She serves as an apprentice to Ceylan and has been sent on a mission to bring Lucas and Mina to the Watcher. Her role is part of a larger game involving the Elven Council, and she is integral to the unfolding prophecy.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Candice is agile, confident, and curious. She is protective of nature, introspective, and loyal. Despite being determined and composed under pressure, she feels torn and internally conflicted about her mission, which burdens her. She remains insightful, quiet, and firm, yet sometimes frustrated at the dismissal of the Watcher.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Candice is an expert in survival, climbing, stealth, archery, blow darts, and short blades. She possesses a chaotic presence she struggles to control, possibly tied to Ceylan. Her knowledge of the Watcher is vast, and she believes it plays a key role in the success of her mission.</p>
+        </div>
+
+        <div class="section-content" id="alliances-clans">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Candice is aligned with the Nythari Tribe and temporarily under the protection of the Elven Council. She also shares an alliance with the Watcher, and is part of a faction within the Nythari Tribe that deeply values the guidance of the Watcher.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Candice has an athletic build and striking amber eyes. Her long, brown treaded hair and elegant demeanor reflect the pride she feels for the Nythari culture. Her presence is firm and captivating, embodying her connection to her tribe and mission.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Candice’s goal is to fulfill her mission, ensuring Lucas and Mina’s safe return to the Watcher. As she navigates her role in the prophecy, she is dedicated to uncovering vital truths about it and helping the group. Her internal conflict about the prophecy and her role weighs heavily on her decisions.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Candice believes in the prophecy regarding Lucas and Mina, and her mission is closely tied to it. She also harbors a chaotic presence that lies dormant in her mind, possibly linked to Ceylan’s influence.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Candice is highly skilled in combat, particularly in survival, climbing, stealth, archery, blow darts, and short blades. These skills make her a formidable opponent in any environment.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Candice carries a pouch of iridescent stones (currency from Derek), a small stone fragment from Nythari ruins, a sarbacane, four poison darts, one normal dart, Nythari survival gear, and a special pass granted by the Elven Council.</p>
+        </div>
+    </div>
+</body>
+</html>
+

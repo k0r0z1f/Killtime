@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elf Researcher - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Elf Researcher - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Elderly elf, researcher at the Magi-Tech Laboratory</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Thoughtful, analytical, cautious</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Expertise in magi-tech</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-clans-factions" onclick="highlightSection(this, 'alliances-clans-factions')">Alliances/Clans/Factions</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Intricate tattoos, older appearance</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">Character Arc/Goal</a></td>
+                    <td>Assisting in the study of the relics</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Magi-tech measuring device</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Not provided</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>The Elf Researcher is an elderly elf who works as a researcher at the Magi-Tech Laboratory. They specialize in the study of magical technology, contributing to advancements in the field.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>The Elf Researcher is thoughtful, analytical, and cautious. They approach problems with a measured perspective, taking their time to assess all possible solutions.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>They possess a deep expertise in magi-tech, blending magical abilities with technological innovations to enhance their research and work in the laboratory.</p>
+        </div>
+
+        <div class="section-content" id="alliances-clans-factions">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Not provided</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Elf Researcher has intricate tattoos that signify their age and wisdom, and their appearance reflects their advanced years with features that show the passage of time.</p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>The Elf Researcher is focused on assisting in the study of relics, particularly those tied to magical technology, which could hold the key to new discoveries in their field.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Not provided</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Not provided</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>The Elf Researcher carries a magi-tech measuring device, essential for their work in studying magical artifacts and technology.</p>
+        </div>
+    </div>
+</body>
+</html>
+

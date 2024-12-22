@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Profile - Lucas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Character Profile - Lucas</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (current year 1771, he's 17 years old)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Hero of Brum'korath; short time former and recently released Brum'korath prisoner, having taken part in the Cults War and the Disciple's rampage; main protagonist of the party; connected to ancient relics prophecy and fused with one; strategist; outlaw of Central Lands for the Kingston incident, unrelated to Brum'korath (Kingston Police, World Police); victim of medi-laboratory experiments as a child from birth to 11 years old; aspiring college student as a teen; escapee since Kingston incident; One of the Children of Hybris, central to the prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Determined, analytical, introspective, calculating, self-doubting, practical, cautious, curious, calm under pressure, protective, resolute, skeptical, doubtful, brave, frustrated, observant, burdened by hidden truths, burdened by guilt, feels the weight of scrutiny, uncertain, thoughtful, empathetic, intense, inquisitive, anxious, critical, questioning, wary, but gradually more at ease with the group, vulnerable, focused, willing to take risks, burdened by responsibility, pragmatic, occasionally reckless.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Telepathy (Stage 1: Surface Thought Reading - DMN-Focused, Stage 2: Deeper Thought Access and Emotional Sensory Tuning, Stage 3: Memory Access and Short-Term Influence), Entry-level Clairvoyance (Unconscious or Basic Vision), Intermediate Telekinesis (Multiple Small Object Movement or one bigger object of maximum weight of 30kg), Pyrokinesis: Entry - Small Heat Control, Basic - Flame Creation, Intermediate - Fire Manipulation; senses chaotic thoughts and mental presences, permanent telepathic link with Mina; connection to the Sent Ones prophecy; Telekinesis (can move objects with his mind), has other unexplained powers. Telepathic communication with the Relics, emerging mastery of arcane technology. Connected to the Relics, can sense their power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-factions" onclick="highlightSection(this, 'alliances-factions')">Alliances/Clans/Factions</a></td>
+                    <td>Aligned with Mina and Thomas; Cult of the Sent Ones (indirectly, through prophecy); Dwarven Council, Brum'korath, World Police (now enemy), Haliriel (temporary alliance); Part of the mission team. Children of Hybris (implied). Working with a group of researchers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", brown eyes, serious look; lean; Light-brown hair, disheveled, typically wears a worn satchel. Typically stressed or focused expression.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">Character Arc/Goal</a></td>
+                    <td>Overcoming insecurity to embrace his potential and confront his mysterious past; grappling with his role as one of the Sent Ones; feeling the growing pressure of the coming war, beginning to understand the depth of his connection to the Sent Ones prophecy; experiencing the direct pressure of the Disciple’s approach; seeking redemption, navigating the weight of being monitored, uncover the truth behind the explosion in Kingston, discover the origin and purpose of the relics, unlock their mysteries and powers, manage the dangers they present, stand firm against the World Police, protect his companions, prepare for the coming war, survive, uncover hidden motives, seeking safety but conflicted over political and personal motivations, discover his role in the prophecy and the magic that flows through the world, understand his connection to Candice, unravel the mysteries that bind him to her and the others; To navigate the path set by the prophecy and understand his role. His role in the prophecy is unclear, but it involves both him and Mina with a significant focus on the Disciple of Air. Unlock the relics, stop the Disciples, and uncover the mystery behind his DNA anomaly.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Struggling with memory of the explosion, feeling guilt over its consequences, Lucas, Mina, and Thomas each have a relic fused with them (unable to be removed), possibly misled about being the chosen one for the relics, holds resentment toward being caught up in political conflict, deep mistrust of both the elves and the dwarves due to past manipulation; His connection to the relic, its unknown powers, and other undisclosed parts of the prophecy. Has a minor anomaly in his DNA, leading to instability in relic synchronization. Possible doubt regarding his true worthiness for the relics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Strategic and warfare knowledge; telekinetic defense; basic weapon training; basic pyrokinesis and intermediate telekinesis; skilled with basic weaponry, moderate combat training, skilled with tactics, strategic thinker (from deep study); He is involved in the mission and appears capable in a leadership context. Basic combat training.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>810 doumis; rare battery hybrid magic-tech (worth 20,000 doumis); new travel clothes; backpack with survival gear; dry food; change of clothes; Satchel with notes, theories, and scraps of information about the Relics. Relic attached to his wrist, possibly containing powerful or dangerous energy.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>1754 (current year 1771, Lucas is 17 years old).</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Hero of Brum'korath; short time former and recently released Brum'korath prisoner, having taken part in the Cults War and the Disciple's rampage; main protagonist of the party; connected to ancient relics prophecy and fused with one; strategist; outlaw of Central Lands for the Kingston incident, unrelated to Brum'korath (Kingston Police, World Police); victim of medi-laboratory experiments as a child from birth to 11 years old; aspiring college student as a teen; escapee since Kingston incident; One of the Children of Hybris, central to the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Determined, analytical, introspective, calculating, self-doubting, practical, cautious, curious, calm under pressure, protective, resolute, skeptical, doubtful, brave, frustrated, observant, burdened by hidden truths, burdened by guilt, feels the weight of scrutiny, uncertain, thoughtful, empathetic, intense, inquisitive, anxious, critical, questioning, wary, but gradually more at ease with the group, vulnerable, focused, willing to take risks, burdened by responsibility, pragmatic, occasionally reckless.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Telepathy (Stage 1: Surface Thought Reading - DMN-Focused, Stage 2: Deeper Thought Access and Emotional Sensory Tuning, Stage 3: Memory Access and Short-Term Influence), Entry-level Clairvoyance (Unconscious or Basic Vision), Intermediate Telekinesis (Multiple Small Object Movement or one bigger object of maximum weight of 30kg), Pyrokinesis: Entry - Small Heat Control, Basic - Flame Creation, Intermediate - Fire Manipulation; senses chaotic thoughts and mental presences, permanent telepathic link with Mina; connection to the Sent Ones prophecy; Telekinesis (can move objects with his mind), has other unexplained powers. Telepathic communication with the Relics, emerging mastery of arcane technology. Connected to the Relics, can sense their power.</p>
+        </div>
+
+        <div class="section-content" id="alliances-factions">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Aligned with Mina and Thomas; Cult of the Sent Ones (indirectly, through prophecy); Dwarven Council, Brum'korath, World Police (now enemy), Haliriel (temporary alliance); Part of the mission team. Children of Hybris (implied). Working with a group of researchers.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>5'10", brown eyes, serious look; lean; Light-brown hair, disheveled, typically wears a worn satchel. Typically stressed or focused expression.</p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>Overcoming insecurity to embrace his potential and confront his mysterious past; grappling with his role as one of the Sent Ones; feeling the growing pressure of the coming war, beginning to understand the depth of his connection to the Sent Ones prophecy; experiencing the direct pressure of the Disciple’s approach; seeking redemption, navigating the weight of being monitored, uncover the truth behind the explosion in Kingston, discover the origin and purpose of the relics, unlock their mysteries and powers, manage the dangers they present, stand firm against the World Police, protect his companions, prepare for the coming war, survive, uncover hidden motives, seeking safety but conflicted over political and personal motivations, discover his role in the prophecy and the magic that flows through the world, understand his connection to Candice, unravel the mysteries that bind him to her and the others; To navigate the path set by the prophecy and understand his role. His role in the prophecy is unclear, but it involves both him and Mina with a significant focus on the Disciple of Air. Unlock the relics, stop the Disciples, and uncover the mystery behind his DNA anomaly.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Struggling with memory of the explosion, feeling guilt over its consequences, Lucas, Mina, and Thomas each have a relic fused with them (unable to be removed), possibly misled about being the chosen one for the relics, holds resentment toward being caught up in political conflict, deep mistrust of both the elves and the dwarves due to past manipulation; His connection to the relic, its unknown powers, and other undisclosed parts of the prophecy. Has a minor anomaly in his DNA, leading to instability in relic synchronization. Possible doubt regarding his true worthiness for the relics.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Strategic and warfare knowledge; telekinetic defense; basic weapon training; basic pyrokinesis and intermediate telekinesis; skilled with basic weaponry, moderate combat training, skilled with tactics, strategic thinker (from deep study); He is involved in the mission and appears capable in a leadership context. Basic combat training.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>810 doumis; rare battery hybrid magic-tech (worth 20,000 doumis); new travel clothes; backpack with survival gear; dry food; change of clothes; Satchel with notes, theories, and scraps of information about the Relics. Relic attached to his wrist, possibly containing powerful or dangerous energy.</p>
+        </div>
+    </div>
+</body>
+</html>
+

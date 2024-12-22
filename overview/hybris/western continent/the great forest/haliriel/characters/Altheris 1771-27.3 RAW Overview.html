@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altheris - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Altheris - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Commandant overseeing the Eastern Continent mission, leader of the mission</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Composed, authoritative, cold, calculated, tall, elegant, purposeful, commanding</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Skilled in high-level strategy and leadership</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-clans" onclick="highlightSection(this, 'alliances-clans')">Alliances/Clans/Factions</a></td>
+                    <td>Affiliated with Haliriel and the council</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Silver hair, angular features, composed demeanor, tall, elegant, dark elven robes</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Oversee the mission, ensure the containment and understanding of the Disciple of Air, guide the team through the lab and the mission to the Eastern Continent</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Experienced in leadership and tactics</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Information not provided.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Altheris is the Commandant overseeing the Eastern Continent mission, serving as the leader of the mission.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Altheris is composed, authoritative, cold, and calculated. His tall, elegant presence commands respect and attention. He approaches every situation with purpose and precision, exuding a calm, commanding energy.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Altheris is skilled in high-level strategy and leadership, able to coordinate and direct complex missions with efficiency and foresight.</p>
+        </div>
+
+        <div class="section-content" id="alliances-clans">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Altheris is affiliated with Haliriel and the council, working closely with these powerful factions to achieve his objectives.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Altheris has silver hair and angular features, with a composed demeanor that matches his tall and elegant form. He typically wears dark elven robes that reflect his high status and the gravity of his role.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Altheris’s primary goal is to oversee the Eastern Continent mission, ensuring the containment and understanding of the Disciple of Air. He is tasked with guiding his team through both the lab and the mission itself, working to achieve success despite the unknowns ahead.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Information not provided.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Altheris is highly experienced in leadership and tactics, with a deep understanding of battlefield strategies, although not necessarily trained in physical combat.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Information not provided.</p>
+        </div>
+    </div>
+</body>
+</html>
+

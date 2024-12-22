@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High Elves Council - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">High Elves Council - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role" onclick="highlightSection(this, 'role')">Role/Background</a></td>
+                    <td>Powerful governing body of the elves, overseeing the High Temple of Nature and the fate of Haliriel. The council consists of three elves: the Elder Elf, the Regal Female Elf (The Queen of Elves), and the Soft Yet Powerful Elf.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>The Elder Elf exudes wisdom, the Regal Female Elf is stern and authoritative, and the Soft Yet Powerful Elf is inquisitive and cautious. Wise, authoritative, cautious, secretive.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>The Regal Elf is skilled in air magic, divination, and diplomacy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Elven Nation, High Elves, allied with the Queen of Elves.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>The Elder Elf: Long silver hair, braided intricately. The Queen: Crown of leaves, regal presence. The Soft Yet Powerful Elf: Deep, soft features, powerful presence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Preserving the sovereignty of the Elves, ensuring Haliriel’s safety, protecting Haliriel, ensuring the prophecy is fulfilled, and guiding the Children of Hybris.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Knowledge of the prophecy and its implications.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>None provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>None provided.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role">
+            <h2>Role/Background</h2>
+            <p>The High Elves Council is a powerful governing body of elves who oversee the High Temple of Nature and the fate of Haliriel. The council consists of three members: the Elder Elf, the Regal Female Elf (Queen of Elves), and the Soft Yet Powerful Elf. They play an essential role in guiding the fate of the Elven realm and Haliriel itself, particularly in relation to prophecy and magic.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>The Elder Elf exudes wisdom and experience, always thinking carefully before making decisions. The Regal Female Elf is stern and authoritative, commanding respect and obedience from others. The Soft Yet Powerful Elf is more introspective, inquisitive, and cautious, bringing balance to the council's decision-making.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>The Regal Elf is skilled in air magic, divination, and diplomacy. Their magical abilities enable them to interpret prophecies and foresee future events, as well as maintain peace and unity within the Elven realm.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The High Elves Council is part of the Elven Nation and aligned with the Queen of Elves. Their influence is vast, particularly concerning the destiny of Haliriel and its people.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Elder Elf has long silver hair, braided intricately, embodying both elegance and wisdom. The Queen of Elves has a crown of leaves, exuding a regal presence and commanding respect. The Soft Yet Powerful Elf has deep, soft features with a powerful presence that emanates strength in a subtle manner.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>The High Elves Council's primary goals are to preserve the sovereignty of the Elves, ensure the safety of Haliriel, protect the realm from external threats, and guide the Children of Hybris. They are deeply involved in the fulfillment of the prophecy that ties their fate to that of Lucas and Mina.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>The High Elves Council holds secret knowledge of the prophecy, understanding its profound implications for Haliriel and its people. This secret is one of the most powerful and dangerous in the realm.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>No specific combat training details were provided for the High Elves Council members.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>No inventory details were provided for the High Elves Council members.</p>
+        </div>
+    </div>
+</body>
+</html>
+
