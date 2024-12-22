@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>High District of Haliriel - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">High District of Haliriel (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Unknown</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Delicate wooden architecture, soft glow from Serran trees, towering structures, treetop walkways, shimmering pathways, polished wooden streets, grand chambers bathed in emerald-tinted lantern light.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Quiet hum of magic, ethereal glow, cool, refreshing evening air, serene yet bustling atmosphere, sacred silence, air thick with the scent of ancient wood and blooming vines.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Elegant wood-based structures, intertwined with nature, intricate timber walls, smooth cedar floors, ancient oak beams, rare use of stone, throne room and chambers made of living wood.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Intricate carvings and engravings on passes, symbols familiar to the Nythari people.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Guards at gates, special pass for access.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>The Nythari tribe's connection to the land, strong cultural identity, Watcher referenced as part of ancient lore tied to prophecy, Queen of Elves rules, place of wisdom.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Potential political tensions or unseen factions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Candice and Jarek are granted a reprieve to stay here; Candice’s special pass grants them entry, the group moves through the district, Candice stands before the Queen seeking guidance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Surrounded by lush, magical Serran trees, the city with stone and wood creating a natural yet urban environment, surrounded by ancient forests, atmosphere closely tied to nature.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Soft, glowing ambiance from surrounding trees, air smells faintly of pine, earth, and something older, cool evening air with a refreshing bite, chambers bathed in a soft glow, likely from natural or magical sources.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The Elven Council convened here, granting permission to the party, Candice’s arrival, mission to bring the Children of Hybris to the Watcher, the Queen plans a journey to the Watcher, a place where the true nature of the prophecy can be revealed.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The population is unknown, as it remains hidden in the delicate and peaceful district. It is likely made up of the Nythari people, deeply connected to the surrounding magical environment.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The High District of Haliriel features delicate wooden architecture, with the soft glow of Serran trees illuminating the towering structures. Walkways in the treetops, shimmering pathways, and polished wooden streets create an ethereal and serene environment. The throne room is bathed in emerald-tinted lantern light, with blooming vines framing the area.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The energy in this district hums with quiet magic, creating an ethereal glow. The air is cool and refreshing, carrying the scent of ancient wood and blooming vines. The atmosphere is both serene and bustling, as the people move quietly through their sacred, yet busy, spaces.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The High District is an elegant blend of natural materials, with wood-based structures entwined with the surrounding nature. Timber walls, cedar floors, and oak beams create an intricate yet harmonious design. The throne room and chambers are crafted from living wood, with a rare use of stone in the architecture.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>Intricate carvings and engravings, often depicting symbols familiar to the Nythari people, are etched throughout the district. These symbols are steeped in ancient meaning, invoking a sense of wisdom and connection to the land.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Guards stand at the gates, and a special pass is required for entry into the district. These measures ensure the security and secrecy of the area, guarding it from unwanted outside influence.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The High District is deeply tied to the Nythari tribe’s history and their connection to the land. The Watcher, part of ancient lore and prophecy, is a key figure in the district’s legends. It is said to be a place of great wisdom and spiritual significance, ruled by the Queen of Elves.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>While the district appears peaceful, there may be political tensions brewing or unseen factions lurking in the background, potentially leading to unseen dangers or power struggles.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party’s connection to the district grows when Candice and Jarek are granted special permission to stay. Candice's special pass provides them entry, and her quest to seek guidance from the Queen and the Watcher unfolds.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The High District is surrounded by lush, magical Serran trees and ancient forests. The environment blends nature with urban development, creating a serene yet vibrant atmosphere filled with the sounds of nature.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather is typically cool, with soft glowing light from the surrounding trees. The air smells faintly of pine and earth, with a refreshing evening breeze that adds to the district's tranquil ambiance.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recently, the Elven Council convened in the district, granting permission for Candice and her group to stay. Plans are also underway for a journey to the Watcher, a place where the true nature of an ancient prophecy may be revealed.</p>
+        </div>
+    </div>
+</body>
+</html>
+
