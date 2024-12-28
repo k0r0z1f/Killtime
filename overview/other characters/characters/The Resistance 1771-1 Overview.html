@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Resistance - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Resistance - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#background" onclick="highlightSection(this, 'background')">Role/Background</a></td>
+                    <td>A coalition of native tribes, outlaws, and defectors from the Empire, working to oppose Imperial control over Vardis.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Determined, defiant, resourceful, pragmatic, distrustful of outsiders.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Some possess elemental magic, guerrilla tactics, and survival skills.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Tribes of Vardis, Outlaws, Empire defectors.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Varied appearances based on the individuals, including rugged clothing, tribal symbols, camouflage gear, and elemental tattoos.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>The goal is to protect Vardis from Imperial exploitation and harness its mystical powers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>The Resistance has fragmented leadership, with some factions secretly negotiating with the Empire or using mystical powers for their own agenda.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="background">
+            <h2>Role/Background</h2>
+            <p>The Resistance is a coalition formed by various factions including native tribes, outlaws, and former Empire soldiers who oppose the Imperial control over Vardis. They are dedicated to protecting their land, people, and the planet's mystical forces.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>The Resistance members are determined and defiant, using their resourcefulness to navigate the challenges they face. They are pragmatic and suspicious of outsiders, often choosing to rely on their own survival skills and knowledge of the land.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Many members of the Resistance possess elemental magic that ties them to the forces of nature, as well as advanced guerrilla tactics and survival skills. They are highly adaptable, using the terrain to their advantage in their ongoing struggle against the Empire.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The Resistance is primarily made up of the indigenous tribes of Vardis, along with outlaws and defectors from the Empire. Their shared goal is to protect the mystical powers of Vardis and resist Imperial exploitation.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Resistance members have varied appearances depending on their backgrounds. Some wear rugged, functional clothing suited for guerrilla warfare, while others don tribal symbols, camouflage gear, or even elemental tattoos that reflect their affinity with the land and its magic.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>The primary goal of the Resistance is to prevent the Empire from exploiting Vardis. They aim to harness the planet's mystical powers for their own defense and ensure that the land remains free from outside influence.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>The Resistance is not a united front. Some factions within it secretly engage in negotiations with the Empire, while others use the planet's mystical forces for their own purposes. These internal divisions complicate the overall mission and make their ultimate goals uncertain.</p>
+        </div>
+    </div>
+</body>
+</html>
+

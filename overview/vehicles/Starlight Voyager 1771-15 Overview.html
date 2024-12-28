@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starlight Voyager - Ship Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Starlight Voyager - Ship Overview</h1>
+        
+        <!-- Ship Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#design" onclick="highlightSection(this, 'design')">Design</a></td>
+                    <td>Compact, rugged, and designed for stealth and practicality.</td>
+                </tr>
+                <tr>
+                    <td><a href="#materials" onclick="highlightSection(this, 'materials')">Materials</a></td>
+                    <td>Reinforced alloys, composite armor.</td>
+                </tr>
+                <tr>
+                    <td><a href="#size" onclick="highlightSection(this, 'size')">Size</a></td>
+                    <td>Medium-sized and compact.</td>
+                </tr>
+                <tr>
+                    <td><a href="#sails" onclick="highlightSection(this, 'sails')">Sails/Membranes</a></td>
+                    <td>No sails.</td>
+                </tr>
+                <tr>
+                    <td><a href="#levitation" onclick="highlightSection(this, 'levitation')">Levitation Mechanism</a></td>
+                    <td>Antigrav boosters and stabilizers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#propulsion" onclick="highlightSection(this, 'propulsion')">Propulsion</a></td>
+                    <td>Ion engines, magnetic thrusters.</td>
+                </tr>
+                <tr>
+                    <td><a href="#interior" onclick="highlightSection(this, 'interior')">Interior Design</a></td>
+                    <td>Minimalistic, utilitarian environment.</td>
+                </tr>
+                <tr>
+                    <td><a href="#cockpit" onclick="highlightSection(this, 'cockpit')">Cockpit</a></td>
+                    <td>Centrally located cockpit for a single pilot.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-source" onclick="highlightSection(this, 'energy-source')">Energy Source</a></td>
+                    <td>Core fusion reactor with backup solar cells.</td>
+                </tr>
+                <tr>
+                    <td><a href="#navigation" onclick="highlightSection(this, 'navigation')">Navigation</a></td>
+                    <td>Standard star maps and manual calculation tools.</td>
+                </tr>
+                <tr>
+                    <td><a href="#speed" onclick="highlightSection(this, 'speed')">Speed</a></td>
+                    <td>Moderate speed in atmosphere, slower in deep space.</td>
+                </tr>
+                <tr>
+                    <td><a href="#range" onclick="highlightSection(this, 'range')">Range</a></td>
+                    <td>Long, capable of travel for several months in deep space.</td>
+                </tr>
+                <tr>
+                    <td><a href="#stealth" onclick="highlightSection(this, 'stealth')">Stealth</a></td>
+                    <td>Camouflaged hull, cloaking capability.</td>
+                </tr>
+                <tr>
+                    <td><a href="#altitude" onclick="highlightSection(this, 'altitude')">Altitude Limitations</a></td>
+                    <td>Mid-range altitudes in atmosphere; no altitude limitations in space.</td>
+                </tr>
+                <tr>
+                    <td><a href="#special-features" onclick="highlightSection(this, 'special-features')">Special Features</a></td>
+                    <td>Stealth features for shadow operations, modular components.</td>
+                </tr>
+                <tr>
+                    <td><a href="#passenger-capacity" onclick="highlightSection(this, 'passenger-capacity')">Passenger Capacity</a></td>
+                    <td>8-10 persons.</td>
+                </tr>
+                <tr>
+                    <td><a href="#exterior" onclick="highlightSection(this, 'exterior')">Exterior Appearance</a></td>
+                    <td>Dark, matte gray hull with faint reactor glow.</td>
+                </tr>
+                <tr>
+                    <td><a href="#flight-control" onclick="highlightSection(this, 'flight-control')">Flight Control</a></td>
+                    <td>Manual flight control assisted by basic AI.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="design">
+            <h2>Design</h2>
+            <p>The Starlight Voyager is compact, rugged, and designed for stealth and practicality. Its design prioritizes utility over luxury, focusing on the ability to operate under the radar and survive in hostile environments.</p>
+        </div>
+
+        <div class="section-content" id="materials">
+            <h2>Materials</h2>
+            <p>The ship is constructed using reinforced alloys and composite armor, ensuring durability and protection from external threats.</p>
+        </div>
+
+        <div class="section-content" id="size">
+            <h2>Size</h2>
+            <p>The ship is medium-sized and compact, making it well-suited for stealth operations without attracting too much attention.</p>
+        </div>
+
+        <div class="section-content" id="sails">
+            <h2>Sails/Membranes</h2>
+            <p>The Starlight Voyager does not utilize sails, relying instead on advanced propulsion and levitation mechanisms for maneuverability.</p>
+        </div>
+
+        <div class="section-content" id="levitation">
+            <h2>Levitation Mechanism</h2>
+            <p>The ship uses antigrav boosters and stabilizers to maintain balance and allow for smooth travel, even in challenging environments.</p>
+        </div>
+
+        <div class="section-content" id="propulsion">
+            <h2>Propulsion</h2>
+            <p>Powered by ion engines and magnetic thrusters, the Starlight Voyager is capable of fast travel in both atmosphere and space.</p>
+        </div>
+
+        <div class="section-content" id="interior">
+            <h2>Interior Design</h2>
+            <p>The interior of the Starlight Voyager is minimalistic and utilitarian, focused on efficiency and practicality for the crew's needs during long missions.</p>
+        </div>
+
+        <div class="section-content" id="cockpit">
+            <h2>Cockpit</h2>
+            <p>The cockpit is centrally located for a single pilot, designed for easy operation and manual control with assistance from basic AI.</p>
+        </div>
+
+        <div class="section-content" id="energy-source">
+            <h2>Energy Source</h2>
+            <p>The ship is powered by a core fusion reactor with backup solar cells, ensuring a reliable power source for long journeys in space.</p>
+        </div>
+
+        <div class="section-content" id="navigation">
+            <h2>Navigation</h2>
+            <p>The Starlight Voyager relies on standard star maps and manual calculation tools for navigation, which provides flexibility during space travel.</p>
+        </div>
+
+        <div class="section-content" id="speed">
+            <h2>Speed</h2>
+            <p>The ship operates at moderate speeds in atmosphere but slows down significantly when traveling in deep space.</p>
+        </div>
+
+        <div class="section-content" id="range">
+            <h2>Range</h2>
+            <p>The Starlight Voyager has a long range, capable of traveling for several months in deep space, making it ideal for extended missions.</p>
+        </div>
+
+        <div class="section-content" id="stealth">
+            <h2>Stealth</h2>
+            <p>The ship is equipped with a camouflaged hull and cloaking capabilities, perfect for shadow operations and avoiding detection.</p>
+        </div>
+
+        <div class="section-content" id="altitude">
+            <h2>Altitude Limitations</h2>
+            <p>In atmosphere, the Starlight Voyager has mid-range altitude capabilities, but it has no altitude limitations in space.</p>
+        </div>
+
+        <div class="section-content" id="special-features">
+            <h2>Special Features</h2>
+            <p>The ship’s stealth features and modular components make it ideal for various mission types, whether for reconnaissance or transporting important figures.</p>
+        </div>
+
+        <div class="section-content" id="passenger-capacity">
+            <h2>Passenger Capacity</h2>
+            <p>The Starlight Voyager can accommodate 8-10 persons, providing enough space for a small crew or a group of travelers.</p>
+        </div>
+
+        <div class="section-content" id="exterior">
+            <h2>Exterior Appearance</h2>
+            <p>The ship has a dark, matte gray hull with a faint reactor glow, making it difficult to spot in the darkness of space.</p>
+        </div>
+
+        <div class="section-content" id="flight-control">
+            <h2>Flight Control</h2>
+            <p>The Starlight Voyager’s flight control is manual, assisted by basic AI to ensure smooth navigation and operation.</p>
+        </div>
+    </div>
+</body>
+</html>
