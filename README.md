@@ -11,4 +11,4 @@ Are you ready to explore a world where every second counts?
 
 Welcome to Killtime—the clock is ticking.
 
-http://maptool.temis.qc.ca:8000
+http://k0r0z1fstudioz-killtime.s3-website-us-east-1.amazonaws.com/
