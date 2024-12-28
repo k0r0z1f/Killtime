@@ -89,12 +89,20 @@
       // on load, add messages to the root div
       window.onload = function() {
           var root = document.getElementById("root");
+          var menu = document.getElementById("menu");
           for (var i = 0; i < jsonData.length; i++) {
               var conversation = jsonData[i];
+              var convname = conversation.title;              
+              var menudiv = document.createElement("div");
+              menudiv.innerHTML = convname;
+              menudiv.id = convname;
+              menudiv.onclick = function() { linkConv(event, this) };
+              menu.appendChild(menudiv); 
               var messages = getConversationMessages(conversation);
               var div = document.createElement("div");
               div.className = "conversation";
-              div.innerHTML = "<h4>" + conversation.title + "</h4>";
+              div.id = "conv-"+convname;
+              div.innerHTML = "<h4>" + convname + "</h4>";
               for (var j = 0; j < messages.length; j++) {
                   var message = document.createElement("pre");
                   message.className = "message";
@@ -123,9 +131,20 @@
               root.appendChild(div);
           }
       }
+       function linkConv(e, target) {
+         window.location.href="#conv-"+target.id;
+         var t = document.getElementById("conv-"+target.id);
+         if(window.isSecureContext) {
+         	navigator.clipboard.writeText(t.innerHTML).then(() => {alert("successfully copied");}).catch(() => {alert("something went wrong");});
+         }
+         e.preventDefault();
+         e.stopPropagation(); 
+       }
+
     </script>
   </head>
   <body>
+    <div id="menu"></div>
     <div id="root"></div>
   </body>
 </html>
