@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Lucas - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (21 years old, current year 1775)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Lucas is the 'messiah' figure being transported by John. He is a hero of Brum'korath on Hybris, and a former prisoner who participated in the Cults War and the Disciples of the Empire menace. He is central to an ancient prophecy, with a significant role in determining the future.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Determined, analytical, introspective, calculating, self-doubting, practical, cautious, curious, calm under pressure, protective, resolute, skeptical, doubtful, brave, frustrated, observant, burdened by hidden truths, uncertain, thoughtful, empathetic, intense, inquisitive, anxious, critical, questioning, wary, gradually more at ease with the group, vulnerable, focused, willing to take risks, rarely reckless.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Telepathy (Stage 1 & Stage 4), Telekinesis (Mid-Stage), Pyrokinesis (Early Mastery), Clairvoyance (Stage 5, Mastery).</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Brum'korath, Haliriel and the elves, The Watcher’s Nythari elves, Dwarven Council, Ceylan, World Police (formerly an enemy, now paroled by Central Lands). His ties to the Cult of the Sent Ones are indirect through prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", light-brown hair, brown eyes, lean build. Wears a worn satchel and typically looks stressed or focused.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Lucas' arc revolves around overcoming insecurity, embracing his potential, grappling with his role as one of the Sent Ones, Child of Hybris, and understanding the prophecy. He seeks to unlock the power of the relics, confront his mysterious past, and ultimately change the fate of the factions involved. A major personal goal is finding Mina, whose potential death haunts him. His journey involves survival, self-discovery, and potentially altering the outcome of the Empire war.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Lucas' secret includes his guilt over the Kingston explosion, which he believes may have caused Mina's possible death and the scattering of the group. He is burdened by the pressure of the ongoing war and the full extent of his powers, especially his telepathy and the ability to disrupt Imperial systems, which are still unknown to him. He is also struggling with his worthiness to wield the relics and what they truly mean for his future.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>1754 (21 years old, current year 1775)</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Lucas is the 'messiah' figure being transported by John. He is a hero of Brum'korath on Hybris, and a former prisoner who participated in the Cults War and the Disciples of the Empire menace. He is central to an ancient prophecy, with a significant role in determining the future.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Determined, analytical, introspective, calculating, self-doubting, practical, cautious, curious, calm under pressure, protective, resolute, skeptical, doubtful, brave, frustrated, observant, burdened by hidden truths, uncertain, thoughtful, empathetic, intense, inquisitive, anxious, critical, questioning, wary, gradually more at ease with the group, vulnerable, focused, willing to take risks, rarely reckless.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>**Telepathy:** Stage 1 (Unconscious thought reading with no cost), Stage 4 (Can edit recent memories, create false associations, and manipulate thought patterns with focus). <br> **Telekinesis:** Mid-Stage (Can assemble intricate devices under extreme focus, difficult for delicate tasks). <br> **Pyrokinesis:** Early Mastery (Can ignite or extinguish flames in a wide radius but struggles with control, risking harm to allies). <br> **Clairvoyance:** Stage 5 (Mastery, can see long-term events and the near future/past, but at a mental and emotional cost. Struggling with control and clarity, especially when trying to find Mina. He has abused his powers to see the future and this has caused physical and mental strain).</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Brum'korath, Haliriel and the elves, The Watcher’s Nythari elves, Dwarven Council, Ceylan, World Police (formerly an enemy, now paroled by Central Lands). His ties to the Cult of the Sent Ones are indirect through prophecy.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>5'10", light-brown hair, brown eyes, lean build. Wears a worn satchel and typically looks stressed or focused.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Lucas' arc revolves around overcoming insecurity, embracing his potential, grappling with his role as one of the Sent Ones, Child of Hybris, and understanding the prophecy. He seeks to unlock the power of the relics, confront his mysterious past, and ultimately change the fate of the factions involved. A major personal goal is finding Mina, whose potential death haunts him. His journey involves survival, self-discovery, and potentially altering the outcome of the Empire war.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Lucas' secret includes his guilt over the Kingston explosion, which he believes may have caused Mina's possible death and the scattering of the group. He is burdened by the pressure of the ongoing war and the full extent of his powers, especially his telepathy and the ability to disrupt Imperial systems, which are still unknown to him. He is also struggling with his worthiness to wield the relics and what they truly mean for his future.</p>
+        </div>
+    </div>
+</body>
+</html>
+
