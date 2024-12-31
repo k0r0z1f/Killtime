@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Outskirts of Atraxia - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Outskirts of Atraxia (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Mixed, including indigenous tribes and settlers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A transition zone from jungle to more barren, utilitarian land.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense, with a mixture of nature clashing with Imperial presence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Crude homesteads, remnants of wilderness.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>None noted in the area.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Light military presence, increasing as one approaches Atraxia.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Not much is known about local legends.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Military patrols, increased Imperial control.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party passes through on their way to Atraxia.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Farms, small settlements, remnants of wilderness.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>The landscape is tense, with occasional bursts of clear skies.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Imperial expansion continues, increased military presence.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The outskirts of Atraxia are home to a diverse group of people, including indigenous tribes and settlers who have attempted to carve out a life in this harsh environment.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The area presents a stark contrast of nature and human influence. The lush jungle slowly transitions into barren, utilitarian land that bears the marks of increasing Imperial control.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere is tense, as the clash of nature and the Imperial presence creates an uneasy environment. The land feels unsettled, as if under constant pressure.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture is basic and functional. Crude homesteads and remnants of the wilderness dot the landscape. There are few developed structures, and much of the area retains a raw, untamed look.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>No significant symbolism or carvings are noted in the area, though the environment itself speaks of conflict and survival.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The region has a light military presence, but as one approaches Atraxia, this presence intensifies. Military patrols are becoming more frequent, especially due to the Empire's increasing control over the area.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Few legends or tales are associated with the outskirts, with most of the lore focused on the more established areas of Atraxia. However, there are whispers about the area being an early battleground during the Empire's expansion.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The increasing Imperial control brings hidden dangers. Military patrols, along with the growing presence of the Empire, pose constant risks to anyone passing through the outskirts.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party passes through the outskirts of Atraxia on their way to the city, experiencing the tension and pressure of Imperial expansion firsthand.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The area surrounding the outskirts consists of farms, small settlements, and remnants of wilderness, with a few paths leading in and out of the region.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in this area is often tense, with occasional bursts of clear skies before the oppressive clouds return. The temperature can vary, but the air always carries a sense of unrest.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The region is seeing an increase in Imperial presence, as their expansion continues to push deeper into the outskirts. This has led to more frequent patrols and a growing sense of tension among the settlers.</p>
+        </div>
+    </div>
+</body>
+</html>
+
