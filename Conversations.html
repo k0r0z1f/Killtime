@@ -13,13 +13,14 @@
             width:100%;
             height:100%;
             position:absolute;
+            overflow-y:hidden;
         }
         #overview-sidebar {
-            width: 250px;
+            width: 280px;
             background-color: #2c3e50;
             color: white;
-            padding: 20px;
             position: fixed;
+            padding-left: 10px;
             height: 100%;
             overflow-y: auto;
         }
@@ -40,11 +41,33 @@
             background-color: #34495e;
             padding-left: 10px;
         }
-        #overview-main-content {
-            width:78%;
+        #overview-compendium {
+            background-color: #4a6179;
+            color: white;
+            width:auto;
+            position: fixed;
+            left:290px;
             height:100%;
-            margin-left: 270px;
-            padding: 20px;
+            overflow-y: auto;
+            padding-left: 10px;
+            padding-right: 10px;
+        }
+        #overview-compendium ul {
+            list-style-type: none;
+            padding-left: 20px;
+        }
+        #overview-compendium li {
+            margin: 10px 0;
+        }
+        #overview-compendium a {
+            color: white;
+            text-decoration: none;
+            font-size: 16px;
+            display: block;
+        }
+        #overview-compendium a:hover {
+            background-color: #5e93c9;
+            padding-left: 10px;
         }
         .overview-folder {
             font-weight: bold;
@@ -65,9 +88,12 @@
         </ul>
     </div>
 
-    <div id="overview-main-content">
-        <h1>Welcome to the Overview</h1>
-        <p>Select a file from the navigation panel to view its details.</p>
+    <div id="overview-compendium">
+        <h1>Welcome to the Compendium</h1>
+        <p>Select a link below to open it.</p>
+        <ul id="conversations-compendium">
+
+        </ul>
     </div>
 
   <script>
@@ -145,6 +171,36 @@
 	  idEle.children[0].appendChild(newli);
         }
       });
+      readTextFile("./chat-compendium.json", function(text){
+        var data = JSON.parse(text);
+        var output = {};
+        for(var chat in data) {
+          //console.log(chat);
+          //console.log(data[chat]);
+          var values = data[chat];
+          for(var v of values)
+          {
+            //console.log(v);
+            var newvalues = [];
+            if(output.hasOwnProperty(v)) {
+              //console.log(output);
+              //alert(v);
+              newvalues = output[v];
+              newvalues.push(chat);
+            } else {
+              //console.log("c "+chat);
+              newvalues.push(chat);
+            }
+            //console.log("n "+newvalues);
+            output[v] = newvalues;
+          }
+          
+          //output = output.concat(data[chat]);
+        }
+        //output.sort();
+        //console.log(output);
+        buildLinkMenu(output);
+      });
     })
   </script>
   
@@ -155,6 +211,54 @@
   			
   		});
   	}
+
+    function readTextFile(file, callback) {
+      var rawFile = new XMLHttpRequest();
+      rawFile.overrideMimeType("application/json");
+      rawFile.open("GET", file, true);
+      rawFile.onreadystatechange = function() {
+        if (rawFile.readyState === 4 && rawFile.status == "200") {
+            callback(rawFile.responseText);
+        }
+      }
+      rawFile.send(null);
+    }
+
+    function buildLinkMenu(links) {
+      menu=document.getElementById("conversations-compendium");
+      const sortedlinks = Object.keys(links).sort().reduce((obj, key) => { 
+        obj[key] = links[key]; 
+          return obj;
+        }, 
+        {}
+      );
+
+      //console.log(JSON.stringify(sortedlinks));
+      for(var link in sortedlinks){
+        //console.log(link);
+        //console.log(sortedlinks[link]);
+        linkname = link;
+        linklist = sortedlinks[link];
+
+        newli=document.createElement("li");
+        newli.innerHTML=linkname;
+        menu.appendChild(newli);
+
+        newul=document.createElement("ul");
+
+        for(var l in linklist){
+          liname=linklist[l];
+          newli=document.createElement("li");
+          //newli.innerHTML=liname;
+          newa=document.createElement("a");
+          newa.href="./chatgpt/chat%20"+liname+".html#"+linkname;
+          newa.innerHTML=liname;
+          newli.appendChild(newa);
+          newul.appendChild(newli);
+        }
+        menu.appendChild(newul);
+      }
+    }
   </script>
 
 </body>
