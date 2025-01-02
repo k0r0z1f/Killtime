@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eastern Continent Expedition - Mission Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Eastern Continent Expedition (Mission Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Mission Aspect</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#mission-name" onclick="highlightSection(this, 'mission-name')">Mission Name</a></td>
+                    <td>Eastern Continent Expedition</td>
+                </tr>
+                <tr>
+                    <td><a href="#primary-objective" onclick="highlightSection(this, 'primary-objective')">Primary Objective</a></td>
+                    <td>To study the Disciple of Air, understand its connection to the prophecy, and ensure it remains contained.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mission-background" onclick="highlightSection(this, 'mission-background')">Mission Background</a></td>
+                    <td>The Disciple of Air is bound but still exerts influence, destabilizing the Eastern Continent. The Children of Hybris, Lucas and Mina, play a pivotal role in the mission. The Windfighter, an elven vessel, will be used for transportation and defense.</td>
+                </tr>
+                <tr>
+                    <td><a href="#task-objective" onclick="highlightSection(this, 'task-objective')">Task Objective</a></td>
+                    <td>The team will travel to the Eastern Continent, study the Disciple of Air, and ensure it does not escape its containment. Try to find a way to destroy it.</td>
+                </tr>
+                <tr>
+                    <td><a href="#special-instructions" onclick="highlightSection(this, 'special-instructions')">Special Instructions</a></td>
+                    <td>Lucas will study his relic in the magi-tech laboratory before departure. The Queen has ordered a detour to the Watcher. The mission will now begin in 2 days with a detour to the Watcher, and the final mission will depart from there instead of Haliriel.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mission-scope" onclick="highlightSection(this, 'mission-scope')">Mission Scope</a></td>
+                    <td>The expedition will last until the Disciple’s containment is stable and the team gathers critical information about its connection to the prophecy. All information acquired during the detour could modify the scope and objectives of the current mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#key-players" onclick="highlightSection(this, 'key-players')">Key Players</a></td>
+                    <td>Lucas, Mina, Thomas, Candice, Dira, Altheris</td>
+                </tr>
+                <tr>
+                    <td><a href="#critical-details" onclick="highlightSection(this, 'critical-details')">Critical Details</a></td>
+                    <td>The Windfighter is a transport and reconnaissance vessel, not designed for prolonged combat. The team must balance the urgency of the mission with the potential risks of ignoring the Watcher.</td>
+                </tr>
+                <tr>
+                    <td><a href="#potential-risks" onclick="highlightSection(this, 'potential-risks')">Potential Risks</a></td>
+                    <td>The Disciple of Air may escape containment or influence the region further. The Watcher’s guidance could be vital, but Altheris’s orders prevent this course of action. Other threats may arise from the mission’s dangers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#final-objective" onclick="highlightSection(this, 'final-objective')">Final Objective</a></td>
+                    <td>To study the Disciple of Air, understand its role in the prophecy, and secure the region’s stability before proceeding further. All potential adjustments to the mission will be informed by insights from the Watcher.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="mission-name">
+            <h2>Mission Name</h2>
+            <p>Eastern Continent Expedition</p>
+        </div>
+
+        <div class="section-content" id="primary-objective">
+            <h2>Primary Objective</h2>
+            <p>To study the Disciple of Air, understand its connection to the prophecy, and ensure it remains contained.</p>
+        </div>
+
+        <div class="section-content" id="mission-background">
+            <h2>Mission Background</h2>
+            <p>The Disciple of Air is bound but still exerts influence, destabilizing the Eastern Continent. The Children of Hybris, Lucas and Mina, play a pivotal role in the mission. The Windfighter, an elven vessel, will be used for transportation and defense.</p>
+        </div>
+
+        <div class="section-content" id="task-objective">
+            <h2>Task Objective</h2>
+            <p>The team will travel to the Eastern Continent, study the Disciple of Air, and ensure it does not escape its containment. Try to find a way to destroy it.</p>
+        </div>
+
+        <div class="section-content" id="special-instructions">
+            <h2>Special Instructions</h2>
+            <p>Lucas will study his relic in the magi-tech laboratory before departure. The Queen has ordered a detour to the Watcher. The mission will now begin in 2 days with a detour to the Watcher, and the final mission will depart from there instead of Haliriel.</p>
+        </div>
+
+        <div class="section-content" id="mission-scope">
+            <h2>Mission Scope</h2>
+            <p>The expedition will last until the Disciple’s containment is stable and the team gathers critical information about its connection to the prophecy. All information acquired during the detour could modify the scope and objectives of the current mission.</p>
+        </div>
+
+        <div class="section-content" id="key-players">
+            <h2>Key Players</h2>
+            <p>Lucas, Mina, Thomas, Candice, Dira, Altheris</p>
+        </div>
+
+        <div class="section-content" id="critical-details">
+            <h2>Critical Details</h2>
+            <p>The Windfighter is a transport and reconnaissance vessel, not designed for prolonged combat. The team must balance the urgency of the mission with the potential risks of ignoring the Watcher.</p>
+        </div>
+
+        <div class="section-content" id="potential-risks">
+            <h2>Potential Risks</h2>
+            <p>The Disciple of Air may escape containment or influence the region further. The Watcher’s guidance could be vital, but Altheris’s orders prevent this course of action. Other threats may arise from the mission’s dangers.</p>
+        </div>
+
+        <div class="section-content" id="final-objective">
+            <h2>Final Objective</h2>
+            <p>To study the Disciple of Air, understand its role in the prophecy, and secure the region’s stability before proceeding further. All potential adjustments to the mission will be informed by insights from the Watcher.</p>
+        </div>
+    </div>
+</body>
+</html>
+

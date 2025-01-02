@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nythari Tribe - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Nythari Tribe (Candice's Village) - Location Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Small village, about 280, a smaller community of Nythari.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Resilient, connected to nature, with an elegant and striking appearance. Amber eyes, long brown hair.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Calm, grounded, ancient connection to nature, peaceful yet tense with the threat of outside forces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Simple, nature-integrated huts made from wood, stone, and plants, blending into the environment. Treehouses and sacred sites.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Emblems of the mountain hawk, ancestral symbols tied to nature, the land, and spirituality. Carvings of tribal symbols.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Stealth-based traps, natural obstacles, guarded by Nythari warriors. Strong connection to nature for protection, no advanced fortifications.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Legends of The Watcher, protectors of the land, ancient survival against the Empire's oppression.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>The jungle itself, which is both a protector and a danger.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Candice’s people are the keepers of the land and guardians of The Watcher. Candice grew up here.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Dense jungle, steep slopes, high cliffs, rivers and valleys, overgrown with thick vegetation and hidden ruins.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Warm, humid, with occasional storms, cooler at higher elevations.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Recent talk of Kingston explosion, potential involvement with the Children of Hybris. Candice’s departure, leaving her village behind.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Nythari tribe is a small, close-knit community of around 280 members. They live harmoniously with the jungle, surviving off the land and maintaining a peaceful, sustainable existence. The villagers are resilient and deeply connected to nature, their way of life shaped by centuries of tradition and survival.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Nythari people are known for their elegant and striking appearance. With their amber eyes and long brown hair, they embody the natural beauty of the jungle. Their clothing is crafted from materials found in nature, blending seamlessly with the environment. Their presence exudes resilience, strength, and a deep connection to the land.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The energy in the village is calm and grounded, with a deep, ancient connection to nature. While the atmosphere is generally peaceful, there is a tension in the air due to the looming threat of outside forces that seek to exploit the land and its people. Despite this, the Nythari maintain their focus on survival and spiritual harmony with their surroundings.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of the Nythari village is simple and nature-integrated. The huts are constructed from wood, stone, and plant materials that blend with the surrounding jungle. Treehouses and sacred sites are interwoven with the environment, reflecting the tribe's deep reverence for nature. The structures are designed to be both functional and harmonious with the land.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The Nythari tribe's symbols are deeply tied to their relationship with nature. Emblems of the mountain hawk and other animals are carved into trees, rocks, and structures, representing their spiritual connection to the land. These carvings also tell stories of the tribe's survival and their ongoing resistance against external threats, including the Empire.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Nythari tribe's defenses are not built with fortifications, but rather rely on stealth and their deep connection to the jungle. The tribe uses natural obstacles, traps, and camouflage to protect their village. Nythari warriors are skilled in using the environment to their advantage, making them formidable opponents in their own land.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>One of the most important legends in Nythari culture is the tale of The Watcher, an ancient protector of the land. This figure is said to embody the spirit of the jungle and the strength of the Nythari ancestors. The tribe also tells stories of their survival against the Empire’s oppression, keeping alive the memory of their resilience and defiance.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The jungle that protects the Nythari people can also be a source of danger. It is filled with wild animals, treacherous terrain, and hidden threats. The jungle’s thick vegetation can easily conceal predators, and the ancient ruins scattered across the landscape may hide traps or dangerous artifacts.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>Candice's connection to her people is vital to her sense of responsibility toward the Nythari tribe. Her departure from the village to fulfill her mission has left her with mixed feelings of duty and guilt. Her knowledge of the land and its defenses is crucial to the party as they navigate the dense jungle and face potential threats from outside forces.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The Nythari village is surrounded by dense jungle, steep slopes, and high cliffs. The land is lush with vegetation, rivers, and valleys, making it both a beautiful and challenging place to navigate. Hidden ruins can occasionally be found, but the terrain is largely unexplored and untouched by outsiders.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather is typically warm and humid, with occasional storms that roll through the jungle. Higher elevations tend to be cooler, providing some respite from the heat. The unpredictable rain showers add to the mystery and difficulty of living in such a dense and ancient environment.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent developments in the region include talk of the Kingston explosion and potential involvement with the Children of Hybris. This has led to Candice’s departure from her village, leaving her people behind to fulfill her mission. Her journey may have larger implications for both the Nythari tribe and the unfolding prophecy.</p>
+        </div>
+    </div>
+</body>
+</html>
+
