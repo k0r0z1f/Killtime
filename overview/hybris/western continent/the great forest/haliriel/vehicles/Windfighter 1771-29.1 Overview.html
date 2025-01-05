@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Windfighter - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Windfighter (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#design" onclick="highlightSection(this, 'design')">Design</a></td>
+                    <td>Small, agile, airship; sleek, elongated design, alloys of wood and metal frame for high-speed and long-distance travel.</td>
+                </tr>
+                <tr>
+                    <td><a href="#materials" onclick="highlightSection(this, 'materials')">Materials</a></td>
+                    <td>Lightweight, durable regenerative metals.</td>
+                </tr>
+                <tr>
+                    <td><a href="#size" onclick="highlightSection(this, 'size')">Size</a></td>
+                    <td>Smaller than typical sky galleons from the Central Lands; compact, suitable for a small group or up to 10-12 passengers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#sails" onclick="highlightSection(this, 'sails')">Sails/Membranes</a></td>
+                    <td>High-tech mixed with magic.</td>
+                </tr>
+                <tr>
+                    <td><a href="#levitation" onclick="highlightSection(this, 'levitation')">Levitation Mechanism</a></td>
+                    <td>Magi-tech air-based propulsion.</td>
+                </tr>
+                <tr>
+                    <td><a href="#propulsion" onclick="highlightSection(this, 'propulsion')">Propulsion</a></td>
+                    <td>Wind-based magi-tech propulsion system (magical engines with energy crystals).</td>
+                </tr>
+                <tr>
+                    <td><a href="#interior" onclick="highlightSection(this, 'interior')">Interior Design</a></td>
+                    <td>Compact, functional layout for a close-knit crew, designed for versatility in missions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#cockpit" onclick="highlightSection(this, 'cockpit')">Cockpit</a></td>
+                    <td>Sophisticated 2 pilots' area with advanced magi-technology control systems, designed for a small team or commando.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy" onclick="highlightSection(this, 'energy')">Energy Source</a></td>
+                    <td>Combination of magic and technology, powered by energy crystals.</td>
+                </tr>
+                <tr>
+                    <td><a href="#navigation" onclick="highlightSection(this, 'navigation')">Navigation</a></td>
+                    <td>Uses advanced navigational tools.</td>
+                </tr>
+                <tr>
+                    <td><a href="#speed" onclick="highlightSection(this, 'speed')">Speed</a></td>
+                    <td>Moderate to fast; avoids turbulence and storms.</td>
+                </tr>
+                <tr>
+                    <td><a href="#range" onclick="highlightSection(this, 'range')">Range</a></td>
+                    <td>Long range over varying terrains, designed for long expeditions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#stealth" onclick="highlightSection(this, 'stealth')">Stealth</a></td>
+                    <td>High stealth (through design, avoids detection due to air magi-tech).</td>
+                </tr>
+                <tr>
+                    <td><a href="#altitude" onclick="highlightSection(this, 'altitude')">Altitude Limitations</a></td>
+                    <td>Maximum altitude of about 1000 feet over terrain or 400 over seas.</td>
+                </tr>
+                <tr>
+                    <td><a href="#special" onclick="highlightSection(this, 'special')">Special Features</a></td>
+                    <td>Runes and enchanted design; smooth landings, needs to avoid turbulence, capable of precision landings, compact design.</td>
+                </tr>
+                <tr>
+                    <td><a href="#passenger" onclick="highlightSection(this, 'passenger')">Passenger Capacity</a></td>
+                    <td>Fits a small group (up to 4-6, possibly 10-12 in some configurations).</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Exterior Appearance</a></td>
+                    <td>Sleek, shiny wood-metallic alloy frame with glowing runes pulsing along the surface; futuristic appearance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#control" onclick="highlightSection(this, 'control')">Flight Control</a></td>
+                    <td>Controlled via magi-tech mechanisms, sensitive and intuitive.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="design">
+            <h2>Design</h2>
+            <p>The Windfighter is a small, agile airship with a sleek and elongated design. Its frame is constructed from alloys of wood and metal, ensuring both high-speed and long-distance travel capabilities.</p>
+        </div>
+
+        <div class="section-content" id="materials">
+            <h2>Materials</h2>
+            <p>The ship is made from lightweight, durable regenerative metals, designed to withstand various environmental conditions.</p>
+        </div>
+
+        <div class="section-content" id="size">
+            <h2>Size</h2>
+            <p>The Windfighter is smaller than typical sky galleons from the Central Lands, offering a compact size suitable for a small group or up to 10-12 passengers.</p>
+        </div>
+
+        <div class="section-content" id="sails">
+            <h2>Sails/Membranes</h2>
+            <p>The ship incorporates a high-tech blend of magical and technological systems for its sails or membranes, enabling it to fly smoothly in all conditions.</p>
+        </div>
+
+        <div class="section-content" id="levitation">
+            <h2>Levitation Mechanism</h2>
+            <p>The Windfighter uses a magi-tech air-based propulsion system that allows it to levitate, relying on magical engines powered by energy crystals.</p>
+        </div>
+
+        <div class="section-content" id="propulsion">
+            <h2>Propulsion</h2>
+            <p>The propulsion is wind-based, utilizing magi-tech engines combined with energy crystals that provide the necessary power for flight.</p>
+        </div>
+
+        <div class="section-content" id="interior">
+            <h2>Interior Design</h2>
+            <p>The interior features a compact, functional layout designed for a close-knit crew. It is versatile enough to support a variety of missions, from reconnaissance to combat.</p>
+        </div>
+
+        <div class="section-content" id="cockpit">
+            <h2>Cockpit</h2>
+            <p>The cockpit is sophisticated, featuring two pilot stations equipped with advanced magi-technology control systems. It is tailored for a small team or commando operations.</p>
+        </div>
+
+        <div class="section-content" id="energy">
+            <h2>Energy Source</h2>
+            <p>The Windfighter’s power source is a combination of magic and technology, with energy crystals providing the primary energy source.</p>
+        </div>
+
+        <div class="section-content" id="navigation">
+            <h2>Navigation</h2>
+            <p>The ship uses advanced navigational tools that help it fly smoothly over varying terrains and through different weather conditions.</p>
+        </div>
+
+        <div class="section-content" id="speed">
+            <h2>Speed</h2>
+            <p>The Windfighter is moderate to fast, designed to avoid turbulence and storms, ensuring smooth travel even in challenging environments.</p>
+        </div>
+
+        <div class="section-content" id="range">
+            <h2>Range</h2>
+            <p>The ship has a long range, capable of covering varying terrains over extended periods. It’s ideal for long expeditions and remote travel.</p>
+        </div>
+
+        <div class="section-content" id="stealth">
+            <h2>Stealth</h2>
+            <p>The Windfighter is highly stealthy, with its design allowing it to avoid detection due to the air magi-tech systems incorporated into its structure.</p>
+        </div>
+
+        <div class="section-content" id="altitude">
+            <h2>Altitude Limitations</h2>
+            <p>The Windfighter can reach a maximum altitude of about 1000 feet over terrain or 400 feet over seas, making it perfect for low-altitude operations.</p>
+        </div>
+
+        <div class="section-content" id="special">
+            <h2>Special Features</h2>
+            <p>The Windfighter is equipped with runes and enchanted designs, allowing for smooth landings and precise control. It avoids turbulence well and is highly maneuverable for such a compact ship.</p>
+        </div>
+
+        <div class="section-content" id="passenger">
+            <h2>Passenger Capacity</h2>
+            <p>While the ship is designed for a small group, it can carry up to 4-6 people comfortably, with configurations that could fit up to 10-12 passengers in some scenarios.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Exterior Appearance</h2>
+            <p>The Windfighter has a sleek and futuristic appearance, featuring a shiny wood-metallic alloy frame with glowing runes that pulse along its surface.</p>
+        </div>
+
+        <div class="section-content" id="control">
+            <h2>Flight Control</h2>
+            <p>The flight control system is highly intuitive, with sensitive magi-tech mechanisms that respond precisely to the pilot’s movements.</p>
+        </div>
+    </div>
+</body>
+</html>
+

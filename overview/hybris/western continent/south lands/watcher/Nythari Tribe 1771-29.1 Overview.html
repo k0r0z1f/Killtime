@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nythari Tribe (Candice's Village) - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Nythari Tribe (Candice's Village) - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Small village, about 280 elves, community of Nythari, including Candice’s family and tribe members</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Resilient, connected to nature, with an elegant and striking appearance. Amber eyes, long brown hair.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy" onclick="highlightSection(this, 'energy')">Energy & Atmosphere</a></td>
+                    <td>Calm, grounded, ancient connection to nature, peaceful yet tense with the threat of outside forces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Simple, nature-integrated huts made from wood, stone, and plants, blending into the environment.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Emblems of the mountain hawk, ancestral symbols tied to nature, the land, and spirituality.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Stealth-based traps, natural obstacles, guarded by Nythari warriors.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Legends of The Watcher, protectors of the land, ties to ancient forces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#dangers" onclick="highlightSection(this, 'dangers')">Hidden Dangers</a></td>
+                    <td>The jungle itself, which is both a protector and a danger. Possible external threats.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link" onclick="highlightSection(this, 'link')">Link to the Party</a></td>
+                    <td>Candice’s home, where she plans to vouch for her companions’ entry.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Dense jungle, steep slopes, high cliffs, rivers and valleys, overgrown with thick vegetation.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Warm, humid, with occasional storms, cooler at higher elevations.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Recent talk of Kingston explosion, Candice’s departure to fulfill her mission.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Nythari Tribe consists of around 280 elves, with Candice’s family and tribe members being the core of the community. It’s a small, tight-knit group that values connection to nature and spiritual tradition.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Nythari Tribe is resilient and connected to nature. They have an elegant and striking appearance, with amber eyes and long brown hair, blending harmoniously with their environment.</p>
+        </div>
+
+        <div class="section-content" id="energy">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere in Candice’s village is calm and grounded, with an ancient connection to nature. While peaceful, there is an underlying tension due to the constant threat of external forces.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The tribe’s architecture is simple and nature-integrated. Their huts are made from wood, stone, and plants, and they blend seamlessly into the surrounding jungle. Treehouses and sacred sites are common structures.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>Symbols of the mountain hawk and carvings tied to ancestral beliefs are prominent. These symbols reflect the tribe’s deep spiritual connection to nature and the land.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The village is protected by stealth-based traps, natural obstacles, and Nythari warriors. The tribe’s strong connection to nature offers a form of magical defense, although there are no advanced fortifications.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The Nythari are protectors of The Watcher, an ancient entity tied to forces older than the Empire. The tribe’s ancestors survived an exile from the Empire, which led to a spirit of resilience and defiance.</p>
+        </div>
+
+        <div class="section-content" id="dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The jungle is both a protector and a danger. External threats, such as mysterious strangers or competing factions, may pose a challenge to the tribe’s safety.</p>
+        </div>
+
+        <div class="section-content" id="link">
+            <h2>Link to the Party</h2>
+            <p>Candice’s village is where she plans to vouch for her companions’ entry. She has a deep sense of responsibility towards her people and home.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The surrounding terrain consists of dense jungle, steep mountain slopes, high cliffs, rivers, and valleys. Thick vegetation makes the area hard to navigate, with occasional hidden ruins adding mystery to the land.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The climate is warm and humid, with sporadic rain showers typical of jungle environments. At higher elevations, it is cooler.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>There have been rumors surrounding the explosion in Kingston and potential connections to the Children of Hybris. Candice’s departure from the village signifies her readiness to fulfill her mission.</p>
+        </div>
+    </div>
+</body>
+</html>
+

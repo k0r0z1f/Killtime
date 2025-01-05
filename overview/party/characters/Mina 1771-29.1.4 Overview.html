@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Mina - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (17 years old, current date 03-06-1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>
+                        - Adopted daughter of a powerful businessman and criminal boss.<br>
+                        - One of the Children of Hybris, part of the prophecy with Lucas.<br>
+                        - Revealed during the Elven Council meeting.<br>
+                        - A key figure tied to the prophecy; linked telepathically to Lucas.<br>
+                        - Has grown into a key member of the prophecy as one of the Children of Hybris.<br>
+                        - Deeply tied to the prophecy and Lucas through a telepathic link.<br>
+                        - Close companion to Lucas; provides emotional support in the midst of his turmoil.<br>
+                        - Member of the group, shares a telepathic link with Lucas, highly concerned about the mission.<br>
+                        - Supportive, involved in a greater fate tied to the prophecy.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>
+                        - Calm, composed, logical, and concerned; displays emotional depth.<br>
+                        - Steady, supportive, sharp, focused, loyal, playful, quick-witted, and reassuring.<br>
+                        - Highly concerned about the mission.<br>
+                        - Fiercely autonomous; values self-reliance.<br>
+                        - Empathetic; strong ability to connect with others’ emotions.<br>
+                        - Observant; notices small details.<br>
+                        - Brave; faces danger with careful thought.<br>
+                        - Optimistic; sees hope in difficult situations.<br>
+                        - Grounding for Lucas; calms and helps him focus.<br>
+                        - Trustworthy; loyal and protective of those she cares about.<br>
+                        - Determined, caring, loyal, seeks independence but struggles with the weight of the prophecy.<br>
+                        - Deeply protective of her companions and conflicted about her role in the unfolding events.<br>
+                        - Gentle, supportive, unwavering, comforting, affectionate.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>
+                        - Superhuman Speed and Agility (exceptional speed, agility, acrobatics).<br>
+                        - Hyper-sensitive Senses (uncontrolled, hard to manage).<br>
+                        - Telepathic Link with Lucas (permanent mental connection).<br>
+                        - Athletic Combat (Speed-Based Tactics): quick movements, acrobatic feats, hit-and-run.<br>
+                        - Potential deeper connection to the prophecy.<br>
+                        - Telepathic abilities, deeply connected to the prophecy.<br>
+                        - Shares a permanent telepathic link with Lucas.<br>
+                        - Experiences heightened sensitivity to magical forces.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>
+                        - Lucas: Telepathically connected and deeply trusted partner.<br>
+                        - Thomas: Mutual respect and trust.<br>
+                        - Cult of the Sent Ones (Indirectly): Through her connection to Lucas and the prophecy.<br>
+                        - Candice (not yet ally).<br>
+                        - Aligned with Lucas, Thomas, and Candice.<br>
+                        - Indirectly involved with her father’s underground operations for justice.<br>
+                        - Connected to the Children of Hybris prophecy.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>
+                        - Eye color: Green / Bright green eyes.<br>
+                        - Hair: Bright blonde, practical style.<br>
+                        - Build: Athletic, physically strong but weathered from experience.<br>
+                        - Demeanor: Youthful, determined, calm, with intense focus; strong but not overly aggressive.<br>
+                        - Athletic build, often serious in demeanor;<br>
+                        - Confident and determined presence.<br>
+                        - Golden hair, green eyes, light silk robe, simple camisole, bare feet.<br>
+                        - Often serious in demeanor; confident and determined presence.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>
+                        - Protection of Friends: Prioritizes Lucas and Thomas’s safety.<br>
+                        - Navigating the Prophecy: Seeks to understand her role in the Children of Hybris prophecy.<br>
+                        - Self-Discovery: Wants to uncover her true purpose in the prophecy.<br>
+                        - Uncertainty: Struggles with her future/responsibilities as one of the Children of Hybris.<br>
+                        - Understanding her role in the prophecy and protecting Lucas from the relic’s side effects.<br>
+                        - To uncover the truth about the Watcher and fulfill her role in the prophecy.<br>
+                        - Struggling to balance her role in the prophecy with her desire for autonomy and freedom.<br>
+                        - Seeks to uncover the mysteries of her birth, her connection to the prophecy, and her ties to Lucas while protecting those she cares about and finding her true purpose.<br>
+                        - To reassure and strengthen Lucas as he faces the prophecy.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>
+                        - Uncertainty About Role in the Prophecy: Conflicted about her significance and what it means for her future and the world.<br>
+                        - Born during an arcane storm that destroyed a hospital, leaving her and one other boy as the only survivors. Her survival and connection to the prophecy remain a mystery.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>
+                        - Athletic Combat (Speed-Based Tactics): Expertise in using agility and speed to overwhelm opponents.<br>
+                        - Athletic background supported by her father; no explicit combat training detailed.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>
+                        - 90 doumis (currency).<br>
+                        - Travel Clothes (practical attire).<br>
+                        - Survival Gear (essentials for the wild).<br>
+                        - Dagger (compact close-quarters weapon).<br>
+                        - A relic she cannot remove, tied to the prophecy of the Sent Ones.<br>
+                        - Light silk robe, simple camisole.
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#relations-lucas" onclick="highlightSection(this, 'relations-lucas')">Lucas</a></td>
+                    <td>Best friend, falling in love but complicated, telepathically linked.</td>
+                </tr>
+                <tr>
+                    <td><a href="#relations-thomas" onclick="highlightSection(this, 'relations-thomas')">Thomas</a></td>
+                    <td>Best friend, trusts with her life.</td>
+                </tr>
+                <tr>
+                    <td><a href="#relations-candice" onclick="highlightSection(this, 'relations-candice')">Candice</a></td>
+                    <td>Known her for 2 days, acquaintance, respects, feels they serve a purpose.</td>
+                </tr>
+                <tr>
+                    <td><a href="#relations-dira" onclick="highlightSection(this, 'relations-dira')">Dira</a></td>
+                    <td>Known for less than a month, friend, trusts her but is cautious about her past betrayal.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Mina was born in the year 1754, making her 17 years old as of the current date, March 6, 1771.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Mina is the adopted daughter of a powerful businessman and criminal boss, placing her in a unique position within both the legitimate and underground sectors of society. She is one of the Children of Hybris, a group central to a significant prophecy that involves her and Lucas. Her existence and role were revealed during a pivotal Elven Council meeting, marking her as a key figure in the unfolding events tied to the prophecy. Mina shares a telepathic link with Lucas, strengthening their bond and their roles within the prophecy. Over time, she has become an indispensable member of the group, providing emotional support to Lucas amidst his internal struggles. Her involvement in the mission is driven by her deep concern and commitment to fulfilling the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Mina is characterized by her calm and composed demeanor, often approaching situations with logic and concern. She possesses emotional depth, allowing her to connect deeply with others. Her steady and supportive nature makes her a reliable ally, while her sharp and focused mindset ensures that she remains attentive to details. Mina is fiercely autonomous, valuing her self-reliance, yet she is also empathetic, able to understand and resonate with others' emotions. Her observant nature means she notices small but important details, and her bravery allows her to face danger thoughtfully. Despite the challenges she faces, Mina remains optimistic, always seeking hope in difficult circumstances. She serves as a grounding force for Lucas, helping him maintain focus and composure. Her trustworthiness and loyalty make her protective of those she cares about. However, she struggles with the weight of the prophecy, seeking independence while being deeply tied to her companions and the larger fate they are part of. Mina is gentle, supportive, unwavering, comforting, and affectionate, embodying a balance of strength and compassion.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Mina possesses several remarkable abilities that make her a formidable member of her group:</p>
+            <ul>
+                <li><strong>Superhuman Speed and Agility:</strong> Mina can move with exceptional speed and agility, performing acrobatic feats that surpass normal human capabilities. This allows her to execute quick maneuvers in both combat and evasive situations.</li>
+                <li><strong>Hyper-sensitive Senses:</strong> Her senses are highly attuned, granting her heightened perception. However, these senses are often uncontrolled and difficult to manage, making them both a boon and a challenge.</li>
+                <li><strong>Telepathic Link with Lucas:</strong> Mina shares a permanent mental connection with Lucas, allowing for instantaneous communication and deep emotional bonding. This link enhances their teamwork and strategic planning.</li>
+                <li><strong>Athletic Combat (Speed-Based Tactics):</strong> Mina employs quick movements and acrobatic techniques in combat, favoring hit-and-run strategies that leverage her speed to overwhelm opponents without direct confrontation.</li>
+                <li><strong>Potential Deeper Connection to the Prophecy:</strong> Her abilities suggest a deeper, possibly untapped connection to the prophecy of the Children of Hybris, indicating that her powers may evolve as the prophecy unfolds.</li>
+                <li><strong>Heightened Sensitivity to Magical Forces:</strong> Mina can sense and react to magical energies around her, providing her with an awareness that can be crucial in environments imbued with magic.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Mina is aligned with several key individuals and groups:</p>
+            <ul>
+                <li><strong>Lucas:</strong> Mina is telepathically connected to Lucas, who is not only her best friend but also a deeply trusted partner in their shared destiny.</li>
+                <li><strong>Thomas:</strong> She shares a mutual respect and trust with Thomas, making him another close ally within their group.</li>
+                <li><strong>Cult of the Sent Ones (Indirectly):</strong> Through her connection to Lucas and the overarching prophecy, Mina has an indirect association with the Cult of the Sent Ones.</li>
+                <li><strong>Candice:</strong> While not yet an ally, Candice is recognized as someone who may join their cause in the future.</li>
+                <li><strong>Aligned with Lucas, Thomas, and Candice:</strong> Mina's primary alliances are with Lucas, Thomas, and potentially Candice, forming a cohesive unit working towards their shared goals.</li>
+                <li><strong>Indirect Involvement with Her Father’s Underground Operations:</strong> Although not directly involved, Mina benefits from her father's underground operations aimed at achieving justice in the Central Lands.</li>
+                <li><strong>Children of Hybris Prophecy:</strong> As one of the Children of Hybris, Mina is intrinsically linked to the prophecy that defines her role and alliances within the larger narrative.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Mina presents a striking and practical appearance that reflects both her youth and her active lifestyle:</p>
+            <ul>
+                <li><strong>Eye Color:</strong> Bright green eyes that convey intelligence and determination.</li>
+                <li><strong>Hair:</strong> Bright blonde hair styled in a practical manner, suitable for her active and dynamic role.</li>
+                <li><strong>Build:</strong> Athletic and physically strong, her physique shows signs of wear from her experiences and training.</li>
+                <li><strong>Demeanor:</strong> She maintains a youthful and determined presence, often appearing calm and intensely focused. Her demeanor is strong yet not overly aggressive, exuding confidence and determination.</li>
+                <li><strong>Clothing:</strong> Mina typically wears a light silk robe paired with a simple camisole, allowing for ease of movement. She often goes barefoot, which may indicate a connection to nature or a preference for practicality over protection.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Mina's journey is defined by her efforts to balance personal desires with her obligations to the prophecy and her friends:</p>
+            <ul>
+                <li><strong>Protection of Friends:</strong> Mina prioritizes the safety of Lucas and Thomas, often putting their well-being above her own.</li>
+                <li><strong>Navigating the Prophecy:</strong> She is determined to understand her role within the Children of Hybris prophecy, seeking clarity on her purpose and the expectations placed upon her.</li>
+                <li><strong>Self-Discovery:</strong> Mina aims to uncover her true purpose within the prophecy, striving to define herself beyond the roles assigned to her.</li>
+                <li><strong>Uncertainty:</strong> She grapples with doubts about her future and responsibilities as one of the Children of Hybris, questioning how much autonomy she truly has.</li>
+                <li><strong>Understanding and Protection:</strong> Mina seeks to comprehend her role in the prophecy while simultaneously protecting Lucas from the detrimental side effects of the relic they possess.</li>
+                <li><strong>Uncovering the Truth:</strong> Her goal is to discover the truth about the Watcher and fulfill her destined role within the prophecy.</li>
+                <li><strong>Balancing Roles:</strong> Mina struggles to balance her predestined role in the prophecy with her personal desire for independence and freedom.</li>
+                <li><strong>Mystery and Purpose:</strong> She is on a quest to uncover the mysteries surrounding her birth, her connection to the prophecy, and her telepathic ties to Lucas, all while protecting those she cares about and finding her true purpose.</li>
+                <li><strong>Supporting Lucas:</strong> Mina aims to reassure and strengthen Lucas as he faces the challenges posed by the prophecy, acting as his emotional anchor.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Mina harbors uncertainties regarding her role in the prophecy, leading to inner conflicts about her significance and the implications for her future and the world at large. Additionally, her birth is shrouded in mystery; she was born during an arcane storm that obliterated a hospital, resulting in her and one other boy being the sole survivors. The reasons behind her survival and her connection to the prophecy remain unclear, adding layers of intrigue and complexity to her character.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Mina's combat skills are primarily based on her athletic background:</p>
+            <ul>
+                <li><strong>Athletic Combat (Speed-Based Tactics):</strong> She excels in using her agility and speed to outmaneuver opponents, employing hit-and-run tactics that leverage her physical prowess.</li>
+                <li><strong>Background Support:</strong> Her combat abilities are supported by her father's influence and resources, though there is no explicit formal combat training detailed.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Mina's inventory consists of practical and essential items that aid her in her missions and daily life:</p>
+            <ul>
+                <li><strong>90 Doumis:</strong> The currency she possesses, allowing her to manage expenses related to her missions and personal needs.</li>
+                <li><strong>Travel Clothes:</strong> Practical attire suited for various environments and situations she may encounter.</li>
+                <li><strong>Survival Gear:</strong> Essentials for wilderness survival, ensuring she is prepared for unexpected challenges.</li>
+                <li><strong>Dagger:</strong> A compact close-quarters weapon for self-defense and combat situations.</li>
+                <li><strong>Relic:</strong> An unremovable relic tied to the prophecy of the Sent Ones, indicating its significance and potential impact on her abilities and destiny.</li>
+                <li><strong>Light Silk Robe and Simple Camisole:</strong> Her everyday attire that allows for ease of movement while maintaining a semblance of modesty and simplicity.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="relations-lucas">
+            <h2>Lucas</h2>
+            <p>Lucas is Mina's best friend, with whom she shares a complicated romantic relationship. Their telepathic link not only strengthens their bond but also ties them together in their shared destiny within the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="relations-thomas">
+            <h2>Thomas</h2>
+            <p>Thomas is Mina's best friend who trusts her implicitly. Their mutual respect and trust form a strong foundation for their collaboration and friendship.</p>
+        </div>
+
+        <div class="section-content" id="relations-candice">
+            <h2>Candice</h2>
+            <p>Mina has known Candice for only two days. While their acquaintance is relatively new, Mina respects Candice and feels that she serves a purpose within their group or the larger prophecy.</p>
+        </div>
+
+        <div class="section-content" id="relations-dira">
+            <h2>Dira</h2>
+            <p>Mina has known Dira for less than a month. While she considers Dira a friend and trusts her, there is caution regarding Dira's past betrayals, indicating a complex relationship dynamic.</p>
+        </div>
+    </div>
+</body>
+</html>
+
