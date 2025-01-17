@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Lucas - Character Overview</h1>
+        
+        <!-- Location Table (kept concise) -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Short Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birthyear" onclick="highlightSection(this, 'birthyear')">Birth Year</a></td>
+                    <td>1754; currently 17 years old.</td>
+                </tr>
+                <tr>
+                    <td><a href="#rolebackground" onclick="highlightSection(this, 'rolebackground')">Role/Background</a></td>
+                    <td>Hero of Brum'korath; main protagonist; connected to relics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Determined, analytical, introspective, burdened by prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Telepathy, telekinesis, pyrokinesis, relic bond.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Aligned with Mina &amp; Thomas; linked to Brum'korath &amp; prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", lean, light-brown disheveled hair, brown eyes.</td>
+                </tr>
+                <tr>
+                    <td><a href="#characterarc" onclick="highlightSection(this, 'characterarc')">Character Arc/Goal</a></td>
+                    <td>Seeks redemption; aims to uncover relic truths; prepare for war.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Trauma from Kingston explosion; relic's unclear influence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combattraining" onclick="highlightSection(this, 'combattraining')">Combat Training</a></td>
+                    <td>Strategic thinker; moderate combat skills; telekinesis in battle.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>810 doumis, hybrid magic-tech battery, survival gear, relic bound to wrist.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>Best friend, telepathic link, deep trust.</td>
+                </tr>
+                <tr>
+                    <td><a href="#thomas" onclick="highlightSection(this, 'thomas')">Thomas</a></td>
+                    <td>Close friend, party leader.</td>
+                </tr>
+                <tr>
+                    <td><a href="#candice" onclick="highlightSection(this, 'candice')">Candice</a></td>
+                    <td>Acquaintance; only known for 2 days; suspicious mental presence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>Less than a month; friend and trusted researcher.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown (full details) -->
+
+        <div class="section-content" id="birthyear">
+            <h2>Birth Year</h2>
+            <p>1754 (current date 03-06-1771, he's 17 years old)</p>
+        </div>
+
+        <div class="section-content" id="rolebackground">
+            <h2>Role/Background</h2>
+            <p>Hero of Brum'korath; short-time former and recently released Brum'korath prisoner, having taken part in the Cults War and the Disciple's rampage; main protagonist of the party; connected to ancient relics prophecy and fused with one; strategist; outlaw of the Central Lands for the Kingston incident (unrelated to Brum'korath); victim of medi-laboratory experiments from birth to age 11; aspiring college student as a teen; escapee since Kingston incident; One of the Children of Hybris, central to the prophecy. Member of the group preparing for the Eastern Continent expedition. Part of a team trying to unlock relics' power to stop the Disciple of Air; holds a relic bound to his wrist; central figure, researcher, driven to unlock the power of the Relics; connected to the prophecy and studying an ancient relic.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Determined, analytical, introspective, calculating, self-doubting, practical, cautious, curious, calm under pressure, protective, resolute, skeptical, doubtful, brave, frustrated, observant, burdened by hidden truths, burdened by guilt, feels the weight of scrutiny, uncertain, thoughtful, empathetic, intense, inquisitive, anxious, critical, questioning, wary, gradually more at ease with the group, vulnerable, focused, willing to take risks, burdened by responsibility, pragmatic, occasionally reckless; anxious but hopeful, determined to contribute to the mission, reflective, feels the weight of the prophecy; playful and teasing in his telepathic bond with Mina, yet burdened by insecurities about his abilities.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>Telepathy (Stage 1: Surface Thought Reading - DMN-Focused, Stage 2: Deeper Thought Access and Emotional Sensory Tuning, Stage 3: Memory Access and Short-Term Influence), entry-level Clairvoyance (unconscious or basic vision), intermediate Telekinesis (multiple small objects or one bigger object up to 30kg), Pyrokinesis (entry-level heat control, basic flame creation, intermediate fire manipulation); senses chaotic thoughts and mental presences; permanent telepathic link with Mina; connected to the Sent Ones prophecy; emerging mastery of arcane technology; can telepathically communicate with the Relics; affected by the ancient relic he’s studying; potential magical connection to the prophecy; other unexplained powers; showcased advanced telekinesis during the Nythari village arrival by levitating rocks for Mina’s acrobatics, demonstrating growing mastery of his abilities.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Aligned with Mina and Thomas; Cult of the Sent Ones (indirectly, via prophecy); Dwarven Council, Brum'korath, World Police (now enemy), Haliriel (temporary alliance); part of the mission team; Children of Hybris (implied); working with a group of researchers.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>5'10", brown eyes, serious look; lean; light-brown hair, disheveled; typically wears a worn satchel; usually stressed or focused expression; often appears burdened and reflective, with glimpses of lightheartedness in interactions with Mina.</p>
+        </div>
+
+        <div class="section-content" id="characterarc">
+            <h2>Character Arc/Goal</h2>
+            <p>Overcoming insecurity to embrace his potential and confront his mysterious past; grappling with his role as one of the Sent Ones; feeling the growing pressure of the coming war and the Disciple’s approach; seeking redemption; uncovering the truth behind the explosion in Kingston; discovering the origin and purpose of the relics; unlocking their mysteries and powers; standing firm against the World Police; protecting his companions; preparing for the coming war; surviving; uncovering hidden motives; conflicted over political and personal motivations; discovering his role in the prophecy and his connection to Candice; unraveling the mysteries that bind him to her and the others; understanding his place in the prophecy with Mina, especially regarding the Disciple of Air; aims to understand the relic’s nature and protect the group while seeking answers about the prophecy and relics.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Struggling with memory of the Kingston explosion and guilt over its consequences; he, Mina, and Thomas each have a fused relic; possibly misled about being the chosen one for the relics; resentful about political conflicts; deep mistrust of elves and dwarves due to past manipulations; has a minor anomaly in his DNA leading to instability in relic synchronization; doubts his worthiness for the relics; the relic’s effects on him remain unclear but seem to be worsening; harbors growing suspicions of the relic’s long-term influence.</p>
+        </div>
+
+        <div class="section-content" id="combattraining">
+            <h2>Combat Training</h2>
+            <p>Strategic and warfare knowledge; telekinetic defense; basic weapon training; basic pyrokinesis and intermediate telekinesis; skilled with basic weaponry; moderate combat training; tactical and strategic thinker from deep study; capable in a leadership context; showcases evolving telekinesis proficiency for supporting allies.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>810 doumis; rare battery hybrid magic-tech (worth 20,000 doumis); new travel clothes; backpack with survival gear; dry food; change of clothes; satchel with notes, theories, and relic information; relic attached to his wrist (potentially powerful or dangerous).</p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>Best friend, loves her, telepathically linked; shares playful banter and teasing through telepathy; deep trust and emotional connection.</p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>Best friend, leader.</p>
+        </div>
+
+        <div class="section-content" id="candice">
+            <h2>Candice</h2>
+            <p>Known her for 2 days, acquaintance; feels like he must believe her; senses a familiar yet parasitical presence in her mind.</p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>Known her for less than a month, friend, trusts her research and resolve; has forgiven her for her betrayal.</p>
+        </div>
+    </div>
+</body>
+</html>
+

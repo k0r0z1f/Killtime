@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eryndor - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Eryndor - Character Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#character" onclick="highlightSection(this, 'character')">Character</a></td>
+                    <td>Eryndor</td>
+                </tr>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Not specified</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Hunter, Guardian of the Nythari people</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Gruff, yet can soften; displays disbelief mixed with reverence; warm encouragement</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Not specified</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-clans-factions" onclick="highlightSection(this, 'alliances-clans-factions')">Alliances/Clans/Factions</a></td>
+                    <td>Nythari people</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Sharp, weathered features</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">Character Arc/Goal</a></td>
+                    <td>Provides crucial information about the mountain passes</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Not specified</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Combat and tracking skills</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Not specified</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="character">
+            <h2>Character</h2>
+            <p>Eryndor is a key figure among the Nythari people, known for his dedication and prowess as both a hunter and protector. His reputation precedes him, and many who speak his name do so with a mixture of respect and caution.</p>
+        </div>
+
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>No specific birth year has been provided for Eryndor.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>
+                Eryndor serves as a guardian of the Nythari people. His skills as a hunter allow him to provide for his community and defend them against threats. In his role as guardian, he ensures the safety of his kin by patrolling the surrounding wilderness and mastering the hidden paths through treacherous terrain.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                Eryndor presents a gruff demeanor at first glance, characterized by a sense of world-weariness and guarded caution. Yet this exterior can soften, especially when he perceives genuine intentions from others. He often displays a combination of disbelief and reverence when encountering unfamiliar magic or circumstances, reflecting both his skepticism and deep respect for what he cannot fully explain. When it comes to offering encouragement, Eryndor is surprisingly warm, a quality that solidifies trust and camaraderie among his companions.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>No specific magical abilities or unique powers are mentioned for Eryndor.</p>
+        </div>
+
+        <div class="section-content" id="alliances-clans-factions">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Eryndor’s primary allegiance is to the Nythari people, who depend on him for guidance and protection. Beyond this, no other alliances or affiliations have been detailed.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                Eryndor is described as having sharp, weathered features, a testament to his life spent outdoors under harsh conditions. His posture and rugged countenance hint at both his perseverance and his readiness for sudden action if danger arises.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>
+                Eryndor’s immediate purpose is to aid the group by sharing vital information about the mountain passes. As someone intimately familiar with the region’s secrets, his role is essential in guiding others through perilous routes. The knowledge he offers may well prove decisive in future endeavors.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>No secret has been provided for Eryndor.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                Trained in combat from years of defending his territory against both wildlife and other dangers, Eryndor is proficient in close-quarters fighting. His expertise in tracking complements his combat skills, enabling him to anticipate threats and strike decisively when necessary.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>No specific inventory items have been listed for Eryndor.</p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hidden Temple - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Hidden Temple (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Hidden Temple</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Vermicalis and his tribe's village</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Ominous and foreboding; associated with danger</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Guarded by Vermicalis and his warriors</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Central to the Children of Hybris prophecy; said to hold secrets of the prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Mention of a strange man with unclear intentions; potential danger</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>A vital location tied to the Children of Hybris prophecy; The stranger is searching for it, possibly lost or worse</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Mountainous jungle terrain; Eastern slope of the mountain</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>N/A</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>A stranger seeking the temple has entered the lands, creating urgency for the party to act</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>The Hidden Temple serves as the central point of worship and secrecy for Vermicalis and his tribe. Its name reflects its elusive nature, concealed from outsiders and protected by those who revere its sacred grounds.</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Hidden Temple is inhabited by Vermicalis and his tribe's village. This close-knit community is dedicated to the temple's upkeep and the preservation of its ancient traditions. The villagers are skilled in various crafts and rituals essential to maintaining the temple's sanctity.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>No information provided.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere surrounding the Hidden Temple is ominous and foreboding, creating a palpable sense of danger. The area feels charged with an ancient energy that warns intruders of the perils that lie within, making it a place both revered and feared.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>No information provided.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>No information provided.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Hidden Temple is well-protected, guarded by Vermicalis and his warriors. These defenders are trained in both combat and the use of ancient defensive mechanisms that deter and repel any potential threats seeking to uncover the temple's secrets.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The Hidden Temple plays a pivotal role in the Children of Hybris prophecy. It is believed to hold the secrets necessary to fulfill or prevent the foretold events. Legends speak of ancient rites performed here and the divine interventions that have shaped its history.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The presence of a strange man with unclear intentions poses a significant threat to the Hidden Temple. His motives are unknown, and his actions could bring unforeseen dangers to the temple and its inhabitants, potentially disrupting the balance foretold by the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The Hidden Temple is a vital location tied to the Children of Hybris prophecy, making it a focal point for the party's quest. The stranger searching for the temple adds urgency, as his intentions could either aid or endanger the party's mission to uncover the prophecy's secrets.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The Hidden Temple is situated on the eastern slope of a mountain, enveloped by mountainous jungle terrain. The rugged landscape offers both natural protection and challenges, with dense foliage and steep inclines making access difficult for outsiders.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>No information provided.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>A stranger seeking the temple has recently entered the lands, heightening the urgency for the party to act. His arrival may signal upcoming events that could influence the outcome of the Children of Hybris prophecy.</p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candice - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Candice (Character Overview)</h1>
+        
+        <!-- Location Table (Concise) -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Quick Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>No data provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Leader of the Children of Hybris; experienced guide; familiar with Nythari customs.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Calm, respectful, empathetic, determined, etc.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Strategic leadership; knowledge of Nythari lore.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Children of Hybris; allied with Nythari village.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Practical jungle attire with natural elements.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Fulfill prophecy; protect Nythari; answer Watcher's call.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>No data provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Basic leader-level self-defense skills.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Climbing gear; a special charm.</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas" onclick="highlightSection(this, 'lucas')">Lucas</a></td>
+                    <td>No data provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>No data provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#thomas" onclick="highlightSection(this, 'thomas')">Thomas</a></td>
+                    <td>No data provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>No data provided.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>No data provided.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>
+                Candice is the leader of the Children of Hybris. She is an experienced guide, intimately familiar 
+                with Nythari customs and mountain conditions. Her primary responsibility is to ensure safe passage 
+                to the Watcher’s cave. She is also tasked with aiding the Nythari village by responding to the 
+                Watcher's call and fulfilling the prophecy entrusted to the Children of Hybris.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                Candice is calm, composed, respectful, and knowledgeable. She remains humble and empathetic 
+                despite her leadership role. She is brave, confident, and responsible, determined to see her 
+                tasks through. Over time, she becomes even more humbled and steady, showing deep compassion for 
+                others. She does, however, exhibit moments of pride and apprehension as she grapples with the 
+                enormity of her responsibilities.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>
+                While Candice does not wield overt magical powers, her strongest abilities lie in strategic 
+                leadership and a profound understanding of Nythari traditions, lore, and the intricate routes 
+                throughout the mountains. This knowledge is instrumental in guiding others safely and 
+                overcoming natural hazards.
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>
+                Candice is a key member of the Children of Hybris and maintains an alliance with the Nythari 
+                village. She fosters strong cooperative ties, ensuring mutual protection and guiding 
+                collaborative efforts to uphold the prophecy.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                Candice carries herself with a graceful presence. She wears practical attire suited for the 
+                jungle environment—light, rugged materials designed for ease of movement. Natural elements, 
+                such as subtle leaf motifs or woven accessories, adorn her clothing to reflect her connection 
+                to the land and the traditions she represents.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>
+                Candice aims to fulfill the prophecy of the Children of Hybris and protect the Nythari village 
+                from emerging threats. Her goal includes leading her group safely to Ceylan’s cave, arranging 
+                visits to various villages, and responding to the mysterious Watcher's call. As she progresses, 
+                she grows both as a leader and a person, understanding the weight of her mission and finding 
+                balance between her sense of duty and compassion.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>
+                No data provided.
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                Candice possesses basic combat training suitable for a leader, giving her the capacity to 
+                defend herself and guide others in hostile environments. Though she relies more on strategy, 
+                knowledge, and negotiation, she can hold her own if necessary.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>
+                Candice carries essential climbing gear for navigating mountain terrain. She also keeps a small 
+                pouch containing a charm given to her by a villager, a token of goodwill and protection. 
+            </p>
+        </div>
+
+        <div class="section-content" id="lucas">
+            <h2>Lucas</h2>
+            <p>No data provided.</p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>No data provided.</p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>No data provided.</p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>No data provided.</p>
+        </div>
+    </div>
+</body>
+</html>
+

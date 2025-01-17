@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Lucas (Character Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Lucas, 17 years old (Born 1754)</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Lean, 5'10", disheveled light-brown hair, serious look</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Determined, analytical, introspective, burdened by guilt</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Telepathy, Telekinesis, Pyrokinesis, arcane-tech potential</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Allied with Mina & Thomas; part of Children of Hybris</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Moderate combat training, strategic thinking</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Connected to ancient relics prophecy, one of the Sent Ones</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Kingston explosion guilt, mistrust of elves & dwarves</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Friends with Mina & Thomas; uneasy trust with Candice & Dira</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Has relic on wrist, survival gear, limited funds</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Carrying hidden burdens from past experiments</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Freed from Brum'korath, heading to Eastern Continent expedition</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>
+                <strong>Lucas, 17 years old (Born 1754).</strong> Former short-time prisoner of Brum'korath, 
+                he has been pulled into major conflicts across the land from an early age. He is one of the 
+                Children of Hybris, marked by prophecy. Officially considered an outlaw in the Central Lands 
+                after the Kingston incident, he escaped custody and has been on the run. Despite his 
+                precarious status, his intellect and resolve have kept him alive.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                Lucas stands at around <strong>5’10”</strong> with a lean build. He has <strong>light-brown, 
+                disheveled hair</strong>, and <strong>brown eyes</strong> that often carry a serious or 
+                worried look. His expressions typically reflect the stress he endures or the focus of his 
+                contemplations. He often wears a <strong>worn satchel</strong> slung across his shoulder, 
+                containing notes, relic information, and survival gear. His posture can be slightly guarded, 
+                revealing both caution and vigilance.
+            </p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>
+                Lucas’s personality is a swirling mix of <strong>determination, analytical thinking, 
+                introspection, and caution</strong>. He is curious by nature, but also deeply weighed 
+                down by guilt and mistrust born from past events. He can be <strong>skeptical and 
+                reserved</strong>, yet protective of those close to him. Socially, he may be shy or 
+                hesitant, even easily embarrassed when it comes to romantic feelings, but his sense of 
+                duty pushes him to adapt. This makes him at times <strong>anxious but hopeful</strong>, 
+                gradually warming up to the group as he realizes the importance of unity.
+            </p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>
+                Lucas possesses a range of psychic and elemental abilities. 
+                <ul>
+                    <li><strong>Telepathy</strong>: Three stages—Surface Thought Reading, Deeper Thought 
+                        Access/Emotional Sensory, and limited <em>Memory Access</em>. Permanent telepathic 
+                        link with Mina.</li>
+                    <li><strong>Telekinesis</strong>: Intermediate control, allowing multiple small objects 
+                        or one larger object (up to ~30kg).</li>
+                    <li><strong>Pyrokinesis</strong>: Basic flame creation and intermediate fire manipulation.</li>
+                    <li><strong>Entry-level Clairvoyance</strong>: Unconscious or rudimentary visions, 
+                        not well controlled.</li>
+                </ul>
+                Additionally, he demonstrates <strong>emerging mastery of arcane technology</strong>—capable 
+                of communicating telepathically with the relics, and potentially unlocking deeper powers linked 
+                to the prophecy.
+            </p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>
+                Lucas’s affiliations are both formal and informal. He is <strong>aligned with Mina and Thomas</strong>, 
+                key companions who also bear fused relics. Though an <strong>outlaw to the World Police</strong> 
+                (due to misunderstandings and the Kingston incident), he also holds a <strong>temporary alliance 
+                with Haliriel</strong> and has ties to <strong>the Children of Hybris</strong>. He indirectly 
+                finds himself connected to the <strong>Cult of the Sent Ones</strong> through prophecy. 
+                Despite these complexities, he moves forward with the mission team that aims to undertake 
+                the Eastern Continent expedition.
+            </p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>
+                In terms of combat, Lucas leans on his <strong>strategic thinking and psychic powers</strong>. 
+                While he has <strong>basic weapon training</strong> and moderate combat experience, it is 
+                his telekinesis and pyrokinesis that provide him with an edge. His time in Brum'korath and 
+                the constant need to evade capture have honed his survival instincts, pushing him to 
+                innovate on the fly. He is capable of leadership in tense situations, though he often feels 
+                the weight of responsibility keenly.
+            </p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>
+                Lucas is <strong>central to ancient relic prophecies</strong> as one of the 
+                <em>Children of Hybris</em> and part of the <em>Sent Ones</em> prophecy. He, along 
+                with Mina and Thomas, has a fused relic, linking him to the unfolding events. His involvement 
+                in the Cults War and the Disciple’s rampage has placed him in a precarious spotlight. Many 
+                see him as a key figure capable of unlocking the relics’ power to <strong>stop the Disciples’ 
+                threat</strong>. Yet rumor and speculation persist—some believe he may be misled about being 
+                “chosen,” while others think the relic’s chaotic synergy with him is a sign of deeper destiny.
+            </p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>
+                The greatest hidden danger for Lucas lies in the <strong>memory of the Kingston explosion</strong> 
+                and the guilt he harbors over it. Furthermore, he is burdened by an <strong>anomaly in his DNA</strong> 
+                that could cause instability with the relic’s synchronization. He has deep-seated 
+                <strong>mistrust of elves and dwarves</strong>, resulting from manipulations in his past, 
+                and feels uncertain about how far the prophecy might push him. His experiences in 
+                medical laboratories from birth to age 11 have left scars, both mental and physical, that 
+                continue to influence him.
+            </p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>
+                <ul>
+                    <li><strong>Mina</strong>: Best friend, loves her deeply, telepathically linked.</li>
+                    <li><strong>Thomas</strong>: Best friend and de facto leader figure.</li>
+                    <li><strong>Candice</strong>: Known for 3 days, unsure but feels compelled to believe her; 
+                        senses a parasitic presence in her mind.</li>
+                    <li><strong>Dira</strong>: Met less than a month ago. Despite her past betrayal, 
+                        he trusts her research and resolve; a friend.</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>
+                Lucas’s <strong>inventory</strong> includes:
+                <ul>
+                    <li>810 doumis</li>
+                    <li>Rare battery hybrid magic-tech (worth ~20,000 doumis)</li>
+                    <li>New travel clothes</li>
+                    <li>Backpack with survival gear, dry food, a change of clothes</li>
+                    <li>Satchel containing notes, theories, relic information</li>
+                    <li>A relic fused to his wrist, potentially powerful or dangerous</li>
+                    <li>Small token from villagers</li>
+                    <li>Magi-tech parts for testing the relics</li>
+                </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>
+                Beneath the surface, Lucas carries <strong>the lingering burdens of medical experimentation</strong> 
+                that define much of his past. From infancy to age 11, he was subjected to various procedures 
+                aimed at enhancing or controlling his latent abilities. This invasive history creates an 
+                undercurrent of anxiety, especially regarding institutional forces like the World Police or 
+                powerful factions he cannot fully trust.
+            </p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>
+                Having <strong>recently been released from Brum'korath</strong>, Lucas is now traveling 
+                to prepare for an upcoming <strong>Eastern Continent expedition</strong> intended to 
+                confront the Disciple of Air. He aims to <strong>understand the nature of the relics</strong>, 
+                stop the looming threat of the Disciples, and protect his companions. Uncertain political 
+                motivations swirl around him, yet his main goal remains the same: to discover the truth 
+                behind the relics and the prophecy, and to ensure the safety of those he cares about.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

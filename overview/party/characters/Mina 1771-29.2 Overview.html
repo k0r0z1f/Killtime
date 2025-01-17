@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina's Character Profile</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Mina's Character Profile (Overview)</h1>
+        
+        <!-- Location Table (Keep it concise) -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="#birth-year" onclick="highlightSection(this, 'birth-year')">
+                            Birth Year
+                        </a>
+                    </td>
+                    <td>1754 (17 years old)</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#role-background" onclick="highlightSection(this, 'role-background')">
+                            Role/Background
+                        </a>
+                    </td>
+                    <td>Adopted daughter of a criminal boss, Child of Hybris prophecy</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">
+                            Personality Traits
+                        </a>
+                    </td>
+                    <td>Calm, supportive, playful, empathetic</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">
+                            Abilities/Magic
+                        </a>
+                    </td>
+                    <td>Superhuman speed, agility, telepathic link with Lucas</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#alliances" onclick="highlightSection(this, 'alliances')">
+                            Alliances/Factions
+                        </a>
+                    </td>
+                    <td>Allied with Lucas, Thomas, Candice; cautious friendship with Dira</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#appearance" onclick="highlightSection(this, 'appearance')">
+                            Appearance
+                        </a>
+                    </td>
+                    <td>Athletic build, bright blonde hair, green eyes</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">
+                            Character Arc/Goal
+                        </a>
+                    </td>
+                    <td>Seeks truth of the Watcher & prophecy, protect loved ones</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#secret" onclick="highlightSection(this, 'secret')">
+                            Secret
+                        </a>
+                    </td>
+                    <td>Born during a destructive arcane storm, only survivor besides one boy</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#combat-training" onclick="highlightSection(this, 'combat-training')">
+                            Combat Training
+                        </a>
+                    </td>
+                    <td>Speed-based tactics, acrobatics, athletic combat style</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#inventory" onclick="highlightSection(this, 'inventory')">
+                            Inventory
+                        </a>
+                    </td>
+                    <td>90 doumis, travel clothes, dagger, a prophecy relic</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#lucas" onclick="highlightSection(this, 'lucas')">
+                            Lucas
+                        </a>
+                    </td>
+                    <td>Best friend, telepathic link, playful teasing</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#thomas" onclick="highlightSection(this, 'thomas')">
+                            Thomas
+                        </a>
+                    </td>
+                    <td>Trusted ally, mutual respect</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#candice" onclick="highlightSection(this, 'candice')">
+                            Candice
+                        </a>
+                    </td>
+                    <td>Known for 3 days, cautious trust</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#dira" onclick="highlightSection(this, 'dira')">
+                            Dira
+                        </a>
+                    </td>
+                    <td>Less than a month, friend but cautious due to her past</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown (Full details) -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>
+                Mina was born in 1754, making her 17 years old at the time of the story. 
+                She is a Child of Hybris, tied to a larger prophecy that shapes her destiny.
+            </p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>
+                - Adopted daughter of a powerful businessman and incognito criminal boss.<br>
+                - Her pivotal role was revealed during the Elven Council meeting, marking her as a key figure 
+                  in the prophecy.<br>
+                - She is one of the Children of Hybris alongside Lucas.<br>
+                - Mina provides emotional support to Lucas, deeply tied to him through a telepathic bond.<br>
+                - She is highly involved in the mission concerning the Watcher and the prophecy of the Sent Ones.<br>
+                - Determined to uncover the truth about the Watcher, believing it is connected to her fate.<br>
+                - Has demonstrated leadership and confidence during critical trials.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                - Calm, composed, and logical but also displays emotional depth.<br>
+                - Steady, supportive, sharp, and loyal; provides a grounding presence for those around her.<br>
+                - Fiercely autonomous, yet her permanent telepathic bond with Lucas has made her slightly dependent on him.<br>
+                - Empathetic and observant, able to pick up on subtle emotional cues.<br>
+                - Brave, facing danger with careful thought; optimistic, seeking hope in dire situations.<br>
+                - Playful and teasing in her interactions with Lucas, using humor to strengthen their bond.<br>
+                - Embraces reverence during spiritual moments (e.g., Aria’s ritual).<br>
+                - Determined, caring, and struggles with the weight of the prophecy but remains unwavering.<br>
+                - Exhibits youthful resilience and a measure of uncertainty, reflecting her age.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>
+                - Superhuman Speed and Agility: Moves exceptionally fast and can execute acrobatic maneuvers.<br>
+                - Hyper-sensitive Senses: Feels magic and environment changes more intensely, which can be overwhelming.<br>
+                - Telepathic Link with Lucas: A permanent mental connection, allowing shared thoughts and emotions.<br>
+                - Athletic Combat (Speed-Based Tactics): Relies on quick, agile movements and hit-and-run strategies.<br>
+                - Strong coordination in group challenges, especially when working with Lucas via their shared bond.
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>
+                - Lucas: Deep trust, telepathically connected partner.<br>
+                - Thomas: Mutual respect and trust, part of the prophecy circle.<br>
+                - Cult of the Sent Ones (Indirect): Involvement through her role as a Child of Hybris.<br>
+                - Candice: Cautious trust after only three days of acquaintance; they share the same mission.<br>
+                - Dira: Considers her a friend but remains watchful due to Dira’s past actions.<br>
+                - Also indirectly connected to her father’s criminal enterprises, but seeks to use that power for justice.<br>
+                - Tied to the Nythari Tribe’s spiritual traditions through the prophecy.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                - Bright green eyes, distinctive and full of determination.<br>
+                - Bright blonde hair styled practically for agility and combat.<br>
+                - Athletic build with a strong physique, carrying a few scars from past experiences.<br>
+                - Youthful but resolute presence; can appear calm and graceful, shifting to playful at times.<br>
+                - Alternates between lighthearted confidence and a reverent demeanor in significant moments.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>
+                - Struggles to understand her true purpose in the Children of Hybris prophecy.<br>
+                - Determined to protect Lucas, Thomas, and her allies while unraveling the mystery of the Watcher.<br>
+                - Confronts uncertainty about her future and responsibilities as a prophesized figure.<br>
+                - Seeks self-discovery: balancing her desired independence with the weight of her destiny.<br>
+                - Aims to reassure and strengthen Lucas as he wrestles with the prophecy’s burdens.<br>
+                - Embraces both playful challenges and moments of profound significance to maintain group morale.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>
+                - Mina was born during a catastrophic arcane storm that destroyed a hospital, leaving only her 
+                  and one other boy alive.<br>
+                - She has not yet shared this detail with Lucas, unsure of how it might affect their bond.<br>
+                - Her miraculous survival deepens the mystery of her connection to the prophecy.
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                - Specializes in athletic, speed-based combat, executing hit-and-run techniques.<br>
+                - Well-trained due to her father’s support, focusing on agility over raw strength.<br>
+                - Uses her exceptional dexterity to outmaneuver opponents, leveraging acrobatic feats and quick reflexes.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>
+                - 90 doumis (local currency).<br>
+                - Practical travel clothes suited for diverse terrains.<br>
+                - Survival gear, including essentials for wilderness journeys.<br>
+                - A dagger for close-quarters protection.<br>
+                - A relic tied to the prophecy of the Sent Ones, which she cannot remove.<br>
+                - Light silk robe and simple camisole for comfort on the road.<br>
+                - A small token gifted by villagers they encountered.
+            </p>
+        </div>
+
+        <div class="section-content" id="lucas">
+            <h2>Lucas</h2>
+            <p>
+                - Best friend and most significant companion; they share a permanent telepathic link.<br>
+                - Engaged in playful teasing to maintain levity in tense situations.<br>
+                - Mina provides emotional support and grounding for Lucas, helping him focus on their goals.<br>
+                - Their bond suggests deeper feelings, though complicated by the prophecy and their young age.
+            </p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>
+                - Trusted ally, valued for his strategic mind and unwavering support.<br>
+                - Shares in the responsibilities of protecting one another, part of the prophecy group.<br>
+                - Respects Thomas for his loyalty and calm reliability in dire situations.
+            </p>
+        </div>
+
+        <div class="section-content" id="candice">
+            <h2>Candice</h2>
+            <p>
+                - Acquainted for only three days, but they share a common mission related to the prophecy.<br>
+                - Mina respects Candice’s abilities while remaining cautious due to the latter’s past betrayal experiences.<br>
+                - Recognizes Candice’s importance in their group, especially regarding the mission to the Watcher.
+            </p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>
+                - Has known Dira for less than a month; they have become friends but trust is still developing.<br>
+                - Aware of Dira’s troubled past and hopes she finds a path to self-forgiveness.<br>
+                - Appreciates Dira’s presence, but maintains caution due to the unpredictability of their quest.
+            </p>
+        </div>
+
+    </div>
+</body>
+</html>
+
