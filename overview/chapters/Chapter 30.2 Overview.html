@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter Overviews - Narrative Journey</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 30px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Chapter Overviews (Narrative Journey)</h1>
+        
+        <!-- Chapter Overview Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="#chapter-30.2.1" onclick="highlightSection(this, 'chapter-30.2.1')">
+                            30.2.1 - Carrying the Weight
+                        </a>
+                    </td>
+                    <td>
+                        <strong>Summary:</strong> The group navigates oppressive tunnels carrying an unconscious Lucas, facing physical and emotional burdens amid the threat of Imperial patrols.<br>
+                        <strong>Key Themes:</strong> Burdens of responsibility, oppressive environment, and mounting fear.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#chapter-30.2.2" onclick="highlightSection(this, 'chapter-30.2.2')">
+                            30.2.2 - In the Streets Again
+                        </a>
+                    </td>
+                    <td>
+                        <strong>Summary:</strong> Exiting the tunnels into rain-soaked, chaotic streets, the group is intercepted by a seasoned Resistance fighter who reveals Lucas as the prophesied messiah, triggering a violent standoff.<br>
+                        <strong>Key Themes:</strong> Fate versus free will, destiny’s burden, and sudden escalation to combat.
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#chapter-30.2.3" onclick="highlightSection(this, 'chapter-30.2.3')">
+                            30.2.3 - Awakening the Power
+                        </a>
+                    </td>
+                    <td>
+                        <strong>Summary:</strong> Cornered in a narrow alley, the group faces imminent danger until Lucas awakens, unleashing raw supernatural power that incapacitates enemy soldiers while mumbling about a mysterious figure.<br>
+                        <strong>Key Themes:</strong> Unleashed power, tension in confinement, and hints of future complications.
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-30.2.1">
+            <h2>30.2.1 - Carrying the Weight</h2>
+            <p>
+                In this chapter, the narrative focuses on the group's treacherous journey through dark, oppressive tunnels beneath Atraxia. With an unconscious Lucas in tow, John, Erika, and the Resistance scout Kael bear both a literal and figurative burden. Every step is laden with the weight of responsibility as they carefully navigate the labyrinthine passages, all while remaining acutely aware of the imminent threat posed by nearby Imperial patrols.
+            </p>
+            <p>
+                <strong>Detailed Elements:</strong><br>
+                - <em>Physical Burden:</em> The arduous task of carrying Lucas underscores the physical challenges faced by the group.<br>
+                - <em>Emotional Weight:</em> Beyond the physical strain, the chapter highlights the internal conflict and fear that accompanies the responsibility of safeguarding a vulnerable comrade.<br>
+                - <em>Oppressive Environment:</em> The dark and claustrophobic tunnels amplify the tension and uncertainty of their escape.
+            </p>
+        </div>
+
+        <div class="section-content" id="chapter-30.2.2">
+            <h2>30.2.2 - In the Streets Again</h2>
+            <p>
+                The group emerges from the confining tunnels into the chaotic, rain-soaked streets of Atraxia. The sudden change in environment does little to ease the tension; if anything, the unpredictable urban landscape amplifies their vulnerability. While still burdened by Lucas, whose identity carries a prophetic weight, the group is unexpectedly confronted by a seasoned Resistance fighter. This fighter reveals that Lucas is the prophesied messiah, an announcement that not only redefines Lucas's role but also drastically alters the group's immediate priorities.
+            </p>
+            <p>
+                <strong>Detailed Elements:</strong><br>
+                - <em>Ominous Declaration:</em> The fighter’s revelation about Lucas being the messiah introduces a clash between destiny and personal agency.<br>
+                - <em>Rising Tension:</em> The peaceful exit from the tunnels quickly devolves into a standoff as both sides brace for conflict.<br>
+                - <em>Sudden Escalation:</em> The narrative shifts from cautious navigation to violent confrontation, emphasizing the constant threat of the environment.
+            </p>
+        </div>
+
+        <div class="section-content" id="chapter-30.2.3">
+            <h2>30.2.3 - Awakening the Power</h2>
+            <p>
+                In a confined and perilous narrow alley, the group finds itself surrounded by a mixture of rival faction members and Imperial soldiers. The atmosphere is charged with tension and urgency as strategic decisions must be made in seconds. At this critical moment, Lucas, who had been unconscious, suddenly awakens. His emergence is marked by the display of raw and uncontrollable supernatural power—he levitates and unwittingly unleashes a devastating force that incapacitates enemy soldiers.
+            </p>
+            <p>
+                <strong>Detailed Elements:</strong><br>
+                - <em>Supernatural Awakening:</em> Lucas’s sudden display of extraordinary power introduces an unpredictable element to the narrative.<br>
+                - <em>Confinement and Desperation:</em> The narrow alley setting intensifies the sense of entrapment and imminent danger.<br>
+                - <em>Mysterious Hint:</em> His cryptic mumble about a mysterious figure waiting for him adds a layer of intrigue and foreshadows potential future complications.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atraxia - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Atraxia - Character Overview</h1>
+
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Atraxia</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Crowded with vendors, children, soldiers, and general population; mixed Imperial soldiers and Resistance members</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Chaotic, narrow, and grimy urban streets with dimly lit alleys, smoldering building remnants, decaying tenement walls, narrow passages, towering spires, darkened alleys, metallic walls, urban labyrinth, rusted metal warehouses, and faded insignias under a gray sky</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense, oppressive atmosphere filled with the stench of decay in the sewers, eerie echoes, sounds of conflict, charged air from Lucas's powers, and a sense of impending war and Imperial presence</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Labyrinthine sewers, narrow and tight alleyways with crates and barrels, old tenements with decaying and towering walls, smoldering remnants from destroyed buildings, Empire’s towering spires, metallic and maze-like alleyways, and urban warehouses with blockades</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism-carvings" onclick="highlightSection(this, 'symbolism-carvings')">Symbolism & Carvings</a></td>
+                    <td>Resistance markings scraped away on warehouses</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Imperial soldiers, patrols, SWAT teams, armored vehicles, surveillance drones, Imperial reinforcements, and blockades</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends-lore" onclick="highlightSection(this, 'legends-lore')">Legends & Lore</a></td>
+                    <td>The Prophecy of a messiah, Lucas, known to the Resistance; dominated by the Empire’s control and presence</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Imperial patrols, Resistance factions, general chaos, unpredictable threats, surveillance drones, Imperial forces, potential for urban warfare, persistent Imperial pursuit and containment efforts, and potential for Lucas's powers to surface</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>The party is navigating through Atraxia, following Lucas who is central to the Prophecy, while evading and being pursued by Imperial forces</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Urban environment with narrow streets, alleys, maze-like streets, and industrial warehouses</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Gray and drizzly with a threat of more rain; humid air</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Ongoing and escalating conflict between the Resistance and the Empire, including the Resistance using sewers to move covertly, recent destruction of buildings due to Empire's crackdown, increased Imperial surveillance and mobilization, emergence and awakening of Lucas's powers, Empire’s forces advancing into the city, and blockade formations</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>Atraxia is the urban center central to the ongoing battle between the Resistance and the Empire. It's a hub of conflict and tension.</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The population is crowded, with a mix of vendors, children, soldiers, and general citizens. Imperial soldiers and Resistance members intermingle, each group occupying different corners of the city.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Atraxia’s streets are chaotic and grimy. The atmosphere is dominated by narrow, decaying alleyways, smoldering building remnants, and metallic walls. The towering spires of the Empire contrast with the dark, maze-like alleys.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The city exudes a tense and oppressive energy. There is an ever-present stench of decay, coupled with eerie echoes, distant sounds of conflict, and a sense of impending war, further amplified by Lucas's emerging powers.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture is a mixture of labyrinthine sewers, narrow alleys, decaying tenements, and massive Empire spires. Urban warehouses are scattered throughout, many blocked off or repurposed by the Empire for control.</p>
+        </div>
+
+        <div class="section-content" id="symbolism-carvings">
+            <h2>Symbolism & Carvings</h2>
+            <p>The city shows signs of resistance, with markings scraped away on buildings, symbolizing the ongoing efforts to fight against the Empire’s control.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Atraxia is heavily patrolled by Imperial forces, including SWAT teams, armored vehicles, and surveillance drones. Reinforcements are regularly deployed, and blockades are set up to contain the Resistance.</p>
+        </div>
+
+        <div class="section-content" id="legends-lore">
+            <h2>Legends & Lore</h2>
+            <p>The Prophecy of a messiah, Lucas, is known to the Resistance, with the Empire struggling to control this rising power. The city remains under heavy Imperial influence.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Atraxia is full of hidden dangers, from Imperial patrols and surveillance drones to unpredictable threats from Resistance factions and urban warfare. Lucas's powers are a wild card in the ongoing conflict.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The party is currently navigating Atraxia, with Lucas being central to the Prophecy. They are on the run from Imperial forces, evading their control and surveillance.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Atraxia's surrounding terrain is a dense urban landscape, filled with narrow streets, maze-like alleys, and industrial warehouses that provide cover for the Resistance.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather is gloomy and rainy, with heavy cloud cover and the constant threat of more rain. The air is thick with humidity, adding to the oppressive atmosphere of the city.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The conflict between the Resistance and the Empire is escalating. Recent events include increased Imperial surveillance, resistance efforts using the sewers to stay hidden, and the emergence of Lucas’s powers, all contributing to an intense struggle for control of Atraxia.</p>
+        </div>
+    </div>
+</body>
+</html>
+

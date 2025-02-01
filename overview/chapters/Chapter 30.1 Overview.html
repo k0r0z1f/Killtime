@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>John - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">John (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter-30.1.1" onclick="highlightSection(this, 'chapter-30.1.1')">Chapter 30.1.1</a></td>
+                    <td>Into the Depths Again (Part 1)</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-30.1.2" onclick="highlightSection(this, 'chapter-30.1.2')">Chapter 30.1.2</a></td>
+                    <td>Labyrinth of Darkness</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-30.1.3" onclick="highlightSection(this, 'chapter-30.1.3')">Chapter 30.1.3</a></td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-30.1.1">
+            <h2>Chapter 30.1.1: Into the Depths Again (Part 1)</h2>
+            <p>The chapter follows John leading a small Resistance group—including Erika and a visibly troubled Lucas—into the sewers beneath Atraxia. As they navigate the dark, decaying tunnels using an old, partially inaccurate map, tensions rise over the chosen route and Lucas’s unstable state. The oppressive environment, echoing footsteps, and ever-present threat of Imperial patrols create an atmosphere of suspense and internal conflict, compounded by Lucas's haunting memories of the Empire’s experiments.</p>
+            <p><strong>Key Themes & Moments:</strong> The dangers of covert movement and the oppressive atmosphere of the sewers; internal conflict and concern over Lucas's mental state amid the mission; the tension between following orders and the instinct for self-preservation; the constant threat of Imperial surveillance, heightening the sense of urgency and danger.</p>
+        </div>
+
+        <div class="section-content" id="chapter-30.1.2">
+            <h2>Chapter 30.1.2: Labyrinth of Darkness</h2>
+            <p>The group—Lucas, Erika, John, and two Resistance soldiers—traverse Atraxia’s grim sewer network. Overwhelmed by the oppressive atmosphere, Lucas is suddenly engulfed in a vivid flashback of monstrous destruction in an ancient dwarven city. His latent powers surge, emitting a blinding burst of light that leaves him unconscious. The team debates how to manage his condition while continuing their perilous escape through Imperial territory.</p>
+            <p><strong>Key Themes & Moments:</strong> The confrontation with personal trauma and latent powers; the suffocating, claustrophobic setting of the sewers; the tension between immediate safety and the risk of exposure; and hints of a dark, haunting presence beyond mere memory.</p>
+        </div>
+
+        <div class="section-content" id="chapter-30.1.3">
+            <h2>Chapter 30.1.3: N/A</h2>
+            <p>The group cautiously navigates oppressive, dimly lit tunnels marked by damp air and faint bioluminescent fungi. Tensions simmer between John, who insists on careful progress, and Erika, who is frustrated by the slow pace. After encountering ambiguous noises and a maintenance drone in a large chamber filled with rusted Imperial equipment, the group debates its next move. They decide to press forward rather than risk delay, leaving the tunnel’s oppressive atmosphere behind as they near an upper exit.</p>
+            <p><strong>Key Themes & Moments:</strong> The conflict between cautious strategy and urgency, as seen in John’s measured approach versus Erika’s impatience; the palpable tension within the group, heightened by the responsibility of carrying Lucas, the unconscious telepath; key moments include the detection of ambiguous noises, the encounter with a maintenance drone, and the decision to continue despite the looming threat of Imperial patrols.</p>
+        </div>
+    </div>
+</body>
+</html>
+

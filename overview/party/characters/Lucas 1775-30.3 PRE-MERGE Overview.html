@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Lucas - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (21 years old)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>A central figure in an ancient prophecy, referred to as "the messiah" and "the key to the future". Formerly a prisoner in the Cults War, now a hero of Brum'korath. Involved in the Resistance against the Empire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Complex, introspective, empathetic, brave, protective, anxious, haunted by guilt and self-doubt.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Telepathy, Telekinesis, Pyrokinesis, Clairvoyance, additional abilities including energy surges and aura shielding.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Brum'korath, Haliriel, Nythari elves, the Dwarven Council, the World Police, Resistance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", light-brown hair, brown eyes, lean build, often stressed and worn.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Overcoming insecurity, supporting the Resistance, finding Mina, controlling his powers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Haunted by a troubled past, feeling guilty over the Kingston explosion and the loss of Mina.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Basic combat skills from Brum'korath and the Resistance, but relies more on his powers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>A worn satchel or pack, containing tools for survival, maps, remnants of the relics.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Lucas was born in the year 1754. He is currently 21 years old.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Lucas is a central figure in an ancient prophecy, referred to as "the messiah" and "the key to the future." He was formerly a prisoner in the Cults War and is now a hero of Brum'korath, deeply involved in the Resistance against the Empire. He is a key guest in the Resistance's strategies, facing overwhelming challenges in escaping the Empire's pursuit.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Lucas is introspective and often torn between his role as a hero and the burdens of his powers and past mistakes. He is determined, brave, and protective, but also suffers from anxiety, mental exhaustion, self-doubt, and guilt. He struggles with his emotions and powers, making him wary of his abilities and future.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Lucas possesses several potent abilities, including:
+            <ul>
+                <li><strong>Telepathy</strong>: Unconscious thought reading and the ability to manipulate thoughts and memories.</li>
+                <li><strong>Telekinesis</strong>: Ability to manipulate energy and objects, including levitation and creating pressure waves.</li>
+                <li><strong>Pyrokinesis</strong>: Control over fire, though still in early stages of mastery.</li>
+                <li><strong>Clairvoyance</strong>: Mastery of seeing past and future events, though it comes with an emotional toll.</li>
+                <li><strong>Additional Abilities</strong>: Energy surges that disable machinery, aura shielding, and environmental manipulation.</li>
+            </ul>
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Lucas is allied with several factions, including Brum'korath, Haliriel, Nythari elves, and the Dwarven Council. He is also involved with the World Police (formerly an enemy, now paroled) and is a key figure in the Resistance against the Empire.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Lucas is 5'10" with light-brown hair and brown eyes. He has a lean build and, when conscious, appears stressed, pale, and worn from mental and emotional fatigue. He often has shadows under his eyes, but when unconscious, he levitates and glows with an ethereal, bright light.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Lucas is focused on overcoming his insecurities and inner struggles. His journey includes finding Mina, learning to control his powers, and supporting the Resistance in their mission. He faces the weight of his prophetic role while dealing with his trauma and the responsibilities of his powers.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Lucas harbors deep guilt over his troubled past, especially the explosion in Kingston, which affected him and his previous companions. He feels responsible for the scattering of his group and the loss of Mina. He is haunted by visions of her, struggling to understand his role as a symbol of hope, despite his feelings of failure.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Lucas has basic combat skills from his time with Brum'korath and the Resistance, though he relies more on his abilities than formal combat training. His focus is on strategy and utilizing his powers in battle.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Lucas carries a worn satchel or pack, which holds tools for survival, maps, and remnants of the relics that are central to his quest.</p>
+        </div>
+    </div>
+</body>
+</html>
+
