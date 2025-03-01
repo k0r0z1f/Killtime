@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Watcher (Mountain) - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">The Watcher (Mountain) - Location Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>The Watcher (Mountain)</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Not specified</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Rugged mountain base with new frost layers and unstable ice formations.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Lingering, faint, and reactive energy hinting at a mysterious presence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Natural formation, not carved by hands.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Unstable natural defenses with shifting ice and rocky surfaces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Hints at the Minulican’s mysterious behavior and unfinished business.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Cracked ice and unstable paths that may give way unexpectedly.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>Reference point for clues about Lucas, Mina, and the Minulican; marks the cave entrance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Rocky, icy, and broken landscape with altered pathways toward the Pass of the Hawk and jungle.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold with fresh snow, howling winds, and heavy snowfall.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Minulican’s energy detected moving east, suggesting injury or unresolved matters; conditions changed overnight.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>The location is known as "The Watcher (Mountain)". The name evokes a sense of vigilance and enduring presence in a harsh, elevated environment, suggesting that the mountain may serve as a natural lookout or marker in the surrounding region.</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>No population details are provided, indicating that The Watcher (Mountain) might be uninhabited or host only transient visitors, likely due to its challenging and unstable natural conditions.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The site is characterized as a rugged mountain base. New layers of frost have developed on the rocks, and ice has settled in unstable areas, significantly altering its appearance. The natural ice formations contribute to a raw, ever-changing landscape.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere at The Watcher (Mountain) is charged with a lingering and faint energy. This energy is reactive and hints at the mysterious presence of the Minulican. It is notably felt by Aphyrosia, imbuing the area with a heavy, uncertain, and expectant ambiance—as if something is perpetually "there… waiting."</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>This location is a natural formation rather than a structure crafted by human hands. Its features are the direct result of geological processes, showcasing the raw power of nature without any deliberate architectural design.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>No specific carvings or symbolic elements have been provided for The Watcher (Mountain). The absence of such details leaves its deeper symbolic significance open to interpretation or lost to time.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The natural defenses of the mountain are formidable. The environment is marked by loose, shifting ice, unstable rocky surfaces, and paths that can crack and give way unexpectedly. These hazards create a natural barrier, deterring unwary intruders without the need for man-made fortifications.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Local lore suggests a connection between The Watcher (Mountain) and the enigmatic behavior of the Minulican. There is an implication of "unfinished business" surrounding the area, hinting at past events or mysteries that continue to influence its current state.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The mountain conceals several hidden dangers. The presence of cracked ice and unstable pathways means that the terrain can become treacherous without warning, posing significant risks to those who venture across its surface.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The Watcher (Mountain) is a critical reference point for the party. It serves as a clue in their investigation concerning Lucas, Mina, and the Minulican, and it notably marks the cave entrance encountered during their mountain climb.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The surrounding landscape is rugged, marked by rocky, icy, and broken terrain. Altered pathways lead away from the mountain toward the Pass of the Hawk and further direct travelers toward a jungle, emphasizing the stark transition in the environment.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather is harsh and unforgiving. The area is cold with fresh snow blanketing the ground, while howling winds and heavy snowfall add to the oppressive chill. Although a storm has recently eased, the severe conditions persist.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent observations have noted that the energy associated with the Minulican is shifting eastward. This change hints at possible injury or unresolved matters. Overnight, the mountain experienced a notable transformation, with new frost layers and a marked alteration in its reactive energy.</p>
+        </div>
+    </div>
+</body>
+</html>
+

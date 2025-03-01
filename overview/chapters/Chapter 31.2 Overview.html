@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapters Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            padding: 10px 0;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Chapters Overview</h1>
+        
+        <!-- Chapter Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter No.</th>
+                    <th>Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter31.2.1" onclick="highlightSection(this, 'chapter31.2.1')">31.2.1</a></td>
+                    <td><a href="#chapter31.2.1" onclick="highlightSection(this, 'chapter31.2.1')">Aftermath of the Beast</a></td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter31.2.2" onclick="highlightSection(this, 'chapter31.2.2')">31.2.2</a></td>
+                    <td><a href="#chapter31.2.2" onclick="highlightSection(this, 'chapter31.2.2')">Vanished Without a Trace</a></td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter31.2.3" onclick="highlightSection(this, 'chapter31.2.3')">31.2.3</a></td>
+                    <td><a href="#chapter31.2.3" onclick="highlightSection(this, 'chapter31.2.3')">The Vanishing and Return</a></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter31.2.1">
+            <h2>31.2.1 - Aftermath of the Beast</h2>
+            <h3>Summary</h3>
+            <p>In the aftermath of their brutal battle with the Beast, the group assesses the damage to their shelter and tends to their injuries. The battle left the shelter in ruins, with cracks in the walls and debris littering the floor. The tension in the air is heightened by a far greater concern—Lucas and Mina have vanished without a trace. Thomas, despite his injuries, is desperate to begin searching for them, but Aphyrosia insists they focus on healing first. She provides magical healing to Thomas, Candice, and others, though it only partially restores them. Meanwhile, Dira tends to Altheris’s wound, demonstrating her practical medical skills. As the group regains their strength, the urgency to find their missing companions looms over them.</p>
+            <h3>Key Themes &amp; Moments</h3>
+            <ul>
+                <li><strong>Tension &amp; Desperation</strong> – The group grapples with Lucas and Mina’s sudden disappearance, heightening the stakes.</li>
+                <li><strong>Thomas’s Frustration</strong> – His protective instincts drive him to act, but Aphyrosia tempers his impatience with logic.</li>
+                <li><strong>Aphyrosia’s Leadership</strong> – She prioritizes strategy and recovery over reckless action.</li>
+                <li><strong>Dira’s Growth</strong> – She overcomes fear and adrenaline to provide medical aid.</li>
+                <li><strong>Lingering Threats</strong> – The storm rages on, and the Beast may return, reinforcing the constant danger.</li>
+                <li><strong>Uncertainty</strong> – The unexplained nature of Lucas and Mina’s disappearance leaves the group uneasy.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="chapter31.2.2">
+            <h2>31.2.2 - Vanished Without a Trace</h2>
+            <h3>Summary</h3>
+            <p>The group steps out of the shelter into a worsening storm, searching for any sign of Lucas and Mina. Thomas, filled with frustration and guilt, leads the search, but there are no footprints, no burn marks—nothing to indicate what happened. Candice suspects something erased their tracks, while Aphyrosia senses the Minulican's lingering energy. She determines that it has left the area, heading east toward the jungle. Thomas refuses to wait and insists on searching, but Aphyrosia urges patience, knowing they must think strategically. As the cold and night deepen, their search remains fruitless.</p>
+            <h3>Key Themes &amp; Moments</h3>
+            <ul>
+                <li><strong>Mystery &amp; Disappearance</strong>: Lucas and Mina have vanished without a trace, deepening the tension.</li>
+                <li><strong>Frustration &amp; Guilt</strong>: Thomas struggles with his failure to prevent their disappearance.</li>
+                <li><strong>Leadership &amp; Strategy</strong>: Aphyrosia urges caution and patience despite rising emotions.</li>
+                <li><strong>Ominous Signs</strong>: The Minulican has left toward the jungle, hinting at an unresolved danger.</li>
+                <li><strong>Desperation &amp; Determination</strong>: Despite the uncertainty, the group refuses to give up the search.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="chapter31.2.3">
+            <h2>31.2.3 - The Vanishing and Return</h2>
+            <h3>Summary</h3>
+            <p>As a relentless storm rages outside, the group remains restless, unable to find any sign of Lucas and Mina after their mysterious disappearance. The atmosphere in the damaged shelter is tense, with Thomas barely containing his frustration and Candice pragmatically waiting for a sign. Dira, sickened by the unnatural circumstances, struggles to process what has happened, while Aphyrosia meditates, sensing disturbances beyond their understanding. Suddenly, Candice notices a strange shimmer in the air, followed by Lucas and Mina reappearing exactly where they vanished—collapsed in the snow, unconscious but alive. The group rushes to their side, overwhelmed with relief, but their return raises more questions. Their fevers are gone, their vitals stable, yet something lingers in their minds. Aphyrosia assures the group that they will wake soon, though it is clear that something has changed.</p>
+            <h3>Key Themes &amp; Moments</h3>
+            <ul>
+                <li><strong>Disappearance and Mystery</strong>: Lucas and Mina’s vanishing is unnatural, with no trace left behind. Their sudden return deepens the enigma.</li>
+                <li><strong>Emotional Turmoil</strong>: Thomas struggles with helplessness, Dira is disturbed, and Candice remains pragmatic.</li>
+                <li><strong>Unnatural Phenomenon</strong>: The strange shimmering in the air hints at forces beyond their comprehension.</li>
+                <li><strong>Relief and Unease</strong>: Though the group is relieved to have Lucas and Mina back, an underlying tension remains—where had they gone, and what had happened to them?</li>
+                <li><strong>Aphyrosia’s Insight</strong>: She senses something lingering in their minds, reinforcing the idea that their journey is becoming increasingly tied to forces beyond their control.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

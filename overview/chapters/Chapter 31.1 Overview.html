@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Battle Breakdown - The Beast Conflict</title>
+  <style>
+      body {
+          font-family: Arial, sans-serif;
+          background-color: #f4f4f9;
+          margin: 0;
+          padding: 0;
+          transition: background-color 0.3s, color 0.3s;
+      }
+      .container {
+          max-width: 1000px;
+          margin: 40px auto;
+          padding: 20px;
+          background-color: #fff;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      }
+      table {
+          width: 100%;
+          border-collapse: collapse;
+          margin-bottom: 40px;
+      }
+      th, td {
+          padding: 12px 15px;
+          text-align: left;
+          border-bottom: 1px solid #ddd;
+      }
+      th {
+          background-color: #2a3d63;
+          color: white;
+      }
+      tr:nth-child(even) {
+          background-color: #f9f9f9;
+      }
+      td a {
+          color: #007bff;
+          text-decoration: none;
+          cursor: pointer;
+      }
+      td a:hover {
+          text-decoration: underline;
+      }
+      .section-heading {
+          color: #2a3d63;
+          font-size: 1.6em;
+          margin-bottom: 20px;
+      }
+      .section-content {
+          margin-left: 20px;
+          margin-bottom: 30px;
+      }
+      .highlighted {
+          background-color: #f0f8ff;
+      }
+      /* Dark Mode Styles */
+      body.dark-mode {
+          background-color: #121212;
+          color: #e0e0e0;
+      }
+      body.dark-mode .container {
+          background-color: #1e1e1e;
+          box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+      }
+      body.dark-mode table {
+          border-color: #333;
+      }
+      body.dark-mode th {
+          background-color: #1a237e;
+      }
+      body.dark-mode tr:nth-child(even) {
+          background-color: #2c2c2c;
+      }
+      body.dark-mode td a {
+          color: #81d4fa;
+      }
+      /* Toggle Button Styles */
+      .toggle-button {
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background-color: #2a3d63;
+          color: white;
+          border: none;
+          padding: 10px 15px;
+          cursor: pointer;
+          border-radius: 5px;
+          transition: background-color 0.3s;
+      }
+      .toggle-button:hover {
+          background-color: #1e2a4a;
+      }
+  </style>
+  <script>
+      function highlightSection(link, sectionId) {
+          // Remove highlight from all links and sections
+          let links = document.querySelectorAll('table a');
+          links.forEach(l => l.classList.remove('highlighted'));
+
+          let sections = document.querySelectorAll('.section-content');
+          sections.forEach(section => section.classList.remove('highlighted'));
+
+          // Add highlight to the clicked link and corresponding section
+          link.classList.add('highlighted');
+          document.getElementById(sectionId).classList.add('highlighted');
+      }
+
+      function toggleDarkMode() {
+          document.body.classList.toggle('dark-mode');
+          const button = document.getElementById('darkModeToggle');
+          if (document.body.classList.contains('dark-mode')) {
+              button.textContent = 'Light Mode';
+          } else {
+              button.textContent = 'Dark Mode';
+          }
+      }
+  </script>
+</head>
+<body>
+  <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+  <div class="container">
+      <h1 class="section-heading">Battle Breakdown: The Beast Conflict</h1>
+      
+      <!-- Character Attribute Table -->
+      <!-- Minimal concise table summarizing chapter info -->
+      <table>
+          <thead>
+              <tr>
+                  <th>Chapter</th>
+                  <th>Title</th>
+                  <th>Brief</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr>
+                  <td><a href="#chap-31.1.1" onclick="highlightSection(this, 'chap-31.1.1')">31.1.1</a></td>
+                  <td><a href="#chap-31.1.1" onclick="highlightSection(this, 'chap-31.1.1')">The Beast Strikes</a></td>
+                  <td><a href="#chap-31.1.1" onclick="highlightSection(this, 'chap-31.1.1')">Surprise attack; relic punch</a></td>
+              </tr>
+              <tr>
+                  <td><a href="#chap-31.1.2" onclick="highlightSection(this, 'chap-31.1.2')">31.1.2</a></td>
+                  <td><a href="#chap-31.1.2" onclick="highlightSection(this, 'chap-31.1.2')">The Fight for Survival</a></td>
+                  <td><a href="#chap-31.1.2" onclick="highlightSection(this, 'chap-31.1.2')">Battle continues; adaptive Beast</a></td>
+              </tr>
+              <tr>
+                  <td><a href="#chap-31.1.3" onclick="highlightSection(this, 'chap-31.1.3')">31.1.3</a></td>
+                  <td><a href="#chap-31.1.3" onclick="highlightSection(this, 'chap-31.1.3')">Thomas Unleashes the Relic</a></td>
+                  <td><a href="#chap-31.1.3" onclick="highlightSection(this, 'chap-31.1.3')">Climax; relic fusion</a></td>
+              </tr>
+          </tbody>
+      </table>
+      
+      <!-- Detailed Breakdown -->
+      <div class="section-content" id="chap-31.1.1">
+          <h2>31.1.1 – The Beast Strikes</h2>
+          <p>
+              In this chapter, the Beast launches a surprise attack inside the shelter, nearly killing Dira before Thomas intervenes. Dira, unarmed and outmatched, barely escapes the initial strike. Thomas crashes into the Beast, engaging in a brutal struggle to protect her. Candice and Altheris join the fight, but the Beast’s overwhelming power soon becomes evident as Altheris is struck down and injured by a forceful blow against a wall. With Dira in imminent danger, the Beast refocuses its assault on her until Thomas’s relic unexpectedly flares and morphs over his arm, empowering him to deliver a devastating, relic-enhanced punch that sends the Beast flying. However, even after this powerful attack, the Beast shows signs of recovery, indicating that the conflict is far from over.
+          </p>
+          <p>
+              <strong>Key Themes & Moments:</strong><br>
+              - Dira’s vulnerability as a scholar unprepared for combat.<br>
+              - Thomas’s determined intervention and physical prowess.<br>
+              - Altheris’s brave but ultimately costly involvement.<br>
+              - Candice’s tactical archery distraction.<br>
+              - The awakening and transformative power of Thomas’s relic, marking a turning point in the fight.<br>
+              - An escalating danger as the Beast begins to recover.
+          </p>
+      </div>
+      
+      <div class="section-content" id="chap-31.1.2">
+          <h2>31.1.2 – The Fight for Survival</h2>
+          <p>
+              The battle intensifies inside the shelter as the Beast recovers quickly from Thomas’s relic-enhanced punch. The fight continues with the Beast adapting to the group’s tactics. It overpowers Thomas, hurling him across the shelter, while Candice lands another shot to momentarily slow it down. Aphyrosia’s timely use of wind magic further disrupts the Beast’s advance, and Altheris manages to wound it despite his injuries. Realizing Dira is the weakest link, the Beast targets her, forcing Candice to step in to protect her. However, Candice is struck and thrown aside, leaving Dira in grave danger. Just as the Beast is about to deliver a fatal blow to both Candice and Dira, Thomas recovers and lands another devastating punch that forces the Beast to pause and reassess its strategy.
+          </p>
+          <p>
+              <strong>Key Themes & Moments:</strong><br>
+              - The Beast’s rapid adaptation to its enemies’ tactics.<br>
+              - The limits of Thomas’s relic power despite its enhancements.<br>
+              - Dira’s growing fear and vulnerability in the midst of chaos.<br>
+              - Candice’s courageous efforts to shield Dira.<br>
+              - Aphyrosia’s strategic use of wind magic to gain a tactical edge.<br>
+              - A climactic pause where the Beast calculates its next move.
+          </p>
+      </div>
+      
+      <div class="section-content" id="chap-31.1.3">
+          <h2>31.1.3 – Thomas Unleashes the Relic</h2>
+          <p>
+              In the climax of the conflict, Thomas fully embraces the power of his relic as the final showdown with the Beast unfolds. As the Beast charges forward, Thomas meets it head-on, his strikes now infused with relic energy that sends shockwaves through the shelter. The relic, now seamlessly integrated with Thomas, amplifies his speed and strength, shifting the dynamics of the battle. While Candice lands a crucial shot and Aphyrosia uses wind magic to protect Altheris, it is Thomas’s series of relentless, devastating blows that finally force the Beast to acknowledge its defeat. Recognizing Thomas as the greatest threat, the Beast retreats into the storm. In the quiet aftermath, the group is left to process the confrontation, fully aware that the Beast’s retreat is only temporary and that it will return, having learned from this intense encounter.
+          </p>
+          <p>
+              <strong>Key Themes & Moments:</strong><br>
+              - Thomas’s transformation as the relic fuses with him, marking his awakening.<br>
+              - The Beast’s adaptability and its acknowledgment of Thomas’s threat.<br>
+              - The coordinated efforts of the group, with crucial contributions from Candice, Aphyrosia, and Altheris.<br>
+              - Foreshadowing of the Beast’s eventual return, stronger and more cunning.<br>
+              - Dira’s shaken state, hinting at a significant turning point in her character arc.
+          </p>
+      </div>
+  </div>
+</body>
+</html>
+

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pass of the Hawk - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 30px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Pass of the Hawk (Location Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Pass of the Hawk</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Sparse population; primarily transient travelers, hermits, a few hardy mountain dwellers, and local guides, rare wildlife</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A narrow, winding mountain pass with towering, jagged ice- and snow-covered rocks</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy &amp; Atmosphere</a></td>
+                    <td>Tense, foreboding, and imbued with ancient, sacred energy</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Natural formations with minimal human-made structures like stone pathways and small shelters</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism-carvings" onclick="highlightSection(this, 'symbolism-carvings')">Symbolism &amp; Carvings</a></td>
+                    <td>Ancient carvings of hawks, storms, mythical creatures, and celestial symbols</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Sheer cliffs, crevasses, and natural barriers forming treacherous terrain</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends-lore" onclick="highlightSection(this, 'legends-lore')">Legends &amp; Lore</a></td>
+                    <td>Legends of the Watcher—a guardian spirit testing traveler’s worthiness</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Avalanches, sudden crevasses, extreme cold, and potential hostile encounters</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>The party navigates the pass en route to Ceylan’s Cave amid environmental challenges</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Rugged, snow-covered mountains with steep cliffs, deep valleys, and dense forests</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Extremely cold with biting winds, heavy snowfall, and sudden snowstorms</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Seismic activity, avalanches, altered pathways, and heightened mystical significance</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p><strong>Pass of the Hawk</strong></p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The area is characterized by a sparse population, including primarily transient travelers, hermits, a few hardy mountain dwellers, local guides, and the occasional appearance of rare wildlife.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The pass is a narrow, winding mountain route flanked by towering, jagged rocks covered in ice and snow. The path is rugged and treacherous, featuring narrow, rocky trails, steep inclines, and sheer drops into mist-covered abysses below. Over time, new frost and ice have altered the familiar route, rendering the pathways barely recognizable. The snow-covered paths and jagged rocks underscore a harsh, survival-focused environment.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy &amp; Atmosphere</h2>
+            <p>The overall energy of the pass is tense and foreboding. There is a constant sense of imminent danger, spurred by unstable terrain, unpredictable weather, relentless winds, and icy conditions. The area exudes an ancient and untouched quality, imbuing it with a solemn, mysterious, and survival-driven atmosphere, heightened by an underlying sacred energy.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of the pass is predominantly defined by natural formations. Minimal human-made structures are present, including sturdy stone pathways carved into the mountainside, reinforced handrails fashioned from ice or metal, small shelters built into rock faces, remnants of old lookout points, and temporary shelters such as shallow overhangs.</p>
+        </div>
+
+        <div class="section-content" id="symbolism-carvings">
+            <h2>Symbolism &amp; Carvings</h2>
+            <p>Rocky walls along the pass feature intricate, ancient carvings depicting hawks, storms, mythical creatures, and celestial symbols. These carvings are believed to serve as protective symbols—warding off natural disasters and malevolent spirits while representing vigilance and protection. Although weathered by time, they remain visible and contribute to the mystical reputation of the pass, hinting at historical or mystical significance.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The natural defenses of the pass include its sheer cliffs, avalanche-prone zones, hidden crevices, and treacherous terrain. Deep ravines and rocky outcrops further complicate navigation, serving as formidable barriers that challenge large groups or any hostile forces.</p>
+        </div>
+
+        <div class="section-content" id="legends-lore">
+            <h2>Legends &amp; Lore</h2>
+            <p>Local legends speak of a guardian known as the Watcher—a spirit or deity believed to control the weather and protect the pass from those deemed unworthy. According to myth, the Watcher tests the worthiness of travelers, guiding or challenging them through trials. Some heroes are said to have overcome these tests, while others vanished without a trace. This lore is intertwined with ancient prophecies and local myths, deepening the mystical allure of the pass.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The pass is fraught with hidden dangers, including a high risk of avalanches, unstable rock formations, and sudden crevasses formed by recent tremors. Extreme cold, limited visibility from snowstorms, and harsh winds further complicate travel. There is also the potential for encounters with unknown or hostile creatures lurking within the misty abysses, compounded by unstable pathways altered by frost and ice.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The party is a central element in the current events of the Pass of the Hawk. They are navigating through this treacherous pass en route to Ceylan’s Cave. Along the way, they encounter newly formed crevasses and rely on their unique abilities to survive. Their journey is marked by the establishment of temporary camps after grueling climbs, and they face environmental challenges—some of which are influenced by the Watcher’s mysterious interventions, including avalanches and sightings of unusual figures near avalanche sites. These trials are testing the party’s resolve and unity, aligning with an unfolding prophecy.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The terrain surrounding the pass is harsh and dominated by high, jagged, snow-covered mountains with steep cliffs, deep valleys, dense forests, and scattered rocky outcrops. Notable landmarks, such as Ceylan’s Cave, punctuate the rugged landscape. Fresh snow, frost, and ice have altered the mountain's features, further isolating the pass and complicating access.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in the pass is extremely cold, marked by persistent, biting winds and heavy snowfall. Frequent, sudden snowstorms and strong gusts create unpredictable conditions. A recent storm has eased slightly, though a lingering chill remains, adding to the inhospitable nature of the environment.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent seismic activity has significantly altered the landscape of the pass. New crevasses, such as the so-called Watcher’s Crevasse, have formed. A recent avalanche—possibly triggered by what is believed to be the Watcher’s intervention—has blocked portions of the path, forcing the party to seek alternative routes. Overnight, new layers of frost and ice rendered familiar pathways unrecognizable. As the party sets up temporary camps after arduous climbs, they have witnessed unusual figures near avalanche sites, experienced heightened tensions amid harsh weather, and sensed the growing influence of the mountain’s sacred energy in response to their presence and the unfolding prophecy.</p>
+        </div>
+    </div>
+</body>
+</html>
+

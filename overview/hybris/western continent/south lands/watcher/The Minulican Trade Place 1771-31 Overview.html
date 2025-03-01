@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Minulican's Trade Place - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">The Minulican's Trade Place (Location Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>The Minulican's trade place</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>No permanent inhabitants; transient Lucas &amp; Mina</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Shimmering, flickering shelter entrance</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy &amp; Atmosphere</a></td>
+                    <td>Unsettling, mysterious presence</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism-carvings" onclick="highlightSection(this, 'symbolism-carvings')">Symbolism &amp; Carvings</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends-lore" onclick="highlightSection(this, 'legends-lore')">Legends &amp; Lore</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Lingering mental effects</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>Lucas &amp; Mina vanished altered</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Snow-covered, featureless</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Frigid, stormy, heavy snowfall</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Lucas &amp; Mina reappeared unconscious, mentally affected</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>The location is officially known as "The Minulican's trade place," serving as a designated area for transient activity rather than a settled community.</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>There are no permanent inhabitants at this site. The only observed presences are the transient visits by Lucas and Mina, indicating a temporary occupancy.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The entrance of the shelter is marked by a shimmering, flickering effect that creates a mirage-like appearance against the snowy backdrop, contributing to its enigmatic look.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy &amp; Atmosphere</h2>
+            <p>The overall energy of the location is unsettling and mysterious. There is an inexplicable presence that pervades the area, making it feel otherworldly.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>No architectural details have been provided for this location.</p>
+        </div>
+
+        <div class="section-content" id="symbolism-carvings">
+            <h2>Symbolism &amp; Carvings</h2>
+            <p>There is no information available regarding any symbolism or carvings associated with the structure or its surroundings.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>No defensive measures or structures have been noted in the provided details.</p>
+        </div>
+
+        <div class="section-content" id="legends-lore">
+            <h2>Legends &amp; Lore</h2>
+            <p>There is no lore or legendary background information associated with this place in the available data.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Observers have noted unexplained lingering mental effects in those who visit, suggesting that the location may harbor subtle yet dangerous influences.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The location is directly tied to the party's ordeal, as Lucas and Mina vanished into this space and later reappeared altered, hinting at a mysterious connection.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The area surrounding the trade place is characterized by a vast, snow-covered expanse that is largely featureless and devoid of distinct landmarks.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The climate at the location is harsh, with frigid temperatures accompanied by stormy conditions and heavy snowfall, adding to the overall bleak atmosphere.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recently, Lucas and Mina were found reappearing in the area unconscious but with stable vitals. However, they exhibited signs of lingering mental influences, deepening the mystery surrounding this trade place.</p>
+        </div>
+    </div>
+</body>
+</html>
+
