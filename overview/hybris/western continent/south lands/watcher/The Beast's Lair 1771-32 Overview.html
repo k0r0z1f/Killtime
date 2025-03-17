@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Beast's Lair - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            padding: 10px 0;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+    
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+    
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">The Beast's Lair (Location Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>The Beast's Lair</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Battle-weary party visit</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Dark cavern, charred remains</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy &amp; Atmosphere</a></td>
+                    <td>Oppressive, battle-scarred</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Natural rock, collapsed tunnels</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism-carvings" onclick="highlightSection(this, 'symbolism-carvings')">Symbolism &amp; Carvings</a></td>
+                    <td>Ancient Nythari markings</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Guardian beast, unstable hazards</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends-lore" onclick="highlightSection(this, 'legends-lore')">Legends &amp; Lore</a></td>
+                    <td>Prophecy &amp; bound soul shard</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Debris, pulsating shard</td>
+                </tr>
+                <tr>
+                    <td><a href="#party-link" onclick="highlightSection(this, 'party-link')">Link to the Party</a></td>
+                    <td>Candice's warning, Lucas's draw</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Northern cliffs, battle debris</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold, damp, oppressive</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Guardian slain, relics revealed</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>The Beast’s Lair</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>Formerly guarded by the Beast; visited by the battle-weary party (Lucas, Mina, Thomas, Candice, Dira, Aphyrosia and Altheris).</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>High on the northern cliffs, a vast, dark cavern with jagged, uneven rock formations, collapsed tunnels, fractured stone, scorched ground, charred remains, scattered embers, lingering smoke, bones of past victims, rusted weapons, and remnants of natural rock outcroppings. The Beast’s ruined corpse lies half-buried and charred.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy &amp; Atmosphere</h2>
+            <p>Oppressive, heavy with the lingering weight of battle and an eerie, foreboding silence; charged with raw, primal energy, residual heat, and a sense of unfinished purpose.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>Natural rock formations, unstable terrain, sharp outcroppings, and collapsed tunnels; no man-made structures except for relics left behind.</p>
+        </div>
+
+        <div class="section-content" id="symbolism-carvings">
+            <h2>Symbolism &amp; Carvings</h2>
+            <p>The Beast’s hide bore intricate, ancient markings in Nythari script, hinting at an older guardianship purpose. A faded metal plate with arcane carvings in the same script was found.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Beast itself served as a guardian, its ferocity acting as a natural defense; natural hazards include unstable walls, loose rubble, crevices, and suffocating dead-ends.</p>
+        </div>
+
+        <div class="section-content" id="legends-lore">
+            <h2>Legends &amp; Lore</h2>
+            <p>Stories of its guardian were not mere fables. The Beast may have been a guardian rather than a mere predator. Its lair is connected to an ancient prophecy and houses a soul meant to be bound, inside a crystal shard, suggesting a deeper, forgotten lore.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The cavern’s environment remains unstable—loose rubble, hidden crevices, falling debris, and a crystal shard within a metallic frame pulsating with a malevolent, living presence radiating intense hatred.</p>
+        </div>
+
+        <div class="section-content" id="party-link">
+            <h2>Link to the Party</h2>
+            <p>Candice was warned about this place; it may contain stolen artifacts. Lucas was drawn here for a reason, and his actions in the battle may have awakened unknown forces. The party is investigating relics and debating the meaning of the shard.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Northern cliffs; the cavern’s interior is strewn with debris from the battle, remnants of past victims, and old, charred relics.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>Cold, damp, and oppressive; occasional water drips, residual heat from Lucas's fire attacks, and a pervasive stench of rot and damp fur.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The Beast was slain, revealing it was a guardian. The lair contained relics, including a metal plate and a crystal shard, hinting at an ancient prophecy. Artifacts stolen over centuries may still be hidden here. The party is investigating their significance.</p>
+        </div>
+    </div>
+</body>
+</html>
+

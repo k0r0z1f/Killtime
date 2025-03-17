@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altheris - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Altheris (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Injured soldier; guide & protector; ex-guard/scout; documenter; Elven tech link</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Swift, brave, stoic; observant, duty-bound; calm, pragmatic; vigilant, protective; reserved</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Swordsmanship; hybrid tech proficiency</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Haliriel's Defense; loyal to Queen Aphyrosia; expedition member; Elven realms link</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Large elf frame; imposing; sharp eyes; muscular; scarred; practical attire</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Guide mission; protect Queen/group; mountain ascent; confront Beast; document events</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Observed a Beast at camp; kept secret per Queen's order</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Military-trained; skilled in combat</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Fencing sword & long blade; advanced camera device</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>No birth year details were provided for Altheris.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>
+                Altheris serves as an injured soldier and a key member of a traveling group. He acts as a guide for the party, leveraging his extensive knowledge of the mission and the Queen's involvement. Once a guard and scout responsible for patrolling and vigilance, he remains ever watchful, positioned at the rear to monitor for potential threats. Additionally, his role extends to documenting mysterious events in a mansion, and he maintains a connection with the Elven realms through an advanced technological device.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                Altheris is characterized by his swift and brave nature, combined with a stoic and observant demeanor. His personality reflects composure, respect, and a strong sense of duty. Calm and pragmatic, he remains focused and vigilant, displaying protective loyalty and readiness to act quickly. His reserved nature often leaves his true feelings unreadable.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>
+                Altheris is proficient in swordsmanship and is skilled in utilizing advanced hybrid technology. These abilities make him an effective combatant and a resourceful member of his group.
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>
+                As the commandant of Haliriel's Defense, Altheris holds a position of authority and maintains close ties with Queen Aphyrosia. His loyalty extends to the expedition group he serves with, and he is implicitly linked to the Elven realms. He is also associated with the Children of Hybris.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                With a larger frame typical of an elf, Altheris presents an imposing presence. His sharp eyes and muscular, battle-hardened build are complemented by fresh scars that testify to past conflicts. He dresses in practical attire suited for both combat and the rigors of travel.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>
+                Altheris’s journey centers on guiding his party through a complex mission. His goals include ensuring that Ceylan’s wisdom is consulted, protecting the group and the Queen from threats, and playing a crucial role in ascending a mountain. Additionally, he is tasked with confronting a dangerous Beast in combat, aiding in the search for Lucas and Mina, and meticulously documenting the mysterious events unfolding within the mansion.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>
+                In a closely guarded secret, Altheris once observed a mysterious, hairy figure—referred to as the Beast—watching the camp. He has kept this unsettling discovery confidential, adhering strictly to the Queen's instructions.
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                Altheris is well-versed in military training, having honed his skills in combat and physical defense. His background as a soldier ensures he is capable in a variety of battle scenarios.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>
+                His gear includes a fencing sword and a long blade that is carried on his back. In addition, he utilizes a small, advanced camera device—hybrid technology sourced from the Elven realms—to assist him in his documentation and mission-related tasks.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

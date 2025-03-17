@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceylan's Cave - Location Overview (1771-32)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Ceylan's Cave (Location Overview 1771-32)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Ceylan's Cave</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Ceylan missing; visited by party</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Jagged entrance; varied interiors; vanished mansion; mahogany door</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy &amp; Atmosphere</a></td>
+                    <td>Sacred, alive, warm yet oppressive</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Natural stone; altered interior; ornate door</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism &amp; Carvings</a></td>
+                    <td>Mountain hawks; Nythari symbols; swirling carvings</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Terrain, energy, self-opening door, Watcher</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends-lore" onclick="highlightSection(this, 'legends-lore')">Legends &amp; Lore</a></td>
+                    <td>Ceylan’s domain; prophecy-linked; timeless magic</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Tremors, rockfalls, avalanches, unseen threats</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>Prophecy route; vision; pursuit east</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Mountainous, icy, jagged, storm-scarred</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold storms outside; warm, heavy inside</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Tremors; altered cave; missing Ceylan; lost day</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p><strong>Ceylan's Cave</strong></p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>Home to Ceylan, now missing; visited by the adventuring party.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The entrance is obscured by jagged rocks and snow, half-hidden by natural formations. Inside, smooth stone floors and shadowed walls once lit by old torches. Deeper sections have rough, uneven walls that cast long, shifting shadows. The cave temporarily contained a massive, dark mahogany door with intricate details. Barren and cold with rough, icy stone floors, but mysteriously smooth walls. A mansion briefly existed within before vanishing overnight.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy &amp; Atmosphere</h2>
+            <p>A layered, shifting presence: an overwhelming sense of sacredness and watchfulness, as if the cave itself were alive. A subtle warmth contrasts with the cold wind outside, yet an ominous, oppressive weight lingers. Time and power seem to shift within, creating an unnerving, almost tangible vibration. The cave also has an eerie silence and heavy stillness. It is a safe starting point before a chase but also carries an unseen threat.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>A natural stone formation appearing unmodified externally, with only minor smoothing of pathways inside. Internally altered by unknown forces, as shown by the unexpected, ornate mahogany door that remained until morning. That door led into a mansion that disappeared with the door.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism &amp; Carvings</h2>
+            <p>Carvings of mountain hawks and ancient Nythari symbols representing balance, wisdom, and protection. The mahogany door features intricate swirling carvings of eyes, spirals, and faceless figures with ornate brass knockers shaped like watchful faces.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>No explicit or constructed defenses; however, the difficult terrain, the cave’s mystical energy, the mahogany door’s self-opening nature, and the Watcher’s presence suggest supernatural safeguards.</p>
+        </div>
+
+        <div class="section-content" id="legends-lore">
+            <h2>Legends &amp; Lore</h2>
+            <p>Known as Ceylan’s domain, imbued with ancient and enigmatic power. It is believed to hold wisdom essential for the prophecy. Ceylan spoke cryptically of cycles, fate, and hidden names, tying the cave to prophecy. It is described as a place “outside of time” with a lingering magical presence. The Watcher and a hidden temple are linked to the cave’s purpose.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Unstable ground due to tremors; potential for sudden rockfalls. Treacherous winds after dusk; increased avalanche activity. The cave’s energy appears capable of ‘touching’ individuals, as warned by Ceylan. A mysterious force is present, and unseen threats linger. The altered energy, the door’s stirring, Ceylan’s disappearance, and the mansion’s vanishing all suggest concealed dangers.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The party must ascend the mountain to seek Ceylan’s wisdom for their prophetic journey. It is a pivotal location where cryptic revelations hint at a hidden tomb and temple. Lucas experiences a traumatic telepathic vision here before his departure. Later, the party transitions from the vanished mansion to this cave and pursues their mission toward the eastern pass. Mina and others begin their pursuit of Lucas here after he emerges and is captured by the Beast.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Mountainous, icy terrain near jagged cliffs; a treacherous, shifting landscape with loose stone and snow-covered outcrops. The cold mountain air creates a harsh environment, with steep paths scarred by storms.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>Outside: bitterly cold with violent, icy storms and howling winds. Inside: an unnatural warmth replaces the cold wind, but the air is heavy and thick. Winds become treacherous after dusk.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent mountain tremors have made paths unsafe and increased avalanche activity. The party’s arrival has coincided with intensified cave energy. Ceylan is missing, and an unseen presence has grown stronger. The cave was mysteriously altered, with a mahogany door appearing and a mansion vanishing overnight. The party found themselves with healed wounds but lost a day, forcing them toward the eastern pass to continue their mission.</p>
+        </div>
+    </div>
+</body>
+</html>
+
