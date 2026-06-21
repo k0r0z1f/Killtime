@@ -1,0 +1,125 @@
+{
+    "timelines": {
+        "Main Line": {
+            "y": 0,
+            "color": "#ffeb3b",
+            "start_val": 0.0,
+            "parent": null
+        },
+        "Timeline-0 1": {
+            "y": 120,
+            "color": "#f44336",
+            "start_val": 1000000.36,
+            "parent": "Main Line"
+        },
+        "Timeline-0 2": {
+            "y": -240,
+            "color": "#2196f3",
+            "start_val": 0.0,
+            "parent": "Timeline-0 1"
+        },
+        "Timeline-A 1": {
+            "y": 360,
+            "color": "#4caf50",
+            "start_val": 150.63666666666666,
+            "parent": "Timeline-0 2"
+        }
+    },
+    "events": [
+        {
+            "float_val": 0.0,
+            "date_str": "0000-01-01",
+            "name": "Arrival of the Exiled Colony on Hybris",
+            "line_name": "Main Line",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1788.32,
+            "date_str": "1788-04-07",
+            "name": "Disciple of Earth Fight in Brum'korath",
+            "line_name": "Main Line",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1788.36,
+            "date_str": "1788-04-19",
+            "name": "Party-0 first spacetime jump",
+            "line_name": "Main Line",
+            "type": "trigger",
+            "target_branch": "Timeline-0 1"
+        },
+        {
+            "float_val": 1000000.9366666666,
+            "date_str": "1000000-10-12",
+            "name": "Relic driven spacetime jump",
+            "line_name": "Timeline-0 1",
+            "type": "trigger",
+            "target_branch": "Timeline-0 2"
+        },
+        {
+            "float_val": 0.02,
+            "date_str": "0000-01-07",
+            "name": "Party-0 loses the demonsoul gem catalyst on the Watcher",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 59.71,
+            "date_str": "0059-08-04",
+            "name": "Thomas-0 death",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 67.37333333333333,
+            "date_str": "0067-04-23",
+            "name": "Lucas-0 death",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 69.11,
+            "date_str": "0069-02-04",
+            "name": "Mina-0 death",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1771.7133333333334,
+            "date_str": "1771-08-05",
+            "name": "Lucas-A, Mina-A birth",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1771.19,
+            "date_str": "1771-02-28",
+            "name": "Thomas-A birth",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1788.32,
+            "date_str": "1788-04-07",
+            "name": "Party-A fight with Disciple of Earth-A",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1788.3666666666666,
+            "date_str": "1788-04-21",
+            "name": "Party-A fight with Disciple of Air-A",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1788.3666666666666,
+            "date_str": "1788-04-21",
+            "name": "Lucas-A botched space jump",
+            "line_name": "Timeline-0 2",
+            "type": "trigger",
+            "target_branch": "Timeline-A 1"
+        }
+    ],
+    "color_index": 3
+}
