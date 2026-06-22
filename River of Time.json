@@ -155,65 +155,79 @@
             "type": "fixed"
         },
         {
-            "float_val": 1770.4166,
-            "date_str": "1770-05-15",
-            "name": "Orientation day at Central Institute; the trio unites",
+            "float_val": 1770.3666,
+            "date_str": "1770-04-21",
+            "name": "Lucas-A and Mina-A's first meeting outside the stadium",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
         {
-            "float_val": 1770.4666,
-            "date_str": "1770-05-20",
-            "name": "Mina-A's runaway speed; Lucas-A's telekinetic door breach",
-            "line_name": "Timeline-A 1",
-            "type": "fixed"
-        },
-        {
-            "float_val": 1770.48,
+            "float_val": 1770.4766,
             "date_str": "1770-05-24",
             "name": "Graduation day; Lucas-A applies to Central Institute",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
         {
-            "float_val": 1770.5066,
-            "date_str": "1770-06-02",
+            "float_val": 1770.65,
+            "date_str": "1770-07-15",
+            "name": "Orientation day at Central Institute; the trio unites",
+            "line_name": "Timeline-A 1",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1770.7166,
+            "date_str": "1770-08-05",
+            "name": "Mina-A's runaway speed; Lucas-A's telekinetic door breach",
+            "line_name": "Timeline-A 1",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1770.75,
+            "date_str": "1770-08-15",
             "name": "The Acoustic Breach: Lucas-A and Mina-A's first kiss",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
         {
-            "float_val": 1770.57,
-            "date_str": "1770-06-21",
-            "name": "Lucas-A and Mina-A's first meeting outside the stadium",
+            "float_val": 1770.7533,
+            "date_str": "1770-08-16",
+            "name": "Sleepwalking Carnage: The Arcane Storm triggers, Lupine Anomaly born",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
         {
-            "float_val": 1771.1,
+            "float_val": 1770.7566,
+            "date_str": "1770-08-17",
+            "name": "Thomas-A hides them in the safehouse; they become fugitives",
+            "line_name": "Timeline-A 1",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1771.1033,
             "date_str": "1771-02-01",
-            "name": "Party-A discovers Timeline-0 sarcophagi in the Obsidian Crypt",
+            "name": "Party-A fight with Disciple of Earth-A in Brum'korath",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
         {
-            "float_val": 1771.12,
-            "date_str": "1771-02-05",
+            "float_val": 1771.1666,
+            "date_str": "1771-02-20",
             "name": "The Windfighter journeys to the Watcher; Ceylan's broken prophecy",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
         {
-            "float_val": 1771.14,
-            "date_str": "1771-02-07",
+            "float_val": 1771.1833,
+            "date_str": "1771-02-25",
             "name": "Party-A enters the impossible Mansion / Temple of Mirrors",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
         {
-            "float_val": 1771.32,
-            "date_str": "1771-04-07",
-            "name": "Party-A fight with Disciple of Earth-A in Brum'korath",
+            "float_val": 1771.1933,
+            "date_str": "1771-02-28",
+            "name": "Party-A discovers Timeline-0 sarcophagi in the Obsidian Crypt",
             "line_name": "Timeline-A 1",
             "type": "fixed"
         },
@@ -233,8 +247,8 @@
             "target_branch": "Timeline-D"
         },
         {
-            "float_val": 1775.4166,
-            "date_str": "1775-04-16",
+            "float_val": 1775.4133,
+            "date_str": "1775-05-05",
             "name": "Timeline-A5 Side-Story: John & Erika transport the Broken Messiah",
             "line_name": "Timeline-A 1",
             "type": "fixed"
