@@ -8,7 +8,7 @@ from PyQt6.QtWidgets import (QApplication, QMainWindow, QGraphicsScene, QGraphic
                              QFormLayout, QLineEdit, QComboBox, QSpinBox, QDialogButtonBox,
                              QLabel, QFileDialog, QMenuBar, QStatusBar, QGraphicsItem, QMenu)
 from PyQt6.QtGui import QPen, QColor, QBrush, QPainterPath, QFont, QPainter, QAction
-from PyQt6.QtCore import Qt, QTimer, QLineF, QRectF
+from PyQt6.QtCore import Qt, QTimer, QLineF, QRectF, QPointF
 
 # --- CONFIGURATION ---
 PIXELS_PER_YEAR = 100  # Scale: 100 pixels represents 1 year horizontally
@@ -75,6 +75,9 @@ class AddEventDialog(QDialog):
 
         self.name_input = QLineEdit()
         self.layout.addRow("Event Name:", self.name_input)
+
+        self.chapter_input = QLineEdit()
+        self.layout.addRow("Chapter/Part (Optional):", self.chapter_input)
 
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.accept)
@@ -147,63 +150,13 @@ class EditEventDialog(QDialog):
         self.name_input = QLineEdit(event_data["name"])
         self.layout.addRow("Event Name:", self.name_input)
 
+        self.chapter_input = QLineEdit(event_data.get("chapter_part", ""))
+        self.layout.addRow("Chapter/Part (Optional):", self.chapter_input)
+
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
         self.layout.addWidget(self.buttons)
-
-class InfiniteDashLineItem(QGraphicsItem):
-    def __init__(self, x1, x2, y, pen):
-        super().__init__()
-        self.x1 = min(x1, x2)
-        self.x2 = max(x1, x2)
-        self.y_pos = y
-        self.pen = pen
-        self.pattern_length = sum(pen.dashPattern())
-        if self.pattern_length == 0:
-            self.pattern_length = 1.0
-
-    def boundingRect(self):
-        # Generous bounding rect so it stays active during panning
-        return QRectF(self.x1, self.y_pos - 50, self.x2 - self.x1, 100)
-
-    def paint(self, painter, option, widget=None):
-        device = painter.device()
-        if not device: return
-
-        # 1) Since FullViewportUpdate makes exposedRect cover the entire huge item, 
-        # we bypass it and calculate the exact visible screen bounds via the viewport device.
-        view_rect = QRectF(0, 0, device.width(), device.height())
-        inv_transform, invertible = painter.transform().inverted()
-        if not invertible: return
-        
-        logical_rect = inv_transform.mapRect(view_rect)
-        
-        # 2) Calculate draw segment clamping to item bounds and visible bounds
-        scale_x = abs(painter.transform().m11())
-        if scale_x == 0: scale_x = 1.0
-        
-        pad = 200 / scale_x # Pad dynamically by 200 screen pixels
-        
-        draw_x1 = max(self.x1, logical_rect.left() - pad)
-        draw_x2 = min(self.x2, logical_rect.right() + pad)
-
-        if draw_x1 > draw_x2:
-            return
-
-        # 3) Determine dash offset so the pattern remains perfectly anchored globally
-        pixel_dist = (draw_x1 - self.x1) * scale_x
-        pen_width = self.pen.widthF()
-        if pen_width == 0: pen_width = 1.0 
-            
-        offset_units = (pixel_dist / pen_width) % self.pattern_length
-        
-        draw_pen = QPen(self.pen)
-        draw_pen.setDashOffset(offset_units)
-        
-        painter.setPen(draw_pen)
-        painter.drawLine(QLineF(draw_x1, self.y_pos, draw_x2, self.y_pos))
-
 
 class RiverView(QGraphicsView):
     def __init__(self, scene, main_window):
@@ -218,6 +171,29 @@ class RiverView(QGraphicsView):
         
         # Disable pixel-scrolling optimization so the fixed foreground overlay doesn't smear when panning
         self.setViewportUpdateMode(QGraphicsView.ViewportUpdateMode.FullViewportUpdate)
+        
+        self.setMouseTracking(True)
+        self.hovered_event_idx = None
+
+    def mouseMoveEvent(self, event):
+        super().mouseMoveEvent(event)
+        item = self.itemAt(event.pos())
+        event_idx = None
+        if item is not None:
+            event_idx = item.data(0)
+            
+        if event_idx != self.hovered_event_idx:
+            if self.hovered_event_idx is not None:
+                self.main_window.set_event_highlight(self.hovered_event_idx, False)
+            self.hovered_event_idx = event_idx
+            if self.hovered_event_idx is not None:
+                self.main_window.set_event_highlight(self.hovered_event_idx, True)
+
+    def leaveEvent(self, event):
+        if self.hovered_event_idx is not None:
+            self.main_window.set_event_highlight(self.hovered_event_idx, False)
+            self.hovered_event_idx = None
+        super().leaveEvent(event)
 
     def mouseDoubleClickEvent(self, event):
         item = self.itemAt(event.pos())
@@ -255,8 +231,13 @@ class RiverView(QGraphicsView):
         zoom_in_factor = 1.15
         zoom_out_factor = 1 / zoom_in_factor
         
+        current_scale_x = self.transform().m11()
+        max_scale_x = 1500.0 # 1 day (~0.33 scene pixels) becomes ~500 screen pixels
+        
         if event.angleDelta().y() > 0:
-            zoom_factor = zoom_in_factor
+            if current_scale_x >= max_scale_x:
+                return # Reached max zoom in
+            zoom_factor = min(zoom_in_factor, max_scale_x / current_scale_x)
         else:
             zoom_factor = zoom_out_factor
             
@@ -288,18 +269,56 @@ class RiverView(QGraphicsView):
                 step = s
                 break
                 
-        # Draw the vertical grid lines in the background
+        # Draw the vertical grid lines in the background directly in screen-space
+        # to prevent Qt's 32-bit transform overflow at extreme zooms and coordinates.
         grid_pen = QPen(QColor(40, 45, 50))
-        grid_pen.setWidth(0) # Width 0 guarantees a crisp 1px line regardless of zoom
+        grid_pen.setWidth(1) # Setting width 1 since we are drawing in untransformed device coordinates
+        
+        painter.save()
+        painter.resetTransform()
         painter.setPen(grid_pen)
         
         start_count = math.floor(min_val / step)
         end_count = math.ceil(max_val / step)
+        view_height = self.viewport().height()
+        # viewportTransform() includes BOTH zoom scale and panning translation
+        transform = self.viewportTransform() 
         
         for i in range(start_count, end_count + 1):
             x = (i * step) * PIXELS_PER_YEAR
-            # Use QLineF to prevent 32-bit integer overflow crashes at extreme zooms
-            painter.drawLine(QLineF(x, rect.top(), x, rect.bottom()))
+            screen_x = transform.map(QPointF(x, 0)).x()
+            painter.drawLine(QLineF(screen_x, 0, screen_x, view_height))
+            
+        # --- Draw Infinite Lines in Pure Screen Space ---
+        # This completely bypasses Qt's QGraphicsItem clipping limits.
+        view_width = self.viewport().width()
+        pad = 200.0
+        
+        for line in self.main_window.infinite_lines:
+            x1, x2 = min(line['x1'], line['x2']), max(line['x1'], line['x2'])
+            
+            screen_y = transform.map(QPointF(0, line['y'])).y()
+            screen_x1 = transform.map(QPointF(x1, line['y'])).x()
+            screen_x2 = transform.map(QPointF(x2, line['y'])).x()
+            
+            draw_x1 = max(-pad, min(screen_x1, view_width + pad))
+            draw_x2 = max(-pad, min(screen_x2, view_width + pad))
+            
+            if abs(draw_x2 - draw_x1) < 0.1:
+                continue
+                
+            pen = QPen(line['pen'])
+            pattern_length = sum(pen.dashPattern())
+            if pattern_length > 0:
+                pen_width = pen.widthF()
+                if pen_width == 0: pen_width = 1.0
+                offset_units = ((draw_x1 - screen_x1) / pen_width) % pattern_length
+                pen.setDashOffset(offset_units)
+                
+            painter.setPen(pen)
+            painter.drawLine(QLineF(draw_x1, screen_y, draw_x2, screen_y))
+            
+        painter.restore()
 
     def drawForeground(self, painter, rect):
         super().drawForeground(painter, rect)
@@ -340,8 +359,8 @@ class RiverView(QGraphicsView):
             v = i * step
             x = v * PIXELS_PER_YEAR
             
-            # Translate scene X coordinate to viewport window X coordinate
-            view_pt = self.mapFromScene(x, 0)
+            # Translate scene X coordinate to viewport window X coordinate using pure floats
+            screen_x = self.viewportTransform().map(QPointF(x, 0)).x()
             
             # Eliminate microscopic floating point drift before extracting dates
             clean_v = round(v * 300) / 300.0 
@@ -362,7 +381,7 @@ class RiverView(QGraphicsView):
             else:             # days
                 label = f"{year}-{month:02d}-{day:02d}"
                 
-            painter.drawText(int(view_pt.x()) + 5, 18, label)
+            painter.drawText(int(screen_x) + 5, 18, label)
 
 
 class TimelineApp(QMainWindow):
@@ -380,7 +399,11 @@ class TimelineApp(QMainWindow):
         self.current_filepath = None
 
         self.scene = QGraphicsScene()
+        # Disable BSP tree indexing so massive bounding rects aren't incorrectly culled at high zoom
+        self.scene.setItemIndexMethod(QGraphicsScene.ItemIndexMethod.NoIndex)
         self.view = RiverView(self.scene, self)
+        
+        self.infinite_lines = []
 
         # Menu Bar
         menubar = self.menuBar()
@@ -487,10 +510,14 @@ class TimelineApp(QMainWindow):
             date_str = dialog.date_input.get_date_str()
             event_name = dialog.name_input.text()
             
-            self.events.append({
+            chapter_part = dialog.chapter_input.text().strip()
+            new_event = {
                 "float_val": float_val, "date_str": date_str, "name": event_name, 
                 "line_name": line_name, "type": "fixed"
-            })
+            }
+            if chapter_part:
+                new_event["chapter_part"] = chapter_part
+            self.events.append(new_event)
             self.render_canvas()
             self.autosave_project()
             self.statusBar().showMessage(f"Event '{event_name}' added to {line_name}.", 4000)
@@ -530,6 +557,8 @@ class TimelineApp(QMainWindow):
 
     def render_canvas(self):
         self.scene.clear()
+        self.view.hovered_event_idx = None
+        self.infinite_lines = []
         
         # Pull real dynamic bounds based on timeline starts & events bounds
         vals = [e["float_val"] for e in self.events]
@@ -565,7 +594,9 @@ class TimelineApp(QMainWindow):
                 
                 main_pen = QPen(color, 4)
                 main_pen.setCosmetic(True) # Keeps line thick when zoomed out
-                self.scene.addLine(inf_min_x, y_pos, inf_max_x, y_pos, main_pen)
+                self.infinite_lines.append({
+                    'x1': inf_min_x, 'x2': inf_max_x, 'y': y_pos, 'pen': main_pen
+                })
                 
                 # Add title at the edge of the bounded view width
                 self.add_text(rect_x + 100, y_pos - 35, name, color, 14)
@@ -658,11 +689,10 @@ class TimelineApp(QMainWindow):
                     arc_path1.cubicTo(trigger_x, cp1_y, cp2_x, control_y, up_end_x, control_y)
                     self.scene.addPath(arc_path1, jump_pen)
                     
-                    # Draw the massive horizontal segment dynamically via a custom item 
-                    # so that dashes are only calculated for the visible screen viewport,
-                    # avoiding Qt's absolute dash-count crash limits on zoom-in.
-                    dash_item = InfiniteDashLineItem(up_end_x, down_start_x, control_y, jump_pen)
-                    self.scene.addItem(dash_item)
+                    # Draw the massive horizontal segment dynamically via screen space
+                    self.infinite_lines.append({
+                        'x1': up_end_x, 'x2': down_start_x, 'y': control_y, 'pen': jump_pen
+                    })
                     
                     arc_path2 = QPainterPath()
                     arc_path2.moveTo(down_start_x, control_y)
@@ -685,7 +715,9 @@ class TimelineApp(QMainWindow):
                 # Draw the Branch Solid Line (From Jump Arrival into infinity)
                 branch_pen = QPen(color, 4)
                 branch_pen.setCosmetic(True) # Keeps branch line visible when zoomed out
-                self.scene.addLine(start_x, y_pos, self.val_to_x(5000000), y_pos, branch_pen)
+                self.infinite_lines.append({
+                    'x1': start_x, 'x2': self.val_to_x(5000000), 'y': y_pos, 'pen': branch_pen
+                })
                 
                 # Add a marker at the very beginning of the new branch
                 # Anchor it to 0,0 and translate it so it doesn't shrink when zooming out
@@ -705,6 +737,9 @@ class TimelineApp(QMainWindow):
             line_y = self.timelines[e["line_name"]]["y"]
             x_pos = self.val_to_x(e["float_val"])
             
+            chapter_prefix = f"[{e['chapter_part']}] " if e.get("chapter_part") else ""
+            display_text = f"{chapter_prefix}{e['name']}\n[{e['date_str']}]"
+
             if e["type"] == "fixed":
                 fixed_pen = QPen(QColor(255, 255, 255), 3)
                 fixed_pen.setCosmetic(True) # Stop marker from thinning out
@@ -715,7 +750,7 @@ class TimelineApp(QMainWindow):
                 marker.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIgnoresTransformations) 
                 marker.setData(0, idx)
                 
-                txt = self.add_text(0, 0, f"{e['name']}\n[{e['date_str']}]", QColor(200, 200, 200), 10)
+                txt = self.add_text(0, 0, display_text, QColor(200, 200, 200), 10)
                 txt.setData(0, idx)
                 marker_offset = 15 
                 
@@ -730,7 +765,7 @@ class TimelineApp(QMainWindow):
                 marker.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIgnoresTransformations) 
                 marker.setData(0, idx)
                 
-                txt = self.add_text(0, 0, f"{e['name']}\n[{e['date_str']}]", QColor(255, 100, 100), 10)
+                txt = self.add_text(0, 0, display_text, QColor(255, 100, 100), 10)
                 txt.setData(0, idx)
                 marker_offset = 8 
                 
@@ -745,10 +780,16 @@ class TimelineApp(QMainWindow):
 
             self.event_graphics.append({
                 "txt": txt,
+                "marker": marker,
                 "conn_line": conn_line,
                 "line_y": line_y,
                 "x_pos": x_pos,
-                "marker_offset": marker_offset
+                "marker_offset": marker_offset,
+                "orig_txt_color": txt.defaultTextColor(),
+                "orig_marker_pen": marker.pen(),
+                "orig_marker_brush": marker.brush() if e["type"] == "trigger" else None,
+                "orig_conn_pen": conn_line.pen(),
+                "type": e["type"]
             })
 
         # Calculate exact pixel layout based on the current camera scale
@@ -811,6 +852,36 @@ class TimelineApp(QMainWindow):
                 
             placed_rects.append((base_x, base_x + w, current_y, current_y + h))
 
+    def set_event_highlight(self, idx, highlighted):
+        if not hasattr(self, 'event_graphics') or idx < 0 or idx >= len(self.event_graphics):
+            return
+            
+        graphics = self.event_graphics[idx]
+        txt = graphics["txt"]
+        marker = graphics["marker"]
+        conn_line = graphics["conn_line"]
+        
+        if highlighted:
+            hl_color = QColor(0, 255, 255) # Cyan
+            txt.setDefaultTextColor(hl_color)
+            
+            hl_pen = QPen(hl_color, 3)
+            hl_pen.setCosmetic(True)
+            marker.setPen(hl_pen)
+            
+            if graphics["type"] == "trigger":
+                marker.setBrush(QBrush(hl_color))
+                
+            conn_pen = QPen(hl_color, 2, Qt.PenStyle.DashLine)
+            conn_pen.setCosmetic(True)
+            conn_line.setPen(conn_pen)
+        else:
+            txt.setDefaultTextColor(graphics["orig_txt_color"])
+            marker.setPen(graphics["orig_marker_pen"])
+            if graphics["type"] == "trigger":
+                marker.setBrush(graphics["orig_marker_brush"])
+            conn_line.setPen(graphics["orig_conn_pen"])
+
     def add_text(self, x, y, text_str, color, size):
         text = self.scene.addText(text_str)
         text.setDefaultTextColor(color)
@@ -828,6 +899,12 @@ class TimelineApp(QMainWindow):
             ev["float_val"] = dialog.date_input.get_float_year()
             ev["date_str"] = dialog.date_input.get_date_str()
             ev["name"] = dialog.name_input.text()
+            
+            chapter_part = dialog.chapter_input.text().strip()
+            if chapter_part:
+                ev["chapter_part"] = chapter_part
+            elif "chapter_part" in ev:
+                del ev["chapter_part"]
             
             # If it's a trigger, update the actual arrival branch start date too
             if dialog.is_trigger and dialog.target_branch and dialog.target_branch in self.timelines:
