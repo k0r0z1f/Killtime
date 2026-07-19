@@ -152,7 +152,7 @@
             "name": "Mina-A runs the Iron-Tide Biathlon",
             "line_name": "Timeline-A 1",
             "type": "fixed",
-            "chapter_part": "Chapter 4 - Part 4"
+            "chapter_part": "Chapter 4 - Part 3"
         },
         {
             "float_val": 1770.0366666666666,
@@ -240,7 +240,7 @@
             "name": "Sub-dermal resonance tracker extracted in the abandoned hospital",
             "line_name": "Timeline-A 1",
             "type": "fixed",
-            "chapter_part": "Chapter 10 - Part 4"
+            "chapter_part": "Chapter 10 - Part 3"
         },
         {
             "float_val": 1772.01,
@@ -251,12 +251,52 @@
             "chapter_part": "Chapter 10 - Part 5"
         },
         {
+            "float_val": 1772.01,
+            "date_str": "1772-01-04",
+            "name": "Sparks in the Void: Party crosses the Great Bridge",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 1"
+        },
+        {
+            "float_val": 1772.02,
+            "date_str": "1772-01-07",
+            "name": "The Weight of the Stone: Arrival at Brum'korath gates",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 2"
+        },
+        {
+            "float_val": 1772.03,
+            "date_str": "1772-01-10",
+            "name": "Toxic Resonance: Lucas-A poisoned; Mina-A kidnapped by Unbound",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 3"
+        },
+        {
             "float_val": 1772.0366666666666,
             "date_str": "1772-01-12",
             "name": "Candice and Jarek encounter the Giants",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 8 - Part 2"
+        },
+        {
+            "float_val": 1772.0666666666666,
+            "date_str": "1772-01-21",
+            "name": "The Treacherous Vector: Grimbar's betrayal",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 4"
+        },
+        {
+            "float_val": 1772.0666666666666,
+            "date_str": "1772-01-21",
+            "name": "The Resonance of the Sent Ones: Arrival at the Hidden Temple",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 5"
         },
         {
             "float_val": 1772.0766666666666,
