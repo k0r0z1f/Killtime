@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Relics - Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Relics (Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#origin" onclick="highlightSection(this, 'origin')">Origins</a></td>
+                    <td>Ancient, powerful artifacts tied to Lucas, Mina, and Thomas, possibly linked to the Sent Ones.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Dark stone with an unnatural pulse, fused with the wearers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy" onclick="highlightSection(this, 'energy')">Energy & Power</a></td>
+                    <td>Possesses dormant energy with the potential to unlock unknown powers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#role" onclick="highlightSection(this, 'role')">Role & Impact</a></td>
+                    <td>Key to the fates of Lucas, Mina, and Thomas, waiting to be unlocked.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link" onclick="highlightSection(this, 'link')">Link to the Party</a></td>
+                    <td>Inextricably tied to Lucas, Mina, and Thomas, affecting their fates.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secrets" onclick="highlightSection(this, 'secrets')">Secrets</a></td>
+                    <td>Possibly linked to an ancient intelligence or entity.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="origin">
+            <h2>Origins</h2>
+            <p>The Relics are ancient, powerful artifacts whose origins remain a mystery. They are closely tied to Lucas, Mina, and Thomas, and their purpose may be linked to the fabled Sent Ones prophecy. Their creation and true power have yet to be fully understood.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Relics take the form of dark stone, exuding an unnatural pulse of energy. They are fused with the wearers—Lucas, Mina, and Thomas—each resonating with their individual powers and yet tied to a larger fate that remains to be uncovered.</p>
+        </div>
+
+        <div class="section-content" id="energy">
+            <h2>Energy & Power</h2>
+            <p>The Relics contain dormant energy, which has yet to be fully unlocked. They hold the potential for great power, and their activation could bring about unforeseen consequences, possibly altering the course of history or unleashing ancient forces.</p>
+        </div>
+
+        <div class="section-content" id="role">
+            <h2>Role & Impact</h2>
+            <p>As relics linked to the Sent Ones, these artifacts are pivotal to the fates of Lucas, Mina, and Thomas. They are key to the unfolding events surrounding the prophecy, with the potential to either save or doom the world depending on how they are used.</p>
+        </div>
+
+        <div class="section-content" id="link">
+            <h2>Link to the Party</h2>
+            <p>The Relics are inextricably tied to Lucas, Mina, and Thomas, affecting their choices, actions, and destinies. Each character's journey is intertwined with the artifacts' power, and unlocking their secrets may be the key to overcoming the growing threats they face.</p>
+        </div>
+
+        <div class="section-content" id="secrets">
+            <h2>Secrets</h2>
+            <p>The Relics may be connected to an ancient intelligence or entity, one that lies dormant within the artifacts themselves. Their full history and purpose are shrouded in mystery, and uncovering their secrets may be the key to understanding the true nature of the Sent Ones prophecy.</p>
+        </div>
+    </div>
+</body>
+</html>

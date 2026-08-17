@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Beast - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Beast (Character Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Guardian of the lair on the northern cliffs.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Enormous, bipedal creature with a thick, matted fur coat and imposing, saber-tooth-like fangs.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">Character Arc/Goal</a></td>
+                    <td>To protect the lair and its artifacts.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>The Beast serves as the steadfast guardian of its lair, strategically positioned on the northern cliffs. Its primary responsibility is to safeguard the lair and the valuable artifacts contained within. This role has defined The Beast's existence, making it a formidable presence in the region.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Beast is an imposing figure, standing on two legs with an enormous stature. Its body is covered in a thick, matted fur coat that provides both protection and camouflage against the rugged cliffs it guards. The creature's most striking features are its saber-tooth-like fangs, which add to its fearsome demeanor and serve as a warning to any who might threaten its domain.</p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>The Beast's primary goal is to protect the lair and its artifacts from any intruders or threats. This unwavering dedication has made it a solitary figure, deeply connected to its role as a guardian. Throughout its existence, The Beast has faced numerous challenges that test its loyalty and strength, reinforcing its commitment to its duty.</p>
+        </div>
+    </div>
+</body>
+</html>
+

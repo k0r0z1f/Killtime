@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altheris - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Altheris (Character Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#character" onclick="highlightSection(this, 'character')">Character</a></td>
+                    <td>Altheris</td>
+                </tr>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Guides the party, Commandant of the mission</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Composed, respectful, duty-bound, hints of discomfort</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-clans-factions" onclick="highlightSection(this, 'alliances-clans-factions')">Alliances/Clans/Factions</a></td>
+                    <td>Commandant of Haliriel's Defense, Children of Hybris</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Composed, well-dressed in practical attire</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">Character Arc/Goal</a></td>
+                    <td>Ensure mission success, consult Ceylan’s wisdom</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Military trained</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Not provided</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="character">
+            <h2>Character</h2>
+            <p>Altheris is the Commandant leading the current mission. He stands as a guiding figure for the party, ensuring they stay on the right path and adhere to the Queen's interests. He is a key organizer, using his position to bring necessary resources and information together for the journey.</p>
+        </div>
+
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>No birth year was provided.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>
+                - Guides the party, leveraging his knowledge of the mission’s importance and the Queen’s involvement.<br>
+                - Serves as Commandant of the mission, tasked with ensuring its strategic and safe execution.
+            </p>
+            <p>Altheris is deeply intertwined with the royal court, entrusted to see that the Queen’s wishes are fulfilled and that no harm befalls her interests during this critical undertaking. His connection to Haliriel’s defense forces grants him the authority and credibility to coordinate both military and diplomatic efforts.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                - Composed, respectful, and unwaveringly duty-bound.<br>
+                - Calm and authoritative, able to diffuse tension in critical moments.<br>
+                - Pragmatic outlook, yet subtly uneasy about the Queen’s direct presence.
+            </p>
+            <p>Altheris maintains a poised demeanor and respectful tone, commanding the respect of his subordinates. Despite his collected nature, there are signs of internal conflict whenever the Queen’s personal involvement is mentioned—an indication that he may harbor concerns or moral reservations.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>No abilities or magic were provided.</p>
+        </div>
+
+        <div class="section-content" id="alliances-clans-factions">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>
+                - Commandant of Haliriel’s Defense, closely tied to the Queen’s court.<br>
+                - Member of the Children of Hybris.
+            </p>
+            <p>As an influential figure within Haliriel, Altheris holds sway in matters of security and strategy. His connection to the Children of Hybris marks him as part of a group that may command certain mystique or moral code, though details remain sparse. This dual-affiliation cements Altheris as someone adept at navigating both the political and military spheres of Haliriel.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                - Appears composed, with a neat and self-assured bearing.<br>
+                - Wears practical attire reflecting both status and readiness for action.
+            </p>
+            <p>Altheris’s clothing is understated yet of clear quality, designed for easy movement while still denoting his rank. His stance suggests discipline and training, revealing a professional posture likely ingrained from years of service.</p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>
+                - Strives to guide the party through the mission and ensure Ceylan’s wisdom is properly consulted.<br>
+                - Hopes to lead the group safely and effectively, providing wisdom and direction at every turn.
+            </p>
+            <p>Altheris’s overarching aim is to protect the Queen’s interests while securing the success of the mission. Though unwavering in his directive, his subtle discomfort around the Queen hints at a deeper conflict that may emerge as events unfold. Ensuring the party’s safe passage is not only a personal duty but also a testament to his capability as Commandant.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>No secret was provided.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                - Military trained.<br>
+            </p>
+            <p>His combat acumen stems from years of disciplined military service. Altheris is well-versed in standard combat formations, weaponry, and command protocols, further enhancing his leadership qualities under duress. Although his precise fighting style remains unspecified, it is clear he can hold his own on the battlefield.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>No inventory details were provided.</p>
+        </div>
+    </div>
+</body>
+</html>
+

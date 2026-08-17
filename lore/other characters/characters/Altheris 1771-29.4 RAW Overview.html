@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altheris - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Altheris (Character Overview)</h1>
+
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Warrior, protector of the Queen; commandant of the expedition; vigilant member bringing up the rear.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Focused, steady, observant, vigilant, serious, concerned, protective, loyal, quick to act.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Loyal to Queen Aphyrosia and part of the expedition group.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Larger frame for an elf; imposing presence; sharp eyes; muscular and battle-hardened.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Protect the Queen and the group; assist in ascending the mountain; defend against threats like the Minulican and the Beast.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Saw a mysterious, hairy figure watching the camp but keeps it secret as instructed by the Queen.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Military training; skilled in combat, physical fighting, and defense.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Fencing sword.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Altheris is a warrior and protector of the Queen, serving as the commandant of the expedition. He is a vigilant member who brings up the rear of the group, constantly scanning for potential threats. His past includes roles as a guard and scout responsible for patrolling and vigilance.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Altheris is focused, steady, observant, vigilant, serious, concerned, protective, loyal, and quick to act. His personality is defined by his dedication to safeguarding the Queen and the group.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Altheris is loyal to Queen Aphyrosia and is an integral part of the expedition group.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Altheris has a larger frame for an elf, with an imposing presence. His sharp eyes and muscular, battle-hardened physique contribute to his formidable appearance.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Altheris's primary goal is to protect the Queen and the group by monitoring and alerting to threats. He assists in ascending the mountain and defends against dangers like the Minulican and the Beast.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Altheris witnessed a mysterious, hairy figure watching the camp. He keeps this secret as instructed by the Queen.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Altheris has military training and is skilled in physical combat, fighting, and defense techniques.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Altheris carries a fencing sword as part of his standard equipment.</p>
+        </div>
+    </div>
+</body>
+</html>
+

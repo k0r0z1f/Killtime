@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aphyrosia, The Queen of Elves - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2a3d63;
+            padding-bottom: 5px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .highlighted {
+            background-color: #e8f4fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 5px 5px 0;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode h2 {
+            color: #81d4fa;
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        body.dark-mode .highlighted {
+            background-color: #2a3b5c;
+            border-left: 4px solid #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('highlighted');
+            
+            // Smooth scroll to the section
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Aphyrosia, The Queen of Elves (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>929 (842 yrs old)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Elven ruler, council leader, battlefield controller, preserver of ancient history</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Commanding, regal, profoundly wise, protective, enigmatic, pragmatic</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Mastery in air magic; deep arcane sensitivity; ancient linguistics</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Haliriel, High Elves, Nythari Tribe (Chief V), Children of Hybris</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall, silver braids, piercing green/silver eyes, elegant robes woven from forest essence</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Protect her people, guide the prophecy, manage inter-species tensions, confront ancient schisms</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Holds hidden insights into the Great Arcane Crisis and the original Elven-Dwarven schism over the relics</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Expert in elven warfare, archery, battlefield control via advanced magic</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Ceremonial robes, healing herbs, magical restorative items</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Aphyrosia was born in the year 929, making her 842 years old. Her extreme longevity reflects the timeless nature of the elven race and allows her to hold firsthand—or near-firsthand—knowledge of historical events that other races view purely as myth.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Aphyrosia is the ruler of Haliriel and the Queen of Elves. As the leader of the High Elves Council, she actively oversees her people’s fate. Recently, she accompanied the Children of Hybris up the Watcher and deep into the Temple of Crystals. She acts as the ultimate lore-keeper, explaining the true history of the Great Arcane Crisis (1500 years ago) and translating the archaic Elvish script on the sarcophagi in the "Tombs of the First," revealing the ancient names of Lucas, Mina, and Thomas.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>With a commanding and regal presence, Aphyrosia is known for her wisdom, authority, and unwavering protectiveness. She is diplomatic and calm, yet maintains a cryptic and enigmatic demeanor. While she was once enraged in her youth by the Dwarves stealing the ancient relics, time has softened her grudges. She is now highly pragmatic, recognizing that petty racial rivalries must be set aside to face the true threat of the Empire and the Disciples.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Aphyrosia has mastered air magic, enabling her to control wind, stabilize allies against mountain gusts, and create protective barriers. She possesses deep arcane sensitivity, allowing her to "feel" the ancient currents of magic in places like the Temple of Crystals. Furthermore, she is highly educated in ancient linguistics, fluently reading archaic scripts that even seasoned scholars struggle with.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>As a central figure among the elven, Aphyrosia rules over Haliriel and leads the High Elves. She has forged a fragile but essential alliance with Chief V and the Nythari Tribe. She acts as a powerful patron and guide to the Children of Hybris (Lucas and Mina), and maintains a tense, guarded truce with Dr. Thorne.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Aphyrosia is tall and exudes an air of elegance. Her silver hair is intricately braided, framing piercing eyes that alternate between green and silver. She adorns herself with a crown or circlet of entwined leaves and gemstones, and her robes—woven from the forest’s essence—feature motifs of trees, earth, and air. Her graceful, deliberate movements command absolute respect.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Charged with the leadership of her people, Aphyrosia’s journey revolves around protection, guidance, and historical reconciliation. Her current arc involves moving past the ancient sins of her people and the dwarves during the Great Arcane Crisis. She prioritizes understanding the broader threat of the Disciples and ensuring that the Children of Hybris are prepared to face the unfolding prophecy.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Beneath her regal exterior, Aphyrosia harbors concealed knowledge about the ancient prophecies. She kept the true history of the Elven/Dwarven schism over the relics hidden until the group descended the Watcher. She also secretly ordered Alt to conceal the presence of the Guardian Beast from the rest of the party to prevent panic, showing her willingness to withhold information to maintain control.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Trained extensively in elven warfare, Aphyrosia excels in archery and the strategic use of magic in combat. Her expertise in both defensive and offensive magic-based tactics allows her to control battlefields, counter formidable adversaries with precision, and neutralize chaotic elements (such as subduing the Minulican).</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Aphyrosia’s inventory includes elaborate ceremonial robes that denote her status, a small pouch containing rare healing herbs, and an assortment of magical items designed for barrier creation and restorative purposes.</p>
+        </div>
+    </div>
+</body>
+</html>

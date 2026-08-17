@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Watcher Detour - Mission Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Watcher Detour - Mission Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Mission Aspect</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#mission-name" onclick="highlightSection(this, 'mission-name')">Mission Name</a></td>
+                    <td>The Watcher Detour</td>
+                </tr>
+                <tr>
+                    <td><a href="#primary-objective" onclick="highlightSection(this, 'primary-objective')">Primary Objective</a></td>
+                    <td>To consult the Watcher and uncover vital information about the prophecy, the Children of Hybris, and the relics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mission-background" onclick="highlightSection(this, 'mission-background')">Mission Background</a></td>
+                    <td>The Watcher is an ancient, sacred site tied to the prophecy involving the Children of Hybris.</td>
+                </tr>
+                <tr>
+                    <td><a href="#task-objective" onclick="highlightSection(this, 'task-objective')">Task Objective</a></td>
+                    <td>The team will travel to the Watcher, spend two days investigating, and seek answers about the relics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#special-instructions" onclick="highlightSection(this, 'special-instructions')">Special Instructions</a></td>
+                    <td>Candice will guide the group to the base near her village. Prepare for potential risks.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mission-scope" onclick="highlightSection(this, 'mission-scope')">Mission Scope</a></td>
+                    <td>Two days for investigation, followed by a three-day journey to the Eastern Continent.</td>
+                </tr>
+                <tr>
+                    <td><a href="#key-players" onclick="highlightSection(this, 'key-players')">Key Players</a></td>
+                    <td>Lucas, Mina, Thomas, Candice, Dira, Altheris</td>
+                </tr>
+                <tr>
+                    <td><a href="#critical-details" onclick="highlightSection(this, 'critical-details')">Critical Details</a></td>
+                    <td>The Watcher is sacred and dangerous; its knowledge could either help or hinder their mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#potential-risks" onclick="highlightSection(this, 'potential-risks')">Potential Risks</a></td>
+                    <td>Threats from unknown parties, including others seeking the Watcher’s knowledge.</td>
+                </tr>
+                <tr>
+                    <td><a href="#final-objective" onclick="highlightSection(this, 'final-objective')">Final Objective</a></td>
+                    <td>To gain crucial insights into the prophecy and then proceed to the Eastern Continent mission.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="mission-name">
+            <h2>Mission Name</h2>
+            <p>The Watcher Detour</p>
+        </div>
+
+        <div class="section-content" id="primary-objective">
+            <h2>Primary Objective</h2>
+            <p>To consult the Watcher and uncover vital information about the prophecy, the Children of Hybris, and the relics.</p>
+        </div>
+
+        <div class="section-content" id="mission-background">
+            <h2>Mission Background</h2>
+            <p>The Watcher is an ancient, sacred site tied to the prophecy involving the Children of Hybris. It holds knowledge that could guide the group in their battle against the Disciple of Air and inform their next steps in the Eastern Continent mission.</p>
+        </div>
+
+        <div class="section-content" id="task-objective">
+            <h2>Task Objective</h2>
+            <p>The team will travel to the Watcher, spend two days investigating, and seek answers about the relics and their connection to Lucas and Mina.</p>
+        </div>
+
+        <div class="section-content" id="special-instructions">
+            <h2>Special Instructions</h2>
+            <p>Candice will guide the group to the base near her village. The Watcher is a place of ancient power, and there may be others watching. Prepare for potential risks.</p>
+        </div>
+
+        <div class="section-content" id="mission-scope">
+            <h2>Mission Scope</h2>
+            <p>The detour will last two days for investigation, followed by a three-day journey to the Eastern Continent.</p>
+        </div>
+
+        <div class="section-content" id="key-players">
+            <h2>Key Players</h2>
+            <p>Lucas, Mina, Thomas, Candice, Dira, Altheris</p>
+        </div>
+
+        <div class="section-content" id="critical-details">
+            <h2>Critical Details</h2>
+            <p>The Watcher is sacred and dangerous; its knowledge could either help or hinder their mission. Time is limited.</p>
+        </div>
+
+        <div class="section-content" id="potential-risks">
+            <h2>Potential Risks</h2>
+            <p>The group may face threats from unknown parties, including others seeking the Watcher’s knowledge. The Watcher itself may hold dangers tied to its power.</p>
+        </div>
+
+        <div class="section-content" id="final-objective">
+            <h2>Final Objective</h2>
+            <p>To gain crucial insights into the prophecy, the Children of Hybris, and the relics, and then proceed to the Eastern Continent mission.</p>
+        </div>
+    </div>
+</body>
+</html>
+

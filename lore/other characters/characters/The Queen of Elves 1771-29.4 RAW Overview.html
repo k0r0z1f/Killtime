@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aphyrosia (The Queen) - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            button.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Aphyrosia (The Queen) - Character Overview</h1>
+
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Queen of Elves, leader overseeing camp safety, assists group in Watcher climbing, and manages crises like the Minulican confrontation.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Calm, authoritative, serene, thoughtful, observant, protective, resolute.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Mastery of air magic, intermediate fire, water, earth; includes barriers, healing, restraining powerful creatures.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Nythari Tribe</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall with silver hair, green eyes, elegant frame, faint aura of air magic.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Support the group's journey, recognize Lucas and Mina's bond as critical, ensure safety, manage chaos effectively.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Skilled in magic, combat-focused magic use.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Magical items for barriers and healing purposes.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Not provided.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Aphyrosia is the Queen of Elves and leads her group in maintaining safety, overseeing camp management, and assisting in climbing the Watcher. She intervenes in crises like the Minulican confrontation and monitors Lucas and Mina's bond.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>She is calm, composed, and radiates quiet reverence. Her demeanor is thoughtful, observant, and protective, often acting as a resolute leader during critical moments.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Aphyrosia has mastery over air magic and intermediate skills in fire, water, and earth. Her abilities include controlling wind, creating barriers, healing, and restraining powerful creatures.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>She is allied with the Nythari Tribe, reflecting her connection to her people and role as their leader.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Aphyrosia is tall, with silver hair that catches the light of the setting sun. Her piercing green eyes and elegant frame convey her regal nature, while a faint aura of air magic surrounds her.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Her goals include supporting the group in proving their worth to the Watcher, managing the Minulican crisis, and ensuring the safety of her people. She recognizes the bond between Lucas and Mina as crucial for survival and strives to maintain order in chaotic situations.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Aphyrosia is skilled in magic, with a focus on combat-oriented magical techniques.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>She carries magical items designed for barrier creation and healing, essential tools for her role as a leader and protector.</p>
+        </div>
+    </div>
+</body>
+</html>
+

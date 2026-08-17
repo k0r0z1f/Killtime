@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceylan - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Ceylan (Character Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>
+                        <a href="#character" onclick="highlightSection(this, 'character')">
+                            Character
+                        </a>
+                    </td>
+                    <td>Ceylan</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#birth-year" onclick="highlightSection(this, 'birth-year')">
+                            Birth Year
+                        </a>
+                    </td>
+                    <td>Unknown</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#role-background" onclick="highlightSection(this, 'role-background')">
+                            Role/Background
+                        </a>
+                    </td>
+                    <td>Mentor to Candice, lives in a secluded cave on The Watcher mountain</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">
+                            Personality Traits
+                        </a>
+                    </td>
+                    <td>Eccentric, wise, cryptic, manipulative, forgetful, reclusive</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">
+                            Abilities/Magic
+                        </a>
+                    </td>
+                    <td>Spiritual ties to The Watcher</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#alliances" onclick="highlightSection(this, 'alliances')">
+                            Alliances/Clans/Factions
+                        </a>
+                    </td>
+                    <td>Nythari Tribe</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#appearance" onclick="highlightSection(this, 'appearance')">
+                            Appearance
+                        </a>
+                    </td>
+                    <td>Aged, weathered old bearded man</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#character-arc" onclick="highlightSection(this, 'character-arc')">
+                            Character Arc/Goal
+                        </a>
+                    </td>
+                    <td>Guide Candice to find the Children of Hybris and protect the world</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#secret" onclick="highlightSection(this, 'secret')">
+                            Secret
+                        </a>
+                    </td>
+                    <td>Dark knowledge of a prophecy, mental decline leading to eventual death</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#combat-training" onclick="highlightSection(this, 'combat-training')">
+                            Combat Training
+                        </a>
+                    </td>
+                    <td>Relies on spiritual and mystical abilities, not heavily combat-trained</td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#inventory" onclick="highlightSection(this, 'inventory')">
+                            Inventory
+                        </a>
+                    </td>
+                    <td>(none provided)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="character">
+            <h2>Character</h2>
+            <p>
+                Ceylan is a mentor figure, known for his deep connection to the mystical forces of The Watcher. 
+                He rarely emerges from his isolated lifestyle, and most who seek his guidance must journey to him.
+            </p>
+        </div>
+
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>
+                The exact year of Ceylan's birth is unknown. His advanced age and the weathered lines on his face 
+                suggest that he has long outlived most men of his era.
+            </p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>
+                As a mentor to Candice, Ceylan resides in a secluded cave on The Watcher mountain. He passes on his 
+                spiritual wisdom to guide her in uncovering the truth about the Children of Hybris, an elusive group 
+                he believes holds the key to the world’s protection.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                Ceylan is eccentric and deeply wise. He is quiet and contemplative, speaking only when necessary. 
+                At times, he displays a rare sense of urgency, and his cryptic advice can be both enlightening and 
+                confusing. He has a tendency to manipulate situations to suit his perceived greater good, and he 
+                occasionally forgets crucial details due to his declining mental state. His reclusive nature 
+                underscores a life spent in solitude.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>
+                He possesses spiritual ties to The Watcher, channeling its energy to perform unique rituals or 
+                gain insights. Though these connections grant him unusual knowledge, they do not translate into 
+                traditional combat prowess.
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>
+                Ceylan’s primary allegiance lies with the Nythari Tribe. Though his seclusion has distanced him 
+                from many tribe members, he is still recognized as one who once held authority and respect among them.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                Ceylan is an aged, weathered man with a long, unkempt beard. His eyes reflect a lifetime of 
+                knowledge and sacrifice. Dressed in worn robes and leaning on a simple staff, he looks every bit 
+                the hermit sage one might expect to find on an isolated mountaintop.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>
+                Ceylan's overarching goal is to guide Candice on her journey to find the Children of Hybris and 
+                safeguard the world from impending threats. He believes the prophecy of The Watcher indicates 
+                a growing darkness and that only Candice’s success can thwart the rise of catastrophic forces.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>
+                Ceylan suspects the Empire’s ascension, along with its chosen Champion. He hints that a dark 
+                prophecy foretells a devastating chain of events. The weight of this knowledge—and the spiritual 
+                sacrifice he once made—have eroded his mind. His visions are increasingly clouded and his health 
+                deteriorates, foreshadowing his eventual death before the conflict truly unfolds.
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                Ceylan is not a warrior. He relies almost entirely on mystical insight and spiritual communion 
+                with The Watcher to navigate conflicts. Although he can defend himself with basic spells or 
+                subtle manipulations, he avoids direct confrontation whenever possible.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>
+                No notable inventory is listed for Ceylan. His primary “possessions” are his worn garments, 
+                a simple staff, and the intangible knowledge he carries.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

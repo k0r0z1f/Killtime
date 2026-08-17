@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altheris - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Altheris - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Not provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>
+                        - Guides the party, and is knowledgeable about the mission and the Queen's involvement.<br>
+                        - Commandant of the mission
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>
+                        - Composed, respectful, duty-bound, but hints of discomfort regarding the Queen's presence.<br>
+                        - Calm, authoritative, pragmatic
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Not provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Commandant of Haliriel's Defense and is close to the Queen.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Appears composed, well-dressed in practical attire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>
+                        - To successfully guide the party through the mission and ensure Ceylan’s wisdom is properly consulted.<br>
+                        - Lead the group safely through the journey, provide guidance
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Not provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Military trained</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Not provided.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>No birth year has been provided for Altheris.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Altheris serves as the Commandant of the mission, guiding the party with his extensive knowledge about the mission objectives and the Queen's involvement. His leadership role ensures that the mission stays on track and that all members are well-informed and coordinated.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Altheris is composed and respectful, always upholding his duty with a sense of responsibility. Despite his calm and authoritative demeanor, there are subtle hints of discomfort regarding the Queen's presence, suggesting underlying tensions or conflicts. His pragmatic approach allows him to make sound decisions under pressure.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>No abilities or magic have been provided for Altheris.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>As the Commandant of Haliriel's Defense, Altheris holds a significant position within the defense forces. His close relationship with the Queen indicates strong alliances and possibly influential connections within the royal court and military hierarchy.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Altheris maintains a composed appearance, often seen in well-dressed practical attire that reflects his authoritative status. His demeanor exudes professionalism and reliability, making him a respected figure among his peers and subordinates.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Altheris aims to successfully guide the party through their mission, ensuring that Ceylan’s wisdom is effectively consulted and applied. His overarching goal is to lead the group safely through their journey, providing unwavering guidance and support to achieve the mission's objectives.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>No secret has been provided for Altheris.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Altheris has undergone military training, equipping him with the necessary skills to handle various combat situations. His training ensures that he can lead effectively in both strategic planning and direct engagements.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>No inventory details have been provided for Altheris.</p>
+        </div>
+    </div>
+</body>
+</html>
+

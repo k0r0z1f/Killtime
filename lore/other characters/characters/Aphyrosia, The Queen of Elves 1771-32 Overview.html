@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aphyrosia, The Queen of Elves - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Aphyrosia, The Queen of Elves - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>929 (842 yrs)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Elven ruler, council leader, battlefield controller</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Commanding, regal, wise, protective, enigmatic</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Mastery in air magic; minor elemental skills</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Haliriel, High Elves, Nythari Tribe, allied groups</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall, silver braids, piercing green/silver eyes, elegant robes</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Protect her people, guide prophecy, manage tensions</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Holds hidden prophecy insights and secret alliances</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Expert in elven warfare, archery, magic combat</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Ceremonial robes, healing herbs, magical items</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Aphyrosia was born in the year 929, making her 842 years old. Her longevity reflects the timeless nature of the elven race and the accumulated wisdom of centuries.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Aphyrosia is the ruler of Haliriel and the Queen of Elves. As the leader of the High Elves Council and the sovereign of the Elven Realm, she actively oversees her people’s fate. Notably, she follows the group climbing the Watcher, monitors the growing bond between Lucas and Mina, and intervenes during the Minulican confrontation. Her role as a battlefield controller and her involvement in deciphering ancient prophecies emphasize her central position in the unfolding events.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>With a commanding and regal presence, Aphyrosia is known for her wisdom, authority, and unwavering protectiveness. She is diplomatic and calm, yet maintains a cryptic and enigmatic demeanor. Though she rarely speaks, her silent intensity and measured actions reveal a blend of sorrow and determination, underscoring her commitment to her people.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Aphyrosia has mastered air magic, which enables her to control wind, stabilize against gusts, and create protective barriers. Her nature-based abilities extend to healing and enhancing her sensory perception. Additionally, she possesses intermediate skills in fire, water, and earth magic. The subtle shifts in the air around her signal her deep connection with mystical energies and ancient forces.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>As a central figure among the elven, Aphyrosia rules over Haliriel and leads the High Elves. She forges significant alliances, notably with the Nythari Tribe and allied groups such as Candice’s tribe, and is intricately linked with ancient elven prophecies and the legacy of Ceylan.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Aphyrosia is tall and exudes an air of elegance. Her silver hair is intricately braided, framing piercing eyes that alternate between green and silver. She adorns herself with a crown or circlet of entwined leaves and gemstones, and her robes—woven from the forest’s essence—feature motifs of trees, earth, and air. Her graceful, deliberate movements and dignified presence further accentuate her majestic bearing.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Charged with the leadership of her people, Aphyrosia’s journey is one of both protection and guidance. She is devoted to safeguarding the elven realm, navigating political tensions, and ensuring prosperity. Her responsibilities extend to mentoring figures like Lucas, Mina, and Candice, consulting with Ceylan on prophetic matters, and critically assessing threats—such as the mysterious mansion—to secure her people's future.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Beneath her regal exterior, Aphyrosia harbors concealed knowledge about the ancient prophecies and secret alliances. She is aware of deeper truths regarding the Watcher and Ceylan’s mental decline, which she attributes to a great sacrifice. This hidden insight, coupled with her guarded identity, marks her as a keeper of powerful secrets.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Trained extensively in elven warfare, Aphyrosia excels in archery and the strategic use of magic in combat. Her expertise in both defensive and offensive magic-based tactics allows her to control battlefields and counter formidable adversaries with precision.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Aphyrosia’s inventory includes elaborate ceremonial robes that denote her status, a small pouch containing rare healing herbs, and an assortment of magical items designed for barrier creation and restorative purposes.</p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eryndor - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Eryndor - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role" onclick="highlightSection(this, 'role')">Role/Background</a></td>
+                    <td>A skilled elf hunter and protector of the Nythari village.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Gruff, sharp-tongued, but deeply protective of his people.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Expert tracker, marksman, and survivalist.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances</a></td>
+                    <td>Nythari Tribe</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall, lean, weathered features, sharp brown eyes, long dark hair tied back.</td>
+                </tr>
+                <tr>
+                    <td><a href="#arc" onclick="highlightSection(this, 'arc')">Character Arc/Goal</a></td>
+                    <td>To safeguard the Nythari people and the Watcher’s secrets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>None explicitly provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat" onclick="highlightSection(this, 'combat')">Combat Training</a></td>
+                    <td>Highly skilled in archery, stealth, hand-to-hand combat, and traps.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Longbow, enchanted arrows, hunting knife, survival tools, charm, satchel of herbs.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role">
+            <h2>Role/Background</h2>
+            <p>Eryndor is a skilled elf hunter, dedicated to protecting the Nythari village and guiding his people through the treacherous paths of the Watcher mountain.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Eryndor has a gruff and sharp-tongued demeanor but is deeply protective of his people. He shows a softer side when offering encouragement or in moments of reverence.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>As an expert tracker and marksman, Eryndor possesses exceptional survival skills. He can navigate dangerous terrain and utilize his knowledge of the wilderness to aid his tribe and allies.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Eryndor is a steadfast member of the Nythari Tribe, a group deeply connected to the Watcher’s wilderness.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Eryndor is tall and lean with weathered features. His long dark hair is tied back, and his sharp brown eyes hint at his years of experience. He often wears a cloak of furs, blending with the forest surroundings.</p>
+        </div>
+
+        <div class="section-content" id="arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Eryndor’s ultimate goal is to protect the Nythari people and safeguard the ancient secrets of the Watcher mountain.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>No explicit secret is provided for Eryndor.</p>
+        </div>
+
+        <div class="section-content" id="combat">
+            <h2>Combat Training</h2>
+            <p>Highly skilled in archery, stealth, hand-to-hand combat, and setting traps, Eryndor is a formidable warrior in both offensive and defensive scenarios.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Eryndor carries a longbow with a quiver of enchanted arrows, a hunting knife, essential survival tools, a charm tied to Nythari traditions, and a satchel of dried herbs for medical and ritual purposes.</p>
+        </div>
+    </div>
+</body>
+</html>
+
