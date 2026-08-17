@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceylan's Cave - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Ceylan's Cave (Location Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Ceylan's Cave</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Ceylan; party</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Jagged entrance; shadowed interior</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy" onclick="highlightSection(this, 'energy')">Energy &amp; Atmosphere</a></td>
+                    <td>Sacred, oppressive, alive</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Natural cave; smooth paths</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism &amp; Carvings</a></td>
+                    <td>Hawks &amp; Nythari symbols</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Rugged terrain</td>
+                </tr>
+                <tr>
+                    <td><a href="#lore" onclick="highlightSection(this, 'lore')">Legends &amp; Lore</a></td>
+                    <td>Ancient, cryptic wisdom</td>
+                </tr>
+                <tr>
+                    <td><a href="#dangers" onclick="highlightSection(this, 'dangers')">Hidden Dangers</a></td>
+                    <td>Tremors, rockfalls, eerie force</td>
+                </tr>
+                <tr>
+                    <td><a href="#link" onclick="highlightSection(this, 'link')">Link to the Party</a></td>
+                    <td>Ascend for prophetic wisdom</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Mountainous, icy, steep</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Biting cold outside; warmer inside</td>
+                </tr>
+                <tr>
+                    <td><a href="#developments" onclick="highlightSection(this, 'developments')">Recent Developments</a></td>
+                    <td>Tremors, avalanches, cryptic warnings</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>Ceylan's Cave</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The cave is associated with Ceylan and the adventuring party. It serves as a domain for Ceylan and plays a pivotal role in the party’s quest.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The cave entrance is obscured by jagged rocks and snow, half-hidden by the rock formation of the Watcher (the mountain). Inside, smooth stone floors and shadowed walls once lit by a few old torches are evident. In deeper sections, the walls become rough and uneven, casting long, shifting shadows.</p>
+        </div>
+
+        <div class="section-content" id="energy">
+            <h2>Energy &amp; Atmosphere</h2>
+            <p>An overwhelming sense of sacredness and watchfulness permeates the cave. The energy of the Watcher seems to thrum within its walls. A subtle, warm energy contrasts with the cold wind outside, yet an ominous, oppressive weight gives the impression that the cave is alive, filled with a thick, ancient stillness.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The interior is a natural formation within the mountain, featuring only minor modifications like smoothened pathways to facilitate movement. The eroded, uneven walls remain largely unchanged, preserving the cave’s original structure.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism &amp; Carvings</h2>
+            <p>Carvings of mountain hawks and ancient Nythari symbols are etched into the walls. These carvings represent balance, wisdom, protection, and the ancient lore of the Nythari.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The natural defenses of the cave include its difficult terrain and remote location, making it a formidable and secure refuge.</p>
+        </div>
+
+        <div class="section-content" id="lore">
+            <h2>Legends &amp; Lore</h2>
+            <p>Known as Ceylan’s domain, the cave is imbued with an ancient, enigmatic power interwoven with the mountain. It is believed to hold ancient wisdom essential for a prophecy. Cryptic dialogue hints at cycles and fate, though no explicit legends are directly tied to the cave.</p>
+        </div>
+
+        <div class="section-content" id="dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The cave harbors hidden dangers such as unstable ground from tremors, potential sudden rockfalls, and other natural hazards. Treacherous winds after dusk and increased avalanche activity further complicate its safety. A mysterious force reputedly 'touches' individuals, hinting at unseen threats.</p>
+        </div>
+
+        <div class="section-content" id="link">
+            <h2>Link to the Party</h2>
+            <p>The party must ascend the mountain to reach the cave and gain the wisdom necessary for their quest. Their mission to consult Ceylan and seek the Watcher’s guidance makes this location pivotal. Here, Ceylan delivers fragmented, cryptic revelations about a hidden tomb and temple, and Lucas endures a traumatic telepathic vision prompting his departure.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Set in a mountainous region, the terrain features shifting ice, loose stone, and the massive natural formation known as the Watcher. Rocky outcrops, sparse vegetation, and steep slopes contribute to the harsh environment around the cave.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>Outside, the environment is marked by biting cold and strong winds. Inside the cave, the cold wind subsides and is replaced by a warmer, yet enigmatic atmosphere. However, winds can become treacherous after dusk.</p>
+        </div>
+
+        <div class="section-content" id="developments">
+            <h2>Recent Developments</h2>
+            <p>Recent mountain tremors have rendered the usual paths unsafe and increased avalanche activity. The unsettled terrain has heightened the journey’s tension, coinciding with an intensified presence inside the cave. Ceylan noted that someone had been affected by an unknown force, and in a cryptic, altered state, hinted at looming dangers, compounded by Lucas’s telepathic experience.</p>
+        </div>
+    </div>
+</body>
+</html>
+

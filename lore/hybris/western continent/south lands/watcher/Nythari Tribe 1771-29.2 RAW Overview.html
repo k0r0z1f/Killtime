@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nythari Tribe (Candice's Village) - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Nythari Tribe (Candice's Village) - Location Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Small, closely-knit village</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Dense jungle village with natural structures and treehouses; lantern-lit interiors and humble huts, including Eryndor's hut</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Harmonious and reverent, alive with energy; communal and focused atmosphere with hope and faith, featuring traditional chanting by elders</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Woven from vines, wood, and stone; seamlessly blends with nature featuring wooden huts and humble structures</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Reflects nature with sacred carvings linked to prophecy; includes woven charms, dried herbs, and small pouches as gifts</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Remote jungle location with hidden pathways</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Legends of the Children of Hybris and ancient prophecies; stories of the Watcher</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>A strange man seeking a hidden temple; mountain tremors and avalanches</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Home of Candice, who is a member of the tribe; reveres Queen Aphyrosia; center of prophecy; Aria's hut is part of the village; Eryndor's hut supports the mission</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Dense jungle with towering trees and a mountainous region under a dense jungle canopy</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Humid and sunny with scattered light through overgrowth; pine and damp earth scents with a heavy air</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Arrival of the Children of Hybris; warning of a strange man seeking the temple; recent tremors causing increased avalanches; preparing to send off a group on a mission and providing gifts</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Nythari Tribe is a small, closely-knit village comprising members who live in harmony within the dense jungle. The community is tightly bonded, relying on each other for support and maintaining strong familial ties. The population size fosters a sense of unity and cooperation among the villagers, ensuring that traditions and cultural practices are preserved and respected.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The village is nestled deep within a lush jungle, characterized by natural structures that blend seamlessly with the surrounding environment. Treehouses are a prominent feature, elevated among the towering trees to provide safety and utilize the vertical space of the jungle. The interiors of these treehouses are illuminated by lanterns, creating a warm and inviting atmosphere at night. Humble huts made from locally sourced materials, including wood and thatch, are scattered throughout the village. Notably, Eryndor's hut stands out as a central location within the village, serving as a hub for community activities and support for ongoing missions.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere of the Nythari Tribe's village is harmonious and reverent, filled with a palpable sense of energy that permeates daily life. The community is communal and focused, with villagers working together towards common goals. There is a strong sense of hope and faith that sustains the tribe, especially during challenging times. Traditional chanting by the elders is a common practice, reinforcing cultural values and providing spiritual guidance to the members of the tribe.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of the Nythari Tribe is intricately woven from vines, wood, and stone, allowing the village to blend effortlessly with the natural surroundings. Wooden huts are the primary structures, designed to be both functional and aesthetically pleasing. These humble structures are arranged thoughtfully to maintain the integrity of the jungle environment. The use of natural materials not only provides durability but also ensures that the village remains sustainable and in tune with nature.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The village's symbolism and carvings are deeply reflective of the natural world and the tribe's spiritual beliefs. Sacred carvings adorn various structures, each linked to ancient prophecies that guide the tribe's actions and decisions. These carvings often depict elements of nature, such as animals and plants, symbolizing the tribe's connection to their environment. Additionally, the use of woven charms, dried herbs, and small pouches as gifts serves as a means of sharing blessings and maintaining cultural traditions within and beyond the village.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Nythari Tribe's village benefits from its remote jungle location, which naturally serves as a defensive barrier against external threats. The dense jungle acts as a deterrent, making it difficult for outsiders to locate and access the village. Additionally, the village features hidden pathways that allow members to move discreetly and defend their home if necessary. These concealed routes are known only to the tribe members, providing strategic advantages in case of invasions or other dangers.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The village is rich with legends and lore that shape the cultural identity of the Nythari Tribe. Central to these stories are the Legends of the Children of Hybris, which speak of ancient prophecies that foretell significant events affecting the tribe and the broader world. Another prominent legend is that of the Watcher, a mysterious figure believed to protect the village and guide its members through times of uncertainty. These tales are passed down through generations, fostering a sense of history and destiny among the villagers.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Despite its harmonious appearance, the village faces several hidden dangers. A mysterious man has been seen seeking a hidden temple within the jungle, posing a potential threat to the tribe's safety and secrets. Additionally, the region is prone to natural hazards such as mountain tremors and avalanches, which can disrupt daily life and endanger the villagers. These dangers require the tribe to remain vigilant and prepared to respond to both external and environmental threats.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The Nythari Tribe serves as the home of Candice, a key member of the party. The village reveres Queen Aphyrosia and acts as the center of prophecy, providing crucial guidance and support for the party's mission. Aria's hut is part of the village, offering a base for strategic planning and coordination. Additionally, Eryndor's hut supports the party's mission, ensuring that resources and assistance are readily available. This deep connection between the tribe and the party underscores the importance of the village in the broader narrative.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The village is situated in a dense jungle area characterized by towering trees and a mountainous region. The dense jungle canopy creates a lush and vibrant environment, while the surrounding mountains add a rugged and formidable backdrop. This combination of dense vegetation and mountainous terrain makes the area both breathtaking and treacherous, with few accessible paths leading in or out of the village. The challenging terrain requires the tribe to navigate carefully and maintain their hidden location.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The climate in the region is predominantly humid, with plenty of sunshine interspersed with scattered light filtering through the dense overgrowth. The air is heavy and moist, carrying the scents of pine and damp earth. This humid environment contributes to the lushness of the jungle and affects daily life in the village, influencing activities and the overall ambiance. The weather patterns support the thriving ecosystem that the Nythari Tribe depends on.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recently, the Nythari Tribe has experienced several significant developments. The arrival of the Children of Hybris has introduced new dynamics and potential alliances within the village. Additionally, there has been a warning regarding a strange man seeking the hidden temple, heightening the sense of urgency and caution among the villagers. Recent mountain tremors have caused increased avalanches, posing new challenges and risks to the community. In response, the tribe is preparing to send off a group on a mission, ensuring they are equipped with necessary gifts and support to undertake their journey safely.</p>
+        </div>
+    </div>
+</body>
+</html>
+

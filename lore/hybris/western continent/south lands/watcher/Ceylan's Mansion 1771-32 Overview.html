@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ceylan's Mansion 1771-32 - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Ceylan's Mansion 1771-32 (Location Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Location</th>
+                    <th>Concise Attributes</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#mahogany-door" onclick="highlightSection(this, 'mahogany-door')">Mahogany Door</a></td>
+                    <td>Heavy wood, intricate carvings, eerie, ancient, mysterious, shifting, entry, cave, dim, new</td>
+                </tr>
+                <tr>
+                    <td><a href="#entrance-hall" onclick="highlightSection(this, 'entrance-hall')">Mansion’s Entrance Hall</a></td>
+                    <td>Rich paneling, vaulted, warm opulence, lavish, legacy, tension, door entry, cave, warm, revealed</td>
+                </tr>
+                <tr>
+                    <td><a href="#grand-dining-hall" onclick="highlightSection(this, 'grand-dining-hall')">Grand Dining Hall</a></td>
+                    <td>Vast hall, long table, inviting-tense, opulent, ambiguous feast, potential trap, divided, interior, indoor, feast</td>
+                </tr>
+                <tr>
+                    <td><a href="#grand-hall" onclick="highlightSection(this, 'grand-hall')">Grand Hall</a></td>
+                    <td>Carved walls, polished floors, lingering tension, grand, enigmatic tapestries, central, mountain cave, candlelit, post-meal</td>
+                </tr>
+                <tr>
+                    <td><a href="#corridors" onclick="highlightSection(this, 'corridors')">Corridors</a></td>
+                    <td>Elegant hallways, lanterns, eerie silence, refined, no explicit carvings, mysterious, connecting, interior, controlled, transit</td>
+                </tr>
+                <tr>
+                    <td><a href="#study" onclick="highlightSection(this, 'study')">Study</a></td>
+                    <td>Bookshelves, aged tomes, ancient aura, traditional, symbolic texts, hidden secrets, clue, deep interior, stable, texts</td>
+                </tr>
+                <tr>
+                    <td><a href="#bathing-chamber" onclick="highlightSection(this, 'bathing-chamber')">Bathing Chamber</a></td>
+                    <td>Steaming pool, gold mosaics, warm yet cautious, ornate, celestial, opulent, masked threat, respite, interior, warm, cloak off</td>
+                </tr>
+                <tr>
+                    <td><a href="#bedchambers" onclick="highlightSection(this, 'bedchambers')">Bedchambers</a></td>
+                    <td>Tailored rooms, unnatural window, deceptive comfort, bespoke, symbolic, personalized, secret view, retreats, indoors, uneasy</td>
+                </tr>
+                <tr>
+                    <td><a href="#spiral-staircase" onclick="highlightSection(this, 'spiral-staircase')">Spiral Staircase</a></td>
+                    <td>Narrow, winding, foreboding, elegant, transitional, risk, connects Observatory, interior, (weather n/a), ascension</td>
+                </tr>
+                <tr>
+                    <td><a href="#observatory" onclick="highlightSection(this, 'observatory')">Observatory</a></td>
+                    <td>Domed, glass ceiling, awe-disquiet, classical, contradictory, mysterious, hidden truths, cosmic, internally lit, anomaly</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="mahogany-door">
+            <h2>Mahogany Door</h2>
+            <p><strong>Population:</strong> [Not provided]</p>
+            <p><strong>Appearance:</strong> Heavy mahogany wood, deep and gleaming; intricate carvings including spirals, interwoven eyes, faceless figures; immense brass knockers with watchful faces.</p>
+            <p><strong>Energy & Atmosphere:</strong> Eerie, dense silence; a sense of being watched.</p>
+            <p><strong>Architecture:</strong> Ancient carved wood with detailed motifs.</p>
+            <p><strong>Symbolism & Carvings:</strong> Carvings of spirals, eyes, and faceless figures.</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> Its sudden, unaccounted-for appearance hints at Ceylan’s lingering power.</p>
+            <p><strong>Hidden Dangers:</strong> The carvings seem to shift and unsettle observers.</p>
+            <p><strong>Link to the Party:</strong> Serves as the entry point into the mysterious mansion.</p>
+            <p><strong>Surrounding Terrain:</strong> Located within the cave interior.</p>
+            <p><strong>Weather:</strong> Dim, cave conditions.</p>
+            <p><strong>Recent Developments:</strong> Appeared mysteriously—was not here before.</p>
+        </div>
+
+        <div class="section-content" id="entrance-hall">
+            <h2>Mansion’s Entrance Hall</h2>
+            <p><strong>Population:</strong> Transient (the party arrives).</p>
+            <p><strong>Appearance:</strong> Rich wooden paneling, high vaulted ceiling, flickering golden chandeliers, polished black stone floor.</p>
+            <p><strong>Energy & Atmosphere:</strong> Warm and opulent yet disquieting; an uncanny, almost unreal quality.</p>
+            <p><strong>Architecture:</strong> Lavishly crafted interior with elegant detailing.</p>
+            <p><strong>Symbolism & Carvings:</strong> [Not provided]</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> Constructed as part of Ceylan’s gift/power legacy.</p>
+            <p><strong>Hidden Dangers:</strong> Underlying tension and an unsettling feeling of observation.</p>
+            <p><strong>Link to the Party:</strong> The group enters here after the door swings open.</p>
+            <p><strong>Surrounding Terrain:</strong> Set inside the cave as part of the hidden mansion.</p>
+            <p><strong>Weather:</strong> Artificially warm interior.</p>
+            <p><strong>Recent Developments:</strong> Recently revealed beyond the mysterious door.</p>
+        </div>
+
+        <div class="section-content" id="grand-dining-hall">
+            <h2>Grand Dining Hall</h2>
+            <p><strong>Population:</strong> Transient (the party gathers).</p>
+            <p><strong>Appearance:</strong> Vast hall with a long wooden table; elaborate feast featuring steaming roasted meats, fresh bread with golden crusts, glistening fruits, and crystal goblets of wine/mead.</p>
+            <p><strong>Energy & Atmosphere:</strong> Inviting yet tense; an atmosphere of cautious anticipation.</p>
+            <p><strong>Architecture:</strong> Opulent and lavish, illuminated by candlelight.</p>
+            <p><strong>Symbolism & Carvings:</strong> [Not provided]</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> The feast is offered as a gift from Ceylan—its true intent remains ambiguous.</p>
+            <p><strong>Hidden Dangers:</strong> Potential trap; the feast and sumptuous setting belie an underlying threat.</p>
+            <p><strong>Link to the Party:</strong> The party is drawn in and divided by caution versus hunger at the feast.</p>
+            <p><strong>Surrounding Terrain:</strong> Located deeper within the mansion structure.</p>
+            <p><strong>Weather:</strong> Indoor, controlled conditions.</p>
+            <p><strong>Recent Developments:</strong> The feast has just been presented and tasted by some members.</p>
+        </div>
+
+        <div class="section-content" id="grand-hall">
+            <h2>Grand Hall</h2>
+            <p><strong>Population:</strong> Occupied by the party (they gather here after the meal).</p>
+            <p><strong>Appearance:</strong> Vast hall with carved wooden walls, smooth polished floors, and ornate tapestries depicting unknown, surreal landscapes.</p>
+            <p><strong>Energy & Atmosphere:</strong> A lingering tension softened by the warmth of a recent meal, yet an undercurrent of unease remains.</p>
+            <p><strong>Architecture:</strong> Grand and stately with intricate woodwork and large, open spaces.</p>
+            <p><strong>Symbolism & Carvings:</strong> Tapestries show scenes with spiraling mountains, upward flowing rivers, and figures at lightless voids.</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> Implies a place left by Ceylan “for those who would come” with a mysterious provenance.</p>
+            <p><strong>Hidden Dangers:</strong> An overall sense that the place “should not exist” and carries a subtle, unnerving presence.</p>
+            <p><strong>Link to the Party:</strong> The party’s central gathering area as they begin to explore the mansion.</p>
+            <p><strong>Surrounding Terrain:</strong> Part of the mansion interior; the building is set into a mountain where a cave was expected.</p>
+            <p><strong>Weather:</strong> Interior warmth with candlelight; no external weather noted.</p>
+            <p><strong>Recent Developments:</strong> Arrival after a strenuous journey; the group’s tension begins to dull as they settle in.</p>
+        </div>
+
+        <div class="section-content" id="corridors">
+            <h2>Corridors</h2>
+            <p><strong>Population:</strong> Traversed by the party as they split up.</p>
+            <p><strong>Appearance:</strong> Long, elegant hallways lit by flickering lanterns with blue and gold-tinted glass reflections; lined with intricately carved wooden doors.</p>
+            <p><strong>Energy & Atmosphere:</strong> Eerie and silent, imbued with an unsettling, almost watchful quality.</p>
+            <p><strong>Architecture:</strong> Refined and meticulous with elegant finishes and continuous design elements.</p>
+            <p><strong>Symbolism & Carvings:</strong> No explicit carvings detailed beyond the overall ornate style.</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> Implicit in the mansion’s design; part of the mysterious nature of Ceylan’s legacy.</p>
+            <p><strong>Hidden Dangers:</strong> The atmosphere itself creates a feeling of being observed.</p>
+            <p><strong>Link to the Party:</strong> Used by the party as the connecting network between various chambers.</p>
+            <p><strong>Surrounding Terrain:</strong> Interior of the mansion, away from the expected cave environment.</p>
+            <p><strong>Weather:</strong> Controlled, indoor ambience.</p>
+            <p><strong>Recent Developments:</strong> Serves as the main transit area for exploration.</p>
+        </div>
+
+        <div class="section-content" id="study">
+            <h2>Study</h2>
+            <p><strong>Population:</strong> Entered by Dira, Candice, and Aphyrosia.</p>
+            <p><strong>Appearance:</strong> Towering bookshelves, aged tomes and scrolls; massive writing desk with ink bottle and quill; smells of parchment, cedarwood, and a faint metallic note.</p>
+            <p><strong>Energy & Atmosphere:</strong> Carries an ancient, almost sentient quality—there is an awareness that makes the visitors uneasy.</p>
+            <p><strong>Architecture:</strong> Traditional interior with wooden shelves and a well-kept arrangement suggestive of long preservation.</p>
+            <p><strong>Symbolism & Carvings:</strong> Contains books with symbols: some matching Nythari script while others remain unrecognized.</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> The texts hint at an older history tied to Ceylan’s past.</p>
+            <p><strong>Hidden Dangers:</strong> The room “felt too aware” of their presence, implying it may hide secrets or dangers.</p>
+            <p><strong>Link to the Party:</strong> A stop in their exploration where clues about the mansion’s history are encountered.</p>
+            <p><strong>Surrounding Terrain:</strong> Deep within the mansion’s interior.</p>
+            <p><strong>Weather:</strong> Stable indoor climate; no external weather effects.</p>
+            <p><strong>Recent Developments:</strong> Discovery of ancient texts that deepen the enigma of the mansion’s origin.</p>
+        </div>
+
+        <div class="section-content" id="bathing-chamber">
+            <h2>Bathing Chamber</h2>
+            <p><strong>Population:</strong> Visited by Thomas, Candice.</p>
+            <p><strong>Appearance:</strong> Circular pool of steaming water edged with smooth stone; gold-inlaid mosaics of celestial bodies and unknown constellations.</p>
+            <p><strong>Energy & Atmosphere:</strong> Warm and inviting with floral scents; an unnaturally soothing invitation that suggests both comfort and caution.</p>
+            <p><strong>Architecture:</strong> Ornate with detailed mosaics and precise stonework.</p>
+            <p><strong>Symbolism & Carvings:</strong> Celestial imagery—stars and swirling constellations hinting at cosmic symbolism.</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> The chamber’s opulence hints at deliberate design by Ceylan.</p>
+            <p><strong>Hidden Dangers:</strong> The alluring warmth and invitation of the water might mask an underlying threat.</p>
+            <p><strong>Link to the Party:</strong> A momentary respite, highlighting exhaustion and mistrust.</p>
+            <p><strong>Surrounding Terrain:</strong> Within the mansion’s interior.</p>
+            <p><strong>Weather:</strong> Warm, perfumed air.</p>
+            <p><strong>Recent Developments:</strong> Candice’s casual decision to enter and remove her cloak.</p>
+        </div>
+
+        <div class="section-content" id="bedchambers">
+            <h2>Bedchambers</h2>
+            <p><strong>Population:</strong> Assigned individually to party members.</p>
+            <p><strong>Appearance:</strong> Rooms tailored to individual needs; Lucas’s features a massive window overlooking a dark, unnatural horizon that should have shown the cave outside.</p>
+            <p><strong>Energy & Atmosphere:</strong> Deceptive comfort—providing rest yet exuding an uncanny, almost disquieting perfection.</p>
+            <p><strong>Architecture:</strong> Designed with personal touches and an almost bespoke quality.</p>
+            <p><strong>Symbolism & Carvings:</strong> The window itself becomes a symbolic element of the mansion’s deceptive perfection.</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> The mansion responds to its guests in personalized ways.</p>
+            <p><strong>Hidden Dangers:</strong> The view suggests hidden, perhaps dangerous, deceptions.</p>
+            <p><strong>Link to the Party:</strong> Personal retreats for the party as they uncover the mansion’s secrets.</p>
+            <p><strong>Surrounding Terrain:</strong> Inside the mansion, yet with an unnatural view.</p>
+            <p><strong>Weather:</strong> Indoors; controlled climate.</p>
+            <p><strong>Recent Developments:</strong> Lucas’s unease as he questions the reality of the view.</p>
+        </div>
+
+        <div class="section-content" id="spiral-staircase">
+            <h2>Spiral Staircase</h2>
+            <p><strong>Population:</strong> Used by the party.</p>
+            <p><strong>Appearance:</strong> Narrow, winding, and precise, leading to upper levels.</p>
+            <p><strong>Energy & Atmosphere:</strong> Foreboding anticipation; a ritualistic passage between the familiar and the mysterious.</p>
+            <p><strong>Architecture:</strong> Elegantly crafted, blending function and symbolism.</p>
+            <p><strong>Symbolism & Carvings:</strong> [Not provided]</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> A transitional element hinting at the architect’s purpose.</p>
+            <p><strong>Hidden Dangers:</strong> The risk of ascending into unknown territory.</p>
+            <p><strong>Link to the Party:</strong> Directly connects the mansion’s lower areas to the Observatory.</p>
+            <p><strong>Surrounding Terrain:</strong> Internal mansion structure.</p>
+            <p><strong>Weather:</strong> [Not provided]</p>
+            <p><strong>Recent Developments:</strong> The party ascends toward the Observatory.</p>
+        </div>
+
+        <div class="section-content" id="observatory">
+            <h2>Observatory</h2>
+            <p><strong>Population:</strong> Initially visited by Lucas; later joined by Altheris.</p>
+            <p><strong>Appearance:</strong> Domed chamber with a glass ceiling revealing an alien galaxy; brass telescope focused on a spiraling cluster.</p>
+            <p><strong>Energy & Atmosphere:</strong> Awe-inspiring and disquieting—the view contradicts expected reality.</p>
+            <p><strong>Architecture:</strong> Classical observatory with scientific precision and mystical design.</p>
+            <p><strong>Symbolism & Carvings:</strong> The galaxy image contradicts the expected cave sky.</p>
+            <p><strong>Defenses:</strong> [Not provided]</p>
+            <p><strong>Legends & Lore:</strong> The mansion “wants them to see” beyond the known world.</p>
+            <p><strong>Hidden Dangers:</strong> The view hints at hidden truths or dangers.</p>
+            <p><strong>Link to the Party:</strong> Lucas and Altheris deepen their realization of the mansion’s anomaly.</p>
+            <p><strong>Surrounding Terrain:</strong> Cosmic vista, unnatural to its location.</p>
+            <p><strong>Weather:</strong> Internally lit, showing a starless expanse.</p>
+            <p><strong>Recent Developments:</strong> The galaxy seen does not match reality.</p>
+        </div>
+    </div>
+</body>
+</html>
+

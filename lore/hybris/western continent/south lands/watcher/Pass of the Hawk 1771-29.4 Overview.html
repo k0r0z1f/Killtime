@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pass of the Hawk - Detailed Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Pass of the Hawk - Detailed Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Sparse, primarily transient travelers and local hermits.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Rugged, snow-covered mountain pass with jagged rocks.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense and foreboding, with a sacred and mysterious aura.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Minimal human-made structures, sturdy pathways and shelters.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism-carvings" onclick="highlightSection(this, 'symbolism-carvings')">Symbolism & Carvings</a></td>
+                    <td>Ancient carvings of hawks, storms, and celestial symbols.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Sheer cliffs, avalanche-prone areas, and hidden crevices.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends-lore" onclick="highlightSection(this, 'legends-lore')">Legends & Lore</a></td>
+                    <td>Stories of the Watcher, a guardian spirit testing travelers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Avalanches, extreme cold, and unknown hostile entities.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>Key route to Ceylan’s Cave, with trials influenced by the Watcher.</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Jagged mountains, deep valleys, and dense snow-covered forests.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Extremely cold with frequent snowstorms and heavy winds.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Seismic activity creating new crevasses and avalanche events.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Pass of the Hawk has a sparse population, consisting mostly of transient travelers, hermits, hardy mountain dwellers, and local guides. Wildlife is rare but exists.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>A narrow, winding mountain pass flanked by towering, jagged rocks covered in ice and snow. The path is treacherous, with narrow rocky paths, steep inclines, and sheer drops into mist-covered abysses below.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The area feels tense and foreboding, with a constant sense of imminent danger due to unstable terrain and unpredictable weather. The atmosphere exudes a solemn, mysterious, and ancient sacred energy, making it both awe-inspiring and terrifying.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture in the Pass of the Hawk is minimal, with human intervention restricted to sturdy stone pathways carved into the mountainside, reinforced handrails, and small shelters built into the rock faces. Remnants of older lookout points and temporary shelters, such as shallow overhangs, provide evidence of past explorers’ struggles against the harsh elements.</p>
+        </div>
+
+        <div class="section-content" id="symbolism-carvings">
+            <h2>Symbolism & Carvings</h2>
+            <p>Intricate carvings of hawks, storms, mythical creatures, and celestial symbols adorn the rocky walls. These carvings are believed to act as protective wards against natural disasters and malevolent spirits. Despite their weathered state, they remain a source of mystery and are thought to hold both historical and mystical significance.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The pass’s natural defenses include sheer cliffs, avalanche-prone slopes, deep crevasses, and rugged terrain. These features not only deter large groups but also make it perilous for even the most skilled travelers to navigate.</p>
+        </div>
+
+        <div class="section-content" id="legends-lore">
+            <h2>Legends & Lore</h2>
+            <p>Legends of the Pass of the Hawk revolve around the Watcher, a guardian spirit or deity that oversees the pass. Travelers who venture through must prove their worthiness; those deemed unworthy face challenges that often end in failure or disappearance. The tales of heroes who overcame the Watcher’s trials are celebrated, while the fate of many who vanish remains unknown.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The pass is fraught with hidden dangers such as sudden avalanches, newly formed crevasses due to recent tremors, extreme cold, and the ever-present threat of unknown creatures or hostile entities lurking in the misty depths.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The party’s journey through the Pass of the Hawk is critical to their mission to reach Ceylan’s Cave. They face environmental challenges and trials influenced by the Watcher, testing their resolve and unity while tying into a greater unfolding prophecy.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The pass is surrounded by jagged, snow-covered peaks, steep cliffs, deep valleys, and dense forests. The rugged terrain and landmarks, such as Ceylan’s Cave, make it both an awe-inspiring and dangerous region to traverse.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in the Pass of the Hawk is harsh, with biting winds, heavy snowfall, frequent and sudden snowstorms, and rapidly changing conditions that can turn treacherous in moments.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent seismic activity has dramatically altered the landscape, creating new crevasses such as the Watcher’s Crevasse. A recent avalanche, believed to be triggered by the Watcher, has blocked parts of the path, forcing the party to find alternative routes. These developments have heightened the sense of urgency and mysticism surrounding the pass as the party confronts these new challenges.</p>
+        </div>
+    </div>
+</body>
+</html>
+

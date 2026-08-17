@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pass of the Hawk - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Pass of the Hawk (Location Overview)</h1>
+        
+        <!-- Location Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Pass of the Hawk</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Pathways altered by frost and ice</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy" onclick="highlightSection(this, 'energy')">Energy &amp; Atmosphere</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism &amp; Carvings</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends &amp; Lore</a></td>
+                    <td>Unstable pathways due to frost and ice</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#link" onclick="highlightSection(this, 'link')">Link to the Party</a></td>
+                    <td>Intended route for the party’s journey</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Mountainous; altered by snow, frost &amp; ice</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold with lingering chill</td>
+                </tr>
+                <tr>
+                    <td><a href="#developments" onclick="highlightSection(this, 'developments')">Recent Developments</a></td>
+                    <td>Mountain changed overnight with new frost &amp; ice</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>The location is known as <strong>Pass of the Hawk</strong>. This name hints at a possibly strategic or revered mountain pass, though no further naming lore is provided.</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>No population information has been provided for Pass of the Hawk.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The pathways leading to Pass of the Hawk are barely recognizable. They have been dramatically altered by new frost and ice, which have reshaped what was once a familiar route.</p>
+        </div>
+
+        <div class="section-content" id="energy">
+            <h2>Energy &amp; Atmosphere</h2>
+            <p>No details have been provided regarding the energy or atmosphere of this location.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>No architectural information is available for Pass of the Hawk.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism &amp; Carvings</h2>
+            <p>There is no information provided about any symbolism or carvings associated with Pass of the Hawk.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>No defensive structures or measures have been mentioned for this location.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends &amp; Lore</h2>
+            <p>Local lore speaks of the pass as having unstable and altered pathways, a consequence of the pervasive frost and ice. These elements have contributed to its mysterious reputation.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>No specific hidden dangers have been detailed for Pass of the Hawk.</p>
+        </div>
+
+        <div class="section-content" id="link">
+            <h2>Link to the Party</h2>
+            <p>This pass is noted as the intended route for the party’s journey, making it an important element in their travel plans.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The area surrounding Pass of the Hawk is mountainous. The terrain has been significantly altered by fresh snow, frost, and ice, which have impacted the stability of the rocks and pathways.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather at this location is cold. A recent storm has eased, yet it left behind a lingering chill that still affects the area.</p>
+        </div>
+
+        <div class="section-content" id="developments">
+            <h2>Recent Developments</h2>
+            <p>Overnight, the mountain underwent a dramatic change, with new layers of frost and ice forming. This sudden transformation has rendered the once-familiar pathways virtually unrecognizable.</p>
+        </div>
+    </div>
+</body>
+</html>
+
