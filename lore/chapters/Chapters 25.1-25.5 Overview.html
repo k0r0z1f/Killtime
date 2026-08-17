@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 25.1-25.5 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 25.1-25.5 Overview</h1>
+        
+        <!-- Chapter Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter-25-1" onclick="highlightSection(this, 'chapter-25-1')">25.1</a></td>
+                    <td>The Trial Begins</td>
+                    <td>Lucas, Mina, and Thomas face the council, accused of inciting chaos and allying with the Cult of the Sent Ones.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-25-2" onclick="highlightSection(this, 'chapter-25-2')">25.2</a></td>
+                    <td>Unraveling Alliances</td>
+                    <td>The trio navigates offers from factions, while Tolgar’s true intentions become questionable.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-25-3" onclick="highlightSection(this, 'chapter-25-3')">25.3</a></td>
+                    <td>The Council’s Divide</td>
+                    <td>As the council splits, the trio faces choices about loyalty and power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-25-4" onclick="highlightSection(this, 'chapter-25-4')">25.4</a></td>
+                    <td>The Relic’s Power</td>
+                    <td>The group battles ancient guardians and uncovers the mysterious power of the relic.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-25-5" onclick="highlightSection(this, 'chapter-25-5')">25.5</a></td>
+                    <td>The Elves' Request</td>
+                    <td>The elves reveal their involvement, offering key knowledge on the prophecy and artifacts.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-25-1">
+            <h2>25.1 The Trial Begins</h2>
+            <p>Lucas, Mina, and Thomas are put on trial in Brum'korath, accused of collaborating with the Cult of the Sent Ones. They defend their actions, recounting the battle against the Disciple and revealing the Empire's involvement. Tensions rise as Thomas uncovers hidden political agendas and Mina receives a cryptic warning.</p>
+        </div>
+
+        <div class="section-content" id="chapter-25-2">
+            <h2>25.2 Unraveling Alliances</h2>
+            <p>As Tolgar’s influence grows, the trio receives offers from multiple factions. Lucas becomes suspicious of Tolgar’s intentions after learning of secret meetings, and Mina struggles with mounting pressure. The group’s decision to ally with the dwarves leads to new risks and the discovery of a hidden temple.</p>
+        </div>
+
+        <div class="section-content" id="chapter-25-3">
+            <h2>25.3 The Council’s Divide</h2>
+            <p>The trio navigates a splintering council, torn between Tolgar’s efforts to unite the Sent Ones and Dira’s aggressive tactics. Amid growing tensions, Lucas questions the loyalty of those around him. The group must choose whether to trust Tolgar or carve their own path in a divided council.</p>
+        </div>
+
+        <div class="section-content" id="chapter-25-4">
+            <h2>25.4 The Relic’s Power</h2>
+            <p>The group explores a hidden chamber where they encounter ancient guardians. After a fierce battle, Lucas discovers that the relic controls the guardians, and in a desperate attempt to destroy it, the relic fuses to his wrist, halting the guardians and leaving the group with more questions than answers.</p>
+        </div>
+
+        <div class="section-content" id="chapter-25-5">
+            <h2>25.5 The Elves' Request</h2>
+            <p>The council informs the group that the elves of Haliriel have requested a meeting regarding the prophecy and artifacts. The elves remain distrustful of the Cult and the dwarves. The group prepares for the meeting, realizing the growing importance of the relics and the role of the elves in unraveling the prophecy.</p>
+        </div>
+    </div>
+</body>
+</html>

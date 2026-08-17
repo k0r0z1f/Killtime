@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 21.1-21.5 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 21.1-21.5 Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>21.1</td>
+                    <td><a href="#chapter-21.1" onclick="highlightSection(this, 'chapter-21.1')">Shadows Beneath the Storm (Part 1)</a></td>
+                    <td>Journey through the Storm Mountains. Candice discovers ancient Nythari markings.</td>
+                </tr>
+                <tr>
+                    <td>21.2</td>
+                    <td><a href="#chapter-21.2" onclick="highlightSection(this, 'chapter-21.2')">Shadows Beneath the Storm (Part 2)</a></td>
+                    <td>Candice reflects on her heritage and uncovers more about Kingston’s disaster.</td>
+                </tr>
+                <tr>
+                    <td>21.3</td>
+                    <td><a href="#chapter-21.3" onclick="highlightSection(this, 'chapter-21.3')">Shadows Beneath the Storm (Part 3)</a></td>
+                    <td>Hostile mermaid encounter on a government island, dark forces lurking.</td>
+                </tr>
+                <tr>
+                    <td>21.4</td>
+                    <td><a href="#chapter-21.4" onclick="highlightSection(this, 'chapter-21.4')">Shadows Beneath the Storm (Part 4)</a></td>
+                    <td>Suspicion grows as Candice senses a sinister force in the nearby forest.</td>
+                </tr>
+                <tr>
+                    <td>21.5</td>
+                    <td><a href="#chapter-21.5" onclick="highlightSection(this, 'chapter-21.5')">Shadows Beneath the Storm (Part 5)</a></td>
+                    <td>Arrested by elven guards, Candice realizes her journey is tied to Lucas and Mina.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-21.1">
+            <h2>Shadows Beneath the Storm (Part 1)</h2>
+            <p>Candice and Jarek journey through the Storm Mountains, battling Dereks, magical dwarven mountain dwellers. Candice, injured but persistent, discovers ancient Nythari markings deep in a cavern, which deepens her connection to her ancestors and the mystery behind Kingston’s disaster.</p>
+        </div>
+
+        <div class="section-content" id="chapter-21.2">
+            <h2>Shadows Beneath the Storm (Part 2)</h2>
+            <p>As they continue through treacherous terrain, Candice reflects on her Nythari roots and the purpose of her journey. Taking shelter in ancient ruins, she contemplates the significance of Kingston’s disaster and her pivotal role in uncovering its truth.</p>
+        </div>
+
+        <div class="section-content" id="chapter-21.3">
+            <h2>Shadows Beneath the Storm (Part 3)</h2>
+            <p>Upon reaching a government island, Candice's instincts prove correct when they encounter hostile mermaids. After narrowly escaping, Candice senses an even greater, unseen threat, highlighting her growing awareness of a dark force lurking in the shadows.</p>
+        </div>
+
+        <div class="section-content" id="chapter-21.4">
+            <h2>Shadows Beneath the Storm (Part 4)</h2>
+            <p>As they reach an advanced fishing village near Haliriel, Candice’s intuition about a nearby threat intensifies. Despite forming connections with the villagers, she remains cautious, sensing that something sinister resides in the forest that they must confront.</p>
+        </div>
+
+        <div class="section-content" id="chapter-21.5">
+            <h2>Shadows Beneath the Storm (Part 5)</h2>
+            <p>After securing a permit to enter the Second District of Haliriel, Candice and Jarek are confronted by elven guards. Their attempt to escape fails, leading to their arrest and a journey to the High Temple of Nature. Candice begins to realize that her fate is intertwined with Lucas and Mina’s, hinting at a larger purpose in the events unfolding around Kingston.</p>
+        </div>
+    </div>
+</body>
+</html>

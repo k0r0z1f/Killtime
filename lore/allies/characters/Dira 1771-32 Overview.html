@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dira - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Dira - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1729 (42 yrs)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Scholar; researcher; dagger combatant; medic; group companion; ex-Unbound guide; Cult devotee; relic researcher; explorer.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Nervous, anxious, earnest; steady; determined; cautious; intellectual; reserved; pragmatic; reactive.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Herbalism; dagger skills.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Cult of the Sent Ones; adventuring group.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Female dwarf; dark braided hair; anxious eyes; pale; cloaked.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Prevent civil war; protect Sent Ones; decipher prophecy; support group; survive crises.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Hid temple truth; repents from Unbound; fears relics; seeks forgiveness.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Basic dagger combat; crisis reactive.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Notebook, rope, dagger, herbs, kit, needle, thread, shard.</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas" onclick="highlightSection(this, 'lucas')">Lucas</a></td>
+                    <td>Friend; doubts her worth.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>Friend; admires, seeks forgiveness.</td>
+                </tr>
+                <tr>
+                    <td><a href="#thomas" onclick="highlightSection(this, 'thomas')">Thomas</a></td>
+                    <td>Friend; intimidating yet forgiving hope.</td>
+                </tr>
+                <tr>
+                    <td><a href="#candice" onclick="highlightSection(this, 'candice')">Candice</a></td>
+                    <td>Acquaintance; linked to prophecy.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Dira was born in 1729, making her 42 years old. This age reflects a blend of youthful energy and the wisdom gained from her challenging experiences as a scholar, healer, and combatant.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Dira is a scholar and researcher who survived by wit rather than brute strength. Although not a traditional fighter, she wields a dagger and uses her skills in combat when necessary. In her role as a medic and healer, she supports her adventuring group and acts as a vital traveling companion. Previously, she served as a guide for the Cult of the Sent Ones while covertly infiltrating the Unbound. Now, having repented her past, she is devoted to the Cult and actively researches relics and their significance, having explored locations such as caverns and mansions.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Dira exhibits a nervous and anxious demeanor while remaining earnest and a steadying force in times of uncertainty. She is determined and cautious, blending intellectual curiosity with a reserved, pragmatic nature. Though she is reactive under pressure—often displaying signs of panic and fear—her overall approach is observant and calculated, even if occasionally marked by skepticism and tension.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Proficient in herbalism, Dira prepares remedies essential for healing. She is also skilled with a small blade or dagger, a necessary ability that complements her role as a combatant when situations demand quick defensive action.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Dira is a devoted member of the Cult of the Sent Ones and participates actively in an adventuring group. This dual affiliation underscores her involvement in both mystical practices and exploratory missions.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>A female dwarf, Dira is distinguished by her long, dark braided hair and slightly tremulous hands. Her anxious eyes and pale face reveal her inner concerns, while her small stature and youthful yet weary appearance are accentuated by her habit of clutching a notebook and her signature cloak.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Dira’s internal struggle is driven by a deep-seated fear of the collapse of the Cult. Determined to prevent civil war and maintain the unity of the Sent Ones, she works to decipher a crucial prophecy and understand the true nature of relics. Her mission involves supporting her group through dangerous encounters, documenting critical events, and ensuring the safety and well-being of her companions—even relying on the aid of friends like Thomas when in peril.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Behind her composed exterior, Dira hides a significant secret: she once concealed the true nature of the temple and her connections to the Cult of the Unbound. Having since revealed everything—leading to the imprisonment of both cult leaders—she now repents and struggles with the unsettling truth that the relics may possess powers beyond what is understood.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Although her strengths lie in scholarship and healing, Dira has received basic combat training with a small blade. This training equips her to react swiftly under pressure, providing essential defense when confronted with danger.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Dira carries a notebook filled with her studies on the prophecy and the Temple of the Sent Ones, along with a rope and her small blade. Her satchel holds herbs, and she is equipped with a medical kit containing a needle and spool of thread. Additionally, an old satchel conceals a jagged crystal shard, hinting at the mysterious nature of the relics she investigates.</p>
+        </div>
+
+        <div class="section-content" id="lucas">
+            <h2>Lucas</h2>
+            <p>Lucas, a friend known for less than a month, harbors doubts about Dira's worth due to her past betrayal, adding a personal conflict that influences her journey toward redemption.</p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>Mina, another friend of less than a month’s acquaintance, admires Dira deeply and hopes for eventual forgiveness, underscoring a bond marked by both respect and the complexities of recent conflicts.</p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>Thomas, also a friend known for less than a month, may appear intimidating, yet he holds a hopeful outlook for forgiveness. His presence further complicates the dynamics of Dira’s interactions within the group.</p>
+        </div>
+
+        <div class="section-content" id="candice">
+            <h2>Candice</h2>
+            <p>Candice, an acquaintance of 5 days, believes that Dira is intrinsically linked to an important prophecy. She views Dira’s mission as a vital connection in a larger, unfolding narrative, lending an external perspective to the challenges Dira faces.</p>
+        </div>
+    </div>
+</body>
+</html>
+

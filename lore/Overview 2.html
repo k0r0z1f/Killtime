@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Navigation Menu</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            width: 300px;
+            margin: 0 auto;
+        }
+        .menu {
+            list-style-type: none;
+            padding: 0;
+        }
+        .menu-item {
+            padding: 10px;
+            background: #f4f4f4;
+            margin: 5px 0;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+        .menu-item:hover {
+            background: #ddd;
+        }
+        .file-content {
+            margin-top: 20px;
+            padding: 10px;
+            background: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>File Navigation Menu</h2>
+        <ul id="menu" class="menu">
+            <!-- File links will be dynamically added here -->
+        </ul>
+
+        <div id="file-content" class="file-content">
+            <h3>File Content</h3>
+            <p id="file-details">Please select a file to view its contents.</p>
+        </div>
+    </div>
+
+    <script>
+        const files = [
+            "./overview/allies/characters/Dira 1771-24.5 Overview.html",
+            "./overview/allies/characters/Dira 1771-25.5 Overview.html",
+            "./overview/allies/characters/Dira 1771-25.5 RAW Overview.html",
+            "./overview/allies/Ally 1771-21 Overview.html",
+            "./overview/Killtime Tables Archive.html",
+            "./overview/Killtime Universe Overview.html",
+            "./overview/chapters/Chapters 23.5.1-23.5.5 Overview.html",
+            "./overview/chapters/Chapter 26.5 Overview.html",
+            "./overview/chapters/Chapter 26.1 Overview.html",
+            "./overview/chapters/Chapters 11-17 Overview.html",
+            "./overview/chapters/Chapters 22.1-22.5 Overview.html",
+            "./overview/chapters/Chapter 26.4 Overview.html",
+            "./overview/chapters/Chapter 26.3 Overview.html",
+            "./overview/chapters/Chapters 21.1-21.5 Overview.html",
+            "./overview/chapters/Chapters 1-5 Overview.html",
+            "./overview/chapters/Chapters 18-20.5 Overview.html",
+            "./overview/chapters/Chapter 26.2 Overview.html",
+            "./overview/chapters/Chapters 23.1-23.4 Overview.html",
+            "./overview/chapters/Chapters 6-10 Overview.html",
+            "./overview/chapters/Chapters 24.1-24.5 Overview.html",
+            "./overview/chapters/Chapters 25.1-25.5 Overview.html",
+            "./overview/hybris/eastern continent/Eastern Continent 1771-26.5 Overview.html",
+            "./overview/hybris/Hybris 1771-25.5 RAW Overview.html",
+            "./overview/hybris/Hybris 0-Prelude Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/Dwarven Mountains 1771-26.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/Dwarven Population 1771 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/dwarven gates/Dwarven Gates 1771-22.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/temple of the sent ones/Temple of the Sent Ones 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/temple of the sent ones/Temple of the Sent Ones 1771-22.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/temple of the sent ones/Temple of the Sent Ones 1771-24.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/Cults 1771-23.3 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/Cultists 1771-24.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/Cults 1771-23.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Cult HQ 1771-23.4 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Council Chamber of the Sent Ones 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Tolgar 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Elder Aria 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Goldar 1771-25.5 RAW Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Goldar 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Elder Gorla 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Goldar 1771-24.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Elder Gorla 1771-24.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/characters/Goldar 1771-26.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Cult HQ 1771-23.3 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Sent Ones HQ 1771-23.5 RAW Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Cult HQ 1771-24.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Sent Ones HQ 1771-25.5 RAW Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Sent Ones HQ 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/sent ones/Cult of the Sent Ones 1771-22.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/Cults 1771-22.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/cults/Cults 1771-23.4 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/City of Brum'korath 1771-23.5 RAW Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/The Streets of Brum'korath 1771-26.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/Justice Halls 1771-26.5 RAW Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/Justice Halls 1771-25.5 RAW Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/City of Brum'korath 1771-25.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/City of Brum'korath 1771-26.5 RAW Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/characters/Voice from the Door 1771-25.1 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/characters/Dwarven Council Members 1771-26.5 Overview.html",
+            "./overview/hybris/western continent/dwarven mountains/brum'korath/characters/Militia Captain 1771-25.1 Overview.html"
+        ];
+
+        // Function to display the list of files
+        function displayMenu() {
+            const menu = document.getElementById('menu');
+            files.forEach((file, index) => {
+                const menuItem = document.createElement('li');
+                menuItem.classList.add('menu-item');
+                menuItem.textContent = file.split('/').pop();
+                menuItem.onclick = function() { loadFileContent(index); };
+                menu.appendChild(menuItem);
+            });
+        }
+
+        // Function to load the content of a selected file
+        function loadFileContent(index) {
+            const filePath = files[index];
+            const fileDetails = document.getElementById('file-details');
+            fileDetails.textContent = `Loading content for: ${filePath}`;
+
+            // For now, we just simulate content loading.
+            // In a real app, you could use AJAX/fetch to load the file.
+            setTimeout(() => {
+                fileDetails.textContent = `This is the content for: ${filePath}`;
+            }, 1000);
+
+            // Show the file content area
+            document.getElementById('file-content').style.display = 'block';
+        }
+
+        // Initialize the menu
+        window.onload = displayMenu;
+    </script>
+</body>
+</html>
+

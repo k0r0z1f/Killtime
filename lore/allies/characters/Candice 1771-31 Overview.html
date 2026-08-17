@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candice - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Candice (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1721 (49 years old)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Nythari warrior, seeker &amp; messenger, apprentice to Ceylan; guides Lucas &amp; Mina to Watcher; group leader.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Agile, confident, curious, protective, determined, introspective, loyal, composed, insightful, firm, sincere, burdened, awe-inspired, steady, strong-willed.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Expert in survival, climbing, stealth, archery, blow darts &amp; short blades; skilled with bow &amp; dagger; mind link (Ceylan?); Watcher knowledge.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Elven Council of Haliriel (temp. protection), Watcher-aligned, Nythari Tribe, Queen Aphyrosia, traveling leader.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Athletic, bright amber eyes, long brown hair, elegant, striking, warrior; climbing-ready; enigmatic aura.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Ensure Lucas &amp; Mina’s return to Watcher; fulfill prophecy; support group; 33-day journey; seek truth; resolve conflict.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Prophecy-bound mission; dormant chaotic mind presence (Ceylan?).</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Skilled in survival, climbing, stealth, archery, blow darts, short blades; terrain scouting expert.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Pouch of iridescent stones, Nythari stone fragment, blow-dart, 4 poison darts, 1 dart, survival gear, Elven pass, climbing gear, blanket, bow, dagger, last arrow.</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas" onclick="highlightSection(this, 'lucas')">Lucas</a></td>
+                    <td>Acquaintance (5 days); trusts him as Child of Hybris.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>Acquaintance (5 days); trusts her as Child of Hybris.</td>
+                </tr>
+                <tr>
+                    <td><a href="#thomas" onclick="highlightSection(this, 'thomas')">Thomas</a></td>
+                    <td>Acquaintance (5 days); respects his imposing, protective, strategic nature.</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>Acquaintance (5 days); notes cautious, redemption-seeking, smart.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Candice was born in 1721 and is currently 49 years old.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Candice is a member of the Nythari tribe and serves as a warrior, seeker, and messenger. As an apprentice to Ceylan, she is tasked with bringing Lucas and Mina to the Watcher, playing an integral role in the unfolding prophecy. Concerned about the mission’s risks, she advocates consulting the Watcher for guidance and works to uncover the truth about the Children of Hybris and the disciples. Familiar with the paths leading to Ceylan’s cave, she consults trusted allies like Eryndor for updates, leads the group during the ascent to the Watcher, and is responsible for navigation, securing camp needs, and maintaining the fire. Additionally, she is a trainee of Ceylan and may even serve as Ceylan’s vessel.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Candice is agile, confident, and curious. She is protective of nature, determined, and introspective, with a deep loyalty and a calm composure under pressure. Though she remains insightful and firm, she also carries the burden of her mission with an awe-inspired steadiness. Her strong-willed nature is balanced by moments of urgency and desperation, and she demonstrates reflective, resolute, and cautious qualities alongside a courageous and focused outlook. Overall, her resourcefulness and innate leadership provide a steadying presence in challenging times.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Candice is an expert in survival, climbing, stealth, archery, and the use of blow darts and short blades. She is highly proficient with both a bow and a dagger. A strange entity appears to reside within her mind—possibly linked to Ceylan—though it does not seem to affect her actions. Her connection to Ceylan also grants her valuable knowledge about the Watcher and its significance.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Candice is aligned with the Elven Council of Haliriel, currently under temporary protection. She is also connected with the Watcher and is an active member of the Nythari Tribe. Moreover, she serves under Queen Aphyrosia and leads a traveling group.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>With an athletic build complemented by bright amber eyes and long, brown, thread-like hair, Candice exudes elegance and strength. Her striking warrior appearance and climbing-ready gear reflect her pride in Nythari culture. An enigmatic aura surrounds her, and her alert posture—often seen with crossed arms and tapping fingers—along with flushed cheeks from cold and exertion, complete her distinctive look.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Candice’s mission is to ensure that Lucas and Mina return safely to the Watcher, thereby fulfilling a crucial part of an unfolding prophecy. She believes that consulting the Watcher is essential for the mission’s success and leads her group through numerous challenges, including a rigorous 33-day journey from her village to the discovery of the Children of Hybris. Along the way, she strives to support her group’s survival and seeks to resolve her internal conflicts regarding her role and the true nature of the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Candice secretly believes in the prophecy concerning Lucas and Mina, with her entire mission intricately tied to it. Additionally, she harbors a mysterious, chaotic presence in her mind—possibly linked to Ceylan—that adds an element of enigma to her character.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Candice is highly trained in survival, climbing, stealth, archery, and the use of blow darts and short blades. Her expertise also extends to terrain scouting, which enables her to navigate challenging environments effectively.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Her inventory consists of a pouch of iridescent stones used as currency (Derek's currency), a small stone fragment from Nythari ruins, and a set of weapons and survival gear. This includes a blow-dart, four poison darts, one normal dart, essential Nythari survival equipment, a special pass granted by the Elven Council, climbing gear, a blanket, as well as a bow, a dagger, and her last arrow.</p>
+        </div>
+
+        <div class="section-content" id="lucas">
+            <h2>Lucas</h2>
+            <p>Candice has known Lucas for 5 days as an acquaintance. She blindly trusts him due to his status as a Child of Hybris and his proven powers.</p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>Having known Mina for 5 days, Candice regards her as an acquaintance and tends to trust her blindly, given Mina’s identity as a Child of Hybris.</p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>Candice’s acquaintance with Thomas spans 5 days. She is respectful of his imposing presence and recognizes his protective and strategic nature.</p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>In the 5 days she has known Dira, Candice has come to note her cautious nature and desire for redemption, considering her to be smart and insightful.</p>
+        </div>
+    </div>
+</body>
+</html>
+

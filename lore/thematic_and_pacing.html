@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hybris Telemetry: Thematic Flow & Pacing</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;500;700&display=swap');
+
+        :root {
+            --bg-color: #050608;
+            --surface-color: #0f1115;
+            --text-main: #d1d5db;
+            --accent-glow: #45a29e;
+            
+            /* Theme Colors */
+            --theme-lucas: #00e6e6;   /* Clinical/Calculus */
+            --theme-mina: #00ff88;    /* Feral/Velocity */
+            --theme-thomas: #b08d55;  /* Bedrock/Mass */
+            --theme-dread: #ff3333;   /* Cosmic/Geological Horror */
+            --theme-nature: #6b8e23;  /* Hostile Environment */
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            font-family: 'Oswald', sans-serif;
+            margin: 0;
+            padding: 20px;
+            overflow-x: hidden;
+        }
+
+        .dashboard {
+            max-width: 1200px;
+            margin: 0 auto;
+            border: 1px solid #1f2833;
+            background: var(--surface-color);
+            padding: 30px;
+            box-shadow: 0 0 30px rgba(0, 0, 0, 0.8), inset 0 0 20px rgba(69, 162, 158, 0.05);
+            border-radius: 4px;
+        }
+
+        h1 {
+            color: var(--accent-glow);
+            text-align: center;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            border-bottom: 1px solid #1f2833;
+            padding-bottom: 15px;
+            margin-top: 0;
+            text-shadow: 0 0 10px rgba(69, 162, 158, 0.3);
+        }
+
+        /* Timeline Navigation */
+        .timeline-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 40px 0;
+            position: relative;
+        }
+
+        .timeline-line {
+            position: absolute;
+            top: 50%;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: #1f2833;
+            z-index: 0;
+        }
+
+        .chapter-node {
+            position: relative;
+            z-index: 1;
+            background: var(--bg-color);
+            border: 2px solid #333;
+            color: #555;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 50%;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.9em;
+        }
+
+        .chapter-node:hover {
+            border-color: var(--accent-glow);
+            color: var(--accent-glow);
+            transform: scale(1.1);
+        }
+
+        .chapter-node.active {
+            border-color: var(--accent-glow);
+            background: var(--accent-glow);
+            color: #000;
+            box-shadow: 0 0 15px var(--accent-glow);
+            transform: scale(1.2);
+        }
+
+        /* Controls */
+        .controls {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        button {
+            background: transparent;
+            border: 1px solid var(--accent-glow);
+            color: var(--accent-glow);
+            padding: 10px 20px;
+            font-family: 'Courier Prime', monospace;
+            text-transform: uppercase;
+            cursor: pointer;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background: var(--accent-glow);
+            color: #000;
+        }
+
+        /* Data Display Area */
+        .data-panel {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 40px;
+        }
+
+        @media (max-width: 800px) {
+            .data-panel {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .chart-area, .analysis-area {
+            background: #0a0b0e;
+            border: 1px solid #1f2833;
+            padding: 25px;
+            border-radius: 4px;
+        }
+
+        h2 {
+            font-size: 1.2em;
+            color: #fff;
+            letter-spacing: 2px;
+            margin-top: 0;
+            border-bottom: 1px dashed #333;
+            padding-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        /* Bars */
+        .bar-wrap {
+            margin-bottom: 15px;
+        }
+
+        .bar-label {
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.85em;
+            margin-bottom: 5px;
+            color: #888;
+        }
+
+        .bar-label span:first-child {
+            color: #fff;
+            letter-spacing: 1px;
+        }
+
+        .bar-bg {
+            width: 100%;
+            height: 12px;
+            background: #111;
+            border: 1px solid #222;
+            overflow: hidden;
+        }
+
+        .bar-fill {
+            height: 100%;
+            width: 0%;
+            transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        /* Analysis Text */
+        .analysis-text {
+            font-family: 'Courier Prime', monospace;
+            font-size: 0.95em;
+            color: #a0a3a8;
+            line-height: 1.7;
+            min-height: 250px;
+        }
+
+        .metric-tag {
+            display: inline-block;
+            padding: 3px 8px;
+            font-size: 0.8em;
+            margin-right: 10px;
+            margin-bottom: 15px;
+            border-radius: 2px;
+            background: #1a1a1a;
+            border: 1px solid #333;
+            color: #fff;
+        }
+
+        .pulse-text {
+            color: var(--theme-mina);
+            text-shadow: 0 0 5px rgba(0,255,136,0.3);
+        }
+        .void-text {
+            color: var(--theme-lucas);
+            text-shadow: 0 0 5px rgba(0,230,230,0.3);
+        }
+        .crush-text {
+            color: var(--theme-dread);
+            text-shadow: 0 0 5px rgba(255,51,51,0.3);
+        }
+    </style>
+</head>
+<body>
+
+<div class="dashboard">
+    <h1>Thematic Telemetry & Pacing Matrix</h1>
+    
+    <div class="controls">
+        <button id="playBtn" onclick="toggleAutoPlay()">[ Initiate Auto-Sequence ]</button>
+    </div>
+
+    <div class="timeline-container" id="timeline">
+        <div class="timeline-line"></div>
+        <!-- Nodes generated by JS -->
+    </div>
+
+    <div class="data-panel">
+        <!-- Live Chart -->
+        <div class="chart-area">
+            <h2>Thematic Friction (Live Readout)</h2>
+            
+            <div class="bar-wrap">
+                <div class="bar-label"><span style="color: var(--theme-lucas)">Clinical Void (Lucas)</span> <span id="val-lucas">0%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="bar-lucas" style="background: var(--theme-lucas)"></div></div>
+            </div>
+            
+            <div class="bar-wrap">
+                <div class="bar-label"><span style="color: var(--theme-mina)">Feral Velocity (Mina)</span> <span id="val-mina">0%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="bar-mina" style="background: var(--theme-mina)"></div></div>
+            </div>
+
+            <div class="bar-wrap">
+                <div class="bar-label"><span style="color: var(--theme-thomas)">Unmovable Mass (Thomas)</span> <span id="val-thomas">0%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="bar-thomas" style="background: var(--theme-thomas)"></div></div>
+            </div>
+
+            <div class="bar-wrap">
+                <div class="bar-label"><span style="color: var(--theme-dread)">Cosmic / Psychological Dread</span> <span id="val-dread">0%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="bar-dread" style="background: var(--theme-dread)"></div></div>
+            </div>
+
+            <div class="bar-wrap">
+                <div class="bar-label"><span style="color: var(--theme-nature)">Environmental Hostility</span> <span id="val-nature">0%</span></div>
+                <div class="bar-bg"><div class="bar-fill" id="bar-nature" style="background: var(--theme-nature)"></div></div>
+            </div>
+        </div>
+
+        <!-- Analysis Readout -->
+        <div class="analysis-area">
+            <h2>Pacing & Flow Analysis</h2>
+            <div id="metrics-container">
+                <!-- Tags generated by JS -->
+            </div>
+            <div class="analysis-text" id="analysis-text">
+                Select a coordinate on the timeline to map the narrative vectors.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    // System Data for all 15 Chapters
+    const chapterData = [
+        {
+            chapter: 1,
+            title: "The Atomic Crucible",
+            lucas: 60, mina: 10, thomas: 10, dread: 50, nature: 30,
+            pace: "Methodical Incubation",
+            flow: "Linear",
+            text: "The narrative boots up in a state of rigid containment. The pacing is deliberate, measuring the spatial distance between the rebels and the Empire. We are introduced to the <span class='void-text'>sterile calculations</span> of survival. The mix of themes is highly separated; the dread is an external, ambient pressure (the war) rather than an immediate, localized threat."
+        },
+        {
+            chapter: 2,
+            title: "Echoes of the Storm",
+            lucas: 75, mina: 65, thomas: 0, dread: 40, nature: 20,
+            pace: "Simultaneous Compression",
+            flow: "Parallel Vectors",
+            text: "The timeline splices. We observe the origins of the anomalies. The theme of <span class='void-text'>clinical observation</span> (Lucas in the lab) perfectly contrasts with <span class='pulse-text'>feral confinement</span> (Mina in the gilded estate). The pacing here builds atmospheric tension—showing the devastating potential of the storm, then immediately choking it back down into cages."
+        },
+        {
+            chapter: 3,
+            title: "The Kinetic Delta",
+            lucas: 80, mina: 0, thomas: 70, dread: 30, nature: 10,
+            pace: "Frictionless Drift",
+            flow: "Grounding",
+            text: "Lucas attempts to merge into baseline reality. The pacing slows, creating a localized vacuum of tension. Thomas is introduced, and his theme of <span style='color: var(--theme-thomas)'>unyielding bedrock</span> anchors Lucas’s spiraling paranoia. The flow is methodical, focusing on the agonizing friction of a prodigy trying to camouflage his output among baseline humans."
+        },
+        {
+            chapter: 4,
+            title: "The Outlier Variables",
+            lucas: 0, mina: 85, thomas: 30, dread: 20, nature: 40,
+            pace: "Coiling Tension",
+            flow: "Rising Heat",
+            text: "Focus shifts entirely to Mina. The pacing accelerates. The narrative simulates the physical sensation of holding one's breath. Her <span class='pulse-text'>untamed velocity</span> strains against the mathematical limits forced upon her. The thematic flow mixes her organic momentum against the rigid, suffocating expectations of the Uncle. The brakes are beginning to slip."
+        },
+        {
+            chapter: 5,
+            title: "The Resonance of Friction",
+            lucas: 70, mina: 70, thomas: 50, dread: 10, nature: 10,
+            pace: "Magnetic Convergence",
+            flow: "Intersection",
+            text: "The pacing shifts from isolation to intersection. The two distinct thematic vectors (Lucas's cold math and Mina's rushing heat) finally collide in the physical space of the Central Institute. The pacing is a slow, agonizing pull—a magnetic convergence that ignores the ambient static of the outside world. The calm before the rupture."
+        },
+        {
+            chapter: 6,
+            title: "The Anatomy of a Spark",
+            lucas: 80, mina: 80, thomas: 40, dread: 90, nature: 20,
+            pace: "Violent Eruption",
+            flow: "Catastrophic Merger",
+            text: "The mental firewalls collapse. When the <span class='void-text'>acoustic void</span> merges with the <span class='pulse-text'>vital current</span>, the narrative pacing shatters completely. The Sleepwalking Carnage is unleashed. The thematic flow immediately spikes into <span class='crush-text'>cosmic dread</span> as the raw magic tears the sky open, birthing the Lupine Anomaly. The steady pacing is violently eradicated."
+        },
+        {
+            chapter: 7,
+            title: "The Perimeter Breach",
+            lucas: 40, mina: 0, thomas: 0, dread: 60, nature: 80,
+            pace: "Ballistic Freefall",
+            flow: "Descent",
+            text: "A violent perspective snap to Timeline-A5. The pacing mimics a ship breaking apart in the atmosphere—frantic, deafening, and relentless. The theme of <span class='void-text'>clinical logic</span> is completely overwhelmed by <span style='color: var(--theme-nature)'>hostile terrestrial physics</span>. The narrative forces the reader to endure the sheer kinetic terror of terminal velocity."
+        },
+        {
+            chapter: 8,
+            title: "The Deep Green Void",
+            lucas: 0, mina: 0, thomas: 0, dread: 50, nature: 90,
+            pace: "Predatory Stalking",
+            flow: "Environmental Shift",
+            text: "We transition to the Nythari peaks. The pacing drops from a freefall into a slow, grinding attrition. The environment dominates the thematic matrix. <span style='color: var(--theme-nature)'>Nature here is not a backdrop; it is a lethal, active variable.</span> The flow mixes ancient bloodline history with the immediate, visceral threat of a hostile ecosystem."
+        },
+        {
+            chapter: 9,
+            title: "The Labyrinth of Rust",
+            lucas: 85, mina: 75, thomas: 60, dread: 70, nature: 20,
+            pace: "Frantic Evasion",
+            flow: "Asymmetrical Warfare",
+            text: "Back to the fugitives. The pacing is a rapid, breathless sprint through the urban underbelly. Themes of <span class='void-text'>clinical calculus</span> and <span class='pulse-text'>feral momentum</span> are forced to synchronize to survive the pursuit. Lucas executes a psychic lobotomy—a terrifying merger of hard-science telepathy and raw <span class='crush-text'>psychological horror</span>."
+        },
+        {
+            chapter: 10,
+            title: "The Weight of the Shadows",
+            lucas: 60, mina: 50, thomas: 85, dread: 80, nature: 10,
+            pace: "Suffocating Bottleneck",
+            flow: "Attritional",
+            text: "The pursuit grinds them down. The pacing becomes claustrophobic. As Lucas and Mina's biological reserves flatline, the thematic weight transfers entirely to Thomas. His <span style='color: var(--theme-thomas)'>unyielding mass</span> carries the narrative through the dark. The paranoia peaks with the discovery of the biometric tracker—a terrifying fusion of science and imprisonment."
+        },
+        {
+            chapter: 11,
+            title: "The Mountain's Shadow",
+            lucas: 0, mina: 0, thomas: 0, dread: 40, nature: 95,
+            pace: "Grinding Ascent",
+            flow: "Endurance",
+            text: "Candice and Jarek face the absolute limits of terrestrial endurance. The pacing is grueling, mapping every frozen, agonizing step. The narrative perfectly blends <span style='color: var(--theme-nature)'>environmental lethality</span> (blizzards, apex beasts, abyss walkers) with a deep, ancient historical gravity. A visceral reminder of the world's sheer, indifferent scale."
+        },
+        {
+            chapter: 12,
+            title: "The Iron Path",
+            lucas: 70, mina: 60, thomas: 80, dread: 75, nature: 40,
+            pace: "Tectonic Grinding",
+            flow: "Paranoia",
+            text: "The fugitives enter Brum'korath. The open chase mutates into a stagnant, psychological trap. The pacing simulates the heavy, suffocating pressure of being watched in the dark. The themes of <span class='crush-text'>cult fanaticism and treason</span> begin to choke the air, forcing the anomalies to rely purely on their internal, geometric cohesion to avoid shattering."
+        },
+        {
+            chapter: 13,
+            title: "The Hollowed Aegis",
+            lucas: 85, mina: 80, thomas: 70, dread: 85, nature: 50,
+            pace: "Claustrophobic Fracture",
+            flow: "Collapse",
+            text: "The sanctuary is revealed to be a gilded tomb. The pacing accelerates sharply as betrayals are unearthed in the sewers. Lucas uses telepathy as an aggressive decryption tool. The thematic flow is a toxic mix of <span class='crush-text'>religious fanaticism</span> and <span class='pulse-text'>feral survival</span>. The walls are literally and figuratively closing in on all sides."
+        },
+        {
+            chapter: 14,
+            title: "The Absolute Pressure",
+            lucas: 90, mina: 95, thomas: 90, dread: 85, nature: 20,
+            pace: "Urban Slaughter",
+            flow: "Chaotic Eruption",
+            text: "The cold war detonates into an open, bloody street purge. The pacing is a chaotic, deafening roar. All three primary themes (Calculus, Velocity, Bedrock) perfectly synchronize to combat the crushing, mechanical phalanx of the militia. The narrative flow is violent, rapid, and heavily reliant on spatial/tactical awareness."
+        },
+        {
+            chapter: 15,
+            title: "The Fractured Anvil",
+            lucas: 100, mina: 100, thomas: 100, dread: 100, nature: 50,
+            pace: "Terminal Impact",
+            flow: "Complete System Overload",
+            text: "The arrival of the Disciple redlines every single metric. The pacing is apocalyptic. <span class='void-text'>Clinical science</span> (Thermal Shock) is weaponized against <span class='crush-text'>geological horror</span>. When the math fails, <span class='pulse-text'>feral momentum</span> and <span style='color: var(--theme-thomas)'>tectonic bedrock</span> are sacrificed to break the entity. The chapter ends in absolute thermodynamic collapse. A masterpiece of structural devastation."
+        }
+    ];
+
+    let currentInterval;
+    let isPlaying = false;
+
+    // Initialize UI
+    const timeline = document.getElementById('timeline');
+    
+    chapterData.forEach((data, index) => {
+        const node = document.createElement('div');
+        node.className = 'chapter-node';
+        node.textContent = data.chapter;
+        node.onclick = () => selectChapter(index);
+        timeline.appendChild(node);
+    });
+
+    function selectChapter(index) {
+        // Stop autoplay if user interacts
+        if(isPlaying && event && event.isTrusted) toggleAutoPlay();
+
+        // Update Nodes
+        document.querySelectorAll('.chapter-node').forEach((n, i) => {
+            n.classList.toggle('active', i === index);
+        });
+
+        const data = chapterData[index];
+
+        // Update Bars
+        document.getElementById('bar-lucas').style.width = data.lucas + '%';
+        document.getElementById('val-lucas').textContent = data.lucas + '%';
+        
+        document.getElementById('bar-mina').style.width = data.mina + '%';
+        document.getElementById('val-mina').textContent = data.mina + '%';
+
+        document.getElementById('bar-thomas').style.width = data.thomas + '%';
+        document.getElementById('val-thomas').textContent = data.thomas + '%';
+
+        document.getElementById('bar-dread').style.width = data.dread + '%';
+        document.getElementById('val-dread').textContent = data.dread + '%';
+
+        document.getElementById('bar-nature').style.width = data.nature + '%';
+        document.getElementById('val-nature').textContent = data.nature + '%';
+
+        // Update Tags & Text
+        const metricsHtml = `
+            <span class="metric-tag">Chapter ${data.chapter}: ${data.title}</span>
+            <span class="metric-tag">Pace: ${data.pace}</span>
+            <span class="metric-tag">Flow Vector: ${data.flow}</span>
+        `;
+        document.getElementById('metrics-container').innerHTML = metricsHtml;
+        document.getElementById('analysis-text').innerHTML = data.text;
+    }
+
+    // Auto-Sequence Logic
+    function toggleAutoPlay() {
+        const btn = document.getElementById('playBtn');
+        if (isPlaying) {
+            clearInterval(currentInterval);
+            isPlaying = false;
+            btn.textContent = "[ Initiate Auto-Sequence ]";
+            btn.style.background = "transparent";
+            btn.style.color = "var(--accent-glow)";
+        } else {
+            isPlaying = true;
+            btn.textContent = "[ Terminate Sequence ]";
+            btn.style.background = "var(--accent-glow)";
+            btn.style.color = "#000";
+            
+            let i = 0;
+            selectChapter(i); // start at 0
+            currentInterval = setInterval(() => {
+                i++;
+                if (i >= chapterData.length) {
+                    toggleAutoPlay(); // Stop at end
+                } else {
+                    selectChapter(i);
+                }
+            }, 3500); // 3.5 seconds per chapter for reading
+        }
+    }
+
+    // Load Chapter 1 on boot
+    selectChapter(0);
+
+</script>
+
+</body>
+</html>

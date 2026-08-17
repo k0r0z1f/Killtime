@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 26.4 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 26.4 Overview</h1>
+        
+        <!-- Chapter Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                    <th>Important Events in Order</th>
+                    <th>Locations</th>
+                    <th>Characters Present</th>
+                    <th>Keywords</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter-26-4-1" onclick="highlightSection(this, 'chapter-26-4-1')">26.4.1</a></td>
+                    <td>Shadows of Justice and Light of Discovery (Part 4)</td>
+                    <td>The party is summoned to the Dwarven Council, where an elf envoy from Haliriel, Altheris, presents a high-stakes mission involving a powerful Disciple of the Empire, linked to the Sent Ones' prophecy.</td>
+                    <td>1. The party enters the Dwarven Council chamber. 2. The elf Altheris introduces themselves. 3. Altheris explains the Disciple of Air threat. 4. Altheris proposes a mission. 5. The party discusses risks and immunity from the World Police. 6. The council deliberates.</td>
+                    <td>Dwarven Council Chamber</td>
+                    <td>Lucas, Mina, Thomas, Altheris (Elf), Dwarven Council Members</td>
+                    <td>Dwarves, Elves, Sent Ones Prophecy, Disciple of Air, World Police, Haliriel, Alliance, Trust, Protection, Mission</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-26-4-2" onclick="highlightSection(this, 'chapter-26-4-2')">26.4.2</a></td>
+                    <td>Tensions and Terms</td>
+                    <td>The negotiation between the party and the dwarven council becomes more heated. The party seeks assurances for their safety and autonomy while the dwarves demand compensation for their involvement.</td>
+                    <td>1. Tension in the negotiation room. 2. Thomas demands assurances. 3. Mina questions the safety of the journey. 4. The dwarves express resentment. 5. The dwarves demand compensation. 6. Altheris mediates.</td>
+                    <td>Dwarven Council Chamber, Brum'korath</td>
+                    <td>Lucas, Mina, Thomas, Altheris, Dwarven Council Members</td>
+                    <td>Negotiation, Dwarven Council, Tension, Politics, Compensation, Autonomy</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-26-4-3" onclick="highlightSection(this, 'chapter-26-4-3')">26.4.3</a></td>
+                    <td>The Weight of Promises</td>
+                    <td>Lucas and the party face the elves and dwarves in the council chamber, negotiating terms for their mission and future freedom. Trust is in short supply as the political tensions rise.</td>
+                    <td>1. The party sits in the council chamber. 2. Altheris discusses the mission. 3. Lucas demands guarantees for their freedom. 4. Altheris offers limited protection. 5. The agreement is formalized.</td>
+                    <td>Council Chamber, Haliriel</td>
+                    <td>Lucas, Mina, Thomas, Altheris, Dwarven Council Members</td>
+                    <td>Negotiation, Trust, Freedom, Protection, Political Tension, Mistrust, Reluctance</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-26-4-1">
+            <h2>26.4.1 - Shadows of Justice and Light of Discovery (Part 4)</h2>
+            <p>The party is summoned to the Dwarven Council, where an elf envoy from Haliriel, Altheris, presents a high-stakes mission involving a powerful Disciple of the Empire, linked to the Sent Ones' prophecy. Altheris offers protection and sanctuary from the World Police in exchange for their help, but the party is left with lingering doubts about trusting the elves and the risks of the mission.</p>
+        </div>
+
+        <div class="section-content" id="chapter-26-4-2">
+            <h2>26.4.2 - Tensions and Terms</h2>
+            <p>The negotiation between the party and the dwarven council becomes more heated as both sides struggle with differing priorities. The party seeks assurances for their safety and autonomy while the dwarves demand compensation for their involvement. Altheris mediates, but underlying distrust and rivalries continue to surface.</p>
+        </div>
+
+        <div class="section-content" id="chapter-26-4-3">
+            <h2>26.4.3 - The Weight of Promises</h2>
+            <p>Lucas and the party face the elves and dwarves in the council chamber, negotiating terms for their mission and future freedom. Trust is in short supply as the political tensions rise, and the group demands written assurances of their safety and freedom. Despite reaching an agreement, Lucas remains distrustful, sensing that they are being manipulated.</p>
+        </div>
+    </div>
+</body>
+</html>
+

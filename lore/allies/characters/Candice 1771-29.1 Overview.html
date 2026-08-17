@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candice - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 40px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Candice (Character Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Brief Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1721, currently 49 years old (as of 03-06-1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role & Background</a></td>
+                    <td>Nythari warrior, Seeker & Messenger, apprentice to Ceylan</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Agile, determined, introspective, loyal, torn, wary, strong-willed</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities / Magic</a></td>
+                    <td>Expert in survival, stealth, archery; chaotic presence linked to Ceylan</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-factions" onclick="highlightSection(this, 'alliances-factions')">Alliances / Factions</a></td>
+                    <td>Elven Council (temporary protection), aligned with the Watcher, Nythari Tribe</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Athletic build, brown long-threaded hair, bright amber eyes</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">Character Arc / Goal</a></td>
+                    <td>Wants to fulfill her mission and guide Lucas & Mina to the Watcher</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Believes in the prophecy, hosts a dormant chaotic presence</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Skilled in survival, climbing, stealth, archery, blow darts, short blades</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Pouch of iridescent stones, stone fragment, sarbacane, poison darts</td>
+                </tr>
+                <tr>
+                    <td><a href="#relations" onclick="highlightSection(this, 'relations')">Relations (Lucas, Mina, Thomas, Dira)</a></td>
+                    <td>Acquaintances for 2 days, believes they are the Children of Hybris</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>
+                Candice was born in the year 1721. Currently, the date is 03-06-1771 (dd/mm/yyyy), making her
+                49 years old. She has spent much of her life in the Nythari tribe and has been deeply
+                involved in its traditions and missions since childhood.
+            </p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role & Background</h2>
+            <p>
+                Candice is a member of the Nythari tribe, serving as a Nythari warrior, Seeker &amp; Messenger.
+                She is an apprentice to Ceylan and was tasked with finding Lucas and Mina to bring them to
+                the Watcher. Her role places her at the center of a larger plan devised by the Elven Council,
+                with the prophecy guiding her steps. While she believes the Watcher’s guidance is essential,
+                she remains cautious about the mission's inherent risks and the true motives of those
+                involved. She also seeks to learn more about the Children of Hybris and the disciples tied
+                to this prophecy. Candice has been on this mission away from her village for 33 days.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                Candice is agile, confident, and curious. She is deeply protective of nature, determined,
+                introspective, and loyal. Yet she is also torn and quietly wary, as she grapples with
+                internal conflict about her mission. Under pressure, she remains composed, firm,
+                and sincere. Her curiosity and openness extend to her views on the Watcher, and she holds a
+                reflective, almost awe-inspired reverence for its guidance. Occasionally, she grows
+                frustrated with those who dismiss the Watcher’s importance, feeling the urgency of
+                her duty to see Lucas and Mina’s involvement through. She can be anxious and emotional
+                when she senses the mission is in jeopardy.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities / Magic</h2>
+            <p>
+                She is an expert in survival, climbing, stealth, archery, and blow darts, as well as
+                short blades. There is also a chaotic presence within her—something she struggles to
+                control—connected to her mentor, Ceylan, which hints at deeper magical ties. This presence
+                underscores her knowledge of the Watcher and the significance of its power.
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances-factions">
+            <h2>Alliances / Factions</h2>
+            <p>
+                Candice operates under the temporary protection of the Elven Council, aligning herself with
+                the Watcher, and remains a loyal member of the Nythari Tribe. The tribe’s traditions and
+                reverence for natural harmony heavily influence her decisions. Despite the Elven Council's
+                involvement, Candice's personal loyalty to the Nythari people and the Watcher stands above
+                all else.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                Candice has an athletic build and bright amber eyes that reflect her unwavering determination.
+                Her long, brown-threaded hair is emblematic of her Nythari roots, often woven in practical
+                styles befitting her role as a warrior. She carries herself with a certain elegance and
+                exudes a striking aura, influenced by her pride in Nythari culture and her
+                accomplished skill set.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc / Goal</h2>
+            <p>
+                Candice’s primary goal is to fulfill her mission and ensure Lucas and Mina’s return to the
+                Watcher. She believes that consulting the Watcher is crucial for the mission’s success.
+                Simultaneously, she wrestles with the prophecy and her part in it—she fears what it could
+                demand of her, yet remains committed to seeing it through. She intends to guide the group to
+                the Watcher and uncover vital truths about the Children of Hybris and the disciples. Another
+                source of internal conflict is the thought of returning home after many years away—she’s
+                uncertain about how that reunion might unfold.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>
+                Candice holds a deep belief in the prophecy concerning Lucas and Mina. She is convinced
+                her mission is inevitably tied to it. Within her mind, she carries a chaotic presence that
+                lies dormant, possibly connected directly to Ceylan. This presence is both a source of
+                power and a point of tension, fueling her drive while leaving her anxious about the cost.
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                She has honed her survival skills, including stealth, climbing, archery, and the use of
+                blow darts and short blades. Though her training is formidable, she must remain mindful of
+                the chaotic force within her, which can complicate her control and judgment in high-stress
+                situations.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>
+                Candice carries a pouch of iridescent stones, which serve as currency known as Derek’s
+                currency. She has a small stone fragment from the Nythari ruins, a sarbacane (blowpipe),
+                and multiple darts (four poison darts and one normal dart). Additionally, she is outfitted
+                with Nythari survival gear and a special pass granted by the Elven Council, allowing her
+                relative freedom of movement across the lands under their domain.
+            </p>
+        </div>
+
+        <div class="section-content" id="relations">
+            <h2>Relations (Lucas, Mina, Thomas, Dira)</h2>
+            <p>
+                Candice has known Lucas, Mina, Thomas, and Dira for only two days. As they appear to be
+                the Children of Hybris, Candice trusts them—or at least feels compelled to place faith in
+                them—given the prophecy. She believes Lucas and Mina’s powers confirm the importance of
+                her mission. With Thomas and Dira, she remains mostly an acquaintance, but she does not
+                underestimate their roles in the unfolding events. The fleeting nature of their shared
+                journey is overshadowed by the significance of the prophecy, uniting them under a
+                common cause.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

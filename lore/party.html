@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fiche de Groupe - Les Libérateurs de Barovia</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 900px;
+            margin: auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            text-align: center;
+            color: #5a0a0a; /* Dark red */
+        }
+        h3 {
+            color: #333;
+            border-bottom: 2px solid #eee;
+            padding-bottom: 5px;
+            margin-top: 25px;
+        }
+        .collapsible {
+            background-color: #777;
+            color: white;
+            cursor: pointer;
+            padding: 12px 18px; /* Reduced padding */
+            width: 100%;
+            border: none;
+            text-align: left;
+            outline: none;
+            font-size: 16px; /* Slightly smaller font */
+            margin-top: 10px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+        .collapsible:hover {
+            background-color: #555;
+        }
+        .collapsible.active {
+             background-color: #5a0a0a; /* Dark red when active */
+             border-bottom-left-radius: 0;
+             border-bottom-right-radius: 0;
+        }
+
+        .collapsible::before {
+            content: '+ ';
+            font-weight: bold;
+            margin-right: 5px;
+        }
+
+        .collapsible.active::before {
+            content: "- ";
+        }
+
+        .content {
+            padding: 0 18px;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease-out;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-top: none;
+            border-bottom-left-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+        .content ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        .content p {
+            margin-top: 5px;
+            margin-bottom: 10px;
+        }
+        strong {
+            font-weight: bold;
+            color: #444;
+        }
+        .objective-list li {
+            margin-bottom: 5px;
+        }
+        .accomplished {
+            text-decoration: line-through;
+            color: grey;
+        }
+        .partially-accomplished {
+            font-style: italic;
+            color: #555;
+        }
+        .uncertain {
+             font-style: italic;
+             color: orange;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Les Libérateurs de Barovia</h1>
+    <h2>État au 18 Octyavr - Session 64</h2>
+
+    <button type="button" class="collapsible active">Membres Actifs Joués</button>
+    <div class="content" style="max-height: fit-content;"> <button type="button" class="collapsible">Karsa</button>
+        <div class="content">
+            <p><strong>Race/Classe :</strong> Humain / Magicien (École du Chantelame / Bladesinger) 8 / Roublard 4 (Niveau Total 12)</p>
+            <p><strong>Rôle :</strong> Combattant agile (mêlée/magie), investigateur (magie/physique), utilitaire (outils, sorts).</p>
+            <p><strong>Traits Notables :</strong></p>
+            <ul>
+                <li>Utilise fréquemment Détection de la Magie et Pas Brumeux, ainsi que des sorts comme Boule de Feu, Mur de Glace, et potentiellement Contresort.</li>
+                <li>Combat en mêlée avec agilité ("danse") grâce à son épée enchantée et sa capacité Chantelame.</li>
+                <li>Maîtrise les Outils de Voleur et la Discrétion (peut se rendre invisible).</li>
+                <li>Investigateur curieux mais parfois décrit comme prudent ou hésitant ("peureux") face à certains dangers (corde, piège).</li>
+                <li>Possède une boussole morale (s'opposant à tuer sans nécessité) mais pragmatique (a sauvé Izek Strazni).</li>
+                <li>Déterminé à combattre le mal (Strahd).</li>
+                <li>Souvent cible d'effets incapacitants (paralysie, sommeil, étourdissement, transformation en rat par Strahd).</li>
+                <li>A reçu une prophétie de Madame Eva et une vision de sa propre mort.</li>
+                <li>A trouvé les Ossements de St. Andral, survécu à un piège (cercueil), entendu un message sur Argynvost, été brièvement téléporté par Avandra, participé à la défaite de Strahd, et affronté des créatures comme Dahlver-Nar et le Mad Mage/Exethanter.</li>
+                <li>Utilise son familier Chouette pour la reconnaissance.</li>
+                <li>A interrogé un cadavre via Van Richten.</li>
+            </ul>
+            <p><strong>Équipement Notable :</strong></p>
+            <ul>
+                <li>Épée Enchantée</li>
+                <li>Outils de Voleur</li>
+                <li>Familier Chouette</li>
+            </ul>
+        </div>
+
+        <button type="button" class="collapsible">Maeve</button>
+        <div class="content">
+            <p><strong>Informations de Base:</strong></p>
+            <ul>
+                <li>Race : Humaine</li>
+                <li>Genre : Féminin</li>
+                <li>Classe : Moine (Voie du Moi Astral)</li>
+                <li>Niveau : 12</li>
+            </ul>
+             <p><strong>Capacités Notables (basées sur les actions décrites):</strong></p>
+            <ul>
+                 <li><strong>Manifestations du Moi Astral :</strong> Utilise fréquemment les pouvoirs de sa sous-classe.
+                     <ul>
+                        <li><em>Visage Astral</em> : Employé pour créer des diversions ou potentiellement intimider (Session 28).</li>
+                        <li><em>Bras Astraux</em> : Utilisés pour le combat, permettant des attaques multiples ou à portée étendue (décrit comme des "tentacules" lors d'un combat confiné, Session Sep 10). Capable de harceler les ennemis (Session 63).</li>
+                     </ul>
+                 </li>
+                 <li><strong>Capacités de Moine (Implicites):</strong> Agilité, mouvement rapide, défense sans armure, probable utilisation du Ki pour diverses manœuvres (non détaillées dans les résumés).</li>
+             </ul>
+             <p><strong>Style de Combat & Rôle:</strong></p>
+             <ul>
+                 <li>Combat principalement en mêlée, souvent en première ligne.</li>
+                 <li>Fait preuve d'agilité et de mobilité sur le champ de bataille.</li>
+                 <li>Engage rapidement les adversaires.</li>
+                 <li>Capable d'infliger des dégâts importants (coup critique sur Dahlver-Nar, Session 63).</li>
+                 <li>Endurante : a survécu à de lourds dégâts (Session 48), à l'empoisonnement (Session 31), et à la lycanthropie.</li>
+             </ul>
+             <p><strong>Événements Marquants & Historique (basé sur les résumés):</strong></p>
+             <ul>
+                 <li>A participé à l'ensemble de l'aventure décrite, traversant Barovia, Vallaki, Kresk, Argynvostholt, le Vieux Moulin, le Temple d'Ambre et le Château Ravenloft.</li>
+                 <li>A subi une transformation forcée en crapaud par une guenaude (Session Aug 6).</li>
+                 <li>A contracté la lycanthropie suite à une morsure de loup-garou et en a été guérie grâce à un sort (Session 16, 17).</li>
+                 <li>A joué un rôle dans la capture du tigre de Rictavio à Vallaki (Session 27).</li>
+                 <li>A découvert le corps déchiqueté de Nikolai Wachter Jr. (Session 27).</li>
+                 <li>A trouvé un parchemin relatant le siège d'Argynvostholt (Session 25).</li>
+                 <li>A été charmée par Strahd lors d'une rencontre (Session 21).</li>
+                 <li>A été soudainement enlevée/appelée par l'entité Avandra pendant un combat/repos (Session 45) puis est réapparue plus tard (Session 54).</li>
+                 <li>A ressenti une attraction étrange envers des sarcophages dans le Temple d'Ambre (Session 40).</li>
+                 <li>A combattu une grande variété d'ennemis majeurs, incluant les Guenaudes, Neferon, des créatures mortes-vivantes (Rejetons vampiriques, Revenants, Ombres, Fantômes, Ghasts), Dahlver-Nar, Exethanter/"Mad Mage", et les Épouses de Strahd.</li>
+                 <li>A contribué à la destruction du Cœur du Chagrin et à la défaite finale de Strahd.</li>
+             </ul>
+             <p><strong>Objets Notables:</strong></p>
+             <ul>
+                 <li>Est harmonisée avec une <strong>Lame de Chance</strong> (<em>Luck Blade</em>) depuis la Session 54.</li>
+             </ul>
+             <p><strong>Relations Clés:</strong></p>
+             <ul>
+                 <li>Membre essentiel du groupe d'aventuriers aux côtés de Liam, Karsa et Renna.</li>
+                 <li>Semble souvent coordonner ses actions avec Karsa en combat.</li>
+                 <li>A interagi et collaboré avec des alliés tels qu'Ismark, Rictavio, Silas, Konstroc, Lloyd et Gwyn/Glenn.</li>
+                 <li>A été directement influencée par l'entité Avandra.</li>
+            </ul>
+        </div>
+    </div> <button type="button" class="collapsible active">Alliés Actifs (PNJs dans le groupe)</button>
+    <div class="content" style="max-height: fit-content;"> <button type="button" class="collapsible">Konstroc</button>
+        <div class="content">
+            <p><strong>Race/Classe :</strong> Inconnue</p>
+            <p><strong>Rôle :</strong> Combattant.</p>
+            <p><strong>Traits Notables :</strong></p>
+            <ul>
+                <li>Trouvé au fond d'un puits dans les catacombes de Ravenloft (Session 58).</li>
+                <li>Sorti du puits par le groupe (Session 59).</li>
+                <li>Participe activement aux combats aux côtés du groupe (Sessions 62, 63, 64).</li>
+                <li>A porté le coup final à Dahlver-Nar.</li>
+            </ul>
+            <p><strong>Équipement Notable :</strong> Inconnu.</p>
+        </div>
+
+        <button type="button" class="collapsible">Van Richten (alias Rictavio)</button>
+        <div class="content">
+            <p><strong>Race/Classe (probable) :</strong> Humain / Expert (Chasseur de Monstres, possiblement Ranger/Roublard avec des capacités de lanceur de sorts)</p>
+            <p><strong>Rôle :</strong> Guide, expert en vampires, source de connaissances, soutien (sorts offensifs et curatifs).</p>
+            <p><strong>Traits Notables :</strong></p>
+            <ul>
+                <li>Chasseur de vampires expérimenté.</li>
+                <li>Connaît bien Barovia, Strahd et le Temple d'Ambre.</li>
+                <li>A une tour comme refuge.</li>
+                <li>Possédait un tigre (Gringer).</li>
+                <li>A été maudit (ne peut rester longtemps au même endroit).</li>
+                <li>A un lien avec les Gardiens de la Plume.</li>
+                <li>A utilisé la magie pour le soin, la protection (Sanctuaire), l'attaque et l'interrogation de cadavres.</li>
+                <li>S'est harmonisé avec une épée consciente trouvée dans les donjons.</li>
+            </ul>
+            <p><strong>Équipement Notable :</strong> Épée consciente (harmonisée), connaissances étendues.</p>
+        </div>
+    </div> <button type="button" class="collapsible">Anciens Membres / Alliés / PNJs Notables (Statut actuel incertain ou non avec le groupe)</button>
+    <div class="content">
+        <ul>
+            <li><strong>Liam:</strong> (Ancien PJ?) Lanceur de sorts (Clerc?), possédait une chouette (Luna), a flirté avec Ireena, souvent impliqué dans les plans audacieux, empoisonné à Vallaki. <span class="uncertain">Semble avoir quitté le groupe après Session 31/32.</span></li>
+            <li><strong>Renna:</strong> (Ancienne PJ?) Elfe archère, douée en déguisement et communication animale, a tenté d'apprivoiser Gringer, possédait un cheval (volé), a lancé Corde Enchantée. <span class="uncertain">Dernière mention autour de Session 43/45.</span></li>
+            <li><strong>Silas:</strong> (Ancien PJ/Allié PNJ?) Paladin de Tyr / Sorcier (ou Warlock?), est arrivé Session 43, s'est harmonisé avec le Symbole Sacré de Ravenkind, combat avec hallebarde et magie noire (Eldritch Blast?), a participé aux derniers combats (Ghasts, Dahlver-Nar, Mad Mage). <span class="uncertain">Dernière mention active Session 64. Statut actuel à clarifier.</span></li>
+            <li><strong>Glenn:</strong> (Allié PNJ) Envoyé par Avandra, a aidé contre les corbeaux (Session 45), a guidé le groupe dans Ravenloft (Sessions 50, 51), a révélé un passage secret. <span class="uncertain">Dernière mention Session 51.</span></li>
+            <li><strong>Loyd:</strong> (Allié PNJ) Rencontré près du moulin (Session 32), a aidé à trouver les ruines de Baba Lysaga (Session 34), a combattu aux côtés du groupe (Tsolenka Pass, Ravenloft). <span class="uncertain">Dernière mention Session 48.</span></li>
+            <li><strong>Ireena Kolayana:</strong> (PNJ Clé) Réincarnation de Tatyana, cible de Strahd, sœur d'Ismark. Dernière localisation connue : église de Vallaki (Session 31), où elle comptait surveiller Izek. <span class="uncertain">Son statut actuel est inconnu.</span></li>
+            <li><strong>Ismark Kolyanovich:</strong> (PNJ Clé) Frère d'Ireena, combattant. Dernière localisation connue : église de Vallaki avec Ireena (Session 31). <span class="uncertain">Son statut actuel est inconnu.</span></li>
+            <li><strong>Gwyn:</strong> (Allié PNJ Temporaire?) Est apparu pour aider contre Neferon (Session 37), a utilisé un "écho" pour explorer, puis a disparu (Session 38). <span class="uncertain">Statut actuel inconnu.</span></li>
+            <li><strong>Gringer:</strong> (Animal/PNJ) Tigre à dents de sabre de Rictavio, libéré par le groupe. <span class="uncertain">Statut actuel inconnu.</span></li>
+            <li><strong>Luna:</strong> (Familier) Chouette de Liam. <span class="uncertain">Statut actuel inconnu.</span></li>
+            <li><strong>Abbé de Sainte-Markovia:</strong> (Antagoniste/PNJ) A aidé Strahd, s'est révélé être un Deva, s'est enfui après un combat (Session 42-43). <span class="uncertain">Statut actuel inconnu.</span></li>
+             <li><strong>Exethanter:</strong> (PNJ/Antagoniste?) Liche amnésique rencontrée au Temple d'Ambre (Session 41). <span class="uncertain">Possiblement le "Mad Mage" tué et interrogé (Session 64). Statut mort probable.</span></li>
+        </ul>
+    </div> <button type="button" class="collapsible active">Objectifs Récents / Accomplis</button>
+    <div class="content objective-list" style="max-height: fit-content;"> <ul>
+            <li class="accomplished">Vaincre Strahd von Zarovich. (Accompli - Session 55)</li>
+            <li>Explorer le Château Ravenloft. (En cours - Cryptes restantes - Session 58)</li>
+            <li class="accomplished">Récupérer les artefacts : Tome de Strahd (Accompli - Session 18), Symbole Sacré de Ravenkind (Accompli - Session 41), Épée Solaire (Accompli - Session 38).</li>
+            <li class="accomplished">Trouver un allié prédit (Rictavio/Van Richten - homme divertissant avec un singe? Tigre? Possible). (Accompli)</li>
+             <li class="accomplished">Rallumer le fanal d'Argynvostholt (nécessitait le crâne d'Argynvost, trouvé?). (Accompli - Session 60)</li>
+             <li class="partially-accomplished">Trouver les gemmes des Martikov (2/3 trouvées - Yester Hill, Baba Lysaga). Troisième gemme? (Partiellement accompli)</li>
+             <li class="accomplished">Livrer la robe de mariée à l'Abbé. (Accompli - Session 42)</li>
+             <li class="accomplished">Détruire les Guenaudes du Vieux Moulin. (Accompli - Session 52)</li>
+             <li class="accomplished">S'occuper de Baba Lysaga. (Accompli - Session 34/35)</li>
+             <li class="partially-accomplished">Enquêter/Affronter les entités du Temple d'Ambre. (En cours/Partiellement fait)</li>
+         </ul>
+    </div> </div><script>
+    var coll = document.getElementsByClassName("collapsible");
+    var i;
+
+    for (i = 0; i < coll.length; i++) {
+        coll[i].addEventListener("click", function() {
+            this.classList.toggle("active");
+            var content = this.nextElementSibling;
+            if (content.style.maxHeight && content.style.maxHeight !== "0px"){
+                content.style.maxHeight = null;
+            } else {
+                // Set max-height to fit the content, ensuring smooth transition
+                // For initially expanded items, use 'fit-content' or similar if needed, otherwise calculate scrollHeight
+                 if(content.style.maxHeight === "fit-content") { // Handle already expanded sections on load
+                     content.style.maxHeight = null;
+                 } else {
+                    content.style.maxHeight = content.scrollHeight + "px";
+                 }
+            }
+        });
+
+         // Keep initially active sections open (or set max-height directly in style attribute)
+        // The code below ensures the pre-expanded sections stay expanded visually after JS runs
+        // Note: Added style="max-height: fit-content;" directly to the .content divs that should start open.
+        /*
+         if (coll[i].classList.contains('active')) {
+             var content = coll[i].nextElementSibling;
+             if (content) {
+                  // Set initial max-height for already active sections
+                 content.style.maxHeight = content.scrollHeight + "px";
+             }
+         }
+         */
+    }
+</script>
+
+</body>
+</html>

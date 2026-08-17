@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 26 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 26 Overview</h1>
+        
+        <!-- Chapter Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                    <th>Important Events in Order</th>
+                    <th>Locations</th>
+                    <th>Characters Present</th>
+                    <th>Keywords</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>26.5.1</td>
+                    <td><a href="#arrival-haliriel" onclick="highlightSection(this, 'arrival-haliriel')">Arrival in Haliriel and a Mysterious Presence</a></td>
+                    <td>The party arrives in Haliriel and is greeted with a mixture of awe and political significance. They are met by the Elven Queen, who demonstrates her mastery of Air Magic. The weight of the prophecy and their role in the coming changes hangs in the air.</td>
+                    <td>1. Party’s arrival at Haliriel<br> 2. Observation of the elven city and its beauty<br> 3. Formal greeting by the elven envoys<br> 4. Meeting with the Queen of the Elves<br> 5. Queen demonstrates Air Magic<br> 6. Prophecy and tensions become clearer</td>
+                    <td>Haliriel, High District, Citadel</td>
+                    <td>Lucas, Mina, Thomas, Dira, Elven Envoys, Elven Queen</td>
+                    <td>Haliriel, prophecy, elven politics, Air Magic, fate, Queen, destiny, tension</td>
+                </tr>
+                <tr>
+                    <td>26.5.2</td>
+                    <td><a href="#unseen-presence" onclick="highlightSection(this, 'unseen-presence')">The Unseen Presence</a></td>
+                    <td>Lucas and Mina, while settling into Haliriel, feels an unknown force stirring within their telepathic link. They sense someone or something nearby, calling them towards an uncertain fate. Meanwhile, the Queen sent guards to escort Candice back to the High Elves, unknowingly tied to the party's destiny.</td>
+                    <td>1. Lucas and Mina experience a strange disturbance in their telepathic connection.<br> 2. They discuss the mysterious presence and plan to meet with the Queen.<br> 3. The Queen orders an envoy to find the individual tied to the disturbance.<br> 4. Candice already in Haliriel, gets taken by guards with Jarek.<br> 5. Candice stands before the High Elves in a tense, silent meeting.</td>
+                    <td>High District, Citadel, Haliriel</td>
+                    <td>Lucas, Mina, Thomas, Queen, Candice, Jarek, High Elves</td>
+                    <td>Telepathic disturbance, Serran trees, unknown presence, High Elves, Queen, fate, tension, destiny</td>
+                </tr>
+                <tr>
+                    <td>26.5.3</td>
+                    <td><a href="#weight-of-fate" onclick="highlightSection(this, 'weight-of-fate')">The Weight of Fate</a></td>
+                    <td>Candice and her companions find themselves at the High Temple of Nature, where the High Elves deliberate on her fate. Tension rises as the group grapples with the unknown forces that bind them together. The chapter explores Candice's growing unease and the deepening telepathic connection between her, Lucas, and Mina.</td>
+                    <td>1. Candice and Jarek enter the High Temple of Nature.<br> 2. The High Elves deliberate on Candice's role.<br> 3. Candice senses the weight of their scrutiny and her connection to Lucas and Mina.<br> 4. Candice and Jarek share a quiet conversation about their uncertainty.<br> 5. Lucas and Mina observe Candice’s growing connection to the group.<br> 6. Lucas and Mina’s telepathic link deepens, causing them to sense Candice’s importance.<br> 7. The High Elves continue their quiet deliberation, awaiting a decision.</td>
+                    <td>High Temple of Nature, Haliriel</td>
+                    <td>Candice, Jarek, Lucas, Mina, High Elves (Elder Elf, Regal Female Elf, Soft-Powerful Elf)</td>
+                    <td>High Elves, Prophecy, Tension, Telepathy, Destiny, Fate, Tests, Unease</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="arrival-haliriel">
+            <h2>Arrival in Haliriel and a Mysterious Presence</h2>
+            <p>The party arrives in Haliriel and is met with a sense of awe, as the city reveals its beauty and political significance. They are introduced to the Queen of the Elves, who demonstrates her mastery of Air Magic, leaving a lasting impression on the group. As they settle in, the prophecy and the role they will play in the coming events become even clearer, with tensions rising among the elven factions.</p>
+        </div>
+
+        <div class="section-content" id="unseen-presence">
+            <h2>The Unseen Presence</h2>
+            <p>While settling into Haliriel, Lucas and Mina begin to sense an unknown presence stirring through their telepathic link. They feel drawn to something or someone, a force that is both familiar and unsettling. Meanwhile, Candice, who has arrived in Haliriel, is taken by guards to meet with the High Elves, unaware that her fate is intricately tied to the group’s destiny.</p>
+        </div>
+
+        <div class="section-content" id="weight-of-fate">
+            <h2>The Weight of Fate</h2>
+            <p>At the High Temple of Nature, Candice and her companions stand before the High Elves, who deliberate on Candice's fate. Tension runs high as Candice grapples with the weight of their scrutiny and her growing connection to Lucas and Mina. As her telepathic bond with them deepens, it becomes clear that she holds a significant role in the prophecy, though the full extent of her involvement remains uncertain.</p>
+        </div>
+
+    </div>
+</body>
+</html>
+

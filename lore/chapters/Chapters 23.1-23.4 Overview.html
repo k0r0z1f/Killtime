@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 23.1-23.4 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 23.1-23.4 Overview</h1>
+
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter-23.1" onclick="highlightSection(this, 'chapter-23.1')">23.1</a></td>
+                    <td>Arrival and Meeting the Guide</td>
+                    <td>A group arrives at the temple, meets their guide, and encounters mysterious cultists.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-23.2" onclick="highlightSection(this, 'chapter-23.2')">23.2</a></td>
+                    <td>The Beast in the Shadows</td>
+                    <td>A deadly sewer beast fight reveals Dira's betrayal and leads to new discoveries.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-23.3" onclick="highlightSection(this, 'chapter-23.3')">23.3</a></td>
+                    <td>Judgment and Revelation</td>
+                    <td>Dira faces judgment, and an ancient prophecy about Thomas is uncovered.</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-23.4" onclick="highlightSection(this, 'chapter-23.4')">23.4</a></td>
+                    <td>The Calm before the Storm</td>
+                    <td>The group prepares for the battle ahead, experiencing tension and anticipation.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="chapter-23.1">
+            <h2>Chapter 23.1 - Arrival and Meeting the Guide</h2>
+            <p>The group arrives at the moss-covered temple of the Sent Ones, where they meet Dira, their guide. Inside, they encounter cultists, some of whom are particularly intrigued by Mina's powers. The group begins to feel uneasy as Dira becomes increasingly nervous, leading them deeper into the temple. The air grows thick with ominous energy, and something feels off about the situation.</p>
+        </div>
+
+        <div class="section-content" id="chapter-23.2">
+            <h2>Chapter 23.2 - The Beast in the Shadows</h2>
+            <p>The party battles a grotesque sewer beast in the dark tunnels. Afterward, Dira's true allegiance as a spy for the Cult of the Unbound is revealed. Tension rises between Dira and the group, culminating in a confrontation where Lucas uses his telepathy to expose her betrayal. They head towards the Sent Ones' headquarters, bringing Dira for judgment.</p>
+        </div>
+
+        <div class="section-content" id="chapter-23.3">
+            <h2>Chapter 23.3 - Judgment and Revelation</h2>
+            <p>Dira is brought before the Cult of the Sent Ones’ council, where she offers critical information in exchange for her life. A dwarf elder questions Thomas's connection to an ancient legend, linking him to a figure who can nullify the Sent Ones' powers. Lucas and Mina demonstrate their powers, and Goldar urges the group to prepare for the impending war against the Empire.</p>
+        </div>
+
+        <div class="section-content" id="chapter-23.4">
+            <h2>Chapter 23.4 - The Calm before the Storm</h2>
+            <p>The group experiences a rare moment of calm before the conflict ahead. Their training reaches new extremes, particularly for Lucas and Mina. After a skirmish between the Sent Ones and the Cult of the Unbound, the group realizes the war is imminent. Goldar delivers a final speech, and the group departs for the frontlines, readying themselves for the battles to come.</p>
+        </div>
+    </div>
+</body>
+</html>

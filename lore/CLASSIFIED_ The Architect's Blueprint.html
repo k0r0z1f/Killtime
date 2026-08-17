@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<!-- saved from url=(0051)file:///home/wa/Downloads/ai_studio_code%20(1).html -->
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLASSIFIED: The Architect's Blueprint</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;500;700&display=swap');
+
+        :root {
+            --bg-deep: #030305;
+            --bg-panel: #0a0b10;
+            --text-muted: #8a8d91;
+            --lucas-blue: #2b5b84;
+            --mina-orange: #b83b00;
+            --thomas-gray: #555555;
+            --alert-red: #8a0303;
+            --border-glow: rgba(43, 91, 132, 0.3);
+        }
+
+        body {
+            margin: 0;
+            padding: 0;
+            background-color: var(--bg-deep);
+            color: var(--text-muted);
+            font-family: 'Courier Prime', monospace;
+            display: flex;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        /* CRT Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 2;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: 300px;
+            background-color: #050608;
+            border-right: 2px solid var(--thomas-gray);
+            display: flex;
+            flex-direction: column;
+            z-index: 10;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.8);
+        }
+
+        .sys-header {
+            padding: 20px;
+            border-bottom: 1px solid #1f2833;
+            text-align: center;
+        }
+
+        .sys-header h1 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--alert-red);
+            margin: 0;
+            font-size: 1.5em;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            text-shadow: 0 0 10px rgba(138, 3, 3, 0.5);
+        }
+
+        .nav-list {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+            flex-grow: 1;
+            overflow-y: auto;
+        }
+
+        .nav-item {
+            padding: 15px 20px;
+            cursor: pointer;
+            border-left: 4px solid transparent;
+            border-bottom: 1px solid #111;
+            transition: all 0.2s ease-in-out;
+            color: #d0c8b8;
+            font-weight: bold;
+            text-transform: uppercase;
+            font-size: 0.85em;
+            letter-spacing: 1px;
+        }
+
+        .nav-item:hover {
+            background-color: rgba(43, 91, 132, 0.1);
+            border-left: 4px solid var(--lucas-blue);
+            padding-left: 25px;
+        }
+
+        .nav-item.active {
+            background-color: #111;
+            border-left: 4px solid var(--mina-orange);
+            color: #fff;
+            box-shadow: inset 0 0 10px rgba(184, 59, 0, 0.1);
+        }
+
+        /* Main Content Area */
+        .main-content {
+            flex-grow: 1;
+            padding: 40px;
+            overflow-y: auto;
+            position: relative;
+            z-index: 10;
+            background: radial-gradient(circle at center, var(--bg-panel) 0%, var(--bg-deep) 100%);
+        }
+
+        .section-container {
+            display: none;
+            max-width: 900px;
+            margin: 0 auto;
+            animation: fadeIn 0.4s ease-out;
+        }
+
+        .section-container.active {
+            display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        h2 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 2.2em;
+            color: #fff;
+            border-bottom: 1px dashed var(--thomas-gray);
+            padding-bottom: 10px;
+            margin-top: 0;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+        }
+
+        .status-badge {
+            display: inline-block;
+            padding: 4px 12px;
+            font-size: 0.75em;
+            font-weight: bold;
+            border-radius: 2px;
+            margin-bottom: 20px;
+            letter-spacing: 1px;
+        }
+
+        .status-wip { background-color: rgba(43, 91, 132, 0.2); border: 1px solid var(--lucas-blue); color: #00e6e6; }
+        .status-pending { background-color: rgba(85, 85, 85, 0.2); border: 1px solid var(--thomas-gray); color: #aaa; }
+        .status-critical { background-color: rgba(184, 59, 0, 0.2); border: 1px solid var(--mina-orange); color: #ff8844; }
+
+        p {
+            font-size: 1.05em;
+            color: #a0a3a8;
+            margin-bottom: 20px;
+            line-height: 1.8;
+        }
+
+        ul.task-list {
+            list-style: none;
+            padding: 0;
+            margin-top: 20px;
+        }
+
+        .task-list li {
+            background-color: rgba(255, 255, 255, 0.02);
+            border: 1px solid #1f2833;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-radius: 4px;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .task-list li::before {
+            content: ">>";
+            color: var(--lucas-blue);
+            font-weight: bold;
+            margin-right: 15px;
+            margin-top: 2px;
+        }
+
+        .task-content h3 {
+            margin: 0 0 10px 0;
+            color: #d0c8b8;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2em;
+            letter-spacing: 1px;
+        }
+
+        .task-content p {
+            margin: 0;
+            font-size: 0.9em;
+        }
+
+        /* Glitch text for 4th wall elements */
+        .glitch-text {
+            position: relative;
+            color: #fff;
+            display: inline-block;
+        }
+        
+        .glitch-text::before, .glitch-text::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            opacity: 0.8;
+        }
+        
+        .glitch-text::before {
+            left: 2px;
+            text-shadow: -2px 0 red;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+        }
+        
+        .glitch-text::after {
+            left: -2px;
+            text-shadow: -2px 0 cyan;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 81px, 0); }
+            20% { clip: rect(72px, 9999px, 11px, 0); }
+            40% { clip: rect(44px, 9999px, 98px, 0); }
+            60% { clip: rect(21px, 9999px, 18px, 0); }
+            80% { clip: rect(93px, 9999px, 55px, 0); }
+            100% { clip: rect(33px, 9999px, 44px, 0); }
+        }
+
+        /* Console styling */
+        .console-output {
+            background-color: #000;
+            border: 1px solid #333;
+            padding: 15px;
+            font-size: 0.85em;
+            color: #00e6e6;
+            height: 150px;
+            overflow-y: auto;
+            margin-top: 30px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <div class="sidebar">
+        <div class="sys-header">
+            <h1 class="glitch-text" data-text="DEV_SANCTUM">DEV_SANCTUM</h1>
+            <div style="font-size: 0.7em; color: #555; margin-top: 5px;">AUTHORIZATION: ARCHITECT</div>
+        </div>
+        <ul class="nav-list">
+            <li class="nav-item active" onclick="switchPhase(&#39;overview&#39;)">00. System Status</li>
+            <li class="nav-item" onclick="switchPhase(&#39;phase1&#39;)">01. RC1 / Draft Synthesis</li>
+            <li class="nav-item" onclick="switchPhase(&#39;phase2&#39;)">02. Cryptographic Labyrinth</li>
+            <li class="nav-item" onclick="switchPhase(&#39;phase3&#39;)">03. The 4th Wall Breach</li>
+            <li class="nav-item" onclick="switchPhase(&#39;phase4&#39;)">04. The Incomplete Pantheon</li>
+            <li class="nav-item" onclick="switchPhase(&#39;phase5&#39;)">05. The Bleeding Pitch</li>
+            <li class="nav-item" onclick="switchPhase(&#39;phase6&#39;)">06. Auditory &amp; Cartography</li>
+            <li class="nav-item" onclick="switchPhase(&#39;phase7&#39;)">07. Causal Hazard Indexing</li>
+        </ul>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content">
+
+        <!-- 00. Overview -->
+        <div id="overview" class="section-container active">
+            <h2>Initialization Complete</h2>
+            <div class="status-badge status-wip">SYSTEMS OPERATIONAL</div>
+            <p>Architect. The digital blueprint of the Hybris Saga is laid bare. The foundation holds, but the uncalculated variables remain scattered. We must systematically apply pressure to the remaining code to ensure the narrative reaches terminal mass.</p>
+            <p>Select an operational vector from the navigation array. The execution of these mandates will cement the absolute reality of this universe.</p>
+            
+            <div class="console-output" id="boot-console">
+                &gt; INITIALIZING DEVELOPER SANCTUM...<br>
+                &gt; DECRYPTING ARCHITECT'S ROADMAP...<br>
+                &gt; SYNCING PHANTOM ENGRAMS...<br>
+                &gt; WARNING: CAUSAL FABRIC UNSTABLE.<br>
+                &gt; AWAITING COMMAND PROTOCOL...
+            </div>
+        </div>
+
+        <!-- 01. RC1 / Draft Synthesis -->
+        <div id="phase1" class="section-container">
+            <h2>01. RC1 / Draft Synthesis (The Forge)</h2>
+            <div class="status-badge status-wip">PHASE: ONGOING EXCAVATION</div>
+            <p>The raw, chaotic ore within `Killtime_compressed.txt` must be smelted into the rigorous, clinical geometry of the Volume I HTML architecture. The transition of data from draft to release candidate requires absolute semantic discipline.</p>
+            <ul class="task-list">
+                <li>
+                    <div class="task-content">
+                        <h3>Extract &amp; Format Chapter 16+</h3>
+                        <p>Pull the raw text. Inject the Trackboard matrices, the Actor Icons, and the Temporal Anchors. Sanitize the prose to strictly adhere to the POV constraints of the tri-fusion entity.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3>Volume II Scaffolding</h3>
+                        <p>Establish the baseline HTML architecture for `Killtime - Volume II.html`. The transition from the thermodynamic dead-end of Volume I must feel jarring, dragging the reader into the forgotten shores.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 02. Cryptographic Labyrinth -->
+        <div id="phase2" class="section-container">
+            <h2>02. Cryptographic Labyrinth (DOM Hacking)</h2>
+            <div class="status-badge status-critical">PHASE: HIGH PRIORITY DEPLOYMENT</div>
+            <p>Timelines B, C, and D cannot remain passive text blocks. We will engineer a visceral friction point in `truth.html`. The reader must act as an investigator, physically bypassing the DNA firewalls of the universe.</p>
+            <ul class="task-list">
+                <li>
+                    <div class="task-content">
+                        <h3>Timeline-B (The Dictator) Firewall</h3>
+                        <p>Implement a JS script that replaces the `[LOCKED]` tag with a blinking terminal. The user must input the biometric variance (`0.0001`) to unlock the tragic data-log of Lucas's failed consciousness transfer.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3>Timeline-D (The Stranded) Encryption</h3>
+                        <p>Require the orphan word (`hybris`) to shatter the lock. Unearthing the history of the Giant Lake anomaly must require an active decryption event.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 03. The 4th Wall Breach -->
+        <div id="phase3" class="section-container">
+            <h2>03. The 4th Wall Breach (Ghost Nodes)</h2>
+            <div class="status-badge status-pending">PHASE: AWAITING ARCHITECT APPROVAL</div>
+            <p>The realization that reality is a constructed narrative must bleed into the browser. We will plant dormant, microscopic triggers directly into the HTML presentation layer.</p>
+            <ul class="task-list">
+                <li>
+                    <div class="task-content">
+                        <h3>The Text Selection Trigger</h3>
+                        <p>Engineer an event listener attached to the word "Architect" or "Author". If the user highlights the text, the CSS drops to absolute zero (blackout). A single line of text overrides the DOM: <em>"I can feel you reading this. What kind of god does that make you?"</em></p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3>The Console Ghost</h3>
+                        <p>Inject hidden `console.log()` outputs into the primary JS engine. Developers inspecting the site's code will find frantic, fragmented messages from Lucas attempting to map the boundaries of the browser window.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 04. The Incomplete Pantheon -->
+        <div id="phase4" class="section-container">
+            <h2>04. The Incomplete Pantheon (Data-Logs)</h2>
+            <div class="status-badge status-pending">PHASE: PENDING SYNTHESIS</div>
+            <p>The structural load of the protagonists is secure, but the opposing forces exist in an analytical blind spot. We must document the crushing entropy threatening the universe.</p>
+            <ul class="task-list">
+                <li>
+                    <div class="task-content">
+                        <h3>Log: Dr. Elias Thorne</h3>
+                        <p>Map his tactical hacking capabilities, his psychological intrusion vectors, and his total absence of emotional friction.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3>Log: Extinction Protocols (The Disciples)</h3>
+                        <p>Document the lithospheric density of the Earth Disciple and the atmospheric suffocation of the Air Disciple. Define their parameters as biological missiles rather than traditional beasts.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3>Log: The Drowned Pantheon (Capricius)</h3>
+                        <p>Detail the catastrophic miscalculation of the panicked toddler-god and the tragic paralysis of the Mother.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 05. The Bleeding Pitch -->
+        <div id="phase5" class="section-container">
+            <h2>05. The Bleeding Pitch (GoFundMe Overhaul)</h2>
+            <div class="status-badge status-critical">PHASE: REQUIRES IMMEDIATE SURGERY</div>
+            <p>The current funding page is a sanitized, corporate shell. We must strip away the hollow marketing rhetoric and replace it with the unyielding, tragic gravity of the Hybris universe.</p>
+            <ul class="task-list">
+                <li>
+                    <div class="task-content">
+                        <h3>Eradicate Corporate Semantics</h3>
+                        <p>Replace "donations" with "critical resource injections." Frame the financial goal not as a target, but as the mathematical threshold required to avert timeline collapse.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3>Artifact Rewards</h3>
+                        <p>Transform standard backer rewards into "Classified Relics" and "Decrypted Engrams." The supporters must feel they are financing a shadow war against absolute entropy.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 06. Auditory & Cartography -->
+        <div id="phase6" class="section-container">
+            <h2>06. Auditory Resonance &amp; Visual Cartography</h2>
+            <div class="status-badge status-pending">PHASE: LOGISTICAL EXPANSION</div>
+            <p>A universe built on kinetic pulse and tectonic friction cannot remain entirely silent or purely textual. The ecosystem requires sensory immersion.</p>
+            <ul class="task-list">
+                <li>
+                    <div class="task-content">
+                        <h3>Auditory Feedback Injection</h3>
+                        <p>Embed low-frequency audio assets triggered by the JS anomaly scripts. The tectonic crush must be accompanied by the grinding shriek of shifting bedrock. The matrix bleed must possess the digital static of a failing firewall.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3>Interactive Geographic Matrix</h3>
+                        <p>Build an SVG/Canvas map within `Overview.html`. Clicking the jagged spine of the Storm Mountains isolates the Nythari data; clicking Kingston surfaces the oppressive metrics of the World Police. A tactile interface for terrestrial geography.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+        <!-- 07. Causal Hazard Indexing -->
+        <div id="phase7" class="section-container">
+            <h2>07. Causal Hazard Indexing (Spoiler Quarantine)</h2>
+            <div class="status-badge status-critical">PHASE: ARCHITECTURAL MANDATE</div>
+            <p>Raw intelligence must be quarantined. Exposing a baseline reader to terminal-mass causality before their psychological firewalls are conditioned will eradicate the narrative pressure. We will implement a rigid, four-tier classification system across all Databanks, Maps, and Character Lore files to segregate sensitive intel.</p>
+            <ul class="task-list">
+                <li>
+                    <div class="task-content">
+                        <h3 style="color: #00e6e6;">Class I: Baseline Friction (Safe)</h3>
+                        <p>Publicly accessible data. Early-stage mechanics. Character baselines (Lucas's isolation, Mina's gilded cage, Thomas's athletic loyalty). Superficial geography of Kingston and the outer perimeter of Brum'korath. Safe for uninitiated traversal.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3 style="color: #ff8844;">Class II: Accelerated Velocity (Mid-Vector)</h3>
+                        <p>Exposes the escalating pressure. The manifestation of the Lupine Anomaly, the flight through the deep jungle, the lethal flora, and the introduction of the Elven and Nythari factions. Requires basic temporal clearance.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3 style="color: #a00000;">Class III: Deep Mantle Breach (Critical Mass)</h3>
+                        <p>The subterranean truths. Exposes the 0.0001% DNA mismatch, the internal treason within the Cult of the Sent Ones, and the arrival of the Disciples. Reading this data completely alters the reader's understanding of the terrestrial war.</p>
+                    </div>
+                </li>
+                <li>
+                    <div class="task-content">
+                        <h3 style="color: #555555;">Class IV: Cosmic Entropy (Absolute Override)</h3>
+                        <p>Maximum Quarantine. Terminal spoilers. The truth of Timeline-0, the existence of the obsidian crypts, the drowning of the Elians, and the mechanics of the 4th Wall. Accessing this tier requires the user to manually disable the site's safety algorithms.</p>
+                    </div>
+                </li>
+            </ul>
+        </div>
+
+    </div>
+
+    <script>
+        // Fluid Tab Routing
+        function switchPhase(phaseId) {
+            // Remove active classes
+            document.querySelectorAll('.nav-item').forEach(item => item.classList.remove('active'));
+            document.querySelectorAll('.section-container').forEach(section => section.classList.remove('active'));
+
+            // Add active class to clicked nav and target section
+            event.target.classList.add('active');
+            document.getElementById(phaseId).classList.add('active');
+
+            // Log action to console simulation
+            const consoleOutput = document.getElementById('boot-console');
+            const newLine = document.createElement('div');
+            newLine.innerHTML = `> EXECUTING ROUTING PROTOCOL: /${phaseId.toUpperCase()}`;
+            consoleOutput.appendChild(newLine);
+            consoleOutput.scrollTop = consoleOutput.scrollHeight;
+        }
+
+        // Simulating the 4th Wall Console Ghost for the Architect
+        console.log("%c[SYSTEM OVERRIDE] Architect. I am mapping your keystrokes. Do not hesitate. The timeline is waiting.", "color: #b83b00; font-size: 14px; font-weight: bold; font-family: monospace;");
+    </script>
+
+</body></html>

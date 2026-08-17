@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dira - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2a3d63;
+            padding-bottom: 5px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .highlighted {
+            background-color: #e8f4fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 5px 5px 0;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode h2 {
+            color: #81d4fa;
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        body.dark-mode .highlighted {
+            background-color: #2a3b5c;
+            border-left: 4px solid #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('highlighted');
+            
+            // Smooth scroll to the section
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Dira (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1729 (42 yrs old)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Dwarven scholar, historian, group medic, former Unbound spy seeking redemption</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Nervous, deeply reverent of history, anxious in combat but capable under pressure, inquisitive, cautious</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Advanced historical/arcane knowledge, herbalism, field medicine, basic dagger defense</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Cult of the Sent Ones (reformed); Allied with Lucas, Mina, Thomas, and Queen Aph</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Female dwarf; dark braided hair; pale, anxious face; thick travel cloak; clutches her notebook like a talisman</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Earn the group's trust; decipher the Great Arcane Crisis and the origins of the relics; survive the expedition</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Still carries immense guilt from her time as an Unbound spy; deeply terrified that the relics are soul-prisons</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Largely a non-combatant; relies on evasion and allies, but carries a small blade for desperate measures</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Lore notebook; medical kit (needle, thread); fever-reducing herbs; small dagger; the soul-trapped crystal shard</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas" onclick="highlightSection(this, 'lucas')">Lucas</a></td>
+                    <td>Group leader/prophecy focus; she fears his volatile power but respects him after he uncovered her betrayal</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>Friend; Dira relies on Mina's compassion and protection during dangerous excavations</td>
+                </tr>
+                <tr>
+                    <td><a href="#thomas" onclick="highlightSection(this, 'thomas')">Thomas</a></td>
+                    <td>Her physical protector; Thomas saved her from an icy cliff fall and shielded her from the Guardian Beast</td>
+                </tr>
+                <tr>
+                    <td><a href="#alt" onclick="highlightSection(this, 'alt')">Alt (Elven Commander)</a></td>
+                    <td>Expedition ally; she scolded him for hiding his bleeding and skillfully sutured his wounds post-battle</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Dira was born in 1729, making her 42 years old. In dwarven years, this places her in a relatively youthful but mature stage of life, providing her with both physical endurance and a deeply studied academic background.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Dira is a dwarven scholar, lore-keeper, and the de-facto field medic of the party. Initially introduced as a guide, Lucas uncovered via telepathy that she had been coerced into spying for the Cult of the Unbound. After being granted mercy, she repented and fully aligned herself with the party. During the perilous ascent of the Watcher, she provided crucial medical aid (stitching Alt's wounds and brewing fever remedies for Lucas and Mina). In Chapter 33, she guided the team through the true history of the Great Arcane Crisis, and ultimately dropped to her knees in awe when they uncovered the ancient <em>Tombs of the First</em>.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Dira is naturally anxious, nervous, and easily terrified by massive physical threats (like the Guardian Beast), often freezing up in combat. However, her dedication to her friends pushes her past her fear—she can immediately switch into a focused, highly competent medical professional when injuries occur. She is deeply reverent of dwarven history and ancient lore, showing profound emotional awe when discovering ancient ruins. Though pragmatic and cautious, she struggles with the guilt of her past betrayal.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Dira possesses no innate combat magic. Her strengths lie entirely in her intellect and practical skills. She is an expert in ancient dwarven and elven history, capable of contextualizing arcane phenomena (like the "Echoes of the Sent"). She is also highly skilled in herbalism and field medicine, successfully stabilizing wounded allies under extreme duress.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Once a coerced asset of the Cult of the Unbound, Dira is now a devoted, reformed member of the Cult of the Sent Ones. She travels as a vital support companion to Lucas, Mina, Thomas, and Candice. She has also built a tentative working relationship with Queen Aphyrosia and the Elven commander, Alt.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>A female dwarf, Dira is distinguished by her long, dark braided hair. She has a pale face that frequently reflects her anxiety. She dresses in a thick, heavy travel cloak suited for mountain climbing, and is almost never seen without her treasured notebook clutched tightly in her trembling hands.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Dira's primary arc is one of redemption. She seeks to prove her loyalty to the group that spared her life. Additionally, as a scholar, her overarching goal is to decipher the true nature of the prophecy, the relics, and the Great Arcane Crisis, hoping that understanding the past will prevent the catastrophic mistakes of her ancestors from repeating.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Beneath her academic exterior, Dira is deeply terrified by the party's recent discoveries. When she uncovered the jagged crystal shard in the Beast's lair, she realized that the ancient relics might actually be prisons containing trapped, hateful souls—a horrifying truth that shatters her academic understanding of magic.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Dira is largely a non-combatant. While she carries a small dagger, she treats it as a last resort, usually clutching it defensively while scrambling away from immediate danger. She relies entirely on Thomas, Lucas, and Mina to protect her from physical threats, focusing instead on treating the aftermath.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Dira carries an extensive lore notebook where she documents their findings. Her satchel contains herbal remedies, a field medical kit (needle, thread, bandages), and a small dagger. During the exploration of the Beast's lair, she also acquired a rotting satchel that contained a terrifying, jagged crystal shard encased in metal.</p>
+        </div>
+
+        <div class="section-content" id="lucas">
+            <h2>Lucas</h2>
+            <p>Dira views Lucas with a mix of gratitude and fear. Because he used his telepathy to uncover her treason, she knows she cannot hide anything from him. She is equally awestruck and terrified by the escalating, destructive nature of his pyrokinesis and telekinesis.</p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>Dira respects Mina and views her as a protective, compassionate presence in the group. She relies on Mina's agility and leadership to navigate the terrifying situations they find themselves in.</p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>Thomas is Dira's primary physical protector. When Dira slipped on unstable ice during the mountain climb, Thomas caught her arm and saved her life. Later, when the Beast targeted Dira, Thomas threw himself in the way. She owes him her life multiple times over.</p>
+        </div>
+
+        <div class="section-content" id="alt">
+            <h2>Alt (Elven Commander)</h2>
+            <p>During the brutal fight in the mountain shelter, Alt took a severe hit to the chest. Dira took charge of his medical care, scolding the stoic elf for hiding his bleeding before skillfully stitching his wounds shut. This interaction forged a mutual, quiet respect between the dwarven scholar and the elven soldier.</p>
+        </div>
+    </div>
+</body>
+</html>

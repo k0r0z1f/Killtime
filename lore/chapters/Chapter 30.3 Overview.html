@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Chapter Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 30px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Lucas (Chapter Overview)</h1>
+        
+        <!-- Chapter Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#chapter-30.3.1" onclick="highlightSection(this, 'chapter-30.3.1')">30.3.1</a></td>
+                    <td>The Pull of the Presence</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-30.3.2" onclick="highlightSection(this, 'chapter-30.3.2')">30.3.2</a></td>
+                    <td>The First Confrontation</td>
+                </tr>
+                <tr>
+                    <td><a href="#chapter-30.3.3" onclick="highlightSection(this, 'chapter-30.3.3')">30.3.3</a></td>
+                    <td>N/A</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+
+        <!-- Chapter 30.3.1 Detailed Breakdown -->
+        <div class="section-content" id="chapter-30.3.1">
+            <h2>Chapter 30.3.1: The Pull of the Presence</h2>
+            <p><strong>Summary:</strong> In Atraxia’s oppressive streets, Lucas drifts unconsciously while emanating an eerie glow that draws both his wary party and a growing crowd of locals. As they follow him through dark, labyrinthine alleys, surveillance drones appear, only to be unexpectedly disabled by a surge of mysterious energy from Lucas. With Imperial forces closing in and tension mounting, the party debates their limited options while Lucas, unresponsive yet purposefully guided by an unseen force, continues on his ominous path.</p>
+            <p><strong>Key Themes & Moments:</strong></p>
+            <ul>
+                <li>The mysterious, supernatural influence over Lucas.</li>
+                <li>The tension between following an uncontrollable force and maintaining caution.</li>
+                <li>The unexpected display of power, notably in disabling drones.</li>
+                <li>The growing public curiosity and fear in the oppressive setting.</li>
+                <li>The looming threat of Imperial intervention, emphasizing an impending danger.</li>
+            </ul>
+        </div>
+
+        <!-- Chapter 30.3.2 Detailed Breakdown -->
+        <div class="section-content" id="chapter-30.3.2">
+            <h2>Chapter 30.3.2: The First Confrontation</h2>
+            <p><strong>Summary:</strong> In Atraxia’s tense streets, the protagonists encounter a SWAT team enforcing an order to surrender. As Lucas, whose uncontrolled powers glow ominously, advances through the chaos, a surveillance drone and a rubber bullet trigger his energy to flare. This sudden surge results in debris and vehicles being hurled aside, bullets reversing course, and casualties among the Imperial officers. Amidst the unfolding destruction, the group struggles to regain control while deciding whether to follow Lucas toward an unknown destination.</p>
+            <p><strong>Key Themes & Moments:</strong></p>
+            <ul>
+                <li>Escalation of tension between the protagonists and the Imperial forces.</li>
+                <li>The unintended destructive power of Lucas’s mysterious energy.</li>
+                <li>The moral dilemma of intervening to prevent further casualties.</li>
+                <li>The fragile balance between control and chaos in an increasingly volatile situation.</li>
+            </ul>
+        </div>
+
+        <!-- Chapter 30.3.3 Detailed Breakdown -->
+        <div class="section-content" id="chapter-30.3.3">
+            <h2>Chapter 30.3.3: N/A</h2>
+            <p><strong>Summary:</strong> Lucas’s glowing form leads the group through Atraxia’s desolate streets while Imperial forces are in hot pursuit. During their flight, Kael splits off to warn the Resistance base. Upon reaching a decrepit warehouse, the group discovers Lucas collapsed but still alive. At this critical juncture, a mysterious, metallic platinum-blue figure known as The Relic emerges, expressing forgiveness for past transgressions and ordering that Lucas be taken to a secure basement. Meanwhile, Imperial reinforcements gather outside as The Relic rallies the Resistance fighters for the impending battle.</p>
+            <p><strong>Key Themes & Moments:</strong></p>
+            <ul>
+                <li>Lucas’s mysterious transformation and the symbolic significance of his glowing form.</li>
+                <li>The strategic decision to split the group, underscoring urgency in warning the Resistance base.</li>
+                <li>Lucas’s collapse, which highlights his vulnerability despite his supernatural aura.</li>
+                <li>The emergence of The Relic, introducing themes of destiny, sacrifice, and redemption.</li>
+                <li>The mounting tension and preparation for the inevitable confrontation with the Imperial forces.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

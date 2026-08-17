@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 27.1 Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 27.1 Overview</h1>
+        
+        <!-- Chapter Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Chapter Number</th>
+                    <th>Chapter Title</th>
+                    <th>Summary</th>
+                    <th>Important Events in Order</th>
+                    <th>Locations</th>
+                    <th>Characters Present</th>
+                    <th>Keywords</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td>27.1.1</td>
+                    <td><a href="#interrogation" onclick="highlightSection(this, 'interrogation')">The Interrogation at the High Temple of Nature</a></td>
+                    <td>Candice faces an intense interrogation by the Queen of Elves and her council, revealing the mysteries surrounding her mission and the Children of Hybris. Tension grows as Candice tries to maintain control over the situation.</td>
+                    <td>1. Candice is interrogated by the Queen of Elves. <br> 2. She reveals that she is seeking the Children of Hybris. <br> 3. The Queen questions her knowledge of the Kingston explosion and the prophecy. <br> 4. The council members express suspicion of Candice’s true motives. <br> 5. Candice tries to maintain her cover but is caught in a web of ancient forces and prophecies.</td>
+                    <td>High Temple of Nature, Elven Council Chamber</td>
+                    <td>Candice, Lucas, Mina, Queen of Elves, Elder Elf, Soft Yet Powerful Elf</td>
+                    <td>Children of Hybris, prophecy, Kingston, Elven council, secrets, interrogation, ancient forces</td>
+                </tr>
+                <tr>
+                    <td>27.1.2</td>
+                    <td><a href="#growing-unease" onclick="highlightSection(this, 'growing-unease')">The High Temple of Nature - The Growing Unease</a></td>
+                    <td>Candice faces a tense interrogation by the High Elves' council, while Lucas senses a disturbing, chaotic presence in her mind. The internal chaos creates a conflict within Candice, forcing her to confront her own doubts and the hidden force attached to her.</td>
+                    <td>1. Candice is interrogated by the High Elves' council about the prophecy. <br> 2. Lucas senses an alien, parasitic presence in Candice’s mind. <br> 3. Candice remembers Ceylan’s warning about uncontrollable forces. <br> 4. Candice struggles to maintain composure and conceal the truth from the council. <br> 5. She prepares to answer the council's questions, uncertain of her next step.</td>
+                    <td>High Temple of Nature</td>
+                    <td>Candice, Lucas, High Elves' council (including Queen of Elves), Ceylan (mentioned)</td>
+                    <td>Prophecy, Children of Hybris, chaotic presence, alien force, control, trust, internal conflict</td>
+                </tr>
+                <tr>
+                    <td>27.1.3</td>
+                    <td><a href="#revelation" onclick="highlightSection(this, 'revelation')">Revelation at the High Temple</a></td>
+                    <td>Candice realizes the chaotic presence in her mind might be linked to her mentor, Ceylan. She inadvertently identifies Lucas and Mina as the Children of Hybris. The High Elves Council confirms this, but the Queen of Elves seems to have anticipated this moment. The chapter ends with lingering questions about the Queen’s knowledge and motives.</td>
+                    <td>1. Candice receives a telepathic message from Lucas about the chaotic presence in her mind. <br> 2. Candice realizes the presence might be tied to Ceylan. <br> 3. Candice blurts out that Lucas and Mina are the Children of Hybris. <br> 4. The Council confirms this, with the Queen appearing unbothered. <br> 5. Tension shifts, leaving lingering suspicions about the Queen’s prior knowledge.</td>
+                    <td>High Temple of Nature</td>
+                    <td>Candice, Lucas, Mina, Queen of Elves, Elder Elf, High Elves Council</td>
+                    <td>Children of Hybris, Prophecy, Chaos, Ceylan, Revelation, High Elves Council</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="interrogation">
+            <h2>The Interrogation at the High Temple of Nature</h2>
+            <p>Candice faces an intense interrogation by the Queen of Elves and her council, revealing the mysteries surrounding her mission and the Children of Hybris. Tension grows as Candice tries to maintain control over the situation.</p>
+        </div>
+
+        <div class="section-content" id="growing-unease">
+            <h2>The High Temple of Nature - The Growing Unease</h2>
+            <p>Candice faces a tense interrogation by the High Elves' council, while Lucas senses a disturbing, chaotic presence in her mind. The internal chaos creates a conflict within Candice, forcing her to confront her own doubts and the hidden force attached to her.</p>
+        </div>
+
+        <div class="section-content" id="revelation">
+            <h2>Revelation at the High Temple</h2>
+            <p>Candice realizes the chaotic presence in her mind might be linked to her mentor, Ceylan. She inadvertently identifies Lucas and Mina as the Children of Hybris. The High Elves Council confirms this, but the Queen of Elves seems to have anticipated this moment. The chapter ends with lingering questions about the Queen’s knowledge and motives.</p>
+        </div>
+    </div>
+</body>
+</html>
+

@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chapter 29.2.2 - The Watcher’s Gift</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Chapter 29.2.2 - The Watcher’s Gift</h1>
+
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#summary" onclick="highlightSection(this, 'summary')">Summary</a></td>
+                    <td>The group gathers in Aria’s hut, where Queen Aphyrosia shares a legend about the Watcher and its protectors, inspiring the group for their journey.</td>
+                </tr>
+                <tr>
+                    <td><a href="#events" onclick="highlightSection(this, 'events')">Important Events</a></td>
+                    <td>Aphyrosia outlines the plan, Candice suggests preparation, Aria performs a ritual for resilience.</td>
+                </tr>
+                <tr>
+                    <td><a href="#locations" onclick="highlightSection(this, 'locations')">Locations</a></td>
+                    <td>Aria’s hut.</td>
+                </tr>
+                <tr>
+                    <td><a href="#characters" onclick="highlightSection(this, 'characters')">Characters Present</a></td>
+                    <td>Queen Aphyrosia, Lucas, Mina, Thomas, Candice, Aria.</td>
+                </tr>
+                <tr>
+                    <td><a href="#keywords" onclick="highlightSection(this, 'keywords')">Keywords</a></td>
+                    <td>Watcher, prophecy, resilience, legend, ritual, Children of the Watcher, mountain journey.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="summary">
+            <h2>Summary</h2>
+            <p>The group gathers in Aria’s hut, where Queen Aphyrosia discusses their urgent mission to ascend the mountain and consult with Ceylan. She shares a legend about the Watcher and its chosen protectors, the Children of the Watcher, inspiring the group with ancient wisdom. A ritual is performed to strengthen their resolve before the journey.</p>
+        </div>
+
+        <div class="section-content" id="events">
+            <h2>Important Events</h2>
+            <ol>
+                <li>Aphyrosia outlines the group’s need to reach Ceylan for guidance on the prophecy.</li>
+                <li>Candice suggests preparation and gathering mountain conditions from Eryndor.</li>
+                <li>Aria recommends visiting key locations: the eastern temple, villages, and beast’s lair.</li>
+                <li>Aphyrosia shares the Watcher’s legend and its connection to the group.</li>
+                <li>Aria performs a ritual to inspire resilience in the group.</li>
+            </ol>
+        </div>
+
+        <div class="section-content" id="locations">
+            <h2>Locations</h2>
+            <p>Aria’s hut: A cozy, secluded dwelling where the group gathers to discuss their mission and perform the ritual.</p>
+        </div>
+
+        <div class="section-content" id="characters">
+            <h2>Characters Present</h2>
+            <ul>
+                <li>Queen Aphyrosia: The wise and regal leader who inspires the group with tales of the Watcher.</li>
+                <li>Lucas: A determined and steadfast member of the group.</li>
+                <li>Mina: A perceptive and resourceful ally.</li>
+                <li>Thomas: A loyal and courageous companion.</li>
+                <li>Candice: The strategic thinker who suggests practical preparations.</li>
+                <li>Aria: The spiritual guide who performs the ritual to boost the group’s resilience.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="keywords">
+            <h2>Keywords</h2>
+            <p>Watcher, prophecy, resilience, legend, ritual, Children of the Watcher, mountain journey.</p>
+        </div>
+    </div>
+</body>
+</html>
+

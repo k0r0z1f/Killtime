@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Candice - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Candice - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1721 (49 years old, current year 1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Member of the Nythari tribe, nythari warrior, Seeker, apprentice to Ceylan</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Agile, confident, curious, protective of nature, determined, introspective, loyal, torn, internally conflicted</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Expert in survival, climbing, stealth, archery, blow darts, and short blades</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Jarek (guide and ally), not yet allied with Lucas and Mina</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Athletic build, bright amber eyes, long brown treaded hair, wears forest-toned leather armor, cloak, and mountain hawk brooch</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Protect the worlds by finding and guarding two 'Children of Hybris', uncover the truth about her role in a prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Uncertainty (now fading away) about Lucas's claim of having an internal chaotic presence in her mind, torn loyalty between Ceylan and other forces, A revelation that Lucas and Mina are the Children of Hybris.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Skilled in survival, climbing, stealth, archery, blow darts, and short blades</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Pouch of iridescent stones (derek's currency), small stone fragment from Nythari ruins, sarbacane, nythari survival gear</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Candice was born in 1721, making her 49 years old in the current year, 1771.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Candice is a member of the Nythari tribe, a skilled warrior, and an apprentice to Ceylan. Her role as a Seeker involves protecting her people and finding those fated by prophecy.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Candice is agile, confident, and curious, yet torn between her loyalty to Ceylan and other forces. Her introspective nature reflects her inner conflicts, and her protective instincts make her deeply committed to nature and the worlds she seeks to protect.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>Her skills include expert-level survival techniques, climbing, stealth, archery, blow darts, and short blades. Candice is a highly capable warrior and survivalist, adapting quickly to various environments.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Candice currently counts Jarek, a guide and ally, as part of her circle but has not yet allied with Lucas and Mina, despite her growing doubts about Ceylan’s intentions.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Candice is athletically built, with striking amber eyes and long brown hair styled in a treaded fashion. She wears forest-toned leather armor, a cloak, and carries a mountain hawk brooch, signifying her tribe’s connection to nature.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Candice’s goal is to protect the worlds by guarding the two 'Children of Hybris' and uncovering the truth behind her role in an ancient prophecy. She is trying to reconcile her growing internal conflict as she learns more about Lucas and Mina.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Candice struggles with the uncertainty of an internal chaotic presence that Lucas claims exists in her mind. She is also torn between loyalty to Ceylan and the revelations she’s learning about Lucas and Mina being the Children of Hybris.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Candice is highly skilled in stealth, climbing, survival tactics, and various forms of combat, including archery, blow darts, and short blades. Her training makes her a deadly opponent in both close-quarters and ranged combat.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Candice carries a pouch of iridescent stones (used as Derek’s currency), a small stone fragment from Nythari ruins, a sarbacane (blow dart weapon), and Nythari survival gear for her travels.</p>
+        </div>
+    </div>
+</body>
+</html>
+

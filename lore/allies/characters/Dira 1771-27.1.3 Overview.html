@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dira - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Dira - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1739 (42 years old, current year 1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Now devoted to the Cult of the Sent Ones as repentant from the Unbound; Was a guide to the Cult of the Sent Ones (infiltrated Unbound spy).</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Nervous, secretive, anxious, earnest, exhausted, steadying force amid uncertainty, determined, assertive, confident, concerned, cautious, observant, intellectual.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Repenting from Unbound cult and now member of the party, Cult of the Sent Ones.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Female dwarf, long dark braid, braided hair, slightly tremulous hands, anxious eyes, likely young, exhausted, weary.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Dira’s internal turmoil highlights her fear of the Cult’s collapse. She may take more active steps to protect the group's interests, her motivations toward the Sent Ones now more clear. The Disciple’s rampage pushes her to reconsider her role. Actively working to prevent civil war, protect and hold the Sent Ones together, seeks to understand the prophecy and relics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Dira was hiding crucial information about the true nature of the temple and had her own motives linked to the Cult of the Unbound. Now repenting after spilling everything and both cult leaders are imprisoned; She helps the party with her knowledge of the prophecy in hope that they forgive her for leading them into the sewer's beast's lair.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Not specified.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Notebook from her studies of the prophecy and the Temple of the Sent Ones.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Dira was born in 1739, making her 42 years old in the current year of 1771.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Dira is a former member of the Unbound cult who infiltrated the Cult of the Sent Ones as a spy. She now serves the Cult of the Sent Ones, repenting for her past actions. She was once a guide to the Cult of the Sent Ones but was deeply involved in the Unbound's machinations before spilling everything to the party.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Dira is nervous and secretive, with a deep sense of guilt for her past involvement with the Unbound cult. She is earnest and determined, often acting as a steadying force within the group. However, she is anxious and conflicted about her role, which makes her cautious, observant, and intellectual. She is determined to prevent the collapse of the Cult of the Sent Ones, but her past weighs heavily on her actions.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Initially a spy for the Unbound cult, Dira has since repented and joined the Cult of the Sent Ones, where she serves as a member of the group. Her primary allegiance now lies with the party, as she works to protect and hold the Cult together.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Dira is a female dwarf with long, dark hair braided in a traditional style. She carries herself with an air of weariness, and her hands often tremble, reflecting her inner turmoil. Her eyes show signs of anxiety, and her face is a mixture of exhaustion and determination. Despite the outward signs of wear, there is a quiet strength in her demeanor.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Dira is grappling with her past actions, particularly her betrayal of the party when she led them into the sewer’s beast lair. She actively works to prevent civil war and protect the Cult of the Sent Ones from collapse. As she seeks redemption, Dira also hopes to uncover the truth about the prophecy and relics while trying to keep the Cult together amidst growing internal strife.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Dira once hid critical information about the true nature of the temple and had her own motives tied to the Cult of the Unbound. However, she has since confessed everything, hoping that the party will forgive her for her past mistakes. With both cult leaders imprisoned, Dira is now using her knowledge of the prophecy to assist the party in navigating the unfolding events.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Combat training for Dira is not specified, though her background suggests she may have some defensive skills, particularly in knowledge of the Cult of the Sent Ones and the Temple.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Dira carries a notebook with detailed notes on the prophecy and the Temple of the Sent Ones. This knowledge is crucial in understanding the larger events surrounding the Cult of the Sent Ones and their eventual fate.</p>
+        </div>
+    </div>
+</body>
+</html>
+
