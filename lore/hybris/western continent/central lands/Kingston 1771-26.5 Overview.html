@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kingston - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Kingston (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Some millions</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Vibrant, magical and technological city with narrow alleys and limited large streets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense, lingering trauma from the street corner explosion, marked by the consequences of recent events.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Urban, with modern structures.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Explosion, catastrophe, destruction, tied to the party's actions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Guardians of the Law maintain order and enforce laws; magi-tech pods used for transportation.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>The explosion tied to the party, particularly Lucas and Mina. The explosion remains a haunting memory.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>World Police scrutiny.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The street corner explosion tied to the party, still being pieced together by the party.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Urban, near water and central trade routes.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Unstable weather conditions, with arcane storms foreshadowing challenges.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Street corner explosion tied to the party, still being pieced together by the party, World Police scrutiny.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>Kingston is home to millions, a bustling urban center filled with diverse residents. The population is a mix of high-ranking government officials, citizens, and workers, all navigating the challenges of living in a city still recovering from a major catastrophe.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The city is vibrant and dynamic, blending advanced technology with a magical atmosphere. Narrow alleyways are interspersed with large streets, creating a unique urban landscape. The skyline is filled with gleaming towers, while older parts of the city bear the scars of the explosion that changed everything.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The air in Kingston is thick with tension. The lingering trauma of the street corner explosion still affects the city, with some areas feeling eerily quiet, while others are filled with uneasy whispers. The atmosphere is heavy with both the energy of progress and the shadow of catastrophe.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>Kingston’s urban layout combines modern structures with remnants of older, more traditional buildings. Skyscrapers of metal and glass stand beside stone structures that have withstood centuries. The contrast between the old and new adds to the city’s unique charm and complexity.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The city’s buildings, both old and new, are etched with symbols that reflect Kingston’s past and its struggle with destruction. Many of these markings are tied to the events surrounding the explosion, a reminder of the chaos and the resilience of the city’s citizens.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Kingston’s guardians work tirelessly to maintain order. The Law’s enforcers are a well-trained group, supported by arcane technology and magi-tech pods used for swift transport. However, there is a growing tension between these forces and the citizens, especially after the explosion.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The explosion that shook Kingston has become part of the city’s recent history. The event is tied to the party, particularly Lucas and Mina. It remains a haunting memory for the people, and many believe that the full truth behind the explosion has yet to be revealed.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The World Police maintains strict scrutiny over Kingston’s activities, but beneath the surface, there are other dangers lurking. The truth behind the explosion and the forces that caused it are still being uncovered, and the city may harbor more secrets than anyone realizes.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party’s actions during the street corner explosion are a critical part of Kingston’s recent history. Their involvement is being pieced together, and they are at the heart of the investigation, with the World Police eyeing them closely.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Kingston is strategically located near water and key trade routes, making it a central hub of commerce and politics. The surrounding terrain is urban, but the city’s location on the coast offers both advantages and challenges for its inhabitants.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>Weather in Kingston is unpredictable. Arcane storms are frequent, creating sudden bursts of magical energy that can disrupt the flow of the city. This unstable weather mirrors the city’s chaotic state, adding to the tension that already pervades the streets.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The street corner explosion remains a critical issue for Kingston. The party’s involvement is still under investigation, and the World Police continue to scrutinize the situation. The city’s future remains uncertain, as factions rise to control the narrative of what happened.</p>
+        </div>
+    </div>
+</body>
+</html>
+

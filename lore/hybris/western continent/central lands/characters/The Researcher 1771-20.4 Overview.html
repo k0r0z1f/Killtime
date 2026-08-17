@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Researcher - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Researcher - Character Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Former member of the old regime, scientist, former experimenter, currently seeking Lucas, unclear intentions, guide for the group. Works with Lucas, Mina, and Thomas on their escape, helps modify the van, and assists with the tracking problem.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Earnest, determined, urgent, remorseful, desperate, insistent, persuasive, conflicted, concerned, calm, composed, manipulative, persistent, weary, annoyed, irritated, secretive, stressed.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>None listed.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Formerly part of the medi-laboratory in Kingston.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Sharp features, intense gaze, bloodshot eyes, fatigued.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>To help Lucas unlock his potential, provide answers about the experiments, assist the group, control their fate, ensure his safety, help Lucas and Mina escape, fix the tracking problem.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Has a chip embedded in Lucas's chest, he took it off in an operation ordered by Thomas.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>None listed.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Unmarked glass tube.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>The Researcher is a former scientist who once served the old regime. Now, with unclear intentions, they are helping Lucas, Mina, and Thomas with their escape. They modify equipment like the van and assist with solving problems, such as the tracking issue. The Researcher’s background and past experiments add layers of complexity to their current motivations, and they continue to navigate their own role within the group.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>The Researcher is earnest and determined, though often urgent and remorseful for past actions. Their desperation to control their fate leads to persistent behavior. They are conflicted, concerned, calm under pressure, but also manipulative when necessary. While composed, they frequently experience stress and irritation due to their complex situation.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Currently, no magical abilities are listed for the Researcher.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The Researcher was formerly part of the medi-laboratory in Kingston, where they were involved in the scientific experiments that now tie them to Lucas’s past. Their current allegiances remain unclear, but they are working with the group to help solve the problems they face.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Researcher has sharp features, a strong, intense gaze, and bloodshot eyes, indicating exhaustion. Their fatigued look is a reflection of their current state, caught between their past experiments and the pressure of aiding the group.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>The Researcher’s main goal is to help Lucas unlock his full potential, reveal the truth behind the experiments, and control their fate. They aim to ensure their own safety while assisting Lucas and Mina in their escape and helping with the tracking problem.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>The Researcher harbors a secret: they were responsible for embedding a chip in Lucas’s chest. This chip was later removed by an operation that was ordered by Thomas, adding another layer of mystery to their involvement with Lucas and the group's journey.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>No specific combat training is listed for the Researcher, suggesting they are more focused on intellectual and technological contributions to the group.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>The Researcher carries an unmarked glass tube, though its contents and purpose are currently unknown.</p>
+        </div>
+    </div>
+</body>
+</html>
+

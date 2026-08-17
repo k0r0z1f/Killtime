@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Profile - Altheris</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Character Profile: Altheris</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Envoy of Haliriel, tasked with persuading the party to join a mission to the Eastern Continent. Also an elven council member representing Haliriel in negotiations with the dwarves. Later, Commandant overseeing the Eastern Continent mission and leader of the mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Calm, composed, commanding, persuasive, diplomatic, slightly amused, determined, occasionally frustrated, reluctant, cold, calculated, tall, elegant, purposeful, commanding.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Skilled in high-level strategy and leadership.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Haliriel, elves as a whole.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Silver hair, pale green eyes, intricate tunic embroidered with vines and stars, angular features, composed demeanor, tall, elegant, dark elven robes.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Seeks to uncover the truth behind the Disciple of Air and the prophecy, protect Haliriel, ensure smooth negotiations and cooperation with Brum'korath, oversee the mission, ensure the containment and understanding of the Disciple of Air, guide the team through the lab and the mission to the Eastern Continent.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>None provided.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Experienced in leadership and tactics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>None provided.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Altheris is an envoy of Haliriel, tasked with persuading the party to join a crucial mission to the Eastern Continent. Additionally, Altheris serves as an elven council member, representing Haliriel in high-stakes negotiations with the dwarves. Later, Altheris becomes the Commandant overseeing the Eastern Continent mission and leads the party's operations in the region.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Altheris is calm and composed, exuding a commanding presence. Persuasive and diplomatic, he approaches situations with calculated precision. However, there are moments where his cold, slightly amused demeanor reveals a determined leader who can be frustrated by the reluctance of others. Tall, elegant, and purposeful, Altheris is someone who commands respect effortlessly.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>Altheris is highly skilled in high-level strategy and leadership, making him a natural at directing operations and overseeing complex missions. His understanding of tactics and diplomacy is a key asset in his role.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Altheris is an ally to the elves, particularly Haliriel, where he holds a leadership role. His alliances extend beyond his own kin, as he works to ensure successful diplomacy with other factions, such as the dwarves.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Altheris has silver hair and pale green eyes, embodying the elegance of his elven heritage. His attire consists of an intricate tunic embroidered with vines and stars, emphasizing his connection to nature and magic. His angular features and composed demeanor make him appear both noble and distant, while his tall, elegant form is typically draped in dark elven robes.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Altheris’s main goal is to uncover the truth behind the Disciple of Air and the prophecy associated with it. He is determined to protect Haliriel from any threats and to ensure smooth negotiations and cooperation with Brum'korath, a significant ally. Throughout his journey, Altheris must guide the party in understanding the Disciple of Air, leading them through the mission to the Eastern Continent and ensuring their success in the process.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>No secret information was provided for Altheris.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Although not detailed in terms of specific skills, Altheris’s combat training is reflected in his leadership and tactical expertise. His strength lies in guiding and commanding others rather than direct combat.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>No inventory information was provided for Altheris.</p>
+        </div>
+    </div>
+</body>
+</html>
+

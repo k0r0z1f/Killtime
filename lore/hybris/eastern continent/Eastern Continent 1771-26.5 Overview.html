@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eastern Continent - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Eastern Continent - Location Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>A diverse range of peoples, with some areas still untouched by colonization.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Varied landscapes, from dense jungles to barren plains, with some untouched areas.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Grave danger; untamed and unpredictable energy due to the Disciple’s presence.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Regions vary, with ancient ruins and scattered rare structures, many untouched.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Symbols and carvings are rare, mostly found in ancient or hidden structures.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Natural barriers, dense jungles, and treacherous terrains make it difficult to traverse.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Associated with the Disciple of Air and ancient mystical powers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>The Disciple of Air's weakening containment is a constant threat, along with untamed forces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Connected to the Sent Ones' prophecy, with ties to the Disciple of Air.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Untamed wilderness, with vast jungles, mountains, and hidden valleys.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Unpredictable, with violent storms and occasional calm spells.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The Disciple of Air has been captured, weakening the immediate threat, but tensions remain.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Eastern Continent hosts a varied population, including nomads, tribal communities, and some settlers from the Empire. Some regions, however, remain entirely untouched by colonization, preserving ancient cultures and beliefs.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The continent’s appearance is diverse, with dense, lush jungles filled with hidden dangers, vast barren plains, and towering mountain ranges. There are regions untouched by time, where nature reigns supreme and few dare to venture.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The energy in the Eastern Continent is unpredictable, much like the Disciple of Air itself. The land feels volatile, as though ancient powers are awakening beneath its surface. A grave sense of danger looms over much of the land, tempered by the unpredictable and untamed nature of the place.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>Architectural styles vary across the continent. Some regions still boast ancient stone temples and arcane-infused structures, while others are filled with natural barriers like dense jungles and mountains. Few man-made structures are found here, with nature itself standing as the greatest form of defense.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>Ancient symbols and carvings are rare, but when found, they are often tied to powerful forces of nature or the Disciple of Air. These markings are mostly hidden in remote places, their meanings long lost to most.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The continent's natural defenses are formidable, with dense jungles, untamed wildlife, and towering mountains making travel difficult. The presence of the Disciple of Air also serves as a form of defense, though his power is weakening.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The Eastern Continent is steeped in ancient myths and legends, many of which concern the Disciple of Air and the ancient powers he once controlled. It is said that the continent holds secrets of immense power, waiting to be unlocked by those brave or foolish enough to venture into its depths.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The biggest danger in the Eastern Continent is the Disciple of Air, whose containment is weakening. His power could once again tear through the land, and ancient forces stir beneath the surface, waiting to be unleashed.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The Eastern Continent is intrinsically tied to the Sent Ones’ prophecy and the Disciple of Air’s presence. The party’s involvement here could change the course of history, as they face the growing threat of the Disciple’s power and unravel the secrets hidden in the continent's depths.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The terrain surrounding the Eastern Continent is wild and untamed. Thick jungles, deep valleys, and towering mountains make it difficult to traverse. Many areas remain unexplored due to the dangers lurking within.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather is unpredictable, with sudden violent storms and heavy rains that can last for days. There are occasional calm spells, but they are brief, and the land is never fully at peace.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The Disciple of Air has been captured, but his power still lingers, making the land a volatile and dangerous place. Factions are already preparing for the possibility of his return, and tensions within the continent grow by the day.</p>
+        </div>
+    </div>
+</body>
+</html>
+

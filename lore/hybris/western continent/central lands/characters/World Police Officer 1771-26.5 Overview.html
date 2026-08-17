@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>World Police Officer - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">World Police Officer - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role" onclick="highlightSection(this, 'role')">Role/Background</a></td>
+                    <td>World Police representative, tasked with enforcing the law and controlling rogue elements like Lucas and his companions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Stern, authoritative, unyielding, cold, icy, unemotional, focused on control.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>No inherent magic abilities but highly skilled in tactical combat and law enforcement.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>World Police (WP).</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Dark uniform, stern face, exudes authority.</td>
+                </tr>
+                <tr>
+                    <td><a href="#goal" onclick="highlightSection(this, 'goal')">Character Arc/Goal</a></td>
+                    <td>Enforce World Police demands and bring Lucas and his companions to trial.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Unspecified.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Unspecified, but presumed highly trained in law enforcement and tactical operations.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Unspecified.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role">
+            <h2>Role/Background</h2>
+            <p>The World Police Officer is a representative of the World Police (WP), a powerful law enforcement entity tasked with maintaining order in the Central Lands. Their primary role is to track down and apprehend individuals who challenge the authority of the World Police, including rebel factions, and rogue entities like Lucas and his companions.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>The World Police Officer is cold, calculating, and focused on control. Their stern demeanor reflects their unwavering commitment to maintaining order, often at the cost of empathy or flexibility. They are authoritative and unyielding, showing little to no emotional reaction to the situations they face.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>While they possess no inherent magical abilities, World Police Officers are highly trained in tactical combat, law enforcement procedures, and surveillance. They are experts in tracking and capturing individuals, often using a combination of advanced technology and psychological warfare to ensure compliance.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The World Police Officer answers directly to the World Police (WP), a powerful and often controversial organization that controls law enforcement in the Central Lands. The WP has the backing of the Empire, giving them a significant amount of influence and power.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The World Police Officer typically wears a dark uniform that signifies their high rank within the WP. Their uniform is sharply tailored, and their face is stern and unreadable, conveying an aura of authority and control. They are typically well-groomed, with an appearance that commands respect and obedience.</p>
+        </div>
+
+        <div class="section-content" id="goal">
+            <h2>Character Arc/Goal</h2>
+            <p>The World Police Officer’s primary goal is to enforce the demands of the World Police. This includes the pursuit of individuals like Lucas and his companions, who have defied the law. Their role involves bringing these figures to trial, ensuring that justice, as defined by the WP, is served.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Currently unspecified, though it’s implied that the officer may have hidden motives or loyalties that could affect their actions.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>The World Police Officer is likely highly trained in both armed and unarmed combat, with a focus on apprehension and control rather than lethal force. Their training includes advanced tactical operations, interrogation techniques, and crowd control.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>The specific inventory of the World Police Officer is currently unspecified, but it likely includes standard law enforcement tools, such as restraints, communication devices, and other equipment designed for apprehending targets.</p>
+        </div>
+    </div>
+</body>
+</html>

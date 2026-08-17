@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Citadel, Haliriel - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Citadel, Haliriel (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>2 million, mostly elven population in the tree districts, with a mix of elven, human, and occasional dwarven presence in the market district.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Ancient city with towering structures and natural integration. A blend of nature and architecture, with glowing Serran trees and elegant woodwork.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Calm, serene, yet with an undercurrent of tension. Feels like a place out of time, with a blend of mystical serenity and quiet unease.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Elven architecture blending nature with organic forms. Large, glowing structures of living wood, rope bridges, and spiraling stairs.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Elven symbols, nature motifs, and glowing runes etched in wood and stone, often connected to nature and the royal family.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Strong natural barriers like forests and rivers, along with magi-tech defenses and highly skilled guards at district entrances.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Deeply tied to ancient prophecies and the fate of the world, with connections to the Nythari Tribe and the Children of Hybris.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Unknown dangers linked to prophecy, political intrigue, and potential forces rising in the shadows of the city.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party is connected to the city's prophecies, searching for relics and engaging with its political tensions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Surrounded by dense forests, rivers, and mystical landscapes, providing protection and secrecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Mild, temperate climate with ethereal mist and gentle breezes, often calm but thick with tension.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Political strife, tensions with the prophecy, and the arrival of significant figures like Candice are shaping the future.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The city is home to 2 million inhabitants, predominantly elves living in tree districts. There is a mix of elves, humans, and occasional dwarves present in the bustling market district, reflecting the city's trade and cultural exchanges.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Haliriel is a breathtaking city where nature and architecture seamlessly blend. Towering columns of living wood rise up from the earth, interwoven with delicate vines. The glowing Serran trees illuminate the city at night, creating a tranquil atmosphere that is both magical and serene.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>Haliriel carries a serene and mystical atmosphere, as if suspended in time. Yet, beneath the tranquility, there is an underlying tension, tied to the ancient prophecies and the forces stirring in the world. The air is cool and refreshing, but charged with an unsettling energy.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The city's architecture is a masterpiece of elven design, blending the natural world with elegant craftsmanship. Organic, flowing structures made from living wood tower above, while the High District showcases grand citadels, large windows, and smooth cedar floors.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>Throughout Haliriel, intricate carvings and symbols etched into wood and stone tell the city's history. Nature motifs like leaves and flowers are common, representing the elves' deep reverence for nature. The High Temple of Nature contains special carvings tied to ancient prophecies.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The city is well-protected by natural barriers, such as the surrounding forests and the Great Lake. In addition, strong defenses are in place, including magi-tech barriers, guards stationed at district entrances, and secretive, well-hidden passageways for strategic movements.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Haliriel's history is deeply intertwined with prophecies, ancient relics, and the fate of the world. The city is said to hold key secrets that could shape the future. The elves' connection to the Children of Hybris and the Nythari Tribe adds further depth to the city's ancient lore.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>There are rumors of sealed chambers beneath the city, containing powerful artifacts long forgotten. Political intrigue and the possibility of secret factions working against the city's interests add to the tension, with the prophecy casting a shadow over all.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party plays a pivotal role in uncovering the city's hidden truths. Their presence is connected to ancient prophecies, as they search for relics and navigate complex political landscapes. Their involvement in the city's future may shape the outcome of the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Haliriel is surrounded by lush forests and mystical landscapes, offering both beauty and protection. The terrain is rugged and difficult to traverse, adding to the city's secrecy and its isolation from the outside world.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>Haliriel enjoys a mild, temperate climate with occasional ethereal mist that clings to the ground. The air is fresh, carrying the scent of earth and pine. Calm yet thick with an underlying tension, the weather is a perfect reflection of the city’s atmosphere.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The city's political landscape is in flux, with growing tensions among the various factions. The prophecy is beginning to take shape, and the arrival of Candice, a key figure in the unfolding story, has added to the city's sense of uncertainty and change.</p>
+        </div>
+    </div>
+</body>
+</html>
+
