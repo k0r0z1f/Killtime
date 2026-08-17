@@ -1,0 +1,524 @@
+{
+    "timelines": {
+        "Main Line": {
+            "y": 0,
+            "color": "#ffeb3b",
+            "start_val": 0.0,
+            "parent": null
+        },
+        "Timeline-0 1": {
+            "y": 120,
+            "color": "#f44336",
+            "start_val": 1771.21,
+            "parent": "Main Line"
+        },
+        "Timeline-0 2": {
+            "y": -240,
+            "color": "#2196f3",
+            "start_val": 0.0,
+            "parent": "Timeline-0 1"
+        },
+        "Timeline-A 1": {
+            "y": 360,
+            "color": "#4caf50",
+            "start_val": 150.63666666666666,
+            "parent": "Timeline-0 2"
+        },
+        "Timeline-D": {
+            "y": 480,
+            "color": "#9c27b0",
+            "start_val": 1772.12,
+            "parent": "Timeline-A 1"
+        }
+    },
+    "events": [
+        {
+            "float_val": 0.0,
+            "date_str": "0000-01-01",
+            "name": "Arrival of the Exiled Colony on Hybris",
+            "line_name": "Main Line",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1771.21,
+            "date_str": "1771-04-19",
+            "name": "Party-0 first spacetime jump (Stranded in Year 0)",
+            "line_name": "Main Line",
+            "type": "trigger",
+            "target_branch": "Timeline-0 1"
+        },
+        {
+            "float_val": 1000000.9366,
+            "date_str": "1000000-10-12",
+            "name": "Relic driven spacetime jump",
+            "line_name": "Timeline-0 1",
+            "type": "trigger",
+            "target_branch": "Timeline-0 2"
+        },
+        {
+            "float_val": 0.02,
+            "date_str": "0000-01-07",
+            "name": "Party-0 loses the demonsoul gem catalyst on the Watcher",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 59.71,
+            "date_str": "0059-08-04",
+            "name": "Thomas-0 death",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 67.3733,
+            "date_str": "0067-04-23",
+            "name": "Lucas-0 death",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 69.11,
+            "date_str": "0069-02-04",
+            "name": "Mina-0 death",
+            "line_name": "Timeline-0 2",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1754.19,
+            "date_str": "1754-02-28",
+            "name": "Thomas-A birth",
+            "line_name": "Timeline-A 1",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1754.7933,
+            "date_str": "1754-08-29",
+            "name": "Lucas-A and Mina-A birth (The Arcane Storm)",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 2"
+        },
+        {
+            "float_val": 1766.4833,
+            "date_str": "1766-05-26",
+            "name": "Lucas-A meets Thomas-A at the settlement fence",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 3 - Part 1"
+        },
+        {
+            "float_val": 1766.54,
+            "date_str": "1766-06-13",
+            "name": "Mina-A's first kinetic burst at the estate",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 4 - Part 1"
+        },
+        {
+            "float_val": 1766.6033,
+            "date_str": "1766-07-02",
+            "name": "Lucas-A is discharged from the medi-laboratory",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 3 - Part 2"
+        },
+        {
+            "float_val": 1766.91,
+            "date_str": "1766-10-04",
+            "name": "Lucas-A and Thomas-A reunite at public school",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 3 - Part 3"
+        },
+        {
+            "float_val": 1767.65,
+            "date_str": "1767-08-15",
+            "name": "Mina-A watches Thomas-A at the track field",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 4 - Part 2"
+        },
+        {
+            "float_val": 1768.2933,
+            "date_str": "1768-03-29",
+            "name": "Mina-A runs the Iron-Tide Biathlon",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 4 - Part 3"
+        },
+        {
+            "float_val": 1769.29,
+            "date_str": "1769-03-28",
+            "name": "Lucas-A probes Thomas-A's thermodynamics at practice",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 3 - Part 4"
+        },
+        {
+            "float_val": 1769.9133,
+            "date_str": "1769-10-05",
+            "name": "Lucas-A and Thomas-A discuss Mina's track records",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 3 - Part 5"
+        },
+        {
+            "float_val": 1770.0366,
+            "date_str": "1770-01-12",
+            "name": "Lucas-A is inspired by Mina-A at the school assembly",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 5 - Part 1"
+        },
+        {
+            "float_val": 1770.5666,
+            "date_str": "1770-06-21",
+            "name": "Lucas-A and Mina-A intersect outside the stadium",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 5 - Part 2"
+        },
+        {
+            "float_val": 1771.5766,
+            "date_str": "1771-06-24",
+            "name": "Graduation day; Lucas-A applies to Central Institute",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 5 - Part 3"
+        },
+        {
+            "float_val": 1771.73,
+            "date_str": "1771-08-10",
+            "name": "Orientation day at Central Institute; the trio unites",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 5 - Part 4"
+        },
+        {
+            "float_val": 1771.9633,
+            "date_str": "1771-10-20",
+            "name": "Mina-A's runaway speed; Lucas-A's telekinetic door breach",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 5 - Part 5"
+        },
+        {
+            "float_val": 1772.0033,
+            "date_str": "1772-01-02",
+            "name": "The Acoustic Breach: Lucas-A and Mina-A's first kiss",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 6 - Part 1 & 2"
+        },
+        {
+            "float_val": 1772.0066,
+            "date_str": "1772-01-03",
+            "name": "Sleepwalking Carnage: The Arcane Storm triggers, Lupine Anomaly born",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 6 - Part 3"
+        },
+        {
+            "float_val": 1772.0066,
+            "date_str": "1772-01-03",
+            "name": "Thomas-A hides them in the safehouse; they become fugitives",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 6 - Part 4"
+        },
+        {
+            "float_val": 1772.0066,
+            "date_str": "1772-01-03",
+            "name": "Candice receives mission from Ceylan on The Watcher",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 8 - Part 1"
+        },
+        {
+            "float_val": 1772.0066,
+            "date_str": "1772-01-03",
+            "name": "Lucas-A hijacks Elias Thorne's mind; van chase",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 9 - Part 1 & 2"
+        },
+        {
+            "float_val": 1772.0066,
+            "date_str": "1772-01-03",
+            "name": "Sub-dermal resonance tracker extracted in the abandoned hospital",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 10 - Part 3"
+        },
+        {
+            "float_val": 1772.01,
+            "date_str": "1772-01-04",
+            "name": "The party escapes to the Great River",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 10 - Part 5"
+        },
+        {
+            "float_val": 1772.01,
+            "date_str": "1772-01-04",
+            "name": "Sparks in the Void: Party crosses the Great Bridge",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 1"
+        },
+        {
+            "float_val": 1772.02,
+            "date_str": "1772-01-07",
+            "name": "The Weight of the Stone: Arrival at Brum'korath gates",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 2"
+        },
+        {
+            "float_val": 1772.03,
+            "date_str": "1772-01-10",
+            "name": "Toxic Resonance: Lucas-A poisoned; Mina-A kidnapped by Unbound",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 3"
+        },
+        {
+            "float_val": 1772.0366,
+            "date_str": "1772-01-12",
+            "name": "Candice and Jarek encounter the Giants",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 8 - Part 2"
+        },
+        {
+            "float_val": 1772.0666,
+            "date_str": "1772-01-21",
+            "name": "The Treacherous Vector: Grimbar's betrayal",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 4"
+        },
+        {
+            "float_val": 1772.0666,
+            "date_str": "1772-01-21",
+            "name": "The Resonance of the Sent Ones: Arrival at the Hidden Temple",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 12 - Part 5"
+        },
+        {
+            "float_val": 1772.0666,
+            "date_str": "1772-01-21",
+            "name": "Descent into the Dark: Party enters the ancient passages",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 13 - Part 1"
+        },
+        {
+            "float_val": 1772.0666,
+            "date_str": "1772-01-21",
+            "name": "The Apex of the Deep: Battle with the subterranean beast",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 13 - Part 2"
+        },
+        {
+            "float_val": 1772.0666,
+            "date_str": "1772-01-21",
+            "name": "The Calculus of Treason: Dira's betrayal exposed",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 13 - Part 3"
+        },
+        {
+            "float_val": 1772.0666,
+            "date_str": "1772-01-21",
+            "name": "The Crucible of Stone: Training in the Resonant Bastion",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 13 - Part 4"
+        },
+        {
+            "float_val": 1772.0766,
+            "date_str": "1772-01-24",
+            "name": "Candice and Jarek fight the mountain dwarves",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 11 - Part 1"
+        },
+        {
+            "float_val": 1772.08,
+            "date_str": "1772-01-25",
+            "name": "Candice and Jarek defeat the apex predator and discover the ancient Nythari cave",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 11 - Part 2"
+        },
+        {
+            "float_val": 1772.0933,
+            "date_str": "1772-01-29",
+            "name": "The Bleeding Perimeter: Skirmishes in the streets",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 14 - Part 2"
+        },
+        {
+            "float_val": 1772.0866,
+            "date_str": "1772-01-27",
+            "name": "The Bottleneck: Militia siege preparation",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 14 - Part 1"
+        },
+        {
+            "float_val": 1772.1033,
+            "date_str": "1772-02-01",
+            "name": "The Phalanx: Shield wall clash in the courtyard",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 14 - Part 3"
+        },
+        {
+            "float_val": 1772.1033,
+            "date_str": "1772-02-01",
+            "name": "The Shockwave: Marketplace explosion and blinding light",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 14 - Part 4"
+        },
+        {
+            "float_val": 1772.1033,
+            "date_str": "1772-02-01",
+            "name": "Decapitation: High Cleric Goldar captured by elite guards",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 14 - Part 5"
+        },
+        {
+            "float_val": 1772.09,
+            "date_str": "1772-01-28",
+            "name": "Candice and Jarek cross the Giant Lake and survive the arcane storm",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 11 - Part 3"
+        },
+        {
+            "float_val": 1772.0933,
+            "date_str": "1772-01-29",
+            "name": "Candice and Jarek fight the abyss walkers and arrive at the outskirts of Haliriel",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 11 - Part 4"
+        },
+        {
+            "float_val": 1772.0966,
+            "date_str": "1772-01-30",
+            "name": "Candice and Jarek are arrested in the Second District and reunite with Lucas and Mina",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 11 - Part 5"
+        },
+        {
+            "float_val": 1772.1033,
+            "date_str": "1772-02-02",
+            "name": "The Windfighter journeys to the Watcher; Ceylan's broken prophecy",
+            "line_name": "Timeline-A 1",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1772.11,
+            "date_str": "1772-02-04",
+            "name": "Party-A enters the impossible Mansion / Temple of Mirrors",
+            "line_name": "Timeline-A 1",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1772.1066,
+            "date_str": "1772-02-02",
+            "name": "The Crumbling Foundation",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 15 - Part 1"
+        },
+        {
+            "float_val": 1772.1066,
+            "date_str": "1772-02-02",
+            "name": "The Imperial Missile",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 15 - Part 2"
+        },
+        {
+            "float_val": 1772.1066,
+            "date_str": "1772-02-02",
+            "name": "Thermal Shock",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 15 - Part 3"
+        },
+        {
+            "float_val": 1772.1066,
+            "date_str": "1772-02-02",
+            "name": "The Divergent Vector",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 15 - Part 4"
+        },
+        {
+            "float_val": 1772.1066,
+            "date_str": "1772-02-02",
+            "name": "Terminal Mass",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 15 - Part 5"
+        },
+        {
+            "float_val": 1772.1133,
+            "date_str": "1772-02-05",
+            "name": "The Obsidian Crypt: Discovery of the Master Blueprints (Lucianae, Minalia, Thomar)",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Vol II - Chapter 1"
+        },
+        {
+            "float_val": 1772.1133,
+            "date_str": "1772-02-05",
+            "name": "Journal-0 Decode: Mathematical proof of temporal divergence and Wallace's survival",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Vol II - Chapter 2"
+        },
+        {
+            "float_val": 1772.1166,
+            "date_str": "1772-02-06",
+            "name": "Windfighter Extraction: Elias Thorne restrained; departure to Haliriel",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Vol II - Chapter 2"
+        },
+        {
+            "float_val": 1772.12,
+            "date_str": "1772-02-07",
+            "name": "Party-A fight with Disciple of Air-A",
+            "line_name": "Timeline-A 1",
+            "type": "fixed"
+        },
+        {
+            "float_val": 1772.12,
+            "date_str": "1772-02-07",
+            "name": "Lucas-A botched space jump",
+            "line_name": "Timeline-A 1",
+            "type": "trigger",
+            "target_branch": "Timeline-D"
+        },
+        {
+            "float_val": 1775.4433,
+            "date_str": "1775-05-14",
+            "name": "Timeline-A5 Side-Story: John & Erika transport the Broken Messiah",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 1 & 7"
+        }
+    ],
+    "color_index": 3
+}
