@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City of Brum'korath - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">City of Brum'korath (Location Overview)</h1>
+
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Civilians, soldiers, and cultists</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Damaged city with twisted stone pillars and shattered walls after the Disciple's attack</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Chaotic and panicked, destruction and fear fill the air</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Majestic stone structures, many now in ruins due to the Disciple's earth magic</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Symbols of power and protection, though many defaced by the Disciple</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Minimal, ineffective against the Disciple's overwhelming power</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Weapon against the Empire hidden in a secret temple, central to local lore</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Instability in the remaining structures, ongoing destruction from the Disciple</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Party may be drawn into conflict, defending or seeking the weapon</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Craggy mountains and uneven terrain add to the city's vulnerability</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Dust-choked skies, tremors, chaotic weather due to destruction</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>City in crisis; Disciple's assault continues, military retreating</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The population includes civilians, soldiers, and cultists. Amid the chaos, these groups are struggling to survive, with some defending the city and others turning to the Disciple's cause.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Brum'korath, once a proud city, now shows signs of severe damage. Twisted stone pillars rise above shattered walls, the aftermath of the Disciple's devastating earth magic. The skyline is now marked by ruined spires, while the streets are littered with debris and crumbling buildings.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The city is in a state of panic, with destruction and fear permeating the air. The Disciple’s looming presence only heightens the tension, making it feel as though the city itself is holding its breath, awaiting further devastation.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of Brum'korath is majestic, with many stone structures standing tall despite their damage. The Disciple's earth magic has shattered much of the city's integrity, leaving ruins scattered amidst military fortifications hastily constructed in recent years.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The city’s carvings depict symbols of power and protection, though many have been defaced or destroyed by the Disciple’s influence. These symbols once conveyed strength and unity, but now tell the story of the city’s fall.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Brum'korath’s defenses are minimal, with the Disciple's overwhelming power rendering most of the city's fortifications ineffective. The military and cultists are struggling to hold their ground, but the city’s outer defenses have been severely compromised.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Local legends speak of a weapon hidden within a secret temple, a weapon that could potentially turn the tide against the Disciple and the Empire. This artifact plays a key role in the city's myths and in the ongoing struggle for control.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The city’s remaining structures are unstable, and tremors from the Disciple’s magic only increase the risk of collapse. Hidden beneath the ruins are further dangers, including forgotten magic and hidden traps set by the Disciple’s forces.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party becomes directly involved in Brum'korath's defense. Whether as defenders or seekers of the hidden weapon, their actions could significantly shape the city’s future, as they confront both physical and magical dangers.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Brum'korath is surrounded by craggy mountains and uneven terrain, which makes the city both strategically advantageous and vulnerable. The harsh landscape limits movement and makes it difficult for outside forces to approach or retreat.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The skies above Brum'korath are choked with dust, remnants of the destruction caused by the Disciple. Tremors continue to shake the earth, and the weather is chaotic, with unpredictable storms adding to the sense of despair.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The city is in a state of crisis. The Disciple’s assault continues unabated, and the military is retreating to the armory. The balance of power is shifting, and Brum'korath's future is uncertain, hinging on the discovery of the weapon and the party’s intervention.</p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Council Chamber of the Sent Ones - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Council Chamber of the Sent Ones (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Small but powerful council of Elders.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Awe-inspiring space with intricate carvings.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense, foreboding, and serious.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Grand dwarven engineering and artistry.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Depictions of battles, lawgivers, and judgments.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Guards and possible enchantments.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Rich history of law and leadership.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Political tension and external threats.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Judgment of the party's actions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Heart of the mountain.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold and oppressive.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Trial and political instability.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The council is composed of 10–15 members, including prominent figures such as Elders Aria and Gorla. Each member brings centuries of experience, representing the pinnacle of dwarven leadership and wisdom.</p>
+        </div>
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The chamber is grand, with intricate carvings of legendary dwarven judgments, battles, and lawgivers. The domed ceiling glimmers faintly with veins of gold and silver, evoking an ethereal and ancient beauty.</p>
+        </div>
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere is tense, foreboding, and charged with suspicion. The weight of centuries of governance is palpable, shifting from calm deliberation to alarm following recent revelations.</p>
+        </div>
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture showcases dwarven mastery, with towering columns, intricate stonework, and a dominating circular table. The dome above is a work of art, glowing with veins of precious metals.</p>
+        </div>
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The carvings on the walls depict monumental battles, legendary judgments, and ancient dwarven lawgivers, emphasizing the chamber's role as a seat of justice and power.</p>
+        </div>
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The chamber is heavily guarded, with potential enchantments and barriers to ensure security during critical meetings.</p>
+        </div>
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The chamber’s walls and carvings embody its rich history, including major decisions that shaped dwarven civilization. Elder Aria, in particular, is tied to tales of profound wisdom and leadership.</p>
+        </div>
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Political tension and hidden agendas among council members pose significant risks. External threats, such as interference from other factions, add to the chamber’s vulnerabilities.</p>
+        </div>
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party stands at the center of the trial, accused of actions tied to the Disciple’s destruction. The judgment they face here could reshape their path and the city's future.</p>
+        </div>
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The chamber is located deep within Brum’korath, surrounded by sprawling mines and towering mountain peaks. The city itself is a dwarven stronghold, blending beauty and impenetrability.</p>
+        </div>
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The atmosphere inside mirrors the trial’s gravity, while outside, cold winds and the shadow of recent destruction create a somber mood.</p>
+        </div>
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Political instability, the destruction caused by the Disciple, and the Empire’s growing influence all culminate in the party’s trial, making this chamber the focal point of unfolding events.</p>
+        </div>
+    </div>
+</body>
+</html>

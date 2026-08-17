@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The City of Brum'korath - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The City of Brum'korath (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>A mix of dwarven nobility, miners, engineers, cultists (Sent Ones), and powerful families.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A blend of decaying grandeur and rebuilding, with vast underground chambers and shadowy streets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Steeped in tension, with optimism mixed with fear, influenced by cults and a haunting prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Ancient dwarven stonework combined with modern additions, scars of past destruction evident.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Symbols of the Sent Ones and ancient prophecies are visible throughout the city.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Ancient fortifications, modern updates, and secret chambers protected by the city council.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>The Sent Ones' prophecy looms over the city, feared and debated after the War of the Cults.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Secret tunnels, rogue cultists, and the lingering threat of ancient powers beneath the city.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party navigates political and spiritual intrigue, investigating the prophecy and ancient secrets.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Rugged mountains and dense forests, isolated but strategically important for defense.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold, unpredictable storms, with harsh conditions both in the city and underground.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Growing tensions, cult influence rising, and the party’s involvement crucial to the city's future.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>Brum'korath's population is diverse, including dwarven nobility, engineers, miners, and merchant families. The most notable presence is that of the Sent Ones, a religious cult, whose numbers have grown significantly. The majority of the city’s inhabitants are miners and engineers, who make up the working class.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Brum'korath presents a unique blend of decayed grandeur and ongoing reconstruction. The city is scattered with ruins of ancient dwarven buildings, but vast underground chambers carved into the mountains remain intact. The atmosphere is dim and shadowy, with parts of the city bathed in the fading light of day, creating a sense of decline.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The energy in Brum'korath is thick with tension. While there’s a sense of cautious optimism due to the city's recovery, the past conflicts—especially the Disciple incident—cast a long shadow. The influence of cults, particularly the Sent Ones, grows stronger, and a prophecy concerning the city's potential doom stirs unease among the populace.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture in Brum'korath is a striking mix of ancient dwarven craftsmanship and newer, less refined structures. The stonework in the older sections of the city reflects a grandeur that is now fading, while newer constructions struggle to replace what was lost. The city's underground chambers remain solid, but the older tunnels are showing signs of wear.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The city's walls and structures are adorned with carvings depicting ancient dwarven history, the rise of the Sent Ones, and the prophetic visions that now shape the future of Brum'korath. Symbols of the Sent Ones' faith are common, as well as representations of the prophecy that looms over the city’s fate.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Brum'korath’s defenses combine ancient dwarven fortifications with modern additions. While the city still boasts formidable stone walls and watchtowers, many of the older defenses have deteriorated. The council maintains a strong security presence, especially around key locations such as the sealed chamber, but the city's overall defenses have been weakened by years of neglect.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The most prominent legend in Brum'korath is the prophecy of the Sent Ones, foretelling the city's destruction or salvation. This prophecy, once dismissed as superstition, has gained increasing prominence following the War of the Cults and the devastation of the Disciple. Many believe that the prophecy’s fulfillment will determine the city’s future.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Hidden dangers lurk in both the physical and political realms of Brum'korath. The underground chambers may hold long-forgotten artifacts or powers, while rogue cultists and old political factions threaten the city’s stability. The looming return of the Unbound, along with pressure from the Empire and World Police, adds to the tension.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party has become deeply entwined in Brum'korath’s struggles. Investigating the prophecy, ancient secrets, and the increasing influence of cults, they must navigate a complex political landscape. Their actions may shape the future of the city, and they are closely watched by various factions within and outside the city.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Brum'korath is surrounded by rugged, mountainous terrain and dense forests. While these natural features provide a degree of defense, they also isolate the city, limiting access to resources. The surrounding wilderness is treacherous, with hidden paths and tunnels offering both a means of secret movement and potential danger.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in Brum'korath is harsh and unpredictable. Storms frequently sweep across the region, making travel dangerous. The city’s high-altitude location also contributes to a cold, oppressive atmosphere, particularly in the underground chambers, which remain damp and chilly even when the surface temperature is mild.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Brum'korath is in the midst of recovery, but political tensions are rising. The influence of the Sent Ones is growing, and the city is under increasing pressure from external forces such as the Empire and World Police. The party’s actions are pivotal as they delve into the city’s mysteries, including the search for ancient artifacts and the sealed chamber.</p>
+        </div>
+    </div>
+</body>
+</html>

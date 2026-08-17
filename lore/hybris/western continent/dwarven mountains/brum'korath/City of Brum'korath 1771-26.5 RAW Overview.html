@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brum'korath - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Brum'korath (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Large, bustling city, almost completely dwarves.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Stone buildings, towering structures, heavy stone walls, large stone and steel buildings with intricate tapestries depicting ancient history.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tension-filled, heavy with uncertainty, political upheaval, festive atmosphere with an undercurrent of unease, tension among the guests.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Gilded, towering structures with high arches and stone pillars, stone halls with large hearths.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Tapestries of ancient history, depicting important events or the city's role in past wars; features dwarven symbols, carvings tied to the city’s culture.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Heavy scrutiny and surveillance, strong city defenses with heavy walls, military presence, constant surveillance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Known for its political intrigue and importance in the region; a city where the past and future collide.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Unrest, distrust of outsiders, lingering tensions from recent events like the Disciple's attack, political maneuvering, surveillance, and control by powerful figures.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Hosts Goldar's trial, center of political decisions affecting the party; a place of both respect and caution, they were held here as prisoners before being granted parole, now under surveillance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Urban setting, surrounded by mountains, city-state.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Thick with political tension, cloudy with moments of clarity, weather in the area is a cooler, stone-heavy environment.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Recent trial of Goldar and conditional freedom for the party, now under surveillance, shifting from temporary freedom to uncertainty, political intrigue surrounding the dwarves’ hospitality.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>Brum'korath is a large, bustling city primarily inhabited by dwarves. The city is filled with craftsmen, warriors, and political figures who shape the city's ongoing power struggles.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The city features large, imposing stone buildings, with towering structures and heavy stone walls. Intricate tapestries are displayed throughout the city, depicting ancient history and the city’s significance in past conflicts.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere in Brum'korath is tense, filled with political unrest and uncertainty. While there is a festive energy in certain quarters, a constant undercurrent of unease pervades, especially among outsiders and visitors.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The city's architecture features gilded, towering structures with high arches and stone pillars. The stone halls are grand and warm, with large hearths to fend off the cold mountain air.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The city is adorned with tapestries that depict important historical events. These tapestries often include dwarven symbols and carvings that reflect Brum'korath’s role in past wars and its cultural heritage.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Brum'korath is heavily guarded, with strong military presence, constant surveillance, and fortified stone walls. There is a focus on ensuring security and control within the city, especially as political tensions rise.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Brum'korath is renowned for its political intrigue. It is a city where the past and future collide, as ancient legends intertwine with modern-day power struggles. The city holds great significance in regional politics.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The city harbors deep mistrust of outsiders, with lingering tensions from past events like the Disciple's attack. The political maneuvering here is dangerous, and powerful figures control many aspects of the city’s security.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party is deeply connected to Brum'korath’s political landscape. They are involved in Goldar’s trial, a pivotal event that determines the course of their freedom. The party has faced imprisonment here but was granted conditional release, though under constant surveillance.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Brum'korath is an urban center, surrounded by harsh mountain terrain. The city-state is nestled in a mountainous region, giving it natural defenses and isolating it from surrounding areas.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in Brum'korath is typically cooler, with heavy, stone-laden air. The atmosphere often reflects the political tensions that hang over the city: thick with uncertainty, but with occasional moments of clarity and calm.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Brum'korath has recently hosted Goldar's trial, which led to conditional freedom for the party. However, their movements are now under closer scrutiny, and the political dynamics surrounding their actions in the city remain uncertain.</p>
+        </div>
+
+    </div>
+</body>
+</html>
+

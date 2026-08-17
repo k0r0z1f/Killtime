@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Streets of Brum'korath - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Streets of Brum'korath (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Mixed (Citizens, Merchants, Visitors, Soldiers)</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A bustling urban environment, with both grand and modest buildings. Some areas are teeming with life, while others appear more cautious or even fearful.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Mixed reactions from the crowd—some cheer, others are cautious or fearful. There is an air of both admiration and suspicion.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Streets lined with stone and metal buildings, featuring towering structures and narrow alleys.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>The architecture reflects the city's wealth and status.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Strong, given the city’s importance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Brum'korath is known for its grandeur, but also its political tensions, especially related to the party's role in recent events.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Fear and caution, particularly from those who remember the Disciple’s incident.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party is the center of attention, with the crowd's mixed reaction reflecting their complicated status as heroes and potential threats.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Central urban area, with towering structures and a mix of festive and tense environments.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Cold, misty winds swirl around the streets, with brief sunny spells and heavy rain.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The party is now both celebrated and watched, with the city reacting to their presence after their involvement in the Disciple’s downfall.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The streets of Brum'korath are home to a vibrant mix of citizens, merchants, visitors, and soldiers. The city’s central location and significance attract a diverse range of people, contributing to its bustling atmosphere.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Brum'korath’s urban landscape is both grand and imposing. Towering stone and metal buildings create a sense of wealth and power, while narrow alleys and quieter districts give off an air of secrecy and caution. The city’s vibrancy contrasts with its darker corners, where fear and tension linger.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere in the streets is mixed. Some people cheer the presence of the party, while others view them with suspicion or fear due to their involvement in the Disciple’s downfall. There’s an underlying tension in the air, as the city is caught between celebration and unease.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of Brum'korath reflects its importance as a hub of power and influence. The streets are lined with grand structures made of stone and metal, featuring towering buildings and intricate designs. Narrow alleys and secret passages hint at the city’s complicated political landscape.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The city’s architecture features carvings and symbols that reflect its wealth and status. Many of these symbols are tied to the city’s history and the powerful figures that have shaped its legacy.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Brum'korath is heavily fortified, both physically and magically. Strong defenses protect the city’s key areas, and its strategic importance ensures that it remains secure despite political tensions.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>Brum'korath has a rich history filled with tales of grandeur, power struggles, and heroic deeds. The most recent events involving the party and the Disciple have only added to the city’s complex lore.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>Despite its apparent grandeur, there are many hidden dangers in Brum'korath. The fear and caution of the people, especially after the Disciple’s incident, reflect the city’s ongoing struggles with power and control.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party is at the center of the city’s political landscape. Their actions have had far-reaching consequences, and the people of Brum'korath are divided on how they view them. Are they heroes or threats? This question remains at the heart of the city's reaction to their presence.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The central urban area of Brum'korath is surrounded by a mix of festive and tense environments. The city’s towering structures dominate the landscape, but the areas beyond offer a more complex view of the city’s true nature.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in Brum'korath is typically cold and misty, with winds that swirl around the streets. Rainstorms are common, particularly during the colder months, contributing to the city’s moody and atmospheric presence.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The party’s actions have caused a stir in Brum'korath. Their involvement in the Disciple’s downfall has made them both celebrated and watched closely. The city is in the midst of political shifts, and the party's role in these developments remains uncertain.</p>
+        </div>
+    </div>
+</body>
+</html>
+

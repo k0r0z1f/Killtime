@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sent Ones HQ - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Sent Ones HQ (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>A select group of cultists and followers of the Sent Ones.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>High stone walls, ancient symbols, and a high-ceilinged, echoing chamber filled with an air of urgency.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Tense, solemn, and mysterious, filled with the weight of prophecy and anticipation.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Imposing stone walls, sparse and functional design, and ancient symbols throughout.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Carvings of balance, opposing forces, and ancient prophecies.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Well-guarded by the cultists with secretive, hidden protections.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Stories of prophecy and the rise of the Sent Ones to restore balance and defeat the Empire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Uncontrollable powers of Lucas and Mina, the weight of prophecy, and the threat of war.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>The party is groomed for training and involvement in the conflict, with their fates entwined.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Located in Brum'korath, near the edge of a mountain peak.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Temperate with a foreboding air, influenced by the cult’s power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Dira's fate sealed, training set to begin, and the Sent Ones' prophecy nearing fulfillment.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Sent Ones HQ is primarily populated by a select group of cultists and followers, including those who have been chosen for their role in the prophecy. The cult maintains a tight-knit, secretive membership, bound by a shared purpose.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Sent Ones HQ is characterized by towering stone walls that feel imposing and ancient. Inside, the council chamber has a high ceiling that echoes with the sounds of whispered prayers and urgent discussions. Ancient symbols of the Sent Ones line the walls, and the room is sparsely furnished, focusing on practicality over decoration. The air is thick with the sense of prophecy and importance.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere within the Sent Ones HQ is charged with a sense of tension and solemnity. There is a constant undercurrent of power and authority, with every action feeling purposeful. It is a place where the weight of prophecy hangs heavy, and every decision seems to be a step toward a larger, inevitable fate. The air is thick with anticipation of the events to come, and every word spoken here feels like it carries immense significance.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture of the Sent Ones HQ is designed to be imposing, with large stone walls that exude a sense of strength and permanence. The structure is built for function rather than form, with simple furnishings and layouts that allow for training, gathering, and planning. However, the walls are adorned with mysterious symbols that hint at the ancient and arcane nature of the place. The dim lighting and sparse decor create a somber and utilitarian atmosphere.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The Sent Ones HQ is rich with symbolism, with intricate carvings adorning the walls. These symbols are deeply tied to the prophecy of the Sent Ones and their mission to restore balance. Many of the carvings depict battles of old, celestial alignments, and opposing forces in the universe. The symbols seem to pulse with power, as though they hold secrets waiting to be unlocked.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>While the Sent Ones HQ is primarily protected by the cultists themselves, there are hidden and secretive defenses woven into the architecture. These include arcane wards, hidden traps, and magical protections that are activated only by those who truly belong within. The cult's inner circle also employs subtle methods of defense, including knowledge of obscure rituals and secret entrances.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>The legends surrounding the Sent Ones HQ are steeped in prophecy. It is said that the return of the Sent Ones will signal the fall of the Empire, and their actions will bring about a great balance in the world. Tales of their origins, their battles, and their connection to higher powers are told within the HQ, serving as both a guide and a warning. The cult believes their fate is written in the stars, and the party's involvement will play a pivotal role in fulfilling these prophecies.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The greatest dangers within the Sent Ones HQ are those that are hidden from the cultists themselves. The uncontrolled nature of Lucas and Mina’s powers poses a significant risk, as well as the growing tension between the factions within the cult. The weight of the prophecy can drive people to madness, and the threat of war looms ever closer. Secrets buried deep within the HQ may also hold untold dangers, waiting for the right moment to be uncovered.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The party's connection to the Sent Ones HQ is both strategic and personal. They are being trained in combat, survival, and strategy as they prepare for the conflict ahead. The decisions made by the council and their growing bond with Dira are setting the stage for their role in the coming war. The party’s fates are intertwined with the prophecy, and their actions will help determine the future of the world.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The Sent Ones HQ is located in Brum'korath, on the eastern edge of the city, near the peak of a towering mountain. The surrounding terrain is harsh and rugged, with steep cliffs and rocky outcrops. The environment is both awe-inspiring and perilous, with limited access points to the HQ. The mountain's isolation adds to the cult's mystique and provides both natural defense and a sense of foreboding.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather surrounding the Sent Ones HQ is temperate, though it carries an air of tension. Winds whip through the mountain passes, and the weather shifts unpredictably, reflecting the cult's influence. There is always a sense of foreboding in the air, and storms are known to brew suddenly, adding to the oppressive atmosphere within the HQ.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recent developments at the Sent Ones HQ have been dominated by the fate of Dira, whose destiny is intertwined with the prophecy. The council has made the decision to keep her in custody while training the party to face the coming conflict. Tensions are high as the prophecy nears its fulfillment, and the cult's future actions will depend on the party's success in mastering their newfound abilities and navigating the storm that is gathering.</p>
+        </div>
+    </div>
+</body>
+</html>

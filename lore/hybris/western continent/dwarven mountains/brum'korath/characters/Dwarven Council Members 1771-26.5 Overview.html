@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dwarven Council Members - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Dwarven Council Members (Character Overview)</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role" onclick="highlightSection(this, 'role')">Role/Background</a></td>
+                    <td>Members of the dwarven council, convened for political deliberation and responsible for the city’s governance and its interactions with outsiders.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Wary, suspicious, calculating, distrustful of elves, politically driven, impatient, occasionally amused, gruff, protective, transactional.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>---</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Brum'korath, Dwarven Council.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Clad in ceremonial robes, sturdy and rugged typical of dwarves.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Ensuring the safety and sovereignty of the dwarven people, maintaining the stability of their city, wary of elves and outside factions.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>---</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>---</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>---</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role">
+            <h2>Role/Background</h2>
+            <p>The Dwarven Council is a group of influential leaders within Brum'korath, tasked with governing the city and handling relations with other factions, particularly the elves. They are a politically-driven group, weighing the needs of their people against the complexities of outside threats.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>The council members are characterized by their wariness and suspicion, especially toward elves. They are pragmatic and often gruff, preferring to avoid unnecessary diplomacy. They tend to be politically savvy and transactional, calculating every decision with the intent to maintain their people’s safety and sovereignty.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>The Dwarven Council members may possess individual magical abilities or combat prowess, though these are more likely to be tied to their roles as leaders and strategists rather than any supernatural power. Their strength lies in their wisdom and experience.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The council represents the interests of Brum'korath and is primarily concerned with the welfare of the dwarven people. They are wary of outside influence, particularly from elves, and navigate a delicate balance between maintaining their autonomy and dealing with external political forces.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The members of the Dwarven Council are typically dressed in ceremonial robes that reflect the traditional styles of their people. Their appearance is rugged, often with beards and hard features, embodying the strength and resilience of dwarven culture.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>The ultimate goal of the council members is to protect the sovereignty of Brum'korath and ensure the survival of their people. They must navigate growing political tensions, both within their own city and with external factions, including the elves. Their arc revolves around making difficult decisions to maintain stability.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>There may be some undisclosed secrets surrounding the Dwarven Council, possibly relating to ancient alliances or hidden motives that could change the balance of power within the region. These secrets could play a pivotal role in future events.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>The council members are well-versed in dwarven combat traditions, including axe fighting, shield use, and strategic battle planning. While they may not engage directly in battle, their leadership experience in warfare is invaluable.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>The inventory of each council member would likely include traditional dwarven tools, ceremonial artifacts, and possibly relics tied to the history of Brum'korath. Some members might carry powerful artifacts or magic items that help them govern or protect their people.</p>
+        </div>
+    </div>
+</body>
+</html>

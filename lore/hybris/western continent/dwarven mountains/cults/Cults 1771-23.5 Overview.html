@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Table - Hybris Year 1771</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        table {
+            width: 100%;
+            margin: 30px 0;
+            border-collapse: collapse;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        th.sortable:hover {
+            background-color: #45a049;
+        }
+        th.sortable:after {
+            content: "\f0dc";
+            font-family: FontAwesome;
+            margin-left: 10px;
+            color: white;
+        }
+        th.sortable.asc:after {
+            content: "\f0de";
+        }
+        th.sortable.desc:after {
+            content: "\f0dd";
+        }
+    </style>
+</head>
+<body>
+
+<div style="padding: 20px;">
+    <h2>Character Table - Hybris Year 1771</h2>
+    <table id="characterTable">
+        <thead>
+            <tr>
+                <th class="sortable" onclick="sortTable(0)">Character</th>
+                <th class="sortable" onclick="sortTable(1)">Birth Year</th>
+                <th class="sortable" onclick="sortTable(2)">Role/Background</th>
+                <th class="sortable" onclick="sortTable(3)">Personality Traits</th>
+                <th class="sortable" onclick="sortTable(4)">Abilities/Magic</th>
+                <th class="sortable" onclick="sortTable(5)">Alliances/Clans/Factions</th>
+                <th class="sortable" onclick="sortTable(6)">Appearance</th>
+                <th class="sortable" onclick="sortTable(7)">Character Arc/Goal</th>
+                <th class="sortable" onclick="sortTable(8)">Secret</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Torgar</td>
+                <td>TBD</td>
+                <td>Rockbinder Kharf, Primary Cleric</td>
+                <td>Stern, authoritative, deeply spiritual</td>
+                <td>Weak earth and stone manipulation, weak clerical magic</td>
+                <td>Cult of the Sent Ones</td>
+                <td>Tall, muscular build; adorned with ritualistic symbols and dark robes</td>
+                <td>Torgar’s leadership is increasingly questioned as internal divisions grow. In Chapter 23.5.4, his desperation to hold the Cult together becomes evident, yet many members are losing faith in him.</td>
+                <td>Hiding the true purpose of the Cult’s mission, manipulating others' beliefs to serve his personal spiritual goals.</td>
+            </tr>
+            <tr>
+                <td>Durnak</td>
+                <td>TBD</td>
+                <td>Earthbinder Rornok, Cleric</td>
+                <td>Methodical, reserved, wise</td>
+                <td>None</td>
+                <td>Cult of the Sent Ones</td>
+                <td>Broad-shouldered, rough features, simple functional robes</td>
+                <td>Durnak’s disillusionment continues as the internal fractures worsen. In Chapter 23.5.4, he begins to distance himself from Torgar’s leadership and contemplates what path to follow next.</td>
+                <td>He knows secret truths that could turn the tide against Torgar and the Cult’s mission.</td>
+            </tr>
+            <tr>
+                <td>Grimbar</td>
+                <td>TBD</td>
+                <td>Stonefist Groln, Cleric</td>
+                <td>Gruff, blunt, loyal</td>
+                <td>None</td>
+                <td>Cult of the Sent Ones, double agent for an opposing cult</td>
+                <td>Stocky, intimidating, solid build, heavy robes with armor-like adornments</td>
+                <td>Grimbar's internal conflict deepens as Chapter 23.5.4 forces him to confront the possibility that his loyalty to the Cult may cost him everything. His struggle to protect the group while staying true to his double-agent mission intensifies.</td>
+                <td>Double agent working for a rival cult, the Cult of the Unbound, torn between loyalties.</td>
+            </tr>
+            <tr>
+                <td>Goldar</td>
+                <td>TBD</td>
+                <td>High Leader of the Cult of the Sent Ones</td>
+                <td>Commanding, authoritative, insightful</td>
+                <td>Unknown, likely has spiritual influence or ability to access ancient knowledge</td>
+                <td>Cult of the Sent Ones</td>
+                <td>Tall, imposing, with long white beard and intricate robes of gold and black</td>
+                <td>Goldar’s leadership continues to face growing challenges, and Chapter 23.5.4 reveals that his once strong control is slipping as many cultists begin questioning his authority. His long-term plans for Lucas and Mina remain shrouded in mystery.</td>
+                <td>Goldar’s long-term goals may involve not just survival against the Empire, but the manipulation of Lucas and Mina’s powers for the Cult’s larger purposes.</td>
+            </tr>
+            <tr>
+                <td>Gorla</td>
+                <td>TBD</td>
+                <td>Dwarf Council Member of the Cult of the Sent Ones</td>
+                <td>Observant, wise, determined</td>
+                <td>Unknown, possibly enhanced perception or insight into magic</td>
+                <td>Cult of the Sent Ones</td>
+                <td>Short, stout build, long silver hair and beard, adorned in ceremonial armor and robes</td>
+                <td>Gorla’s interests in Mina’s powers deepen, and Chapter 23.5.4 sees her taking on a more active role as the fractures within the Cult increase. She may try to manipulate Mina’s abilities for her own purposes or for the Cult’s survival.</td>
+                <td>Gorla suspects there is more to Mina's powers than meets the eye and is quietly exploring ways to use her abilities for the Cult’s advantage. She may have deeper plans beyond her official duties.</td>
+            </tr>
+            <tr>
+                <td>Serina</td>
+                <td>TBD</td>
+                <td>Skilled fighter, mercenary ally of the group</td>
+                <td>Tough, independent, no-nonsense, wary of magic</td>
+                <td>Highly skilled in hand-to-hand combat, swordsmanship, and tactical combat</td>
+                <td>Freelance fighter (currently aligned with the group temporarily)</td>
+                <td>5'8", athletic build, short-cropped dark hair, deep-set eyes, weathered appearance from years of combat</td>
+                <td>Serina’s mistrust of magic grows, but she begins to bond more with the group, especially Lucas and Mina, as they face increasingly difficult battles. In Chapter 23.5.4, her disdain for the Cult’s methods may drive her to challenge them more openly.</td>
+                <td>Serina has a personal vendetta against the Cult of the Sent Ones, as their activities have caused her to lose loved ones in the past, though this information is not fully disclosed to the group.</td>
+            </tr>
+            <tr>
+                <td>Thrainor Blackstone</td>
+                <td>TBD</td>
+                <td>Leader of the Cult of the Unbound</td>
+                <td>Calculating, cold, commanding</td>
+                <td>Possible control over forbidden magics</td>
+                <td>Cult of the Unbound</td>
+                <td>Tall, imposing, with sharp features and a commanding presence</td>
+                <td>Thrainor is using the breakdown within the Sent Ones to further his goals, manipulating events behind the scenes. In Chapter 23.5.4, his actions to destabilize the Sent Ones' forces become more evident, particularly targeting their leadership and unity.</td>
+                <td>Thrainor’s true goal may be to harness the power of the Sent Ones for his own gain, manipulating them for his own purposes.</td>
+            </tr>
+            <tr>
+                <td>Dira</td>
+                <td>TBD</td>
+                <td>Guide to the Cult of the Sent Ones</td>
+                <td>Secretive, patient, wise</td>
+                <td>None apparent yet, likely has hidden powers</td>
+                <td>Cult of the Sent Ones</td>
+                <td>Mysterious, slender build, dark hair, often draped in shadows or cloaks</td>
+                <td>Dira’s role as a guide grows more important as the narrative progresses, and she begins to reveal more about the Cult’s deeper intentions and rituals. She holds a secret regarding the prophecy surrounding Lucas and Mina.</td>
+                <td>Dira is deeply connected to the prophecy and may have known more about it than she let on. She may hold secrets that could shift the balance of power between the Sent Ones and the Unbound Cult.</td>
+            </tr>
+	<tr>
+	    <td>Cult of the Unbound</td>
+	    <td>TBD</td>
+	    <td>Rival Religious Order</td>
+	    <td>Hidden, rebellious, ambitious</td>
+	    <td>Unknown, possible manipulation of forbidden forces</td>
+	    <td>Secretive, underground faction</td>
+	    <td>Cloaked in dark, rough attire with no visible symbols, often masked</td>
+	    <td>The Cult of the Unbound sees the breakdown of the Cult of the Sent Ones as an opportunity to sway Lucas and Mina away from their current path. Their long-term agenda becomes clearer as they seek to disrupt the Sent Ones' prophecy.</td>
+	    <td>The Cult’s leader, <strong>Thrainor Blackstone</strong>, is a feared figure, and their base of operations is hidden beneath Brum’korath in the Dwarven Mountains, focusing on subverting the Sent Ones' prophecy.</td>
+	</tr>
+
+	<tr>
+	    <td>Cult of the Sent Ones (Collective)</td>
+	    <td>TBD</td>
+	    <td>Religious Order and Mystical Guardians</td>
+	    <td>Stern, secretive, zealous</td>
+	    <td>Earth and stone-based magic, spiritual rituals</td>
+	    <td>Various branches, secretive, far-reaching</td>
+	    <td>Cloaked figures, robed in dark fabrics, adorned with runic symbols and totems</td>
+	    <td>The Cult faces a critical crisis of leadership, with key figures losing faith. In Chapter 23.5.4, the Cult's mission is more fractured than ever, as members question their purpose in the face of mounting losses and internal collapse.</td>
+	    <td>The Cult's leadership may be concealing their true motives, aiming to manipulate world events to gain control over mystical forces, rather than promoting spiritual enlightenment.</td>
+	</tr>
+
+        </tbody>
+    </table>
+</div>
+
+<script>
+    // Function to sort the table
+    function sortTable(columnIndex) {
+        const table = document.getElementById("characterTable");
+        const rows = Array.from(table.rows).slice(1); // Exclude header row
+        let isAscending = table.rows[0].cells[columnIndex].classList.toggle("asc");
+        const isDescending = !isAscending;
+
+        // Sort rows based on the clicked column
+        rows.sort((rowA, rowB) => {
+            const cellA = rowA.cells[columnIndex].innerText;
+            const cellB = rowB.cells[columnIndex].innerText;
+
+            // Handle numeric and string sorting
+            const a = isNaN(cellA) ? cellA : parseFloat(cellA);
+            const b = isNaN(cellB) ? cellB : parseFloat(cellB);
+
+            if (a < b) return isAscending ? -1 : 1;
+            if (a > b) return isAscending ? 1 : -1;
+            return 0;
+        });
+
+        // Reattach sorted rows to the table body
+        rows.forEach(row => table.appendChild(row));
+    }
+</script>
+
+</body>
+</html>
