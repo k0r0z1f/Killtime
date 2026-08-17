@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Starlight Voyager - Ship Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Starlight Voyager - Ship Overview</h1>
+        
+        <!-- Ship Details Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#design" onclick="highlightSection(this, 'design')">Design</a></td>
+                    <td>Compact, rugged, utilitarian design</td>
+                </tr>
+                <tr>
+                    <td><a href="#materials" onclick="highlightSection(this, 'materials')">Materials</a></td>
+                    <td>Reinforced alloys, composite armor</td>
+                </tr>
+                <tr>
+                    <td><a href="#size" onclick="highlightSection(this, 'size')">Size</a></td>
+                    <td>Medium (small frigate)</td>
+                </tr>
+                <tr>
+                    <td><a href="#sails-membranes" onclick="highlightSection(this, 'sails-membranes')">Sails/Membranes</a></td>
+                    <td>None (no sails, atmospheric control via thrusters)</td>
+                </tr>
+                <tr>
+                    <td><a href="#levitation-mechanism" onclick="highlightSection(this, 'levitation-mechanism')">Levitation Mechanism</a></td>
+                    <td>Antigrav boosters and stabilizers</td>
+                </tr>
+                <tr>
+                    <td><a href="#propulsion" onclick="highlightSection(this, 'propulsion')">Propulsion</a></td>
+                    <td>Ion engines, magnetic thrusters</td>
+                </tr>
+                <tr>
+                    <td><a href="#interior-design" onclick="highlightSection(this, 'interior-design')">Interior Design</a></td>
+                    <td>Practical, utilitarian; minimal luxuries</td>
+                </tr>
+                <tr>
+                    <td><a href="#cockpit" onclick="highlightSection(this, 'cockpit')">Cockpit</a></td>
+                    <td>Single-pilot, centrally located</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-source" onclick="highlightSection(this, 'energy-source')">Energy Source</a></td>
+                    <td>Core fusion reactor, backup solar cells</td>
+                </tr>
+                <tr>
+                    <td><a href="#navigation" onclick="highlightSection(this, 'navigation')">Navigation</a></td>
+                    <td>Standard star maps, manual calculation tools</td>
+                </tr>
+                <tr>
+                    <td><a href="#speed" onclick="highlightSection(this, 'speed')">Speed</a></td>
+                    <td>Moderate (fast in atmosphere, slower in deep space)</td>
+                </tr>
+                <tr>
+                    <td><a href="#range" onclick="highlightSection(this, 'range')">Range</a></td>
+                    <td>Long-range (several months of travel in deep space)</td>
+                </tr>
+                <tr>
+                    <td><a href="#stealth" onclick="highlightSection(this, 'stealth')">Stealth</a></td>
+                    <td>Low (designed for low-profile, shadow operations)</td>
+                </tr>
+                <tr>
+                    <td><a href="#altitude-limitations" onclick="highlightSection(this, 'altitude-limitations')">Altitude Limitations</a></td>
+                    <td>Atmospheric: Limited to mid-range altitudes; Space: No limitations</td>
+                </tr>
+                <tr>
+                    <td><a href="#special-features" onclick="highlightSection(this, 'special-features')">Special Features</a></td>
+                    <td>Camouflaged hull, cloaking capability for stealth, modular components for various mission types</td>
+                </tr>
+                <tr>
+                    <td><a href="#passenger-capacity" onclick="highlightSection(this, 'passenger-capacity')">Passenger Capacity</a></td>
+                    <td>8-10 (crew + small complement of guests)</td>
+                </tr>
+                <tr>
+                    <td><a href="#exterior-appearance" onclick="highlightSection(this, 'exterior-appearance')">Exterior Appearance</a></td>
+                    <td>Dark, matte gray hull with weathered surface; faint glow from reactor vents</td>
+                </tr>
+                <tr>
+                    <td><a href="#flight-control" onclick="highlightSection(this, 'flight-control')">Flight Control</a></td>
+                    <td>Manual flight control with a basic AI assist for navigation</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="design">
+            <h2>Design</h2>
+            <p>Compact, rugged, utilitarian design for practicality and stealth. Built for efficiency and durability in challenging environments.</p>
+        </div>
+
+        <div class="section-content" id="materials">
+            <h2>Materials</h2>
+            <p>Constructed with reinforced alloys and composite armor, providing durability while keeping the ship's weight manageable for stealth operations.</p>
+        </div>
+
+        <div class="section-content" id="size">
+            <h2>Size</h2>
+            <p>The Starlight Voyager is medium-sized, comparable to a small frigate, offering a balanced capacity for both crew and operational needs.</p>
+        </div>
+
+        <div class="section-content" id="sails-membranes">
+            <h2>Sails/Membranes</h2>
+            <p>The ship does not have sails or membranes, relying on thrusters for atmospheric control.</p>
+        </div>
+
+        <div class="section-content" id="levitation-mechanism">
+            <h2>Levitation Mechanism</h2>
+            <p>Uses antigrav boosters and stabilizers for smooth and efficient levitation in both atmosphere and space.</p>
+        </div>
+
+        <div class="section-content" id="propulsion">
+            <h2>Propulsion</h2>
+            <p>The ship is powered by ion engines and magnetic thrusters, offering a balance between energy efficiency and propulsion power.</p>
+        </div>
+
+        <div class="section-content" id="interior-design">
+            <h2>Interior Design</h2>
+            <p>The interior is minimalistic and utilitarian, with few luxuries, focusing on practicality for long-term missions and stealth operations.</p>
+        </div>
+
+        <div class="section-content" id="cockpit">
+            <h2>Cockpit</h2>
+            <p>The cockpit is centrally located for the pilot, offering manual flight control assisted by basic AI for navigation and mission management.</p>
+        </div>
+
+        <div class="section-content" id="energy-source">
+            <h2>Energy Source</h2>
+            <p>The ship is powered by a core fusion reactor, with backup solar cells for extended missions.</p>
+        </div>
+
+        <div class="section-content" id="navigation">
+            <h2>Navigation</h2>
+            <p>Standard star maps and manual calculation tools assist in navigation, ensuring precise course plotting during deep space travels.</p>
+        </div>
+
+        <div class="section-content" id="speed">
+            <h2>Speed</h2>
+            <p>The ship is moderately fast in atmosphere, though slower in deep space, where efficiency is prioritized over speed.</p>
+        </div>
+
+        <div class="section-content" id="range">
+            <h2>Range</h2>
+            <p>Long-range capabilities allow the ship to travel for several months in deep space before requiring resupply.</p>
+        </div>
+
+        <div class="section-content" id="stealth">
+            <h2>Stealth</h2>
+            <p>The ship is designed for low-profile operations, with stealth features like a camouflaged hull and cloaking capability to avoid detection.</p>
+        </div>
+
+        <div class="section-content" id="altitude-limitations">
+            <h2>Altitude Limitations</h2>
+            <p>In atmosphere, the ship is limited to mid-range altitudes, while it has no limitations in space.</p>
+        </div>
+
+        <div class="section-content" id="special-features">
+            <h2>Special Features</h2>
+            <p>Features include a camouflaged hull, cloaking capability for stealth operations, and modular components that can be adjusted for various mission types.</p>
+        </div>
+
+        <div class="section-content" id="passenger-capacity">
+            <h2>Passenger Capacity</h2>
+            <p>The ship has a capacity of 8-10, accommodating the crew along with a small complement of guests.</p>
+        </div>
+
+        <div class="section-content" id="exterior-appearance">
+            <h2>Exterior Appearance</h2>
+            <p>The ship's exterior is a dark, matte gray, with a weathered surface and a faint glow emanating from the reactor vents.</p>
+        </div>
+
+        <div class="section-content" id="flight-control">
+            <h2>Flight Control</h2>
+            <p>Flight control is manual, with basic AI assistance to ensure smooth navigation and mission control.</p>
+        </div>
+    </div>
+</body>
+</html>

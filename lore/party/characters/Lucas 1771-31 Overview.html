@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Lucas - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#character" onclick="highlightSection(this, 'character')">Character</a></td>
+                    <td>Lucas</td>
+                </tr>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (17 y/o)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Hero; ex-prisoner; strategist; relic-linked; escapee; mission member</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Determined; analytical; cautious; brave; introspective</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Telepathy; clairvoyance; telekinesis; pyrokinesis; arcane tech; relic communication</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Mina, Thomas; Sent Ones; Dwarven, Brum'korath; World Police enemy; Children of Hybris; mission team; allies: Candice, Dira, Queen, Altheris</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", brown eyes; lean; light-brown hair; worn satchel; stressed look</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Overcome insecurity; embrace potential; seek redemption; unlock relics; stop Disciples; protect companions; unravel prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Kingston guilt; relic fusion; chosen mislead; political resentment; mistrust elves/dwarves; DNA anomaly; relic uncertainty</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Strategic; telekinetic defense; basic weapon/pyrokinesis; moderate training</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>810 doumis; rare magic-tech; travel clothes; survival backpack; relic wrist; village token; Magi-tech parts; rope; blanket</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>Best friend; telepathic link</td>
+                </tr>
+                <tr>
+                    <td><a href="#thomas" onclick="highlightSection(this, 'thomas')">Thomas</a></td>
+                    <td>Best friend; leader</td>
+                </tr>
+                <tr>
+                    <td><a href="#candice" onclick="highlightSection(this, 'candice')">Candice</a></td>
+                    <td>Acquaintance; sensed parasitical presence</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>Friend; trusted; forgave betrayal</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="character">
+            <h2>Character</h2>
+            <p>This section identifies the character as <strong>Lucas</strong>.</p>
+        </div>
+
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Lucas was born in 1754, making him 17 years old at the time described.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Lucas is the Hero of Brum'korath; a short-time former and recently released Brum'korath prisoner, having taken part in the Cults War and the Disciple's rampage. He is the main protagonist of the party, connected to ancient relics prophecy and fused with one. A strategist and outlaw of the Central Lands for the Kingston incident (unrelated to Brum'korath), he was a victim of medi-laboratory experiments from birth to age 11, later becoming an aspiring college student as a teen and an escapee since the Kingston incident. He is one of the Children of Hybris, central to the prophecy, and a member of the mission team preparing for the Eastern Continent expedition. Lucas is trying to unlock the relics' power to stop the Disciples’ threat, is connected to the Sent Ones prophecy, and supports the journey to Ceylan's cave on the Watcher. Notably, he previously had a fever and disappeared (with Mina) before rejoining the group, resulting in missing memories of that time, and remains sensitive to a mysterious presence.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Lucas is determined, analytical, introspective, calculating, self-doubting, practical, cautious, curious, calm under pressure, protective, resolute, skeptical, doubtful, brave, frustrated, observant, and burdened by hidden truths and guilt. He feels the weight of scrutiny, remains uncertain yet thoughtful and empathetic, and is intense, inquisitive, anxious but hopeful, critical, and questioning. He is also wary, willing to take risks, burdened by responsibility, pragmatic, occasionally reckless, shy, hesitant, easily embarrassed (love drunk), friendly, reflective, calm, serious, focused, vulnerable, strong-willed, conflicted, fearful of his own powers, and resilient; somewhat unsettled after returning, he is sensitive, introspective, frustrated, enraged, and haunted by his past.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Lucas possesses several abilities: 
+            Telepathy with multiple stages (Stage 1: Surface Thought Reading – DMN-Focused, Stage 2: Deeper Thought Access and Emotional Sensory Tuning, Stage 3: Memory Access and Short-Term Influence), entry-level Clairvoyance (unconscious or basic vision), intermediate Telekinesis (capable of moving multiple small objects or one larger object up to 30kg), and Pyrokinesis (entry-level heat control, basic flame creation, and intermediate fire manipulation). He maintains a permanent telepathic link with Mina and shows emerging mastery of arcane technology, which allows him to communicate telepathically with the relics. There is a potential magical connection to the prophecy along with other unexplained powers. His telekinesis is enhanced by Mina's telepathy, yet he struggles to control his destructive potential. Remarkably, he moves with unusual ease, seemingly unaffected by cold, exhaustion, or normal physical strain after reappearing, and he can sense a strange energy.
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Lucas is aligned with Mina and Thomas, and he is indirectly connected to the Cult of the Sent Ones via prophecy. His affiliations include the Dwarven Council and Brum'korath, and he is considered an enemy of the state by the World Police. Additionally, he has a temporary alliance with Haliriel, is one of the Children of Hybris, and is part of the mission team currently ascending the Watcher. He is also allied with Candice, Dira, The Queen, and Altheris, and he travels as part of a close-knit group.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Lucas stands at 5'10" with a lean build and a serious look in his brown eyes. He sports light-brown, disheveled hair and typically carries a worn satchel. His expression is usually stressed or focused, adding to his overall determined appearance.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Lucas’s journey is marked by his struggle to overcome insecurity and embrace his potential while confronting a mysterious past. He grapples with his role as one of the Sent Ones and seeks redemption by uncovering the truth behind the explosion in Kingston. His mission includes discovering the origin and purpose of the relics, unlocking their mysteries and powers, standing firm against the World Police, and protecting his companions. Additionally, he faces internal conflict over political and personal motivations, works to understand his role in the prophecy and his connection to Candice, and assists in unraveling the prophecy by reaching Ceylan's cave on the Watcher. Ultimately, he aims to understand the relic’s nature, contribute to stopping the Disciple of Air, and free himself from past trauma, though his companions suspect that something about him has changed.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Lucas struggles with the memory of the Kingston explosion and the guilt over its consequences. He, along with Mina and Thomas, possesses a fused relic, and there is uncertainty as to whether he was misled into believing he was the chosen one. His experiences have led to resentment over political conflicts and a deep mistrust of elves and dwarves due to past manipulations. Moreover, a minor anomaly in his DNA causes instability in relic synchronization, leaving him to doubt his worthiness for the relics while their effects on him remain unclear.
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Lucas has developed strategic and warfare knowledge that includes telekinetic defense and offensive capabilities. He has received basic weapon training along with skills in basic pyrokinesis and intermediate telekinesis. His training in weaponry is solid but moderate, and he is recognized as a tactical and strategic thinker capable of leadership, even though he sometimes struggles to control his powers.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Lucas carries an inventory that includes 810 doumis and a rare battery hybrid magic-tech valued at 20,000 doumis. He wears new travel clothes and carries a backpack stocked with survival gear, dry food, a change of clothes, and a satchel containing notes, theories, and relic information. Notably, he has a relic attached to his wrist—potentially powerful or dangerous—and a small token from villagers. His gear is further supplemented by Magi-tech parts for a device to test the relics, as well as a rope and a blanket secured over him by Candice.
+            </p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>Mina is Lucas's best friend with whom he shares a permanent telepathic link. Their bond plays a significant role in both his personal life and his adventures.
+            </p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>Thomas is a close friend of Lucas and serves as a leader within their group. Their mutual trust and camaraderie underpin their strong alliance.
+            </p>
+        </div>
+
+        <div class="section-content" id="candice">
+            <h2>Candice</h2>
+            <p>Lucas has known Candice for 5 days. Although their relationship is primarily that of acquaintances, he feels an inexplicable compulsion to believe her and senses a familiar yet parasitical presence in her mind.
+            </p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>Dira is a friend of Lucas, known for less than a month, whom he trusts due to her thorough research and steadfast resolve. Despite past conflicts, he has forgiven her for her betrayal.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

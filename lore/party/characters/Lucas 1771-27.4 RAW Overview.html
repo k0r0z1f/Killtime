@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Character Profile: Lucas</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Character Profile: Lucas</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Unknown</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role / Background</a></td>
+                    <td>One of the Children of Hybris, central to the prophecy. Member of the group preparing for the Eastern Continent expedition. Part of a team trying to unlock relics' power to stop the Disciple of Air.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Critical, questioning, cautious, thoughtful, wary, but gradually more at ease with the group, frustrated, vulnerable, skeptical, determined, focused, brave, willing to take risks, burdened by responsibility, pragmatic, occasionally reckless.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities / Magic</a></td>
+                    <td>Telekinesis (can move objects with his mind), has other unexplained powers. Likely has magical or prophetic significance due to his connection with the Disciple of Air and the relic. Telepathic connection with Mina. Connected to the Relics, can sense their power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances-factions" onclick="highlightSection(this, 'alliances-factions')">Alliances / Clans / Factions</a></td>
+                    <td>Part of the mission team. Children of Hybris (implied). Working with a group of scientists or researchers.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Light-brown hair, disheveled, typically wears a worn satchel. Typically stressed or focused expression.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc / Goal</a></td>
+                    <td>To navigate the path set by the prophecy and understand his role. Unlock the relics, stop the Disciples, and uncover the mystery behind his DNA anomaly. To understand the Relics, unlock their potential, and prevent the Disciple from succeeding.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>His connection to the relic, its unknown powers, and other undisclosed parts of the prophecy. Has a minor anomaly in his DNA, leading to instability in relic synchronization.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>He is involved in the mission and appears capable in a leadership context. Basic combat training.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>The relic bound to his wrist, possibly of great significance. Satchel with notes, theories, and scraps of information about the Relics.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Lucas' birth year is currently unknown.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role / Background</h2>
+            <p>Lucas is one of the Children of Hybris, central to a prophecy. He is a member of the group preparing for the Eastern Continent expedition, working as part of a team tasked with unlocking the relics' power to stop the Disciple of Air. His connection to the relic bound to his wrist plays a pivotal role in this mission.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Lucas is a critical and cautious individual, often questioning things around him. He's thoughtful, wary, and at times, frustrated with the group's progress. Despite being burdened by responsibility, he is determined and focused on his mission. While he's occasionally reckless, Lucas is driven by a strong sense of duty, becoming more willing to take risks as he grows comfortable with the team.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities / Magic</h2>
+            <p>Lucas possesses telekinesis, enabling him to move objects with his mind. He has unexplained powers linked to the relic bound to his wrist, and a telepathic connection with Mina. He can sense the power within the Relics, and it seems that his connection to them may grant him other abilities if he can unlock their full potential.</p>
+        </div>
+
+        <div class="section-content" id="alliances-factions">
+            <h2>Alliances / Clans / Factions</h2>
+            <p>Lucas is part of the team preparing for the Eastern Continent expedition, as well as potentially connected to the Children of Hybris. He works alongside a group of scientists and researchers on a critical mission involving the Relics and the Disciple of Air.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Lucas has light-brown, disheveled hair and often wears a worn satchel. His expression is typically stressed or focused, reflecting the weight of his responsibility and the ongoing mystery surrounding the relics.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc / Goal</h2>
+            <p>Lucas' primary goal is to understand his role in the prophecy and the significance of the Relics. He seeks to unlock their potential and prevent the Disciple of Air from succeeding in their mission. Along the way, he must confront his doubts and uncertainties about his worthiness to wield the power of the relics.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Lucas hides the truth of his connection to the relic, its potential powers, and parts of the prophecy. He also harbors a minor DNA anomaly that makes his synchronization with the relic unstable, casting doubt on his readiness to handle the immense power bound to him.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Lucas has basic combat training, which is sufficient for him to lead in certain situations. He has shown the ability to defend himself, though his primary focus remains on the mission and the Relics.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Lucas' most important possession is the relic bound to his wrist, which may hold immense power. He also carries a satchel containing notes, theories, and scraps of information about the Relics, providing key insights into their potential and purpose.</p>
+        </div>
+    </div>
+</body>
+</html>
+

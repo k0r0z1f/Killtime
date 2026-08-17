@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Mina - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (17 years old, current year 1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>One of the Children of Hybris, part of the prophecy with Lucas. Revealed during the Elven Council meeting. Member of the group, shares a telepathic link with Lucas, highly concerned about the mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Calm, composed, involved in a greater fate tied to the prophecy, sharp, focused, loyal, playful, quick-witted, reassuring, highly concerned about the mission.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Superhuman Speed and Agility, Hyper-sensitive Senses (Uncontrolled), Telepathic Link with Lucas, Athletic Combat (Speed-Based Tactics)</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Lucas, Thomas, Cult of the Sent Ones (Indirectly), Candice (not yet ally)</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Eye color: Green, Hair: Bright blonde, practical style, Build: Athletic, physically strong but weathered from experience, Demeanor: Calm, intense focus, strong but not overly aggressive.</td>
+                </tr>
+                <tr>
+                    <td><a href="#arc-goal" onclick="highlightSection(this, 'arc-goal')">Character Arc/Goal</a></td>
+                    <td>Protection of Friends, Navigating the Prophecy, Self-Discovery, Uncertainty about Role in the Prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Uncertainty About Role in the Prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Athletic Combat (Speed-Based Tactics)</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>90 doumis, Travel Clothes, Survival Gear, Dagger, Relic</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Mina was born in 1754 and is currently 17 years old in the year 1771.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Mina is one of the Children of Hybris, a key figure in a prophecy that intertwines her fate with Lucas. She was revealed as part of this prophecy during the Elven Council meeting and shares a telepathic link with Lucas. She plays a critical role in the group, always highly concerned about the mission and its success.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Mina is calm, composed, and deeply focused on her destiny, which is tied to the prophecy. She is sharp, loyal, and fiercely protective of those she cares about. Some of her most notable traits include:</p>
+            <ul>
+                <li><strong>Independent:</strong> Fiercely autonomous, values self-reliance.</li>
+                <li><strong>Empathetic:</strong> Strong ability to connect with and understand others’ emotions.</li>
+                <li><strong>Observant:</strong> Notices small details others might miss.</li>
+                <li><strong>Brave:</strong> Faces danger without hesitation, but with careful thought.</li>
+                <li><strong>Optimistic:</strong> Sees hope in difficult situations.</li>
+                <li><strong>Grounding for Lucas:</strong> Helps calm Lucas and focus him when needed.</li>
+                <li><strong>Trustworthy:</strong> Loyal and protective of those she cares about.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <ul>
+                <li><strong>Superhuman Speed and Agility:</strong> Mina possesses exceptional speed, agility, and acrobatic skills.</li>
+                <li><strong>Hyper-sensitive Senses:</strong> Mina’s senses are heightened, but difficult to control.</li>
+                <li><strong>Telepathic Link with Lucas:</strong> Mina shares a permanent mental connection with Lucas.</li>
+                <li><strong>Athletic Combat:</strong> Focused on quick movements, acrobatic feats, and hit-and-run tactics.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <ul>
+                <li><strong>Lucas:</strong> Telepathically connected and deeply trusted partner.</li>
+                <li><strong>Thomas:</strong> Respects and has mutual trust with Thomas.</li>
+                <li><strong>Cult of the Sent Ones:</strong> Indirectly associated through her connection to Lucas and the prophecy.</li>
+                <li><strong>Candice:</strong> Not yet an ally, but could play a role in the future.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Mina has green eyes and bright blonde hair, styled in a practical way to suit her active lifestyle. She is athletic and physically strong, but her experiences have weathered her appearance. Her demeanor is calm and focused, exuding strength without being overly aggressive.</p>
+        </div>
+
+        <div class="section-content" id="arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>Mina’s primary goals revolve around protecting her friends, particularly Lucas, and understanding her role within the Children of Hybris prophecy. She seeks self-discovery and struggles with uncertainty about her future and responsibilities. Despite her doubts, she is determined to navigate her destiny and fulfill her purpose.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Mina is conflicted about her role in the prophecy, uncertain of her significance and what it ultimately means for her and the world.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Mina excels in athletic combat, using her speed and agility to overwhelm opponents with hit-and-run tactics and acrobatic maneuvers.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <ul>
+                <li><strong>90 doumis:</strong> Currency.</li>
+                <li><strong>Travel Clothes:</strong> Practical attire for adventures.</li>
+                <li><strong>Survival Gear:</strong> Essential tools for surviving in the wild.</li>
+                <li><strong>Dagger:</strong> Compact weapon for close-quarters combat.</li>
+                <li><strong>Relic:</strong> A relic tied to the prophecy of the Sent Ones, which she cannot remove.</li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
+

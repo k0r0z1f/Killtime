@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atraxia Sewers - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Atraxia Sewers (Location Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Atraxia Sewers</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Resistance members, Imperial soldiers, patrols, and drones</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Damp, labyrinthine tunnels with rusted grates and machinery, dark and stifling stone walls slick with moisture and grime. Features include glistening brickwork, bioluminescent fungi, moss illumination, forgotten Imperial equipment, narrow passages with flickering lanterns casting shadows, and rusted machinery.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Oppressive, tense, and foreboding atmosphere, thick with the stench of decay and damp earth. Eerie, suffocating, and fearful energy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Narrow, ancient stone tunnels with rusted grates as entrances, a maze-like and networked system of damp tunnels, junctions, chambers, corridors, and ladders.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism-carvings" onclick="highlightSection(this, 'symbolism-carvings')">Symbolism & Carvings</a></td>
+                    <td>Resistance's markers etched into the walls, small symbols beneath grime.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Imperial patrols, soldiers with rifles, maintenance drones, potential for ambushes and hidden patrols.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Potential Imperial ambushes, traps, broadcasting drones, unstable tunnels, sensory overload, latent dangers related to Lucas’ powers, feeling of being watched, shifting shadows, whispers in Lucas’s mind, and darkness.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>The party is navigating the Atraxia Sewers as part of the Resistance mission, using the sewers as a safe route to the outer sectors to avoid Imperial detection, carrying the unconscious Lucas (John is carrying Lucas).</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Underground sewers and tunnels beneath the city of Atraxia, including narrow streets and alleys, upper levels, and surrounding narrow terrain.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Underground conditions are damp, decaying, stifling, and oppressive; above ground there is a cooler breeze.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The Resistance is utilizing the sewers as the safest route to the outer sectors due to outdated maps and increased Imperial patrols. There is active Imperial patrols and drone presence. The party is on an ongoing mission against the Empire, carrying the unconscious Lucas and planning escape via ladder.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>The location is known as the Atraxia Sewers, a critical point of operation for the Resistance.</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>The Atraxia Sewers are home to Resistance members, Imperial soldiers, patrols, and drones traversing the area.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The sewers are damp, labyrinthine tunnels featuring rusted grates and machinery, dark stone walls slick with grime, and an oppressive atmosphere. Glistening brickwork, bioluminescent fungi, and moss illumination contribute to the eerie surroundings. Forgotten Imperial equipment and flickering lanterns add to the bleak aesthetics.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The energy of the Atraxia Sewers is oppressive, tense, and foreboding, filled with the stench of decay and damp earth. It is a suffocating, eerie environment that fills individuals with a sense of fear and unease.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The architecture consists of narrow, ancient stone tunnels with rusted grates as entrances. It forms a maze-like network of junctions, chambers, corridors, and ladders, creating a disorienting and claustrophobic system.</p>
+        </div>
+
+        <div class="section-content" id="symbolism-carvings">
+            <h2>Symbolism & Carvings</h2>
+            <p>The Resistance has left markers and symbols etched into the walls of the sewers, often hidden beneath grime to remain unnoticed by Imperial forces.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Imperial patrols, soldiers with rifles, maintenance drones, and hidden patrols represent significant threats in the sewers. There is a constant risk of ambushes.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The Atraxia Sewers hold many latent dangers, including Imperial ambushes, traps, unstable tunnels, broadcasting drones, sensory overload, and dark forces linked to Lucas’s powers. A constant feeling of being watched and whispers in the dark heighten the sense of dread.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The party is currently navigating the Atraxia Sewers as part of a Resistance mission. They are carrying the unconscious Lucas and using the sewers to avoid Imperial detection, heading toward the outer sectors.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The sewers are situated beneath the city of Atraxia, surrounded by narrow streets, alleys, and upper levels, forming a vast underground network.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The underground conditions are damp, decaying, and oppressive, while above ground, a cooler breeze provides a sharp contrast to the sewers’ stifling atmosphere.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Due to outdated maps and increased Imperial patrols, the Resistance now uses the sewers as the safest route to the outer sectors. The party is engaged in an ongoing mission against the Empire, planning their escape through a ladder system.</p>
+        </div>
+    </div>
+</body>
+</html>
+

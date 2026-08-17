@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2a3d63;
+            padding-bottom: 5px;
+        }
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .highlighted {
+            background-color: #e8f4fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 5px 5px 0;
+        }
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode h2 {
+            color: #81d4fa;
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        body.dark-mode .highlighted {
+            background-color: #2a3b5c;
+            border-left: 4px solid #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('highlighted');
+            
+            // Smooth scroll to the section
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Lucas (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (17 years old)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Hero of Brum'korath; ex-prisoner; strategist; Kingston escapee; Descendant/Reincarnation of "Lucianae"</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Determined, analytical, cautious, fiercely protective, intellectually gifted, deeply traumatized</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Advanced Telepathy & Pyrokinesis, Amplified Telekinesis, Arcane Energy Sensing, Clairvoyance</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Allied with Mina, Thomas; Sent Ones; Haliriel (Elves); Nythari Tribe; Uneasy truce with Thorne</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", brown eyes, light-brown hair; lean but hardened; wears a coat & boots; fused black relic on wrist</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Mastering his magic; protecting his found family; unlocking the relics; uncovering his ancient lineage</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Relic DNA mismatch anomaly; relived his own childhood torture; nearly injured Candice with a blast; Relic whispered "Owner near"</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Tactical genius, devastating fire manipulation, high-velocity telekinetic offense, forcefield generation</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>810 doumis; magic-tech hybrid battery; satchel with notes; fused wrist relic; homemade magi-tech parasite device</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>Best friend, romantic partner; deeply telepathically linked (can amplify his powers)</td>
+                </tr>
+                <tr>
+                    <td><a href="#thomas" onclick="highlightSection(this, 'thomas')">Thomas</a></td>
+                    <td>Best friend; physical vanguard; fellow relic bearer</td>
+                </tr>
+                <tr>
+                    <td><a href="#candice" onclick="highlightSection(this, 'candice')">Candice</a></td>
+                    <td>Nythari guide and trusted ally; Lucas harbors guilt for almost hitting her with debris</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>Forgiven friend and scholar; former coerced spy for the Unbound</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Lucas was born in 1754, making him 17 years old.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>
+                Hero of Brum'korath and former prisoner who survived the Cults War and the Disciple of Earth's rampage. He is the main protagonist and one of the "Children of Hybris," central to an ancient prophecy. A survivor of horrific medi-laboratory experiments from birth to age 11, he is a declared outlaw of the Central Lands following the Kingston incident. He recently journeyed up the Watcher, destroyed a massive Guardian Beast with pyrokinesis, and led the excavation of the Temple of Crystals. During Chapter 33, he penetrated the hidden "Tombs of the First" and made a chilling discovery: an ancient sarcophagus bearing his own name, <strong>Lucianae</strong>.
+            </p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>
+                Determined, analytical, introspective, and highly calculating. He is practical, cautious, curious, and incredibly calm under intense pressure. While burdened by hidden truths, laboratory trauma, and the crushing weight of responsibility, his recent victories have forged a more resolute, fierce protector. He possesses a genius-level intellect, capable of solving complex puzzles and adapting quickly. Vulnerable and deeply loving toward Mina, he is willing to push himself to the absolute brink to keep his chosen family safe, yet he carries heavy guilt when his power threatens allies (as seen when he accidentally endangered Candice).
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic Analysis</h2>
+            <ul>
+                <li><strong>Telepathy (Advanced):</strong> Shares a permanent, deepening bond with Mina. Capable of deep mind reading, extracting suppressed memories, and mind control. He can intuitively navigate mental "static" and detect lies or hidden motives, successfully verifying Thorne's complex scientific claims via surface-level probing.</li>
+                <li><strong>Pyrokinesis (Advanced):</strong> Transitioned from accidental flare-ups to lethal, precise control. He has learned to "embrace the fire," shaping flames into pillars, sweeping arcs, and concentrated blasts to incinerate targets like the Guardian Beast.</li>
+                <li><strong>Telekinesis (Intermediate / Amplified Advanced):</strong> Can hurl heavy projectiles at high velocities. When his mind synchronizes with Mina, his telekinesis is massively amplified, allowing him to create forcefields or unleash massive concussive shockwaves to shatter rock formations.</li>
+                <li><strong>Arcane Energy Sensing:</strong> Without needing technological tools, Lucas can "feel" the invisible currents and energy flows between magical objects, allowing him to solve ancient arcane puzzles purely through intuition and sensory tracking.</li>
+                <li><strong>Clairvoyance (Novice/Unpredictable):</strong> Experiences vivid, visceral visions of the past, including traumatic first-person views of his abusers.</li>
+                <li><strong>Intellect & Magi-Tech Aptitude (Genius):</strong> Uncanny ability to understand and manipulate ancient arcane science, out-pacing seasoned researchers.</li>
+            </ul>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>
+                Aligned intimately with Mina and Thomas. Allied with Queen Aph of Haliriel, Chief V, and the Nythari Tribe. Regarded as a prophesied savior by the Cult of the Sent Ones. Currently in an uneasy, tense collaboration with Dr. Thorne (the Researcher). He is an enemy of the state to the World Police, and actively hunted by the Cult of the Unbound and the Empire.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                5'10", lean but hardened by constant battle. He has disheveled light-brown hair and serious brown eyes that reflect deep emotional strain and intelligence. He typically wears a coat, boots, and a worn satchel containing his research. Fused to his wrist is an ancient, obsidian-like relic that occasionally pulses with energy and alien consciousness. 
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>
+                Lucas's arc has shifted from surviving his past to actively seeking to master his immense powers and understand his destiny. He aims to uncover the true origins of the relics and prevent the catastrophic destabilization of the arcane field threatened by the Temple's bursting crystals. Ultimately, he seeks to navigate the political treachery around him, defeat the Empire's Disciples, and uncover his direct connection to the ancient Sent One known as "Lucianae."
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>
+                He hides the severe guilt of nearly hitting Candice with a wayward telekinetic shockwave. He discovered through a hacked interface that his DNA has a <0.0001% mismatch with the relic's intended host. He harbors the horror of a clairvoyant vision where he relived his childhood torture through his abuser's eyes. Most recently, when approaching the sarcophagus of "Lucianae", his dormant relic finally awakened to telepathically whisper: <em>"Owner... near..."</em>
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                Operates as the strategic anchor of his team's combat formations. Utilizes tactical genius, using his environment and combining powers (like thermal shock) to defeat foes vastly larger than himself. Transitioned into a devastating mid-to-long range combatant, relying on high-velocity telekinesis and lethal pyrokinesis.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>
+                810 doumis; rare battery hybrid magic-tech (worth 20,000 doumis); travel clothes; satchel with notes, theories, and relic data; a homemade magi-tech parasitic device; and the fused obsidian relic on his wrist.
+            </p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>
+                Best friend and romantic partner. Their profound telepathic and emotional link acts as Lucas's primary grounding force, capable of amplifying his powers exponentially when their minds sync (such as their combined effort to clear the Temple's rubble).
+            </p>
+        </div>
+
+        <div class="section-content" id="thomas">
+            <h2>Thomas</h2>
+            <p>
+                Best friend and physical vanguard of the group. Wields an adaptive piston-gauntlet relic. Lucas relies on Thomas's brute strength and protective instincts to anchor his long-range strategy.
+            </p>
+        </div>
+
+        <div class="section-content" id="candice">
+            <h2>Candice</h2>
+            <p>
+                Nythari warrior and trusted guide. Lucas harbors quiet guilt after a unified telekinetic blast he unleashed with Mina almost struck Candice with lethal debris.
+            </p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>
+                Scholar and friend. Lucas used his telepathy to uncover that she was a coerced spy for the Unbound, ultimately choosing to forgive her and keep her as an asset to their group.
+            </p>
+        </div>
+    </div>
+</body>
+</html>

@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thomas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Thomas (Character Overview)</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1753 (17 y/o)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Leader, hero, fugitive, protector, adventurer.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Strategic, protective, skeptical, calm, resilient, observant.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Sword mastery; relic power.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Factions</a></td>
+                    <td>Lucas &amp; Mina ally; Cult of Sent Ones; Brum'korath; World Police enemy; climbing group.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>6'5", athletic, imposing, practical attire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Protector; strategist; uncover truth; safeguard friends.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Inner conflict from relic; isolated; guilt.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Extensive; tactical; sword &amp; hand-to-hand.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>86 doumis; backpack; survival gear; sword, shield; relic.</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas" onclick="highlightSection(this, 'lucas')">Lucas</a></td>
+                    <td>Best friend; beacon of hope.</td>
+                </tr>
+                <tr>
+                    <td><a href="#mina" onclick="highlightSection(this, 'mina')">Mina</a></td>
+                    <td>Trusted ally; balanced protector.</td>
+                </tr>
+                <tr>
+                    <td><a href="#candice" onclick="highlightSection(this, 'candice')">Candice</a></td>
+                    <td>Acquaintance (5 days); complex crush.</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>New friend (&lt;1 month); cautious, respectful.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Thomas was born in 1753, and he is noted as being 17 years old, according to the provided details.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Thomas serves as a leader and companion, known as the Hero of Brum'korath. He has a background as a former student with an athletic history and is a fugitive of the Central Lands, now marked as an enemy of the state. He is a protective member of a climbing group that assists with physical challenges during the ascent of the Watcher, responsible for caring for Lucas and Mina, and acts as a defender during crises. In battle, he is a fighter, protector, and skeptical observer—once even catching Dira when she slips. His involvement spans the aftermath of a battle, an expedition investigating a cavern, and an adventure exploring a mansion. Additionally, he is part of the climbing group aiming to reach the Watcher’s cave (also known as Candice’s group), which is now seeking Lucas and Mina.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Thomas is strategic and level-headed, exhibiting a protective nature and skepticism toward cults. He remains calm, confident, and commanding while being focused, calculating, and steady. His resilience and loyalty are balanced by occasional impatience, frustration, caution, and desperation. He is also vocal, tense, weary, and unsettled, yet his curiosity and concern drive a stoic, pragmatic, and determined outlook. With a resolute and diplomatic approach, his passionate and restless side makes him sharp, authoritative, and reflective. Overall, he is observant, practical, supportive, composed, and strong—even when feeling anxious or powerless. His readiness to act sometimes borders on anger, sarcasm, and confrontation, especially when he grows suspicious of the sudden changes in Lucas and Mina, prompting him to question Ceylan’s actions.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>The relic Thomas wields subtly affects his morality and decision-making, creating an inner conflict. He demonstrates significant physical strength and is capable of shielding others. In combat, he wields a sword and employs a relic that transforms into a cylindrical, piston-like device with otherworldly power—enhancing his punches and allowing his arm to absorb impacts.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Thomas is a friend and travel companion to both Lucas and Mina. He is indirectly linked with the Cult of the Sent Ones through prophecy and aligns with Brum'korath allies, while the World Police regard him as an enemy of the state. He is also an active member of the climbing group aiming to reach the Watcher’s cave—known as Candice’s group—which is currently in pursuit of Lucas and Mina.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Standing at 6'5" with a broad frame and sturdy build, Thomas boasts an athletic and imposing presence. His sharp eyes and practical attire underscore his readiness for travel, while his clenched fists and tense posture emphasize both his physical strength and keen observance.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Thomas’s journey is defined by his role as a protector and strategist. He supports Lucas and Mina by ensuring their survival through epic actions on the battlefield—serving as a leader during critical confrontations, including fighting the Disciple of Earth. His personal struggle with morality amid war has driven him to deliver decisive blows against his enemies. Ultimately, his goal is to safeguard his friends, uncover hidden truths, and navigate complex political and physical challenges, including combating threats like the Minulican and the Beast, all while deciphering a mysterious prophecy.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Deep within, Thomas harbors an inner conflict spurred by the relic he possesses. This artifact not only enhances his physical abilities but also unsettles his moral compass. As a result, he is increasingly suspicious of the cult’s influence, uncertain about the ethics of the war, and burdened by guilt over his choices—fostering feelings of isolation and internal change.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Thomas has received extensive combat training, showcasing tactical leadership in both sword and hand-to-hand combat. His ability to adapt quickly in unpredictable scenarios is further enhanced by his proficiency with the relic, making him a formidable force on the battlefield.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Thomas’s meticulous preparation is evident in his inventory: he carries 86 doumis, a reliable backpack, and essential survival gear. His armament includes a sword and shield, with the relic bound to his wrist, a coil of rope, and sturdy boots—all ensuring he is always battle-ready.</p>
+        </div>
+
+        <div class="section-content" id="lucas">
+            <h2>Lucas</h2>
+            <p>Lucas is Thomas’s best friend—a beacon of hope whom Thomas is determined to protect at all costs.</p>
+        </div>
+
+        <div class="section-content" id="mina">
+            <h2>Mina</h2>
+            <p>Mina is also a close ally. Thomas admires her prowess and trusts her abilities, balancing his protective instincts with a respect for her independence.</p>
+        </div>
+
+        <div class="section-content" id="candice">
+            <h2>Candice</h2>
+            <p>Candice is an acquaintance known to Thomas for only five days. An unconscious crush on her adds a layer of complexity to his decisions and interactions.</p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>Dira is a newer friend, known for less than a month. Thomas regards her with cautious respect, finding her insightful despite her somewhat intimidating presence.</p>
+        </div>
+    </div>
+</body>
+</html>
+

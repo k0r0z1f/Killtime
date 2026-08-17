@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atraxia - City Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Atraxia - City Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#location-name" onclick="highlightSection(this, 'location-name')">Location Name</a></td>
+                    <td>Atraxia</td>
+                </tr>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>The heart of the Empire on Vardis, a sprawling megalopolis with over 15 million people, predominantly Imperial settlers, with a significant indigenous minority.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>A blend of towering obsidian and steel spires, symbolizing technological and militaristic nature, surrounded by crumbling Vardisian ruins.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>The city’s atmosphere is influenced by the Aurion Nexus, giving it an otherworldly, mystical glow.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>A fusion of high-tech Imperial design and ancient tribal stonework, with tribal carvings woven into Imperial structures.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism-carvings" onclick="highlightSection(this, 'symbolism-carvings')">Symbolism & Carvings</a></td>
+                    <td>Tribal symbols are present in indigenous districts, highlighting the contested history between the Empire and indigenous people.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Heavy military presence, automated sentries, energy barriers, and elite Imperial guards.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends-lore" onclick="highlightSection(this, 'legends-lore')">Legends & Lore</a></td>
+                    <td>The First Collapse, when a previous empire colony fell due to overuse of the Nexus, is a key part of Atraxia's history.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>The instability of the Aurion Nexus could trigger dangerous magical phenomena, with rogue factions smuggling weapons and magical artifacts.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-to-party" onclick="highlightSection(this, 'link-to-party')">Link to the Party</a></td>
+                    <td>The Resistance operates from hidden underground tunnels within the city, where Lucas plays a pivotal role.</td>
+                </tr>
+                <tr>
+                    <td><a href="#surrounding-terrain" onclick="highlightSection(this, 'surrounding-terrain')">Surrounding Terrain</a></td>
+                    <td>Surrounding the city are dense jungles and barren, ruined clearings.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Weather on Atraxia is influenced by strange storms, strange lights, and magnetic disturbances caused by the Aurion Nexus.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>Recently, the Empire has strengthened its technological and military presence, adding fleets of spaceships to the defense of the planet.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="location-name">
+            <h2>Location Name</h2>
+            <p>Atraxia is the heart of the Empire on Vardis, a sprawling megalopolis with over 15 million people, predominantly Imperial settlers, with a significant indigenous minority.</p>
+        </div>
+
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>Atraxia is home to over 15 million people, mainly Imperial settlers, but there is also a significant indigenous minority. It is a crowded city filled with vendors, soldiers, and a mix of general populations, Imperial forces, and Resistance members.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Atraxia has towering obsidian and steel spires, symbolizing its technological and militaristic nature, surrounded by crumbling Vardisian ruins. The streets are chaotic and grimy, with narrow alleys and towering spires casting shadows over the city.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The city’s atmosphere is influenced by the Aurion Nexus, giving it an otherworldly, mystical glow. It has a tense, oppressive atmosphere filled with decay, conflict, and constant surveillance.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>Atraxia’s architecture blends high-tech Imperial designs with ancient tribal stonework, creating a labyrinthine urban structure with narrow alleyways and towering spires.</p>
+        </div>
+
+        <div class="section-content" id="symbolism-carvings">
+            <h2>Symbolism & Carvings</h2>
+            <p>Tribal symbols can be found in the indigenous districts, emphasizing the contested history between the Empire and the indigenous people. Resistance markings can be seen scraped away on warehouses.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>Atraxia is heavily defended with automated sentries, energy barriers, elite Imperial guards, surveillance drones, and patrols. The Aurion Nexus also controls access to the planet's mystical power.</p>
+        </div>
+
+        <div class="section-content" id="legends-lore">
+            <h2>Legends & Lore</h2>
+            <p>The First Collapse, a catastrophic event where a previous empire colony fell due to overuse of the Nexus, remains an important piece of Atraxia's history. There are also rumors of a prophecy involving a messiah, Lucas, who is central to the Resistance.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>There are dangerous magical phenomena tied to the instability of the Aurion Nexus, along with rogue factions smuggling weapons and magical artifacts through hidden tunnels beneath the city.</p>
+        </div>
+
+        <div class="section-content" id="link-to-party">
+            <h2>Link to the Party</h2>
+            <p>The Resistance operates from hidden underground tunnels where Lucas, central to the Prophecy, plays a pivotal role. The party is navigating through Atraxia while evading Imperial forces.</p>
+        </div>
+
+        <div class="section-content" id="surrounding-terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>Atraxia is surrounded by dense jungles and barren, ruined clearings, reflecting the environmental damage caused by the Empire's expansion.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>The weather in Atraxia is strange, with magnetic disturbances and odd lights caused by the Aurion Nexus. It’s typically gray, drizzly, and humid, with occasional storms.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>Recently, the Empire has strengthened its military and technological presence. Resistance factions are organizing, but they remain fragmented, and the Empire’s grip on the city is tightening.</p>
+        </div>
+    </div>
+</body>
+</html>
+

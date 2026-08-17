@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+        body.dark-mode table {
+            border-color: #333;
+        }
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            button.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+        }
+    </script>
+</head>
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Mina - Character Overview</h1>
+        
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (17 years old)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Adopted daughter of a powerful businessman; integral to the Children of Hybris prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Calm, composed, logical, empathetic, brave, playful, determined.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Superhuman speed and agility, telepathic link with Lucas, heightened magical sensitivity.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Connected to Lucas, Candice, Thomas, and the Children of Hybris prophecy.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Bright blonde hair, athletic build, bright green eyes.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Seeks independence, uncovering her role in the prophecy, protecting Lucas and friends.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Born during an arcane storm that destroyed a hospital; hasn't revealed full details to Lucas.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Athletic combat relying on speed and agility; proficient in hit-and-run tactics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Relic tied to prophecy, travel clothes, survival gear, dagger, and 90 doumis.</td>
+                </tr>
+                <tr>
+                    <td><a href="#relationships" onclick="highlightSection(this, 'relationships')">Relationships</a></td>
+                    <td>Close ties with Lucas, Thomas, Candice, and Dira.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Mina was born in 1754 and is currently 17 years old.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Mina is the adopted daughter of a powerful businessman and an incognito criminal boss. She is a key figure in the Children of Hybris prophecy, providing emotional support to Lucas. Mina serves as a scout and lookout for the party while ascending the Watcher. Her connection to relics and the prophecy defines much of her role in the group's mission.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Mina is calm, composed, and logical, with a steady and supportive demeanor. She is empathetic, observant, and brave, often grounding Lucas emotionally. Her playful and quick-witted nature contrasts with her deep reverence during spiritual moments. She is fiercely autonomous but values her bond with Lucas, even as she struggles with her dependence on him.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Mina possesses superhuman speed and agility, along with a telepathic link to Lucas, amplifying his telekinetic powers. She has heightened sensitivity to magical forces and exceptional coordination, making her a formidable scout and fighter. Her athletic combat style relies on speed-based tactics, such as hit-and-run maneuvers.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Mina is deeply connected to Lucas, Thomas, Candice, and the Children of Hybris prophecy. She respects and cautiously trusts Dira, despite past betrayals. Her alliances include indirect ties to the Cult of the Sent Ones and alignment with Queen Aphyrosia and Altheris. The group seeks the wisdom of Ceylan at the Watcher.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Mina has bright blonde hair styled practically, striking green eyes, and an athletic build. She carries scars from her experiences and exudes a determined, confident presence. Her demeanor shifts between playful teasing and solemn reverence during critical moments.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Mina’s arc revolves around balancing her autonomy with the prophecy’s weight. She seeks to uncover the Watcher’s truth and her role in the Children of Hybris. Her goals include protecting Lucas and her friends, embracing her spiritual journey, and finding her true purpose amidst uncertainty.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Mina was born during an arcane storm that destroyed a hospital, leaving her and another boy as the only survivors. This event ties her to the prophecy, but she has not yet revealed this to Lucas. The storm’s energy affects her, leading to levitation and other mysterious phenomena.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Mina’s combat style is rooted in agility and speed-based tactics. She uses hit-and-run techniques and acrobatics, leveraging her athletic background. While not relying on brute strength, her strong legs make her a formidable opponent in close-quarters combat.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Mina carries practical travel clothes, survival gear, a compact dagger, and 90 doumis. She also possesses a relic tied to the prophecy, which she cannot remove. Her inventory reflects her role as a scout and her preparedness for challenges during the group’s journey.</p>
+        </div>
+
+        <div class="section-content" id="relationships">
+            <h2>Relationships</h2>
+            <p><strong>Lucas:</strong> Mina shares a telepathic bond with Lucas and deeply trusts him. Their relationship is marked by playful teasing, emotional support, and unwavering trust.<br>
+               <strong>Thomas:</strong> Mina respects Thomas and relies on his strategic thinking. Their camaraderie is built on mutual trust and friendship.<br>
+               <strong>Candice:</strong> Although Mina has only known Candice for four days, she respects her and recognizes her importance to the mission.<br>
+               <strong>Dira:</strong> Mina sees Dira as a friend but remains cautious due to Dira’s past betrayal. She hopes Dira can forgive herself and move forward.</p>
+        </div>
+    </div>
+</body>
+</html>
+

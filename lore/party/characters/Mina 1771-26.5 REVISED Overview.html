@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mina - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Mina - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Adventurer, Hero of Brum'korath, Protector, Prophecy Bearer, Companion to Lucas, Ally to Thomas</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Independent, Intuitive, Empathetic, Brave, Protective, Curious, Reckless, Grounding influence on Lucas</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Telepathic link with Lucas, superhuman speed & agility, rapid healing, hypersensitive senses</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Lucas and Thomas, Cult of the Sent Ones (indirectly)</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Green eyes, 5'11", athletic build, bright blonde hair in tight ponytail, faint scars from past injuries</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Protect her friends, navigate the prophecy, seek truth, balance freedom & surveillance, stop catastrophe</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Unsure about her role in the prophecy, growing trust in the group</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Advanced athletic combat, speed-based tactics, preparing for larger-scale battles</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>90 doumis, travel clothes, survival gear, dagger, relic (impossible to remove)</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Mina was born in the year 1754, making her 17 years old. She is a young adventurer with a complex past tied to the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Mina is an adventurer, the Hero of Brum'korath, and a key member of the group. She has become a trusted protector, both to Lucas and Thomas, while navigating the complex world shaped by the Cults War and the prophecy that binds them.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>Mina is fiercely independent, having broken free from her father's mansion after college. She is intuitive, empathetic, and courageous, though she carries a streak of recklessness. Her deep connection with Lucas gives her a grounding presence, helping him navigate the chaos around them.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Mina possesses superhuman speed and agility due to a magical growth incident. She shares a permanent telepathic link with Lucas, and her senses are hypersensitive, making her acutely aware of her surroundings. Her healing abilities are enhanced, allowing her to recover more quickly than most non-magical individuals.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Mina is closely allied with Lucas and Thomas, and she indirectly has ties to the Cult of the Sent Ones through their shared connection to the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Mina has striking green eyes and a strong, athletic build. Standing at 5'11", she carries herself with a fierce presence. Her bright blonde hair is usually pulled back in a tight ponytail, and though she bears faint scars from past battles, her demeanor is magnetic and full of life.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Mina's goal is to protect her friends, especially Lucas, and navigate the murky waters of the prophecy. She seeks to understand her connection to the events unfolding around her, grappling with the balance between personal freedom and the looming surveillance of larger powers. Ultimately, she aims to prevent a catastrophe and find answers about her role in the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Mina is uncertain about her role in the prophecy. While she has come to trust her companions, her doubts still linger about her true place in the larger story unfolding. She’s starting to enjoy the thrill and action that comes with their dangerous life, but her internal fears remain.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Mina is trained in advanced athletic combat, with a focus on speed-based tactics. Her expertise in martial arts and track has helped her become a formidable combatant. She is preparing for larger-scale battles and responsibilities in the war that lies ahead.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Mina carries 90 doumis, a set of travel clothes, survival gear, a dagger, and a relic that is impossible to remove from her possession. She also has a backpack filled with essential supplies like dry food and a change of clothes.</p>
+        </div>
+    </div>
+</body>
+</html>
+

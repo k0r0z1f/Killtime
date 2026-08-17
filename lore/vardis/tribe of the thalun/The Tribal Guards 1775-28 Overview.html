@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Tribal Guards - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">The Tribal Guards - Character Overview</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>A group of warriors defending their tribe from the Empire. They have a deep cultural connection to nature and tradition.</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Initially aggressive, protective, resilient, and distrustful of outsiders, especially the Empire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities/Magic</a></td>
+                    <td>Combat skills with bone, sinew, and natural materials, as well as guerrilla warfare and stealth tactics.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Primarily aligned with their tribe, harboring deep hatred for the Empire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>The chief is weathered and adorned with tribal symbols. The guards wear attire made from natural materials.</td>
+                </tr>
+                <tr>
+                    <td><a href="#goal" onclick="highlightSection(this, 'goal')">Character Arc/Goal</a></td>
+                    <td>Protect their tribe and culture, seek trust from outsiders, and potentially seek redemption or revenge against the Empire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>The chief may secretly seek revenge or redemption regarding the trauma caused by the Empire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Highly trained in guerrilla warfare, stealth, and combat with natural materials.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Spears, jagged blades, crossbows, knives, and tribal ceremonial tools.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>The Tribal Guards are a group of warriors sworn to defend their tribe from external threats, particularly the Empire, which has caused them great harm in the past. They rely on their deep cultural connection to nature and tradition in both their defensive tactics and everyday life.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>The Tribal Guards are initially distrustful and aggressive, due to their past experiences with the Empire. However, they are deeply protective of their people, resilient in the face of danger, and highly wary of outsiders. Once trust is earned, they become more cooperative.</p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities/Magic</h2>
+            <p>Skilled in combat using bone, sinew, and natural materials, the Tribal Guards are masters of guerrilla warfare and stealth. They are adept at using spears, jagged blades, and crossbows, often with unique tribal designs that carry cultural significance.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>The Tribal Guards are primarily loyal to their own tribe, with a profound disdain for the Empire, which has caused them immense suffering in the past. Their allegiance lies in the defense of their people and maintaining their cultural practices.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The chief of the Tribal Guards is weathered, with a hardened appearance, and wears a cloak adorned with tribal symbols. The guards themselves wear tribal attire made from natural materials that are designed for combat. Their weapons and armor are crafted from materials found in their environment, creating a distinct, nature-based aesthetic.</p>
+        </div>
+
+        <div class="section-content" id="goal">
+            <h2>Character Arc/Goal</h2>
+            <p>The primary goal of the Tribal Guards is to protect their people and maintain their cultural integrity. Their experiences with the Empire have made them distrustful, but they are open to aiding those who prove themselves worthy. They may also secretly seek redemption or revenge for past traumas caused by the Empire's actions.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>The chief may have a personal vendetta against the Empire, driven by a deep desire for revenge or redemption concerning the past trauma inflicted on the tribe.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>The Tribal Guards are highly trained in guerrilla warfare, utilizing their knowledge of the land to remain hidden and strike when the time is right. They are skilled in using natural materials for weapons and are adept at stealthy tactics in combat.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>The Tribal Guards carry weapons crafted from natural materials, including spears, jagged blades, crossbows, and knives. Their weapons are often inlaid with tribal designs and hold cultural significance. Some guards may also carry ceremonial tools or tribal charms.</p>
+        </div>
+    </div>
+</body>
+</html>
+

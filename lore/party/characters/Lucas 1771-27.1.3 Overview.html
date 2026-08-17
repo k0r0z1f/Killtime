@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Lucas - Character Overview</h1>
+        
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1754 (currently 17 years old, in the year 1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Hero of Brum'korath; former prisoner, involved in the Cults War and the Disciple's rampage; connected to ancient relics prophecy and fused with one; strategist, outlaw, victim of experiments as a child</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Determined, analytical, introspective, calculating, self-doubting, practical, cautious, curious, calm under pressure, protective, resolute, skeptical, brave, intense, anxious, and empathetic.</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Telepathy, clairvoyance, telekinesis, pyrokinesis, with varying levels of mastery and a permanent telepathic link with Mina.</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Aligned with Mina, Thomas; indirectly with the Cult of the Sent Ones; Dwarven Council; Brum'korath; enemies with the World Police.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>5'10", brown eyes, short light-brown hair, lean build, serious look.</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc/Goal</a></td>
+                    <td>Struggling to embrace his potential and understand his role in the prophecy, uncovering the truth behind the Kingston explosion, navigating political and personal motivations, and preparing for the coming war.</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Feels guilt over the Kingston explosion, possibly misled about being the chosen one, and harbors resentment over being caught up in political conflict.</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Strategic and warfare knowledge, basic weapon training, telekinetic defense, basic pyrokinesis, moderate combat skills, skilled with tactics and strategic thinking.</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>812 doumis, rare battery hybrid magic-tech (20,000 doumis value), travel clothes, survival gear, a relic tied to his wrist.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Lucas was born in 1754, making him 17 years old in the current year, 1771.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Lucas is the Hero of Brum'korath and was involved in the Cults War and the Disciple's rampage. Once a prisoner in Brum'korath, he is now free but an outlaw in the Central Lands due to his involvement in the Kingston incident. Lucas is also connected to an ancient relics prophecy, one of the "Children of Hybris," and has been fused with one of the relics. He was also a victim of scientific experiments as a child.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Lucas is a determined, introspective, and strategic thinker, but he struggles with self-doubt, feeling burdened by hidden truths and guilt. He is practical, cautious, and calm under pressure, but also curious, inquisitive, and often anxious. He is protective of those he cares about, especially Mina and Thomas, and feels the weight of scrutiny due to his role in the prophecy.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Lucas possesses advanced telepathy (with varying stages of mastery), entry-level clairvoyance, and intermediate telekinesis. He can read surface thoughts, influence emotions, access memories, and move small objects or one larger object (up to 30kg). His pyrokinesis allows him to manipulate fire, from creating small flames to controlling fire. He also has a permanent telepathic link with Mina, allowing them to communicate over great distances.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Lucas has alliances with Mina and Thomas, with whom he shares a deep bond. He is indirectly aligned with the Cult of the Sent Ones through the prophecy, and has connections with the Dwarven Council and Brum'korath. However, he is an enemy of the World Police after the Kingston incident. His alliances are constantly shifting as the political landscape changes.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Lucas stands 5'10" with brown eyes and short light-brown hair. His appearance gives off a serious, intense look, often reflecting the burden he carries due to his past and current situation. He is lean and physically fit, with the agility to match his strategic mind.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Lucas is on a journey of self-discovery, trying to understand his role in the prophecy, overcome his insecurities, and unlock the powers tied to the ancient relics. His path involves grappling with the consequences of the Kingston explosion, uncovering hidden truths, and preparing for the war that looms ahead. He must navigate the complex political landscape while protecting his companions and uncovering the mysteries that bind him to the world and to others like Candice.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Lucas harbors guilt over the Kingston explosion, the details of which remain a mystery. He may have been misled about being the chosen one for the relics and has deep resentment about being caught up in political conflict. He feels the weight of the world on his shoulders as he tries to piece together his past.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Lucas has moderate combat skills, including strategic thinking and telekinetic defense. He has received basic training in weaponry and pyrokinesis, as well as combat tactics. His greatest strength lies in his ability to think strategically and use his telekinetic powers to defend and control the battlefield.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Lucas carries 812 doumis, a rare hybrid magic-tech battery worth 20,000 doumis, travel clothes, survival gear, dry food, a change of clothes, and a relic tied to his wrist. These items are essential for his survival and his journey ahead.</p>
+        </div>
+    </div>
+</body>
+</html>
+

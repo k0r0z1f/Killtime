@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thomas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Thomas - Character Overview</h1>
+
+        <!-- Character Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>1753 (17 years old, current year 1771)</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Leader, Companion, Hero of Brum'korath, strategist, former student with athletic background, fugitive of Central Lands, now marked as an enemy of the state</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality Traits</a></td>
+                    <td>Strategic, level-headed, protective, skeptical about the cults, calm, confident, commanding, focused, calculating, steady, resilient, determined, loyal, impatient, frustrated, cautious, desperate, vocal, tense, weary, unsettled, curious, concerned but calm, stoic, pragmatic, calm under pressure, determined, steady, resolute, cautious, firm, diplomatic, passionate, restless, sharp, authoritative, thoughtful, reflective, driven by a sense of purpose, observant, practical, supportive</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic" onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>None (no magic)</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a></td>
+                    <td>Friend and travel companion of Lucas and Mina; Cult of the Sent Ones (indirectly, through prophecy); Brum'korath allies; World Police (enemy)</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>6'5", broad, sturdy build, tall, athletic build, sharp eyes, imposing presence, practical, often in worn clothing suitable for travel</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc-goal" onclick="highlightSection(this, 'character-arc-goal')">Character Arc/Goal</a></td>
+                    <td>Acts as a protector and strategist; supporting Lucas and Mina with a focus on survival; performing epic actions in battle to ensure group safety; battlefield leader while fighting the Disciple; struggling with his own sense of morality in the face of war; very involved in bringing down the Disciple, gave coup de grace to kill it; to protect his friends and help them uncover the truth and survival; navigate the political landscape of Brum'korath, ensure the party’s survival and success despite surveillance, stay sharp under pressure, protect his friends, fight for the truth, survival, and to stop a larger catastrophe, navigate the challenges in Haliriel, tries to understand the prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Suspicious of the cult’s influence; uncertain about the moral implications of the war; feeling isolated in his beliefs; feels something is changing inside his mind due to the relic</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td>Extensive combat training, tactical leadership, skilled in sword combat</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>90 doumis, backpack, survival gear; weapons (sword and shield); relic bound to his wrist</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>1753 (17 years old, current year 1771)</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Thomas is a leader and companion, originally a student with an athletic background. He became a fugitive after the Kingston incident, marking him as an enemy of the state. He is a hero of Brum'korath, known for his strategic mind and natural leadership abilities.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Thomas is calm under pressure and incredibly focused. He's strategic, protective of his companions, and skeptical of outside forces, especially the cults. He tends to be authoritative, driven by a strong sense of purpose, and is extremely loyal to his friends. His sense of morality is challenged by the ongoing war, and he's often frustrated by the changes he’s going through, particularly his growing isolation due to the relic's influence.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>Thomas does not possess any magical abilities but makes up for it with his exceptional combat skills and tactical acumen.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Thomas is a close friend and travel companion to Lucas and Mina. He is indirectly tied to the Cult of the Sent Ones through the prophecy and has formed strong alliances with Brum'korath allies. He remains an enemy of the World Police due to his involvement in the Kingston incident and subsequent actions.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Standing at 6'5" with a broad and sturdy build, Thomas is imposing and easily noticeable. His sharp eyes and athletic build reflect his training, and his practical clothing is worn and suited for travel. His presence alone often commands respect and attention.</p>
+        </div>
+
+        <div class="section-content" id="character-arc-goal">
+            <h2>Character Arc/Goal</h2>
+            <p>Thomas' primary goal is to protect his friends and ensure their survival, all while navigating the tumultuous political landscape of Brum'korath. He struggles with the pressure of leadership and is often forced to make tough decisions in the heat of battle. As the party faces new challenges, Thomas works tirelessly to uncover the truth behind the prophecy and stop a larger catastrophe from unfolding.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Thomas is unsure about the cult's influence on him and is struggling with his growing sense of isolation. The relic he wears is subtly changing his behavior, though he remains unaware of its effects. He also harbors doubts about the moral implications of the war and his place in it.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Thomas is an expert in tactical leadership and sword combat. His combat skills have been honed through years of training and battlefield experience, particularly during the fight against the Disciple.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Thomas carries 90 doumis, a backpack filled with survival gear, and a sword and shield for combat. He also has a relic bound to his wrist, which has a significant impact on his behavior, though he is unaware of its influence.</p>
+        </div>
+
+    </div>
+</body>
+</html>
+

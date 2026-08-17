@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resistance Base, Atraxia - Location Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(link => link.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Resistance Base, Atraxia (Location Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#population" onclick="highlightSection(this, 'population')">Population</a></td>
+                    <td>Members of the Resistance, a clandestine group working against the Empire.</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Hidden deep within the city, a mix of old stonework and underground tunnels.</td>
+                </tr>
+                <tr>
+                    <td><a href="#energy-atmosphere" onclick="highlightSection(this, 'energy-atmosphere')">Energy & Atmosphere</a></td>
+                    <td>Oppressive, tense, with a feeling of secrecy and urgency.</td>
+                </tr>
+                <tr>
+                    <td><a href="#architecture" onclick="highlightSection(this, 'architecture')">Architecture</a></td>
+                    <td>Ancient stonework, network of tunnels.</td>
+                </tr>
+                <tr>
+                    <td><a href="#symbolism" onclick="highlightSection(this, 'symbolism')">Symbolism & Carvings</a></td>
+                    <td>Tribal and Imperial symbols reflecting the conflict.</td>
+                </tr>
+                <tr>
+                    <td><a href="#defenses" onclick="highlightSection(this, 'defenses')">Defenses</a></td>
+                    <td>Guerrilla fighters, secretive entrances.</td>
+                </tr>
+                <tr>
+                    <td><a href="#legends" onclick="highlightSection(this, 'legends')">Legends & Lore</a></td>
+                    <td>Prophecy tied to the Resistance and Lucas' arrival.</td>
+                </tr>
+                <tr>
+                    <td><a href="#hidden-dangers" onclick="highlightSection(this, 'hidden-dangers')">Hidden Dangers</a></td>
+                    <td>Empire’s tightening control, pressure from Imperial forces.</td>
+                </tr>
+                <tr>
+                    <td><a href="#link-party" onclick="highlightSection(this, 'link-party')">Link to the Party</a></td>
+                    <td>Safe haven for the group, their mission aligned with the Resistance.</td>
+                </tr>
+                <tr>
+                    <td><a href="#terrain" onclick="highlightSection(this, 'terrain')">Surrounding Terrain</a></td>
+                    <td>Deep within the city, connected to the heart of Atraxia.</td>
+                </tr>
+                <tr>
+                    <td><a href="#weather" onclick="highlightSection(this, 'weather')">Weather</a></td>
+                    <td>Underground, damp, stale air.</td>
+                </tr>
+                <tr>
+                    <td><a href="#recent-developments" onclick="highlightSection(this, 'recent-developments')">Recent Developments</a></td>
+                    <td>The Empire's escalating actions, Resistance's increased danger.</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="population">
+            <h2>Population</h2>
+            <p>Members of the Resistance, working covertly to oppose the Empire's increasing control over the city of Atraxia. The group is a mixture of various individuals, including fighters, spies, and those who have lost loved ones to the Empire's rule.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>The Resistance base is hidden deep within the city, concealed by layers of old stonework and an intricate network of underground tunnels. The entrance is well-guarded, blending seamlessly into the surroundings to avoid detection by the Empire.</p>
+        </div>
+
+        <div class="section-content" id="energy-atmosphere">
+            <h2>Energy & Atmosphere</h2>
+            <p>The atmosphere is heavy with urgency and secrecy. A constant undercurrent of tension permeates the air as the group prepares for the Empire's next move. There’s a sense of cautious hope, though the pressure from the Empire is ever-growing.</p>
+        </div>
+
+        <div class="section-content" id="architecture">
+            <h2>Architecture</h2>
+            <p>The base’s architecture is a mix of ancient stonework from the old city and a labyrinthine network of tunnels that make up the heart of the Resistance’s operations. Secret chambers and hidden passages are scattered throughout, allowing members to move unseen.</p>
+        </div>
+
+        <div class="section-content" id="symbolism">
+            <h2>Symbolism & Carvings</h2>
+            <p>The Resistance has adopted tribal symbols interwoven with Imperial motifs, representing their struggle against the Empire. These symbols are carved into the stonework of the base, serving as reminders of the group's heritage and the conflict they face.</p>
+        </div>
+
+        <div class="section-content" id="defenses">
+            <h2>Defenses</h2>
+            <p>The Resistance relies on guerrilla tactics and secretive entrances to safeguard the base. Only those who know the right paths are able to find it, and its members are skilled in combat and stealth, prepared for any attack from the Empire.</p>
+        </div>
+
+        <div class="section-content" id="legends">
+            <h2>Legends & Lore</h2>
+            <p>There is a prophecy among the Resistance, one that ties Lucas' arrival to a greater destiny for the group. This prophecy speaks of a pivotal moment in the war, where Lucas' role will become clear in the struggle against the Empire.</p>
+        </div>
+
+        <div class="section-content" id="hidden-dangers">
+            <h2>Hidden Dangers</h2>
+            <p>The Empire's tightening grip over Atraxia creates constant danger. Their forces are becoming more aggressive, and time is running out for the Resistance to act. Every move must be calculated to avoid detection.</p>
+        </div>
+
+        <div class="section-content" id="link-party">
+            <h2>Link to the Party</h2>
+            <p>The Resistance base serves as a safe haven for the group, with their mission now aligned with the Resistance’s cause. The group’s involvement could be the tipping point in the war against the Empire.</p>
+        </div>
+
+        <div class="section-content" id="terrain">
+            <h2>Surrounding Terrain</h2>
+            <p>The base is deep within the city, nestled near the heart of Atraxia. The terrain around it is urban, with narrow alleyways and hidden pathways connecting the Resistance's safehouses and the heart of the city.</p>
+        </div>
+
+        <div class="section-content" id="weather">
+            <h2>Weather</h2>
+            <p>Located underground, the weather around the Resistance base is irrelevant. The air is damp and stale, with little natural light, contributing to the feeling of being trapped in a subterranean world.</p>
+        </div>
+
+        <div class="section-content" id="recent-developments">
+            <h2>Recent Developments</h2>
+            <p>The Empire's actions are becoming more severe, putting the Resistance in ever-increasing danger. The group is under pressure to act quickly, as the Empire escalates its efforts to crush any form of rebellion within Atraxia.</p>
+        </div>
+    </div>
+</body>
+</html>
+

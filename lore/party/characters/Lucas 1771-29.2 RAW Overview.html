@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lucas - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+        th, td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        td a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        td a:hover {
+            text-decoration: underline;
+        }
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.6em;
+            margin-bottom: 20px;
+        }
+        .section-content {
+            margin-left: 20px;
+        }
+        .highlighted {
+            background-color: #f0f8ff;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(lnk => lnk.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            document.getElementById(sectionId).classList.add('highlighted');
+        }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <h1 class="section-heading">Lucas (Character Overview)</h1>
+        
+        <!-- Location Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background" onclick="highlightSection(this, 'role-background')">Role / Background</a></td>
+                    <td>Child of Hybris</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality" onclick="highlightSection(this, 'personality')">Personality Traits</a></td>
+                    <td>Shy, hesitant, easily embarrassed (love drunk), friendly</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities" onclick="highlightSection(this, 'abilities')">Abilities / Magic</a></td>
+                    <td>Telepathic bond with Mina</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances / Clans / Factions</a></td>
+                    <td>Children of Hybris</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Relic bound to his wrist</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character Arc / Goal</a></td>
+                    <td>Unravel the prophecy; reach Ceylan’s cave; journey to the Watcher’s cave</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat Training</a></td>
+                    <td></td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Relic bound to his wrist; Small token from the villagers</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>No information about Lucas's birth year is provided.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role / Background</h2>
+            <p>Lucas is a Child of Hybris. Beyond that title, no further details are given about his upbringing or heritage.</p>
+        </div>
+
+        <div class="section-content" id="personality">
+            <h2>Personality Traits</h2>
+            <p>
+                Lucas is notably shy and hesitant. He becomes easily embarrassed, often described as "love drunk" in romantic or emotionally charged situations. Despite these tendencies, he remains friendly and approachable to those who interact with him.
+            </p>
+        </div>
+
+        <div class="section-content" id="abilities">
+            <h2>Abilities / Magic</h2>
+            <p>
+                Lucas possesses a telepathic bond with someone named Mina. Specifics about how this bond functions or how it was formed are not provided, but it indicates a unique connection allowing them to communicate or sense each other in some way.
+            </p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances / Clans / Factions</h2>
+            <p>
+                He is affiliated with the group known as the Children of Hybris. No additional details are offered regarding the group’s structure, beliefs, or operations.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>
+                Lucas notably has a relic bound to his wrist. There is no information about how the relic came to be attached or what special properties it might hold, only that it is a defining feature of his look.
+            </p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc / Goal</h2>
+            <p>
+                Lucas aims to assist in unraveling a prophecy by traveling to Ceylan's cave. Furthermore, he intends to support the prophecy’s fulfillment and continue onward to the Watcher’s cave. The details of the prophecy itself are not described here, but his involvement appears crucial to advancing it.
+            </p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>
+                No secret has been provided or hinted at in the available information.
+            </p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>
+                No details are given concerning Lucas’s combat training or martial skills.
+            </p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>
+                Lucas’s inventory includes the relic bound to his wrist and a small token he received from the villagers. No further context is offered for either item, such as their history or potential uses.
+            </p>
+        </div>
+    </div>
+</body>
+</html>
+

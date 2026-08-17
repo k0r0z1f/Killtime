@@ -1,0 +1,432 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcane-OS // Subject L-1754 Detailed Dossier</title>
+    <style>
+        :root {
+            --bg-base: #050a0f;
+            --panel-bg: #0b131d;
+            --panel-border: #1a2a40;
+            --text-main: #e2e8f0;
+            --text-dim: #708299;
+            --neon-blue: #00d2ff;
+            --neon-purple: #b53cff;
+            --neon-red: #ff3366;
+            --neon-orange: #ff8c00;
+            --neon-green: #00ff66;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-mono: 'Consolas', 'Courier New', monospace;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            background-image: 
+                linear-gradient(rgba(0, 210, 255, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.03) 1px, transparent 1px);
+            background-size: 30px 30px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header / HUD Top Bar */
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--neon-blue);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+        }
+
+        .hud-title h1 {
+            font-size: 2.2rem;
+            color: var(--neon-blue);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 10px rgba(0, 210, 255, 0.4);
+        }
+
+        .hud-title p {
+            font-family: var(--font-mono);
+            color: var(--text-dim);
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+
+        .hud-status {
+            text-align: right;
+            font-family: var(--font-mono);
+            font-size: 0.9rem;
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background-color: var(--neon-red);
+            box-shadow: 0 0 8px var(--neon-red);
+            margin-right: 8px;
+            animation: pulse 1.5s infinite;
+        }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background-color: rgba(11, 19, 29, 0.85);
+            border: 1px solid var(--panel-border);
+            border-radius: 4px;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+            position: relative;
+            overflow: hidden;
+        }
+
+        /* Panel Sizing */
+        .panel-vitals { grid-column: span 4; }
+        .panel-radar { grid-column: span 4; display: flex; flex-direction: column; align-items: center;}
+        .panel-cognitive { grid-column: span 4; }
+        .panel-pyro { grid-column: span 6; }
+        .panel-kinesis { grid-column: span 6; }
+        .panel-synergy { grid-column: span 12; }
+        .panel-terminal { grid-column: span 12; }
+
+        .panel h2 {
+            font-size: 1.1rem;
+            color: var(--neon-purple);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed var(--panel-border);
+            padding-bottom: 8px;
+        }
+
+        /* Data Rows */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255,255,255,0.05);
+            padding-bottom: 4px;
+        }
+
+        .data-label { color: var(--text-dim); }
+        .data-val-blue { color: var(--neon-blue); font-weight: bold; }
+        .data-val-red { color: var(--neon-red); font-weight: bold; }
+        .data-val-green { color: var(--neon-green); font-weight: bold; }
+        .data-val-orange { color: var(--neon-orange); font-weight: bold; }
+
+        /* Progress Bars */
+        .bar-container { margin-bottom: 15px; }
+        .bar-title {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+        .bar-track {
+            width: 100%;
+            height: 6px;
+            background-color: var(--panel-border);
+            border-radius: 3px;
+            overflow: hidden;
+        }
+        .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Radar SVG */
+        .radar-svg { overflow: visible; margin-top: 10px; }
+        .radar-label {
+            fill: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-anchor: middle;
+        }
+        .radar-legend {
+            display: flex;
+            gap: 15px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-top: 20px;
+        }
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .legend-box { width: 12px; height: 12px; border-radius: 2px; }
+
+        /* Terminal Window */
+        .terminal {
+            background-color: #020408;
+            border: 1px solid var(--neon-blue);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            padding: 15px;
+            height: 180px;
+            overflow-y: auto;
+            color: var(--neon-blue);
+            box-shadow: inset 0 0 15px rgba(0, 210, 255, 0.1);
+        }
+        .term-line { margin-bottom: 6px; opacity: 0; animation: fadeIn 0.1s forwards; }
+        .term-err { color: var(--neon-red); }
+        .term-warn { color: var(--neon-orange); }
+        .term-succ { color: var(--neon-green); }
+
+        /* Animations */
+        @keyframes pulse {
+            0% { opacity: 1; box-shadow: 0 0 8px var(--neon-red); }
+            50% { opacity: 0.4; box-shadow: 0 0 2px var(--neon-red); }
+            100% { opacity: 1; box-shadow: 0 0 8px var(--neon-red); }
+        }
+        @keyframes fadeIn { to { opacity: 1; } }
+        
+        .scan-line {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-blue), transparent);
+            opacity: 0.5;
+            animation: scan 4s linear infinite;
+        }
+        @keyframes scan {
+            0% { top: -10%; }
+            100% { top: 110%; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="hud-header">
+        <div class="hud-title">
+            <h1>Arcane-OS // Biometrics</h1>
+            <p>SUBJECT ID: L-1754 | ALIAS: "L" | CLASSIFICATION: COH / SENT ONE PROTOTYPE</p>
+        </div>
+        <div class="hud-status">
+            <span class="status-indicator"></span>
+            OBSIDIAN RELIC STATUS: <span style="color:var(--neon-red)">UNSTABLE AWAKENING</span><br>
+            LOCATION: HALIRIEL MAGI-TECH LAB
+        </div>
+    </div>
+
+    <div class="grid-container">
+
+        <!-- 1. PHYSIOLOGY & RELIC INTERFACE -->
+        <div class="panel panel-vitals">
+            <div class="scan-line"></div>
+            <h2>Physiology & Symbiosis</h2>
+            
+            <div class="data-row">
+                <span class="data-label">Aetheric Blood Saturation:</span>
+                <span class="data-val-blue">88.4% (Elevated)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Relic DNA Mismatch Variance:</span>
+                <span class="data-val-red">< 0.0001% (Anomaly)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Symbiosis Glitch Rate:</span>
+                <span class="data-val-orange">2.4 pings/sec</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Magi-Tech Intuition (IQ Eqv):</span>
+                <span class="data-val-green">Class IX (Genius)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Resting Arcane Pulse:</span>
+                <span class="data-val-blue">42 Hz</span>
+            </div>
+
+            <br>
+            <div class="bar-container">
+                <div class="bar-title"><span>Relic Integration Stability</span><span>41%</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width: 41%; background-color: var(--neon-red);"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-title"><span>Neural Plasticity (Trauma Resilience)</span><span>91%</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width: 91%; background-color: var(--neon-blue);"></div></div>
+            </div>
+        </div>
+
+        <!-- 2. RADAR CHART (Base vs Synced) -->
+        <div class="panel panel-radar">
+            <h2>Arcane Capability Matrix</h2>
+            <svg class="radar-svg" viewBox="0 0 300 300" width="220" height="220">
+                <!-- Grid Rings (Hexagon) -->
+                <!-- R=25 --> <polygon points="150,125 171.6,137.5 171.6,162.5 150,175 128.4,162.5 128.4,137.5" fill="none" stroke="#1a2a40" stroke-width="1"/>
+                <!-- R=50 --> <polygon points="150,100 193.3,125 193.3,175 150,200 106.7,175 106.7,125" fill="none" stroke="#1a2a40" stroke-width="1"/>
+                <!-- R=75 --> <polygon points="150,75 214.9,112.5 214.9,187.5 150,225 85.1,187.5 85.1,112.5" fill="none" stroke="#1a2a40" stroke-width="1"/>
+                <!-- R=100--> <polygon points="150,50 236.6,100 236.6,200 150,250 63.4,200 63.4,100" fill="none" stroke="#304463" stroke-width="1"/>
+                
+                <!-- Spoke Lines -->
+                <line x1="150" y1="150" x2="150" y2="50" stroke="#304463" stroke-width="1"/> <!-- Top -->
+                <line x1="150" y1="150" x2="236.6" y2="100" stroke="#304463" stroke-width="1"/> <!-- Top Right -->
+                <line x1="150" y1="150" x2="236.6" y2="200" stroke="#304463" stroke-width="1"/> <!-- Bottom Right -->
+                <line x1="150" y1="150" x2="150" y2="250" stroke="#304463" stroke-width="1"/> <!-- Bottom -->
+                <line x1="150" y1="150" x2="63.4" y2="200" stroke="#304463" stroke-width="1"/> <!-- Bottom Left -->
+                <line x1="150" y1="150" x2="63.4" y2="100" stroke="#304463" stroke-width="1"/> <!-- Top Left -->
+
+                <!-- Data Polygon: BASE POWER (Blue) -->
+                <!-- Telepathy (Top: 80%), Pyro (TR: 70%), TK (BR: 60%), Clairvoyance (B: 30%), Defense (BL: 50%), Tech (TL: 90%) -->
+                <!-- R=80 -> 150, 70 -->
+                <!-- R=70 -> 150+70*.866=210.6, 150-70*.5=115 -->
+                <!-- R=60 -> 150+60*.866=201.9, 150+60*.5=180 -->
+                <!-- R=30 -> 150, 180 -->
+                <!-- R=50 -> 150-50*.866=106.7, 150+50*.5=175 -->
+                <!-- R=90 -> 150-90*.866=72.1, 150-90*.5=105 -->
+                <polygon points="150,70 210.6,115 201.9,180 150,180 106.7,175 72.1,105" fill="rgba(0, 210, 255, 0.3)" stroke="var(--neon-blue)" stroke-width="2"/>
+
+                <!-- Data Polygon: SYNCED w/ MINA (Purple) -->
+                <!-- Telepathy (100%), Pyro (85%), TK (100%), Clairvoyance (50%), Defense (80%), Tech (95%) -->
+                <polygon points="150,50 223.6,107.5 236.6,200 150,200 80.7,190 67.7,102.5" fill="rgba(181, 60, 255, 0.2)" stroke="var(--neon-purple)" stroke-width="2" stroke-dasharray="4,4"/>
+
+                <!-- Labels -->
+                <text x="150" y="40" class="radar-label">Telepathy</text>
+                <text x="250" y="95" class="radar-label">Pyrokinesis</text>
+                <text x="255" y="215" class="radar-label">Telekinesis</text>
+                <text x="150" y="265" class="radar-label">Clairvoyance</text>
+                <text x="45" y="215" class="radar-label">Defense</text>
+                <text x="40" y="95" class="radar-label">Magi-Tech</text>
+            </svg>
+            <div class="radar-legend">
+                <div class="legend-item"><div class="legend-box" style="background:var(--neon-blue)"></div> Base Output</div>
+                <div class="legend-item"><div class="legend-box" style="background:var(--neon-purple)"></div> Synced w/ Mina</div>
+            </div>
+        </div>
+
+        <!-- 3. COGNITIVE & PSIONIC OUTPUT -->
+        <div class="panel panel-cognitive">
+            <h2>Cognitive & Psionic Networks</h2>
+            <div class="data-row">
+                <span class="data-label">Synaptic Intrusion Depth:</span>
+                <span class="data-val-blue">Class IV (Memory Access)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Involuntary Clairvoyance Event:</span>
+                <span class="data-val-red">Trauma Feedback Loop</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Lie Detection Confidence:</span>
+                <span class="data-val-green">99.8% (Surface Probing)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Motor-Function Override:</span>
+                <span class="data-val-orange">Successful (Subject: Thorne)</span>
+            </div>
+            
+            <br>
+            <div class="bar-container">
+                <div class="bar-title"><span>Mental Defense (Shielding)</span><span>74%</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width: 74%; background-color: var(--neon-blue);"></div></div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-title"><span>Hostile Mind Penetration</span><span>96%</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width: 96%; background-color: var(--neon-purple);"></div></div>
+            </div>
+        </div>
+
+        <!-- 4. THERMODYNAMIC PHYSICS (PYRO) -->
+        <div class="panel panel-pyro">
+            <div class="scan-line"></div>
+            <h2>Thermodynamic Arcane Physics (Pyrokinesis)</h2>
+            <p style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim); margin-bottom: 15px; line-height:1.4;">
+                Evaluation of localized thermal manipulation. Subject has bypassed initial emotional-instability blocks, unlocking precision shaping and lethal thermal escalation. Achieved critical thermal-shock against stone-armored entities.
+            </p>
+            
+            <div style="display:flex; gap: 20px;">
+                <div style="flex:1;">
+                    <div class="data-row">
+                        <span class="data-label">Peak Caloric Output:</span>
+                        <span class="data-val-orange">1.2 x 10^7 Joules</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Max Core Temperature:</span>
+                        <span class="data-val-red">1,650°C (Smelting)</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Mana-to-Heat Conversion:</span>
+                        <span class="data-val-green">94.2% Efficiency</span>
+                    </div>
+                </div>
+                <div style="flex:1;">
+                    <div class="bar-container">
+                        <div class="bar-title"><span>Flame Shaping / Targeting</span><span>88%</span></div>
+                        <div class="bar-track"><div class="bar-fill" style="width: 88%; background-color: var(--neon-orange);"></div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-title"><span>O2 Deprivation Tolerance</span><span>35%</span></div>
+                        <div class="bar-track"><div class="bar-fill" style="width: 35%; background-color: var(--neon-red);"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. GRAVIMETRIC KINETICS (TELEKINESIS) -->
+        <div class="panel panel-kinesis">
+            <h2>Gravimetric & Kinetic Output (Telekinesis)</h2>
+            <p style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim); margin-bottom: 15px; line-height:1.4;">
+                Analysis of vector manipulation and mass alteration. Standard baseline allows for multi-projectile levitation. When synced with Subject M, force limits break standard Newtonian constraints, creating massive localized seismic events.
+            </p>
+
+            <div style="display:flex; gap: 20px;">
+                <div style="flex:1;">
+                    <div class="data-row">
+                        <span class="data-label">Base Kinetic Impact:</span>
+                        <span class="data-val-blue">6.5 kN</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Synced Kinetic Impact:</span>
+                        <span class="data-val-purple">85.0+ kN (Avalanche Deflection)</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Projectile Velocity (Max):</span>
+                        <span class="data-val-green">Mach 0.8 (Metal Pole)</span>
+                    </div>
+                </div>
+                <div style="flex:1;">
+                    <div class="bar-container">
+                        <div class="bar-title"><span>Mass Suspension Capacity</span><span>72%</span></div>
+                        <div class="bar-track"><div class="bar-fill" style="width: 72%; background-color: var(--neon-blue);"></div></div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-title"><span>Forcefield Pressure Integrity</span><span>99% (Synced)</span></div>
+                        <div class="bar-track"><div class="bar-fill" style="width: 99%; background-color: var(--neon-purple);"></div></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. TERMINAL LOG (Lore & Recent Events) -->
+        <div class="panel panel-terminal">
+            <h2>Live Arcane Terminal Logs</h2>
+            <div class="terminal" id="terminalLog">
+                <div class="term-line" style="animation-delay: 0.1s;">[SYSTEM] Initializing bio-scan... SUCCESS.</div>
+                <div class="term-line" style="animation-delay: 0.5s;">[DATA] Cross-referencing historical archives: "Tombs of the First"</div>
+                <div class="term-line" style="animation-delay: 1.0s;">[WARN] Subject signature aligns with Sarcophagus Entity: <span class="term-err">LUCIANAE</span>.</div>
+                <div class="term-line" style="animation-delay: 1.5s;">[DATA] Relic Status: Attempted hacking via Subject's parasitic magi-tech device.</div>
+                <div class="term-line" style="animation-delay: 2.0s;">[ERR] <span class="term-warn">Mismatch DNA detected. Recalibrating...</span></div>
+                <div class="term-line" style="animation-delay: 2.5s;">[COMM] Relic telepathic broadcast logged: "Owner... near... Far to the south..."</div>
+                <div class="term-line" style="animation-delay: 3.0s;">[COMBAT] Target 'Disciple of Earth' neutralized via thermal shock & kinetic impalement.</div>
+                <div class="term-line" style="animation-delay: 3.5s;">[COMBAT] Target 'Guardian Beast' incinerated. Lair compromised.</div>
+                <div class="term-line" style="animation-delay: 4.0s;">[SYNC] Subject M entanglement detected. Arcane limiters temporarily disabled.</div>
+                <div class="term-line" style="animation-delay: 4.5s;">[SYSTEM] <span class="term-succ">Monitoring ongoing. Awaiting Eastern Continent deployment.</span></div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+</html>
