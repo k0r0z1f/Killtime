@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="./Killtime/theme.css">
+    <script src="./Killtime/theme.js"></script>
+
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Explore the Killtime universe with detailed insights into its characters, lore, telepathic evolution, and mystical gates. Access resources, downloads, and updates.">
@@ -122,13 +126,59 @@
 </head>
 <body>
 
-<header style="display: flex; align-items: center; justify-content: center; gap: 120px;">
+<header style="display: flex; align-items: center; justify-content: center; gap: 60px; flex-wrap: wrap; padding: 20px 15px;">
     <!-- Project Status Widget -->
-    <div style="display: flex; flex-direction: column; align-items: center; background-color: rgba(0,0,0,0.2); padding: 10px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.1);">
-        <div style="font-size: 1em; font-weight: bold; margin-bottom: 5px; text-transform: uppercase; letter-spacing: 1px;">Project Progression</div>
-        <div style="font-size: 0.9em; margin-bottom: 3px;">Draft: <span style="font-weight: bold; color: #4CAF50;">100%</span></div>
-        <div style="font-size: 0.9em; margin-bottom: 3px;">RC1 (Volume I): <span id="rc1-progress-val" style="font-weight: bold; color: #FF9800;">41.58%</span></div>
-        <div style="font-size: 0.9em;">Website: <span style="font-weight: bold; color: #F44336;">10%</span></div>
+    <div style="display: flex; flex-direction: column; align-items: center; background-color: rgba(0,0,0,0.25); padding: 12px 20px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.12); font-size: 0.85em; backdrop-filter: blur(4px); min-width: 320px;">
+        <div style="font-size: 0.95em; font-weight: bold; margin-bottom: 4px; text-transform: uppercase; letter-spacing: 1px; width: 100%; text-align: center;">Project Progression</div>
+        <div style="font-size: 0.9em; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.15); width: 100%; text-align: center;">
+            Global Progress: <span id="global-project-progress-val" style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">16.55%</span>
+        </div>
+        <div style="display: flex; gap: 16px; text-align: left; width: 100%; justify-content: space-between;">
+            <!-- Volume I -->
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-weight: bold; color: #58a6ff; margin-bottom: 2px; font-size: 0.95em; border-bottom: 1px solid rgba(88,166,255,0.3); padding-bottom: 2px;">Volume I</div>
+                <div style="font-size: 0.88em;">Draft: <span style="font-weight: bold; color: #4CAF50;">100%</span></div>
+                <div style="font-size: 0.88em;">RC1: <span id="rc1-progress-val" style="font-weight: bold; color: #FF9800;">41.58%</span></div>
+                <div style="font-size: 0.88em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="font-size: 0.88em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.88em;">
+                    Total: <span id="vol1-total-val" style="font-weight: bold; color: #79c0ff;">48.32%</span>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div style="width: 1px; background: rgba(255,255,255,0.15);"></div>
+
+            <!-- Volume II -->
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-weight: bold; color: #58a6ff; margin-bottom: 2px; font-size: 0.95em; border-bottom: 1px solid rgba(88,166,255,0.3); padding-bottom: 2px;">Volume II</div>
+                <div style="font-size: 0.88em;">Draft: <span id="vol2-draft-progress-val" style="font-weight: bold; color: #FF9800;">~3.3%</span></div>
+                <div style="font-size: 0.88em;">RC1: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="font-size: 0.88em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="font-size: 0.88em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.88em;">
+                    Total: <span id="vol2-total-val" style="font-weight: bold; color: #79c0ff;">1.32%</span>
+                </div>
+            </div>
+
+            <!-- Divider -->
+            <div style="width: 1px; background: rgba(255,255,255,0.15);"></div>
+
+            <!-- Volume III -->
+            <div style="display: flex; flex-direction: column; gap: 2px;">
+                <div style="font-weight: bold; color: #58a6ff; margin-bottom: 2px; font-size: 0.95em; border-bottom: 1px solid rgba(88,166,255,0.3); padding-bottom: 2px;">Volume III</div>
+                <div style="font-size: 0.88em;">Draft: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="font-size: 0.88em;">RC1: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="font-size: 0.88em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="font-size: 0.88em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
+                <div style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.88em;">
+                    Total: <span id="vol3-total-val" style="font-weight: bold; color: #8b949e;">0.00%</span>
+                </div>
+            </div>
+        </div>
+        <div style="margin-top: 8px; padding-top: 4px; border-top: 1px solid rgba(255,255,255,0.1); width: 100%; text-align: center; font-size: 0.85em;">
+            Website: <span style="font-weight: bold; color: #F44336;">10%</span>
+        </div>
     </div>
 
     <!-- Title -->
@@ -142,17 +192,23 @@
 	    <!-- Link to Draft 1 HTML-->
 	    <a href="./Killtime/manuscripts/Killtime.html" style="font-size: 1.4em; text-decoration: none; color: #007bff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';"">Draft 1 HTML</a>
 	    <!-- Link to Draft 1 .docx-->
-	    <a href="./Killtime/Killtime.docx" style="font-size: 1.4em; text-decoration: none; color: #007bff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';"">Draft 1 .docx</a>
+	    <a href="./Killtime/manuscripts/Killtime.docx" style="font-size: 1.4em; text-decoration: none; color: #007bff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';">Draft 1 .docx</a>
 	    
 	    <!-- Link to Overview -->
-	    <a href="./Killtime/Overview.html" style="font-size: 1.4em; text-decoration: none; color: #007bff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';"">Overviews</a>
+	    <a href="./Killtime/lore/Overview.html" style="font-size: 1.4em; text-decoration: none; color: #007bff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';">Overviews</a>
 	    <!-- Link to Conversations -->
-	    <a href="./Killtime/Conversations.html" style="font-size: 1.4em; text-decoration: none; color: #007bff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';"">Conversations</a>
+	    <a href="./Killtime/chatgpt/Conversations.html" style="font-size: 1.4em; text-decoration: none; color: #007bff; transition: transform 0.2s;" onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';">Conversations</a>
     </div>
 </header>
 
-<!-- Language Toggle Button -->
-<button class="language-toggle" onclick="toggleLanguage()">Français</button>
+<!-- Top Controls: Theme and Language -->
+<div class="top-controls" style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000;">
+    <button class="theme-toggle theme-toggle-header-btn" type="button" style="padding: 10px 16px; font-size: 15px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+        <span class="theme-icon" style="display: flex; align-items: center;"></span>
+        <span class="theme-label">Theme</span>
+    </button>
+    <button class="language-toggle" onclick="toggleLanguage()" style="position: static; padding: 10px 20px; border-radius: 5px; cursor: pointer; font-size: 16px;">Français</button>
+</div>
 
 <div class="content">
     <!-- Main Image Section -->
@@ -699,8 +755,46 @@
 </footer>
 
 <script>
-    // Dynamically calculate and update RC1 progression from RC1 HTML content
+    // Dynamically calculate and update progression metrics from manuscripts
     document.addEventListener("DOMContentLoaded", function () {
+        let currentVol1Rc1 = 41.58;
+        let currentVol2Draft = 3.3;
+
+        function recalcGlobals() {
+            const vol1Draft = 100;
+            const vol1Rc1 = currentVol1Rc1;
+            const vol1Rc2 = 0;
+            const vol1Gold = 0;
+            const vol1Total = (vol1Draft * 0.40) + (vol1Rc1 * 0.20) + (vol1Rc2 * 0.20) + (vol1Gold * 0.20);
+
+            const vol2Draft = currentVol2Draft;
+            const vol2Rc1 = 0;
+            const vol2Rc2 = 0;
+            const vol2Gold = 0;
+            const vol2Total = (vol2Draft * 0.40) + (vol2Rc1 * 0.20) + (vol2Rc2 * 0.20) + (vol2Gold * 0.20);
+
+            const vol3Draft = 0;
+            const vol3Rc1 = 0;
+            const vol3Rc2 = 0;
+            const vol3Gold = 0;
+            const vol3Total = (vol3Draft * 0.40) + (vol3Rc1 * 0.20) + (vol3Rc2 * 0.20) + (vol3Gold * 0.20);
+
+            const globalProject = (vol1Total + vol2Total + vol3Total) / 3;
+
+            const elVol1 = document.getElementById('vol1-total-val');
+            if (elVol1) elVol1.textContent = vol1Total.toFixed(2) + '%';
+
+            const elVol2 = document.getElementById('vol2-total-val');
+            if (elVol2) elVol2.textContent = vol2Total.toFixed(2) + '%';
+
+            const elVol3 = document.getElementById('vol3-total-val');
+            if (elVol3) elVol3.textContent = vol3Total.toFixed(2) + '%';
+
+            const elGlobal = document.getElementById('global-project-progress-val');
+            if (elGlobal) elGlobal.textContent = globalProject.toFixed(2) + '%';
+        }
+
+        // Volume I (RC1)
         fetch('./Killtime/manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html')
             .then(response => {
                 if (!response.ok) throw new Error('Network response was not ok');
@@ -713,14 +807,42 @@
                 if (chapterContent) {
                     const text = chapterContent.innerText || chapterContent.textContent;
                     const words = text.trim().split(/\s+/).filter(word => word.length > 0);
-                    const percentage = (words.length / 180000 * 100).toFixed(2) + '%';
+                    const pctNum = (words.length / 180000 * 100);
+                    currentVol1Rc1 = pctNum;
                     const elem = document.getElementById('rc1-progress-val');
                     if (elem) {
-                        elem.textContent = percentage;
+                        elem.textContent = pctNum.toFixed(2) + '%';
+                    }
+                    recalcGlobals();
+                }
+            })
+            .catch(err => console.error('Error fetching Volume I RC1 progression metrics:', err));
+
+        // Volume II (Draft)
+        fetch('./Killtime/manuscripts/Killtime%20-%20Volume%20II.html')
+            .then(response => {
+                if (!response.ok) throw new Error('Network response was not ok');
+                return response.text();
+            })
+            .then(htmlText => {
+                const parser = new DOMParser();
+                const doc = parser.parseFromString(htmlText, 'text/html');
+                const container = doc.querySelector('.book-container') || doc.querySelector('.chapter-content') || doc.body;
+                if (container) {
+                    const text = container.innerText || container.textContent;
+                    const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                    if (words.length > 0) {
+                        const pctNum = (words.length / 180000 * 100);
+                        currentVol2Draft = pctNum;
+                        const elem = document.getElementById('vol2-draft-progress-val');
+                        if (elem) {
+                            elem.textContent = pctNum.toFixed(2) + '%';
+                        }
+                        recalcGlobals();
                     }
                 }
             })
-            .catch(err => console.error('Error fetching RC1 progression metrics:', err));
+            .catch(err => console.error('Error fetching Volume II Draft progression metrics:', err));
     });
 </script>
 
