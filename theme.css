@@ -1,0 +1,1267 @@
+/* ==========================================================================
+   KILLTIME UNIVERSE - SYNCHRONIZED THEME ENGINE (DARK / LIGHT MODE)
+   ========================================================================== */
+
+/* --------------------------------------------------------------------------
+   Root Variables & Color Palettes
+   -------------------------------------------------------------------------- */
+:root,
+html[data-theme="dark"] {
+    --bg-primary: #0d1117;
+    --bg-secondary: #161b22;
+    --bg-tertiary: #21262d;
+    --text-primary: #e6edf3;
+    --text-secondary: #8b949e;
+    --text-muted: #6e7681;
+    --border-color: #30363d;
+    --accent-primary: #58a6ff;
+    --accent-secondary: #bc8cff;
+    --accent-hover: #79c0ff;
+    --link-color: #58a6ff;
+    --link-hover: #79c0ff;
+    --card-bg: #161b22;
+    --card-border: #30363d;
+    --header-bg: #161b22;
+    --header-text: #ffffff;
+    --footer-bg: #10141b;
+    --footer-text: #8b949e;
+    --table-header-bg: #21262d;
+    --table-row-bg: #161b22;
+    --table-row-alt: #1a212d;
+    --table-border: #30363d;
+    --input-bg: #0d1117;
+    --input-border: #30363d;
+    --input-text: #e6edf3;
+    --shadow-color: rgba(0, 0, 0, 0.6);
+    --glow-color: rgba(88, 166, 255, 0.25);
+    --code-bg: #0d1117;
+    --code-border: #30363d;
+
+    /* Volume I & II Variables Override */
+    --bg-color: #0d1117 !important;
+    --text-color: #c9d1d9 !important;
+    --accent-color: #58a6ff !important;
+    --ai-color: #58a6ff !important;
+    --ai-warning: #f0883e !important;
+    --telepathy-color: #56d364 !important;
+    
+    color-scheme: dark;
+}
+
+html[data-theme="light"] {
+    --bg-primary: #f4f4f9;
+    --bg-secondary: #ffffff;
+    --bg-tertiary: #eef1f5;
+    --text-primary: #24292f;
+    --text-secondary: #57606a;
+    --text-muted: #6e7681;
+    --border-color: #d0d7de;
+    --accent-primary: #0969da;
+    --accent-secondary: #8250df;
+    --accent-hover: #0550ae;
+    --link-color: #0969da;
+    --link-hover: #0550ae;
+    --card-bg: #ffffff;
+    --card-border: #d0d7de;
+    --header-bg: #2c3e50;
+    --header-text: #ffffff;
+    --footer-bg: #2c3e50;
+    --footer-text: #ffffff;
+    --table-header-bg: #f6f8fa;
+    --table-row-bg: #ffffff;
+    --table-row-alt: #f6f8fa;
+    --table-border: #d0d7de;
+    --input-bg: #ffffff;
+    --input-border: #d0d7de;
+    --input-text: #24292f;
+    --shadow-color: rgba(0, 0, 0, 0.1);
+    --glow-color: rgba(9, 105, 218, 0.15);
+    --code-bg: #f6f8fa;
+    --code-border: #d0d7de;
+
+    /* Volume I & II Variables */
+    --bg-color: #f7f6f2 !important;
+    --text-color: #2c2c2c !important;
+    --accent-color: #1a1a24 !important;
+    --ai-color: #2b5b84 !important;
+    --ai-warning: #b86e00 !important;
+    --telepathy-color: #4a635d !important;
+
+    color-scheme: light;
+}
+
+/* --------------------------------------------------------------------------
+   Global Layout & Background Overrides
+   -------------------------------------------------------------------------- */
+body {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Remove Dark CRT Scanlines in Light Mode */
+html[data-theme="light"] body::before {
+    display: none !important;
+}
+
+a {
+    color: var(--link-color);
+    transition: color 0.2s ease;
+}
+
+a:hover {
+    color: var(--link-hover);
+}
+
+/* --------------------------------------------------------------------------
+   Containers, Cards & Panels
+   -------------------------------------------------------------------------- */
+.content,
+.container,
+.main-container,
+.card,
+.section,
+.overview-container {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+    border-color: var(--card-border) !important;
+    box-shadow: 0 4px 20px var(--shadow-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Headers & Footers
+   -------------------------------------------------------------------------- */
+header:not(.book-container header, .sanctum-header, .task-header) {
+    background-color: var(--header-bg) !important;
+    color: var(--header-text) !important;
+    border-bottom: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+footer {
+    background-color: var(--footer-bg) !important;
+    color: var(--footer-text) !important;
+    border-top: 1px solid var(--border-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* --------------------------------------------------------------------------
+   Typography & Headers
+   -------------------------------------------------------------------------- */
+h1, h2, h3, h4, h5, h6 {
+    color: var(--text-primary);
+    transition: color 0.3s ease;
+}
+
+html[data-theme="dark"] h2:not(#eventModalTitle, #modalTitle, .sanctum-h2, .task-title, .modal h2) {
+    color: #58a6ff !important;
+    border-bottom-color: #30363d !important;
+}
+
+html[data-theme="light"] h2:not(#eventModalTitle, #modalTitle, .sanctum-h2, .task-title, .modal h2) {
+    color: #2c3e50 !important;
+    border-bottom-color: #2c3e50 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Collapsible Details & Summaries (e.g. HSC Calendar)
+   -------------------------------------------------------------------------- */
+html[data-theme="dark"] details {
+    background: #161b22 !important;
+    border: 1px solid #30363d !important;
+    color: #e6edf3 !important;
+}
+
+html[data-theme="dark"] details summary {
+    color: #58a6ff !important;
+}
+
+html[data-theme="dark"] details p,
+html[data-theme="dark"] details li,
+html[data-theme="dark"] details span,
+html[data-theme="dark"] details strong,
+html[data-theme="dark"] details em {
+    color: #e6edf3 !important;
+}
+
+html[data-theme="dark"] details h4 {
+    color: #58a6ff !important;
+}
+
+html[data-theme="light"] details {
+    background: #eef2f5 !important;
+    border: 1px solid #cbd5e1 !important;
+    color: #24292f !important;
+}
+
+html[data-theme="light"] details summary {
+    color: #34495e !important;
+}
+
+/* --------------------------------------------------------------------------
+   Book Containers & Manuscripts (Volume I, Volume II, Drafts)
+   -------------------------------------------------------------------------- */
+.book-container {
+    background-color: var(--card-bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--card-border) !important;
+    box-shadow: 0 10px 30px var(--shadow-color) !important;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+.book-container header {
+    background-color: transparent !important;
+    border-bottom: none !important;
+}
+
+#word-count-display {
+    color: var(--text-secondary) !important;
+}
+
+h1.book-title {
+    color: var(--accent-primary) !important;
+}
+
+h2.chapter-title {
+    color: var(--text-secondary) !important;
+    border-bottom: 1px solid var(--border-color) !important;
+}
+
+.toc {
+    background-color: var(--bg-tertiary) !important;
+    border-left-color: var(--accent-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+.toc h3 {
+    color: var(--accent-primary) !important;
+    border-bottom-color: var(--border-color) !important;
+}
+
+.toc a {
+    color: var(--text-primary) !important;
+}
+
+.toc a:hover {
+    color: var(--accent-hover) !important;
+}
+
+/* AI Voice Dialogue & Special Callouts */
+html[data-theme="dark"] .ai-voice {
+    background: #111a24 !important;
+    color: #58a6ff !important;
+    border: 1px solid rgba(88, 166, 255, 0.3) !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+}
+
+html[data-theme="light"] .ai-voice {
+    background: #f0f4f8 !important;
+    color: #2b5b84 !important;
+    border: 1px solid #d0d7de !important;
+}
+
+html[data-theme="dark"] .ai-warning {
+    background: #23190e !important;
+    color: #f0883e !important;
+    border: 1px solid rgba(240, 136, 62, 0.4) !important;
+}
+
+html[data-theme="light"] .ai-warning {
+    background: #fff8eb !important;
+    color: #b86e00 !important;
+    border: 1px solid #fed7aa !important;
+}
+
+html[data-theme="dark"] .journal-entry {
+    background-color: #161b22 !important;
+    color: #e6edf3 !important;
+    border-left-color: #58a6ff !important;
+}
+
+html[data-theme="light"] .journal-entry {
+    background-color: #faf9f5 !important;
+    color: #444 !important;
+    border-left-color: #c8c0b0 !important;
+}
+
+html[data-theme="dark"] .telepathy {
+    color: #56d364 !important;
+}
+
+html[data-theme="light"] .telepathy {
+    color: #4a635d !important;
+}
+
+/* Temporal Anchor & Highlighting */
+html[data-theme="dark"] #temporal-anchor-btn {
+    background-color: #21262d !important;
+    color: #58a6ff !important;
+    border: 1px solid #30363d !important;
+}
+
+html[data-theme="dark"] #temporal-anchor-btn:hover {
+    background-color: #30363d !important;
+    color: #79c0ff !important;
+}
+
+html[data-theme="dark"] #anchor-toast {
+    background-color: #161b22 !important;
+    color: #e6edf3 !important;
+    border-left-color: #58a6ff !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6) !important;
+}
+
+html[data-theme="dark"] .temporal-anchor-highlight {
+    border-left-color: rgba(88, 166, 255, 0.6) !important;
+    background-color: rgba(88, 166, 255, 0.1) !important;
+}
+
+/* Scene breaks & Trackboard */
+html[data-theme="dark"] hr.scene-break::before {
+    color: #58a6ff !important;
+}
+
+.trackboard-divider {
+    background-color: var(--border-color) !important;
+}
+
+.chapter-header-wrapper hr.title-divider {
+    border-color: var(--border-color) !important;
+}
+
+.actor-icon {
+    border-color: var(--card-bg) !important;
+}
+
+/* LibreOffice Exported Document Styles (Killtime.html) */
+html[data-theme="dark"] p.western,
+html[data-theme="dark"] p.cjk,
+html[data-theme="dark"] p.ctl,
+html[data-theme="dark"] p,
+html[data-theme="dark"] span,
+html[data-theme="dark"] b,
+html[data-theme="dark"] strong,
+html[data-theme="dark"] em,
+html[data-theme="dark"] blockquote {
+    color: var(--text-primary) !important;
+}
+
+html[data-theme="dark"] a:link {
+    color: var(--link-color) !important;
+}
+
+html[data-theme="dark"] a:visited {
+    color: var(--accent-secondary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Specialized Timeline & Lore Terminal Pages (truth.html, dossiers, abilities)
+   -------------------------------------------------------------------------- */
+
+/* Truth.html - The Labyrinth of Timelines (Dark Mode) */
+html[data-theme="dark"] .timeline-list li {
+    background-color: #12161f !important;
+    border-left: 4px solid #ef4444 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.6) !important;
+}
+
+html[data-theme="dark"] .timeline-list li:hover {
+    background-color: #1a202c !important;
+    border-left-color: #f87171 !important;
+}
+
+html[data-theme="dark"] .timeline-title {
+    color: #f3f4f6 !important;
+}
+
+html[data-theme="dark"] .timeline-meta {
+    color: #9ca3af !important;
+}
+
+html[data-theme="dark"] .timeline-meta span {
+    color: #d1d5db !important;
+    border-left-color: #ef4444 !important;
+}
+
+html[data-theme="dark"] .warning {
+    color: #ef4444 !important;
+    text-shadow: 0 0 10px rgba(239, 68, 68, 0.3) !important;
+}
+
+html[data-theme="dark"] .back-link {
+    color: #9ca3af !important;
+}
+
+html[data-theme="dark"] .back-link:hover {
+    color: #ef4444 !important;
+}
+
+html[data-theme="dark"] #engine-container {
+    border-color: #30363d !important;
+    background-color: #0f1216 !important;
+}
+
+html[data-theme="dark"] #engine-toolbar button {
+    background: #161b22 !important;
+    color: #e6edf3 !important;
+    border: 1px solid #30363d !important;
+}
+
+html[data-theme="dark"] #engine-toolbar button:hover {
+    background: #21262d !important;
+    border-color: #58a6ff !important;
+}
+
+/* Truth.html - The Labyrinth of Timelines (Light Mode) */
+html[data-theme="light"] .timeline-list li {
+    background-color: #ffffff !important;
+    border-left: 4px solid #dc2626 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] .timeline-list li:hover {
+    background-color: #f8fafc !important;
+    border-left-color: #b91c1c !important;
+}
+
+html[data-theme="light"] .timeline-title {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .timeline-meta {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .timeline-meta span {
+    color: #1e293b !important;
+    border-left-color: #dc2626 !important;
+}
+
+html[data-theme="light"] .warning {
+    color: #b91c1c !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .back-link {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .back-link:hover {
+    color: #dc2626 !important;
+}
+
+html[data-theme="light"] #engine-container {
+    border-color: #cbd5e1 !important;
+    background-color: #f8fafc !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] #engine-toolbar button {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+html[data-theme="light"] #engine-toolbar button:hover {
+    background: #f1f5f9 !important;
+    border-color: #0284c7 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Dev Sanctum & Task Engine (architect_tasks.html)
+   -------------------------------------------------------------------------- */
+
+/* Task Engine (Light Mode) */
+html[data-theme="light"] header:has(h1) {
+    background: transparent !important;
+    border-bottom: 2px solid #cbd5e1 !important;
+}
+
+html[data-theme="light"] header h1 {
+    color: #b91c1c !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .board .column {
+    background-color: #ffffff !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.06) !important;
+}
+
+html[data-theme="light"] .column-header {
+    background-color: #f8fafc !important;
+    color: #0f172a !important;
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html[data-theme="light"] .task {
+    background-color: #f8fafc !important;
+    border: 1px solid #e2e8f0 !important;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-theme="light"] .task:hover {
+    background-color: #ffffff !important;
+    border-color: #94a3b8 !important;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] .task-title {
+    color: #0f172a !important;
+    font-weight: bold !important;
+}
+
+html[data-theme="light"] .task-desc {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .task-meta {
+    color: #64748b !important;
+}
+
+html[data-theme="light"] .priority-badge {
+    background: #e2e8f0 !important;
+    color: #1e293b !important;
+}
+
+html[data-theme="light"] .task-actions button {
+    color: #475569 !important;
+    background: #e2e8f0 !important;
+}
+
+html[data-theme="light"] .task-actions button:hover {
+    color: #0f172a !important;
+    background: #cbd5e1 !important;
+}
+
+html[data-theme="light"] .controls button,
+html[data-theme="light"] button:not(.theme-switch-floating-btn, .theme-toggle, .btn-primary, .sanctum-btn-primary) {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+html[data-theme="light"] .controls button:hover,
+html[data-theme="light"] button:not(.theme-switch-floating-btn, .theme-toggle, .btn-primary, .sanctum-btn-primary):hover {
+    background-color: #f1f5f9 !important;
+    border-color: #0284c7 !important;
+}
+
+html[data-theme="light"] button.primary {
+    background-color: #b91c1c !important;
+    color: #ffffff !important;
+    border-color: #991b1b !important;
+    box-shadow: 0 2px 8px rgba(185, 28, 28, 0.2) !important;
+}
+
+html[data-theme="light"] button.primary:hover {
+    background-color: #991b1b !important;
+}
+
+/* Task Engine (Dark Mode) */
+html[data-theme="dark"] .board .column {
+    background-color: #0f1217 !important;
+    border: 1px solid #1e2430 !important;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.6) !important;
+}
+
+html[data-theme="dark"] .column-header {
+    background-color: rgba(0, 0, 0, 0.6) !important;
+    color: #ffffff !important;
+    border-bottom: 1px dashed #30363d !important;
+}
+
+html[data-theme="dark"] .task {
+    background-color: #161c24 !important;
+    border: 1px solid #2d3748 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4) !important;
+}
+
+html[data-theme="dark"] .task:hover {
+    background-color: #1c2430 !important;
+    border-color: #4a5568 !important;
+}
+
+html[data-theme="dark"] .task-title {
+    color: #f3f4f6 !important;
+}
+
+html[data-theme="dark"] .task-desc {
+    color: #cbd5e1 !important;
+}
+
+html[data-theme="dark"] .task-meta {
+    color: #8b949e !important;
+}
+
+html[data-theme="dark"] .priority-badge {
+    background: rgba(0, 0, 0, 0.6) !important;
+    color: #e6edf3 !important;
+}
+
+html[data-theme="dark"] header h1 {
+    color: #ff4444 !important;
+    text-shadow: 0 0 15px rgba(255, 68, 68, 0.6) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Blueprint & Terminal Dossiers (CLASSIFIED_ The Architect's Blueprint.html)
+   -------------------------------------------------------------------------- */
+html[data-theme="light"] .sidebar {
+    background-color: #ffffff !important;
+    border-right: 1px solid #cbd5e1 !important;
+    box-shadow: 2px 0 10px rgba(0, 0, 0, 0.05) !important;
+}
+
+html[data-theme="light"] .sys-header {
+    border-bottom: 1px solid #e2e8f0 !important;
+}
+
+html[data-theme="light"] .sys-header h1 {
+    color: #b91c1c !important;
+    text-shadow: none !important;
+}
+
+html[data-theme="light"] .nav-item {
+    color: #475569 !important;
+    border-bottom: 1px solid #f1f5f9 !important;
+}
+
+html[data-theme="light"] .nav-item:hover {
+    background-color: #f1f5f9 !important;
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .nav-item.active {
+    background-color: #e2e8f0 !important;
+    color: #0f172a !important;
+    border-left-color: #dc2626 !important;
+}
+
+html[data-theme="light"] .main-content {
+    background: #f8fafc !important;
+}
+
+html[data-theme="light"] .main-content h2 {
+    color: #0f172a !important;
+    border-bottom-color: #cbd5e1 !important;
+}
+
+html[data-theme="light"] .main-content p {
+    color: #334155 !important;
+}
+
+html[data-theme="light"] .main-content .task-list li {
+    background-color: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04) !important;
+}
+
+html[data-theme="light"] .main-content .task-list h4 {
+    color: #0f172a !important;
+}
+
+/* Modals */
+html[data-theme="light"] .modal {
+    background: #ffffff !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15) !important;
+}
+
+html[data-theme="light"] .modal h2 {
+    color: #0f172a !important;
+}
+
+html[data-theme="light"] .modal .form-group label {
+    color: #475569 !important;
+}
+
+html[data-theme="light"] .modal .form-group input,
+html[data-theme="light"] .modal .form-group select,
+html[data-theme="light"] .modal .form-group textarea {
+    background: #f8fafc !important;
+    color: #0f172a !important;
+    border: 1px solid #cbd5e1 !important;
+}
+
+html[data-theme="light"] .btn-primary {
+    background: #dc2626 !important;
+    border-color: #b91c1c !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .btn-secondary {
+    background: #e2e8f0 !important;
+    border-color: #cbd5e1 !important;
+    color: #1e293b !important;
+}
+
+/* Ability Logs & Character Dossiers */
+html[data-theme="light"] .date-stamp {
+    color: #64748b !important;
+}
+
+/* Thematic and Pacing Dashboard */
+html[data-theme="light"] .dashboard {
+    background: #ffffff !important;
+    border-color: #e2e8f0 !important;
+    box-shadow: 0 4px 25px rgba(0, 0, 0, 0.08) !important;
+}
+
+html[data-theme="light"] .bar-bg {
+    background: #e2e8f0 !important;
+}
+
+/* --------------------------------------------------------------------------
+   Overview & Navigation Trees (Overview.html, Conversations.html)
+   -------------------------------------------------------------------------- */
+#overview-sidebar {
+    background-color: var(--header-bg) !important;
+    border-right: 1px solid var(--border-color);
+    color: var(--header-text) !important;
+}
+
+#overview-sidebar a {
+    color: var(--header-text) !important;
+}
+
+#overview-sidebar a:hover {
+    background-color: var(--bg-tertiary) !important;
+}
+
+#overview-main-content {
+    background-color: var(--bg-primary) !important;
+    color: var(--text-primary) !important;
+}
+
+#overview-compendium {
+    background-color: var(--bg-tertiary) !important;
+    border-right: 1px solid var(--border-color);
+    color: var(--text-primary) !important;
+}
+
+#overview-compendium a {
+    color: var(--link-color) !important;
+}
+
+#overview-compendium a:hover {
+    background-color: var(--card-bg) !important;
+}
+
+/* --------------------------------------------------------------------------
+   ChatGPT Log Cards (chatgpt/*.html)
+   -------------------------------------------------------------------------- */
+.conversation {
+    background-color: var(--card-bg) !important;
+    border-color: var(--border-color) !important;
+    color: var(--text-primary) !important;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+}
+
+.message {
+    color: var(--text-primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Tables (Lore Tables, Character Stats, Missions)
+   -------------------------------------------------------------------------- */
+table {
+    border-collapse: collapse;
+    width: 100%;
+    border-color: var(--table-border) !important;
+}
+
+th {
+    background-color: var(--table-header-bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--table-border) !important;
+    padding: 10px 14px;
+}
+
+td {
+    background-color: var(--table-row-bg) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--table-border) !important;
+    padding: 8px 12px;
+}
+
+td:first-child {
+    color: var(--accent-primary) !important;
+}
+
+tr:nth-child(even) td {
+    background-color: var(--table-row-alt) !important;
+}
+
+tr:hover td {
+    background-color: var(--bg-tertiary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Buttons, Inputs, and Toggle Badges
+   -------------------------------------------------------------------------- */
+button, input, select, textarea {
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    transition: all 0.2s ease;
+}
+
+.language-toggle {
+    background-color: var(--bg-tertiary) !important;
+    color: var(--text-primary) !important;
+    border: 1px solid var(--border-color) !important;
+    box-shadow: 0 2px 8px var(--shadow-color);
+}
+
+.language-toggle:hover {
+    background-color: var(--card-border) !important;
+    border-color: var(--accent-primary) !important;
+}
+
+/* --------------------------------------------------------------------------
+   Universal Floating Theme Switcher Badge (Bottom Right)
+   -------------------------------------------------------------------------- */
+.theme-switch-floating-btn {
+    position: fixed;
+    bottom: 24px;
+    right: 24px;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color), 0 0 15px var(--glow-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 999999;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.25s ease,
+                border-color 0.25s ease,
+                background-color 0.3s ease,
+                bottom 0.3s ease;
+    padding: 0;
+    margin: 0;
+}
+
+/* Prevent overlapping if #temporal-anchor-btn or manuscript is active */
+body:has(#temporal-anchor-btn) .theme-switch-floating-btn,
+.book-container ~ .theme-switch-floating-btn {
+    bottom: 95px !important;
+}
+
+.theme-switch-floating-btn:hover {
+    transform: scale(1.12) rotate(8deg);
+    border-color: var(--accent-primary);
+    box-shadow: 0 6px 25px var(--shadow-color), 0 0 20px var(--glow-color);
+}
+
+.theme-switch-floating-btn:active {
+    transform: scale(0.95);
+}
+
+.theme-switch-floating-btn svg {
+    width: 26px;
+    height: 26px;
+    fill: none;
+    stroke: var(--accent-primary);
+    stroke-width: 2;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1), stroke 0.3s ease;
+}
+
+.theme-switch-floating-btn:hover svg {
+    stroke: var(--accent-hover);
+}
+
+/* Tooltip for floating button */
+.theme-switch-floating-btn::before {
+    content: attr(data-tooltip);
+    position: absolute;
+    right: 64px;
+    background: var(--bg-secondary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transform: translateX(10px);
+    transition: opacity 0.2s ease, transform 0.2s ease;
+    box-shadow: 0 4px 12px var(--shadow-color);
+}
+
+.theme-switch-floating-btn:hover::before {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Header Inline Theme Toggle Button */
+.theme-toggle-header-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 8px 16px;
+    border-radius: 6px;
+    background-color: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    box-shadow: 0 2px 6px var(--shadow-color);
+}
+
+.theme-toggle-header-btn:hover {
+    border-color: var(--accent-primary);
+    background-color: var(--card-border);
+    transform: translateY(-1px);
+}
+
+.theme-toggle-header-btn svg {
+    width: 18px;
+    height: 18px;
+    stroke: var(--accent-primary);
+}
+
+/* --------------------------------------------------------------------------
+   Dev Sanctum Floating Trigger Badge (Bottom Left)
+   -------------------------------------------------------------------------- */
+.dev-sanctum-floating-btn {
+    position: fixed;
+    bottom: 24px;
+    left: 24px;
+    height: 48px;
+    padding: 0 16px;
+    border-radius: 24px;
+    background: var(--card-bg);
+    border: 1.5px solid var(--border-color);
+    box-shadow: 0 4px 20px var(--shadow-color), 0 0 15px rgba(239, 68, 68, 0.2);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    z-index: 999998;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1),
+                box-shadow 0.25s ease,
+                border-color 0.25s ease,
+                background-color 0.3s ease;
+    font-family: 'Courier Prime', monospace, monospace;
+    font-weight: bold;
+    font-size: 13px;
+    letter-spacing: 1px;
+    color: #ef4444;
+}
+
+html[data-theme="light"] .dev-sanctum-floating-btn {
+    color: #b91c1c;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08), 0 0 10px rgba(185, 28, 28, 0.15);
+}
+
+.dev-sanctum-floating-btn:hover {
+    transform: scale(1.08);
+    border-color: #ef4444;
+    box-shadow: 0 6px 25px var(--shadow-color), 0 0 20px rgba(239, 68, 68, 0.4);
+}
+
+.dev-sanctum-floating-btn svg {
+    width: 20px;
+    height: 20px;
+    stroke: #ef4444;
+    stroke-width: 2;
+    fill: rgba(239, 68, 68, 0.15);
+}
+
+html[data-theme="light"] .dev-sanctum-floating-btn svg {
+    stroke: #b91c1c;
+    fill: rgba(185, 28, 28, 0.1);
+}
+
+/* --------------------------------------------------------------------------
+   Dev Sanctum Slide-out Side Drawer & Backdrop
+   -------------------------------------------------------------------------- */
+.dev-sanctum-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.6);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    z-index: 1000000;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.dev-sanctum-backdrop.open {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.dev-sanctum-drawer {
+    position: fixed;
+    top: 0;
+    right: -560px;
+    width: 520px;
+    max-width: 95vw;
+    height: 100vh;
+    background: var(--bg-primary);
+    border-left: 1.5px solid var(--border-color);
+    box-shadow: -5px 0 35px var(--shadow-color);
+    z-index: 1000001;
+    display: flex;
+    flex-direction: column;
+    box-sizing: border-box;
+    transition: right 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    font-family: 'Courier Prime', monospace;
+}
+
+.dev-sanctum-drawer.open {
+    right: 0;
+}
+
+.sanctum-drawer-header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.sanctum-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.1em;
+    letter-spacing: 1.5px;
+    color: #ef4444;
+    font-weight: bold;
+}
+
+html[data-theme="light"] .sanctum-title {
+    color: #b91c1c;
+}
+
+.sanctum-subtitle {
+    font-size: 0.68em;
+    color: var(--accent-primary);
+    letter-spacing: 0.5px;
+    margin-top: 2px;
+}
+
+.sanctum-header-actions {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.sanctum-btn {
+    padding: 5px 10px;
+    font-size: 11px;
+    font-weight: bold;
+    border-radius: 4px;
+    cursor: pointer;
+    font-family: 'Courier Prime', monospace;
+    border: 1px solid var(--border-color);
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+}
+
+.sanctum-btn-primary {
+    background: #ef4444 !important;
+    border-color: #dc2626 !important;
+    color: #ffffff !important;
+}
+
+html[data-theme="light"] .sanctum-btn-primary {
+    background: #b91c1c !important;
+    border-color: #991b1b !important;
+    color: #ffffff !important;
+}
+
+.sanctum-close-btn {
+    width: 28px;
+    height: 28px;
+    border-radius: 4px;
+    border: 1px solid var(--border-color);
+    background: transparent;
+    color: var(--text-muted);
+    font-size: 14px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sanctum-close-btn:hover {
+    color: #ef4444;
+    border-color: #ef4444;
+}
+
+.sanctum-tab-bar {
+    display: flex;
+    border-bottom: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+}
+
+.sanctum-tab {
+    flex: 1;
+    padding: 10px 6px;
+    font-size: 11px;
+    font-weight: bold;
+    border: none;
+    border-bottom: 2px solid transparent;
+    background: transparent;
+    color: var(--text-muted);
+    cursor: pointer;
+    text-align: center;
+    border-radius: 0;
+}
+
+.sanctum-tab.active {
+    color: var(--accent-primary);
+    border-bottom-color: var(--accent-primary);
+    background: rgba(88, 166, 255, 0.05);
+}
+
+.sanctum-drawer-content {
+    flex-grow: 1;
+    padding: 16px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sanctum-drawer-footer {
+    padding: 12px 20px;
+    border-top: 1px solid var(--border-color);
+    background: var(--bg-secondary);
+    display: flex;
+    justify-content: center;
+}
+
+.sanctum-fullscreen-link {
+    font-size: 12px;
+    color: var(--accent-primary);
+    text-decoration: none;
+    font-weight: bold;
+    letter-spacing: 0.5px;
+}
+
+.sanctum-fullscreen-link:hover {
+    text-decoration: underline;
+    color: var(--accent-hover);
+}
+
+/* Quick Drawer Task Card */
+.sanctum-card {
+    background: var(--card-bg);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    padding: 12px;
+    box-shadow: 0 2px 8px var(--shadow-color);
+    position: relative;
+    transition: transform 0.15s ease, border-color 0.15s ease;
+}
+
+.sanctum-card:hover {
+    transform: translateY(-2px);
+    border-color: var(--accent-primary);
+}
+
+.sanctum-card.p-baseline { border-left: 3.5px solid #2b5b84 !important; }
+.sanctum-card.p-critical { border-left: 3.5px solid #b83b00 !important; }
+.sanctum-card.p-terminal { border-left: 3.5px solid #ef4444 !important; }
+
+.sanctum-card-title {
+    font-family: 'Oswald', sans-serif;
+    font-size: 14px;
+    margin: 0 0 6px 0;
+    color: var(--text-primary);
+}
+
+.sanctum-card-desc {
+    font-size: 12px;
+    color: var(--text-secondary);
+    margin: 0 0 10px 0;
+    line-height: 1.45;
+    white-space: pre-wrap;
+}
+
+.sanctum-card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 11px;
+    border-top: 1px dashed var(--border-color);
+    padding-top: 8px;
+    margin-top: 8px;
+}
+
+.sanctum-status-select {
+    padding: 2px 6px;
+    font-size: 10px;
+    border-radius: 4px;
+    background: var(--bg-tertiary);
+    color: var(--text-primary);
+    border: 1px solid var(--border-color);
+}
+
+.sanctum-card-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.sanctum-card-btn {
+    background: transparent;
+    border: none;
+    color: var(--text-muted);
+    font-size: 11px;
+    cursor: pointer;
+    padding: 2px 4px;
+}
+
+.sanctum-card-btn:hover {
+    color: #ef4444;
+}
+
+/* --------------------------------------------------------------------------
+   Custom Scrollbars
+   -------------------------------------------------------------------------- */
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--border-color);
+    border-radius: 5px;
+    border: 2px solid var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--text-secondary);
+}

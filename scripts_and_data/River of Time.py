@@ -79,6 +79,35 @@ class AddEventDialog(QDialog):
         self.chapter_input = QLineEdit()
         self.layout.addRow("Chapter/Part (Optional):", self.chapter_input)
 
+        self.color_input = QLineEdit("#ffffff")
+        color_container = QVBoxLayout()
+        
+        color_top_layout = QHBoxLayout()
+        color_top_layout.addWidget(self.color_input)
+        
+        btn_match_line = QPushButton("Match Timeline")
+        btn_match_line.clicked.connect(lambda: self.color_input.setText(timelines.get(self.line_combo.currentText(), {}).get("color", "#ffffff")))
+        color_top_layout.addWidget(btn_match_line)
+        color_container.addLayout(color_top_layout)
+
+        swatch_layout = QHBoxLayout()
+        swatches = [
+            ("#ffffff", "White"), ("#f44336", "Red"), ("#ffeb3b", "Yellow"),
+            ("#2196f3", "Blue"), ("#4caf50", "Green"), ("#00ffff", "Cyan"),
+            ("#9c27b0", "Purple"), ("#ff9800", "Orange")
+        ]
+        for hex_code, name in swatches:
+            btn_s = QPushButton()
+            btn_s.setFixedSize(22, 22)
+            btn_s.setToolTip(name)
+            btn_s.setStyleSheet(f"background-color: {hex_code}; border: 1px solid #555; border-radius: 3px;")
+            btn_s.clicked.connect(lambda _, c=hex_code: self.color_input.setText(c))
+            swatch_layout.addWidget(btn_s)
+        swatch_layout.addStretch()
+        color_container.addLayout(swatch_layout)
+
+        self.layout.addRow("Color (Hex):", color_container)
+
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
@@ -153,6 +182,35 @@ class EditEventDialog(QDialog):
         self.chapter_input = QLineEdit(event_data.get("chapter_part", ""))
         self.layout.addRow("Chapter/Part (Optional):", self.chapter_input)
 
+        self.color_input = QLineEdit(event_data.get("color", "#ffffff"))
+        color_container = QVBoxLayout()
+        
+        color_top_layout = QHBoxLayout()
+        color_top_layout.addWidget(self.color_input)
+        
+        btn_match_line = QPushButton("Match Timeline")
+        btn_match_line.clicked.connect(lambda: self.color_input.setText(timelines.get(self.line_combo.currentText(), {}).get("color", "#ffffff")))
+        color_top_layout.addWidget(btn_match_line)
+        color_container.addLayout(color_top_layout)
+
+        swatch_layout = QHBoxLayout()
+        swatches = [
+            ("#ffffff", "White"), ("#f44336", "Red"), ("#ffeb3b", "Yellow"),
+            ("#2196f3", "Blue"), ("#4caf50", "Green"), ("#00ffff", "Cyan"),
+            ("#9c27b0", "Purple"), ("#ff9800", "Orange")
+        ]
+        for hex_code, name in swatches:
+            btn_s = QPushButton()
+            btn_s.setFixedSize(22, 22)
+            btn_s.setToolTip(name)
+            btn_s.setStyleSheet(f"background-color: {hex_code}; border: 1px solid #555; border-radius: 3px;")
+            btn_s.clicked.connect(lambda _, c=hex_code: self.color_input.setText(c))
+            swatch_layout.addWidget(btn_s)
+        swatch_layout.addStretch()
+        color_container.addLayout(swatch_layout)
+
+        self.layout.addRow("Color (Hex):", color_container)
+
         self.buttons = QDialogButtonBox(QDialogButtonBox.StandardButton.Ok | QDialogButtonBox.StandardButton.Cancel)
         self.buttons.accepted.connect(self.accept)
         self.buttons.rejected.connect(self.reject)
@@ -215,12 +273,21 @@ class RiverView(QGraphicsView):
         if item is not None:
             event_idx = item.data(0)
             if event_idx is not None:
+                ev = self.main_window.events[event_idx]
                 menu = QMenu(self)
+                
+                jump_action = None
+                if ev.get("type") == "trigger" and ev.get("target_branch"):
+                    jump_action = menu.addAction(f"⚡ Jump to Arrival ({ev['target_branch']})")
+                    menu.addSeparator()
+
                 edit_action = menu.addAction("Edit Event")
                 remove_action = menu.addAction("Remove Event")
                 
                 action = menu.exec(event.globalPos())
-                if action == edit_action:
+                if jump_action and action == jump_action:
+                    self.main_window.jump_to_branch_target(ev)
+                elif action == edit_action:
                     self.main_window.edit_event(event_idx)
                 elif action == remove_action:
                     self.main_window.remove_event(event_idx)
@@ -308,15 +375,77 @@ class RiverView(QGraphicsView):
                 continue
                 
             pen = QPen(line['pen'])
-            pattern_length = sum(pen.dashPattern())
-            if pattern_length > 0:
-                pen_width = pen.widthF()
-                if pen_width == 0: pen_width = 1.0
-                offset_units = ((draw_x1 - screen_x1) / pen_width) % pattern_length
-                pen.setDashOffset(offset_units)
-                
+            pen.setCosmetic(False) # Turn off cosmetic in screen-space to prevent transform pipeline overhead
             painter.setPen(pen)
             painter.drawLine(QLineF(draw_x1, screen_y, draw_x2, screen_y))
+            
+        # --- Draw Jumps in Pure Screen Space (Fixed Corner Fillet & Viewport Culling) ---
+        for jump in self.main_window.jumps:
+            s_trig_x = transform.map(QPointF(jump['trigger_x'], 0)).x()
+            s_start_x = transform.map(QPointF(jump['start_x'], 0)).x()
+            s_parent_y = transform.map(QPointF(0, jump['parent_y'])).y()
+            s_target_y = transform.map(QPointF(0, jump['y_pos'])).y()
+            s_ctrl_y = transform.map(QPointF(0, jump['control_y'])).y()
+            
+            min_sx = min(s_trig_x, s_start_x)
+            max_sx = max(s_trig_x, s_start_x)
+            if max_sx < -pad or min_sx > view_width + pad:
+                continue
+                
+            pen = QPen(jump['pen'])
+            pen.setCosmetic(False) # Turn off cosmetic in screen-space
+            dx = abs(s_start_x - s_trig_x)
+            
+            if dx < 1.0:
+                arc = QPainterPath()
+                arc.moveTo(s_trig_x, s_parent_y)
+                c1_x = s_trig_x - 40
+                c2_x = s_start_x + 40
+                arc.cubicTo(c1_x, s_ctrl_y, c2_x, s_ctrl_y, s_start_x, s_target_y)
+                painter.strokePath(arc, pen)
+            else:
+                cruise = min(40.0, dx / 2.0)
+                dir_x = 1.0 if s_start_x >= s_trig_x else -1.0
+                kappa = 0.55228
+                
+                up_end_x = s_trig_x + (cruise * dir_x)
+                down_start_x = s_start_x - (cruise * dir_x)
+                
+                # 1. Departure Curve
+                arc1_min = min(s_trig_x, up_end_x)
+                arc1_max = max(s_trig_x, up_end_x)
+                if not (arc1_max < -pad or arc1_min > view_width + pad):
+                    cp1_y = s_parent_y + (s_ctrl_y - s_parent_y) * kappa
+                    cp2_x = up_end_x - (cruise * dir_x) * kappa
+                    arc1 = QPainterPath()
+                    arc1.moveTo(s_trig_x, s_parent_y)
+                    arc1.cubicTo(s_trig_x, cp1_y, cp2_x, s_ctrl_y, up_end_x, s_ctrl_y)
+                    painter.strokePath(arc1, pen)
+                    
+                # 2. Clamped Horizontal Bypass
+                hx1, hx2 = min(up_end_x, down_start_x), max(up_end_x, down_start_x)
+                draw_hx1 = max(-pad, min(hx1, view_width + pad))
+                draw_hx2 = max(-pad, min(hx2, view_width + pad))
+                if draw_hx2 - draw_hx1 > 0.1:
+                    h_pen = QPen(pen)
+                    pw = h_pen.widthF() if h_pen.widthF() > 0 else 1.0
+                    # Modulo the offset to a strict boundary to prevent floating point overflow in QStroker
+                    safe_offset = ((draw_hx1 - hx1) / pw) % 1000.0
+                    h_pen.setDashOffset(safe_offset)
+                    
+                    painter.setPen(h_pen)
+                    painter.drawLine(QLineF(draw_hx1, s_ctrl_y, draw_hx2, s_ctrl_y))
+                    
+                # 3. Arrival Curve
+                arc2_min = min(down_start_x, s_start_x)
+                arc2_max = max(down_start_x, s_start_x)
+                if not (arc2_max < -pad or arc2_min > view_width + pad):
+                    cp3_x = down_start_x + (cruise * dir_x) * kappa
+                    cp4_y = s_target_y + (s_ctrl_y - s_target_y) * kappa
+                    arc2 = QPainterPath()
+                    arc2.moveTo(down_start_x, s_ctrl_y)
+                    arc2.cubicTo(cp3_x, s_ctrl_y, s_start_x, cp4_y, s_start_x, s_target_y)
+                    painter.strokePath(arc2, pen)
             
         painter.restore()
 
@@ -404,6 +533,7 @@ class TimelineApp(QMainWindow):
         self.view = RiverView(self.scene, self)
         
         self.infinite_lines = []
+        self.jumps = []
 
         # Menu Bar
         menubar = self.menuBar()
@@ -463,12 +593,21 @@ class TimelineApp(QMainWindow):
     def val_to_x(self, float_val):
         return float_val * PIXELS_PER_YEAR
 
-    def focus_on_val(self, float_val):
+    def focus_on_val(self, float_val, y_pos=0):
         # Reset zoom scale to default 1:1 before centering, to avoid weird offsets
         self.view.resetTransform()
         x_pos = self.val_to_x(float_val)
-        self.view.centerOn(x_pos, 0)
+        self.view.centerOn(x_pos, y_pos)
         self.recalculate_text_layout()
+
+    def jump_to_branch_target(self, ev):
+        target_branch = ev.get("target_branch")
+        if target_branch and target_branch in self.timelines:
+            target_data = self.timelines[target_branch]
+            arr_val = target_data.get("start_val", 0.0)
+            target_y = target_data.get("y", 0)
+            self.focus_on_val(arr_val, target_y)
+            self.statusBar().showMessage(f"Teleported to arrival on branch '{target_branch}' ({float_to_date(arr_val)}).", 4000)
 
     def fit_to_screen(self):
         rect = self.scene.sceneRect()
@@ -509,11 +648,12 @@ class TimelineApp(QMainWindow):
             float_val = dialog.date_input.get_float_year()
             date_str = dialog.date_input.get_date_str()
             event_name = dialog.name_input.text()
+            color = dialog.color_input.text().strip() or "#ffffff"
             
             chapter_part = dialog.chapter_input.text().strip()
             new_event = {
                 "float_val": float_val, "date_str": date_str, "name": event_name, 
-                "line_name": line_name, "type": "fixed"
+                "line_name": line_name, "type": "fixed", "color": color
             }
             if chapter_part:
                 new_event["chapter_part"] = chapter_part
@@ -559,6 +699,7 @@ class TimelineApp(QMainWindow):
         self.scene.clear()
         self.view.hovered_event_idx = None
         self.infinite_lines = []
+        self.jumps = []
         
         # Pull real dynamic bounds based on timeline starts & events bounds
         vals = [e["float_val"] for e in self.events]
@@ -632,11 +773,11 @@ class TimelineApp(QMainWindow):
                 else:
                     control_y = max(parent_y, y_pos) + base_control_y_offset
 
-                # Setup custom "small separated lines" pen with rounded caps
-                jump_pen = QPen(color, 3)
-                jump_pen.setCosmetic(True) # Keeps jump line visible when zoomed out
-                jump_pen.setCapStyle(Qt.PenCapStyle.RoundCap) 
-                jump_pen.setDashPattern([1.5, 3]) 
+                # [OPTIMIZATION] Custom sub-pixel dashes + RoundCap causes fatal CPU tessellation lag.
+                # Reverting to hardware-accelerated standard DashLine and FlatCap.
+                jump_pen = QPen(color, 2, Qt.PenStyle.DashLine)
+                jump_pen.setCosmetic(True) 
+                jump_pen.setCapStyle(Qt.PenCapStyle.FlatCap) 
                 
                 # Setup pen for directional jump arrows
                 arrow_pen = QPen(color, 3)
@@ -661,47 +802,15 @@ class TimelineApp(QMainWindow):
                     arrow_item.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIgnoresTransformations)
                     arrow_item.setZValue(50)
 
-                # --- DRAW THE ARC ---
-                dx = abs(start_x - trigger_x)
-                
-                if dx < 1.0:
-                    arc_path = QPainterPath()
-                    arc_path.moveTo(trigger_x, parent_y)
-                    c1_x = trigger_x - 40
-                    c2_x = start_x + 40
-                    arc_path.cubicTo(c1_x, control_y, c2_x, control_y, start_x, y_pos)
-                    self.scene.addPath(arc_path, jump_pen)
-                else:
-                    cruise = min(75.0, dx / 2.0)
-                    dir_x = 1 if start_x >= trigger_x else -1
-                    
-                    up_end_x = trigger_x + (cruise * dir_x)
-                    down_start_x = start_x - (cruise * dir_x)
-                    
-                    kappa = 0.55228
-                    
-                    arc_path1 = QPainterPath()
-                    arc_path1.moveTo(trigger_x, parent_y)
-                    
-                    cp1_y = parent_y + (control_y - parent_y) * kappa
-                    cp2_x = up_end_x - (cruise * dir_x) * kappa
-                    
-                    arc_path1.cubicTo(trigger_x, cp1_y, cp2_x, control_y, up_end_x, control_y)
-                    self.scene.addPath(arc_path1, jump_pen)
-                    
-                    # Draw the massive horizontal segment dynamically via screen space
-                    self.infinite_lines.append({
-                        'x1': up_end_x, 'x2': down_start_x, 'y': control_y, 'pen': jump_pen
-                    })
-                    
-                    arc_path2 = QPainterPath()
-                    arc_path2.moveTo(down_start_x, control_y)
-                    
-                    cp3_x = down_start_x + (cruise * dir_x) * kappa
-                    cp4_y = y_pos + (control_y - y_pos) * kappa
-                    
-                    arc_path2.cubicTo(cp3_x, control_y, start_x, cp4_y, start_x, y_pos)
-                    self.scene.addPath(arc_path2, jump_pen)
+                # --- REGISTER THE JUMP ---
+                self.jumps.append({
+                    'trigger_x': trigger_x,
+                    'parent_y': parent_y,
+                    'start_x': start_x,
+                    'y_pos': y_pos,
+                    'control_y': control_y,
+                    'pen': jump_pen
+                })
                 
                 # Add Directional Arrows to the vertical jump segments
                 dep_y_dir = 1 if control_y > parent_y else -1
@@ -735,13 +844,16 @@ class TimelineApp(QMainWindow):
             if e["line_name"] not in self.timelines: continue 
 
             line_y = self.timelines[e["line_name"]]["y"]
-            x_pos = self.val_to_x(e["float_val"])
+            y, m, d = float_to_date(e["float_val"])
+            clean_day_val = date_to_float(y, m, d)
+            x_pos = self.val_to_x(clean_day_val)
             
             chapter_prefix = f"[{e['chapter_part']}] " if e.get("chapter_part") else ""
             display_text = f"{chapter_prefix}{e['name']}\n[{e['date_str']}]"
 
+            ev_color = QColor(e.get("color", "#ffffff"))
             if e["type"] == "fixed":
-                fixed_pen = QPen(QColor(255, 255, 255), 3)
+                fixed_pen = QPen(ev_color, 3)
                 fixed_pen.setCosmetic(True) # Stop marker from thinning out
                 
                 # Anchor to 0,0 and use setPos so the 30px height never scales down
@@ -750,7 +862,7 @@ class TimelineApp(QMainWindow):
                 marker.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIgnoresTransformations) 
                 marker.setData(0, idx)
                 
-                txt = self.add_text(0, 0, display_text, QColor(200, 200, 200), 10)
+                txt = self.add_text(0, 0, display_text, ev_color, 10)
                 txt.setData(0, idx)
                 marker_offset = 15 
                 
@@ -765,7 +877,8 @@ class TimelineApp(QMainWindow):
                 marker.setFlag(QGraphicsItem.GraphicsItemFlag.ItemIgnoresTransformations) 
                 marker.setData(0, idx)
                 
-                txt = self.add_text(0, 0, display_text, QColor(255, 100, 100), 10)
+                txt_color = ev_color if "color" in e else QColor(255, 100, 100)
+                txt = self.add_text(0, 0, display_text, txt_color, 10)
                 txt.setData(0, idx)
                 marker_offset = 8 
                 
@@ -809,8 +922,12 @@ class TimelineApp(QMainWindow):
         placed_rects = []
         pad_x = 2 * inv_scale_x
         pad_y = 2 * inv_scale_y
+        step_y = 35 * inv_scale_y
         
-        for item in self.event_graphics:
+        # [SWEEP-LINE PRUNING] Sort events by x_pos to stabilize layout and optimize collision checks
+        sorted_graphics = sorted(self.event_graphics, key=lambda item: item["x_pos"])
+        
+        for item in sorted_graphics:
             txt = item["txt"]
             conn_line = item["conn_line"]
             line_y = item["line_y"]
@@ -825,20 +942,24 @@ class TimelineApp(QMainWindow):
             base_y = line_y + marker_offset + (10 * inv_scale_y)
             current_y = base_y
             
+            rect1_left = base_x - pad_x
+            rect1_right = base_x + w + pad_x
+            
+            # Prune bounding boxes that are safely behind us on the X-axis (Mathematically impossible to collide)
+            placed_rects = [p for p in placed_rects if p[1] >= rect1_left]
+            
             overlap = True
             iterations = 0
             while overlap and iterations < 50:
                 overlap = False
                 
-                rect1_left = base_x - pad_x
-                rect1_right = base_x + w + pad_x
                 rect1_top = current_y - pad_y
                 rect1_bottom = current_y + h + pad_y
                 
                 for p in placed_rects:
                     if not (rect1_right <= p[0] or rect1_left >= p[1] or rect1_bottom <= p[2] or rect1_top >= p[3]):
                         overlap = True
-                        current_y += 35 * inv_scale_y
+                        current_y += step_y
                         break
                 iterations += 1
                 
@@ -899,6 +1020,7 @@ class TimelineApp(QMainWindow):
             ev["float_val"] = dialog.date_input.get_float_year()
             ev["date_str"] = dialog.date_input.get_date_str()
             ev["name"] = dialog.name_input.text()
+            ev["color"] = dialog.color_input.text().strip() or "#ffffff"
             
             chapter_part = dialog.chapter_input.text().strip()
             if chapter_part:

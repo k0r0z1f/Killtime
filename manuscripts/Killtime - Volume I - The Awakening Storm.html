@@ -2,6 +2,10 @@
 <html lang="en">
 
 <head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../theme.css">
+    <script src="../theme.js"></script>
+
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Book 1 - The Awakening Storm</title>
@@ -255,8 +259,8 @@
         }
 
         .location-icon:hover {
-            transform: translateY(-6px) scale(1.1);
-            z-index: 10;
+            transform: translateY(-8px) scale(1.6);
+            z-index: 30;
         }
 
         .location-icon img {
@@ -345,8 +349,8 @@
         }
 
         .actor-icon:hover {
-            transform: translateY(-8px) scale(1.1);
-            z-index: 10;
+            transform: translateY(-10px) scale(1.6);
+            z-index: 30;
         }
 
         .actor-icon img {
@@ -420,10 +424,19 @@
         }
 
         /* Temporal Anchor (Bookmark) Styles */
-        #temporal-anchor-btn {
+        #temporal-anchor-container {
             position: fixed;
             bottom: 30px;
             right: 30px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            gap: 10px;
+            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease;
+        }
+
+        #temporal-anchor-btn {
             background-color: var(--accent-color);
             color: #ffffff;
             border: 1px solid #444;
@@ -434,16 +447,93 @@
             font-weight: bold;
             cursor: pointer;
             box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
-            z-index: 1000;
-            /* Added opacity and refined the transition speed for a flawless emergence */
-            transition: transform 0.4s cubic-bezier(0.2, 0.8, 0.2, 1), opacity 0.4s ease, background-color 0.3s ease;
+            transition: background-color 0.3s ease, transform 0.2s ease;
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         #temporal-anchor-btn:hover {
             background-color: var(--ai-color);
-            transform: translateY(-3px);
+            transform: translateY(-2px);
+        }
+
+        #temporal-anchor-menu {
+            display: none;
+            flex-direction: column;
+            gap: 6px;
+            background: var(--bg-color);
+            border: 1px solid var(--accent-color);
+            border-radius: 6px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+            padding: 12px;
+            width: 300px;
+            max-width: 85vw;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #temporal-anchor-menu.open {
+            display: flex;
+        }
+
+        .temporal-menu-header {
+            font-size: 0.75em;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: var(--ai-color);
+            font-weight: bold;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 6px;
+            margin-bottom: 4px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .anchor-choice-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            background: rgba(0, 0, 0, 0.03);
+            border: 1px solid rgba(0, 0, 0, 0.1);
+            border-left: 3px solid var(--accent-color);
+            border-radius: 4px;
+            padding: 8px 10px;
+            cursor: pointer;
+            text-align: left;
+            transition: all 0.2s ease;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .anchor-choice-btn:hover {
+            background: var(--ai-color);
+            border-left-color: #ffffff;
+            transform: translateX(-3px);
+        }
+
+        .anchor-choice-btn:hover .anchor-tag,
+        .anchor-choice-btn:hover .anchor-preview {
+            color: #ffffff;
+        }
+
+        .anchor-tag {
+            font-size: 0.75em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: var(--accent-color);
+            margin-bottom: 3px;
+        }
+
+        .anchor-preview {
+            font-size: 0.8em;
+            line-height: 1.3;
+            color: #555;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            width: 100%;
         }
 
         #anchor-toast {
@@ -471,8 +561,8 @@
 
         /* Residual Optical Resonance for the anchored paragraph */
         .temporal-anchor-highlight {
-            border-left: 3px solid rgba(43, 91, 132, 0.4);
-            background-color: rgba(43, 91, 132, 0.03);
+            border-left: 3px solid rgba(43, 91, 132, 0.6);
+            background-color: rgba(43, 91, 132, 0.05);
             padding-left: 15px;
             margin-left: -18px;
             /* Offsets padding to maintain structural alignment */
@@ -721,19 +811,12 @@
             <div class="chapter-header-wrapper">
                 <h2 class="chapter-title" id="chapter-1">Chapter 1: The Atomic Crucible</h2>
                 <div class="trackboard">
-                    <div class="location-icon" data-name="Asteroid Base"><img
-                            src="https://ui-avatars.com/api/?name=Asteroid+Base&background=1a1a24&color=fff&bold=true"
+                    <div class="location-icon" data-name="Asteroid Base"><img src="../img/Asteroid%20Base.png"
                             alt="Asteroid Base"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="John"><img
-                            src="https://ui-avatars.com/api/?name=John&background=333&color=fff&bold=true" alt="John">
-                    </div>
-                    <div class="actor-icon" data-name="Erika"><img
-                            src="https://ui-avatars.com/api/?name=Erika&background=ff4500&color=fff&bold=true"
-                            alt="Erika"></div>
-                    <div class="actor-icon" data-name="Syn"><img
-                            src="https://ui-avatars.com/api/?name=Syn&background=2b5b84&color=fff&bold=true" alt="Syn">
-                    </div>
+                    <div class="actor-icon" data-name="John"><img src="../img/John.png" alt="John"></div>
+                    <div class="actor-icon" data-name="Erika"><img src="../img/Erika.png" alt="Erika"></div>
+                    <div class="actor-icon" data-name="Syn"><img src="../img/Syn.png" alt="Syn"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -1676,12 +1759,8 @@
                             alt="Kingston Estate"></div>
                     <div class="trackboard-divider"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="The Uncle"><img
-                            src="https://ui-avatars.com/api/?name=Uncle&background=cfb53b&color=fff&bold=true"
-                            alt="Uncle"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="The Uncle"><img src="../img/The%20Uncle.png" alt="Uncle"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -1985,12 +2064,8 @@
                             alt="Private Airstrip"></div>
                     <div class="trackboard-divider"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="The Uncle"><img
-                            src="https://ui-avatars.com/api/?name=Uncle&background=cfb53b&color=fff&bold=true"
-                            alt="Uncle"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="The Uncle"><img src="../img/The%20Uncle.png" alt="Uncle"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2215,9 +2290,7 @@
                     <div class="trackboard-divider"></div>
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2489,12 +2562,8 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="The Uncle"><img
-                            src="https://ui-avatars.com/api/?name=Uncle&background=cfb53b&color=fff&bold=true"
-                            alt="Uncle"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="The Uncle"><img src="../img/The%20Uncle.png" alt="Uncle"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3204,15 +3273,10 @@
                             src="https://ui-avatars.com/api/?name=Starlight+Voyager&background=2b5b84&color=fff&bold=true"
                             alt="Starlight Voyager"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="John"><img
-                            src="https://ui-avatars.com/api/?name=John&background=333&color=fff&bold=true" alt="John">
+                    <div class="actor-icon" data-name="John"><img src="../img/John.png" alt="John">
                     </div>
-                    <div class="actor-icon" data-name="Erika"><img
-                            src="https://ui-avatars.com/api/?name=Erika&background=ff4500&color=fff&bold=true"
-                            alt="Erika"></div>
-                    <div class="actor-icon" data-name="Syn"><img
-                            src="https://ui-avatars.com/api/?name=Syn&background=2b5b84&color=fff&bold=true" alt="Syn">
-                    </div>
+                    <div class="actor-icon" data-name="Erika"><img src="../img/Erika.png" alt="Erika"></div>
+                    <div class="actor-icon" data-name="Syn"><img src="../img/Syn.png" alt="Syn"></div>
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                 </div>
                 <hr class="title-divider">
@@ -3320,14 +3384,10 @@
                             src="https://ui-avatars.com/api/?name=Vardis+Canopy&background=4a635d&color=fff&bold=true"
                             alt="Vardis Canopy"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="John"><img
-                            src="https://ui-avatars.com/api/?name=John&background=333&color=fff&bold=true" alt="John">
+                    <div class="actor-icon" data-name="John"><img src="../img/John.png" alt="John">
                     </div>
-                    <div class="actor-icon" data-name="Erika"><img
-                            src="https://ui-avatars.com/api/?name=Erika&background=ff4500&color=fff&bold=true"
-                            alt="Erika"></div>
-                    <div class="actor-icon" data-name="Syn"><img
-                            src="https://ui-avatars.com/api/?name=Syn&background=2b5b84&color=fff&bold=true" alt="Syn">
+                    <div class="actor-icon" data-name="Erika"><img src="../img/Erika.png" alt="Erika"></div>
+                    <div class="actor-icon" data-name="Syn"><img src="../img/Syn.png" alt="Syn">
                     </div>
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                 </div>
@@ -3469,9 +3529,7 @@
                             src="https://ui-avatars.com/api/?name=The+Watcher&background=b86e00&color=fff&bold=true"
                             alt="The Watcher"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img
-                            src="https://ui-avatars.com/api/?name=Candice&background=b86e00&color=fff&bold=true"
-                            alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
                     <div class="actor-icon" data-name="Ceylan"><img
                             src="https://ui-avatars.com/api/?name=Ceylan&background=eee&color=888&bold=true"
                             alt="Ceylan"></div>
@@ -3616,9 +3674,7 @@
                             src="https://ui-avatars.com/api/?name=Nythari+Jungle&background=4a635d&color=fff&bold=true"
                             alt="Nythari Jungle"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img
-                            src="https://ui-avatars.com/api/?name=Candice&background=b86e00&color=fff&bold=true"
-                            alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -4882,9 +4938,7 @@
                             src="https://ui-avatars.com/api/?name=Storm+Mountains&background=1a1a24&color=fff&bold=true"
                             alt="Storm Mountains"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img
-                            src="https://ui-avatars.com/api/?name=Candice&background=b86e00&color=fff&bold=true"
-                            alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -5050,9 +5104,7 @@
                             src="https://ui-avatars.com/api/?name=Ancestral+Cave&background=b86e00&color=fff&bold=true"
                             alt="Ancestral Cave"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img
-                            src="https://ui-avatars.com/api/?name=Candice&background=b86e00&color=fff&bold=true"
-                            alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -5231,9 +5283,7 @@
                             src="https://ui-avatars.com/api/?name=Giant+Lake+Shore&background=2b5b84&color=fff&bold=true"
                             alt="Giant Lake Shore"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img
-                            src="https://ui-avatars.com/api/?name=Candice&background=b86e00&color=fff&bold=true"
-                            alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -5431,9 +5481,7 @@
                             src="https://ui-avatars.com/api/?name=Giant+Lake+Abyss&background=000000&color=fff&bold=true"
                             alt="Giant Lake Abyss"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img
-                            src="https://ui-avatars.com/api/?name=Candice&background=b86e00&color=fff&bold=true"
-                            alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -5603,9 +5651,7 @@
                             src="https://ui-avatars.com/api/?name=Haliriel+Citadel&background=4caf50&color=fff&bold=true"
                             alt="Haliriel Citadel"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img
-                            src="https://ui-avatars.com/api/?name=Candice&background=b86e00&color=fff&bold=true"
-                            alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -6155,9 +6201,7 @@
                     <div class="actor-icon" data-name="Krin Dow-Kabar"><img
                             src="https://ui-avatars.com/api/?name=Krin&background=8b4513&color=fff&bold=true"
                             alt="Krin"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -6372,12 +6416,8 @@
                     <div class="actor-icon" data-name="Cult of the Unbound"><img
                             src="https://ui-avatars.com/api/?name=Unbound&background=000&color=ff4500&bold=true"
                             alt="Unbound"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -6638,18 +6678,10 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
-                    <div class="actor-icon" data-name="Durnak"><img
-                            src="https://ui-avatars.com/api/?name=Durnak&background=555&color=fff&bold=true"
-                            alt="Durnak"></div>
-                    <div class="actor-icon" data-name="Grimbar"><img
-                            src="https://ui-avatars.com/api/?name=Grimbar&background=555&color=fff&bold=true"
-                            alt="Grimbar"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Durnak"><img src="../img/Durnak.png" alt="Durnak"></div>
+                    <div class="actor-icon" data-name="Grimbar"><img src="../img/Grimbar.png" alt="Grimbar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -6988,9 +7020,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -7205,9 +7235,7 @@
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -7448,9 +7476,7 @@
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -7595,9 +7621,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
@@ -7818,9 +7842,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -8016,12 +8038,8 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -8197,9 +8215,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -8498,9 +8514,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -8620,9 +8634,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -8826,9 +8838,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -8904,9 +8914,7 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -9084,12 +9092,9 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img
-                            src="https://ui-avatars.com/api/?name=Disciple&background=000&color=ff4500&bold=true"
-                            alt="Disciple"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                            alt="Disciple of Earth"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -9102,13 +9107,13 @@
                 shrieked with warning static, but before the authorities could plot a defense, the anomaly vanished into
                 the heavy storm clouds hovering above the Dwarven Mountains.</p>
 
-            <p>Down in the sprawling, iron-wrought streets of Brum'korath, the sky did not merely burn; it ruptured.</p>
+            <p>Down in the sprawling, iron-wrought streets of Brum'korath, the sky violently ruptured under the falling
+                mass.</p>
 
             <p>The impact delivered a crushing, immovable weight directly into the mountain's core. The ensuing
-                shockwave didn't just crack the earth—it turned the ancient, solid stone into a rolling, violent tide.
-                Centuries of heavy masonry groaned and collapsed inward, folding under the sudden, staggering pressure.
-                A towering cloud of shattered granite and untamed heat erupted, choking the avenues and burying the
-                vanguard.</p>
+                shockwave converted the ancient, solid stone into a rolling, violent tide. Centuries of heavy masonry
+                groaned and collapsed inward, folding under the sudden, staggering pressure. A towering cloud of
+                shattered granite and untamed heat erupted, choking the avenues and burying the vanguard.</p>
 
             <p>As the choking dust began to thin, a nightmare silhouette materialized at the epicenter of the crater.
                 The Disciple of Earth had arrived.</p>
@@ -9129,86 +9134,106 @@
                 cobblestones fractured and rippled, the solid earth groaning under its staggering, unyielding density.
             </p>
 
-            <p>A desperate contingent of the city militia rallied to form an interlocking barricade, their polished
-                shields tarnished with ash. Perceiving the entity's sluggish movements as a tactical vulnerability, the
-                dwarven commander roared an order. A volley of heavy crossbow bolts blackened the sky. The steel
-                quarrels struck the Disciple’s hide with dull, hollow impacts, instantly splintering into useless
+            <p>A disciplined contingent of the city militia rallied to form an interlocking barricade, their polished
+                shields tarnished with ash. Dwarven tacticians held their ground, deploying sensory devices and leveling
+                heavy crossbows in a tense perimeter sweep, barking containment commands across the rubble to determine
+                if the wreckage housed a rogue mining automaton or an invasive weapon. But as the colossal anomaly
+                ignored their perimeter warnings, grinding relentlessly past the cordon with seismic indifference, the
+                dwarven commander gave the defensive order. A volley of heavy crossbow bolts blackened the sky. The
+                steel quarrels struck the Disciple’s hide with dull, hollow impacts, instantly splintering into useless
                 fragments against its cooling outer slag.</p>
 
             <p>The Disciple attempted to raise a massive limb to retaliate. The motion stuttered—a jagged, grinding halt
                 as a pocket of deep internal frost locked its shoulder joint. The militia cheered, bracing their shields
                 to push the advantage. But the delay was only temporary. A blinding, orange heat pulsed violently from
                 the creature's chest, flash-boiling the last of the ice from its internal structure. The seized arm
-                snapped upward, the motion suddenly fluid and devastatingly fast. It did not cast an incantation; it
-                merely seized control of the planet's deep fault lines. Monolithic pillars of raw, petrified basalt
-                erupted violently from beneath the militia’s boots. The rock spiraled upward with crushing force before
-                collapsing back down, folding the vanguard's iron armor like tin beneath a localized seismic upheaval.
-            </p>
+                snapped upward, the motion suddenly fluid and devastatingly fast. It seized direct control of the
+                planet's deep fault lines. Monolithic pillars of raw, petrified basalt erupted violently from beneath
+                the
+                militia’s boots. The rock spiraled upward with crushing force before collapsing back down, folding the
+                vanguard's iron armor like tin beneath a localized seismic upheaval.</p>
 
             <p>Amidst the dust and screaming, the Disciple spoke. Its vocal apparatus generated a low, subterranean
-                frequency
-                that vibrated straight through the marrow of everyone present, shaking the dust from the surrounding
-                walls.</p>
+                frequency that vibrated straight through the marrow of everyone present, shaking the dust from the
+                surrounding walls.</p>
 
             <p>“Bring me the weapon against the Empire.”</p>
 
-            <p>The demand was a blunt, absolute directive. It did not specify physical dimensions nor the parameters of
-                its masters, but its glowing optical voids swept the ruined skyline, isolating and mapping the residual
-                arcane exhaust venting from the city grid.</p>
+            <p>The demand was a blunt, absolute directive. Its glowing optical voids swept the ruined skyline, isolating
+                and mapping the residual arcane exhaust venting from the city grid.</p>
 
-            <p>The surviving militia commanders, paralyzed by the sheer inefficiency of their traditional iron, realized
-                the futility of their defense. “Fall back to the primary armory!” a captain shrieked, blood pouring from
-                his temple. “Break out the heavy magi-tech ordnance! Standard steel is dead! Get the aetheric rifles!”
-            </p>
+            <p>All across the avenue, civil defense protocols fractured into bleeding, frantic triage. Squads of
+                militia broke their combat lines, desperately hauling trapped miners and crying dwarven families from
+                the debris of collapsing stone dwellings. Officers barked conflicting evacuation vectors through the
+                blinding dust, shoving citizens toward the deep storm shelters only to watch the reinforced arches
+                groan and buckle under continuous tectonic shocks. The proud, ancient infrastructure of Brum'korath was
+                actively turning into a mass grave.</p>
 
-            <p>The dwarven soldiers broke ranks, scrambling over the rubble to retrieve the advanced, highly restricted
-                ballistics hoarded in the city’s deep vaults. The Disciple did not attempt to halt their retreat. As its
-                internal furnace reached optimal temperature, its slow, methodical march smoothed into a relentless,
-                rolling stride. It began to treat the surrounding architecture as fragile anomalies in its path,
-                collapsing watchtowers and merchant tiers with an effortless shift of the bedrock.</p>
+            <p>The surviving commanders, overwhelmed by the complete failure of their fortress, fought to salvage a
+                perimeter. “Evacuate the lower tiers! Clear the civilian shafts!” a captain shrieked, blood streaming
+                into his beard as he shoved a stunned youth toward the rear guards. He spun back toward the crater,
+                panic fraying his voice. “Fall back to the primary armory! Standard steel is useless against this! Bring
+                out the heavy magi-tech ordnance! Get the aetheric rifles!”</p>
 
-            <p>Deep within the subterranean Resonant Bastion, the initial shockwave rattled the dust from the vaulted
-                ceilings. Torgar and the surviving Sent Ones cultists froze, the petty factional war instantly eclipsed
-                by the sheer, crushing magnitude of the threat above. The whispered legends of the Empire's heralds had
-                suddenly materialized into a devastating reality.</p>
+            <p>Dwarven soldiers scrambled over the shattered cobblestones to retrieve the restricted ballistics hoarded
+                in the city’s deep vaults, while their comrades formed desperate rescue chains beneath falling masonry.
+                As its internal furnace reached optimal temperature, the Disciple's methodical march smoothed into a
+                relentless, rolling stride. It advanced straight through the residential core, collapsing watchtowers,
+                aqueduct supports, and merchant tiers with effortless shifts of the bedrock.</p>
 
-            <p>“The weapon against the Empire,” Torgar murmured, his face paling as he looked toward the dark corridor
-                where the three human outsiders were quartered. The cryptic demand of the beast perfectly mirrored the
-                prophecies they had bled for.</p>
+            <p>Deep within the subterranean Resonant Bastion, the violent tremor of the celestial impact had rattled
+                dust from the vaulted ceilings minutes earlier, leaving the cultists paralyzed in blind confusion. Now,
+                the bloody reality caught up to the depths. A breathless surface scout tumbled down the upper stairwell,
+                choking on pulverized stone as he gasped out the catastrophic dispatch from the square—the obliterated
+                garrison, the towering titan of molten slag, and the seismic demand echoing down the ventilation
+                shafts.</p>
 
-            <p>When the militia reformed on the surface, they were armed with sleek, heavy aetheric rifles and volatile
-                concussive charges. They opened fire en masse, unleashing blinding beams of super-charged plasma and
-                hurling explosives that detonated with deafening force. The combined payload engulfed the Disciple’s
-                chest, carving smoking craters into the surrounding streets and bathing the entity in a searing
-                firestorm.</p>
+            <p>“The weapon against the Empire,” Torgar murmured, his face paling as he absorbed the scout's words and
+                looked toward the dark corridor where the three human outsiders were quartered. The cryptic demand of
+                the beast perfectly mirrored the prophecies they had bled for.</p>
 
-            <p>As the smoke dissipated, the militia realized their fatal error. The barrage of thermal energy had not
-                damaged the Disciple; it had fully saturated its core. The apocalyptic weapon was no longer a stiff,
-                grinding monolith. Operating at peak internal heat, its movements became terrifyingly seamless. The
-                superheated stone across its chest flowed like water, re-sealing the impact craters in real-time.
-                Raising both hands with newfound, devastating speed, the Disciple commanded the earth beneath the
-                militia’s heavy artillery to fracture. A massive chasm ripped open, effortlessly swallowing their
-                weapons and their soldiers into the crushing dark of the lithosphere.</p>
+            <p>When the militia reformed on the surface, their vanguard deployed standard containment protocols,
+                unleashing heavy high-voltage arc-casters to paralyze the intruder's nervous system. Millions of volts
+                of webbed electrical current surged against the entity, grounding directly into its silicate mass and
+                dissipating harmlessly into the mountain's bedrock. Escalating instantly to destructive force, the rear
+                ranks opened fire with heavy aetheric rifles and hurled volatile concussive charges. Blinding beams of
+                super-charged plasma and shattering explosives detonated across the Disciple’s chest, carving smoking
+                craters into the surrounding streets and bathing the entity in a searing firestorm.</p>
+
+            <p>As the smoke dissipated, the militia realized their fatal error. The barrage of thermal energy fully
+                saturated the Disciple's core. Operating at peak internal heat, the apocalyptic weapon moved with
+                terrifying, fluid precision. The superheated stone across its chest flowed like water, re-sealing the
+                impact craters in real-time. Raising both hands with newfound, devastating speed, the Disciple drove a
+                concentrated seismic shear straight down through the engineered tiers of the city. The fracture ripped
+                through the paved roadway, pulverized centuries of reinforced sewer vaults in a geyser of ruptured steam
+                and pressurized runoff, and split the mountain's bedrock to the primordial lithosphere below. The
+                roaring chasm swallowed heavy artillery, soldiers, and shattered municipal infrastructure into the
+                crushing dark of the planetary crust.</p>
 
             <p>Down in the subterranean training ring, Lucas and Mina felt the structural shift.</p>
 
-            <p>It began as a faint, distant vibration traveling through the soles of their boots, but it rapidly
-                escalated into a
-                suffocating, atmospheric crush. This was not the chaotic static of panicked cultists. It was a singular,
-                towering surge of planetary gravity, carving a direct, merciless vector toward their specific
-                coordinates.</p>
+            <p>It began as a faint tremor traveling through the stone beneath their boots, but quickly grew into
+                violent, rhythmic shaking. Dust sifted down from the cracked ceiling as the heavy, crushing presence
+                above marched straight toward their position.</p>
 
-            <p><em>It can feel us,</em> Mina realized, the thought a sharp, icy spike in her mind. Her hands tightened
-                into fists, the untamed heat in her blood rising violently to meet the pressure.</p>
+            <p>A suffocating presence bore straight through the mountain bedrock, locking onto them with the weight of
+                an
+                unseen gaze. It radiated cold, fanatical hatred—a relentless hostility bearing directly down upon their
+                very existence. Mina’s hands tightened into fists, her breath catching as the untamed heat in her blood
+                rose to push back against the crushing dread.</p>
 
-            <p>Lucas’s mind clinically dissected the crushing seismic feedback. The entity above was not wandering
-                blindly. It was tracking the residual acoustic frequency of their awakening in Kingston. “The Disciple
-                is moving toward the Bastion,” Lucas stated, his voice a flat, freezing absolute. “We cannot sit in this
-                cage and wait for it to collapse the ceiling.”</p>
+            <p>Static clawed at the edges of Lucas’s mental barriers as the heavy malice pressed down from the surface.
+                Every rhythmic tremor through the floor confirmed a singular, terrifying trajectory. “Something has a
+                lock on us,” Lucas rasped, his throat tight against the mounting pressure. “Whatever crashed above is
+                carving a path straight to us. We cannot sit in this cage and wait for the ceiling to bury us.”</p>
 
-            <p>Thomas stepped into the dim light of the torches, the dwarven whetstone abandoned, his broad sword drawn.
-                He was rooted to the floorboards, an immovable monolith stripped of any hesitation. “No. We intercept
-                before it buries the innocents in this mountain. The militia is breaking.”</p>
+            <p>The heavy stone door swung open as Thomas strode into the torchlight, guiding a breathless cultist into
+                the chamber. One look at the pale, rigid postures of Lucas and Mina confirmed the reality: the psychic
+                pressure had already reached them. Silencing the trembling guide with a raised hand, Thomas drew his
+                broad sword, his frame settling into the unyielding density of bedrock. “We intercept it before it
+                buries the innocents in this mountain,” Thomas rumbled, his voice an anchor against the shuddering
+                walls.
+                “The militia is breaking.”</p>
 
             <p>The colossal footfalls of the Disciple shook the foundations of Brum’korath, the ground physically
                 splitting open in a direct vector toward the Hidden Temple. The entity knew its programming. It was
@@ -9216,33 +9241,59 @@
                 to eradicate the source of the resistance.</p>
 
             <p>The breach of the Bastion was catastrophic. The Disciple’s massive, molten limb slammed into the outer
-                subterranean wall of the cult’s headquarters. The reinforced stone shattered like brittle glass, sending
+                wall of the cult’s headquarters. The reinforced stone shattered like brittle glass, sending
                 lethal, jagged shrapnel tearing through the antechamber. Torgar bellowed orders, desperately trying to
                 organize a defensive phalanx, but the cultists were swept aside by a sweeping wave of raw, displaced
                 bedrock.</p>
 
-            <p>The Disciple stepped through the rubble into the inner sanctum, its internal thermal heat instantly
-                raising the cavern’s ambient temperature.</p>
+            <p>The Disciple tore through the shattered outer ramparts into the inner sanctum, its radiant heat driving a
+                wave of blistering air across the ground floor of the great tower.</p>
 
-            <p>From the shadows of the training wing, the three anomalies emerged.</p>
+            <p>The sanctuary stretched outward across the base of the spire—a soaring, stone-vaulted nave rising into
+                the
+                hollow throat of the fortress above. Massive load-bearing pillars of petrified timber, etched with the
+                geometric symbols of the Sent Ones, flanked the central dais beneath arched galleries and shattered
+                aetheric clerestories. Cold mountain wind and choking smoke rushed in from the ruined streets through
+                the
+                torn entryway, colliding violently with the titan's molten slag in a roaring hiss of white steam. The
+                air
+                hung thick with pulverized mortar, burning sage, and the suffocating tang of scorched rock.</p>
 
-            <p>They did not run. They did not hide behind the dwarven shields.</p>
+            <p>From the access stairwells of the lower wing, the three stepped past the shattered dwarven barricades,
+                claiming the center of the dais. The monstrous titan loomed over the hall, a walking extinction event
+                of cracked black silicate and churning, white-hot magma. The furnace of its presence hit them like a
+                hammer, flash-drying the moisture in their throats and searing their eyelashes. A sickening sub-harmonic
+                vibration ground through the air from its molten core, rattling their internal organs and sending their
+                nervous systems into pure, suffocating terror.</p>
 
-            <p>“We break its rush here,” Mina declared, her green eyes burning with a feral, untamed spark. The
-                cage was fractured. The time for restraint had officially expired.</p>
-
-            <p>“Agreed,” Lucas replied, plunging the sterile ghosts of the medi-laboratory into the absolute vacuum of
-                his mind, locking his defenses into a flawless, chilling geometry.</p>
-
-            <p>Thomas stepped slightly ahead of them, his boots grinding deep into the fractured stone. He became a
-                staggering, immovable bulwark, his foundation prepared to meet the sheer planetary weight of the Empire.
+            <p>“We break its rush here,” Mina rasped, her voice trembling slightly against the roar of the fire before
+                she forced a desperate, feral focus into her stance. Her breath came in shallow gasps, but the untamed
+                heat in her blood surged, fighting through the paralyzing terror to coil her muscles tight for impact.
             </p>
+
+            <p>“Agreed,” Lucas replied, his jaw locked tight as cold sweat broke across his brow. He fought the violent
+                tremor in his hands, forcing his panicked thoughts into the clinical silence of his mind and sealing
+                his terror behind a rigid, chilling geometry.</p>
+
+            <p>Across the open air between them, their telepathic bond flared to life. Mina pushed a surge of vibrant,
+                living warmth straight into the cold static of Lucas's mind. <span class="telepathy">Anchor to my
+                    heartbeat,</span> she projected, her mental voice a fierce, defiant current pushing back against his
+                suffocating dread. <span class="telepathy">We hold this ground together.</span></p>
+
+            <p>Lucas seized her vitality, returning a wave of sharp, structured clarity that steadied her erratic pulse.
+                <span class="telepathy">Together,</span> he echoed, the harmonic feedback locking their nervous systems
+                into a singular, heightened frequency of survival.
+            </p>
+
+            <p>Thomas planted his boots into the fractured stone, his knuckles white around the grips of his heavy
+                shield. Every nerve in his body registered the bone-crushing gravity of the titan before them, but he
+                ground his teeth, locking his frame into an unyielding, stoic foundation.</p>
 
             <p>The Disciple’s molten eyes locked onto the three teenagers. The biometric resonance matched. The targets
                 were acquired.</p>
 
-            <p>With a deafening, seismic roar that shook the dust from the cavern ceiling, the apocalyptic
-                weapon surged forward.</p>
+            <p>With a deafening, seismic roar that shook dust from the high ceiling, the apocalyptic weapon surged
+                forward.</p>
 
             <hr class="scene-break">
             <div class="chapter-header-wrapper">
@@ -9257,12 +9308,9 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img
-                            src="https://ui-avatars.com/api/?name=Torgar&background=800020&color=fff&bold=true"
-                            alt="Torgar"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img
-                            src="https://ui-avatars.com/api/?name=Disciple&background=000&color=ff4500&bold=true"
-                            alt="Disciple"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                            alt="Disciple of Earth"></div>
                     <div class="actor-icon" data-name="Militia"><img
                             src="https://ui-avatars.com/api/?name=Militia&background=000&color=0ff&bold=true"
                             alt="Militia"></div>
@@ -9274,53 +9322,64 @@
             <p>The atmospheric pressure in the crumbling sanctum was lethal. Lucas, Mina, and Thomas stood amidst the
                 chaos, tracking the relentless advance of the Disciple. The apocalyptic biological missile was a
                 hulking nightmare of silicate and fury. Its rocky armor gleamed with a faint, unnatural sheen, entirely
-                immune to the desperate, localized magic of the cultists scrambling across the ruins.</p>
+                unyielding against the crude iron blades and frantic crossbow bolts of the cultists scrambling across
+                the ruins.</p>
 
             <p>From the fractured perimeter of the courtyard, the city militia hurled both insults and heavy aetheric
                 plasma rounds, stubbornly refusing to coordinate with the Sent Ones despite their shared executioner.
                 The air was a chaotic, deafening maelstrom of displaced ozone, fear, and shattered stone.</p>
 
-            <p>Lucas gritted his teeth, his hands trembling as he projected intense, concentrated streams of heat. But
-                his pyrokinesis was failing. The flames washed over the Disciple’s torso, barely scorching the outer
-                layer of its hyper-dense shell. The heat simply dissipated against the entity's own internal magma. The
-                crushing weight of Lucas's inadequacy pressed down on his skull like the collapsing walls around them.
-                His synthesis mind was redlining, searching for an algorithm that didn't exist.</p>
+            <p>A freezing, suffocating terror clamped down on Lucas’s throat—the visceral dread of a lab specimen
+                staring into an extinction-level force. His mind mapped the closing vectors in frantic, fractured
+                bursts: twenty paces, fifteen, closing fast. The sheer, crushing density of the advancing titan
+                threatened to obliterate their perimeter before Mina or Thomas could even mount a defense. He had to
+                dictate the spatial boundary. He had to erect a blistering thermal barrier between the beast and his
+                friends, using raw combustion to halt its forward momentum and keep the crushing mass at bay.</p>
 
-            <p>“Lucas, sever the feed! You’re bleeding output for nothing!” Mina’s voice cut through the roaring din.
+            <p>Lucas gritted his teeth, his hands trembling with tension as he thrust his palms forward, projecting
+                concentrated streams of searing heat straight into the creature's chest. But the tactical calculation
+                collapsed. The flames washed over the Disciple’s torso, barely scorching the outer layer of its
+                hyper-dense shell. The intense output bled directly into the entity's churning internal magma, absorbed
+                into its molten core with absolute ease. The suffocating weight of his inadequacy pressed down on his
+                skull, his thoughts stalling in a sterile loop as the creature strode through the firestorm with
+                relentless, unyielding momentum.</p>
+
+            <p>“Lucas, stop! Drop the fire—you’re burning yourself out for nothing!” Mina’s voice cut through the
+                roaring din.
             </p>
 
             <p>A cultist had thrust a pair of heavy iron daggers into her hands moments prior, but Mina discarded them
-                without hesitation. Cold steel was a dead variable against bedrock. She needed velocity. She slipped her
+                without hesitation. Cold steel had no purchase against bedrock. She needed velocity. She slipped her
                 internal restraints, her movements instantly blurring into a feral, untamed rush. Bounding off a jagged
-                chunk of rubble, she pivoted in mid-air, transferring the entirety of her kinetic momentum into a
-                devastating, concentrated kick directly to the Disciple’s flank.</p>
+                chunk of rubble, she pivoted in mid-air, channeling the raw fury of her speed into a devastating,
+                concentrated strike directly to the Disciple’s flank.</p>
 
             <p>The impact registered like a cannon shot. A localized shockwave ripped through the dust-choked air.
                 Hairline fractures spider-webbed across the Disciple’s outer armor, and the colossal entity actually
-                staggered, its center of gravity momentarily compromised.</p>
+                staggered, its towering foundation momentarily buckling under the shear pressure.</p>
 
             <p>Mina landed with fluid grace, her bright green eyes narrowing as she assessed the shallow damage.
-                “Blades are useless. But momentum transfers,” she muttered, wiping soot from her brow.</p>
+                “Blades have no bite. But the impact carries,” she muttered, wiping soot from her brow.</p>
 
-            <p>“Mina!” Lucas shouted, his threat-assessment algorithms screaming. “Watch the vector! He’s—”</p>
+            <p>“Mina, look out!” Lucas shouted, a cold spike of terror hitting him as he saw the titan coil its weight.
+                “Get back, he’s—”
+            </p>
 
             <p>The Disciple recovered with terrifying speed. It slammed both its massive, molten fists directly into
-                the earth. The bedrock didn't just crack; it liquefied. A tectonic ripple surged outward like a tidal
-                wave, throwing Mina violently off her feet. Lucas didn't think; he reacted. Reaching out with a
-                desperate, telekinetic net, he caught her mid-fall, arresting her backward momentum just enough to pull
-                her safely out of the impact zone.</p>
+                the earth. The bedrock liquefied under the concussive impact, surging outward in a violent tectonic wave
+                that threw Mina off her boots. Operating on raw reflex, Lucas projected a concentrated net of force,
+                arresting her backward trajectory just enough to pull her safely out of the crushing zone.</p>
 
             <p>“Thanks,” she breathed, instantly finding her footing.</p>
 
             <p>Thomas stepped into the gap. His broad frame eclipsed them, positioning his heavy shield between his
-                friends and the towering beast. “We need a structural strategy,” Thomas rumbled, his voice cold and
-                dense. “Lucas, find the structural flaw. Mina, keep its targeting sensors on you. I will absorb the
-                collateral.”</p>
+                friends and the towering beast. “We need a plan,” Thomas rumbled, his voice a stoic, immovable weight.
+                “Lucas, find where to hit it. Mina, draw its focus. I will take the brunt.”</p>
 
             <p>“What about them?” Mina jerked her chin toward the surviving cultists, who were retreating in complete
                 disarray.</p>
 
-            <p>“They’re not our variables,” Thomas stated, his tone unyielding. “Focus on the strike.”</p>
+            <p>“They are not our concern,” Thomas stated, his tone unyielding. “Hold the line.”</p>
 
             <p>The Disciple roared, the sound grinding like tectonic plates, and initiated a secondary assault. Jagged,
                 petrified pillars of earth erupted from the floorboards, forcing Lucas and Mina to scatter. Thomas held
@@ -9328,15 +9387,15 @@
                 upward trajectory. The blunt force rattled the bones in his forearm, but his stance remained absolute
                 bedrock.</p>
 
-            <p>Lucas darted behind a collapsed stone column, his breathing ragged. Brute-force telekinesis was
-                ineffective, and his thermal output wasn’t penetrating the armor. His mind raced, calculating the
-                material properties of silicate, the immense internal heat of the Disciple, and the freezing ambient
-                temperature of the mountain.</p>
+            <p>Lucas darted behind a collapsed stone column, his breathing ragged. The silicate armor absorbed his
+                telekinetic grip, bleeding his heat harmlessly into the freezing ambient air. His mind raced,
+                cross-referencing the immense internal pressure of the creature's core against the mountain's sub-zero
+                draft.</p>
 
             <p>Out in the open, Mina was relentless. She rode the slipstream, her strikes landing in rapid, blinding
-                succession. She targeted the exact same hairline fractures she had created earlier, relentlessly
-                chipping away at the armor. But it wasn't enough. The Disciple’s biology was ancient; the cracks sealed
-                with fresh, molten rock almost as quickly as she formed them.</p>
+                succession. She targeted the exact same hairline fractures she had opened, relentlessly driving blunt
+                shocks into the stone. The Disciple’s ancient physiology adapted instantly, surging fresh, molten rock
+                across the fissures to seal the trauma as fast as she carved it.</p>
 
             <p>“It’s regenerating,” she hissed, dropping back to Lucas’s cover.</p>
 
@@ -9347,15 +9406,18 @@
                 succeeding
                 in drawing its molten gaze.</p>
 
-            <p>“You anomalies better finish this before the entire cavern collapses on our heads!” a militia commander
-                bellowed, his pristine armor scorched black.</p>
+            <p>“I’ve spent thirty years locking up cult fanatics!” a dwarven militia commander bellowed through the
+                smoke, his once-pristine armor scorched black. “But every child in these mountains grew up on the tale
+                of the three who hold the line when the earth breaks! If the old songs are true, break this bastard
+                before the ceiling caves in on us all!”</p>
 
-            <p>Thomas grunted, bracing his shield against a hail of stone shrapnel. “They’re just waiting for us to
-                bleed out first.”</p>
+            <p>Thomas grunted, bracing his shield against a hail of stone shrapnel. “Guess the whole mountain is
+                betting on us now.”</p>
 
-            <p>“Then we change the math,” Mina said sharply. She turned to Lucas, her expression fierce and unyielding.
-                “You need to stop holding back, Lucas. If sheer fire won’t melt him, what else can you do with the
-                pressure?”</p>
+            <p>“Then we stop fighting him in pieces!” Mina shouted over the deafening roar, ducking as fresh shrapnel
+                sheared through the smoke. She seized his arm, breathing hard, eyes blazing with urgency. “Stop trying
+                to
+                take him down alone, Lucas! What can the three of us do together to crack that thing open?”</p>
 
             <p>Lucas blinked, the static in his mind stalling. “What are you talking about?”</p>
 
@@ -9364,36 +9426,45 @@
 
             <p>The weight of her absolute belief sliced straight through his self-doubt. The ghosts of the laboratory
                 receded. Lucas closed his eyes, filtering out the chaotic noise of the militia, the screams of the
-                cultists, and the grinding roar of the Disciple. He synthesized the variables: <em>Hyper-dense silicate.
-                    Internal magma core. Absolute physical resistance.</em></p>
+                cultists, and the grinding roar of the Disciple. He mapped the structural constraints: <em>Hyper-dense
+                    silicate.
+                    Internal magma core. Unyielding physical shell.</em></p>
 
-            <p>“Thermal shock,” Lucas murmured, his eyes snapping open. The equation finally balanced.</p>
+            <p>“Thermal shock,” Lucas murmured, his eyes snapping open. The solution locked into place.</p>
 
             <p>“What?” Torgar grunted, sliding into cover beside them, wiping dark blood from a laceration on his cheek.
             </p>
 
-            <p>“We can’t break his armor with blunt force,” Lucas explained, his voice stripped of panic, cold and
-                clinical. “But we can fracture it at the molecular level. If I superheat his exterior to critical mass,
-                and we instantly quench him with freezing water, the rapid thermodynamic contraction will shatter the
-                silicate shell. He’ll lose structural stability.”</p>
+            <p>“Direct impacts shatter against that crust,” Lucas explained, his voice stripped of panic, cold and
+                clinical. “We have to fracture it at the molecular level. If I superheat his exterior to critical mass,
+                and we instantly quench him with freezing water, the rapid contraction will rip the silicate shell
+                apart.
+                The temperature drop will force a catastrophic structural collapse.”</p>
 
-            <p>“That’s the vector!” Mina’s voice rang through their telepathic link, her exhaustion overridden by the
-                thrill of a viable path. “What do you need?”</p>
+            <p>Torgar stared at him in utter bewilderment through the drifting smoke, his knuckles white around his
+                mace. “Speak plain, boy! What are you babbling about?”</p>
+
+            <p>Through their mental bond, the concept hit Mina in a single, vivid flash—hot glass plunged into ice
+                water, shattering instantly. She grabbed Torgar’s arm, shouting over the roar of falling debris. “Like
+                hot glass in ice water! He heats the shell red-hot, we douse it, and the whole thing shatters!”</p>
 
             <p>Lucas looked at the dwarven cleric. “I need a massive volume of water. Now.”</p>
 
             <p>Torgar’s brow furrowed as he mentally mapped the ruined district. “There is a municipal aqueduct hub.
                 Three streets east, leading into the lower reservoir. The pipes are pressurized.”</p>
 
-            <p>“We lure him there,” Lucas decided. He glanced out at the immovable boy holding the line. “Thomas! Can
-                you force the militia to funnel him east? If they block the peripheral streets, we have a corridor!”</p>
+            <p>“We lure him there,” Lucas decided. He glanced out at the immovable boy holding the center. Surrounding
+                Thomas was a battered squad of dwarven militia and a cluster of Sent Ones cultists—the only mixed unit
+                on the entire battlefield fighting shoulder-to-shoulder—while the rest of the militia remained mostly
+                outside the breached walls and the bulk of the cultists clashed under Durnak and other captains across
+                the ruins. “Thomas! Can your line funnel him east? If you seal the side streets, we have our
+                corridor!”</p>
 
-            <p>Thomas didn't hesitate. “I will form the wedge. Go!”</p>
+            <p>Thomas didn't hesitate. “We’ll lock the street. Go!”</p>
 
-            <p>Mina flexed her hands, the feral heat in her blood rising to a blinding intensity. She didn't shout
-                insults;
-                she weaponized her aura. She pulsed her raw creation energy outward, a blinding beacon of biometric
-                resonance designed to completely overwhelm the Disciple's sensory input.</p>
+            <p>Mina flexed her hands, the feral heat in her blood coiling to a blinding intensity. Weaponizing her
+                vitality, she pulsed her raw creation energy outward—a dazzling flare of organic radiance designed to
+                completely overwhelm the Disciple's sensory focus.</p>
 
             <p>The entity roared, its molten eyes locking instantly onto her vibrant signature.</p>
 
@@ -9401,33 +9472,87 @@
                 shattering the cobblestones with every colossal stride, entirely ignoring the cultists and militia in
                 its single-minded pursuit of the anomaly.</p>
 
-            <p>Thomas turned his imposing mass toward the bewildered militia lines. “Lock your shields on the southern
-                flank!” his voice boomed, carrying a tectonic authority that bypassed their commanding officer. “Funnel
-                him east or he buries us all!”</p>
+            <p>Thomas tracked the flash of her movement, instantly recognizing that she had drawn the target. Focused
+                solely on the directive to herd the beast east, and keenly aware that the sentient titan stood within
+                hearing range, Thomas restricted his orders to pure formation mechanics. He turned his imposing mass
+                toward the mixed company of thirty militia guards and cultist vanguards holding the center with him.
+                “Form the wedge!” his voice boomed, carrying a tectonic authority that cut through the thunder and
+                bound the rival factions into a single, disciplined force. “First two ranks, overlap shields and anchor
+                the center! Left and right squads, peel off and seal every side alley as we push! Cultists fill the
+                seams, militia hold the wall! We advance on my count—ten paces, steady cadence! Keep the perimeter
+                locked tight and drive him forward in her wake!”</p>
 
-            <p>Driven by the undeniable logic of survival and Thomas's crushing presence, the militia fell into a rigid
-                phalanx, creating an iron barricade that blocked the Disciple’s lateral movement. Lucas, Torgar, and a
-                handful of surviving cultists sprinted in Mina’s wake.</p>
+            <p>Driven by the undeniable logic of survival and Thomas's crushing presence, the thirty-man company
+                responded as a single engine. Iron clashed against iron as dwarven soldiers and cultist vanguards locked
+                shields, moving in a heavy, synchronized march behind Mina's advance. Squads peeled away to blockade
+                the side streets with locked armor, boxing the Disciple into the primary avenue and severing any lateral
+                escape.</p>
+
+            <p>Outside that disciplined pocket, the street was a grinding slaughter. The Disciple retaliated against the
+                herding pressure with seismic fury. Splatters of superheated mantle erupted from its ruptured joints,
+                searing through unshielded militia ranks on the outer avenues and melting iron breastplates to the bone.
+                A sweeping backhand from the titan's stone fist obliterated a merchant colonnade, burying seven dwarven
+                guards under tons of collapsing masonry. Uncoordinated clusters of cultists, attempting to rush the
+                monster independently, were swatted into the stone facades like broken dolls. Screams echoed across the
+                district as the city’s defense fractured into bloody, isolated holding actions.</p>
+
+            <p>Yet Thomas’s company endured. Whenever a concussive shockwave rolled down the avenue, Thomas planted his
+                boots as the central bulwark, absorbing the blunt force on his heavy shield. His locked formation
+                weathered the flying debris, holding the line with grim, unyielding traction. They advanced ten paces on
+                his rhythmic count, replacing fallen shields, filling every gap, and systematically herding the titan
+                down the main thoroughfare.</p>
+
+            <p>Ahead of the monster, Mina turned the avenue into a gauntlet of speed. She darted across the Disciple’s
+                vision in a relentless, unpredictable blur, vaulting off shattered wagons and crumbling balconies.
+                Whenever the titan slowed to crush an exposed squad of wounded dwarves, Mina surged into its strike
+                zone, delivering a concussive kick to its fractured knee before vanishing into the smoke. She taunted
+                its burning gaze, shouting across the thunder of the collapse, dancing inches beyond its sweeping claws.
+                Enraged by the agile pest it could not crush, the Disciple abandoned the peripheral slaughter and
+                charged blindly in her wake.</p>
+
+            <p>Sprinting in her wake, Lucas initiated the thermal buildup. He focused his mind into a tight, intense
+                stream, pouring concentrated heat directly into the Disciple's trailing crust with every stride. Waves
+                of scorching energy washed over the entity's back, steadily driving the stone toward its boiling point.
+                Agitated by the mounting burn, the Disciple thrashed wildly, sweeping its glowing arms to clear the
+                fighters swarming its flanks. Several overeager cultists and militia members who strayed too close were
+                violently thrown back, their armor and skin scorched by the searing backdraft radiating from the
+                titan's body.</p>
+
+            <p>Lucas, Torgar, and the surviving clerics pushed through the heat-shimmering corridor Thomas had hammered
+                open, sprinting toward the eastern district.</p>
 
             <p>Mina reached the aqueduct hub first. The open plaza was dominated by massive, iron-wrought pressure
-                valves and a deep, stone-lined reservoir basin. She skidded to a halt, spinning to face the oncoming
-                cataclysm.</p>
+                valves and a deep, stone-lined reservoir basin. She skidded to a halt on the slick cobblestones,
+                spinning to face the oncoming cataclysm.</p>
 
-            <p>“Lucas! The grid is set!” she projected.</p>
+            <p><span class="telepathy">“Lucas! I brought him to the water!”</span> she projected, breathless and sharp.
+                <span class="telepathy">“He’s right on my heels—do it
+                    now!”</span>
+            </p>
 
-            <p>Lucas arrived seconds later, his lungs burning. He didn't summon scattered flames. He dropped his
-                internal
-                temperature to absolute zero, forcing all the ambient heat in the plaza to compress into a singular,
-                sterile geometric dome around the approaching Disciple.</p>
+            <p>Lucas burst into the plaza seconds later, his chest heaving, vision blurring from the continuous drain.
+                Instant flash-heating remained far beyond his current mastery; the process demanded a sustained,
+                brutal compression of heat to force the silicate rock past its critical threshold. Planted on the
+                stones, Lucas locked his focus onto the charging titan, doubling down on the thermal stream and driving
+                the entity's crust from a dull orange to a blinding, incandescent white.</p>
 
-            <p>The Disciple lunged for Mina, but Lucas snapped the trap shut.</p>
+            <p>The radiant heat rolled across the plaza like an open furnace. The air itself began to scorch, singeing
+                the hair on Lucas's arms.</p>
 
-            <p>A blinding, super-heated plasma field ignited around the entity. The air inside the dome incinerated.
-                The Disciple thrashed, its silicate armor glowing a furious, blinding white-hot under the localized
-                thermodynamic pressure.</p>
+            <p><span class="telepathy">Mina, get back!</span> Lucas shouted across their bond, his mental voice laced
+                with raw urgency. <span class="telepathy">Stay away from him! The air around his shell will sear your
+                    lungs!</span></p>
+
+            <p>The Disciple lunged blindly into the plaza, roaring in agony as its exterior baked under the extreme
+                compression. In a frantic bid to purge the burning pests, it swung its molten fists in a wild arc. Two
+                dwarven guards positioned near the outer valves were clipped by the searing air, tumbling back across
+                the stones with scorched armor and blistering skin as they scrambled out of the kill zone.</p>
+
+            <p>Lucas held the thermal focus with white-knuckled desperation, his teeth grinding as the entire silicate
+                crust reached a shimmering, white-hot critical mass.</p>
 
             <p>“Torgar! Now!” Lucas screamed, the blood vessels in his nose rupturing from the catastrophic mental
-                strain of containing the heat.</p>
+                strain of holding the heat.</p>
 
             <p>Torgar and the cultists drove their heavy maces and axes directly into the pressurized iron valves of the
                 aqueduct. The metal sheared. A violent, roaring deluge of freezing mountain water exploded from the
@@ -9435,10 +9560,10 @@
 
             <p>The resulting flash-steam explosion was deafening.</p>
 
-            <p>A massive plume of white vapor instantly blinded the plaza. But through the hiss of the steam, the sound
-                of catastrophic structural failure echoed. The rapid thermodynamic contraction tore through the
-                Disciple’s armor. A sickening series of cracks ripped across its body, the dense silicate violently
-                fracturing at the molecular level.</p>
+            <p>A massive plume of white vapor instantly blinded the plaza. Through the hiss of the steam, the sound of
+                catastrophic structural failure echoed. The sudden thermal shock tore through the Disciple’s armor. A
+                sickening series of cracks ripped across its body, the dense silicate violently fracturing under the
+                brutal freeze.</p>
 
             <p>The Disciple staggered out of the steam, its molten eyes dimming, its once-impenetrable armor shedding
                 jagged, smoking plates of dead stone.</p>
@@ -9469,7 +9594,8 @@
             <p>Lucas slumped against the cold stone of the ruptured pipes, struggling to pull oxygen into his burning
                 lungs. The thermal output had drained his cellular reserves to critical levels. Sweat and soot streaked
                 his pale face. Through their telepathic tether, he could feel Mina’s fierce, predatory focus locking
-                onto the wounded Disciple. But her next kinetic shift sent a spike of pure terror into his mind.</p>
+                onto the wounded Disciple. But her sudden acceleration forward sent a spike of pure terror into his
+                mind.</p>
 
             <p>The Disciple turned. Registering catastrophic structural damage, its programming overrode its aggression.
                 It began a slow, staggering retreat into the lightless, ruined alleyways of the eastern sector.</p>
@@ -9479,36 +9605,40 @@
             <p>“Mina, wait!” Lucas gasped, his voice cracking, entirely devoid of command.</p>
 
             <p>He threw his thoughts violently into their bond, strained and frantic. <span class="telepathy">Mina,
-                    stop! Sever the pursuit! It’s retreating! Your energy is redlining, you don't have the reserves to
-                    finish it alone!</span></p>
+                    please, stop! Let it go! It’s falling back! You’re burning through everything you have—you can't
+                    take that thing down alone!</span></p>
 
             <p>Her response hit his mind like a physical strike—hot, feral, and absolutely resolute. <span
-                    class="telepathy">If we let it repair its silicate shell, it will come back. It will never stop
-                    hunting us. I end the equation now.</span> She violently choked off his voice, compartmentalizing
-                the bond to focus solely on the kill.</p>
+                    class="telepathy">If we let it put itself back together, it's coming right back for us! It will
+                    never stop hunting us. I'm finishing this right now!</span> She violently choked off his voice,
+                shutting down the bond to focus solely on the kill.</p>
 
             <p>Lucas’s heart hammered against his ribs as her presence in his mind grew terrifyingly faint. He forced
                 his trembling arms to push him upward, his legs threatening to buckle under his own weight. He looked
-                frantically for the immovable anchor.</p>
+                frantically through the smoke for Thomas.</p>
 
-            <p>“Thomas!” Lucas rasped, grabbing the larger boy's armored shoulder. “She slipped the tether! She’s
-                chasing
-                it alone! Anchor her!”</p>
+            <p>“Thomas!” Lucas rasped, grabbing the larger boy's armored shoulder. “She shut me out—she’s going after it
+                alone! You have to stop her!”</p>
 
-            <p>Thomas’s dark eyes narrowed. He didn't ask for variables. He simply ripped his blade from the fractured
-                stone and bolted into the steam, his heavy boots pounding the earth with relentless, driving mass,
-                sprinting into the dark after the blur of green energy.</p>
+            <p>Thomas’s dark eyes narrowed. He didn't ask questions. He ripped his blade from the fractured stone and
+                bolted into the steam, his heavy boots pounding the wet earth as he sprinted into the dark in her wake.
+                Behind him, the shock broke—a handful of able-bodied militia and cultist vanguards who had held the line
+                with him rallied, drawing their weapons and charging into the gloom to back him up.</p>
 
-            <p>Lucas leaned heavily against Torgar, who had rushed to support him. “You’re operating on a flatline,
-                boy,”
-                the dwarven cleric grunted, hauling Lucas upright. “You are in no state to walk.”</p>
+            <p>In the ruins of the plaza, Torgar immediately took command. His booming voice cut through the hiss of the
+                steam, barking orders to the survivors. He kept a small unit to secure the broken aqueduct and organize
+                triage, dragging the crushed and scorched dwarves from the rubble, while swiftly directing the last
+                capable fighters to push forward and reinforce Thomas’s group down the avenue.</p>
 
-            <p>“I don’t care,” Lucas snapped, his voice trembling with desperation as he fought to stand on his own. He
-                stared into the dark alleyway where his friends had vanished. “She is my anchor. I don't let the tether
-                snap.”</p>
+            <p>Lucas leaned heavily against Torgar as the cleric tried to steady him. “You’re on your knees, boy!”
+                Torgar grunted, hauling him upright. “You’re half-dead on your feet—stay with the wounded!”</p>
 
-            <p>Refusing to be left behind in the ruins, Lucas forced his failing biology forward, taking his first
-                staggering steps into the shadows, determined to follow the violent echoes of the storm.</p>
+            <p>“I don’t care,” Lucas rasped, tearing himself from the cleric’s grip, his voice trembling with
+                desperation as he stared into the dark alleyway where his friends had vanished. “I’m not leaving
+                them.”</p>
+
+            <p>Refusing to stay behind in the wreckage, Lucas forced his failing body into motion, taking his first
+                staggering steps into the shadows to follow the violent echoes of the fight.</p>
 
             <hr class="scene-break">
             <div class="chapter-header-wrapper">
@@ -9523,12 +9653,9 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img
-                            src="https://ui-avatars.com/api/?name=Wallace&background=1a1a24&color=fff&bold=true"
-                            alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img
-                            src="https://ui-avatars.com/api/?name=Disciple&background=000&color=ff4500&bold=true"
-                            alt="Disciple"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                            alt="Disciple of Earth"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -9725,9 +9852,8 @@
                     <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
                     <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img
-                            src="https://ui-avatars.com/api/?name=Disciple&background=000&color=ff4500&bold=true"
-                            alt="Disciple"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                            alt="Disciple of Earth"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -10303,116 +10429,198 @@
         // --- TEMPORAL ANCHOR ALGORITHM (BOOKMARK) ---
         document.addEventListener("DOMContentLoaded", function () {
             const contentNodes = Array.from(document.querySelectorAll('.chapter-content p, .chapter-content h2, .chapter-content h3'));
-            const STORAGE_KEY = 'hybris_timeline_anchor';
+            const STORAGE_KEY = 'hybris_timeline_anchors';
+            const LEGACY_STORAGE_KEY = 'hybris_timeline_anchor';
 
-            // Initialize physical UI components for the void
+            // Initialize UI hierarchy
+            const anchorContainer = document.createElement('div');
+            anchorContainer.id = 'temporal-anchor-container';
+            anchorContainer.style.transform = 'translateY(150px)';
+            anchorContainer.style.opacity = '0';
+            anchorContainer.style.pointerEvents = 'none';
+
+            const anchorMenu = document.createElement('div');
+            anchorMenu.id = 'temporal-anchor-menu';
+
             const bookmarkBtn = document.createElement('button');
             bookmarkBtn.id = 'temporal-anchor-btn';
             bookmarkBtn.innerHTML = '&#10022; Realign to Anchor';
-            // Start completely submerged beneath the periphery
-            bookmarkBtn.style.transform = 'translateY(150px)';
-            bookmarkBtn.style.opacity = '0';
-            bookmarkBtn.style.pointerEvents = 'none';
-            document.body.appendChild(bookmarkBtn);
+
+            anchorContainer.appendChild(anchorMenu);
+            anchorContainer.appendChild(bookmarkBtn);
+            document.body.appendChild(anchorContainer);
 
             const saveToast = document.createElement('div');
             saveToast.id = 'anchor-toast';
             saveToast.innerHTML = 'Temporal Coordinate Synchronized';
             document.body.appendChild(saveToast);
 
-            let savedIndex = parseInt(localStorage.getItem(STORAGE_KEY));
+            // Load and sanitize the 3-anchor coordinate stack
+            function loadAnchors() {
+                try {
+                    const raw = localStorage.getItem(STORAGE_KEY);
+                    if (raw) {
+                        const parsed = JSON.parse(raw);
+                        if (Array.isArray(parsed)) {
+                            return parsed.filter(idx => !isNaN(idx) && idx >= 0 && idx < contentNodes.length).slice(0, 3);
+                        }
+                    }
+                    // Backward compatibility with single-anchor legacy key
+                    const legacy = parseInt(localStorage.getItem(LEGACY_STORAGE_KEY));
+                    if (!isNaN(legacy) && legacy >= 0 && legacy < contentNodes.length) {
+                        return [legacy];
+                    }
+                } catch (e) {
+                    console.warn("Temporal coordinate extraction fault:", e);
+                }
+                return [];
+            }
 
-            // Imprint the physical resonance onto the selected node
+            let anchors = loadAnchors();
+
+            // Imprint optical resonance onto the target node
             function imprintAnchorResonance(index) {
-                // Purge residual echoes from all nodes
                 contentNodes.forEach(node => node.classList.remove('temporal-anchor-highlight'));
                 if (!isNaN(index) && index >= 0 && contentNodes[index]) {
                     contentNodes[index].classList.add('temporal-anchor-highlight');
                 }
             }
 
-            // Function to dynamically assess the anchor's proximity to the optical perimeter
+            // Render the coordinate selection matrix
+            function renderAnchorMenu() {
+                anchorMenu.innerHTML = '';
+                if (anchors.length === 0) return;
+
+                const header = document.createElement('div');
+                header.className = 'temporal-menu-header';
+                header.innerHTML = '<span>✦ Temporal Resonance Stack</span><span>' + anchors.length + '/3</span>';
+                anchorMenu.appendChild(header);
+
+                const labels = ['Anchor I (Latest)', 'Anchor II', 'Anchor III'];
+
+                anchors.forEach((nodeIndex, position) => {
+                    const node = contentNodes[nodeIndex];
+                    if (!node) return;
+
+                    const btn = document.createElement('button');
+                    btn.className = 'anchor-choice-btn';
+
+                    const rawText = (node.innerText || node.textContent || '').trim();
+                    const snippet = rawText.length > 55 ? rawText.substring(0, 55) + '...' : rawText;
+
+                    btn.innerHTML = `
+                        <span class="anchor-tag">${labels[position] || `Anchor ${position + 1}`}</span>
+                        <span class="anchor-preview">${snippet || '[Non-text coordinate]'}</span>
+                    `;
+
+                    btn.onclick = (e) => {
+                        e.stopPropagation();
+                        node.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                        imprintAnchorResonance(nodeIndex);
+                        anchorMenu.classList.remove('open');
+                        assessAnchorVisibility();
+                    };
+
+                    anchorMenu.appendChild(btn);
+                });
+            }
+
+            // Assess if the primary coordinate has breached optical perimeter
             function assessAnchorVisibility() {
-                if (!isNaN(savedIndex) && savedIndex >= 0 && contentNodes[savedIndex]) {
-                    const rect = contentNodes[savedIndex].getBoundingClientRect();
-                    // Identify if the anchored mass has breached the visual boundaries
+                if (anchors.length > 0 && contentNodes[anchors[0]]) {
+                    const rect = contentNodes[anchors[0]].getBoundingClientRect();
                     const isOutOfBounds = rect.bottom < 0 || rect.top > window.innerHeight;
 
                     if (isOutOfBounds) {
-                        bookmarkBtn.style.transform = 'translateY(0)';
-                        bookmarkBtn.style.opacity = '1';
-                        bookmarkBtn.style.pointerEvents = 'auto';
+                        anchorContainer.style.transform = 'translateY(0)';
+                        anchorContainer.style.opacity = '1';
+                        anchorContainer.style.pointerEvents = 'auto';
                     } else {
-                        bookmarkBtn.style.transform = 'translateY(150px)';
-                        bookmarkBtn.style.opacity = '0';
-                        bookmarkBtn.style.pointerEvents = 'none';
+                        anchorContainer.style.transform = 'translateY(150px)';
+                        anchorContainer.style.opacity = '0';
+                        anchorContainer.style.pointerEvents = 'none';
+                        anchorMenu.classList.remove('open');
                     }
+                } else {
+                    anchorContainer.style.transform = 'translateY(150px)';
+                    anchorContainer.style.opacity = '0';
+                    anchorContainer.style.pointerEvents = 'none';
+                    anchorMenu.classList.remove('open');
                 }
             }
 
-            // Command vector for manual realignment
-            bookmarkBtn.onclick = () => {
-                if (!isNaN(savedIndex) && contentNodes[savedIndex]) {
-                    contentNodes[savedIndex].scrollIntoView({ behavior: 'smooth', block: 'center' });
+            // Command vector for the main anchor trigger
+            bookmarkBtn.onclick = (e) => {
+                e.stopPropagation();
+                if (anchors.length === 1) {
+                    // Single coordinate: realign directly
+                    contentNodes[anchors[0]].scrollIntoView({ behavior: 'smooth', block: 'center' });
+                    imprintAnchorResonance(anchors[0]);
+                } else if (anchors.length > 1) {
+                    // Multi-coordinate stack: toggle realignment matrix
+                    anchorMenu.classList.toggle('open');
                 }
             };
 
-            // Initial perimeter check and resonance imprint
+            // Close coordinate matrix when clicking beyond periphery
+            document.addEventListener('click', (e) => {
+                if (!anchorContainer.contains(e.target)) {
+                    anchorMenu.classList.remove('open');
+                }
+            });
+
+            // Initial initialization
+            renderAnchorMenu();
             assessAnchorVisibility();
-            imprintAnchorResonance(savedIndex);
+            if (anchors.length > 0) {
+                imprintAnchorResonance(anchors[0]);
+            }
 
             let scrollTimeout;
             let isMoving = false;
             let initialY = 0;
 
             window.addEventListener('scroll', () => {
-                // Log the absolute starting coordinate the microsecond movement begins
                 if (!isMoving) {
                     isMoving = true;
                     initialY = window.scrollY;
                 }
 
-                // Continuously evaluate the beacon's necessity while in motion
                 assessAnchorVisibility();
-
                 clearTimeout(scrollTimeout);
 
-                // Wait for the atmospheric pressure to stabilize
                 scrollTimeout = setTimeout(() => {
                     isMoving = false;
                     const finalY = window.scrollY;
                     const displacement = Math.abs(finalY - initialY);
 
-                    // Filter out massive spatial jumps. Only log organic, fluid reading patterns (delta <= 1.5x viewport height).
+                    // Filter out massive leaps; capture organic data absorption
                     if (displacement > 0 && displacement <= window.innerHeight * 1.5) {
                         let currentIndex = -1;
 
-                        // Map the physical architecture of the current viewport
                         for (let i = 0; i < contentNodes.length; i++) {
                             const rect = contentNodes[i].getBoundingClientRect();
-                            if (rect.bottom > 150) {
+                            if (rect.top < window.innerHeight && rect.bottom > 150) {
                                 currentIndex = i;
                                 break;
                             }
                         }
 
-                        // Overwrite the coordinate if a new variable is established
-                        if (currentIndex !== -1 && currentIndex !== savedIndex) {
-                            savedIndex = currentIndex;
-                            localStorage.setItem(STORAGE_KEY, currentIndex);
+                        if (currentIndex !== -1 && (!anchors.length || anchors[0] !== currentIndex)) {
+                            // Update temporal stack: push to front, de-duplicate, keep top 3
+                            anchors = [currentIndex, ...anchors.filter(idx => idx !== currentIndex)].slice(0, 3);
+                            localStorage.setItem(STORAGE_KEY, JSON.stringify(anchors));
 
-                            // Imprint the new optical resonance
-                            imprintAnchorResonance(savedIndex);
+                            imprintAnchorResonance(anchors[0]);
+                            renderAnchorMenu();
 
-                            // Visual confirmation of the data overwrite
                             saveToast.classList.add('show');
                             setTimeout(() => saveToast.classList.remove('show'), 2000);
 
-                            // Re-evaluate the beacon's necessity based on the new baseline
                             assessAnchorVisibility();
                         }
                     }
-                }, 800); // 800ms of absolute stillness registers as data absorption
+                }, 800);
             });
         });
     </script>
