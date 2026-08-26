@@ -22,14 +22,14 @@ def get_relative_theme_paths(html_file_path):
     
     if not dir_of_file or dir_of_file == '.':
         # In Webserver root (e.g., index.html)
-        css_path = "./Killtime/theme.css"
-        js_path = "./Killtime/theme.js"
+        css_path = "./Killtime/css/theme.css"
+        js_path = "./Killtime/scripts_and_data/theme.js"
     else:
         # In subdirectories: compute path back to Killtime/
         depth = len(dir_of_file.split(os.sep))
         up_to_base = "../" * depth
-        css_path = up_to_base + "Killtime/theme.css"
-        js_path = up_to_base + "Killtime/theme.js"
+        css_path = up_to_base + "Killtime/css/theme.css"
+        js_path = up_to_base + "Killtime/scripts_and_data/theme.js"
         
         # Simplify if inside Killtime directory
         if rel_from_base.startswith("Killtime" + os.sep):
