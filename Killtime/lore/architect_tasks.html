@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../css/theme.css">
+    <script src="../scripts_and_data/theme.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Synthesis Mind: Task Engine</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Courier+Prime:ital,wght@0,400;0,700;1,400&family=Oswald:wght@300;500;700&display=swap');
+
+        :root {
+            --bg-deep: #030305;
+            --bg-panel: #0a0b10;
+            --text-muted: #8a8d91;
+            --lucas-blue: #2b5b84;
+            --mina-orange: #b83b00;
+            --thomas-gray: #555555;
+            --alert-red: #8a0303;
+            --glow-blue: rgba(43, 91, 132, 0.4);
+            --glow-orange: rgba(184, 59, 0, 0.4);
+            --glow-gray: rgba(85, 85, 85, 0.4);
+        }
+
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: var(--bg-deep);
+            color: var(--text-muted);
+            font-family: 'Courier Prime', monospace;
+            height: 100vh;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+        }
+
+        /* CRT Scanline Effect */
+        body::before {
+            content: " ";
+            display: block;
+            position: absolute;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            right: 0;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%), linear-gradient(90deg, rgba(255, 0, 0, 0.06), rgba(0, 255, 0, 0.02), rgba(0, 0, 255, 0.06));
+            z-index: 999;
+            background-size: 100% 2px, 3px 100%;
+            pointer-events: none;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid var(--thomas-gray);
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        h1 {
+            font-family: 'Oswald', sans-serif;
+            color: var(--alert-red);
+            margin: 0;
+            font-size: 2em;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            text-shadow: 0 0 15px rgba(138, 3, 3, 0.6);
+        }
+
+        .controls {
+            display: flex;
+            gap: 15px;
+        }
+
+        button {
+            background-color: #111;
+            color: #d0c8b8;
+            border: 1px solid var(--thomas-gray);
+            padding: 8px 15px;
+            font-family: 'Courier Prime', monospace;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.2s;
+        }
+
+        button:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            border-color: #fff;
+        }
+
+        button.primary {
+            border-color: var(--alert-red);
+            color: #ff4444;
+            box-shadow: 0 0 10px rgba(138, 3, 3, 0.2);
+        }
+
+        button.primary:hover {
+            background-color: rgba(138, 3, 3, 0.2);
+        }
+
+        /* Board */
+        .board {
+            display: flex;
+            flex-grow: 1;
+            gap: 20px;
+            overflow-x: auto;
+            padding-bottom: 10px;
+        }
+
+        .column {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--bg-panel);
+            border: 1px solid #1a1a24;
+            display: flex;
+            flex-direction: column;
+            border-top: 4px solid var(--thomas-gray);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .column-header {
+            padding: 15px;
+            font-family: 'Oswald', sans-serif;
+            font-size: 1.2em;
+            color: #fff;
+            text-align: center;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed #333;
+            background-color: rgba(0, 0, 0, 0.5);
+        }
+
+        #col-synthesis {
+            border-top-color: var(--lucas-blue);
+        }
+
+        #col-friction {
+            border-top-color: var(--mina-orange);
+        }
+
+        #col-zero {
+            border-top-color: var(--thomas-gray);
+        }
+
+        .task-list {
+            flex-grow: 1;
+            padding: 15px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        /* Task Card */
+        .task {
+            background-color: rgba(255, 255, 255, 0.03);
+            border: 1px solid #333;
+            padding: 15px;
+            cursor: grab;
+            position: relative;
+            transition: transform 0.1s, box-shadow 0.1s;
+        }
+
+        .task:hover {
+            border-color: #555;
+        }
+
+        .task:active {
+            cursor: grabbing;
+        }
+
+        .task.priority-baseline {
+            border-left: 3px solid var(--lucas-blue);
+        }
+
+        .task.priority-critical {
+            border-left: 3px solid var(--mina-orange);
+        }
+
+        .task.priority-terminal {
+            border-left: 3px solid var(--alert-red);
+        }
+
+        .task-title {
+            font-family: 'Oswald', sans-serif;
+            color: #d0c8b8;
+            font-size: 1.1em;
+            margin: 0 0 10px 0;
+            pointer-events: none;
+        }
+
+        .task-desc {
+            font-size: 0.85em;
+            color: #999;
+            margin: 0 0 15px 0;
+            pointer-events: none;
+            white-space: pre-wrap;
+        }
+
+        .task-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.75em;
+            color: #666;
+            pointer-events: none;
+        }
+
+        .priority-badge {
+            padding: 2px 6px;
+            background: rgba(0, 0, 0, 0.5);
+            text-transform: uppercase;
+        }
+
+        .task-actions {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            display: none;
+            gap: 5px;
+        }
+
+        .task:hover .task-actions {
+            display: flex;
+        }
+
+        .task-actions button {
+            padding: 2px 5px;
+            font-size: 0.8em;
+            border: none;
+            background: transparent;
+            color: #aaa;
+        }
+
+        .task-actions button:hover {
+            color: #fff;
+            background: #333;
+        }
+
+        /* Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.85);
+            z-index: 1000;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            backdrop-filter: blur(2px);
+        }
+
+        .modal {
+            background: var(--bg-panel);
+            border: 1px solid var(--alert-red);
+            width: 500px;
+            max-width: 90%;
+            padding: 25px;
+            box-shadow: 0 0 30px rgba(138, 3, 3, 0.3);
+        }
+
+        .modal h2 {
+            font-family: 'Oswald', sans-serif;
+            color: #fff;
+            margin-top: 0;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--lucas-blue);
+            font-size: 0.9em;
+            text-transform: uppercase;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 10px;
+            background: #050608;
+            color: #d0c8b8;
+            border: 1px solid #333;
+            box-sizing: border-box;
+            font-family: 'Courier Prime', monospace;
+        }
+
+        .form-group textarea {
+            resize: vertical;
+            height: 100px;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: var(--mina-orange);
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 25px;
+        }
+
+        /* Drag and drop classes */
+        .drag-over {
+            background-color: rgba(255, 255, 255, 0.05);
+            border: 1px dashed var(--thomas-gray);
+        }
+
+        .dragging {
+            opacity: 0.5;
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <div>
+            <h1>DEV_SANCTUM: TASK ENGINE</h1>
+            <div
+                style="font-size: 0.8em; color: var(--lucas-blue); margin-top: 5px; display: flex; gap: 15px; align-items: center; flex-wrap: wrap;">
+                <span>MAPPING THERMODYNAMIC FRICTION &amp; CAUSAL HAZARDS</span>
+                <span style="opacity: 0.4;">|</span>
+                <a href="./timelines/truth.html"
+                    style="color: #ff4444; text-decoration: none; font-weight: bold; letter-spacing: 1px;">✦ [ The
+                    Labyrinth / Truths ]</a>
+                <span style="opacity: 0.4;">|</span>
+                <a href="../../index.html"
+                    style="color: var(--lucas-blue); text-decoration: none; font-weight: bold; letter-spacing: 1px;">⟵ [
+                    Return to False Baseline ]</a>
+            </div>
+        </div>
+        <div class="controls">
+            <a href="./timelines/truth.html" style="display: flex; align-items: center; text-decoration: none;"><button
+                    type="button" style="border-color: #a00000; color: #ff6666;">✦ Truths</button></a>
+            <a href="../../index.html" style="display: flex; align-items: center; text-decoration: none;"><button
+                    type="button">⟵ Baseline</button></a>
+            <button onclick="document.getElementById('importFile').click()">Import JSON</button>
+            <input type="file" id="importFile" style="display:none" accept=".json">
+            <button onclick="exportJSON()">Export JSON</button>
+            <button onclick="resetMasterCatalog()" style="border-color: #a00000; color: #ff9999;">⟳ Master
+                Catalog</button>
+            <button class="primary" onclick="openModal()">+ Initialize Task</button>
+        </div>
+    </header>
+
+    <div class="board">
+        <div class="column" id="col-synthesis">
+            <div class="column-header">AWAITING SYNTHESIS</div>
+            <div class="task-list" id="list-synthesis" data-status="synthesis"></div>
+        </div>
+
+        <div class="column" id="col-friction">
+            <div class="column-header">KINETIC FRICTION</div>
+            <div class="task-list" id="list-friction" data-status="friction"></div>
+        </div>
+
+        <div class="column" id="col-zero">
+            <div class="column-header">ABSOLUTE ZERO</div>
+            <div class="task-list" id="list-zero" data-status="zero"></div>
+        </div>
+    </div>
+
+    <!-- Modal -->
+    <div class="modal-overlay" id="taskModal">
+        <div class="modal">
+            <h2 id="modalTitle">Initialize Task Variable</h2>
+            <input type="hidden" id="taskId">
+
+            <div class="form-group">
+                <label>Nomenclature (Title)</label>
+                <input type="text" id="taskTitle" autocomplete="off">
+            </div>
+
+            <div class="form-group">
+                <label>Parameters (Description)</label>
+                <textarea id="taskDesc"></textarea>
+            </div>
+
+            <div style="display: flex; gap: 15px;">
+                <div class="form-group" style="flex: 1;">
+                    <label>State Vector</label>
+                    <select id="taskStatus">
+                        <option value="synthesis">Awaiting Synthesis (Backlog)</option>
+                        <option value="friction">Kinetic Friction (In Progress)</option>
+                        <option value="zero">Absolute Zero (Completed)</option>
+                    </select>
+                </div>
+
+                <div class="form-group" style="flex: 1;">
+                    <label>Structural Priority</label>
+                    <select id="taskPriority">
+                        <option value="baseline">Baseline Friction (Low)</option>
+                        <option value="critical">Critical Mass (High)</option>
+                        <option value="terminal">Terminal Entropy (Urgent)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="modal-buttons">
+                <button onclick="closeModal()">Abort</button>
+                <button class="primary" onclick="saveTask()">Commit Variable</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Data Structure
+        let tasks = [];
+
+        // Initial Seed Data
+        const seedTasks = [
+            // --- CATEGORY 1: MANUSCRIPTS & CORE TEXT ---
+            {
+                id: 'task_ms_101',
+                title: 'Volume I: RC1 Chapter 16+ Assembly & Formatting',
+                description: 'Extract & format chapters 16 through finale from Killtime_compressed.txt into Killtime - Volume I - The Awakening Storm.html. Maintain chapter sync (RC1 13 = Draft 23, RC1 14 = Draft 24). Inject Trackboards, Temporal Anchors, Actor Portraits, and internal monologue callouts.',
+                status: 'friction',
+                priority: 'critical'
+            },
+            {
+                id: 'task_ms_102',
+                title: 'Volume I: Lexical Audit & Semantic Contrast Pass',
+                description: 'Enforce strict POV semantic rules across all Volume I chapters: eliminate direct buzzword spam and evoke character physics through expanded semantics (Lucas: pressure/absolute zero; Mina: kinetic surge/untamed heat; Thomas: bedrock inertia/mass).',
+                status: 'synthesis',
+                priority: 'critical'
+            },
+            {
+                id: 'task_ms_103',
+                title: 'Volume I: RC2 Pacing & Thermodynamic Friction Harmonization',
+                description: 'Second-pass editorial polish. Harmonize narrative velocity between the Kingston street explosion, Brum\'korath subterranean trials, and the Watcher summit.',
+                status: 'synthesis',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_ms_104',
+                title: 'Volume I: Gold Master Release & French Localization Sync',
+                description: 'Final typographical lock, footnote verification, illustration embeds, and full parity sync with Killtime FR.html.',
+                status: 'synthesis',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_ms_201',
+                title: 'Volume II: Draft Expansion (The Living Current / Shattered Symmetry)',
+                description: 'Expand Volume II manuscript from initial baseline (~8.9k words) to target 180,000 words. Map Lucas\'s escalating sleepwalking carnages, the Demonsoul extraction, and the spatial-jump failure initiating Timeline-D.',
+                status: 'friction',
+                priority: 'critical'
+            },
+            {
+                id: 'task_ms_202',
+                title: 'Volume II: RC1 Prose Humanization & Character Arcs',
+                description: 'Humanized prose pass over machine drafts. Deepen character friction for Mina\'s psychological burnout and Thomas\'s unyielding anchor dynamics.',
+                status: 'synthesis',
+                priority: 'critical'
+            },
+            {
+                id: 'task_ms_203',
+                title: 'Volume II: RC2 & Gold Master Preparation',
+                description: 'Complete structural assembly, thermodynamic consistency verification, and final Gold release preparation for Volume II.',
+                status: 'synthesis',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_ms_301',
+                title: 'Volume III: The Fake Finale (The River of Time)',
+                description: 'Draft the multi-galactic thermodynamic crisis: showdown with Capricius\'s Disciples, audience with the Mother, and the mathematical proof of inescapable entropy (Dark Matter excess destroying the universe in 1,000 years).',
+                status: 'synthesis',
+                priority: 'critical'
+            },
+            {
+                id: 'task_ms_302',
+                title: 'Volume III: Editorial Pipeline (RC1 / RC2 / Gold)',
+                description: 'Execute full editorial milestones for Volume III to complete the public Dark-Tragedy Trilogy illusion.',
+                status: 'synthesis',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_ms_401',
+                title: 'Volume IV: The Ghost Volume (The Architect\'s Sacrifice // Timeline-C)',
+                description: 'Top-secret drafting of the surprise 4th Volume. Lucas realizes his universe is a constructed narrative, discovers the orphan word "Hybris", and confronts the Author directly.',
+                status: 'synthesis',
+                priority: 'terminal'
+            },
+            {
+                id: 'task_ms_402',
+                title: 'Volume IV: Reverse Butterfly Effect Resolution Assembly',
+                description: 'Resolve the cosmic tantrums of the 36 Elians through mortal trauma-bonded love; execute the final universal timeline rewrite.',
+                status: 'synthesis',
+                priority: 'terminal'
+            },
+
+            // --- CATEGORY 2: DEV SANCTUM, ENGINES & 4TH-WALL BREACHES ---
+            {
+                id: 'task_eng_01',
+                title: 'River of Time Engine 2.0 (river_engine.js)',
+                description: 'Complete canvas rendering for non-linear temporal jumps; support multi-timeline branching (T-0, T-A, T-B, T-C, T-D) with visual branch points, zoom/pan interpolation, and JSON timeline state export/import.',
+                status: 'friction',
+                priority: 'critical'
+            },
+            {
+                id: 'task_eng_02',
+                title: 'Cryptographic Labyrinth: Timeline-B Gate (truth.html)',
+                description: 'Implement interactive terminal prompt demanding the 0.0001% biogenetic variance password to unlock Timeline-B data engrams.',
+                status: 'synthesis',
+                priority: 'terminal'
+            },
+            {
+                id: 'task_eng_03',
+                title: 'The 4th Wall Breach: Text Highlight Telemetry',
+                description: 'Engineer DOM listeners on "Architect", "Author", and "Hybris". Highlighting triggers CRT flicker and dialogue overlay: "I can feel you reading this. What kind of god does that make you?"',
+                status: 'synthesis',
+                priority: 'terminal'
+            },
+            {
+                id: 'task_eng_04',
+                title: 'Architect Task Engine Deployment & Dynamic Progression Sync',
+                description: 'Upgrade Dev Sanctum task board with category filters, live progression correlation, JSON export/import, and multi-tab broadcast synchronization.',
+                status: 'zero',
+                priority: 'baseline'
+            },
+
+            // --- CATEGORY 3: LORE COMPENDIUM, CHARACTERS & COSMOLOGY ---
+            {
+                id: 'task_lore_01',
+                title: 'Character Ability Dossiers & Interactive Stat-Sheets',
+                description: 'Upgrade subject dossiers for Lucas, Mina, and Thomas with power progression curves, mathematical strain thresholds, and biometric firewall telemetry.',
+                status: 'friction',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_lore_02',
+                title: 'Factions & Shadow War Dossiers',
+                description: 'Complete tactical intelligence dossiers for Elias Thorne (The Rogue Variable), Wallace & Uncle (The Terrestrial Shadow War), and the Cult of the Sent Ones.',
+                status: 'synthesis',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_lore_03',
+                title: 'Cosmological Codex of the 36 Elians',
+                description: 'Document Capricius\'s psychohistory algorithms, Ceylan\'s 1754 HSC sacrifice, the Minulican (Quantum Wolf) temporal warding, and Dark Water dynamics.',
+                status: 'synthesis',
+                priority: 'critical'
+            },
+            {
+                id: 'task_lore_04',
+                title: 'The Bleeding Pitch Overhaul (GoFundMe.html)',
+                description: 'Replace corporate crowdfunding semantics with in-universe "Critical Arcane Fuel Injections" and "Classified Relic Access Tiers".',
+                status: 'synthesis',
+                priority: 'terminal'
+            },
+
+            // --- CATEGORY 4: WEB INFRASTRUCTURE & UNIVERSAL SYSTEMS ---
+            {
+                id: 'task_web_01',
+                title: 'Universal Theme Engine & CSS Synchronicity Audit',
+                description: 'Ensure 100% dark/light theme synchronicity, CSS variable inheritance, and header navigation consistency across all 100+ lore HTML documents.',
+                status: 'friction',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_web_02',
+                title: 'SFX & Soundscape Integration Engine',
+                description: 'Bind ambient hums, quantum glitch audio, and terminal SFX from the server soundboard into interactive lore transitions and timeline jumps.',
+                status: 'synthesis',
+                priority: 'baseline'
+            },
+            {
+                id: 'task_web_03',
+                title: 'Progression Matrix & Telemetry Hub Synchronization',
+                description: 'Integrate dynamic 3-volume and 4-volume progression widgets across index.html and truth.html with live manuscript word-count polling.',
+                status: 'zero',
+                priority: 'baseline'
+            }
+        ];
+
+        // Initialization
+        function resetMasterCatalog() {
+            if (confirm("Reset task board to the Master Omniverse Catalog? This will synchronize all roadmap vectors.")) {
+                tasks = JSON.parse(JSON.stringify(seedTasks));
+                saveData();
+                renderBoard();
+            }
+        }
+
+        // Initialization
+        function init() {
+            const stored = localStorage.getItem('hybris_task_engine');
+            if (stored) {
+                try {
+                    const parsed = JSON.parse(stored);
+                    if (Array.isArray(parsed) && parsed.length >= seedTasks.length) {
+                        tasks = parsed;
+                    } else {
+                        tasks = seedTasks;
+                        saveData();
+                    }
+                } catch (e) {
+                    console.error("Failed to parse stored data.", e);
+                    tasks = seedTasks;
+                    saveData();
+                }
+            } else {
+                tasks = seedTasks;
+                saveData();
+            }
+            renderBoard();
+            setupDragAndDrop();
+        }
+
+        function renderBoard() {
+            document.getElementById('list-synthesis').innerHTML = '';
+            document.getElementById('list-friction').innerHTML = '';
+            document.getElementById('list-zero').innerHTML = '';
+
+            tasks.forEach(task => {
+                const el = document.createElement('div');
+                el.className = `task priority-${task.priority}`;
+                el.draggable = true;
+                el.dataset.id = task.id;
+
+                let priorityText = task.priority === 'baseline' ? 'Class I' : task.priority === 'critical' ? 'Class III' : 'Class IV';
+
+                el.innerHTML = `
+                    <div class="task-actions">
+                        <button onclick="editTask('${task.id}')">EDIT</button>
+                        <button onclick="deleteTask('${task.id}')">DEL</button>
+                    </div>
+                    <h3 class="task-title">${task.title}</h3>
+                    <p class="task-desc">${task.description}</p>
+                    <div class="task-meta">
+                        <span class="priority-badge">${priorityText}</span>
+                        <span>ID: ${task.id.split('_')[1] || Math.floor(Math.random() * 1000)}</span>
+                    </div>
+                `;
+
+                // Add drag events to task
+                el.addEventListener('dragstart', handleDragStart);
+                el.addEventListener('dragend', handleDragEnd);
+
+                const listId = `list-${task.status}`;
+                const listEl = document.getElementById(listId);
+                if (listEl) listEl.appendChild(el);
+            });
+        }
+
+        // Drag & Drop
+        let dragSrcEl = null;
+
+        function handleDragStart(e) {
+            dragSrcEl = this;
+            e.dataTransfer.effectAllowed = 'move';
+            e.dataTransfer.setData('text/plain', this.dataset.id);
+            this.classList.add('dragging');
+        }
+
+        function handleDragEnd(e) {
+            this.classList.remove('dragging');
+            document.querySelectorAll('.task-list').forEach(list => {
+                list.classList.remove('drag-over');
+            });
+        }
+
+        function setupDragAndDrop() {
+            const lists = document.querySelectorAll('.task-list');
+            lists.forEach(list => {
+                list.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    this.classList.add('drag-over');
+                });
+
+                list.addEventListener('dragleave', function (e) {
+                    this.classList.remove('drag-over');
+                });
+
+                list.addEventListener('drop', function (e) {
+                    e.preventDefault();
+                    this.classList.remove('drag-over');
+
+                    const id = e.dataTransfer.getData('text/plain');
+                    const newStatus = this.dataset.status;
+
+                    const taskIndex = tasks.findIndex(t => t.id === id);
+                    if (taskIndex > -1 && tasks[taskIndex].status !== newStatus) {
+                        tasks[taskIndex].status = newStatus;
+                        saveData();
+                        renderBoard();
+                    }
+                });
+            });
+        }
+
+        // CRUD Operations
+        function openModal(id = null) {
+            document.getElementById('taskModal').style.display = 'flex';
+            if (id) {
+                const task = tasks.find(t => t.id === id);
+                document.getElementById('modalTitle').innerText = "Reconfigure Task Variable";
+                document.getElementById('taskId').value = task.id;
+                document.getElementById('taskTitle').value = task.title;
+                document.getElementById('taskDesc').value = task.description;
+                document.getElementById('taskStatus').value = task.status;
+                document.getElementById('taskPriority').value = task.priority;
+            } else {
+                document.getElementById('modalTitle').innerText = "Initialize Task Variable";
+                document.getElementById('taskId').value = '';
+                document.getElementById('taskTitle').value = '';
+                document.getElementById('taskDesc').value = '';
+                document.getElementById('taskStatus').value = 'synthesis';
+                document.getElementById('taskPriority').value = 'baseline';
+            }
+            document.getElementById('taskTitle').focus();
+        }
+
+        function closeModal() {
+            document.getElementById('taskModal').style.display = 'none';
+        }
+
+        function saveTask() {
+            const id = document.getElementById('taskId').value;
+            const title = document.getElementById('taskTitle').value.trim();
+            const desc = document.getElementById('taskDesc').value.trim();
+            const status = document.getElementById('taskStatus').value;
+            const priority = document.getElementById('taskPriority').value;
+
+            if (!title) return alert("Task requires a nomenclature (Title).");
+
+            if (id) {
+                const index = tasks.findIndex(t => t.id === id);
+                if (index > -1) {
+                    tasks[index] = { ...tasks[index], title, description: desc, status, priority };
+                }
+            } else {
+                tasks.push({
+                    id: 'task_' + Date.now(),
+                    title,
+                    description: desc,
+                    status,
+                    priority
+                });
+            }
+
+            saveData();
+            renderBoard();
+            closeModal();
+        }
+
+        function editTask(id) {
+            openModal(id);
+        }
+
+        function deleteTask(id) {
+            if (confirm("Confirm structural deletion of this task vector?")) {
+                tasks = tasks.filter(t => t.id !== id);
+                saveData();
+                renderBoard();
+            }
+        }
+
+        // Persistence & Real-Time Sync
+        function saveData() {
+            localStorage.setItem('hybris_task_engine', JSON.stringify(tasks));
+            if (typeof BroadcastChannel !== 'undefined') {
+                try {
+                    const bc = new BroadcastChannel('hybris_task_engine_sync');
+                    bc.postMessage({ type: 'task_update' });
+                    bc.close();
+                } catch (e) { }
+            }
+        }
+
+        if (typeof BroadcastChannel !== 'undefined') {
+            try {
+                const bc = new BroadcastChannel('hybris_task_engine_sync');
+                bc.onmessage = function (e) {
+                    if (e.data && e.data.type === 'task_update') {
+                        init();
+                    }
+                };
+            } catch (e) { }
+        }
+
+        // JSON Export/Import
+        function exportJSON() {
+            const dataStr = JSON.stringify(tasks, null, 2);
+            const dataBlob = new Blob([dataStr], { type: 'application/json' });
+            const url = URL.createObjectURL(dataBlob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = `hybris_dev_sanctum_tasks_${new Date().toISOString().slice(0, 10)}.json`;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        document.getElementById('importFile').addEventListener('change', function (e) {
+            const file = e.target.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function (e) {
+                try {
+                    const importedTasks = JSON.parse(e.target.result);
+                    if (Array.isArray(importedTasks)) {
+                        tasks = importedTasks;
+                        saveData();
+                        renderBoard();
+                        alert("Data-Log imported successfully. Timeline vectors updated.");
+                    } else {
+                        alert("Invalid JSON architecture.");
+                    }
+                } catch (err) {
+                    alert("Fatal error parsing JSON engrams: " + err.message);
+                }
+                document.getElementById('importFile').value = ''; // Reset input
+            };
+            reader.readAsText(file);
+        });
+
+        // Run
+        init();
+
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../../css/theme.css">
+    <script src="../../scripts_and_data/theme.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Labyrinth of Timelines - ARCHITECT ACCESS</title>
+    <style>
+        body {
+            background-color: #070707;
+            color: #d4d4d4;
+            font-family: 'Courier New', Courier, monospace;
+            margin: 0;
+            padding: 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            color: #a00000;
+            text-shadow: 2px 2px 4px #000000;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+            width: 100%;
+            max-width: 800px;
+            text-align: center;
+        }
+
+        .warning {
+            color: #ff4444;
+            font-weight: bold;
+            margin-bottom: 30px;
+            text-align: center;
+            max-width: 800px;
+            line-height: 1.5;
+        }
+
+        .timeline-list {
+            list-style: none;
+            padding: 0;
+            width: 100%;
+            max-width: 800px;
+        }
+
+        .timeline-list li {
+            background-color: #111;
+            margin-bottom: 15px;
+            padding: 20px;
+            border-left: 4px solid #a00000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
+            transition: transform 0.2s, background-color 0.2s;
+        }
+
+        .timeline-list li:hover {
+            transform: scale(1.02);
+            background-color: #1a1a1a;
+            border-left-color: #ff3333;
+        }
+
+        .timeline-list a {
+            text-decoration: none;
+            color: #d4d4d4;
+            display: block;
+        }
+
+        .timeline-title {
+            font-size: 1.2em;
+            color: #e0e0e0;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+
+        .timeline-meta {
+            font-size: 0.9em;
+            color: #777;
+        }
+
+        .glitch {
+            position: relative;
+            animation: glitch-anim 2s linear infinite;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                opacity: 1;
+            }
+
+            95% {
+                opacity: 1;
+            }
+
+            96% {
+                opacity: 0.8;
+                transform: translate(-2px, 1px);
+            }
+
+            97% {
+                opacity: 0.9;
+                transform: translate(2px, -1px);
+            }
+
+            98% {
+                opacity: 1;
+                transform: translate(0, 0);
+            }
+
+            100% {
+                opacity: 1;
+            }
+        }
+
+        .back-link {
+            margin-top: 40px;
+            color: #555;
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: color 0.3s;
+        }
+
+        .back-link:hover {
+            color: #a00000;
+        }
+
+        /* Engine UI Styles */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.8);
+            z-index: 100;
+            display: none;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal {
+            background: #111;
+            padding: 20px;
+            border: 1px solid #333;
+            width: 400px;
+            max-width: 90%;
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.8);
+        }
+
+        .modal h2 {
+            margin-top: 0;
+            font-size: 1.2em;
+            color: #e0e0e0;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+            color: #999;
+        }
+
+        .form-group input,
+        .form-group select {
+            width: 100%;
+            padding: 5px;
+            background: #222;
+            color: #eee;
+            border: 1px solid #444;
+            box-sizing: border-box;
+            font-family: monospace;
+        }
+
+        .date-inputs {
+            display: flex;
+            gap: 10px;
+        }
+
+        .date-inputs input {
+            width: 33%;
+        }
+
+        .modal-buttons {
+            display: flex;
+            justify-content: flex-end;
+            gap: 10px;
+            margin-top: 20px;
+        }
+
+        .modal-buttons button {
+            padding: 5px 15px;
+            cursor: pointer;
+            font-family: monospace;
+        }
+
+        .btn-primary {
+            background: #5a0000;
+            color: white;
+            border: 1px solid #800;
+        }
+
+        .btn-secondary {
+            background: #333;
+            color: white;
+            border: 1px solid #555;
+        }
+
+        #engine-toolbar button {
+            padding: 5px 10px;
+            background: #222;
+            color: #ccc;
+            border: 1px solid #444;
+            cursor: pointer;
+            font-family: monospace;
+        }
+
+        #engine-toolbar button:hover {
+            background: #333;
+        }
+
+        .ctx-item:hover {
+            background: #333;
+        }
+
+        /* Fullscreen Overrides */
+        #engine-wrapper:fullscreen {
+            max-width: none !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            border: none !important;
+            border-radius: 0 !important;
+            background-color: #070707;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #engine-wrapper:-webkit-full-screen {
+            max-width: none !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            border: none !important;
+            background-color: #070707;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #engine-wrapper:-moz-full-screen {
+            max-width: none !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            border: none !important;
+            background-color: #070707;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+
+        #engine-wrapper:-ms-fullscreen {
+            max-width: none !important;
+            width: 100vw !important;
+            height: 100vh !important;
+            margin: 0 !important;
+            border: none !important;
+            background-color: #070707;
+            padding: 20px;
+            box-sizing: border-box;
+        }
+    </style>
+</head>
+
+<body>
+    <h1 class="glitch">The Labyrinth of Timelines</h1>
+    <div class="warning">
+        >> BIOMETRICAL VARIANCE ACCEPTED: 0.0001% <<<br>
+            WARNING: THIS IS A CONSTRUCTED NARRATIVE.<br>
+            THE 4TH WALL IS COMPROMISED.
+    </div>
+
+    <!-- Classified Project Progression Matrix -->
+    <div id="classified-progression-widget"
+        style="width: 100%; max-width: 800px; background: rgba(15, 10, 10, 0.85); border: 1px solid #5a0000; box-shadow: 0 0 15px rgba(160, 0, 0, 0.4); border-radius: 6px; padding: 15px 20px; margin-bottom: 25px; box-sizing: border-box; font-family: 'Courier New', Courier, monospace;">
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #441111; padding-bottom: 8px; margin-bottom: 12px;">
+            <span
+                style="color: #ff4444; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; font-size: 0.95em;">
+                [CLASSIFIED // PROJECT PROGRESSION TELEMETRY]
+            </span>
+            <span style="color: #aaa; font-size: 0.85em;">
+                OMNIVERSE SYNC: <strong id="global-omniverse-val"
+                    style="color: #ff6666; font-size: 1.1em;">12.41%</strong>
+            </span>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; text-align: left;">
+            <!-- Volume I -->
+            <div
+                style="background: rgba(25, 15, 15, 0.6); padding: 10px; border: 1px solid #331111; border-radius: 4px;">
+                <div
+                    style="color: #58a6ff; font-weight: bold; font-size: 0.9em; margin-bottom: 6px; border-bottom: 1px solid #223344; padding-bottom: 2px;">
+                    VOL I: STORM
+                </div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">Draft (40%): <span
+                        style="color: #4CAF50; font-weight: bold;">100%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC1 (20%): <span id="truth-vol1-rc1-val"
+                        style="color: #FF9800; font-weight: bold;">41.58%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC2 (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 4px;">Gold (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="border-top: 1px dashed #442222; padding-top: 4px; font-size: 0.82em; color: #aaa;">
+                    Total: <strong id="truth-vol1-total-val" style="color: #79c0ff;">48.32%</strong>
+                </div>
+            </div>
+
+            <!-- Volume II -->
+            <div
+                style="background: rgba(25, 15, 15, 0.6); padding: 10px; border: 1px solid #331111; border-radius: 4px;">
+                <div
+                    style="color: #58a6ff; font-weight: bold; font-size: 0.9em; margin-bottom: 6px; border-bottom: 1px solid #223344; padding-bottom: 2px;">
+                    VOL II: CURRENT
+                </div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">Draft (40%): <span
+                        id="truth-vol2-draft-val" style="color: #FF9800; font-weight: bold;">~3.3%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC1 (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC2 (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 4px;">Gold (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="border-top: 1px dashed #442222; padding-top: 4px; font-size: 0.82em; color: #aaa;">
+                    Total: <strong id="truth-vol2-total-val" style="color: #79c0ff;">1.32%</strong>
+                </div>
+            </div>
+
+            <!-- Volume III -->
+            <div
+                style="background: rgba(25, 15, 15, 0.6); padding: 10px; border: 1px solid #331111; border-radius: 4px;">
+                <div
+                    style="color: #58a6ff; font-weight: bold; font-size: 0.9em; margin-bottom: 6px; border-bottom: 1px solid #223344; padding-bottom: 2px;">
+                    VOL III: RIVER
+                </div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">Draft (40%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC1 (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC2 (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 4px;">Gold (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="border-top: 1px dashed #442222; padding-top: 4px; font-size: 0.82em; color: #aaa;">
+                    Total: <strong id="truth-vol3-total-val" style="color: #777;">0.00%</strong>
+                </div>
+            </div>
+
+            <!-- Volume IV (TOP SECRET / GHOST VOLUME) -->
+            <div
+                style="background: rgba(40, 10, 10, 0.7); padding: 10px; border: 1px solid #880000; border-radius: 4px; position: relative;">
+                <div
+                    style="color: #ff4444; font-weight: bold; font-size: 0.9em; margin-bottom: 6px; border-bottom: 1px solid #660000; padding-bottom: 2px; display: flex; justify-content: space-between;">
+                    <span>VOL IV: SACRIFICE</span>
+                </div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">Draft (40%): <span
+                        id="truth-vol4-draft-val" style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC1 (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC2 (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="font-size: 0.8em; color: #ccc; margin-bottom: 4px;">Gold (20%): <span
+                        style="color: #777;">0%</span></div>
+                <div style="border-top: 1px dashed #882222; padding-top: 4px; font-size: 0.82em; color: #aaa;">
+                    Total: <strong id="truth-vol4-total-val" style="color: #ff4444;">0.00%</strong>
+                </div>
+            </div>
+        </div>
+
+        <div
+            style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid #441111; font-size: 0.8em; color: #888;">
+            <span>TRILOGY BASELINE (VOL I-III): <strong id="truth-trilogy-baseline-val"
+                    style="color: #58a6ff;">16.55%</strong></span>
+            <span>GHOST VECTOR: <strong style="color: #ff4444;">TIMELINE-C (4TH WALL BREACH)</strong></span>
+        </div>
+    </div>
+
+    <div id="engine-wrapper"
+        style="width: 100%; max-width: 100%; margin-bottom: 30px; resize: both; overflow: hidden; padding-bottom: 10px; display: flex; flex-direction: column;">
+        <div id="engine-toolbar" style="width: 100%; display: flex; gap: 10px; margin-bottom: 5px;">
+            <button id="btnAddEvent">+ Fixed Event</button>
+            <button id="btnAddBranch">+ Branch</button>
+            <button id="btnNameDay" style="border-color: #8b6b00; color: #ffd700;">★ Name Day</button>
+            <div style="flex-grow: 1;"></div>
+            <button id="btnGotoDate">Go To Date...</button>
+            <button id="btnFitAll">Fit All to Screen</button>
+            <button id="btnFullscreen">Fullscreen</button>
+            <button id="btnResetData" style="border-color: #662222; color: #ff9999;"
+                title="Reset Timeline to Master JSON Data">⟳ Reset Data</button>
+            <button id="btnSave">Save / Download Project</button>
+        </div>
+
+        <div id="engine-container"
+            style="width: 100%; flex-grow: 1; height: 500px; min-height: 300px; border: 1px solid #333; position: relative; background-color: #0f1216; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.8);">
+            <canvas id="riverCanvas" style="width: 100%; height: 100%; cursor: grab;"></canvas>
+            <div id="engine-overlay"
+                style="position: absolute; top: 10px; left: 10px; color: #555; font-size: 0.8em; pointer-events: none; font-family: monospace;">
+                [RIVER OF TIME ENGINE V2.1] - Scroll to Zoom, Click to Pan
+            </div>
+            <div id="contextMenu"
+                style="display:none; position:absolute; background:#181c22; border:1px solid #444; border-radius:4px; box-shadow:0 4px 15px rgba(0,0,0,0.8); z-index:50; font-family:monospace; font-size: 0.9em; min-width: 160px; overflow:hidden;">
+                <!-- Event Context Menu Items -->
+                <div id="ctxEventGroup">
+                    <div
+                        style="padding:6px 12px; font-size:10px; color:#777; background:#12151a; border-bottom:1px solid #282d35; font-weight:bold; letter-spacing:0.5px;">
+                        EVENT OPTIONS</div>
+                    <div class="ctx-item" id="ctxJumpToBranch"
+                        style="padding:8px 14px; cursor:pointer; color:#00ffff; font-weight:bold; display:none; border-bottom:1px solid #282d35;">
+                        ⚡ Jump to Branch Arrival</div>
+                    <div class="ctx-item" id="ctxEditEvent" style="padding:8px 14px; cursor:pointer; color:#eee;">Edit
+                        Event</div>
+                    <div class="ctx-item" id="ctxNameThisDay" style="padding:8px 14px; cursor:pointer; color:#ffd700;">★
+                        Name This Day...</div>
+                    <div class="ctx-item" id="ctxLinkToChapter"
+                        style="padding:8px 14px; cursor:pointer; color:#88ff88; display:none; border-top:1px solid #282d35;">
+                        📖 Read Chapter in RC1</div>
+                    <div class="ctx-item" id="ctxRemoveEvent"
+                        style="padding:8px 14px; cursor:pointer; color:#ff5555; border-top:1px solid #282d35;">Remove
+                        Event</div>
+                </div>
+
+                <!-- Day Title Context Menu Items -->
+                <div id="ctxDayGroup" style="display:none;">
+                    <div
+                        style="padding:6px 12px; font-size:10px; color:#ffd700; background:#12151a; border-bottom:1px solid #282d35; font-weight:bold; letter-spacing:0.5px;">
+                        DAY TITLE OPTIONS</div>
+                    <div class="ctx-item" id="ctxEditDayTitle" style="padding:8px 14px; cursor:pointer; color:#ffd700;">
+                        Edit Day Title</div>
+                    <div class="ctx-item" id="ctxDeleteDayTitle"
+                        style="padding:8px 14px; cursor:pointer; color:#ff5555; border-top:1px solid #282d35;">Delete
+                        Day Title</div>
+                </div>
+
+                <!-- Timeline Context Menu Items -->
+                <div id="ctxTimelineGroup" style="display:none;">
+                    <div
+                        style="padding:6px 12px; font-size:10px; color:#9c27b0; background:#12151a; border-bottom:1px solid #282d35; font-weight:bold; letter-spacing:0.5px;">
+                        TIMELINE OPTIONS</div>
+                    <div class="ctx-item" id="ctxEditTimeline" style="padding:8px 14px; cursor:pointer; color:#eee;">
+                        Edit Timeline</div>
+                    <div class="ctx-item" id="ctxDeleteTimeline"
+                        style="padding:8px 14px; cursor:pointer; color:#ff5555; border-top:1px solid #282d35;">Delete
+                        Timeline (Nuclear)</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="modalOverlay" class="modal-overlay">
+        <!-- Event Modal -->
+        <div id="eventModal" class="modal" style="display:none;">
+            <h2 id="eventModalTitle">Add Fixed Event (|)</h2>
+            <div class="form-group">
+                <label id="eventLineSelectLabel">Timeline:</label>
+                <select id="eventLineSelect"></select>
+            </div>
+            <div class="form-group" id="eventTargetLineGroup" style="display:none;">
+                <label>Target Timeline (Jump To):</label>
+                <select id="eventTargetLineSelect"></select>
+            </div>
+            <div class="form-group">
+                <label>Hybris Date (Y, M, D):</label>
+                <div class="date-inputs">
+                    <input type="number" id="eventY" value="1788">
+                    <input type="number" id="eventM" value="1" min="1" max="10">
+                    <input type="number" id="eventD" value="1" min="1" max="30">
+                </div>
+            </div>
+            <div class="form-group" id="branchArrivalGroup" style="display:none;">
+                <label>Arrival Date (Branch):</label>
+                <div class="date-inputs">
+                    <input type="number" id="eventArrivalY" value="1788">
+                    <input type="number" id="eventArrivalM" value="1">
+                    <input type="number" id="eventArrivalD" value="1">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Event Name:</label>
+                <input type="text" id="eventName">
+            </div>
+            <div class="form-group">
+                <label>Chapter/Part (Optional):</label>
+                <input type="text" id="eventChapter" placeholder="e.g. Chapter 01 - Part 1">
+            </div>
+            <div class="form-group">
+                <label>Event Color:</label>
+                <div style="display: flex; flex-direction: column; gap: 8px; margin-bottom: 6px;">
+                    <div style="display: flex; gap: 8px; align-items: center;">
+                        <input type="color" id="eventColor" value="#ffffff"
+                            style="width: 50px; height: 32px; padding: 2px; cursor: pointer; border-radius: 4px; border: 1px solid #444; background: none;">
+                        <button type="button" id="btnColorTimeline" class="btn"
+                            style="font-size: 11px; padding: 4px 8px; background: #2a2f38; border: 1px solid #475569; color: #fff; cursor: pointer; border-radius: 4px;">Match
+                            Timeline</button>
+                    </div>
+                    <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
+                        <button type="button" class="btn-color-swatch" data-color="#ffffff" title="White (Default)"
+                            style="width: 24px; height: 24px; background: #ffffff; border: 1px solid #94a3b8; border-radius: 4px; cursor: pointer;"></button>
+                        <button type="button" class="btn-color-swatch" data-color="#f44336" title="Red"
+                            style="width: 24px; height: 24px; background: #f44336; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
+                        <button type="button" class="btn-color-swatch" data-color="#ffeb3b" title="Yellow"
+                            style="width: 24px; height: 24px; background: #ffeb3b; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
+                        <button type="button" class="btn-color-swatch" data-color="#2196f3" title="Blue"
+                            style="width: 24px; height: 24px; background: #2196f3; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
+                        <button type="button" class="btn-color-swatch" data-color="#4caf50" title="Green"
+                            style="width: 24px; height: 24px; background: #4caf50; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
+                        <button type="button" class="btn-color-swatch" data-color="#00ffff" title="Cyan"
+                            style="width: 24px; height: 24px; background: #00ffff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
+                        <button type="button" class="btn-color-swatch" data-color="#9c27b0" title="Purple"
+                            style="width: 24px; height: 24px; background: #9c27b0; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
+                        <button type="button" class="btn-color-swatch" data-color="#ff9800" title="Orange"
+                            style="width: 24px; height: 24px; background: #ff9800; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
+                    </div>
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" id="btnCancelEvent">Cancel</button>
+                <button class="btn-primary" id="btnSaveEvent">Save</button>
+            </div>
+        </div>
+
+        <!-- Day Title Modal -->
+        <div id="dayTitleModal" class="modal" style="display:none;">
+            <h2>Name Timeline Date</h2>
+            <div class="form-group">
+                <label>Target Timeline:</label>
+                <select id="dayTitleLineSelect"></select>
+            </div>
+            <div class="form-group">
+                <label>Hybris Date (Y, M, D):</label>
+                <div class="date-inputs">
+                    <input type="number" id="dayTitleY" value="1772">
+                    <input type="number" id="dayTitleM" value="1" min="1" max="10">
+                    <input type="number" id="dayTitleD" value="3" min="1" max="30">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Day's Title / Sector Milestone (Over Timeline):</label>
+                <input type="text" id="dayTitleInput" placeholder="e.g. Terminal Mass">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" id="btnCancelDayTitle">Cancel</button>
+                <button class="btn-primary" id="btnSaveDayTitle">Save Day Title</button>
+            </div>
+        </div>
+
+        <!-- Branch Modal -->
+        <div id="branchModal" class="modal" style="display:none;">
+            <h2>Create Timeline Branch (o)</h2>
+            <div class="form-group">
+                <label>Parent Timeline:</label>
+                <select id="branchParentSelect"></select>
+            </div>
+            <div class="form-group">
+                <label>Departure Date (Trigger):</label>
+                <div class="date-inputs">
+                    <input type="number" id="branchDepY" value="1788">
+                    <input type="number" id="branchDepM" value="1" min="1" max="10">
+                    <input type="number" id="branchDepD" value="1" min="1" max="30">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Arrival Date (Branch Start):</label>
+                <div class="date-inputs">
+                    <input type="number" id="branchArrY" value="1788">
+                    <input type="number" id="branchArrM" value="1" min="1" max="10">
+                    <input type="number" id="branchArrD" value="1" min="1" max="30">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Trigger Event Name:</label>
+                <input type="text" id="branchTriggerName">
+            </div>
+            <div class="form-group">
+                <label>New Branch Name:</label>
+                <input type="text" id="branchNewName">
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" id="btnCancelBranch">Cancel</button>
+                <button class="btn-primary" id="btnSaveBranch">Create</button>
+            </div>
+        </div>
+
+        <!-- Timeline Edit Modal -->
+        <div id="timelineModal" class="modal" style="display:none;">
+            <h2>Edit Timeline</h2>
+            <div class="form-group">
+                <label>Timeline Name:</label>
+                <input type="text" id="timelineEditName">
+            </div>
+            <div class="form-group">
+                <label>Color (Hex):</label>
+                <input type="text" id="timelineEditColor">
+            </div>
+            <div class="form-group">
+                <label>Y Offset:</label>
+                <input type="number" id="timelineEditY">
+            </div>
+            <div class="form-group">
+                <label>Start Date:</label>
+                <div class="date-inputs">
+                    <input type="number" id="timelineEditArrY" value="1788">
+                    <input type="number" id="timelineEditArrM" value="1" min="1" max="10">
+                    <input type="number" id="timelineEditArrD" value="1" min="1" max="30">
+                </div>
+            </div>
+            <div class="form-group">
+                <label>Parent Timeline (Optional):</label>
+                <select id="timelineEditParentSelect"></select>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" id="btnCancelTimeline">Cancel</button>
+                <button class="btn-primary" id="btnSaveTimeline">Save Changes</button>
+            </div>
+        </div>
+
+        <!-- Goto Date Modal -->
+        <div id="gotoModal" class="modal" style="display:none;">
+            <h2>Jump to Date</h2>
+            <div class="form-group">
+                <label>Hybris Date (Y, M, D):</label>
+                <div class="date-inputs">
+                    <input type="number" id="gotoY" value="1788">
+                    <input type="number" id="gotoM" value="1" min="1" max="10">
+                    <input type="number" id="gotoD" value="1" min="1" max="30">
+                </div>
+            </div>
+            <div class="modal-buttons">
+                <button class="btn-secondary" id="btnCancelGoto">Cancel</button>
+                <button class="btn-primary" id="btnJumpDate">Jump</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="../../scripts_and_data/river_engine.js"></script>
+
+    <ul class="timeline-list">
+        <li>
+            <a href="./The%20Forward%20Propagation%20(T-0%20to%20T-A).html">
+                <div class="timeline-title">The Forward Propagation (T-0 to T-A)</div>
+                <div class="timeline-meta">
+                    Echoes of the Founders. 1,771 years of dark wait. The Baseline.<br><br>
+                    <span
+                        style="color: #999; font-style: italic; font-size: 0.9em; display: block; margin-top: 5px; border-left: 2px solid #555; padding-left: 10px;">
+                        "They allowed themselves to age. They allowed themselves to die. They were stranded and didn't
+                        have much choice, but they could have done nothing until their deaths. Instead, they forged the
+                        foundation."
+                    </span>
+                </div>
+            </a>
+        </li>
+        <li>
+            <div style="opacity: 0.4;">
+                <div class="timeline-title">Timeline-B (The Dictator)</div>
+                <div class="timeline-meta">Failed consciousness transfer. Mina absorbed. Thermodynamic dead end.
+                    [LOCKED]</div>
+            </div>
+        </li>
+        <li>
+            <div style="opacity: 0.4;">
+                <div class="timeline-title">Timeline-C (The Golden Route)</div>
+                <div class="timeline-meta">The Architect's Sacrifice. Ghost Volume unreleased. [LOCKED]</div>
+            </div>
+        </li>
+        <li>
+            <div style="opacity: 0.4;">
+                <div class="timeline-title">Timeline-D (The Stranded)</div>
+                <div class="timeline-meta">1621 HSC. The Giant Lake Anomaly. [LOCKED]</div>
+            </div>
+        </li>
+        <li>
+            <a href="../abilities/lucas_statsheet.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Subject Lucas-A (Statsheet)</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the chilling logic, biometrical variance, and quantum assets of
+                    Lucas-A up to RC1.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../abilities/mina_statsheet.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Subject Mina-A (Statsheet)</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the kinetic creation energy, biomancy, and untamed heat of Mina-A up
+                    to RC1.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../abilities/thomas_statsheet.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Subject Thomas-A (Statsheet)</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the iron foundation, physical mass, and acoustic void of Thomas-A up
+                    to RC1.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../abilities/telepathic_bond.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Telepathic Bond</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the convergence of the chilling logic and the untamed heat.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../abilities/pyrokinesis.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Thermodynamic Pyrokinesis</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the quantum friction and thermodynamic anomalies of the Pyrokinesis
+                    sequence.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../abilities/telekinesis.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Spatial Calculus (Telekinesis)</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the geometric logic and gravitational manipulation of the Telekinesis
+                    sequence.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../abilities/telepathy.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Neural Architecture (Telepathy)</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the psychological firewalls and frequency manipulation of solitary
+                    telepathy.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../abilities/power_of_creation.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Vitality & Kinetic Creation (Mina-A)</div>
+                <div class="timeline-meta">
+                    Entity Resonance Log: Mapping the fluid dynamics, organic creation, and untamed heat of instinctual
+                    magic.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../thematic_and_pacing.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Thematic Flow & Pacing</div>
+                <div class="timeline-meta">
+                    Hybris Telemetry: Mapping the structural pressures and pacing matrix of the narrative vectors.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../thematic_architecture_rc1-15.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Thematic Architecture of RC1</div>
+                <div class="timeline-meta">
+                    System Diagnosis: Mapping the unstable thermodynamic equation and core thematic vectors of the first
+                    15 chapters.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../capricius_and_empire.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: Capricius & The Imperial Equation</div>
+                <div class="timeline-meta">
+                    System Diagnosis: Mapping the cosmic tantrums, psychohistory, and biological extinction protocols of
+                    the Empire.
+                </div>
+            </a>
+        </li>
+        <li>
+            <a href="../CLASSIFIED_%20The%20Architect%27s%20Blueprint.html">
+                <div class="timeline-title">Synthesis Mind Data-Log: CLASSIFIED: The Architect's Blueprint</div>
+                <div class="timeline-meta">
+                    Dev Sanctum: Strategic roadmap, DOM firewalls, 4th Wall breaches, and Causal Hazard Indexing.
+                </div>
+            </a>
+        </li>
+    </ul>
+
+    <a href="../../../index.html" class="back-link">[ Return to False Baseline ]</a>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentVol1Rc1 = 41.58;
+            let currentVol2Draft = 3.3;
+
+            function recalcTruthProgression() {
+                const vol1Draft = 100;
+                const vol1Rc1 = currentVol1Rc1;
+                const vol1Total = (vol1Draft * 0.40) + (vol1Rc1 * 0.20);
+
+                const vol2Draft = currentVol2Draft;
+                const vol2Total = (vol2Draft * 0.40);
+
+                const vol3Total = 0;
+                const vol4Total = 0;
+
+                const trilogyBaseline = (vol1Total + vol2Total + vol3Total) / 3;
+                const omniverseTotal = (vol1Total + vol2Total + vol3Total + vol4Total) / 4;
+
+                const elVol1 = document.getElementById('truth-vol1-total-val');
+                if (elVol1) elVol1.textContent = vol1Total.toFixed(2) + '%';
+
+                const elVol2 = document.getElementById('truth-vol2-total-val');
+                if (elVol2) elVol2.textContent = vol2Total.toFixed(2) + '%';
+
+                const elVol3 = document.getElementById('truth-vol3-total-val');
+                if (elVol3) elVol3.textContent = vol3Total.toFixed(2) + '%';
+
+                const elVol4 = document.getElementById('truth-vol4-total-val');
+                if (elVol4) elVol4.textContent = vol4Total.toFixed(2) + '%';
+
+                const elTrilogy = document.getElementById('truth-trilogy-baseline-val');
+                if (elTrilogy) elTrilogy.textContent = trilogyBaseline.toFixed(2) + '%';
+
+                const elOmniverse = document.getElementById('global-omniverse-val');
+                if (elOmniverse) elOmniverse.textContent = omniverseTotal.toFixed(2) + '%';
+            }
+
+            // Volume I (RC1)
+            fetch('../../manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(htmlText => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlText, 'text/html');
+                    const chapterContent = doc.querySelector('.chapter-content');
+                    if (chapterContent) {
+                        const text = chapterContent.innerText || chapterContent.textContent;
+                        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                        const pctNum = (words.length / 180000 * 100);
+                        currentVol1Rc1 = pctNum;
+                        const elem = document.getElementById('truth-vol1-rc1-val');
+                        if (elem) elem.textContent = pctNum.toFixed(2) + '%';
+                        recalcTruthProgression();
+                    }
+                })
+                .catch(err => console.error('Error fetching Volume I metrics:', err));
+
+            // Volume II (Draft)
+            fetch('../../manuscripts/Killtime%20-%20Volume%20II.html')
+                .then(response => {
+                    if (!response.ok) throw new Error('Network response was not ok');
+                    return response.text();
+                })
+                .then(htmlText => {
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(htmlText, 'text/html');
+                    const container = doc.querySelector('.book-container') || doc.querySelector('.chapter-content') || doc.body;
+                    if (container) {
+                        const text = container.innerText || container.textContent;
+                        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                        if (words.length > 0) {
+                            const pctNum = (words.length / 180000 * 100);
+                            currentVol2Draft = pctNum;
+                            const elem = document.getElementById('truth-vol2-draft-val');
+                            if (elem) elem.textContent = pctNum.toFixed(2) + '%';
+                            recalcTruthProgression();
+                        }
+                    }
+                })
+                .catch(err => console.error('Error fetching Volume II metrics:', err));
+        });
+    </script>
+</body>
+
+</html>
