@@ -3,7 +3,7 @@
         "Main Line": {
             "y": 0,
             "color": "#ffeb3b",
-            "start_val": 0.0,
+            "start_val": 0,
             "parent": null
         },
         "Timeline-0 1": {
@@ -15,7 +15,7 @@
         "Timeline-0 2": {
             "y": -240,
             "color": "#2196f3",
-            "start_val": 0.0,
+            "start_val": 0,
             "parent": "Timeline-0 1"
         },
         "Timeline-A 1": {
@@ -32,13 +32,45 @@
         }
     },
     "day_titles": {
-        "1772-01-03": "The Kingston Outbreak & Safehouse Fugitives",
-        "1772-01-21": "The Hidden Temple & Subterranean Trials",
-        "1772-02-03": "Terminal Mass & Thermal Shock"
+        "1772-01-03": {
+            "title": "The Awakening",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.0066666666667
+        },
+        "1772-01-21": {
+            "title": "The Hollowed Aegis",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.0666666666666
+        },
+        "1772-02-01": {
+            "title": "The Shattered Bedrock",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.1
+        },
+        "1772-02-02": {
+            "title": "Terminal Mass",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.1033333333332
+        },
+        "1772-02-05": {
+            "title": "The Causal Genesis",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.1133333333332
+        },
+        "1772-01-29": {
+            "title": "The Bleeding Perimeter",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.0933333333332
+        },
+        "1772-01-04": {
+            "title": "New Dawns",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.01
+        }
     },
     "events": [
         {
-            "float_val": 0.0,
+            "float_val": 0,
             "date_str": "0000-01-01",
             "name": "Arrival of the Exiled Colony on Hybris",
             "line_name": "Main Line",
@@ -376,24 +408,24 @@
             "chapter_part": "Chapter 14 - Part 1"
         },
         {
-            "float_val": 1772.1033,
-            "date_str": "1772-02-02",
+            "float_val": 1772.1,
+            "date_str": "1772-02-01",
             "name": "The Phalanx: Shield wall clash in the courtyard",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 14 - Part 3"
         },
         {
-            "float_val": 1772.1033,
-            "date_str": "1772-02-02",
+            "float_val": 1772.1,
+            "date_str": "1772-02-01",
             "name": "The Shockwave: Marketplace explosion and blinding light",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 14 - Part 4"
         },
         {
-            "float_val": 1772.1033,
-            "date_str": "1772-02-02",
+            "float_val": 1772.1,
+            "date_str": "1772-02-01",
             "name": "Decapitation: High Cleric Goldar captured by elite guards",
             "line_name": "Timeline-A 1",
             "type": "fixed",
@@ -426,80 +458,109 @@
         {
             "float_val": 1772.1033,
             "date_str": "1772-02-02",
-            "name": "The Windfighter journeys to the Watcher; Ceylan's broken prophecy",
-            "line_name": "Timeline-A 1",
-            "type": "fixed"
-        },
-        {
-            "float_val": 1772.11,
-            "date_str": "1772-02-04",
-            "name": "Party-A enters the impossible Mansion / Temple of Mirrors",
-            "line_name": "Timeline-A 1",
-            "type": "fixed"
-        },
-        {
-            "float_val": 1772.1066,
-            "date_str": "1772-02-03",
-            "name": "The Crumbling Foundation",
+            "name": "The Crumbling Foundation: Sent Ones panic after Goldar's capture",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 15 - Part 1"
         },
         {
-            "float_val": 1772.1066,
-            "date_str": "1772-02-03",
-            "name": "The Imperial Missile",
+            "float_val": 1772.1033,
+            "date_str": "1772-02-02",
+            "name": "The Imperial Missile: The Disciple of Earth descends upon Brum'korath",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 15 - Part 2"
         },
         {
-            "float_val": 1772.1066,
-            "date_str": "1772-02-03",
-            "name": "Thermal Shock",
+            "float_val": 1772.1033,
+            "date_str": "1772-02-02",
+            "name": "Thermal Shock: Aquatic flush fractures the Disciple's armor",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 15 - Part 3"
         },
         {
-            "float_val": 1772.1066,
-            "date_str": "1772-02-03",
-            "name": "The Divergent Vector",
+            "float_val": 1772.1033,
+            "date_str": "1772-02-02",
+            "name": "The Divergent Vector: Wallace intervenes; causality holds",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 15 - Part 4"
         },
         {
-            "float_val": 1772.1066,
-            "date_str": "1772-02-03",
-            "name": "Terminal Mass",
+            "float_val": 1772.1033,
+            "date_str": "1772-02-02",
+            "name": "Terminal Mass: The Disciple of Earth is slain by Thomas-A",
             "line_name": "Timeline-A 1",
             "type": "fixed",
             "chapter_part": "Chapter 15 - Part 5"
         },
         {
+            "float_val": 1772.1033,
+            "date_str": "1772-02-02",
+            "name": "The Weight of the Ash: Arrest by dwarven militia and preliminary hearing",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 16 - Part 1"
+        },
+        {
+            "float_val": 1772.1066,
+            "date_str": "1772-02-03",
+            "name": "Judgment in the Halls: Goldar's public trial, Dira's briefing, and Torgar's midnight pact",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 16 - Part 2"
+        },
+        {
+            "float_val": 1772.11,
+            "date_str": "1772-02-04",
+            "name": "Echoes of the Trial: World Police extradition standoff, Wallace's departure, and deep vault mobilization",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 16 - Part 3"
+        },
+        {
             "float_val": 1772.1133,
             "date_str": "1772-02-05",
+            "name": "The Obsidian Cipher: Descent into the lithosphere, construct battle, and Lucas-A relic bonding (0.0001% DNA lock)",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 16 - Part 4"
+        },
+        {
+            "float_val": 1772.1133,
+            "date_str": "1772-02-05",
+            "name": "Unfinished Threads: Tri-Fusion Relic integration, Guardian mural, and Haliriel summons",
+            "line_name": "Timeline-A 1",
+            "type": "fixed",
+            "chapter_part": "Chapter 16 - Part 5"
+        },
+        {
+            "float_val": 1772.14,
+            "date_str": "1772-02-13",
             "name": "The Obsidian Crypt: Discovery of the Master Blueprints (Lucianae, Minalia, Thomar)",
             "line_name": "Timeline-A 1",
             "type": "fixed",
-            "chapter_part": "Vol II - Chapter 1"
+            "chapter_part": "Vol II - Chapter 1",
+            "color": "#ffffff"
         },
         {
-            "float_val": 1772.1133,
-            "date_str": "1772-02-05",
+            "float_val": 1772.1366666666668,
+            "date_str": "1772-02-12",
             "name": "Journal-0 Decode: Mathematical proof of temporal divergence and Wallace's survival",
             "line_name": "Timeline-A 1",
             "type": "fixed",
-            "chapter_part": "Vol II - Chapter 2"
+            "chapter_part": "Vol II - Chapter 2",
+            "color": "#ffffff"
         },
         {
-            "float_val": 1772.1166,
-            "date_str": "1772-02-06",
+            "float_val": 1772.1533333333334,
+            "date_str": "1772-02-17",
             "name": "Windfighter Extraction: Elias Thorne restrained; departure to Haliriel",
             "line_name": "Timeline-A 1",
             "type": "fixed",
-            "chapter_part": "Vol II - Chapter 2"
+            "chapter_part": "Vol II - Chapter 2",
+            "color": "#ffffff"
         },
         {
             "float_val": 1772.12,
