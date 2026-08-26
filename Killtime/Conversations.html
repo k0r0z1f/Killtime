@@ -99,7 +99,7 @@
 <body>
 
   <div id="overview-sidebar">
-    <a href="../../index.html"
+    <a href="../index.html"
       style="display: inline-block; margin-bottom: 15px; padding: 6px 12px; background-color: #1f2937; color: #fff !important; border-radius: 4px; text-decoration: none; font-size: 13px; font-weight: bold; border: 1px solid #374151;">←
       Back to Universe Hub</a>
     <h2>Overview Navigation</h2>
@@ -192,7 +192,7 @@
           idEle.children[0].appendChild(newli);
         }
       });
-      readTextFile("./chat-compendium.json", function (text) {
+      readTextFile("./scripts_and_data/chat-compendium.json", function (text) {
         var data = JSON.parse(text);
         var output = {};
         for (var chat in data) {
@@ -276,7 +276,7 @@
           newli = document.createElement("li");
           //newli.innerHTML=liname;
           newa = document.createElement("a");
-          newa.href = "./chat%20" + liname + ".html#" + linkname;
+          newa.href = "./chatgpt/chat%20" + liname + ".html#" + linkname;
           newa.innerHTML = liname;
           newli.appendChild(newa);
           newul.appendChild(newli);

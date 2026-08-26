@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../../../css/theme.css">
+    <script src="../../../scripts_and_data/theme.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Altheris - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2a3d63;
+            padding-bottom: 5px;
+        }
+
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .highlighted {
+            background-color: #e8f4fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 5px 5px 0;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode h2 {
+            color: #81d4fa;
+        }
+
+        body.dark-mode table {
+            border-color: #333;
+        }
+
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+
+        body.dark-mode .highlighted {
+            background-color: #2a3b5c;
+            border-left: 4px solid #81d4fa;
+        }
+
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('highlighted');
+
+            // Smooth scroll to the section
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Altheris "Alt" (Character Overview)</h1>
+
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Not provided</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background"
+                            onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Commandant of Haliriel's Defense; Elven Envoy; expedition rear guard; documenter</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality
+                            Traits</a></td>
+                    <td>Composed, pragmatic, vigilant, stoic, diplomatic, unyielding, deeply protective</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic"
+                            onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Elite swordsmanship; tactical coordination; mastery of advanced Elven hybrid-technology</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a>
+                    </td>
+                    <td>Fiercely loyal to Queen Aph & Haliriel; allied with Lucas, Mina, Thomas; distrusts Thorne</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Tall/imposing elven frame; silver hair; pale green eyes; battle scars; wears a vine/star
+                        embroidered tunic</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character
+                            Arc/Goal</a></td>
+                    <td>Ensure the success of the Eastern Continent mission; protect Queen Aph; secure asylum for the
+                        Children of Hybris</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Observed the Guardian Beast stalking their camp early on and concealed the information per Queen
+                        Aph's direct orders</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat
+                            Training</a></td>
+                    <td>Elite military-trained soldier; expert in physical defense, intercepting threats, and rear-guard
+                        positioning</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Fencing sword, long blade (strapped to back); advanced Elven hybrid-tech camera device</td>
+                </tr>
+                <tr>
+                    <td><a href="#queen-aph" onclick="highlightSection(this, 'queen-aph')">Queen Aphyrosia</a></td>
+                    <td>His monarch; he acts as her personal shield and executes her will without hesitation</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas-mina-thomas" onclick="highlightSection(this, 'lucas-mina-thomas')">The Party</a>
+                    </td>
+                    <td>Maintains a professional, protective relationship with them; respects their capabilities</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>Shares a quiet, mutual respect after she skillfully sutured his severe chest wound post-battle
+                    </td>
+                </tr>
+                <tr>
+                    <td><a href="#thorne" onclick="highlightSection(this, 'thorne')">Thorne & Kael</a></td>
+                    <td>Highly suspicious of the rogue researcher and his mercenary; kept his hand near his sword around
+                        them in the Temple</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>No birth year details are provided for Altheris, but as a high-ranking Elven commander with deep battle
+                experience, he likely possesses the long lifespan characteristic of his people.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Altheris (often called "Alt") serves as the Commandant of Haliriel's Defense. He acted as the official
+                Elven Envoy to the Dwarven Council in Brum'korath, successfully negotiating diplomatic asylum and
+                extraction for Lucas, Mina, and Thomas. He is the designated commander for the upcoming Eastern
+                Continent expedition via the <em>Windfighter</em>. During the treacherous ascent of the Watcher and the
+                descent into the Temple of Crystals, he acts as the expedition's steadfast rear guard, ensuring no
+                threats approach them from behind.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Altheris is defined by his unwavering composure, pragmatic stoicism, and vigilant nature. As a diplomat,
+                he displays calm restraint and unyielding confidence, gracefully navigating the heavy resentment and
+                racism of the Dwarven Council. As a soldier, he is highly observant, keeping his emotions unreadable but
+                maintaining a constant readiness to draw his blade to protect his Queen and his charges.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>He is highly proficient in swordsmanship and military tactics. While he has not displayed innate magical
+                spellcasting, he possesses an expert understanding of advanced Elven hybrid-technology, seamlessly
+                blending arcane engineering with practical field operations (such as operating the Windfighter and
+                magi-tech recording devices).</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>He is fundamentally loyal to Haliriel and Queen Aphyrosia, prioritizing her safety above all else. He has
+                formed a functioning, protective alliance with the Children of Hybris (Lucas and Mina) and their
+                companions. He actively distrusts Thorne and the mercenary Kael, viewing them as unpredictable threats
+                to the mission.</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Altheris presents an imposing yet graceful elven figure. He has silver hair, sharp pale green eyes, and a
+                muscular, battle-hardened build adorned with fresh scars from recent conflicts. During diplomatic and
+                official missions, he wears an elegant tunic heavily embroidered with intricate patterns of vines and
+                stars, blending military functionality with royal Elven aesthetics.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>His primary goal is to execute the will of Haliriel: securing the Children of Hybris, extracting answers
+                regarding the Disciple of Air, and commanding the upcoming Eastern Continent expedition. In the
+                immediate present, his arc revolves around protecting his Queen and the party as they uncover the
+                ancient, world-altering secrets buried in the Temple of Crystals and the Tombs of the First.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Altheris spotted the massive, hairy Guardian Beast stalking the group's camp long before it attacked.
+                Following Queen Aphyrosia's direct orders, he kept this sighting a secret from the rest of the party to
+                prevent panic, bearing the burden of vigilance alone.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>He is an elite, military-trained Elven commander. In battle, he acts as a disciplined interceptor and
+                rear guard, stepping directly into the path of massive beasts to shield more vulnerable party members
+                (such as Candice and Dira). Even when grievously injured, his combat endurance allows him to maintain
+                his defensive line.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>He carries a primary fencing sword and a long blade strapped to his back for heavy combat. Additionally,
+                he utilizes a small, highly advanced hybrid-tech camera device from the Elven realms, which he used to
+                document the impossible, starless galaxy they witnessed in the vanished mansion.</p>
+        </div>
+
+        <div class="section-content" id="queen-aph">
+            <h2>Queen Aphyrosia</h2>
+            <p>His monarch and liege. Altheris is fiercely loyal to her, acting as her personal shield. He will
+                instinctively throw himself in front of lethal magic or physical blows to ensure her survival.</p>
+        </div>
+
+        <div class="section-content" id="lucas-mina-thomas">
+            <h2>The Party (Lucas, Mina, Thomas)</h2>
+            <p>He maintains a professional, protective stance toward the trio. While he respects Thomas's combat
+                pragmatism and Lucas's power, he views them primarily as vital assets to Haliriel's mission that must be
+                guarded at all costs.</p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>A quiet, mutual respect exists between Altheris and Dira. After he sustained a severe blow to the chest
+                from the Guardian Beast, Dira scolded him for hiding the bleeding and skillfully stitched his wounds, an
+                act he accepted with stoic approval.</p>
+        </div>
+
+        <div class="section-content" id="thorne">
+            <h2>Thorne & Kael</h2>
+            <p>Altheris views the rogue researcher and his mercenary bodyguard with extreme suspicion. Upon discovering
+                them deep within the Temple of Crystals, Altheris immediately rested his hand on his sword hilt,
+                preparing to execute them if they made a hostile move toward his Queen or the party.</p>
+        </div>
+    </div>
+</body>
+
+</html>

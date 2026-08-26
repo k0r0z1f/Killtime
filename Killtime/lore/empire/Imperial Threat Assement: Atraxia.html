@@ -1,0 +1,595 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../../css/theme.css">
+    <script src="../../scripts_and_data/theme.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Arcane-OS // Atraxia Incident Report: L-1759</title>
+    <style>
+        :root {
+            --bg-base: #03060a;
+            --panel-bg: #0a1118;
+            --panel-border: #1f3a5e;
+            --text-main: #e2e8f0;
+            --text-dim: #5c728a;
+            --neon-blue: #00d2ff;
+            --neon-purple: #9d00ff;
+            --neon-red: #ff2a4d;
+            --neon-yellow: #ffb700;
+            --font-main: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            --font-mono: 'Consolas', 'Courier New', monospace;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: var(--font-main);
+            background-color: var(--bg-base);
+            color: var(--text-main);
+            background-image:
+                radial-gradient(circle at 50% 50%, rgba(157, 0, 255, 0.05) 0%, transparent 60%),
+                linear-gradient(rgba(0, 210, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(0, 210, 255, 0.02) 1px, transparent 1px);
+            background-size: 100% 100%, 40px 40px, 40px 40px;
+            padding: 20px;
+            min-height: 100vh;
+        }
+
+        /* Header / HUD Top Bar */
+        .hud-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            border-bottom: 2px solid var(--neon-red);
+            padding-bottom: 10px;
+            margin-bottom: 30px;
+            animation: glitch 3s infinite;
+        }
+
+        .hud-title h1 {
+            font-size: 2.2rem;
+            color: var(--neon-red);
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            text-shadow: 0 0 15px rgba(255, 42, 77, 0.6);
+        }
+
+        .hud-title p {
+            font-family: var(--font-mono);
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-top: 5px;
+        }
+
+        .hud-status {
+            text-align: right;
+            font-family: var(--font-mono);
+            font-size: 0.95rem;
+            color: var(--neon-yellow);
+        }
+
+        .status-indicator {
+            display: inline-block;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: var(--neon-red);
+            box-shadow: 0 0 10px var(--neon-red);
+            margin-right: 8px;
+            animation: pulse-fast 0.8s infinite;
+        }
+
+        /* Grid Layout */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .panel {
+            background-color: rgba(10, 17, 24, 0.85);
+            border: 1px solid var(--neon-red);
+            border-radius: 4px;
+            padding: 20px;
+            backdrop-filter: blur(8px);
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(255, 42, 77, 0.05);
+        }
+
+        /* Panel Sizing */
+        .panel-vitals {
+            grid-column: span 4;
+        }
+
+        .panel-radar {
+            grid-column: span 4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .panel-avatar {
+            grid-column: span 4;
+        }
+
+        .panel-kinesis {
+            grid-column: span 6;
+        }
+
+        .panel-emp {
+            grid-column: span 6;
+        }
+
+        .panel-terminal {
+            grid-column: span 12;
+        }
+
+        .panel h2 {
+            font-size: 1.1rem;
+            color: var(--neon-yellow);
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            margin-bottom: 20px;
+            border-bottom: 1px dashed var(--panel-border);
+            padding-bottom: 8px;
+        }
+
+        /* Data Rows */
+        .data-row {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            padding-bottom: 4px;
+        }
+
+        .data-label {
+            color: var(--text-dim);
+        }
+
+        .data-val-blue {
+            color: var(--neon-blue);
+            font-weight: bold;
+        }
+
+        .data-val-red {
+            color: var(--neon-red);
+            font-weight: bold;
+            text-shadow: 0 0 5px rgba(255, 42, 77, 0.5);
+        }
+
+        .data-val-purple {
+            color: var(--neon-purple);
+            font-weight: bold;
+        }
+
+        .data-val-yellow {
+            color: var(--neon-yellow);
+            font-weight: bold;
+        }
+
+        /* Progress Bars */
+        .bar-container {
+            margin-bottom: 15px;
+        }
+
+        .bar-title {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-bottom: 5px;
+        }
+
+        .bar-track {
+            width: 100%;
+            height: 6px;
+            background-color: #111;
+            border-radius: 3px;
+            overflow: hidden;
+            border: 1px solid var(--panel-border);
+        }
+
+        .bar-fill {
+            height: 100%;
+            border-radius: 3px;
+        }
+
+        /* Radar SVG */
+        .radar-svg {
+            overflow: visible;
+            margin-top: 10px;
+        }
+
+        .radar-label {
+            fill: var(--text-main);
+            font-family: var(--font-mono);
+            font-size: 11px;
+            text-anchor: middle;
+        }
+
+        .radar-legend {
+            display: flex;
+            gap: 15px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            margin-top: 20px;
+        }
+
+        .legend-item {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        }
+
+        .legend-box {
+            width: 12px;
+            height: 12px;
+            border-radius: 2px;
+        }
+
+        /* Terminal Window */
+        .terminal {
+            background-color: #010204;
+            border: 1px solid var(--neon-red);
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+            padding: 15px;
+            height: 200px;
+            overflow-y: auto;
+            color: var(--neon-red);
+            box-shadow: inset 0 0 15px rgba(255, 42, 77, 0.15);
+        }
+
+        .term-line {
+            margin-bottom: 6px;
+            opacity: 0;
+            animation: fadeIn 0.1s forwards;
+        }
+
+        .term-crit {
+            color: var(--neon-yellow);
+            font-weight: bold;
+        }
+
+        .term-sys {
+            color: var(--neon-blue);
+        }
+
+        /* Animations */
+        @keyframes pulse-fast {
+            0% {
+                opacity: 1;
+                box-shadow: 0 0 10px var(--neon-red);
+            }
+
+            50% {
+                opacity: 0.2;
+                box-shadow: 0 0 2px var(--neon-red);
+            }
+
+            100% {
+                opacity: 1;
+                box-shadow: 0 0 10px var(--neon-red);
+            }
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes glitch {
+            0% {
+                text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-red);
+            }
+
+            50% {
+                text-shadow: -2px 0 var(--neon-blue), 2px 0 var(--neon-red);
+            }
+
+            100% {
+                text-shadow: 2px 0 var(--neon-blue), -2px 0 var(--neon-red);
+            }
+        }
+
+        .scan-line {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--neon-red), transparent);
+            opacity: 0.7;
+            animation: scan 2.5s linear infinite;
+        }
+
+        @keyframes scan {
+            0% {
+                top: -10%;
+            }
+
+            100% {
+                top: 110%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="hud-header">
+        <div class="hud-title">
+            <h1>Imperial Threat Assessment: Atraxia</h1>
+            <p>SUBJECT ID: L-1759 | AGE: 22 | CURRENT STATE: CATATONIC / ASCENDED TRANCE</p>
+        </div>
+        <div class="hud-status">
+            <span class="status-indicator"></span>
+            CRITICAL CONTAINMENT BREACH<br>
+            AURA EMISSION: <span style="color:var(--neon-red)">LETHAL RADIUS</span>
+        </div>
+    </div>
+
+    <div class="grid-container">
+
+        <!-- 1. PHYSIOLOGY & TRANCE STATE -->
+        <div class="panel panel-vitals">
+            <div class="scan-line"></div>
+            <h2>Biometrics & Trance Data</h2>
+
+            <div class="data-row">
+                <span class="data-label">Consciousness Level:</span>
+                <span class="data-val-red">0.0% (Comatose)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Aetheric Output:</span>
+                <span class="data-val-red">340% (Catastrophic Overload)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Prophetic Resonance:</span>
+                <span class="data-val-purple">Active ("She is waiting...")</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">PTSD Trigger Stimulus:</span>
+                <span class="data-val-yellow">Atraxia Sewers (Claustrophobia/Trauma)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Levitation Altitude:</span>
+                <span class="data-val-blue">12-24 inches (Autonomous)</span>
+            </div>
+
+            <br>
+            <div class="bar-container">
+                <div class="bar-title"><span>Autonomous Kinetic Shielding</span><span>100%</span></div>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: 100%; background-color: var(--neon-red);"></div>
+                </div>
+            </div>
+            <div class="bar-container">
+                <div class="bar-title"><span>Voluntary Motor Control</span><span>0%</span></div>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: 0%; background-color: var(--text-dim);"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 2. RADAR CHART (Base vs Trance) -->
+        <div class="panel panel-radar">
+            <h2>Arcane Shift: Conscious vs. Trance</h2>
+            <svg class="radar-svg" viewBox="0 0 300 300" width="220" height="220">
+                <!-- Grid Rings -->
+                <polygon points="150,125 171.6,137.5 171.6,162.5 150,175 128.4,162.5 128.4,137.5" fill="none"
+                    stroke="#1f3a5e" stroke-width="1" />
+                <polygon points="150,100 193.3,125 193.3,175 150,200 106.7,175 106.7,125" fill="none" stroke="#1f3a5e"
+                    stroke-width="1" />
+                <polygon points="150,75 214.9,112.5 214.9,187.5 150,225 85.1,187.5 85.1,112.5" fill="none"
+                    stroke="#1f3a5e" stroke-width="1" />
+                <polygon points="150,50 236.6,100 236.6,200 150,250 63.4,200 63.4,100" fill="none" stroke="#1f3a5e"
+                    stroke-width="2" />
+
+                <!-- Spoke Lines -->
+                <line x1="150" y1="150" x2="150" y2="50" stroke="#1f3a5e" stroke-width="1" />
+                <line x1="150" y1="150" x2="236.6" y2="100" stroke="#1f3a5e" stroke-width="1" />
+                <line x1="150" y1="150" x2="236.6" y2="200" stroke="#1f3a5e" stroke-width="1" />
+                <line x1="150" y1="150" x2="150" y2="250" stroke="#1f3a5e" stroke-width="1" />
+                <line x1="150" y1="150" x2="63.4" y2="200" stroke="#1f3a5e" stroke-width="1" />
+                <line x1="150" y1="150" x2="63.4" y2="100" stroke="#1f3a5e" stroke-width="1" />
+
+                <!-- Data Polygon: BASE 22-YR OLD (Blue) -->
+                <!-- TK (Top: 75%), Def (TR: 60%), EMP (BR: 40%), Clairvoyance (B: 40%), Pyro (BL: 85%), Telepathy (TL: 90%) -->
+                <polygon points="150,75 201.9,120 184.6,170 150,190 76.5,192.5 72.1,105" fill="rgba(0, 210, 255, 0.2)"
+                    stroke="var(--neon-blue)" stroke-width="1.5" />
+
+                <!-- Data Polygon: ATRAXIA TRANCE STATE (Red) -->
+                <!-- TK (Top: 100%), Def (100%), EMP (100%), Clairvoyance (100%), Pyro (10%), Telepathy (20%) -->
+                <polygon points="150,50 236.6,100 236.6,200 150,250 132.7,160 132.7,140" fill="rgba(255, 42, 77, 0.3)"
+                    stroke="var(--neon-red)" stroke-width="2.5" stroke-dasharray="3,3" />
+
+                <!-- Labels -->
+                <text x="150" y="40" class="radar-label">Telekinesis</text>
+                <text x="260" y="95" class="radar-label">Auto-Defense</text>
+                <text x="260" y="215" class="radar-label">EMP/Disruption</text>
+                <text x="150" y="265" class="radar-label">Clairvoyance</text>
+                <text x="40" y="215" class="radar-label">Pyrokinesis</text>
+                <text x="40" y="95" class="radar-label">Telepathy</text>
+            </svg>
+            <div class="radar-legend">
+                <div class="legend-item">
+                    <div class="legend-box" style="background:var(--neon-blue)"></div> Conscious Base
+                </div>
+                <div class="legend-item">
+                    <div class="legend-box" style="background:var(--neon-red)"></div> Atraxia Trance
+                </div>
+            </div>
+        </div>
+
+        <!-- 3. RELIC AVATAR MANIFESTATION -->
+        <div class="panel panel-avatar">
+            <h2>Relic Avatar Deployment</h2>
+            <p
+                style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim); margin-bottom: 15px; line-height:1.4;">
+                CRITICAL EVENT: Subject L's fused relic achieved physical separation and manifested an autonomous,
+                platinum-blue humanoid entity.
+            </p>
+            <div class="data-row">
+                <span class="data-label">Entity Composition:</span>
+                <span class="data-val-blue">Platinum-Blue Energy Matrix</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Sentience Level:</span>
+                <span class="data-val-purple">High (Capable of Speech)</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Host Acknowledgment:</span>
+                <span class="data-val-green">"L was right all along."</span>
+            </div>
+            <div class="data-row">
+                <span class="data-label">Current Action:</span>
+                <span class="data-val-yellow">Defending Host from Imperial SWAT</span>
+            </div>
+
+            <br>
+            <div class="bar-container">
+                <div class="bar-title"><span>Relic Independence from Host</span><span>100%</span></div>
+                <div class="bar-track">
+                    <div class="bar-fill" style="width: 100%; background-color: var(--neon-purple);"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 4. AUTONOMOUS KINETICS -->
+        <div class="panel panel-kinesis">
+            <div class="scan-line"></div>
+            <h2>Unconscious Kinetic Force</h2>
+            <p
+                style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim); margin-bottom: 15px; line-height:1.4;">
+                While comatose, Subject generates a hyper-dense telekinetic aura. Projectiles are caught in orbital
+                stasis and returned to sender at increased velocity. Heavy Imperial vehicles lifted and hurled with zero
+                gestural input.
+            </p>
+
+            <div style="display:flex; gap: 20px;">
+                <div style="flex:1;">
+                    <div class="data-row">
+                        <span class="data-label">Kinetic Lift Capacity:</span>
+                        <span class="data-val-red">12,000+ kg (SWAT Vehicles)</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Projectile Reversal Speed:</span>
+                        <span class="data-val-yellow">Mach 1.2</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Aura Deflection Rate:</span>
+                        <span class="data-val-blue">100% (Impenetrable)</span>
+                    </div>
+                </div>
+                <div style="flex:1;">
+                    <div class="bar-container">
+                        <div class="bar-title"><span>Mass Disruption Radius</span><span>50 meters</span></div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 85%; background-color: var(--neon-red);"></div>
+                        </div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-title"><span>Aura Lethality Index</span><span>Critical</span></div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 95%; background-color: var(--neon-yellow);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 5. EMP & MAGI-TECH DISRUPTION -->
+        <div class="panel panel-emp">
+            <h2>EMP / Technology Disruption</h2>
+            <p
+                style="font-family:var(--font-mono); font-size:0.8rem; color:var(--text-dim); margin-bottom: 15px; line-height:1.4;">
+                Subject's aura emits high-frequency arcane interference, actively frying Imperial circuitry and causing
+                severe systemic overloads in surveillance hardware.
+            </p>
+
+            <div style="display:flex; gap: 20px;">
+                <div style="flex:1;">
+                    <div class="data-row">
+                        <span class="data-label">Interference Radius:</span>
+                        <span class="data-val-blue">500 ft</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Drone Kill Count:</span>
+                        <span class="data-val-red">Multiple (Circuit Shatter)</span>
+                    </div>
+                    <div class="data-row">
+                        <span class="data-label">Lighting Grid Impact:</span>
+                        <span class="data-val-yellow">Total Blackout (Local)</span>
+                    </div>
+                </div>
+                <div style="flex:1;">
+                    <div class="bar-container">
+                        <div class="bar-title"><span>Hardware Overload Efficiency</span><span>98%</span></div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 98%; background-color: var(--neon-blue);"></div>
+                        </div>
+                    </div>
+                    <div class="bar-container">
+                        <div class="bar-title"><span>Arcane Static Emission</span><span>Extreme</span></div>
+                        <div class="bar-track">
+                            <div class="bar-fill" style="width: 100%; background-color: var(--neon-purple);"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- 6. TERMINAL LOG -->
+        <div class="panel panel-terminal">
+            <h2>Imperial SWAT Engagement Log // Atraxia Sector 4</h2>
+            <div class="terminal" id="terminalLog">
+                <div class="term-line" style="animation-delay: 0.1s;">[SYS] Subject L-1759 entered subterranean sewage
+                    network.</div>
+                <div class="term-line" style="animation-delay: 0.5s;">[WARN] Subject experienced massive trauma
+                    feedback. <span class="term-crit">"I hate sewers!"</span></div>
+                <div class="term-line" style="animation-delay: 1.0s;">[SYS] Blinding luminous burst detected. Subject
+                    entered comatose state.</div>
+                <div class="term-line" style="animation-delay: 1.5s;">[ALERT] Subject levitating autonomously. Emitting
+                    intense EMP aura.</div>
+                <div class="term-line" style="animation-delay: 2.0s;">[AUDIO] Subject muttering: <span
+                        class="term-sys">"She's here. She's waiting for me."</span></div>
+                <div class="term-line" style="animation-delay: 2.5s;">[COMBAT] Imperial drones at 500ft shattered via
+                    EMP overload.</div>
+                <div class="term-line" style="animation-delay: 3.0s;">[COMBAT] SWAT deployed non-lethal round. <span
+                        class="term-crit">Round suspended mid-air and reversed. Officer down.</span></div>
+                <div class="term-line" style="animation-delay: 3.5s;">[COMBAT] Suppressive fire initiated. All
+                    projectiles caught in orbital stasis.</div>
+                <div class="term-line" style="animation-delay: 4.0s;">[CRITICAL] Subject lifted 3 armored SWAT vehicles
+                    and hurled them into perimeter walls.</div>
+                <div class="term-line" style="animation-delay: 4.5s;">[SYS] Subject arrived at Resistance Base. Aura
+                    collapsed.</div>
+                <div class="term-line" style="animation-delay: 5.0s;">[ANOMALY] <span class="term-crit">Relic separated
+                        from Subject. Platinum-blue entity manifested.</span></div>
+                <div class="term-line" style="animation-delay: 5.5s;">[ENTITY] "I forgive him for hacking me. Now, he
+                    needs rest. For now, we shall fight!"</div>
+                <div class="term-line" style="animation-delay: 6.0s;">[SYS] Entity engaging Imperial reinforcements.
+                    Signal lost.</div>
+            </div>
+        </div>
+
+    </div>
+
+</body>
+
+</html>

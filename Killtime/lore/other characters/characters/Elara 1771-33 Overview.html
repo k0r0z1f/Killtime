@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../../../css/theme.css">
+    <script src="../../../scripts_and_data/theme.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Elara (Historian) - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2a3d63;
+            padding-bottom: 5px;
+        }
+
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .highlighted {
+            background-color: #e8f4fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 5px 5px 0;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode h2 {
+            color: #81d4fa;
+        }
+
+        body.dark-mode table {
+            border-color: #333;
+        }
+
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+
+        body.dark-mode .highlighted {
+            background-color: #2a3b5c;
+            border-left: 4px solid #81d4fa;
+        }
+
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('highlighted');
+
+            // Smooth scroll to the section
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Elara (Historian) - Character Overview</h1>
+
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Unknown</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background"
+                            onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Historian, scholar, archaeological expert specializing in Nythari lore and Watcher legends</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality
+                            Traits</a></td>
+                    <td>Fascinated, curious, eager, highly observant, intellectually driven, blissfully oblivious to
+                        political tension</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic"
+                            onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Genius-level pattern recognition, geological and historical analysis, rapid
+                        sketching/documentation</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a>
+                    </td>
+                    <td>Contracted by Dr. Thorne; part of the rogue Kingston expedition</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Simple, functional attire suited for long travel and fieldwork; carries a heavily overflowing
+                        satchel</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character
+                            Arc/Goal</a></td>
+                    <td>Decipher the misinterpreted, fragmented story of the Temple of Crystals and document history
+                        firsthand</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>Appears entirely unbothered by the ethical implications of Thorne's past, prioritizing raw
+                        historical discovery over morality</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat
+                            Training</a></td>
+                    <td>Absolute non-combatant; relies completely on Kael and Thorne for physical protection</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Overflowing satchel, numerous ancient scrolls, sketchbook, charcoal/sketching materials</td>
+                </tr>
+                <tr>
+                    <td><a href="#dr-thorne" onclick="highlightSection(this, 'dr-thorne')">Dr. Thorne</a></td>
+                    <td>Her employer; he values her expertise and utilizes her to contextualize the magi-tech anomalies
+                        he uncovers</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas-mina" onclick="highlightSection(this, 'lucas-mina')">Lucas & Mina</a></td>
+                    <td>Fascinated by them as living pieces of the prophecy she has spent her life studying</td>
+                </tr>
+                <tr>
+                    <td><a href="#dira" onclick="highlightSection(this, 'dira')">Dira</a></td>
+                    <td>Academic parallel; while Dira fears the history they are uncovering, Elara embraces it with
+                        sheer excitement</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Elara's exact birth year is unknown. However, her deep, specialized knowledge of ancient Nythari lore
+                suggests she has spent many years or even decades in academia and field study.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Elara is a historian and scholar brought on by Dr. Thorne to help navigate and decipher the sealed Temple
+                of Crystals. While Thorne focuses on the arcane physics and raw energy of the crystals, Elara is the
+                cultural and historical translator. Her expertise lies in the legends of the Watcher and Nythari lore.
+                She is part of the three-person rogue expedition (Thorne, Kael, Elara) that used heavy machinery to
+                collapse the ancient stone gates of the temple to force entry.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Elara is defined by an insatiable, almost childlike academic curiosity. While the rest of the room is
+                locked in a deadly, deeply personal standoff between Lucas and his former abuser (Thorne), Elara remains
+                entirely unfazed, her eyes wide with pure fascination. She is highly observant, eager, and constantly
+                documenting everything she sees. She seems to live completely in the world of history, largely ignoring
+                the political and ethical tensions happening right next to her.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>While she exhibits no combat magic, Elara possesses genius-level deductive skills in archaeology and
+                geology. During the standoff, she was the one who observed that the Black and White crystals were
+                artificial additions to the cavern. She noticed that their fusion points with the natural stalagmites
+                were "flawless, almost too perfect compared to the organic intermingling of the others," revealing them
+                to be masterfully engineered locks rather than natural formations.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Elara is allied with Dr. Thorne. However, her allegiance appears purely academic rather than ideological.
+                She is with Thorne because he possesses the resources and audacity to get her into places that have been
+                sealed for millennia (like the Temple of Crystals).</p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>She dresses in simple, highly functional attire, suggesting a life spent in dusty libraries and rugged
+                travel rather than high society. Her defining visual trait is her ever-present, overflowing satchel
+                stuffed with scrolls, sketchbooks, and drawing materials. Her eyes are frequently wide and darting,
+                taking in every architectural detail of her surroundings.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Elara's ultimate goal is to correct the historical record. She notes that the story of the crystals and
+                the Sent Ones has been "fragmented and misinterpreted for centuries." By physically standing in the
+                Temple of Crystals, she intends to document the truth, providing a fresh perspective to centuries of
+                myth.</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Elara's secret is her extreme moral detachment. While she politely nods to the group, she works willingly
+                for Thorne—a man who tortured children in a medi-laboratory. Her drive to uncover history completely
+                eclipses any ethical qualms she might have about her employer's violent methods or past atrocities.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Elara is a complete non-combatant. In dangerous environments, she relies entirely on Kael's lethal
+                proficiency and Thorne's technology to keep her safe so she can focus purely on her research and
+                sketching.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Elara carries a heavy, overflowing satchel. Inside, she keeps a vast array of ancient scrolls for
+                cross-referencing, a sketchbook, and various sketching materials (likely charcoal or ink). When Lucas
+                and Thorne solve the crystal puzzle, she immediately pulls out her sketchbook, her fingers flying across
+                the page to capture the arcane mechanism in action.</p>
+        </div>
+
+        <div class="section-content" id="dr-thorne">
+            <h2>Dr. Thorne</h2>
+            <p>Her employer and expedition leader. Thorne relies on Elara to bridge the gap between his hard science and
+                the ancient magic of the world. He respects her input, allowing her to interrupt tense moments with
+                historical context.</p>
+        </div>
+
+        <div class="section-content" id="lucas-mina">
+            <h2>Lucas & Mina</h2>
+            <p>To Elara, Lucas and Mina are likely walking, breathing historical artifacts. She recognizes them as the
+                living embodiments of the prophecy she has studied her entire life, viewing them with eager fascination
+                rather than malice.</p>
+        </div>
+
+        <div class="section-content" id="dira">
+            <h2>Dira</h2>
+            <p>Elara acts as a dark academic parallel to Dira. Both are dwarf/human scholars tasked with recording the
+                truth of the prophecy. However, while Dira views the temple's power with profound dread and reverence,
+                Elara treats it with thrilling academic curiosity.</p>
+        </div>
+    </div>
+</body>
+
+</html>

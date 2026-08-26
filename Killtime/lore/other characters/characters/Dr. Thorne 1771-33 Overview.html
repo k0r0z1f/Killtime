@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../../../css/theme.css">
+    <script src="../../../scripts_and_data/theme.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dr. Thorne (The Researcher) - Character Overview</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+            transition: background-color 0.3s, color 0.3s;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 40px;
+        }
+
+        th,
+        td {
+            padding: 12px 15px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #2a3d63;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+
+        td a {
+            color: #007bff;
+            text-decoration: none;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        td a:hover {
+            text-decoration: underline;
+        }
+
+        .section-heading {
+            color: #2a3d63;
+            font-size: 1.8em;
+            margin-bottom: 20px;
+            border-bottom: 2px solid #2a3d63;
+            padding-bottom: 5px;
+        }
+
+        .section-content {
+            margin-left: 20px;
+            margin-bottom: 20px;
+            padding: 15px;
+            border-left: 4px solid transparent;
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+
+        .highlighted {
+            background-color: #e8f4fa;
+            border-left: 4px solid #007bff;
+            border-radius: 0 5px 5px 0;
+        }
+
+        h2 {
+            color: #333;
+            margin-top: 0;
+        }
+
+        /* Dark Mode Styles */
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .container {
+            background-color: #1e1e1e;
+            box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+        }
+
+        body.dark-mode h2 {
+            color: #81d4fa;
+        }
+
+        body.dark-mode table {
+            border-color: #333;
+        }
+
+        body.dark-mode th {
+            background-color: #1a237e;
+        }
+
+        body.dark-mode tr:nth-child(even) {
+            background-color: #2c2c2c;
+        }
+
+        body.dark-mode td a {
+            color: #81d4fa;
+        }
+
+        body.dark-mode .highlighted {
+            background-color: #2a3b5c;
+            border-left: 4px solid #81d4fa;
+        }
+
+        /* Toggle Button Styles */
+        .toggle-button {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            background-color: #2a3d63;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+            z-index: 1000;
+        }
+
+        .toggle-button:hover {
+            background-color: #1e2a4a;
+        }
+    </style>
+    <script>
+        function highlightSection(link, sectionId) {
+            // Remove highlight from all links and sections
+            let links = document.querySelectorAll('table a');
+            links.forEach(l => l.classList.remove('highlighted'));
+
+            let sections = document.querySelectorAll('.section-content');
+            sections.forEach(section => section.classList.remove('highlighted'));
+
+            // Add highlight to the clicked link and corresponding section
+            link.classList.add('highlighted');
+            const targetSection = document.getElementById(sectionId);
+            targetSection.classList.add('highlighted');
+
+            // Smooth scroll to the section
+            targetSection.scrollIntoView({ behavior: 'smooth', block: 'center' });
+        }
+
+        function toggleDarkMode() {
+            document.body.classList.toggle('dark-mode');
+            const button = document.getElementById('darkModeToggle');
+            if (document.body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+            } else {
+                button.textContent = 'Dark Mode';
+            }
+        }
+    </script>
+</head>
+
+<body>
+    <button class="toggle-button" id="darkModeToggle" onclick="toggleDarkMode()">Dark Mode</button>
+    <div class="container">
+        <h1 class="section-heading">Dr. Thorne (The Researcher) - Character Overview</h1>
+
+        <!-- Character Attribute Table -->
+        <table>
+            <thead>
+                <tr>
+                    <th>Attribute</th>
+                    <th>Details</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <td><a href="#birth-year" onclick="highlightSection(this, 'birth-year')">Birth Year</a></td>
+                    <td>Unknown</td>
+                </tr>
+                <tr>
+                    <td><a href="#role-background"
+                            onclick="highlightSection(this, 'role-background')">Role/Background</a></td>
+                    <td>Rogue scientist, former Kingston medi-laboratory head, abuser of Lucas, leader of the illicit
+                        Temple expedition</td>
+                </tr>
+                <tr>
+                    <td><a href="#personality-traits" onclick="highlightSection(this, 'personality-traits')">Personality
+                            Traits</a></td>
+                    <td>Cold, clinical, arrogant, intellectually superior, lacking empathy, pragmatically cooperative,
+                        urgent</td>
+                </tr>
+                <tr>
+                    <td><a href="#abilities-magic"
+                            onclick="highlightSection(this, 'abilities-magic')">Abilities/Magic</a></td>
+                    <td>Mastery of magi-tech and arcane physics; innate mental shielding against telepaths</td>
+                </tr>
+                <tr>
+                    <td><a href="#alliances" onclick="highlightSection(this, 'alliances')">Alliances/Clans/Factions</a>
+                    </td>
+                    <td>Former Kingston Regime; leads Kael & Elara; in a highly volatile, uneasy truce with the
+                        protagonists</td>
+                </tr>
+                <tr>
+                    <td><a href="#appearance" onclick="highlightSection(this, 'appearance')">Appearance</a></td>
+                    <td>Gaunt features, intense eyes, wears a coat with the Kingston insignia, gloved hands,
+                        authoritative posture</td>
+                </tr>
+                <tr>
+                    <td><a href="#character-arc" onclick="highlightSection(this, 'character-arc')">Character
+                            Arc/Goal</a></td>
+                    <td>Avert a global arcane catastrophe caused by bursting crystals; utilize Lucas to solve ancient
+                        mysteries</td>
+                </tr>
+                <tr>
+                    <td><a href="#secret" onclick="highlightSection(this, 'secret')">Secret</a></td>
+                    <td>His mind is guarded by mental "static"; his apocalyptic warning of planetary devastation is
+                        completely genuine</td>
+                </tr>
+                <tr>
+                    <td><a href="#combat-training" onclick="highlightSection(this, 'combat-training')">Combat
+                            Training</a></td>
+                    <td>Non-combatant; relies on Kael for physical defense and magi-tech drones for reconnaissance</td>
+                </tr>
+                <tr>
+                    <td><a href="#inventory" onclick="highlightSection(this, 'inventory')">Inventory</a></td>
+                    <td>Ruggedized mobile laboratory pod, sensor drones, datapad, scanners, small vial of shimmering
+                        liquid (past)</td>
+                </tr>
+                <tr>
+                    <td><a href="#lucas" onclick="highlightSection(this, 'lucas')">Lucas</a></td>
+                    <td>His former test subject and current reluctant collaborator; views Lucas as the "key" to the
+                        prophecy</td>
+                </tr>
+                <tr>
+                    <td><a href="#kael" onclick="highlightSection(this, 'kael')">Kael</a></td>
+                    <td>His heavily armed, fiercely loyal mercenary bodyguard</td>
+                </tr>
+                <tr>
+                    <td><a href="#elara" onclick="highlightSection(this, 'elara')">Elara</a></td>
+                    <td>His hired historian, utilized to bridge the gap between his hard science and ancient Nythari
+                        lore</td>
+                </tr>
+            </tbody>
+        </table>
+
+        <!-- Detailed Breakdown -->
+        <div class="section-content" id="birth-year">
+            <h2>Birth Year</h2>
+            <p>Dr. Thorne's birth year is unknown. He is an older, established scientist with decades of research under
+                his belt, having been active since Lucas's infancy.</p>
+        </div>
+
+        <div class="section-content" id="role-background">
+            <h2>Role/Background</h2>
+            <p>Formerly known only as "The Researcher," Dr. Thorne was the head of the Kingston medi-laboratory where he
+                subjected a young Lucas to horrific experiments. Now operating independently after the fall of the
+                Kingston regime, he hired the mercenary Kael and the historian Elara to force his way into the sealed
+                Temple of Crystals using heavy excavation machinery. He claims his past atrocities were "necessary
+                sacrifices" to stop the Disciples of the Empire.</p>
+        </div>
+
+        <div class="section-content" id="personality-traits">
+            <h2>Personality Traits</h2>
+            <p>Thorne is cold, clinical, and completely lacks empathy, viewing even human suffering as a mere data
+                point. He is highly arrogant and condescending, explaining complex arcane physics as if speaking to
+                children. However, he is remarkably pragmatic; he readily sets aside past animosities to collaborate
+                with Lucas when a puzzle requires both his technology and Lucas's magical intuition.</p>
+        </div>
+
+        <div class="section-content" id="abilities-magic">
+            <h2>Abilities/Magic</h2>
+            <p>While he possesses no innate offensive magic, Thorne is a genius in arcane physics and magi-tech
+                engineering. Furthermore, he possesses a formidable mental defense. When Lucas attempted to
+                telepathically probe his mind, Thorne's thoughts were shielded by a buzzing, disruptive "static," and he
+                was immediately aware of the intrusion.</p>
+        </div>
+
+        <div class="section-content" id="alliances">
+            <h2>Alliances/Clans/Factions</h2>
+            <p>Thorne previously served the Kingston Regime but now operates as a rogue element. He leads a three-person
+                faction (himself, Kael, Elara). Currently, he has forged a tense, fragile truce with the protagonists,
+                Queen Aphyrosia, and Chief V to solve the mystery of the Temple of Crystals and avert a global disaster.
+            </p>
+        </div>
+
+        <div class="section-content" id="appearance">
+            <h2>Appearance</h2>
+            <p>Dr. Thorne is described as having gaunt features and an intensely sharp gaze. He wears a coat bearing the
+                faded insignia of the Kingston medi-laboratory and keeps his hands covered with gloves. His posture is
+                stiff, commanding, and perpetually authoritative.</p>
+        </div>
+
+        <div class="section-content" id="character-arc">
+            <h2>Character Arc/Goal</h2>
+            <p>Thorne’s immediate goal is to prevent a planet-wide cataclysm. He discovered that the massive crystals
+                within the temple are acting as overcharged arcane capacitors on the brink of bursting, which would
+                destabilize the global arcane field and trigger apocalyptic storms. To stop this, he seeks to unlock the
+                secrets of the Sent Ones, utilizing Lucas and Mina as the "keys."</p>
+        </div>
+
+        <div class="section-content" id="secret">
+            <h2>Secret</h2>
+            <p>Despite his villainous past, his current warning is absolutely genuine. Lucas performed a surface-level
+                mind read on Thorne and found no deception—only complex calculations, simulations of global devastation,
+                and a desperate, weary urgency to avert the crisis. Thorne is not lying about the impending doom.</p>
+        </div>
+
+        <div class="section-content" id="combat-training">
+            <h2>Combat Training</h2>
+            <p>Thorne is a non-combatant. He relies entirely on Kael’s lethal expertise to protect him in hostile
+                environments, issuing swift, cold commands to his bodyguard if he feels physically or mentally
+                threatened.</p>
+        </div>
+
+        <div class="section-content" id="inventory">
+            <h2>Inventory</h2>
+            <p>Thorne is heavily equipped with cutting-edge magi-tech. He operates a compact, ruggedized mobile
+                laboratory pod featuring an array of multi-layered holographic displays, a datapad, and several
+                hover-drones capable of emitting and scanning precise frequencies of light and arcane energy. In the
+                past, he was noted carrying small vials of shimmering liquid used to sedate/mutate his test subjects.
+            </p>
+        </div>
+
+        <div class="section-content" id="lucas">
+            <h2>Lucas</h2>
+            <p>His former victim. Thorne displays no remorse for torturing Lucas, viewing him merely as an essential
+                tool to fulfill the prophecy and stop the Disciples. Despite this, the two form an incredibly effective,
+                if hateful, problem-solving duo inside the temple.</p>
+        </div>
+
+        <div class="section-content" id="kael">
+            <h2>Kael</h2>
+            <p>Thorne's hired mercenary and bodyguard. Thorne trusts Kael to execute his defense perfectly, casually
+                ordering him to prioritize his safety if Lucas attempts to telepathically compromise his mind.</p>
+        </div>
+
+        <div class="section-content" id="elara">
+            <h2>Elara (Historian)</h2>
+            <p>Thorne's hired academic. He relies on Elara to provide historical context to the physical anomalies he
+                detects, demonstrating a pragmatic willingness to delegate tasks outside his scientific expertise.</p>
+        </div>
+    </div>
+</body>
+
+</html>
