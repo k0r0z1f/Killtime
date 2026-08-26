@@ -1,0 +1,13 @@
+# Ignore a specific file
+secret_config.json
+
+# Ignore an entire folder (add a trailing slash)
+node_modules/
+.git/
+.vscode/
+.agents/
+dist/
+
+# Ignore all files with a specific extension
+*.log
+*.tmp
