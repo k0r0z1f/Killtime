@@ -35,12 +35,84 @@
 
         /* Container & Layout */
         .book-container {
-            max-width: 800px;
+            position: relative;
+            max-width: 960px;
+            width: 100%;
             margin: 40px auto;
             background: #ffffff;
             padding: 60px 80px;
             box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
             border-radius: 8px;
+            box-sizing: border-box;
+            transition: max-width 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+        }
+
+        .book-container.is-resizing {
+            transition: none !important;
+            user-select: none;
+        }
+
+        /* Fluid Relative Maximization (Adapts Dynamically to Browser Zoom & Resizing) */
+        .book-container.is-maximized {
+            max-width: calc(100vw - 40px) !important;
+            width: 100%;
+        }
+
+        @media (min-width: 1400px) {
+            .book-container.is-maximized {
+                max-width: calc(100vw - 640px) !important;
+            }
+        }
+
+        /* Lateral Elastic Resize Seams */
+        .resize-handle {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 16px;
+            cursor: ew-resize;
+            z-index: 50;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            opacity: 0.35;
+            transition: opacity 0.2s ease, background-color 0.2s ease;
+        }
+
+        .resize-handle:hover {
+            opacity: 1;
+            background-color: rgba(88, 166, 255, 0.08);
+        }
+
+        .resize-handle-left {
+            left: 0;
+            border-radius: 8px 0 0 8px;
+        }
+
+        .resize-handle-right {
+            right: 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .resize-grip-line {
+            width: 3px;
+            height: 48px;
+            background-color: var(--ai-color, #2b5b84);
+            border-radius: 2px;
+            box-shadow: 0 0 4px rgba(88, 166, 255, 0.4);
+            transition: height 0.2s ease, background-color 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .resize-handle:hover .resize-grip-line {
+            height: 76px;
+            background-color: #58a6ff;
+            box-shadow: 0 0 8px #58a6ff;
+        }
+
+        @media (max-width: 768px) {
+            .resize-handle {
+                display: none;
+            }
         }
 
         /* Typography */
@@ -569,12 +641,925 @@
             border-radius: 2px;
             transition: background-color 0.6s ease, border-color 0.6s ease;
         }
+
+        /* === Responsive Sidebar Layout System (Wide Screen Matrix) === */
+        .sidebar-left,
+        .sidebar-right {
+            display: none;
+        }
+
+        @media (min-width: 1400px) {
+
+            .sidebar-left,
+            .sidebar-right {
+                display: block;
+                position: fixed;
+                top: 0;
+                width: 290px;
+                height: 100vh;
+                z-index: 900;
+                overflow-y: auto;
+                padding: 25px 15px;
+                box-sizing: border-box;
+                background-color: #1a1a24;
+                color: #f0f4f8;
+                border-right: 1px solid rgba(255, 255, 255, 0.08);
+                font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+                font-size: 0.9em;
+            }
+
+            .sidebar-left {
+                left: 0;
+                border-right: 1px solid rgba(255, 255, 255, 0.08);
+            }
+
+            .sidebar-right {
+                right: 0;
+                border-left: 1px solid rgba(255, 255, 255, 0.08);
+                border-right: none;
+            }
+
+            .sidebar-section-title {
+                font-size: 0.95em;
+                font-weight: bold;
+                text-transform: uppercase;
+                letter-spacing: 1px;
+                text-align: center;
+                margin-bottom: 14px;
+                padding-bottom: 8px;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+                color: #58a6ff;
+            }
+
+            .sidebar-nav-list {
+                list-style: none;
+                padding-left: 0;
+                margin: 0;
+            }
+
+            .sidebar-nav-item {
+                margin-bottom: 6px;
+            }
+
+            .sidebar-link {
+                display: block;
+                padding: 7px 10px;
+                color: #c9d1d9;
+                text-decoration: none;
+                border-radius: 4px;
+                transition: all 0.2s ease;
+                font-size: 0.92em;
+                line-height: 1.3;
+            }
+
+            .sidebar-link:hover {
+                background-color: rgba(88, 166, 255, 0.15);
+                color: #58a6ff;
+                transform: translateX(4px);
+            }
+
+            .sidebar-link.active-node {
+                background-color: rgba(88, 166, 255, 0.2);
+                color: #ffffff;
+                font-weight: bold;
+                border-left: 3px solid #58a6ff;
+            }
+
+            .sidebar-sub-item {
+                padding-left: 14px;
+                font-size: 0.86em;
+                margin-bottom: 4px;
+            }
+
+            .sidebar-sub-item a {
+                color: #8b949e;
+            }
+
+            .sidebar-sub-item a:hover {
+                color: #79c0ff;
+            }
+
+            .sidebar-toggle-btn {
+                background: none;
+                border: 1px solid rgba(255, 255, 255, 0.2);
+                color: #58a6ff;
+                border-radius: 3px;
+                cursor: pointer;
+                font-family: monospace;
+                font-size: 0.8em;
+                width: 18px;
+                height: 18px;
+                display: inline-flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: 6px;
+                padding: 0;
+                line-height: 1;
+            }
+
+            .sidebar-toggle-btn:hover {
+                background: rgba(88, 166, 255, 0.25);
+                color: #fff;
+            }
+
+            /* Main Reading Column Positioning */
+            .book-container {
+                max-width: 960px;
+                margin: 40px auto;
+            }
+        }
+
+        /* Custom Scrollbar for Sidebars */
+        .sidebar-left::-webkit-scrollbar,
+        .sidebar-right::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .sidebar-left::-webkit-scrollbar-thumb,
+        .sidebar-right::-webkit-scrollbar-thumb {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 3px;
+        }
+
+        .sidebar-left::-webkit-scrollbar-thumb:hover,
+        .sidebar-right::-webkit-scrollbar-thumb:hover {
+            background: rgba(88, 166, 255, 0.4);
+        }
+
+        /* === Narrow Viewport Floating Menu System (< 1400px) === */
+        #narrow-menu-trigger {
+            display: none;
+            position: fixed;
+            bottom: 35px;
+            left: 0;
+            z-index: 998;
+            background: rgba(26, 26, 36, 0.85);
+            backdrop-filter: blur(8px);
+            color: #58a6ff;
+            border: 1px solid rgba(88, 166, 255, 0.4);
+            border-left: none;
+            padding: 8px 12px 8px 8px;
+            border-radius: 0 20px 20px 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-size: 0.8em;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.35);
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
+            align-items: center;
+            gap: 6px;
+            opacity: 0.65;
+            animation: quantumBeacon 3.5s infinite ease-in-out;
+        }
+
+        #narrow-menu-trigger:hover {
+            opacity: 1;
+            background-color: #1a1a24;
+            color: #ffffff;
+            border-color: #58a6ff;
+            padding-right: 16px;
+            transform: translateX(2px);
+            box-shadow: 0 0 16px rgba(88, 166, 255, 0.5);
+            animation: none;
+        }
+
+        #narrow-menu-trigger .trigger-label {
+            max-width: 0;
+            overflow: hidden;
+            white-space: nowrap;
+            transition: max-width 0.3s ease, opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #narrow-menu-trigger:hover .trigger-label {
+            max-width: 100px;
+            opacity: 1;
+            margin-left: 2px;
+        }
+
+        @keyframes quantumBeacon {
+
+            0%,
+            100% {
+                opacity: 0.55;
+                box-shadow: 0 0 6px rgba(88, 166, 255, 0.2);
+                border-color: rgba(88, 166, 255, 0.3);
+            }
+
+            50% {
+                opacity: 0.95;
+                box-shadow: 0 0 14px rgba(88, 166, 255, 0.6), 2px 0 8px rgba(88, 166, 255, 0.4);
+                border-color: #58a6ff;
+            }
+        }
+
+        #narrow-menu-overlay {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-color: rgba(10, 10, 15, 0.7);
+            backdrop-filter: blur(4px);
+            z-index: 1100;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #narrow-menu-overlay.active {
+            display: block;
+            opacity: 1;
+        }
+
+        #narrow-menu-drawer {
+            position: fixed;
+            top: 0;
+            left: -340px;
+            width: 320px;
+            max-width: 85vw;
+            height: 100vh;
+            background-color: #1a1a24;
+            color: #f0f4f8;
+            z-index: 1200;
+            box-sizing: border-box;
+            padding: 20px 15px;
+            overflow-y: auto;
+            box-shadow: 5px 0 25px rgba(0, 0, 0, 0.6);
+            transition: left 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        #narrow-menu-drawer.active {
+            left: 0;
+        }
+
+        .narrow-drawer-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        }
+
+        .narrow-drawer-title {
+            font-size: 1em;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #58a6ff;
+        }
+
+        .narrow-drawer-close {
+            background: none;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #c9d1d9;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1em;
+            width: 28px;
+            height: 28px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .narrow-drawer-close:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        @media (max-width: 1399px) {
+            #narrow-menu-trigger {
+                display: flex;
+            }
+        }
+
+        @media (min-width: 1400px) {
+
+            #narrow-menu-trigger,
+            #narrow-menu-drawer,
+            #narrow-menu-overlay {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 
 <body>
 
-    <div class="book-container">
+    <!-- LEFT SIDEBAR: Chapter Navigation Matrix (Wide Screens >= 1400px) -->
+    <aside class="sidebar-left">
+        <div class="sidebar-section-title">✦ Volume I Navigation</div>
+        <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item"><a class="sidebar-link" href="#chapter-1">Ch 1: The Atomic Crucible</a></li>
+            <li class="sidebar-nav-item"><a class="sidebar-link" href="#chapter-2">Ch 2: Echoes of the Storm</a></li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-3" style="flex-grow: 1;">Ch 3: The Kinetic Delta</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch3-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch3-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-1">Part 1: Unmonitored
+                            Variable</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-2">Part 2: Discharge
+                            Protocol</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-3">Part 3: The Ghost and
+                            the Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-4">Part 4: Thermodynamic
+                            Friction</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-5">Part 5: The Kinetic
+                            Delta</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-4" style="flex-grow: 1;">Ch 4: Outlier Variables</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch4-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch4-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-4-part-1">Part 1: The Gilded
+                            Current</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-4-part-2">Part 2: The Gravity of
+                            Iron</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-4-part-3">Part 3: Friction of
+                            the World</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-5" style="flex-grow: 1;">Ch 5: Resonance of Friction</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch5-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch5-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-1">Part 1: The Acoustic
+                            Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-2">Part 2: Kinetic
+                            Intersection</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-3">Part 3: Calculus of
+                            the Spark</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-4">Part 4: Stepping into
+                            Light</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-5">Part 5: The Unseen
+                            Sparks</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-6" style="flex-grow: 1;">Ch 6: Anatomy of a Spark</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch6-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch6-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-1">Part 1: The Acoustic
+                            Breach</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-2">Part 2: The Kinetic
+                            Merge</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-3">Part 3: Sleepwalking
+                            Carnage</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-4">Part 4: The Anchor of
+                            Iron</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-7" style="flex-grow: 1;">Ch 7: Perimeter Breach</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch7-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch7-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-7-part-1">Part 1: Orbital
+                            Friction</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-7-part-2">Part 2: Terminal
+                            Velocity</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-8" style="flex-grow: 1;">Ch 8: Deep Green Void</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch8-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch8-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-8-part-1">Part 1: Mountain's
+                            Root</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-8-part-2">Part 2: Shadows and
+                            Giants</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-9" style="flex-grow: 1;">Ch 9: Labyrinth of Rust</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch9-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch9-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-9-part-1">Part 1: The Acoustic
+                            Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-9-part-2">Part 2: Kinetic
+                            Momentum</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-10" style="flex-grow: 1;">Ch 10: Weight of Shadows</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch10-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch10-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-1">Part 1: Terminal
+                            Velocity</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-2">Part 2: Mathematical
+                            Impossibility</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-3">Part 3: Sterile
+                            Extraction</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-4">Part 4: Anchor's
+                            Burden</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-5">Part 5: Beneath
+                            Serran Sky</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-11" style="flex-grow: 1;">Ch 11: Mountain's Shadow</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch11-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch11-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-1">Part 1: The White
+                            Abyss</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-2">Part 2: Apex
+                            Instinct</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-3">Part 3: Shifting
+                            Currents</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-4">Part 4: Predators of
+                            the Deep</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-5">Part 5: The Gilded
+                            Cage</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-12" style="flex-grow: 1;">Ch 12: The Iron Path</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch12-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch12-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-1">Part 1: Sparks in the
+                            Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-2">Part 2: Weight of the
+                            Stone</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-3">Part 3: Toxic
+                            Resonance</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-4">Part 4: Subterranean
+                            Maw</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-5">Part 5: Collapse of
+                            Sanctuary</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-13" style="flex-grow: 1;">Ch 13: Hollowed Aegis</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch13-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch13-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-1">Part 1: Descent into
+                            the Dark</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-2">Part 2: Apex of the
+                            Deep</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-3">Part 3: Calculus of
+                            Treason</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-4">Part 4: Crucible of
+                            Stone</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-14" style="flex-grow: 1;">Ch 14: Absolute Pressure</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch14-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch14-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-1">Part 1: The
+                            Bottleneck</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-2">Part 2: Bleeding
+                            Perimeter</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-3">Part 3: The
+                            Phalanx</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-4">Part 4: The
+                            Shockwave</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-5">Part 5:
+                            Decapitation</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-15" style="flex-grow: 1;">Ch 15: Fractured Anvil</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch15-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch15-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-1">Part 1: Crumbling
+                            Foundation</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-2">Part 2: Imperial
+                            Missile</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-3">Part 3: Thermal
+                            Shock</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-4">Part 4: Divergent
+                            Vector</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-5">Part 5: Terminal
+                            Mass</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-16" style="flex-grow: 1;">Ch 16: Chains of Justice</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('sb-ch16-sub', this)">+</button>
+                </div>
+                <ul id="sb-ch16-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-1">Part 1: Weight of the
+                            Ash</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-2">Part 2: Judgment in
+                            Halls</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-3">Part 3: Echoes of the
+                            Trial</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-4">Part 4: Obsidian
+                            Cipher</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-5">Part 5: Unfinished
+                            Threads</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item"
+                style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px;">
+                <a class="sidebar-link" href="#glossary">📖 Glossary of Hybris</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="sidebar-link" href="#appendices">🗓️ Appendices (HSC Calendar)</a>
+            </li>
+        </ul>
+    </aside>
+
+    <!-- RIGHT SIDEBAR: Universe Portals & Diagnostics (Wide Screens >= 1400px) -->
+    <aside class="sidebar-right">
+        <div class="sidebar-section-title">✦ Universe Portals</div>
+        <a class="sidebar-link" href="../../index.html">🏠 Universe Portal</a>
+        <a class="sidebar-link active-node" href="./Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html">📖
+            Volume I (RC1)</a>
+        <a class="sidebar-link" href="./Killtime%20-%20Volume%20II.html">📖 Volume II</a>
+        <a class="sidebar-link" href="./Killtime.html">📄 Draft 1 HTML</a>
+        <a class="sidebar-link" href="../lore/Killtime%20Universe%20Overview.html">🌍 Overview (1771 HSC)</a>
+        <a class="sidebar-link" href="../Conversations.html">💬 Conversations</a>
+
+        <div class="sidebar-section-title" style="margin-top: 25px;">✦ Volume I Telemetry</div>
+        <div
+            style="background: rgba(0,0,0,0.3); padding: 12px; border-radius: 6px; border: 1px solid rgba(255,255,255,0.1); font-size: 0.85em;">
+            <div style="margin-bottom: 6px;"><strong>Status:</strong> <span
+                    style="color: #FF9800; font-weight: bold;">Release Candidate 1</span></div>
+            <div style="margin-bottom: 6px;"><strong>Chapters:</strong> 16 Deployed</div>
+            <div style="margin-bottom: 6px;"><strong>Temporal Anchor:</strong> 1772 HSC</div>
+            <div style="border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 6px; margin-top: 6px;">
+                <a href="#glossary" style="color: #58a6ff; text-decoration: none; display: block; margin-bottom: 4px;">⚡
+                    Jump to Arcane Glossary</a>
+                <a href="#appendices" style="color: #58a6ff; text-decoration: none; display: block;">⏳ View HSC
+                    Calendar</a>
+            </div>
+        </div>
+
+        <div class="sidebar-section-title" style="margin-top: 25px;">✦ Reading Coordinate</div>
+        <div style="text-align: center;">
+            <button onclick="document.getElementById('temporal-anchor-btn').click();"
+                style="background: rgba(88, 166, 255, 0.15); border: 1px solid #58a6ff; color: #58a6ff; padding: 8px 14px; border-radius: 4px; font-weight: bold; cursor: pointer; width: 100%; transition: all 0.2s ease;">
+                &#10022; Realign to Anchor
+            </button>
+        </div>
+    </aside>
+
+    <!-- NARROW SCREEN FLOATING MENU TRIGGER (< 1400px) -->
+    <button id="narrow-menu-trigger" onclick="toggleNarrowMenu()" aria-label="Toggle Chapter Navigation"
+        title="Chapter Navigation">
+        <span style="font-size: 1.1em; line-height: 1;">✦</span>
+        <span class="trigger-label">Chapters</span>
+    </button>
+
+    <!-- NARROW SCREEN NAVIGATION DRAWER & BACKDROP -->
+    <div id="narrow-menu-overlay" onclick="closeNarrowMenu()"></div>
+    <div id="narrow-menu-drawer">
+        <div class="narrow-drawer-header">
+            <span class="narrow-drawer-title">✦ Index Matrix</span>
+            <button class="narrow-drawer-close" onclick="closeNarrowMenu()" aria-label="Close Navigation">✕</button>
+        </div>
+
+        <div style="display: flex; gap: 8px; margin-bottom: 15px;">
+            <button onclick="document.getElementById('temporal-anchor-btn').click(); closeNarrowMenu();"
+                style="flex: 1; background: rgba(88, 166, 255, 0.15); border: 1px solid #58a6ff; color: #58a6ff; padding: 6px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; cursor: pointer;">
+                &#10022; Bookmark
+            </button>
+            <button onclick="window.scrollTo({top: 0, behavior: 'smooth'}); closeNarrowMenu();"
+                style="flex: 1; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #c9d1d9; padding: 6px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; cursor: pointer;">
+                ↑ Top
+            </button>
+        </div>
+
+        <div class="sidebar-section-title" style="margin-top: 10px;">✦ Chapter Navigation</div>
+        <ul class="sidebar-nav-list">
+            <li class="sidebar-nav-item"><a class="sidebar-link" href="#chapter-1" onclick="closeNarrowMenu()">Ch 1: The
+                    Atomic Crucible</a></li>
+            <li class="sidebar-nav-item"><a class="sidebar-link" href="#chapter-2" onclick="closeNarrowMenu()">Ch 2:
+                    Echoes of the Storm</a></li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-3" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 3:
+                        The Kinetic Delta</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch3-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch3-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Unmonitored Variable</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Discharge Protocol</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-3"
+                            onclick="closeNarrowMenu()">Part 3: The Ghost and the Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Thermodynamic Friction</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-3-part-5"
+                            onclick="closeNarrowMenu()">Part 5: The Kinetic Delta</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-4" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 4:
+                        Outlier Variables</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch4-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch4-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-4-part-1"
+                            onclick="closeNarrowMenu()">Part 1: The Gilded Current</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-4-part-2"
+                            onclick="closeNarrowMenu()">Part 2: The Gravity of Iron</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-4-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Friction of the World</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-5" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 5:
+                        Resonance of Friction</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch5-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch5-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-1"
+                            onclick="closeNarrowMenu()">Part 1: The Acoustic Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Kinetic Intersection</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Calculus of the Spark</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Stepping into Light</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-5-part-5"
+                            onclick="closeNarrowMenu()">Part 5: The Unseen Sparks</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-6" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 6:
+                        Anatomy of a Spark</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch6-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch6-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-1"
+                            onclick="closeNarrowMenu()">Part 1: The Acoustic Breach</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-2"
+                            onclick="closeNarrowMenu()">Part 2: The Kinetic Merge</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Sleepwalking Carnage</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-6-part-4"
+                            onclick="closeNarrowMenu()">Part 4: The Anchor of Iron</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-7" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 7:
+                        Perimeter Breach</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch7-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch7-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-7-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Orbital Friction</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-7-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Terminal Velocity</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-8" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 8:
+                        Deep Green Void</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch8-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch8-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-8-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Mountain's Root</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-8-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Shadows and Giants</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-9" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 9:
+                        Labyrinth of Rust</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch9-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch9-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-9-part-1"
+                            onclick="closeNarrowMenu()">Part 1: The Acoustic Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-9-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Kinetic Momentum</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-10" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 10:
+                        Weight of Shadows</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch10-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch10-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Terminal Velocity</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Mathematical Impossibility</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Sterile Extraction</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Anchor's Burden</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-10-part-5"
+                            onclick="closeNarrowMenu()">Part 5: Beneath Serran Sky</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-11" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 11:
+                        Mountain's Shadow</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch11-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch11-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-1"
+                            onclick="closeNarrowMenu()">Part 1: The White Abyss</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Apex Instinct</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Shifting Currents</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Predators of the Deep</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-11-part-5"
+                            onclick="closeNarrowMenu()">Part 5: The Gilded Cage</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-12" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 12:
+                        The Iron Path</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch12-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch12-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Sparks in the Void</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Weight of the Stone</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Toxic Resonance</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Subterranean Maw</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-12-part-5"
+                            onclick="closeNarrowMenu()">Part 5: Collapse of Sanctuary</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-13" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 13:
+                        Hollowed Aegis</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch13-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch13-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Descent into the Dark</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Apex of the Deep</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Calculus of Treason</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-13-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Crucible of Stone</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-14" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 14:
+                        Absolute Pressure</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch14-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch14-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-1"
+                            onclick="closeNarrowMenu()">Part 1: The Bottleneck</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Bleeding Perimeter</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-3"
+                            onclick="closeNarrowMenu()">Part 3: The Phalanx</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-4"
+                            onclick="closeNarrowMenu()">Part 4: The Shockwave</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-14-part-5"
+                            onclick="closeNarrowMenu()">Part 5: Decapitation</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-15" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 15:
+                        Fractured Anvil</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch15-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch15-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Crumbling Foundation</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Imperial Missile</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Thermal Shock</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Divergent Vector</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-15-part-5"
+                            onclick="closeNarrowMenu()">Part 5: Terminal Mass</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item">
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <a class="sidebar-link" href="#chapter-16" onclick="closeNarrowMenu()" style="flex-grow: 1;">Ch 16:
+                        Chains of Justice</a>
+                    <button class="sidebar-toggle-btn" onclick="toggleSidebarToc('nm-ch16-sub', this)">+</button>
+                </div>
+                <ul id="nm-ch16-sub" style="display: none; list-style: none; padding-left: 8px; margin: 4px 0;">
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-1"
+                            onclick="closeNarrowMenu()">Part 1: Weight of the Ash</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-2"
+                            onclick="closeNarrowMenu()">Part 2: Judgment in Halls</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-3"
+                            onclick="closeNarrowMenu()">Part 3: Echoes of the Trial</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-4"
+                            onclick="closeNarrowMenu()">Part 4: Obsidian Cipher</a></li>
+                    <li class="sidebar-sub-item"><a class="sidebar-link" href="#chapter-16-part-5"
+                            onclick="closeNarrowMenu()">Part 5: Unfinished Threads</a></li>
+                </ul>
+            </li>
+
+            <li class="sidebar-nav-item"
+                style="margin-top: 10px; border-top: 1px solid rgba(255,255,255,0.1); padding-top: 6px;">
+                <a class="sidebar-link" href="#glossary" onclick="closeNarrowMenu()">📖 Glossary of Hybris</a>
+            </li>
+            <li class="sidebar-nav-item">
+                <a class="sidebar-link" href="#appendices" onclick="closeNarrowMenu()">🗓️ Appendices (HSC Calendar)</a>
+            </li>
+        </ul>
+
+        <div class="sidebar-section-title" style="margin-top: 25px;">✦ Universe Portals</div>
+        <a class="sidebar-link" href="../../index.html">🏠 Universe Portal</a>
+        <a class="sidebar-link active-node" href="./Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html">📖
+            Volume I (RC1)</a>
+        <a class="sidebar-link" href="./Killtime%20-%20Volume%20II.html">📖 Volume II</a>
+        <a class="sidebar-link" href="./Killtime.html">📄 Draft 1 HTML</a>
+        <a class="sidebar-link" href="../lore/Killtime%20Universe%20Overview.html">🌍 Overview (1771 HSC)</a>
+        <a class="sidebar-link" href="../Conversations.html">💬 Conversations</a>
+    </div>
+
+    <div class="book-container" id="book-container">
+        <!-- Bilateral Elastic Resize Seams -->
+        <div class="resize-handle resize-handle-left" id="resize-handle-left"
+            title="Drag to adjust width. Double-click to toggle Maximum / Default width.">
+            <div class="resize-grip-line"></div>
+        </div>
+        <div class="resize-handle resize-handle-right" id="resize-handle-right"
+            title="Drag to adjust width. Double-click to toggle Maximum / Default width.">
+            <div class="resize-grip-line"></div>
+        </div>
 
         <!-- Header -->
         <header>
@@ -10227,86 +11212,95 @@
             <p><em>Duon-cres, Borin 1772 HSC — Terminal Mass</em></p>
 
             <p>The ground shuddered with the residual trauma of the fallen Disciple. The cooling slag hissed, venting
-                plumes of suffocating ash into the fractured light bleeding through Brum’korath’s colossal iron gates.
-                The apocalyptic weapon—a monolithic herald of the Empire—had been reduced to a sprawling graveyard of
-                pulverized silicate and dead magma, leaving an open, bleeding wound across the architecture of the
+                plumes of suffocating ash into the fractured light cutting across the crags of the mountain range. The
+                apocalyptic weapon—a monolithic herald of the Empire—had been reduced to a sprawling graveyard of
+                pulverized silicate and dead magma, leaving an open, bleeding wound across the jagged perimeter of the
                 dwarven city.</p>
 
-            <p>Lucas stood at the epicenter of the carnage, his breath tearing through his throat in ragged, uneven
-                bursts. The catastrophic expenditure of his internal resonance saturated his neural pathways, generating
-                a severe feedback loop of raw, unmitigated terror in his skull. His hands trembled uncontrollably. The
-                geometric architecture of his mind was fracturing under the overload, struggling to reconcile the sheer
-                scale of the destruction with the sterile, calculated containment he had relied upon his entire life.
-            </p>
+            <p>Lucas lay sprawled across the shattered stone, lost in the heavy, lightless dark of absolute
+                exhaustion. Driving that iron pipe clean through the titan's chest had torn every last scrap of
+                strength from his body. His breath rose faint and shallow in the dust. His skin was freezing to the
+                touch, his mind shutting down into deep, unbroken silence.</p>
 
-            <p>Mina slumped against the jagged remnants of a shattered stone column. A thick streak of drying blood
-                painted the side of her temple, matting her golden hair with soot and debris. The untamed heat that
-                defined her existence had cooled to a desperate, flickering spark. Her muscles, previously coiled with
-                feral grace, now locked with deep, bone-aching exhaustion. Beside her, Thomas maintained his unyielding
-                posture. His shield bore the catastrophic, buckling dents of the titan’s fury, yet his broad shoulders
-                remained locked in a stoic, relentless bulwark. He offered his solid bedrock foundation for Mina to lean
-                against, anchoring her failing vitality to the earth.</p>
+            <p>Thomas had pulled the wounded together amidst the debris. He had hauled Lucas's limp frame across the
+                cobblestones, propping him beside Mina against a broken slab of stone. Wallace leaned over her, bracing
+                his weight against a bent iron beam just to stay on his feet. His fine coat was drenched in blackened,
+                venom-tainted blood and torn from the violent fall. His breath came in harsh, ragged gasps, yet his
+                hands were steady as he adjusted the cloth over the bleeding cut at Mina's temple.</p>
+
+            <p>Mina rested against the cold stone, her golden hair matted with soot and blood, her untamed vitality
+                reduced to a flickering ember. She watched Wallace's trembling fingers with quiet concern, her bruised
+                ribs aching with every shallow breath. Over them both, Thomas maintained an unyielding stance, his
+                dented shield held low, his broad shoulders anchoring the group against the settling ash.</p>
 
             <p>The rhythmic, tectonic strike of heavy boots against pulverized stone shattered the fragile silence.</p>
 
-            <p>A phalanx of dwarven militia marched into the ruins. Their polished steel armor reflected the pale,
-                choked light of the cavernous city, forming an impenetrable, moving barricade. At the apex of the
-                formation strode a stout militia captain. His thick, braided beard swayed with the blunt force of his
-                stride. His face was a mask of cold, uncompromising granite, and his heavy gauntlet rested permanently
-                upon the hilt of a master-crafted war-axe.</p>
+            <p>A heavy line of dwarven militia marched into the ruins. Their steel armor caught the dim, smoke-choked
+                light of the city, shields locked tight as they advanced. Leading them was a stout captain, his thick,
+                braided beard swaying with every heavy step. His weathered face was grim and unyielding, one armored
+                hand resting on the grip of a battle-axe.</p>
 
             <p>“Drop your weapons,” the captain commanded, his voice a heavy, concussive boom that demanded absolute
                 submission.</p>
 
-            <p>Lucas’s internal threat-assessment algorithms spiked. A surge of panicked adrenaline ordered him to
-                ignite the air, to establish a localized wall of blistering heat to keep the iron phalanx at bay. He
-                raised his trembling hands, the temperature dropping sharply around his boots as he prepared to pull the
-                oxygen from the avenue.</p>
+            <p>Thomas lowered his notched broadsword, resting the tip against the cracked stone, and stepped forward to
+                shield his fallen friends. He didn't raise his voice, but the calm, unshakeable weight in his posture
+                made the front rank pause. “Hold your weapons, Captain,” Thomas said, his voice deep and steady. “The
+                monster is dead. We held the line with your men—let's focus on getting the wounded out of the
+                dirt.”</p>
 
-            <p>Thomas stepped into the vector. He raised a massive, scarred hand, projecting an immovable, calming
-                inertia that instantly short-circuited Lucas’s panic. “We are allies to this city,” Thomas stated, his
-                deep voice radiating a steady, grounding vibration. “We shattered the Disciple. We stopped the
-                collapse.”</p>
+            <p>“That’s the truth, Captain!” a hoarse, gravelly voice barked from the peripheral rubble.</p>
 
-            <p>The captain’s sharp, unforgiving eyes flicked toward the smoking crater housing the lifeless remains of
-                the titan, before locking back onto the bloodied teenagers. “You stand in the ashes of our
-                infrastructure, surrounded by the crushed bodies of dwarven citizens who will never breathe again.” The
-                captain drew his axe an inch from its sheath, the scrape of steel whining in the dust. “You brought this
-                cataclysm down upon us. You march with the fanatic cult that bleeds our streets. Save your
-                justifications for the High Council.”</p>
+            <p>A bloodied dwarven militia sergeant stepped forward, leaning heavily on a dented tower shield, his face
+                streaked with soot and dark gore. Several surviving troopers who had held the avenue defense rallied
+                behind him, their armor buckled from the titan's seismic shockwaves.</p>
 
-            <p>Before Lucas could calculate a diplomatic countermeasure, a frantic shout erupted from the peripheral
-                rubble. A triage unit of dwarven medics surged forward, converging on the fallen form of Wallace. The
-                operative had collapsed moments after the battle’s apex. Dark, necrotic blood seeped relentlessly
-                through his tailored coat, pooling into the cracked stone beneath him. The pristine, clinical discipline
-                of the man had evaporated, exposing the fragile, dying biology of an operative who had expended his
-                final drop of vitality in the fight.</p>
+            <p>“He speaks the absolute stone,” the sergeant rasped, meeting his superior's glare with stubborn,
+                battlefield grit. “When the northern line broke and the street caved in, this boy held the center. He
+                formed our wedge, locked our shields ten paces at a time, and drove that monster straight into the
+                aqueduct. He commanded us like a true general. Without his foundation, every soldier in my squad would
+                be crushed bone under that rubble.”</p>
 
-            <p>“Transport him to the deep infirmary,” the captain barked to the medics, his tone entirely devoid of
-                empathy. “Stabilize his pulse. But bind him to the cot. He remains an enemy of the state until the
-                magistrates decree otherwise.”</p>
+            <p>A chorus of gruff, affirmative shouts rose from the battered veterans leaning on their pikes. The
+                militia captain’s thick jaw tightened, his authority strained by the fierce loyalty his own infantry
+                offered an unregistered human. Yet, the rigid discipline of dwarven bureaucracy reasserted itself across
+                the captain's stone features.</p>
 
-            <p>The soldiers moved with brutal efficiency, lifting Wallace’s limp frame onto a rigid stretcher. Mina
-                surged forward, a final, desperate pulse of her untamed rhythm pushing her off the broken column. Lucas
-                caught her arm, clamping down with a firm, desperate grip. “He is breathing,” Lucas whispered, his dark
-                eyes locking onto hers, forcing his chilling logic to override her panic. “They have the medical
-                infrastructure to purge the venom. We surrender, or they execute us in this street.”</p>
+            <p>“Silence in the ranks!” the captain roared, his heavy gauntlet slamming against the pommel of his
+                war-axe. “You take your orders from the High Council, Sergeant, not from surface-dwelling outsiders.
+                The law demands an absolute accounting.” His sharp, unforgiving eyes swept the smoking crater before
+                locking back onto Thomas. “You stand in the ashes of our infrastructure, surrounded by the crushed
+                bodies of dwarven citizens who will never breathe again. You brought this cataclysm down upon us. You
+                march with the fanatic cult that bleeds our streets. Save your justifications for the magistrates.”</p>
 
-            <p>“Shackle them,” the captain ordered, gesturing to the phalanx.</p>
+            <p>The captain’s gaze landed on Wallace, taking in the gray pallor of the operative's skin and the necrotic
+                stains spreading across his coat. “That one is saturated with sewer venom,” the captain barked to the
+                militia medics. “Transport him to the deep infirmary. Stabilize his pulse, but bind him to the cot. He
+                remains an enemy of the state until the magistrates decree otherwise.”</p>
 
-            <p>The dwarven heavy infantry closed the perimeter. They confiscated Thomas’s dented sword and shield,
-                ripping the weapons away with rough, dismissive force. Thick, cold iron manacles were locked ruthlessly
-                around their wrists. The heavy metal bit directly into Lucas’s skin. The clinical, inescapable reality
-                of the chains triggered a profound psychological collapse; the memory of the sterile restraints in the
-                Kingston medi-laboratory flooded his sensory inputs, threatening to drown him in pure static.</p>
+            <p>Two armored guards stepped forward, disarming Wallace and forcing his weakened frame onto a rigid
+                stretcher. Wallace exhaled a harsh, rattling breath, submitting to the extraction without resistance.
+                Mina pushed herself upward, her muscles tightening to intervene, but Thomas’s heavy hand rested on her
+                shoulder, anchoring her in place. “Hold,” Thomas murmured, his tone absolute. “They have the clinics to
+                purge the poison. We let them treat him.”</p>
 
-            <p>As the phalanx forced them into a marching column, Lucas cast a singular, calculating glance back toward
-                the smoking battlefield. Standing completely still at the edge of the crater was Torgar. The interim
-                leader of the Cult of the Sent Ones wore robes smeared heavily with dirt and dwarven blood. Torgar
-                watched the party being dragged away in chains, his expression an impenetrable mask of stone. Lucas
-                analyzed the dwarf's posture. Torgar offered no protest. He initiated no rescue vector. The cleric was
-                actively running the brutal calculus of survival, assessing the political fallout, and abandoning his
-                supposed deities to the city's iron grip.</p>
+            <p>“Shackle them,” the captain ordered, gesturing to his guards.</p>
+
+            <p>The dwarven heavy infantry closed the perimeter. They confiscated Thomas’s battered sword and shield,
+                locking thick iron manacles around his wrists, followed by Mina’s. Two soldiers hoisted Lucas’s limp,
+                unconscious form off the flagstones, clamping heavy iron cuffs around his cold wrists before carrying
+                his
+                dead weight between their armored shoulders.</p>
+
+            <p>As the soldiers forced them into a marching column, Mina cast a sharp, aching glance back toward the
+                smoking battlefield. Near the center of the crater, a specialized dwarven recovery crew had already
+                swarmed the wreckage—figures in heavy leather aprons and brass goggles carefully chiseling fragments of
+                the Disciple’s cooling slag and scooping the glassified, scorched earth into sealed iron cases. Further
+                back, half-hidden in the deep shadows of a collapsed archway, she caught sight of Torgar. A handful of
+                bloodstained cultists crouched behind him in the gloom, hoods pulled low, careful to stay out of the
+                militia's line of sight. Torgar met her gaze for a single, heavy heartbeat before stepping deeper into
+                the dark, quietly choosing the survival of his broken order and abandoning his prophesied saviors to
+                the city's iron grip.</p>
 
             <hr class="scene-break">
 
@@ -10317,8 +11311,7 @@
                 flattened to the bedrock, massive aqueducts hung in jagged, ruined arcs, and deep, smoking craters
                 scarred the once-pristine cobblestones.</p>
 
-            <p>Lucas processed the overlapping acoustic frequencies of the crowd. The whispers scraped against his
-                mental firewalls like broken glass.</p>
+            <p>Hostile murmurs scraped against the stale air like grinding stone.</p>
 
             <p><em>“They summoned the beast…”</em></p>
 
@@ -10326,39 +11319,29 @@
 
             <p><em>“The Sent Ones brought the end of the world to our gates…”</em></p>
 
-            <p>The crushing weight of their collective hatred pressed down on Lucas’s skull. He lowered his gaze,
-                focusing entirely on the rhythmic, scraping sound of the heavy chains dragging between his wrists. Mina
-                walked beside him, her usual vibrant current entirely suffocated by the iron bindings. Her boots dragged
-                across the stone, her steps faltering under the immense physical exhaustion.</p>
+            <p>Mina kept her head down, her boots dragging across the flagstones, her lungs burning with the acrid dust.
+                Beside her, two guards carried Lucas, his head slumped forward against his chest, his pale face smeared
+                with dried soot, insulated from the crowd's hatred by the absolute silence of his coma. Thomas walked on
+                their flank, his massive frame absorbing the glares of the populace like an immovable stone pier facing
+                a bitter tide.</p>
 
-            <p>“Lean into the momentum,” Lucas whispered, his voice a tight, strained frequency meant only for her ears.
-            </p>
+            <p>Ahead of them, the massive Hall of Justice rose against the towering ring of mountain peaks that
+                encircled the city. Its facade was carved directly into the sheer cliff face beneath the open, bruised
+                sky, framed by towering, austere statues of ancient dwarven lawgivers. The unblinking stone eyes glared
+                down across the wide plaza, projecting an aura of cold, absolute judgment.</p>
 
-            <p>“The chains kill the rhythm,” Mina murmured, her chest heaving as she fought the heavy, staggering drag
-                of her own limbs. “Everything feels like it’s made of lead.”</p>
+            <p>As they reached the massive bronze doors, the militia captain halted the column. He turned to face
+                Thomas and the exhausted Mina, his eyes narrowing into cold slits. “You will be given the floor to state
+                your case,” the captain stated, his tone dripping with bureaucratic malice. “Once that boy wakes up to
+                answer for his sorcery. But understand this absolute reality: outsiders do not bring war to Brum’korath
+                and walk away. You will answer for the ash covering our streets.”</p>
 
-            <p>Thomas walked on Mina’s opposing flank, acting as a relentless, physical shield against the hostile
-                stares of the populace. His broad shoulders remained perfectly squared. “Maintain your foundation,”
-                Thomas instructed quietly, projecting a stoic, unyielding bulk. “We march. We face the stone. We do not
-                give them the satisfaction of watching us break.”</p>
-
-            <p>Ahead of them, the monolithic structure of the Hall of Justice consumed the cavernous horizon. Its facade
-                was carved directly into the central stalactite of the city, adorned with towering, austere statues of
-                ancient dwarven lawgivers. The unblinking, heavy stone eyes of the statues glared down at the plaza,
-                projecting an aura of absolute, crushing judgment. Lucas felt the temperature of his blood drop. The
-                building was an architectural manifestation of a sterile, inescapable cage.</p>
-
-            <p>As they reached the massive bronze doors, the militia captain halted the column. He turned to face the
-                prisoners, his eyes narrowing into cold slits. “You will be given the floor to state your variables,”
-                the captain stated, his tone dripping with bureaucratic malice. “But understand this absolute reality:
-                outsiders do not bring war to Brum’korath and walk away. You will answer for the ash covering our
-                streets.”</p>
-
-            <p>Lucas met the captain’s glare, channeling the chilling logic of his synthesis mind to mask his terror.
-                “We will deliver the absolute truth. The math will verify our actions.”</p>
+            <p>Thomas met the captain’s glare without flinching. “We killed the monster that was tearing your city
+                apart,” Thomas said, his voice flat and steady. “We saved your people. You owe us your lives, not an
+                execution.”</p>
 
             <p>The captain scoffed, a harsh, grinding sound. “The executioner’s block is made of stone, human. Not
-                math.”</p>
+                gratitude.”</p>
 
             <p>With a deafening groan, the heavy bronze doors of the Justice Hall swung inward, swallowing the party
                 into the lightless, echoing belly of the dwarven legal machine.</p>
@@ -10367,24 +11350,37 @@
 
             <p>The interior of the Justice Hall was a sprawling, subterranean labyrinth of polished granite and cold
                 iron bars. The acoustic void of the structure amplified the heavy, rhythmic clanking of their chains,
-                ensuring that every step resonated with the finality of their capture. The phalanx escorted Lucas, Mina,
-                and Thomas deep into the lower holding tiers, completely isolating them from the bustling bureaucracy of
-                the upper courts.</p>
+                ensuring that every step resonated with the finality of their capture. The militia escorted the trio
+                deep into the lower holding tiers, completely isolating them from the bustling bureaucracy of the upper
+                courts.</p>
 
             <p>They were shoved into a claustrophobic, dimly lit staging chamber. A broad slab of dark stone dominated
-                the center of the room, flanked by high-backed iron chairs that dwarfed their human frames. The captain
-                issued a curt hand signal, and the militia retreated, leaving only two heavily armored sentinels
+                the center of the room, flanked by high-backed iron chairs that dwarfed their human frames. The guards
+                dropped Lucas’s limp form onto the central stone bench, his iron chains rattling against the rock. The
+                captain issued a curt hand signal, and the militia retreated, leaving only two heavily armored sentinels
                 stationed at the reinforced timber door. The heavy mechanical deadbolt slid into place with a
                 definitive, ringing <em>clack</em>.</p>
 
-            <p>Mina collapsed into one of the iron chairs, her face pale, the sweat drying on her brow. “This atmosphere
-                is toxic,” she muttered, wincing as she shifted her weight to alleviate the throbbing agony in her
-                bruised ribs. The untamed vitality that normally fueled her recovery was completely stifled by the
-                stagnant, enclosed space.</p>
+            <p>Mina collapsed into one of the iron chairs, wincing as she shifted her weight to alleviate the throbbing
+                agony in her bruised ribs. She leaned over Lucas, pressing two trembling fingers against his throat to
+                confirm his pulse. “His skin is freezing,” she murmured, her voice raw. “The output drained him dry.”
+            </p>
 
-            <p>“The environment is designed to exert psychological compression,” Lucas replied, pacing the short length
-                of the floorboards. His mind cycled rapidly, attempting to construct a coherent defense algorithm out of
-                the catastrophic variables of the past week. “They intend to exhaust our mental reserves before the
+            <p>On the stone slab, Lucas stirred. A jagged gasp tore from his lungs as his nervous system surged with
+                blinding static. His dark eyes flew open, darting wildly across the sheer stone walls, the heavy iron
+                bars, and the cold metal clamped around his wrists. His synthesis mind booted into an immediate,
+                fractured panic—superimposing the clinical restraints of the Kingston medi-laboratory over the dwarven
+                cell. He struggled upright, the chains clattering loudly against the slab as his breath turned rapid and
+                shallow.</p>
+
+            <p>“Lucas, breathe,” Mina urged softly, her hand pressing firmly against his arm, her organic warmth
+                cutting through his sensory overload. “You’re in Brum’korath. The titan is dead. We were arrested by the
+                militia.”</p>
+
+            <p>Lucas forced his respiration to slow, clinical logic fighting its way through the fog of his exhaustion.
+                He rubbed the cold metal encircling his wrists, his synthesis mind mapping the enclosed room and the
+                stagnant air. “The environment is designed to exert psychological compression,” Lucas rasped, his voice
+                tight with the lingering chill of his burnout. “They intend to exhaust our mental reserves before the
                 interrogation begins.”</p>
 
             <p>Thomas remained standing, planting his boots firmly into the flagstones. He crossed his thick arms over
@@ -12411,6 +13407,158 @@
                 btn.textContent = '+';
             }
         }
+
+        // Sidebar Navigation Matrix Release Valve
+        function toggleSidebarToc(id, btn) {
+            const el = document.getElementById(id);
+            if (el.style.display === 'none' || el.style.display === '') {
+                el.style.display = 'block';
+                btn.textContent = '-';
+            } else {
+                el.style.display = 'none';
+                btn.textContent = '+';
+            }
+        }
+
+        // Narrow Viewport Floating Menu Controls
+        function toggleNarrowMenu() {
+            const drawer = document.getElementById('narrow-menu-drawer');
+            const overlay = document.getElementById('narrow-menu-overlay');
+            if (drawer && overlay) {
+                const isActive = drawer.classList.contains('active');
+                if (isActive) {
+                    drawer.classList.remove('active');
+                    overlay.classList.remove('active');
+                } else {
+                    drawer.classList.add('active');
+                    overlay.classList.add('active');
+                }
+            }
+        }
+
+        function closeNarrowMenu() {
+            const drawer = document.getElementById('narrow-menu-drawer');
+            const overlay = document.getElementById('narrow-menu-overlay');
+            if (drawer && overlay) {
+                drawer.classList.remove('active');
+                overlay.classList.remove('active');
+            }
+        }
+
+        // --- STORY CONTAINER ELASTIC RESIZE & MAXIMUM TOGGLE ENGINE ---
+        document.addEventListener("DOMContentLoaded", function () {
+            const container = document.getElementById("book-container");
+            const handleRight = document.getElementById("resize-handle-right");
+            const handleLeft = document.getElementById("resize-handle-left");
+            if (!container || !handleRight) return;
+
+            const MIN_WIDTH = 550;
+
+            function calculateMaxAvailableWidth() {
+                if (window.innerWidth >= 1400) {
+                    return Math.max(MIN_WIDTH, window.innerWidth - 640);
+                }
+                return Math.max(MIN_WIDTH, window.innerWidth - 40);
+            }
+
+            // Restore persistent reading state
+            const cachedState = localStorage.getItem("hybris_reading_width");
+            if (cachedState === "maximized") {
+                container.classList.add("is-maximized");
+                container.style.maxWidth = "";
+            } else if (cachedState && cachedState !== "default") {
+                const parsed = parseInt(cachedState, 10);
+                if (!isNaN(parsed) && parsed >= MIN_WIDTH) {
+                    const boundedWidth = Math.min(parsed, calculateMaxAvailableWidth());
+                    container.style.maxWidth = boundedWidth + "px";
+                }
+            }
+
+            // Double-Click Toggle: Switch cleanly between Default (CSS) and Maximized (100vw relative)
+            function toggleWidthMax(e) {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const isCurrentlyMax = container.classList.contains("is-maximized") ||
+                    (container.getBoundingClientRect().width >= calculateMaxAvailableWidth() - 40);
+
+                if (isCurrentlyMax) {
+                    // Restore to pure CSS default width
+                    container.classList.remove("is-maximized");
+                    container.style.maxWidth = "";
+                    localStorage.setItem("hybris_reading_width", "default");
+                } else {
+                    // Activate fluid relative maximization
+                    container.classList.add("is-maximized");
+                    container.style.maxWidth = "";
+                    localStorage.setItem("hybris_reading_width", "maximized");
+                }
+            }
+
+            if (handleRight) handleRight.addEventListener("dblclick", toggleWidthMax);
+            if (handleLeft) handleLeft.addEventListener("dblclick", toggleWidthMax);
+
+            // Dynamically clamp custom pixel widths when browser zoom/window resize changes
+            window.addEventListener("resize", function () {
+                if (!container.classList.contains("is-maximized") && container.style.maxWidth) {
+                    const currentCustom = parseInt(container.style.maxWidth, 10);
+                    const currentMax = calculateMaxAvailableWidth();
+                    if (!isNaN(currentCustom) && currentCustom > currentMax) {
+                        container.style.maxWidth = currentMax + "px";
+                    }
+                }
+            });
+
+            // Drag to Resize Engine (De-coupled from click/dblclick)
+            function bindResizeDrag(handle, isLeft) {
+                handle.addEventListener("mousedown", function (e) {
+                    if (e.button !== 0) return; // Primary click only
+                    e.preventDefault();
+
+                    const startX = e.clientX;
+                    const startWidth = container.getBoundingClientRect().width;
+                    let hasMoved = false;
+
+                    function onMouseMove(e) {
+                        const deltaX = isLeft ? (startX - e.clientX) * 2 : (e.clientX - startX) * 2;
+
+                        // Only engage drag if movement exceeds jitter threshold to protect dblclick events
+                        if (!hasMoved && Math.abs(deltaX) > 4) {
+                            hasMoved = true;
+                            container.classList.remove("is-maximized");
+                            container.classList.add("is-resizing");
+                        }
+
+                        if (hasMoved) {
+                            let targetWidth = startWidth + deltaX;
+                            const maxWidth = calculateMaxAvailableWidth();
+
+                            if (targetWidth < MIN_WIDTH) targetWidth = MIN_WIDTH;
+                            if (targetWidth > maxWidth) targetWidth = maxWidth;
+
+                            container.style.maxWidth = targetWidth + "px";
+                        }
+                    }
+
+                    function onMouseUp() {
+                        window.removeEventListener("mousemove", onMouseMove);
+                        window.removeEventListener("mouseup", onMouseUp);
+
+                        if (hasMoved) {
+                            container.classList.remove("is-resizing");
+                            const finalWidth = Math.round(container.getBoundingClientRect().width);
+                            localStorage.setItem("hybris_reading_width", finalWidth);
+                        }
+                    }
+
+                    window.addEventListener("mousemove", onMouseMove);
+                    window.addEventListener("mouseup", onMouseUp);
+                });
+            }
+
+            bindResizeDrag(handleRight, false);
+            if (handleLeft) bindResizeDrag(handleLeft, true);
+        });
 
         // --- TEMPORAL ANCHOR ALGORITHM (BOOKMARK) ---
         document.addEventListener("DOMContentLoaded", function () {

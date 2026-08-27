@@ -11,3 +11,5 @@ dist/
 # Ignore all files with a specific extension
 *.log
 *.tmp
+
+*(Copy)*.*
