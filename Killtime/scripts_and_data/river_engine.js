@@ -8,6 +8,10 @@ const PIXELS_PER_YEAR = 100;
 const LOCAL_STORAGE_KEY = 'river_of_time_project_data';
 
 let isDragging = false;
+let isDraggingEvent = false;
+let draggedEventIdx = null;
+let dragHasMoved = false;
+let rightPanMoved = false;
 let lastMouseX = 0;
 let lastMouseY = 0;
 
@@ -89,31 +93,100 @@ if (window.ResizeObserver && engineContainer) {
 }
 
 canvas.addEventListener('mousedown', (e) => {
-    isDragging = true;
-    lastMouseX = e.clientX;
-    lastMouseY = e.clientY;
-    canvas.style.cursor = 'grabbing';
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    if (e.button === 0) {
+        let clickedEventIdx = null;
+        for (let h of hitboxes) {
+            if (mouseX >= h.left && mouseX <= h.right && mouseY >= h.top && mouseY <= h.bottom) {
+                if (!h.isDayTitle && !h.isTimeline && h.idx !== null && h.idx !== undefined) {
+                    clickedEventIdx = h.idx;
+                    break;
+                }
+            }
+        }
+
+        if (clickedEventIdx !== null && projectData && projectData.events && projectData.events[clickedEventIdx]) {
+            isDraggingEvent = true;
+            draggedEventIdx = clickedEventIdx;
+            dragHasMoved = false;
+            canvas.style.cursor = 'move';
+        }
+    } else if (e.button === 2) {
+        isDragging = true;
+        rightPanMoved = false;
+        lastMouseX = e.clientX;
+        lastMouseY = e.clientY;
+        canvas.style.cursor = 'grabbing';
+    }
 });
 
 window.addEventListener('mouseup', () => {
-    isDragging = false;
-    canvas.style.cursor = 'grab';
+    if (isDraggingEvent) {
+        if (dragHasMoved) {
+            persistProjectData();
+        }
+        isDraggingEvent = false;
+        draggedEventIdx = null;
+        dragHasMoved = false;
+        canvas.style.cursor = 'default';
+        render();
+    }
+    if (isDragging) {
+        isDragging = false;
+        canvas.style.cursor = 'default';
+    }
 });
 
 canvas.addEventListener('mousemove', (e) => {
-    if (isDragging) {
+    const rect = canvas.getBoundingClientRect();
+    const mouseX = e.clientX - rect.left;
+    const mouseY = e.clientY - rect.top;
+
+    if (isDraggingEvent && draggedEventIdx !== null && projectData && projectData.events) {
+        dragHasMoved = true;
+        const ev = projectData.events[draggedEventIdx];
+        if (ev) {
+            // 1. Horizontal Date Snap (X-Axis)
+            const worldX = (mouseX - translateX) / scaleX;
+            const rawFloat = worldX / PIXELS_PER_YEAR;
+            const d = floatToDate(rawFloat);
+            ev.float_val = dateToFloat(d.year, d.month, d.day);
+            ev.date_str = normalizeDateStr(d.year, d.month, d.day);
+
+            // 2. Timeline Track Proximity Snap (Y-Axis)
+            if (projectData.timelines) {
+                let closestLine = ev.line_name;
+                let minDist = Infinity;
+                Object.keys(projectData.timelines).forEach(tName => {
+                    const line = projectData.timelines[tName];
+                    const lineY = translateY + line.y;
+                    const dist = Math.abs(mouseY - lineY);
+                    if (dist < minDist) {
+                        minDist = dist;
+                        closestLine = tName;
+                    }
+                });
+                if (closestLine) {
+                    ev.line_name = closestLine;
+                }
+            }
+            render();
+        }
+    } else if (isDragging) {
         const dx = e.clientX - lastMouseX;
         const dy = e.clientY - lastMouseY;
+        if (Math.abs(dx) > 1 || Math.abs(dy) > 1) {
+            rightPanMoved = true;
+        }
         translateX += dx;
         translateY += dy;
         lastMouseX = e.clientX;
         lastMouseY = e.clientY;
         render();
     } else {
-        const rect = canvas.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left;
-        const mouseY = e.clientY - rect.top;
-
         let foundIdx = null;
         let foundDayKey = null;
 
@@ -132,6 +205,12 @@ canvas.addEventListener('mousemove', (e) => {
             hoveredEventIdx = foundIdx;
             hoveredDayTitleKey = foundDayKey;
             render();
+        }
+
+        if (foundIdx !== null) {
+            canvas.style.cursor = 'grab';
+        } else {
+            canvas.style.cursor = 'default';
         }
     }
 });
@@ -199,6 +278,10 @@ let contextMenuTargetTimelineName = null;
 
 canvas.addEventListener('contextmenu', (e) => {
     e.preventDefault();
+    if (rightPanMoved) {
+        rightPanMoved = false;
+        return;
+    }
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
@@ -799,6 +882,61 @@ if (btnSaveDayTitle) {
     };
 }
 
+// --- DYNAMIC TRACK ALLOCATION & COMPACTION ---
+const TRACK_SPACING = 110;
+
+function findOptimalBranchY(parentLineName) {
+    const timelines = projectData.timelines || {};
+    const parentData = timelines[parentLineName];
+    const parentY = parentData ? (parentData.y || 0) : 0;
+    const occupiedY = Object.values(timelines).map(t => t.y || 0);
+
+    // Expand outward from the parent's actual Y coordinate
+    for (let step = 1; step <= 50; step++) {
+        const candidates = [
+            parentY + (step * TRACK_SPACING),
+            parentY - (step * TRACK_SPACING)
+        ];
+        for (let cand of candidates) {
+            const collision = occupiedY.some(y => Math.abs(y - cand) < (TRACK_SPACING * 0.7));
+            if (!collision) {
+                return cand;
+            }
+        }
+    }
+    return parentY + TRACK_SPACING;
+}
+
+function compactTimelineTracks() {
+    if (!projectData || !projectData.timelines) return;
+    const timelines = projectData.timelines;
+
+    // Lock the root Main Line to Y = 0
+    const mainName = Object.keys(timelines).find(k => timelines[k].parent === null) || Object.keys(timelines)[0];
+    if (timelines[mainName]) {
+        timelines[mainName].y = 0;
+    }
+
+    const nonMain = Object.keys(timelines).filter(k => k !== mainName);
+
+    // Sort tracks by their existing relative positions
+    const aboveTracks = nonMain.filter(k => (timelines[k].y || 0) < 0)
+        .sort((a, b) => (timelines[b].y || 0) - (timelines[a].y || 0)); // Closest to 0 first
+    const belowTracks = nonMain.filter(k => (timelines[k].y || 0) >= 0)
+        .sort((a, b) => (timelines[a].y || 0) - (timelines[b].y || 0)); // Closest to 0 first
+
+    aboveTracks.forEach((name, idx) => {
+        timelines[name].y = -((idx + 1) * TRACK_SPACING);
+    });
+
+    belowTracks.forEach((name, idx) => {
+        timelines[name].y = ((idx + 1) * TRACK_SPACING);
+    });
+
+    persistProjectData();
+    render();
+}
+
 function openBranchModal() {
     updateLineDropdowns();
     document.getElementById('branchTriggerName').value = '';
@@ -905,8 +1043,7 @@ document.getElementById('btnSaveBranch').onclick = () => {
         return;
     }
 
-    const bCount = Object.keys(projectData.timelines).length;
-    const yOff = (bCount % 2 !== 0) ? (bCount * 120) : -(bCount * 120);
+    const yOff = findOptimalBranchY(parentLine);
 
     if (projectData.color_index === undefined) projectData.color_index = 0;
     const color = branchColors[projectData.color_index % branchColors.length];
@@ -1094,7 +1231,7 @@ function drawGrid() {
 function drawEvents() {
     const placedRects = [];
     const dayGroupLastY = {};
-    const padX = 2;
+    const padX = 14;
     const padY = 2;
 
     const events = projectData.events || [];
@@ -1121,7 +1258,11 @@ function drawEvents() {
         });
     });
 
-    events.forEach((e, idx) => {
+    // Chronologically sort event indices for layout computation to eliminate insertion-order collision drift
+    const sortedEventIndices = events.map((e, idx) => ({ e, idx }))
+        .sort((a, b) => a.e.float_val - b.e.float_val || a.idx - b.idx);
+
+    sortedEventIndices.forEach(({ e, idx }) => {
         const line = timelines[e.line_name];
         if (!line) return;
 
@@ -1195,7 +1336,8 @@ function drawEvents() {
 
         let overlap = true;
         let iterations = 0;
-        while (overlap && iterations < 50) {
+        const maxIter = events.length + 50;
+        while (overlap && iterations < maxIter) {
             overlap = false;
             const rect1Left = baseX - padX;
             const rect1Right = baseX + w + padX;
@@ -1560,6 +1702,9 @@ function loadInitialData() {
     if (cached) {
         try {
             projectData = JSON.parse(cached);
+            // In loadInitialData():
+            projectData.day_titles = projectData.day_titles || {};
+            compactTimelineTracks(); // Automatically pulls distant branches into compact 110px spacing
             projectData.day_titles = projectData.day_titles || {};
             resizeCanvas();
             if (projectData.events && projectData.events.length > 0) {

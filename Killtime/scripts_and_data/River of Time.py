@@ -677,8 +677,7 @@ class TimelineApp(QMainWindow):
                 self.statusBar().showMessage("Error: Branch name empty or already exists!", 4000)
                 return
             
-            branch_count = len(self.timelines)
-            y_offset = (branch_count * 120) if branch_count % 2 != 0 else -(branch_count * 120)
+            y_offset = self.find_optimal_branch_y(parent_line)
             color = self.branch_colors[self.color_index % len(self.branch_colors)]
             self.color_index += 1
 
@@ -920,7 +919,7 @@ class TimelineApp(QMainWindow):
         inv_scale_y = 1.0 / scale_y
         
         placed_rects = []
-        pad_x = 2 * inv_scale_x
+        pad_x = 10 * inv_scale_x
         pad_y = 2 * inv_scale_y
         step_y = 35 * inv_scale_y
         
@@ -945,12 +944,10 @@ class TimelineApp(QMainWindow):
             rect1_left = base_x - pad_x
             rect1_right = base_x + w + pad_x
             
-            # Prune bounding boxes that are safely behind us on the X-axis (Mathematically impossible to collide)
-            placed_rects = [p for p in placed_rects if p[1] >= rect1_left]
-            
             overlap = True
             iterations = 0
-            while overlap and iterations < 50:
+            max_iter = len(self.events) + 50
+            while overlap and iterations < max_iter:
                 overlap = False
                 
                 rect1_top = current_y - pad_y
@@ -1091,6 +1088,7 @@ class TimelineApp(QMainWindow):
                 self.timelines = data.get("timelines", self.timelines)
                 self.events = data.get("events", [])
                 self.color_index = data.get("color_index", 0)
+                self.compact_timeline_tracks()
                 
             # MIGRATION: Patch old JSON files to link branches with their trigger events
             for branch_name, data in self.timelines.items():
@@ -1116,6 +1114,47 @@ class TimelineApp(QMainWindow):
         except Exception as e:
             self.statusBar().showMessage(f"Error loading project: {e}", 4000)
             return False
+
+    TRACK_SPACING = 110
+
+    def find_optimal_branch_y(self, parent_line_name):
+        parent_data = self.timelines.get(parent_line_name, {})
+        parent_y = parent_data.get("y", 0)
+        occupied_y = [t.get("y", 0) for t in self.timelines.values()]
+
+        for step in range(1, 50):
+            candidates = [
+                parent_y + (step * self.TRACK_SPACING),
+                parent_y - (step * self.TRACK_SPACING)
+            ]
+            for cand in candidates:
+                collision = any(abs(y - cand) < (self.TRACK_SPACING * 0.7) for y in occupied_y)
+                if not collision:
+                    return cand
+        return parent_y + self.TRACK_SPACING
+
+    def compact_timeline_tracks(self):
+        if not self.timelines:
+            return
+
+        main_name = next((k for k, v in self.timelines.items() if v.get("parent") is None), list(self.timelines.keys())[0])
+        if main_name in self.timelines:
+            self.timelines[main_name]["y"] = 0
+
+        non_main = [k for k in self.timelines.keys() if k != main_name]
+        above_tracks = sorted([k for k in non_main if self.timelines[k].get("y", 0) < 0],
+                              key=lambda k: self.timelines[k].get("y", 0), reverse=True)
+        below_tracks = sorted([k for k in non_main if self.timelines[k].get("y", 0) >= 0],
+                              key=lambda k: self.timelines[k].get("y", 0))
+
+        for idx, name in enumerate(above_tracks):
+            self.timelines[name]["y"] = -((idx + 1) * self.TRACK_SPACING)
+
+        for idx, name in enumerate(below_tracks):
+            self.timelines[name]["y"] = ((idx + 1) * self.TRACK_SPACING)
+
+        self.render_canvas()
+        self.autosave_project()
 
 
 if __name__ == "__main__":

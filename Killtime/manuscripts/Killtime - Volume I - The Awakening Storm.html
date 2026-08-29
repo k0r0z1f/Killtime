@@ -947,6 +947,75 @@
                 display: none !important;
             }
         }
+
+        /* === HSC Calendar Telemetry Tooltip Matrix === */
+        .hsc-tooltip-wrapper {
+            position: relative;
+            display: block;
+        }
+
+        .hsc-tooltip-box {
+            visibility: hidden;
+            opacity: 0;
+            position: absolute;
+            bottom: calc(100% + 10px);
+            right: 0;
+            width: 250px;
+            background: #12121a;
+            color: #c9d1d9;
+            border: 1px solid #58a6ff;
+            border-radius: 6px;
+            padding: 10px 12px;
+            font-size: 0.82em;
+            line-height: 1.4;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.75), 0 0 10px rgba(88, 166, 255, 0.2);
+            z-index: 9999;
+            pointer-events: none;
+            transition: opacity 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), visibility 0.25s;
+            transform: translateY(6px);
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: left;
+            box-sizing: border-box;
+        }
+
+        .hsc-tooltip-wrapper:hover .hsc-tooltip-box {
+            visibility: visible;
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .hsc-tooltip-header {
+            color: #58a6ff;
+            font-weight: bold;
+            font-size: 0.88em;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            border-bottom: 1px solid rgba(88, 166, 255, 0.25);
+            padding-bottom: 4px;
+            margin-bottom: 6px;
+            text-align: center;
+        }
+
+        .hsc-tooltip-row {
+            margin-bottom: 3px;
+        }
+
+        .hsc-tooltip-row strong {
+            color: #f0f4f8;
+        }
+
+        .hsc-tooltip-divider {
+            border-top: 1px dashed rgba(255, 255, 255, 0.15);
+            margin: 6px 0 4px 0;
+            padding-top: 4px;
+        }
+
+        .hsc-tooltip-example {
+            color: #79c0ff;
+            font-style: italic;
+            font-size: 0.9em;
+            text-align: center;
+        }
     </style>
 </head>
 
@@ -1230,8 +1299,26 @@
             <div style="border-top: 1px dashed rgba(255,255,255,0.15); padding-top: 6px; margin-top: 6px;">
                 <a href="#glossary" style="color: #58a6ff; text-decoration: none; display: block; margin-bottom: 4px;">⚡
                     Jump to Arcane Glossary</a>
-                <a href="#appendices" style="color: #58a6ff; text-decoration: none; display: block;">⏳ View HSC
-                    Calendar</a>
+                <div class="hsc-tooltip-wrapper">
+                    <a href="#appendices" style="color: #58a6ff; text-decoration: none; display: block;">⏳ View HSC
+                        Calendar</a>
+                    <div class="hsc-tooltip-box">
+                        <div class="hsc-tooltip-header">✦ HSC Calendar Matrix</div>
+                        <div class="hsc-tooltip-row"><strong>Year:</strong> 10 Months (300 Days)</div>
+                        <div class="hsc-tooltip-row"><strong>Month:</strong> 3 Weeks (30 Days)</div>
+                        <div class="hsc-tooltip-row"><strong>Week:</strong> 10 Days (24h/Day)</div>
+                        <div class="hsc-tooltip-row"><strong>Phases:</strong> <code>-cres</code> (W1),
+                            <code>-plen</code> (W2), <code>-wan</code> (W3)
+                        </div>
+                        <div class="hsc-tooltip-divider"></div>
+                        <div class="hsc-tooltip-row"><strong>Days:</strong> Solus, Duon, Trion, Quadra, Penta, Hexa,
+                            Septa, Octa, Nova, Deca</div>
+                        <div class="hsc-tooltip-row"><strong>Months:</strong> Aris, Borin, Cygnus, Delia, Elara, Feron,
+                            Galen, Heston, Ilias, Jorvan</div>
+                        <div class="hsc-tooltip-divider"></div>
+                        <div class="hsc-tooltip-example">Ex: Penta-plen, Galen 1772 HSC</div>
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -11305,7 +11392,7 @@
             <hr class="scene-break">
 
             <p>The march through the heart of Brum’korath was an agonizing, psychological gauntlet. The colossal,
-                subterranean avenues were choked with the heavy scent of burning timber and pulverized mortar. Civilians
+                stone-tiered avenues were choked with the heavy scent of burning timber and pulverized mortar. Civilians
                 huddled in the shadows of shattered archways, their faces pale with terror and deep-rooted suspicion.
                 The structural devastation from the Disciple’s rampage was absolute—residential blocks had been
                 flattened to the bedrock, massive aqueducts hung in jagged, ruined arcs, and deep, smoking craters
@@ -11348,11 +11435,11 @@
 
             <hr class="scene-break">
 
-            <p>The interior of the Justice Hall was a sprawling, subterranean labyrinth of polished granite and cold
-                iron bars. The acoustic void of the structure amplified the heavy, rhythmic clanking of their chains,
-                ensuring that every step resonated with the finality of their capture. The militia escorted the trio
-                deep into the lower holding tiers, completely isolating them from the bustling bureaucracy of the upper
-                courts.</p>
+            <p>The interior of the Justice Hall rose in monumental tiers of polished granite beneath high, vaulted
+                clerestories. The acoustic void of the massive structure amplified the heavy, rhythmic clanking of their
+                chains, ensuring that every step resonated with the finality of their capture as the militia escorted
+                the trio down into the lower holding tiers, isolating them from the bustling bureaucracy of the halls
+                above.</p>
 
             <p>They were shoved into a claustrophobic, dimly lit staging chamber. A broad slab of dark stone dominated
                 the center of the room, flanked by high-backed iron chairs that dwarfed their human frames. The guards
@@ -11361,9 +11448,9 @@
                 stationed at the reinforced timber door. The heavy mechanical deadbolt slid into place with a
                 definitive, ringing <em>clack</em>.</p>
 
-            <p>Mina collapsed into one of the iron chairs, wincing as she shifted her weight to alleviate the throbbing
-                agony in her bruised ribs. She leaned over Lucas, pressing two trembling fingers against his throat to
-                confirm his pulse. “His skin is freezing,” she murmured, her voice raw. “The output drained him dry.”
+            <p>Mina sank into one of the iron chairs, wincing as she shifted her weight to take the pressure off her
+                bruised ribs. She leaned over Lucas, pressing two trembling fingers against his throat to find his
+                pulse. “His skin is freezing,” she murmured, her voice raw. “He burned through everything he had.”
             </p>
 
             <p>On the stone slab, Lucas stirred. A jagged gasp tore from his lungs as his nervous system surged with
@@ -11377,119 +11464,122 @@
                 cutting through his sensory overload. “You’re in Brum’korath. The titan is dead. We were arrested by the
                 militia.”</p>
 
-            <p>Lucas forced his respiration to slow, clinical logic fighting its way through the fog of his exhaustion.
-                He rubbed the cold metal encircling his wrists, his synthesis mind mapping the enclosed room and the
-                stagnant air. “The environment is designed to exert psychological compression,” Lucas rasped, his voice
-                tight with the lingering chill of his burnout. “They intend to exhaust our mental reserves before the
-                interrogation begins.”</p>
+            <p>Lucas forced his breathing to slow, fighting through the fog of exhaustion. He rubbed the cold iron
+                around his wrists, taking in the small, locked room and the stale air. “They’re trying to wear us down,”
+                Lucas rasped, his voice rough and shivering from the cold. “Lock us in the dark so we’re too exhausted
+                to
+                push back when they start asking questions.”</p>
 
-            <p>Thomas remained standing, planting his boots firmly into the flagstones. He crossed his thick arms over
-                his chest, his dark eyes scanning the structural integrity of the stone walls. “The battle lines have
-                shifted,” Thomas rumbled, his voice carrying the blunt force of reality. “Wallace is locked in the
-                infirmary. Goldar is chained in a high-security vault. Grimbar’s treason has gutted the cult’s command
-                structure, and Torgar is standing on a fractured foundation. The Sent Ones are no longer a viable
-                shield. We face this council entirely on our own.”</p>
+            <p>Thomas remained standing, his heavy boots planted firmly on the flagstones. He crossed his thick arms
+                over his chest, his dark eyes scanning the solid stone walls. “Things have changed,” Thomas said, his
+                voice a low, heavy rumble. “Wallace is in the infirmary. Goldar is locked away in chains. And after
+                Dira and Grimbar, it's obvious the cult is full of holes—Torgar doesn't even know who he can trust.
+                The Sent Ones aren't going to protect us. When we walk into that hall, we’re on our own.”</p>
 
             <p>Mina closed her eyes, letting her head fall back against the cold iron of the chair. “We should have
-                ridden the slipstream the exact microsecond the Disciple’s core ruptured.”</p>
+                run,” she whispered, her voice tight with the suffocating panic of being cornered. “The second that
+                monster broke apart, we should’ve just run.”</p>
 
-            <p>“A retreat was mathematically impossible,” Lucas snapped, his voice sharp with the friction of his own
-                guilt. “The militia had already established a highly coordinated perimeter grid. If we had broken into a
-                sprint, they would have executed us as fleeing hostiles in the open street. Surrender was the only
-                vector that preserved our biological functions.”</p>
+            <p>“You made the right call,” Lucas said softly, though a tremor of guilt frayed his words. “The militia had
+                the entire street sealed. Even if I was on my feet, we wouldn't have made it ten yards. Surrendering was
+                the only reason we're still breathing.”</p>
 
-            <p>Mina opened her eyes, fixing him with a tired, feral glare. “And now we are sitting in a cage, Lucas.
-                Shackled like animals, waiting for a panel of strangers to drop the axe on our necks.”</p>
+            <p>Mina opened her eyes. She started to speak, but the words caught in her throat as the telepathic link
+                between them hummed. Across the bond, she caught the chilling undercurrent of Lucas’s thoughts—not cold
+                logic, but a suffocating, freezing dread. He was staring at the iron on his wrists, fighting off the
+                ghosts of the laboratory. The sheer weight of his terror washed over her, and the restless frustration
+                in
+                her chest softened. His steady, calculating presence pushed back against her frantic pulse, grounding
+                her even as her own warmth reached out to anchor him.</p>
 
-            <p>The heavy tension hung in the sterile air, the absolute gravity of their choices pressing down on their
-                lungs.</p>
+            <p>She leaned closer, letting her shoulder brush his. “I know,” she murmured, her voice quiet and gentle
+                now. “I hate being locked in. But we’re alive. We'll figure this out together.”</p>
 
             <p>Hours dragged past in an agonizing, slow drip. The faint, muffled echoes of dwarven voices reverberated
                 through the thick walls, a constant reminder of the massive bureaucratic machine operating above them.
                 Finally, the heavy deadbolt cracked open. A dwarf clad in simple, austere gray robes stepped into the
                 chamber. His face was a blank slate of official detachment.</p>
 
-            <p>“You are to be partitioned,” the official announced, his tone flat and unyielding.</p>
+            <p>“You are being separated,” the official announced, his tone flat and unyielding.</p>
 
-            <p>“Partitioned?” Lucas demanded, his chains rattling as he took a rigid step forward. “Explain the
-                parameter.”</p>
+            <p>“Separated?” Lucas demanded, his chains rattling as he took a sharp step forward. “Why?”</p>
 
-            <p>The official gestured to the guards waiting in the corridor. “A decree from the High Council. You will
-                formulate your testimonies in absolute isolation. You will remain in solitary confinement until you are
-                summoned to the central dais.”</p>
+            <p>The official gestured to the guards waiting in the corridor. “Orders from the High Council. You will
+                wait in separate cells until you are called before the magistrates.”</p>
 
-            <p>Mina’s posture instantly hardened, her muscles coiling to resist the physical separation, but Thomas
-                intercepted her vector. He placed a heavy, restraining hand on her shoulder. “Do not fight the current,”
-                Thomas advised, his voice dropping to a low, steady baseline. “They are attempting to fracture our
-                narrative. To find inconsistencies in the data. Hold the line.”</p>
+            <p>Mina tensed, her fists clenching as she stepped back, ready to fight them off, but Thomas caught her
+                shoulder. “Don’t,” he said, his voice low and steady. “They want to see if our stories match. They’re
+                looking for a reason to doubt us. Just keep your head.”</p>
 
-            <p>Lucas felt his heart accelerate, a cold sweat breaking across his skin. “We require zero coordination to
-                speak the truth,” Lucas stated tightly, though the prospect of solitary confinement was a direct,
-                visceral trigger for his deepest traumas.</p>
+            <p>Lucas felt his heart hammer against his ribs, cold sweat breaking across his skin. “We don't need to
+                rehearse the truth,” he said tightly, though the thought of being locked in a dark room alone made his
+                chest tighten with dread.</p>
 
-            <p>The dwarven guards advanced, their armored hands gripping the teenagers with blunt, bruising force. Mina
-                cast a desperate, urgent glance back at Lucas and Thomas as she was hauled toward a descending
-                stairwell, but the heavy timber door slammed shut, severing their visual contact entirely.</p>
+            <p>The dwarven guards stepped in, grabbing their arms with rough, heavy hands. Mina threw a desperate glance
+                back at Lucas and Thomas as they pulled her toward a descending stairwell, but the thick timber door
+                slammed shut, cutting them off from each other.</p>
 
-            <p>Lucas was dragged down a separate, lightless corridor and shoved brutally into a tiny, unadorned stone
-                cell. The iron grate slammed shut, the locking mechanism echoing like a final judgment. The walls were
-                sheer bedrock, completely devoid of windows or natural light. A single, flickering aether-crystal in the
-                ceiling cast long, sterile shadows across a narrow stone cot.</p>
+            <p>Lucas was dragged down a separate, dark hallway and shoved into a cramped stone cell. The iron grate
+                slammed shut, the heavy lock turning with a cold, hollow thud. The walls were rough bedrock, with no
+                windows and no way out. A single, dim crystal in the ceiling flickered weakly, casting pale shadows
+                across a narrow stone cot.</p>
 
-            <p>The geometric isolation was absolute.</p>
+            <p>The silence in the cell was suffocating.</p>
 
-            <p>Lucas stumbled to the center of the cell, his breathing growing ragged and rapid. His synthesis mind
-                began to wildly misfire. The cold stone mutated in his peripheral vision, replacing the dwarven masonry
-                with the gleaming stainless steel and reinforced glass of the Kingston medi-laboratory. He could feel
-                the phantom pinch of IV needles sliding into his veins. He could hear the scratching of Elias Thorne’s
-                pen recording his vital signs as his core temperature was forcibly manipulated.</p>
+            <p>Lucas stumbled backward, his breath catching in his throat as panic clawed at his chest. The rough stone
+                walls seemed to blur, shifting in the dim light until they looked like the polished steel and glass of
+                the laboratory in Kingston. He could feel the phantom sting of needles in his arms, the freezing cold of
+                the metal table beneath his back, and the sound of the researcher’s pen scratching across a clipboard
+                while
+                he lay helpless in the dark.</p>
 
-            <p>He clamped his chained hands over his ears, dropping to his knees on the freezing floor. He fought to
-                construct a mental Faraday cage, desperately utilizing complex calculus to drown out the screaming
-                terror of his past. He forced his mind to map the atomic structure of the stone beneath him, anchoring
-                his thoughts to the physical reality of the cell, refusing to let the ghosts of the laboratory consume
-                him.</p>
+            <p>He clamped his chained hands over his ears and dropped to his knees on the freezing floor. He forced
+                himself to count, running through numbers and equations in his head just to drown out the screaming
+                memory. He pressed his palms flat against the stone, focusing on the cold, gritty texture beneath his
+                skin, fighting with everything he had to stay grounded in the present.</p>
 
-            <p>Across the subterranean complex, Mina paced the perimeter of her own cell with the caged intensity of a
-                feral predator. The sheer lack of spatial clearance was agonizing. Her untamed heat demanded velocity,
-                begging her to shatter the iron bars and tear a path straight through the mountain. She kicked the heavy
-                stone wall, the blunt impact sending a jarring ache up her leg, but doing nothing to alleviate the
-                suffocating pressure in her chest.</p>
+            <p>Across the lower holding tiers, Mina paced her cell like a caged animal. The small space made her skin
+                crawl. Every instinct screamed at her to break the iron bars and run, to find open air and break into a
+                sprint. Frustrated and desperate for release, she kicked the heavy wall; the jolt sent a sharp ache up
+                her leg, but did nothing to ease the tight, suffocating panic in her chest.</p>
 
-            <p>She slumped against the cold bars, her chest heaving as she checked the crude, bloody bandages wrapped
-                around her arm.</p>
+            <p>She slumped against the cold iron bars, breathing hard as she touched the rough, blood-soaked bandages
+                wrapped around her arm.</p>
 
-            <p>A faint, localized scrape of fabric against stone interrupted her rapid breathing.</p>
+            <p>A faint rustle of smooth cloth against stone broke the quiet.</p>
 
             <p>“You hold allies in the dark.”</p>
 
-            <p>The voice was a mere breath, slipping through the narrow gap between the cell door and the bedrock floor.
+            <p>The voice was a low whisper, slipping through the narrow gap between the cell door and the stone floor.
                 Mina froze, her green eyes widening. She dropped into a silent crouch, pressing her ear close to the
-                iron.</p>
+                cold iron.</p>
 
-            <p>“Identify yourself,” Mina hissed, her tone laced with absolute suspicion.</p>
+            <p>“Who's there?” Mina hissed, her voice sharp with suspicion.</p>
 
-            <p>A soft, gravelly chuckle vibrated through the stone. “Names are a luxury the hunted cannot afford. I
-                deliver a warning. The High Council is severely fractured. Certain factions demand your immediate
-                execution to appease the Terrestrial Hegemony, while others view you as the tactical wedge needed to
-                break the Unbound completely. Your trial is a political theater.”</p>
+            <p>A quiet chuckle vibrated through the stone—a rough, forced sound that tried to mimic the deep gravel of a
+                dwarf. But beneath the scratching tone, Mina caught the steady, measured breath of an outsider trying to
+                hide their natural cadence—the smooth, controlled lilt of an elf or a polished tongue from the Central
+                Lands. “Names are a luxury the hunted cannot afford. I come with a warning. The High Council is tearing
+                itself apart. Some demand your heads to appease the Central Lands, while others see you as the hammer
+                they need to crush the Unbound. Your trial is just a show.”</p>
 
-            <p>Mina’s jaw locked. “What is the variable you want from me?”</p>
+            <p>Mina’s jaw tightened. “What do you want from us?”</p>
 
-            <p>“I require nothing but your continued survival,” the hidden voice murmured, fading into the ambient noise
-                of the corridor. “When the magistrates cast their stones, do not flinch. The mountain is watching.”</p>
+            <p>“Only that you stay alive,” the voice murmured, the refined accent slipping through before dying away
+                into the dark corridor. “When the magistrates cast their stones, do not flinch. The winds are already
+                shifting in your favor.”</p>
 
-            <p>The shadow beyond the door vanished, leaving Mina alone with the chaotic implications of the whisper.</p>
+            <p>The shadow vanished from beneath the door, leaving Mina alone with the quiet echo of the warning.</p>
 
-            <p>In the deepest isolation tier, Thomas sat on his stone cot, an immovable monument of iron density. He did
-                not pace. He did not succumb to the crushing psychological compression of the cell. He simply closed his
-                eyes, slowing his heart rate to a steady, tectonic rhythm. He meticulously categorized the variables of
-                the impending interrogation. He knew the council would attempt to leverage their exhaustion. He knew
-                they would demand submission. Thomas prepared his unyielding foundation, ensuring that when the hammer
-                of dwarven justice fell, it would strike pure bedrock.</p>
+            <p>Down in the deepest holding cells, Thomas sat on the edge of his stone cot. He didn’t pace, and he
+                didn’t let the cold gloom of the dungeon wear him down. He simply closed his eyes, letting his breathing
+                slow to a calm, steady rhythm. He turned the coming interrogation over in his mind, bracing himself. He
+                knew the council would try to use their exhaustion against them, pushing until they broke. But Thomas
+                had spent his life standing his ground. When the dwarven judges tried to hammer them, they would find
+                nothing to shatter.</p>
 
-            <p>The rhythmic clank of armored boots finally broke his meditation. The iron grate swung open, revealing
-                two dwarven sentinels.</p>
+            <p>The heavy clatter of armored boots broke the silence. The iron door creaked open, revealing two dwarven
+                guards.</p>
 
             <p>“The High Council demands your presence,” the lead guard grunted.</p>
 
@@ -11507,49 +11597,78 @@
                 granite. Seated behind it were the Elders of Brum’korath, their expressions locked into masks of
                 absolute authority.</p>
 
-            <p>Lucas was marched into the center of the floor, his chains echoing sharply. He immediately located Mina
-                and Thomas, already positioned at the defensive flanks. The relief of seeing them unharmed provided a
-                momentary spike of warmth, but his synthesis mind quickly locked onto the crushing reality of the
-                tribunal before them.</p>
+            <p>Lucas was marched into the center of the floor, his chains echoing sharply against the stone. He
+                immediately located Mina and Thomas, flanked by heavy guards near the center of the chamber. The relief
+                of seeing them alive and upright provided a momentary surge of warmth, though the heavy bruises and
+                weariness etched into their faces mirrored his own exhaustion.</p>
+
+            <p>Their eyes met across the floor. Thomas caught Lucas’s gaze, offering a subtle, unyielding nod that
+                anchored the room's mounting dread. Beside him, Mina’s green eyes sharpened. The moment their sightlines
+                locked, she reached across the open air, her telepathic presence brushing against Lucas’s mind like a
+                warm, urgent current.</p>
+
+            <p><span class="telepathy">Someone came to my door in the cells,</span> Mina projected, her thoughts
+                carrying a sharp, restless edge. <span class="telepathy">An outsider whispering through the gap,
+                    faking a rough dwarven drawl. They said this trial is a complete sham. The council is split right
+                    down the middle—half the elders want to hand us over to the Central Lands, and the other half want
+                    to use us as a sledgehammer against the Unbound. The voice told me to stay alive and stand our
+                    ground, that someone is moving in the shadows to tip the scales for us.</span></p>
+
+            <p>Lucas absorbed the data, his mind instantly mapping the hidden angles of the courtroom. <span
+                    class="telepathy">An unseen hand playing the margins,</span> he answered across the bond,
+                drawing steady strength from her presence. <span class="telepathy">We hold our ground and give them
+                    nothing to exploit.</span></p>
+
+            <p>Mina offered a faint, weary pulse of agreement. Thomas, reading the sudden, subtle hardening in their
+                postures, shifted his weight and squared his broad shoulders, forming a unified, stoic front before the
+                dais.</p>
 
             <p>At the direct apex of the table sat Elder Valka. Her silver hair was tightly braided, and her piercing,
                 ice-blue eyes scanned the three teenagers with the lethal calculation of a raptor. Seated to her
-                immediate left was Elder Gorla, a heavily scarred dwarf whose traditional armor bore subtle, muted
-                insignias linking her to the Sent Ones. Gorla maintained a rigid, unreadable facade, but Lucas detected
-                a microscopic shift in her posture—a faint, heavily suppressed tension.</p>
+                immediate left was Elder Gorla, a heavily scarred dwarf clad in austere, unadorned council plate devoid
+                of any factional heraldry. Gorla maintained a rigid, unreadable facade, but Lucas detected a microscopic
+                shift in her posture—a faint, heavily suppressed tension.</p>
 
             <p>Elder Valka raised a heavy, iron-bound gavel and struck the granite slab. The resulting concussive boom
                 instantly silenced the sprawling chamber.</p>
 
-            <p>“Lucas, Minalia, Thomar,” Elder Valka pronounced, her voice cold and commanding, projecting perfectly
-                across the acoustic void of the room. “You stand before the bedrock of Brum’korath. You are charged with
-                inciting mass urban destabilization, providing tactical harbor to a radical religious faction, and
-                participating in a cataclysmic event that pulverized our civilian sectors. However, the military logs
-                confirm your direct involvement in the neutralization of the colossal anomaly. The math of your actions
-                is contradictory.”</p>
+            <p>“Lucas, Mina, Thomas,” Elder Valka pronounced, her voice cold and commanding, echoing with heavy
+                authority across the vaulted stone. “You stand before the high council of Brum’korath. You are charged
+                with trespassing onto sovereign dwarven soil without permit, bringing violence into our streets,
+                harboring among religious fanatics, and participating in a catastrophe that shattered our outer tiers.
+                Yet our captains confirm your direct hand in slaying the beast that breached our gates. Your deeds stand
+                in stark conflict.”</p>
+
+            <p>She paused, resting her heavy, ringed fingers upon a slate ledger set into the granite bench. “The
+                preliminary accounting of your battle is written in blood and ruin. The eastern residential sectors have
+                collapsed into the lower caverns. The municipal aqueduct hub lies fractured, drowning our secondary
+                mine shafts. Forty-seven militia guards—including Captain Throm of the Iron Gate—perished holding the
+                line. Two master engineers of the Stonemasons' Guild were crushed beneath falling colonnades, and over
+                two hundred civilians remain buried in the rubble of the market tier. Our search crews continue to pull
+                bodies from the dark, and the final toll will climb for days.”</p>
 
             <p>Valka leaned forward, clasping her hands on the granite. “You will state your defense. Do not attempt to
-                mask your variables. Our justice is absolute, and our patience has been ground to dust.”</p>
+                hide your guilt or weave falsehoods before this stone. Our justice is absolute, and our patience has
+                been ground to dust.”</p>
 
-            <p>Lucas stepped forward, forcing his posture to remain rigidly geometric despite the heavy iron binding his
-                wrists. He engaged his chilling logic, stripping his voice of all emotional resonance to deliver a pure,
-                clinical defense.</p>
+            <p>Lucas stepped forward, forcing his posture to remain rigidly upright despite the heavy iron binding his
+                wrists. He drew upon his chilling, calculated focus, stripping his voice of all emotional resonance to
+                deliver a cold, measured defense.</p>
 
-            <p>“We did not engineer the destruction of your infrastructure,” Lucas stated clearly, his dark eyes locking
-                onto Valka. “Our presence in your city was a matter of survival, not malice. The Disciple of Earth was
-                an
-                apocalyptic biological missile. It was not summoned by the Sent Ones, nor was it a local beast. It was a
-                cosmic response to our unique arcane signatures. We engaged the titan because we possessed the specific
-                thermodynamic output required to shatter its silicate core. We utilized your streets as a battlefield
-                out of absolute necessity, and we executed the threat before it could wipe Brum’korath off the map.”</p>
+            <p>“We did not come to bring ruin to your mountain,” Lucas stated quietly, his dark eyes locking onto Valka.
+                “We arrived as refugees seeking shelter, not conflict. Whatever fell from your skies was not summoned by
+                the cult, and it was not a beast native to these rocks. It came with a targeted hostility, tearing
+                through your gates to corner us. We did not choose that battlefield. We fought because retreat was
+                impossible, and we brought it down through desperate improvisation alongside your own militia. If we
+                had turned our backs, that creature would still be grinding this hall to dust.”</p>
 
             <p>A stout, fiery-eyed elder sitting to Valka’s right slammed his fist on the table. “You admit you brought
-                the beast to our gates! You integrated with the cultists who actively defy our laws! Your presence is a
-                toxic variable!”</p>
+                the beast to our gates! You harbored among fanatics who actively defy our laws! Your very presence is a
+                poison to this mountain!”</p>
 
-            <p>Lucas maintained his cold, sterile gaze. “The cult offered us sanctuary when your World Police allies
-                hunted us like animals. We do not answer for the political friction of your factions. We only answer for
-                the beast we dismantled.”</p>
+            <p>Lucas maintained his cold, steady gaze. “The cult offered us shelter when the World Police hunted us like
+                animals. We do not answer for the feuds between your factions. We answer only for the beast we slew.”
+            </p>
 
             <p>Mina surged forward, the heavy chains clanking violently against the stone floor. Her green eyes burned
                 with a feral, untamed heat that directly challenged the crushing authority of the room. </p>
@@ -11564,8 +11683,8 @@
                 into dangerous, icy slits, but before she could drop the hammer of her authority, Thomas stepped into
                 the absolute center of the floor.</p>
 
-            <p>Thomas did not project arcane static or feral speed. He projected pure, unyielding bedrock. His broad
-                shoulders squared, eclipsing the physical space of his friends.</p>
+            <p>Thomas anchored his stance with the unyielding density of solid bedrock. His broad shoulders squared,
+                his heavy physical presence commanding the floor and shielding the space around his friends.</p>
 
             <p>“You are analyzing the wrong battlefield,” Thomas rumbled, his voice a slow, tectonic vibration that
                 demanded absolute attention from every dwarf in the chamber. “You are debating gang wars and property
@@ -11588,20 +11707,67 @@
                 seventeen centuries! You dare stand in the Hall of Justice and weave ancient fairytales to excuse your
                 destruction?”</p>
 
-            <p>“It is not a fairytale,” Thomas replied, his stance an immovable monolith. “The beast was a herald. A
-                Disciple sent to pave the way. You can execute us for breaking your streets, but it will not stop the
-                cosmic tide that is coming. The Empire is awake, and they know exactly where Brum’korath is.”</p>
+            <p>“It is not a fairytale,” Thomas replied, his stance an immovable monolith. “That beast was an advance
+                strike—a Disciple sent to test this ground. Condemning us for the shattered stone will not alter the
+                reality of what breached your gates. The Empire deployed that weapon, and Brum’korath is already on
+                their
+                map.”</p>
 
             <p>The absolute, stoic certainty in the boy's voice paralyzed the council. Elder Gorla leaned forward, her
                 hands trembling slightly against the granite table. The theological implications of his words perfectly
                 mirrored the forbidden prophecies she secretly guarded.</p>
 
-            <p>Valka stared at the three outsiders, the complex, political architecture of her city rapidly collapsing
-                under the staggering weight of their revelation. She raised her gavel, her knuckles white.</p>
+            <p>Elder Valka did not strike her gavel. The icy calculation in her blue eyes hardened, boring straight
+                through Thomas and locking onto Lucas. She leaned forward, resting her heavy, ringed palms flat against
+                the black granite.</p>
 
-            <p>“Your claims shatter the very foundation of our history,” Valka pronounced, her voice tight with an icy
-                dread she could barely conceal. “The council will withdraw to calculate the validity of these variables.
-                If you are lying to mask your crimes, the executioner's block will be your final destination. Remove
+            <p>“Before that titan breached the inner sanctum,” Valka stated, her voice dropping into a low, terrifying
+                frequency that vibrated through the chamber, “our surviving captains recorded the words it bellowed into
+                the dust. It demanded: <em>‘Bring me the weapon against the Empire.’</em> It ignored our vaults. It
+                ignored our armories. It tore a direct chasm through our infrastructure toward one specific vector:
+                you.”</p>
+
+            <p>She shifted her gaze across the three prisoners, her fingers tapping a slow, deliberate cadence on the
+                slate ledger. “Our deepest archives hold transcripts translated from archaic Nythari stones—imperfect,
+                damaged records where the syntax blurs between an ancient ‘primordial beast’ and a ‘cosmic cataclysm.’
+                Those texts record three harbingers—the Sent Ones—who would seek the bedrock of this mountain and the
+                steel of dwarven iron to survive an existential purge. I treated those fragments as religious poetry.
+                Fables whispered in the dark.”</p>
+
+            <p>Valka’s gaze hardened, her eyes cold and sharp. “A beast falling from the heavens is a tragedy. But a
+                creature tearing through our gates to demand the surrender of three outsiders now standing in chains
+                before this council is no coincidence. Give me the truth, boy. Who forged that monstrosity, why did it
+                target our mountain, and what was it sent here to destroy?”</p>
+
+            <p>Lucas met her stare, his voice steady despite the exhaustion clawing at his chest. He offered no false
+                arrogance, only the raw, grounded facts they had bled to uncover.</p>
+
+            <p>“We have told you the truth,” Lucas answered, the iron chains rattling softly as he took half a step
+                forward. “I do not know the name of whatever forged that creature, nor do I easily put my faith in
+                ancient fables. All we have are the fragments your own records and the Sent Ones preserved—warnings of
+                an
+                ancient Empire that once threatened this world. I wanted to dismiss it as superstition, but when that
+                beast tore through your gates and demanded the ‘weapon against the Empire,’ coincidence stopped making
+                sense. It did not strike for dwarven gold or territory. Everything points to one conclusion: it came to
+                destroy us before we can even understand what we are.”</p>
+
+            <p>He held Valka’s gaze, his tone softening with an earnest, urgent gravity. “Your soldiers died defending
+                their home, and we nearly burned our lives to ash helping them hold the line. We never asked to be the
+                targets of this war, Elder. But if that beast was only an advance strike, more will follow. We cannot
+                survive what is coming if we bleed each other dry in the dark. We need your help. We need your wisdom,
+                your iron, and your understanding.”</p>
+
+            <p>A suffocating silence clamped down upon the hall. The elders sat frozen, the crushing weight of the
+                equation locking together in their minds. One plus one yielded two. The fables were dead; the cosmic war
+                had arrived at their gates.</p>
+
+            <p>Valka stared at Lucas, the complex, political architecture of her city rapidly collapsing under the
+                staggering weight of their revelation. She slowly lifted her heavy, iron-bound gavel, her knuckles
+                white.</p>
+
+            <p>“Your claims strike at the very bedrock of our history,” Valka pronounced, her voice tight with an icy
+                dread she could barely conceal. “The council will withdraw to weigh the truth of your words. If you have
+                lied to excuse your destruction, the executioner's block will be your final destination. Remove
                 them.”</p>
 
             <p>The heavy iron guards swarmed forward, seizing the chains and dragging the trio backward through the
@@ -11639,7 +11805,7 @@
             <p><em>Trion-cres, Borin 1772 HSC</em></p>
 
             <p>The Justice Hall of Brum'korath functioned as an architectural manifestation of unyielding, absolute
-                pressure. Carved directly into the mountain’s geological heart, the cavernous space was a sweeping
+                pressure. Carved directly into the mountain’s sheer granite face, the soaring space was a sweeping
                 testament to dwarven craftsmanship and their relentless commitment to systemic order. The sheer,
                 towering walls were etched deeply with the ancient symbols of terrestrial law—balanced scales, heavy
                 hammers, and the unbroken iron chains of justice. Endless rows of stone benches, filled entirely with
@@ -11772,7 +11938,7 @@
             <p>As the massive bronze doors of the Justice Hall were hauled open, the trio was aggressively ushered out
                 by the militia, their thoughts swirling in a dark, uncertain vortex. Goldar’s ultimate fate remained
                 locked behind closed doors, but the shockwaves of his trial were already triggering catastrophic shifts
-                across the subterranean city—and the true battle for Brum'korath was bleeding out of the shadows.</p>
+                across the mountain city—and the true battle for Brum'korath was bleeding out of the shadows.</p>
 
             <hr class="scene-break">
 
@@ -12288,7 +12454,7 @@
                 corridor. “But we stretch the perimeter until it snaps. We exploit the chaos.”</p>
 
             <p>The trio resumed their march, their trajectory leading them toward the peripheral communal halls where
-                the remnants of the Sent Ones congregated. The grand, subterranean plaza was a shell of its former
+                the remnants of the Sent Ones congregated. The grand, vaulted plaza was a shell of its former
                 glory. The cultists huddled in tight, paranoid clusters, their faith clinging desperately to the
                 fractured ruins of Goldar’s legacy. Lucas scanned the room, his synthesis mind filtering the acoustic
                 noise, seeking a specific, vital target.</p>
@@ -12393,7 +12559,7 @@
                 vulnerability. The trials crippled our alliances. The World Police demand immediate accountability, and
                 they construct their gallows as we speak.”</p>
 
-            <p>Mina’s bright green eyes flicked toward the narrow, reinforced window overlooking the dark, subterranean
+            <p>Mina’s bright green eyes flicked toward the narrow, reinforced window overlooking the dark, stone-tiered
                 thoroughfare. The shadows of the city seemed to stretch longer, pressing against the glass. The World
                 Police were a relentless, systemic machine, and their temporary reprieve was mathematically guaranteed
                 to expire.</p>
@@ -12927,7 +13093,7 @@
             <hr class="scene-break">
 
             <p>The return march to the Cult of the Sent Ones’ primary headquarters was thick with suffocating tension.
-                The flickering lanterns lining the subterranean thoroughfares did little to ease the heavy dread
+                The flickering lanterns lining the stone-tiered thoroughfares did little to ease the heavy dread
                 settling over the city. Lucas walked in absolute silence, his mind processing the fragmented elven
                 reliefs and the chilling certainty of the prophecy. Mina moved at his side, her untamed heat held under
                 strict lockdown as she analyzed the geopolitical fallout of the Guardian relief. Thomas maintained his
