@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <!-- Universal Dark/Light Mode Theme System -->
+    <link rel="stylesheet" href="../../css/theme.css">
+    <script src="../../scripts_and_data/theme.js"></script>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CLASSIFIED LOG: Field Journal of Lucas-A (1772 HSC)</title>
+    <style>
+        :root {
+            --bg-color: #070709;
+            --text-color: #c4c8d0;
+            --header-color: #2b5b84;
+            --lucas-color: #58a6ff;
+            --mina-color: #ff7b72;
+            --thomas-color: #8b949e;
+            --warning-color: #f85149;
+            --border-color: #1a1f2c;
+            --entry-bg: #0d1117;
+        }
+
+        body {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.7;
+            margin: 0;
+            padding: 30px 20px;
+        }
+
+        .archive-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: #0d1117;
+            padding: 40px 50px;
+            border: 1px solid var(--border-color);
+            box-shadow: 0 0 25px rgba(0, 0, 0, 0.9);
+            border-left: 4px solid var(--header-color);
+            border-radius: 4px;
+        }
+
+        h1 {
+            font-size: 1.8em;
+            color: var(--lucas-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+            margin-top: 0;
+            margin-bottom: 5px;
+        }
+
+        .meta-data {
+            font-size: 0.82em;
+            color: #6e7681;
+            margin-bottom: 30px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.1);
+            padding-bottom: 15px;
+        }
+
+        .relic-terminal {
+            background: #010409;
+            border: 1px solid #30363d;
+            border-radius: 4px;
+            padding: 15px;
+            font-size: 0.85em;
+            color: #79c0ff;
+            margin-bottom: 35px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.8);
+        }
+
+        .journal-entry {
+            background: rgba(13, 17, 23, 0.7);
+            border: 1px solid #21262d;
+            border-left: 3px solid var(--lucas-color);
+            border-radius: 4px;
+            padding: 25px;
+            margin-bottom: 30px;
+            font-family: 'Georgia', serif;
+            font-size: 1.02em;
+            text-align: justify;
+        }
+
+        .entry-header {
+            font-family: 'Courier New', Courier, monospace;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #21262d;
+            padding-bottom: 8px;
+            margin-bottom: 15px;
+            font-size: 0.85em;
+        }
+
+        .entry-date {
+            color: #f0883e;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .entry-loc {
+            color: #8b949e;
+            font-style: italic;
+        }
+
+        .equation-block {
+            background: #010409;
+            border-left: 2px solid var(--header-color);
+            padding: 10px 15px;
+            margin: 15px 0;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.85em;
+            color: #a5d6ff;
+        }
+
+        .highlight-lucas {
+            color: var(--lucas-color);
+        }
+
+        .highlight-mina {
+            color: var(--mina-color);
+        }
+
+        .highlight-thomas {
+            color: var(--thomas-color);
+        }
+
+        .highlight-warn {
+            color: var(--warning-color);
+            font-weight: bold;
+        }
+
+        .back-nav {
+            display: inline-block;
+            margin-top: 30px;
+            color: #58a6ff;
+            text-decoration: none;
+            font-size: 0.9em;
+            font-family: 'Courier New', Courier, monospace;
+            transition: color 0.2s ease;
+        }
+
+        .back-nav:hover {
+            color: #79c0ff;
+            text-decoration: underline;
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="archive-container">
+
+        <div class="relic-terminal">
+            > SOURCE ARTIFACT: RECOVERED FIELD JOURNAL // SUBJECT: LUCAS-A<br>
+            > RECOVERY COORDINATE: SECTOR 4-B // EXPEDITION BASELINE, WATCHER CRYPT<br>
+            > PHYSICAL MEDIUM: ROUGH COWHIDE BINDING, ACIDIC CHARCOAL INK (PURCHASED IN VELDRUK)<br>
+            > STATUS: DECRYPTED & CROSS-REFERENCED WITH MASTER BLUEPRINTS<br>
+            > ANOMALOUS VARIABLE: "HYBRIS" OCCURS 41 TIMES WITHOUT LOCAL ETYMOLOGICAL ROOTS.
+        </div>
+
+        <h1>Field Calculations & Observations</h1>
+        <div class="meta-data">
+            AUTHOR: Lucas-A (Designation: 07-Alpha // "The Calculating Void")<br>
+            TIMELINE: A-Prime (Pre-Fracture)<br>
+            ARCHIVAL INTEGRITY: COMPLETE
+        </div>
+
+        <!-- Entry 1 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Septa-cres, Aris 1772 HSC</span>
+                <span class="entry-loc">Veldruk Outpost // Base of the Storm Mountains</span>
+            </div>
+            <p>I traded one of the drone batteries for this ledger. The merchant thought he was robbing an exhausted runaway, his cognitive matrix radiating pure, petty greed as he slid a stack of unmarked cards and this stack of pressed hide across the wood. I let him keep the illusion of profit. A physical notebook stores zero electromagnetic signature. The World Police scan the aetheric grid for digital resonance; they cannot intercept carbon scraped onto dead cellulose.</p>
+            <p>We are three hundred miles west of Kingston. My lungs still carry the phantom scent of ionized ozone and scorched plaster from the hospital ward. Every time I close my eyes, the memory of that explosion executes a recursive feedback loop in my skull. I keep running the numbers on the blast radius. The thermodynamic yield required to level that square in a microsecond defies standard atomic mechanics. It wasn't simple combustion. It was a structural tear in the local spatial fabric.</p>
+            <p>Mina is sleeping against the timber wall of our room, her breathing shallow. Her kinetic threshold is frighteningly high—she moves without aerodynamic drag, Parting the air before friction can catch her. Thomas sits by the door, an immovable bulk of bone and iron. His mind remains a complete dead-zone to my telepathy, a soothing vacuum in a world screaming with mental static. If we stay on the open roads, the statistical probability of our capture reaches 99.4% within forty-eight hours. The mountains are our only non-linear vector.</p>
+        </article>
+
+        <!-- Entry 2 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Deca-cres, Aris 1772 HSC</span>
+                <span class="entry-loc">Peripheral Trail // Two Miles North of Veldruk</span>
+            </div>
+            <p>A statistical anomaly occurred on the trail today. Six armed bandits cornered a dwarven supply cart in the mud. Under normal tactical doctrine, fugitives do not engage local skirmishes. But the static in my head was deafening, and Mina broke formation before I could map the perimeter.</p>
+            <p>What followed was an impossible alignment of physics. Mina provided the kinetic surge, shattering the lead bandit’s momentum; Thomas occupied the spatial void she vacated, absorbing the counter-strike like bedrock; I applied targeted telekinetic compression to sever the remaining vectors. Ten seconds. Zero wasted energy. We operated not as three isolated entities, but as a synchronized engine.</p>
+            <p>The merchant calls himself Krin Dow-Kabar. He recognized that we were avoiding the official toll-gates and their biometric scanners. In exchange for repacking his cargo, he has agreed to guide us up the restricted mountain pass. A pragmatic transaction. The calculation held.</p>
+        </article>
+
+        <!-- Entry 3 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Solus-wan, Aris 1772 HSC</span>
+                <span class="entry-loc">Tredmor // Outer Gates of Brum'korath</span>
+            </div>
+            <p>The physical mass of this fortress is suffocating. Millions of tons of granite and dark iron carved directly into the mountain's crust. My synthesis mind struggles to process the acoustic density of the place—every footstep echoes with the weight of centuries.</p>
+            <p>While sitting in a lower-tier tavern, I detected an active mental probe. A dwarven cleric in deep burgundy robes. When I attempted to counter-scan his cognitive matrix, I slammed into an engineered wall—a psychic firewall as dense as tectonic slate. He spoke to us in the street later. He called himself Torgar. He knew what we were hiding. He referenced ancient runic tablets and 'legends carved into the bedrock.' I do not believe in gods or mystical prophecies. Prophecy is merely the clumsy language baseline mortals use when they cannot compute the underlying physics of causality. But someone planted those records here long before we arrived. Why?</p>
+        </article>
+
+        <!-- Entry 4 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Deca-wan, Aris 1772 HSC</span>
+                <span class="entry-loc">Subterranean Safehouse // Tredmor Underbelly</span>
+            </div>
+            <p>I almost killed a man tonight. Not with fire or blunt force, but with the raw, unchecked pressure of my mind.</p>
+            <p>The Unbound poisoned my meal at the tavern, then abducted Mina while I was incapacitated. When Thomas and I cornered the operative in the alley behind the smithy, the sight of her bound, bleeding through a coarse hood with a poisoned blade against her throat... it destroyed my mental firewalls. The cold logic broke. I didn't probe his thoughts; I flooded his nervous system with the unmitigated trauma of the medi-laboratory. I burned through his synapses until blood poured from his ears. He was babbling incoherently before Thomas dragged him down. The terrifying reality is that once the feedback loop started, I couldn't stop it. My power is not a tool; it is a nuclear core with a failing cooling system.</p>
+            <div class="equation-block">
+                NEURAL OVERLOAD THRESHOLD: &Delta;E = &Psi; &times; (Emotional Strain / Cognitive Resistance)<br>
+                RESULT: Synaptic burnout within 4.2 seconds of unconstrained telepathic pressure.
+            </div>
+            <p>Wallace is here. He traced our vector across the plains and eliminated an Unbound assassin outside our door without making a sound. Having his cold, tactical discipline back in our perimeter stabilizes the equation, but he advises us to accept Torgar’s sanctuary in the deep temple. The noose is tightening.</p>
+        </article>
+
+        <!-- Entry 5 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Solus-cres, Borin 1772 HSC</span>
+                <span class="entry-loc">The Resonant Bastion // Subterranean Headquarters</span>
+            </div>
+            <p>We survived the ascent to the Hidden Temple, though Grimbar—one of Torgar’s vanguards—revealed himself as an Unbound asset and tried to throw me off a slate cliff. Mina saved my life. She moved so fast the air cracked like lightning. I decrypted Grimbar's mind in front of the entire vanguard, tearing out the name of his handler: Thrainor Blackstone.</p>
+            <p>Inside the Bastion, High Cleric Goldar Ironfist demanded proof of our identity. When I dropped the room's temperature to absolute zero and levitated a two-ton stone altar, he didn't call it magic. He called it the 'Second Coming.' Goldar claims that exactly 1,772 years ago—Year 0 HSC—the original Sent Ones walked this earth and sealed an invading force called the Central Galactic Empire. He believes that our awakening in Kingston was the cosmic beacon that summoned the Empire's heralds: biological weapons called Disciples.</p>
+            <p>1,772 years. That is not a rounded historical estimate. That is the exact chronological metric of our current calendar. The timeline is not a straight line. It is a closed circuit.</p>
+        </article>
+
+        <!-- Entry 6 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Duon-cres, Borin 1772 HSC</span>
+                <span class="entry-loc">Deep Caverns // Beneath the Resonant Bastion</span>
+            </div>
+            <p>Training in the subterranean arena with Mina and Thomas. I spent hours in the cult's ancient archives, learning to extend my telekinesis as a microscopic sensor grid to read closed books on the high shelves without touching them. The dwarven scribes stare at me as if I am a ghost.</p>
+            <p>Later, by the oil lamp in our quarters, the noise of the world finally went quiet. Thomas was asleep against the bedrock. Mina sat beside me, her fingers laced through mine, her vibrant warmth bleeding through my skin to melt the cold geometry of my nightmares. In her eyes, I am not a weapon, an anomaly, or a prophesied savior. I am just Lucas. For three hours, the math didn't matter. But the quiet never lasts. Wallace intercepted chatter: the city militia has sealed the upper gates, and the Unbound are massing in the tunnels below. A siege is imminent.</p>
+        </article>
+
+        <!-- Entry 7 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Trion-cres, Borin 1772 HSC</span>
+                <span class="entry-loc">Ruins of the Aqueduct Plaza // Brum'korath</span>
+            </div>
+            <p>The sky broke. It fell like an asteroid—a monolithic titan of molten slag and petrified mantle. The Disciple of Earth.</p>
+            <p>Direct kinetic strikes and standard combustion did nothing against its silicate crust. I had to calculate an emergency thermodynamic equation on the fly: thermal shock. I focused every drop of my atomic friction to superheat its outer shell to white-hot critical mass, while Torgar and the cultists sheared the municipal aqueduct valves. When the pressurized mountain water hit that boiling crust, the flash-steam explosion was deafening. The thermal contraction shattered its armor into fragile glass.</p>
+            <div class="equation-block">
+                THERMAL SHOCK COEFFICIENT: &sigma; = (E &times; &alpha; &times; &Delta;T) / (1 - &nu;)<br>
+                CRITICAL THRESHOLD: &Delta;T &gt; 1,400 K &rarr; Structural fracture of outer silicate lattice achieved.
+            </div>
+            <p>The cost was catastrophic. When the titan broke through our retreat, Wallace took a jagged stone pillar through his ribs to protect Mina. We should have left him—cold calculus dictated that running would buy us 4.2 seconds of survival. We threw the math away. Thomas caught the beast's descending foot on his shield, Mina kicked the ankle joint out of alignment, and together we dragged Wallace clear.</p>
+            <p>In the final plaza, after I drove a ten-foot aetheric conduit through its chest with raw telekinesis and collapsed from neural hemorrhage, Thomas finished it. Stripped of magic, he lifted a slab of bedrock weighing hundreds of pounds and drove the pipe clean through its molten heart. The titan detonated. We survived. But the dwarven militia arrived with iron chains before we could stand.</p>
+        </article>
+
+        <!-- Entry 8 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Penta-cres, Borin 1772 HSC</span>
+                <span class="entry-loc">Subterranean Vaults // Brum'korath High Security</span>
+            </div>
+            <p>The secular council put Goldar on trial, stripping him of his office, but the magistrates are terrified of the ash in their streets. To avoid open civil war with the Unbound, they granted us temporary parole under strict surveillance and gave us access to the deep vaults to examine the ancient relics.</p>
+            <p>When I touched the obsidian shard on the pedestal, the metal liquefied, wrapping around my wrist like a living circuit. The hardware initiated an immediate biometric scan, but stalled on a catastrophic error:</p>
+            <div class="equation-block">
+                BIOMETRICAL VARIANCE DETECTED: 0.0001%<br>
+                STATUS: OWNER MISMATCH. SYSTEM INITIATING DORMANT LOCKDOWN.
+            </div>
+            <p>0.0001%. That is the genetic difference between identical twins. The relic was engineered for someone who possesses my exact cellular structure, yet its security firewall rejected me as a counterfeit. Who built these devices? Who was the original owner? Mina's relic locked to her ankle; Thomas's fused to his wrist with such violent force that it caused an intracranial hemorrhage, altering his cognitive baseline. We are wearing pieces of an ancient machine we cannot control.</p>
+        </article>
+
+        <!-- Entry 9 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Hexa-wan, Galen 1772 HSC</span>
+                <span class="entry-loc">Command Cabin // Aboard the Windfighter</span>
+            </div>
+            <p>The High Elves of Haliriel sent an envoy—Commandant Altheris—to negotiate our extraction. We crossed the Great Forest aboard an airship powered by aetheric turbines, standing before Queen Aphyrosia in the High Temple of Nature. She confirmed our status as the 'Children of Hybris,' though the word feels like an orphan term inserted into our reality by an unseen hand.</p>
+            <p>We took a detour south to The Watcher, guided by Candice, a Nythari warrior whose sharp amber eyes carry the legacy of our ancestors. High on the mountain, we found Ceylan—a broken prophet whose mind is actively unraveling. He looked at Mina and me and gasped: <em>"You're alive again? The cycle turns... a cage of mirrors and forgotten names."</em> He spoke of a hidden tomb. When we awoke the next morning from a shared dream inside an impossible mansion that vanished into thin air, all our wounds had been healed. Ceylan had disappeared. The mountain is an active participant in this nightmare.</p>
+        </article>
+
+        <!-- Entry 10 -->
+        <article class="journal-entry">
+            <div class="entry-header">
+                <span class="entry-date">Deca-wan, Galen 1772 HSC</span>
+                <span class="entry-loc">Obsidian Crypt // Heart of the Watcher</span>
+            </div>
+            <p>The final equation has resolved, and the answer is an absolute horror.</p>
+            <p>Dr. Thorne—the lead researcher who tortured me as a child in Kingston—was already inside the Temple of Crystals. We were forced into an uneasy truce to bypass the chromatic locks on the black and white crystal pillars. When the hidden threshold crumbled inward, we stepped into an obsidian chamber untouched for seventeen centuries.</p>
+            <p>Three colossal sarcophagi rest upon the dais. Etched in glowing archaic Elvish upon their lids are three names:</p>
+            <div class="equation-block">
+                SARCOPHAGUS I: LUCIANAE<br>
+                SARCOPHAGUS II: MINALIA<br>
+                SARCOPHAGUS III: THOMAR
+            </div>
+            <p>When my hand drew near the stone, the relic on my wrist flared with blinding light. The dormant consciousness inside whispered: <em>"Owner... near."</em></p>
+            <p>We are not the pioneers. We are the echoes. Seventeen hundred years ago, in Timeline-0, an older version of myself, Mina, and Thomas failed to defeat the Empire. They were thrown back in time to Year 0 HSC, built this entire civilization from the mud, engineered these relics, wrote the prophecy into the Nythari bloodline, and laid themselves down in these stone boxes to rot. The 0.0001% DNA mismatch is the temporal drift between Timeline-0 and Timeline-A.</p>
+            <p>I am looking at my own corpse. I am reading a script written by a ghost who wore my face. The only variable that remains uncertain is whether we are doomed to repeat their failure, or if we can break the causality loop before the River of Time drowns us all.</p>
+        </article>
+
+        <a href="./truth.html" class="back-nav">&larr; [ Return to The Labyrinth of Timelines ]</a>
+
+    </div>
+
+</body>
+
+</html>
