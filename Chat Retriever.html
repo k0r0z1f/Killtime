@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gemini Chat Tool</title>
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif; background-color: #f4f7f6; color: #333; margin: 0; padding: 2em; display: flex; flex-direction: column; align-items: center; }
+        .container { background-color: white; padding: 2em; border-radius: 8px; box-shadow: 0 4px 12px rgba(0,0,0,0.1); max-width: 1100px; width: 100%; }
+        h1 { color: #1a73e8; border-bottom: 2px solid #e0e0e0; padding-bottom: 0.5em; }
+        p { line-height: 1.6; }
+        .info-box { background-color: #e8f0fe; border: 1px solid #d2e3fc; padding: 1em; border-radius: 4px; margin-bottom: 1em; }
+        button { background-color: #1a73e8; color: white; border: none; padding: 8px 14px; font-size: 13px; border-radius: 4px; cursor: pointer; transition: background-color 0.3s, transform 0.1s; vertical-align: middle; margin-right: 5px; }
+        button:hover { background-color: #185abc; }
+        button:active { transform: scale(0.98); }
+        button:disabled { background-color: #d1d1d1; color: #888; cursor: not-allowed; }
+        .action-btn { background-color: #1e8e3e; }
+        .action-btn:hover { background-color: #1a7a35; }
+        .copy-btn { background-color: #4285f4; }
+        .copy-btn:hover { background-color: #3367d6; }
+        #api-container { display: none; margin-top: 1em; }
+        #search-controls { display: flex; gap: 10px; align-items: center; margin-bottom: 1em; }
+        #search-term { padding: 11px; font-size: 16px; border: 1px solid #ccc; border-radius: 4px; flex-grow: 1; }
+        #status { margin-top: 1.5em; font-style: italic; color: #666; }
+        #results-table { margin-top: 1em; border-collapse: collapse; width: 100%; }
+        #results-table th, #results-table td { border: 1px solid #e0e0e0; padding: 12px; text-align: left; vertical-align: middle; }
+        #results-table th { background-color: #f9f9f9; }
+        #results-table td code { background-color: #eee; padding: 3px 6px; border-radius: 3px; font-family: monospace; }
+        #results-table img { vertical-align: middle; margin-right: 8px; }
+        .priority-row { background-color: #e8f0fe; }
+        .priority-row td:first-child { border-left: 4px solid #1a73e8; }
+        .actions-cell { white-space: nowrap; }
+    </style>
+    <script async defer src="https://apis.google.com/js/api.js" onload="gapiLoaded()"></script>
+    <script async defer src="https://accounts.google.com/gsi/client" onload="gisLoaded()"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h1>Gemini Chat Tool</h1>
+        <div class="info-box">
+             <p>This tool will remember your login session after you authorize it. If you sign out or clear your browser data, you will need to authorize again.</p>
+        </div>
+
+        <div id="auth-container">
+            <button id="authorize_button" disabled>Loading...</button>
+        </div>
+
+        <div id="api-container">
+            <div id="search-controls">
+                <input type="text" id="search-term" placeholder="Enter keyword to find specific chats...">
+                <button id="search_button" class="action-btn">Search Drive</button>
+            </div>
+            <table id="results-table">
+                <thead>
+                    <tr>
+                        <th>Icon</th>
+                        <th>File Name</th>
+                        <th>MIME Type</th>
+                        <th>Last Modified</th>
+                        <th>Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="results-body"></tbody>
+            </table>
+        </div>
+        <div id="status">Initializing... Please wait.</div>
+    </div>
+
+    <script type="text/javascript">
+        const CLIENT_ID = '912037324641-pinlphb2i9m595dvg1g4v6m50e6h70ab.apps.googleusercontent.com'; // <-- PASTE YOUR CLIENT ID
+        const API_KEY = 'AIzaSyBH6legYpdsHCEERdh3Gg8-knvcqE3WYzk'; // <-- PASTE YOUR API KEY
+        const SCOPES = 'https://www.googleapis.com/auth/drive.readonly';
+        const PRIORITY_MIME_TYPE = 'application/vnd.google-makersuite.prompt';
+        const TOKEN_KEY = 'gemini_tool_token';
+
+        let tokenClient;
+        
+        const authorizeButton = document.getElementById('authorize_button');
+        const searchButton = document.getElementById('search_button');
+        const statusDiv = document.getElementById('status');
+        const resultsBody = document.getElementById('results-body');
+        const authContainer = document.getElementById('auth-container');
+        const apiContainer = document.getElementById('api-container');
+        const searchTermInput = document.getElementById('search-term');
+        
+        authorizeButton.onclick = handleAuthClick;
+        searchButton.onclick = handleSearchClick;
+        searchTermInput.addEventListener('keyup', (event) => { if (event.key === "Enter") handleSearchClick(); });
+        resultsBody.addEventListener('click', handleActionClick);
+
+        let gapiReady = false;
+        let gisReady = false;
+
+        function gapiLoaded() {
+            gapi.load('client', async () => {
+                await gapi.client.init({ apiKey: API_KEY, discoveryDocs: ['https://www.googleapis.com/discovery/v1/apis/drive/v3/rest']});
+                gapiReady = true;
+                checkLibrariesReady();
+            });
+        }
+        
+        function gisLoaded() {
+            tokenClient = google.accounts.oauth2.initTokenClient({
+                client_id: CLIENT_ID,
+                scope: SCOPES,
+                callback: (response) => {
+                    // A token response has been received, so we can clear the timeout
+                    // that was set to handle silent auth failures.
+                    if (window.authTimeout) {
+                        clearTimeout(window.authTimeout);
+                    }
+                    
+                    if (response && response.access_token) {
+                        console.log('SUCCESS! New token received from Google.');
+                        storeToken(response);
+                        gapi.client.setToken(response);
+                        showApiView();
+                    } else {
+                        console.error('FAILURE: Token was not received.', response);
+                        // This typically happens if the user denies the consent prompt.
+                        showAuthView('Authorization failed. Please try again.');
+                    }
+                },
+            });
+            gisReady = true;
+            checkLibrariesReady();
+        }
+
+        function checkLibrariesReady() {
+            if (gapiReady && gisReady) {
+                // First, check for a valid token in localStorage. This is the fastest way to restore a session.
+                const storedToken = getStoredToken();
+                if (storedToken) {
+                    console.log('Found valid token in storage. Restoring session.');
+                    gapi.client.setToken(storedToken);
+                    showApiView();
+                } else {
+                    // If no stored token, attempt a "silent" token request.
+                    // This will succeed without a popup if the user has previously authorized this app.
+                    console.log('No valid token found. Attempting to restore session silently...');
+                    statusDiv.innerText = 'Attempting to restore your session...';
+                    
+                    // The silent request does not provide a failure callback.
+                    // So, we set a timer. If we don't get a token after a few seconds,
+                    // we assume user interaction is required and show the manual authorize button.
+                    window.authTimeout = setTimeout(() => {
+                        console.log('Silent authorization did not complete in time. Manual authorization needed.');
+                        showAuthView('Your session may have expired. Please authorize to continue.');
+                    }, 4000); // 4-second timeout
+
+                    tokenClient.requestAccessToken({prompt: 'none'});
+                }
+            }
+        }
+        
+        function handleAuthClick() {
+            // When the user clicks the button, we use 'consent' to ensure the popup appears.
+            tokenClient.requestAccessToken({prompt: 'consent'});
+        }
+        
+        // --- UI VIEW FUNCTIONS ---
+        function showApiView() {
+            authContainer.style.display = 'none';
+            apiContainer.style.display = 'block';
+            statusDiv.innerText = 'Authorization successful! Ready to search.';
+        }
+
+        function showAuthView(message = 'Ready. Please authorize to proceed.') {
+            authContainer.style.display = 'block';
+            apiContainer.style.display = 'none';
+            authorizeButton.disabled = false;
+            authorizeButton.innerText = 'Authorize';
+            statusDiv.innerText = message;
+        }
+        
+        // --- TOKEN STORAGE FUNCTIONS ---
+        function storeToken(tokenResponse) {
+            const now = new Date();
+            const expirationTime = now.getTime() + (tokenResponse.expires_in * 1000);
+            localStorage.setItem(TOKEN_KEY, JSON.stringify({
+                ...tokenResponse,
+                expires_at: expirationTime,
+            }));
+            console.log('Token saved to localStorage.');
+        }
+
+        function getStoredToken() {
+            const tokenString = localStorage.getItem(TOKEN_KEY);
+            if (!tokenString) {
+                return null;
+            }
+            const token = JSON.parse(tokenString);
+            const now = new Date();
+            if (now.getTime() > token.expires_at) {
+                console.log('Stored token has expired.');
+                localStorage.removeItem(TOKEN_KEY);
+                return null;
+            }
+            return token;
+        }
+
+        // --- THE REST OF THE APP ---
+        async function handleSearchClick() {
+            statusDiv.innerText = 'Searching your Google Drive...';
+            resultsBody.innerHTML = '';
+            searchButton.disabled = true;
+            
+            try {
+                const searchTerm = searchTermInput.value;
+                let query = 'trashed=false';
+                if (searchTerm) {
+                    query += ` and name contains '${searchTerm.replace(/'/g, "\\'")}'`;
+                }
+
+                const response = await gapi.client.drive.files.list({
+                    q: query, pageSize: 200,
+                    fields: 'files(id, name, mimeType, iconLink, webViewLink, modifiedTime)',
+                    orderBy: 'modifiedTime desc'
+                });
+
+                const files = response.result.files;
+                if (!files || files.length === 0) {
+                    statusDiv.innerText = 'No files found matching your criteria.';
+                } else {
+                    statusDiv.innerText = `Search complete. Found ${files.length} file(s).`;
+                    files.sort((a, b) => {
+                        const aIsPriority = a.mimeType === PRIORITY_MIME_TYPE;
+                        const bIsPriority = b.mimeType === PRIORITY_MIME_TYPE;
+                        if (aIsPriority && !bIsPriority) return -1;
+                        if (!aIsPriority && bIsPriority) return 1;
+                        return 0;
+                    }).forEach(addFileRow);
+                }
+            } catch (err) {
+                console.error("API Error:", err);
+                statusDiv.innerText = 'Error searching. Your session may have expired.';
+                showAuthView('Your session expired. Please authorize again.');
+            } finally {
+                searchButton.disabled = false;
+            }
+        }
+        
+        function addFileRow(file) {
+            const row = resultsBody.insertRow();
+            if (file.mimeType === PRIORITY_MIME_TYPE) row.classList.add('priority-row');
+            
+            row.innerHTML = `
+                <td><img src="${file.iconLink}" width="16" alt="File icon"></td>
+                <td><a href="${file.webViewLink}" target="_blank">${file.name || '(Untitled)'}</a></td>
+                <td><code>${file.mimeType}</code></td>
+                <td>${new Date(file.modifiedTime).toLocaleDateString()}</td>
+                <td class="actions-cell"></td>`;
+            
+            if (file.mimeType === PRIORITY_MIME_TYPE) {
+                const cell = row.querySelector('.actions-cell');
+                cell.innerHTML = `
+                    <button class="action-btn download-btn" data-file-id="${file.id}" data-file-name="${file.name || 'Untitled-Chat'}">Download</button>
+                    <button class="copy-btn" data-file-id="${file.id}" title="Copy JSON to clipboard">Copy</button>`;
+                
+                if (!(navigator.clipboard && typeof navigator.clipboard.writeText === 'function')) {
+                    cell.querySelector('.copy-btn').disabled = true;
+                }
+            }
+        }
+
+        async function handleActionClick(event) {
+            const button = event.target.closest('button');
+            if (!button) return;
+            
+            const isDownload = button.classList.contains('download-btn');
+            const isCopy = button.classList.contains('copy-btn');
+            if (!isDownload && !isCopy) return;
+
+            const fileId = button.dataset.fileId;
+            const originalText = button.textContent;
+            button.disabled = true;
+            button.textContent = '...';
+
+            try {
+                const response = await gapi.client.drive.files.get({ fileId: fileId, alt: 'media' });
+                const prettyJson = JSON.stringify(response.result, null, 2);
+
+                if (isDownload) {
+                    const fileName = button.dataset.fileName.replace(/[^a-z0-9_.-]/gi, '_');
+                    const blob = new Blob([prettyJson], { type: 'application/json' });
+                    const link = document.createElement('a');
+                    link.href = URL.createObjectURL(blob);
+                    link.download = `${fileName}.json`;
+                    link.click();
+                    URL.revokeObjectURL(link.href);
+                } else if (isCopy) {
+                    await navigator.clipboard.writeText(prettyJson);
+                    button.textContent = 'Copied!';
+                    setTimeout(() => { button.textContent = originalText; }, 2000);
+                }
+            } catch (err) {
+                console.error('Action Error:', err);
+                alert('Action failed. See console for details.');
+            } finally {
+                 if (button.textContent !== 'Copied!') {
+                    button.textContent = originalText;
+                 }
+                 button.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
