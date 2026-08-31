@@ -1527,6 +1527,43 @@
             }
         });
 
+        // Touch gesture for mobile: Diagonal swipe (top-left to bottom-right)
+        let _touchStartX = 0;
+        let _touchStartY = 0;
+        let _isTrackingSwipe = false;
+        const SWIPE_MIN_DISTANCE = 150;
+
+        window.addEventListener('touchstart', function(e) {
+            if (_anomalyTriggered || e.touches.length !== 1) return;
+            _isTrackingSwipe = true;
+            _touchStartX = e.touches[0].clientX;
+            _touchStartY = e.touches[0].clientY;
+        });
+
+        window.addEventListener('touchend', function(e) {
+            if (!_isTrackingSwipe || _anomalyTriggered || e.changedTouches.length !== 1) {
+                _isTrackingSwipe = false;
+                return;
+            }
+            
+            const touchEndX = e.changedTouches[0].clientX;
+            const touchEndY = e.changedTouches[0].clientY;
+            
+            const dx = touchEndX - _touchStartX;
+            const dy = touchEndY - _touchStartY;
+            
+            // Trigger if swipe is definitively down and right
+            if (dx > SWIPE_MIN_DISTANCE && dy > SWIPE_MIN_DISTANCE) {
+                const ratio = dx / dy;
+                // Enforce a roughly 45-degree angle
+                if (ratio > 0.4 && ratio < 2.5) {
+                    triggerAnomaly();
+                }
+            }
+            
+            _isTrackingSwipe = false;
+        });
+
         function triggerAnomaly() {
             _anomalyTriggered = true;
 
