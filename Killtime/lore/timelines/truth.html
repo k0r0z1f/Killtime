@@ -296,7 +296,7 @@
             </span>
             <span style="color: #aaa; font-size: 0.85em;">
                 OMNIVERSE SYNC: <strong id="global-omniverse-val"
-                    style="color: #ff6666; font-size: 1.1em;">12.41%</strong>
+                    style="color: #ff6666; font-size: 1.1em;">13.33%</strong>
             </span>
         </div>
 
@@ -311,13 +311,13 @@
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">Draft (40%): <span
                         style="color: #4CAF50; font-weight: bold;">100%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC1 (20%): <span id="truth-vol1-rc1-val"
-                        style="color: #FF9800; font-weight: bold;">41.58%</span></div>
+                        style="color: #FF9800; font-weight: bold;">60.03%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC2 (20%): <span
                         style="color: #777;">0%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 4px;">Gold (20%): <span
                         style="color: #777;">0%</span></div>
                 <div style="border-top: 1px dashed #442222; padding-top: 4px; font-size: 0.82em; color: #aaa;">
-                    Total: <strong id="truth-vol1-total-val" style="color: #79c0ff;">48.32%</strong>
+                    Total: <strong id="truth-vol1-total-val" style="color: #79c0ff;">52.01%</strong>
                 </div>
             </div>
 
@@ -385,7 +385,7 @@
         <div
             style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid #441111; font-size: 0.8em; color: #888;">
             <span>TRILOGY BASELINE (VOL I-III): <strong id="truth-trilogy-baseline-val"
-                    style="color: #58a6ff;">16.55%</strong></span>
+                    style="color: #58a6ff;">17.78%</strong></span>
             <span>GHOST VECTOR: <strong style="color: #ff4444;">TIMELINE-C (4TH WALL BREACH)</strong></span>
         </div>
     </div>
@@ -655,7 +655,7 @@
                 <div class="timeline-title" style="color: #58a6ff;">CLASSIFIED LOG: Field Journal of Lucas-A (1772 HSC)
                 </div>
                 <div class="timeline-meta">
-                    The Raw Calculations of an Anomaly. Recovered field ledger bought in Veldruk and maintained daily
+                    The Raw Calculations of an Anomaly. Active field ledger acquired at the Great Bridge outpost and maintained daily
                     through the siege of Brum'korath to the Obsidian Crypt.<br><br>
                     <span
                         style="color: #58a6ff; font-style: italic; font-size: 0.9em; display: block; margin-top: 5px; border-left: 2px solid #2b5b84; padding-left: 10px;">
@@ -809,7 +809,7 @@
     <a href="../../../index.html" class="back-link">[ Return to False Baseline ]</a>
     <script>
         document.addEventListener("DOMContentLoaded", function () {
-            let currentVol1Rc1 = 41.58;
+            let currentVol1Rc1 = 60.03;
             let currentVol2Draft = 3.3;
 
             function recalcTruthProgression() {
@@ -825,6 +825,9 @@
 
                 const trilogyBaseline = (vol1Total + vol2Total + vol3Total) / 3;
                 const omniverseTotal = (vol1Total + vol2Total + vol3Total + vol4Total) / 4;
+
+                const elRc1 = document.getElementById('truth-vol1-rc1-val');
+                if (elRc1) elRc1.textContent = currentVol1Rc1.toFixed(2) + '%';
 
                 const elVol1 = document.getElementById('truth-vol1-total-val');
                 if (elVol1) elVol1.textContent = vol1Total.toFixed(2) + '%';
@@ -844,6 +847,9 @@
                 const elOmniverse = document.getElementById('global-omniverse-val');
                 if (elOmniverse) elOmniverse.textContent = omniverseTotal.toFixed(2) + '%';
             }
+
+            // Initial calculation
+            recalcTruthProgression();
 
             // Volume I (RC1)
             fetch('../../manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html')

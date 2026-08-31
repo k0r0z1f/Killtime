@@ -5,6 +5,7 @@
     <!-- Universal Dark/Light Mode Theme System -->
     <link rel="stylesheet" href="../css/theme.css">
     <script src="../scripts_and_data/theme.js"></script>
+    <script src="../scripts_and_data/reader-progress.js"></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -1329,6 +1330,10 @@
                 &#10022; Realign to Anchor
             </button>
         </div>
+
+        <div style="margin-top: 20px; padding-top: 15px; border-top: 1px solid rgba(255,255,255,0.15);">
+            <div id="rp-vol1-sidebar-mount"></div>
+        </div>
     </aside>
 
     <!-- NARROW SCREEN FLOATING MENU TRIGGER (< 1400px) -->
@@ -1355,6 +1360,10 @@
                 style="flex: 1; background: rgba(255, 255, 255, 0.08); border: 1px solid rgba(255, 255, 255, 0.2); color: #c9d1d9; padding: 6px 8px; border-radius: 4px; font-size: 0.8em; font-weight: bold; cursor: pointer;">
                 ↑ Top
             </button>
+        </div>
+
+        <div style="margin-top: 15px; margin-bottom: 15px; padding-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.15);">
+            <div id="rp-vol1-narrow-mount"></div>
         </div>
 
         <div class="sidebar-section-title" style="margin-top: 10px;">✦ Chapter Navigation</div>
@@ -1658,6 +1667,7 @@
         <!-- Table of Contents / Table des matières -->
         <nav class="toc">
             <h3>Table of Contents</h3>
+            <div id="rp-vol1-toc-mount" style="margin: 15px 0 20px 0;"></div>
             <ul>
                 <li>
                     <a href="#chapter-1">Chapter 1: The Atomic Crucible</a>
@@ -13303,8 +13313,8 @@
         <!-- Glossary Section -->
         <section class="glossary-section" id="glossary">
             <h2 class="glossary-title">Glossary of Hybris</h2>
-            <p class="glossary-note">Database synchronized. Current indexing: RC1 — Volume I, Chapters 1-14. Arcane
-                Mechanics, Biogenetical Anomalies, and Geopolitical Vectors.</p>
+            <p class="glossary-note">Database synchronized. Current indexing: RC1 — Volume I, Chapters 1-16. Arcane
+                Mechanics, Biogenetical Anomalies, Causal Hardware, and Geopolitical Vectors.</p>
             <table>
                 <thead>
                     <tr>
@@ -13422,6 +13432,12 @@
                             loyal, grounded defender of the Bastion.</td>
                     </tr>
                     <tr>
+                        <td>Elder Valka & Elder Gorla</td>
+                        <td>Presiding dwarven elders of the secular magistrate in Brum'korath. They conducted the political
+                            tribunal following the aqueduct breach, seeking to balance civic stability against the
+                            militarized fanaticism of the Unbound.</td>
+                    </tr>
+                    <tr>
                         <td>Elias Thorne / The Lead Researcher</td>
                         <td>The cold, calculating architect of Lucas’s childhood containment in the medi-laboratories.
                             He views human trauma, atomic manipulation, and arcane physics purely as harvestable
@@ -13440,6 +13456,12 @@
                             cathedral in Brum'korath.</td>
                     </tr>
                     <tr>
+                        <td>Goldar's Trial & Secular Council</td>
+                        <td>The emergency judicial tribunal convened in the Halls of Justice following the catastrophic
+                            titan incursion. High Cleric Goldar was stripped of clerical jurisdiction, while the Council
+                            established a fragile tactical truce with the Children of Hybris to examine the deep vaults.</td>
+                    </tr>
+                    <tr>
                         <td>Haliriel (The Elven Citadel)</td>
                         <td>A breathtaking architectural marvel blending pale stone and living Serran trees. The city
                             operates in a strict caste system: the chaotic <em>Outsider District</em> (Market) at the
@@ -13453,9 +13475,22 @@
                             silent authority and strict adherence to the prophecy.</td>
                     </tr>
                     <tr>
+                        <td>High Elven Parley (Citadel of Haliriel)</td>
+                        <td>An unprecedented diplomatic summons transmitted by the elven leadership of Haliriel directly
+                            to the High Council of Brum'korath. Bypassing centuries of isolationism, the dispatch
+                            demanded an emergency summit at a neutral terrestrial coordinate outside the mountain.</td>
+                    </tr>
+                    <tr>
                         <td>Hybris</td>
                         <td>The terrestrial planet where the primary narrative is anchored. Marked by stark landscapes,
                             dormant magic, and oppressive structural governance.</td>
+                    </tr>
+                    <tr>
+                        <td>Intracranial Overwrite (Thomas's Neural Restructuring)</td>
+                        <td>A violent cognitive reconfiguration triggered when Thomas bonded with his relic. Because his
+                            biology operates as an absolute non-magical bedrock, the causal hardware bypassed standard
+                            arcane channels, embedding directly into his neural matrix and initiating an autonomous
+                            algorithmic restructuring of his thoughts.</td>
                     </tr>
                     <tr>
                         <td>Invisible Steps Protocol</td>
@@ -13501,6 +13536,13 @@
                             the Dwarven prophecy.</td>
                     </tr>
                     <tr>
+                        <td>Relics of Timeline-0 / Causal Hardware (Biometric Lock)</td>
+                        <td>Hyper-advanced metallic artifacts forged near the End of Time by the founders of Timeline-0.
+                            Engineered as biometric safety valves to regulate raw magical volatility, they bind
+                            seamlessly to host biology. When bonded to Lucas-A, the relic flagged a 0.0001% biogenetic
+                            variance, locking out master-level functionality.</td>
+                    </tr>
+                    <tr>
                         <td>Resonant Bastion</td>
                         <td>The subterranean headquarters and inner sanctum of the Cult of the Sent Ones within
                             Brum'korath. A massive, vaulted labyrinth equipped with cavernous auditory halls, training
@@ -13535,6 +13577,12 @@
                             heavy iron restraints by John and Erika.</td>
                     </tr>
                     <tr>
+                        <td>The Guardian Peak Relief</td>
+                        <td>A colossal subterranean mural discovered in the deep vaults of Brum'korath, depicting
+                            deep-forest elves in worshipful posture around the sacred Guardian mountain. It mathematically
+                            links the dwarven relics to the ancient southern elven defense grid.</td>
+                    </tr>
+                    <tr>
                         <td>The Lupine Anomaly (The Minulican)</td>
                         <td>A multidimensional byproduct forged from the violent thermodynamic collision of Lucas and
                             Mina’s raw magic in the Kingston Square. A hulking, demonic mass of flesh, bone, and violet
@@ -13550,6 +13598,13 @@
                         <td>The Watcher</td>
                         <td>An isolated, jagged peak south of the western continent. It acts as an ancient arcane
                             epicenter and an archival tombstone for a world that has forgotten its own history.</td>
+                    </tr>
+                    <tr>
+                        <td>Thermal Shock Equation</td>
+                        <td>An emergency thermodynamic calculation executed by Lucas during the Disciple of Earth siege.
+                            By superheating the titan's silicate armor to critical mass and flashing it with municipal
+                            aqueduct water, the resulting thermal contraction shattered the monster's impenetrable mantle
+                            into brittle glass.</td>
                     </tr>
                     <tr>
                         <td>Thrainor Blackstone</td>
@@ -14038,6 +14093,19 @@
                         }
                     }
                 }, 800);
+            });
+
+            // Mount Reader Progress Slider
+            if (typeof ReaderProgress !== 'undefined') {
+                ReaderProgress.mount(['#rp-vol1-sidebar-mount', '#rp-vol1-narrow-mount', '#rp-vol1-toc-mount']);
+            }
+            window.addEventListener('reader-progress-changed', function (e) {
+                if (e.detail && e.detail.volumeId === 'vol1' && e.detail.chapter > 0) {
+                    const target = document.getElementById('chapter-' + e.detail.chapter);
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                }
             });
         });
     </script>

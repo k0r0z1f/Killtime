@@ -30,6 +30,7 @@ const ReaderProgress = (function () {
                 { num: 13, label: 'Ch 13: The Hollowed Aegis' },
                 { num: 14, label: 'Ch 14: The Absolute Pressure' },
                 { num: 15, label: 'Ch 15: The Fractured Anvil' },
+                { num: 16, label: 'Ch 16: Chains of Justice' },
             ]
         }
         // Future volumes can be added here
@@ -200,9 +201,20 @@ const ReaderProgress = (function () {
 
     /** Mount the widget into a container element */
     function mount(containerSelector, options) {
-        const targets = typeof containerSelector === 'string'
-            ? document.querySelectorAll(containerSelector)
-            : [containerSelector];
+        let targets = [];
+        if (typeof containerSelector === 'string') {
+            targets = Array.from(document.querySelectorAll(containerSelector));
+        } else if (Array.isArray(containerSelector)) {
+            containerSelector.forEach(sel => {
+                if (typeof sel === 'string') {
+                    targets.push(...document.querySelectorAll(sel));
+                } else if (sel) {
+                    targets.push(sel);
+                }
+            });
+        } else if (containerSelector) {
+            targets = [containerSelector];
+        }
 
         if (!targets || targets.length === 0) return;
 
@@ -237,6 +249,9 @@ const ReaderProgress = (function () {
                     save(s);
                     // Systemic update: immediately synchronize all mounted instances across the document
                     refresh();
+                    window.dispatchEvent(new CustomEvent('reader-progress-changed', {
+                        detail: { volumeId: vol.id, chapter: val, chapters: vol.chapters }
+                    }));
                 });
             });
         });

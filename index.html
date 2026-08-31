@@ -400,7 +400,7 @@
         <div
             style="font-size: 0.9em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.15); text-align: center;">
             <span id="sb-global-label">Global Progress:</span> <span id="sidebar-global-progress"
-                style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">16.55%</span>
+                style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">17.78%</span>
         </div>
 
         <!-- Volume I -->
@@ -411,13 +411,13 @@
             <div style="font-size: 0.85em;"><span class="label-draft">Draft:</span> <span
                     style="font-weight: bold; color: #4CAF50;">100%</span></div>
             <div style="font-size: 0.85em;">RC1: <span id="sidebar-rc1-progress"
-                    style="font-weight: bold; color: #FF9800;">41.58%</span></div>
+                    style="font-weight: bold; color: #FF9800;">60.03%</span></div>
             <div style="font-size: 0.85em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
             <div style="font-size: 0.85em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
             <div
                 style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.85em;">
                 <span class="label-total">Total:</span> <span id="sidebar-vol1-total"
-                    style="font-weight: bold; color: #79c0ff;">48.32%</span>
+                    style="font-weight: bold; color: #79c0ff;">52.01%</span>
             </div>
         </div>
 
@@ -498,7 +498,7 @@
             <div
                 style="font-size: 0.9em; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.15); width: 100%; text-align: center;">
                 <span id="hdr-global-label">Global Progress:</span> <span id="global-project-progress-val"
-                    style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">16.55%</span>
+                    style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">17.78%</span>
             </div>
             <div style="display: flex; gap: 16px; text-align: left; width: 100%; justify-content: space-between;">
                 <!-- Volume I -->
@@ -510,7 +510,7 @@
                             style="font-weight: bold; color: #4CAF50;">100%</span>
                     </div>
                     <div style="font-size: 0.88em;">RC1: <span id="rc1-progress-val"
-                            style="font-weight: bold; color: #FF9800;">41.58%</span></div>
+                            style="font-weight: bold; color: #FF9800;">60.03%</span></div>
                     <div style="font-size: 0.88em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span>
                     </div>
                     <div style="font-size: 0.88em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span>
@@ -518,7 +518,7 @@
                     <div
                         style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.88em;">
                         <span class="label-total">Total:</span> <span id="vol1-total-val"
-                            style="font-weight: bold; color: #79c0ff;">48.32%</span>
+                            style="font-weight: bold; color: #79c0ff;">52.01%</span>
                     </div>
                 </div>
 
@@ -1402,7 +1402,7 @@
     <script>
         // Dynamically calculate and update progression metrics from manuscripts
         document.addEventListener("DOMContentLoaded", function () {
-            let currentVol1Rc1 = 41.58;
+            let currentVol1Rc1 = 60.03;
             let currentVol2Draft = 3.3;
 
             function recalcGlobals() {
@@ -1426,6 +1426,19 @@
 
                 const globalProject = (vol1Total + vol2Total + vol3Total) / 3;
 
+                // Sync Volume I RC1
+                const elRc1 = document.getElementById('rc1-progress-val');
+                if (elRc1) elRc1.textContent = currentVol1Rc1.toFixed(2) + '%';
+                const sRc1 = document.getElementById('sidebar-rc1-progress');
+                if (sRc1) sRc1.textContent = currentVol1Rc1.toFixed(2) + '%';
+
+                // Sync Volume II Draft
+                const elVol2Draft = document.getElementById('vol2-draft-progress-val');
+                if (elVol2Draft) elVol2Draft.textContent = currentVol2Draft.toFixed(1) + '%';
+                const sVol2Draft = document.getElementById('sidebar-vol2-draft');
+                if (sVol2Draft) sVol2Draft.textContent = currentVol2Draft.toFixed(1) + '%';
+
+                // Total Volumes
                 const elVol1 = document.getElementById('vol1-total-val');
                 if (elVol1) elVol1.textContent = vol1Total.toFixed(2) + '%';
 
@@ -1449,6 +1462,9 @@
                 if (sGlobal) sGlobal.textContent = globalProject.toFixed(2) + '%';
             }
 
+            // Initial calculation
+            recalcGlobals();
+
             // Volume I (RC1)
             fetch('./Killtime/manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html')
                 .then(response => {
@@ -1464,10 +1480,6 @@
                         const words = text.trim().split(/\s+/).filter(word => word.length > 0);
                         const pctNum = (words.length / 180000 * 100);
                         currentVol1Rc1 = pctNum;
-                        const elem = document.getElementById('rc1-progress-val');
-                        if (elem) {
-                            elem.textContent = pctNum.toFixed(2) + '%';
-                        }
                         recalcGlobals();
                     }
                 })
@@ -1489,10 +1501,6 @@
                         if (words.length > 0) {
                             const pctNum = (words.length / 180000 * 100);
                             currentVol2Draft = pctNum;
-                            const elem = document.getElementById('vol2-draft-progress-val');
-                            if (elem) {
-                                elem.textContent = pctNum.toFixed(2) + '%';
-                            }
                             recalcGlobals();
                         }
                     }
