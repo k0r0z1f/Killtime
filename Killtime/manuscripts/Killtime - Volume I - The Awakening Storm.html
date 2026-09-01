@@ -14100,10 +14100,19 @@
                 ReaderProgress.mount(['#rp-vol1-sidebar-mount', '#rp-vol1-narrow-mount', '#rp-vol1-toc-mount']);
             }
             window.addEventListener('reader-progress-changed', function (e) {
-                if (e.detail && e.detail.volumeId === 'vol1' && e.detail.chapter > 0) {
-                    const target = document.getElementById('chapter-' + e.detail.chapter);
-                    if (target) {
-                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                if (e.detail && e.detail.volumeId === 'vol1') {
+                    if (e.detail.partId) {
+                        const targetPart = document.getElementById(e.detail.partId);
+                        if (targetPart) {
+                            targetPart.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                            return;
+                        }
+                    }
+                    if (e.detail.chapter > 0) {
+                        const target = document.getElementById('chapter-' + e.detail.chapter);
+                        if (target) {
+                            target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                        }
                     }
                 }
             });

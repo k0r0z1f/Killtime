@@ -1527,42 +1527,302 @@
             }
         });
 
-        // Touch gesture for mobile: Diagonal swipe (top-left to bottom-right)
+        // Particle Trail Logic
+        const particleCanvas = document.createElement('canvas');
+        particleCanvas.style.position = 'fixed';
+        particleCanvas.style.top = '0';
+        particleCanvas.style.left = '0';
+        particleCanvas.style.width = '100vw';
+        particleCanvas.style.height = '100vh';
+        particleCanvas.style.pointerEvents = 'none';
+        particleCanvas.style.zIndex = '9998'; // Just below anomaly effects
+        document.body.appendChild(particleCanvas);
+
+        const pCtx = particleCanvas.getContext('2d');
+        let particles = [];
+        
+        function resizeCanvas() {
+            particleCanvas.width = window.innerWidth;
+            particleCanvas.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
+
+        // Diagnostic & Particle Trail System (Zero Click Required - Strict Spiral Filter)
+        const SHOW_DIAGNOSTICS = false; // Set to true to re-enable Red/Green lines, HUD Telemetry & Demo Button
+        let _touchPoints = [];
+        let _trailSegments = []; // { p1: {x,y}, p2: {x,y}, isSpiral: boolean, diff: number, time: number }
+        let _accumulatedAngle = 0;
+        let _dominantDirection = 0; // +1 = CW, -1 = CCW
+        let _consecutiveReversals = 0;
+        let _telemetryStatus = 'IDLE — Trace a 2-Loop Spiral';
         let _touchStartX = 0;
         let _touchStartY = 0;
-        let _isTrackingSwipe = false;
-        const SWIPE_MIN_DISTANCE = 150;
+        let _lastMovementTime = 0;
+        const SPIRAL_THRESHOLD = Math.PI * 3.5; // ~1.75 Clean Rotations (630 deg)
+        const TRAIL_MAX_AGE_MS = 3200; // Trail persists 3.2s
 
-        window.addEventListener('touchstart', function(e) {
-            if (_anomalyTriggered || e.touches.length !== 1) return;
-            _isTrackingSwipe = true;
-            _touchStartX = e.touches[0].clientX;
-            _touchStartY = e.touches[0].clientY;
-        });
+        function addParticle(x, y) {
+            particles.push({
+                x: x,
+                y: y,
+                alpha: 1,
+                size: Math.random() * 3 + 2,
+                vx: (Math.random() - 0.5) * 1.5,
+                vy: (Math.random() - 0.5) * 1.5
+            });
+        }
 
-        window.addEventListener('touchend', function(e) {
-            if (!_isTrackingSwipe || _anomalyTriggered || e.changedTouches.length !== 1) {
-                _isTrackingSwipe = false;
-                return;
-            }
+        function animateParticles() {
+            pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
+            const now = Date.now();
             
-            const touchEndX = e.changedTouches[0].clientX;
-            const touchEndY = e.changedTouches[0].clientY;
-            
-            const dx = touchEndX - _touchStartX;
-            const dy = touchEndY - _touchStartY;
-            
-            // Trigger if swipe is definitively down and right
-            if (dx > SWIPE_MIN_DISTANCE && dy > SWIPE_MIN_DISTANCE) {
-                const ratio = dx / dy;
-                // Enforce a roughly 45-degree angle
-                if (ratio > 0.4 && ratio < 2.5) {
-                    triggerAnomaly();
+            // 1. Draw Particle Exhaust (Blue Thermal Bleed)
+            for (let i = particles.length - 1; i >= 0; i--) {
+                const p = particles[i];
+                p.x += p.vx;
+                p.y += p.vy;
+                p.alpha -= 0.015;
+                
+                if (p.alpha <= 0) {
+                    particles.splice(i, 1);
+                } else {
+                    pCtx.beginPath();
+                    pCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    pCtx.fillStyle = `rgba(88, 166, 255, ${p.alpha})`;
+                    pCtx.fill();
                 }
             }
             
-            _isTrackingSwipe = false;
+            // 2. Filter expired trail segments
+            for (let i = _trailSegments.length - 1; i >= 0; i--) {
+                if (now - _trailSegments[i].time > TRAIL_MAX_AGE_MS) {
+                    _trailSegments.splice(i, 1);
+                }
+            }
+
+            // Recalculate rolling accumulated angle from valid green segments in the last 2.6 seconds
+            const recentValidSegments = _trailSegments.filter(s => s.isSpiral && now - s.time < 2600);
+            _accumulatedAngle = recentValidSegments.reduce((sum, s) => sum + s.diff, 0);
+
+            // 3. Persistent Secondary Diagnostic Trail (Red = Rejected/Erratic, Green = Valid Spiral)
+            if (SHOW_DIAGNOSTICS && _trailSegments.length > 0) {
+                pCtx.lineWidth = 4;
+                pCtx.lineCap = 'round';
+                pCtx.lineJoin = 'round';
+                
+                for (let i = 0; i < _trailSegments.length; i++) {
+                    const seg = _trailSegments[i];
+                    const age = now - seg.time;
+                    const opacity = Math.max(0.1, 1 - (age / TRAIL_MAX_AGE_MS));
+                    
+                    pCtx.beginPath();
+                    pCtx.moveTo(seg.p1.x, seg.p1.y);
+                    pCtx.lineTo(seg.p2.x, seg.p2.y);
+                    pCtx.strokeStyle = seg.isSpiral 
+                        ? `rgba(0, 255, 136, ${opacity * 0.95})` 
+                        : `rgba(255, 59, 48, ${opacity * 0.95})`;
+                    pCtx.stroke();
+                }
+            }
+
+            // 4. Real-time HUD Telemetry Overlay
+            if (SHOW_DIAGNOSTICS && (_trailSegments.length > 0 || now - _lastMovementTime < 3500)) {
+                const progressPct = Math.min(100, Math.round((Math.abs(_accumulatedAngle) / SPIRAL_THRESHOLD) * 100));
+                const hudX = 20;
+                const hudY = 25;
+                const hudW = 340;
+                const hudH = 125;
+
+                pCtx.save();
+                pCtx.fillStyle = 'rgba(10, 14, 23, 0.88)';
+                pCtx.strokeStyle = progressPct >= 100 ? '#00ff88' : '#30363d';
+                pCtx.lineWidth = 1.5;
+                pCtx.beginPath();
+                pCtx.roundRect ? pCtx.roundRect(hudX, hudY, hudW, hudH, 8) : pCtx.rect(hudX, hudY, hudW, hudH);
+                pCtx.fill();
+                pCtx.stroke();
+
+                pCtx.font = 'bold 12px "Courier New", monospace';
+                pCtx.fillStyle = '#58a6ff';
+                pCtx.fillText('[ KINETIC VECTOR TELEMETRY ]', hudX + 12, hudY + 22);
+
+                pCtx.font = '13px "Courier New", monospace';
+                pCtx.fillStyle = progressPct >= 100 ? '#00ff88' : (now - _lastMovementTime < 800 ? '#79c0ff' : '#ff7b72');
+                pCtx.fillText(progressPct >= 100 ? 'THRESHOLD BREACHED — Unlocking Truth...' : _telemetryStatus, hudX + 12, hudY + 42);
+
+                // Progress Bar
+                pCtx.fillStyle = 'rgba(255, 255, 255, 0.1)';
+                pCtx.fillRect(hudX + 12, hudY + 54, hudW - 24, 10);
+                pCtx.fillStyle = progressPct >= 100 ? '#00ff88' : '#58a6ff';
+                pCtx.fillRect(hudX + 12, hudY + 54, ((hudW - 24) * progressPct) / 100, 10);
+
+                // Metric readout
+                pCtx.font = '11px "Courier New", monospace';
+                pCtx.fillStyle = '#c9d1d9';
+                pCtx.fillText(`Tension: ${(Math.abs(_accumulatedAngle) / Math.PI).toFixed(2)}π / ${(SPIRAL_THRESHOLD / Math.PI).toFixed(2)}π (${progressPct}%)`, hudX + 12, hudY + 80);
+
+                // Legend
+                pCtx.fillStyle = '#00ff88';
+                pCtx.fillText('● Green: Pure Spiral', hudX + 12, hudY + 102);
+                pCtx.fillStyle = '#ff4d4d';
+                pCtx.fillText('● Red: Erratic / Linear', hudX + 175, hudY + 102);
+
+                pCtx.restore();
+            }
+            
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        // Vector tracking engine without requiring click
+        function processVectorMovement(x, y, isTouch = false, touchEvent = null) {
+            addParticle(x, y);
+            if (_anomalyTriggered) return;
+
+            const now = Date.now();
+            
+            // If movement paused for > 500ms, reset point history to avoid teleport jumps
+            if (now - _lastMovementTime > 500 || _touchPoints.length === 0) {
+                _touchPoints = [{ x, y, time: now }];
+                _dominantDirection = 0;
+                _consecutiveReversals = 0;
+            }
+            _lastMovementTime = now;
+            _telemetryStatus = 'Tracking Spiral Vector...';
+
+            const p2 = { x, y, time: now };
+            const p1 = _touchPoints[_touchPoints.length - 1];
+            const dist = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+
+            const minSamplingDist = isTouch ? 9 : 10;
+            if (dist > minSamplingDist) {
+                _touchPoints.push(p2);
+                if (_touchPoints.length > 35) _touchPoints.shift();
+
+                if (_touchPoints.length >= 3) {
+                    const p0 = _touchPoints[_touchPoints.length - 3];
+                    const v1 = { x: p1.x - p0.x, y: p1.y - p0.y };
+                    const v2 = { x: p2.x - p1.x, y: p2.y - p1.y };
+
+                    const a1 = Math.atan2(v1.y, v1.x);
+                    const a2 = Math.atan2(v2.y, v2.x);
+
+                    let diff = a2 - a1;
+                    while (diff > Math.PI) diff -= Math.PI * 2;
+                    while (diff < -Math.PI) diff += Math.PI * 2;
+
+                    // Establish dominant direction once clean continuous rotation is established
+                    if (_dominantDirection === 0 && Math.abs(diff) >= 0.06 && Math.abs(diff) <= 1.15) {
+                        _dominantDirection = Math.sign(diff);
+                    }
+
+                    // Curvature Criteria (0.05 to 1.15 rad = smooth arc without sharp erratic cornering)
+                    const isSmoothArc = Math.abs(diff) >= 0.05 && Math.abs(diff) <= 1.15;
+                    const matchesDirection = _dominantDirection !== 0 && Math.sign(diff) === _dominantDirection;
+                    const isValidSpiral = isSmoothArc && matchesDirection;
+
+                    if (isValidSpiral) {
+                        _consecutiveReversals = 0;
+                        _trailSegments.push({ p1: {x: p1.x, y: p1.y}, p2: {x: p2.x, y: p2.y}, isSpiral: true, diff: diff, time: now });
+                    } else {
+                        // Mark as RED: Straight line, sharp jerk (>65 deg per step), or rotational reversal
+                        _consecutiveReversals++;
+                        _trailSegments.push({ p1: {x: p1.x, y: p1.y}, p2: {x: p2.x, y: p2.y}, isSpiral: false, diff: 0, time: now });
+
+                        // If erratic movement or opposite rotation persists, reset dominant direction
+                        if (_consecutiveReversals >= 3) {
+                            _dominantDirection = 0;
+                            _consecutiveReversals = 0;
+                        }
+                    }
+
+                    // Check for threshold breach
+                    if (Math.abs(_accumulatedAngle) >= SPIRAL_THRESHOLD) {
+                        _telemetryStatus = 'THRESHOLD BREACHED — Unlocking Truth...';
+                        triggerAnomaly();
+                    }
+                }
+            }
+        }
+
+        // Pointer / Touch / Mouse Listeners (Zero Click Required + Scroll Isolation)
+        window.addEventListener('touchstart', function(e) {
+            if (e.touches.length === 1) {
+                _touchStartX = e.touches[0].clientX;
+                _touchStartY = e.touches[0].clientY;
+                processVectorMovement(e.touches[0].clientX, e.touches[0].clientY, true, e);
+            }
+        }, { passive: false });
+
+        window.addEventListener('touchmove', function(e) {
+            if (e.touches.length === 1) {
+                const touch = e.touches[0];
+                const dx = touch.clientX - _touchStartX;
+                const dy = touch.clientY - _touchStartY;
+                
+                // Immediately prevent native mobile scroll from killing curved/spiral gestures
+                const isCurvedOrLateral = Math.abs(dx) > 6 || Math.abs(dx) > Math.abs(dy) * 0.4 || Math.abs(_accumulatedAngle) > 0.15;
+                if (isCurvedOrLateral && e.cancelable) {
+                    e.preventDefault();
+                }
+                
+                processVectorMovement(touch.clientX, touch.clientY, true, e);
+            }
+        }, { passive: false });
+
+        window.addEventListener('mousemove', function(e) {
+            processVectorMovement(e.clientX, e.clientY, false, null);
         });
+
+        // Demo Spiral Button (Dev Diagnostics)
+        if (SHOW_DIAGNOSTICS) {
+            const demoBtn = document.createElement('button');
+            demoBtn.innerText = '🌀';
+            demoBtn.style.position = 'fixed';
+            demoBtn.style.bottom = '20px';
+            demoBtn.style.right = '20px';
+            demoBtn.style.zIndex = '10000';
+            demoBtn.style.background = 'rgba(13, 17, 23, 0.8)';
+            demoBtn.style.border = '1px solid #58a6ff';
+            demoBtn.style.color = '#58a6ff';
+            demoBtn.style.padding = '12px';
+            demoBtn.style.borderRadius = '50%';
+            demoBtn.style.cursor = 'pointer';
+            demoBtn.style.fontSize = '20px';
+            demoBtn.style.boxShadow = '0 0 10px rgba(88,166,255,0.5)';
+            demoBtn.title = 'Demo Spiral Telemetry';
+            document.body.appendChild(demoBtn);
+
+            demoBtn.addEventListener('click', function() {
+                if (_anomalyTriggered) return;
+                
+                const centerX = window.innerWidth / 2;
+                const centerY = window.innerHeight / 2;
+                
+                let angle = 0;
+                let radius = 10;
+                const maxAngle = SPIRAL_THRESHOLD * 1.05;
+                
+                function drawSpiralStep() {
+                    if (angle >= maxAngle || _anomalyTriggered) {
+                        return;
+                    }
+                    
+                    const x = centerX + Math.cos(angle) * radius;
+                    const y = centerY + Math.sin(angle) * radius;
+                    
+                    processVectorMovement(x, y, false, null);
+                    
+                    angle += 0.12;
+                    radius += 1.8;
+                    
+                    requestAnimationFrame(drawSpiralStep);
+                }
+                
+                drawSpiralStep();
+            });
+        }
 
         function triggerAnomaly() {
             _anomalyTriggered = true;
