@@ -5,6 +5,7 @@
     <!-- Universal Dark/Light Mode Theme System -->
     <link rel="stylesheet" href="./Killtime/css/theme.css">
     <script src="./Killtime/scripts_and_data/theme.js"></script>
+    <script src="./Killtime/scripts_and_data/metrics.js"></script>
     <script src="./Killtime/scripts_and_data/reader-progress.js"></script>
 
     <meta charset="UTF-8">
@@ -400,7 +401,7 @@
         <div
             style="font-size: 0.9em; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.15); text-align: center;">
             <span id="sb-global-label">Global Progress:</span> <span id="sidebar-global-progress"
-                style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">17.78%</span>
+                style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">18.92%</span>
         </div>
 
         <!-- Volume I -->
@@ -411,13 +412,13 @@
             <div style="font-size: 0.85em;"><span class="label-draft">Draft:</span> <span
                     style="font-weight: bold; color: #4CAF50;">100%</span></div>
             <div style="font-size: 0.85em;">RC1: <span id="sidebar-rc1-progress"
-                    style="font-weight: bold; color: #FF9800;">60.03%</span></div>
+                    style="font-weight: bold; color: #FF9800;">73.96%</span></div>
             <div style="font-size: 0.85em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
             <div style="font-size: 0.85em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
             <div
                 style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.85em;">
                 <span class="label-total">Total:</span> <span id="sidebar-vol1-total"
-                    style="font-weight: bold; color: #79c0ff;">52.01%</span>
+                    style="font-weight: bold; color: #79c0ff;">54.79%</span>
             </div>
         </div>
 
@@ -427,14 +428,14 @@
                 style="font-weight: bold; color: #58a6ff; margin-bottom: 4px; font-size: 0.95em; border-bottom: 1px solid rgba(88,166,255,0.3); padding-bottom: 2px;">
                 Volume II</div>
             <div style="font-size: 0.85em;"><span class="label-draft">Draft:</span> <span id="sidebar-vol2-draft"
-                    style="font-weight: bold; color: #FF9800;">~3.3%</span></div>
+                    style="font-weight: bold; color: #FF9800;">4.9%</span></div>
             <div style="font-size: 0.85em;">RC1: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
             <div style="font-size: 0.85em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
             <div style="font-size: 0.85em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span></div>
             <div
                 style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.85em;">
                 <span class="label-total">Total:</span> <span id="sidebar-vol2-total"
-                    style="font-weight: bold; color: #79c0ff;">1.32%</span>
+                    style="font-weight: bold; color: #79c0ff;">1.98%</span>
             </div>
         </div>
 
@@ -498,7 +499,7 @@
             <div
                 style="font-size: 0.9em; margin-bottom: 8px; padding-bottom: 6px; border-bottom: 1px solid rgba(255,255,255,0.15); width: 100%; text-align: center;">
                 <span id="hdr-global-label">Global Progress:</span> <span id="global-project-progress-val"
-                    style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">17.78%</span>
+                    style="font-weight: bold; color: #58a6ff; font-size: 1.05em;">18.92%</span>
             </div>
             <div style="display: flex; gap: 16px; text-align: left; width: 100%; justify-content: space-between;">
                 <!-- Volume I -->
@@ -510,7 +511,7 @@
                             style="font-weight: bold; color: #4CAF50;">100%</span>
                     </div>
                     <div style="font-size: 0.88em;">RC1: <span id="rc1-progress-val"
-                            style="font-weight: bold; color: #FF9800;">60.03%</span></div>
+                            style="font-weight: bold; color: #FF9800;">73.96%</span></div>
                     <div style="font-size: 0.88em;">RC2: <span style="font-weight: bold; color: #8b949e;">0%</span>
                     </div>
                     <div style="font-size: 0.88em;">Gold: <span style="font-weight: bold; color: #8b949e;">0%</span>
@@ -518,7 +519,7 @@
                     <div
                         style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.88em;">
                         <span class="label-total">Total:</span> <span id="vol1-total-val"
-                            style="font-weight: bold; color: #79c0ff;">52.01%</span>
+                            style="font-weight: bold; color: #79c0ff;">54.79%</span>
                     </div>
                 </div>
 
@@ -541,7 +542,7 @@
                     <div
                         style="margin-top: 3px; padding-top: 2px; border-top: 1px dashed rgba(255,255,255,0.1); font-size: 0.88em;">
                         <span class="label-total">Total:</span> <span id="vol2-total-val"
-                            style="font-weight: bold; color: #79c0ff;">1.32%</span>
+                            style="font-weight: bold; color: #79c0ff;">1.98%</span>
                     </div>
                 </div>
 
@@ -1402,8 +1403,28 @@
     <script>
         // Dynamically calculate and update progression metrics from manuscripts
         document.addEventListener("DOMContentLoaded", function () {
-            let currentVol1Rc1 = 60.03;
-            let currentVol2Draft = 3.3;
+            let currentVol1Rc1 = 73.96;
+            let currentVol2Draft = 4.94;
+
+            // 1. Hydrate from window.KILLTIME_METRICS if available (via metrics.js)
+            if (typeof window.KILLTIME_METRICS !== 'undefined' && window.KILLTIME_METRICS) {
+                if (window.KILLTIME_METRICS.volume1 && typeof window.KILLTIME_METRICS.volume1.rc1Pct === 'number') {
+                    currentVol1Rc1 = window.KILLTIME_METRICS.volume1.rc1Pct;
+                }
+                if (window.KILLTIME_METRICS.volume2 && typeof window.KILLTIME_METRICS.volume2.draftPct === 'number') {
+                    currentVol2Draft = window.KILLTIME_METRICS.volume2.draftPct;
+                }
+            }
+
+            // 2. Check for locally cached real-time metrics
+            try {
+                const cached = localStorage.getItem('killtime_live_metrics');
+                if (cached) {
+                    const parsed = JSON.parse(cached);
+                    if (parsed && typeof parsed.currentVol1Rc1 === 'number') currentVol1Rc1 = parsed.currentVol1Rc1;
+                    if (parsed && typeof parsed.currentVol2Draft === 'number') currentVol2Draft = parsed.currentVol2Draft;
+                }
+            } catch (e) { /* ignore */ }
 
             function recalcGlobals() {
                 const vol1Draft = 100;
@@ -1460,11 +1481,23 @@
                 if (sVol3) sVol3.textContent = vol3Total.toFixed(2) + '%';
                 const sGlobal = document.getElementById('sidebar-global-progress');
                 if (sGlobal) sGlobal.textContent = globalProject.toFixed(2) + '%';
+
+                try {
+                    localStorage.setItem('killtime_live_metrics', JSON.stringify({
+                        currentVol1Rc1: currentVol1Rc1,
+                        currentVol2Draft: currentVol2Draft,
+                        vol1Total: vol1Total,
+                        vol2Total: vol2Total,
+                        globalProject: globalProject,
+                        timestamp: Date.now()
+                    }));
+                } catch (e) { /* ignore */ }
             }
 
-            // Initial calculation
+            // Initial immediate calculation from fast sources
             recalcGlobals();
 
+            // Background dynamic live recalculation against raw manuscripts
             // Volume I (RC1)
             fetch('./Killtime/manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html')
                 .then(response => {
@@ -1476,14 +1509,14 @@
                     const doc = parser.parseFromString(htmlText, 'text/html');
                     const chapterContent = doc.querySelector('.chapter-content');
                     if (chapterContent) {
-                        const text = chapterContent.innerText || chapterContent.textContent;
+                        const text = chapterContent.textContent;
                         const words = text.trim().split(/\s+/).filter(word => word.length > 0);
                         const pctNum = (words.length / 180000 * 100);
                         currentVol1Rc1 = pctNum;
                         recalcGlobals();
                     }
                 })
-                .catch(err => console.error('Error fetching Volume I RC1 progression metrics:', err));
+                .catch(err => console.log('Volume I RC1 background live calculation using manifest / offline cache.'));
 
             // Volume II (Draft)
             fetch('./Killtime/manuscripts/Killtime%20-%20Volume%20II.html')
@@ -1496,7 +1529,7 @@
                     const doc = parser.parseFromString(htmlText, 'text/html');
                     const container = doc.querySelector('.book-container') || doc.querySelector('.chapter-content') || doc.body;
                     if (container) {
-                        const text = container.innerText || container.textContent;
+                        const text = container.textContent;
                         const words = text.trim().split(/\s+/).filter(word => word.length > 0);
                         if (words.length > 0) {
                             const pctNum = (words.length / 180000 * 100);
@@ -1505,7 +1538,7 @@
                         }
                     }
                 })
-                .catch(err => console.error('Error fetching Volume II Draft progression metrics:', err));
+                .catch(err => console.log('Volume II Draft background live calculation using manifest / offline cache.'));
         });
     </script>
 

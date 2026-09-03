@@ -182,9 +182,115 @@ const ReaderProgress = (function () {
                         { part: 5, id: 'chapter-16-part-5', label: 'Part 5: Unfinished Threads' }
                     ]
                 },
+                {
+                    num: 17,
+                    label: 'Ch 17: The Gilded Shackle',
+                    title: 'The Gilded Shackle',
+                    parts: [
+                        { part: 1, id: 'chapter-17-part-1', label: 'Chapter 17 - Part 1: A Hero\'s Surveillance' },
+                        { part: 2, id: 'chapter-17-part-2', label: 'Chapter 17 - Part 2: Discovery in the Lab' },
+                        { part: 3, id: 'chapter-17-part-3', label: 'Chapter 17 - Part 3: Shadows of Justice' },
+                        { part: 4, id: 'chapter-17-part-4', label: 'Chapter 17 - Part 4: The Envoy\'s Gambit' },
+                        { part: 5, id: 'chapter-17-part-5', label: 'Chapter 17 - Part 5: Arrival in Haliriel' }
+                    ]
+                }
             ]
         }
     ];
+
+    /** Dynamically harvest chapters & parts from manuscript DOM if available */
+    function harvestManuscriptChapters() {
+        try {
+            const article = document.querySelector('.chapter-content');
+            if (!article) return null;
+
+            const chHeaders = Array.from(article.querySelectorAll('.chapter-title'));
+            if (chHeaders.length === 0) return null;
+
+            const harvested = [
+                { num: 0, label: "Haven't started yet", title: "Haven't started yet", parts: [] }
+            ];
+
+            chHeaders.forEach((h2, idx) => {
+                const idMatch = (h2.id || '').match(/chapter-(\d+)/);
+                const titleText = h2.textContent.replace(/^Chapter\s+\d+:\s*/i, '').trim();
+                const chNum = idMatch ? parseInt(idMatch[1], 10) : (idx + 1);
+
+                const parts = [];
+                let curr = h2.parentElement ? h2.parentElement.nextElementSibling : h2.nextElementSibling;
+                while (curr) {
+                    if (curr.querySelector && curr.querySelector('.chapter-title')) break;
+                    if (curr.classList && curr.classList.contains('chapter-header-wrapper')) break;
+                    if (curr.tagName === 'H2' && curr.classList.contains('chapter-title')) break;
+                    if (curr.tagName === 'SECTION' && curr.id === 'glossary') break;
+
+                    const h3s = curr.querySelectorAll ? Array.from(curr.querySelectorAll('h3')) : [];
+                    if (curr.tagName === 'H3') h3s.push(curr);
+
+                    h3s.forEach(h3 => {
+                        const pMatch = (h3.id || '').match(/chapter-\d+-part-(\d+)/);
+                        if (pMatch) {
+                            parts.push({
+                                part: parseInt(pMatch[1], 10),
+                                id: h3.id,
+                                label: h3.textContent.trim()
+                            });
+                        }
+                    });
+
+                    curr = curr.nextElementSibling;
+                }
+
+                harvested.push({
+                    num: chNum,
+                    label: `Ch ${chNum}: ${titleText}`,
+                    title: titleText,
+                    parts: parts
+                });
+            });
+
+            if (harvested.length > 1) {
+                try {
+                    localStorage.setItem('killtime_reader_manifest_vol1', JSON.stringify(harvested));
+                } catch (e) { /* ignore */ }
+                return harvested;
+            }
+        } catch (e) {
+            console.warn('[ReaderProgress] DOM harvesting skipped:', e);
+        }
+        return null;
+    }
+
+    /** Synchronize Volume Chapters from DOM, window.KILLTIME_VOL1_CHAPTERS, or cache */
+    function syncDynamicChapters() {
+        // 1. Live DOM harvest if on manuscript page
+        const live = harvestManuscriptChapters();
+        if (live && live.length > 1) {
+            VOLUMES[0].chapters = live;
+            return;
+        }
+
+        // 2. Pre-computed manifest from metrics.js
+        if (typeof window !== 'undefined' && window.KILLTIME_VOL1_CHAPTERS && Array.isArray(window.KILLTIME_VOL1_CHAPTERS) && window.KILLTIME_VOL1_CHAPTERS.length > 1) {
+            VOLUMES[0].chapters = window.KILLTIME_VOL1_CHAPTERS;
+            return;
+        }
+
+        // 3. Cached manifest from localStorage
+        try {
+            const cached = localStorage.getItem('killtime_reader_manifest_vol1');
+            if (cached) {
+                const parsed = JSON.parse(cached);
+                if (Array.isArray(parsed) && parsed.length > 1) {
+                    VOLUMES[0].chapters = parsed;
+                    return;
+                }
+            }
+        } catch (e) { /* ignore */ }
+    }
+
+    // Run dynamic chapter sync on script initialization
+    syncDynamicChapters();
 
     function load() {
         try {
@@ -673,6 +779,7 @@ const ReaderProgress = (function () {
 
         if (!targets || targets.length === 0) return;
 
+        syncDynamicChapters();
         injectStyles();
 
         const standalone = options && options.standalone;
