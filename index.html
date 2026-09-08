@@ -1247,8 +1247,7 @@
                         <li><a id="explore-link-draft" href="./Killtime/manuscripts/Killtime.html">Killtime First
                                 Draft</a> <span id="explore-draft-note">(redacted by chatGPT, next draft will be
                                 re-written humanely)</span></li>
-                        <li><a id="explore-link-overview"
-                                href="./Killtime/lore/Killtime%20Universe%20Overview.html">Killtime Universe
+                        <li><a id="explore-link-overview" href="./Killtime/Overview.html">Killtime Universe
                                 Overview</a>, <span id="explore-overview-year">Hybris year 1771</span></li>
                     </ul>
                 </div>
@@ -1573,7 +1572,7 @@
 
         const pCtx = particleCanvas.getContext('2d');
         let particles = [];
-        
+
         function resizeCanvas() {
             particleCanvas.width = window.innerWidth;
             particleCanvas.height = window.innerHeight;
@@ -1609,14 +1608,14 @@
         function animateParticles() {
             pCtx.clearRect(0, 0, particleCanvas.width, particleCanvas.height);
             const now = Date.now();
-            
+
             // 1. Draw Particle Exhaust (Blue Thermal Bleed)
             for (let i = particles.length - 1; i >= 0; i--) {
                 const p = particles[i];
                 p.x += p.vx;
                 p.y += p.vy;
                 p.alpha -= 0.015;
-                
+
                 if (p.alpha <= 0) {
                     particles.splice(i, 1);
                 } else {
@@ -1626,7 +1625,7 @@
                     pCtx.fill();
                 }
             }
-            
+
             // 2. Filter expired trail segments
             for (let i = _trailSegments.length - 1; i >= 0; i--) {
                 if (now - _trailSegments[i].time > TRAIL_MAX_AGE_MS) {
@@ -1643,17 +1642,17 @@
                 pCtx.lineWidth = 4;
                 pCtx.lineCap = 'round';
                 pCtx.lineJoin = 'round';
-                
+
                 for (let i = 0; i < _trailSegments.length; i++) {
                     const seg = _trailSegments[i];
                     const age = now - seg.time;
                     const opacity = Math.max(0.1, 1 - (age / TRAIL_MAX_AGE_MS));
-                    
+
                     pCtx.beginPath();
                     pCtx.moveTo(seg.p1.x, seg.p1.y);
                     pCtx.lineTo(seg.p2.x, seg.p2.y);
-                    pCtx.strokeStyle = seg.isSpiral 
-                        ? `rgba(0, 255, 136, ${opacity * 0.95})` 
+                    pCtx.strokeStyle = seg.isSpiral
+                        ? `rgba(0, 255, 136, ${opacity * 0.95})`
                         : `rgba(255, 59, 48, ${opacity * 0.95})`;
                     pCtx.stroke();
                 }
@@ -1703,7 +1702,7 @@
 
                 pCtx.restore();
             }
-            
+
             requestAnimationFrame(animateParticles);
         }
         animateParticles();
@@ -1714,7 +1713,7 @@
             if (_anomalyTriggered) return;
 
             const now = Date.now();
-            
+
             // If movement paused for > 500ms, reset point history to avoid teleport jumps
             if (now - _lastMovementTime > 500 || _touchPoints.length === 0) {
                 _touchPoints = [{ x, y, time: now }];
@@ -1757,11 +1756,11 @@
 
                     if (isValidSpiral) {
                         _consecutiveReversals = 0;
-                        _trailSegments.push({ p1: {x: p1.x, y: p1.y}, p2: {x: p2.x, y: p2.y}, isSpiral: true, diff: diff, time: now });
+                        _trailSegments.push({ p1: { x: p1.x, y: p1.y }, p2: { x: p2.x, y: p2.y }, isSpiral: true, diff: diff, time: now });
                     } else {
                         // Mark as RED: Straight line, sharp jerk (>65 deg per step), or rotational reversal
                         _consecutiveReversals++;
-                        _trailSegments.push({ p1: {x: p1.x, y: p1.y}, p2: {x: p2.x, y: p2.y}, isSpiral: false, diff: 0, time: now });
+                        _trailSegments.push({ p1: { x: p1.x, y: p1.y }, p2: { x: p2.x, y: p2.y }, isSpiral: false, diff: 0, time: now });
 
                         // If erratic movement or opposite rotation persists, reset dominant direction
                         if (_consecutiveReversals >= 3) {
@@ -1780,7 +1779,7 @@
         }
 
         // Pointer / Touch / Mouse Listeners (Zero Click Required + Scroll Isolation)
-        window.addEventListener('touchstart', function(e) {
+        window.addEventListener('touchstart', function (e) {
             if (e.touches.length === 1) {
                 _touchStartX = e.touches[0].clientX;
                 _touchStartY = e.touches[0].clientY;
@@ -1788,23 +1787,23 @@
             }
         }, { passive: false });
 
-        window.addEventListener('touchmove', function(e) {
+        window.addEventListener('touchmove', function (e) {
             if (e.touches.length === 1) {
                 const touch = e.touches[0];
                 const dx = touch.clientX - _touchStartX;
                 const dy = touch.clientY - _touchStartY;
-                
+
                 // Immediately prevent native mobile scroll from killing curved/spiral gestures
                 const isCurvedOrLateral = Math.abs(dx) > 6 || Math.abs(dx) > Math.abs(dy) * 0.4 || Math.abs(_accumulatedAngle) > 0.15;
                 if (isCurvedOrLateral && e.cancelable) {
                     e.preventDefault();
                 }
-                
+
                 processVectorMovement(touch.clientX, touch.clientY, true, e);
             }
         }, { passive: false });
 
-        window.addEventListener('mousemove', function(e) {
+        window.addEventListener('mousemove', function (e) {
             processVectorMovement(e.clientX, e.clientY, false, null);
         });
 
@@ -1827,32 +1826,32 @@
             demoBtn.title = 'Demo Spiral Telemetry';
             document.body.appendChild(demoBtn);
 
-            demoBtn.addEventListener('click', function() {
+            demoBtn.addEventListener('click', function () {
                 if (_anomalyTriggered) return;
-                
+
                 const centerX = window.innerWidth / 2;
                 const centerY = window.innerHeight / 2;
-                
+
                 let angle = 0;
                 let radius = 10;
                 const maxAngle = SPIRAL_THRESHOLD * 1.05;
-                
+
                 function drawSpiralStep() {
                     if (angle >= maxAngle || _anomalyTriggered) {
                         return;
                     }
-                    
+
                     const x = centerX + Math.cos(angle) * radius;
                     const y = centerY + Math.sin(angle) * radius;
-                    
+
                     processVectorMovement(x, y, false, null);
-                    
+
                     angle += 0.12;
                     radius += 1.8;
-                    
+
                     requestAnimationFrame(drawSpiralStep);
                 }
-                
+
                 drawSpiralStep();
             });
         }

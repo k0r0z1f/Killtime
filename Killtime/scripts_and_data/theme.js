@@ -322,6 +322,7 @@
                     </div>
                     <div class="sanctum-card-actions">
                         <button class="sanctum-card-btn sanctum-edit-btn" data-id="${task.id}" title="Edit Task">EDIT</button>
+                        <button class="sanctum-card-btn sanctum-dupe-btn" data-id="${task.id}" title="Duplicate Task">DUPE</button>
                         <button class="sanctum-card-btn sanctum-del-btn" data-id="${task.id}" title="Delete Task">DEL</button>
                     </div>
                 </div>
@@ -344,6 +345,12 @@
             const editBtn = card.querySelector('.sanctum-edit-btn');
             editBtn.addEventListener('click', () => {
                 promptEditTask(task.id);
+            });
+
+            // Handle dupe
+            const dupeBtn = card.querySelector('.sanctum-dupe-btn');
+            dupeBtn.addEventListener('click', () => {
+                duplicateSanctumTask(task.id);
             });
 
             // Handle delete
@@ -374,6 +381,22 @@
         task.description = newDesc.trim();
         saveSanctumTasks(all);
         renderSanctumTasks();
+    }
+
+    function duplicateSanctumTask(id) {
+        const all = getSanctumTasks();
+        const idx = all.findIndex(t => t.id === id);
+        if (idx > -1) {
+            const source = all[idx];
+            const newTask = {
+                ...source,
+                id: 'task_' + Date.now(),
+                title: `${source.title} (Copy)`
+            };
+            all.splice(idx + 1, 0, newTask);
+            saveSanctumTasks(all);
+            renderSanctumTasks();
+        }
     }
 
     function promptAddTask() {

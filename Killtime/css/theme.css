@@ -1238,9 +1238,24 @@ html[data-theme="light"] .sanctum-btn-primary {
     font-size: 11px;
     cursor: pointer;
     padding: 2px 4px;
+    border-radius: 3px;
+    transition: color 0.15s ease, background-color 0.15s ease;
 }
 
 .sanctum-card-btn:hover {
+    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.05);
+}
+
+.sanctum-card-btn.sanctum-edit-btn:hover {
+    color: var(--accent-secondary);
+}
+
+.sanctum-card-btn.sanctum-dupe-btn:hover {
+    color: var(--accent-primary);
+}
+
+.sanctum-card-btn.sanctum-del-btn:hover {
     color: #ef4444;
 }
 

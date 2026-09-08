@@ -319,12 +319,39 @@
 
         /* Drag and drop classes */
         .drag-over {
-            background-color: rgba(255, 255, 255, 0.05);
+            background-color: rgba(255, 255, 255, 0.04);
             border: 1px dashed var(--thomas-gray);
         }
 
-        .dragging {
-            opacity: 0.5;
+        .task.dragging {
+            opacity: 0.35;
+            transform: scale(0.98);
+            border-style: dashed;
+            border-color: #666;
+            box-shadow: none;
+        }
+
+        .task-placeholder {
+            border: 2px dashed var(--lucas-blue, #58a6ff);
+            background: rgba(88, 166, 255, 0.04);
+            border-radius: 4px;
+            pointer-events: none;
+            box-sizing: border-box;
+            transition: height 0.15s ease, margin 0.15s ease;
+            box-shadow: inset 0 0 15px rgba(88, 166, 255, 0.06);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 60px;
+        }
+
+        .task-placeholder::after {
+            content: '✦ INSERT VECTOR';
+            font-family: 'Share Tech Mono', monospace;
+            font-size: 0.75em;
+            letter-spacing: 2px;
+            color: var(--lucas-blue, #58a6ff);
+            opacity: 0.6;
         }
     </style>
 </head>
@@ -639,8 +666,9 @@
 
                 el.innerHTML = `
                     <div class="task-actions">
-                        <button onclick="editTask('${task.id}')">EDIT</button>
-                        <button onclick="deleteTask('${task.id}')">DEL</button>
+                        <button onclick="editTask('${task.id}')" title="Reconfigure Task">EDIT</button>
+                        <button onclick="dupeTask('${task.id}')" title="Duplicate Task">DUPE</button>
+                        <button onclick="deleteTask('${task.id}')" title="Delete Task">DEL</button>
                     </div>
                     <h3 class="task-title">${task.title}</h3>
                     <p class="task-desc">${task.description}</p>
@@ -662,19 +690,150 @@
 
         // Drag & Drop
         let dragSrcEl = null;
+        let placeholder = null;
+        let scrollAnimId = null;
+        let activeScrollList = null;
+        let scrollSpeed = 0;
+        let lastDragY = null;
+
+        function startAutoScrollLoop() {
+            if (scrollAnimId) return;
+            function loop() {
+                if (activeScrollList && scrollSpeed !== 0) {
+                    if (scrollSpeed < 0 && activeScrollList.scrollTop <= 0) {
+                        stopAutoScroll();
+                        return;
+                    }
+                    if (scrollSpeed > 0 && (activeScrollList.scrollTop + activeScrollList.clientHeight >= activeScrollList.scrollHeight)) {
+                        stopAutoScroll();
+                        return;
+                    }
+
+                    activeScrollList.scrollTop += scrollSpeed;
+
+                    // Dynamically reposition placeholder as items scroll under cursor
+                    if (activeScrollList && lastDragY !== null) {
+                        updatePlaceholderPosition(activeScrollList, lastDragY);
+                    }
+                    scrollAnimId = requestAnimationFrame(loop);
+                } else {
+                    stopAutoScroll();
+                }
+            }
+            scrollAnimId = requestAnimationFrame(loop);
+        }
+
+        function stopAutoScroll() {
+            if (scrollAnimId) {
+                cancelAnimationFrame(scrollAnimId);
+                scrollAnimId = null;
+            }
+            activeScrollList = null;
+            scrollSpeed = 0;
+        }
+
+        function checkAutoScroll(list, x, y) {
+            if (!list) return;
+            const rect = list.getBoundingClientRect();
+
+            // Check if cursor is horizontally within column bounds (with generous buffer)
+            if (x < rect.left - 30 || x > rect.right + 30) {
+                if (activeScrollList === list) {
+                    stopAutoScroll();
+                }
+                return;
+            }
+
+            const threshold = 80; // Trigger zone in px from edge
+            const maxSpeed = 18;  // Maximum scroll velocity
+
+            if (y <= rect.top + threshold) {
+                // Top zone: scroll up (intensity scales closer to top edge / header)
+                const dist = Math.max(0, y - rect.top);
+                const intensity = y < rect.top ? 1 : (1 - dist / threshold);
+                scrollSpeed = -Math.max(3, Math.round(maxSpeed * intensity));
+                activeScrollList = list;
+                startAutoScrollLoop();
+            } else if (y >= rect.bottom - threshold) {
+                // Bottom zone: scroll down (intensity scales closer to bottom edge)
+                const dist = Math.max(0, rect.bottom - y);
+                const intensity = y > rect.bottom ? 1 : (1 - dist / threshold);
+                scrollSpeed = Math.max(3, Math.round(maxSpeed * intensity));
+                activeScrollList = list;
+                startAutoScrollLoop();
+            } else {
+                if (activeScrollList === list) {
+                    stopAutoScroll();
+                }
+            }
+        }
 
         function handleDragStart(e) {
             dragSrcEl = this;
             e.dataTransfer.effectAllowed = 'move';
             e.dataTransfer.setData('text/plain', this.dataset.id);
-            this.classList.add('dragging');
+
+            // Timeout ensures drag ghost image is captured before opacity change
+            setTimeout(() => {
+                if (dragSrcEl) {
+                    dragSrcEl.classList.add('dragging');
+                }
+            }, 0);
+
+            if (!placeholder) {
+                placeholder = document.createElement('div');
+                placeholder.className = 'task-placeholder';
+            }
+            placeholder.style.height = `${this.offsetHeight}px`;
         }
 
         function handleDragEnd(e) {
-            this.classList.remove('dragging');
+            cleanupDrag();
+        }
+
+        function cleanupDrag() {
+            stopAutoScroll();
+            if (placeholder && placeholder.parentNode) {
+                placeholder.parentNode.removeChild(placeholder);
+            }
+            document.querySelectorAll('.task').forEach(t => t.classList.remove('dragging'));
             document.querySelectorAll('.task-list').forEach(list => {
                 list.classList.remove('drag-over');
             });
+            dragSrcEl = null;
+            lastDragY = null;
+        }
+
+        function getDragAfterElement(container, y) {
+            const draggableElements = [...container.querySelectorAll('.task:not(.dragging)')];
+
+            return draggableElements.reduce((closest, child) => {
+                const box = child.getBoundingClientRect();
+                const offset = y - box.top - box.height / 2;
+                if (offset < 0 && offset > closest.offset) {
+                    return { offset: offset, element: child };
+                } else {
+                    return closest;
+                }
+            }, { offset: Number.NEGATIVE_INFINITY }).element;
+        }
+
+        function updatePlaceholderPosition(list, y) {
+            if (!placeholder) {
+                placeholder = document.createElement('div');
+                placeholder.className = 'task-placeholder';
+            }
+
+            const afterElement = getDragAfterElement(list, y);
+            if (afterElement == null) {
+                if (list.lastElementChild !== placeholder) {
+                    list.appendChild(placeholder);
+                }
+            } else {
+                if (afterElement.previousElementSibling !== placeholder) {
+                    list.insertBefore(placeholder, afterElement);
+                }
+            }
         }
 
         function setupDragAndDrop() {
@@ -684,24 +843,83 @@
                     e.preventDefault();
                     e.dataTransfer.dropEffect = 'move';
                     this.classList.add('drag-over');
+
+                    lastDragY = e.clientY;
+                    updatePlaceholderPosition(this, e.clientY);
+                    checkAutoScroll(this, e.clientX, e.clientY);
                 });
 
                 list.addEventListener('dragleave', function (e) {
-                    this.classList.remove('drag-over');
+                    if (!this.contains(e.relatedTarget)) {
+                        this.classList.remove('drag-over');
+                        if (activeScrollList === this) {
+                            stopAutoScroll();
+                        }
+                    }
                 });
 
                 list.addEventListener('drop', function (e) {
                     e.preventDefault();
                     this.classList.remove('drag-over');
 
-                    const id = e.dataTransfer.getData('text/plain');
-                    const newStatus = this.dataset.status;
+                    const id = e.dataTransfer.getData('text/plain') || (dragSrcEl ? dragSrcEl.dataset.id : null);
+                    if (!id || !dragSrcEl) {
+                        cleanupDrag();
+                        return;
+                    }
 
-                    const taskIndex = tasks.findIndex(t => t.id === id);
-                    if (taskIndex > -1 && tasks[taskIndex].status !== newStatus) {
-                        tasks[taskIndex].status = newStatus;
-                        saveData();
-                        renderBoard();
+                    // Insert dragged element precisely at the placeholder slot
+                    if (placeholder && placeholder.parentNode === this) {
+                        this.insertBefore(dragSrcEl, placeholder);
+                    } else {
+                        const afterElement = getDragAfterElement(this, e.clientY);
+                        if (afterElement) {
+                            this.insertBefore(dragSrcEl, afterElement);
+                        } else {
+                            this.appendChild(dragSrcEl);
+                        }
+                    }
+
+                    cleanupDrag();
+
+                    // Reconstruct task sequence and statuses directly from the DOM layout
+                    const taskMap = new Map(tasks.map(t => [t.id, t]));
+                    const newTasks = [];
+
+                    document.querySelectorAll('.task-list').forEach(colList => {
+                        const colStatus = colList.dataset.status;
+                        colList.querySelectorAll('.task').forEach(taskEl => {
+                            const taskObj = taskMap.get(taskEl.dataset.id);
+                            if (taskObj) {
+                                taskObj.status = colStatus;
+                                newTasks.push(taskObj);
+                            }
+                        });
+                    });
+
+                    // Safeguard: Retain any tasks not currently present in the DOM
+                    tasks.forEach(t => {
+                        if (!newTasks.some(nt => nt.id === t.id)) {
+                            newTasks.push(t);
+                        }
+                    });
+
+                    tasks = newTasks;
+                    saveData();
+                    renderBoard();
+                });
+            });
+
+            // Column Header dragover integration: allows dragging all the way to top boundary
+            document.querySelectorAll('.column-header').forEach(header => {
+                header.addEventListener('dragover', function (e) {
+                    e.preventDefault();
+                    e.dataTransfer.dropEffect = 'move';
+                    const list = this.parentElement.querySelector('.task-list');
+                    if (list) {
+                        lastDragY = e.clientY;
+                        updatePlaceholderPosition(list, e.clientY);
+                        checkAutoScroll(list, e.clientX, e.clientY);
                     }
                 });
             });
@@ -764,6 +982,21 @@
 
         function editTask(id) {
             openModal(id);
+        }
+
+        function dupeTask(id) {
+            const taskIndex = tasks.findIndex(t => t.id === id);
+            if (taskIndex > -1) {
+                const source = tasks[taskIndex];
+                const newTask = {
+                    ...source,
+                    id: 'task_' + Date.now(),
+                    title: `${source.title} (Copy)`
+                };
+                tasks.splice(taskIndex + 1, 0, newTask);
+                saveData();
+                renderBoard();
+            }
         }
 
         function deleteTask(id) {

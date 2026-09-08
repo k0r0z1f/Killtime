@@ -66,6 +66,11 @@
             "title": "The Causal Genesis",
             "line_name": "Timeline-A 1",
             "float_val": 1772.08
+        },
+        "1772-01-26": {
+            "title": "The Gilded Shackle",
+            "line_name": "Timeline-A 1",
+            "float_val": 1772.0833333333333
         }
     },
     "events": [
@@ -443,8 +448,8 @@
             "chapter_part": "Chapter 14 - Part 5"
         },
         {
-            "float_val": 1772.08,
-            "date_str": "1772-01-25",
+            "float_val": 1772.0766666666666,
+            "date_str": "1772-01-24",
             "name": "Candice and Jarek cross the Giant Lake and survive the arcane storm",
             "line_name": "Timeline-A 1 (Timeline-0 2)",
             "type": "fixed",
@@ -452,8 +457,8 @@
             "color": "#2196f3"
         },
         {
-            "float_val": 1772.0833333333333,
-            "date_str": "1772-01-26",
+            "float_val": 1772.08,
+            "date_str": "1772-01-25",
             "name": "Candice and Jarek fight the abyss walkers and arrive at the outskirts of Haliriel",
             "line_name": "Timeline-A 1 (Timeline-0 2)",
             "type": "fixed",
@@ -461,8 +466,8 @@
             "color": "#2196f3"
         },
         {
-            "float_val": 1772.0866666666666,
-            "date_str": "1772-01-27",
+            "float_val": 1772.0833333333333,
+            "date_str": "1772-01-26",
             "name": "Candice and Jarek are arrested in the Second District and reunite with Lucas and Mina",
             "line_name": "Timeline-A 1 (Timeline-0 2)",
             "type": "fixed",
@@ -550,6 +555,46 @@
             "chapter_part": "Chapter 16 - Part 5"
         },
         {
+            "float_val": 1772.0833333333333,
+            "date_str": "1772-01-26",
+            "name": "A Hero's Surveillance: Goldar sentenced, Crown Tier confinement, and the state banquet under dwarven watch",
+            "line_name": "Timeline-A 1 (Timeline-0 2)",
+            "type": "fixed",
+            "chapter_part": "Chapter 17 - Part 1"
+        },
+        {
+            "float_val": 1772.0866666666666,
+            "date_str": "1772-01-27",
+            "name": "Discovery in the Lab: Spectrometric analysis reveals the 0.0001% genetic discrepancy and duplicate status",
+            "line_name": "Timeline-A 1 (Timeline-0 2)",
+            "type": "fixed",
+            "chapter_part": "Chapter 17 - Part 2"
+        },
+        {
+            "float_val": 1772.09,
+            "date_str": "1772-01-28",
+            "name": "Shadows of Justice: World Police holographic transmission from Kingston and alliance strategy",
+            "line_name": "Timeline-A 1 (Timeline-0 2)",
+            "type": "fixed",
+            "chapter_part": "Chapter 17 - Part 3"
+        },
+        {
+            "float_val": 1772.0933333333332,
+            "date_str": "1772-01-29",
+            "name": "The Envoy's Gambit: Altheris presents Queen Aphyrosia's royal charter granting diplomatic immunity",
+            "line_name": "Timeline-A 1 (Timeline-0 2)",
+            "type": "fixed",
+            "chapter_part": "Chapter 17 - Part 4"
+        },
+        {
+            "float_val": 1772.0966666666666,
+            "date_str": "1772-01-30",
+            "name": "Arrival in Haliriel: Windstrider flight, audience with Queen Aphyrosia, and High Temple reunion with Candice and Jarek",
+            "line_name": "Timeline-A 1 (Timeline-0 2)",
+            "type": "fixed",
+            "chapter_part": "Chapter 17 - Part 5"
+        },
+        {
             "float_val": 1772.1833333333334,
             "date_str": "1772-02-26",
             "name": "The Obsidian Crypt: Discovery of the Master Blueprints (Lucianae, Minalia, Thomar)",
@@ -601,14 +646,6 @@
             "type": "fixed",
             "chapter_part": "Chapter 1 & 7",
             "color": "#ffeb3b"
-        },
-        {
-            "float_val": 1772.0833333333333,
-            "date_str": "1772-01-26",
-            "name": "Party-A arrives in Haliriel",
-            "line_name": "Timeline-A 1 (Timeline-0 2)",
-            "type": "fixed",
-            "color": "#ffffff"
         },
         {
             "float_val": 1754.19,

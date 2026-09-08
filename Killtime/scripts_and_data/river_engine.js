@@ -93,6 +93,7 @@ if (window.ResizeObserver && engineContainer) {
 }
 
 canvas.addEventListener('mousedown', (e) => {
+    cancelCameraAnimation();
     const rect = canvas.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
     const mouseY = e.clientY - rect.top;
@@ -215,7 +216,73 @@ canvas.addEventListener('mousemove', (e) => {
     }
 });
 
+let activeCameraAnimation = null;
+let isAnimating = false;
+
+function cancelCameraAnimation() {
+    if (activeCameraAnimation) {
+        cancelAnimationFrame(activeCameraAnimation);
+        activeCameraAnimation = null;
+    }
+}
+
+function easeInOutCubic(t) {
+    return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function animateCameraTo(targetWorldX, targetLineY, targetScale = 1000, duration = 1200) {
+    cancelCameraAnimation();
+    isAnimating = true;
+
+    const startScale = Math.max(0.00001, scaleX);
+    const endScale = Math.max(0.00001, Math.min(1000, targetScale));
+
+    // Screen X position where the target currently sits right now
+    const startScreenX = translateX + (targetWorldX * startScale);
+    const targetScreenX = canvas.width / 2;
+
+    const startTranslateY = translateY;
+    const targetTranslateY = (targetLineY !== null && targetLineY !== undefined)
+        ? ((canvas.height / 2) - targetLineY)
+        : startTranslateY;
+
+    const startTime = performance.now();
+
+    function step(now) {
+        const elapsed = now - startTime;
+        const t = Math.min(1, elapsed / duration);
+        const u = easeInOutCubic(t);
+
+        // Exponential interpolation for scale keeps perceptual zoom speed constant
+        const currentScale = Math.exp(Math.log(startScale) + (Math.log(endScale) - Math.log(startScale)) * u);
+        scaleX = currentScale;
+
+        // Target glides smoothly across the screen directly to center with zero drift or skip
+        const currentScreenX = startScreenX + (targetScreenX - startScreenX) * u;
+        translateX = currentScreenX - (targetWorldX * currentScale);
+
+        // Vertical track translation glides smoothly to center
+        translateY = startTranslateY + (targetTranslateY - startTranslateY) * u;
+
+        render();
+
+        if (t < 1) {
+            activeCameraAnimation = requestAnimationFrame(step);
+        } else {
+            scaleX = endScale;
+            translateX = targetScreenX - (targetWorldX * endScale);
+            translateY = targetTranslateY;
+            isAnimating = false;
+            render();
+            activeCameraAnimation = null;
+        }
+    }
+
+    activeCameraAnimation = requestAnimationFrame(step);
+}
+
 canvas.addEventListener('wheel', (e) => {
+    cancelCameraAnimation();
     e.preventDefault();
     const zoomIntensity = 0.1;
     const wheel = e.deltaY < 0 ? 1 : -1;
@@ -245,17 +312,32 @@ canvas.addEventListener('dblclick', (e) => {
             if (h.isDayTitle) {
                 const parsed = parseDateStr(h.date_str);
                 const targetX = valToX(dateToFloat(parsed.year, parsed.month, parsed.day));
-                scaleX = MAX_SCALE;
-                translateX = (canvas.width / 2) - targetX * scaleX;
-                render();
+
+                let line = projectData?.timelines ? projectData.timelines[h.line_name] : null;
+                if (!line && h.line_name && projectData?.timelines) {
+                    const match = Object.keys(projectData.timelines).find(k => k.startsWith(h.line_name) || h.line_name.startsWith(k));
+                    if (match) line = projectData.timelines[match];
+                }
+                if (!line && h.idx !== null && h.idx !== undefined && projectData?.events?.[h.idx]) {
+                    const ev = projectData.events[h.idx];
+                    line = projectData.timelines ? projectData.timelines[ev.line_name] : null;
+                }
+
+                animateCameraTo(targetX, line ? (line.y || 0) : null, MAX_SCALE);
                 return;
+            } else if (h.isTimeline) {
+                const line = projectData?.timelines ? projectData.timelines[h.timelineName] : null;
+                if (line) {
+                    const currentWorldCenterX = ((canvas.width / 2) - translateX) / scaleX;
+                    animateCameraTo(currentWorldCenterX, line.y || 0, scaleX);
+                    return;
+                }
             } else if (h.idx !== null && h.idx !== undefined) {
-                const ev = projectData.events[h.idx];
+                const ev = projectData?.events ? projectData.events[h.idx] : null;
                 if (ev) {
                     const targetX = valToX(ev.float_val);
-                    scaleX = MAX_SCALE;
-                    translateX = (canvas.width / 2) - targetX * scaleX;
-                    render();
+                    const line = projectData?.timelines ? projectData.timelines[ev.line_name] : null;
+                    animateCameraTo(targetX, line ? (line.y || 0) : null, MAX_SCALE);
                     return;
                 }
             }
@@ -263,12 +345,11 @@ canvas.addEventListener('dblclick', (e) => {
     }
 
     if (hoveredEventIdx !== null) {
-        const ev = projectData.events[hoveredEventIdx];
+        const ev = projectData?.events ? projectData.events[hoveredEventIdx] : null;
         if (ev) {
             const targetX = valToX(ev.float_val);
-            scaleX = MAX_SCALE;
-            translateX = (canvas.width / 2) - targetX * scaleX;
-            render();
+            const line = projectData?.timelines ? projectData.timelines[ev.line_name] : null;
+            animateCameraTo(targetX, line ? (line.y || 0) : null, MAX_SCALE);
         }
     }
 });
@@ -453,12 +534,8 @@ if (ctxJumpToBranch) {
                 const targetFloat = targetLine.start_val || 0.0;
                 const targetX = valToX(targetFloat);
 
-                scaleX = 1.0;
-                translateX = (canvas.width / 2) - targetX * scaleX;
-                translateY = (canvas.height / 2) - (targetLine.y || 0);
-
                 contextMenu.style.display = 'none';
-                render();
+                animateCameraTo(targetX, targetLine.y || 0, 1.0, 1400);
                 return;
             }
         }
@@ -1072,10 +1149,8 @@ document.getElementById('btnJumpDate').onclick = () => {
     const d = parseInt(document.getElementById('gotoD').value);
     const float_val = dateToFloat(y, m, d);
 
-    scaleX = 1.0;
-    translateX = (canvas.width / 2) - valToX(float_val) * scaleX;
     closeModal();
-    render();
+    animateCameraTo(valToX(float_val), null, 1.0, 1400);
 };
 
 function closeModal() {
@@ -1271,6 +1346,9 @@ function drawEvents() {
         const screenX = translateX + valToX(cleanDayFloat) * scaleX;
         const lineY = translateY + line.y;
 
+        // Viewport culling: skip events far off-screen to avoid costly measureText/collision/draw
+        if (screenX < -600 || screenX > canvas.width + 600) return;
+
         const isHovered = (idx === hoveredEventIdx) || (hoveredDayTitleKey === e.date_str);
         const hlColor = dark ? '#00ffff' : '#0284c7';
 
@@ -1374,21 +1452,21 @@ function drawEvents() {
         ctx.fillText(date, baseX + 2, currentY + 22);
     });
 
-    // Dedicated Day Titles Renderer
-    drawDayTitles(dayGroups);
+    // Dedicated Day Titles Renderer (skip during animation for performance)
+    if (!isAnimating) {
+        drawDayTitles(dayGroups, placedRects);
+    }
 }
 
-function drawDayTitles(dayGroups) {
+function drawDayTitles(dayGroups, placedRects = []) {
     if (!projectData || !projectData.day_titles) return;
     const dark = isDarkTheme();
     const hlColor = dark ? '#00ffff' : '#0284c7';
     const timelines = projectData.timelines || {};
     const events = projectData.events || [];
 
-    // Collect all day titles
+    // 1. Collect and filter all valid day titles
     const allTitles = Object.assign({}, projectData.day_titles);
-    const placedDayTitles = [];
-
     const titleEntries = Object.keys(allTitles).map(dateKey => {
         const rawEntry = allTitles[dateKey];
         if (!rawEntry) return null;
@@ -1404,13 +1482,16 @@ function drawDayTitles(dayGroups) {
         return { dateKey, rawEntry, titleText, normDateKey, floatVal };
     }).filter(e => e !== null);
 
-    // Sort descending by floatVal (latest first) so upward stacking pushes earlier dates to the top
-    titleEntries.sort((a, b) => b.floatVal - a.floatVal);
+    if (titleEntries.length === 0) return;
 
-    titleEntries.forEach(entry => {
+    // 2. Sort chronologically (earliest first) so top-to-bottom order is always strictly chronological
+    titleEntries.sort((a, b) => a.floatVal - b.floatVal);
+
+    // 3. Resolve metadata for each entry
+    ctx.font = 'bold 11px monospace';
+    const resolvedEntries = titleEntries.map(entry => {
         const { dateKey, rawEntry, titleText, normDateKey, floatVal } = entry;
 
-        // Find ALL events matching this normalized dateKey
         const matchEvents = events.filter(e => {
             if (e.date_str) {
                 const ep = parseDateStr(e.date_str);
@@ -1419,82 +1500,235 @@ function drawDayTitles(dayGroups) {
             return Math.abs(e.float_val - floatVal) < 0.001;
         });
 
-        // Determine timeline line & spatial coordinates
         let lineName = null;
         let eventFloat = floatVal;
 
         if (matchEvents.length > 0) {
-            // ALWAYS lock to the actual timeline and float_val where the events exist
             lineName = matchEvents[0].line_name;
             eventFloat = matchEvents[0].float_val;
-        } else if (typeof rawEntry === 'object' && rawEntry.line_name && timelines[rawEntry.line_name]) {
-            lineName = rawEntry.line_name;
+        } else if (typeof rawEntry === 'object' && rawEntry.line_name) {
+            let reqLine = rawEntry.line_name;
+            if (timelines[reqLine]) {
+                lineName = reqLine;
+            } else {
+                const match = Object.keys(timelines).find(k => k.startsWith(reqLine) || reqLine.startsWith(k));
+                lineName = match || Object.keys(timelines)[0] || 'Main Line';
+            }
         } else {
             lineName = Object.keys(timelines)[0] || 'Main Line';
         }
 
         const line = timelines[lineName];
-        if (!line) return;
-
-        const N = matchEvents.length;
-        const lineY = translateY + line.y;
+        const lineY = translateY + (line ? line.y : 0);
         const screenX = translateX + valToX(eventFloat) * scaleX;
 
-        // Exactly match the stair-step geometry used in drawEvents:
-        // stepX = 6px, stepY = 10px, markerOffset = 15px
+        const N = matchEvents.length;
         const maxTickIndex = N > 1 ? (N - 1) : 0;
         const absoluteHighestTickTop = lineY - (maxTickIndex * 10) - 15;
         const clusterCenterX = screenX + (maxTickIndex * 6 / 2);
 
-        // Badge Dimensions & Clean Clearance (22px clear vertical air gap above the peak tick)
-        ctx.font = 'bold 11px monospace';
         const displayLabel = `★ ${titleText} ★`;
         const titleWidth = ctx.measureText(displayLabel).width;
         const badgeW = titleWidth + 18;
         const badgeH = 22;
 
-        const clearanceAboveTicks = 22;
-        let badgeY = absoluteHighestTickTop - clearanceAboveTicks - badgeH;
-        const badgeX = clusterCenterX - (badgeW / 2);
+        const stemTargetY = N > 0 ? absoluteHighestTickTop : (lineY - 8);
 
-        const padX = 4;
-        let highestY = badgeY;
+        return {
+            entry,
+            dateKey,
+            titleText,
+            normDateKey,
+            floatVal,
+            matchEvents,
+            lineName,
+            lineY,
+            screenX,
+            clusterCenterX,
+            displayLabel,
+            badgeW,
+            badgeH,
+            stemTargetY,
+            absoluteHighestTickTop
+        };
+    }).filter(item => {
+        if (!timelines[item.lineName]) return false;
+        // Viewport culling: skip day titles far off-screen
+        if (item.screenX < -800 || item.screenX > canvas.width + 800) return false;
+        return true;
+    });
 
-        for (let i = 0; i < placedDayTitles.length; i++) {
-            const p = placedDayTitles[i];
-            const rectLeft = badgeX - padX;
-            const rectRight = badgeX + badgeW + padX;
+    if (resolvedEntries.length === 0) return;
 
-            // Check horizontal overlap
-            if (!(rectRight <= p[0] || rectLeft >= p[1])) {
-                const candidateY = p[2] - badgeH - 8;
-                if (candidateY < highestY) {
-                    highestY = candidateY;
+    // 4. Cluster entries by line and horizontal proximity so adjacent titles stay unified
+    const clusters = [];
+    let currentCluster = [resolvedEntries[0]];
+
+    for (let i = 1; i < resolvedEntries.length; i++) {
+        const prev = resolvedEntries[i - 1];
+        const curr = resolvedEntries[i];
+        const maxW = Math.max(prev.badgeW, curr.badgeW);
+        const thresholdX = maxW + 24;
+
+        if (curr.lineName === prev.lineName && Math.abs(curr.clusterCenterX - prev.clusterCenterX) < thresholdX) {
+            currentCluster.push(curr);
+        } else {
+            clusters.push(currentCluster);
+            currentCluster = [curr];
+        }
+    }
+    clusters.push(currentCluster);
+
+    // 5. Layout each cluster: together in a clean column, ordered top-to-bottom chronologically
+    const renderQueue = [];
+
+    clusters.forEach(cluster => {
+        const avgCenterX = cluster.reduce((sum, it) => sum + it.clusterCenterX, 0) / cluster.length;
+        const lineY = cluster[0].lineY;
+        const minHighestTickTop = Math.min(...cluster.map(it => it.absoluteHighestTickTop));
+        const maxBadgeW = Math.max(...cluster.map(it => it.badgeW));
+        const badgeH = 22;
+        // StepY: 24px vertical step ensures every single day title is strictly sorted top-to-bottom
+        // while giving 48px vertical clearance between badges on the same side
+        const stepY = 24;
+
+        // Desired vertical bottom of the stack (closest to the line for the latest event)
+        const clearanceAboveTicks = 20;
+        let bottomBadgeY = minHighestTickTop - clearanceAboveTicks - badgeH;
+        let topBadgeY = bottomBadgeY - (cluster.length - 1) * stepY;
+
+        // Ensure top does not clip into the ruler header at y=25
+        if (topBadgeY < 34) {
+            topBadgeY = 34;
+            bottomBadgeY = topBadgeY + (cluster.length - 1) * stepY;
+        }
+
+        function hasEventCollision(x, y, w, h) {
+            const padX = 10;
+            const padY = 4;
+            const rLeft = x - padX;
+            const rRight = x + w + padX;
+            const rTop = y - padY;
+            const rBottom = y + h + padY;
+
+            for (let i = 0; i < placedRects.length; i++) {
+                const p = placedRects[i];
+                if (!(rRight <= p[0] || rLeft >= p[1] || rBottom <= p[2] || rTop >= p[3])) {
+                    return true;
                 }
             }
+            return false;
         }
-        badgeY = highestY;
 
-        const badgeBottomY = badgeY + badgeH;
-        const titleCenterY = badgeY + (badgeH / 2);
-        placedDayTitles.push([badgeX, badgeX + badgeW, badgeY, badgeY + badgeH]);
+        // Assign each day title in this cluster its exact position in top-to-bottom chronological order,
+        // alternating individually on the left and right, and dynamically clearing events at its specific Y level
+        cluster.forEach((item, idx) => {
+            const badgeY = topBadgeY + (idx * stepY);
+            const wantsRight = (idx % 2 === 1);
 
-        const isGroupHovered = (hoveredDayTitleKey === dateKey) ||
-            (matchEvents.length > 0 && matchEvents.some(ev => events.indexOf(ev) === hoveredEventIdx));
+            // Find all events in placedRects that overlap vertically with THIS badge
+            const rowEvents = placedRects.filter(p => !(p[3] <= (badgeY - 4) || p[2] >= (badgeY + badgeH + 4)));
+            const rowMaxRight = rowEvents.length > 0 ? Math.max(...rowEvents.map(p => p[1])) : item.clusterCenterX;
+            const rowMinLeft = rowEvents.length > 0 ? Math.min(...rowEvents.map(p => p[0])) : item.clusterCenterX;
 
-        // Dashed connector stem cleanly bridging the gap between badge bottom and peak tick
-        const stemTargetY = N > 0 ? absoluteHighestTickTop : (lineY - 8);
+            // Calculate clear candidate positions to the right and left of events at this height
+            const candRightX = (rowEvents.length > 0)
+                ? Math.max(item.clusterCenterX + 25, rowMaxRight + 20)
+                : item.clusterCenterX + 25;
+
+            const candLeftX = (rowEvents.length > 0)
+                ? Math.min(item.clusterCenterX - 25 - item.badgeW, rowMinLeft - 20 - item.badgeW)
+                : item.clusterCenterX - 25 - item.badgeW;
+
+            // Prioritize candidates based on alternating preference
+            const candidates = wantsRight
+                ? [candRightX, candLeftX, candRightX + 40, candLeftX - 40]
+                : [candLeftX, candRightX, candLeftX - 40, candRightX + 40];
+
+            let badgeX = candidates[0];
+            let found = false;
+
+            for (let cx of candidates) {
+                const fitsCanvas = (cx >= 12 && cx + item.badgeW <= canvas.width - 12);
+                if (fitsCanvas && !hasEventCollision(cx, badgeY, item.badgeW, badgeH)) {
+                    badgeX = cx;
+                    found = true;
+                    break;
+                }
+            }
+
+            if (!found) {
+                // If standard candidates are blocked or close to edge, step outward until free
+                for (let offset = 40; offset <= 800; offset += 40) {
+                    const testRight = candRightX + offset;
+                    if (testRight + item.badgeW <= canvas.width - 10 && !hasEventCollision(testRight, badgeY, item.badgeW, badgeH)) {
+                        badgeX = testRight;
+                        found = true;
+                        break;
+                    }
+                    const testLeft = candLeftX - offset;
+                    if (testLeft >= 10 && !hasEventCollision(testLeft, badgeY, item.badgeW, badgeH)) {
+                        badgeX = testLeft;
+                        found = true;
+                        break;
+                    }
+                }
+            }
+
+            // Determine stem connection point based on badge position relative to clusterCenterX
+            let stemStartX = badgeX;
+            let stemStartY = badgeY + (badgeH / 2);
+
+            if (badgeX + item.badgeW <= item.clusterCenterX) {
+                stemStartX = badgeX + item.badgeW;
+                stemStartY = badgeY + (badgeH / 2);
+            } else if (badgeX >= item.clusterCenterX) {
+                stemStartX = badgeX;
+                stemStartY = badgeY + (badgeH / 2);
+            } else {
+                stemStartX = item.clusterCenterX;
+                stemStartY = badgeY + badgeH;
+            }
+
+            const isGroupHovered = (hoveredDayTitleKey === item.dateKey) ||
+                (item.matchEvents.length > 0 && item.matchEvents.some(ev => events.indexOf(ev) === hoveredEventIdx));
+
+            renderQueue.push({
+                item,
+                dateKey: item.dateKey,
+                titleText: item.titleText,
+                lineName: item.lineName,
+                matchEvents: item.matchEvents,
+                displayLabel: item.displayLabel,
+                badgeX,
+                badgeY,
+                badgeW: item.badgeW,
+                badgeH,
+                clusterCenterX: item.clusterCenterX,
+                stemTargetY: item.stemTargetY,
+                stemStartX,
+                stemStartY,
+                isGroupHovered
+            });
+        });
+    });
+
+    // Pass 1: Draw all Stems and Anchor Ticks
+    renderQueue.forEach(q => {
+        const { isGroupHovered, stemStartX, stemStartY, clusterCenterX, stemTargetY, matchEvents, lineName } = q;
+        const line = timelines[lineName];
+        const lineY = translateY + (line ? line.y : 0);
+
         ctx.strokeStyle = isGroupHovered ? hlColor : (dark ? 'rgba(255, 215, 0, 0.7)' : 'rgba(180, 83, 9, 0.7)');
         ctx.lineWidth = isGroupHovered ? 2 : 1;
         ctx.setLineDash([2, 3]);
         ctx.beginPath();
-        ctx.moveTo(clusterCenterX, badgeBottomY);
+        ctx.moveTo(stemStartX, stemStartY);
         ctx.lineTo(clusterCenterX, stemTargetY);
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // If no events exist on this date, draw an anchor tick on the line
-        if (N === 0) {
+        if (matchEvents.length === 0) {
             ctx.strokeStyle = isGroupHovered ? hlColor : (dark ? '#ffd700' : '#b45309');
             ctx.lineWidth = 2;
             ctx.beginPath();
@@ -1502,8 +1736,15 @@ function drawDayTitles(dayGroups) {
             ctx.lineTo(clusterCenterX, lineY + 8);
             ctx.stroke();
         }
+    });
 
-        // Draw Badge Background
+    // Pass 2: Draw all Badges (Background, Border, Typography, Hitboxes)
+    renderQueue.forEach(q => {
+        const { isGroupHovered, badgeX, badgeY, badgeW, badgeH, displayLabel, dateKey, lineName, titleText, matchEvents } = q;
+        const badgeCenterX = badgeX + (badgeW / 2);
+        const titleCenterY = badgeY + (badgeH / 2);
+
+        // Badge Background
         ctx.fillStyle = isGroupHovered ? (dark ? '#1e293b' : '#fef08a') : (dark ? 'rgba(22, 18, 10, 0.94)' : 'rgba(254, 243, 199, 0.96)');
         ctx.strokeStyle = isGroupHovered ? hlColor : (dark ? '#ffd700' : '#b45309');
         ctx.lineWidth = 1.5;
@@ -1517,15 +1758,16 @@ function drawDayTitles(dayGroups) {
             ctx.strokeRect(badgeX, badgeY, badgeW, badgeH);
         }
 
-        // Draw Text
+        // Centered Text
         ctx.fillStyle = isGroupHovered ? hlColor : (dark ? '#ffd700' : '#92400e');
         ctx.textAlign = 'center';
         ctx.textBaseline = 'middle';
-        ctx.fillText(displayLabel, clusterCenterX, titleCenterY);
+        ctx.font = 'bold 11px monospace';
+        ctx.fillText(displayLabel, badgeCenterX, titleCenterY);
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
 
-        // Hitbox for Click / Hover / Context Menu
+        // Register Hitbox
         hitboxes.push({
             idx: matchEvents.length > 0 ? events.indexOf(matchEvents[0]) : null,
             isDayTitle: true,
@@ -1604,76 +1846,94 @@ function render() {
             const screenTriggerX = translateX + triggerX * scaleX;
             const screenStartX = translateX + startX * scaleX;
 
-            ctx.lineWidth = 3;
-            ctx.setLineDash([5, 10]);
-            ctx.lineCap = 'round';
-
-            const dx = Math.abs(screenStartX - screenTriggerX);
+            // Performance: skip entire dashed connector when both endpoints are far off-screen on the same side
             const pad = 200;
             const viewWidth = canvas.width;
+            const safeMargin = viewWidth + pad;
+            const bothFarLeft = (screenTriggerX < -safeMargin && screenStartX < -safeMargin);
+            const bothFarRight = (screenTriggerX > viewWidth + safeMargin && screenStartX > viewWidth + safeMargin);
 
-            if (dx < 1.0) {
-                const minSX = Math.min(screenTriggerX, screenStartX);
-                const maxSX = Math.max(screenTriggerX, screenStartX);
-                if (!(maxSX < -pad || minSX > viewWidth + pad)) {
-                    ctx.beginPath();
-                    ctx.moveTo(screenTriggerX, parentScreenY);
-                    ctx.bezierCurveTo(screenTriggerX - 40, screenControlY, screenStartX + 40, screenControlY, screenStartX, screenY);
-                    ctx.stroke();
-                }
-            } else {
-                const dirX = screenStartX >= screenTriggerX ? 1 : -1;
-                const cruise = Math.min(75.0, dx / 2.0);
-                const upEndX = screenTriggerX + (cruise * dirX);
-                const downStartX = screenStartX - (cruise * dirX);
-                const kappa = 0.55228;
+            if (!bothFarLeft && !bothFarRight) {
+                ctx.lineWidth = 3;
+                ctx.setLineDash([5, 10]);
+                ctx.lineCap = 'round';
 
-                // 1. Departure Curve
-                const arc1Min = Math.min(screenTriggerX, upEndX);
-                const arc1Max = Math.max(screenTriggerX, upEndX);
-                if (!(arc1Max < -pad || arc1Min > viewWidth + pad)) {
-                    ctx.beginPath();
-                    ctx.moveTo(screenTriggerX, parentScreenY);
-                    const cp1Y = parentScreenY + (screenControlY - parentScreenY) * kappa;
-                    const cp2X = upEndX - (cruise * dirX) * kappa;
-                    ctx.bezierCurveTo(screenTriggerX, cp1Y, cp2X, screenControlY, upEndX, screenControlY);
-                    ctx.stroke();
-                }
+                const dx = Math.abs(screenStartX - screenTriggerX);
 
-                // 2. Clamped Horizontal Bypass
-                const hx1 = Math.min(upEndX, downStartX);
-                const hx2 = Math.max(upEndX, downStartX);
-                const drawHx1 = Math.max(-pad, Math.min(hx1, viewWidth + pad));
-                const drawHx2 = Math.max(-pad, Math.min(hx2, viewWidth + pad));
+                if (dx < 1.0) {
+                    const minSX = Math.min(screenTriggerX, screenStartX);
+                    const maxSX = Math.max(screenTriggerX, screenStartX);
+                    if (!(maxSX < -pad || minSX > viewWidth + pad)) {
+                        ctx.beginPath();
+                        ctx.moveTo(screenTriggerX, parentScreenY);
+                        ctx.bezierCurveTo(screenTriggerX - 40, screenControlY, screenStartX + 40, screenControlY, screenStartX, screenY);
+                        ctx.stroke();
+                    }
+                } else {
+                    const dirX = screenStartX >= screenTriggerX ? 1 : -1;
+                    const cruise = Math.min(75.0, dx / 2.0);
 
-                if (drawHx2 - drawHx1 > 0.1) {
-                    if (drawHx1 > hx1) {
-                        ctx.lineDashOffset = -((drawHx1 - hx1) % 15);
-                    } else {
+                    // Clamp all bezier control points to a safe pixel range to prevent
+                    // Canvas2D from rasterizing dashed curves across billions of pixels
+                    const safeClamp = viewWidth * 3;
+                    const clampX = (x) => Math.max(-safeClamp, Math.min(x, viewWidth + safeClamp));
+
+                    const upEndX = clampX(screenTriggerX + (cruise * dirX));
+                    const downStartX = clampX(screenStartX - (cruise * dirX));
+                    const clampedTriggerX = clampX(screenTriggerX);
+                    const clampedStartX = clampX(screenStartX);
+                    const kappa = 0.55228;
+
+                    // 1. Departure Curve
+                    const arc1Min = Math.min(clampedTriggerX, upEndX);
+                    const arc1Max = Math.max(clampedTriggerX, upEndX);
+                    if (!(arc1Max < -pad || arc1Min > viewWidth + pad)) {
+                        ctx.beginPath();
+                        ctx.moveTo(clampedTriggerX, parentScreenY);
+                        const cp1Y = parentScreenY + (screenControlY - parentScreenY) * kappa;
+                        const cp2X = upEndX - (cruise * dirX) * kappa;
+                        ctx.bezierCurveTo(clampedTriggerX, cp1Y, clampX(cp2X), screenControlY, upEndX, screenControlY);
+                        ctx.stroke();
+                    }
+
+                    // 2. Clamped Horizontal Bypass
+                    const hx1 = Math.min(upEndX, downStartX);
+                    const hx2 = Math.max(upEndX, downStartX);
+                    const drawHx1 = Math.max(-pad, Math.min(hx1, viewWidth + pad));
+                    const drawHx2 = Math.max(-pad, Math.min(hx2, viewWidth + pad));
+
+                    if (drawHx2 - drawHx1 > 0.1) {
+                        if (drawHx1 > hx1) {
+                            ctx.lineDashOffset = -((drawHx1 - hx1) % 15);
+                        } else {
+                            ctx.lineDashOffset = 0;
+                        }
+                        ctx.beginPath();
+                        ctx.moveTo(drawHx1, screenControlY);
+                        ctx.lineTo(drawHx2, screenControlY);
+                        ctx.stroke();
                         ctx.lineDashOffset = 0;
                     }
-                    ctx.beginPath();
-                    ctx.moveTo(drawHx1, screenControlY);
-                    ctx.lineTo(drawHx2, screenControlY);
-                    ctx.stroke();
-                    ctx.lineDashOffset = 0;
+
+                    // 3. Arrival Curve
+                    const arc2Min = Math.min(downStartX, clampedStartX);
+                    const arc2Max = Math.max(downStartX, clampedStartX);
+                    if (!(arc2Max < -pad || arc2Min > viewWidth + pad)) {
+                        ctx.beginPath();
+                        ctx.moveTo(downStartX, screenControlY);
+                        const cp3X = downStartX + (cruise * dirX) * kappa;
+                        const cp4Y = screenY - (screenY - screenControlY) * kappa;
+                        ctx.bezierCurveTo(clampX(cp3X), screenControlY, clampedStartX, cp4Y, clampedStartX, screenY);
+                        ctx.stroke();
+                    }
                 }
 
-                // 3. Arrival Curve
-                const arc2Min = Math.min(downStartX, screenStartX);
-                const arc2Max = Math.max(downStartX, screenStartX);
-                if (!(arc2Max < -pad || arc2Min > viewWidth + pad)) {
-                    ctx.beginPath();
-                    ctx.moveTo(downStartX, screenControlY);
-                    const cp3X = downStartX + (cruise * dirX) * kappa;
-                    const cp4Y = screenY - (screenY - screenControlY) * kappa;
-                    ctx.bezierCurveTo(cp3X, screenControlY, screenStartX, cp4Y, screenStartX, screenY);
-                    ctx.stroke();
-                }
+                ctx.setLineDash([]);
+                drawArrow(screenStartX, screenY, !isTop, color);
+            } else {
+                // Even when connector is culled, still need to clear dash state
+                ctx.setLineDash([]);
             }
-
-            ctx.setLineDash([]);
-            drawArrow(screenStartX, screenY, !isTop, color);
 
             ctx.lineWidth = 4;
             drawInfiniteLine(screenStartX, translateX + maxX * scaleX, screenY);
