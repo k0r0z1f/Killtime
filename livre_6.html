@@ -1,0 +1,786 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Jeu RP — Livre VI : Combat Tactique & Déplacements</title>
+    <meta name="description" content="Livre VI du Système de Jeu RP : Le tour de 10 secondes, l'économie dynamique des Points d'Action, l'essoufflement, la localisation anatomique chirurgicale, les poursuites et le combat de véhicules.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet partagée -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ================= TOP BAR ================= -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    </div>
+                    <div class="brand-info">
+                        <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
+                    </div>
+                </a>
+                <nav class="breadcrumbs">
+                    <a href="index.html">Codex</a>
+                    <span>/</span>
+                    <span class="current">Livre VI : Combat Tactique</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    <span>Site Killtime</span>
+                </a>
+                <div class="search-trigger" id="searchTrigger">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <span>Rechercher...</span>
+                    <kbd class="search-kbd">Ctrl+K</kbd>
+                </div>
+                <button class="theme-btn" id="themeToggle" title="Basculer le thème">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= WRAPPER ================= -->
+        <div class="content-wrapper">
+            
+            <!-- ================= SIDEBAR NAVIGATION ================= -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        <span>Table des Matières</span>
+                        <span>9 Livres</span>
+                    </div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <!-- LIEN VERS L'UNIVERS KILLTIME -->
+                    <div class="external-site-group">
+                        <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
+                            <span class="nav-external-label">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <span>Site Killtime</span>
+                            </span>
+                            <span class="nav-item-badge badge-live">Univers ↗</span>
+                        </a>
+                    </div>
+
+                    <!-- PRÉFACE -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">00</span>
+                                <span>Prologue & Vision</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE I -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.I</span>
+                                <span>Bases & Création PJ</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE II -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.II</span>
+                                <span>Paliers de Dés & Épreuves</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE III -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.III</span>
+                                <span>Arbres de Compétences</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IV -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IV</span>
+                                <span>5e Force & Magie</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE V -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.V</span>
+                                <span>Temps & Causalité</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VI (ACTIF) -->
+                    <div class="nav-group expanded">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VI</span>
+                                <span>Combat Tactique</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="#chap-24" class="nav-item-link active"><span>24. Le Tour de 10s & Économie des PA</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VII</span>
+                                <span>Santé, États & Blessures</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VIII</span>
+                                <span>Arsenal & Arcanotech</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IX -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IX</span>
+                                <span>Outils Web Interactifs</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE X -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.X</span>
+                                <span>Atlas des Mondes</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE XI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.XI</span>
+                                <span>Bestiaire &amp; Menaces</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ================= CONTENU PRINCIPAL (LIVRE VI) ================= -->
+            <main class="main-content">
+                <article class="doc-page prose">
+                    
+                    <div class="doc-badge-row">
+                        <span class="doc-badge-pill">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/></svg>
+                            Livre VI — Combat & Manœuvres
+                        </span>
+                        <span class="doc-badge-pill accent">Tactique 10s & Localisation</span>
+                        <span class="doc-badge-pill live">Système Validé</span>
+                    </div>
+
+                    <h1 class="doc-title">Livre VI : Combat Tactique & Déplacements</h1>
+                    <p class="doc-lead">
+                        Le combat dans le Système RP est une chorégraphie dynamique et chirurgicale. Ici, aucun tour n'est passif : chaque seconde correspond à une décision énergétique. Le round de 10 secondes orchestre les <strong>Points d'Action (PA)</strong> comme monnaie d'échange offensive et défensive, gère la fatigue par l'<strong>Essoufflement</strong>, récompense la visée anatomique précise et structure les affrontements à pied comme aux commandes de véhicules blindés.
+                    </p>
+
+                    <hr class="doc-divider">
+
+                    <!-- ================= CHAPITRE 24 ================= -->
+                    <h2 id="chap-24">
+                        <span class="section-symbol">Chapitre 24.</span>
+                        Le Tour de 10 Secondes & L'Économie des Points d'Action
+                    </h2>
+
+                    <p>
+                        Le temps de combat est découpé en <strong>tours de 10 secondes réelles</strong>. Durant ces 10 secondes, chaque participant dépense ses Points d'Action (PA) pour se mouvoir, attaquer, bloquer, ajuster son tir ou déclencher des sortilèges.
+                    </p>
+
+                    <div class="callout temporal">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                            Séquence Fondamentale du Tour de Combat
+                        </div>
+                        <div class="callout-body">
+                            <ol style="margin-bottom: 0;">
+                                <li><strong>Élément Déclencheur & Initiative :</strong> Jet d'initiative basé sur la compétence <em>Rapidité d'exécution</em>.</li>
+                                <li><strong>Action Principale :</strong> Résolution des actions offensives ou sorts majeurs par ordre décroissant d'initiative.</li>
+                                <li><strong>Résolution des Réactions :</strong> Déclaration et résolution des parades, esquives ou interruptions réactives.</li>
+                                <li><strong>Fin du Tour & Ravitaillement :</strong> Récupération de la réserve de PA. <em>Les PA non dépensés lors du tour précédent sont conservés et s'additionnent à la nouvelle réserve !</em></li>
+                                <li><strong>Itération :</strong> Répéter les étapes 2 à 4 jusqu'à reddition, fuite ou neutralisation de l'un des camps.</li>
+                            </ol>
+                        </div>
+                    </div>
+
+                    <h3>24.1 L'Économie des Points d'Action : 1 PA = +1 au Résultat</h3>
+                    <p>
+                        Les PA ne servent pas uniquement à « payer » des actions : ils constituent un fluide d'effort physique ou magique que le joueur injecte en direct dans ses jets.
+                    </p>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Règle d'Injection Énergétique</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Résultat Total</span> = Jet de Dé + Compétence + <span class="hl-gold">PA Investis</span> &minus; <span class="hl-ruby">Pénalités</span>
+                        </div>
+                        <div class="formula-desc">
+                            Chaque PA dépensé dans une attaque ou dans une défense confère <strong>+1 point direct</strong> au résultat de l'épreuve. L'attaquant annonce son investissement en premier ; le défenseur peut alors choisir combien de PA il engage pour parer ou esquiver.
+                        </div>
+                    </div>
+
+                    <div class="cards-grid-2">
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Actions Principales</span>
+                                <span class="pill-badge ruby">1 / Tour (Défaut)</span>
+                            </div>
+                            <div class="spec-card-world">Offensif // Temps Fort</div>
+                            <p>
+                                Chaque combattant dispose d'<strong>une action principale par tour</strong>. Les manœuvres offensives (frapper, tirer, trancher, sort offensif) sont presque exclusivement des actions principales.<br><br>
+                                <strong>Règle de Maîtrise Exceptionnelle :</strong> Un personnage ayant une compétence offensive à <strong>2d6 ou plus</strong> (2d6, 2d8, 2d10, 2d12) débloque une <strong>2e action principale par tour</strong> avec cette compétence ! Il peut la jouer après sa 1re action et après le tour d'un autre combattant.
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill ruby">Attaque Majeure</span>
+                                <span class="tag-pill cyan">Double Action à 2d6+</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Réactions & Défenses</span>
+                                <span class="pill-badge cyan">1 / Tour (Réactif)</span>
+                            </div>
+                            <div class="spec-card-world">Défensif // Interruption</div>
+                            <p>
+                                Chaque combattant a droit à <strong>une réaction par tour</strong> en réponse à une offensive ennemie. Une réaction est soit une parade, soit une esquive, soit une manœuvre non-offensive d'urgence.<br><br>
+                                <strong>Ajustement de Dernière Seconde :</strong> Si le défenseur constate que son jet initial est insuffisant, il peut immédiatement griller des PA résiduels supplémentaires pour combler l'écart !
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill cyan">Esquive / Parade</span>
+                                <span class="tag-pill green">Ajustement Réactif</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>24.2 L'Essoufflement : Dépasser ses Limites</h3>
+                    <p>
+                        Lorsqu'un combattant est à court de Points d'Action mais doit absolument réussir une défense vitale ou porter le coup de grâce, il peut puiser dans ses réserves vitales en prenant des <strong>Points d'Essoufflement</strong>.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Mécanique d'Essoufflement</th>
+                                    <th>Règle & Conditions</th>
+                                    <th>Effet Table de Jeu</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Prise d'Essoufflement</strong></td>
+                                    <td>Quand les PA sont épuisés, le joueur peut prendre 1 à N points d'essoufflement.</td>
+                                    <td>Chaque point d'essoufflement agit comme +1 PA temporaire sur l'action ou la réaction en cours.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Plafond Maximal</strong></td>
+                                    <td>Le total d'essoufflement accumulé <strong>ne peut jamais dépasser la valeur de Constitution</strong> du personnage.</td>
+                                    <td>Si le plafond est atteint, le personnage est au bord de l'asphyxie et ne peut plus forcer.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Reprendre son Souffle</strong></td>
+                                    <td>Action de début de tour. Le joueur dépense des PA pour effacer de l'essoufflement (maximum Constitution).</td>
+                                    <td>1 PA dépensé à reprendre son souffle = 1 point d'essoufflement effacé immédiatement.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Choc Traumatique (&gt; 2 &times; Constitution)</strong></td>
+                                    <td>Quand les dégâts accumulés sur une même zone dépassent le double de la Constitution.</td>
+                                    <td>Le personnage gagne <strong>+1 Essoufflement automatique</strong> et doit réussir une épreuve de Constitution sous peine de s'effondrer.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>24.3 Barème des Coûts en Points d'Action Types</h3>
+                    <div class="cards-grid-3">
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Coût : 1 PA</span>
+                                <span class="pill-badge green">Micro-Action</span>
+                            </div>
+                            <ul style="padding-left: 15px; margin: 10px 0; font-size: 0.9em;">
+                                <li>Se déplacer de 1 case (1 mètre).</li>
+                                <li>Dégainer ou ranger une arme.</li>
+                                <li>Recharger une arme à feu ou un carquois.</li>
+                                <li>Ouvrir ou claquer une porte.</li>
+                                <li><strong>Préparation d'Action :</strong> Dépenser 1 PA pour se préparer confère <strong>+2 au jet</strong> de l'action ou défense suivante.</li>
+                                <li>Annuler la punition d'une visée précise.</li>
+                            </ul>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Manœuvres Mobiles</span>
+                                <span class="pill-badge amber">+1 PA Extra</span>
+                            </div>
+                            <ul style="padding-left: 15px; margin: 10px 0; font-size: 0.9em;">
+                                <li><strong>La Charge :</strong> Déplacement d'approche qui coûte <strong>+1 PA de plus que la normale</strong>, immédiatement suivi d'une action principale d'attaque au contact.</li>
+                                <li><strong>Le GetAway (Dégagement) :</strong> Action principale (attaque ou parade) immédiatement suivie d'un déplacement de fuite coûtant <strong>+1 PA supplémentaire</strong>.</li>
+                                <li><strong>Parler en combat :</strong> 2 phrases courtes (~30 mots) sont gratuites par round. Chaque phrase additionnelle coûte <strong>1 PA</strong>.</li>
+                            </ul>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Action en Progression</span>
+                                <span class="pill-badge cyan">Multi-Tours</span>
+                            </div>
+                            <p style="font-size: 0.9em; margin-top: 8px;">
+                                Un combattant peut préparer un coup dévastateur en étalant son effort sur plusieurs temps (ex: ajuster posément le tir avec 3 PA au tour 1 pour lâcher une frappe surpuissante au tour 2).<br><br>
+                                <em>Attention :</em> S'il est attaqué pendant sa progression, il défend avec une <strong>punition de progression de -1</strong>.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 25 ================= -->
+                    <h2 id="chap-25">
+                        <span class="section-symbol">Chapitre 25.</span>
+                        Déplacements, Poursuites & Attaques de Groupe
+                    </h2>
+
+                    <p>
+                        L'espace tactique est quantifié en cases de 1 mètre. Se déplacer exige une gestion stricte de ses PA pour ne pas se retrouver sans défense face à une contre-offensive.
+                    </p>
+
+                    <h3>25.1 La Règle de Course & Poursuite : « Se Sauver en Combat »</h3>
+                    <p>
+                        Tenter d'échapper à un ou plusieurs ennemis n'est pas un simple retrait tactique : c'est un <strong>concours d'Athlétisme sous tension</strong>.
+                    </p>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Mécanique de la Proie et du Poursuivant</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Épreuve Athlétisme (Proie)</span> vs <span class="hl-ruby">Épreuve Athlétisme (Poursuivant)</span>
+                        </div>
+                        <div class="formula-desc">
+                            La proie lance son épreuve d'Athlétisme (avec injection possible de PA et d'essoufflement) et note son résultat. Chaque poursuivant lance à son tour son épreuve.
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>Sur chaque réussite de la proie contre un poursuivant :</strong> La proie maintient la distance et ne peut pas être approchée à moins de <strong>1 case</strong> par ce poursuivant, même si la vitesse brute de celui-ci aurait dû l'amener plus loin (ex: Proie fait 15, Poursuivant fait 7 : le poursuivant reste bloqué à distance).</li>
+                        <li><strong>Sur une faillite de la proie :</strong> Le poursuivant gagne du terrain et réduit la distance.</li>
+                        <li><strong>Règle d'Arrêt aux 4 Faillites :</strong> Dès que le total cumulé de faillites de la proie contre l'ensemble des poursuivants atteint <strong>4</strong>, la proie est définitivement rattrapée et acculée.</li>
+                    </ul>
+
+                    <h3>25.2 Les Attaques Combinées de Groupe</h3>
+                    <p>
+                        Deux combattants ou plus peuvent synchroniser leurs assauts pour briser une défense impénétrable ou terrasser une créature colossale.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Paramètre</th>
+                                    <th>Règle Tactique</th>
+                                    <th>Exemple d'Application</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Synchronisation</strong></td>
+                                    <td>Tous les participants doivent <strong>déléguer et caler leur initiative sur celle du membre le plus lent</strong> du groupe.</td>
+                                    <td>Un bretteur rapide (Ini 3) attend son compagnon en armure lourde (Ini 1) pour frapper à l'unisson à l'Initiative 1.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sommation des Rangs</strong></td>
+                                    <td>Chaque participant effectue son épreuve. Les résultats totaux <strong>s'additionnent face à l'unique défense</strong> de la cible !</td>
+                                    <td>Attaquant A (12.5) + Attaquant B (10.5) = <strong>23 total</strong> face à une parade ennemie de 10.5. Différentiel massif de <strong>+12.5</strong> !</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Dépassement d'Armure</strong></td>
+                                    <td>Alors que deux attaques séparées auraient pu rebondir individuellement contre l'armure et la Constitution, l'attaque combinée pulvérise les défenses.</td>
+                                    <td>Séparés : 1.5 dégât infligé. Ensemble : <strong>10.5 dégâts réels</strong> traversant l'armure !</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ================= CHAPITRE 26 ================= -->
+                    <h2 id="chap-26">
+                        <span class="section-symbol">Chapitre 26.</span>
+                        Localisation Anatomique & Combat de Véhicules
+                    </h2>
+
+                    <p>
+                        Dans le Système RP, les personnages n'ont pas une jauge de points de vie abstraite. Chaque coup frappe un membre précis, avec des conséquences physiologiques directes.
+                    </p>
+
+                    <h3>26.1 Cible Visée & Le Différentiel de Touche</h3>
+                    <p>
+                        Un attaquant peut désigner une zone précise du corps (le cœur, les yeux, les poumons, la tête, les bras, les jambes) :
+                    </p>
+                    <ul>
+                        <li><strong>Punition de Visée :</strong> Viser un point précis impose <strong>-1 de punition</strong> sur l'épreuve (ou la dépense préalable de <strong>1 PA</strong> pour annuler la punition).</li>
+                        <li><strong>Différentiel Positif (Attaque &gt; Défense) :</strong> L'attaque frappe exactement la partie visée. Le différentiel s'ajoute directement aux dégâts !</li>
+                        <li><strong>Différentiel Égal à 0 (Attaque = Défense) :</strong> Le coup porte, mais la visée dévie à cause du réflexe défensif. L'attaque inflige ses dégâts de base sur une <strong>zone aléatoire adjacente</strong> déterminée au dé (ex: 1d4 ou 1d6).</li>
+                        <li><strong>Différentiel Négatif :</strong> Si le total de l'attaque plus les dégâts de l'arme reste inférieur ou égal à la parade, le coup est <strong>parfaitement bloqué</strong> (aucun dégât).</li>
+                    </ul>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Tirage Dé</th>
+                                    <th>Déviation Haute (Tête / Torse)</th>
+                                    <th>Déviation Membres</th>
+                                    <th>Conséquence Médicale</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1</strong></td>
+                                    <td><strong>Yeux / Visage</strong></td>
+                                    <td>Épaule / Clavicule</td>
+                                    <td>Cécité partielle, hémorragie faciale, désorientation.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2</strong></td>
+                                    <td><strong>Cou / Trachée</strong></td>
+                                    <td>Bras Droit (Porteur d'arme)</td>
+                                    <td>Risque d'asphyxie, perte d'essoufflement immédiate.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3</strong></td>
+                                    <td><strong>Tête / Boîte Crânienne</strong></td>
+                                    <td>Bras Gauche (Bouclier)</td>
+                                    <td>Commotion, épreuve de Constitution pour rester conscient.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4</strong></td>
+                                    <td><strong>Poumons / Cœur</strong></td>
+                                    <td>Abdomen / Côtes</td>
+                                    <td>Dégâts massifs, perforation, incapacité respiratoire.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5-6</strong></td>
+                                    <td><strong>Torse / Dos</strong></td>
+                                    <td>Cuisse / Genou / Jambe</td>
+                                    <td>Encaissement standard, perte de motricité si jambe brisée.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Formule Complète des Dégâts Réels</div>
+                        <div class="formula-math">
+                            <span class="hl-ruby">Dégâts Subis</span> = (Dégâts Arme + Bonus Entraînement + <span class="hl-cyan">&Delta; Touche</span>) &minus; <span class="hl-gold">Constitution</span> &minus; <span class="hl-emerald">Armure</span>
+                        </div>
+                        <div class="formula-desc">
+                            Si le total final est inférieur ou égal à zéro, le corps du personnage <strong>encaisse le choc</strong> grâce à sa musculature et son blindage sans subir de blessure incapacitante.
+                        </div>
+                    </div>
+
+                    <h3>26.2 Combat Impliquant des Véhicules</h3>
+                    <p>
+                        Qu'il s'agisse d'une charrette médiévale, d'un tank d'assaut, d'un speeder de combat ou d'un croiseur stellaire, les règles mécaniques sont unifiées.
+                    </p>
+
+                    <div class="cards-grid-2">
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Zones Essentielles</span>
+                                <span class="pill-badge ruby">Vitales</span>
+                            </div>
+                            <div class="spec-card-world">Cockpit // Moteur // Cadre // Rails</div>
+                            <p>
+                                La destruction des points de vie d'une zone essentielle <strong>met immédiatement hors service le véhicule</strong> (explosion, panne motrice complète ou écrasement catastrophique).
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill ruby">Destruction Véhicule</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Zones Superficielles</span>
+                                <span class="pill-badge cyan">Systèmes Auxiliaires</span>
+                            </div>
+                            <div class="spec-card-world">Guidon // Canons // Passagers // Queue</div>
+                            <p>
+                                La destruction d'une zone superficielle désactive uniquement l'usage de l'équipement lié (perte des freins, enrayement de la tourelle laser, dépressurisation d'un pod latéral).
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill cyan">Perte Fonctionnelle</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Échelle des Calibres & Seuils de Blindage</h4>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Palier de Points de Vie</th>
+                                    <th>Catégorie d'Armement Capable d'Endommager</th>
+                                    <th>Exemples Typiques de Véhicules</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1 à 10 PV</strong></td>
+                                    <td>Mains nues, armes de jet légères, flèches, pistolets</td>
+                                    <td><strong>Vélo :</strong> Guidon (Sup 4pv), Cadre (Ess 6pv), Pédalier (Ess 3pv), Roues (Ess 2pv).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>11 à 50 PV</strong></td>
+                                    <td>Armes de contact lourdes (marteau, hache), explosifs légers</td>
+                                    <td><strong>Charrette :</strong> Conducteur (Ess 30pv), Passagers (Sup 40pv), Roues (Ess 15pv).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>51 à 1 000 PV</strong></td>
+                                    <td>Armes de siège, canons de char, explosifs moyens</td>
+                                    <td><strong>Jet :</strong> Cockpit (Ess 100pv), Moteurs (Sup 90pv), Ailes (Ess 100pv).<br><strong>Tank :</strong> Canon (Sup 500pv), Corps (Ess 1000pv), Chenilles (Ess 300pv).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1 001 à 10 000 PV</strong></td>
+                                    <td>Armes lourdes de vaisseaux spatiaux, lasers arcaniques, torpilles</td>
+                                    <td><strong>Porte-avions :</strong> Contrôle (Ess 3000pv), Decks (Sup 6000pv), Flancs (Ess 6000pv).<br><strong>Croiseur Spatial (Aeschylus) :</strong> Coque (Ess 8000pv), Moteurs (Ess 4000pv), Pods & Lasers (Sup 2000pv).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>10 001+ PV</strong></td>
+                                    <td>Armement nucléaire, frappe orbitale de Cinquième Force</td>
+                                    <td>Stations spatiales orbitales, forteresses continentales, mégastructures.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="codex-signature">
+                        <div class="sig-meta">
+                            <strong>LIVRE VI DU CODEX UNIVERSEL</strong><br>
+                            Combat Tactique, Séquence de Round, Localisation & Engins Motorisés<br>
+                            <em>Règles officielles de duel et de bataille pour tous les théâtres d'affrontement.</em>
+                        </div>
+                        <div class="sig-stamp">
+                            <span class="stamp-title">COMBAT ENGAGÉ</span>
+                            <span class="stamp-date">TOUR : 10 SECONDES // VALIDÉ</span>
+                        </div>
+                    </div>
+
+                    <!-- PAGINATION ENTRE LIVRES -->
+                    <div class="chapter-pagination">
+                        <a href="livre_5.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Précédent</div>
+                                <div class="pagination-title">← Livre V : Temps & Causalité</div>
+                            </div>
+                        </a>
+                        <a href="livre_7.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Suivant</div>
+                                <div class="pagination-title">Livre VII : Santé, États & Blessures →</div>
+                            </div>
+                        </a>
+                    </div>
+
+                </article>
+            </main>
+
+            <!-- ================= RIGHT INSPECTOR ================= -->
+            <aside class="inspector">
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        Sur cette page
+                    </div>
+                    <ul class="toc-on-page">
+                        <li><a href="#chap-24">24. Tour de 10s & Économie des PA</a></li>
+                        <li><a href="#chap-25">25. Déplacements & Poursuites</a></li>
+                        <li><a href="#chap-26">26. Localisation & Véhicules</a></li>
+                    </ul>
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Télémétrie Tactique
+                    </div>
+                    <div class="telemetry-card">
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Durée Round :</span>
+                            <span class="telemetry-val">10 Secondes</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Injection PA :</span>
+                            <span class="telemetry-val">+1 au jet / PA</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Report PA :</span>
+                            <span class="telemetry-val">PA non dépensés cumulés</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Essoufflement :</span>
+                            <span class="telemetry-val">Plafond = Constitution</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Cible Visée :</span>
+                            <span class="telemetry-val">-1 ou 1 PA</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Seuil Choc :</span>
+                            <span class="telemetry-val">> Con &times; 2</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-stage-card">
+                    <h5>Prochaine Étape</h5>
+                    <p>Livre VII : Santé, États & Blessures (encaissement vs résiduel, compendium des 16 états préjudiciables et bénéfiques, soins et séquelles permanentes).</p>
+                    <a href="livre_7.html" class="btn-step" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                        <span>Consulter Livre VII</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Script partagé -->
+    <script src="js/codex.js"></script>
+</body>
+</html>

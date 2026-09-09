@@ -1,0 +1,909 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Jeu RP — Livre II : Paliers de Dés, Difficultés & Critiques</title>
+    <meta name="description" content="Livre II du Système de Jeu RP : Échelle des dés vivante (Die-Step), seuils de difficulté 0-34, tables de réussites critiques d2-d24 et challenges hors-combat.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet partagée -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ================= TOP BAR ================= -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <div class="brand-info">
+                        <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
+                    </div>
+                </a>
+                <nav class="breadcrumbs">
+                    <a href="index.html">Codex</a>
+                    <span>/</span>
+                    <span class="current">Livre II : Paliers de Dés & Épreuves</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    <span>Site Killtime</span>
+                </a>
+                <div class="search-trigger" id="searchTrigger">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <span>Rechercher...</span>
+                    <kbd class="search-kbd">Ctrl+K</kbd>
+                </div>
+                <button class="theme-btn" id="themeToggle" title="Basculer le thème">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= WRAPPER ================= -->
+        <div class="content-wrapper">
+            
+            <!-- ================= SIDEBAR NAVIGATION ================= -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        <span>Table des Matières</span>
+                        <span>9 Livres</span>
+                    </div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <!-- LIEN VERS L'UNIVERS KILLTIME -->
+                    <div class="external-site-group">
+                        <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
+                            <span class="nav-external-label">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <span>Site Killtime</span>
+                            </span>
+                            <span class="nav-item-badge badge-live">Univers ↗</span>
+                        </a>
+                    </div>
+
+                    <!-- PRÉFACE -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">00</span>
+                                <span>Prologue & Vision</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li>
+                                <a href="index.html#preface" class="nav-item-link">
+                                    <span>Préface : Le Souffle & Le Temps</span>
+                                    <span class="nav-item-badge badge-live">Disponible</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE I -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.I</span>
+                                <span>Bases & Création PJ</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE II (ACTIF) -->
+                    <div class="nav-group expanded">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.II</span>
+                                <span>Paliers de Dés & Épreuves</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="#chap-6" class="nav-item-link active"><span>6. L'Échelle des Dés (d2-d12+)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE III -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.III</span>
+                                <span>Arbres de Compétences</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IV -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IV</span>
+                                <span>5e Force & Magie</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE V -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.V</span>
+                                <span>Temps & Causalité</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VI</span>
+                                <span>Combat Tactique</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VII</span>
+                                <span>Santé, États & Blessures</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VIII</span>
+                                <span>Arsenal & Arcanotech</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IX -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IX</span>
+                                <span>Outils Web Interactifs</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE X -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.X</span>
+                                <span>Atlas des Mondes</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE XI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.XI</span>
+                                <span>Bestiaire &amp; Menaces</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ================= CONTENU PRINCIPAL (LIVRE II) ================= -->
+            <main class="main-content" id="livre-2">
+                
+                <header class="doc-header">
+                    <div class="doc-meta-tags">
+                        <span class="pill-badge cyan">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2M9 9h.01M15 9h.01"/></svg>
+                            Livre II — Résolution & Épreuves
+                        </span>
+                        <span class="pill-badge amber">Die-Step Polyédrique</span>
+                        <span class="pill-badge ruby">Critiques d2-d24</span>
+                    </div>
+
+                    <h1 class="doc-title">Livre II : Paliers de Dés, Difficultés & Tables des Critiques</h1>
+                    <p class="doc-subtitle">
+                        Le moteur probabiliste du jeu : l'échelle évolutive des dés polyédriques, les seuils de difficulté absolue de 0 à 34, le tableau universel des réussites critiques et la résolution des challenges étendus hors-combat.
+                    </p>
+                </header>
+
+                <article class="prose">
+
+                    <!-- ================= CHAPITRE 6 ================= -->
+                    <h2 id="chap-6">
+                        <span class="section-symbol">06.</span>
+                        L'Échelle des Dés Vivante (*Die-Step System*)
+                    </h2>
+
+                    <p class="lead">
+                        Contrairement aux systèmes rigides reposant sur un unique dé à vingt faces, notre mécanique adopte une <strong>échelle polyédrique évolutive</strong>. Vos compétences et vos attributs ne se traduisent pas par un modificateur abstrait, mais par un dé d'une taille physiquement supérieure, repoussant le plafond de vos réussites.
+                    </p>
+
+                    <h3>6.1 Table de Correspondance Attribut ➔ Dé</h3>
+                    <p>
+                        La valeur d'un attribut ou le rang moyen d'une compétence détermine directement le dé polyédrique lancé lors d'une Épreuve de Caractéristique (EC) :
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Valeur de Caractéristique</th>
+                                    <th>Palier & Dé Associé</th>
+                                    <th>Moyenne Statistique</th>
+                                    <th>Description & Statut</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1 – 2</strong></td>
+                                    <td><span class="pill-badge ruby">1d2</span> (-1 niveau de dé)</td>
+                                    <td>1.5</td>
+                                    <td>Défaillance ou atrophie sévère. Jet binaire très limité.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3</strong></td>
+                                    <td><span class="pill-badge amber">1d4</span> (Dé neutre de base)</td>
+                                    <td>2.5</td>
+                                    <td>Moyenne naturelle d'un adulte sain non entraîné.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4 – 5</strong></td>
+                                    <td><span class="pill-badge cyan">1d6</span> (+1 niveau de dé)</td>
+                                    <td>3.5</td>
+                                    <td>Condition physique ou intellectuelle supérieure à la moyenne.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>6 – 7</strong></td>
+                                    <td><span class="pill-badge cyan">1d8</span> (+2 niveaux de dé)</td>
+                                    <td>4.5</td>
+                                    <td>Pratique professionnelle affirmée, talents notables.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>8 – 9</strong></td>
+                                    <td><span class="pill-badge cyan">1d10</span> (+3 niveaux de dé)</td>
+                                    <td>5.5</td>
+                                    <td>Haut niveau d'expertise, vétéran aguerri.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>10</strong></td>
+                                    <td><span class="pill-badge emerald">1d12</span> (+4 niveaux de dé)</td>
+                                    <td>6.5</td>
+                                    <td>Maîtrise d'élite, sommum du potentiel mortel standard.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>11 – 13</strong></td>
+                                    <td><span class="pill-badge emerald">2d6</span></td>
+                                    <td>7.0</td>
+                                    <td>Seuil surhumain ou arcanique avancé (courbe en cloche).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>14 – 16</strong></td>
+                                    <td><span class="pill-badge emerald">2d8</span></td>
+                                    <td>9.0</td>
+                                    <td>Puissance cinétique majeure ou amplification magique.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>17 – 19</strong></td>
+                                    <td><span class="pill-badge emerald">2d10</span></td>
+                                    <td>11.0</td>
+                                    <td>Entités héroïques légendaires ou moteurs de 5e force.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>20+</strong></td>
+                                    <td><span class="pill-badge emerald">2d12</span> ➔ <span class="pill-badge emerald">2d12+10</span></td>
+                                    <td>13.0+</td>
+                                    <td>Plafond absolu de compétence (échelle cosmique / *Godlike*).</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout arcane">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+                            Règle d'Or de l'Entraînement
+                        </div>
+                        <div class="callout-body">
+                            Chaque niveau d'<strong>Entraînement</strong> acquis dans une compétence confère un <strong>bonus permanent de +1 niveau de dé</strong>.<br>
+                            <em>Exemple :</em> Un personnage ayant <strong>3 en Agilité</strong> (dé de base 1d4) mais bénéficiant de <strong>2 entraînements</strong> en <em>Maniement des armes de jet</em> lance <strong>1d8</strong> (1d4 ➔ 1d6 ➔ 1d8) lors de ses tirs !
+                        </div>
+                    </div>
+
+                    <h3>6.2 Analyse Statistique des Confrontations</h3>
+                    <p>
+                        L'avantage conféré par un dé supérieur n'est pas seulement d'atteindre un résultat plus élevé, mais de dominer statistiquement son opposant lors des confrontations directes :
+                    </p>
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Confrontation Directe</th>
+                                    <th>Probabilité de Victoire</th>
+                                    <th>Chance de Réussite Critique</th>
+                                    <th>Commentaire Probabiliste</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1d4 vs 1d2</strong></td>
+                                    <td><strong>83%</strong> en faveur du d4</td>
+                                    <td>25% (sur 4) vs 50% (sur 2)</td>
+                                    <td>Le dé supérieur l'emporte 5 fois sur 6 face à une cible atrophique.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1d6 vs 1d4</strong></td>
+                                    <td><strong>75%</strong> en faveur du d6</td>
+                                    <td>16.7% vs 25%</td>
+                                    <td>Un combattant entraîné domine nettement un novice (15 sur 20 issues).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1d8 vs 1d6</strong></td>
+                                    <td><strong>64%</strong> en faveur du d8</td>
+                                    <td>12.5% vs 16.7%</td>
+                                    <td>Avantage net de régularité et potentiel de dégâts accrus.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1d10 vs 1d8</strong></td>
+                                    <td><strong>61%</strong> en faveur du d10</td>
+                                    <td>10.0% vs 12.5%</td>
+                                    <td>L'écart se resserre mais le d10 permet de franchir les seuils d'armure lourde.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>1d12 vs 1d6</strong></td>
+                                    <td><strong>83.5%</strong> en faveur du d12</td>
+                                    <td>8.3% vs 16.7%</td>
+                                    <td>Domination écrasante d'un maître face à un soldat moyen.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ================= CHAPITRE 7 ================= -->
+                    <h2 id="chap-7">
+                        <span class="section-symbol">07.</span>
+                        Épreuves & Seuils de Difficulté (0 à 34)
+                    </h2>
+
+                    <p>
+                        Une <strong>Épreuve de Caractéristique (EC)</strong> survient dès qu'une action comporte une incertitude ou un péril. Le Meneur de Jeu fixe un seuil chiffré sur l'<strong>Échelle Universelle de Difficulté</strong>.
+                    </p>
+
+                    <h3>7.1 L'Échelle Universelle des Seuils</h3>
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Seuil Exigé</th>
+                                    <th>Désignation & Difficulté</th>
+                                    <th>Formule Typique</th>
+                                    <th>Accessibilité par Palier de Maîtrise</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="pill-badge emerald">0</span></td>
+                                    <td><strong>Réussite Automatique</strong></td>
+                                    <td>Aucun jet</td>
+                                    <td>Marcher, parler, se relever sans obstacle.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge emerald">1 – 2</span></td>
+                                    <td><strong>Extrêmement Facile</strong></td>
+                                    <td>1d4 - 3</td>
+                                    <td>Ouverture d'une porte normale, course sur sol plat.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge emerald">3</span></td>
+                                    <td><strong>Facile</strong></td>
+                                    <td>1d4 - 1</td>
+                                    <td>Difficulté standard pour un non-initié dans des conditions calmes.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">4 – 5</span></td>
+                                    <td><strong>Difficile / Très Difficile</strong></td>
+                                    <td>1d4 + 1</td>
+                                    <td>Franchir un obstacle sous le feu, escalader un mur humide.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">6 – 7</span></td>
+                                    <td><strong>Extrêmement Difficile</strong></td>
+                                    <td>1d4 + 3</td>
+                                    <td>Presque impossible pour un débutant (exige un d6 ou d8).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">8 – 9</span></td>
+                                    <td><strong>Formidable</strong></td>
+                                    <td>1d6 + 4</td>
+                                    <td>Impossible pour un débutant non entraîné.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">10 – 11</span></td>
+                                    <td><strong>Héroïque</strong></td>
+                                    <td>1d6 + 5</td>
+                                    <td>Presque impossible pour un initié.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">12 – 15</span></td>
+                                    <td><strong>Prodigieux</strong></td>
+                                    <td>1d8 + 6</td>
+                                    <td>Impossible pour un initié, accessible à un combattant avancé.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">16 – 19</span></td>
+                                    <td><strong>Légendaire</strong></td>
+                                    <td>1d10 + 8</td>
+                                    <td>Exige le rang d'Expert et une concentration totale.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">20 – 22</span></td>
+                                    <td><strong>Mythique</strong></td>
+                                    <td>1d12 + 10</td>
+                                    <td>Impossible pour un expert, réservé aux Maîtres absolus.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">34</span></td>
+                                    <td><strong>Plafond Cosmique</strong></td>
+                                    <td>2d12 + 10</td>
+                                    <td>Maximum absolu des compétences physiques et arcaniques.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>7.2 Paliers de Maîtrise & Réussites Automatiques</h3>
+                    <p>
+                        À mesure qu'un personnage progresse, les tâches autrefois complexes deviennent réflexes. Le système accorde des <strong>plages de réussite automatique</strong> selon le rang atteint :
+                    </p>
+
+                    <div class="cards-grid-3">
+                        <div class="spec-card">
+                            <div class="spec-card-top">
+                                <div class="spec-card-title">Débutant</div>
+                                <div class="spec-card-world">Rangs 1 à 3</div>
+                            </div>
+                            <p>
+                                <strong>Réussite auto :</strong> Seuil 0.<br>
+                                <strong>Plage de jet :</strong> 1 à 7.<br>
+                                <em>Chaque action incertaine requiert un jet complet de dé.</em>
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill amber">Novice</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-top">
+                                <div class="spec-card-title">Initié & Avancé</div>
+                                <div class="spec-card-world">Rangs 4 à 7</div>
+                            </div>
+                            <p>
+                                <strong>Réussite auto Initié :</strong> Seuils 1 à 4.<br>
+                                <strong>Réussite auto Avancé :</strong> Seuils 1 à 6.<br>
+                                <em>Les tâches triviales et moyennes sont réussies d'office sans lancer de dé.</em>
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill cyan">Confirmé</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-top">
+                                <div class="spec-card-title">Expert & Maître</div>
+                                <div class="spec-card-world">Rangs 8 à 10+</div>
+                            </div>
+                            <p>
+                                <strong>Réussite auto Expert :</strong> Seuils 1 à 8.<br>
+                                <strong>Réussite auto Maître :</strong> Seuils 1 à 10.<br>
+                                <em>Même sous haute pression, les actes complexes sont exécutés d'instinct.</em>
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill emerald">Élite Absolue</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>7.3 Épreuves Simples vs Challenges Opposés</h3>
+                    <p>
+                        Lors d'un <strong>Challenge Opposé</strong> (Attaque vs Parade, Tir vs Esquive, Tir au poignet Force vs Force) :
+                    </p>
+                    <ul>
+                        <li>Chaque protagoniste effectue son jet de dé, applique ses entraînements et ajoute ses points d'action investis.</li>
+                        <li>On soustrait le score du défenseur de celui de l'attaquant : ce résultat est le <strong>Différentiel Net</strong>.</li>
+                        <li>Si le différentiel est de <strong>0 ou plus</strong>, l'action réussit. En combat armé, un différentiel de 0 touche la cible mais sans pénétration de précision (l'impact frappe alors une zone aléatoire déterminée par 1d4 ou 1d6).</li>
+                    </ul>
+
+                    <!-- ================= CHAPITRE 8 ================= -->
+                    <h2 id="chap-8">
+                        <span class="section-symbol">08.</span>
+                        Réussites Critiques & Échecs Critiques
+                    </h2>
+
+                    <p class="lead">
+                        Le hasard récompense l'audace et sanctionne les maladresses par des basculements cinétiques immédiats sur le champ de bataille.
+                    </p>
+
+                    <h3>8.1 Déclenchement de la Réussite Critique</h3>
+                    <p>
+                        Une <strong>Réussite Critique</strong> survient chaque fois qu'un joueur obtient le <strong>score maximal sur son dé</strong> lors d'une épreuve (un 4 sur 1d4, un 6 sur 1d6, un 8 sur 1d8, un 10 sur 1d10, etc.).
+                    </p>
+                    <ul>
+                        <li>Si plusieurs dés sont lancés simultanément (ex: 2d6), il suffit qu'<strong>un seul dé affiche sa face maximale</strong> pour déclencher le critique.</li>
+                        <li><strong>Le Jet de Conséquence :</strong> Le joueur relance immédiatement un second dé de même calibre et consulte la table universelle des effets ci-dessous pour déterminer l'impact spectaculaire produit.</li>
+                    </ul>
+
+                    <h3>8.2 Table Universelle des Conséquences Critiques (d2 à d24)</h3>
+                    <p>
+                        À moins d'une mention contraire explicite, la conséquence d'une réussite critique dure <strong>1 tour complet</strong> :
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Résultat Relancé</th>
+                                    <th>Effet Offensif</th>
+                                    <th>Effet Défensif</th>
+                                    <th>Effet Social</th>
+                                    <th>Effet Utilitaire</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>1</strong></td>
+                                    <td>La cible tombe à terre</td>
+                                    <td>La cible tombe à terre</td>
+                                    <td>Interlocuteur déstabilisé</td>
+                                    <td>Tâche accomplie sans bruit</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>2</strong></td>
+                                    <td>Cible repoussée d'1 case</td>
+                                    <td>+1 EC bonus pour la cible</td>
+                                    <td>Ascendant psychologique</td>
+                                    <td>Gain d'élan cinétique</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>3</strong></td>
+                                    <td>Avantage contre la cible pour l'action</td>
+                                    <td>Défense impénétrable</td>
+                                    <td>Confiance immédiate</td>
+                                    <td>Précision chirurgicale</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>4</strong></td>
+                                    <td>+1 EC pour l'attaquant</td>
+                                    <td>+1 EC pour l'attaquant</td>
+                                    <td>+1 EC en persuasion</td>
+                                    <td>+1 EC pour la tâche</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>5</strong></td>
+                                    <td><strong>+2 Dégâts</strong> directs</td>
+                                    <td><strong>+2 Défense</strong> bonus</td>
+                                    <td>L'interlocuteur cède</td>
+                                    <td>Économie de matériel</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>6</strong></td>
+                                    <td><strong>Cible étourdie</strong> (-1 EC)</td>
+                                    <td>Cible étourdie en retour</td>
+                                    <td>Interlocuteur sidéré</td>
+                                    <td>Découverte inattendue</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>8</strong></td>
+                                    <td><span class="pill-badge cyan">Récupère 1 effet</span></td>
+                                    <td><span class="pill-badge cyan">Récupère 1 effet</span></td>
+                                    <td><span class="pill-badge cyan">Récupère 1 effet</span></td>
+                                    <td><span class="pill-badge cyan">Récupère 1 effet</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>9</strong></td>
+                                    <td><span class="pill-badge emerald">Récupère 1 Essoufflement</span></td>
+                                    <td><span class="pill-badge emerald">Récupère 1 Essoufflement</span></td>
+                                    <td>Regain de sang-froid</td>
+                                    <td>Regain de vigueur</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>10</strong></td>
+                                    <td><strong>Cible ralentie</strong> (PA doublés)</td>
+                                    <td>Attaquant ralenti</td>
+                                    <td>Opposition neutralisée</td>
+                                    <td>Ralentissement temporel</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>12</strong></td>
+                                    <td><strong>Cible déstabilisée</strong> (-2 EC)</td>
+                                    <td>Attaquant déstabilisé</td>
+                                    <td>Effondrement de l'argument</td>
+                                    <td>Composant réparé/sauvé</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>16</strong></td>
+                                    <td><span class="pill-badge amber">Récupère 2 PA</span></td>
+                                    <td><span class="pill-badge amber">Récupère 2 PA</span></td>
+                                    <td><span class="pill-badge amber">Récupère 2 PA</span></td>
+                                    <td><span class="pill-badge amber">Récupère 2 PA</span></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>20</strong></td>
+                                    <td><strong>3 Dégâts Résiduels</strong> continus</td>
+                                    <td>Contre-attaque automatique</td>
+                                    <td>Ralliement inconditionnel</td>
+                                    <td>Survoltage arcanique total</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>24</strong></td>
+                                    <td><span class="pill-badge ruby">Cible Inconsciente</span></td>
+                                    <td>Désarçonnement fatal ennemi</td>
+                                    <td>Soumission absolue</td>
+                                    <td>Succès mirifique critique</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>8.3 Les Échecs Critiques</h3>
+                    <p>
+                        Obtenir un <strong>1 naturel sur le dé de base</strong> sans bonus d'entraînement suffisant entraîne un échec critique. Le joueur relance le dé pour en mesurer la gravité :
+                    </p>
+                    <ul>
+                        <li><strong>Perte de PA</strong> : 1 à 2 PA perdus pour le tour en cours ou le tour suivant.</li>
+                        <li><strong>Déséquilibre</strong> : Le personnage trébuche, devient <em>Déstabilisé</em> (-2 EC) ou tombe <em>À terre</em>.</li>
+                        <li><strong>Incident matériel / arcanique</strong> : L'arme s'enraye, l'épée glisse de la main, ou la canalisation de la 5e Force produit un choc en retour.</li>
+                    </ul>
+
+                    <!-- ================= CHAPITRE 9 ================= -->
+                    <h2 id="chap-9">
+                        <span class="section-symbol">09.</span>
+                        Mécanique des Challenges Hors-Combat
+                    </h2>
+
+                    <p class="lead">
+                        Toutes les situations critiques ne sont pas des duels au corps-à-corps. L'infiltration d'un complexe sécurisé, la fuite d'un éboulement souterrain, la réparation d'urgence d'un réacteur de nytharite ou un débat diplomatique tendu sont gérés via le système de <strong>Challenges Étendus</strong>.
+                    </p>
+
+                    <h3>9.1 Structure d'un Challenge par Étapes</h3>
+                    <p>
+                        Un challenge se compose d'une <strong>suite ordonnée d'étapes (3 à 7 étapes en moyenne)</strong>. Chaque étape exige une Épreuve de Caractéristique précise (ex: Étape 1 : Discrétion, Étape 2 : Crochetage, Étape 3 : Informatique).
+                    </p>
+                    <ul>
+                        <li><strong>Dépense de PA Hors-Combat :</strong> Dans un challenge, les personnages disposent de leur quota habituel de PA, mais à la différence d'un combat, <strong>les PA ne reviennent pas automatiquement à chaque tour</strong> ! Chaque point investi pour sécuriser une étape est déduit de votre réserve globale pour l'ensemble du challenge.</li>
+                        <li><strong>Essoufflement Volontaire :</strong> Un joueur peut encaisser des points d'Essoufflement pour s'octroyer des bonus d'urgence, mais cet essoufflement persiste jusqu'au terme du défi.</li>
+                        <li><strong>Tentatives de Rattrapage (*Retries*) :</strong> En cas d'échec à une étape, le joueur dispose de <strong>0 à 3 tentatives de rattrapage</strong> selon la sévérité du scénario. Chaque réessai consomme du temps et réduit la récompense finale.</li>
+                    </ul>
+
+                    <!-- FORMULE DE RÉCOMPENSE DU CHALLENGE -->
+                    <div class="formula-box">
+                        <span class="formula-badge">Formule de Résolution du Challenge</span>
+                        <div class="formula-content">
+                            <div class="formula-math">
+                                Récompense = (<span class="hl-cyan">Étapes Réussies</span> × 2) − <span class="hl-ruby">Total Retries</span>
+                            </div>
+                            <div class="formula-desc">
+                                Calcule le nombre de <strong>cases de récompense ou d'XP bonus</strong> octroyées au groupe. Le score final ne peut jamais être inférieur à <strong>2 cases minimum</strong> si le challenge est validé.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout vital">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                            Exemple de Challenge Hors-Combat
+                        </div>
+                        <div class="callout-body">
+                            L'équipe tente d'infiltrer la salle des machines d'un croiseur impérial (4 étapes successives).<br>
+                            Ils réussissent les 4 étapes mais ont dû faire <strong>2 retries</strong> sur l'étape de piratage.<br>
+                            <strong>Calcul de récompense :</strong> (4 × 2) − 2 = <strong>6 cases de progression / XP cochées</strong> !
+                        </div>
+                    </div>
+
+                    <div class="codex-signature">
+                        <div class="sig-meta">
+                            <strong>LIVRE II DU CODEX UNIVERSEL</strong><br>
+                            Moteur Probabiliste, Paliers de Dés & Résolution Tactique<br>
+                            <em>Approuvé pour l'arbitrage universel des sessions de jeu.</em>
+                        </div>
+                        <div class="sig-stamp">
+                            <span class="stamp-title">DÉS HOMOLOGUÉS</span>
+                            <span class="stamp-date">ÉCHELLE POLYÉDRIQUE : STABLE</span>
+                        </div>
+                    </div>
+
+                    <!-- PAGINATION ENTRE LIVRES -->
+                    <div class="chapter-pagination">
+                        <a href="livre_1.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Précédent</div>
+                                <div class="pagination-title">← Livre I : Fondations & Création</div>
+                            </div>
+                        </a>
+                        <a href="livre_3.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Suivant</div>
+                                <div class="pagination-title">Livre III : Arbres de Compétences →</div>
+                            </div>
+                        </a>
+                    </div>
+
+                </article>
+
+            </main>
+
+            <!-- ================= RIGHT INSPECTOR ================= -->
+            <aside class="inspector">
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        Sur cette page
+                    </div>
+                    <ul class="toc-on-page">
+                        <li><a href="#chap-6">06. L'Échelle des Dés (d2-d12+)</a></li>
+                        <li><a href="#chap-7">07. Difficultés & Seuils (0-34)</a></li>
+                        <li><a href="#chap-8">08. Tables des Critiques (d2-d24)</a></li>
+                        <li><a href="#chap-9">09. Challenges Hors-Combat</a></li>
+                    </ul>
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Télémétrie Résolution
+                    </div>
+                    <div class="telemetry-card">
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Échelle Dés :</span>
+                            <span class="telemetry-val">d2 ➔ 2d12+10</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Entraînement :</span>
+                            <span class="telemetry-val">+1 Palier Dé</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Critique sur :</span>
+                            <span class="telemetry-val">Face Maximale</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Seuil Trivial :</span>
+                            <span class="telemetry-val">0 (Auto)</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Seuil Plafond :</span>
+                            <span class="telemetry-val">34 (Cosmique)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-stage-card">
+                    <h5>Prochaine Étape</h5>
+                    <p>Livre III : Arbres de Compétences & Spécialisations (Force, Agilité, Mental, Social et Instinct).</p>
+                    <a href="livre_3.html" class="btn-step">
+                        <span>Ouvrir Livre III</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Script partagé -->
+    <script src="js/codex.js"></script>
+</body>
+</html>

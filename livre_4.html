@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Jeu RP — Livre IV : La Cinquième Force & La Magie</title>
+    <meta name="description" content="Livre IV du Système de Jeu RP : Physique de la Cinquième Force, résonance de nytharite, moteurs arcaniques, 6 stades de télépathie, liens psychiques et atelier modulaire de pouvoirs.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet partagée -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ================= TOP BAR ================= -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <div class="brand-info">
+                        <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
+                    </div>
+                </a>
+                <nav class="breadcrumbs">
+                    <a href="index.html">Codex</a>
+                    <span>/</span>
+                    <span class="current">Livre IV : 5e Force & Magie</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    <span>Site Killtime</span>
+                </a>
+                <div class="search-trigger" id="searchTrigger">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <span>Rechercher...</span>
+                    <kbd class="search-kbd">Ctrl+K</kbd>
+                </div>
+                <button class="theme-btn" id="themeToggle" title="Basculer le thème">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= WRAPPER ================= -->
+        <div class="content-wrapper">
+            
+            <!-- ================= SIDEBAR NAVIGATION ================= -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        <span>Table des Matières</span>
+                        <span>9 Livres</span>
+                    </div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <!-- LIEN VERS L'UNIVERS KILLTIME -->
+                    <div class="external-site-group">
+                        <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
+                            <span class="nav-external-label">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <span>Site Killtime</span>
+                            </span>
+                            <span class="nav-item-badge badge-live">Univers ↗</span>
+                        </a>
+                    </div>
+
+                    <!-- PRÉFACE -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">00</span>
+                                <span>Prologue & Vision</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE I -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.I</span>
+                                <span>Bases & Création PJ</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE II -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.II</span>
+                                <span>Paliers de Dés & Épreuves</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE III -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.III</span>
+                                <span>Arbres de Compétences</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IV (ACTIF) -->
+                    <div class="nav-group expanded">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IV</span>
+                                <span>5e Force & Magie</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="#chap-14" class="nav-item-link active"><span>14. Physique de la 5e Force</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE V -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.V</span>
+                                <span>Temps & Causalité</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VI</span>
+                                <span>Combat Tactique</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VII</span>
+                                <span>Santé, États & Blessures</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VIII</span>
+                                <span>Arsenal & Arcanotech</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IX -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IX</span>
+                                <span>Outils Web Interactifs</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE X -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.X</span>
+                                <span>Atlas des Mondes</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE XI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.XI</span>
+                                <span>Bestiaire &amp; Menaces</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ================= CONTENU PRINCIPAL (LIVRE IV) ================= -->
+            <main class="main-content" id="livre-4">
+                
+                <header class="doc-header">
+                    <div class="doc-meta-tags">
+                        <span class="pill-badge cyan">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                            Livre IV — Arcanotech & Psyché
+                        </span>
+                        <span class="pill-badge amber">La Cinquième Force</span>
+                        <span class="pill-badge ruby">Atelier XP = PA</span>
+                    </div>
+
+                    <h1 class="doc-title">Livre IV : La Cinquième Force & La Magie</h1>
+                    <p class="doc-subtitle">
+                        La réconciliation de l'arcanisme et de la physique quantique : résonance des cristaux de nytharite, moteurs magiques, échelons d'évolution neuronale de la télépathie et de la télékinésie, liens symbiotiques et atelier de création modulaire de sortilèges.
+                    </p>
+                </header>
+
+                <article class="prose">
+
+                    <!-- ================= CHAPITRE 14 ================= -->
+                    <h2 id="chap-14">
+                        <span class="section-symbol">14.</span>
+                        Physique de la Cinquième Force & Résonance Nytharite
+                    </h2>
+
+                    <p class="lead">
+                        Dans notre cosmologie, la magie n'est pas un caprice surnaturel : elle est une <strong>cinquième interaction fondamentale</strong> unifiée de l'univers, distincte de la gravitation, de l'électromagnétisme, de l'interaction forte et de l'interaction faible. Elle interagit directement avec les particules subatomiques dès lors que certaines conditions de résonance sont réunies.
+                    </p>
+
+                    <h3>14.1 Conducteurs Arcaniques & Cristallographie Nytharite</h3>
+                    <p>
+                        Si le champ de la Cinquième Force est omniprésent à l'état latent, il demeure invisible aux instruments conventionnels. Il ne se manifeste physiquement que lorsqu'il entre en résonance avec des matériaux spécifiques appelés <strong>conducteurs arcaniques</strong>, au premier rang desquels figurent les <strong>cristaux de Nytharite</strong>.
+                    </p>
+                    <ul>
+                        <li><strong>Résonance Calibrée :</strong> Lorsqu'un cristal de nytharite reçoit une impulsion énergétique adéquate (bio-électrique, neurale ou mécanique), il entre dans un état de vibration harmonique capable d'amplifier et de canaliser la Cinquième Force ambiante.</li>
+                        <li><strong>Cycle Auto-Entretenu :</strong> Une fois stabilisée, cette oscillation génère un champ auto-entretenu convertissant l'énergie du vide arcanique en poussée cinétique, onde thermique ou barrière de force.</li>
+                    </ul>
+
+                    <div class="callout arcane">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a10 10 0 0 0 0 20v-2a8 8 0 0 1 0-16V2z"/></svg>
+                            Vulnérabilités & Champs Anti-Magie
+                        </div>
+                        <div class="callout-body">
+                            La manipulation de la Cinquième Force présente deux limites absolues :<br>
+                            1. <strong>La Saturation / Échauffement Arcanique :</strong> Un excès d'énergie non dissipée provoque une surcharge thermique brutale chez le lanceur ou le moteur.<br>
+                            2. <strong>Les Champs d'Interférence Destructifs (Anti-Magie) :</strong> Des fréquences électromagnétiques spécifiques peuvent désynchroniser le réseau cristallin de la nytharite, éteignant instantanément tout sort ou propulseur magique.
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 15 ================= -->
+                    <h2 id="chap-15">
+                        <span class="section-symbol">15.</span>
+                        Moteurs Magiques & Ingénierie Arcanique
+                    </h2>
+
+                    <p>
+                        L'intégration de la Cinquième Force dans l'ingénierie mécanique a permis la conception des <strong>Moteurs Magiques (*Magical Engines*)</strong>, moteurs compacts équipant les pods de transport interurbains, les vaisseaux de patrouille impériaux et les modules d'assaut.
+                    </p>
+
+                    <div class="cards-grid-2">
+                        <div class="spec-card">
+                            <div class="spec-card-title">1. Chambre de Résonance du Cœur</div>
+                            <p>
+                                Située au centre du moteur, elle loge un cristal de nytharite taillé selon des axes précis. Une impulsion d'allumage déclenche la résonance continue, générant le flux d'énergie de base sans combustible fossile.
+                            </p>
+                            <div class="spec-card-footer"><span class="tag-pill cyan">Génération Primaire</span></div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">2. Stabilisateurs de Champ</div>
+                            <p>
+                                Anneaux magnéto-arcaniques ceinturant le cœur. Ils modulent et sculptent l'énergie brute en vecteurs de poussée directionnelle, garantissant une maniabilité parfaite sans inertie violente.
+                            </p>
+                            <div class="spec-card-footer"><span class="tag-pill emerald">Vecteur & Contrôle</span></div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">3. Nœuds d'Infusion Élémentaire</div>
+                            <p>
+                                Injecteurs arcaniques qui teintent la Cinquième Force selon les impératifs du milieu : <strong>vecteur Air</strong> pour la sustentation/lévitation sans frottement, <strong>vecteur Feu</strong> pour la propulsion vélique à grande vitesse.
+                            </p>
+                            <div class="spec-card-footer"><span class="tag-pill amber">Air (Portance) / Feu (Poussée)</span></div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">4. Recyclage d'Énergie Dynamique</div>
+                            <p>
+                                Circuit fermé réabsorbant les émissions résiduelles du champ. Cette boucle de rétroaction élimine le gaspillage énergétique et permet aux pods de fonctionner des mois durant avec un entretien minimal.
+                            </p>
+                            <div class="spec-card-footer"><span class="tag-pill cyan">Rendement Quasi-Infini</span></div>
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 16 ================= -->
+                    <h2 id="chap-16">
+                        <span class="section-symbol">16.</span>
+                        Voies Arcaniques, Éléments & Portée des Sorts
+                    </h2>
+
+                    <p>
+                        Pour un être vivant, canaliser la Cinquième Force nécessite d'éveiller l'attribut <strong>Magie (MAG)</strong>. Les sorts et pouvoirs se déploient à travers trois grandes familles de canaux :
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Voie Arcanique</th>
+                                    <th>Éléments & Canaux Disponibles</th>
+                                    <th>Types d'Action Typiques</th>
+                                    <th>Caractéristiques Principales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Magie Élémentale</strong></td>
+                                    <td>Feu, Air, Eau, Terre, Foudre, Glace</td>
+                                    <td>Offensif, Défensif, Utilitaire</td>
+                                    <td>Manifestations thermodynamiques tangibles : flammes, blasts de vent, gel, arcs électriques.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Magie Primale</strong></td>
+                                    <td>Corps, Manipulation, Destruction, Ombre, Lumière, Poison</td>
+                                    <td>Offensif, Utilitaire</td>
+                                    <td>Altération biologique, pourrissement, éclairs aveuglants, dégâts résiduels toxiques.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Magie de l'Esprit (Psyché)</strong></td>
+                                    <td>Télépathie, Télékinésie, Clairsentience</td>
+                                    <td>Offensif, Défensif, Social, Utilitaire</td>
+                                    <td>Manipulation spatiale pure, lecture et réécriture de la pensée, calcul géométrique de la gravité.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- FORMULE DE PORTÉE MAGIQUE -->
+                    <div class="formula-box">
+                        <span class="formula-badge">Règle de Portée des Sorts</span>
+                        <div class="formula-content">
+                            <div class="formula-math">
+                                Portée = <span class="hl-cyan">Rang de Magie</span> + <span class="hl-gold">1 par Entraînement</span>
+                            </div>
+                            <div class="formula-desc">
+                                Un sort offensif (tel un <em>Projectile Magique</em>) frappe sans pénalité jusqu'à sa portée initiale en cases. Au-delà, chaque tranche supplémentaire égale à sa portée de base applique un <strong>malus de 1 niveau de dé</strong> sur le jet.
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="callout arcane">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            Exemple de Portée & Malus de Distance
+                        </div>
+                        <div class="callout-body">
+                            Menna possède <strong>5 en Magie</strong>, 1 entraînement en Magie et 1 entraînement en Magie de Feu.<br>
+                            <strong>Portée de base :</strong> 5 + 1 + 1 = <strong>7 cases</strong>.<br>
+                            Si elle attaque un ennemi situé à <strong>20 cases</strong> : la distance dépasse sa portée de base. Les tranches sont [1-7 cases : 0 malus], [8-14 cases : -1], [15-21 cases : -2]. Menna lance donc son sort avec un <strong>malus de 2</strong> (ou -2 paliers de dés).
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 17 ================= -->
+                    <h2 id="chap-17">
+                        <span class="section-symbol">17.</span>
+                        Paliers d'Évolution des Disciplines Psychiques
+                    </h2>
+
+                    <p class="lead">
+                        Les pouvoirs de l'esprit ne sont pas statiques : ils suivent une courbe d'évolution neuronale précise, s'étendant de la perception passive jusqu'au contrôle synaptique absolu de la matière et des êtres vivants.
+                    </p>
+
+                    <!-- LES 6 STADES DE LA TÉLÉPATHIE -->
+                    <h3>17.1 Télépathie : Les 6 Stades Neuronaux</h3>
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Stade Neuronal</th>
+                                    <th>Région Cérébrale Cible</th>
+                                    <th>Capacités & Pouvoirs Débloqués</th>
+                                    <th>Limites & Contraintes</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Stade 1 : Lecture de Surface</strong></td>
+                                    <td>Réseau du Mode par Défaut (DMN)</td>
+                                    <td>Perçoit les pensées errantes, rêveries, sentiments immédiats et distractions de la cible sans effort soutenu.</td>
+                                    <td>Purement réceptif. Impossible de lire les pensées actives ou de modifier quoi que ce soit.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stade 2 : Accès Profond & Émotions</strong></td>
+                                    <td>Cortex Préfrontal & Lobe Temporal</td>
+                                    <td>Lit les pensées actives, les processus de décision, les sous-entendus émotionnels et les souvenirs sensoriels récents.</td>
+                                    <td>Toujours observationnel. Ne peut pas altérer les pensées ou implanter d'idées.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stade 3 : Accès Mémoriel & Suggestion</strong></td>
+                                    <td>Hippocampe & Circuits de Mémoire</td>
+                                    <td>Explore les souvenirs stockés. Peut envoyer de brèves suggestions pour orienter subtilement l'humeur ou le choix de la cible.</td>
+                                    <td>Suggestions éphémères. Si l'ordre heurte la survie de la cible, il est rejeté.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stade 4 : Édition Mémorielle</strong></td>
+                                    <td>Voies Synaptiques Récentes</td>
+                                    <td>Modifie des souvenirs récents (moins de 24h), crée de fausses associations d'idées, altère temporairement l'état émotionnel.</td>
+                                    <td>Limité aux détails récents. Les croyances profondément ancrées résistent à l'édition.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stade 5 : Réécriture Complète</strong></td>
+                                    <td>Circuits Cognitifs Intégrés</td>
+                                    <td>Réécrit des pans entiers de mémoire, efface des souvenirs clés, scénarise et dicte les réactions émotionnelles de la cible.</td>
+                                    <td>Requiert une concentration continue. Draine l'énergie mentale à chaque tour d'application.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Stade 6 : Contrôle Neural & Possession</strong></td>
+                                    <td>Tronc Cérébral & Cortex Moteur</td>
+                                    <td><strong>Possession corporelle totale</strong> : le télépathe contrôle les mouvements, ressent à travers les sens de la cible et reconfigure sa personnalité.</td>
+                                    <td>Épuisement extrême. Risque de dissociation et instabilité psychologique pour le télépathe.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- TÉLÉKINÉSIE & SPATIAL CALCULUS -->
+                    <h3>17.2 Télékinésie : Le Calcul Spatial (*Spatial Calculus*)</h3>
+                    <p>
+                        La télékinésie opère comme un piratage des coordonnées géométriques de la gravité locale :
+                    </p>
+                    <ul>
+                        <li><strong>Entrée (Objets Légers) :</strong> Déplace stylos, dagues, clés. Portée visuelle directe, concentration complète.</li>
+                        <li><strong>Basique (Multi-Objets) :</strong> Maintient en lévitation plusieurs objets légers simultanément dans le champ de vision.</li>
+                        <li><strong>Intermédiaire (Masses Lourdes) :</strong> Soulève des meubles, caisses d'armement, corps d'adversaires. Tension sous effort prolongé.</li>
+                        <li><strong>Avancé (Précision Chirurgicale) :</strong> Démonte ou réassemble des mécanismes complexes à distance (ex: désarmer un percuteur de pistolet).</li>
+                        <li><strong>Maîtrise (Barrières de Force) :</strong> Déploie des boucliers cinétiques télékinétiques capables d'intercepter les tirs de projectiles physiques.</li>
+                        <li><strong>Élite (Manipulation Gravitationnelle) :</strong> Inverse la gravité locale sous les pieds d'une escouade ennemie ou compresse la matière (écrasement télékinétique ignorant l'armure physique).</li>
+                    </ul>
+
+                    <!-- PYROCINÉSIE & VITALITÉ CINÉTIQUE -->
+                    <h3>17.3 Pyrocinésie & Magie de Création</h3>
+                    <div class="cards-grid-2">
+                        <div class="spec-card">
+                            <div class="spec-card-title">Pyrocinésie & Thermodynamique</div>
+                            <p>
+                                Maîtrise de l'énergie cinétique moléculaire : du simple réchauffement d'objet à la formation de sphères ignées, déploiement d'écrans thermiques défensifs et, au palier élite, <strong>contrôle moléculaire thermique</strong> permettant le changement instantané d'état de la matière (sublimation, fusion).
+                            </p>
+                            <div class="spec-card-footer"><span class="tag-pill ruby">Offensif / Dégâts Résiduels</span></div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">Vitalité Cinétique & Création Primale</div>
+                            <p>
+                                Tissage instinctif des flux élémentaires organiques (terre, eau, vent, feu entrelacés). Manifestation d'un élan cinétique violent et création de matière spontanée. Impose un <strong>fardeau cinétique (*kinetic burden*)</strong> : risque de surchauffe corporelle nécessitant un ancrage de refroidissement.
+                            </p>
+                            <div class="spec-card-footer"><span class="tag-pill emerald">Organique / Dynamique</span></div>
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 18 ================= -->
+                    <h2 id="chap-18">
+                        <span class="section-symbol">18.</span>
+                        Liens Télépathiques & Résonance Symbiotique
+                    </h2>
+
+                    <p>
+                        Lorsque deux créatures éveillées partagent une affinité arcanique ou s'entraînent de concert, elles peuvent tisser un <strong>Lien Télépathique Permanent (*Telepathic Bond*)</strong> :
+                    </p>
+                    <ul>
+                        <li><strong>Communication Instantanée :</strong> Échange d'idées, de tactiques et d'alertes instantané à la vitesse de la pensée, <strong>sans consommer de PA de parole</strong> en combat.</li>
+                        <li><strong>Synchronisation Tactique :</strong> Les personnages liés peuvent coordonner leurs réactions défensives et s'accorder un bonus mutuel de <strong>+1 EC</strong> lorsqu'ils combattent à moins de 3 cases l'un de l'autre.</li>
+                        <li><strong>Ancrage Thermodynamique :</strong> Si l'un des protagonistes subit une surchauffe arcanique ou un fardeau cinétique, son partenaire peut absorber une fraction de cette énergie résiduelle pour stabiliser son intégrité physique.</li>
+                    </ul>
+
+                    <!-- ================= CHAPITRE 19 ================= -->
+                    <h2 id="chap-19">
+                        <span class="section-symbol">19.</span>
+                        Atelier de Création Modulaire de Pouvoirs
+                    </h2>
+
+                    <p class="lead">
+                        Le système offre un outil d'artisanat absolu : vous ne choisissez pas simplement des sorts dans une liste figée, <strong>vous concevez vos propres techniques et sortilèges</strong> grâce à une conversion mathématique transparente.
+                    </p>
+
+                    <!-- RÈGLE D'OR XP = PA -->
+                    <div class="formula-box">
+                        <span class="formula-badge">La Règle d'Or de Création</span>
+                        <div class="formula-content">
+                            <div class="formula-math">
+                                <span class="hl-gold">Coût de Création (XP)</span> = <span class="hl-cyan">Coût d'Activation (PA)</span>
+                            </div>
+                            <div class="formula-desc">
+                                Chaque point d'XP dépensé pour acheter des effets modulaires lors de la création d'un pouvoir détermine exactement le <strong>nombre de Points d'Action (PA)</strong> nécessaires pour l'activer en combat ! Un pouvoir de 6 XP coûtera 6 PA à lancer.
+                            </div>
+                        </div>
+                    </div>
+
+                    <h3>19.1 Fiche Technique d'un Pouvoir</h3>
+                    <p>
+                        Tout pouvoir conçu doit comporter les rubriques suivantes :
+                    </p>
+                    <ul>
+                        <li><strong>Nom :</strong> Titre représentatif de la technique (Gratuit).</li>
+                        <li><strong>Description :</strong> Aspect visuel, sonore et narratif de la manifestation (Gratuit).</li>
+                        <li><strong>Attribut Associé :</strong> L'attribut d'où provient l'XP investi (généralement Magie, mais peut être Force pour une technique martiale ou Agilité pour un tir spécial) (Gratuit).</li>
+                        <li><strong>Type de Pouvoir :</strong> Offensif, Défensif, Social ou Utilitaire (Gratuit).</li>
+                        <li><strong>Coût en PA & Type d'Action :</strong> Déterminé par le total des points d'effets (Action Principale, Réaction, etc.) (Gratuit).</li>
+                        <li><strong>Mécanique & Effets :</strong> Sélection d'effets achetés dans le catalogue officiel ci-dessous (Payant en XP).</li>
+                    </ul>
+
+                    <h3>19.2 Catalogue Officiel des Effets Achetables</h3>
+
+                    <!-- EFFETS OFFENSIFS -->
+                    <h4>Effets Offensifs (Attaques & Neutralisation)</h4>
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Coût (XP / PA)</th>
+                                    <th>Effet Modulaire Acheté</th>
+                                    <th>Propriétés & Cumul</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="pill-badge cyan">1 point</span></td>
+                                    <td><strong>+1 à l'Épreuve Offensive</strong></td>
+                                    <td>Cumulable (*stackable*)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge cyan">1 point</span></td>
+                                    <td><strong>+2 Dégâts</strong> directs</td>
+                                    <td>Cumulable (*stackable*)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge cyan">1 point</span></td>
+                                    <td>La cible perd <strong>2 PA</strong> (reportable au tour suivant)</td>
+                                    <td>Cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge cyan">1 point</span></td>
+                                    <td>La cible est <strong>Débalancée</strong> pour 1 tour</td>
+                                    <td>Durée cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">2 points</span></td>
+                                    <td>La cible <strong>tombe au sol</strong> (À terre)</td>
+                                    <td>Effet immédiat</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">3 points</span></td>
+                                    <td>La cible subit <strong>2 Dégâts Résiduels</strong> continus</td>
+                                    <td>Dégressif par tour (-1/tour)</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">3 points</span></td>
+                                    <td>La cible est <strong>Déstabilisée</strong> pour 1 tour (-2 EC)</td>
+                                    <td>Durée cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">3 points</span></td>
+                                    <td>La cible est <strong>Immobilisée</strong> pour 1 tour</td>
+                                    <td>Durée cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">3 points</span></td>
+                                    <td><strong>+1 Dégât Absolu</strong> à toutes les créatures à 1 case de zone</td>
+                                    <td>Zone & bonus cumulables</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">4 points</span></td>
+                                    <td>La cible est <strong>Ralentie</strong> (toute action coûte double PA)</td>
+                                    <td>Durée cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">6 points</span></td>
+                                    <td>La cible subit <strong>3 Dégâts Résiduels</strong> continus</td>
+                                    <td>Dégressif par tour</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">7 points</span></td>
+                                    <td>La cible est <strong>Paralysée</strong> pour 1 tour (incapacité totale)</td>
+                                    <td>Durée cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">8 points</span></td>
+                                    <td>La cible est <strong>Sonnée</strong> pour 1 tour (paralysée et chute au sol)</td>
+                                    <td>Durée cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">10 points</span></td>
+                                    <td>La cible subit <strong>4 Dégâts Résiduels</strong> continus</td>
+                                    <td>Dégressif par tour</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- EFFETS DÉFENSIFS & UTILITAIRES -->
+                    <h4>Effets Défensifs & Utilitaires</h4>
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Coût (XP / PA)</th>
+                                    <th>Effet Modulaire Acheté</th>
+                                    <th>Type</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="pill-badge cyan">1 point</span></td>
+                                    <td><strong>+1 à l'Épreuve Défensive ou Utilitaire</strong></td>
+                                    <td>Cumulable</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">3 points</span></td>
+                                    <td><strong>+2 Résistance Résiduelle</strong> (absorption bonus directe sur le calcul des blessures)</td>
+                                    <td>Défensif</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge amber">3 points</span></td>
+                                    <td>État <strong>Rapide</strong> pour 1 tour (+3 PA dédiés au déplacement)</td>
+                                    <td>Utilitaire</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">4 points</span></td>
+                                    <td>État <strong>Survolté</strong> pour 1 tour (+1 EC, +3 PA)</td>
+                                    <td>Utilitaire / Buff</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">7 points</span></td>
+                                    <td>État <strong>En Transe</strong> pour 1 tour (+2 EC, +5 PA)</td>
+                                    <td>Utilitaire / Buff Majeur</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">7 points</span></td>
+                                    <td>État <strong>En Vol</strong> pour 1 tour (déplacement tridimensionnel à demi-coût)</td>
+                                    <td>Utilitaire arcanique</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">8 points</span></td>
+                                    <td>État <strong>Accéléré</strong> pour 1 tour (tout déplacement coûte moitié PA)</td>
+                                    <td>Utilitaire</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="pill-badge ruby">9 points</span></td>
+                                    <td>État <strong>Lévitation</strong> sans effort pour 1 tour</td>
+                                    <td>Magie seulement</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="callout vital">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+                            Règle des Pouvoirs Hybrides
+                        </div>
+                        <div class="callout-body">
+                            Un pouvoir peut combiner des effets issus de plusieurs catégories (ex: un blast offensif qui confère simultanément l'état <em>Survolté</em> au lanceur).<br>
+                            <strong>Règle de surcoût :</strong> Le pouvoir coûte <strong>+1 XP additionnel par catégorie supplémentaire</strong>. Cet XP de pénalité ne compte pas dans le coût d'activation en PA en combat.
+                        </div>
+                    </div>
+
+                    <h3>19.3 Exemples Officiels de Sortilèges Conçus</h3>
+
+                    <div class="cards-grid-2">
+                        <!-- POUVOIR 1 -->
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Ralentissement Gravitationnel</span>
+                                <span class="pill-badge cyan">3 PA // Action Principale</span>
+                            </div>
+                            <div class="spec-card-world">Magie Utilitaire // Attribut : Magie</div>
+                            <p>
+                                <em>« L'atmosphère devient pesante et tout semble se figer autour de la cible. »</em><br><br>
+                                Le lanceur modifie la gravité locale sur la case cible. Il effectue une épreuve de Magie avec <strong>+1 au jet</strong> (1 pt). Si réussi, la cible <strong>perd 4 Points d'Action</strong> (2 pts) reportables au tour suivant.
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill cyan">Coût Création : 3 XP</span>
+                                <span class="tag-pill amber">Coût Combat : 3 PA</span>
+                            </div>
+                        </div>
+
+                        <!-- POUVOIR 2 -->
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Écrasement de Matière</span>
+                                <span class="pill-badge ruby">3 PA // Action Principale</span>
+                            </div>
+                            <div class="spec-card-world">Magie Offensive // Attribut : Magie</div>
+                            <p>
+                                <em>« En concentrant la gravité sur un membre précis, la matière cède et se compresse. »</em><br><br>
+                                Le lanceur vise une partie du corps adverse et lance son épreuve avec <strong>+1 au résultat</strong> (1 pt). Si réussi, l'impact inflige <strong>2 Dégâts Absolus</strong> ignorant la Constitution et le blindage physique de la cible (2 pts).
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill ruby">Coût Création : 3 XP</span>
+                                <span class="tag-pill amber">Coût Combat : 3 PA</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="codex-signature">
+                        <div class="sig-meta">
+                            <strong>LIVRE IV DU CODEX UNIVERSEL</strong><br>
+                            Physique Arcanique, Cinquième Force & Générateur Modulaire<br>
+                            <em>Homologué pour toutes les académies arcaniques et vaisseaux impériaux.</em>
+                        </div>
+                        <div class="sig-stamp">
+                            <span class="stamp-title">NYTHARITE CALIBRÉE</span>
+                            <span class="stamp-date">RÉSONANCE : 100% // OPÉRATIONNELLE</span>
+                        </div>
+                    </div>
+
+                    <!-- PAGINATION ENTRE LIVRES -->
+                    <div class="chapter-pagination">
+                        <a href="livre_3.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Précédent</div>
+                                <div class="pagination-title">← Livre III : Arbres de Compétences</div>
+                            </div>
+                        </a>
+                        <a href="livre_5.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Suivant</div>
+                                <div class="pagination-title">Livre V : Temps & Causalité →</div>
+                            </div>
+                        </a>
+                    </div>
+
+                </article>
+
+            </main>
+
+            <!-- ================= RIGHT INSPECTOR ================= -->
+            <aside class="inspector">
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        Sur cette page
+                    </div>
+                    <ul class="toc-on-page">
+                        <li><a href="#chap-14">14. Physique de la 5e Force</a></li>
+                        <li><a href="#chap-15">15. Moteurs Magiques</a></li>
+                        <li><a href="#chap-16">16. Voies Arcaniques & Portée</a></li>
+                        <li><a href="#chap-17">17. Évolution Psychique (6 Stades)</a></li>
+                        <li><a href="#chap-18">18. Liens & Résonance</a></li>
+                        <li><a href="#chap-19">19. Atelier Modulaire (XP=PA)</a></li>
+                    </ul>
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Télémétrie Arcanique
+                    </div>
+                    <div class="telemetry-card">
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Catalyseur :</span>
+                            <span class="telemetry-val">Nytharite</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Portée Sort :</span>
+                            <span class="telemetry-val">Mag + Entraînement</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Création Sort :</span>
+                            <span class="telemetry-val">XP = PA Combat</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Télépathie :</span>
+                            <span class="telemetry-val">6 Stades Neuronaux</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Hybridation :</span>
+                            <span class="telemetry-val">+1 XP / Type Add.</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-stage-card">
+                    <h5>Prochaine Étape</h5>
+                    <p>Livre V : Voyage Temporel, Chrono-Physique & Causalité (le fleuve du temps, propagation avant vs arrière, goulots d'étranglement et 8 échelons de clairsentience).</p>
+                    <a href="livre_5.html" class="btn-step" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                        <span>Consulter Livre V</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Script partagé -->
+    <script src="js/codex.js"></script>
+</body>
+</html>

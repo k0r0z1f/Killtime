@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Jeu RP — Livre III : Arbres de Compétences & Spécialisations</title>
+    <meta name="description" content="Livre III du Système de Jeu RP : Architecture des compétences, arbres de Force, Agilité, Constitution, Intelligence, Charisme, Sagesse et compendium des spécialisations.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet partagée -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ================= TOP BAR ================= -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <div class="brand-info">
+                        <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
+                    </div>
+                </a>
+                <nav class="breadcrumbs">
+                    <a href="index.html">Codex</a>
+                    <span>/</span>
+                    <span class="current">Livre III : Arbres de Compétences</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    <span>Site Killtime</span>
+                </a>
+                <div class="search-trigger" id="searchTrigger">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <span>Rechercher...</span>
+                    <kbd class="search-kbd">Ctrl+K</kbd>
+                </div>
+                <button class="theme-btn" id="themeToggle" title="Basculer le thème">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= WRAPPER ================= -->
+        <div class="content-wrapper">
+            
+            <!-- ================= SIDEBAR NAVIGATION ================= -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        <span>Table des Matières</span>
+                        <span>9 Livres</span>
+                    </div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <!-- LIEN VERS L'UNIVERS KILLTIME -->
+                    <div class="external-site-group">
+                        <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
+                            <span class="nav-external-label">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <span>Site Killtime</span>
+                            </span>
+                            <span class="nav-item-badge badge-live">Univers ↗</span>
+                        </a>
+                    </div>
+
+                    <!-- PRÉFACE -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">00</span>
+                                <span>Prologue & Vision</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE I -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.I</span>
+                                <span>Bases & Création PJ</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE II -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.II</span>
+                                <span>Paliers de Dés & Épreuves</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE III (ACTIF) -->
+                    <div class="nav-group expanded">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.III</span>
+                                <span>Arbres de Compétences</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="#chap-10" class="nav-item-link active"><span>10. Architecture & Typologie</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IV -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IV</span>
+                                <span>5e Force & Magie</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE V -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.V</span>
+                                <span>Temps & Causalité</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VI</span>
+                                <span>Combat Tactique</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VII</span>
+                                <span>Santé, États & Blessures</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VIII</span>
+                                <span>Arsenal & Arcanotech</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IX -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IX</span>
+                                <span>Outils Web Interactifs</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE X -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.X</span>
+                                <span>Atlas des Mondes</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE XI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.XI</span>
+                                <span>Bestiaire &amp; Menaces</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ================= CONTENU PRINCIPAL (LIVRE III) ================= -->
+            <main class="main-content" id="livre-3">
+                
+                <header class="doc-header">
+                    <div class="doc-meta-tags">
+                        <span class="pill-badge cyan">
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="4 7 4 4 20 4 20 7"/><line x1="9" y1="20" x2="15" y2="20"/><line x1="12" y1="4" x2="12" y2="20"/></svg>
+                            Livre III — Compétences & Spécialisations
+                        </span>
+                        <span class="pill-badge amber">Arbres de Maîtrise</span>
+                        <span class="pill-badge emerald">Catalogue Complet</span>
+                    </div>
+
+                    <h1 class="doc-title">Livre III : Arbres de Compétences & Spécialisations</h1>
+                    <p class="doc-subtitle">
+                        L'exhaustivité des compétences de base et spécialisées : calcul des scores par moyennes d'attributs, typologie d'action, règles de réaction défensive et compendium complet des techniques martiales, académiques et sociales.
+                    </p>
+                </header>
+
+                <article class="prose">
+
+                    <!-- ================= CHAPITRE 10 ================= -->
+                    <h2 id="chap-10">
+                        <span class="section-symbol">10.</span>
+                        Architecture & Typologie des Compétences
+                    </h2>
+
+                    <p class="lead">
+                        Une compétence n'est pas une valeur isolée : elle prend racine dans un ou plusieurs attributs principaux. Le système distingue rigoureusement la <strong>compétence de base</strong> (son assise générale) et la <strong>spécialisation</strong> (l'expertise pointue débloquant des effets critiques uniques).
+                    </p>
+
+                    <h3>10.1 Calcul du Rang de Base</h3>
+                    <p>
+                        Le score de base d'une compétence est égal à la <strong>moyenne arithmétique de ses attributs associés</strong> (arrondie au chiffre le plus proche). Si la compétence n'est liée qu'à un seul attribut, elle prend directement la valeur de cet attribut.
+                    </p>
+                    <ul>
+                        <li><em>Exemple 1 :</em> <strong>Maniement des armes de contact (FOR, AGI)</strong>. Avec Force 5 et Agilité 3, la moyenne est (5 + 3) / 2 = <strong>4</strong> (Dé associé : <strong>1d6</strong>).</li>
+                        <li><em>Exemple 2 :</em> <strong>Premiers Soins (ÉRU)</strong>. Avec Érudition 3, le score de base est <strong>3</strong> (Dé associé : <strong>1d4</strong>).</li>
+                        <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Avec Con 4, For 5, Agi 3, la moyenne est (4 + 5 + 3) / 3 = <strong>4</strong> (Dé associé : <strong>1d6</strong>).</li>
+                    </ul>
+
+                    <h3>10.2 Les 5 Catégories Fonctionnelles d'Action</h3>
+                    <div class="cards-grid-3">
+                        <div class="spec-card">
+                            <div class="spec-card-title">Offensif</div>
+                            <p>Actions visant à blesser, neutraliser, déstabiliser ou impacter directement une cible ennemie ou un obstacle physique.</p>
+                            <div class="spec-card-footer"><span class="tag-pill ruby">Attaque / Déstabilisation</span></div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-card-title">Défensif</div>
+                            <p>Réactions et parades visant à dévier un coup, encaisser une frappe, esquiver un projectile ou ériger un écran de protection.</p>
+                            <div class="spec-card-footer"><span class="tag-pill emerald">Parade / Esquive</span></div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-card-title">Utilitaire</div>
+                            <p>Actions physiques, techniques ou perceptives hors confrontation martiale directe (escalade, discrétion, réparation, soins).</p>
+                            <div class="spec-card-footer"><span class="tag-pill cyan">Technique / Déplacement</span></div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-card-title">Social</div>
+                            <p>Interactions directes avec des créatures pensantes (négociation, intimidation, séduction, interrogatoire, commandement).</p>
+                            <div class="spec-card-footer"><span class="tag-pill amber">Influence / Débat</span></div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-card-title">Hybride</div>
+                            <p>Capacités combinant plusieurs natures (ex: une frappe qui intimide, ou un mouvement d'esquive qui inflige un recul).</p>
+                            <div class="spec-card-footer"><span class="tag-pill cyan">Polyvalent (+1 XP)</span></div>
+                        </div>
+                    </div>
+
+                    <div class="callout vital">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                            Règle Cruciale : La Défense Non-Exclusive
+                        </div>
+                        <div class="callout-body">
+                            On peut utiliser une compétence de type défensif pour parer ou réagir à une attaque. Cependant, <strong>si la compétence utilisée n'est pas exclusivement défensive</strong> (ex: parer avec <em>Mains Nues</em> ou <em>Maniement des armes</em>), un <strong>malus de 1 niveau de dé</strong> est appliqué, <strong>à moins que le personnage possède une spécialisation dédiée</strong> (ex: spécialisation <em>Bloquer</em> ou <em>Maniement de l'épée</em>).
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 11 ================= -->
+                    <h2 id="chap-11">
+                        <span class="section-symbol">11.</span>
+                        Les Arbres Physiques (Force, Agilité, Constitution)
+                    </h2>
+
+                    <!-- ARBRE DE LA FORCE -->
+                    <h3>11.1 Arbre de la Force (FOR)</h3>
+                    <p>
+                        Gouverne la puissance musculaire brute, l'athlétisme lourd, le corps-à-corps contondant et le port d'armures imposantes.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Compétence de Base</th>
+                                    <th>Attributs Liés</th>
+                                    <th>Type</th>
+                                    <th>Spécialisations Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Mains Nues</strong></td>
+                                    <td>Force ou (Force, Agilité)</td>
+                                    <td>Offensif, Défensif, Utilitaire</td>
+                                    <td>Arts Martiaux, Agripper, Frapper, Étrangler</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Armes Contondantes</strong></td>
+                                    <td>Force</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td><strong>Marteau</strong>, Masse, Gourdin, Fléau</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Armes Tranchantes</strong></td>
+                                    <td>Force, Agilité</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td><strong>Épée Lourde</strong>, Hache de guerre, Zweihander</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Athlétisme</strong></td>
+                                    <td>Constitution, Force, Agilité</td>
+                                    <td>Utilitaire</td>
+                                    <td>Grimper, Nager, Courir, Soulever, Transporter</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Défense Corporelle</strong></td>
+                                    <td>Force</td>
+                                    <td>Défensif</td>
+                                    <td><strong>Bloquer</strong>, Protéger, Armures Lourdes</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h4>Actions Physiques de Force & Difficultés Associées</h4>
+                    <ul>
+                        <li><strong>Courir / Nager</strong> : Prérequis locomotion. Difficulté facile (1–3) d'ordinaire. Jet de Force exigé si la difficulté excède 5 ou en cas de courant/bourbier.</li>
+                        <li><strong>Pousser / Soulever</strong> : Déplace une masse importante. Challenge Force vs Force requis si une créature s'oppose (ex: retenir une herse qui se ferme).</li>
+                        <li><strong>Agripper</strong> : Nécessite un challenge Force vs Défense de la cible. Si réussi, la cible est immobilisée.</li>
+                        <li><strong>Porter une Armure Lourde</strong> : Exige un score de Force minimal ajusté. Si la Force du porteur chute sous le prérequis, une épreuve de Force est requise toutes les 10 minutes sous peine d'épuisement.</li>
+                    </ul>
+
+                    <!-- ARBRE DE L'AGILITÉ -->
+                    <h3>11.2 Arbre de l'Agilité (AGI)</h3>
+                    <p>
+                        Gouverne la locomotion aérienne, l'habileté manuelle fine, les armes perçantes, les armes à distance et le pilotage.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Compétence de Base</th>
+                                    <th>Attributs Liés</th>
+                                    <th>Type</th>
+                                    <th>Spécialisations Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Acrobatie</strong></td>
+                                    <td>Agilité, Rapidité</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Saut acrobatique, Équilibre, Se balancer, Chute contrôlée</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Discrétion</strong></td>
+                                    <td>Agilité ou (Agilité, Intelligence)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Déplacement silencieux, Camouflage, Ombres</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Esquive</strong></td>
+                                    <td>Agilité, Rapidité ou Instinct</td>
+                                    <td>Défensif Pur</td>
+                                    <td>Esquive acrobatique, Roulade d'évitement, Dérobée</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Armes Perçantes & Fines</strong></td>
+                                    <td>Agilité</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td><strong>Escrime</strong>, Rapière, Dague, Lance</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Projectiles / Armes à Feu</strong></td>
+                                    <td>Agilité ou (Agilité, Vision)</td>
+                                    <td>Offensif</td>
+                                    <td><strong>Pistolet</strong>, Tir de précision, Fusil d'assaut, <strong>Armes Lourdes</strong>, Arc</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Conduite & Pilotage</strong></td>
+                                    <td>Agilité, Rapidité</td>
+                                    <td>Utilitaire</td>
+                                    <td>Véhicules terrestres, Pods arcaniques, Vaisseaux, Montures</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Subterfuge Manuel</strong></td>
+                                    <td>Agilité, Intelligence</td>
+                                    <td>Utilitaire</td>
+                                    <td>Crochetage mécanique, Vol à la tire, Sabotage</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ARBRE DE LA CONSTITUTION -->
+                    <h3>11.3 Arbre de la Constitution (CON)</h3>
+                    <p>
+                        Gouverne la résistance biologique, l'endurance cardiovasculaire et le seuil d'encaissement face aux traumatismes.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Compétence de Base</th>
+                                    <th>Attributs Liés</th>
+                                    <th>Type</th>
+                                    <th>Spécialisations Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Endurance Physique</strong></td>
+                                    <td>Constitution, Force</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Résistance aux Blessures, Résistance aux Coups, Marche forcée</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Cardio</strong></td>
+                                    <td>Constitution</td>
+                                    <td>Utilitaire</td>
+                                    <td>Apnée prolongée, Récupération d'essoufflement, Sprint continu</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Système Immunitaire</strong></td>
+                                    <td>Constitution</td>
+                                    <td>Défensif</td>
+                                    <td>Résistance aux Maladies, Résistance aux Toxines & Poisons</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ================= CHAPITRE 12 ================= -->
+                    <h2 id="chap-12">
+                        <span class="section-symbol">12.</span>
+                        Les Arbres Mentaux, Sociaux & Instinctifs
+                    </h2>
+
+                    <!-- ARBRE INTELLIGENCE & ÉRUDITION -->
+                    <h3>12.1 Arbre de l'Intelligence & Érudition (INT / ÉRU)</h3>
+                    <p>
+                        Gouverne le raisonnement logique, la déduction cartésienne, les sciences académiques, la médecine et la techno-ingénierie.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Compétence de Base</th>
+                                    <th>Attributs Liés</th>
+                                    <th>Type</th>
+                                    <th>Spécialisations Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Académie</strong></td>
+                                    <td>Érudition, Intelligence</td>
+                                    <td>Utilitaire</td>
+                                    <td>Histoire des mondes, Linguistique, Économie impériale</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Premiers Soins</strong></td>
+                                    <td>Érudition</td>
+                                    <td>Utilitaire</td>
+                                    <td>Stabilisation d'urgence, Pose de garrot, Soins de terrain</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Médecine Avancée</strong></td>
+                                    <td>Érudition, Intelligence</td>
+                                    <td>Utilitaire</td>
+                                    <td><strong>Chirurgie</strong>, Traitement des infections, <strong>Apothicaire</strong>, Pharmacologie</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Ingénierie & Arcanotech</strong></td>
+                                    <td>Intelligence, Érudition</td>
+                                    <td>Utilitaire</td>
+                                    <td>Réparation de réacteurs, Cristallographie Nytharite, Piratage</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Penser / Stratégie</strong></td>
+                                    <td>Intelligence</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Tactique de combat, Analyse des points faibles, Anticipation</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ARBRE DU CHARISME -->
+                    <h3>12.2 Arbre du Charisme (CHA)</h3>
+                    <p>
+                        Gouverne l'ascendant psychologique, la persuasion verbale, l'intimidation et le commandement d'escouades.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Compétence de Base</th>
+                                    <th>Attributs Liés</th>
+                                    <th>Type</th>
+                                    <th>Spécialisations Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Communication</strong></td>
+                                    <td>Charisme, Intelligence</td>
+                                    <td>Social</td>
+                                    <td><strong>Tromper</strong>, <strong>Négocier</strong>, <strong>Charmer</strong>, <strong>Interroger</strong>, <strong>Provoquer</strong></td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Intimidation</strong></td>
+                                    <td>Charisme (ou Charisme, Force)</td>
+                                    <td>Social, Offensif</td>
+                                    <td>Soumission psychologique, Menace de mort, Regard de fer</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Leadership</strong></td>
+                                    <td>Charisme, Intelligence</td>
+                                    <td>Social, Utilitaire</td>
+                                    <td><strong>Mener des troupes</strong>, Ralliement moral, Coordination de feu</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ARBRE DE LA SAGESSE & INSTINCT -->
+                    <h3>12.3 Arbre de la Sagesse & Instinct (INS / SAG)</h3>
+                    <p>
+                        Gouverne la perception sensorielle immédiate, le sixième sens, la survie en milieu hostile et la résonance naturelle.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Compétence de Base</th>
+                                    <th>Attributs Liés</th>
+                                    <th>Type</th>
+                                    <th>Spécialisations Disponibles</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Observation</strong></td>
+                                    <td>Vision, Ouïe</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Détection des embuscades, Repérage de détails, Vigilance</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Écoute</strong></td>
+                                    <td>Ouïe</td>
+                                    <td>Utilitaire</td>
+                                    <td>Perception des bruits lointains, Écho acoustique, Auscultation</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Intuition</strong></td>
+                                    <td>Intelligence, Instinct</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td>Sixième sens du danger, Pressentiment, Détection du mensonge</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Nature & Survie</strong></td>
+                                    <td>Instinct ou (Intelligence, Érudition)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Traque, Orientation, Botanique sauvage, Construction d'abris</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Artisanat / Connaissance</strong></td>
+                                    <td>Sagesse, Intelligence</td>
+                                    <td>Utilitaire</td>
+                                    <td>Fabriquer, Forger, Sculpter, Enseigner</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- ================= CHAPITRE 13 ================= -->
+                    <h2 id="chap-13">
+                        <span class="section-symbol">13.</span>
+                        Compendium des Spécialisations & Effets Spéciaux
+                    </h2>
+
+                    <p class="lead">
+                        Une spécialisation coûte <strong>5 XP</strong> (liés à l'attribut concerné). Elle octroie des effets mécaniques spécifiques et lève l'interdiction de parer sans malus.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="codex-table">
+                            <thead>
+                                <tr>
+                                    <th>Spécialisation</th>
+                                    <th>Compétence / Attribut Source</th>
+                                    <th>Type</th>
+                                    <th>Effets Spéciaux & Règles Martiales</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Maniement de l'Épée</strong></td>
+                                    <td>Armes Tranchantes (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Permet de <strong>contre-attaquer les actions offensives</strong> en réaction (avec un malus de 1 sur la riposte). Pas de malus de défense non-exclusive.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Marteau de Guerre</strong></td>
+                                    <td>Armes Contondantes (FOR)</td>
+                                    <td>Offensif</td>
+                                    <td>Sur réussite nette : <strong>La cible tombe à terre</strong>, reçoit <strong>+2 Dégâts</strong> et inflige des <strong>Dégâts Absolus</strong> (ignore l'armure non énergétique).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Pistolet & Tir Rapide</strong></td>
+                                    <td>Projectiles (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Sur réussite nette : La cible est <strong>Ralentie</strong> pour 1 tour. Sur un résultat de 5 ou 6 sur le dé : <strong>La cible tombe au sol</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Armes Lourdes (Canons)</strong></td>
+                                    <td>Projectiles (AGI, FOR)</td>
+                                    <td>Offensif</td>
+                                    <td>Armement de gros calibre : confère <strong>+100 dégâts de masse</strong> contre les structures, fortifications et blindages de véhicules.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Escrime / Rapière</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Annule la pénalité de visée chirurgicale vers les points vitaux légers (bras, cou, jugulaire).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Arts Martiaux</strong></td>
+                                    <td>Mains Nues (FOR, AGI, RAP)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Permet d'utiliser l'Agilité ou la Force pour parer à mains nues sans pénalité. Désarçonnement possible sur différentiel de 2+.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Médecine & Chirurgie</strong></td>
+                                    <td>Académie / Soins (ÉRU, INT)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Permet de soigner les blessures critiques d'organes vitaux (estomac, poumons) et de stopper les dégâts résiduels de saignement.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tromper</strong></td>
+                                    <td>Communication (CHA, INT)</td>
+                                    <td>Social</td>
+                                    <td>Permet de duper un adversaire ou un PNJ par une épreuve sociale opposée à son Intuition/Instinct.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Négocier</strong></td>
+                                    <td>Communication (CHA)</td>
+                                    <td>Social</td>
+                                    <td>Permet de réduire les prix des marchandises impériales de 10% à 50% et de remporter des débats contradictoires.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Intimider</strong></td>
+                                    <td>Communication (CHA, FOR)</td>
+                                    <td>Social, Offensif</td>
+                                    <td>Effraie et soumet des cibles. En combat, peut forcer un sbire (*Petite Merde*) à fuir sur un différentiel net de 3+.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Charmer</strong></td>
+                                    <td>Communication (CHA)</td>
+                                    <td>Social</td>
+                                    <td>Gagne la confiance immédiate d'un PNJ non hostile. Accorde un avantage de +1 EC sur les interactions sociales ultérieures.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Mener (Commandement)</strong></td>
+                                    <td>Leadership (CHA, INT)</td>
+                                    <td>Social, Utilitaire</td>
+                                    <td>Dépense 2 PA pour conférer <strong>+1 PA ou +1 EC</strong> à tous les alliés situés à moins de 3 cases lors du tour en cours.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="codex-signature">
+                        <div class="sig-meta">
+                            <strong>LIVRE III DU CODEX UNIVERSEL</strong><br>
+                            Arbres de Maîtrise, Compétences & Spécialisations Martiales<br>
+                            <em>Homologué pour toutes les fiches PJ et PNJ.</em>
+                        </div>
+                        <div class="sig-stamp">
+                            <span class="stamp-title">COMPÉTENCES HOMOLOGUÉES</span>
+                            <span class="stamp-date">ARBRES PHYSIQUES & MENTAUX : ACTIFS</span>
+                        </div>
+                    </div>
+
+                    <!-- PAGINATION ENTRE LIVRES -->
+                    <div class="chapter-pagination">
+                        <a href="livre_2.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Précédent</div>
+                                <div class="pagination-title">← Livre II : Paliers de Dés & Épreuves</div>
+                            </div>
+                        </a>
+                        <a href="livre_4.html" class="pagination-btn">
+                            <div>
+                                <div class="pagination-label">Livre Suivant</div>
+                                <div class="pagination-title">Livre IV : 5e Force & Magie →</div>
+                            </div>
+                        </a>
+                    </div>
+
+                </article>
+
+            </main>
+
+            <!-- ================= RIGHT INSPECTOR ================= -->
+            <aside class="inspector">
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        Sur cette page
+                    </div>
+                    <ul class="toc-on-page">
+                        <li><a href="#chap-10">10. Architecture & Typologie</a></li>
+                        <li><a href="#chap-11">11. Arbres Physiques (FOR/AGI/CON)</a></li>
+                        <li><a href="#chap-12">12. Arbres Mentaux & Sociaux</a></li>
+                        <li><a href="#chap-13">13. Compendium Spécialisations</a></li>
+                    </ul>
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Télémétrie Arbres
+                    </div>
+                    <div class="telemetry-card">
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Calcul Rang :</span>
+                            <span class="telemetry-val">Moyenne Attributs</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Parade Non-Pure :</span>
+                            <span class="telemetry-val">-1 Niveau Dé</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Coût Spécialisation :</span>
+                            <span class="telemetry-val">5 XP Associés</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Arbres Physiques :</span>
+                            <span class="telemetry-val">3 (FOR, AGI, CON)</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Arbres Mentaux :</span>
+                            <span class="telemetry-val">3 (INT, CHA, INS)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-stage-card">
+                    <h5>Prochaine Étape</h5>
+                    <p>Livre IV : La Cinquième Force & La Magie (physique arcanique, moteurs nytharite, télépathie à 6 stades neuronaux et création de pouvoirs).</p>
+                    <a href="livre_4.html" class="btn-step" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                        <span>Consulter Livre IV</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Script partagé -->
+    <script src="js/codex.js"></script>
+</body>
+</html>

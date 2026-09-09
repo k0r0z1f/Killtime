@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système de Jeu RP — Livre IX : Outils Web Interactifs</title>
+    <meta name="description" content="Livre IX du Système de Jeu RP : Suite complète d'outils web interactifs. Générateur de fiche PJ automatisé, atelier de sorts modulaire (XP=PA), lanceur polyédrique avec tables de critiques instantanées et résolveur de challenges.">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Stylesheet partagée -->
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <!-- ================= TOP BAR ================= -->
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <div class="brand-info">
+                        <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
+                    </div>
+                </a>
+                <nav class="breadcrumbs">
+                    <a href="index.html">Codex</a>
+                    <span>/</span>
+                    <span class="current">Livre IX : Outils Web Interactifs</span>
+                </nav>
+            </div>
+
+            <div class="topbar-right">
+                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                    <span>Site Killtime</span>
+                </a>
+                <div class="search-trigger" id="searchTrigger">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <span>Rechercher...</span>
+                    <kbd class="search-kbd">Ctrl+K</kbd>
+                </div>
+                <button class="theme-btn" id="themeToggle" title="Basculer le thème">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <!-- ================= WRAPPER ================= -->
+        <div class="content-wrapper">
+            
+            <!-- ================= SIDEBAR NAVIGATION ================= -->
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title">
+                        <span>Table des Matières</span>
+                        <span>9 Livres</span>
+                    </div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                    </div>
+                </div>
+
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <!-- LIEN VERS L'UNIVERS KILLTIME -->
+                    <div class="external-site-group">
+                        <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
+                            <span class="nav-external-label">
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <span>Site Killtime</span>
+                            </span>
+                            <span class="nav-item-badge badge-live">Univers ↗</span>
+                        </a>
+                    </div>
+
+                    <!-- PRÉFACE -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">00</span>
+                                <span>Prologue & Vision</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE I -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.I</span>
+                                <span>Bases & Création PJ</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE II -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.II</span>
+                                <span>Paliers de Dés & Épreuves</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE III -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.III</span>
+                                <span>Arbres de Compétences</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IV -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IV</span>
+                                <span>5e Force & Magie</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE V -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.V</span>
+                                <span>Temps & Causalité</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VI</span>
+                                <span>Combat Tactique</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VII</span>
+                                <span>Santé, États & Blessures</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VIII</span>
+                                <span>Arsenal & Arcanotech</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Blanches</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE IX (ACTIF) -->
+                    <div class="nav-group expanded">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.IX</span>
+                                <span>Outils Web Interactifs</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="#chap-33" class="nav-item-link active"><span>33. Créateur de Fiche PJ Dynamique</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-34" class="nav-item-link"><span>34. Atelier de Sorts Modulaire (XP=PA)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges Étendus</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE X -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.X</span>
+                                <span>Atlas des Mondes</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Nouveau</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- LIVRE XI -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.XI</span>
+                                <span>Bestiaire &amp; Menaces</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                        </ul>
+                    </div>
+                </nav>
+            </aside>
+
+            <!-- ================= CONTENU PRINCIPAL (LIVRE IX) ================= -->
+            <main class="main-content">
+                <article class="doc-page prose">
+                    
+                    <div class="doc-badge-row">
+                        <span class="doc-badge-pill">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                            Livre IX — Outils Web Interactifs
+                        </span>
+                        <span class="doc-badge-pill amber">Calculateurs Temps Réel</span>
+                        <span class="doc-badge-pill emerald">Vanilla JS & Zero Dépendance</span>
+                    </div>
+
+                    <h1 class="doc-title">Livre IX : Suite d'Outils Web Interactifs & Calculateurs</h1>
+
+                    <div class="doc-lead">
+                        Cette suite d'outils interactifs matérialise l'ensemble des formules mathématiques, des mécaniques d'attribution et des tables du <strong>Système RP</strong>. Créez et exportez votre fiche de héros en direct, assemblez des sorts sur mesure selon la règle absolue <code>1 XP = 1 PA</code>, simulez vos jets de dés avec résolution automatique des réussites et échecs critiques, et pilotez vos challenges d'aventure sans calcul manuel.
+                    </div>
+
+                    <!-- ================= CHAPITRE 33 ================= -->
+                    <section class="doc-section" id="chap-33">
+                        <div class="section-badge">Chapitre 33</div>
+                        <h2>Générateur de Fiche de Personnage Dynamique</h2>
+                        
+                        <p>
+                            Configurez votre alter-ego. Les modificateurs raciaux, le calcul des <strong>Points d'Action</strong>, les <strong>seuils d'encaissement et de mort</strong> ainsi que la réserve d'essoufflement sont réévalués en temps réel dès chaque modification.
+                        </p>
+
+                        <div class="tool-section">
+                            <div class="tool-header-bar">
+                                <div class="tool-title">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+                                    Éditeur de Fiche PJ
+                                </div>
+                                <div class="tool-badge-row">
+                                    <span class="pill-badge cyan" id="csPointsLeft">Calcul en cours...</span>
+                                </div>
+                            </div>
+
+                            <!-- IDENTITÉ -->
+                            <div class="tool-grid-3">
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="csName">Nom du Personnage</label>
+                                    <input type="text" id="csName" class="tool-input" value="Roger de Vardis" placeholder="Ex: Valérian Kor">
+                                </div>
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="csRace">
+                                        <span>Espèce Jouable</span>
+                                        <span class="tool-label-hint" id="csRaceNote">Polyvalent</span>
+                                    </label>
+                                    <select id="csRace" class="tool-select">
+                                        <option value="humain">Humain (Aucun malus, sens min 3)</option>
+                                        <option value="drakka">Drakka (+1 FOR, +1 CON, -1 INT, -1 CHA)</option>
+                                        <option value="taurien">Taurien (+1 AGI, +1 RAP, affinité sylvestre)</option>
+                                        <option value="cleien">Cléien (-1 FOR, -1 CON, +1 INT, +1 ÉRU, +1 INS, sens min 4)</option>
+                                        <option value="mikyai">Mikyai (+1 FOR, +1 CON, -1 ÉRU, -1 CHA)</option>
+                                        <option value="vardien">Vardien / Frontalier (+1 CON, +1 INS)</option>
+                                    </select>
+                                </div>
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="csProfile">Profil & Budget</label>
+                                    <select id="csProfile" class="tool-select">
+                                        <option value="hero">Héros PJ (1 attribut à 5, 1 à 4, 15 pts secondaires)</option>
+                                        <option value="elite">PNJ Élite / Soldat (2 attributs à 4, 15 pts secondaires)</option>
+                                        <option value="sbire">PNJ Sbire (12 pts au total, max 3)</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <!-- ATTRIBUTS PHYSIQUES & MENTAUX -->
+                            <h4 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
+                                1. Les 8 Attributs Majeurs (Base brute avant modificateurs raciaux)
+                            </h4>
+                            
+                            <div class="tool-grid-4">
+                                <!-- FOR -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrFor">Force (FOR)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrFor" data-step="-1">-</button>
+                                        <input type="number" id="attrFor" class="stepper-val" value="3" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrFor" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <!-- AGI -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrAgi">Agilité (AGI)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrAgi" data-step="-1">-</button>
+                                        <input type="number" id="attrAgi" class="stepper-val" value="3" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrAgi" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <!-- CON -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrCon">Constitution (CON)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrCon" data-step="-1">-</button>
+                                        <input type="number" id="attrCon" class="stepper-val" value="3" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrCon" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <!-- RAP -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrRap">Rapidité (RAP)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrRap" data-step="-1">-</button>
+                                        <input type="number" id="attrRap" class="stepper-val" value="3" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrRap" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <!-- INT -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrInt">Intelligence (INT)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrInt" data-step="-1">-</button>
+                                        <input type="number" id="attrInt" class="stepper-val" value="3" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrInt" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <!-- ERU -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrEru">Érudition (ÉRU)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrEru" data-step="-1">-</button>
+                                        <input type="number" id="attrEru" class="stepper-val" value="3" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrEru" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <!-- CHA -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrCha">Charisme (CHA)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrCha" data-step="-1">-</button>
+                                        <input type="number" id="attrCha" class="stepper-val" value="2" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrCha" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <!-- INS -->
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrIns">Instinct / Sagesse (INS)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrIns" data-step="-1">-</button>
+                                        <input type="number" id="attrIns" class="stepper-val" value="2" min="1" max="10" readonly>
+                                        <button class="stepper-btn" data-target="attrIns" data-step="1">+</button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- SPÉCIAL : MAGIE & SENS -->
+                            <div class="tool-grid-3" style="margin-top: 15px;">
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="attrMag">Magie (5e Force éveillée)</label>
+                                    <div class="stepper-box">
+                                        <button class="stepper-btn" data-target="attrMag" data-step="-1">-</button>
+                                        <input type="number" id="attrMag" class="stepper-val" value="0" min="0" max="5" readonly>
+                                        <button class="stepper-btn" data-target="attrMag" data-step="1">+</button>
+                                    </div>
+                                </div>
+                                <div class="tool-form-group">
+                                    <label class="tool-label">Points de Miracle</label>
+                                    <div class="tool-input" style="font-family: var(--font-mono); font-weight: 700; color: var(--temporal-amber); text-align: center;">
+                                        1 Point Initial
+                                    </div>
+                                </div>
+                                <div class="tool-form-group">
+                                    <label class="tool-label">Perceptions Sensorielles</label>
+                                    <div class="tool-input" style="font-family: var(--font-mono); font-size: 0.8rem; text-align: center;">
+                                        Vision : 1d6 (min race) | Ouïe : 1d6 (min race)
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- DASHBOARD VITAL EN DIRECT -->
+                            <h4 style="margin: 24px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--temporal-amber); text-transform: uppercase;">
+                                2. Métriques Tactiques & Jauges de Survie Dérivées
+                            </h4>
+
+                            <div class="vitals-dashboard">
+                                <div class="vital-metric-card cyan">
+                                    <div class="vital-metric-title">Points d'Action (PA)</div>
+                                    <div class="vital-metric-num" id="vitalPa">7</div>
+                                    <div class="vital-metric-sub">Max(Agi, Int) + Rap + Min(Core)</div>
+                                </div>
+                                <div class="vital-metric-card emerald">
+                                    <div class="vital-metric-title">Encaissement (CAP)</div>
+                                    <div class="vital-metric-num" id="vitalCap">6</div>
+                                    <div class="vital-metric-sub">Constitution × 2</div>
+                                </div>
+                                <div class="vital-metric-card ruby">
+                                    <div class="vital-metric-title">Maximum Létal (MAX)</div>
+                                    <div class="vital-metric-num" id="vitalMax">15</div>
+                                    <div class="vital-metric-sub">Constitution × 5 (Mort / Coma)</div>
+                                </div>
+                                <div class="vital-metric-card amber">
+                                    <div class="vital-metric-title">Essoufflement</div>
+                                    <div class="vital-metric-num" id="vitalEss">3 tours</div>
+                                    <div class="vital-metric-sub">Plafond d'effort continu (CON)</div>
+                                </div>
+                            </div>
+
+                            <!-- COMPÉTENCES ENTRAÎNÉES -->
+                            <div style="margin-top: 20px; padding: 16px; background: rgba(0,0,0,0.25); border-radius: 8px; border: 1px dashed var(--border-subtle);">
+                                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px;">
+                                    <span style="font-family: var(--font-mono); font-size: 0.8rem; font-weight: 700; color: var(--text-primary);">
+                                        Compétences de Base Entraînées (+1 niveau de dé permanent)
+                                    </span>
+                                    <span class="pill-badge cyan" id="trainedSkillsChecked">0 / 3</span>
+                                </div>
+                                <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
+                                    Selon la règle officielle (Livre I, Chapitre 3), vous choisissez un nombre de compétences de base égal à votre score d'<strong>Érudition</strong> (<span id="vitalTrainedCount">3</span>).
+                                </p>
+                                <div class="tool-grid-4" style="font-size: 0.82rem;">
+                                    <label><input type="checkbox" class="skill-check" id="skMelee" data-skill="Armes de Mêlée"> Mêlée (FOR)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skTir" data-skill="Armes à Distance / Tir"> Tir & Viseur (AGI)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skEsquive" data-skill="Esquive Tactique"> Esquive (AGI)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skParade" data-skill="Parade / Bouclier"> Parade (FOR/AGI)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skAthletisme" data-skill="Athlétisme & Escalade"> Athlétisme (FOR)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skDiscretion" data-skill="Discrétion & Infiltration"> Discrétion (AGI)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skPilotage" data-skill="Pilotage & Conduite"> Pilotage (RAP)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skMedecine" data-skill="Médecine & Soins d'Urgence"> Médecine (ÉRU)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skArcanes" data-skill="Arcanes & 5e Force"> Arcanes (ÉRU/MAG)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skPiratage" data-skill="Piratage & Informatique"> Piratage (INT)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skPersuasion" data-skill="Persuasion & Tromperie"> Négociation (CHA)</label>
+                                    <label><input type="checkbox" class="skill-check" id="skSurvie" data-skill="Survie & Pistage"> Survie (INS)</label>
+                                </div>
+                            </div>
+
+                            <!-- BOUTONS D'ACTION -->
+                            <div class="tool-btn-row">
+                                <button class="tool-btn primary" id="csBtnCopy">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    Copier le Résumé de Fiche (Texte / Markdown)
+                                </button>
+                                <button class="tool-btn secondary" id="csBtnSave">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>
+                                    Sauvegarder dans le Navigateur
+                                </button>
+                                <button class="tool-btn secondary" id="csBtnLoad">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></svg>
+                                    Charger la Sauvegarde
+                                </button>
+                                <button class="tool-btn danger" id="csBtnReset">
+                                    Réinitialiser
+                                </button>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- ================= CHAPITRE 34 ================= -->
+                    <section class="doc-section" id="chap-34">
+                        <div class="section-badge">Chapitre 34</div>
+                        <h2>Atelier de Création Modulaire de Sorts (1 XP = 1 PA)</h2>
+                        
+                        <p>
+                            Selon la règle officielle du Livre IV (Chapitre 19), vous concevez librement vos techniques et sortilèges : <strong>chaque point d'effet acheté coûte 1 XP à l'apprentissage et consomme 1 PA à l'activation en combat</strong>. Les techniques combinant plusieurs catégories subissent un malus de <strong>+1 XP par catégorie additionnelle</strong> (sans surcoût de PA d'activation).
+                        </p>
+
+                        <div class="tool-section">
+                            <div class="tool-header-bar">
+                                <div class="tool-title">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+                                    Forge de Sortilèges & Pouvoirs Modulaires
+                                </div>
+                                <div class="tool-badge-row">
+                                    <span class="pill-badge amber">Règle d'or : 1 XP = 1 PA</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-grid-3">
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="spName">Nom du Pouvoir / Sort</label>
+                                    <input type="text" id="spName" class="tool-input" value="Éclair Causal Surchargé" placeholder="Nom du sort...">
+                                </div>
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="spAttr">Attribut Source d'Investissement</label>
+                                    <select id="spAttr" class="tool-select">
+                                        <option value="Magie (5e Force)">Magie (Voie Arcanique)</option>
+                                        <option value="Force (Technique Martiale)">Force (Prouesse Guerrière)</option>
+                                        <option value="Agilité (Tir Spécial)">Agilité (Tir Cinétique)</option>
+                                        <option value="Intelligence (Calcul Mental)">Intelligence (Protocole Neural)</option>
+                                    </select>
+                                </div>
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="spDesc">Description Narrative</label>
+                                    <input type="text" id="spDesc" class="tool-input" value="Décharge violette ionisante qui déchire le blindage et fait vaciller le temps." placeholder="Effet visuel, sonore...">
+                                </div>
+                            </div>
+
+                            <!-- MATRICE DES EFFETS MODULAIRES OFFICIELS -->
+                            <h4 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
+                                Sélection des Effets Modulaires Achetables
+                            </h4>
+
+                            <div class="tool-grid-2">
+                                <!-- SECTION OFFENSIVE -->
+                                <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
+                                    <h5 style="color: var(--vital-ruby); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
+                                        Effets Offensifs & Dégâts
+                                    </h5>
+                                    
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Bonus au Jet Offensif (+1 EC / point)</span>
+                                            <span class="tool-label-hint">1 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="1" data-category="offensif" data-label="+1 au jet d'attaque" data-unit="cran(s)" min="0" max="6" value="1">
+                                    </div>
+
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Dégâts Directs Additionnels (+2 Dégâts / point)</span>
+                                            <span class="tool-label-hint">1 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="1" data-category="offensif" data-label="+2 Dégâts directs" data-unit="palier(s)" min="0" max="10" value="2">
+                                    </div>
+
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Perte de PA Cible (-2 PA / point)</span>
+                                            <span class="tool-label-hint">1 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="1" data-category="offensif" data-label="La cible perd -2 PA" data-unit="cran(s)" min="0" max="5" value="0">
+                                    </div>
+
+                                    <div class="tool-grid-2" style="font-size: 0.8rem; margin-top: 8px;">
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="1" data-category="offensif" data-label="Cible Débalancée (1 tour)" data-unit="actif"> Cible Débalancée (1 pt)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="2" data-category="offensif" data-label="Cible Tombe au sol (À terre)" data-unit="actif"> Cible À Terre (2 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="3" data-category="offensif" data-label="Cible Déstabilisée (-2 EC)" data-unit="actif"> Cible Déstabilisée (3 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="3" data-category="offensif" data-label="Cible Immobilisée (1 tour)" data-unit="actif"> Cible Immobilisée (3 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="3" data-category="offensif" data-label="+1 Dégât Absolu en zone (1 case)" data-unit="actif"> +1 Absolu Zone (3 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="4" data-category="offensif" data-label="Cible Ralentie (PA doublés)" data-unit="actif"> Cible Ralentie (4 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="7" data-category="offensif" data-label="Cible Paralysée (1 tour)" data-unit="actif"> Cible Paralysée (7 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="8" data-category="offensif" data-label="Cible Sonnée (paralysée + chute)" data-unit="actif"> Cible Sonnée (8 pts)</label>
+                                    </div>
+                                </div>
+
+                                <!-- SECTION DÉFENSIVE & UTILITAIRE -->
+                                <div style="background: rgba(0,0,0,0.25); border: 1px solid var(--border-subtle); border-radius: 8px; padding: 14px;">
+                                    <h5 style="color: var(--arcane-cyan); font-family: var(--font-mono); font-size: 0.82rem; margin-bottom: 10px; text-transform: uppercase;">
+                                        Effets Défensifs & Utilitaires
+                                    </h5>
+
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Bonus au Jet Défensif / Utilitaire (+1 EC)</span>
+                                            <span class="tool-label-hint">1 XP / PA par cran</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="1" data-category="defensif" data-label="+1 à l'épreuve défensive" data-unit="cran(s)" min="0" max="6" value="0">
+                                    </div>
+
+                                    <div class="tool-form-group">
+                                        <label class="tool-label">
+                                            <span>Résistance Résiduelle (+2 Absorption)</span>
+                                            <span class="tool-label-hint">3 XP / PA</span>
+                                        </label>
+                                        <input type="number" class="tool-input spell-effect-input" data-cost="3" data-category="defensif" data-label="+2 Résistance résiduelle" data-unit="cran(s)" min="0" max="4" value="0">
+                                    </div>
+
+                                    <div class="tool-grid-2" style="font-size: 0.8rem; margin-top: 8px;">
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="3" data-category="utilitaire" data-label="État Rapide (+3 PA déplacement)" data-unit="actif"> État Rapide (3 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="4" data-category="utilitaire" data-label="État Survolté (+1 EC, +3 PA)" data-unit="actif"> État Survolté (4 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="7" data-category="utilitaire" data-label="État En Transe (+2 EC, +5 PA)" data-unit="actif"> État En Transe (7 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="7" data-category="utilitaire" data-label="État En Vol (déplacement 3D)" data-unit="actif"> État En Vol (7 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="8" data-category="utilitaire" data-label="État Accéléré (PA déplacement /2)" data-unit="actif"> État Accéléré (8 pts)</label>
+                                        <label><input type="checkbox" class="spell-effect-input" data-cost="9" data-category="utilitaire" data-label="Lévitation Arcanique sans effort" data-unit="actif"> Lévitation (9 pts)</label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- FICHE DU SORT EN DIRECT -->
+                            <div class="spell-card-preview" id="spCardPreview">
+                                <div class="spell-card-header">
+                                    <div>
+                                        <div class="spell-card-name" id="spCardName">Éclair Causal Surchargé</div>
+                                        <div class="spell-card-type" id="spCardType">OFFENSIF — Source : Magie</div>
+                                    </div>
+                                    <div class="spell-card-costs">
+                                        <div class="spell-pa-tag" id="spCardPa">3 PA</div>
+                                        <div class="spell-xp-tag" id="spCardXp">Coût : 3 XP</div>
+                                    </div>
+                                </div>
+                                <div class="spell-card-body">
+                                    <p id="spCardDesc">Décharge violette ionisante qui déchire le blindage et fait vaciller le temps.</p>
+                                    <ul class="spell-effects-list" id="spCardEffectsList">
+                                        <li>+1 au jet d'attaque (1 XP)</li>
+                                        <li>+4 Dégâts directs (2 XP)</li>
+                                    </ul>
+                                </div>
+                            </div>
+
+                            <div class="tool-btn-row">
+                                <button class="tool-btn primary" id="spBtnCopy">
+                                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+                                    Copier la Carte de Sort
+                                </button>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- ================= CHAPITRE 35 ================= -->
+                    <section class="doc-section" id="chap-35">
+                        <div class="section-badge">Chapitre 35</div>
+                        <h2>Lanceur Polyédrique & Résolution des Critiques Instantanée</h2>
+                        
+                        <p>
+                            Testez vos épreuves de caractéristiques (EC) ou challenges opposés. Le simulateur applique l'échelle universelle des dés (de <code>1d2</code> jusqu'à <code>2d12+10</code>), intègre l'injection de <strong>PA de précision</strong> (+1 par PA), calcule le <strong>différentiel net (&Delta;)</strong> et consulte automatiquement la <strong>table des critiques (d2 à d24)</strong> en cas de face maximale !
+                        </p>
+
+                        <div class="tool-section">
+                            <div class="tool-header-bar">
+                                <div class="tool-title">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="8.5" cy="8.5" r="1.5"/><circle cx="15.5" cy="15.5" r="1.5"/><circle cx="15.5" cy="8.5" r="1.5"/><circle cx="8.5" cy="15.5" r="1.5"/><circle cx="12" cy="12" r="1.5"/></svg>
+                                    Simulateur Polyédrique Tactique
+                                </div>
+                                <div class="tool-badge-row">
+                                    <span class="pill-badge emerald">Détection Critiques Auto</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-grid-3">
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="diceStepSelect">Échelon de Dé</label>
+                                    <select id="diceStepSelect" class="tool-select">
+                                        <option value="d2">1d2 (Échelon Infime)</option>
+                                        <option value="d4-1">1d4 - 1</option>
+                                        <option value="d4">1d4 (Échelon Faible)</option>
+                                        <option value="d4+1">1d4 + 1</option>
+                                        <option value="d4+2">1d4 + 2</option>
+                                        <option value="d4+3">1d4 + 3</option>
+                                        <option value="d6" selected>1d6 (Échelon Moyen / Standard)</option>
+                                        <option value="d6+1">1d6 + 1</option>
+                                        <option value="d6+2">1d6 + 2</option>
+                                        <option value="d8">1d8 (Échelon Supérieur)</option>
+                                        <option value="d8+2">1d8 + 2</option>
+                                        <option value="d10">1d10 (Échelon Avancé)</option>
+                                        <option value="d12">1d12 (Échelon Maître)</option>
+                                        <option value="d12+2">1d12 + 2</option>
+                                        <option value="2d8">2d8 (Échelon Héroïque)</option>
+                                        <option value="2d10">2d10 (Échelon Légendaire)</option>
+                                        <option value="2d12">2d12 (Échelon Mythique)</option>
+                                        <option value="2d12+10">2d12 + 10 (Plafond Cosmique 34)</option>
+                                    </select>
+                                </div>
+
+                                <div class="tool-form-group">
+                                    <label class="tool-label">
+                                        <span>Injection de PA (+1 / PA)</span>
+                                        <span class="tool-label-hint" id="dicePaVal">+0 PA</span>
+                                    </label>
+                                    <input type="range" id="dicePaBoost" class="tool-range" min="0" max="10" value="0">
+                                </div>
+
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="diceOtherMod">Autres Modificateurs (+/-)</label>
+                                    <input type="number" id="diceOtherMod" class="tool-input" value="0" min="-10" max="15">
+                                </div>
+                            </div>
+
+                            <div class="tool-grid-2" style="align-items: center;">
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="diceDc">Seuil de Difficulté ND (0 à 34)</label>
+                                    <input type="number" id="diceDc" class="tool-input" value="4" min="0" max="34">
+                                </div>
+                                <div style="padding-top: 15px;">
+                                    <label style="display: flex; align-items: center; gap: 8px; font-size: 0.85rem; color: var(--text-primary); cursor: pointer;">
+                                        <input type="checkbox" id="diceIsOpposed"> 
+                                        <span>Challenge Opposé (Attaquant vs Défenseur)</span>
+                                    </label>
+                                    <div id="opposedContainer" style="margin-top: 8px; display: none;">
+                                        <input type="number" id="diceDefRoll" class="tool-input" placeholder="Jet du défenseur..." value="3" style="width: 160px;">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- ZONE DE LANCER -->
+                            <div class="dice-arena">
+                                <div class="dice-display-box">
+                                    <div class="die-cube" id="diceCubeDisplay">
+                                        <div class="die-val" id="dieFaceVal">?</div>
+                                        <div class="die-sub" id="dieSubText">Prêt à rouler</div>
+                                    </div>
+                                </div>
+
+                                <div class="dice-total-banner" id="diceBannerTotal">
+                                    En attente du jet...
+                                </div>
+
+                                <button class="tool-btn primary" id="btnRollDice" style="font-size: 1rem; padding: 12px 30px;">
+                                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"/><circle cx="12" cy="12" r="2"/></svg>
+                                    LANCER LE DÉ TACTIQUE
+                                </button>
+
+                                <!-- CARTE RÉVÉLÉE EN CAS DE CRITIQUE -->
+                                <div class="crit-consequence-card" id="critConsequenceCard">
+                                    <div class="crit-consequence-header">
+                                        <span>RÉUSSITE CRITIQUE DÉCLENCHÉE !</span>
+                                        <span id="critRollVal">Jet de Conséquence : 6</span>
+                                    </div>
+                                    <div class="crit-effects-grid">
+                                        <div class="crit-effect-item">
+                                            <strong>Offensif</strong>
+                                            <span id="critOffText">Cible étourdie (-1 EC)</span>
+                                        </div>
+                                        <div class="crit-effect-item">
+                                            <strong>Défensif</strong>
+                                            <span id="critDefText">Cible étourdie en retour</span>
+                                        </div>
+                                        <div class="crit-effect-item">
+                                            <strong>Social</strong>
+                                            <span id="critSocText">Interlocuteur sidéré</span>
+                                        </div>
+                                        <div class="crit-effect-item">
+                                            <strong>Utilitaire</strong>
+                                            <span id="critUtilText">Découverte inattendue</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </section>
+
+                    <!-- ================= CHAPITRE 36 ================= -->
+                    <section class="doc-section" id="chap-36">
+                        <div class="section-badge">Chapitre 36</div>
+                        <h2>Résolveur de Challenges & Épreuves Prolongées</h2>
+                        
+                        <p>
+                            Gérez les infiltrations, courses-poursuites et réparations d'urgence. Le module applique la formule officielle de récompense : 
+                            <code>Récompense = (Étapes Réussies × 2) − Total Retries (min 2)</code>.
+                        </p>
+
+                        <div class="tool-section">
+                            <div class="tool-header-bar">
+                                <div class="tool-title">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                    Pilote de Challenge Séquentiel
+                                </div>
+                                <div class="tool-badge-row">
+                                    <span class="pill-badge amber" id="challengeRewardDisplay">0 case(s) de progression / XP</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-grid-2">
+                                <div class="tool-form-group">
+                                    <label class="tool-label" for="challengeStepCount">Nombre d'Étapes du Défi</label>
+                                    <select id="challengeStepCount" class="tool-select">
+                                        <option value="3">3 Étapes (Défi court / escarmouche)</option>
+                                        <option value="4" selected>4 Étapes (Infiltration standard)</option>
+                                        <option value="5">5 Étapes (Opération complexe)</option>
+                                        <option value="6">6 Étapes (Crise majeure)</option>
+                                        <option value="7">7 Étapes (Épopée / Survie extrême)</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; align-items: center; justify-content: flex-end;">
+                                    <button class="tool-btn secondary" id="btnResetChallenge">
+                                        Réinitialiser le Défi
+                                    </button>
+                                </div>
+                            </div>
+
+                            <!-- CONTAINER DES ÉTAPES -->
+                            <div class="challenge-steps-container" id="challengeStepsContainer">
+                                <!-- Généré dynamiquement en JS -->
+                            </div>
+
+                            <div style="margin-top: 15px; font-family: var(--font-mono); font-size: 0.85rem; font-weight: 700;" id="challengeStatusDisplay">
+                                Défi en attente d'arbitrage...
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- ================= CHAPITRE 37 ================= -->
+                    <section class="doc-section" id="chap-37">
+                        <div class="section-badge">Chapitre 37</div>
+                        <h2>Simulateur de Chronotrames & Clairsentience</h2>
+                        
+                        <p>
+                            Visualisez la propagation du fleuve temporel et les risques de distorsion selon le palier de clairsentience mobilisé (Livre V, Chapitres 20 à 22).
+                        </p>
+
+                        <div class="tool-section">
+                            <div class="tool-header-bar">
+                                <div class="tool-title">
+                                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                                    Radar de Dilatation Chronale
+                                </div>
+                                <div class="tool-badge-row">
+                                    <span class="pill-badge cyan">Effet Papillon Inversé</span>
+                                </div>
+                            </div>
+
+                            <div class="tool-form-group">
+                                <label class="tool-label" for="chronoTierSelect">Palier de Clairsentience Causal</label>
+                                <select id="chronoTierSelect" class="tool-select">
+                                    <option value="1">Palier 1 : Quelques Secondes (Anticipation de mêlée)</option>
+                                    <option value="2">Palier 2 : 1 à 10 Minutes (Courte vue tactique)</option>
+                                    <option value="3">Palier 3 : 1 à 24 Heures (Projection quotidienne)</option>
+                                    <option value="4">Palier 4 : 1 Semaine à 1 Mois (Prédictions stratégiques)</option>
+                                    <option value="5">Palier 5 : 1 An à 1 Décennie (Destinées de factions)</option>
+                                    <option value="6">Palier 6 : 1 Siècle (Ères planétaires)</option>
+                                    <option value="7">Palier 7 : 1 Millénaire (Âges galactiques)</option>
+                                    <option value="8">Palier 8 : Temps Géologique & Cosmique (Singularité)</option>
+                                </select>
+                            </div>
+
+                            <div class="cards-grid-2" style="margin-top: 20px;">
+                                <div class="spec-card">
+                                    <div class="spec-card-title">Portée & Investissement</div>
+                                    <p>
+                                        <strong>Horizon Temporel :</strong> <span id="chronoHorizon" style="color: var(--temporal-amber);">Quelques Secondes (Combat immédiat)</span><br>
+                                        <strong>Coût en PA de Maintien :</strong> <span id="chronoPaCost" style="color: var(--arcane-cyan); font-family: var(--font-mono); font-weight: 700;">2 PA</span>
+                                    </p>
+                                </div>
+                                <div class="spec-card">
+                                    <div class="spec-card-title">Topologie Causalité</div>
+                                    <p>
+                                        <strong>Goulot d'Étranglement :</strong> <span id="chronoBottleneck">Négligeable (Flux local stable)</span><br>
+                                        <strong>Risque de Paradoxe :</strong> <span id="chronoParadoxRisk" style="color: var(--vital-ruby); font-family: var(--font-mono); font-weight: 700;">0% — Dérive quasi impossible</span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+
+                    <!-- SIGNATURE CODEX UNIVERSEL -->
+                    <div class="codex-signature">
+                        <div class="sig-meta">
+                            <strong>SUITE D'OUTILS OFFICIELLE — LIVRE IX DU CODEX RP</strong><br>
+                            Moteurs Logiques Interactifs & Validateurs d'Arbitrage<br>
+                            <em>Conçu pour les tables réelles, les parties virtuelles et l'arbitrage instantané.</em>
+                        </div>
+                        <div class="sig-stamp">
+                            <span class="stamp-title">CODEX INTÉGRAL V2.4</span>
+                            <span class="stamp-date">10 LIVRES HOMOLOGUÉS</span>
+                        </div>
+                    </div>
+
+                    <!-- PAGINATION BAS DE PAGE -->
+                    <nav class="doc-pagination">
+                        <a href="livre_8.html" class="page-link prev">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+                            <div class="link-text">
+                                <span class="link-label">Livre Précédent</span>
+                                <span class="link-title">Livre VIII : Arsenal & Arcanotech</span>
+                            </div>
+                        </a>
+                        <a href="livre_10.html" class="page-link next">
+                            <div class="link-text">
+                                <span class="link-label">Livre Suivant</span>
+                                <span class="link-title">Livre X : Cosmologie & Atlas des Mondes</span>
+                            </div>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        </a>
+                    </nav>
+
+                </article>
+            </main>
+
+            <!-- ================= RIGHT INSPECTOR ================= -->
+            <aside class="inspector">
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        Sur cette page
+                    </div>
+                    <ul class="toc-on-page">
+                        <li><a href="#chap-33">33. Créateur de Fiche PJ</a></li>
+                        <li><a href="#chap-34">34. Atelier de Sorts (XP=PA)</a></li>
+                        <li><a href="#chap-35">35. Lanceur Polyédrique & Critiques</a></li>
+                        <li><a href="#chap-36">36. Résolveur de Challenges</a></li>
+                        <li><a href="#chap-37">37. Simulateur de Chronotrames</a></li>
+                    </ul>
+                </div>
+
+                <div class="inspector-section">
+                    <div class="inspector-title">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        Télémétrie Outils
+                    </div>
+                    <div class="telemetry-card">
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Fiche PJ :</span>
+                            <span class="telemetry-val">Connectée Live</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Sorts (XP=PA) :</span>
+                            <span class="telemetry-val">Actif & Exportable</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Dés Tactiques :</span>
+                            <span class="telemetry-val">d2 à 2d12+10</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Critiques :</span>
+                            <span class="telemetry-val">Auto-lookup d2-d24</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Challenges :</span>
+                            <span class="telemetry-val">Formule Auto</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="next-stage-card">
+                    <h5>Livre Suivant</h5>
+                    <p>Livre X : Cosmologie & Atlas des Mondes Connus (Univers, les 36 Élianes, galaxies, planètes et cités légendaires).</p>
+                    <a href="livre_10.html" class="btn-step" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                        <span>Consulter Livre X</span>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                    </a>
+                </div>
+            </aside>
+
+        </div>
+    </div>
+
+    <!-- Scripts partagés et interactifs -->
+    <script src="js/codex.js"></script>
+    <script src="js/tools.js"></script>
+</body>
+</html>
