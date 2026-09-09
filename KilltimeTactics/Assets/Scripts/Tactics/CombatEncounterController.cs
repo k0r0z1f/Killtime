@@ -32,20 +32,29 @@ namespace Killtime.Tactics
         private CombatCalculator _combatCalculator;
         private DiceRoller _diceRoller;
 
+        private void Awake()
+        {
+            if (_grid == null) _grid = GetComponent<TacticalHexGrid>() ?? FindAnyObjectByType<TacticalHexGrid>();
+            if (_turnManager == null) _turnManager = GetComponent<TurnManager>() ?? FindAnyObjectByType<TurnManager>();
+            if (_cameraController == null) _cameraController = FindAnyObjectByType<TacticalCameraController>();
+            if (_cinematicDirector == null) _cinematicDirector = FindAnyObjectByType<CinematicDirector>();
+            if (_hud == null) _hud = FindAnyObjectByType<CombatHUD>();
+        }
+
         private void Start()
         {
             _diceRoller = new DiceRoller();
             _combatCalculator = new CombatCalculator(_diceRoller);
-            _pathfinder = new HexPathfinder(_grid);
+            if (_grid != null) _pathfinder = new HexPathfinder(_grid);
 
             // Initialiser les positions sur la grille
-            if (_playerUnit != null)
+            if (_playerUnit != null && _grid != null && _turnManager != null)
             {
                 _playerUnit.InitializePosition(new HexCoordinates(0, 0), _grid);
                 _turnManager.RegisterUnit(_playerUnit);
             }
 
-            if (_enemyUnit != null)
+            if (_enemyUnit != null && _grid != null && _turnManager != null)
             {
                 _enemyUnit.InitializePosition(new HexCoordinates(3, -1), _grid);
                 _turnManager.RegisterUnit(_enemyUnit);
@@ -57,7 +66,10 @@ namespace Killtime.Tactics
                 _hud.OnAttackRequested += HandleAttackRequested;
             }
 
-            _turnManager.OnTurnStarted += HandleTurnStarted;
+            if (_turnManager != null)
+            {
+                _turnManager.OnTurnStarted += HandleTurnStarted;
+            }
         }
 
         private void HandleTurnStarted(TacticalUnit unit)

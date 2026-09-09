@@ -34,8 +34,39 @@ namespace Killtime.Tactics.Units
 
         private void Awake()
         {
-            var attributes = new Attributes(_agilite, _intelligence, _rapidite, _constitution, _force, _charisme);
-            Stats = new CharacterStats(_unitName, attributes, _baseArmor);
+            if (Stats == null)
+            {
+                var attributes = new Attributes(_agilite, _intelligence, _rapidite, _constitution, _force, _charisme);
+                Stats = new CharacterStats(_unitName, attributes, _baseArmor);
+            }
+
+            if (GetComponent<TacticalUnitVisual>() == null)
+            {
+                gameObject.AddComponent<TacticalUnitVisual>();
+            }
+        }
+
+        public void ConfigureStats(string unitName, Attributes attributes, int baseArmor, bool isPlayer)
+        {
+            _unitName = unitName;
+            _agilite = attributes.Agilite;
+            _intelligence = attributes.Intelligence;
+            _rapidite = attributes.Rapidite;
+            _constitution = attributes.Constitution;
+            _force = attributes.Force;
+            _charisme = attributes.Charisme;
+            _baseArmor = baseArmor;
+            _isPlayerControlled = isPlayer;
+
+            Stats = new CharacterStats(unitName, attributes, baseArmor);
+        }
+
+        public void TeleportTo(HexCoordinates coords, TacticalHexGrid grid)
+        {
+            var oldNode = grid.GetNode(CurrentCoords);
+            if (oldNode != null) oldNode.IsOccupied = false;
+
+            InitializePosition(coords, grid);
         }
 
         public void InitializePosition(HexCoordinates startCoords, TacticalHexGrid grid)

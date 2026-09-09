@@ -35,6 +35,18 @@ namespace Killtime.CameraSystem
         private float _freeYaw = 0.0f;
         private Coroutine _activeCinematicRoutine;
 
+        private void Awake()
+        {
+            if (_mainCamera == null)
+            {
+                _mainCamera = GetComponent<UnityEngine.Camera>() ?? UnityEngine.Camera.main;
+            }
+            if (_mainCamera != null && _normalFOV > 0)
+            {
+                _mainCamera.fieldOfView = _normalFOV;
+            }
+        }
+
         private void Update()
         {
             // Basculer en mode Free Look avec la touche 'F' ou clic droit maintenu
@@ -110,7 +122,7 @@ namespace Killtime.CameraSystem
 
             Vector3 startCamPos = transform.position;
             Quaternion startCamRot = transform.rotation;
-            float startFOV = _mainCamera.fieldOfView;
+            float startFOV = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
 
             // Position d'angle dramatique (vue rapprochée légèrement en contre-plongée)
             Vector3 midPoint = (attacker.position + target.position) * 0.5f;

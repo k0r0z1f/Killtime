@@ -17,6 +17,25 @@ namespace Killtime.Tactics.Grid
 
         public IReadOnlyDictionary<HexCoordinates, HexNode> Nodes => _nodes;
         public float HexRadius => _hexRadius;
+        public int GridRadius => _gridRadius;
+
+        public void SetNodeCover(HexCoordinates coords, CoverType cover, bool isWalkable = true)
+        {
+            if (_nodes.TryGetValue(coords, out var node))
+            {
+                node.Cover = cover;
+                node.IsWalkable = isWalkable;
+            }
+        }
+
+        public void ClearAllCovers()
+        {
+            foreach (var node in _nodes.Values)
+            {
+                node.Cover = CoverType.None;
+                node.IsWalkable = true;
+            }
+        }
 
         private void Awake()
         {

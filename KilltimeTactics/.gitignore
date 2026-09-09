@@ -8,6 +8,9 @@
 /[Uu]ser[Ss]ettings/
 /[Mm]emoryCaptures/
 
+KT_*/
+*.so*
+
 # Visual Studio / Rider / VS Code cache
 .vs/
 .idea/

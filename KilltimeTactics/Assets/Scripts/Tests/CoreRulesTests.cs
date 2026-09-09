@@ -1,3 +1,4 @@
+#if UNITY_EDITOR || UNITY_INCLUDE_TESTS
 using NUnit.Framework;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
@@ -85,3 +86,4 @@ namespace Killtime.Tests
         }
     }
 }
+#endif

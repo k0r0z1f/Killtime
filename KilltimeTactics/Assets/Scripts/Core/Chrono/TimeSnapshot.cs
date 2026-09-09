@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using UnityEngine;
 using Killtime.Core.Character;
 
 namespace Killtime.Core.Chrono
@@ -43,7 +44,7 @@ namespace Killtime.Core.Chrono
         public int RoundNumber;
         public float SecondInRound; // de 0.0s à 10.0s
         public string ActionDescription;
-        public Dictionary<string, UnitTimeSnapshot> UnitStates = new();
+        [SerializeField] public Dictionary<string, UnitTimeSnapshot> UnitStates = new();
 
         public TacticalTimeSnapshot(int round, float second, string desc)
         {
