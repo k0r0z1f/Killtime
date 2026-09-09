@@ -275,6 +275,13 @@ namespace Killtime.UI
                 _arena?.ResetArena();
             }
             GUILayout.EndHorizontal();
+            
+            GUILayout.Space(8);
+            GUILayout.Label("<b>👥 Personnages & Fiches :</b>");
+            if (GUILayout.Button("🧙 Ouvrir le Créateur de Personnage (F1)", GUILayout.Height(32)))
+            {
+                CharacterDevWindow.Open();
+            }
         }
 
         private void DrawChronomancyTab()
