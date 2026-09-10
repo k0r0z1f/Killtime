@@ -93,15 +93,32 @@ namespace Killtime.Core.Combat
 
             int differential = attackRoll.Total - defenseRoll.Total;
 
+            string aimText = cancelPenaltyWithAP ? "Visée compensée (+1 PA)" : $"Malus Visée {targetInfo.DifficultyModifier}";
+            string paAttText = safeAttackerBonus > 0 ? $" + PA Bonus {safeAttackerBonus}" : "";
+            string critAttText = attackRoll.IsCriticalSuccess ? " <color=#FFE600>[CRITIQUE !]</color>" : "";
+            string attackRollStr = $"{attackDie} [Tirage {attackRoll.RawRoll} + AGI {attackModifier} ({aimText}){paAttText} = Total {attackRoll.Total}]{critAttText}";
+
+            string defPaText = canDefenderReact 
+                ? (actualDefenderBonus > 0 ? $" + PA Réaction {actualDefenderBonus}" : " + Réaction 1 PA") 
+                : " - Malus Réflexe 2 (0 PA)";
+            string critDefText = defenseRoll.IsCriticalSuccess ? " <color=#00E5FF>[CRITIQUE !]</color>" : "";
+            string defenseRollStr = $"{defenseDie} [Tirage {defenseRoll.RawRoll} + AGI {defenseModifier}{defPaText} = Total {defenseRoll.Total}]{critDefText}";
+
             // 1. Différentiel Négatif : parade/esquive complète
             if (differential < 0)
             {
+                string blockLog = $"🛡️ <b>PARADE / ESQUIVE</b> : {attacker.Name} vise {targetInfo.DisplayName}, mais {defender.Name} neutralise l'assaut !\n";
+                blockLog += $"   🎲 <b>Dés :</b> Attaque {attackRollStr} vs Défense {defenseRollStr}\n";
+                blockLog += $"   ⚖️ <b>Différentiel Net :</b> <color=#00E5FF>{differential}</color> ➔ <b>0 dégât infligé</b> (Attaque bloquée).";
+
                 return new DamageResult
                 {
                     IsHit = false,
                     IsBlocked = true,
+                    AttackRoll = attackRoll,
+                    DefenseRoll = defenseRoll,
                     Differential = differential,
-                    CombatLog = $"{attacker.Name} vise {targetInfo.DisplayName} mais {defender.Name} bloque/esquive l'attaque ! (Différentiel: {differential})"
+                    CombatLog = blockLog
                 };
             }
 
@@ -114,23 +131,29 @@ namespace Killtime.Core.Combat
                 actualHitPart = GetAdjacentBodyPart(targetedPart);
             }
 
+            var actualInfo = BodyPartInfo.GetInfo(actualHitPart);
+
             // 3. Calcul des dégâts
             int rawDamage = weaponBaseDamage;
+            string dmgFormula = $"{weaponBaseDamage} (Arme)";
+
             if (differential > 0)
             {
-                // Le différentiel s'ajoute directement aux dégâts
                 rawDamage += differential;
+                dmgFormula += $" + {differential} (Diff &Delta;)";
             }
 
             if (attackRoll.IsCriticalSuccess)
             {
-                rawDamage *= targetInfo.CriticalDamageMultiplier;
+                rawDamage *= actualInfo.CriticalDamageMultiplier;
+                dmgFormula += $" x{actualInfo.CriticalDamageMultiplier} (Critique {actualInfo.DisplayName})";
             }
 
             // Réduction d'armure
             int totalArmor = defenderArmor + defender.BaseArmorAbsorption;
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = Math.Max(0, rawDamage - absorbed);
+            int prevHp = defender.CurrentHealth;
 
             bool exceededEncaissement = finalDamage > defender.EncaissementThreshold;
             StatusEffect inflictedStatus = StatusEffect.None;
@@ -151,38 +174,39 @@ namespace Killtime.Core.Combat
                 defender.CurrentHealth -= finalDamage;
             }
 
-            string log = $"{attacker.Name} attaque {defender.Name} ";
-            log += $"[PA Attaque: {baseAttackCost}+{safeAttackerBonus} | PA Défense: {(canDefenderReact ? $"{baseDefenseCost}+{actualDefenderBonus}" : "0 (Aucune réaction, -2)")}] ";
-            if (wasDeflected)
-            {
-                log += $"(DÉVIATION : visait {targetInfo.DisplayName}, touche {BodyPartInfo.GetInfo(actualHitPart).DisplayName}) ";
-            }
-            else
-            {
-                log += $"sur {targetInfo.DisplayName} ! ";
-            }
-            log += $"Dégâts: {finalDamage} (Bruts: {rawDamage} - Armure: {absorbed}) | PV Restants: {defender.CurrentHealth}/{defender.MaxHealth}";
+            string headerTag = wasDeflected 
+                ? "⚠️ <b>DÉVIATION BALISTIQUE</b>" 
+                : (attackRoll.IsCriticalSuccess ? "💥 <b>COUP CRITIQUE CHIRURGICAL</b>" : "🎯 <b>TOUCHÉ CHIRURGICAL</b>");
 
-            if (inflictedStatus != StatusEffect.None)
+            string hitPartStr = wasDeflected 
+                ? $"Visait <b>{targetInfo.DisplayName}</b> ➔ Dévie sur <b>{actualInfo.DisplayName}</b> (Diff 0)" 
+                : $"Frappe sur <b>{actualInfo.DisplayName}</b>";
+
+            string log = $"{headerTag} : {attacker.Name} ➔ {defender.Name} ({hitPartStr})\n";
+            log += $"   🎲 <b>Dés :</b> Attaque {attackRollStr} vs Défense {defenseRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
+            log += $"   ⚔️ <b>Dégâts :</b> [{dmgFormula} = {rawDamage} Bruts] &minus; [Armure {totalArmor} (Absorbé: {absorbed})] ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
+            log += $"   ❤️ <b>Vitalité {defender.Name} :</b> {prevHp} ➔ <b>{defender.CurrentHealth}/{defender.MaxHealth} PV</b>";
+
+            if (exceededEncaissement)
             {
-                log += $" [TRAUMATISME: {inflictedStatus}]";
+                log += $" | ⚡ <b>CHOC TRAUMATIQUE</b> (&gt; Encaissement {defender.EncaissementThreshold}) ➔ [{inflictedStatus}]";
             }
 
             if (fatalRes == FatalBlowResolution.InstantDeath)
             {
-                log += " 💀 [MORT INSTANTANÉE : TÊTE DÉTRUITE]";
+                log += " | 💀 <b>MORT INSTANTANÉE (Tête détruite)</b>";
             }
             else if (fatalRes == FatalBlowResolution.MiracleSaved)
             {
-                log += " 🔮 [POINT DE MIRACLE : SURVIE À 1 PV]";
+                log += " | 🔮 <b>POINT DE MIRACLE DÉPENSÉ (Survie à 1 PV)</b>";
             }
             else if (fatalRes == FatalBlowResolution.ForcedUnconscious)
             {
-                log += " 💥 [SYNCOPE TRAUMATIQUE : K.O. FORCÉ]";
+                log += " | 💥 <b>SYNCOPE TRAUMATIQUE (K.O.)</b>";
             }
             else if (fatalRes == FatalBlowResolution.EligibleForLastBreath)
             {
-                log += " ⚡ [0 PV : ÉLIGIBLE SOMBRER OU DERNIER SOUFFLE]";
+                log += " | ⚡ <b>0 PV (Choix Sombrer ou Dernier Souffle)</b>";
             }
 
             return new DamageResult
@@ -190,6 +214,8 @@ namespace Killtime.Core.Combat
                 IsHit = true,
                 IsBlocked = false,
                 IsCritical = attackRoll.IsCriticalSuccess,
+                AttackRoll = attackRoll,
+                DefenseRoll = defenseRoll,
                 TargetPart = targetedPart,
                 ActualHitPart = actualHitPart,
                 WasDeflected = wasDeflected,

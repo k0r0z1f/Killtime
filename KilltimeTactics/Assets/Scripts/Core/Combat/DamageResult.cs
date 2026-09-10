@@ -1,4 +1,5 @@
 using Killtime.Core.Character;
+using Killtime.Core.Dice;
 
 namespace Killtime.Core.Combat
 {
@@ -22,6 +23,9 @@ namespace Killtime.Core.Combat
         public BodyPart TargetPart;
         public BodyPart ActualHitPart;
         public bool WasDeflected;
+        
+        public DiceRollResult AttackRoll;
+        public DiceRollResult DefenseRoll;
         
         public int Differential;
         public int RawDamage;

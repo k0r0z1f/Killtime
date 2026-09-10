@@ -451,7 +451,8 @@ namespace Killtime.UI
             {
                 fontSize = 10,
                 alignment = TextAnchor.UpperLeft,
-                wordWrap = true
+                wordWrap = true,
+                richText = true
             };
             _terminalBodyStyle.normal.textColor = new Color(0.86f, 0.90f, 0.95f, 0.90f);
         }
@@ -701,8 +702,8 @@ namespace Killtime.UI
         // =========================================================================
         private void DrawAdvancedLogSystem(bool isPauseActive)
         {
-            float drawerWidth = Mathf.Clamp(Screen.width * 0.34f, 390f, 520f);
-            float drawerHeight = Mathf.Clamp(Screen.height * 0.31f, 190f, 270f);
+            float drawerWidth = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
+            float drawerHeight = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
             float margin = 20f;
 
             if (!_isLogDrawerExpanded && !isPauseActive)
@@ -730,7 +731,7 @@ namespace Killtime.UI
                 ColorCyanAccent, 0.85f);
 
             GUI.Label(new Rect(terminal.x + 14, terminal.y + 10, terminal.width - 150, 18),
-                "FLUX TACTIQUE", _terminalHeaderStyle);
+                "FLUX TACTIQUE // DÉTAIL DES ACTIONS", _terminalHeaderStyle);
 
             GUI.color = ColorTextMuted;
             if (GUI.Button(new Rect(terminal.x + terminal.width - 130, terminal.y + 8, 58, 20),
@@ -750,9 +751,19 @@ namespace Killtime.UI
             DrawFilterPill(new Rect(fx, filters.y, 68, 18), "TRAUMA", LogCategory.VitalityAndTrauma); fx += 71;
             DrawFilterPill(new Rect(fx, filters.y, 52, 18), "PHASE", LogCategory.MovementAndTurns);
 
+            float textW = terminal.width - 145f;
+            float totalContentHeight = 0f;
+            for (int i = 0; i < _logEntries.Count; i++)
+            {
+                var entry = _logEntries[i];
+                if (_activeCategory != LogCategory.All && entry.Category != _activeCategory) continue;
+                float h = Mathf.Max(20f, _terminalBodyStyle.CalcHeight(new GUIContent(entry.RawMessage), textW));
+                totalContentHeight += h + 6f;
+            }
+
             Rect scrollRect = new Rect(terminal.x + 12, terminal.y + 58, terminal.width - 24, terminal.height - 70);
             _logScroll = GUI.BeginScrollView(scrollRect, _logScroll,
-                new Rect(0, 0, terminal.width - 38, Mathf.Max(1f, _logEntries.Count * 23f)));
+                new Rect(0, 0, terminal.width - 42, Mathf.Max(scrollRect.height, totalContentHeight + 10f)));
 
             float y = 2f;
             for (int i = 0; i < _logEntries.Count; i++)
@@ -760,14 +771,17 @@ namespace Killtime.UI
                 var entry = _logEntries[i];
                 if (_activeCategory != LogCategory.All && entry.Category != _activeCategory) continue;
 
+                float msgH = Mathf.Max(20f, _terminalBodyStyle.CalcHeight(new GUIContent(entry.RawMessage), textW));
+
                 GUI.color = entry.TagColor;
-                GUI.Label(new Rect(0, y, 72, 18), entry.HeaderTag, _terminalHeaderStyle);
+                GUI.Label(new Rect(0, y, 70, 18), entry.HeaderTag, _terminalHeaderStyle);
                 GUI.color = ColorTextMuted;
-                GUI.Label(new Rect(75, y, 42, 18), entry.Timestamp, _hudSubStyle);
+                GUI.Label(new Rect(72, y, 42, 18), entry.Timestamp, _hudSubStyle);
                 GUI.color = ColorTextBright;
-                GUI.Label(new Rect(120, y, terminal.width - 160, 18), entry.RawMessage, _terminalBodyStyle);
+                GUI.Label(new Rect(116, y, textW, msgH), entry.RawMessage, _terminalBodyStyle);
                 GUI.color = Color.white;
-                y += 23f;
+
+                y += msgH + 6f;
             }
             GUI.EndScrollView();
         }
@@ -790,7 +804,7 @@ namespace Killtime.UI
         // =========================================================================
         private void DrawFloatingEphemeralLogs()
         {
-            float width = Mathf.Clamp(Screen.width * 0.34f, 360f, 500f);
+            float width = Mathf.Clamp(Screen.width * 0.42f, 420f, 600f);
             float yOffset = Screen.height - 58f;
             float now = Time.unscaledTime;
             int drawn = 0;
@@ -808,7 +822,12 @@ namespace Killtime.UI
                 Color fade = ColorTextBright;
                 fade.a = alpha * 0.92f;
                 _floatingLogStyle.normal.textColor = fade;
-                GUI.Label(line, $"{entry.HeaderTag}  {entry.RawMessage}", _floatingLogStyle);
+
+                string displayLine = entry.RawMessage.Contains('\n') 
+                    ? entry.RawMessage.Split('\n')[0] 
+                    : entry.RawMessage;
+
+                GUI.Label(line, $"{entry.HeaderTag}  {displayLine}", _floatingLogStyle);
 
                 yOffset -= 20f;
                 drawn++;

@@ -43,7 +43,21 @@ namespace Killtime.Tactics
         public List<TacticalUnit> SparringDummies { get; private set; } = new();
         public TacticalUnit CurrentTarget { get; private set; }
 
+        private readonly List<TacticalUnit> _additionalPlayers = new();
+        private readonly List<CustomSpawnRecord> _customSpawns = new();
+
+        public IReadOnlyList<TacticalUnit> AdditionalPlayers => _additionalPlayers;
+        public IReadOnlyList<CustomSpawnRecord> CustomSpawns => _customSpawns;
+
         public bool InfiniteAP { get; set; } = false;
+
+        [Serializable]
+        public class CustomSpawnRecord
+        {
+            public CharacterSheet Sheet;
+            public HexCoordinates SpawnCoords;
+            public bool IsPlayer;
+        }
         public CombatCalculator Calculator => _combatCalculator;
         public TimelineBranch Timeline => _timelineBranch;
         public ArenaLayoutType CurrentLayout => _currentLayout;
@@ -133,43 +147,104 @@ namespace Killtime.Tactics
 
         private void SetupArenaUnits()
         {
-            // Détruire les anciennes unités si déjà existantes
+            // 1. Purger les instances de jeu actives
             if (PlayerUnit != null) Destroy(PlayerUnit.gameObject);
             foreach (var d in SparringDummies) if (d != null) Destroy(d.gameObject);
             SparringDummies.Clear();
 
-            // 1. Unité Joueur : Roger (Chrono-Opératif)
+            foreach (var p in _additionalPlayers) if (p != null) Destroy(p.gameObject);
+            _additionalPlayers.Clear();
+
+            // 2. Unités de base de l'arène
             PlayerUnit = CreateUnit("Roger (Opératif)", new HexCoordinates(0, 0), 
                 new Attributes(4, 3, 4, 4, 3, 2), 
                 baseArmor: 1, isPlayer: true);
 
-            // 2. Mannequin 1 : Sac de Frappe (Tank lourd)
             var dummyTank = CreateUnit("Sac de Frappe (Tank)", new HexCoordinates(3, -1), 
                 new Attributes(1, 1, 1, 6, 4, 1), 
                 baseArmor: 2, isPlayer: false);
             SparringDummies.Add(dummyTank);
 
-            // 3. Mannequin 2 : Duelliste Agile (Haute Esquive)
             var dummyAgile = CreateUnit("Duelliste Agile (Esquive)", new HexCoordinates(2, 2), 
                 new Attributes(6, 3, 5, 3, 2, 2), 
                 baseArmor: 0, isPlayer: false);
             SparringDummies.Add(dummyAgile);
 
-            // 4. Mannequin 3 : Garde Blindé (Armure Lourde)
             var dummyArmored = CreateUnit("Garde Blindé (Armure)", new HexCoordinates(-3, 2), 
                 new Attributes(2, 2, 2, 5, 4, 1), 
                 baseArmor: 4, isPlayer: false);
             SparringDummies.Add(dummyArmored);
 
-            // Enregistrement au gestionnaire de tours
             _turnManager.RegisterUnit(PlayerUnit);
             foreach (var d in SparringDummies)
             {
                 _turnManager.RegisterUnit(d);
             }
 
-            // Démarre le premier tour pour assigner l'unité active
+            // 3. Recréer et réintégrer toutes les unités personnalisées spawnées
+            for (int i = 0; i < _customSpawns.Count; i++)
+            {
+                var record = _customSpawns[i];
+                if (record != null && record.Sheet != null)
+                {
+                    var go = new GameObject($"Unit_{record.Sheet.Name.Replace(" ", "_")}");
+                    var customUnit = go.AddComponent<TacticalUnit>();
+                    customUnit.InitializeFromSheet(record.Sheet, record.SpawnCoords, _grid, record.IsPlayer);
+
+                    if (record.IsPlayer)
+                    {
+                        _additionalPlayers.Add(customUnit);
+                    }
+                    else
+                    {
+                        SparringDummies.Add(customUnit);
+                    }
+
+                    _turnManager.RegisterUnit(customUnit);
+                }
+            }
+
+            // 4. Démarre le premier tour pour assigner l'unité active
             _turnManager.StartNewRound();
+        }
+
+        public TacticalUnit SpawnCustomCharacter(CharacterSheet sheet, HexCoordinates coords, bool isPlayer)
+        {
+            var record = new CustomSpawnRecord
+            {
+                Sheet = sheet,
+                SpawnCoords = coords,
+                IsPlayer = isPlayer
+            };
+            _customSpawns.Add(record);
+
+            var go = new GameObject($"Unit_{sheet.Name.Replace(" ", "_")}");
+            var unit = go.AddComponent<TacticalUnit>();
+            unit.InitializeFromSheet(sheet, coords, _grid, isPlayer);
+
+            if (isPlayer)
+            {
+                _additionalPlayers.Add(unit);
+            }
+            else
+            {
+                SparringDummies.Add(unit);
+                if (CurrentTarget == null || !CurrentTarget.Stats.IsAlive)
+                {
+                    SelectTarget(unit);
+                }
+            }
+
+            _turnManager?.RegisterUnit(unit);
+            RecordChronoSnapshot($"Apparition de {unit.Stats.Name} en ({coords.Q}, {coords.R})");
+            Log($"⚡ Unité persistante déployée : <b>{sheet.Name}</b> en ({coords.Q}, {coords.R})");
+
+            return unit;
+        }
+
+        public void ClearCustomSpawns()
+        {
+            _customSpawns.Clear();
         }
 
         private TacticalUnit CreateUnit(string unitName, HexCoordinates coords, Attributes attributes, int baseArmor, bool isPlayer)
@@ -337,6 +412,10 @@ namespace Killtime.Tactics
         public TacticalUnit GetUnitAtCoords(HexCoordinates coords)
         {
             if (PlayerUnit != null && PlayerUnit.CurrentCoords.Equals(coords)) return PlayerUnit;
+            foreach (var p in _additionalPlayers)
+            {
+                if (p != null && p.CurrentCoords.Equals(coords)) return p;
+            }
             foreach (var d in SparringDummies)
             {
                 if (d != null && d.CurrentCoords.Equals(coords)) return d;
@@ -361,6 +440,19 @@ namespace Killtime.Tactics
             int idx = SparringDummies.IndexOf(CurrentTarget);
             int nextIdx = (idx + 1) % SparringDummies.Count;
             SelectTarget(SparringDummies[nextIdx]);
+        }
+
+        public void AutoTargetNextAlive()
+        {
+            for (int i = 0; i < SparringDummies.Count; i++)
+            {
+                var dummy = SparringDummies[i];
+                if (dummy != null && dummy.Stats != null && dummy.Stats.IsAlive)
+                {
+                    SelectTarget(dummy);
+                    return;
+                }
+            }
         }
 
         /// <summary>
@@ -511,6 +603,12 @@ namespace Killtime.Tactics
                 );
 
                 RecordChronoSnapshot($"Attaque sur {defender.Stats.Name} ({targetedPart})");
+
+                if (!defender.Stats.IsAlive)
+                {
+                    AutoTargetNextAlive();
+                }
+
                 _turnManager?.CheckCombatOver();
             };
 
@@ -535,6 +633,13 @@ namespace Killtime.Tactics
             if (PlayerUnit != null && PlayerUnit.Stats != null)
             {
                 snap.RecordUnit(PlayerUnit.Stats.Name, PlayerUnit.Stats, PlayerUnit.CurrentCoords.Q, PlayerUnit.CurrentCoords.R);
+            }
+            foreach (var p in _additionalPlayers)
+            {
+                if (p != null && p.Stats != null)
+                {
+                    snap.RecordUnit(p.Stats.Name, p.Stats, p.CurrentCoords.Q, p.CurrentCoords.R);
+                }
             }
             foreach (var d in SparringDummies)
             {
@@ -567,9 +672,17 @@ namespace Killtime.Tactics
                 RestoreUnitState(PlayerUnit, pSnap);
             }
 
+            foreach (var p in _additionalPlayers)
+            {
+                if (p != null && snap.UnitStates.TryGetValue(p.Stats.Name, out var extraSnap))
+                {
+                    RestoreUnitState(p, extraSnap);
+                }
+            }
+
             foreach (var d in SparringDummies)
             {
-                if (snap.UnitStates.TryGetValue(d.Stats.Name, out var dSnap))
+                if (d != null && snap.UnitStates.TryGetValue(d.Stats.Name, out var dSnap))
                 {
                     RestoreUnitState(d, dSnap);
                 }
@@ -590,6 +703,7 @@ namespace Killtime.Tactics
         public void RefillAPAll()
         {
             if (PlayerUnit != null) PlayerUnit.Stats.CurrentActionPoints = PlayerUnit.Stats.MaxActionPoints;
+            foreach (var p in _additionalPlayers) if (p != null) p.Stats.CurrentActionPoints = p.Stats.MaxActionPoints;
             foreach (var d in SparringDummies) if (d != null) d.Stats.CurrentActionPoints = d.Stats.MaxActionPoints;
             Log("⚡ Points d'Action réinitialisés au maximum pour toutes les unités.");
         }
@@ -601,6 +715,15 @@ namespace Killtime.Tactics
                 PlayerUnit.Stats.CurrentHealth = PlayerUnit.Stats.MaxHealth;
                 PlayerUnit.Stats.ActiveStatus = StatusEffect.None;
                 PlayerUnit.Stats.Essoufflement = 0;
+            }
+            foreach (var p in _additionalPlayers)
+            {
+                if (p != null)
+                {
+                    p.Stats.CurrentHealth = p.Stats.MaxHealth;
+                    p.Stats.ActiveStatus = StatusEffect.None;
+                    p.Stats.Essoufflement = 0;
+                }
             }
             foreach (var d in SparringDummies)
             {

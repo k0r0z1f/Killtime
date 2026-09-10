@@ -233,7 +233,12 @@ namespace Killtime.UI
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Profil :", GUILayout.Width(90));
+            var prevProfile = _currentSheet.Profile;
             _currentSheet.Profile = (CharacterProfileType)GUILayout.Toolbar((int)_currentSheet.Profile, Enum.GetNames(typeof(CharacterProfileType)));
+            if (_currentSheet.Profile != prevProfile)
+            {
+                ApplyDefaultProfileAttributes(_currentSheet);
+            }
             GUILayout.EndHorizontal();
 
             DrawModelSelector();
@@ -253,15 +258,15 @@ namespace Killtime.UI
 
             GUILayout.BeginVertical(GUI.skin.box);
 
-            _currentSheet.BaseAttributes.Force = DrawAttrRow("Force (FOR)", _currentSheet.BaseAttributes.Force);
-            _currentSheet.BaseAttributes.Agilite = DrawAttrRow("Agilité (AGI)", _currentSheet.BaseAttributes.Agilite);
-            _currentSheet.BaseAttributes.Constitution = DrawAttrRow("Constitution (CON)", _currentSheet.BaseAttributes.Constitution);
-            _currentSheet.BaseAttributes.Rapidite = DrawAttrRow("Rapidité (RAP)", _currentSheet.BaseAttributes.Rapidite);
-            _currentSheet.BaseAttributes.Intelligence = DrawAttrRow("Intelligence (INT)", _currentSheet.BaseAttributes.Intelligence);
-            _currentSheet.BaseAttributes.Erudition = DrawAttrRow("Érudition (ÉRU)", _currentSheet.BaseAttributes.Erudition);
-            _currentSheet.BaseAttributes.Charisme = DrawAttrRow("Charisme (CHA)", _currentSheet.BaseAttributes.Charisme);
-            _currentSheet.BaseAttributes.Instinct = DrawAttrRow("Instinct (INS)", _currentSheet.BaseAttributes.Instinct);
-            _currentSheet.BaseAttributes.Magie = DrawAttrRow("Magie (5e Force)", _currentSheet.BaseAttributes.Magie);
+            _currentSheet.BaseAttributes.Force = DrawAttrRow("Force (FOR)", _currentSheet.BaseAttributes.Force, 0);
+            _currentSheet.BaseAttributes.Agilite = DrawAttrRow("Agilité (AGI)", _currentSheet.BaseAttributes.Agilite, 1);
+            _currentSheet.BaseAttributes.Constitution = DrawAttrRow("Constitution (CON)", _currentSheet.BaseAttributes.Constitution, 2);
+            _currentSheet.BaseAttributes.Rapidite = DrawAttrRow("Rapidité (RAP)", _currentSheet.BaseAttributes.Rapidite, 3);
+            _currentSheet.BaseAttributes.Intelligence = DrawAttrRow("Intelligence (INT)", _currentSheet.BaseAttributes.Intelligence, 4);
+            _currentSheet.BaseAttributes.Erudition = DrawAttrRow("Érudition (ÉRU)", _currentSheet.BaseAttributes.Erudition, 5);
+            _currentSheet.BaseAttributes.Charisme = DrawAttrRow("Charisme (CHA)", _currentSheet.BaseAttributes.Charisme, 6);
+            _currentSheet.BaseAttributes.Instinct = DrawAttrRow("Instinct (INS)", _currentSheet.BaseAttributes.Instinct, 7);
+            _currentSheet.BaseAttributes.Magie = DrawAttrRow("Magie (5e Force)", _currentSheet.BaseAttributes.Magie, 8);
 
             GUILayout.EndVertical();
 
@@ -610,15 +615,231 @@ namespace Killtime.UI
             _lastLoadedModelName = "__UNINITIALIZED__";
         }
 
-        private int DrawAttrRow(string label, int value)
+        private int DrawAttrRow(string label, int value, int attrIndex)
         {
+            bool canDecrease = CanDecreaseAttribute(attrIndex);
+            bool canIncrease = CanIncreaseAttribute(attrIndex);
+
             GUILayout.BeginHorizontal();
             GUILayout.Label(label, GUILayout.Width(170));
-            if (GUILayout.Button("-", GUILayout.Width(30))) value = Mathf.Max(1, value - 1);
+
+            GUI.enabled = canDecrease;
+            if (GUILayout.Button("-", GUILayout.Width(30)))
+            {
+                value--;
+            }
+            GUI.enabled = true;
+
             GUILayout.Label($"<b>{value}</b>", GUILayout.Width(35));
-            if (GUILayout.Button("+", GUILayout.Width(30))) value = Mathf.Min(10, value + 1);
+
+            GUI.enabled = canIncrease;
+            if (GUILayout.Button("+", GUILayout.Width(30)))
+            {
+                value++;
+            }
+            GUI.enabled = true;
+
             GUILayout.EndHorizontal();
             return value;
+        }
+
+        private bool CanDecreaseAttribute(int attrIndex)
+        {
+            if (attrIndex == 8)
+            {
+                return _currentSheet.BaseAttributes.Magie > 0;
+            }
+
+            var b = _currentSheet.BaseAttributes;
+            int[] core = { b.Force, b.Agilite, b.Constitution, b.Rapidite, b.Intelligence, b.Erudition, b.Charisme, b.Instinct };
+            if (attrIndex >= 0 && attrIndex < 8)
+            {
+                return core[attrIndex] > 1;
+            }
+
+            return false;
+        }
+
+        private bool CanIncreaseAttribute(int attrIndex)
+        {
+            var b = _currentSheet.BaseAttributes;
+            int[] core = { b.Force, b.Agilite, b.Constitution, b.Rapidite, b.Intelligence, b.Erudition, b.Charisme, b.Instinct };
+
+            if (attrIndex == 8)
+            {
+                if (b.Magie >= 10) return false;
+                if (_currentSheet.Profile == CharacterProfileType.PnjSbire && b.Magie >= 3) return false;
+                if (_currentSheet.Profile == CharacterProfileType.HerosPJ && b.Magie >= 5) return false;
+                if (_currentSheet.Profile == CharacterProfileType.PnjNormal && b.Magie >= 4) return false;
+                return true;
+            }
+
+            if (attrIndex < 0 || attrIndex >= 8) return false;
+            if (core[attrIndex] >= 10) return false;
+
+            int[] candidate = (int[])core.Clone();
+            candidate[attrIndex]++;
+
+            return IsCandidateAllocationValid(candidate, _currentSheet.Profile, b.Magie);
+        }
+
+        private bool IsCandidateAllocationValid(int[] candidate, CharacterProfileType profile, int magie)
+        {
+            for (int i = 0; i < 8; i++)
+            {
+                if (candidate[i] > 10 || candidate[i] < 1) return false;
+            }
+
+            if (profile == CharacterProfileType.PnjBoss)
+            {
+                return true;
+            }
+
+            if (profile == CharacterProfileType.PnjSbire)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    if (candidate[i] > 3) return false;
+                }
+
+                int maxSbirePoints = magie > 0 ? 11 : 12;
+                int currentTotal = 0;
+                for (int i = 0; i < 8; i++) currentTotal += candidate[i];
+
+                return currentTotal <= maxSbirePoints;
+            }
+
+            if (profile == CharacterProfileType.HerosPJ)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    if (candidate[i] > 5) return false;
+                }
+
+                int count5 = 0;
+                int countGte4 = 0;
+                int count4 = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    if (candidate[i] == 5) count5++;
+                    if (candidate[i] >= 4) countGte4++;
+                    if (candidate[i] == 4) count4++;
+                }
+
+                if (count5 > 1) return false;
+                if (countGte4 > 2) return false;
+                if (count5 == 1 && count4 > 1) return false;
+
+                int maxTotal = magie > 0 ? 26 : 24;
+                int sum = 0;
+                for (int i = 0; i < 8; i++) sum += candidate[i];
+                if (sum > maxTotal) return false;
+
+                int[] sorted = (int[])candidate.Clone();
+                Array.Sort(sorted);
+                Array.Reverse(sorted);
+
+                int secondarySum = 0;
+                for (int i = 2; i < 8; i++)
+                {
+                    if (sorted[i] > 3) return false;
+                    secondarySum += sorted[i];
+                }
+
+                int maxSecondary = magie > 0 ? 17 : 15;
+                if (secondarySum > maxSecondary) return false;
+
+                return true;
+            }
+
+            if (profile == CharacterProfileType.PnjNormal)
+            {
+                for (int i = 0; i < 8; i++)
+                {
+                    if (candidate[i] > 4) return false;
+                }
+
+                int count4 = 0;
+                for (int i = 0; i < 8; i++)
+                {
+                    if (candidate[i] == 4) count4++;
+                }
+                if (count4 > 2) return false;
+
+                int[] sorted = (int[])candidate.Clone();
+                Array.Sort(sorted);
+                Array.Reverse(sorted);
+
+                int secondarySum = 0;
+                for (int i = 2; i < 8; i++)
+                {
+                    if (sorted[i] > 3) return false;
+                    secondarySum += sorted[i];
+                }
+
+                int maxSecondary = magie > 0 ? 17 : 15;
+                if (secondarySum > maxSecondary) return false;
+
+                int maxTotal = magie > 0 ? 25 : 23;
+                int sum = 0;
+                for (int i = 0; i < 8; i++) sum += candidate[i];
+                if (sum > maxTotal) return false;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        private void ApplyDefaultProfileAttributes(CharacterSheet sheet)
+        {
+            switch (sheet.Profile)
+            {
+                case CharacterProfileType.HerosPJ:
+                    sheet.BaseAttributes.Force = 5;
+                    sheet.BaseAttributes.Constitution = 4;
+                    sheet.BaseAttributes.Agilite = 3;
+                    sheet.BaseAttributes.Rapidite = 3;
+                    sheet.BaseAttributes.Intelligence = 2;
+                    sheet.BaseAttributes.Erudition = 3;
+                    sheet.BaseAttributes.Charisme = 1;
+                    sheet.BaseAttributes.Instinct = 3;
+                    sheet.BaseAttributes.Magie = 0;
+                    break;
+                case CharacterProfileType.PnjNormal:
+                    sheet.BaseAttributes.Force = 4;
+                    sheet.BaseAttributes.Constitution = 4;
+                    sheet.BaseAttributes.Agilite = 3;
+                    sheet.BaseAttributes.Rapidite = 3;
+                    sheet.BaseAttributes.Intelligence = 2;
+                    sheet.BaseAttributes.Erudition = 3;
+                    sheet.BaseAttributes.Charisme = 1;
+                    sheet.BaseAttributes.Instinct = 3;
+                    sheet.BaseAttributes.Magie = 0;
+                    break;
+                case CharacterProfileType.PnjSbire:
+                    sheet.BaseAttributes.Force = 2;
+                    sheet.BaseAttributes.Agilite = 2;
+                    sheet.BaseAttributes.Constitution = 2;
+                    sheet.BaseAttributes.Rapidite = 2;
+                    sheet.BaseAttributes.Intelligence = 1;
+                    sheet.BaseAttributes.Erudition = 1;
+                    sheet.BaseAttributes.Charisme = 1;
+                    sheet.BaseAttributes.Instinct = 1;
+                    sheet.BaseAttributes.Magie = 0;
+                    break;
+                case CharacterProfileType.PnjBoss:
+                    sheet.BaseAttributes.Force = 7;
+                    sheet.BaseAttributes.Constitution = 6;
+                    sheet.BaseAttributes.Agilite = 5;
+                    sheet.BaseAttributes.Rapidite = 4;
+                    sheet.BaseAttributes.Intelligence = 4;
+                    sheet.BaseAttributes.Erudition = 2;
+                    sheet.BaseAttributes.Charisme = 2;
+                    sheet.BaseAttributes.Instinct = 5;
+                    sheet.BaseAttributes.Magie = 0;
+                    break;
+            }
         }
 
         private bool ValidateAttributeAllocation(CharacterSheet sheet, out string statusMessage)
@@ -935,18 +1156,17 @@ namespace Killtime.UI
                 return;
             }
 
-            var go = new GameObject($"Unit_{_currentSheet.Name.Replace(" ", "_")}");
-            var unit = go.AddComponent<TacticalUnit>();
-            unit.InitializeFromSheet(_currentSheet, coords, _grid, _spawnAsPlayer);
-
-            if (_turnManager != null)
+            TacticalUnit unit;
+            if (_arena != null)
             {
-                _turnManager.RegisterUnit(unit);
+                unit = _arena.SpawnCustomCharacter(_currentSheet, coords, _spawnAsPlayer);
             }
-
-            if (_arena != null && !_spawnAsPlayer)
+            else
             {
-                _arena.SparringDummies.Add(unit);
+                var go = new GameObject($"Unit_{_currentSheet.Name.Replace(" ", "_")}");
+                unit = go.AddComponent<TacticalUnit>();
+                unit.InitializeFromSheet(_currentSheet, coords, _grid, _spawnAsPlayer);
+                _turnManager?.RegisterUnit(unit);
             }
 
             string modelLog = string.IsNullOrEmpty(_currentSheet.ModelPrefabName) ? "Avatar Procédural" : $"Modèle '{_currentSheet.ModelPrefabName}'";

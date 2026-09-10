@@ -21,7 +21,7 @@ namespace Killtime.Core.Character
         public string ModelPrefabName = "";
         public string LoreNotes = "";
 
-        public Attributes BaseAttributes = new Attributes(3, 3, 3, 3, 3, 3, 2, 2, 0, 3, 3, 1);
+        public Attributes BaseAttributes = new Attributes(@for: 5, agi: 3, con: 4, rap: 3, @int: 2, eru: 3, cha: 1, ins: 3, mag: 0, vision: 3, ouie: 3, miracle: 1);
         public int BaseArmor = 1;
         public int AvailableXP = 0;
         public int TotalEarnedXP = 0;

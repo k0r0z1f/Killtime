@@ -49,7 +49,7 @@ namespace Killtime.Tactics.AI
         [SerializeField] private CombatAIMode _mode = CombatAIMode.Normal;
         [SerializeField] private AIPersonality _defaultPersonality = AIPersonality.Balanced;
         [SerializeField] private bool _isAIEnabled = true;
-        [SerializeField] [Range(0.1f, 2.0f)] private float _actionDelay = 0.55f;
+        [SerializeField] [Range(0.05f, 4.0f)] private float _actionDelay = 0.55f;
 
         [Header("Paramètres de Survie & Économie")]
         [SerializeField] [Range(0.15f, 0.5f)] private float _retreatHealthRatio = 0.30f; // Fuit si PV < 30%
@@ -57,7 +57,7 @@ namespace Killtime.Tactics.AI
 
         public CombatAIMode Mode { get => _mode; set => _mode = value; }
         public bool IsAIEnabled { get => _isAIEnabled; set => _isAIEnabled = value; }
-        public float ActionDelay { get => _actionDelay; set => _actionDelay = Mathf.Max(0.05f, value); }
+        public float ActionDelay { get => _actionDelay; set => _actionDelay = Mathf.Clamp(value, 0.05f, 4.0f); }
 
         private HexPathfinder _pathfinder;
         private Coroutine _activeTurnRoutine;
@@ -110,7 +110,14 @@ namespace Killtime.Tactics.AI
             StopAITurn();
 
             if (_turnManager != null && _turnManager.IsCombatOver) return;
-            if (!_isAIEnabled || unit == null || unit.Stats == null || !unit.Stats.IsAlive) return;
+            if (!_isAIEnabled || unit == null || unit.Stats == null) return;
+
+            // Sécurité anti-blocage : si l'IA reçoit le tour d'une unité morte, libérer le tour immédiatement
+            if (!unit.Stats.IsAlive)
+            {
+                _turnManager?.EndCurrentTurn();
+                return;
+            }
 
             bool shouldControl = (_mode == CombatAIMode.FullAuto) || (!unit.IsPlayerControlled);
             if (shouldControl)

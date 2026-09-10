@@ -312,7 +312,7 @@ namespace Killtime.UI
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Délai d'action : {ai.ActionDelay:0.00}s", GUILayout.Width(150));
-                ai.ActionDelay = GUILayout.HorizontalSlider(ai.ActionDelay, 0.05f, 1.2f);
+                ai.ActionDelay = GUILayout.HorizontalSlider(ai.ActionDelay, 0.05f, 4.0f);
                 GUILayout.EndHorizontal();
 
                 GUILayout.EndVertical();

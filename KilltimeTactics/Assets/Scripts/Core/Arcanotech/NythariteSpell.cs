@@ -55,22 +55,32 @@ namespace Killtime.Core.Arcanotech
                 return false;
             }
 
+            int prevHp = target.CurrentHealth;
             var roll = diceRoller.Roll(DiceType.D10, caster.Attributes.Intelligence, 10);
             if (roll.IsSuccess)
             {
-                int totalDamage = BaseArcaneDamage + Math.Max(0, roll.Differential);
+                int diffBonus = Math.Max(0, roll.Differential);
+                int totalDamage = BaseArcaneDamage + diffBonus;
                 target.CurrentHealth = Math.Max(0, target.CurrentHealth - totalDamage);
                 if (InflictedStatus != StatusEffect.None)
                 {
                     target.ActiveStatus |= InflictedStatus;
                 }
 
-                log = $"{caster.Name} canalise {Name} (5e Force - {Discipline}) ! Dégâts arcaniques: {totalDamage} | PV Cible: {target.CurrentHealth}/{target.MaxHealth}";
+                log = $"🔮 <b>CANALISATION ARCANOTECH : {Name}</b> (5e Force — {Discipline})\n";
+                log += $"   🎲 <b>Jet de Nytharite :</b> 1d10 [Tirage {roll.RawRoll} + INT {caster.Attributes.Intelligence} = {roll.Total}] vs SD 10 ➔ <b>Différentiel Net : +{roll.Differential}</b>\n";
+                log += $"   ⚡ <b>Dégâts Arcaniques :</b> {BaseArcaneDamage} (Base) + {diffBonus} (Diff &Delta;) = <b><color=#00E5FF>{totalDamage} Absolus</color></b> (Ignore l'armure)\n";
+                log += $"   ❤️ <b>Vitalité {target.Name} :</b> {prevHp} ➔ <b>{target.CurrentHealth}/{target.MaxHealth} PV</b>";
+                if (InflictedStatus != StatusEffect.None)
+                {
+                    log += $" | ⚡ <b>ALTÉRATION</b> [{InflictedStatus}]";
+                }
                 return true;
             }
             else
             {
-                log = $"{caster.Name} échoue à stabiliser le flux de Nytharite pour {Name} (Jet: {roll.Total} vs SD 10).";
+                log = $"🔮 <b>ÉCHEC DE CANALISATION : {Name}</b>\n";
+                log += $"   🎲 <b>Jet de Nytharite :</b> 1d10 [Tirage {roll.RawRoll} + INT {caster.Attributes.Intelligence} = {roll.Total}] vs SD 10 (Différentiel: {roll.Differential}) ➔ Flux arcanique dissipé.";
                 return false;
             }
         }
