@@ -1,0 +1,35 @@
+[
+  {
+    "id": "usr_architect_00",
+    "username": "AlexisLacasse",
+    "email": "architecte@killtime.universe",
+    "saltHex": "2da3b26b9955f20621ef48d3d81344c9",
+    "passwordHashHex": "5943dc2c2f4849cbcf369a55e7fa93bb501c086d1e7db50df21a1a337279ee2e",
+    "role": "Architecte",
+    "provider": "local",
+    "createdAt": "2026-09-10T20:28:32.039Z",
+    "characters": []
+  },
+  {
+    "id": "usr_roger_01",
+    "username": "RogerVardis",
+    "email": "roger@vardis.net",
+    "saltHex": "f4d61244900e71621aa8b26383978219",
+    "passwordHashHex": "16f0d1d8cc11cca6606b67054b02e64997c28e16b3a5d7caef1d75f6c145c05a",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-09-10T20:28:32.052Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mtvzf3lr",
+    "username": "k0r0",
+    "email": "k0r0z1f101@gmail.com",
+    "saltHex": "405bfc3c994bad1774e1e4d30b622f49",
+    "passwordHashHex": "4094bc907e3921b3976036ec46a26c37e10f0448f0d2b867cf765797f0bf348b",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-09-10T20:30:40.383Z",
+    "characters": []
+  }
+]

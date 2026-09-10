@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livre X : Cosmologie & Atlas des Mondes Connus | Codex Universel Système RP</title>
-    <meta name="description" content="Livre X du Codex Universel : Cosmologie intégrale, le Réseau des 36 Zones des Élianes, galaxies, systèmes stellaires, planètes (Hybris, Vardis, Apaphis, Cléia, Karkjiue, Terre), continents, cités et points d'intérêt tactiques.">
-    
+    <meta name="description"
+        content="Livre X du Codex Universel : Cosmologie intégrale, le Réseau des 36 Zones des Élianes, galaxies, systèmes stellaires, planètes (Hybris, Vardis, Apaphis, Cléia, Karkjiue, Terre), continents, cités et points d'intérêt tactiques.">
+
     <!-- Polices Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+        rel="stylesheet">
+
     <!-- Feuille de styles unifiée -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Feuille de styles partagée de l'authentification -->
+    <link rel="stylesheet" href="users/auth.css">
 </head>
+
 <body>
 
     <div class="app-container">
@@ -21,11 +29,18 @@
         <header class="topbar">
             <div class="topbar-left">
                 <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
                 <a href="index.html" class="brand">
                     <div class="brand-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
                     </div>
                     <div class="brand-info">
                         <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
@@ -39,24 +54,49 @@
             </div>
 
             <div class="topbar-right">
-                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <a href="Killtime/index.html" class="topbar-site-link"
+                    title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 14 14" />
+                    </svg>
                     <span>Site Killtime</span>
                 </a>
                 <div class="search-trigger" id="searchTrigger">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
                     <span>Rechercher...</span>
                     <kbd class="search-kbd">Ctrl+K</kbd>
                 </div>
+
+                <!-- Emplacement Authentification & Profil -->
+                <div id="authTopbarSlot">
+                    <button class="auth-trigger-btn" id="authModalTrigger" type="button" title="Connexion au Codex">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                            <polyline points="10 17 15 12 10 7" />
+                            <line x1="15" y1="12" x2="3" y2="12" />
+                        </svg>
+                        <span>Connexion</span>
+                    </button>
+                </div>
+
                 <button class="theme-btn" id="themeToggle" title="Basculer le thème">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
                 </button>
             </div>
         </header>
 
         <!-- ================= WRAPPER ================= -->
         <div class="content-wrapper">
-            
+
             <!-- ================= SIDEBAR NAVIGATION ================= -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
@@ -70,7 +110,11 @@
                     <div class="external-site-group">
                         <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
                             <span class="nav-external-label">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 14 14" />
+                                </svg>
                                 <span>Site Killtime</span>
                             </span>
                             <span class="nav-item-badge badge-live">Univers ↗</span>
@@ -84,13 +128,20 @@
                                 <span class="group-tag">INDEX</span>
                                 <span>Sommaire Général</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface Philosophique</span></a></li>
-                            <li><a href="index.html#harmonie-action" class="nav-item-link"><span>L'Harmonie du Risque</span></a></li>
-                            <li><a href="index.html#cinquieme-force" class="nav-item-link"><span>La Cinquième Force</span></a></li>
-                            <li><a href="index.html#navigation-codex" class="nav-item-link"><span>Navigation du Codex</span></a></li>
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface
+                                        Philosophique</span></a></li>
+                            <li><a href="index.html#harmonie-action" class="nav-item-link"><span>L'Harmonie du
+                                        Risque</span></a></li>
+                            <li><a href="index.html#cinquieme-force" class="nav-item-link"><span>La Cinquième
+                                        Force</span></a></li>
+                            <li><a href="index.html#navigation-codex" class="nav-item-link"><span>Navigation du
+                                        Codex</span></a></li>
                         </ul>
                     </div>
 
@@ -101,14 +152,22 @@
                                 <span class="group-tag">L.I</span>
                                 <span>Fondations & Création</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Les Six Principes</span></a></li>
-                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Les 8 Attributs Majeurs</span></a></li>
-                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Protocole de Création</span></a></li>
-                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Les 3 Profils PNJ</span></a></li>
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Les Six
+                                        Principes</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Les 8 Attributs
+                                        Majeurs</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Protocole de
+                                        Création</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Les 3 Profils
+                                        PNJ</span></a></li>
                         </ul>
                     </div>
 
@@ -119,14 +178,22 @@
                                 <span class="group-tag">L.II</span>
                                 <span>Paliers de Dés & Épreuves</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle Polyédrique</span></a></li>
-                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Tables des Critiques</span></a></li>
-                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Modificateurs de Contexte</span></a></li>
-                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Épreuves Opposées</span></a></li>
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle
+                                        Polyédrique</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Tables des
+                                        Critiques</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Modificateurs de
+                                        Contexte</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Épreuves
+                                        Opposées</span></a></li>
                         </ul>
                     </div>
 
@@ -137,14 +204,22 @@
                                 <span class="group-tag">L.III</span>
                                 <span>Arbres de Compétences</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture des Compétences</span></a></li>
-                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques</span></a></li>
-                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Psychologiques</span></a></li>
-                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Arbres Hybrides & Spécialisations</span></a></li>
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture des
+                                        Compétences</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres
+                                        Physiques</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres
+                                        Psychologiques</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Arbres Hybrides &
+                                        Spécialisations</span></a></li>
                         </ul>
                     </div>
 
@@ -155,15 +230,24 @@
                                 <span class="group-tag">L.IV</span>
                                 <span>5e Force & Magie</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Théorie de la Cinquième Force</span></a></li>
-                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Formule Fondamentale XP = PA</span></a></li>
-                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Domaines Élémentaires</span></a></li>
-                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Grimoire des Effets Magiques</span></a></li>
-                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Contrecoups & Surcharges</span></a></li>
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Théorie de la Cinquième
+                                        Force</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Formule Fondamentale XP =
+                                        PA</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Domaines
+                                        Élémentaires</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Grimoire des Effets
+                                        Magiques</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Contrecoups &
+                                        Surcharges</span></a></li>
                         </ul>
                     </div>
 
@@ -174,14 +258,22 @@
                                 <span class="group-tag">L.V</span>
                                 <span>Temps & Causalité</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
-                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
-                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
-                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps &
+                                        Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des
+                                        Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8
+                                        Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en
+                                        Jeu</span></a></li>
                         </ul>
                     </div>
 
@@ -192,13 +284,20 @@
                                 <span class="group-tag">L.VI</span>
                                 <span>Combat Tactique</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
-                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
-                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie
+                                        des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements &
+                                        Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation &
+                                        Véhicules</span></a></li>
                         </ul>
                     </div>
 
@@ -209,13 +308,20 @@
                                 <span class="group-tag">L.VII</span>
                                 <span>Santé, États & Blessures</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement &
+                                        Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États &
+                                        Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins &
+                                        Résurrection</span></a></li>
                         </ul>
                     </div>
 
@@ -226,13 +332,20 @@
                                 <span class="group-tag">L.VIII</span>
                                 <span>Arsenal & Arcanotech</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Métal</span></a></li>
-                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
-                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier
+                                        Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes
+                                        Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils
+                                        Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &
+                                        Pharmacopée</span></a></li>
                         </ul>
                     </div>
 
@@ -243,15 +356,24 @@
                                 <span class="group-tag">L.IX</span>
                                 <span>Outils Web Interactifs</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
-                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
-                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
-                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
-                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche
+                                        PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts
+                                        (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &
+                                        Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de
+                                        Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de
+                                        Chronotrames</span></a></li>
                         </ul>
                     </div>
 
@@ -262,15 +384,24 @@
                                 <span class="group-tag">L.X</span>
                                 <span>Atlas des Mondes</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_10.html" class="nav-item-link active"><span>Livre X (Page Dédiée)</span><span class="nav-item-badge badge-live">Nouveau</span></a></li>
-                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Zones des Élianes</span></a></li>
-                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes Stellaires</span></a></li>
-                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes, Lunes & Vaisseaux-Mondes</span></a></li>
-                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents & Régions</span></a></li>
-                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Compendium des Villes & POI</span></a></li>
+                            <li><a href="livre_10.html" class="nav-item-link active"><span>Livre X (Page
+                                        Dédiée)</span><span class="nav-item-badge badge-live">Nouveau</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Zones des
+                                        Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes
+                                        Stellaires</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes, Lunes &
+                                        Vaisseaux-Mondes</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents &
+                                        Régions</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Compendium des Villes &
+                                        POI</span></a></li>
                         </ul>
                     </div>
 
@@ -281,15 +412,24 @@
                                 <span class="group-tag">L.XI</span>
                                 <span>Bestiaire &amp; Menaces</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
-                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
-                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
-                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
-                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp;
+                                        Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp;
+                                        Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres
+                                        d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp;
+                                        Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp;
+                                        Cybernétique</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -298,10 +438,15 @@
             <!-- ================= CONTENU PRINCIPAL (LIVRE X) ================= -->
             <main class="main-content">
                 <article class="doc-page prose">
-                    
+
                     <div class="doc-badge-row">
                         <span class="doc-badge-pill">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                                <path d="M2 12h20" />
+                            </svg>
                             Livre X — Cosmologie & Cartographie Réelle
                         </span>
                         <span class="doc-badge-pill accent">Hiérarchie Cosmique en 7 Niveaux</span>
@@ -310,12 +455,18 @@
 
                     <h1 class="doc-title">Livre X : Cosmologie & Atlas des Mondes Connus</h1>
                     <p class="doc-lead">
-                        L'univers du Système RP n'est pas un agrégat aléatoire de planètes suspendues dans le vide. Il obéit à une <strong>architecture enveloppante absolue</strong>, où chaque niveau d'existence englobe et dicte les lois physiques et arcaniques des strates inférieures. De la Cinquième Force primordiale et du réseau maillé des <strong>36 Élianes</strong> jusqu'aux ruelles étouffantes d'Atraxia ou aux forges souterraines de Brum'korath, ce livre dresse la cartographie intégrale des mondes, factions, systèmes et points d'intérêt connus.
+                        L'univers du Système RP n'est pas un agrégat aléatoire de planètes suspendues dans le vide. Il
+                        obéit à une <strong>architecture enveloppante absolue</strong>, où chaque niveau d'existence
+                        englobe et dicte les lois physiques et arcaniques des strates inférieures. De la Cinquième Force
+                        primordiale et du réseau maillé des <strong>36 Élianes</strong> jusqu'aux ruelles étouffantes
+                        d'Atraxia ou aux forges souterraines de Brum'korath, ce livre dresse la cartographie intégrale
+                        des mondes, factions, systèmes et points d'intérêt connus.
                     </p>
 
                     <!-- BANNIÈRE DE HIÉRARCHIE COSMIQUE -->
                     <div class="hierarchy-banner">
-                        <div style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--arcane-cyan); letter-spacing: 0.08em;">
+                        <div
+                            style="font-family: var(--font-mono); font-size: 0.72rem; text-transform: uppercase; color: var(--arcane-cyan); letter-spacing: 0.08em;">
                             Structure Hiérarchique Enveloppante (Chaque niveau englobe les suivants) :
                         </div>
                         <div class="hierarchy-steps">
@@ -344,12 +495,17 @@
                     </h2>
 
                     <p>
-                        À l'échelle suprême se trouve la trame universelle : un continuum quadri-dimensionnel baigné par la <strong>Cinquième Force</strong> et irrigué par le <strong>Fleuve du Temps</strong>. 
+                        À l'échelle suprême se trouve la trame universelle : un continuum quadri-dimensionnel baigné par
+                        la <strong>Cinquième Force</strong> et irrigué par le <strong>Fleuve du Temps</strong>.
                     </p>
 
                     <h3>38.1 La Genèse Cosmique : La Mère, le Fleuve et l'Eau Sombre</h3>
                     <p>
-                        Avant la matérialisation des galaxies, <strong>La Mère</strong> — conscience créatrice transdimensionnelle située sur les rives extérieures du continuum — donna naissance à <strong>36 entités supérieures nommées les Élianes</strong> pour canaliser les courants de matière réelle. Mais il y a 20 milliards d'années, une perturbation catastrophique brisa l'harmonie primordiale :
+                        Avant la matérialisation des galaxies, <strong>La Mère</strong> — conscience créatrice
+                        transdimensionnelle située sur les rives extérieures du continuum — donna naissance à <strong>36
+                            entités supérieures nommées les Élianes</strong> pour canaliser les courants de matière
+                        réelle. Mais il y a 20 milliards d'années, une perturbation catastrophique brisa l'harmonie
+                        primordiale :
                     </p>
 
                     <div class="cards-grid-2">
@@ -360,7 +516,12 @@
                             </div>
                             <div class="spec-card-world">Cosmologie // Entité Élienne Défaillante</div>
                             <p>
-                                Capricius, l'un des 36 Élianes, commit l'erreur irréversible d'engloutir les « courants scintillants » de matière pure. Cet acte créa un excédent toxique d'<strong>Eau Sombre (Matière Noire / Dark Water)</strong> qui submergea le Fleuve du Temps. Condamnant l'univers à un effondrement thermodynamique irréversible d'ici 1 000 ans, Capricius passa les 100 000 années suivantes dans une panique absolue, déployant des équations de psychohistoire pour écraser toute anomalie menaçant son équation de survie.
+                                Capricius, l'un des 36 Élianes, commit l'erreur irréversible d'engloutir les « courants
+                                scintillants » de matière pure. Cet acte créa un excédent toxique d'<strong>Eau Sombre
+                                    (Matière Noire / Dark Water)</strong> qui submergea le Fleuve du Temps. Condamnant
+                                l'univers à un effondrement thermodynamique irréversible d'ici 1 000 ans, Capricius
+                                passa les 100 000 années suivantes dans une panique absolue, déployant des équations de
+                                psychohistoire pour écraser toute anomalie menaçant son équation de survie.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill ruby">Calcul Psychohistorique sur 100 000 ans</span>
@@ -374,7 +535,11 @@
                             </div>
                             <div class="spec-card-world">Vecteurs d'Entropie // Missiles Biologiques</div>
                             <p>
-                                Lorsqu'une anomalie temporelle menace l'équation de Capricius, celui-ci n'envoie pas une flotte : il largue un <strong>Disciple</strong> à travers le temps. Ces prédateurs ultimes incarnent les éléments fondamentaux (<em>Disciple de Terre</em>, <em>d'Air</em>, <em>de Feu</em> et <em>d'Eau</em>). Blindés contre les armes balistiques et arcaniques, ils purgent les lignes divergentes pour restaurer la trajectoire prédéterminée.
+                                Lorsqu'une anomalie temporelle menace l'équation de Capricius, celui-ci n'envoie pas une
+                                flotte : il largue un <strong>Disciple</strong> à travers le temps. Ces prédateurs
+                                ultimes incarnent les éléments fondamentaux (<em>Disciple de Terre</em>, <em>d'Air</em>,
+                                <em>de Feu</em> et <em>d'Eau</em>). Blindés contre les armes balistiques et arcaniques,
+                                ils purgent les lignes divergentes pour restaurer la trajectoire prédéterminée.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill amber">Disciples de Terre &bull; Air &bull; Feu &bull; Eau</span>
@@ -384,7 +549,10 @@
 
                     <h3>38.2 Le Réseau Maillé des 36 Élianes</h3>
                     <p>
-                        Pour stabiliser le multivers, l'espace navigable est quadrillé en <strong>36 Zones d'Influence Éliennes</strong>. Chaque zone correspond au champ de résonance gravitationnelle et arcanique d'un Éliane spécifique. La rupture de communication entre ces zones provoque des tempêtes d'Eau Sombre et des distorsions de la causalité.
+                        Pour stabiliser le multivers, l'espace navigable est quadrillé en <strong>36 Zones d'Influence
+                            Éliennes</strong>. Chaque zone correspond au champ de résonance gravitationnelle et
+                        arcanique d'un Éliane spécifique. La rupture de communication entre ces zones provoque des
+                        tempêtes d'Eau Sombre et des distorsions de la causalité.
                     </p>
 
                     <div class="table-container">
@@ -426,7 +594,8 @@
                                     <td><span class="table-badge warning">Zone 05 à 36</span></td>
                                     <td><strong>Les 32 Autres Archontes</strong></td>
                                     <td>Vecteurs élémentaires, vides stellaires et failles</td>
-                                    <td><span class="table-badge warning">Partiellement submergés par l'Eau Sombre</span></td>
+                                    <td><span class="table-badge warning">Partiellement submergés par l'Eau
+                                            Sombre</span></td>
                                 </tr>
                             </tbody>
                         </table>
@@ -441,7 +610,8 @@
                     </h2>
 
                     <p>
-                        À l'intérieur des 36 zones éliennes tourbillonnent les galaxies, au sein desquelles les civilisations ont bâti leurs empires et tracé les routes spatiales.
+                        À l'intérieur des 36 zones éliennes tourbillonnent les galaxies, au sein desquelles les
+                        civilisations ont bâti leurs empires et tracé les routes spatiales.
                     </p>
 
                     <h3>39.1 Les Galaxies Référencées</h3>
@@ -453,7 +623,8 @@
                             </div>
                             <div class="spec-card-world">Secteur Impérial // Zone Élienne 02</div>
                             <p>
-                                Le cœur de l'<strong>Empire Intergalactique</strong>. Caractérisée par une hyper-densité militaire, des relais de téléportation sub-spatiaux et le monolithe du Nexus d'Aurion.
+                                Le cœur de l'<strong>Empire Intergalactique</strong>. Caractérisée par une hyper-densité
+                                militaire, des relais de téléportation sub-spatiaux et le monolithe du Nexus d'Aurion.
                             </p>
                         </div>
 
@@ -464,7 +635,8 @@
                             </div>
                             <div class="spec-card-world">Expansion Humaine // Zone Élienne 01</div>
                             <p>
-                                Vaste galaxie spirale regroupant des dizaines de mondes colonisés par les humains, de la Terre primitive aux colonies franches et stations minières indépendantes.
+                                Vaste galaxie spirale regroupant des dizaines de mondes colonisés par les humains, de la
+                                Terre primitive aux colonies franches et stations minières indépendantes.
                             </p>
                         </div>
 
@@ -475,14 +647,17 @@
                             </div>
                             <div class="spec-card-world">Faille Causaliste // Hors-Cartes</div>
                             <p>
-                                Visible uniquement depuis les observatoires arcaniques de pointe lors d'alignements quantiques. Un gouffre stellaire dépourvu de soleils, vestige d'une ligne temporelle effacée.
+                                Visible uniquement depuis les observatoires arcaniques de pointe lors d'alignements
+                                quantiques. Un gouffre stellaire dépourvu de soleils, vestige d'une ligne temporelle
+                                effacée.
                             </p>
                         </div>
                     </div>
 
                     <h3>39.2 Les Systèmes Stellaires Majeurs</h3>
                     <p>
-                        Chaque système stellaire abrite une étoile hôte, une ceinture orbitale et des corridors de navigation Warp sécurisés :
+                        Chaque système stellaire abrite une étoile hôte, une ceinture orbitale et des corridors de
+                        navigation Warp sécurisés :
                     </p>
 
                     <div class="table-container">
@@ -505,7 +680,8 @@
                                 <tr>
                                     <td><strong>Système Vardis-Apaphis</strong></td>
                                     <td>Vardis-Major (Étoile binaire rouge-orangée)</td>
-                                    <td><strong>Vardis</strong>, <strong>Apaphis</strong>, Ceinture d'astéroïdes tactique</td>
+                                    <td><strong>Vardis</strong>, <strong>Apaphis</strong>, Ceinture d'astéroïdes
+                                        tactique</td>
                                     <td>Territoire Militaire de l'Empire Intergalactique</td>
                                 </tr>
                                 <tr>
@@ -539,7 +715,9 @@
                     </h2>
 
                     <p>
-                        Les planètes constituent le théâtre direct de l'action. Chaque monde est classé selon deux indices universels officiels du Système RP : son <strong>Échelle Technologique (1 à 6)</strong> et sa <strong>Résonance Magique (Impossible à Inhérente)</strong>.
+                        Les planètes constituent le théâtre direct de l'action. Chaque monde est classé selon deux
+                        indices universels officiels du Système RP : son <strong>Échelle Technologique (1 à 6)</strong>
+                        et sa <strong>Résonance Magique (Impossible à Inhérente)</strong>.
                     </p>
 
                     <!-- COMPENDIUM DES MONDES PRINCIPAUX -->
@@ -552,7 +730,14 @@
                             <span class="pill-badge cyan">Planète Centrale des Héros</span>
                         </div>
                         <p>
-                            Planète jeune au climat vivifiant mais tumultueux. Inhabitée par les civilisations civilisées jusqu'à l'<strong>An 0</strong>, date à laquelle environ <strong>3 000 individus déportés</strong> issus de mondes technologiques avancés y furent largués dans d'immenses cages forgées en alliages rares. Les survivants se scindèrent : les <strong>Drakkas</strong> (nains) bâtirent leur empire souterrain à l'ouest ; les <strong>Tauriens</strong> (elfes des bois) s'installèrent dans la grande forêt du sud ; les humains fondèrent les cités des plaines. Les <strong>Dereks</strong>, êtres indigènes de pierre et de terre, veillent sur les entrailles du monde.
+                            Planète jeune au climat vivifiant mais tumultueux. Inhabitée par les civilisations
+                            civilisées jusqu'à l'<strong>An 0</strong>, date à laquelle environ <strong>3 000 individus
+                                déportés</strong> issus de mondes technologiques avancés y furent largués dans
+                            d'immenses cages forgées en alliages rares. Les survivants se scindèrent : les
+                            <strong>Drakkas</strong> (nains) bâtirent leur empire souterrain à l'ouest ; les
+                            <strong>Tauriens</strong> (elfes des bois) s'installèrent dans la grande forêt du sud ; les
+                            humains fondèrent les cités des plaines. Les <strong>Dereks</strong>, êtres indigènes de
+                            pierre et de terre, veillent sur les entrailles du monde.
                         </p>
                         <div class="world-meta-grid">
                             <div class="meta-field">
@@ -587,7 +772,12 @@
                             <span class="pill-badge ruby">Zone Militaire Oppressive</span>
                         </div>
                         <p>
-                            Planète aride et rocailleuse balafrée par les guerres d'asservissement et l'exploitation industrielle effrénée. Dominée par l'Empire Intergalactique qui y maintient des garnisons d'élite, des réseaux de caméras biométriques et le redoutable Nexus d'Aurion. Les populations locales, notamment les <strong>Tribus des Thaluns</strong> et la <strong>Résistance clandestine d'Atraxia</strong>, combattent au quotidien contre les rafles de la milice impériale.
+                            Planète aride et rocailleuse balafrée par les guerres d'asservissement et l'exploitation
+                            industrielle effrénée. Dominée par l'Empire Intergalactique qui y maintient des garnisons
+                            d'élite, des réseaux de caméras biométriques et le redoutable Nexus d'Aurion. Les
+                            populations locales, notamment les <strong>Tribus des Thaluns</strong> et la
+                            <strong>Résistance clandestine d'Atraxia</strong>, combattent au quotidien contre les rafles
+                            de la milice impériale.
                         </p>
                         <div class="world-meta-grid">
                             <div class="meta-field">
@@ -617,12 +807,16 @@
                         <div class="world-header">
                             <div class="world-title-group">
                                 <h4>3. Apaphis</h4>
-                                <div class="world-subtitle">Planète Dévastée // Vestiges de Guerre &amp; Extraction</div>
+                                <div class="world-subtitle">Planète Dévastée // Vestiges de Guerre &amp; Extraction
+                                </div>
                             </div>
                             <span class="pill-badge amber">Zone de Ruines Martiales</span>
                         </div>
                         <p>
-                            Autrefois riche en gisements minéraux rares et en cristaux résonateurs de nytharite, Apaphis a été ravagée par les conflits d'annexion. Ses mégapoles ne sont plus que des squelettes de béton et de titane où s'affrontent mercenaires, tribus indigènes en lutte pour l'eau et détachements d'ingénieurs impériaux.
+                            Autrefois riche en gisements minéraux rares et en cristaux résonateurs de nytharite, Apaphis
+                            a été ravagée par les conflits d'annexion. Ses mégapoles ne sont plus que des squelettes de
+                            béton et de titane où s'affrontent mercenaires, tribus indigènes en lutte pour l'eau et
+                            détachements d'ingénieurs impériaux.
                         </p>
                         <div class="world-meta-grid">
                             <div class="meta-field">
@@ -652,12 +846,16 @@
                         <div class="world-header">
                             <div class="world-title-group">
                                 <h4>4. Cléia</h4>
-                                <div class="world-subtitle">Monde Natal des Cléiennes // Magie Inhérente &amp; Bio-Ingénierie</div>
+                                <div class="world-subtitle">Monde Natal des Cléiennes // Magie Inhérente &amp;
+                                    Bio-Ingénierie</div>
                             </div>
                             <span class="pill-badge emerald">Membre Associé de l'Empire</span>
                         </div>
                         <p>
-                            Monde harmonieux et immaculé, berceau de la civilisation des <strong>Cléiennes</strong> (race humanoïde alien de petite taille, composée exclusivement de femmes). Grâce à leur connexion instinctive à la Cinquième Force et leur génie architectural, les Cléiennes ont bâti des cités cristallines lévitant au-dessus d'océans de méthane liquide purifié.
+                            Monde harmonieux et immaculé, berceau de la civilisation des <strong>Cléiennes</strong>
+                            (race humanoïde alien de petite taille, composée exclusivement de femmes). Grâce à leur
+                            connexion instinctive à la Cinquième Force et leur génie architectural, les Cléiennes ont
+                            bâti des cités cristallines lévitant au-dessus d'océans de méthane liquide purifié.
                         </p>
                         <div class="world-meta-grid">
                             <div class="meta-field">
@@ -688,7 +886,10 @@
                             <span class="pill-badge ruby">Régime Martial</span>
                         </div>
                         <p>
-                            Monde volcanique à haute activité tectonique et aux plaines de basalte brûlantes. Domicile des <strong>Mikyais</strong>, féroces guerriers reptiliens de taille humaine. Intégrés de force dans l'armée impériale, ils fournissent à l'Empire ses divisions de choc les plus disciplinées et ses maîtres d'armes d'artillerie lourde.
+                            Monde volcanique à haute activité tectonique et aux plaines de basalte brûlantes. Domicile
+                            des <strong>Mikyais</strong>, féroces guerriers reptiliens de taille humaine. Intégrés de
+                            force dans l'armée impériale, ils fournissent à l'Empire ses divisions de choc les plus
+                            disciplinées et ses maîtres d'armes d'artillerie lourde.
                         </p>
                         <div class="world-meta-grid">
                             <div class="meta-field">
@@ -712,7 +913,8 @@
 
                     <h3>40.3 Lunes, Astéroïdes &amp; Vaisseaux-Mondes</h3>
                     <p>
-                        Les héros et contrebandiers sillonnent également des structures artificielles et des relais spatiaux emblématiques :
+                        Les héros et contrebandiers sillonnent également des structures artificielles et des relais
+                        spatiaux emblématiques :
                     </p>
 
                     <div class="cards-grid-2">
@@ -723,7 +925,12 @@
                             </div>
                             <div class="spec-card-world">Astronef de Raid // Équipage Clandestin</div>
                             <p>
-                                Vaisseau pirate légendaire commandé par le mystérieux <strong>Capitaine balafré</strong>, secondé par la féroce <strong>Sara</strong> aux cheveux pourpres, <strong>Max</strong> le chef mécanicien (expert de la clé à molette et du convertisseur Warp), <strong>Gunther</strong> le chirurgien cynique et <strong>Babushka</strong> l'as du pilotage sous gravité variable. Doté de boucliers déflecteurs et d'un propulseur FTL capable de semer les destroyers impériaux.
+                                Vaisseau pirate légendaire commandé par le mystérieux <strong>Capitaine
+                                    balafré</strong>, secondé par la féroce <strong>Sara</strong> aux cheveux pourpres,
+                                <strong>Max</strong> le chef mécanicien (expert de la clé à molette et du convertisseur
+                                Warp), <strong>Gunther</strong> le chirurgien cynique et <strong>Babushka</strong> l'as
+                                du pilotage sous gravité variable. Doté de boucliers déflecteurs et d'un propulseur FTL
+                                capable de semer les destroyers impériaux.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill amber">Propulsion Warp &bull; Furtivité Arcanique</span>
@@ -737,7 +944,10 @@
                             </div>
                             <div class="spec-card-world">Poste d'Assaut // Résistance Insurgée</div>
                             <p>
-                                Astéroïde métallique creusé en orbite discrète au-dessus d'Apaphis. Rempli de consoles de piratage, de racks d'armes lasers et de hangars de lancement rapide. C'est ici que sont décodées les transmissions cryptées de l'Empire et que sont planifiées les frappes éclair contre les convois de CE (Crédits d'Énergie).
+                                Astéroïde métallique creusé en orbite discrète au-dessus d'Apaphis. Rempli de consoles
+                                de piratage, de racks d'armes lasers et de hangars de lancement rapide. C'est ici que
+                                sont décodées les transmissions cryptées de l'Empire et que sont planifiées les frappes
+                                éclair contre les convois de CE (Crédits d'Énergie).
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Radar Brouillé &bull; Quai de Débarquement</span>
@@ -754,7 +964,8 @@
                     </h2>
 
                     <p>
-                        Descente d'un cran dans la hiérarchie : zoomons sur la géographie terrestre des deux mondes les plus documentés du Codex, <strong>Hybris</strong> et <strong>Vardis</strong>.
+                        Descente d'un cran dans la hiérarchie : zoomons sur la géographie terrestre des deux mondes les
+                        plus documentés du Codex, <strong>Hybris</strong> et <strong>Vardis</strong>.
                     </p>
 
                     <h3>41.1 Les Régions du Monde d'Hybris</h3>
@@ -770,7 +981,11 @@
                             </div>
                             <div class="spec-card-world">Territoire Central d'Hybris</div>
                             <p>
-                                Le continent principal où se sont structurés les royaumes après l'An 0. Il regroupe les <strong>Montagnes Naines</strong> (fief des Drakkas), les <strong>Montagnes de l'Orage</strong> aux crêtes électrostatiques permanentes, la <strong>Grande Forêt</strong> des elfes Tauriens, les <strong>Terres Centrales</strong> agricoles et humaines, et la périlleuse <strong>Jungle du Sud</strong>.
+                                Le continent principal où se sont structurés les royaumes après l'An 0. Il regroupe les
+                                <strong>Montagnes Naines</strong> (fief des Drakkas), les <strong>Montagnes de
+                                    l'Orage</strong> aux crêtes électrostatiques permanentes, la <strong>Grande
+                                    Forêt</strong> des elfes Tauriens, les <strong>Terres Centrales</strong> agricoles
+                                et humaines, et la périlleuse <strong>Jungle du Sud</strong>.
                             </p>
                         </div>
 
@@ -781,7 +996,9 @@
                             </div>
                             <div class="spec-card-world">Secteur Sud-Ouest // Haliriel</div>
                             <p>
-                                Canopée millénaire d'arbres titanesques dont les racines absorbent les courants telluriques de 5e Force. Abri de la faune magique et sanctuaire inviolable de la civilisation elfique.
+                                Canopée millénaire d'arbres titanesques dont les racines absorbent les courants
+                                telluriques de 5e Force. Abri de la faune magique et sanctuaire inviolable de la
+                                civilisation elfique.
                             </p>
                         </div>
 
@@ -792,16 +1009,23 @@
                             </div>
                             <div class="spec-card-world">Inexploré // Barrière Temporelle</div>
                             <p>
-                                Vaste masse continentale enveloppée de brumes chronales denses. Les expéditions envoyées depuis Kingston n'en sont jamais revenues intactes, évoquant des anomalies de vieillissement accéléré et des créatures hors-trames.
+                                Vaste masse continentale enveloppée de brumes chronales denses. Les expéditions envoyées
+                                depuis Kingston n'en sont jamais revenues intactes, évoquant des anomalies de
+                                vieillissement accéléré et des créatures hors-trames.
                             </p>
                         </div>
                     </div>
 
                     <h3>41.2 Les Territoires de Vardis</h3>
                     <ul>
-                        <li><strong>Le District Impérial d'Atraxia :</strong> Zone industrielle quadrillée par des miradors, des barrières à plasma et des tranchées d'artillerie lourde.</li>
-                        <li><strong>Les Terres Tribales des Thaluns :</strong> Canyons escarpés et plateaux désertiques où nomadisent les guerriers Thaluns, survivant grâce à leurs techniques ancestrales de filtration d'eau et de camouflage géologique.</li>
-                        <li><strong>Les Fosses d'Extraction :</strong> Cratères béants où des milliers d'excavatrices automatisées broient la roche pour extraire les métaux réfractaires destinés aux coques des croiseurs impériaux.</li>
+                        <li><strong>Le District Impérial d'Atraxia :</strong> Zone industrielle quadrillée par des
+                            miradors, des barrières à plasma et des tranchées d'artillerie lourde.</li>
+                        <li><strong>Les Terres Tribales des Thaluns :</strong> Canyons escarpés et plateaux désertiques
+                            où nomadisent les guerriers Thaluns, survivant grâce à leurs techniques ancestrales de
+                            filtration d'eau et de camouflage géologique.</li>
+                        <li><strong>Les Fosses d'Extraction :</strong> Cratères béants où des milliers d'excavatrices
+                            automatisées broient la roche pour extraire les métaux réfractaires destinés aux coques des
+                            croiseurs impériaux.</li>
                     </ul>
 
                     <hr class="doc-divider">
@@ -813,13 +1037,14 @@
                     </h2>
 
                     <p>
-                        Au niveau le plus précis de la hiérarchie cosmique se situent les lieux où les héros marchent, négocient, se cachent et combattent.
+                        Au niveau le plus précis de la hiérarchie cosmique se situent les lieux où les héros marchent,
+                        négocient, se cachent et combattent.
                     </p>
 
                     <!-- COMPENDIUM DES POINTS D'INTÉRÊT -->
                     <h3>42.1 Les Grandes Cités d'Hybris</h3>
                     <div class="poi-grid">
-                        
+
                         <div class="poi-card">
                             <div class="poi-title">
                                 <span>Brum'korath</span>
@@ -827,7 +1052,11 @@
                             </div>
                             <div class="poi-sub">Montagnes Naines // Hybris Ouest</div>
                             <p class="poi-desc">
-                                Immense mégapole troglodytique creusée au cœur de la roche. Réputée pour ses <strong>Laboratoires de Haute Technologie Magi-Tech</strong>, ses fonderies d'alliages rares, la majestueuse salle du Conseil Nain et le <strong>Temple des Sent Ones</strong>. C'est ici qu'eut lieu le siège apocalyptique où le Disciple de Terre de Capricius dévasta les remparts extérieurs.
+                                Immense mégapole troglodytique creusée au cœur de la roche. Réputée pour ses
+                                <strong>Laboratoires de Haute Technologie Magi-Tech</strong>, ses fonderies d'alliages
+                                rares, la majestueuse salle du Conseil Nain et le <strong>Temple des Sent Ones</strong>.
+                                C'est ici qu'eut lieu le siège apocalyptique où le Disciple de Terre de Capricius
+                                dévasta les remparts extérieurs.
                             </p>
                         </div>
 
@@ -838,7 +1067,10 @@
                             </div>
                             <div class="poi-sub">Grande Forêt // Hybris Sud</div>
                             <p class="poi-desc">
-                                Cité suspendue des Elfes Tauriens, construite dans les branches d'arbres géants reliés par des ponts d'énergie pure. Abrite le <strong>Temple Haut de la Nature</strong>, la Salle du Trône de la <strong>Reine Aphyrosia</strong>, et le spectaculaire Hangar des <em>Windfighters</em> (chasseurs antigravité propulsés par la brise arcanique).
+                                Cité suspendue des Elfes Tauriens, construite dans les branches d'arbres géants reliés
+                                par des ponts d'énergie pure. Abrite le <strong>Temple Haut de la Nature</strong>, la
+                                Salle du Trône de la <strong>Reine Aphyrosia</strong>, et le spectaculaire Hangar des
+                                <em>Windfighters</em> (chasseurs antigravité propulsés par la brise arcanique).
                             </p>
                         </div>
 
@@ -849,7 +1081,10 @@
                             </div>
                             <div class="poi-sub">Terres Centrales // Hybris</div>
                             <p class="poi-desc">
-                                La plus grande métropole humaine d'Hybris. Cosmopolite et animée, elle héberge l'Académie supérieure (où étudient Lucas et Mina en 1771 HSC) et le Quartier Général de la <strong>World Police</strong>. Ville carrefour entre la tradition artisanale et les recherches arcanotechnologiques émergentes.
+                                La plus grande métropole humaine d'Hybris. Cosmopolite et animée, elle héberge
+                                l'Académie supérieure (où étudient Lucas et Mina en 1771 HSC) et le Quartier Général de
+                                la <strong>World Police</strong>. Ville carrefour entre la tradition artisanale et les
+                                recherches arcanotechnologiques émergentes.
                             </p>
                         </div>
 
@@ -860,7 +1095,10 @@
                             </div>
                             <div class="poi-sub">Profondeurs de la Jungle du Sud</div>
                             <p class="poi-desc">
-                                Monument cyclopéen pré-colonial dissimulé sous une végétation millénaire. Les légendes affirment qu'il canalise la résonance du <em>Minulican</em> (le loup temporel). Les tribus indigènes Nytharis gardent férocement les sentiers menant à ce sanctuaire chargé d'énergie chronale.
+                                Monument cyclopéen pré-colonial dissimulé sous une végétation millénaire. Les légendes
+                                affirment qu'il canalise la résonance du <em>Minulican</em> (le loup temporel). Les
+                                tribus indigènes Nytharis gardent férocement les sentiers menant à ce sanctuaire chargé
+                                d'énergie chronale.
                             </p>
                         </div>
 
@@ -871,7 +1109,9 @@
                             </div>
                             <div class="poi-sub">Jungle du Sud // Fief de Candice &amp; Ceylan</div>
                             <p class="poi-desc">
-                                Village de huttes végétales interconnectées au-dessus du sol marécageux. Les Nytharis y pratiquent une magie chamanique de la terre et des plantes, en harmonie avec les prédateurs de la jungle.
+                                Village de huttes végétales interconnectées au-dessus du sol marécageux. Les Nytharis y
+                                pratiquent une magie chamanique de la terre et des plantes, en harmonie avec les
+                                prédateurs de la jungle.
                             </p>
                         </div>
 
@@ -882,7 +1122,9 @@
                             </div>
                             <div class="poi-sub">Entrée des Montagnes Naines</div>
                             <p class="poi-desc">
-                                Deux vantaux titanesques forgés en acier noir et nytharite compressée, fermant le col stratégique entre les Terres Centrales et les mines de Brum'korath. Infranchissables par les armes ordinaires.
+                                Deux vantaux titanesques forgés en acier noir et nytharite compressée, fermant le col
+                                stratégique entre les Terres Centrales et les mines de Brum'korath. Infranchissables par
+                                les armes ordinaires.
                             </p>
                         </div>
 
@@ -890,7 +1132,7 @@
 
                     <h3>42.2 Les Bastions Stratégiques de Vardis</h3>
                     <div class="poi-grid">
-                        
+
                         <div class="poi-card">
                             <div class="poi-title">
                                 <span>Atraxia</span>
@@ -898,7 +1140,9 @@
                             </div>
                             <div class="poi-sub">Vardis // Centre Industriel &amp; Militaire</div>
                             <p class="poi-desc">
-                                Cité métallique oppressante sous surveillance constante par drones et scanners biométriques. Ses gratte-ciels en acier brut surplombent des quartiers d'ouvriers asservis. Les forces de sécurité y patrouillent en phalanxes lourdement armées.
+                                Cité métallique oppressante sous surveillance constante par drones et scanners
+                                biométriques. Ses gratte-ciels en acier brut surplombent des quartiers d'ouvriers
+                                asservis. Les forces de sécurité y patrouillent en phalanxes lourdement armées.
                             </p>
                         </div>
 
@@ -909,7 +1153,9 @@
                             </div>
                             <div class="poi-sub">Atraxia // Cœur du Réseau Impérial</div>
                             <p class="poi-desc">
-                                Tour colossale étendant ses antennes dans la haute atmosphère de Vardis. Elle héberge les supercalculateurs reliés aux équations de Capricius. Centre névralgique de détection des anomalies temporelles et des insurrections planétaires.
+                                Tour colossale étendant ses antennes dans la haute atmosphère de Vardis. Elle héberge
+                                les supercalculateurs reliés aux équations de Capricius. Centre névralgique de détection
+                                des anomalies temporelles et des insurrections planétaires.
                             </p>
                         </div>
 
@@ -920,7 +1166,9 @@
                             </div>
                             <div class="poi-sub">Réseau des Égouts d'Atraxia</div>
                             <p class="poi-desc">
-                                Enclaves souterraines protégées par des générateurs de brouillage de signatures thermiques. La Résistance y stocke des armes arcaniques, des kits de premiers soins et des relais radio pour coordonner le soulèvement contre l'Empire.
+                                Enclaves souterraines protégées par des générateurs de brouillage de signatures
+                                thermiques. La Résistance y stocke des armes arcaniques, des kits de premiers soins et
+                                des relais radio pour coordonner le soulèvement contre l'Empire.
                             </p>
                         </div>
 
@@ -931,7 +1179,9 @@
                             </div>
                             <div class="poi-sub">Espace Profond // Flotte Indépendante</div>
                             <p class="poi-desc">
-                                À bord de l'<em>Aeschylus</em>, la table de conférence holographique du Capitaine balafré et la baie des moteurs où Max surveille la jauge critique du convertisseur Warp constituent le foyer opérationnel des aventuriers de l'espace.
+                                À bord de l'<em>Aeschylus</em>, la table de conférence holographique du Capitaine
+                                balafré et la baie des moteurs où Max surveille la jauge critique du convertisseur Warp
+                                constituent le foyer opérationnel des aventuriers de l'espace.
                             </p>
                         </div>
 
@@ -942,7 +1192,8 @@
                     <!-- ================= EXPLORATEUR INTERACTIF ================= -->
                     <h3>Module Interactif : Explorateur Hiérarchique de l'Atlas</h3>
                     <p>
-                        Utilisez les filtres interactifs ci-dessous pour inspecter les entités répertoriées selon leur niveau d'intégration cosmique :
+                        Utilisez les filtres interactifs ci-dessous pour inspecter les entités répertoriées selon leur
+                        niveau d'intégration cosmique :
                     </p>
 
                     <div class="atlas-filter-bar">
@@ -953,15 +1204,18 @@
                         <button class="atlas-filter-btn" data-filter="poi">6-7. Régions &amp; Villes</button>
                     </div>
 
-                    <div id="atlasTelemetryReport" style="padding: 14px 18px; background: rgba(6, 182, 212, 0.06); border: 1px dashed var(--arcane-cyan); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--arcane-cyan); margin-bottom: 24px;">
-                        Cartographie Synchronisée : 1 Univers &bull; 36 Zones d'Élianes &bull; 3 Galaxies &bull; 5 Systèmes &bull; 6 Mondes Majeurs &bull; 10 Cités &amp; Lieux Stratégiques.
+                    <div id="atlasTelemetryReport"
+                        style="padding: 14px 18px; background: rgba(6, 182, 212, 0.06); border: 1px dashed var(--arcane-cyan); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--arcane-cyan); margin-bottom: 24px;">
+                        Cartographie Synchronisée : 1 Univers &bull; 36 Zones d'Élianes &bull; 3 Galaxies &bull; 5
+                        Systèmes &bull; 6 Mondes Majeurs &bull; 10 Cités &amp; Lieux Stratégiques.
                     </div>
 
                     <div class="codex-signature">
                         <div class="sig-meta">
                             <strong>LIVRE X DU CODEX UNIVERSEL</strong><br>
                             Cosmologie Fondamentale &amp; Atlas Cartographique Réel<br>
-                            <em>Compilé d'après les archives de l'Académie de Kingston, les chroniques de Brum'korath et les relevés de bord de l'Aeschylus.</em>
+                            <em>Compilé d'après les archives de l'Académie de Kingston, les chroniques de Brum'korath et
+                                les relevés de bord de l'Aeschylus.</em>
                         </div>
                         <div class="sig-stamp">
                             <span class="stamp-title">CARTOGRAPHIE OFFICIELLE</span>
@@ -992,7 +1246,15 @@
             <aside class="inspector">
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
                         Sur cette page
                     </div>
                     <ul class="toc-on-page">
@@ -1006,7 +1268,12 @@
 
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                            <path d="M2 12h20" />
+                        </svg>
                         Télémétrie Cosmique
                     </div>
                     <div class="telemetry-card">
@@ -1039,31 +1306,37 @@
 
                 <div class="next-stage-card">
                     <h5>Étape Suivante</h5>
-                    <p>Découvrez le compendium des menaces, créatures sauvages, bandes armées et automates dans le Bestiaire.</p>
-                    <a href="livre_11.html" class="btn-step" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                    <p>Découvrez le compendium des menaces, créatures sauvages, bandes armées et automates dans le
+                        Bestiaire.</p>
+                    <a href="livre_11.html" class="btn-step"
+                        style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
                         <span>Consulter le Livre XI : Bestiaire</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
                     </a>
                 </div>
             </aside>
 
         </div>
     </div>
-
-    <!-- Script partagé -->
+    <!-- Scripts partagés & Authentification -->
     <script src="js/codex.js"></script>
+    <script src="users/user_store.js"></script>
+    <script src="users/auth.js"></script>
 
     <!-- Script d'interaction pour le filtre de l'atlas -->
     <script>
         document.addEventListener('DOMContentLoaded', () => {
             const filterBtns = document.querySelectorAll('.atlas-filter-btn');
             const report = document.getElementById('atlasTelemetryReport');
-            
+
             filterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     filterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    
+
                     const filter = btn.dataset.filter;
                     if (filter === 'all') {
                         report.textContent = 'Affichage global : 1 Univers • 36 Zones d\'Élianes • 3 Galaxies • 5 Systèmes • 6 Mondes Majeurs • 10 Cités & Lieux Stratégiques.';
@@ -1081,4 +1354,5 @@
         });
     </script>
 </body>
+
 </html>

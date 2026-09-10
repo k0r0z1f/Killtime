@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Système de Jeu RP — Livre VIII : Arsenal & Arcanotech</title>
-    <meta name="description" content="Livre VIII du Système de Jeu RP : L'arsenal complet à travers les âges. Notation universelle (D/L/P/H), épées laser 3D-6D, blasters, le fusil Deglazer, grenades, champs de force et pharmacopée tactique.">
-    
+    <meta name="description"
+        content="Livre VIII du Système de Jeu RP : L'arsenal complet à travers les âges. Notation universelle (D/L/P/H), épées laser 3D-6D, blasters, le fusil Deglazer, grenades, champs de force et pharmacopée tactique.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Stylesheet partagée -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Feuille de styles partagée de l'authentification -->
+    <link rel="stylesheet" href="users/auth.css">
 </head>
+
 <body>
 
     <div class="app-container">
@@ -21,11 +29,18 @@
         <header class="topbar">
             <div class="topbar-left">
                 <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
                 <a href="index.html" class="brand">
                     <div class="brand-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
                     </div>
                     <div class="brand-info">
                         <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
@@ -39,24 +54,49 @@
             </div>
 
             <div class="topbar-right">
-                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <a href="Killtime/index.html" class="topbar-site-link"
+                    title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 14 14" />
+                    </svg>
                     <span>Site Killtime</span>
                 </a>
                 <div class="search-trigger" id="searchTrigger">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
                     <span>Rechercher...</span>
                     <kbd class="search-kbd">Ctrl+K</kbd>
                 </div>
+
+                <!-- Emplacement Authentification & Profil -->
+                <div id="authTopbarSlot">
+                    <button class="auth-trigger-btn" id="authModalTrigger" type="button" title="Connexion au Codex">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                            <polyline points="10 17 15 12 10 7" />
+                            <line x1="15" y1="12" x2="3" y2="12" />
+                        </svg>
+                        <span>Connexion</span>
+                    </button>
+                </div>
+
                 <button class="theme-btn" id="themeToggle" title="Basculer le thème">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
                 </button>
             </div>
         </header>
 
         <!-- ================= WRAPPER ================= -->
         <div class="content-wrapper">
-            
+
             <!-- ================= SIDEBAR NAVIGATION ================= -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
@@ -65,8 +105,13 @@
                         <span>9 Livres</span>
                     </div>
                     <div class="sidebar-search-box">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..."
+                            autocomplete="off">
                     </div>
                 </div>
 
@@ -75,7 +120,11 @@
                     <div class="external-site-group">
                         <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
                             <span class="nav-external-label">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 14 14" />
+                                </svg>
                                 <span>Site Killtime</span>
                             </span>
                             <span class="nav-item-badge badge-live">Univers ↗</span>
@@ -89,10 +138,14 @@
                                 <span class="group-tag">00</span>
                                 <span>Prologue & Vision</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le
+                                        Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
                         </ul>
                     </div>
 
@@ -103,15 +156,24 @@
                                 <span class="group-tag">L.I</span>
                                 <span>Bases & Création PJ</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
-                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
-                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
-                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
-                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes &
+                                        Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie &
+                                        Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création
+                                        pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action &
+                                        Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a>
+                            </li>
                         </ul>
                     </div>
 
@@ -122,14 +184,22 @@
                                 <span class="group-tag">L.II</span>
                                 <span>Paliers de Dés & Épreuves</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
-                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
-                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
-                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés
+                                        (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils
+                                        (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques
+                                        (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges
+                                        Hors-Combat</span></a></li>
                         </ul>
                     </div>
 
@@ -140,14 +210,22 @@
                                 <span class="group-tag">L.III</span>
                                 <span>Arbres de Compétences</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
-                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
-                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
-                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture &
+                                        Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR,
+                                        AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux &
+                                        Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium
+                                        Spécialisations</span></a></li>
                         </ul>
                     </div>
 
@@ -158,16 +236,26 @@
                                 <span class="group-tag">L.IV</span>
                                 <span>5e Force & Magie</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a></li>
-                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
-                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
-                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
-                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
-                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e
+                                        Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques &
+                                        Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques &
+                                        Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6
+                                        Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens &
+                                        Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création
+                                        (XP=PA)</span></a></li>
                         </ul>
                     </div>
 
@@ -178,14 +266,22 @@
                                 <span class="group-tag">L.V</span>
                                 <span>Temps & Causalité</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
-                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
-                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
-                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps &
+                                        Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des
+                                        Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8
+                                        Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en
+                                        Jeu</span></a></li>
                         </ul>
                     </div>
 
@@ -196,13 +292,20 @@
                                 <span class="group-tag">L.VI</span>
                                 <span>Combat Tactique</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
-                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
-                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie
+                                        des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements &
+                                        Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation &
+                                        Véhicules</span></a></li>
                         </ul>
                     </div>
 
@@ -213,13 +316,20 @@
                                 <span class="group-tag">L.VII</span>
                                 <span>Santé, États & Blessures</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement &
+                                        Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États &
+                                        Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins &
+                                        Résurrection</span></a></li>
                         </ul>
                     </div>
 
@@ -230,12 +340,18 @@
                                 <span class="group-tag">L.VIII</span>
                                 <span>Arsenal & Arcanotech</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="#chap-30" class="nav-item-link active"><span>30. Nomenclature & Armes Blanches</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-30" class="nav-item-link active"><span>30. Nomenclature & Armes
+                                        Blanches</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils
+                                        Arcanotech</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &
+                                        Pharmacopée</span><span class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
                     </div>
 
@@ -246,15 +362,24 @@
                                 <span class="group-tag">L.IX</span>
                                 <span>Outils Web Interactifs</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
-                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
-                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
-                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
-                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche
+                                        PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts
+                                        (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &
+                                        Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de
+                                        Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de
+                                        Chronotrames</span></a></li>
                         </ul>
                     </div>
 
@@ -265,15 +390,24 @@
                                 <span class="group-tag">L.X</span>
                                 <span>Atlas des Mondes</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
-                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
-                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
-                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
-                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36
+                                        Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies &
+                                        Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes &
+                                        Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des
+                                        Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points
+                                        d'Intérêt</span></a></li>
                         </ul>
                     </div>
 
@@ -284,15 +418,24 @@
                                 <span class="group-tag">L.XI</span>
                                 <span>Bestiaire &amp; Menaces</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
-                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
-                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
-                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
-                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp;
+                                        Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp;
+                                        Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres
+                                        d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp;
+                                        Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp;
+                                        Cybernétique</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -301,10 +444,15 @@
             <!-- ================= CONTENU PRINCIPAL (LIVRE VIII) ================= -->
             <main class="main-content">
                 <article class="doc-page prose">
-                    
+
                     <div class="doc-badge-row">
                         <span class="doc-badge-pill">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                                <polyline points="2 17 12 22 22 17" />
+                                <polyline points="2 12 12 17 22 12" />
+                            </svg>
                             Livre VIII — Armement & Équipement
                         </span>
                         <span class="doc-badge-pill accent">Nomenclature DLPH & Arcanotech</span>
@@ -313,7 +461,12 @@
 
                     <h1 class="doc-title">Livre VIII : Arsenal & Arcanotech</h1>
                     <p class="doc-lead">
-                        Notre système transcende les frontières temporelles. Du duel à l'épée bâtarde en acier forgé jusqu'au combat en combinaison pressurisée sous le feu des lasers de confinement, chaque arme et armure obéit à la même <strong>métrologie universelle</strong>. Ce livre détaille la nomenclature standard (Dégâts, Poids, Portée, Mains), les épées laser 3D à 6D, les fusils laser à longue portée dont le dévastateur <em>Deglazer</em>, les champs de force personnels et la pharmacopée de combat impériale.
+                        Notre système transcende les frontières temporelles. Du duel à l'épée bâtarde en acier forgé
+                        jusqu'au combat en combinaison pressurisée sous le feu des lasers de confinement, chaque arme et
+                        armure obéit à la même <strong>métrologie universelle</strong>. Ce livre détaille la
+                        nomenclature standard (Dégâts, Poids, Portée, Mains), les épées laser 3D à 6D, les fusils laser
+                        à longue portée dont le dévastateur <em>Deglazer</em>, les champs de force personnels et la
+                        pharmacopée de combat impériale.
                     </p>
 
                     <hr class="doc-divider">
@@ -325,18 +478,21 @@
                     </h2>
 
                     <p>
-                        Pour assurer une lisibilité instantanée en jeu quel que soit l'époque ou le monde visité, tout équipement offensif est décrit selon le standard <strong>D-L-P-H</strong> :
+                        Pour assurer une lisibilité instantanée en jeu quel que soit l'époque ou le monde visité, tout
+                        équipement offensif est décrit selon le standard <strong>D-L-P-H</strong> :
                     </p>
 
                     <div class="formula-box">
                         <div class="formula-label">Code Universel d'Arme (DLPH)</div>
                         <div class="formula-math">
-                            <span class="hl-ruby">[D] Dégâts</span> &nbsp;—&nbsp; <span class="hl-gold">[L] Livres (Poids)</span> &nbsp;—&nbsp; <span class="hl-cyan">[P] Portée (m/cases)</span> &nbsp;—&nbsp; <span class="hl-emerald">[H] Maniement (1H / 2H)</span>
+                            <span class="hl-ruby">[D] Dégâts</span> &nbsp;—&nbsp; <span class="hl-gold">[L] Livres
+                                (Poids)</span> &nbsp;—&nbsp; <span class="hl-cyan">[P] Portée (m/cases)</span>
+                            &nbsp;—&nbsp; <span class="hl-emerald">[H] Maniement (1H / 2H)</span>
                         </div>
                         <div class="formula-desc">
-                            <strong>D :</strong> Dégâts de base ajoutés au jet d'attaque. &bull; 
-                            <strong>L :</strong> Poids en livres impériales (1 livre &asymp; 0.45 kg). &bull; 
-                            <strong>P :</strong> Portée opérationnelle en mètres (1 case = 1 mètre). &bull; 
+                            <strong>D :</strong> Dégâts de base ajoutés au jet d'attaque. &bull;
+                            <strong>L :</strong> Poids en livres impériales (1 livre &asymp; 0.45 kg). &bull;
+                            <strong>P :</strong> Portée opérationnelle en mètres (1 case = 1 mètre). &bull;
                             <strong>H :</strong> 1H (une main) ou 2H (deux mains obligatoires).
                         </div>
                     </div>
@@ -452,12 +608,15 @@
                     </h2>
 
                     <p>
-                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la miniaturisation des circuits à résonance de nytharite.
+                        L'armement arcanotech et énergétique combine les principes de la Cinquième Force et la
+                        miniaturisation des circuits à résonance de nytharite.
                     </p>
 
                     <h3>31.1 Les Épées Laser de Confinement Plasma</h3>
                     <p>
-                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais d'usure ni d'émoussement.
+                        Une épée laser projette un arc de plasma stabilisé par un champ magnétique compact. La lame
+                        tranche la matière solide en ignorant la résistance physique ordinaire et ne subit jamais
+                        d'usure ni d'émoussement.
                     </p>
 
                     <div class="table-container">
@@ -537,10 +696,14 @@
                                 <span class="pill-badge cyan">Tir Précis</span>
                             </div>
                             <ul style="padding-left: 15px; margin: 10px 0; font-size: 0.9em;">
-                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE). Pistolet lourd compact.</li>
-                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000 CE). Visée optique intégrée.</li>
-                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000 CE). Cadence soutenue.</li>
-                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000 CE). Portée 1 kilomètre.</li>
+                                <li><strong>Fusil Laser Léger :</strong> <code>3D - 2L - 500P - 1H</code> (10 000 CE).
+                                    Pistolet lourd compact.</li>
+                                <li><strong>Fusil Laser de Précision :</strong> <code>4D - 2L - 750P - 1H</code> (25 000
+                                    CE). Visée optique intégrée.</li>
+                                <li><strong>Fusil d'Assaut Laser :</strong> <code>4D - 3L - 500P - 2H</code> (20 000
+                                    CE). Cadence soutenue.</li>
+                                <li><strong>Fusil de Sniper Lourd :</strong> <code>5D - 4L - 1000P - 2H</code> (50 000
+                                    CE). Portée 1 kilomètre.</li>
                             </ul>
                         </div>
 
@@ -551,10 +714,14 @@
                             </div>
                             <div class="spec-card-world">Arcanotech de Guerre // 200 000 CE</div>
                             <div class="formula-math" style="font-size: 1.1em; margin: 10px 0;">
-                                <span class="hl-cyan">+1 ec</span> &nbsp;—&nbsp; <span class="hl-gold">7D - 4L - 1000P - 2H</span>
+                                <span class="hl-cyan">+1 ec</span> &nbsp;—&nbsp; <span class="hl-gold">7D - 4L - 1000P -
+                                    2H</span>
                             </div>
                             <p style="font-size: 0.9em;">
-                                Arme d'élite légendaire. Le <em>Deglazer</em> tire un rayon focalisé à travers un prisme de nytharite pure. Il confère un <strong>bonus passif de +1 au jet de compétence (+1 ec)</strong> et inflige <strong>7 Dégâts de base</strong> jusqu'à 1 kilomètre de distance !
+                                Arme d'élite légendaire. Le <em>Deglazer</em> tire un rayon focalisé à travers un prisme
+                                de nytharite pure. Il confère un <strong>bonus passif de +1 au jet de compétence (+1
+                                    ec)</strong> et inflige <strong>7 Dégâts de base</strong> jusqu'à 1 kilomètre de
+                                distance !
                             </p>
                         </div>
                     </div>
@@ -612,7 +779,9 @@
                     </h2>
 
                     <p>
-                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et boucliers de diffraction arcanique.
+                        Pour survivre aux tirs laser et aux frappes énergétiques, la technologie offre trois lignes de
+                        protection complémentaires : armures légères flexibles, cuirasses lourdes motorisées et
+                        boucliers de diffraction arcanique.
                     </p>
 
                     <h3>32.1 Armures Corporelles : Légères vs Lourdes</h3>
@@ -623,7 +792,8 @@
                                 <span class="pill-badge green">Mobilité Totale</span>
                             </div>
                             <p style="font-size: 0.9em;">
-                                Conçues en fibres balistiques et polymères souples. Elles n'imposent <strong>aucun malus en PA</strong> sur les actions ou déplacements.
+                                Conçues en fibres balistiques et polymères souples. Elles n'imposent <strong>aucun malus
+                                    en PA</strong> sur les actions ou déplacements.
                             </p>
                             <ul style="padding-left: 15px; font-size: 0.9em;">
                                 <li><strong>Armure Légère 1 :</strong> Protection 1 point &bull; 2 000 CE</li>
@@ -639,7 +809,8 @@
                                 <span class="pill-badge ruby">Blindage Renforcé</span>
                             </div>
                             <p style="font-size: 0.9em;">
-                                Plaques de céramo-métal et exosquelettes. Elles absorbent des chocs extrêmes mais leur inertie impose un <strong>surcoût permanent en PA</strong> !
+                                Plaques de céramo-métal et exosquelettes. Elles absorbent des chocs extrêmes mais leur
+                                inertie impose un <strong>surcoût permanent en PA</strong> !
                             </p>
                             <ul style="padding-left: 15px; font-size: 0.9em;">
                                 <li><strong>Armure Lourde 3 (1 PA) :</strong> Prot 3 &bull; 8 000 CE</li>
@@ -712,7 +883,8 @@
 
                     <h3>32.3 Pharmacopée Tactique & Consommables Médicaux</h3>
                     <p>
-                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la différence entre la survie et le trépas.
+                        Dans les situations d'urgence extrême, les stimulants chimiques et seringues arcaniques font la
+                        différence entre la survie et le trépas.
                     </p>
 
                     <div class="cards-grid-2">
@@ -724,11 +896,14 @@
                             <ul style="padding-left: 15px; margin: 10px 0; font-size: 0.9em;">
                                 <li>
                                     <strong>Antidouleurs (8 tabs &bull; 500 CE) :</strong><br>
-                                    Durée 2 heures. Confère <strong>+5 au seuil de Dégâts Maximum (Létal)</strong> et <strong>+2 à la Capacité d'Encaissement</strong> ! Permet de continuer à combattre au-delà de ses limites physiologiques normales.
+                                    Durée 2 heures. Confère <strong>+5 au seuil de Dégâts Maximum (Létal)</strong> et
+                                    <strong>+2 à la Capacité d'Encaissement</strong> ! Permet de continuer à combattre
+                                    au-delà de ses limites physiologiques normales.
                                 </li>
                                 <li style="margin-top: 10px;">
                                     <strong>Speed (4 tabs &bull; 500 CE) :</strong><br>
-                                    Durée 4 heures. Place immédiatement le sujet sous l'état bénéfique <strong>Rapide (+3 PA pour les déplacements à chaque tour)</strong> !
+                                    Durée 4 heures. Place immédiatement le sujet sous l'état bénéfique <strong>Rapide
+                                        (+3 PA pour les déplacements à chaque tour)</strong> !
                                 </li>
                             </ul>
                         </div>
@@ -742,8 +917,10 @@
                                 <li><strong>Seringue de soins 5 PV :</strong> 900 CE &bull; Injection 1 PA.</li>
                                 <li><strong>Seringue de soins 10 PV :</strong> 2 000 CE &bull; Injection 1 PA.</li>
                                 <li><strong>Seringue de soins 20 PV :</strong> 5 000 CE &bull; Injection 1 PA.</li>
-                                <li><strong>Seringue de soins généralisée 10 PV :</strong> 2 500 CE &bull; Soigne l'ensemble des membres blessés.</li>
-                                <li><strong>Rations & Hydratation :</strong> Meal Pack (10 CE), Meal Pack + Water (15 CE), Water Blob 1L (5 CE).</li>
+                                <li><strong>Seringue de soins généralisée 10 PV :</strong> 2 500 CE &bull; Soigne
+                                    l'ensemble des membres blessés.</li>
+                                <li><strong>Rations & Hydratation :</strong> Meal Pack (10 CE), Meal Pack + Water (15
+                                    CE), Water Blob 1L (5 CE).</li>
                             </ul>
                         </div>
                     </div>
@@ -783,7 +960,15 @@
             <aside class="inspector">
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
                         Sur cette page
                     </div>
                     <ul class="toc-on-page">
@@ -795,7 +980,12 @@
 
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
                         Télémétrie Arsenal
                     </div>
                     <div class="telemetry-card">
@@ -824,10 +1014,14 @@
 
                 <div class="next-stage-card">
                     <h5>Prochaine Étape</h5>
-                    <p>Livre IX : Outils Web Interactifs (créateur de fiche de personnage interactif, calculateur de pouvoirs et sorts XP=PA, lanceur de dés avec gestion des réussites critiques).</p>
+                    <p>Livre IX : Outils Web Interactifs (créateur de fiche de personnage interactif, calculateur de
+                        pouvoirs et sorts XP=PA, lanceur de dés avec gestion des réussites critiques).</p>
                     <a href="livre_9.html" class="btn-step" style="text-decoration: none;">
                         <span>Consulter Livre IX</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
                     </a>
                 </div>
             </aside>
@@ -835,7 +1029,10 @@
         </div>
     </div>
 
-    <!-- Script partagé -->
+    <!-- Scripts partagés & Authentification -->
     <script src="js/codex.js"></script>
+    <script src="users/user_store.js"></script>
+    <script src="users/auth.js"></script>
 </body>
+
 </html>

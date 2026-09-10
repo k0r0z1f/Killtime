@@ -1,19 +1,27 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Système de Jeu RP — Livre V : Voyage Temporel, Chrono-Physique & Causalité</title>
-    <meta name="description" content="Livre V du Système de Jeu RP : Lois fondamentales du fleuve du temps, propagation vers l'avant, effet papillon inversé, goulots d'étranglement causals et les 8 échelons de clairsentience.">
-    
+    <meta name="description"
+        content="Livre V du Système de Jeu RP : Lois fondamentales du fleuve du temps, propagation vers l'avant, effet papillon inversé, goulots d'étranglement causals et les 8 échelons de clairsentience.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Stylesheet partagée -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- Feuille de styles partagée de l'authentification -->
+    <link rel="stylesheet" href="users/auth.css">
 </head>
+
 <body>
 
     <div class="app-container">
@@ -21,11 +29,17 @@
         <header class="topbar">
             <div class="topbar-left">
                 <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
                 <a href="index.html" class="brand">
                     <div class="brand-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <polyline points="12 6 12 12 14 14" />
+                        </svg>
                     </div>
                     <div class="brand-info">
                         <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
@@ -39,24 +53,49 @@
             </div>
 
             <div class="topbar-right">
-                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <a href="Killtime/index.html" class="topbar-site-link"
+                    title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 14 14" />
+                    </svg>
                     <span>Site Killtime</span>
                 </a>
                 <div class="search-trigger" id="searchTrigger">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
                     <span>Rechercher...</span>
                     <kbd class="search-kbd">Ctrl+K</kbd>
                 </div>
+
+                <!-- Emplacement Authentification & Profil -->
+                <div id="authTopbarSlot">
+                    <button class="auth-trigger-btn" id="authModalTrigger" type="button" title="Connexion au Codex">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4" />
+                            <polyline points="10 17 15 12 10 7" />
+                            <line x1="15" y1="12" x2="3" y2="12" />
+                        </svg>
+                        <span>Connexion</span>
+                    </button>
+                </div>
+
                 <button class="theme-btn" id="themeToggle" title="Basculer le thème">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
                 </button>
             </div>
         </header>
 
         <!-- ================= WRAPPER ================= -->
         <div class="content-wrapper">
-            
+
             <!-- ================= SIDEBAR NAVIGATION ================= -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
@@ -65,8 +104,13 @@
                         <span>9 Livres</span>
                     </div>
                     <div class="sidebar-search-box">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..."
+                            autocomplete="off">
                     </div>
                 </div>
 
@@ -75,7 +119,11 @@
                     <div class="external-site-group">
                         <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
                             <span class="nav-external-label">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 14 14" />
+                                </svg>
                                 <span>Site Killtime</span>
                             </span>
                             <span class="nav-item-badge badge-live">Univers ↗</span>
@@ -89,10 +137,14 @@
                                 <span class="group-tag">00</span>
                                 <span>Prologue & Vision</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle & Le
+                                        Temps</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
                         </ul>
                     </div>
 
@@ -103,15 +155,24 @@
                                 <span class="group-tag">L.I</span>
                                 <span>Bases & Création PJ</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes & Lexique</span></a></li>
-                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span></a></li>
-                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span></a></li>
-                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span></a></li>
-                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a></li>
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Principes &
+                                        Lexique</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Cosmologie &
+                                        Espèces</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Création
+                                        pas-à-pas</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action &
+                                        Dégâts</span></a></li>
+                            <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a>
+                            </li>
                         </ul>
                     </div>
 
@@ -122,14 +183,22 @@
                                 <span class="group-tag">L.II</span>
                                 <span>Paliers de Dés & Épreuves</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
-                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
-                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
-                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés
+                                        (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils
+                                        (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques
+                                        (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges
+                                        Hors-Combat</span></a></li>
                         </ul>
                     </div>
 
@@ -140,14 +209,22 @@
                                 <span class="group-tag">L.III</span>
                                 <span>Arbres de Compétences</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
-                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
-                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
-                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture &
+                                        Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR,
+                                        AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux &
+                                        Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium
+                                        Spécialisations</span></a></li>
                         </ul>
                     </div>
 
@@ -158,16 +235,26 @@
                                 <span class="group-tag">L.IV</span>
                                 <span>5e Force & Magie</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a></li>
-                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
-                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
-                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
-                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
-                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e
+                                        Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques &
+                                        Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques &
+                                        Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6
+                                        Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens &
+                                        Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création
+                                        (XP=PA)</span></a></li>
                         </ul>
                     </div>
 
@@ -178,13 +265,20 @@
                                 <span class="group-tag">L.V</span>
                                 <span>Temps & Causalité</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="#chap-20" class="nav-item-link active"><span>20. Fleuve du Temps & Causalité</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-20" class="nav-item-link active"><span>20. Fleuve du Temps &
+                                        Causalité</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-21" class="nav-item-link"><span>21. Topologie des
+                                        Chronotrames</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-22" class="nav-item-link"><span>22. Clairsentience (8
+                                        Échelons)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en
+                                        Jeu</span><span class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
                     </div>
 
@@ -195,13 +289,20 @@
                                 <span class="group-tag">L.VI</span>
                                 <span>Combat Tactique</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
-                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
-                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie
+                                        des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements &
+                                        Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation &
+                                        Véhicules</span></a></li>
                         </ul>
                     </div>
 
@@ -212,13 +313,20 @@
                                 <span class="group-tag">L.VII</span>
                                 <span>Santé, États & Blessures</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement &
+                                        Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États &
+                                        Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins &
+                                        Résurrection</span></a></li>
                         </ul>
                     </div>
 
@@ -229,13 +337,20 @@
                                 <span class="group-tag">L.VIII</span>
                                 <span>Arsenal & Arcanotech</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Métal</span></a></li>
-                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
-                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier
+                                        Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes
+                                        Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils
+                                        Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &
+                                        Pharmacopée</span></a></li>
                         </ul>
                     </div>
 
@@ -246,15 +361,24 @@
                                 <span class="group-tag">L.IX</span>
                                 <span>Outils Web Interactifs</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
-                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
-                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
-                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
-                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche
+                                        PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts
+                                        (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &
+                                        Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de
+                                        Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de
+                                        Chronotrames</span></a></li>
                         </ul>
                     </div>
 
@@ -265,15 +389,24 @@
                                 <span class="group-tag">L.X</span>
                                 <span>Atlas des Mondes</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
-                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
-                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
-                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
-                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36
+                                        Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies &
+                                        Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes &
+                                        Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des
+                                        Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points
+                                        d'Intérêt</span></a></li>
                         </ul>
                     </div>
 
@@ -284,15 +417,24 @@
                                 <span class="group-tag">L.XI</span>
                                 <span>Bestiaire &amp; Menaces</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
-                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
-                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
-                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
-                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp;
+                                        Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp;
+                                        Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres
+                                        d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp;
+                                        Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp;
+                                        Cybernétique</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -301,10 +443,14 @@
             <!-- ================= CONTENU PRINCIPAL (LIVRE V) ================= -->
             <main class="main-content">
                 <article class="doc-page prose">
-                    
+
                     <div class="doc-badge-row">
                         <span class="doc-badge-pill">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
                             Livre V — Chrono-Physique & Causalité
                         </span>
                         <span class="doc-badge-pill accent">Physique Temporelle & Clairsentience</span>
@@ -313,7 +459,11 @@
 
                     <h1 class="doc-title">Livre V : Voyage Temporel, Chrono-Physique & Causalité</h1>
                     <p class="doc-lead">
-                        Le temps n'est pas une ligne inerte gravée dans la pierre, ni une suite infinie de paradoxes sans issue. C'est un <strong>fleuve massif et visqueux</strong>, doté d'une inertie formidable, d'une résistance à l'entropie et de carrefours inévitables. Ce livre dévoile les lois universelles de la causalité, le théorème de la propagation vers l'avant, l'effet papillon inversé et les huit échelons cognitifs de la clairsentience.
+                        Le temps n'est pas une ligne inerte gravée dans la pierre, ni une suite infinie de paradoxes
+                        sans issue. C'est un <strong>fleuve massif et visqueux</strong>, doté d'une inertie formidable,
+                        d'une résistance à l'entropie et de carrefours inévitables. Ce livre dévoile les lois
+                        universelles de la causalité, le théorème de la propagation vers l'avant, l'effet papillon
+                        inversé et les huit échelons cognitifs de la clairsentience.
                     </p>
 
                     <hr class="doc-divider">
@@ -325,22 +475,36 @@
                     </h2>
 
                     <p>
-                        Dans la mécanique de notre univers, le temps est appréhendé non pas comme une abstraction mathématique, mais comme un flux hydrodynamique subquantique : <strong>Le Fleuve du Temps</strong>. Tout être vivant et tout objet macroscopique y est immergé. Modifier le passé ou percevoir l'avenir répond à des contraintes physiques implacables qui interdisent la magie du paradoxe gratuit.
+                        Dans la mécanique de notre univers, le temps est appréhendé non pas comme une abstraction
+                        mathématique, mais comme un flux hydrodynamique subquantique : <strong>Le Fleuve du
+                            Temps</strong>. Tout être vivant et tout objet macroscopique y est immergé. Modifier le
+                        passé ou percevoir l'avenir répond à des contraintes physiques implacables qui interdisent la
+                        magie du paradoxe gratuit.
                     </p>
 
                     <div class="callout temporal">
                         <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
                             Axiome Premier : L'Inertie Causalité
                         </div>
                         <div class="callout-body">
-                            « Le tissu spatio-temporel refuse d'être déchiré par un simple caprice. Lorsqu'une variable est modifiée dans le flux, le fleuve génère une force de rappel causale immédiate. Tenter de nager à contre-courant brise le voyageur ; épouser le courant et façonner la berge en aval forge l'éternité. »
+                            « Le tissu spatio-temporel refuse d'être déchiré par un simple caprice. Lorsqu'une variable
+                            est modifiée dans le flux, le fleuve génère une force de rappel causale immédiate. Tenter de
+                            nager à contre-courant brise le voyageur ; épouser le courant et façonner la berge en aval
+                            forge l'éternité. »
                         </div>
                     </div>
 
                     <h3>20.1 L'Illusion de la Boucle Arrière vs La Propagation vers l'Avant</h3>
                     <p>
-                        Dans les systèmes temporels naïfs, une entité confrontée à l'extinction ou à la défaite tente de « tricher avec les mathématiques » : elle construit un dispositif pour envoyer un projectile, un message d'avertissement ou un esprit vers l'arrière, à contre-courant du fleuve. C'est ce que notre physique qualifie de <strong>Boucle Arrière (Backward Loop)</strong>.
+                        Dans les systèmes temporels naïfs, une entité confrontée à l'extinction ou à la défaite tente de
+                        « tricher avec les mathématiques » : elle construit un dispositif pour envoyer un projectile, un
+                        message d'avertissement ou un esprit vers l'arrière, à contre-courant du fleuve. C'est ce que
+                        notre physique qualifie de <strong>Boucle Arrière (Backward Loop)</strong>.
                     </p>
                     <p>
                         La physique du Système RP établit que la boucle arrière est une impasse entropique :
@@ -354,7 +518,10 @@
                             </div>
                             <div class="spec-card-world">Chrono-Physique // Rétro-Injection</div>
                             <p>
-                                Envoyer de l'information ou de la matière vers le passé engendre un cisaillement temporel. La distorsion accumulée consomme exponentiellement l'énergie du signal jusqu'à l'effondrement en singularité locale ou en boucle fermée stérile où la cause s'annule elle-même. Le voyageur est broyé par la friction du continuum.
+                                Envoyer de l'information ou de la matière vers le passé engendre un cisaillement
+                                temporel. La distorsion accumulée consomme exponentiellement l'énergie du signal jusqu'à
+                                l'effondrement en singularité locale ou en boucle fermée stérile où la cause s'annule
+                                elle-même. Le voyageur est broyé par la friction du continuum.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill ruby">Divergence Incontrôlable</span>
@@ -369,7 +536,11 @@
                             </div>
                             <div class="spec-card-world">Chrono-Physique // Vecteur Naturel</div>
                             <p>
-                                Au lieu de lutter contre le courant, les véritables bâtisseurs temporels acceptent l'exil dans le passé, s'y ancrent physiquement, et <strong>propagent une onde causale vers l'avant</strong> à travers les siècles d'entropie naturelle. En plantant des graines dans l'argile du passé, ils laissent le temps broyer leurs ennemis et mûrir leur triomphe.
+                                Au lieu de lutter contre le courant, les véritables bâtisseurs temporels acceptent
+                                l'exil dans le passé, s'y ancrent physiquement, et <strong>propagent une onde causale
+                                    vers l'avant</strong> à travers les siècles d'entropie naturelle. En plantant des
+                                graines dans l'argile du passé, ils laissent le temps broyer leurs ennemis et mûrir leur
+                                triomphe.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Convergence Causalité</span>
@@ -380,21 +551,30 @@
 
                     <h3>20.2 L'Effet Papillon Inversé (The Reverse Butterfly Effect)</h3>
                     <p>
-                        Dans les modèles temporels classiques, un battement d'ailes de papillon dans le passé déclenche un ouragan à l'autre bout du monde des siècles plus tard (chaos divergent). Dans notre univers de jeu, les grands architectes exploitent le phénomène inverse : <strong>L'Effet Papillon Inversé</strong>.
+                        Dans les modèles temporels classiques, un battement d'ailes de papillon dans le passé déclenche
+                        un ouragan à l'autre bout du monde des siècles plus tard (chaos divergent). Dans notre univers
+                        de jeu, les grands architectes exploitent le phénomène inverse : <strong>L'Effet Papillon
+                            Inversé</strong>.
                     </p>
 
                     <div class="formula-box">
                         <div class="formula-label">Théorème de l'Ancre Causalité Descendante</div>
                         <div class="formula-math">
-                            <span class="hl-cyan">Stabilité Causalité</span> = (<span class="hl-gold">Masse Inerte</span> × <span class="hl-gold">Temps Décantation</span>) / <span class="hl-ruby">&Delta; Perturbation</span> &ge; 0.9999
+                            <span class="hl-cyan">Stabilité Causalité</span> = (<span class="hl-gold">Masse
+                                Inerte</span> × <span class="hl-gold">Temps Décantation</span>) / <span
+                                class="hl-ruby">&Delta; Perturbation</span> &ge; 0.9999
                         </div>
                         <div class="formula-desc">
-                            Une ancre physique (un journal scellé, un sanctuaire enfoui sous la roche, une tradition culturelle tribale vivante) déposée avec une perturbation minime dans le passé voit son impact se solidifier avec les siècles. L'entropie élimine les remous chaotiques et ne conserve que la trajectoire maîtresse voulue.
+                            Une ancre physique (un journal scellé, un sanctuaire enfoui sous la roche, une tradition
+                            culturelle tribale vivante) déposée avec une perturbation minime dans le passé voit son
+                            impact se solidifier avec les siècles. L'entropie élimine les remous chaotiques et ne
+                            conserve que la trajectoire maîtresse voulue.
                         </div>
                     </div>
 
                     <p>
-                        Pour qu'une ancre temporelle survive à plus d'un millénaire de friction, elle doit s'appuyer sur <strong>trois piliers fondamentaux</strong> :
+                        Pour qu'une ancre temporelle survive à plus d'un millénaire de friction, elle doit s'appuyer sur
+                        <strong>trois piliers fondamentaux</strong> :
                     </p>
 
                     <div class="table-container">
@@ -411,19 +591,22 @@
                                 <tr>
                                     <td><strong>L'Ancre Minérale</strong></td>
                                     <td>Roche ignée, crypte d'obsidienne, carcasse métallique scellée</td>
-                                    <td>Inertie géologique absolue. Ne dépend d'aucun observateur ; sa présence physique prouve la matérialité de l'avertissement.</td>
+                                    <td>Inertie géologique absolue. Ne dépend d'aucun observateur ; sa présence physique
+                                        prouve la matérialité de l'avertissement.</td>
                                     <td><span class="table-badge cyan">Millénaire (Inaltérable)</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>Le Courant Vivant</strong></td>
                                     <td>Peuple indigène, lignée biologique, rituels oraux codés</td>
-                                    <td>Transmission culturelle et linguistique. La pierre s'érode, mais un mythe répété de génération en génération s'adapte et survit.</td>
+                                    <td>Transmission culturelle et linguistique. La pierre s'érode, mais un mythe répété
+                                        de génération en génération s'adapte et survit.</td>
                                     <td><span class="table-badge green">Dynamique & Résilient</span></td>
                                 </tr>
                                 <tr>
                                     <td><strong>La Capsule Biométrique</strong></td>
                                     <td>Noyau d'IA dormante, verrou génétique ADN à tolérance 0.0001%</td>
-                                    <td>Système clos en stase totale. L'automate ne s'éveille qu'à la microseconde exacte où l'empreinte génétique désignée pose la main dessus.</td>
+                                    <td>Système clos en stase totale. L'automate ne s'éveille qu'à la microseconde
+                                        exacte où l'empreinte génétique désignée pose la main dessus.</td>
                                     <td><span class="table-badge amber">Précision Chirurgicale</span></td>
                                 </tr>
                             </tbody>
@@ -437,40 +620,64 @@
                     </h2>
 
                     <p>
-                        L'univers ne tolère pas une prolifération anarchique de réalités parallèles infinies. Les lois de conservation de la Cinquième Force imposent que les branches temporelles divergentes se résorbent ou se reconnectent aux événements fondateurs.
+                        L'univers ne tolère pas une prolifération anarchique de réalités parallèles infinies. Les lois
+                        de conservation de la Cinquième Force imposent que les branches temporelles divergentes se
+                        résorbent ou se reconnectent aux événements fondateurs.
                     </p>
 
                     <h3>21.1 Les Goulots d'Étranglement Causals (Causal Bottlenecks)</h3>
                     <p>
-                        Un <strong>goulot d'étranglement causal</strong> est un événement de convergence cosmique absolue. Quelles que soient les micro-décisions prises en amont par des individus, la gravité du destin courbe les chronotrames pour les forcer à traverser ce carrefour précis.
+                        Un <strong>goulot d'étranglement causal</strong> est un événement de convergence cosmique
+                        absolue. Quelles que soient les micro-décisions prises en amont par des individus, la gravité du
+                        destin courbe les chronotrames pour les forcer à traverser ce carrefour précis.
                     </p>
 
                     <div class="callout warning">
                         <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
                             Règle du Maître de Jeu : L'Inaltérabilité du Goulot
                         </div>
                         <div class="callout-body">
-                            Les joueurs ne peuvent pas empêcher un goulot temporel d'arriver (ex: la chute d'une capitale, l'effondrement d'un bouclier planétaire, la fuite obligatoire vers un sanctuaire). En revanche, <strong>la préparation, l'état physique et psychologique, et les armes qu'ils apportent dans le goulot</strong> déterminent s'ils en sortiront broyés ou transformés en demi-dieux.
+                            Les joueurs ne peuvent pas empêcher un goulot temporel d'arriver (ex: la chute d'une
+                            capitale, l'effondrement d'un bouclier planétaire, la fuite obligatoire vers un sanctuaire).
+                            En revanche, <strong>la préparation, l'état physique et psychologique, et les armes qu'ils
+                                apportent dans le goulot</strong> déterminent s'ils en sortiront broyés ou transformés
+                            en demi-dieux.
                         </div>
                     </div>
 
                     <h3>21.2 Le Rôle du Goulot : Forger l'Esprit au lieu de Donner des Armes</h3>
                     <p>
-                        L'erreur classique des voyageurs temporels est de chercher à transmettre une arme magique ou un canon laser surpuissant à travers le temps. Une arme peut être volée, copiée ou confisquée par l'adversaire.
+                        L'erreur classique des voyageurs temporels est de chercher à transmettre une arme magique ou un
+                        canon laser surpuissant à travers le temps. Une arme peut être volée, copiée ou confisquée par
+                        l'adversaire.
                     </p>
                     <p>
-                        Ce que lègue une chronotrame maîtresse dans un goulot temporel, c'est <strong>du temps d'arrêt</strong> :
+                        Ce que lègue une chronotrame maîtresse dans un goulot temporel, c'est <strong>du temps
+                            d'arrêt</strong> :
                     </p>
                     <ul>
-                        <li><strong>La halte forcée :</strong> Offrir à des fuyards traqués l'espace de silence et d'obscurité nécessaire pour cesser de réagir par panique animale.</li>
-                        <li><strong>L'intégration des traumatismes :</strong> Donner les jours ou les semaines de recul indispensables pour souder les esprits, maîtriser la Cinquième Force et dompter les instincts primaires.</li>
-                        <li><strong>La révélation structurante :</strong> Découvrir la trace irréfutable de leurs propres prédécesseurs, transformant le désespoir de l'inconnu en certitude d'accomplissement.</li>
+                        <li><strong>La halte forcée :</strong> Offrir à des fuyards traqués l'espace de silence et
+                            d'obscurité nécessaire pour cesser de réagir par panique animale.</li>
+                        <li><strong>L'intégration des traumatismes :</strong> Donner les jours ou les semaines de recul
+                            indispensables pour souder les esprits, maîtriser la Cinquième Force et dompter les
+                            instincts primaires.</li>
+                        <li><strong>La révélation structurante :</strong> Découvrir la trace irréfutable de leurs
+                            propres prédécesseurs, transformant le désespoir de l'inconnu en certitude
+                            d'accomplissement.</li>
                     </ul>
 
                     <h3>21.3 Paradoxes & Tolérance du Tissu Temporel (Variance 0.0001%)</h3>
                     <p>
-                        Contrairement aux récits fantastiques où tuer son propre grand-père efface le voyageur dans un flash de lumière blanche, le continuum de notre système réagit avec une <strong>friction visqueuse</strong> :
+                        Contrairement aux récits fantastiques où tuer son propre grand-père efface le voyageur dans un
+                        flash de lumière blanche, le continuum de notre système réagit avec une <strong>friction
+                            visqueuse</strong> :
                     </p>
 
                     <div class="table-container">
@@ -493,20 +700,24 @@
                                 <tr>
                                     <td><span class="table-badge cyan">Onde Mineure</span></td>
                                     <td>Modification d'une vie locale ou d'un lieu secondaire</td>
-                                    <td>Les souvenirs oscillent. Les livres d'histoire se réécrivent imperceptiblement.</td>
+                                    <td>Les souvenirs oscillent. Les livres d'histoire se réécrivent imperceptiblement.
+                                    </td>
                                     <td>Migraines chronales (-1 PA au 1er tour de chaque scène pendant 24h).</td>
                                 </tr>
                                 <tr>
                                     <td><span class="table-badge amber">Tension Majeure</span></td>
                                     <td>Altération d'une faction ou retard d'une bataille</td>
                                     <td>Décalage de plusieurs mois sur les événements mondiaux. Dérive de phase.</td>
-                                    <td>Épreuve de Sagesse (Difficile 18) sous peine de perdre 1 Dé de Constitution temporairement.</td>
+                                    <td>Épreuve de Sagesse (Difficile 18) sous peine de perdre 1 Dé de Constitution
+                                        temporairement.</td>
                                 </tr>
                                 <tr>
                                     <td><span class="table-badge ruby">Rupture Causalité</span></td>
                                     <td>Tentative de destruction d'un Goulot d'Étranglement</td>
-                                    <td>Rejet violent du tissu spatio-temporel. Effondrement de la zone en bulle de stase.</td>
-                                    <td>Dégâts Absolus égaux à <code>Constitution &times; 3</code> et bannissement dimensionnel.</td>
+                                    <td>Rejet violent du tissu spatio-temporel. Effondrement de la zone en bulle de
+                                        stase.</td>
+                                    <td>Dégâts Absolus égaux à <code>Constitution &times; 3</code> et bannissement
+                                        dimensionnel.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -519,22 +730,33 @@
                     </h2>
 
                     <p>
-                        La <strong>Clairsentience</strong> est la manifestation cognitive la plus subtile et la plus exigeante de la Cinquième Force. Elle ne repose pas sur une formule magique bruyante, mais sur la capacité du cortex cérébral à capter les ondes de probabilité qui se propagent le long du fleuve temporel.
+                        La <strong>Clairsentience</strong> est la manifestation cognitive la plus subtile et la plus
+                        exigeante de la Cinquième Force. Elle ne repose pas sur une formule magique bruyante, mais sur
+                        la capacité du cortex cérébral à capter les ondes de probabilité qui se propagent le long du
+                        fleuve temporel.
                     </p>
 
                     <div class="callout success">
                         <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
                             Neuro-Physique de la Vision
                         </div>
                         <div class="callout-body">
-                            La clairsentience naît au carrefour du <strong>Réseau par Défaut (DMN)</strong> et de l'activation des noyaux profonds de résonance arcanique. Lorsque le sujet cesse de fixer son attention sur l'immédiat sensoriel, son esprit « dérive » dans l'épaisseur du temps, percevant aussi bien l'écho sédimenté du passé que la courbure gravitationnelle du futur.
+                            La clairsentience naît au carrefour du <strong>Réseau par Défaut (DMN)</strong> et de
+                            l'activation des noyaux profonds de résonance arcanique. Lorsque le sujet cesse de fixer son
+                            attention sur l'immédiat sensoriel, son esprit « dérive » dans l'épaisseur du temps,
+                            percevant aussi bien l'écho sédimenté du passé que la courbure gravitationnelle du futur.
                         </div>
                     </div>
 
                     <h3>22.1 La Grille Complète des 8 Échelons d'Évolution</h3>
                     <p>
-                        Chaque individu doté du potentiel de prescience progresse à travers huit paliers distincts, documentés par les maîtres de la chrono-analyse :
+                        Chaque individu doté du potentiel de prescience progresse à travers huit paliers distincts,
+                        documentés par les maîtres de la chrono-analyse :
                     </p>
 
                     <div class="table-container">
@@ -551,50 +773,75 @@
                                 <tr>
                                     <td><strong>1</strong></td>
                                     <td><span class="table-badge cyan">Entrée</span><br>Visions Inconscientes</td>
-                                    <td>Reçoit des flashs spontanés d'images, d'émotions ou d'odeurs sans aucun contrôle volontaire (ex: sentiment de mort imminente, flash d'un visage).</td>
-                                    <td>Aucune maîtrise. Visions disjointes, fragmentées et imprévisibles. Ne peut être activé à volonté.</td>
+                                    <td>Reçoit des flashs spontanés d'images, d'émotions ou d'odeurs sans aucun contrôle
+                                        volontaire (ex: sentiment de mort imminente, flash d'un visage).</td>
+                                    <td>Aucune maîtrise. Visions disjointes, fragmentées et imprévisibles. Ne peut être
+                                        activé à volonté.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>2</strong></td>
-                                    <td><span class="table-badge cyan">Basique</span><br>Visions Partielles Passé/Futur</td>
-                                    <td>Perçoit des bribes furtives du passé d'un objet touché ou du futur immédiat (quelques secondes), souvent sans rapport avec la situation en cours.</td>
-                                    <td>Netteté floue. Difficulté à distinguer une réminiscence personnelle d'une vision externe.</td>
+                                    <td><span class="table-badge cyan">Basique</span><br>Visions Partielles Passé/Futur
+                                    </td>
+                                    <td>Perçoit des bribes furtives du passé d'un objet touché ou du futur immédiat
+                                        (quelques secondes), souvent sans rapport avec la situation en cours.</td>
+                                    <td>Netteté floue. Difficulté à distinguer une réminiscence personnelle d'une vision
+                                        externe.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>3</strong></td>
                                     <td><span class="table-badge cyan">Intermédiaire</span><br>Visions Dirigées</td>
-                                    <td>Peut se focaliser délibérément sur une personne, une porte ou un carrefour pour sonder ce qui s'y est produit ou ce qui va s'y jouer dans l'heure.</td>
-                                    <td>Nécessite 1 minute d'immobilité et de concentration totale. Portée limitée au contexte immédiat.</td>
+                                    <td>Peut se focaliser délibérément sur une personne, une porte ou un carrefour pour
+                                        sonder ce qui s'y est produit ou ce qui va s'y jouer dans l'heure.</td>
+                                    <td>Nécessite 1 minute d'immobilité et de concentration totale. Portée limitée au
+                                        contexte immédiat.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>4</strong></td>
-                                    <td><span class="table-badge green">Avancé</span><br>Prédictions Précises Court Terme</td>
-                                    <td>Visions d'une netteté cristalline à l'échelle de quelques heures à quelques jours. <strong>Bonus tactique en jeu :</strong> +2 à l'Initiative et +1 Dé en Esquive lors du premier tour d'embuscade.</td>
-                                    <td>Difficulté à maîtriser la portée globale de la vision ; risque de biais d'interprétation émotionnelle.</td>
+                                    <td><span class="table-badge green">Avancé</span><br>Prédictions Précises Court
+                                        Terme</td>
+                                    <td>Visions d'une netteté cristalline à l'échelle de quelques heures à quelques
+                                        jours. <strong>Bonus tactique en jeu :</strong> +2 à l'Initiative et +1 Dé en
+                                        Esquive lors du premier tour d'embuscade.</td>
+                                    <td>Difficulté à maîtriser la portée globale de la vision ; risque de biais
+                                        d'interprétation émotionnelle.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>5</strong></td>
-                                    <td><span class="table-badge green">Maîtrise</span><br>Rétro & Précognition Étendue</td>
-                                    <td>Perçoit des événements historiques oubliés ou des trajectoires futures majeures sur des mois voire des années entières.</td>
-                                    <td>Épuisement mental sévère. Les souvenirs personnels commencent à se mélanger avec les souvenirs perçus.</td>
+                                    <td><span class="table-badge green">Maîtrise</span><br>Rétro & Précognition Étendue
+                                    </td>
+                                    <td>Perçoit des événements historiques oubliés ou des trajectoires futures majeures
+                                        sur des mois voire des années entières.</td>
+                                    <td>Épuisement mental sévère. Les souvenirs personnels commencent à se mélanger avec
+                                        les souvenirs perçus.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>6</strong></td>
                                     <td><span class="table-badge amber">Expert</span><br>Arborescence des Futurs</td>
-                                    <td>Visualise en simultané les <strong>multiples branches probabilistes</strong> d'un événement. Voit chaque choix et son issue directe pour une cible donnée.</td>
-                                    <td>Saturation cognitive (Analysis Paralysis). Le sujet peut hésiter face à l'infinité des embranchements (-2 PA d'hésitation si échec d'un test d'Int).</td>
+                                    <td>Visualise en simultané les <strong>multiples branches probabilistes</strong>
+                                        d'un événement. Voit chaque choix et son issue directe pour une cible donnée.
+                                    </td>
+                                    <td>Saturation cognitive (Analysis Paralysis). Le sujet peut hésiter face à
+                                        l'infinité des embranchements (-2 PA d'hésitation si échec d'un test d'Int).
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>7</strong></td>
-                                    <td><span class="table-badge amber">Élite</span><br>Feuilletage & Glissement Temporel</td>
-                                    <td>Perçoit plusieurs chronotrames concurrentes superposées (Temporal Layering). Identifie la micro-variable précise à modifier pour faire basculer une réalité dans une autre.</td>
-                                    <td>Instabilité psychique extrême. Le sujet a l'impression de vivre dans plusieurs réalités à la fois. Risque de dissociation d'identité.</td>
+                                    <td><span class="table-badge amber">Élite</span><br>Feuilletage & Glissement
+                                        Temporel</td>
+                                    <td>Perçoit plusieurs chronotrames concurrentes superposées (Temporal Layering).
+                                        Identifie la micro-variable précise à modifier pour faire basculer une réalité
+                                        dans une autre.</td>
+                                    <td>Instabilité psychique extrême. Le sujet a l'impression de vivre dans plusieurs
+                                        réalités à la fois. Risque de dissociation d'identité.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>8</strong></td>
                                     <td><span class="table-badge ruby">Suprême</span><br>Vision Temporelle Infinie</td>
-                                    <td>Omniprésence chronale. Accès instantané à l'infinité du spectre temporel (passé, présent, futur et réalités fantômes) pour tout être ou particule de l'univers.</td>
-                                    <td><strong>Rupture du lien présent.</strong> Le sujet cesse d'appartenir au monde mortel. Son corps s'effondre dans le coma si la vision dépasse 10 secondes.</td>
+                                    <td>Omniprésence chronale. Accès instantané à l'infinité du spectre temporel (passé,
+                                        présent, futur et réalités fantômes) pour tout être ou particule de l'univers.
+                                    </td>
+                                    <td><strong>Rupture du lien présent.</strong> Le sujet cesse d'appartenir au monde
+                                        mortel. Son corps s'effondre dans le coma si la vision dépasse 10 secondes.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -602,7 +849,8 @@
 
                     <h3>22.2 Utilisation Tactique en Combat : Anticiper le Coup</h3>
                     <p>
-                        En affrontement armé, un personnage possédant au moins l'<strong>Échelon 3</strong> de Clairsentience peut dépenser des Points d'Action pour deviner la prochaine manœuvre ennemie :
+                        En affrontement armé, un personnage possédant au moins l'<strong>Échelon 3</strong> de
+                        Clairsentience peut dépenser des Points d'Action pour deviner la prochaine manœuvre ennemie :
                     </p>
 
                     <div class="cards-grid-2">
@@ -613,7 +861,10 @@
                             </div>
                             <div class="spec-card-world">Clairsentience // Échelon 3+</div>
                             <p>
-                                Dès qu'un ennemi déclare une attaque contre le prescient, celui-ci peut dépenser <strong>2 PA</strong> pour entrevoir la trajectoire du coup 0.5 seconde avant son exécution. Il gagne <strong>+1 Palier de Dé en Esquive ou Parade</strong> contre cette attaque spécifique.
+                                Dès qu'un ennemi déclare une attaque contre le prescient, celui-ci peut dépenser
+                                <strong>2 PA</strong> pour entrevoir la trajectoire du coup 0.5 seconde avant son
+                                exécution. Il gagne <strong>+1 Palier de Dé en Esquive ou Parade</strong> contre cette
+                                attaque spécifique.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Déclenchement Réactif</span>
@@ -628,7 +879,10 @@
                             </div>
                             <div class="spec-card-world">Clairsentience // Échelon 6+</div>
                             <p>
-                                Le prescient analyse les six prochaines trajectoires de déplacement de la cible. Il désigne une case précise : si la cible s'y déplace ou y reste, toutes les attaques alliées contre elle bénéficient d'une <strong>réduction de difficulté de -4</strong> jusqu'au tour suivant.
+                                Le prescient analyse les six prochaines trajectoires de déplacement de la cible. Il
+                                désigne une case précise : si la cible s'y déplace ou y reste, toutes les attaques
+                                alliées contre elle bénéficient d'une <strong>réduction de difficulté de -4</strong>
+                                jusqu'au tour suivant.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill amber">Contrôle Tactique</span>
@@ -644,26 +898,46 @@
                     </h2>
 
                     <p>
-                        Intégrer le voyage dans le temps et la causalité dans une campagne de jeu de rôle est l'un des défis les plus redoutables pour un Maître de Jeu. Ce chapitre fournit les outils concrets pour structurer des intrigues temporelles rigoureuses, fascinantes et sans paradoxes destructeurs.
+                        Intégrer le voyage dans le temps et la causalité dans une campagne de jeu de rôle est l'un des
+                        défis les plus redoutables pour un Maître de Jeu. Ce chapitre fournit les outils concrets pour
+                        structurer des intrigues temporelles rigoureuses, fascinantes et sans paradoxes destructeurs.
                     </p>
 
                     <h3>23.1 Les Reliques Témoins & Capsules Temporelles</h3>
                     <p>
-                        Une <strong>capsule temporelle scellée</strong> est un objet mécanique ou minéral conçu pour traverser les âges en mode fermé. Pour qu'une relique serve de preuve irréfutable aux joueurs qu'une chronotrame antérieure s'est déjà déroulée, elle doit respecter la règle des trois empreintes :
+                        Une <strong>capsule temporelle scellée</strong> est un objet mécanique ou minéral conçu pour
+                        traverser les âges en mode fermé. Pour qu'une relique serve de preuve irréfutable aux joueurs
+                        qu'une chronotrame antérieure s'est déjà déroulée, elle doit respecter la règle des trois
+                        empreintes :
                     </p>
                     <ol>
-                        <li><strong>L'Empreinte Biométrique Intemporelle :</strong> Le coffre ou la console n'accepte que l'ADN d'un membre précis de la table, avec une marge d'erreur inférieure à <code>0.0001%</code>.</li>
-                        <li><strong>Le Journal de Bord Fermé :</strong> Les écrits ou holocubes stockés ne contiennent pas l'avenir de manière omnisciente, mais <strong>l'historique des erreurs passées</strong> commises par la première itération des héros.</li>
-                        <li><strong>Le Reliquaire Physique :</strong> Les ossements ou l'équipement brisé d'un compagnon mort il y a 1 700 ans, gisant là où les joueurs se trouvent actuellement. C'est le choc psychologique qui brise le doute métaphysique.</li>
+                        <li><strong>L'Empreinte Biométrique Intemporelle :</strong> Le coffre ou la console n'accepte
+                            que l'ADN d'un membre précis de la table, avec une marge d'erreur inférieure à
+                            <code>0.0001%</code>.
+                        </li>
+                        <li><strong>Le Journal de Bord Fermé :</strong> Les écrits ou holocubes stockés ne contiennent
+                            pas l'avenir de manière omnisciente, mais <strong>l'historique des erreurs passées</strong>
+                            commises par la première itération des héros.</li>
+                        <li><strong>Le Reliquaire Physique :</strong> Les ossements ou l'équipement brisé d'un compagnon
+                            mort il y a 1 700 ans, gisant là où les joueurs se trouvent actuellement. C'est le choc
+                            psychologique qui brise le doute métaphysique.</li>
                     </ol>
 
                     <div class="callout temporal">
                         <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
                             La Méthode des Graphes Temporels pour le MJ
                         </div>
                         <div class="callout-body">
-                            Ne préparez jamais une aventure temporelle sous forme de script linéaire. Dessinez un <strong>Graphe Acyclique Dirigé (DAG)</strong> : chaque nœud est un événement inévitable (Goulot), et les flèches représentent les différentes manières dont les joueurs peuvent y parvenir. Peu importe le chemin qu'ils empruntent, ils frapperont le nœud suivant, mais avec des ressources, des alliances et des états psychologiques radicalement différents.
+                            Ne préparez jamais une aventure temporelle sous forme de script linéaire. Dessinez un
+                            <strong>Graphe Acyclique Dirigé (DAG)</strong> : chaque nœud est un événement inévitable
+                            (Goulot), et les flèches représentent les différentes manières dont les joueurs peuvent y
+                            parvenir. Peu importe le chemin qu'ils empruntent, ils frapperont le nœud suivant, mais avec
+                            des ressources, des alliances et des états psychologiques radicalement différents.
                         </div>
                     </div>
 
@@ -680,23 +954,31 @@
                             <tbody>
                                 <tr>
                                     <td><strong>1. Vecteur Aval</strong></td>
-                                    <td>Le temps s'écoule naturellement vers l'avant. Tout retour arrière coûte 100&times; plus d'énergie.</td>
-                                    <td>Les PJ ne « rechargent » pas une sauvegarde. Leurs erreurs passées sont gravées ; ils doivent corriger le futur.</td>
+                                    <td>Le temps s'écoule naturellement vers l'avant. Tout retour arrière coûte
+                                        100&times; plus d'énergie.</td>
+                                    <td>Les PJ ne « rechargent » pas une sauvegarde. Leurs erreurs passées sont gravées
+                                        ; ils doivent corriger le futur.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>2. Ancrage Inversé</strong></td>
-                                    <td>Une ancre discrète semée dans le passé mûrit et se renforce au fil des siècles.</td>
-                                    <td>Les PJ peuvent planquer un objet dans un sanctuaire désert au chapitre 1 et le retrouver intact 1 000 ans plus tard au chapitre 10.</td>
+                                    <td>Une ancre discrète semée dans le passé mûrit et se renforce au fil des siècles.
+                                    </td>
+                                    <td>Les PJ peuvent planquer un objet dans un sanctuaire désert au chapitre 1 et le
+                                        retrouver intact 1 000 ans plus tard au chapitre 10.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>3. Inaltérabilité du Goulot</strong></td>
-                                    <td>Les carrefours du destin sont inévitables ; seul change l'état des acteurs qui le traversent.</td>
-                                    <td>L'Empire attaquera toujours la cité à minuit. La question est : les PJ auront-ils réparé le générateur à temps ?</td>
+                                    <td>Les carrefours du destin sont inévitables ; seul change l'état des acteurs qui
+                                        le traversent.</td>
+                                    <td>L'Empire attaquera toujours la cité à minuit. La question est : les PJ
+                                        auront-ils réparé le générateur à temps ?</td>
                                 </tr>
                                 <tr>
                                     <td><strong>4. Résistance Synaptique</strong></td>
-                                    <td>Sonder l'infinité des futurs inflige de la fatigue cognitive et du stress mental.</td>
-                                    <td>Utiliser la Clairsentience au-delà de l'Échelon 4 consomme des PA et impose des malus de concentration prolongée.</td>
+                                    <td>Sonder l'infinité des futurs inflige de la fatigue cognitive et du stress
+                                        mental.</td>
+                                    <td>Utiliser la Clairsentience au-delà de l'Échelon 4 consomme des PA et impose des
+                                        malus de concentration prolongée.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -706,7 +988,8 @@
                         <div class="sig-meta">
                             <strong>LIVRE V DU CODEX UNIVERSEL</strong><br>
                             Chrono-Physique, Topologie des Chronotrames & Clairsentience<br>
-                            <em>Approuvé par les observateurs de la trame temporelle et les maîtres de l'arcanotech.</em>
+                            <em>Approuvé par les observateurs de la trame temporelle et les maîtres de
+                                l'arcanotech.</em>
                         </div>
                         <div class="sig-stamp">
                             <span class="stamp-title">CAUSALITÉ VÉRIFIÉE</span>
@@ -737,7 +1020,15 @@
             <aside class="inspector">
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
                         Sur cette page
                     </div>
                     <ul class="toc-on-page">
@@ -750,7 +1041,12 @@
 
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
                         Télémétrie Chronale
                     </div>
                     <div class="telemetry-card">
@@ -779,10 +1075,15 @@
 
                 <div class="next-stage-card">
                     <h5>Prochaine Étape</h5>
-                    <p>Livre VI : Combat Tactique & Déplacements (séquence du tour de 10s, ordre d'initiative par PA, tranches de mouvement et tableau anatomique de localisation).</p>
-                    <a href="livre_6.html" class="btn-step" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                    <p>Livre VI : Combat Tactique & Déplacements (séquence du tour de 10s, ordre d'initiative par PA,
+                        tranches de mouvement et tableau anatomique de localisation).</p>
+                    <a href="livre_6.html" class="btn-step"
+                        style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
                         <span>Consulter Livre VI</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
                     </a>
                 </div>
             </aside>
@@ -790,7 +1091,10 @@
         </div>
     </div>
 
-    <!-- Script partagé -->
+    <!-- Scripts partagés & Authentification -->
     <script src="js/codex.js"></script>
+    <script src="users/user_store.js"></script>
+    <script src="users/auth.js"></script>
 </body>
+
 </html>
