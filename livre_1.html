@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Système de Jeu RP — Livre I : Fondations & Création</title>
-    <meta name="description" content="Livre I du Système de Jeu RP : Règles fondamentales, espèces, création pas-à-pas, calcul des Points d'Action (PA) et fiche PJ.">
-    
+    <meta name="description"
+        content="Livre I du Système de Jeu RP : Règles fondamentales, espèces, création pas-à-pas, calcul des Points d'Action (PA) et fiche PJ.">
+
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
 
     <!-- Stylesheet partagée -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
     <div class="app-container">
@@ -21,11 +26,18 @@
         <header class="topbar">
             <div class="topbar-left">
                 <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
                 <a href="index.html" class="brand">
                     <div class="brand-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
                     </div>
                     <div class="brand-info">
                         <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
@@ -39,24 +51,35 @@
             </div>
 
             <div class="topbar-right">
-                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <a href="Killtime/index.html" class="topbar-site-link"
+                    title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 14 14" />
+                    </svg>
                     <span>Site Killtime</span>
                 </a>
                 <div class="search-trigger" id="searchTrigger">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
                     <span>Rechercher...</span>
                     <kbd class="search-kbd">Ctrl+K</kbd>
                 </div>
                 <button class="theme-btn" id="themeToggle" title="Basculer le thème">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
                 </button>
             </div>
         </header>
 
         <!-- ================= WRAPPER ================= -->
         <div class="content-wrapper">
-            
+
             <!-- ================= SIDEBAR NAVIGATION ================= -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
@@ -65,8 +88,13 @@
                         <span>9 Livres</span>
                     </div>
                     <div class="sidebar-search-box">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="11" cy="11" r="8" />
+                            <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                        </svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..."
+                            autocomplete="off">
                     </div>
                 </div>
 
@@ -75,7 +103,11 @@
                     <div class="external-site-group">
                         <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
                             <span class="nav-external-label">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 14 14" />
+                                </svg>
                                 <span>Site Killtime</span>
                             </span>
                             <span class="nav-item-badge badge-live">Univers ↗</span>
@@ -89,7 +121,10 @@
                                 <span class="group-tag">00</span>
                                 <span>Prologue & Vision</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
                             <li>
@@ -108,15 +143,24 @@
                                 <span class="group-tag">L.I</span>
                                 <span>Bases & Création PJ</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="#chap-1" class="nav-item-link active"><span>1. Principes & Lexique</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-5" class="nav-item-link"><span>5. Progression & XP</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-fiche" class="nav-item-link"><span>Fiche de PJ Prototype</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-1" class="nav-item-link active"><span>1. Principes & Lexique</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-2" class="nav-item-link"><span>2. Cosmologie & Espèces</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-3" class="nav-item-link"><span>3. Création pas-à-pas</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-4" class="nav-item-link"><span>4. Points d'Action & Dégâts</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-5" class="nav-item-link"><span>5. Progression & XP</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-fiche" class="nav-item-link"><span>Fiche de PJ Prototype</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
                     </div>
 
@@ -127,14 +171,22 @@
                                 <span class="group-tag">L.II</span>
                                 <span>Paliers de Dés & Épreuves</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés (d2-d12+)</span></a></li>
-                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils (0-34)</span></a></li>
-                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques (d2-d24)</span></a></li>
-                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges Hors-Combat</span></a></li>
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle des Dés
+                                        (d2-d12+)</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Difficultés & Seuils
+                                        (0-34)</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Tables des Critiques
+                                        (d2-d24)</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Challenges
+                                        Hors-Combat</span></a></li>
                         </ul>
                     </div>
 
@@ -145,14 +197,22 @@
                                 <span class="group-tag">L.III</span>
                                 <span>Arbres de Compétences</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture & Typologie</span></a></li>
-                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR, AGI, CON)</span></a></li>
-                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux & Sociaux</span></a></li>
-                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium Spécialisations</span></a></li>
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture &
+                                        Typologie</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques (FOR,
+                                        AGI, CON)</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Mentaux &
+                                        Sociaux</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Compendium
+                                        Spécialisations</span></a></li>
                         </ul>
                     </div>
 
@@ -163,16 +223,26 @@
                                 <span class="group-tag">L.IV</span>
                                 <span>5e Force & Magie</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e Force</span></a></li>
-                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques & Nytharite</span></a></li>
-                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques & Portée</span></a></li>
-                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6 Stades)</span></a></li>
-                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens & Résonance</span></a></li>
-                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création (XP=PA)</span></a></li>
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-14" class="nav-item-link"><span>14. Physique de la 5e
+                                        Force</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Moteurs Magiques &
+                                        Nytharite</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Voies Arcaniques &
+                                        Portée</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Évolution Psychique (6
+                                        Stades)</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Liens &
+                                        Résonance</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Atelier de Création
+                                        (XP=PA)</span></a></li>
                         </ul>
                     </div>
 
@@ -183,14 +253,22 @@
                                 <span class="group-tag">L.V</span>
                                 <span>Temps & Causalité</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps & Causalité</span></a></li>
-                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
-                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
-                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps &
+                                        Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des
+                                        Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8
+                                        Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en
+                                        Jeu</span></a></li>
                         </ul>
                     </div>
 
@@ -201,13 +279,20 @@
                                 <span class="group-tag">L.VI</span>
                                 <span>Combat Tactique</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie des PA</span></a></li>
-                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span></a></li>
-                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span></a></li>
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s & Économie
+                                        des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements &
+                                        Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation &
+                                        Véhicules</span></a></li>
                         </ul>
                     </div>
 
@@ -218,13 +303,20 @@
                                 <span class="group-tag">L.VII</span>
                                 <span>Santé, États & Blessures</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement & Séquelles</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États & Effets</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins & Résurrection</span></a></li>
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement &
+                                        Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États &
+                                        Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins &
+                                        Résurrection</span></a></li>
                         </ul>
                     </div>
 
@@ -235,13 +327,20 @@
                                 <span class="group-tag">L.VIII</span>
                                 <span>Arsenal & Arcanotech</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes Métal</span></a></li>
-                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils Arcanotech</span></a></li>
-                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans & Pharmacopée</span></a></li>
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier
+                                        Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes
+                                        Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils
+                                        Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &
+                                        Pharmacopée</span></a></li>
                         </ul>
                     </div>
 
@@ -252,15 +351,24 @@
                                 <span class="group-tag">L.IX</span>
                                 <span>Outils Web Interactifs</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
-                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
-                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique & Critiques</span></a></li>
-                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
-                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche
+                                        PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts
+                                        (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &
+                                        Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de
+                                        Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de
+                                        Chronotrames</span></a></li>
                         </ul>
                     </div>
 
@@ -271,15 +379,24 @@
                                 <span class="group-tag">L.X</span>
                                 <span>Atlas des Mondes</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36 Élianes</span></a></li>
-                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies & Systèmes</span></a></li>
-                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes & Vaisseaux</span></a></li>
-                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
-                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points d'Intérêt</span></a></li>
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers & 36
+                                        Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies &
+                                        Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes &
+                                        Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des
+                                        Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités & Points
+                                        d'Intérêt</span></a></li>
                         </ul>
                     </div>
 
@@ -290,15 +407,24 @@
                                 <span class="group-tag">L.XI</span>
                                 <span>Bestiaire &amp; Menaces</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
-                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
-                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
-                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp; Disciples</span></a></li>
-                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                            <li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp;
+                                        Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp;
+                                        Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres
+                                        d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités &amp;
+                                        Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp;
+                                        Cybernétique</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -306,11 +432,17 @@
 
             <!-- ================= CONTENU PRINCIPAL (LIVRE I) ================= -->
             <main class="main-content" id="livre-1">
-                
+
                 <header class="doc-header">
                     <div class="doc-meta-tags">
                         <span class="pill-badge cyan">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" ry="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <rect x="3" y="4" width="18" height="18" rx="2" ry="2" />
+                                <line x1="16" y1="2" x2="16" y2="6" />
+                                <line x1="8" y1="2" x2="8" y2="6" />
+                                <line x1="3" y1="10" x2="21" y2="10" />
+                            </svg>
                             Livre I — Fondations & Création
                         </span>
                         <span class="pill-badge emerald">Règles Officielles</span>
@@ -319,7 +451,8 @@
 
                     <h1 class="doc-title">Livre I : Fondations du Système & Création de Personnage</h1>
                     <p class="doc-subtitle">
-                        Toutes les règles pour concevoir votre alter-ego, calibrer ses attributs physiques et mentaux, calculer ses Points d'Action (PA) et mesurer son seuil de survie dans les mondes connus.
+                        Toutes les règles pour concevoir votre alter-ego, calibrer ses attributs physiques et mentaux,
+                        calculer ses Points d'Action (PA) et mesurer son seuil de survie dans les mondes connus.
                     </p>
                 </header>
 
@@ -332,12 +465,17 @@
                     </h2>
 
                     <p class="lead">
-                        Le système s'articule autour d'un principe cardinal : chaque action, qu'elle soit martiale, mentale ou arcanique, consomme un fragment mesurable d'énergie et de temps. Il n'existe pas de « tour gratuit ».
+                        Le système s'articule autour d'un principe cardinal : chaque action, qu'elle soit martiale,
+                        mentale ou arcanique, consomme un fragment mesurable d'énergie et de temps. Il n'existe pas de «
+                        tour gratuit ».
                     </p>
 
                     <h3>1.1 Le Tour de 10 Secondes</h3>
                     <p>
-                        En situation de conflit ou de haute tension, le temps se découpe en <strong>Tours de 10 secondes</strong>. Durant cet intervalle, tous les protagonistes agissent selon un ordre d'initiative dynamique, puis dépensent leurs <strong>Points d'Action (PA)</strong> de manière fluide jusqu'à épuisement ou conservation de leur réserve pour les réactions du tour.
+                        En situation de conflit ou de haute tension, le temps se découpe en <strong>Tours de 10
+                            secondes</strong>. Durant cet intervalle, tous les protagonistes agissent selon un ordre
+                        d'initiative dynamique, puis dépensent leurs <strong>Points d'Action (PA)</strong> de manière
+                        fluide jusqu'à épuisement ou conservation de leur réserve pour les réactions du tour.
                     </p>
 
                     <h3>1.2 Lexique Fondamental</h3>
@@ -354,37 +492,46 @@
                                 <tr>
                                     <td><strong>Points d'Action</strong></td>
                                     <td><span class="pill-badge cyan">PA</span></td>
-                                    <td>La monnaie temporelle de votre personnage. Chaque déplacement, coup, parade, visée ou sortilège consomme un montant fixe de PA. Se régénèrent à chaque nouveau tour.</td>
+                                    <td>La monnaie temporelle de votre personnage. Chaque déplacement, coup, parade,
+                                        visée ou sortilège consomme un montant fixe de PA. Se régénèrent à chaque
+                                        nouveau tour.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Épreuve de Caractéristique</strong></td>
                                     <td><span class="pill-badge amber">EC</span></td>
-                                    <td>Test direct d'une caractéristique ou compétence sous forme de lancer de dé (+ modificateurs) contre un seuil de difficulté fixé par le MJ.</td>
+                                    <td>Test direct d'une caractéristique ou compétence sous forme de lancer de dé (+
+                                        modificateurs) contre un seuil de difficulté fixé par le MJ.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Challenge Opposé</strong></td>
                                     <td><span class="pill-badge ruby">VS</span></td>
-                                    <td>Confrontation directe entre deux créatures (ex: Force vs Force pour repousser, ou Attaque vs Parade/Esquive). Le différentiel net détermine l'ampleur du succès.</td>
+                                    <td>Confrontation directe entre deux créatures (ex: Force vs Force pour repousser,
+                                        ou Attaque vs Parade/Esquive). Le différentiel net détermine l'ampleur du
+                                        succès.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Essoufflement</strong></td>
                                     <td><span class="pill-badge ruby">ESS</span></td>
-                                    <td>Jauge d'effort physique critique. Permet d'injecter des PA d'urgence en situation désespérée au détriment de la lucidité et de l'endurance.</td>
+                                    <td>Jauge d'effort physique critique. Permet d'injecter des PA d'urgence en
+                                        situation désespérée au détriment de la lucidité et de l'endurance.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Seuil d'Encaissement</strong></td>
                                     <td><span class="pill-badge emerald">CAP</span></td>
-                                    <td>Valeur égale à <code>Constitution × 2</code>. Capacité du corps à absorber et encaisser les blessures avant traumatisme grave.</td>
+                                    <td>Valeur égale à <code>Constitution × 2</code>. Capacité du corps à absorber et
+                                        encaisser les blessures avant traumatisme grave.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Maximum Létal</strong></td>
                                     <td><span class="pill-badge ruby">MAX</span></td>
-                                    <td>Valeur égale à <code>Constitution × 5</code>. Montant de dégâts cumulés entraînant l'inconscience immédiate, le coma ou la mort clinique.</td>
+                                    <td>Valeur égale à <code>Constitution × 5</code>. Montant de dégâts cumulés
+                                        entraînant l'inconscience immédiate, le coma ou la mort clinique.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Points de Miracle</strong></td>
                                     <td><span class="pill-badge amber">PM</span></td>
-                                    <td>Réserve de destin (1 point de base pour tout Héros PJ). Permet de défier l'entropie lors d'une issue fatidique.</td>
+                                    <td>Réserve de destin (1 point de base pour tout Héros PJ). Permet de défier
+                                        l'entropie lors d'une issue fatidique.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -397,7 +544,9 @@
                     </h2>
 
                     <p>
-                        L'univers s'étend des civilisations tribales isolées jusqu'aux empires stellaires exploitant la singularité technologique et les mégastructures spatiales. Deux échelles permettent de situer immédiatement l'origine de tout équipement ou être vivant :
+                        L'univers s'étend des civilisations tribales isolées jusqu'aux empires stellaires exploitant la
+                        singularité technologique et les mégastructures spatiales. Deux échelles permettent de situer
+                        immédiatement l'origine de tout équipement ou être vivant :
                     </p>
 
                     <h3>2.1 Échelles Universelles</h3>
@@ -427,7 +576,8 @@
                             </div>
                             <p>
                                 <strong>Impossible</strong> : Biologie réfractaire totale à la magie.<br>
-                                <strong>Limitée</strong> : Entraînement possible au détriment d'un attribut physique.<br>
+                                <strong>Limitée</strong> : Entraînement possible au détriment d'un attribut
+                                physique.<br>
                                 <strong>Normale</strong> : Apprentissage et canalisation conventionnels.<br>
                                 <strong>Inhérente</strong> : La Cinquième Force est innée dès la naissance.<br>
                                 <strong>Godlike</strong> : Tissage instinctif de la réalité sans catalyseur.
@@ -440,7 +590,9 @@
 
                     <h3>2.2 Les Espèces Reconnues</h3>
                     <p>
-                        À la création du personnage, le choix de l'espèce détermine l'origine planétaire, le bagage culturel, le seuil minimum des perceptions sensorielles (Vision & Ouïe) et la compatibilité avec la Cinquième Force :
+                        À la création du personnage, le choix de l'espèce détermine l'origine planétaire, le bagage
+                        culturel, le seuil minimum des perceptions sensorielles (Vision & Ouïe) et la compatibilité avec
+                        la Cinquième Force :
                     </p>
 
                     <div class="cards-grid-3">
@@ -451,7 +603,9 @@
                                 <div class="spec-card-world">Origine : Multiples Mondes</div>
                             </div>
                             <p>
-                                Répandus sur des dizaines de systèmes solaires. Polyvalence absolue, adaptabilité climatique remarquable. Technologie allant du primitif au très avancé selon les colonies.
+                                Répandus sur des dizaines de systèmes solaires. Polyvalence absolue, adaptabilité
+                                climatique remarquable. Technologie allant du primitif au très avancé selon les
+                                colonies.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Tech : Primitive ➔ Très Avancée</span>
@@ -467,7 +621,8 @@
                                 <div class="spec-card-world">Origine : Planète Hybris</div>
                             </div>
                             <p>
-                                Humanoïdes robustes issus des profondeurs souterraines d'Hybris. Squelette dense, vision nocturne développée, métallurgie et techno-ingénierie souterraine propre à la race.
+                                Humanoïdes robustes issus des profondeurs souterraines d'Hybris. Squelette dense, vision
+                                nocturne développée, métallurgie et techno-ingénierie souterraine propre à la race.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Tech : Avancée d'Hybris</span>
@@ -483,7 +638,9 @@
                                 <div class="spec-card-world">Origine : Planète Hybris</div>
                             </div>
                             <p>
-                                Peuple sylvestre d'une grâce et d'une agilité exceptionnelles. Grande sensibilité aux flux de la biosphère et affinité fluide avec les énergies élémentaires de la Cinquième Force.
+                                Peuple sylvestre d'une grâce et d'une agilité exceptionnelles. Grande sensibilité aux
+                                flux de la biosphère et affinité fluide avec les énergies élémentaires de la Cinquième
+                                Force.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Tech : Avancée</span>
@@ -499,7 +656,8 @@
                                 <div class="spec-card-world">Origine : Planète Cléia</div>
                             </div>
                             <p>
-                                Espèce alien de petite taille exclusivement femelle, membre de l'Empire Intergalactique. Réseau neural hypersensible doté d'une affinité innée avec la manipulation arcanique.
+                                Espèce alien de petite taille exclusivement femelle, membre de l'Empire Intergalactique.
+                                Réseau neural hypersensible doté d'une affinité innée avec la manipulation arcanique.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Tech : Impériale Avancée</span>
@@ -515,7 +673,8 @@
                                 <div class="spec-card-world">Origine : Karkjiue</div>
                             </div>
                             <p>
-                                Reptiliens bipèdes de taille humaine, membres de l'Empire. Écailles renforcées conférant un encaissement naturel supérieur. Guerriers redoutables et techniciens réputés.
+                                Reptiliens bipèdes de taille humaine, membres de l'Empire. Écailles renforcées conférant
+                                un encaissement naturel supérieur. Guerriers redoutables et techniciens réputés.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Tech : Impériale Avancée</span>
@@ -531,7 +690,8 @@
                                 <div class="spec-card-world">Origine : Vardis & Bordures</div>
                             </div>
                             <p>
-                                Populations issues des colonies frontalières ou de mondes rudes marqués par l'exploitation minière et les guerres intestines. Volonté d'acier et survie aiguisée.
+                                Populations issues des colonies frontalières ou de mondes rudes marqués par
+                                l'exploitation minière et les guerres intestines. Volonté d'acier et survie aiguisée.
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Tech : Hybride Récup</span>
@@ -548,17 +708,22 @@
                     </h2>
 
                     <p>
-                        La création d'un personnage se déroule en <strong>5 étapes ordonnées</strong> garantissant un profil équilibré, personnalisé et prêt au jeu.
+                        La création d'un personnage se déroule en <strong>5 étapes ordonnées</strong> garantissant un
+                        profil équilibré, personnalisé et prêt au jeu.
                     </p>
 
                     <h3>Étape 1 : Identité & Origine</h3>
                     <p>
-                        Déterminez le <strong>Nom</strong>, l'<strong>Âge</strong>, le <strong>Sexe</strong>, la <strong>Description physique</strong> (cicatrices, posture, gabarit) et l'<strong>Historique</strong> de votre personnage (ses traumatismes, ses alliances de clan, son niveau d'éducation).
+                        Déterminez le <strong>Nom</strong>, l'<strong>Âge</strong>, le <strong>Sexe</strong>, la
+                        <strong>Description physique</strong> (cicatrices, posture, gabarit) et
+                        l'<strong>Historique</strong> de votre personnage (ses traumatismes, ses alliances de clan, son
+                        niveau d'éducation).
                     </p>
 
                     <h3>Étape 2 : Choix du Statut & Profil de Points</h3>
                     <p>
-                        Selon la nature de l'entité créée (un Héros PJ, un PNJ régulier ou un sbire d'arrière-plan), le budget de points d'attributs diffère :
+                        Selon la nature de l'entité créée (un Héros PJ, un PNJ régulier ou un sbire d'arrière-plan), le
+                        budget de points d'attributs diffère :
                     </p>
 
                     <div class="table-container">
@@ -575,23 +740,31 @@
                             <tbody>
                                 <tr>
                                     <td><strong>Héros PJ (Joueur)</strong></td>
-                                    <td>1 attribut à <span class="pill-badge cyan">5</span> + 1 attribut à <span class="pill-badge amber">4</span></td>
-                                    <td><strong>15 points</strong> à répartir dans les autres attributs</td>
-                                    <td>Max <strong>3</strong> par attribut restant</td>
-                                    <td><strong>17 points</strong> au lieu de 15 si Magie > 0</td>
+                                    <td>1 attribut pilier à <span class="pill-badge cyan">5</span> + 1 attribut pilier à
+                                        <span class="pill-badge amber">4</span></td>
+                                    <td><strong>Exactement 15 points</strong> répartis dans les 6 autres attributs (17
+                                        si Magie &gt; 0)</td>
+                                    <td>Min <strong>1</strong>, Max <strong>3</strong> par attribut restant (Plafond
+                                        absolu en jeu : <strong>10</strong>)</td>
+                                    <td><strong>17 points</strong> au lieu de 15 si Magie &gt; 0 (au moins 1 pt en
+                                        Magie)</td>
                                 </tr>
                                 <tr>
                                     <td><strong>PNJ Normal (Soldat / Élite)</strong></td>
-                                    <td>2 attributs à <span class="pill-badge amber">4</span></td>
-                                    <td><strong>15 points</strong> à répartir dans les autres attributs</td>
-                                    <td>Max <strong>3</strong> par attribut restant</td>
-                                    <td><strong>17 points</strong> au lieu de 15 si Magie > 0</td>
+                                    <td>2 attributs piliers à <span class="pill-badge amber">4</span></td>
+                                    <td><strong>Exactement 15 points</strong> répartis dans les 6 autres attributs (17
+                                        si Magie &gt; 0)</td>
+                                    <td>Min <strong>1</strong>, Max <strong>3</strong> par attribut restant (Plafond
+                                        absolu en jeu : <strong>10</strong>)</td>
+                                    <td><strong>17 points</strong> au lieu de 15 si Magie &gt; 0</td>
                                 </tr>
                                 <tr>
                                     <td><strong>PNJ Sbire (« Petite Merde »)</strong></td>
                                     <td>Aucun attribut majeur d'office</td>
-                                    <td><strong>12 points</strong> au total à répartir</td>
-                                    <td>Max <strong>3</strong> par attribut</td>
+                                    <td><strong>12 points</strong> au total répartis sur les 8 attributs (11 si Magie
+                                        &gt; 0)</td>
+                                    <td>Min <strong>1</strong>, Max <strong>3</strong> par attribut (Aucun attribut à 0
+                                        !)</td>
                                     <td><strong>11 points</strong> si magie débloquée</td>
                                 </tr>
                             </tbody>
@@ -600,42 +773,59 @@
 
                     <h3>Étape 3 : Définition des 8 Attributs Majeurs</h3>
                     <p>
-                        Les attributs représentent le potentiel brut de l'individu. Ils sont scindés en deux catégories fondamentales :
+                        Les attributs représentent le potentiel brut de l'individu. Ils sont scindés en deux catégories
+                        fondamentales :
                     </p>
 
                     <div class="cards-grid-2">
                         <div class="spec-card">
                             <div class="spec-card-title">Attributs Physiques</div>
                             <p>
-                                <strong>Force (FOR)</strong> : Puissance musculaire, armes contondantes, armures lourdes, charges.<br>
-                                <strong>Agilité (AGI)</strong> : Dextérité, coordination manuelle, armes de précision, acrobaties.<br>
-                                <strong>Constitution (CON)</strong> : Robustesse organique, santé, cardio, seuil d'encaissement.<br>
-                                <strong>Rapidité d'exécution (RAP)</strong> : Vitesse de réaction nerveuse, cadence, vivacité motrice.
+                                <strong>Force (FOR)</strong> : Puissance musculaire, armes contondantes, armures
+                                lourdes, charges.<br>
+                                <strong>Agilité (AGI)</strong> : Dextérité, coordination manuelle, armes de précision,
+                                acrobaties.<br>
+                                <strong>Constitution (CON)</strong> : Robustesse organique, santé, cardio, seuil
+                                d'encaissement.<br>
+                                <strong>Rapidité d'exécution (RAP)</strong> : Vitesse de réaction nerveuse, cadence,
+                                vivacité motrice.
                             </p>
                         </div>
 
                         <div class="spec-card">
                             <div class="spec-card-title">Attributs Psychologiques & Mentaux</div>
                             <p>
-                                <strong>Intelligence (INT)</strong> : Raisonnement logique, calcul spatial, stratégie, déduction.<br>
-                                <strong>Érudition (ÉRU)</strong> : Savoirs académiques, histoire, médecine, sciences arcaniques.<br>
-                                <strong>Charisme (CHA)</strong> : Force de présence, magnétisme, tromperie, commandement.<br>
-                                <strong>Instinct / Sagesse (INS)</strong> : Intuition, perception du danger, réflexe viscéral, volonté.
+                                <strong>Intelligence (INT)</strong> : Raisonnement logique, calcul spatial, stratégie,
+                                déduction.<br>
+                                <strong>Érudition (ÉRU)</strong> : Savoirs académiques, histoire, médecine, sciences
+                                arcaniques.<br>
+                                <strong>Charisme (CHA)</strong> : Force de présence, magnétisme, tromperie,
+                                commandement.<br>
+                                <strong>Instinct / Sagesse (INS)</strong> : Intuition, perception du danger, réflexe
+                                viscéral, volonté.
                             </p>
                         </div>
                     </div>
 
                     <h3>Étape 4 : Les Attributs Sensoriels & Spéciaux</h3>
                     <ul>
-                        <li><strong>Vision</strong> : Roulez <strong>1d6</strong> à la création (valeur minimale de 3 selon l'espèce).</li>
-                        <li><strong>Ouïe</strong> : Roulez <strong>1d6</strong> à la création (valeur minimale de 3 selon l'espèce).</li>
-                        <li><strong>Magie</strong> : Débute à 0 pour un individu ordinaire. Si le joueur choisit d'éveiller son personnage à la Cinquième Force dès sa création, il bénéficie de <strong>17 points secondaires</strong> au lieu de 15 et place au moins 1 point en Magie.</li>
-                        <li><strong>Points de Miracle</strong> : Tout PJ commence avec <strong>1 Point de Miracle</strong>.</li>
+                        <li><strong>Vision</strong> : Roulez <strong>1d6</strong> à la création (valeur minimale de 3
+                            selon l'espèce).</li>
+                        <li><strong>Ouïe</strong> : Roulez <strong>1d6</strong> à la création (valeur minimale de 3
+                            selon l'espèce).</li>
+                        <li><strong>Magie</strong> : Débute à 0 pour un individu ordinaire. Si le joueur choisit
+                            d'éveiller son personnage à la Cinquième Force dès sa création, il bénéficie de <strong>17
+                                points secondaires</strong> au lieu de 15 et place au moins 1 point en Magie.</li>
+                        <li><strong>Points de Miracle</strong> : Tout PJ commence avec <strong>1 Point de
+                                Miracle</strong>.</li>
                     </ul>
 
                     <h3>Étape 5 : Compétences de Base Entraînées</h3>
                     <p>
-                        Consultez votre score final en <strong>Érudition</strong> : vous choisissez un nombre de <strong>compétences de base égal à votre rang d'Érudition</strong>. Ces compétences sont considérées comme <em>Entraînées</em> dès le début de l'aventure, conférant un bonus permanent de <strong>+1 niveau de dé</strong> lors de leur résolution.
+                        Consultez votre score final en <strong>Érudition</strong> : vous choisissez un nombre de
+                        <strong>compétences de base égal à votre rang d'Érudition</strong>. Ces compétences sont
+                        considérées comme <em>Entraînées</em> dès le début de l'aventure, conférant un bonus permanent
+                        de <strong>+1 niveau de dé</strong> lors de leur résolution.
                     </p>
 
                     <!-- ================= CHAPITRE 4 ================= -->
@@ -653,22 +843,52 @@
                         <span class="formula-badge">Formule Fondamentale</span>
                         <div class="formula-content">
                             <div class="formula-math">
-                                PA = <span class="hl-cyan">[Agi ou Int]</span> + <span class="hl-gold">Rap</span> + <span class="hl-ruby">Min(Principaux)</span>
+                                PA = <span class="hl-cyan">[Agi ou Int]</span> + <span class="hl-gold">Rap</span> +
+                                <span class="hl-ruby">Min(Principaux)</span>
                             </div>
                             <div class="formula-desc">
-                                Prenez la plus haute valeur entre votre <strong>Agilité</strong> ou votre <strong>Intelligence</strong>, ajoutez votre <strong>Rapidité d'exécution</strong>, puis ajoutez la <strong>valeur de votre attribut principal le plus faible</strong>.
+                                Prenez la plus haute valeur entre votre <strong>Agilité</strong> ou votre
+                                <strong>Intelligence</strong>, ajoutez votre <strong>Rapidité d'exécution</strong>, puis
+                                ajoutez la <strong>valeur de votre attribut principal le plus faible</strong>.
                             </div>
                         </div>
                     </div>
 
                     <div class="callout arcane">
                         <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <polyline points="22 12 18 12 15 21 9 3 6 12 2 12" />
+                            </svg>
                             Exemple Concret de Calcul de PA
                         </div>
                         <div class="callout-body">
                             Roger possède : Agi 3, Int 2, Rap 3, et son attribut le plus faible est le Charisme à 1.<br>
-                            <strong>Calcul :</strong> Max(3, 2) + 3 + 1 = <strong>7 Points d'Action</strong> disponibles à chaque début de tour.
+                            <strong>Calcul :</strong> Max(3, 2) + 3 + 1 = <strong>7 Points d'Action</strong> disponibles
+                            à chaque début de tour.
+                        </div>
+                    </div>
+
+                    <div class="callout ruby"
+                        style="border-left: 4px solid var(--vital-ruby); background: rgba(244, 63, 94, 0.06); padding: 14px 18px; margin: 16px 0;">
+                        <div class="callout-header"
+                            style="color: var(--vital-ruby); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                            </svg>
+                            Règles Vitales : Quota d'Attaque & Résolution à 0 PV
+                        </div>
+                        <div class="callout-body">
+                            &bull; <strong>Quota d'Attaque :</strong> 1 seule attaque par tour (2 seulement si palier
+                            d'élite &ge; 2d6).<br>
+                            &bull; <strong>Chute à 0 PV :</strong> Si le coup fatal dépasse l'Encaissement
+                            (<code>CON &times; 2</code>), syncope forcée (ou mort instantanée à la tête, sauf si sauvé
+                            par 1 Point de Miracle). Si le coup n'excède pas l'Encaissement, le combattant choisit entre
+                            <em>Sombrer</em> (inconscience stable) ou <em>Dernier Souffle</em> (reste conscient, +1
+                            Essoufflement par action, mort si Essoufflement = CON).
                         </div>
                     </div>
 
@@ -680,7 +900,9 @@
                                 <span class="pill-badge emerald">Constitution × 2</span>
                             </div>
                             <p>
-                                Représente le bouclier physique de chair et de muscle. Tant qu'une attaque n'inflige pas des dégâts supérieurs à <code>Con × 2</code> (après déduction éventuelle de l'armure), l'impact est encaissé sans dommage incapacitant.
+                                Représente le bouclier physique de chair et de muscle. Tant qu'une attaque n'inflige pas
+                                des dégâts supérieurs à <code>Con × 2</code> (après déduction éventuelle de l'armure),
+                                l'impact est encaissé sans dommage incapacitant.
                             </p>
                         </div>
 
@@ -690,19 +912,28 @@
                                 <span class="pill-badge ruby">Constitution × 5</span>
                             </div>
                             <p>
-                                Le seuil critique d'intégrité biologique. Dès que les dégâts cumulés atteignent <code>Con × 5</code>, le personnage sombre immédiatement dans l'inconscience, entre en état de choc traumatique ou succombe à ses blessures.
+                                Le seuil critique d'intégrité biologique. Dès que les dégâts cumulés atteignent
+                                <code>Con × 5</code>, le personnage sombre immédiatement dans l'inconscience, entre en
+                                état de choc traumatique ou succombe à ses blessures.
                             </p>
                         </div>
                     </div>
 
                     <h3>4.2 Réserve d'Essoufflement</h3>
                     <p>
-                        L'Essoufflement est calibré sur votre Constitution et votre entraînement en Cardio. En combat, lorsqu'un personnage n'a plus de PA mais doit absolument agir pour éviter un coup fatal ou porter une frappe désespérée, il peut <strong>gagner 1 point d'Essoufflement pour s'octroyer des PA d'urgence</strong>. L'Essoufflement ne se réinitialise pas à la fin du tour : il exige une action dédiée de récupération (reprendre son souffle) sans attaquer.
+                        L'Essoufflement est calibré sur votre Constitution et votre entraînement en Cardio. En combat,
+                        lorsqu'un personnage n'a plus de PA mais doit absolument agir pour éviter un coup fatal ou
+                        porter une frappe désespérée, il peut <strong>gagner 1 point d'Essoufflement pour s'octroyer des
+                            PA d'urgence</strong>. L'Essoufflement ne se réinitialise pas à la fin du tour : il exige
+                        une action dédiée de récupération (reprendre son souffle) sans attaquer.
                     </p>
 
                     <h3>4.3 Calcul de l'Initiative</h3>
                     <p>
-                        L'initiative est basée sur la plus haute valeur entre <strong>Rapidité</strong>, <strong>Agilité</strong> et <strong>Intelligence</strong>. On convertit cette valeur en palier de dé (ex: 3 ➔ 1d4, 5 ➔ 1d6, 6 ➔ 1d8, etc.) pour déterminer l'ordre de passage au début du combat.
+                        L'initiative est basée sur la plus haute valeur entre <strong>Rapidité</strong>,
+                        <strong>Agilité</strong> et <strong>Intelligence</strong>. On convertit cette valeur en palier
+                        de dé (ex: 3 ➔ 1d4, 5 ➔ 1d6, 6 ➔ 1d8, etc.) pour déterminer l'ordre de passage au début du
+                        combat.
                     </p>
 
                     <!-- ================= CHAPITRE 5 ================= -->
@@ -712,7 +943,8 @@
                     </h2>
 
                     <p>
-                        Le système utilise un mode d'évolution organique : l'expérience est acquise par <strong>champ d'attribut</strong> selon les actions accomplies et les défis relevés en session.
+                        Le système utilise un mode d'évolution organique : l'expérience est acquise par <strong>champ
+                            d'attribut</strong> selon les actions accomplies et les défis relevés en session.
                     </p>
 
                     <div class="table-container">
@@ -728,22 +960,29 @@
                                 <tr>
                                     <td><strong>+1 Entraînement de Compétence</strong></td>
                                     <td><span class="pill-badge cyan">5 XP</span></td>
-                                    <td>Augmente définitivement la compétence liée à l'attribut d'un palier de dé (+1 niveau de dé).</td>
+                                    <td>Augmente définitivement la compétence liée à l'attribut d'un palier de dé (+1
+                                        niveau de dé).</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Acquisition d'une Spécialisation</strong></td>
                                     <td><span class="pill-badge amber">5 XP</span></td>
-                                    <td>Débloque une spécialisation précise (ex: <em>Maniement de l'épée</em>, <em>Chirurgie</em>, <em>Télékinésie</em>) permettant d'annuler les malus de visée ou d'appliquer des effets spéciaux.</td>
+                                    <td>Débloque une spécialisation précise (ex: <em>Maniement de l'épée</em>,
+                                        <em>Chirurgie</em>, <em>Télékinésie</em>) permettant d'annuler les malus de
+                                        visée ou d'appliquer des effets spéciaux.
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Création d'un Pouvoir Arcanique</strong></td>
                                     <td><span class="pill-badge ruby">X XP = X PA</span></td>
-                                    <td>Le joueur achète des effets modulaires (dégâts résiduels, étourdissement, portée). Le montant total d'XP dépensé fixe exactement le coût en PA pour l'activer en combat.</td>
+                                    <td>Le joueur achète des effets modulaires (dégâts résiduels, étourdissement,
+                                        portée). Le montant total d'XP dépensé fixe exactement le coût en PA pour
+                                        l'activer en combat.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Augmentation d'un Attribut Principal</strong></td>
                                     <td><span class="pill-badge emerald">Variable</span></td>
-                                    <td>Augmente la caractéristique de base après un entraînement intensif prolongé ou une avancée majeure dans la campagne.</td>
+                                    <td>Augmente la caractéristique de base après un entraînement intensif prolongé ou
+                                        une avancée majeure dans la campagne.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -866,7 +1105,15 @@
             <aside class="inspector">
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
                         Sur cette page
                     </div>
                     <ul class="toc-on-page">
@@ -881,7 +1128,12 @@
 
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
+                            <line x1="8" y1="21" x2="16" y2="21" />
+                            <line x1="12" y1="17" x2="12" y2="21" />
+                        </svg>
                         Télémétrie Système
                     </div>
                     <div class="telemetry-card">
@@ -905,15 +1157,23 @@
                             <span class="telemetry-label">Entraînement :</span>
                             <span class="telemetry-val">+1 palier dé</span>
                         </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Attaque / Tour :</span>
+                            <span class="telemetry-val">1 max (2 si &ge; 2d6)</span>
+                        </div>
                     </div>
                 </div>
 
                 <div class="next-stage-card">
                     <h5>Prochaine Étape</h5>
-                    <p>Livre II : Paliers de Dés & Épreuves (Échelle d2 à 2d12, difficultés 0-34 et tables de critiques d2-d24).</p>
+                    <p>Livre II : Paliers de Dés & Épreuves (Échelle d2 à 2d12, difficultés 0-34 et tables de critiques
+                        d2-d24).</p>
                     <a href="livre_2.html" class="btn-step">
                         <span>Ouvrir Livre II</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
                     </a>
                 </div>
             </aside>
@@ -924,4 +1184,5 @@
     <!-- Script partagé -->
     <script src="js/codex.js"></script>
 </body>
+
 </html>

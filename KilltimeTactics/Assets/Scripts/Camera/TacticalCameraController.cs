@@ -110,6 +110,8 @@ namespace Killtime.CameraSystem
 
         private void Update()
         {
+            if (Time.timeScale <= 0.0001f) return;
+
             HandleKeyboardMovement();
             HandleRotation();
             HandleZoom();

@@ -4,6 +4,7 @@ using UnityEngine;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
+using Killtime.UI;
 
 namespace Killtime.Tactics.CombatUI
 {
@@ -48,6 +49,8 @@ namespace Killtime.Tactics.CombatUI
 
         private void HandleSelectionInputs()
         {
+            if (CombatHUD.IsPaused) return;
+
             var cam = UnityEngine.Camera.main;
             if (cam == null || _grid == null) return;
 

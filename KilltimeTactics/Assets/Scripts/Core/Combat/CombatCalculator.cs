@@ -35,33 +35,61 @@ namespace Killtime.Core.Combat
             int defenseModifier,
             int weaponBaseDamage,
             bool cancelPenaltyWithAP = false,
-            int defenderArmor = 0)
+            int defenderArmor = 0,
+            int attackerBonusAP = 0,
+            int defenderBonusAP = 0)
         {
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
 
-            // Coût en PA de base pour l'attaque (ex: 2 PA)
-            int apCost = 2;
-            if (cancelPenaltyWithAP) apCost += 1;
+            // 1. Temps de l'Attaquant : Coût de base + PA bonus injectés
+            int baseAttackCost = cancelPenaltyWithAP ? 3 : 2;
+            int safeAttackerBonus = Math.Max(0, attackerBonusAP);
+            int totalAttackerCost = baseAttackCost + safeAttackerBonus;
 
-            if (!attacker.ConsumeActionPoints(apCost))
+            if (!attacker.ConsumeActionPoints(totalAttackerCost))
             {
                 return new DamageResult
                 {
                     IsHit = false,
                     IsBlocked = false,
-                    CombatLog = $"{attacker.Name} n'a pas assez de PA ({attacker.CurrentActionPoints}/{apCost}) pour attaquer !"
+                    CombatLog = $"{attacker.Name} n'a pas assez de PA ({attacker.CurrentActionPoints}/{totalAttackerCost}) pour attaquer !"
                 };
             }
 
-            int finalAttackMod = attackModifier;
-            if (!cancelPenaltyWithAP)
+            // 2. Temps du Défenseur : Coût de base de réaction (1 PA) + PA bonus défensifs
+            int baseDefenseCost = 1;
+            bool canDefenderReact = defender.CurrentActionPoints >= baseDefenseCost;
+            int actualDefenderBonus = 0;
+
+            if (canDefenderReact)
             {
-                finalAttackMod += targetInfo.DifficultyModifier; // applique le malus de visée
+                int requestedDefenseCost = baseDefenseCost + Math.Max(0, defenderBonusAP);
+                int affordableDefenseCost = Math.Min(defender.CurrentActionPoints, requestedDefenseCost);
+                defender.ConsumeActionPoints(affordableDefenseCost);
+                actualDefenderBonus = affordableDefenseCost - baseDefenseCost;
             }
 
-            // Jets d'attaque et de défense
+            // 3. Calcul des modificateurs finaux
+            int finalAttackMod = attackModifier + safeAttackerBonus;
+            if (!cancelPenaltyWithAP)
+            {
+                finalAttackMod += targetInfo.DifficultyModifier;
+            }
+
+            int finalDefenseMod = defenseModifier;
+            if (canDefenderReact)
+            {
+                finalDefenseMod += actualDefenderBonus;
+            }
+            else
+            {
+                // Défenseur surpris sans PA pour réagir : malus réflexe
+                finalDefenseMod -= 2;
+            }
+
+            // 4. Lancer des dés et différentiel net
             var attackRoll = _diceRoller.Roll(attackDie, finalAttackMod, 10);
-            var defenseRoll = _diceRoller.Roll(defenseDie, defenseModifier, 10);
+            var defenseRoll = _diceRoller.Roll(defenseDie, finalDefenseMod, 10);
 
             int differential = attackRoll.Total - defenseRoll.Total;
 
@@ -104,10 +132,6 @@ namespace Killtime.Core.Combat
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = Math.Max(0, rawDamage - absorbed);
 
-            // Application des dégâts aux PV du défenseur
-            defender.CurrentHealth = Math.Max(0, defender.CurrentHealth - finalDamage);
-
-            // Dépassement d'encaissement (Livre I & VII)
             bool exceededEncaissement = finalDamage > defender.EncaissementThreshold;
             StatusEffect inflictedStatus = StatusEffect.None;
 
@@ -117,13 +141,18 @@ namespace Killtime.Core.Combat
                 defender.ActiveStatus |= inflictedStatus;
             }
 
-            // Vérification de KO ou létalité
-            if (defender.CurrentHealth <= 0)
+            FatalBlowResolution fatalRes = FatalBlowResolution.None;
+            if (defender.CurrentHealth - finalDamage <= 0)
             {
-                defender.ActiveStatus |= StatusEffect.Inconscient;
+                fatalRes = defender.EvaluateFatalBlow(actualHitPart, finalDamage);
+            }
+            else
+            {
+                defender.CurrentHealth -= finalDamage;
             }
 
-            string log = $"{attacker.Name} frappe {defender.Name} ";
+            string log = $"{attacker.Name} attaque {defender.Name} ";
+            log += $"[PA Attaque: {baseAttackCost}+{safeAttackerBonus} | PA Défense: {(canDefenderReact ? $"{baseDefenseCost}+{actualDefenderBonus}" : "0 (Aucune réaction, -2)")}] ";
             if (wasDeflected)
             {
                 log += $"(DÉVIATION : visait {targetInfo.DisplayName}, touche {BodyPartInfo.GetInfo(actualHitPart).DisplayName}) ";
@@ -137,6 +166,23 @@ namespace Killtime.Core.Combat
             if (inflictedStatus != StatusEffect.None)
             {
                 log += $" [TRAUMATISME: {inflictedStatus}]";
+            }
+
+            if (fatalRes == FatalBlowResolution.InstantDeath)
+            {
+                log += " 💀 [MORT INSTANTANÉE : TÊTE DÉTRUITE]";
+            }
+            else if (fatalRes == FatalBlowResolution.MiracleSaved)
+            {
+                log += " 🔮 [POINT DE MIRACLE : SURVIE À 1 PV]";
+            }
+            else if (fatalRes == FatalBlowResolution.ForcedUnconscious)
+            {
+                log += " 💥 [SYNCOPE TRAUMATIQUE : K.O. FORCÉ]";
+            }
+            else if (fatalRes == FatalBlowResolution.EligibleForLastBreath)
+            {
+                log += " ⚡ [0 PV : ÉLIGIBLE SOMBRER OU DERNIER SOUFFLE]";
             }
 
             return new DamageResult
@@ -153,6 +199,7 @@ namespace Killtime.Core.Combat
                 FinalDamageApplied = finalDamage,
                 ExceededEncaissement = exceededEncaissement,
                 InflictedStatus = inflictedStatus,
+                FatalResolution = fatalRes,
                 CombatLog = log
             };
         }

@@ -84,6 +84,22 @@ namespace Killtime.Tests
             Assert.AreEqual("Début du round", rewound.ActionDescription);
             Assert.AreEqual(1, branch.GetFullChronology().Count);
         }
+
+        [Test]
+        public void TestAttributes_CannotExceedTen_AndCannotDropBelowOne()
+        {
+            var clamped = new Attributes(@for: 15, agi: -3, con: 12, rap: 0, @int: 10, eru: 1, cha: 20, ins: 4, mag: 14);
+
+            Assert.AreEqual(10, clamped.Force);
+            Assert.AreEqual(1, clamped.Agilite);
+            Assert.AreEqual(10, clamped.Constitution);
+            Assert.AreEqual(1, clamped.Rapidite);
+            Assert.AreEqual(10, clamped.Intelligence);
+            Assert.AreEqual(1, clamped.Erudition);
+            Assert.AreEqual(10, clamped.Charisme);
+            Assert.AreEqual(4, clamped.Instinct);
+            Assert.AreEqual(10, clamped.Magie);
+        }
     }
 }
 #endif

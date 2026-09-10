@@ -50,12 +50,20 @@ namespace Killtime.Tactics.TurnSystem
             }
         }
 
+        public void ClearUnits()
+        {
+            _allUnits.Clear();
+            ActiveUnit = null;
+            _activeUnitIndex = 0;
+        }
+
         public void ResetCombatState()
         {
             IsCombatOver = false;
             CurrentOutcome = CombatOutcome.InProgress;
             CurrentRound = 1;
             _activeUnitIndex = 0;
+            _allUnits.RemoveAll(u => u == null);
         }
 
         public bool CheckCombatOver()
@@ -92,6 +100,8 @@ namespace Killtime.Tactics.TurnSystem
 
         public void StartNewRound()
         {
+            _allUnits.RemoveAll(u => u == null);
+
             if (CheckCombatOver()) return;
 
             // Tri par initiative selon Rapidité (Livre I & VI)

@@ -10,6 +10,7 @@ using Killtime.Core.Dice;
 using Killtime.Core.Chrono;
 using Killtime.CameraSystem;
 using Killtime.WebGL;
+using Killtime.UI;
 
 namespace Killtime.Tactics
 {
@@ -110,6 +111,13 @@ namespace Killtime.Tactics
             if (_turnManager == null) _turnManager = GetComponent<TurnManager>() ?? FindAnyObjectByType<TurnManager>();
             if (_cameraController == null) _cameraController = FindAnyObjectByType<TacticalCameraController>();
             if (_cinematicDirector == null) _cinematicDirector = FindAnyObjectByType<CinematicDirector>();
+
+            var hud = FindAnyObjectByType<CombatHUD>();
+            if (hud == null)
+            {
+                var hudGo = new GameObject("[UI] TacticalFloatingHUD");
+                hudGo.AddComponent<CombatHUD>();
+            }
         }
 
         private void Update()
@@ -244,6 +252,7 @@ namespace Killtime.Tactics
 
         private void HandleMouseInteraction()
         {
+            if (CombatHUD.IsPaused) return;
             if (UnityEngine.Camera.main == null || _gridVisualizer == null) return;
 
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -276,7 +285,12 @@ namespace Killtime.Tactics
                                 var path = _pathfinder.FindPath(start, target, activeUnit.Stats.CurrentActionPoints, out int apCost);
                                 if (path.Count > 0)
                                 {
-                                    Log($"{activeUnit.Stats.Name} avance de {path.Count - 1} cases (Coût: {apCost} PA).");
+                                    int remainingAP = activeUnit.Stats.CurrentActionPoints - apCost;
+                                    Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{apCost} PA | Restant: {remainingAP} PA]");
+
+                                    var unitVis = activeUnit.GetComponent<TacticalUnitVisual>();
+                                    unitVis?.SpawnFloatingText($"Déplacement (-{apCost} PA)", new Color(0.2f, 0.85f, 1.0f));
+
                                     _gridVisualizer.ClearPathPreview();
                                     StartCoroutine(activeUnit.MoveAlongPath(path, _grid, apCost));
                                     RecordChronoSnapshot($"Déplacement vers ({target.Q}, {target.R})");
@@ -350,9 +364,16 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// Déclenche un tir ciblé selon les règles complètes du Livre VI (Chap. 26).
+        /// Déclenche une passe d'armes ou tir ciblé selon la séquence d'injection de PA du Livre VI.
         /// </summary>
-        public void ExecuteAttack(BodyPart targetedPart, bool cancelPenaltyWithAP, DiceType attackDie = DiceType.D6, DiceType defenseDie = DiceType.D4, int weaponBaseDamage = 5)
+        public void ExecuteAttack(
+            BodyPart targetedPart, 
+            bool cancelPenaltyWithAP, 
+            DiceType attackDie = DiceType.D6, 
+            DiceType defenseDie = DiceType.D4, 
+            int weaponBaseDamage = 5,
+            int attackerBonusAP = 0,
+            int defenderBonusAP = -1)
         {
             var attacker = _turnManager.ActiveUnit;
             var defender = CurrentTarget;
@@ -369,8 +390,29 @@ namespace Killtime.Tactics
                 return;
             }
 
+            int maxAttacks = attacker.Stats.GetMaxAttacksAllowed(attackDie);
+            if (!attacker.Stats.CanAttack(attackDie))
+            {
+                Log($"⚠️ <b>{attacker.Stats.Name}</b> a déjà épuisé son quota d'attaque ce tour ({attacker.Stats.AttacksThisTurn}/{maxAttacks}) ! Requis pour 2 attaques : palier 2d6, 2d8, 2d10 ou 2d12.");
+                return;
+            }
+
+            // Résolution automatique de la réponse du défenseur si non spécifiée manuellement
+            int resolvedDefenderBonus = defenderBonusAP;
+            if (resolvedDefenderBonus < 0)
+            {
+                resolvedDefenderBonus = 0;
+                if (defender.Stats.CurrentActionPoints > 1)
+                {
+                    int extraAvailable = defender.Stats.CurrentActionPoints - 1;
+                    resolvedDefenderBonus = Mathf.Clamp(attackerBonusAP > 0 ? attackerBonusAP : 1, 0, extraAvailable);
+                }
+            }
+
             Action resolveAction = () =>
             {
+                attacker.Stats.RegisterAttack();
+
                 var result = _combatCalculator.ResolveTargetedAttack(
                     attacker: attacker.Stats,
                     defender: defender.Stats,
@@ -381,32 +423,83 @@ namespace Killtime.Tactics
                     defenseModifier: defender.Stats.Attributes.Agilite,
                     weaponBaseDamage: weaponBaseDamage,
                     cancelPenaltyWithAP: cancelPenaltyWithAP,
-                    defenderArmor: defender.Stats.BaseArmorAbsorption
+                    defenderArmor: defender.Stats.BaseArmorAbsorption,
+                    attackerBonusAP: attackerBonusAP,
+                    defenderBonusAP: resolvedDefenderBonus
                 );
 
                 Log(result.CombatLog);
 
-                // Effets visuels sur l'unité cible
+                // Texte flottant d'effort sur l'attaquant
+                var attVisual = attacker.GetComponent<TacticalUnitVisual>();
+                if (attVisual != null)
+                {
+                    int totalCost = (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP;
+                    attVisual.SpawnFloatingText($"Attaque {targetedPart} (-{totalCost} PA)", new Color(0.3f, 0.8f, 1.0f));
+                }
+
+                // Textes flottants et retours visuels sur le défenseur
                 var defVisual = defender.GetComponent<TacticalUnitVisual>();
                 if (defVisual != null)
                 {
                     if (result.IsHit)
                     {
                         defVisual.TriggerHitFlash();
-                        defVisual.SpawnFloatingText($"-{result.FinalDamageApplied} PV", Color.red);
+
+                        if (result.IsCritical)
+                        {
+                            defVisual.SpawnFloatingText("💥 COUP CRITIQUE !", new Color(1.0f, 0.85f, 0.1f));
+                        }
 
                         if (result.WasDeflected)
                         {
-                            defVisual.SpawnFloatingText($"DÉVIATION ➔ {result.ActualHitPart}", Color.yellow);
+                            defVisual.SpawnFloatingText($"DÉVIATION ➔ {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff 0)", Color.yellow);
                         }
+                        else
+                        {
+                            string diffSign = result.Differential > 0 ? $"+{result.Differential}" : $"{result.Differential}";
+                            defVisual.SpawnFloatingText($"🎯 Touché {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff {diffSign})", new Color(0.9f, 0.9f, 1.0f));
+                        }
+
+                        string dmgText = result.ArmorAbsorbed > 0 
+                            ? $"-{result.FinalDamageApplied} PV (Bruts {result.RawDamage} | Armure -{result.ArmorAbsorbed})" 
+                            : $"-{result.FinalDamageApplied} PV";
+                        defVisual.SpawnFloatingText(dmgText, new Color(1.0f, 0.25f, 0.25f));
+
                         if (result.ExceededEncaissement)
                         {
-                            defVisual.SpawnFloatingText($"ENC. DÉPASSÉ! [{result.InflictedStatus}]", Color.magenta);
+                            defVisual.SpawnFloatingText($"⚡ CHOC TRAUMATIQUE ! [{result.InflictedStatus}]", new Color(1.0f, 0.4f, 0.95f));
+                        }
+
+                        if (result.FatalResolution == FatalBlowResolution.InstantDeath)
+                        {
+                            defVisual.SpawnFloatingText("💀 MORT INSTANTANÉE !", Color.black);
+                        }
+                        else if (result.FatalResolution == FatalBlowResolution.MiracleSaved)
+                        {
+                            defVisual.SpawnFloatingText("🔮 POINT DE MIRACLE ! (1 PV)", new Color(1.0f, 0.85f, 0.1f));
+                        }
+                        else if (result.FatalResolution == FatalBlowResolution.ForcedUnconscious)
+                        {
+                            defVisual.SpawnFloatingText("💥 K.O. TRAUMATIQUE FORCÉ !", Color.magenta);
+                        }
+                        else if (result.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
+                        {
+                            if (!defender.IsPlayerControlled)
+                            {
+                                defender.Stats.ChooseSombrer();
+                                defVisual.SpawnFloatingText("💤 SYNCOPE PROTECTRICE (0 PV)", Color.cyan);
+                            }
+                            else
+                            {
+                                defender.Stats.ChooseLastBreath();
+                                defVisual.SpawnFloatingText("🔥 DERNIER SOUFFLE (0 PV, +1 ESS/act)", new Color(1.0f, 0.5f, 0.1f));
+                            }
                         }
                     }
                     else if (result.IsBlocked)
                     {
-                        defVisual.SpawnFloatingText("PARADE / ESQUIVE!", Color.cyan);
+                        defVisual.SpawnFloatingText($"🛡️ PARADE / ESQUIVE (Diff {result.Differential})", new Color(0.2f, 0.9f, 1.0f));
                     }
                 }
 
@@ -535,13 +628,47 @@ namespace Killtime.Tactics
 
         public void ResetArena()
         {
+            // 1. Interrompre toutes les coroutines actives et rétablir le temps réel
+            StopAllCoroutines();
             _aiController?.StopAITurn();
+            _cinematicDirector?.ResetCinematicState();
+
+            // 2. Fermer les menus contextuels et purger la sélection
+            CombatUI.CombatContextMenuUI.Instance?.CloseMenu();
+            CombatUI.TacticalSelectionManager.Instance?.ClearSelection();
+
+            // 3. Purger les nœuds de la grille et le gestionnaire de tours
+            _grid?.ResetGridState();
+            _turnManager?.ClearUnits();
             _turnManager?.ResetCombatState();
+
+            // 4. Nettoyer les surbrillances visuelles
+            if (_gridVisualizer != null)
+            {
+                _gridVisualizer.ClearPathPreview();
+                _gridVisualizer.SetHoveredCoord(null);
+                _gridVisualizer.SetTargetCoord(null);
+                _gridVisualizer.SetReachableCoords(null);
+            }
+
+            // 5. Recréer les unités
             SetupArenaUnits();
-            if (SparringDummies.Count > 0) SelectTarget(SparringDummies[0]);
+
+            // 6. Réappliquer le layout d'obstacles et cibler le premier mannequin
             ApplyArenaLayout(_currentLayout);
+            if (SparringDummies.Count > 0)
+            {
+                SelectTarget(SparringDummies[0]);
+            }
+
+            // 7. Recentrer la caméra sur le joueur
+            if (_cameraController != null && PlayerUnit != null)
+            {
+                _cameraController.FocusOn(PlayerUnit.transform);
+            }
+
             RecordChronoSnapshot("Réinitialisation de l'Arène");
-            Log("🔄 Arène entièrement réinitialisée.");
+            Log("🔄 Arène entièrement réinitialisée et stabilisée.");
         }
 
         private void Log(string message)

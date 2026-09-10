@@ -2,6 +2,15 @@ using Killtime.Core.Character;
 
 namespace Killtime.Core.Combat
 {
+    public enum FatalBlowResolution
+    {
+        None,
+        InstantDeath,
+        MiracleSaved,
+        ForcedUnconscious,
+        EligibleForLastBreath
+    }
+
     /// <summary>
     /// Résultat complet d'une frappe ou d'un tir en combat tactique.
     /// </summary>
@@ -21,6 +30,7 @@ namespace Killtime.Core.Combat
         
         public bool ExceededEncaissement;
         public StatusEffect InflictedStatus;
+        public FatalBlowResolution FatalResolution;
         public string CombatLog;
 
         public override string ToString() => CombatLog;

@@ -33,6 +33,7 @@ namespace Killtime.Tactics.Units
         [Header("Combat & Armure")]
         [SerializeField] private int _baseArmor = 1;
         [SerializeField] private float _moveSpeed = 4.0f;
+        [SerializeField] private string _modelPrefabName = "";
 
         public CharacterStats Stats { get; private set; }
         public CharacterSheet Sheet { get; private set; }
@@ -87,14 +88,24 @@ namespace Killtime.Tactics.Units
         {
             Sheet = sheet;
             _grid = grid;
+            _modelPrefabName = sheet.ModelPrefabName;
 
             var effective = sheet.GetEffectiveAttributes();
-            ConfigureStats(sheet.Name, effective, sheet.BaseArmor, isPlayerControlled);
+            ConfigureStats(sheet.Name, effective, sheet.BaseArmor, isPlayerControlled, sheet.ModelPrefabName);
             InitializePosition(coords, grid);
 
             var visual = GetComponent<TacticalUnitVisual>();
             if (visual != null)
             {
+                if (!string.IsNullOrEmpty(sheet.ModelPrefabName))
+                {
+                    visual.ApplyCustomModel(sheet.ModelPrefabName);
+                }
+                else
+                {
+                    visual.BuildProceduralAvatar();
+                }
+
                 if (isPlayerControlled)
                 {
                     visual.SetColor(new Color(0.15f, 0.45f, 0.85f), new Color(0.0f, 0.95f, 1.0f));
@@ -106,7 +117,7 @@ namespace Killtime.Tactics.Units
             }
         }
 
-        public void ConfigureStats(string unitName, Attributes attributes, int baseArmor, bool isPlayer)
+        public void ConfigureStats(string unitName, Attributes attributes, int baseArmor, bool isPlayer, string modelPrefab = "")
         {
             _unitName = unitName;
             _force = attributes.Force;
@@ -120,8 +131,41 @@ namespace Killtime.Tactics.Units
             _magie = attributes.Magie;
             _baseArmor = baseArmor;
             _isPlayerControlled = isPlayer;
+            if (!string.IsNullOrEmpty(modelPrefab))
+            {
+                _modelPrefabName = modelPrefab;
+            }
 
             Stats = new CharacterStats(unitName, attributes, baseArmor);
+
+            Sheet = new CharacterSheet
+            {
+                Name = unitName,
+                BaseAttributes = attributes,
+                BaseArmor = baseArmor,
+                Profile = isPlayer ? CharacterProfileType.HerosPJ : CharacterProfileType.PnjNormal,
+                ModelPrefabName = _modelPrefabName
+            };
+        }
+
+        public CharacterSheet GetOrBuildSheet()
+        {
+            if (Sheet == null)
+            {
+                var attrs = Stats != null 
+                    ? Stats.Attributes 
+                    : new Attributes(_force, _agilite, _constitution, _rapidite, _intelligence, _erudition, _charisme, _instinct, _magie);
+
+                Sheet = new CharacterSheet
+                {
+                    Name = _unitName,
+                    BaseAttributes = attrs,
+                    BaseArmor = _baseArmor,
+                    Profile = _isPlayerControlled ? CharacterProfileType.HerosPJ : CharacterProfileType.PnjNormal,
+                    ModelPrefabName = _modelPrefabName
+                };
+            }
+            return Sheet;
         }
 
         public void InitializePosition(HexCoordinates startCoords, TacticalHexGrid grid)
@@ -182,6 +226,11 @@ namespace Killtime.Tactics.Units
                 // Déplacement progressif
                 while (Vector3.Distance(transform.position, targetPos) > 0.05f)
                 {
+                    while (Time.timeScale <= 0.0001f)
+                    {
+                        yield return null;
+                    }
+
                     transform.position = Vector3.MoveTowards(transform.position, targetPos, _moveSpeed * Time.deltaTime);
                     yield return null;
                 }

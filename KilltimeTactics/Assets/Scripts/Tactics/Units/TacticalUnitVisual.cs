@@ -22,7 +22,10 @@ namespace Killtime.Tactics.Units
         private TacticalUnit _unit;
         private Transform _modelRoot;
         private MeshRenderer _bodyRenderer;
+        private MeshRenderer _teamDiskRenderer;
+        private readonly List<Renderer> _customModelRenderers = new();
         private MaterialPropertyBlock _propBlock;
+        private bool _isCustomModel = false;
 
         private readonly List<FloatingText> _floatingTexts = new();
         private float _hitFlashTimer = 0f;
@@ -41,11 +44,22 @@ namespace Killtime.Tactics.Units
         {
             _unit = GetComponent<TacticalUnit>();
             _propBlock = new MaterialPropertyBlock();
-            BuildProceduralAvatar();
+
+            string modelName = _unit != null && _unit.Sheet != null ? _unit.Sheet.ModelPrefabName : null;
+            if (!string.IsNullOrEmpty(modelName))
+            {
+                ApplyCustomModel(modelName);
+            }
+            else
+            {
+                BuildProceduralAvatar();
+            }
         }
 
         private void Update()
         {
+            if (Time.timeScale <= 0.0001f) return;
+
             UpdateFloatingTexts();
             UpdateHitFlash();
             UpdateKOAnimation();
@@ -93,8 +107,73 @@ namespace Killtime.Tactics.Units
             return new Material(targetShader) { name = matName };
         }
 
-        private void BuildProceduralAvatar()
+        public bool ApplyCustomModel(string modelName)
         {
+            if (string.IsNullOrEmpty(modelName) || modelName == "(Procédural)")
+            {
+                BuildProceduralAvatar();
+                return true;
+            }
+
+            string cleanName = modelName.StartsWith("Characters/") ? modelName.Substring("Characters/".Length) : modelName;
+            GameObject prefab = Resources.Load<GameObject>($"Characters/{cleanName}") ?? Resources.Load<GameObject>(cleanName);
+
+            if (prefab == null)
+            {
+                Debug.LogWarning($"[TacticalUnitVisual] Modèle introuvable sous Resources/Characters/{cleanName}. Repli sur l'avatar procédural.");
+                BuildProceduralAvatar();
+                return false;
+            }
+
+            if (_modelRoot != null) Destroy(_modelRoot.gameObject);
+
+            _modelRoot = new GameObject("AvatarModel").transform;
+            _modelRoot.SetParent(transform, false);
+
+            GameObject instance = Instantiate(prefab, _modelRoot);
+            instance.name = cleanName;
+            instance.transform.localPosition = Vector3.zero;
+            instance.transform.localRotation = Quaternion.identity;
+            instance.transform.localScale = Vector3.one * _unitScale;
+
+            var colliders = instance.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = false;
+            }
+
+            _customModelRenderers.Clear();
+            _customModelRenderers.AddRange(instance.GetComponentsInChildren<Renderer>());
+            _bodyRenderer = instance.GetComponentInChildren<MeshRenderer>();
+
+            Material baseMat = CreateSafeUnitMaterial("UnitFactionRing_Mat");
+            var disk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            disk.name = "FactionRing";
+            disk.transform.SetParent(_modelRoot, false);
+            disk.transform.localPosition = new Vector3(0, 0.02f, 0);
+            disk.transform.localScale = new Vector3(0.95f, 0.02f, 0.95f) * _unitScale;
+
+            var diskCol = disk.GetComponent<Collider>();
+            if (diskCol != null) Destroy(diskCol);
+
+            _teamDiskRenderer = disk.GetComponent<MeshRenderer>();
+            _teamDiskRenderer.sharedMaterial = baseMat;
+
+            _isCustomModel = true;
+            _currentBodyColor = _unit != null && _unit.IsPlayerControlled 
+                ? new Color(0.15f, 0.45f, 0.85f) 
+                : new Color(0.85f, 0.25f, 0.2f);
+
+            ApplyBodyColor(_currentBodyColor);
+            return true;
+        }
+
+        public void BuildProceduralAvatar()
+        {
+            _isCustomModel = false;
+            _customModelRenderers.Clear();
+            _teamDiskRenderer = null;
+
             if (_modelRoot != null) Destroy(_modelRoot.gameObject);
 
             _modelRoot = new GameObject("AvatarModel").transform;
@@ -114,7 +193,7 @@ namespace Killtime.Tactics.Units
 
             _bodyRenderer = body.GetComponent<MeshRenderer>();
             _bodyRenderer.sharedMaterial = baseMat;
-            _currentBodyColor = _unit.IsPlayerControlled ? new Color(0.15f, 0.45f, 0.85f) : new Color(0.85f, 0.25f, 0.2f);
+            _currentBodyColor = _unit != null && _unit.IsPlayerControlled ? new Color(0.15f, 0.45f, 0.85f) : new Color(0.85f, 0.25f, 0.2f);
             ApplyBodyColor(_currentBodyColor);
 
             // 2. Visière
@@ -130,7 +209,7 @@ namespace Killtime.Tactics.Units
             var visorRend = visor.GetComponent<MeshRenderer>();
             visorRend.sharedMaterial = baseMat;
             var visorProp = new MaterialPropertyBlock();
-            Color vColor = _unit.IsPlayerControlled ? new Color(0.0f, 0.95f, 1.0f) : new Color(1.0f, 0.75f, 0.1f);
+            Color vColor = _unit != null && _unit.IsPlayerControlled ? new Color(0.0f, 0.95f, 1.0f) : new Color(1.0f, 0.75f, 0.1f);
             visorProp.SetColor("_BaseColor", vColor);
             visorProp.SetColor("_Color", vColor);
             visorProp.SetColor("_EmissionColor", vColor * 1.5f);
@@ -157,7 +236,14 @@ namespace Killtime.Tactics.Units
 
         private void ApplyBodyColor(Color color)
         {
-            if (_bodyRenderer != null)
+            if (_teamDiskRenderer != null)
+            {
+                _propBlock.SetColor("_BaseColor", color);
+                _propBlock.SetColor("_Color", color);
+                _teamDiskRenderer.SetPropertyBlock(_propBlock);
+            }
+
+            if (!_isCustomModel && _bodyRenderer != null)
             {
                 _propBlock.SetColor("_BaseColor", color);
                 _propBlock.SetColor("_Color", color);
@@ -168,7 +254,23 @@ namespace Killtime.Tactics.Units
         public void TriggerHitFlash()
         {
             _hitFlashTimer = 0.25f;
-            ApplyBodyColor(Color.white);
+
+            if (_isCustomModel)
+            {
+                _propBlock.SetColor("_BaseColor", Color.white);
+                _propBlock.SetColor("_Color", Color.white);
+                for (int i = 0; i < _customModelRenderers.Count; i++)
+                {
+                    if (_customModelRenderers[i] != null)
+                    {
+                        _customModelRenderers[i].SetPropertyBlock(_propBlock);
+                    }
+                }
+            }
+            else
+            {
+                ApplyBodyColor(Color.white);
+            }
         }
 
         private void UpdateHitFlash()
@@ -178,6 +280,16 @@ namespace Killtime.Tactics.Units
                 _hitFlashTimer -= Time.deltaTime;
                 if (_hitFlashTimer <= 0f)
                 {
+                    if (_isCustomModel)
+                    {
+                        for (int i = 0; i < _customModelRenderers.Count; i++)
+                        {
+                            if (_customModelRenderers[i] != null)
+                            {
+                                _customModelRenderers[i].SetPropertyBlock(null);
+                            }
+                        }
+                    }
                     ApplyBodyColor(_currentBodyColor);
                 }
             }
@@ -206,13 +318,14 @@ namespace Killtime.Tactics.Units
 
         public void SpawnFloatingText(string message, Color color)
         {
+            float stackOffset = _floatingTexts.Count * 0.42f;
             _floatingTexts.Add(new FloatingText
             {
                 Text = message,
                 Color = color,
-                WorldPos = transform.position + Vector3.up * 2.2f,
-                Lifetime = 1.6f,
-                MaxLifetime = 1.6f
+                WorldPos = transform.position + Vector3.up * (2.2f + stackOffset),
+                Lifetime = 3.6f,
+                MaxLifetime = 3.6f
             });
         }
 
@@ -221,8 +334,8 @@ namespace Killtime.Tactics.Units
             for (int i = _floatingTexts.Count - 1; i >= 0; i--)
             {
                 var ft = _floatingTexts[i];
-                ft.Lifetime -= Time.deltaTime;
-                ft.WorldPos += Vector3.up * (0.6f * Time.deltaTime);
+                ft.Lifetime -= Time.unscaledDeltaTime;
+                ft.WorldPos += Vector3.up * (0.22f * Time.unscaledDeltaTime);
 
                 if (ft.Lifetime <= 0f)
                 {
@@ -281,24 +394,38 @@ namespace Killtime.Tactics.Units
 
         private void DrawFloatingCombatTexts(UnityEngine.Camera cam)
         {
-            foreach (var ft in _floatingTexts)
+            for (int i = 0; i < _floatingTexts.Count; i++)
             {
+                var ft = _floatingTexts[i];
                 Vector3 sp = cam.WorldToScreenPoint(ft.WorldPos);
-                if (sp.z > 0.5f)
+                if (sp.z > 0.3f)
                 {
-                    float alpha = Mathf.Clamp01(ft.Lifetime / (ft.MaxLifetime * 0.5f));
+                    float alpha = Mathf.Clamp01(ft.Lifetime / (ft.MaxLifetime * 0.35f));
                     Color c = ft.Color;
                     c.a = alpha;
-                    GUI.color = c;
+
+                    float clampedX = Mathf.Clamp(sp.x, 160, Screen.width - 160);
+                    float clampedY = Mathf.Clamp(Screen.height - sp.y - (i * 28), 40, Screen.height - 45);
+
+                    Rect boxRect = new Rect(clampedX - 150, clampedY - 15, 300, 28);
+
+                    Color prevBg = GUI.backgroundColor;
+                    GUI.backgroundColor = new Color(0.04f, 0.05f, 0.09f, 0.88f * alpha);
+                    GUI.Box(boxRect, GUIContent.none);
+                    GUI.backgroundColor = prevBg;
 
                     var style = new GUIStyle(GUI.skin.label)
                     {
-                        fontSize = 14,
+                        fontSize = 15,
                         fontStyle = FontStyle.Bold,
                         alignment = TextAnchor.MiddleCenter
                     };
 
-                    GUI.Label(new Rect(sp.x - 120, Screen.height - sp.y - 20, 240, 40), ft.Text, style);
+                    style.normal.textColor = new Color(0f, 0f, 0f, 0.9f * alpha);
+                    GUI.Label(new Rect(boxRect.x + 1, boxRect.y + 1, boxRect.width, boxRect.height), ft.Text, style);
+
+                    style.normal.textColor = c;
+                    GUI.Label(boxRect, ft.Text, style);
                 }
             }
             GUI.color = Color.white;

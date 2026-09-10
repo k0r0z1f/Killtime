@@ -1,9 +1,12 @@
 using System;
+using Killtime.Core.Dice;
+using Killtime.Core.Combat;
 
 namespace Killtime.Core.Character
 {
     /// <summary>
     /// Gestion de l'état dynamique d'un personnage en combat (Livre I, VI et VII).
+    /// Intègre la réserve de PA, les seuils d'encaissement et l'arbre de résolution à 0 PV.
     /// </summary>
     [Serializable]
     public class CharacterStats
@@ -22,6 +25,11 @@ namespace Killtime.Core.Character
         public StatusEffect ActiveStatus { get; set; }
 
         public int BaseArmorAbsorption { get; set; }
+        public int AttacksThisTurn { get; private set; }
+
+        public bool IsDead { get; set; }
+        public bool IsInLastBreath { get; set; }
+        public FatalBlowResolution LastFatalBlowResolution { get; set; } = FatalBlowResolution.None;
 
         public CharacterStats(string name, Attributes attributes, int baseArmor = 0)
         {
@@ -30,6 +38,9 @@ namespace Killtime.Core.Character
             BaseArmorAbsorption = baseArmor;
             ActiveStatus = StatusEffect.None;
             Essoufflement = 0;
+            AttacksThisTurn = 0;
+            IsDead = false;
+            IsInLastBreath = false;
 
             RecalculateDerivedStats();
             ResetTurn();
@@ -43,24 +54,20 @@ namespace Killtime.Core.Character
             CurrentHealth = MaxHealth;
         }
 
-        /// <summary>
-        /// Réinitialise les PA au début d'un nouveau round de 10 secondes.
-        /// L'essoufflement reste persistant tant qu'une action de récupération n'est pas effectuée.
-        /// </summary>
         public void ResetTurn()
         {
-            CurrentActionPoints = MaxActionPoints;
-            
-            // Si le personnage est Ralenti, ses PA effectifs sont impactés
-            if (ActiveStatus.HasFlag(StatusEffect.Ralenti))
+            if (IsInLastBreath)
             {
-                // En alternative au double coût des actions, ou réduction
+                CurrentActionPoints = MaxActionPoints / 2;
             }
+            else
+            {
+                CurrentActionPoints = MaxActionPoints;
+            }
+
+            AttacksThisTurn = 0;
         }
 
-        /// <summary>
-        /// Dépense de PA pour effectuer une action tactique.
-        /// </summary>
         public bool ConsumeActionPoints(int cost)
         {
             int effectiveCost = ActiveStatus.HasFlag(StatusEffect.Ralenti) ? cost * 2 : cost;
@@ -68,22 +75,48 @@ namespace Killtime.Core.Character
             if (CurrentActionPoints >= effectiveCost)
             {
                 CurrentActionPoints -= effectiveCost;
+
+                if (IsInLastBreath)
+                {
+                    Essoufflement++;
+                    if (Essoufflement >= Attributes.Constitution)
+                    {
+                        IsInLastBreath = false;
+                        IsDead = true;
+                        ActiveStatus |= StatusEffect.Inconscient;
+                    }
+                }
+
                 return true;
             }
 
             return false;
         }
 
-        /// <summary>
-        /// Recours à l'Essoufflement d'urgence (Livre I & VI) :
-        /// Lorsque le personnage n'a plus de PA mais doit absolument agir,
-        /// il gagne 1 point d'Essoufflement pour obtenir des PA d'urgence (ex: 2 PA).
-        /// </summary>
+        public int GetMaxAttacksAllowed(DiceType attackDie)
+        {
+            return attackDie switch
+            {
+                DiceType.TwoD6 or DiceType.TwoD8 or DiceType.TwoD10 or DiceType.TwoD12 or DiceType.TwoD12Plus10 => 2,
+                _ => 1
+            };
+        }
+
+        public bool CanAttack(DiceType attackDie)
+        {
+            if (!IsAlive) return false;
+            return AttacksThisTurn < GetMaxAttacksAllowed(attackDie);
+        }
+
+        public void RegisterAttack()
+        {
+            AttacksThisTurn++;
+        }
+
         public bool TakeEmergencyBreath(int bonusAP = 2)
         {
             if (Essoufflement >= Attributes.Constitution)
             {
-                // Épuisement critique : le corps refuse d'aller au-delà de sa Constitution
                 return false;
             }
 
@@ -92,9 +125,6 @@ namespace Killtime.Core.Character
             return true;
         }
 
-        /// <summary>
-        /// Action de récupération pour dissiper l'essoufflement.
-        /// </summary>
         public void RecoverBreath()
         {
             if (Essoufflement > 0)
@@ -103,6 +133,61 @@ namespace Killtime.Core.Character
             }
         }
 
-        public bool IsAlive => CurrentHealth > 0 && !ActiveStatus.HasFlag(StatusEffect.Inconscient);
+        public FatalBlowResolution EvaluateFatalBlow(BodyPart hitPart, int finalDamageDealt)
+        {
+            bool exceedsEncaissement = finalDamageDealt > EncaissementThreshold;
+
+            if (exceedsEncaissement)
+            {
+                if (hitPart == BodyPart.Tete || hitPart == BodyPart.YeuxVisage)
+                {
+                    if (Attributes.PointsMiracle > 0)
+                    {
+                        var attrs = Attributes;
+                        attrs.PointsMiracle--;
+                        Attributes = attrs;
+                        CurrentHealth = 1;
+                        ActiveStatus |= StatusEffect.Inconscient | StatusEffect.ATerre;
+                        LastFatalBlowResolution = FatalBlowResolution.MiracleSaved;
+                        return FatalBlowResolution.MiracleSaved;
+                    }
+
+                    CurrentHealth = 0;
+                    IsDead = true;
+                    ActiveStatus |= StatusEffect.Inconscient | StatusEffect.ATerre;
+                    LastFatalBlowResolution = FatalBlowResolution.InstantDeath;
+                    return FatalBlowResolution.InstantDeath;
+                }
+
+                CurrentHealth = 0;
+                ActiveStatus |= StatusEffect.Inconscient | StatusEffect.ATerre;
+                if (hitPart == BodyPart.CoeurPoumons || hitPart == BodyPart.CouTrachee)
+                {
+                    ActiveStatus |= StatusEffect.Agonisant | StatusEffect.Saignement;
+                }
+                LastFatalBlowResolution = FatalBlowResolution.ForcedUnconscious;
+                return FatalBlowResolution.ForcedUnconscious;
+            }
+
+            CurrentHealth = 0;
+            LastFatalBlowResolution = FatalBlowResolution.EligibleForLastBreath;
+            return FatalBlowResolution.EligibleForLastBreath;
+        }
+
+        public void ChooseSombrer()
+        {
+            IsInLastBreath = false;
+            ActiveStatus |= StatusEffect.Inconscient | StatusEffect.ATerre;
+            ActiveStatus &= ~StatusEffect.Agonisant;
+        }
+
+        public void ChooseLastBreath()
+        {
+            IsInLastBreath = true;
+            ActiveStatus |= StatusEffect.ATerre | StatusEffect.Agonisant;
+            ActiveStatus &= ~StatusEffect.Inconscient;
+        }
+
+        public bool IsAlive => !IsDead && (CurrentHealth > 0 || IsInLastBreath) && !ActiveStatus.HasFlag(StatusEffect.Inconscient);
     }
 }

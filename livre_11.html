@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="fr" data-theme="dark">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Livre XI : Le Bestiaire & Menaces Cosmiques | Codex Universel Système RP</title>
-    <meta name="description" content="Livre XI du Codex Universel : Compendium intégral des créatures, monstres sauvages, bandits, forces impériales, automates cybernétiques et entités cosmiques (Bandits 1-3, Petite Merde, Illumo, The Beast, The Minulican, Disciples de Capricius).">
-    
+    <meta name="description"
+        content="Livre XI du Codex Universel : Compendium intégral des créatures, monstres sauvages, bandits, forces impériales, automates cybernétiques et entités cosmiques (Bandits 1-3, Petite Merde, Illumo, The Beast, The Minulican, Disciples de Capricius).">
+
     <!-- Polices Google -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
-    
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;800;900&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&display=swap"
+        rel="stylesheet">
+
     <!-- Feuille de styles unifiée -->
     <link rel="stylesheet" href="css/style.css">
 </head>
+
 <body>
 
     <div class="app-container">
@@ -21,11 +26,18 @@
         <header class="topbar">
             <div class="topbar-left">
                 <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M4 6h16M4 12h16M4 18h16" />
+                    </svg>
                 </button>
                 <a href="index.html" class="brand">
                     <div class="brand-icon">
-                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                            <polyline points="2 17 12 22 22 17" />
+                            <polyline points="2 12 12 17 22 12" />
+                        </svg>
                     </div>
                     <div class="brand-info">
                         <h1>Système RP <span class="brand-badge">Codex v2.4</span></h1>
@@ -39,24 +51,35 @@
             </div>
 
             <div class="topbar-right">
-                <a href="Killtime/index.html" class="topbar-site-link" title="Accéder au site officiel Killtime Universe">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                <a href="Killtime/index.html" class="topbar-site-link"
+                    title="Accéder au site officiel Killtime Universe">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 14 14" />
+                    </svg>
                     <span>Site Killtime</span>
                 </a>
                 <div class="search-trigger" id="searchTrigger">
-                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
                     <span>Rechercher...</span>
                     <kbd class="search-kbd">Ctrl+K</kbd>
                 </div>
                 <button class="theme-btn" id="themeToggle" title="Basculer le thème">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="5" />
+                        <path
+                            d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42" />
+                    </svg>
                 </button>
             </div>
         </header>
 
         <!-- ================= WRAPPER ================= -->
         <div class="content-wrapper">
-            
+
             <!-- ================= SIDEBAR NAVIGATION ================= -->
             <aside class="sidebar" id="sidebar">
                 <div class="sidebar-header">
@@ -70,7 +93,11 @@
                     <div class="external-site-group">
                         <a href="Killtime/index.html" class="nav-external-link" title="Aller vers l'Univers Killtime">
                             <span class="nav-external-label">
-                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 14 14"/></svg>
+                                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                    stroke-width="2">
+                                    <circle cx="12" cy="12" r="10" />
+                                    <polyline points="12 6 12 12 14 14" />
+                                </svg>
                                 <span>Site Killtime</span>
                             </span>
                             <span class="nav-item-badge badge-live">Univers ↗</span>
@@ -84,13 +111,20 @@
                                 <span class="group-tag">INDEX</span>
                                 <span>Sommaire Général</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface Philosophique</span></a></li>
-                            <li><a href="index.html#harmonie-action" class="nav-item-link"><span>L'Harmonie du Risque</span></a></li>
-                            <li><a href="index.html#cinquieme-force" class="nav-item-link"><span>La Cinquième Force</span></a></li>
-                            <li><a href="index.html#navigation-codex" class="nav-item-link"><span>Navigation du Codex</span></a></li>
+                            <li><a href="index.html#preface" class="nav-item-link"><span>Préface
+                                        Philosophique</span></a></li>
+                            <li><a href="index.html#harmonie-action" class="nav-item-link"><span>L'Harmonie du
+                                        Risque</span></a></li>
+                            <li><a href="index.html#cinquieme-force" class="nav-item-link"><span>La Cinquième
+                                        Force</span></a></li>
+                            <li><a href="index.html#navigation-codex" class="nav-item-link"><span>Navigation du
+                                        Codex</span></a></li>
                         </ul>
                     </div>
 
@@ -101,14 +135,22 @@
                                 <span class="group-tag">L.I</span>
                                 <span>Fondations &amp; Création</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Les Six Principes</span></a></li>
-                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Les 8 Attributs Majeurs</span></a></li>
-                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Protocole de Création</span></a></li>
-                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Les 3 Profils PNJ</span></a></li>
+                            <li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_1.html#chap-1" class="nav-item-link"><span>1. Les Six
+                                        Principes</span></a></li>
+                            <li><a href="livre_1.html#chap-2" class="nav-item-link"><span>2. Les 8 Attributs
+                                        Majeurs</span></a></li>
+                            <li><a href="livre_1.html#chap-3" class="nav-item-link"><span>3. Protocole de
+                                        Création</span></a></li>
+                            <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Les 3 Profils
+                                        PNJ</span></a></li>
                         </ul>
                     </div>
 
@@ -119,14 +161,22 @@
                                 <span class="group-tag">L.II</span>
                                 <span>Paliers de Dés &amp; Épreuves</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle Polyédrique</span></a></li>
-                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Tables des Critiques</span></a></li>
-                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Modificateurs de Contexte</span></a></li>
-                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Épreuves Opposées</span></a></li>
+                            <li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_2.html#chap-6" class="nav-item-link"><span>6. L'Échelle
+                                        Polyédrique</span></a></li>
+                            <li><a href="livre_2.html#chap-7" class="nav-item-link"><span>7. Tables des
+                                        Critiques</span></a></li>
+                            <li><a href="livre_2.html#chap-8" class="nav-item-link"><span>8. Modificateurs de
+                                        Contexte</span></a></li>
+                            <li><a href="livre_2.html#chap-9" class="nav-item-link"><span>9. Épreuves
+                                        Opposées</span></a></li>
                         </ul>
                     </div>
 
@@ -137,14 +187,22 @@
                                 <span class="group-tag">L.III</span>
                                 <span>Arbres de Compétences</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture des Compétences</span></a></li>
-                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres Physiques</span></a></li>
-                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres Psychologiques</span></a></li>
-                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Arbres Hybrides &amp; Spécialisations</span></a></li>
+                            <li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_3.html#chap-10" class="nav-item-link"><span>10. Architecture des
+                                        Compétences</span></a></li>
+                            <li><a href="livre_3.html#chap-11" class="nav-item-link"><span>11. Arbres
+                                        Physiques</span></a></li>
+                            <li><a href="livre_3.html#chap-12" class="nav-item-link"><span>12. Arbres
+                                        Psychologiques</span></a></li>
+                            <li><a href="livre_3.html#chap-13" class="nav-item-link"><span>13. Arbres Hybrides &amp;
+                                        Spécialisations</span></a></li>
                         </ul>
                     </div>
 
@@ -155,15 +213,24 @@
                                 <span class="group-tag">L.IV</span>
                                 <span>5e Force &amp; Magie</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Théorie de la Cinquième Force</span></a></li>
-                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Formule Fondamentale XP = PA</span></a></li>
-                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Domaines Élémentaires</span></a></li>
-                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Grimoire des Effets Magiques</span></a></li>
-                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Contrecoups &amp; Surcharges</span></a></li>
+                            <li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_4.html#chap-15" class="nav-item-link"><span>15. Théorie de la Cinquième
+                                        Force</span></a></li>
+                            <li><a href="livre_4.html#chap-16" class="nav-item-link"><span>16. Formule Fondamentale XP =
+                                        PA</span></a></li>
+                            <li><a href="livre_4.html#chap-17" class="nav-item-link"><span>17. Domaines
+                                        Élémentaires</span></a></li>
+                            <li><a href="livre_4.html#chap-18" class="nav-item-link"><span>18. Grimoire des Effets
+                                        Magiques</span></a></li>
+                            <li><a href="livre_4.html#chap-19" class="nav-item-link"><span>19. Contrecoups &amp;
+                                        Surcharges</span></a></li>
                         </ul>
                     </div>
 
@@ -174,14 +241,22 @@
                                 <span class="group-tag">L.V</span>
                                 <span>Temps &amp; Causalité</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps &amp; Causalité</span></a></li>
-                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des Chronotrames</span></a></li>
-                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8 Échelons)</span></a></li>
-                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en Jeu</span></a></li>
+                            <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps &amp;
+                                        Causalité</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des
+                                        Chronotrames</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8
+                                        Échelons)</span></a></li>
+                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en
+                                        Jeu</span></a></li>
                         </ul>
                     </div>
 
@@ -192,13 +267,20 @@
                                 <span class="group-tag">L.VI</span>
                                 <span>Combat Tactique</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s &amp; Économie des PA</span></a></li>
-                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements &amp; Poursuites</span></a></li>
-                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation &amp; Véhicules</span></a></li>
+                            <li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_6.html#chap-24" class="nav-item-link"><span>24. Le Tour de 10s &amp;
+                                        Économie des PA</span></a></li>
+                            <li><a href="livre_6.html#chap-25" class="nav-item-link"><span>25. Déplacements &amp;
+                                        Poursuites</span></a></li>
+                            <li><a href="livre_6.html#chap-26" class="nav-item-link"><span>26. Localisation &amp;
+                                        Véhicules</span></a></li>
                         </ul>
                     </div>
 
@@ -209,13 +291,20 @@
                                 <span class="group-tag">L.VII</span>
                                 <span>Santé, États &amp; Blessures</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement &amp; Séquelles</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États &amp; Effets</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins &amp; Résurrection</span></a></li>
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement
+                                        &amp; Séquelles</span></a></li>
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États
+                                        &amp; Effets</span></a></li>
+                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins &amp;
+                                        Résurrection</span></a></li>
                         </ul>
                     </div>
 
@@ -226,13 +315,20 @@
                                 <span class="group-tag">L.VIII</span>
                                 <span>Arsenal &amp; Arcanotech</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature &amp; Armes Métal</span></a></li>
-                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser &amp; Fusils Arcanotech</span></a></li>
-                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &amp; Pharmacopée</span></a></li>
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier
+                                        Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature &amp; Armes
+                                        Métal</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser &amp; Fusils
+                                        Arcanotech</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &amp;
+                                        Pharmacopée</span></a></li>
                         </ul>
                     </div>
 
@@ -243,15 +339,24 @@
                                 <span class="group-tag">L.IX</span>
                                 <span>Outils Web Interactifs</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche PJ</span></a></li>
-                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts (XP=PA)</span></a></li>
-                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &amp; Critiques</span></a></li>
-                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de Challenges</span></a></li>
-                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de Chronotrames</span></a></li>
+                            <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche
+                                        PJ</span></a></li>
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts
+                                        (XP=PA)</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &amp;
+                                        Critiques</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de
+                                        Challenges</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de
+                                        Chronotrames</span></a></li>
                         </ul>
                     </div>
 
@@ -262,15 +367,24 @@
                                 <span class="group-tag">L.X</span>
                                 <span>Atlas des Mondes</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers &amp; 36 Élianes</span></a></li>
-                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies &amp; Systèmes</span></a></li>
-                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes &amp; Vaisseaux</span></a></li>
-                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des Continents</span></a></li>
-                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités &amp; Points d'Intérêt</span></a></li>
+                            <li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_10.html#chap-38" class="nav-item-link"><span>38. Univers &amp; 36
+                                        Élianes</span></a></li>
+                            <li><a href="livre_10.html#chap-39" class="nav-item-link"><span>39. Galaxies &amp;
+                                        Systèmes</span></a></li>
+                            <li><a href="livre_10.html#chap-40" class="nav-item-link"><span>40. Planètes &amp;
+                                        Vaisseaux</span></a></li>
+                            <li><a href="livre_10.html#chap-41" class="nav-item-link"><span>41. Atlas des
+                                        Continents</span></a></li>
+                            <li><a href="livre_10.html#chap-42" class="nav-item-link"><span>42. Cités &amp; Points
+                                        d'Intérêt</span></a></li>
                         </ul>
                     </div>
 
@@ -281,15 +395,24 @@
                                 <span class="group-tag">L.XI</span>
                                 <span>Bestiaire &amp; Menaces</span>
                             </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_11.html" class="nav-item-link active"><span>Livre XI (Page Dédiée)</span><span class="nav-item-badge badge-live">Nouveau</span></a></li>
-                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp; Calibrage</span></a></li>
-                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp; Factions</span></a></li>
-                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres d'Hybris</span></a></li>
-                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités Cosmiques &amp; Disciples</span></a></li>
-                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp; Cybernétique</span></a></li>
+                            <li><a href="livre_11.html" class="nav-item-link active"><span>Livre XI (Page
+                                        Dédiée)</span><span class="nav-item-badge badge-live">Nouveau</span></a></li>
+                            <li><a href="livre_11.html#chap-43" class="nav-item-link"><span>43. Typologie &amp;
+                                        Calibrage</span></a></li>
+                            <li><a href="livre_11.html#chap-44" class="nav-item-link"><span>44. Humanoïdes &amp;
+                                        Factions</span></a></li>
+                            <li><a href="livre_11.html#chap-45" class="nav-item-link"><span>45. Faune &amp; Monstres
+                                        d'Hybris</span></a></li>
+                            <li><a href="livre_11.html#chap-46" class="nav-item-link"><span>46. Entités Cosmiques &amp;
+                                        Disciples</span></a></li>
+                            <li><a href="livre_11.html#chap-47" class="nav-item-link"><span>47. Automates &amp;
+                                        Cybernétique</span></a></li>
                         </ul>
                     </div>
                 </nav>
@@ -298,10 +421,14 @@
             <!-- ================= CONTENU PRINCIPAL (LIVRE XI) ================= -->
             <main class="main-content">
                 <article class="doc-page prose">
-                    
+
                     <div class="doc-badge-row">
                         <span class="doc-badge-pill">
-                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z"/><circle cx="12" cy="12" r="3"/></svg>
+                            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path d="M12 2a10 10 0 1 0 10 10A10 10 0 0 0 12 2zm0 18a8 8 0 1 1 8-8 8 8 0 0 1-8 8z" />
+                                <circle cx="12" cy="12" r="3" />
+                            </svg>
                             Livre XI — Bestiaire &amp; Entités Hostiles
                         </span>
                         <span class="doc-badge-pill accent">3 Rangs de Menace</span>
@@ -310,7 +437,12 @@
 
                     <h1 class="doc-title">Livre XI : Le Bestiaire &amp; Menaces Cosmiques</h1>
                     <p class="doc-lead">
-                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs. Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.
+                        Dans le Système RP, l'adversité ne se mesure pas à de simples sacs de points de vie passifs.
+                        Tout ennemi — du coupe-jarret embusqué dans les taillis jusqu'au titan de magma largué à travers
+                        les lignes temporelles par Capricius — opère sous la <strong>même rigueur mathématique que les
+                            héros</strong> : calcul dynamique des Points d'Action (PA), seuils d'encaissement
+                        anatomique, malus d'essoufflement et ripostes en réaction. Ce compendium rassemble l'ensemble
+                        des profils martiaux, faunes indigènes et avatars d'annihilation du multivers.
                     </p>
 
                     <hr class="doc-divider">
@@ -322,7 +454,8 @@
                     </h2>
 
                     <p>
-                        Pour permettre au Maître de Jeu d'orchestrer des affrontements équilibrés et nerveux sans s'enliser dans la comptabilité, les adversaires sont scindés en trois calibres standardisés :
+                        Pour permettre au Maître de Jeu d'orchestrer des affrontements équilibrés et nerveux sans
+                        s'enliser dans la comptabilité, les adversaires sont scindés en trois calibres standardisés :
                     </p>
 
                     <div class="cards-grid-3">
@@ -333,8 +466,11 @@
                             </div>
                             <div class="spec-card-world">Chair à Canon // Combats de Masse</div>
                             <p>
-                                <strong>12 points d'attributs</strong> (maximum 3 par attribut). <strong>0 Point de Miracle</strong>.
-                                Ces sbires attaquent en nombre. Dès qu'un Minion subit une blessure dépassant sa capacité d'encaissement (<span class="hl-cyan">Con &times; 2</span>) ou reçoit un coup critique net, il est <em>immédiatement hors de combat</em>.
+                                <strong>12 points d'attributs</strong> (maximum 3 par attribut). <strong>0 Point de
+                                    Miracle</strong>.
+                                Ces sbires attaquent en nombre. Dès qu'un Minion subit une blessure dépassant sa
+                                capacité d'encaissement (<span class="hl-cyan">Con &times; 2</span>) ou reçoit un coup
+                                critique net, il est <em>immédiatement hors de combat</em>.
                             </p>
                         </div>
 
@@ -345,8 +481,11 @@
                             </div>
                             <div class="spec-card-world">Soldats &bull; Bandits &bull; Guerriers</div>
                             <p>
-                                <strong>2 attributs à 4, 15 points partagés</strong> (maximum 3 par carac). <strong>0 à 1 Point de Miracle</strong>.
-                                Nombre de compétences entraînées égal au rang d'Érudition. Utilisent pleinement leurs réactions (parades, esquives, mises à couvert) et bénéficient d'un équipement standard complet.
+                                <strong>2 attributs à 4, 15 points partagés</strong> (maximum 3 par carac). <strong>0 à
+                                    1 Point de Miracle</strong>.
+                                Nombre de compétences entraînées égal au rang d'Érudition. Utilisent pleinement leurs
+                                réactions (parades, esquives, mises à couvert) et bénéficient d'un équipement standard
+                                complet.
                             </p>
                         </div>
 
@@ -357,8 +496,10 @@
                             </div>
                             <div class="spec-card-world">Avatars Éliens &bull; Prédateurs Suprêmes</div>
                             <p>
-                                <strong>Attributs de 5 à 8+</strong>, jauges d'encaissement massives, <strong>2 à 3 Points de Miracle</strong>.
-                                Immunisés à la plupart des états mentaux mineurs, capables d'attaques de zone dévastatrices et d'actions spéciales hors-tour.
+                                <strong>Attributs de 5 à 8+</strong>, jauges d'encaissement massives, <strong>2 à 3
+                                    Points de Miracle</strong>.
+                                Immunisés à la plupart des états mentaux mineurs, capables d'attaques de zone
+                                dévastatrices et d'actions spéciales hors-tour.
                             </p>
                         </div>
                     </div>
@@ -412,7 +553,8 @@
                     </h2>
 
                     <p>
-                        Les adversaires humanoïdes constituent la majorité des affrontements dans les cités, les routes de campagne et les avant-postes coloniaux.
+                        Les adversaires humanoïdes constituent la majorité des affrontements dans les cités, les routes
+                        de campagne et les avant-postes coloniaux.
                     </p>
 
                     <!-- FICHE BANDIT 1 -->
@@ -425,29 +567,48 @@
                             <span class="danger-level-badge regular">Rang II &bull; Régulier</span>
                         </div>
                         <p>
-                            Coupe-jarret agile et opportuniste. Vêtu d'un pourpoint de cuir bouilli et armé d'une épée longue en acier forgé. Il cherche le contact rapproché, vise les organes vitaux et conserve systématiquement des PA pour contre-attaquer à l'épée.
+                            Coupe-jarret agile et opportuniste. Vêtu d'un pourpoint de cuir bouilli et armé d'une épée
+                            longue en acier forgé. Il cherche le contact rapproché, vise les organes vitaux et conserve
+                            systématiquement des PA pour contre-attaquer à l'épée.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val highlight">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span class="stat-cell-val">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Magie</span><span class="stat-cell-val">0</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Vision/Ouïe</span><span class="stat-cell-val">6 / 5</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">7 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">6 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span class="stat-cell-val highlight">15 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span class="stat-cell-val">0</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force [Pilier 1]</span><span
+                                    class="stat-cell-val highlight">4 (1d6)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val">3 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val">3 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span
+                                    class="stat-cell-val">3 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Charisme [Pilier 2]</span><span
+                                    class="stat-cell-val highlight">4 (1d6)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Magie</span><span
+                                    class="stat-cell-val">0</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Vision/Ouïe</span><span
+                                    class="stat-cell-val">6 / 5</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">7 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">6 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span
+                                    class="stat-cell-val highlight">15 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span
+                                    class="stat-cell-val">0</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Tactique Martiale &amp; Arsenal :</h5>
-                            <strong>Épée longue d'acier :</strong> Dégâts bruts 2D. Jet d'attaque : <strong>1d6</strong> (Entraîné en Maniement des armes &bull; Maniement de l'épée).<br>
-                            <strong>Coup précis au Cœur :</strong> Coûte 3 PA. Inflige un malus de -1 au jet d'attaque, mais en cas d'impact réussi, les dégâts sont doublés et appliqués directement au torse.<br>
-                            <strong>Parade Riposte :</strong> Coûte 2 PA en réaction. Dé de parade : 1d6. En cas de parade réussie avec différentiel &ge; 2, le bandit contre-attaque gratuitement !
+                            <strong>Épée longue d'acier :</strong> Dégâts bruts 2D. Jet d'attaque : <strong>1d6</strong>
+                            (Entraîné en Maniement des armes &bull; Maniement de l'épée).<br>
+                            <strong>Coup précis au Cœur :</strong> Coûte 3 PA. Inflige un malus de -1 au jet d'attaque,
+                            mais en cas d'impact réussi, les dégâts sont doublés et appliqués directement au torse.<br>
+                            <strong>Parade Riposte :</strong> Coûte 2 PA en réaction. Dé de parade : 1d6. En cas de
+                            parade réussie avec différentiel &ge; 2, le bandit contre-attaque gratuitement !
                         </div>
                     </div>
 
@@ -456,34 +617,55 @@
                         <div class="bestiary-header">
                             <div class="bestiary-title-group">
                                 <h4>Bandit #2 — L'Arcaniste d'Embuscade</h4>
-                                <div class="bestiary-meta-sub">Humanoïde // Magicien Déchu &bull; Pyromancie &amp; Gravité</div>
+                                <div class="bestiary-meta-sub">Humanoïde // Magicien Déchu &bull; Pyromancie &amp;
+                                    Gravité</div>
                             </div>
                             <span class="danger-level-badge regular">Rang II &bull; Régulier Arcanique</span>
                         </div>
                         <p>
-                            Ancien étudiant d'académie ayant fui les règles impériales pour rejoindre la pègre. Maîtrise une <strong>Magie de rang 7</strong> axée sur la compression gravitationnelle et les gerbes enflammées. Reste en retrait pour bombarder les héros.
+                            Ancien étudiant d'académie ayant fui les règles impériales pour rejoindre la pègre. Maîtrise
+                            une <strong>Magie de rang 7</strong> axée sur la compression gravitationnelle et les gerbes
+                            enflammées. Reste en retrait pour bombarder les héros.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span class="stat-cell-val highlight">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span class="stat-cell-val highlight">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span class="stat-cell-val">1 (1d2-1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Magie</span><span class="stat-cell-val highlight">7 (1d8)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Vision/Ouïe</span><span class="stat-cell-val">6 / 3</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">7 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">6 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span class="stat-cell-val highlight">15 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span class="stat-cell-val">0</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val">3 (1d2+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val">3 (1d2+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val">3 (1d2+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val">3 (1d2+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span
+                                    class="stat-cell-val highlight">4 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span
+                                    class="stat-cell-val highlight">4 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span
+                                    class="stat-cell-val">1 (1d2-1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Magie</span><span
+                                    class="stat-cell-val highlight">7 (1d8)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Vision/Ouïe</span><span
+                                    class="stat-cell-val">6 / 3</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">7 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">6 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span
+                                    class="stat-cell-val highlight">15 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span
+                                    class="stat-cell-val">0</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Sortilèges Préparés :</h5>
-                            <strong>Étreinte de Gravité (Coût : 2 PA) :</strong> Portée 12m. Jet d'attaque Magie 1d8. Inflige 3 dégâts résiduels de compression et plaque la cible au sol (statut <em>À Terre</em>).<br>
-                            <strong>Souffle Igné (Coût : 3 PA) :</strong> Zone conique de 4 mètres. 4 dégâts de feu bruts + état <em>Enflammé</em> (2 dégâts de brûlure par tour).<br>
-                            <strong>Bouclier de Répulsion (Réaction : 2 PA) :</strong> Ajoute +3 à son jet défensif face aux projectiles physiques.
+                            <strong>Étreinte de Gravité (Coût : 2 PA) :</strong> Portée 12m. Jet d'attaque Magie 1d8.
+                            Inflige 3 dégâts résiduels de compression et plaque la cible au sol (statut <em>À
+                                Terre</em>).<br>
+                            <strong>Souffle Igné (Coût : 3 PA) :</strong> Zone conique de 4 mètres. 4 dégâts de feu
+                            bruts + état <em>Enflammé</em> (2 dégâts de brûlure par tour).<br>
+                            <strong>Bouclier de Répulsion (Réaction : 2 PA) :</strong> Ajoute +3 à son jet défensif face
+                            aux projectiles physiques.
                         </div>
                     </div>
 
@@ -497,29 +679,50 @@
                             <span class="danger-level-badge regular">Rang II &bull; Tireur d'Élite</span>
                         </div>
                         <p>
-                            Chasseur impitoyable embusqué en hauteur ou derrière des murets de pierre. Doté d'une <strong>Rapidité exceptionnelle (4)</strong> et d'un total colossal de <strong>10 PA</strong>. Il prépare ses tirs pour interrompre les sorts des PJ et n'hésite pas à capturer un allié pour forcer une reddition.
+                            Chasseur impitoyable embusqué en hauteur ou derrière des murets de pierre. Doté d'une
+                            <strong>Rapidité exceptionnelle (4)</strong> et d'un total colossal de <strong>10
+                                PA</strong>. Il prépare ses tirs pour interrompre les sorts des PJ et n'hésite pas à
+                            capturer un allié pour forcer une reddition.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val highlight">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val highlight">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Magie</span><span class="stat-cell-val">0</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Vision/Ouïe</span><span class="stat-cell-val">3 / 5</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">10 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">6 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span class="stat-cell-val highlight">15 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span class="stat-cell-val">0</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val">3 (1d2+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val highlight">4 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val">3 (1d2+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val highlight">4 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span
+                                    class="stat-cell-val">3 (1d2+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Magie</span><span
+                                    class="stat-cell-val">0</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Vision/Ouïe</span><span
+                                    class="stat-cell-val">3 / 5</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">10 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">6 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span
+                                    class="stat-cell-val highlight">15 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span
+                                    class="stat-cell-val">0</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Tactique de Tir &amp; Saisie :</h5>
-                            <strong>Carabine à Verrou Impériale :</strong> Dégâts bruts 3D. Portée 25 cases. Dé de tir : <strong>1d6</strong>.<br>
-                            <strong>Tir Préparé en Interruption :</strong> Dépense 4 PA au tour N pour préparer un tir réflexe dès qu'un ennemi sort de son couvert ou amorce une incantation.<br>
-                            <strong>Manœuvre de Prise d'Otage :</strong> Si un PJ ou PNJ adjacent est à terre ou essoufflé, le tireur dépense 6 PA pour lui coller le canon sur la tempe. Toute action offensive amie exige un jet sous peine d'exécution immédiate !
+                            <strong>Carabine à Verrou Impériale :</strong> Dégâts bruts 3D. Portée 25 cases. Dé de tir :
+                            <strong>1d6</strong>.<br>
+                            <strong>Tir Préparé en Interruption :</strong> Dépense 4 PA au tour N pour préparer un tir
+                            réflexe dès qu'un ennemi sort de son couvert ou amorce une incantation.<br>
+                            <strong>Manœuvre de Prise d'Otage :</strong> Si un PJ ou PNJ adjacent est à terre ou
+                            essoufflé, le tireur dépense 6 PA pour lui coller le canon sur la tempe. Toute action
+                            offensive amie exige un jet sous peine d'exécution immédiate !
                         </div>
                     </div>
 
@@ -528,29 +731,44 @@
                         <div class="bestiary-header">
                             <div class="bestiary-title-group">
                                 <h4>La « Petite Merde » (Minion Standard)</h4>
-                                <div class="bestiary-meta-sub">Larbins // Miliciens paniqués, bandits conscrits, gobelinoïdes</div>
+                                <div class="bestiary-meta-sub">Larbins // Miliciens paniqués, bandits conscrits,
+                                    gobelinoïdes</div>
                             </div>
                             <span class="danger-level-badge minion">Rang I &bull; Minion</span>
                         </div>
                         <p>
-                            Profil canonique universel pour la racaille et les gardes de bas étage. Dépourvu d'entraînement sérieux, ce profil sert à saturer l'espace lors des assauts de groupe.
+                            Profil canonique universel pour la racaille et les gardes de bas étage. Dépourvu
+                            d'entraînement sérieux, ce profil sert à saturer l'espace lors des assauts de groupe.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val">3</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val">2</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val">3</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val">2</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span class="stat-cell-val">0</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span class="stat-cell-val">2</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span class="stat-cell-val">0</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span class="stat-cell-val">0</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">4 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val">6 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Seuil Létal</span><span class="stat-cell-val">15 (ou 1 blessure nette)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span
+                                    class="stat-cell-val">1 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span
+                                    class="stat-cell-val">1 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span
+                                    class="stat-cell-val">1 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span
+                                    class="stat-cell-val">1 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">5 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val">4 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Seuil Létal</span><span
+                                    class="stat-cell-val">10 dégâts</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Règle de Combat Hachoir :</h5>
-                            Armé d'un gourdin (1D) ou d'un pistolet rouillé (2D). Dé d'attaque : <strong>1d2</strong>. Dès qu'une Petite Merde subit &ge; 4 dégâts en une seule attaque, elle est instantanément neutralisée sans jet d'agonie.
+                            Armé d'un gourdin (1D) ou d'un pistolet rouillé (2D). Dé d'attaque : <strong>1d2</strong>.
+                            Dès qu'une Petite Merde subit &ge; 4 dégâts en une seule attaque, elle est instantanément
+                            neutralisée sans jet d'agonie.
                         </div>
                     </div>
 
@@ -559,31 +777,54 @@
                         <div class="bestiary-header">
                             <div class="bestiary-title-group">
                                 <h4>Illumo, le Tueur Fou</h4>
-                                <div class="bestiary-meta-sub">Humanoïde d'Élite // Assassin Pyromancien &bull; 56 ans</div>
+                                <div class="bestiary-meta-sub">Humanoïde d'Élite // Assassin Pyromancien &bull; 56 ans
+                                </div>
                             </div>
                             <span class="danger-level-badge elite">Rang III &bull; Boss Assassin</span>
                         </div>
                         <p>
-                            Individu trapu au visage balafré et brûlé au troisième degré. Ayant erré toute sa jeunesse dans des désolations arides, Illumo a développé une affinité innée avec un <strong>Feu Arcanique blanc hyper-destructeur</strong>. Spécialiste des infiltrations de bases fortifiées et des assassinats de cibles sous haute protection.
+                            Individu trapu au visage balafré et brûlé au troisième degré. Ayant erré toute sa jeunesse
+                            dans des désolations arides, Illumo a développé une affinité innée avec un <strong>Feu
+                                Arcanique blanc hyper-destructeur</strong>. Spécialiste des infiltrations de bases
+                            fortifiées et des assassinats de cibles sous haute protection.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val highlight">5 (1d4+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val highlight">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val highlight">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span class="stat-cell-val">3 (1d2+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Magie (Feu)</span><span class="stat-cell-val highlight">8 (1d10)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">10 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">8 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span class="stat-cell-val highlight">20 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span class="stat-cell-val highlight">2 PM</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val highlight">5 (1d6)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val highlight">5 (1d6)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val highlight">4 (1d6)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val">4 (1d6)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span
+                                    class="stat-cell-val">3 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span
+                                    class="stat-cell-val">1 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span
+                                    class="stat-cell-val">3 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Magie (Feu)</span><span
+                                    class="stat-cell-val highlight">8 (1d10)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">10 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">8 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span
+                                    class="stat-cell-val highlight">20 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span
+                                    class="stat-cell-val highlight">2 PM</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Pouvoirs d'Assassinat Pyromantique :</h5>
-                            <strong>Dague d'Obsidienne Chauffée à Blanc :</strong> Dégâts bruts 3D + 2 dégâts de brûlure résiduelle.<br>
-                            <strong>Combustion Spontanée Spatiale (4 PA) :</strong> Illumo désigne une cible à vue (portée 18m). Les vêtements et armures de la cible s'enflamment spontanément sans jet de projectile. Inflige 5 dégâts bruts + état <em>Enflammé</em>.<br>
-                            <strong>Foulée de Cendres (2 PA) :</strong> Téléportation de 6 cases à travers un nuage de braises aveuglant (les assaillants adjacents subissent l'état <em>Aveuglé</em> pour 1 tour).
+                            <strong>Dague d'Obsidienne Chauffée à Blanc :</strong> Dégâts bruts 3D + 2 dégâts de brûlure
+                            résiduelle.<br>
+                            <strong>Combustion Spontanée Spatiale (4 PA) :</strong> Illumo désigne une cible à vue
+                            (portée 18m). Les vêtements et armures de la cible s'enflamment spontanément sans jet de
+                            projectile. Inflige 5 dégâts bruts + état <em>Enflammé</em>.<br>
+                            <strong>Foulée de Cendres (2 PA) :</strong> Téléportation de 6 cases à travers un nuage de
+                            braises aveuglant (les assaillants adjacents subissent l'état <em>Aveuglé</em> pour 1 tour).
                         </div>
                     </div>
 
@@ -596,7 +837,8 @@
                     </h2>
 
                     <p>
-                        La biosphère jeune et tumultueuse d'Hybris héberge des espèces aux métabolismes dopés par les veines souterraines de nytharite.
+                        La biosphère jeune et tumultueuse d'Hybris héberge des espèces aux métabolismes dopés par les
+                        veines souterraines de nytharite.
                     </p>
 
                     <!-- FICHE THE BEAST -->
@@ -604,31 +846,55 @@
                         <div class="bestiary-header">
                             <div class="bestiary-title-group">
                                 <h4>La Bête d'Hybris (The Beast)</h4>
-                                <div class="bestiary-meta-sub">Monstre Primal Légendaire // Gardien des Falaises d'Haliriel</div>
+                                <div class="bestiary-meta-sub">Monstre Primal Légendaire // Gardien des Falaises
+                                    d'Haliriel</div>
                             </div>
                             <span class="danger-level-badge boss">Boss Suprême &bull; Rang III</span>
                         </div>
                         <p>
-                            Colosse bipède de 4 mètres de haut à la fourrure noire et dense, doté d'une musculature prodigieuse et d'imposants crocs en dents de sabre. D'abord perçue comme un prédateur sanguinaire traquant les intrus dans les cols gelés du Nord, elle s'avère être un <strong>gardien initiatique millénaire</strong> testant la trempe des porteurs de la Cinquième Force. Même criblée de balles et la fourrure calcinée par les flammes pyrocinétiques, elle continue de charger avec une férocité inébranlable.
+                            Colosse bipède de 4 mètres de haut à la fourrure noire et dense, doté d'une musculature
+                            prodigieuse et d'imposants crocs en dents de sabre. D'abord perçue comme un prédateur
+                            sanguinaire traquant les intrus dans les cols gelés du Nord, elle s'avère être un
+                            <strong>gardien initiatique millénaire</strong> testant la trempe des porteurs de la
+                            Cinquième Force. Même criblée de balles et la fourrure calcinée par les flammes
+                            pyrocinétiques, elle continue de charger avec une férocité inébranlable.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val highlight">7 (1d8+2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val highlight">5 (1d4+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val highlight">6 (1d6+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val">4 (1d4)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span class="stat-cell-val">4 (Stratégique)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span class="stat-cell-val highlight">6 (1d6+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">13 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">12 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span class="stat-cell-val highlight">30 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span class="stat-cell-val highlight">3 PM</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val highlight">7 (1d8+2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val highlight">5 (1d4+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val highlight">6 (1d6+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val">4 (1d4)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span
+                                    class="stat-cell-val">4 (Stratégique)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span
+                                    class="stat-cell-val highlight">6 (1d6+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">13 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">12 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span
+                                    class="stat-cell-val highlight">30 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span
+                                    class="stat-cell-val highlight">3 PM</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Capacités de Boss &amp; Attaques Primordiales :</h5>
-                            <strong>Morsure Sabre (Coût : 3 PA) :</strong> Dégâts bruts <strong>5D</strong>. Si l'attaque inflige &ge; 5 dégâts nets, la cible subit l'état <em>Hémorragie / Saignement</em>.<br>
-                            <strong>Balayage de Griffes en Arc (Coût : 4 PA) :</strong> Touche jusqu'à 3 personnages adjacents. 4D de dégâts + épreuve de Force opposée pour ne pas être projeté à 4 mètres et subir l'état <em>À Terre</em>.<br>
-                            <strong>Mémoire des Flammes (Passif) :</strong> La Bête mémorise les signatures magiques utilisées contre elle. Chaque attaque pyrocinétique successive subie dans le même combat voit ses dégâts réduits de 2 points !<br>
-                            <strong>Charge Tellurique des Falaises (5 PA) :</strong> Bondit de 10 cases sans pénalité de terrain et écrase un obstacle rocheux, faisant s'effondrer des pans de falaise sur le groupe (3D de dégâts de zone).
+                            <strong>Morsure Sabre (Coût : 3 PA) :</strong> Dégâts bruts <strong>5D</strong>. Si
+                            l'attaque inflige &ge; 5 dégâts nets, la cible subit l'état <em>Hémorragie /
+                                Saignement</em>.<br>
+                            <strong>Balayage de Griffes en Arc (Coût : 4 PA) :</strong> Touche jusqu'à 3 personnages
+                            adjacents. 4D de dégâts + épreuve de Force opposée pour ne pas être projeté à 4 mètres et
+                            subir l'état <em>À Terre</em>.<br>
+                            <strong>Mémoire des Flammes (Passif) :</strong> La Bête mémorise les signatures magiques
+                            utilisées contre elle. Chaque attaque pyrocinétique successive subie dans le même combat
+                            voit ses dégâts réduits de 2 points !<br>
+                            <strong>Charge Tellurique des Falaises (5 PA) :</strong> Bondit de 10 cases sans pénalité de
+                            terrain et écrase un obstacle rocheux, faisant s'effondrer des pans de falaise sur le groupe
+                            (3D de dégâts de zone).
                         </div>
                     </div>
 
@@ -642,21 +908,34 @@
                             <span class="danger-level-badge regular">Rang II &bull; Gardien Indigène</span>
                         </div>
                         <p>
-                            Êtres trapus à la peau de granit grisâtre vivant dans les cavernes pré-coloniales d'Hybris. Ils ne parlent pas les langues humaines mais communiquent par résonance acoustique dans la pierre. Capables de fondre dans la roche pour surprendre les mineurs drakkars.
+                            Êtres trapus à la peau de granit grisâtre vivant dans les cavernes pré-coloniales d'Hybris.
+                            Ils ne parlent pas les langues humaines mais communiquent par résonance acoustique dans la
+                            pierre. Capables de fondre dans la roche pour surprendre les mineurs drakkars.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val highlight">5 (1d4+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val highlight">5 (1d4+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Magie Tellurique</span><span class="stat-cell-val highlight">4 (Inhérente)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">6 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">10 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Armure Naturelle</span><span class="stat-cell-val">3 pts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val highlight">5 (1d4+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val highlight">5 (1d4+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Magie Tellurique</span><span
+                                    class="stat-cell-val highlight">4 (Inhérente)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">6 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">10 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Armure Naturelle</span><span
+                                    class="stat-cell-val">3 pts</span></div>
                         </div>
                         <div class="tactics-box">
-                            <strong>Peau de Granit :</strong> Réduit automatiquement de 3 tous les dégâts physiques bruts reçus.<br>
-                            <strong>Séisme Souterrain (3 PA) :</strong> Frappe le sol du poing. Toutes les créatures à 3 cases doivent réussir un test d'Agilité ou tomber <em>À Terre</em> et perdre 2 PA au tour suivant.
+                            <strong>Peau de Granit :</strong> Réduit automatiquement de 3 tous les dégâts physiques
+                            bruts reçus.<br>
+                            <strong>Séisme Souterrain (3 PA) :</strong> Frappe le sol du poing. Toutes les créatures à 3
+                            cases doivent réussir un test d'Agilité ou tomber <em>À Terre</em> et perdre 2 PA au tour
+                            suivant.
                         </div>
                     </div>
 
@@ -669,7 +948,8 @@
                     </h2>
 
                     <p>
-                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par Capricius et l'inondation d'Eau Sombre.
+                        Au sommet de l'échelle des périls trônent les manifestations de la crise cosmique causée par
+                        Capricius et l'inondation d'Eau Sombre.
                     </p>
 
                     <!-- FICHE MINULICAN -->
@@ -682,24 +962,43 @@
                             <span class="danger-level-badge boss">Fléau Multidimensionnel</span>
                         </div>
                         <p>
-                            Monstre titanesque libéré lors des grands orages d'arcane de la Cinquième Force. Doté de cornes spiralées démoniaques, de membres massifs crépitants d'électricité arcanique et d'une peau léchée par des flammes bleu-violettes. Le Minulican traque avec obsession les singularités génétiques (la variance biogénomique de 0.0001%) et défie les lois ordinaires du temps.
+                            Monstre titanesque libéré lors des grands orages d'arcane de la Cinquième Force. Doté de
+                            cornes spiralées démoniaques, de membres massifs crépitants d'électricité arcanique et d'une
+                            peau léchée par des flammes bleu-violettes. Le Minulican traque avec obsession les
+                            singularités génétiques (la variance biogénomique de 0.0001%) et défie les lois ordinaires
+                            du temps.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val highlight">6 (1d6+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val highlight">6 (1d6+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val highlight">6 (1d6+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val highlight">5 (1d4+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Magie Arcanique</span><span class="stat-cell-val highlight">9 (1d12)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">14 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">12 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span class="stat-cell-val highlight">30 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span class="stat-cell-val highlight">3 PM</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val highlight">6 (1d6+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val highlight">6 (1d6+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val highlight">6 (1d6+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val highlight">5 (1d4+1)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Magie Arcanique</span><span
+                                    class="stat-cell-val highlight">9 (1d12)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">14 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">12 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span
+                                    class="stat-cell-val highlight">30 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points Miracle</span><span
+                                    class="stat-cell-val highlight">3 PM</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Pouvoirs de Rupture Causale :</h5>
-                            <strong>Éclairs de Néant en Chaîne (4 PA) :</strong> Décharge un faisceau d'énergie électrique pure qui ricoche sur 3 cibles à portée (15 cases). 5D dégâts + état <em>Déstabilisé (-2 EC)</em>.<br>
-                            <strong>Absorption d'Énergie Thermique (Réaction : 2 PA) :</strong> Lorsqu'il est ciblé par un sort de feu ou de plasma, le Minulican absorbe l'onde et convertit la moitié des dégâts en points de régénération vitale immédiate !<br>
-                            <strong>Saut Quantique Déphasé (3 PA) :</strong> Disparaît dans une faille du continuum et réapparaît instantanément n'importe où sur le champ de bataille, prenant ses adversaires à revers avec avantage au toucher (+2 EC).
+                            <strong>Éclairs de Néant en Chaîne (4 PA) :</strong> Décharge un faisceau d'énergie
+                            électrique pure qui ricoche sur 3 cibles à portée (15 cases). 5D dégâts + état
+                            <em>Déstabilisé (-2 EC)</em>.<br>
+                            <strong>Absorption d'Énergie Thermique (Réaction : 2 PA) :</strong> Lorsqu'il est ciblé par
+                            un sort de feu ou de plasma, le Minulican absorbe l'onde et convertit la moitié des dégâts
+                            en points de régénération vitale immédiate !<br>
+                            <strong>Saut Quantique Déphasé (3 PA) :</strong> Disparaît dans une faille du continuum et
+                            réapparaît instantanément n'importe où sur le champ de bataille, prenant ses adversaires à
+                            revers avec avantage au toucher (+2 EC).
                         </div>
                     </div>
 
@@ -708,28 +1007,54 @@
                         <div class="bestiary-header">
                             <div class="bestiary-title-group">
                                 <h4>Le Disciple de Terre de Capricius</h4>
-                                <div class="bestiary-meta-sub">Missile Biologique d'Extinction // Envoyé de la Psychohistoire</div>
+                                <div class="bestiary-meta-sub">Missile Biologique d'Extinction // Envoyé de la
+                                    Psychohistoire</div>
                             </div>
                             <span class="danger-level-badge boss">Arme Cosmique Antithermodynamique</span>
                         </div>
                         <p>
-                            Colosse lithosphérique de 3 mètres de haut, forgé par Capricius pour purger les anomalies de la ligne temporelle. Sa peau de roche noire veinée de magma en fusion absorbe l'impact des balles, des lasers et des armes tranchantes comme de simples ricochets. Il rasa les défenses extérieures de Brum'korath à lui seul.
+                            Colosse lithosphérique de 3 mètres de haut, forgé par Capricius pour purger les anomalies de
+                            la ligne temporelle. Sa peau de roche noire veinée de magma en fusion absorbe l'impact des
+                            balles, des lasers et des armes tranchantes comme de simples ricochets. Il rasa les défenses
+                            extérieures de Brum'korath à lui seul.
                         </p>
                         <div class="stat-block-grid">
-                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val highlight">8 (1d10+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val highlight">8 (1d10+1)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span class="stat-cell-val">2 (1d2)</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span class="stat-cell-val highlight">8 PA</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span class="stat-cell-val highlight">16 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span class="stat-cell-val highlight">40 dégâts</span></div>
-                            <div class="stat-cell"><span class="stat-cell-label">Armure Magmatique</span><span class="stat-cell-val highlight">6 pts bruts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                    class="stat-cell-val highlight">9 (1d10)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                    class="stat-cell-val highlight">9 (1d10)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Rapidité</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Intelligence</span><span
+                                    class="stat-cell-val">2 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Érudition</span><span
+                                    class="stat-cell-val">1 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Charisme</span><span
+                                    class="stat-cell-val">1 (1d2)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Instinct</span><span
+                                    class="stat-cell-val highlight">4 (1d6)</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Points d'Action</span><span
+                                    class="stat-cell-val highlight">5 PA</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Encaissement</span><span
+                                    class="stat-cell-val highlight">18 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Max Létal</span><span
+                                    class="stat-cell-val highlight">45 dégâts</span></div>
+                            <div class="stat-cell"><span class="stat-cell-label">Armure Magmatique</span><span
+                                    class="stat-cell-val highlight">6 pts bruts</span></div>
                         </div>
                         <div class="tactics-box">
                             <h5>Règles de Jugement Dernier :</h5>
-                            <strong>Poing Tectonique (3 PA) :</strong> Dégâts bruts <strong>7D</strong>. Pulvérise les portes de forteresses et les véhicules blindés.<br>
-                            <strong>Régénération Lithosphérique :</strong> À chaque tour passé en contact avec de la pierre naturelle ou de la roche, le Disciple régénère automatiquement 3 points de dégâts.<br>
-                            <strong>Point Faible Critique (Choc Thermique) :</strong> Si le Disciple subit une alternance violente d'attaque de froid extrême / glace suivie immédiatement d'une frappe pyrocinétique intense (ou l'inverse), sa cuirasse se fissure : il perd son armure naturelle pendant 2 tours et subit le double des dégâts !
+                            <strong>Poing Tectonique (3 PA) :</strong> Dégâts bruts <strong>7D</strong>. Pulvérise les
+                            portes de forteresses et les véhicules blindés.<br>
+                            <strong>Régénération Lithosphérique :</strong> À chaque tour passé en contact avec de la
+                            pierre naturelle ou de la roche, le Disciple régénère automatiquement 3 points de
+                            dégâts.<br>
+                            <strong>Point Faible Critique (Choc Thermique) :</strong> Si le Disciple subit une
+                            alternance violente d'attaque de froid extrême / glace suivie immédiatement d'une frappe
+                            pyrocinétique intense (ou l'inverse), sa cuirasse se fissure : il perd son armure naturelle
+                            pendant 2 tours et subit le double des dégâts !
                         </div>
                     </div>
 
@@ -742,7 +1067,8 @@
                     </h2>
 
                     <p>
-                        Sur les mondes occupés comme Vardis et dans les couloirs du Nexus d'Aurion, la terreur prend la forme de machines d'acier sans pitié.
+                        Sur les mondes occupés comme Vardis et dans les couloirs du Nexus d'Aurion, la terreur prend la
+                        forme de machines d'acier sans pitié.
                     </p>
 
                     <div class="cards-grid-2">
@@ -755,17 +1081,24 @@
                                 <span class="danger-level-badge regular">Rang II &bull; Sentinelle</span>
                             </div>
                             <p>
-                                Rotor antigravité silencieux équipé d'optiques thermiques et d'un canon à faisceau étourdissant.
+                                Rotor antigravité silencieux équipé d'optiques thermiques et d'un canon à faisceau
+                                étourdissant.
                             </p>
                             <div class="stat-block-grid">
-                                <div class="stat-cell"><span class="stat-cell-label">Coque</span><span class="stat-cell-val">8 PV</span></div>
-                                <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val">4</span></div>
-                                <div class="stat-cell"><span class="stat-cell-label">Vitesse Vol</span><span class="stat-cell-val">12 cases/tour</span></div>
-                                <div class="stat-cell"><span class="stat-cell-label">PA</span><span class="stat-cell-val">8 PA</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">Coque</span><span
+                                        class="stat-cell-val">8 PV</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                        class="stat-cell-val">4</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">Vitesse Vol</span><span
+                                        class="stat-cell-val">12 cases/tour</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">PA</span><span
+                                        class="stat-cell-val">8 PA</span></div>
                             </div>
                             <div class="tactics-box">
-                                <strong>Flash Aveuglant &bull; Impulsion Électrique :</strong> Rayon de 3 cases. La cible doit réussir un test de Con pour ne pas être <em>Sonnée (1 tour)</em>.<br>
-                                <strong>Balise d'Alerte Réseau :</strong> Au tour 2 de combat, appelle 2 Drones de renfort qui arrivent en 3 tours.
+                                <strong>Flash Aveuglant &bull; Impulsion Électrique :</strong> Rayon de 3 cases. La
+                                cible doit réussir un test de Con pour ne pas être <em>Sonnée (1 tour)</em>.<br>
+                                <strong>Balise d'Alerte Réseau :</strong> Au tour 2 de combat, appelle 2 Drones de
+                                renfort qui arrivent en 3 tours.
                             </div>
                         </div>
 
@@ -778,16 +1111,23 @@
                                 <span class="danger-level-badge regular">Rang II &bull; Assaut</span>
                             </div>
                             <p>
-                                Bête d'assaut blindée aux mâchoires renforcées de vérins hydrauliques. Utilisée pour débusquer les cellules rebelles dans les égouts d'Atraxia.
+                                Bête d'assaut blindée aux mâchoires renforcées de vérins hydrauliques. Utilisée pour
+                                débusquer les cellules rebelles dans les égouts d'Atraxia.
                             </p>
                             <div class="stat-block-grid">
-                                <div class="stat-cell"><span class="stat-cell-label">Force</span><span class="stat-cell-val">4</span></div>
-                                <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span class="stat-cell-val">4</span></div>
-                                <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span class="stat-cell-val">4</span></div>
-                                <div class="stat-cell"><span class="stat-cell-label">PA</span><span class="stat-cell-val">9 PA</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">Force</span><span
+                                        class="stat-cell-val">4</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">Agilité</span><span
+                                        class="stat-cell-val">4</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">Constitution</span><span
+                                        class="stat-cell-val">4</span></div>
+                                <div class="stat-cell"><span class="stat-cell-label">PA</span><span
+                                        class="stat-cell-val">9 PA</span></div>
                             </div>
                             <div class="tactics-box">
-                                <strong>Morsure Hydraulique (3 PA) :</strong> Dégâts 3D bruts. En cas de succès, verrouille ses mâchoires : la cible est <em>Immobilisée</em> et subit 2 dégâts automatiques au début de chaque tour jusqu'à ce que le chien soit détruit ou repoussé.
+                                <strong>Morsure Hydraulique (3 PA) :</strong> Dégâts 3D bruts. En cas de succès,
+                                verrouille ses mâchoires : la cible est <em>Immobilisée</em> et subit 2 dégâts
+                                automatiques au début de chaque tour jusqu'à ce que le chien soit détruit ou repoussé.
                             </div>
                         </div>
                     </div>
@@ -797,20 +1137,24 @@
                     <!-- ================= MODULE INTERACTIF ================= -->
                     <h3>Module Interactif : Sélecteur &amp; Télémétrie du Bestiaire</h3>
                     <p>
-                        Filtrez instantanément les menaces du multivers pour préparer vos tables de jeu ou consulter les caractéristiques à la volée :
+                        Filtrez instantanément les menaces du multivers pour préparer vos tables de jeu ou consulter les
+                        caractéristiques à la volée :
                     </p>
 
                     <div class="bestiary-filter-bar">
                         <button class="bestiary-filter-btn active" data-bfilter="all">Toutes les Menaces (15+)</button>
                         <button class="bestiary-filter-btn" data-bfilter="minions">Petites Merdes (Minions)</button>
                         <button class="bestiary-filter-btn" data-bfilter="bandits">Bandits &amp; Hors-la-Loi</button>
-                        <button class="bestiary-filter-btn" data-bfilter="monsters">Faune &amp; Monstres d'Hybris</button>
+                        <button class="bestiary-filter-btn" data-bfilter="monsters">Faune &amp; Monstres
+                            d'Hybris</button>
                         <button class="bestiary-filter-btn" data-bfilter="boss">Boss &amp; Disciples Cosmiques</button>
                         <button class="bestiary-filter-btn" data-bfilter="tech">Automates &amp; Cybernétique</button>
                     </div>
 
-                    <div id="bestiaryReport" style="padding: 14px 18px; background: rgba(244, 63, 94, 0.06); border: 1px dashed var(--ruby-danger); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--ruby-danger); margin-bottom: 24px;">
-                        Affichage Global : 15 entités répertoriées &bull; 3 Rangs de Danger &bull; 4 Boss Légendaires d'Élite &bull; 100% Calibré pour le Système RP.
+                    <div id="bestiaryReport"
+                        style="padding: 14px 18px; background: rgba(244, 63, 94, 0.06); border: 1px dashed var(--ruby-danger); border-radius: var(--radius-sm); font-family: var(--font-mono); font-size: 0.82rem; color: var(--ruby-danger); margin-bottom: 24px;">
+                        Affichage Global : 15 entités répertoriées &bull; 3 Rangs de Danger &bull; 4 Boss Légendaires
+                        d'Élite &bull; 100% Calibré pour le Système RP.
                     </div>
 
                     <div class="codex-signature">
@@ -848,7 +1192,15 @@
             <aside class="inspector">
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <line x1="8" y1="6" x2="21" y2="6" />
+                            <line x1="8" y1="12" x2="21" y2="12" />
+                            <line x1="8" y1="18" x2="21" y2="18" />
+                            <line x1="3" y1="6" x2="3.01" y2="6" />
+                            <line x1="3" y1="12" x2="3.01" y2="12" />
+                            <line x1="3" y1="18" x2="3.01" y2="18" />
+                        </svg>
                         Sur cette page
                     </div>
                     <ul class="toc-on-page">
@@ -862,7 +1214,12 @@
 
                 <div class="inspector-section">
                     <div class="inspector-title">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <circle cx="12" cy="12" r="10" />
+                            <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                            <path d="M2 12h20" />
+                        </svg>
                         Télémétrie Bestiaire
                     </div>
                     <div class="telemetry-card">
@@ -895,10 +1252,15 @@
 
                 <div class="next-stage-card">
                     <h5>Codex 100% Homologué</h5>
-                    <p>Félicitations ! Vous avez parcouru les 11 livres intégraux du Système RP. Lancez vos parties ou explorez le Hub Général.</p>
-                    <a href="index.html" class="btn-step" style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
+                    <p>Félicitations ! Vous avez parcouru les 11 livres intégraux du Système RP. Lancez vos parties ou
+                        explorez le Hub Général.</p>
+                    <a href="index.html" class="btn-step"
+                        style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
                         <span>Retour au Hub Général</span>
-                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+                        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                            stroke-width="2">
+                            <polyline points="9 18 15 12 9 6" />
+                        </svg>
                     </a>
                 </div>
             </aside>
@@ -914,12 +1276,12 @@
         document.addEventListener('DOMContentLoaded', () => {
             const bfilterBtns = document.querySelectorAll('.bestiary-filter-btn');
             const report = document.getElementById('bestiaryReport');
-            
+
             bfilterBtns.forEach(btn => {
                 btn.addEventListener('click', () => {
                     bfilterBtns.forEach(b => b.classList.remove('active'));
                     btn.classList.add('active');
-                    
+
                     const filter = btn.dataset.bfilter;
                     if (filter === 'all') {
                         report.textContent = 'Affichage Global : 15 entités répertoriées • 3 Rangs de Danger • 4 Boss Légendaires d\'Élite • 100% Calibré.';
@@ -939,4 +1301,5 @@
         });
     </script>
 </body>
+
 </html>

@@ -525,6 +525,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _grid: {fileID: 2000000003}
+  _customTileMaterial: {fileID: 0}
+  _customObstacleMaterial: {fileID: 0}
   _defaultTileColor: {r: 0.12, g: 0.14, b: 0.18, a: 1}
   _borderTileColor: {r: 0.08, g: 0.09, b: 0.12, a: 1}
   _reachableTileColor: {r: 0.1, g: 0.45, b: 0.65, a: 0.85}
@@ -581,63 +583,6 @@ MonoBehaviour:
   _cinematicDirector: {fileID: 1900725051}
   _isOpen: 1
   _toggleKey: 96
---- !u!1001 &3929869314677404349
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 7407242108175626290, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_Name
-      value: Mina
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: -0.31344
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0.77293
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0.50621
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 7890341590423562888, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: ab3542ca2e96949f2addf8e0212edc57, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
@@ -646,4 +591,3 @@ SceneRoots:
   - {fileID: 1900725528}
   - {fileID: 2000000002}
   - {fileID: 1402855265}
-  - {fileID: 3929869314677404349}

@@ -4,6 +4,7 @@ using Killtime.Tactics.Units;
 using Killtime.Core.Combat;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
+using Killtime.UI;
 
 namespace Killtime.Tactics.CombatUI
 {
@@ -201,6 +202,15 @@ namespace Killtime.Tactics.CombatUI
             // =========================================================================
             // 5. COMMANDES DÉVELOPPEUR
             // =========================================================================
+            actions.Add(new CombatAction(
+                "📜 [DEV] Fiche de Personnage Complète",
+                "Ouvre et affiche la fiche technique intégrale (Attributs, PA, Encaissement, Compétences).",
+                ActionCategory.CommandesDev,
+                0,
+                null,
+                (act, tgt) => CharacterDevWindow.OpenForUnit(tgt)
+            ));
+
             actions.Add(new CombatAction(
                 "⚡ [DEV] Recharger tous les PA",
                 "Restaure instantanément la réserve de PA au plafond maximal.",

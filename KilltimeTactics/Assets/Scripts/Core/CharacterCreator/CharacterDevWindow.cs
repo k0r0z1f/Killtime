@@ -31,6 +31,19 @@ namespace Killtime.UI
         private int _selectedTab = 0;
         private readonly string[] _tabTitles = { "👤 Création", "📈 Progression", "🔮 Sorts (XP=PA)", "💾 Disque", "🗺️ Spawner" };
 
+        private readonly List<string> _availableModelNames = new();
+        private bool _showModelDropdown = false;
+
+        // --- Studio d'Aperçu 3D Temps Réel ---
+        private RenderTexture _previewRT;
+        private Camera _previewCam;
+        private GameObject _previewStudioRoot;
+        private GameObject _currentPreviewInstance;
+        private string _lastLoadedModelName = "__UNINITIALIZED__";
+        private float _previewModelYaw = 180f;
+        private bool _isDraggingPreview = false;
+        private Vector2 _lastMousePos;
+
         private Rect _windowRect;
         private Vector2 _scrollPos;
         private string _statusMessage = "Prêt.";
@@ -62,16 +75,62 @@ namespace Killtime.UI
             Instance.EnsureReferences();
         }
 
+        public static void OpenForUnit(TacticalUnit unit)
+        {
+            Open();
+            Instance?.InspectUnit(unit);
+        }
+
+        public void InspectUnit(TacticalUnit unit)
+        {
+            if (unit == null) return;
+            _currentSheet = unit.GetOrBuildSheet();
+            _statusMessage = $"Inspection active : {unit.Stats.Name} (PV: {unit.Stats.CurrentHealth}/{unit.Stats.MaxHealth} | PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints})";
+            _isOpen = true;
+            _selectedTab = 0;
+        }
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
             EnsureReferences();
             CharacterStorageService.EnsureDirectoryExists();
+            RefreshAvailableModels();
+            EnsurePreviewStudio();
 
             // Positionne la fenêtre sur la droite de l'écran
             float width = 660;
             float height = Mathf.Min(760, Screen.height - 40);
             _windowRect = new Rect(Screen.width - width - 20, 20, width, height);
+        }
+
+        private void OnDisable()
+        {
+            CleanupPreviewStudio();
+        }
+
+        private void OnDestroy()
+        {
+            CleanupPreviewStudio();
+        }
+
+        private void RefreshAvailableModels()
+        {
+            _availableModelNames.Clear();
+            _availableModelNames.Add("(Procédural)");
+
+            var prefabs = Resources.LoadAll<GameObject>("Characters");
+            if (prefabs != null)
+            {
+                for (int i = 0; i < prefabs.Length; i++)
+                {
+                    var p = prefabs[i];
+                    if (p != null && !_availableModelNames.Contains(p.name))
+                    {
+                        _availableModelNames.Add(p.name);
+                    }
+                }
+            }
         }
 
         private void EnsureReferences()
@@ -86,7 +145,17 @@ namespace Killtime.UI
             if (Input.GetKeyDown(_toggleKey))
             {
                 _isOpen = !_isOpen;
-                if (_isOpen) EnsureReferences();
+                if (_isOpen)
+                {
+                    EnsureReferences();
+                    EnsurePreviewStudio();
+                }
+            }
+
+            if (_isOpen && (_selectedTab == 0 || _selectedTab == 4))
+            {
+                UpdatePreviewModel(_currentSheet.ModelPrefabName);
+                RenderPreviewStudio();
             }
         }
 
@@ -167,15 +236,21 @@ namespace Killtime.UI
             _currentSheet.Profile = (CharacterProfileType)GUILayout.Toolbar((int)_currentSheet.Profile, Enum.GetNames(typeof(CharacterProfileType)));
             GUILayout.EndHorizontal();
 
+            DrawModelSelector();
+
             GUILayout.EndVertical();
 
-            int allocatedSecondary = _currentSheet.BaseAttributes.Force + _currentSheet.BaseAttributes.Agilite + 
-                                     _currentSheet.BaseAttributes.Constitution + _currentSheet.BaseAttributes.Rapidite + 
-                                     _currentSheet.BaseAttributes.Intelligence + _currentSheet.BaseAttributes.Erudition + 
-                                     _currentSheet.BaseAttributes.Charisme + _currentSheet.BaseAttributes.Instinct;
+            bool isAllocationValid = ValidateAttributeAllocation(_currentSheet, out string allocationStatus);
 
             GUILayout.Space(6);
-            GUILayout.Label($"<b>2. Les 8 Attributs Fondamentaux (Points alloués : {allocatedSecondary}) :</b>");
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>2. Les 8 Attributs Fondamentaux (Plafond Absolu : 10) :</b>");
+            GUILayout.FlexibleSpace();
+            GUI.color = isAllocationValid ? Color.green : new Color(1.0f, 0.4f, 0.4f);
+            GUILayout.Label(allocationStatus, GUI.skin.box);
+            GUI.color = Color.white;
+            GUILayout.EndHorizontal();
+
             GUILayout.BeginVertical(GUI.skin.box);
 
             _currentSheet.BaseAttributes.Force = DrawAttrRow("Force (FOR)", _currentSheet.BaseAttributes.Force);
@@ -215,15 +290,454 @@ namespace Killtime.UI
             GUI.backgroundColor = Color.white;
         }
 
+        private void DrawModelSelector()
+        {
+            if (_availableModelNames.Count == 0)
+            {
+                RefreshAvailableModels();
+            }
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Modèle 3D :", GUILayout.Width(90));
+
+            int currentIndex = 0;
+            if (!string.IsNullOrEmpty(_currentSheet.ModelPrefabName))
+            {
+                currentIndex = _availableModelNames.IndexOf(_currentSheet.ModelPrefabName);
+                if (currentIndex < 0)
+                {
+                    _availableModelNames.Add(_currentSheet.ModelPrefabName);
+                    currentIndex = _availableModelNames.IndexOf(_currentSheet.ModelPrefabName);
+                }
+            }
+
+            if (GUILayout.Button("◀", GUILayout.Width(28)))
+            {
+                currentIndex = (currentIndex - 1 + _availableModelNames.Count) % _availableModelNames.Count;
+                _currentSheet.ModelPrefabName = (currentIndex == 0) ? "" : _availableModelNames[currentIndex];
+            }
+
+            string currentDisplay = string.IsNullOrEmpty(_currentSheet.ModelPrefabName) 
+                ? "📦 (Procédural / Défaut)" 
+                : $"🤖 {_currentSheet.ModelPrefabName}";
+
+            GUI.color = string.IsNullOrEmpty(_currentSheet.ModelPrefabName) ? Color.gray : Color.cyan;
+            GUILayout.Label($"<b>{currentDisplay}</b>", GUILayout.Width(190));
+            GUI.color = Color.white;
+
+            if (GUILayout.Button("▶", GUILayout.Width(28)))
+            {
+                currentIndex = (currentIndex + 1) % _availableModelNames.Count;
+                _currentSheet.ModelPrefabName = (currentIndex == 0) ? "" : _availableModelNames[currentIndex];
+            }
+
+            if (GUILayout.Button(_showModelDropdown ? "▲ Liste" : "▼ Liste", GUILayout.Width(58)))
+            {
+                _showModelDropdown = !_showModelDropdown;
+            }
+
+            if (GUILayout.Button("🔄 Scan", GUILayout.Width(58)))
+            {
+                RefreshAvailableModels();
+                _statusMessage = $"Modèles scannés dans Resources/Characters ({_availableModelNames.Count - 1} trouvé(s)).";
+            }
+            GUILayout.EndHorizontal();
+
+            if (_showModelDropdown)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("<color=#52687A><i>Modèles disponibles sous Assets/Resources/Characters :</i></color>");
+                for (int i = 0; i < _availableModelNames.Count; i++)
+                {
+                    string mName = _availableModelNames[i];
+                    bool isSelected = (i == 0 && string.IsNullOrEmpty(_currentSheet.ModelPrefabName)) || (_currentSheet.ModelPrefabName == mName);
+
+                    GUI.backgroundColor = isSelected ? new Color(0.1f, 0.6f, 0.9f) : Color.white;
+                    string itemLabel = (i == 0) ? "📦 (Procédural / Défaut)" : $"🤖 {mName}";
+
+                    if (GUILayout.Button(itemLabel))
+                    {
+                        _currentSheet.ModelPrefabName = (i == 0) ? "" : mName;
+                        _showModelDropdown = false;
+                    }
+                    GUI.backgroundColor = Color.white;
+                }
+                GUILayout.EndVertical();
+            }
+
+            GUILayout.Space(6);
+
+            // Hub Visuel : Aperçu 3D du modèle sélectionné
+            GUILayout.BeginHorizontal();
+            GUILayout.FlexibleSpace();
+            DrawPreviewViewport(210, 210);
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+        }
+
+        private void EnsurePreviewStudio()
+        {
+            if (_previewRT == null)
+            {
+                _previewRT = new RenderTexture(256, 256, 16, RenderTextureFormat.ARGB32)
+                {
+                    name = "CharacterModel_PreviewRT"
+                };
+                _previewRT.Create();
+            }
+
+            if (_previewStudioRoot == null)
+            {
+                _previewStudioRoot = new GameObject("[Studio] CharacterModelPreview");
+                _previewStudioRoot.transform.position = new Vector3(5000f, -5000f, 5000f);
+
+                var camGo = new GameObject("PreviewCamera");
+                camGo.transform.SetParent(_previewStudioRoot.transform, false);
+                _previewCam = camGo.AddComponent<Camera>();
+                _previewCam.clearFlags = CameraClearFlags.SolidColor;
+                _previewCam.backgroundColor = new Color(0.02f, 0.04f, 0.07f, 1.0f);
+                _previewCam.fieldOfView = 34f;
+                _previewCam.nearClipPlane = 0.1f;
+                _previewCam.farClipPlane = 50f;
+                _previewCam.targetTexture = _previewRT;
+                _previewCam.enabled = false;
+
+                var lightGo = new GameObject("PreviewLight");
+                lightGo.transform.SetParent(_previewStudioRoot.transform, false);
+                var light = lightGo.AddComponent<Light>();
+                light.type = LightType.Directional;
+                light.color = new Color(0.95f, 0.98f, 1.0f);
+                light.intensity = 1.3f;
+                lightGo.transform.rotation = Quaternion.Euler(30f, -35f, 0f);
+
+                var rimLightGo = new GameObject("PreviewRimLight");
+                rimLightGo.transform.SetParent(_previewStudioRoot.transform, false);
+                var rimLight = rimLightGo.AddComponent<Light>();
+                rimLight.type = LightType.Directional;
+                rimLight.color = new Color(0.0f, 0.85f, 1.0f);
+                rimLight.intensity = 0.65f;
+                rimLightGo.transform.rotation = Quaternion.Euler(-25f, 145f, 0f);
+            }
+        }
+
+        private void UpdatePreviewModel(string modelName)
+        {
+            if (modelName == _lastLoadedModelName && _currentPreviewInstance != null) return;
+
+            EnsurePreviewStudio();
+            _lastLoadedModelName = modelName;
+
+            if (_currentPreviewInstance != null)
+            {
+                Destroy(_currentPreviewInstance);
+                _currentPreviewInstance = null;
+            }
+
+            if (!string.IsNullOrEmpty(modelName) && modelName != "(Procédural)")
+            {
+                string cleanName = modelName.StartsWith("Characters/") ? modelName.Substring("Characters/".Length) : modelName;
+                var prefab = Resources.Load<GameObject>($"Characters/{cleanName}") ?? Resources.Load<GameObject>(cleanName);
+
+                if (prefab != null)
+                {
+                    _currentPreviewInstance = Instantiate(prefab, _previewStudioRoot.transform);
+                    _currentPreviewInstance.name = "Preview_" + cleanName;
+
+                    var colliders = _currentPreviewInstance.GetComponentsInChildren<Collider>();
+                    for (int i = 0; i < colliders.Length; i++) colliders[i].enabled = false;
+                }
+            }
+
+            if (_currentPreviewInstance == null)
+            {
+                _currentPreviewInstance = BuildProceduralPreviewModel();
+            }
+
+            _currentPreviewInstance.transform.localPosition = Vector3.zero;
+            _currentPreviewInstance.transform.localRotation = Quaternion.Euler(0f, _previewModelYaw, 0f);
+
+            FramePreviewCamera();
+        }
+
+        private GameObject BuildProceduralPreviewModel()
+        {
+            var root = new GameObject("Preview_Procedural");
+            root.transform.SetParent(_previewStudioRoot.transform, false);
+
+            var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
+            body.name = "BodyCapsule";
+            body.transform.SetParent(root.transform, false);
+            body.transform.localPosition = new Vector3(0, 1.0f, 0);
+            body.transform.localScale = new Vector3(0.7f, 0.9f, 0.7f);
+            var bCol = body.GetComponent<Collider>();
+            if (bCol != null) Destroy(bCol);
+
+            var visor = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            visor.name = "Visor";
+            visor.transform.SetParent(root.transform, false);
+            visor.transform.localPosition = new Vector3(0, 1.45f, 0.28f);
+            visor.transform.localScale = new Vector3(0.45f, 0.15f, 0.25f);
+            var vCol = visor.GetComponent<Collider>();
+            if (vCol != null) Destroy(vCol);
+
+            var ring = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+            ring.name = "BaseRing";
+            ring.transform.SetParent(root.transform, false);
+            ring.transform.localPosition = new Vector3(0, 0.02f, 0);
+            ring.transform.localScale = new Vector3(0.95f, 0.02f, 0.95f);
+            var rCol = ring.GetComponent<Collider>();
+            if (rCol != null) Destroy(rCol);
+
+            return root;
+        }
+
+        private void FramePreviewCamera()
+        {
+            if (_previewCam == null || _currentPreviewInstance == null) return;
+
+            var renderers = _currentPreviewInstance.GetComponentsInChildren<Renderer>();
+            Bounds bounds;
+
+            if (renderers.Length > 0)
+            {
+                bounds = renderers[0].bounds;
+                for (int i = 1; i < renderers.Length; i++)
+                {
+                    bounds.Encapsulate(renderers[i].bounds);
+                }
+            }
+            else
+            {
+                bounds = new Bounds(_currentPreviewInstance.transform.position + Vector3.up * 1f, Vector3.one * 1.8f);
+            }
+
+            float maxDimension = Mathf.Max(bounds.size.x, bounds.size.y, bounds.size.z);
+            maxDimension = Mathf.Max(maxDimension, 1.2f);
+
+            float distance = (maxDimension * 0.5f) / Mathf.Tan(_previewCam.fieldOfView * 0.5f * Mathf.Deg2Rad);
+            distance *= 1.45f;
+
+            Vector3 targetFocus = bounds.center;
+            _previewCam.transform.position = targetFocus + new Vector3(0f, maxDimension * 0.15f, distance);
+            _previewCam.transform.LookAt(targetFocus);
+        }
+
+        private void RenderPreviewStudio()
+        {
+            if (_previewCam == null || _currentPreviewInstance == null) return;
+
+            if (!_isDraggingPreview)
+            {
+                _previewModelYaw = (_previewModelYaw + Time.unscaledDeltaTime * 28f) % 360f;
+            }
+
+            _currentPreviewInstance.transform.localRotation = Quaternion.Euler(0f, _previewModelYaw, 0f);
+            _previewCam.Render();
+        }
+
+        private void DrawPreviewViewport(float width, float height)
+        {
+            Rect rect = GUILayoutUtility.GetRect(width, height);
+            Color prevBg = GUI.backgroundColor;
+
+            GUI.backgroundColor = new Color(0.01f, 0.03f, 0.06f, 0.95f);
+            GUI.Box(rect, GUIContent.none);
+            GUI.backgroundColor = prevBg;
+
+            if (_previewRT != null)
+            {
+                GUI.DrawTexture(rect, _previewRT, ScaleMode.ScaleToFit);
+            }
+
+            Event e = Event.current;
+            if (rect.Contains(e.mousePosition))
+            {
+                if (e.type == EventType.MouseDown && (e.button == 0 || e.button == 1))
+                {
+                    _isDraggingPreview = true;
+                    _lastMousePos = e.mousePosition;
+                    e.Use();
+                }
+            }
+
+            if (_isDraggingPreview)
+            {
+                if (e.type == EventType.MouseDrag)
+                {
+                    float deltaX = e.mousePosition.x - _lastMousePos.x;
+                    _previewModelYaw -= deltaX * 1.4f;
+                    _lastMousePos = e.mousePosition;
+                    e.Use();
+                }
+                else if (e.type == EventType.MouseUp)
+                {
+                    _isDraggingPreview = false;
+                    e.Use();
+                }
+            }
+
+            Rect labelRect = new Rect(rect.x, rect.y + rect.height - 18, rect.width, 16);
+            var footerStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 9,
+                alignment = TextAnchor.MiddleCenter
+            };
+            footerStyle.normal.textColor = new Color(0.0f, 0.9f, 1.0f, 0.7f);
+            GUI.Label(labelRect, "↔ Glisser pour pivoter le modèle", footerStyle);
+        }
+
+        private void CleanupPreviewStudio()
+        {
+            if (_currentPreviewInstance != null)
+            {
+                Destroy(_currentPreviewInstance);
+                _currentPreviewInstance = null;
+            }
+
+            if (_previewStudioRoot != null)
+            {
+                Destroy(_previewStudioRoot);
+                _previewStudioRoot = null;
+            }
+
+            if (_previewRT != null)
+            {
+                _previewRT.Release();
+                Destroy(_previewRT);
+                _previewRT = null;
+            }
+
+            _lastLoadedModelName = "__UNINITIALIZED__";
+        }
+
         private int DrawAttrRow(string label, int value)
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label(label, GUILayout.Width(170));
             if (GUILayout.Button("-", GUILayout.Width(30))) value = Mathf.Max(1, value - 1);
             GUILayout.Label($"<b>{value}</b>", GUILayout.Width(35));
-            if (GUILayout.Button("+", GUILayout.Width(30))) value++;
+            if (GUILayout.Button("+", GUILayout.Width(30))) value = Mathf.Min(10, value + 1);
             GUILayout.EndHorizontal();
             return value;
+        }
+
+        private bool ValidateAttributeAllocation(CharacterSheet sheet, out string statusMessage)
+        {
+            var b = sheet.BaseAttributes;
+            int[] core = { b.Force, b.Agilite, b.Constitution, b.Rapidite, b.Intelligence, b.Erudition, b.Charisme, b.Instinct };
+
+            for (int i = 0; i < core.Length; i++)
+            {
+                if (core[i] < 1)
+                {
+                    statusMessage = "❌ Attribut < 1 interdit (Plancher vital : 1)";
+                    return false;
+                }
+                if (core[i] > 10)
+                {
+                    statusMessage = "❌ Attribut > 10 interdit (Plafond absolu : 10)";
+                    return false;
+                }
+            }
+
+            if (sheet.Profile == CharacterProfileType.PnjBoss)
+            {
+                statusMessage = "👑 Boss : Attribution Libre (Plafond 10 respecté)";
+                return true;
+            }
+
+            if (sheet.Profile == CharacterProfileType.PnjSbire)
+            {
+                int total = 0;
+                for (int i = 0; i < core.Length; i++)
+                {
+                    if (core[i] > 3)
+                    {
+                        statusMessage = $"❌ Sbire : Attribut ({core[i]}) > 3 interdit";
+                        return false;
+                    }
+                    total += core[i];
+                }
+
+                int expected = b.Magie > 0 ? 11 : 12;
+                if (total == expected)
+                {
+                    statusMessage = $"✅ Sbire : {total}/{expected} pts alloués";
+                    return true;
+                }
+
+                statusMessage = $"⚠️ Sbire : {total}/{expected} pts (Requis exact : {expected})";
+                return false;
+            }
+
+            int count5 = 0;
+            int count4 = 0;
+            int secondarySum = 0;
+            bool remainingOver3 = false;
+
+            for (int i = 0; i < core.Length; i++)
+            {
+                if (sheet.Profile == CharacterProfileType.HerosPJ && core[i] == 5 && count5 == 0)
+                {
+                    count5++;
+                }
+                else if (core[i] == 4 && ((sheet.Profile == CharacterProfileType.HerosPJ && count4 == 0) || (sheet.Profile == CharacterProfileType.PnjNormal && count4 < 2)))
+                {
+                    count4++;
+                }
+                else
+                {
+                    if (core[i] > 3) remainingOver3 = true;
+                    secondarySum += core[i];
+                }
+            }
+
+            int targetSecondary = b.Magie > 0 ? 17 : 15;
+
+            if (sheet.Profile == CharacterProfileType.HerosPJ)
+            {
+                if (count5 != 1 || count4 != 1)
+                {
+                    statusMessage = $"⚠️ Héros : Requis 1 pilier à 5 ({count5}/1) & 1 à 4 ({count4}/1)";
+                    return false;
+                }
+                if (remainingOver3)
+                {
+                    statusMessage = "❌ Héros : Les 6 attributs restants doivent être &le; 3";
+                    return false;
+                }
+                if (secondarySum != targetSecondary)
+                {
+                    statusMessage = $"⚠️ Héros : {secondarySum}/{targetSecondary} pts secondaires";
+                    return false;
+                }
+                statusMessage = $"✅ Héros : Conforme Codex ({targetSecondary} pts)";
+                return true;
+            }
+
+            if (sheet.Profile == CharacterProfileType.PnjNormal)
+            {
+                if (count4 != 2)
+                {
+                    statusMessage = $"⚠️ Soldat : Requis 2 piliers à 4 ({count4}/2)";
+                    return false;
+                }
+                if (remainingOver3)
+                {
+                    statusMessage = "❌ Soldat : Les 6 attributs restants doivent être &le; 3";
+                    return false;
+                }
+                if (secondarySum != targetSecondary)
+                {
+                    statusMessage = $"⚠️ Soldat : {secondarySum}/{targetSecondary} pts secondaires";
+                    return false;
+                }
+                statusMessage = $"✅ Soldat : Conforme Codex ({targetSecondary} pts)";
+                return true;
+            }
+
+            statusMessage = "Statut indéterminé";
+            return false;
         }
 
         // ================= TAB 1 : PROGRESSION =================
@@ -367,6 +881,8 @@ namespace Killtime.UI
             GUILayout.BeginVertical(GUI.skin.box);
 
             GUILayout.Label($"Personnage actif : <b>{_currentSheet.Name}</b> ({_currentSheet.Species})");
+            string appliedModel = string.IsNullOrEmpty(_currentSheet.ModelPrefabName) ? "Avatar Procédural" : _currentSheet.ModelPrefabName;
+            GUILayout.Label($"Modèle 3D appliqué : <b><color=#00E5FF>{appliedModel}</color></b>");
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Coordonnée Hexagonale Q :", GUILayout.Width(180));
@@ -433,7 +949,8 @@ namespace Killtime.UI
                 _arena.SparringDummies.Add(unit);
             }
 
-            _statusMessage = $"'{_currentSheet.Name}' inséré avec succès en ({q}, {r}) !";
+            string modelLog = string.IsNullOrEmpty(_currentSheet.ModelPrefabName) ? "Avatar Procédural" : $"Modèle '{_currentSheet.ModelPrefabName}'";
+            _statusMessage = $"'{_currentSheet.Name}' inséré avec succès en ({q}, {r}) avec {modelLog} !";
         }
     }
 }

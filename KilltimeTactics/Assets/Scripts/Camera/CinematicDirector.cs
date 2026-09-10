@@ -26,7 +26,7 @@ namespace Killtime.CameraSystem
         [SerializeField] private float _freeLookSpeed = 12.0f;
 
         [Header("Configuration Cinématique")]
-        [SerializeField] private float _cinematicFOV = 40.0f;
+        [SerializeField] private float _cinematicFOV = 48.0f;
         [SerializeField] private float _normalFOV = 60.0f;
 
         public CameraMode CurrentMode { get; private set; } = CameraMode.TacticalIsometric;
@@ -34,6 +34,29 @@ namespace Killtime.CameraSystem
         private float _freePitch = 0.0f;
         private float _freeYaw = 0.0f;
         private Coroutine _activeCinematicRoutine;
+
+        public void ResetCinematicState()
+        {
+            if (_activeCinematicRoutine != null)
+            {
+                StopCoroutine(_activeCinematicRoutine);
+                _activeCinematicRoutine = null;
+            }
+
+            Time.timeScale = 1.0f;
+
+            if (_tacticalCam != null)
+            {
+                _tacticalCam.enabled = true;
+            }
+
+            if (_mainCamera != null && _normalFOV > 0)
+            {
+                _mainCamera.fieldOfView = _normalFOV;
+            }
+
+            CurrentMode = CameraMode.TacticalIsometric;
+        }
 
         private void Awake()
         {
@@ -124,18 +147,36 @@ namespace Killtime.CameraSystem
             Quaternion startCamRot = transform.rotation;
             float startFOV = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
 
-            // Position d'angle dramatique (vue rapprochée légèrement en contre-plongée)
-            Vector3 midPoint = (attacker.position + target.position) * 0.5f;
-            Vector3 offset = Vector3.Cross(target.position - attacker.position, Vector3.up).normalized * 3.5f + Vector3.up * 1.5f;
-            Vector3 cinematicPos = midPoint + offset;
-            Quaternion cinematicRot = Quaternion.LookRotation(target.position - cinematicPos);
+            Vector3 attackerChest = attacker.position + Vector3.up * 1.0f;
+            Vector3 targetChest = target.position + Vector3.up * 1.0f;
+            Vector3 focalPoint = (attackerChest + targetChest) * 0.5f;
 
-            // 1. Transition rapide vers le plan cinématique
+            Vector3 combatLine = target.position - attacker.position;
+            combatLine.y = 0f;
+            float combatDistance = Mathf.Max(combatLine.magnitude, 1.2f);
+            Vector3 lineDir = combatLine.normalized;
+
+            Vector3 sideDir = Vector3.Cross(lineDir, Vector3.up).normalized;
+            if (sideDir == Vector3.zero) sideDir = Vector3.right;
+
+            // Recul de la caméra et surélévation verticale pour dégager le champ de vision
+            Vector3 cameraOffset = (sideDir * 1.5f - lineDir * 0.6f).normalized * (combatDistance * 0.85f + 4.2f) + Vector3.up * 1.75f;
+            Vector3 cinematicPos = focalPoint + cameraOffset;
+
+            if (cinematicPos.y < 1.1f)
+            {
+                cinematicPos.y = 1.1f;
+            }
+
+            Quaternion cinematicRot = Quaternion.LookRotation(focalPoint - cinematicPos, Vector3.up);
+
+            // 1. Transition vers le plan cinématique
             float elapsed = 0f;
             float duration = 0.4f;
 
             while (elapsed < duration)
             {
+                while (Time.timeScale <= 0.0001f) yield return null;
                 elapsed += Time.unscaledDeltaTime;
                 float t = Mathf.SmoothStep(0, 1, elapsed / duration);
                 transform.position = Vector3.Lerp(startCamPos, cinematicPos, t);
@@ -144,14 +185,27 @@ namespace Killtime.CameraSystem
                 yield return null;
             }
 
-            // 2. Léger ralenti (Bullet-Time) à l'impact
+            // 2. Ralenti dramatique à l'impact
             Time.timeScale = 0.35f;
-            yield return new WaitForSecondsRealtime(0.5f);
+            float slowmoTimer = 0f;
+            while (slowmoTimer < 0.4f)
+            {
+                while (Time.timeScale <= 0.0001f) yield return null;
+                slowmoTimer += Time.unscaledDeltaTime;
+                yield return null;
+            }
 
-            // Point d'impact (calculs et déclenchement FX)
+            // Point d'impact (résolution mathématique et affichage des textes)
             onStrikePoint?.Invoke();
 
-            yield return new WaitForSecondsRealtime(0.8f);
+            // Temps de lecture étendu pour assimiler les résultats
+            float readTimer = 0f;
+            while (readTimer < 1.5f)
+            {
+                while (Time.timeScale <= 0.0001f) yield return null;
+                readTimer += Time.unscaledDeltaTime;
+                yield return null;
+            }
             Time.timeScale = 1.0f;
 
             // 3. Retour fluide à la vue tactique
@@ -160,6 +214,7 @@ namespace Killtime.CameraSystem
 
             while (elapsed < duration)
             {
+                while (Time.timeScale <= 0.0001f) yield return null;
                 elapsed += Time.deltaTime;
                 float t = Mathf.SmoothStep(0, 1, elapsed / duration);
                 transform.position = Vector3.Lerp(cinematicPos, startCamPos, t);

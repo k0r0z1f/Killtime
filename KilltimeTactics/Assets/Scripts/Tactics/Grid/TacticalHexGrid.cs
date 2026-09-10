@@ -37,6 +37,16 @@ namespace Killtime.Tactics.Grid
             }
         }
 
+        public void ResetGridState()
+        {
+            foreach (var node in _nodes.Values)
+            {
+                node.Cover = CoverType.None;
+                node.IsWalkable = true;
+                node.IsOccupied = false;
+            }
+        }
+
         private void Awake()
         {
             GenerateGrid();

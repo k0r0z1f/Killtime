@@ -33,6 +33,8 @@ namespace Killtime.UI
 
         private BodyPart _selectedPart = BodyPart.Torse;
         private bool _cancelPenaltyWithAP = false;
+        private int _attackerBonusAP = 0;
+        private int _defenderBonusAP = 0;
         private DiceType _attackDie = DiceType.D6;
         private DiceType _defenseDie = DiceType.D4;
         private int _weaponDamage = 5;
@@ -148,6 +150,11 @@ namespace Killtime.UI
                 GUI.color = Color.white;
             }
 
+            if (GUILayout.Button("📜 Fiche", GUILayout.Width(70)))
+            {
+                CharacterDevWindow.OpenForUnit(unit);
+            }
+
             if (GUILayout.Button("⏭️ Fin du Tour", GUILayout.Width(110)))
             {
                 _turnManager?.EndCurrentTurn();
@@ -181,7 +188,13 @@ namespace Killtime.UI
             if (target != null && target.Stats != null)
             {
                 GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginHorizontal();
                 GUILayout.Label($"Cible active : <b>{target.Stats.Name}</b> | PV: {target.Stats.CurrentHealth}/{target.Stats.MaxHealth} | Encaissement: {target.Stats.EncaissementThreshold} | Armure: {target.Stats.BaseArmorAbsorption} | Agi: {target.Stats.Attributes.Agilite}");
+                if (GUILayout.Button("📜 Voir Fiche", GUILayout.Width(95)))
+                {
+                    CharacterDevWindow.OpenForUnit(target);
+                }
+                GUILayout.EndHorizontal();
                 GUILayout.EndVertical();
             }
 
@@ -221,16 +234,49 @@ namespace Killtime.UI
             _weaponDamage = (int)GUILayout.HorizontalSlider(_weaponDamage, 1, 20);
             GUILayout.EndHorizontal();
 
-            GUILayout.Space(10);
-            GUI.backgroundColor = new Color(0.9f, 0.2f, 0.2f);
-            int apCost = _cancelPenaltyWithAP ? 3 : 2;
-            if (GUILayout.Button($"🎯 EXÉCUTER L'ATTAQUE CIBLÉE ({apCost} PA)", GUILayout.Height(40)))
+            // 4. Enchère des PA Bonus (Livre VI, Chap. 24)
+            GUILayout.Space(6);
+            GUILayout.Label("<b>4. Injection des Points d'Action (+1 au Jet / PA) :</b>");
+
+            int baseCost = _cancelPenaltyWithAP ? 3 : 2;
+            int currentAttackerAP = activeUnit != null ? activeUnit.Stats.CurrentActionPoints : 0;
+            int maxAttackerBonus = Mathf.Max(0, currentAttackerAP - baseCost);
+            _attackerBonusAP = Mathf.Clamp(_attackerBonusAP, 0, maxAttackerBonus);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"⚡ PA Bonus Attaquant : <b>+{_attackerBonusAP}</b>", GUILayout.Width(220));
+            _attackerBonusAP = (int)GUILayout.HorizontalSlider(_attackerBonusAP, 0, maxAttackerBonus);
+            GUILayout.EndHorizontal();
+
+            var currentDefender = _arena != null ? _arena.CurrentTarget : null;
+            int currentDefenderAP = currentDefender != null ? currentDefender.Stats.CurrentActionPoints : 0;
+            int maxDefenderBonus = Mathf.Max(0, currentDefenderAP - 1);
+            _defenderBonusAP = Mathf.Clamp(_defenderBonusAP, 0, maxDefenderBonus);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"🛡️ PA Bonus Défenseur : <b>+{_defenderBonusAP}</b>", GUILayout.Width(220));
+            _defenderBonusAP = (int)GUILayout.HorizontalSlider(_defenderBonusAP, 0, maxDefenderBonus);
+            GUILayout.EndHorizontal();
+
+            int maxAttacks = activeUnit != null ? activeUnit.Stats.GetMaxAttacksAllowed(_attackDie) : 1;
+            int attacksDone = activeUnit != null ? activeUnit.Stats.AttacksThisTurn : 0;
+            bool canAttack = activeUnit != null && activeUnit.Stats.CanAttack(_attackDie);
+
+            GUILayout.Space(6);
+            GUILayout.Label($"Attaques du tour : <b>{attacksDone} / {maxAttacks}</b> {(maxAttacks > 1 ? "<color=cyan>(Double action active)</color>" : "<color=gray>(Requis 2d6+ pour 2e attaque)</color>")}");
+
+            GUILayout.Space(6);
+            GUI.backgroundColor = canAttack ? new Color(0.9f, 0.2f, 0.2f) : Color.gray;
+            GUI.enabled = canAttack;
+            int totalApCost = baseCost + _attackerBonusAP;
+            if (GUILayout.Button(canAttack ? $"🎯 EXÉCUTER L'ATTAQUE CIBLÉE ({totalApCost} PA)" : "⚠️ QUOTA D'ATTAQUE ÉPUISÉ POUR CE TOUR", GUILayout.Height(40)))
             {
                 if (_arena != null)
                 {
-                    _arena.ExecuteAttack(_selectedPart, _cancelPenaltyWithAP, _attackDie, _defenseDie, _weaponDamage);
+                    _arena.ExecuteAttack(_selectedPart, _cancelPenaltyWithAP, _attackDie, _defenseDie, _weaponDamage, _attackerBonusAP, _defenderBonusAP);
                 }
             }
+            GUI.enabled = true;
             GUI.backgroundColor = Color.white;
         }
 

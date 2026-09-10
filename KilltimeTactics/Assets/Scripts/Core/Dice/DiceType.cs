@@ -14,6 +14,10 @@ namespace Killtime.Core.Dice
         D10,
         D12,
         D20,
+        TwoD6,
+        TwoD8,
+        TwoD10,
+        TwoD12,
         TwoD12Plus10
     }
 

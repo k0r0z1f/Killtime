@@ -18,6 +18,7 @@ namespace Killtime.Core.Character
         public string Gender = "Indéterminé";
         public SpeciesType Species = SpeciesType.Humain;
         public CharacterProfileType Profile = CharacterProfileType.HerosPJ;
+        public string ModelPrefabName = "";
         public string LoreNotes = "";
 
         public Attributes BaseAttributes = new Attributes(3, 3, 3, 3, 3, 3, 2, 2, 0, 3, 3, 1);
@@ -61,17 +62,17 @@ namespace Killtime.Core.Character
         {
             var (dFor, dAgi, dCon, dRap, dInt, dEru, dCha, dIns, minSense) = SpeciesRules.GetModifiers(Species);
             return new Attributes(
-                @for: Mathf.Max(1, BaseAttributes.Force + dFor),
-                agi: Mathf.Max(1, BaseAttributes.Agilite + dAgi),
-                con: Mathf.Max(1, BaseAttributes.Constitution + dCon),
-                rap: Mathf.Max(1, BaseAttributes.Rapidite + dRap),
-                @int: Mathf.Max(1, BaseAttributes.Intelligence + dInt),
-                eru: Mathf.Max(1, BaseAttributes.Erudition + dEru),
-                cha: Mathf.Max(1, BaseAttributes.Charisme + dCha),
-                ins: Mathf.Max(1, BaseAttributes.Instinct + dIns),
-                mag: BaseAttributes.Magie,
-                vision: Mathf.Max(minSense, BaseAttributes.Vision),
-                ouie: Mathf.Max(minSense, BaseAttributes.Ouie),
+                @for: Mathf.Clamp(BaseAttributes.Force + dFor, 1, 10),
+                agi: Mathf.Clamp(BaseAttributes.Agilite + dAgi, 1, 10),
+                con: Mathf.Clamp(BaseAttributes.Constitution + dCon, 1, 10),
+                rap: Mathf.Clamp(BaseAttributes.Rapidite + dRap, 1, 10),
+                @int: Mathf.Clamp(BaseAttributes.Intelligence + dInt, 1, 10),
+                eru: Mathf.Clamp(BaseAttributes.Erudition + dEru, 1, 10),
+                cha: Mathf.Clamp(BaseAttributes.Charisme + dCha, 1, 10),
+                ins: Mathf.Clamp(BaseAttributes.Instinct + dIns, 1, 10),
+                mag: Mathf.Clamp(BaseAttributes.Magie, 0, 10),
+                vision: Mathf.Clamp(Mathf.Max(minSense, BaseAttributes.Vision), 1, 6),
+                ouie: Mathf.Clamp(Mathf.Max(minSense, BaseAttributes.Ouie), 1, 6),
                 miracle: BaseAttributes.PointsMiracle
             );
         }

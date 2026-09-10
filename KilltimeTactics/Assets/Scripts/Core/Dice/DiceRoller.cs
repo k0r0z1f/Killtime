@@ -64,6 +64,34 @@ namespace Killtime.Core.Dice
                     isCriticalSuccess = (rawRoll == 20);
                     isCriticalFailure = (rawRoll == 1);
                     break;
+                case DiceType.TwoD6:
+                    int r6a = _random.Next(1, 7);
+                    int r6b = _random.Next(1, 7);
+                    rawRoll = r6a + r6b;
+                    isCriticalSuccess = (r6a == 6 || r6b == 6);
+                    isCriticalFailure = (r6a == 1 && r6b == 1);
+                    break;
+                case DiceType.TwoD8:
+                    int r8a = _random.Next(1, 9);
+                    int r8b = _random.Next(1, 9);
+                    rawRoll = r8a + r8b;
+                    isCriticalSuccess = (r8a == 8 || r8b == 8);
+                    isCriticalFailure = (r8a == 1 && r8b == 1);
+                    break;
+                case DiceType.TwoD10:
+                    int r10a = _random.Next(1, 11);
+                    int r10b = _random.Next(1, 11);
+                    rawRoll = r10a + r10b;
+                    isCriticalSuccess = (r10a == 10 || r10b == 10);
+                    isCriticalFailure = (r10a == 1 && r10b == 1);
+                    break;
+                case DiceType.TwoD12:
+                    int r12a = _random.Next(1, 13);
+                    int r12b = _random.Next(1, 13);
+                    rawRoll = r12a + r12b;
+                    isCriticalSuccess = (r12a == 12 || r12b == 12);
+                    isCriticalFailure = (r12a == 1 && r12b == 1);
+                    break;
                 case DiceType.TwoD12Plus10:
                     int d1 = _random.Next(1, 13);
                     int d2 = _random.Next(1, 13);

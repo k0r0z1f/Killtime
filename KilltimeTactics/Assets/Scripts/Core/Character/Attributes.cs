@@ -32,18 +32,18 @@ namespace Killtime.Core.Character
         /// </summary>
         public Attributes(int @for, int agi, int con, int rap, int @int, int eru, int cha, int ins, int mag = 0, int vision = 3, int ouie = 3, int miracle = 1)
         {
-            Force = @for;
-            Agilite = agi;
-            Constitution = con;
-            Rapidite = rap;
-            Intelligence = @int;
-            Erudition = eru;
-            Charisme = cha;
-            Instinct = ins;
-            Magie = mag;
-            Vision = vision;
-            Ouie = ouie;
-            PointsMiracle = miracle;
+            Force = Math.Clamp(@for, 1, 10);
+            Agilite = Math.Clamp(agi, 1, 10);
+            Constitution = Math.Clamp(con, 1, 10);
+            Rapidite = Math.Clamp(rap, 1, 10);
+            Intelligence = Math.Clamp(@int, 1, 10);
+            Erudition = Math.Clamp(eru, 1, 10);
+            Charisme = Math.Clamp(cha, 1, 10);
+            Instinct = Math.Clamp(ins, 1, 10);
+            Magie = Math.Clamp(mag, 0, 10);
+            Vision = Math.Clamp(vision, 1, 6);
+            Ouie = Math.Clamp(ouie, 1, 6);
+            PointsMiracle = Math.Max(0, miracle);
         }
 
         /// <summary>
