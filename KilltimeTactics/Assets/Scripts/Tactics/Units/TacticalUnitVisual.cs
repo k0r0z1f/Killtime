@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 using Killtime.Tactics.Units;
 using Killtime.Core.Character;
 
@@ -7,9 +8,8 @@ namespace Killtime.Tactics.Units
 {
     /// <summary>
     /// Gestionnaire visuel 3D pour une unité tactique.
-    /// Génère le modèle 3D procédural (corps, visière, pointeur d'orientation),
-    /// les barres de vie/PA en billboard au-dessus de la tête,
-    /// et les textes de combat flottants (dégâts, esquives, statuts).
+    /// Assure la création d'avatars procéduraux protégés contre les shaders manquants,
+    /// les barres de vie en billboard et les textes de dégâts flottants.
     /// </summary>
     [RequireComponent(typeof(TacticalUnit))]
     public class TacticalUnitVisual : MonoBehaviour
@@ -59,6 +59,40 @@ namespace Killtime.Tactics.Units
             ApplyBodyColor(bodyColor);
         }
 
+        private Material CreateSafeUnitMaterial(string matName)
+        {
+            Shader targetShader = null;
+
+            var currentRP = GraphicsSettings.currentRenderPipeline;
+            if (currentRP != null)
+            {
+                string rpName = currentRP.GetType().Name;
+                if (rpName.Contains("Universal") || rpName.Contains("URP"))
+                {
+                    targetShader = Shader.Find("Universal Render Pipeline/Lit")
+                                ?? Shader.Find("Universal Render Pipeline/Simple Lit")
+                                ?? Shader.Find("Universal Render Pipeline/Unlit");
+                }
+                else if (rpName.Contains("HighDefinition") || rpName.Contains("HDRP"))
+                {
+                    targetShader = Shader.Find("HDRP/Lit")
+                                ?? Shader.Find("HDRP/Unlit");
+                }
+            }
+
+            if (targetShader == null)
+            {
+                targetShader = Shader.Find("Universal Render Pipeline/Lit")
+                            ?? Shader.Find("Universal Render Pipeline/Simple Lit")
+                            ?? Shader.Find("Universal Render Pipeline/Unlit")
+                            ?? Shader.Find("Standard")
+                            ?? Shader.Find("Unlit/Color")
+                            ?? Shader.Find("Sprites/Default");
+            }
+
+            return new Material(targetShader) { name = matName };
+        }
+
         private void BuildProceduralAvatar()
         {
             if (_modelRoot != null) Destroy(_modelRoot.gameObject);
@@ -66,29 +100,24 @@ namespace Killtime.Tactics.Units
             _modelRoot = new GameObject("AvatarModel").transform;
             _modelRoot.SetParent(transform, false);
 
-            // Extraire le matériau URP par défaut d'une primitive temporaire
-            var tempPrim = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            tempPrim.hideFlags = HideFlags.HideAndDontSave;
-            var mat = new Material(tempPrim.GetComponent<MeshRenderer>().sharedMaterial);
-            DestroyImmediate(tempPrim);
+            Material baseMat = CreateSafeUnitMaterial("UnitAvatar_Mat");
 
-            // 1. Corps principal (Capsule)
+            // 1. Corps principal
             var body = GameObject.CreatePrimitive(PrimitiveType.Capsule);
             body.name = "BodyCapsule";
             body.transform.SetParent(_modelRoot, false);
             body.transform.localPosition = new Vector3(0, 1.0f * _unitScale, 0);
             body.transform.localScale = new Vector3(0.7f, 0.9f, 0.7f) * _unitScale;
 
-            // Retirer le collider physique de l'avatar pour laisser le contrôle à la grille
             var capsuleCol = body.GetComponent<Collider>();
             if (capsuleCol != null) Destroy(capsuleCol);
 
             _bodyRenderer = body.GetComponent<MeshRenderer>();
-            _bodyRenderer.material = mat;
+            _bodyRenderer.sharedMaterial = baseMat;
             _currentBodyColor = _unit.IsPlayerControlled ? new Color(0.15f, 0.45f, 0.85f) : new Color(0.85f, 0.25f, 0.2f);
             ApplyBodyColor(_currentBodyColor);
 
-            // 2. Visière / Tête
+            // 2. Visière
             var visor = GameObject.CreatePrimitive(PrimitiveType.Cube);
             visor.name = "Visor";
             visor.transform.SetParent(_modelRoot, false);
@@ -99,7 +128,7 @@ namespace Killtime.Tactics.Units
             if (visorCol != null) Destroy(visorCol);
 
             var visorRend = visor.GetComponent<MeshRenderer>();
-            visorRend.material = mat;
+            visorRend.sharedMaterial = baseMat;
             var visorProp = new MaterialPropertyBlock();
             Color vColor = _unit.IsPlayerControlled ? new Color(0.0f, 0.95f, 1.0f) : new Color(1.0f, 0.75f, 0.1f);
             visorProp.SetColor("_BaseColor", vColor);
@@ -107,7 +136,7 @@ namespace Killtime.Tactics.Units
             visorProp.SetColor("_EmissionColor", vColor * 1.5f);
             visorRend.SetPropertyBlock(visorProp);
 
-            // 3. Pointeur de visée avant (petit cône/cylindre d'orientation)
+            // 3. Pointeur d'orientation
             var pointer = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             pointer.name = "AimPointer";
             pointer.transform.SetParent(_modelRoot, false);
@@ -119,7 +148,7 @@ namespace Killtime.Tactics.Units
             if (pointerCol != null) Destroy(pointerCol);
 
             var pointerRend = pointer.GetComponent<MeshRenderer>();
-            pointerRend.material = mat;
+            pointerRend.sharedMaterial = baseMat;
             var pointerProp = new MaterialPropertyBlock();
             pointerProp.SetColor("_BaseColor", Color.white);
             pointerProp.SetColor("_Color", Color.white);
@@ -158,7 +187,6 @@ namespace Killtime.Tactics.Units
         {
             if (_unit.Stats != null && !_unit.Stats.IsAlive)
             {
-                // Animation de chute au sol (couché sur le dos)
                 Quaternion targetRot = Quaternion.Euler(-80, transform.rotation.eulerAngles.y, 0);
                 if (_modelRoot != null)
                 {
@@ -208,11 +236,10 @@ namespace Killtime.Tactics.Units
             var cam = UnityEngine.Camera.main;
             if (cam == null || _unit == null || _unit.Stats == null) return;
 
-            // 1. Rendu de l'Overhead Billboard
             Vector3 headWorldPos = transform.position + Vector3.up * 2.2f;
             Vector3 screenPos = cam.WorldToScreenPoint(headWorldPos);
 
-            if (screenPos.z > 0.5f) // Devant la caméra
+            if (screenPos.z > 0.5f)
             {
                 float uiX = screenPos.x;
                 float uiY = Screen.height - screenPos.y;
@@ -229,23 +256,19 @@ namespace Killtime.Tactics.Units
             float height = 48;
             Rect rect = new Rect(x - width * 0.5f, y - height, width, height);
 
-            // Fond discret
             GUI.Box(rect, GUIContent.none);
 
             GUILayout.BeginArea(rect);
 
-            // Nom de l'unité
             GUI.color = _unit.IsPlayerControlled ? new Color(0.4f, 0.8f, 1f) : new Color(1f, 0.4f, 0.4f);
             GUILayout.Label($"<b>{stats.Name}</b>", new GUIStyle(GUI.skin.label) { fontSize = 11, alignment = TextAnchor.MiddleCenter });
 
-            // Barre de vie (PV)
             float hpPct = Mathf.Clamp01((float)stats.CurrentHealth / Mathf.Max(1, stats.MaxHealth));
             Color hpColor = hpPct > 0.5f ? Color.green : (hpPct > 0.25f ? Color.yellow : Color.red);
             GUI.color = hpColor;
             GUILayout.Label($"PV: {stats.CurrentHealth}/{stats.MaxHealth} | PA: {stats.CurrentActionPoints}/{stats.MaxActionPoints}", 
                 new GUIStyle(GUI.skin.label) { fontSize = 10, alignment = TextAnchor.MiddleCenter });
 
-            // Badges de statuts actifs
             if (stats.ActiveStatus != StatusEffect.None)
             {
                 GUI.color = Color.magenta;

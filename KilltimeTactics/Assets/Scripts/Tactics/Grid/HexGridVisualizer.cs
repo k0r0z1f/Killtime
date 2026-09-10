@@ -1,19 +1,26 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 namespace Killtime.Tactics.Grid
 {
     /// <summary>
-    /// Générateur et visualiseur procédural de la grille hexagonale 3D (Style Fallout / XCOM).
-    /// Génère les dalles hexagonales, les obstacles 3D (demi-couvertures et couvertures totales),
-    /// les colliders de clic et les surbrillances dynamiques (portée PA, curseur de survol, chemin).
+    /// Générateur et visualiseur procédural de la grille hexagonale 3D.
+    /// Gère la détection automatique du pipeline (URP / Built-in), la génération des UVs,
+    /// les obstacles 3D et les surbrillances dynamiques de portée/ciblage.
     /// </summary>
     public class HexGridVisualizer : MonoBehaviour
     {
         [Header("Grille Associée")]
         [SerializeField] private TacticalHexGrid _grid;
 
-        [Header("Esthétique")]
+        [Header("Matériaux & Textures (Optionnel)")]
+        [Tooltip("Matériau personnalisé pour les dalles. Si laissé vide, un matériau adapté à URP/Built-in est généré.")]
+        [SerializeField] private Material _customTileMaterial;
+        [Tooltip("Matériau personnalisé pour les obstacles (couvertures).")]
+        [SerializeField] private Material _customObstacleMaterial;
+
+        [Header("Esthétique des Dalles")]
         [SerializeField] private Color _defaultTileColor = new Color(0.12f, 0.14f, 0.18f, 1f);
         [SerializeField] private Color _borderTileColor = new Color(0.08f, 0.09f, 0.12f, 1f);
         [SerializeField] private Color _reachableTileColor = new Color(0.1f, 0.45f, 0.65f, 0.85f);
@@ -33,6 +40,7 @@ namespace Killtime.Tactics.Grid
         private LineRenderer _pathLineRenderer;
 
         private Material _baseMaterial;
+        private Material _obstacleMaterial;
         private MaterialPropertyBlock _propBlock;
 
         public TacticalHexGrid Grid => _grid;
@@ -40,7 +48,7 @@ namespace Killtime.Tactics.Grid
         private void Awake()
         {
             _propBlock = new MaterialPropertyBlock();
-            InitializeShader();
+            InitializeMaterials();
 
             if (_grid == null)
             {
@@ -55,15 +63,64 @@ namespace Killtime.Tactics.Grid
             BuildVisualGrid();
         }
 
-        private void InitializeShader()
+        private void InitializeMaterials()
         {
-            // Méthode fiable : extraire le matériau par défaut d'une primitive Unity.
-            // Cela garantit un shader URP valide même si Shader.Find() échoue au runtime.
-            var tempPrimitive = GameObject.CreatePrimitive(PrimitiveType.Quad);
-            tempPrimitive.hideFlags = HideFlags.HideAndDontSave;
-            var defaultMat = tempPrimitive.GetComponent<MeshRenderer>().sharedMaterial;
-            _baseMaterial = new Material(defaultMat) { name = "HexGrid_Mat_Runtime" };
-            DestroyImmediate(tempPrimitive);
+            if (_customTileMaterial != null)
+            {
+                _baseMaterial = new Material(_customTileMaterial) { name = "HexGrid_BaseMat_Instance" };
+            }
+            else
+            {
+                _baseMaterial = CreatePipelineSafeMaterial("HexGrid_Tile_Mat", _defaultTileColor);
+            }
+
+            if (_customObstacleMaterial != null)
+            {
+                _obstacleMaterial = new Material(_customObstacleMaterial) { name = "HexGrid_ObstacleMat_Instance" };
+            }
+            else
+            {
+                _obstacleMaterial = new Material(_baseMaterial) { name = "HexGrid_Obstacle_Mat" };
+            }
+        }
+
+        private Material CreatePipelineSafeMaterial(string materialName, Color defaultColor)
+        {
+            Shader targetShader = null;
+
+            var currentRP = GraphicsSettings.currentRenderPipeline;
+            if (currentRP != null)
+            {
+                string rpName = currentRP.GetType().Name;
+                if (rpName.Contains("Universal") || rpName.Contains("URP"))
+                {
+                    targetShader = Shader.Find("Universal Render Pipeline/Lit")
+                                ?? Shader.Find("Universal Render Pipeline/Simple Lit")
+                                ?? Shader.Find("Universal Render Pipeline/Unlit");
+                }
+                else if (rpName.Contains("HighDefinition") || rpName.Contains("HDRP"))
+                {
+                    targetShader = Shader.Find("HDRP/Lit")
+                                ?? Shader.Find("HDRP/Unlit");
+                }
+            }
+
+            if (targetShader == null)
+            {
+                targetShader = Shader.Find("Universal Render Pipeline/Lit")
+                            ?? Shader.Find("Universal Render Pipeline/Simple Lit")
+                            ?? Shader.Find("Universal Render Pipeline/Unlit")
+                            ?? Shader.Find("Standard")
+                            ?? Shader.Find("Unlit/Color")
+                            ?? Shader.Find("Sprites/Default");
+            }
+
+            Material mat = new Material(targetShader) { name = materialName };
+
+            if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", defaultColor);
+            if (mat.HasProperty("_Color")) mat.SetColor("_Color", defaultColor);
+
+            return mat;
         }
 
         private void SetupPathLineRenderer()
@@ -85,7 +142,6 @@ namespace Killtime.Tactics.Grid
         {
             if (_grid == null) return;
 
-            // Nettoyage préalable
             if (_tilesParent != null) Destroy(_tilesParent.gameObject);
             if (_obstaclesParent != null) Destroy(_obstaclesParent.gameObject);
             _tileRenderers.Clear();
@@ -115,11 +171,9 @@ namespace Killtime.Tactics.Grid
                 mr.sharedMaterial = _baseMaterial;
                 _tileRenderers[coords] = mr;
 
-                // Ajouter un MeshCollider pour le clic souris et le raycasting
                 var col = tileObj.AddComponent<MeshCollider>();
                 col.sharedMesh = sharedHexMesh;
 
-                // Créer l'obstacle si nécessaire
                 UpdateObstacleVisual(coords, node);
             }
 
@@ -153,8 +207,9 @@ namespace Killtime.Tactics.Grid
                 halfCover.transform.localScale = new Vector3(_grid.HexRadius * 0.8f, 0.7f, _grid.HexRadius * 0.4f);
 
                 var rend = halfCover.GetComponent<MeshRenderer>();
-                // Garder le matériau URP par défaut de la primitive, appliquer la couleur via PropertyBlock
-                _propBlock.SetColor("_BaseColor", new Color(0.75f, 0.55f, 0.15f)); // Ambre / Caisse tactique
+                rend.sharedMaterial = _obstacleMaterial;
+
+                _propBlock.SetColor("_BaseColor", new Color(0.75f, 0.55f, 0.15f));
                 _propBlock.SetColor("_Color", new Color(0.75f, 0.55f, 0.15f));
                 rend.SetPropertyBlock(_propBlock);
 
@@ -169,8 +224,9 @@ namespace Killtime.Tactics.Grid
                 fullCover.transform.localScale = new Vector3(_grid.HexRadius * 0.8f, 1.1f, _grid.HexRadius * 0.8f);
 
                 var rend = fullCover.GetComponent<MeshRenderer>();
-                // Garder le matériau URP par défaut de la primitive
-                _propBlock.SetColor("_BaseColor", new Color(0.25f, 0.28f, 0.35f)); // Pilier de béton renforcé
+                rend.sharedMaterial = _obstacleMaterial;
+
+                _propBlock.SetColor("_BaseColor", new Color(0.25f, 0.28f, 0.35f));
                 _propBlock.SetColor("_Color", new Color(0.25f, 0.28f, 0.35f));
                 rend.SetPropertyBlock(_propBlock);
 
@@ -249,7 +305,7 @@ namespace Killtime.Tactics.Grid
                 var node = _grid.GetNode(coords);
                 if (node != null && !node.IsWalkable)
                 {
-                    c = new Color(0.18f, 0.1f, 0.1f, 1f); // Infranchissable
+                    c = new Color(0.18f, 0.1f, 0.1f, 1f);
                 }
                 else if (_currentHovered.HasValue && _currentHovered.Value.Equals(coords))
                 {
@@ -274,9 +330,6 @@ namespace Killtime.Tactics.Grid
             }
         }
 
-        /// <summary>
-        /// Génère un maillage d'hexagone pointu (Pointy-Topped) avec biseau supérieur.
-        /// </summary>
         public static Mesh GeneratePointyHexMesh(float radius, float height)
         {
             var mesh = new Mesh { name = "ProceduralPointyHex" };
@@ -284,13 +337,15 @@ namespace Killtime.Tactics.Grid
             var vertices = new List<Vector3>();
             var triangles = new List<int>();
             var normals = new List<Vector3>();
+            var uvs = new List<Vector2>();
 
-            // Centre supérieur
+            // 1. Sommet central supérieur
             Vector3 centerTop = new Vector3(0, height * 0.5f, 0);
             vertices.Add(centerTop);
             normals.Add(Vector3.up);
+            uvs.Add(new Vector2(0.5f, 0.5f));
 
-            // 6 coins supérieurs
+            // 2. 6 Sommets périphériques supérieurs
             for (int i = 0; i < 6; i++)
             {
                 float angle = (30f + 60f * i) * Mathf.Deg2Rad;
@@ -298,6 +353,7 @@ namespace Killtime.Tactics.Grid
                 float z = radius * Mathf.Sin(angle);
                 vertices.Add(new Vector3(x, height * 0.5f, z));
                 normals.Add(Vector3.up);
+                uvs.Add(new Vector2((x / (radius * 2f)) + 0.5f, (z / (radius * 2f)) + 0.5f));
             }
 
             // Triangles supérieurs
@@ -309,13 +365,14 @@ namespace Killtime.Tactics.Grid
                 triangles.Add(next);
             }
 
-            // Centre inférieur
+            // 3. Sommet central inférieur
             int centerBottomIndex = vertices.Count;
             Vector3 centerBottom = new Vector3(0, -height * 0.5f, 0);
             vertices.Add(centerBottom);
             normals.Add(Vector3.down);
+            uvs.Add(new Vector2(0.5f, 0.5f));
 
-            // 6 coins inférieurs
+            // 4. 6 Sommets périphériques inférieurs
             int bottomStartIndex = vertices.Count;
             for (int i = 0; i < 6; i++)
             {
@@ -324,6 +381,7 @@ namespace Killtime.Tactics.Grid
                 float z = radius * Mathf.Sin(angle);
                 vertices.Add(new Vector3(x, -height * 0.5f, z));
                 normals.Add(Vector3.down);
+                uvs.Add(new Vector2((x / (radius * 2f)) + 0.5f, (z / (radius * 2f)) + 0.5f));
             }
 
             // Triangles inférieurs
@@ -336,7 +394,7 @@ namespace Killtime.Tactics.Grid
                 triangles.Add(curr);
             }
 
-            // Flancs latéraux
+            // 5. Flancs latéraux
             for (int i = 0; i < 6; i++)
             {
                 int topCurr = 1 + i;
@@ -344,12 +402,10 @@ namespace Killtime.Tactics.Grid
                 int botCurr = bottomStartIndex + i;
                 int botNext = bottomStartIndex + ((i + 1) % 6);
 
-                // Triangle 1
                 triangles.Add(topCurr);
                 triangles.Add(botCurr);
                 triangles.Add(topNext);
 
-                // Triangle 2
                 triangles.Add(topNext);
                 triangles.Add(botCurr);
                 triangles.Add(botNext);
@@ -358,8 +414,8 @@ namespace Killtime.Tactics.Grid
             mesh.SetVertices(vertices);
             mesh.SetTriangles(triangles, 0);
             mesh.SetNormals(normals);
+            mesh.SetUVs(0, uvs);
             mesh.RecalculateBounds();
-            mesh.RecalculateNormals();
 
             return mesh;
         }

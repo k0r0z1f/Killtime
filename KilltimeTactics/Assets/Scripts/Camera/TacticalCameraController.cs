@@ -92,7 +92,7 @@ namespace Killtime.CameraSystem
 
         private void AutoFindPlayerTarget()
         {
-            var units = FindObjectsByType<TacticalUnit>(FindObjectsSortMode.None);
+            var units = FindObjectsByType<TacticalUnit>();
             foreach (var u in units)
             {
                 if (u.IsPlayerControlled)

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Core.Combat;
 using Killtime.Core.Character;
+using Killtime.Tactics;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
 
@@ -35,12 +36,65 @@ namespace Killtime.UI
 
         private void OnGUI()
         {
+            if (_turnManager != null && _turnManager.IsCombatOver)
+            {
+                DrawCombatOutcomeBanner();
+                DrawCombatLogWindow();
+                return;
+            }
+
             var unit = _turnManager != null ? _turnManager.ActiveUnit : null;
             if (unit == null) return;
 
             DrawTopBar(unit);
             DrawTargetedShotPanel(unit);
             DrawCombatLogWindow();
+        }
+
+        private void DrawCombatOutcomeBanner()
+        {
+            bool isVictory = (_turnManager.CurrentOutcome == CombatOutcome.Victory);
+
+            float width = 480;
+            float height = 220;
+            Rect rect = new Rect((Screen.width - width) * 0.5f, (Screen.height - height) * 0.4f, width, height);
+
+            GUI.backgroundColor = isVictory ? new Color(0.1f, 0.35f, 0.15f, 0.95f) : new Color(0.45f, 0.1f, 0.1f, 0.95f);
+            GUILayout.BeginArea(rect, GUI.skin.window);
+
+            string title = isVictory ? "🏆 VICTOIRE TACTIQUE" : "💀 DÉFAITE CRITIQUE";
+            string desc = isVictory 
+                ? "Tous les opposants ont été neutralisés ou mis hors de combat." 
+                : "L'escouade opérationnelle a été décimée ou plongée dans l'inconscience.";
+
+            GUI.color = isVictory ? Color.green : Color.red;
+            GUILayout.Label($"<size=20><b>{title}</b></size>", new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
+            GUI.color = Color.white;
+
+            GUILayout.Space(8);
+            GUILayout.Label(desc, new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter, wordWrap = true });
+
+            GUILayout.Space(16);
+            GUILayout.BeginHorizontal();
+
+            var arena = FindAnyObjectByType<CombatDevArena>();
+
+            GUI.backgroundColor = new Color(0.2f, 0.7f, 0.9f);
+            if (GUILayout.Button("⏪ Rembobiner (Livre V)", GUILayout.Height(38)))
+            {
+                arena?.RewindLastSnapshot();
+            }
+
+            GUI.backgroundColor = isVictory ? new Color(0.2f, 0.8f, 0.3f) : new Color(0.9f, 0.3f, 0.2f);
+            if (GUILayout.Button("🔄 Recommencer l'Arène", GUILayout.Height(38)))
+            {
+                arena?.ResetArena();
+            }
+
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndArea();
         }
 
         private void DrawTopBar(TacticalUnit unit)

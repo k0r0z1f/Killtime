@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics;
+using Killtime.Tactics.AI;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Combat;
@@ -235,6 +236,43 @@ namespace Killtime.UI
 
         private void DrawCheatsAndToolsTab()
         {
+            var ai = _arena != null ? _arena.AIController : null;
+            if (ai != null)
+            {
+                GUILayout.Label("<b>🤖 Automatisation Tactique (IA) :</b>");
+                GUILayout.BeginVertical(GUI.skin.box);
+
+                ai.IsAIEnabled = GUILayout.Toggle(ai.IsAIEnabled, "Activer le Contrôleur d'IA");
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Mode IA :", GUILayout.Width(80));
+
+                bool isNormal = (ai.Mode == CombatAIMode.Normal);
+                bool isFullAuto = (ai.Mode == CombatAIMode.FullAuto);
+
+                GUI.backgroundColor = isNormal ? new Color(0.2f, 0.6f, 1f) : Color.white;
+                if (GUILayout.Button("Mode Normal (Ennemis IA)"))
+                {
+                    ai.Mode = CombatAIMode.Normal;
+                }
+
+                GUI.backgroundColor = isFullAuto ? new Color(1f, 0.4f, 0.2f) : Color.white;
+                if (GUILayout.Button("Mode Full Auto (100% IA)"))
+                {
+                    ai.Mode = CombatAIMode.FullAuto;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"Délai d'action : {ai.ActionDelay:0.00}s", GUILayout.Width(150));
+                ai.ActionDelay = GUILayout.HorizontalSlider(ai.ActionDelay, 0.05f, 1.2f);
+                GUILayout.EndHorizontal();
+
+                GUILayout.EndVertical();
+                GUILayout.Space(6);
+            }
+
             GUILayout.Label("<b>⚡ Manipulation des Points d'Action & Vitalité :</b>");
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("⚡ Recharger Tous les PA")) _arena?.RefillAPAll();

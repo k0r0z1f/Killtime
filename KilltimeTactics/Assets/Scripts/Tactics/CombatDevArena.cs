@@ -55,6 +55,9 @@ namespace Killtime.Tactics
         private DiceRoller _diceRoller;
         private TimelineBranch _timelineBranch;
         private ArenaLayoutType _currentLayout;
+        private AI.TacticalAIController _aiController;
+
+        public AI.TacticalAIController AIController => _aiController;
 
         private void Awake()
         {
@@ -63,6 +66,16 @@ namespace Killtime.Tactics
             _timelineBranch = new TimelineBranch(TimelineId.Timeline0_Prime);
 
             EnsureDependencies();
+            EnsureAIController();
+        }
+
+        private void EnsureAIController()
+        {
+            _aiController = GetComponent<AI.TacticalAIController>() ?? FindAnyObjectByType<AI.TacticalAIController>();
+            if (_aiController == null)
+            {
+                _aiController = gameObject.AddComponent<AI.TacticalAIController>();
+            }
         }
 
         private void Start()
@@ -146,6 +159,9 @@ namespace Killtime.Tactics
             {
                 _turnManager.RegisterUnit(d);
             }
+
+            // Démarre le premier tour pour assigner l'unité active
+            _turnManager.StartNewRound();
         }
 
         private TacticalUnit CreateUnit(string unitName, HexCoordinates coords, Attributes attributes, int baseArmor, bool isPlayer)
@@ -402,6 +418,7 @@ namespace Killtime.Tactics
                 );
 
                 RecordChronoSnapshot($"Attaque sur {defender.Stats.Name} ({targetedPart})");
+                _turnManager?.CheckCombatOver();
             };
 
             if (_enableCinematicKillcam && _cinematicDirector != null)
@@ -518,6 +535,8 @@ namespace Killtime.Tactics
 
         public void ResetArena()
         {
+            _aiController?.StopAITurn();
+            _turnManager?.ResetCombatState();
             SetupArenaUnits();
             if (SparringDummies.Count > 0) SelectTarget(SparringDummies[0]);
             ApplyArenaLayout(_currentLayout);
