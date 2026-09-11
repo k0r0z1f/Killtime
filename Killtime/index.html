@@ -4,6 +4,8 @@
 <head>
     <!-- Universal Dark/Light Mode Theme System -->
     <link rel="stylesheet" href="./Killtime/css/theme.css">
+    <!-- Authentification partagée avec le Codex -->
+    <link rel="stylesheet" href="../users/auth.css">
     <script src="./Killtime/scripts_and_data/theme.js"></script>
     <script src="./Killtime/scripts_and_data/metrics.js"></script>
     <script src="./Killtime/scripts_and_data/reader-progress.js"></script>
@@ -458,7 +460,7 @@
 
         <div
             style="margin-top: 8px; padding-top: 6px; border-top: 1px solid rgba(255,255,255,0.1); text-align: center; font-size: 0.85em;">
-            <span id="sb-website-label">Website:</span> <span style="font-weight: bold; color: #F44336;">20%</span>
+            <span id="sb-website-label">Website:</span> <span style="font-weight: bold; color: #F44336;">40%</span>
         </div>
 
         <!-- Reader Progress Slider (sidebar) -->
@@ -480,7 +482,9 @@
         <a class="sidebar-link" id="sb-link-draft-docx" href="./Killtime/manuscripts/Killtime.docx">📄 Draft 1 .docx</a>
         <a class="sidebar-link" id="sb-link-overviews" href="./Killtime/lore/Overview.html">🌍 Overviews</a>
         <a class="sidebar-link" id="sb-link-convos" href="./Killtime/Conversations.html">💬 Conversations</a>
-        <a class="sidebar-link" id="sb-link-rp" href="../index.html" style="background: rgba(88, 166, 255, 0.12); border: 1px solid rgba(88, 166, 255, 0.35); font-weight: bold; margin-top: 8px;">🎲 Système RP Codex</a>
+        <a class="sidebar-link" id="sb-link-rp" href="../index.html"
+            style="background: rgba(88, 166, 255, 0.12); border: 1px solid rgba(88, 166, 255, 0.35); font-weight: bold; margin-top: 8px;">🎲
+            Système RP Codex</a>
 
         <div class="sidebar-section-title" id="sb-social-title" style="margin-top: 25px;">Social</div>
         <a class="sidebar-link" href="https://www.twitch.tv/k0r0z1f" target="_blank">🎮 Twitch</a>
@@ -615,14 +619,15 @@
                 onmouseout="this.style.transform='scale(1)';">Conversations</a>
             <a id="hdr-link-rp" href="../index.html"
                 style="font-size: 1.4em; text-decoration: none; color: #58a6ff; font-weight: bold; transition: transform 0.2s; margin-top: 4px;"
-                onmouseover="this.style.transform='scale(1.2)'"
-                onmouseout="this.style.transform='scale(1)';">🎲 Système RP Codex</a>
+                onmouseover="this.style.transform='scale(1.2)'" onmouseout="this.style.transform='scale(1)';">🎲 Système
+                RP Codex</a>
         </div>
     </header>
 
-    <!-- Top Controls: Theme and Language -->
+    <!-- Top Controls: Theme, Language and Auth -->
     <div class="top-controls"
-        style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000;">
+        style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000; align-items: center;">
+        <div id="authTopbarSlot"></div>
         <button class="theme-toggle theme-toggle-header-btn" type="button"
             style="padding: 10px 16px; font-size: 15px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
             <span class="theme-icon" style="display: flex; align-items: center;"></span>
@@ -891,17 +896,21 @@
                 <div class="images-category" id="images-candice-category">
                     <h3 class="images-category-name" onclick="toggleCategory('candice')">Candice</h3>
                     <a href="./Killtime/img/Candice.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Candice.jpg" alt="Candice">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Candice.jpg" loading="lazy"
+                            alt="Candice">
                     </a>
                     <div class="images-category-content" id="images-candice" style="display:none;">
                         <a href="./Killtime/img/Candice2.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Candice2.jpg" alt="Candice">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Candice2.jpg" loading="lazy"
+                                alt="Candice">
                         </a>
                         <a href="./Killtime/img/Candice%203.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Candice%203.jpg" alt="Candice">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Candice%203.jpg" loading="lazy"
+                                alt="Candice">
                         </a>
                         <a href="./Killtime/img/Candice%204.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Candice%204.jpg" alt="Candice">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Candice%204.jpg" loading="lazy"
+                                alt="Candice">
                         </a>
                     </div>
                 </div>
@@ -910,7 +919,8 @@
                 <div class="images-category" id="images-dwarven-gates-category">
                     <h3 class="images-category-name" onclick="toggleCategory('dwarven-gates')">Dwarven Gates</h3>
                     <a href="./Killtime/img/Dwarven%20Gates.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Dwarven%20Gates.jpg" alt="Dwarven Gates">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Dwarven%20Gates.jpg" loading="lazy"
+                            alt="Dwarven Gates">
                     </a>
                     <div class="images-category-content" id="images-dwarven-gates" style="display:none;">
                     </div>
@@ -920,18 +930,22 @@
                 <div class="images-category" id="images-temple-category">
                     <h3 class="images-category-name" onclick="toggleCategory('temple')">Temple</h3>
                     <a href="./Killtime/img/Hidden%20Temple.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Hidden%20Temple.jpg" alt="Hidden Temple">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Hidden%20Temple.jpg" loading="lazy"
+                            alt="Hidden Temple">
                     </a>
                     <div class="images-category-content" id="images-temple" style="display:none;">
                         <a href="./Killtime/img/Temple%20Wall.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Temple%20Wall.jpg" alt="Temple Wall">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Temple%20Wall.jpg"
+                                loading="lazy" alt="Temple Wall">
                         </a>
                         <a href="./Killtime/img/templecult.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/templecult.jpg" alt="Temple Cult">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/templecult.jpg" loading="lazy"
+                                alt="Temple Cult">
                         </a>
                         <!-- Added hidden tunnel image -->
                         <a href="./Killtime/img/hiddentunnel.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/hiddentunnel.jpg" alt="Hidden Tunnel">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/hiddentunnel.jpg" loading="lazy"
+                                alt="Hidden Tunnel">
                         </a>
                     </div>
                 </div>
@@ -941,15 +955,16 @@
                     <h3 class="images-category-name" onclick="toggleCategory('cult-sent-ones')">Cult of the Sent Ones
                     </h3>
                     <a href="./Killtime/img/Clerical%20Dwarves.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Clerical%20Dwarves.jpg"
-                            alt="Clerical Dwarves">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Clerical%20Dwarves.jpg"
+                            loading="lazy" alt="Clerical Dwarves">
                     </a>
                     <div class="images-category-content" id="images-cult-sent-ones" style="display:none;">
                         <a href="./Killtime/img/Dira.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Dira.jpg" alt="Dira">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Dira.jpg" loading="lazy"
+                                alt="Dira">
                         </a>
                         <a href="./Killtime/img/galdor.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/galdor.jpg"
+                            <img class="images-category-img" src="./Killtime/img/thumbs/galdor.jpg" loading="lazy"
                                 alt="Galdor, High Priest of the Sent Ones">
                         </a>
                     </div>
@@ -959,20 +974,21 @@
                 <div class="images-category" id="images-lucas-category">
                     <h3 class="images-category-name" onclick="toggleCategory('lucas')">Lucas</h3>
                     <a href="./Killtime/img/lucasface.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/lucasface.jpg" alt="Lucas">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/lucasface.jpg" loading="lazy"
+                            alt="Lucas">
                     </a>
                     <div class="images-category-content" id="images-lucas" style="display:none;">
                         <a href="./Killtime/img/Lucas%20in%20lab.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Lucas%20in%20lab.jpg"
-                                alt="Lucas in Dwarven Laboratory">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Lucas%20in%20lab.jpg"
+                                loading="lazy" alt="Lucas in Dwarven Laboratory">
                         </a>
                         <a href="./Killtime/img/Lucas%20in%20lab2.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Lucas%20in%20lab2.jpg"
-                                alt="Lucas in Dwarven Laboratory">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Lucas%20in%20lab2.jpg"
+                                loading="lazy" alt="Lucas in Dwarven Laboratory">
                         </a>
                         <a href="./Killtime/img/Lucas%20in%20laboratory.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Lucas%20in%20laboratory.jpg"
-                                alt="Lucas in Dwarven Laboratory">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Lucas%20in%20laboratory.jpg"
+                                loading="lazy" alt="Lucas in Dwarven Laboratory">
                         </a>
                     </div>
                 </div>
@@ -981,21 +997,21 @@
                 <div class="images-category" id="images-assassin-alley-category">
                     <h3 class="images-category-name" onclick="toggleCategory('assassin-alley')">Assassin in Alley</h3>
                     <a href="./Killtime/img/assassin%20in%20alley.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/assassin%20in%20alley.jpg"
-                            alt="Assassin in Alley">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/assassin%20in%20alley.jpg"
+                            loading="lazy" alt="Assassin in Alley">
                     </a>
                     <div class="images-category-content" id="images-assassin-alley" style="display:none;">
                         <a href="./Killtime/img/assassin%20in%20alley2.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/assassin%20in%20alley2.jpg"
-                                alt="Assassin in Alley 2">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/assassin%20in%20alley2.jpg"
+                                loading="lazy" alt="Assassin in Alley 2">
                         </a>
                         <a href="./Killtime/img/assassin%20in%20alley3.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/assassin%20in%20alley3.jpg"
-                                alt="Assassin in Alley 3">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/assassin%20in%20alley3.jpg"
+                                loading="lazy" alt="Assassin in Alley 3">
                         </a>
                         <a href="./Killtime/img/assassin%20in%20alley4.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/assassin%20in%20alley4.jpg"
-                                alt="Assassin in Alley 4">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/assassin%20in%20alley4.jpg"
+                                loading="lazy" alt="Assassin in Alley 4">
                         </a>
                     </div>
                 </div>
@@ -1004,18 +1020,19 @@
                 <div class="images-category" id="images-core-category">
                     <h3 class="images-category-name" onclick="toggleCategory('core')">The Party</h3>
                     <a href="./Killtime/img/Lucas,%20Mina%20and%20Thomas.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Lucas,%20Mina%20and%20Thomas.jpg"
-                            alt="Lucas, Mina and Thomas">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Lucas,%20Mina%20and%20Thomas.jpg"
+                            loading="lazy" alt="Lucas, Mina and Thomas">
                     </a>
                     <div class="images-category-content" id="images-core" style="display:none;">
                         <a href="./Killtime/img/The%20Party%20in%20a%20Tavern.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/The%20Party%20in%20a%20Tavern.jpg"
+                            <img class="images-category-img"
+                                src="./Killtime/img/thumbs/The%20Party%20in%20a%20Tavern.jpg" loading="lazy"
                                 alt="The Party in a Tavern">
                         </a>
                         <a href="./Killtime/img/Lucas,%20Thomas%20and%20Mina%20in%20a%20tavern.jpg" target="_blank">
                             <img class="images-category-img"
-                                src="./Killtime/img/Lucas,%20Thomas%20and%20Mina%20in%20a%20tavern.jpg"
-                                alt="The Party in a Tavern">
+                                src="./Killtime/img/thumbs/Lucas,%20Thomas%20and%20Mina%20in%20a%20tavern.jpg"
+                                loading="lazy" alt="The Party in a Tavern">
                         </a>
                     </div>
                 </div>
@@ -1024,28 +1041,31 @@
                 <div class="images-category" id="images-brumkorath-category">
                     <h3 class="images-category-name" onclick="toggleCategory('brumkorath')">Brum'korath</h3>
                     <a href="./Killtime/img/Brum%E2%80%99korath.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Brum%E2%80%99korath.jpg" alt="Brum’korath">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Brum%E2%80%99korath.jpg"
+                            loading="lazy" alt="Brum’korath">
                     </a>
                     <div class="images-category-content" id="images-brumkorath" style="display:none;">
                         <a href="./Killtime/img/Brum%E2%80%99korath%20street.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Brum%E2%80%99korath%20street.jpg"
+                            <img class="images-category-img"
+                                src="./Killtime/img/thumbs/Brum%E2%80%99korath%20street.jpg" loading="lazy"
                                 alt="Brum’korath street">
                         </a>
                         <a href="./Killtime/img/Brum%E2%80%99korath%20street2.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Brum%E2%80%99korath%20street2.jpg"
+                            <img class="images-category-img"
+                                src="./Killtime/img/thumbs/Brum%E2%80%99korath%20street2.jpg" loading="lazy"
                                 alt="Brum’korath street">
                         </a>
                         <a href="./Killtime/img/Brum'karoth%20Destroyed.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Brum'karoth%20Destroyed.jpg"
-                                alt="Brum’korath Destroyed">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Brum'karoth%20Destroyed.jpg"
+                                loading="lazy" alt="Brum’korath Destroyed">
                         </a>
                         <a href="./Killtime/img/Disciple%20impact.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Disciple%20impact.jpg"
-                                alt="Disciple crater impact in Brum’korath">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Disciple%20impact.jpg"
+                                loading="lazy" alt="Disciple crater impact in Brum’korath">
                         </a>
                         <a href="./Killtime/img/Justice%20Halls.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Justice%20Halls.jpg"
-                                alt="Justice Halls">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Justice%20Halls.jpg"
+                                loading="lazy" alt="Justice Halls">
                         </a>
 
                     </div>
@@ -1055,39 +1075,42 @@
                 <div class="images-category" id="images-mina-category">
                     <h3 class="images-category-name" onclick="toggleCategory('mina')">Mina</h3>
                     <a href="./Killtime/img/minaasleep.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/minaasleep.jpg" alt="Mina Asleep">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/minaasleep.jpg" loading="lazy"
+                            alt="Mina Asleep">
                     </a>
                     <div class="images-category-content" id="images-mina" style="display:none;">
                         <a href="./Killtime/img/Mina%20in%20a%20Transport%20Pod.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Mina%20in%20a%20Transport%20Pod.jpg"
+                            <img class="images-category-img"
+                                src="./Killtime/img/thumbs/Mina%20in%20a%20Transport%20Pod.jpg" loading="lazy"
                                 alt="Mina in a Transport Pod">
                         </a>
                         <a href="./Killtime/img/Mina%20and%20father.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Mina%20and%20father.jpg"
-                                alt="Mina talking with her father">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Mina%20and%20father.jpg"
+                                loading="lazy" alt="Mina talking with her father">
                         </a>
                         <a href="./Killtime/img/minaface.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/minaface.jpg" alt="Mina">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/minaface.jpg" loading="lazy"
+                                alt="Mina">
                         </a>
                         <a href="./Killtime/img/Mina%20and%20father2.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Mina%20and%20father2.jpg"
-                                alt="Mina talking with her father">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Mina%20and%20father2.jpg"
+                                loading="lazy" alt="Mina talking with her father">
                         </a>
                         <a href="./Killtime/img/Mina%20and%20father3.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Mina%20and%20father3.jpg"
-                                alt="Mina talking with her father">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Mina%20and%20father3.jpg"
+                                loading="lazy" alt="Mina talking with her father">
                         </a>
                         <a href="./Killtime/img/Mina%20and%20father4.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Mina%20and%20father4.jpg"
-                                alt="Mina talking with her father">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Mina%20and%20father4.jpg"
+                                loading="lazy" alt="Mina talking with her father">
                         </a>
                         <a href="./Killtime/img/Mina%20and%20father5.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Mina%20and%20father5.jpg"
-                                alt="Mina talking with her father">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Mina%20and%20father5.jpg"
+                                loading="lazy" alt="Mina talking with her father">
                         </a>
                         <a href="./Killtime/img/Mina%20and%20father6.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Mina%20and%20father6.jpg"
-                                alt="Mina talking with her father">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Mina%20and%20father6.jpg"
+                                loading="lazy" alt="Mina talking with her father">
                         </a>
                     </div>
                 </div>
@@ -1096,17 +1119,21 @@
                 <div class="images-category" id="images-wallace-category">
                     <h3 class="images-category-name" onclick="toggleCategory('wallace')">Sir Wallace</h3>
                     <a href="./Killtime/img/Wallace.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Wallace.jpg" alt="Sir Wallace">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Wallace.jpg" loading="lazy"
+                            alt="Sir Wallace">
                     </a>
                     <div class="images-category-content" id="images-wallace" style="display:none;">
                         <a href="./Killtime/img/Wallace2.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Wallace2.jpg" alt="Sir Wallace 2">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Wallace2.jpg" loading="lazy"
+                                alt="Sir Wallace 2">
                         </a>
                         <a href="./Killtime/img/Wallace3.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Wallace3.jpg" alt="Sir Wallace 3">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Wallace3.jpg" loading="lazy"
+                                alt="Sir Wallace 3">
                         </a>
                         <a href="./Killtime/img/Wallace4.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Wallace4.jpg" alt="Sir Wallace 4">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Wallace4.jpg" loading="lazy"
+                                alt="Sir Wallace 4">
                         </a>
                     </div>
                 </div>
@@ -1115,12 +1142,13 @@
                 <div class="images-category" id="images-discipleofearth-category">
                     <h3 class="images-category-name" onclick="toggleCategory('discipleofearth')">Disciple of Earth</h3>
                     <a href="./Killtime/img/Disciple%20of%20Earth.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Disciple%20of%20Earth.jpg"
-                            alt="Disciple of Earth">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Disciple%20of%20Earth.jpg"
+                            loading="lazy" alt="Disciple of Earth">
                     </a>
                     <div class="images-category-content" id="images-discipleofearth" style="display:none;">
                         <a href="./Killtime/img/Disciple%20of%20Earth%20Worn%20Out.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Disciple%20of%20Earth%20Worn%20Out.jpg"
+                            <img class="images-category-img"
+                                src="./Killtime/img/thumbs/Disciple%20of%20Earth%20Worn%20Out.jpg" loading="lazy"
                                 alt="Disciple of Earth worn out">
                         </a>
                     </div>
@@ -1130,7 +1158,8 @@
                 <div class="images-category" id="images-johnship-category">
                     <h3 class="images-category-name" onclick="toggleCategory('johnship')">John's Ship</h3>
                     <a href="./Killtime/img/John%20Ship.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/John%20Ship.jpg" alt="John's Ship">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/John%20Ship.jpg" loading="lazy"
+                            alt="John's Ship">
                     </a>
                     <div class="images-category-content" id="images-johnship" style="display:none;">
                     </div>
@@ -1140,32 +1169,33 @@
                 <div class="images-category" id="images-thomas-category">
                     <h3 class="images-category-name" onclick="toggleCategory('thomas')">Thomas</h3>
                     <a href="./Killtime/img/thomasface.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/thomasface.jpg" alt="Thomas">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/thomasface.jpg" loading="lazy"
+                            alt="Thomas">
                     </a>
                     <div class="images-category-content" id="images-thomas" style="display:none;">
                         <a href="./Killtime/img/Thomas%20in%20Brum'korath.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Thomas%20in%20Brum'korath.jpg"
-                                alt="Thomas in Brum'korath">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Thomas%20in%20Brum'korath.jpg"
+                                loading="lazy" alt="Thomas in Brum'korath">
                         </a>
                         <a href="./Killtime/img/Thomas%20in%20Brum'korath2.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Thomas%20in%20Brum'korath2.jpg"
-                                alt="Thomas in Brum'korath">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Thomas%20in%20Brum'korath2.jpg"
+                                loading="lazy" alt="Thomas in Brum'korath">
                         </a>
                         <a href="./Killtime/img/Thomas%20in%20Brum'korath3.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Thomas%20in%20Brum'korath3.jpg"
-                                alt="Thomas in Brum'korath">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Thomas%20in%20Brum'korath3.jpg"
+                                loading="lazy" alt="Thomas in Brum'korath">
                         </a>
                         <a href="./Killtime/img/Thomas%20in%20Brum'korath4.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Thomas%20in%20Brum'korath4.jpg"
-                                alt="Thomas in Brum'korath">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Thomas%20in%20Brum'korath4.jpg"
+                                loading="lazy" alt="Thomas in Brum'korath">
                         </a>
                         <a href="./Killtime/img/Thomas%20in%20Brum'korath5.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Thomas%20in%20Brum'korath5.jpg"
-                                alt="Thomas in Brum'korath">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Thomas%20in%20Brum'korath5.jpg"
+                                loading="lazy" alt="Thomas in Brum'korath">
                         </a>
                         <a href="./Killtime/img/Thomas%20in%20Brum'korath6.jpg" target="_blank">
-                            <img class="images-category-img" src="./Killtime/img/Thomas%20in%20Brum'korath6.jpg"
-                                alt="Thomas in Brum'korath">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Thomas%20in%20Brum'korath6.jpg"
+                                loading="lazy" alt="Thomas in Brum'korath">
                         </a>
                     </div>
                 </div>
@@ -1174,7 +1204,7 @@
                 <div class="images-category" id="images-haliriel-category">
                     <h3 class="images-category-name" onclick="toggleCategory('haliriel')">Haliriel</h3>
                     <a href="./Killtime/img/Haliriel.jpg" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Haliriel.jpg"
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Haliriel.jpg" loading="lazy"
                             alt="Haliriel, City of Elves">
                     </a>
                     <div class="images-category-content" id="images-haliriel" style="display:none;">
@@ -1185,7 +1215,8 @@
                 <div class="images-category" id="images-hybris-category">
                     <h3 class="images-category-name" onclick="toggleCategory('hybris')">Hybris 2035</h3>
                     <a href="./Killtime/img/Hybris%202035.png" target="_blank">
-                        <img class="images-category-img" src="./Killtime/img/Hybris%202035.png" alt="Hybris 2035">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Hybris%202035.png" loading="lazy"
+                            alt="Hybris 2035">
                     </a>
                     <div class="images-category-content" id="images-hybris" style="display:none;">
                     </div>
@@ -1254,7 +1285,8 @@
                                 re-written humanely)</span></li>
                         <li><a id="explore-link-overview" href="./Killtime/Overview.html">Killtime Universe
                                 Overview</a>, <span id="explore-overview-year">Hybris year 1771</span></li>
-                        <li><a id="explore-link-rp" href="../index.html" style="font-weight: bold; color: #2980b9;">🎲 Système de Jeu RP (Codex & Règles)</a></li>
+                        <li><a id="explore-link-rp" href="../index.html" style="font-weight: bold; color: #2980b9;">🎲
+                                Système de Jeu RP (Codex & Règles)</a></li>
                     </ul>
                 </div>
 
@@ -1553,7 +1585,8 @@
         let _anomalyTriggered = false;
 
         window.addEventListener('keydown', function (e) {
-            if (_anomalyTriggered) return;
+            if (_anomalyTriggered || !e || typeof e.key !== 'string') return;
+            if (e.target && (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA' || e.target.isContentEditable)) return;
             if (e.key.length === 1) {
                 _resonanceSequence += e.key.toLowerCase();
                 if (_resonanceSequence.length > _anomalyTrigger.length) {
@@ -2577,6 +2610,9 @@
             // Update the button text
             const button = document.querySelector(".language-toggle");
             if (button) button.textContent = isFrench ? "English" : "Français";
+
+            const authBtnSpan = document.querySelector('#authModalTrigger span');
+            if (authBtnSpan) authBtnSpan.textContent = isFrench ? "Connexion" : "Login";
         }
     </script>
 
@@ -2591,6 +2627,214 @@
                     ReaderProgress.mount('#rp-header-mount');
                 }
             }
+        });
+    </script>
+
+    <!-- Système d'authentification partagé avec le Codex -->
+    <script src="../users/user_store.js"></script>
+    <script src="../users/auth.js"></script>
+
+
+    <!-- ================================================================= -->
+    <!-- KILLTIME ON-DEMAND FULLSCREEN LIGHTBOX (ASYNC HIGH-RES LOADER)   -->
+    <!-- ================================================================= -->
+    <div id="killtime-lightbox" class="killtime-lightbox" aria-hidden="true">
+        <div class="lightbox-overlay" onclick="closeKilltimeLightbox()"></div>
+        <div class="lightbox-container">
+            <button class="lightbox-close" onclick="closeKilltimeLightbox()" aria-label="Fermer">✕</button>
+            <div class="lightbox-loader" id="lightbox-loader">
+                <div class="lightbox-spinner"></div>
+                <span class="lightbox-loader-text">Chargement de la matrice haute résolution...</span>
+            </div>
+            <img id="lightbox-img" class="lightbox-img" src="" alt="Full view" style="display: none;">
+            <div id="lightbox-caption" class="lightbox-caption"></div>
+        </div>
+    </div>
+
+    <style>
+        .killtime-lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 10000;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .killtime-lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(10, 14, 23, 0.94);
+            backdrop-filter: blur(8px);
+        }
+
+        .lightbox-container {
+            position: relative;
+            z-index: 10001;
+            max-width: 90vw;
+            max-height: 90vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -45px;
+            right: 0;
+            background: transparent;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: #fff;
+            font-size: 20px;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s ease;
+        }
+
+        .lightbox-close:hover {
+            background: rgba(255, 255, 255, 0.15);
+            border-color: #58a6ff;
+            color: #58a6ff;
+            transform: scale(1.1);
+        }
+
+        .lightbox-img {
+            max-width: 90vw;
+            max-height: 82vh;
+            object-fit: contain;
+            border-radius: 6px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(88, 166, 255, 0.3);
+            animation: fadeIn 0.25s ease-out;
+        }
+
+        .lightbox-caption {
+            margin-top: 12px;
+            color: #c9d1d9;
+            font-family: 'Segoe UI', Tahoma, sans-serif;
+            font-size: 0.95em;
+            text-align: center;
+            letter-spacing: 0.5px;
+        }
+
+        .lightbox-loader {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .lightbox-spinner {
+            width: 44px;
+            height: 44px;
+            border: 3px solid rgba(88, 166, 255, 0.2);
+            border-top: 3px solid #58a6ff;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+
+        .lightbox-loader-text {
+            color: #58a6ff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9em;
+            letter-spacing: 1px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: scale(0.97);
+            }
+
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+    </style>
+
+    <script>
+        function closeKilltimeLightbox() {
+            const box = document.getElementById('killtime-lightbox');
+            const img = document.getElementById('lightbox-img');
+            if (box) {
+                box.classList.remove('active');
+                box.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+                if (img) img.src = '';
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', function () {
+            const galleryLinks = document.querySelectorAll('.images-category a');
+            const box = document.getElementById('killtime-lightbox');
+            const boxImg = document.getElementById('lightbox-img');
+            const loader = document.getElementById('lightbox-loader');
+            const caption = document.getElementById('lightbox-caption');
+
+            galleryLinks.forEach(link => {
+                link.addEventListener('click', function (e) {
+                    const targetUrl = this.getAttribute('href');
+                    if (!targetUrl || !targetUrl.match(/\.(jpg|jpeg|png|webp|gif)$/i)) {
+                        return;
+                    }
+                    e.preventDefault();
+
+                    box.classList.add('active');
+                    box.setAttribute('aria-hidden', 'false');
+                    document.body.style.overflow = 'hidden';
+
+                    loader.style.display = 'flex';
+                    boxImg.style.display = 'none';
+                    boxImg.src = '';
+
+                    const thumb = this.querySelector('img');
+                    caption.textContent = thumb ? (thumb.alt || '') : '';
+
+                    // Chargement à la demande : la requête réseau HD part UNIQUEMENT ici
+                    const highRes = new Image();
+                    highRes.src = targetUrl;
+                    highRes.onload = function () {
+                        boxImg.src = targetUrl;
+                        loader.style.display = 'none';
+                        boxImg.style.display = 'block';
+                    };
+                    highRes.onerror = function () {
+                        loader.innerHTML = '<span style="color:#ff7b72; font-family:sans-serif;">Échec du chargement haute résolution.</span>';
+                    };
+                });
+            });
+
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape') {
+                    closeKilltimeLightbox();
+                }
+            });
         });
     </script>
 

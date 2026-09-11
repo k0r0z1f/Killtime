@@ -138,6 +138,30 @@
         checkOAuthCallback() {
             const hash = window.location.hash.substring(1);
             const params = new URLSearchParams(hash || window.location.search);
+
+            // Retour OAuth serveur (Google, etc.) — le serveur redirige avec #oauth_success=<base64 user>
+            if (params.has('oauth_success')) {
+                try {
+                    const userJson = atob(decodeURIComponent(params.get('oauth_success')));
+                    const user = JSON.parse(userJson);
+                    this.saveSession(user);
+                    console.log('[CodexAuth] OAuth réussi pour', user.username);
+                } catch (e) {
+                    console.error('[CodexAuth] Erreur parsing OAuth callback:', e);
+                }
+                // Nettoyer l'URL en conservant pathname + search
+                window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+                return;
+            }
+
+            // Erreur OAuth
+            if (params.has('oauth_error')) {
+                console.warn('[CodexAuth] Erreur OAuth:', params.get('oauth_error'));
+                window.history.replaceState({}, document.title, window.location.pathname + window.location.search);
+                return;
+            }
+
+            // Discord implicit flow (legacy)
             if (params.has('access_token') && window.location.href.includes('discord')) {
                 this.fetchDiscordUser(params.get('access_token'));
             }
@@ -200,65 +224,61 @@
         }
 
         loginWithGoogle() {
-            const promptName = prompt("Entrez votre nom ou adresse Google :", "Operateur_Google");
-            if (!promptName) return;
-
-            const payload = {
-                provider: 'google',
-                providerId: 'goog_' + Date.now(),
-                email: promptName.includes('@') ? promptName : `${promptName.toLowerCase()}@gmail.com`,
-                name: promptName.replace('@gmail.com', ''),
-                avatar: null
-            };
-            this.handleSocialPayload(payload);
+            // Vraie redirection OAuth 2.0 vers Google avec préservation de la page de retour
+            const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+            window.location.href = `${getApiBase()}/api/oauth/google?return=${returnUrl}`;
         }
 
         loginWithDiscord() {
-            const name = prompt("Identifiant Discord :", "ShadowRunner_404");
-            if (!name) return;
-
-            const payload = {
-                provider: 'discord',
-                providerId: 'disc_' + Date.now(),
-                email: `${name.toLowerCase()}@discord.gg`,
-                name: name,
-                avatar: null
-            };
-            this.handleSocialPayload(payload);
+            // Vraie redirection OAuth 2.0 vers Discord avec préservation de la page de retour
+            const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+            window.location.href = `${getApiBase()}/api/oauth/discord?return=${returnUrl}`;
         }
 
         loginWithGitHub() {
-            const name = prompt("Identifiant GitHub :", "GitArchitect");
-            if (!name) return;
-
-            const payload = {
-                provider: 'github',
-                providerId: 'gh_' + Date.now(),
-                email: `${name.toLowerCase()}@github.com`,
-                name: name,
-                avatar: null
-            };
-            this.handleSocialPayload(payload);
+            // Vraie redirection OAuth 2.0 vers GitHub avec préservation de la page de retour
+            const returnUrl = encodeURIComponent(window.location.pathname + window.location.search);
+            window.location.href = `${getApiBase()}/api/oauth/github?return=${returnUrl}`;
         }
 
         mountTopbarWidget() {
             let slot = document.getElementById('authTopbarSlot');
 
             if (!slot) {
+                // 1. Chercher dans la topbar Codex
                 const topbarRight = document.querySelector('.topbar-right');
-                if (!topbarRight) return;
-
-                slot = document.createElement('div');
-                slot.id = 'authTopbarSlot';
-                const themeBtn = document.getElementById('themeToggle');
-                if (themeBtn) {
-                    topbarRight.insertBefore(slot, themeBtn);
+                if (topbarRight) {
+                    slot = document.createElement('div');
+                    slot.id = 'authTopbarSlot';
+                    const themeBtn = document.getElementById('themeToggle');
+                    if (themeBtn) {
+                        topbarRight.insertBefore(slot, themeBtn);
+                    } else {
+                        topbarRight.appendChild(slot);
+                    }
                 } else {
-                    topbarRight.appendChild(slot);
+                    // 2. Chercher dans les contrôles du site Killtime
+                    const topControls = document.querySelector('.top-controls');
+                    if (topControls) {
+                        slot = document.createElement('div');
+                        slot.id = 'authTopbarSlot';
+                        topControls.insertBefore(slot, topControls.firstChild);
+                    } else {
+                        return;
+                    }
                 }
             }
 
             slot.innerHTML = '';
+
+            let codexPrefix = '';
+            const path = window.location.pathname;
+            if (path.includes('/manuscripts/') || path.includes('/lore/') || path.includes('/chatgpt/')) {
+                codexPrefix = '../../../';
+            } else if (path.includes('/Killtime/')) {
+                codexPrefix = '../';
+            }
+            const isEnglish = document.documentElement.lang === 'en';
 
             if (this.currentUser) {
                 const initial = (this.currentUser.username || 'U').charAt(0).toUpperCase();
@@ -275,15 +295,15 @@
                     </button>
                     <div class="user-dropdown-panel" id="userDropdownPanel">
                         <div class="user-dropdown-header">
-                            <span class="user-dropdown-role">${this.currentUser.role || 'Joueur'}</span>
+                            <span class="user-dropdown-role">${this.currentUser.role || (isEnglish ? 'Player' : 'Joueur')}</span>
                             <div class="user-dropdown-email">${this.currentUser.email}</div>
                         </div>
-                        <a href="livre_9.html#chap-33" class="user-dropdown-item">
+                        <a href="${codexPrefix}livre_9.html#chap-33" class="user-dropdown-item">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                                 <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
                                 <circle cx="12" cy="7" r="4"/>
                             </svg>
-                            <span>Mes Fiches PJ</span>
+                            <span>${isEnglish ? 'My Character Sheets (Codex)' : 'Mes Fiches PJ (Codex)'}</span>
                         </a>
                         <button class="user-dropdown-item" id="exportUserDataBtn" type="button">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -291,7 +311,7 @@
                                 <polyline points="7 10 12 15 17 10"/>
                                 <line x1="12" y1="15" x2="12" y2="3"/>
                             </svg>
-                            <span>Sauvegarde JSON</span>
+                            <span>${isEnglish ? 'JSON Backup' : 'Sauvegarde JSON'}</span>
                         </button>
                         <button class="user-dropdown-item logout" id="logoutBtn" type="button">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -299,7 +319,7 @@
                                 <polyline points="16 17 21 12 16 7"/>
                                 <line x1="21" y1="12" x2="9" y2="12"/>
                             </svg>
-                            <span>Déconnexion</span>
+                            <span>${isEnglish ? 'Logout' : 'Déconnexion'}</span>
                         </button>
                     </div>
                 `;
@@ -334,13 +354,14 @@
                 btn.className = 'auth-trigger-btn';
                 btn.id = 'authModalTrigger';
                 btn.type = 'button';
+                const triggerText = isEnglish ? 'Login' : 'Connexion';
                 btn.innerHTML = `
                     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M15 3h4a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-4"/>
                         <polyline points="10 17 15 12 10 7"/>
                         <line x1="15" y1="12" x2="3" y2="12"/>
                     </svg>
-                    <span>Connexion</span>
+                    <span>${triggerText}</span>
                 `;
                 btn.addEventListener('click', () => this.openModal());
                 slot.appendChild(btn);

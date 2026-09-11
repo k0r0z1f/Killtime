@@ -28,9 +28,11 @@
     "saltHex": "405bfc3c994bad1774e1e4d30b622f49",
     "passwordHashHex": "4094bc907e3921b3976036ec46a26c37e10f0448f0d2b867cf765797f0bf348b",
     "role": "Joueur",
-    "provider": "local",
+    "provider": "google",
     "createdAt": "2026-09-10T20:30:40.383Z",
-    "characters": []
+    "characters": [],
+    "providerId": "107385058550040028334",
+    "avatar": "https://lh3.googleusercontent.com/a/ACg8ocLmfeepQG8Hy2zuFCMqTse66JrMQgU1XyjWVRioNn0c43WYP_Ez=s96-c"
   },
   {
     "id": "usr_mtvzstfs",
@@ -41,6 +43,28 @@
     "role": "Joueur",
     "provider": "local",
     "createdAt": "2026-09-10T20:41:20.392Z",
+    "characters": []
+  },
+  {
+    "id": "usr_mtxcds5f",
+    "username": "tito",
+    "email": "tito@gmail.com",
+    "saltHex": "2e79b65107584618975febdeee84bb85",
+    "passwordHashHex": "196403c3dbd9993cfd53e13e44825f6481e41f67dcaf5ee2fda78e01ce7a740e",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-09-11T19:21:20.067Z",
+    "characters": []
+  },
+  {
+    "id": "usr_google_mtxd93iq",
+    "username": "Alexis_Lacasse",
+    "email": "alexislacasse1@gmail.com",
+    "role": "Joueur",
+    "provider": "google",
+    "providerId": "103015678527298265653",
+    "avatar": "https://lh3.googleusercontent.com/a/ACg8ocK1MD0BxAFm4Osdaau0A4kaTQfcw4IFezdH5EmdexSxUB0vMw=s96-c",
+    "createdAt": "2026-09-11T19:45:41.138Z",
     "characters": []
   }
 ]

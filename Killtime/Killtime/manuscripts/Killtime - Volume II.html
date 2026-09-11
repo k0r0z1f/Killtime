@@ -5,6 +5,8 @@
 <head>
     <!-- Universal Dark/Light Mode Theme System -->
     <link rel="stylesheet" href="../css/theme.css">
+    <!-- Authentification partagée avec le Codex & Killtime -->
+    <link rel="stylesheet" href="../../../users/auth.css">
     <script src="../scripts_and_data/theme.js"></script>
 
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
@@ -237,6 +239,21 @@
 </head>
 
 <body>
+
+    <!-- Top Controls: Auth, Theme & Navigation -->
+    <div class="top-controls"
+        style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000; align-items: center;">
+        <div id="authTopbarSlot"></div>
+        <button class="theme-toggle theme-toggle-header-btn" type="button"
+            style="padding: 10px 16px; font-size: 14px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+            <span class="theme-icon" style="display: flex; align-items: center;"></span>
+            <span class="theme-label">Theme</span>
+        </button>
+        <a href="../../index.html" class="portal-back-btn"
+            style="padding: 9px 14px; font-size: 14px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 6px; background: rgba(88,166,255,0.1); color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+            🏠 Portal
+        </a>
+    </div>
 
     <div class="book-container">
 
@@ -1295,7 +1312,9 @@
 
     </div>
 
-
+    <!-- Système d'authentification partagé avec le Codex & Killtime -->
+    <script src="../../../users/user_store.js"></script>
+    <script src="../../../users/auth.js"></script>
 </body>
 
 </html>

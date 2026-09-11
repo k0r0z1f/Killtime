@@ -35,7 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Raccourci clavier Ctrl+K / Cmd+K pour recherche
     window.addEventListener('keydown', (e) => {
-        if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        if ((e.ctrlKey || e.metaKey) && e.key && e.key.toLowerCase() === 'k') {
             e.preventDefault();
             if (filterInput) {
                 filterInput.focus();

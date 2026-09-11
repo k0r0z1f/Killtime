@@ -4,6 +4,8 @@
 <head>
     <!-- Universal Dark/Light Mode Theme System -->
     <link rel="stylesheet" href="../css/theme.css">
+    <!-- Authentification partagée avec le Codex & Killtime -->
+    <link rel="stylesheet" href="../../../users/auth.css">
     <script src="../scripts_and_data/theme.js"></script>
     <script src="../scripts_and_data/metrics.js"></script>
     <script src="../scripts_and_data/reader-progress.js"></script>
@@ -652,6 +654,10 @@
 
         @media (min-width: 1400px) {
 
+            .top-controls {
+                right: 310px !important;
+            }
+
             .sidebar-left,
             .sidebar-right {
                 display: block;
@@ -1022,6 +1028,21 @@
 </head>
 
 <body>
+
+    <!-- Top Controls: Auth, Theme & Navigation -->
+    <div class="top-controls"
+        style="position: absolute; top: 20px; right: 20px; display: flex; gap: 10px; z-index: 1000; align-items: center;">
+        <div id="authTopbarSlot"></div>
+        <button class="theme-toggle theme-toggle-header-btn" type="button"
+            style="padding: 10px 16px; font-size: 14px; border-radius: 5px; cursor: pointer; display: flex; align-items: center; gap: 8px;">
+            <span class="theme-icon" style="display: flex; align-items: center;"></span>
+            <span class="theme-label">Theme</span>
+        </button>
+        <a href="../../index.html" class="portal-back-btn"
+            style="padding: 9px 14px; font-size: 14px; border-radius: 5px; text-decoration: none; display: flex; align-items: center; gap: 6px; background: rgba(88,166,255,0.1); color: #58a6ff; border: 1px solid rgba(88,166,255,0.3); font-weight: 600; font-family: 'Segoe UI', sans-serif;">
+            🏠 Portal
+        </a>
+    </div>
 
     <!-- LEFT SIDEBAR: Chapter Navigation Matrix (Wide Screens >= 1400px) -->
     <aside class="sidebar-left">
@@ -1967,12 +1988,12 @@
             <div class="chapter-header-wrapper">
                 <h2 class="chapter-title" id="chapter-1">Chapter 1: The Atomic Crucible</h2>
                 <div class="trackboard">
-                    <div class="location-icon" data-name="Asteroid Base"><img src="../img/Asteroid%20Base.png"
+                    <div class="location-icon" data-name="Asteroid Base"><img src="../img/thumbs/Asteroid%20Base.png" loading="lazy"
                             alt="Asteroid Base"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="John"><img src="../img/John.png" alt="John"></div>
-                    <div class="actor-icon" data-name="Erika"><img src="../img/Erika.png" alt="Erika"></div>
-                    <div class="actor-icon" data-name="Syn"><img src="../img/Syn.png" alt="Syn"></div>
+                    <div class="actor-icon" data-name="John"><img src="../img/thumbs/John.png" loading="lazy" alt="John"></div>
+                    <div class="actor-icon" data-name="Erika"><img src="../img/thumbs/Erika.png" loading="lazy" alt="Erika"></div>
+                    <div class="actor-icon" data-name="Syn"><img src="../img/thumbs/Syn.png" loading="lazy" alt="Syn"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2100,8 +2121,8 @@
             <div class="chapter-header-wrapper">
                 <h2 class="chapter-title" id="chapter-2">Chapter 2: Echoes of the Storm</h2>
                 <div class="trackboard">
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2352,8 +2373,8 @@
                             src="https://ui-avatars.com/api/?name=Settlement+Outskirts&background=4a635d&color=fff&bold=true"
                             alt="Settlement Outskirts"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2451,7 +2472,7 @@
                             src="https://ui-avatars.com/api/?name=Medi-Laboratory&background=2b5b84&color=fff&bold=true"
                             alt="Medi-Laboratory"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
                     <div class="actor-icon" data-name="Elias Thorne"><img
                             src="https://ui-avatars.com/api/?name=Thorne&background=fff8eb&color=333&bold=true"
                             alt="Thorne"></div>
@@ -2595,8 +2616,8 @@
                             src="https://ui-avatars.com/api/?name=Kingston+School&background=b86e00&color=fff&bold=true"
                             alt="Kingston School"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2691,8 +2712,8 @@
                             src="https://ui-avatars.com/api/?name=Athletic+Field&background=4a635d&color=fff&bold=true"
                             alt="Athletic Field"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2815,8 +2836,8 @@
                             src="https://ui-avatars.com/api/?name=High+School&background=b86e00&color=fff&bold=true"
                             alt="High School"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -2914,9 +2935,9 @@
                             src="https://ui-avatars.com/api/?name=Kingston+Estate&background=cfb53b&color=fff&bold=true"
                             alt="Kingston Estate"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="The Uncle"><img src="../img/The%20Uncle.png" alt="Uncle"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="The Uncle"><img src="../img/thumbs/The%20Uncle.png" loading="lazy" alt="Uncle"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3075,8 +3096,8 @@
                             src="https://ui-avatars.com/api/?name=Regional+Track&background=4a635d&color=fff&bold=true"
                             alt="Regional Track"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3219,9 +3240,9 @@
                             src="https://ui-avatars.com/api/?name=Private+Airstrip&background=1a1a24&color=fff&bold=true"
                             alt="Private Airstrip"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="The Uncle"><img src="../img/The%20Uncle.png" alt="Uncle"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="The Uncle"><img src="../img/thumbs/The%20Uncle.png" loading="lazy" alt="Uncle"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3347,9 +3368,9 @@
                             src="https://ui-avatars.com/api/?name=Institute+Library&background=2b5b84&color=fff&bold=true"
                             alt="Institute Library"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3444,9 +3465,9 @@
                             src="https://ui-avatars.com/api/?name=Regional+Stadium&background=b86e00&color=fff&bold=true"
                             alt="Regional Stadium"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3588,9 +3609,9 @@
                             src="https://ui-avatars.com/api/?name=Central+Institute&background=1a1a24&color=fff&bold=true"
                             alt="Central Institute"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3715,11 +3736,11 @@
                             src="https://ui-avatars.com/api/?name=Kingston+Estate&background=cfb53b&color=fff&bold=true"
                             alt="Kingston Estate"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="The Uncle"><img src="../img/The%20Uncle.png" alt="Uncle"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="The Uncle"><img src="../img/thumbs/The%20Uncle.png" loading="lazy" alt="Uncle"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3856,9 +3877,9 @@
                             src="https://ui-avatars.com/api/?name=Central+Institute&background=1a1a24&color=fff&bold=true"
                             alt="Central Institute"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -3971,8 +3992,8 @@
                             src="https://ui-avatars.com/api/?name=Bookstore+Cafe&background=b86e00&color=fff&bold=true"
                             alt="Bookstore Cafe"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -4106,8 +4127,8 @@
                             src="https://ui-avatars.com/api/?name=City+Park&background=4a635d&color=fff&bold=true"
                             alt="City Park"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -4213,8 +4234,8 @@
                             src="https://ui-avatars.com/api/?name=Kingston+Square&background=800080&color=fff&bold=true"
                             alt="Kingston Square"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
                     <div class="actor-icon" data-name="Lupine Anomaly"><img
                             src="https://ui-avatars.com/api/?name=Anomaly&background=800080&color=fff&bold=true"
                             alt="Anomaly"></div>
@@ -4287,9 +4308,9 @@
                             src="https://ui-avatars.com/api/?name=City+Safehouse&background=1a1a24&color=fff&bold=true"
                             alt="City Safehouse"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -4429,11 +4450,11 @@
                             src="https://ui-avatars.com/api/?name=Starlight+Voyager&background=2b5b84&color=fff&bold=true"
                             alt="Starlight Voyager"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="John"><img src="../img/John.png" alt="John">
+                    <div class="actor-icon" data-name="John"><img src="../img/thumbs/John.png" loading="lazy" alt="John">
                     </div>
-                    <div class="actor-icon" data-name="Erika"><img src="../img/Erika.png" alt="Erika"></div>
-                    <div class="actor-icon" data-name="Syn"><img src="../img/Syn.png" alt="Syn"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Erika"><img src="../img/thumbs/Erika.png" loading="lazy" alt="Erika"></div>
+                    <div class="actor-icon" data-name="Syn"><img src="../img/thumbs/Syn.png" loading="lazy" alt="Syn"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -4540,12 +4561,12 @@
                             src="https://ui-avatars.com/api/?name=Vardis+Canopy&background=4a635d&color=fff&bold=true"
                             alt="Vardis Canopy"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="John"><img src="../img/John.png" alt="John">
+                    <div class="actor-icon" data-name="John"><img src="../img/thumbs/John.png" loading="lazy" alt="John">
                     </div>
-                    <div class="actor-icon" data-name="Erika"><img src="../img/Erika.png" alt="Erika"></div>
-                    <div class="actor-icon" data-name="Syn"><img src="../img/Syn.png" alt="Syn">
+                    <div class="actor-icon" data-name="Erika"><img src="../img/thumbs/Erika.png" loading="lazy" alt="Erika"></div>
+                    <div class="actor-icon" data-name="Syn"><img src="../img/thumbs/Syn.png" loading="lazy" alt="Syn">
                     </div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -4685,7 +4706,7 @@
                             src="https://ui-avatars.com/api/?name=The+Watcher&background=b86e00&color=fff&bold=true"
                             alt="The Watcher"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Ceylan"><img
                             src="https://ui-avatars.com/api/?name=Ceylan&background=eee&color=888&bold=true"
                             alt="Ceylan"></div>
@@ -4830,7 +4851,7 @@
                             src="https://ui-avatars.com/api/?name=Nythari+Jungle&background=4a635d&color=fff&bold=true"
                             alt="Nythari Jungle"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -5015,9 +5036,9 @@
                             src="https://ui-avatars.com/api/?name=Underbelly+Hideout&background=1a1a24&color=fff&bold=true"
                             alt="Underbelly Hideout"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Elias Thorne"><img
                             src="https://ui-avatars.com/api/?name=Thorne&background=fff8eb&color=333&bold=true"
                             alt="Thorne"></div>
@@ -5200,9 +5221,9 @@
                             src="https://ui-avatars.com/api/?name=Kingston+Highway&background=b86e00&color=fff&bold=true"
                             alt="Kingston Highway"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Elias Thorne"><img
                             src="https://ui-avatars.com/api/?name=Thorne&background=fff8eb&color=333&bold=true"
                             alt="Thorne"></div>
@@ -5339,9 +5360,9 @@
                             src="https://ui-avatars.com/api/?name=Van+Pod&background=1a1a24&color=fff&bold=true"
                             alt="Van Pod"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Elias Thorne"><img
                             src="https://ui-avatars.com/api/?name=Thorne&background=fff8eb&color=333&bold=true"
                             alt="Thorne"></div>
@@ -5514,9 +5535,9 @@
                             src="https://ui-avatars.com/api/?name=The+Rust-Yards&background=b86e00&color=fff&bold=true"
                             alt="The Rust-Yards"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Elias Thorne"><img
                             src="https://ui-avatars.com/api/?name=Thorne&background=fff8eb&color=333&bold=true"
                             alt="Thorne"></div>
@@ -5672,9 +5693,9 @@
                             src="https://ui-avatars.com/api/?name=Medical+Center&background=2b5b84&color=fff&bold=true"
                             alt="Medical Center"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Elias Thorne"><img
                             src="https://ui-avatars.com/api/?name=Thorne&background=fff8eb&color=333&bold=true"
                             alt="Thorne"></div>
@@ -5786,9 +5807,9 @@
                             src="https://ui-avatars.com/api/?name=Serran+Forest&background=4a635d&color=fff&bold=true"
                             alt="Serran Forest"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Elias Thorne"><img
                             src="https://ui-avatars.com/api/?name=Thorne&background=fff8eb&color=333&bold=true"
                             alt="Thorne"></div>
@@ -5910,9 +5931,9 @@
                             src="https://ui-avatars.com/api/?name=Great+River+Cliff&background=2b5b84&color=fff&bold=true"
                             alt="Great River Cliff"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -6094,7 +6115,7 @@
                             src="https://ui-avatars.com/api/?name=Storm+Mountains&background=1a1a24&color=fff&bold=true"
                             alt="Storm Mountains"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -6260,7 +6281,7 @@
                             src="https://ui-avatars.com/api/?name=Ancestral+Cave&background=b86e00&color=fff&bold=true"
                             alt="Ancestral Cave"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -6439,7 +6460,7 @@
                             src="https://ui-avatars.com/api/?name=Giant+Lake+Shore&background=2b5b84&color=fff&bold=true"
                             alt="Giant Lake Shore"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -6637,7 +6658,7 @@
                             src="https://ui-avatars.com/api/?name=Giant+Lake+Abyss&background=000000&color=fff&bold=true"
                             alt="Giant Lake Abyss"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
@@ -6807,15 +6828,15 @@
                             src="https://ui-avatars.com/api/?name=Haliriel+Citadel&background=4caf50&color=fff&bold=true"
                             alt="Haliriel Citadel"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Jarek"><img
                             src="https://ui-avatars.com/api/?name=Jarek&background=8b4513&color=fff&bold=true"
                             alt="Jarek"></div>
                     <div class="actor-icon" data-name="High Elves"><img
                             src="https://ui-avatars.com/api/?name=Elves&background=eee&color=4caf50&bold=true"
                             alt="Elves"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -7055,9 +7076,9 @@
                             src="https://ui-avatars.com/api/?name=The+Great+Bridge&background=1a1a24&color=fff&bold=true"
                             alt="The Great Bridge"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -7351,13 +7372,13 @@
                             src="https://ui-avatars.com/api/?name=Tredmor+Gates&background=8b4513&color=fff&bold=true"
                             alt="Tredmor Gates"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Krin Dow-Kabar"><img
                             src="https://ui-avatars.com/api/?name=Krin&background=8b4513&color=fff&bold=true"
                             alt="Krin"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -7566,14 +7587,14 @@
                             src="https://ui-avatars.com/api/?name=Tredmor+Tavern&background=800020&color=fff&bold=true"
                             alt="Tredmor Tavern"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Cult of the Unbound"><img
                             src="https://ui-avatars.com/api/?name=Unbound&background=000&color=ff4500&bold=true"
                             alt="Unbound"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -7831,13 +7852,13 @@
                             src="https://ui-avatars.com/api/?name=Mountain+Ascent&background=555555&color=fff&bold=true"
                             alt="Mountain Ascent"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
-                    <div class="actor-icon" data-name="Durnak"><img src="../img/Durnak.png" alt="Durnak"></div>
-                    <div class="actor-icon" data-name="Grimbar"><img src="../img/Grimbar.png" alt="Grimbar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Durnak"><img src="../img/thumbs/Durnak.png" loading="lazy" alt="Durnak"></div>
+                    <div class="actor-icon" data-name="Grimbar"><img src="../img/thumbs/Grimbar.png" loading="lazy" alt="Grimbar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -8173,10 +8194,10 @@
                             src="https://ui-avatars.com/api/?name=The+Hidden+Temple&background=800020&color=fff&bold=true"
                             alt="The Hidden Temple"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -8385,13 +8406,13 @@
                             src="https://ui-avatars.com/api/?name=Temple+Antechamber&background=800020&color=fff&bold=true"
                             alt="Temple Antechamber"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -8626,13 +8647,13 @@
                             src="https://ui-avatars.com/api/?name=Subterranean+Cavern&background=333333&color=fff&bold=true"
                             alt="Subterranean Cavern"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -8774,10 +8795,10 @@
                             src="https://ui-avatars.com/api/?name=Sent+Ones+HQ&background=800020&color=fff&bold=true"
                             alt="Sent Ones HQ"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
@@ -8995,10 +9016,10 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Streets&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Streets"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -9191,11 +9212,11 @@
                             src="https://ui-avatars.com/api/?name=Resonant+Bastion&background=800020&color=fff&bold=true"
                             alt="Resonant Bastion"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -9368,10 +9389,10 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Streets&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Streets"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -9667,10 +9688,10 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Streets&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Streets"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -9787,10 +9808,10 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Streets&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Streets"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -9991,10 +10012,10 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Streets&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Streets"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -10067,10 +10088,10 @@
                             src="https://ui-avatars.com/api/?name=Resonant+Bastion&background=800020&color=fff&bold=true"
                             alt="Resonant Bastion"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -10245,11 +10266,11 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Gates&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Gates"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/thumbs/Disciple%20of%20Earth.png" loading="lazy"
                             alt="Disciple of Earth"></div>
                 </div>
                 <hr class="title-divider">
@@ -10461,11 +10482,11 @@
                             src="https://ui-avatars.com/api/?name=Bastion+Courtyard&background=8b4513&color=fff&bold=true"
                             alt="Bastion Courtyard"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/thumbs/Disciple%20of%20Earth.png" loading="lazy"
                             alt="Disciple of Earth"></div>
                     <div class="actor-icon" data-name="Militia"><img
                             src="https://ui-avatars.com/api/?name=Militia&background=000&color=0ff&bold=true"
@@ -10806,11 +10827,11 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Ruins&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Ruins"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/thumbs/Disciple%20of%20Earth.png" loading="lazy"
                             alt="Disciple of Earth"></div>
                     <div class="actor-icon" data-name="Dwarven Unit"><img
                             src="https://ui-avatars.com/api/?name=Dwarves&background=555&color=fff&bold=true"
@@ -11080,10 +11101,10 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Ruins&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Ruins"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/Disciple%20of%20Earth.png"
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Disciple of Earth"><img src="../img/thumbs/Disciple%20of%20Earth.png" loading="lazy"
                             alt="Disciple of Earth"></div>
                 </div>
                 <hr class="title-divider">
@@ -11347,9 +11368,9 @@
                             src="https://ui-avatars.com/api/?name=Brum'korath+Ruins&background=8b4513&color=fff&bold=true"
                             alt="Brum'korath Ruins"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Militia Captain"><img
                             src="https://ui-avatars.com/api/?name=Captain&background=555&color=fff&bold=true"
                             alt="Militia Captain"></div>
@@ -11852,9 +11873,9 @@
                             src="https://ui-avatars.com/api/?name=Justice+Hall&background=8b4513&color=fff&bold=true"
                             alt="Justice Hall"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Goldar Ironfist"><img
                             src="https://ui-avatars.com/api/?name=Goldar&background=1a1a24&color=fff&bold=true"
                             alt="Goldar"></div>
@@ -11864,7 +11885,7 @@
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -12402,10 +12423,10 @@
                             src="https://ui-avatars.com/api/?name=Justice+Hall&background=8b4513&color=fff&bold=true"
                             alt="Justice Hall"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Wallace"><img src="../img/Wallace.png" alt="Wallace"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Wallace"><img src="../img/thumbs/Wallace.png" loading="lazy" alt="Wallace"></div>
                     <div class="actor-icon" data-name="Elder Vane"><img
                             src="https://ui-avatars.com/api/?name=Elder+Vane&background=555&color=fff&bold=true"
                             alt="Elder Vane"></div>
@@ -12822,10 +12843,10 @@
                             src="https://ui-avatars.com/api/?name=Forgotten+Tunnels&background=333333&color=fff&bold=true"
                             alt="Forgotten Tunnels"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -13191,13 +13212,13 @@
                             src="https://ui-avatars.com/api/?name=Hidden+Temple&background=800020&color=fff&bold=true"
                             alt="Hidden Temple"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Dira"><img
                             src="https://ui-avatars.com/api/?name=Dira&background=555&color=fff&bold=true" alt="Dira">
                     </div>
-                    <div class="actor-icon" data-name="Torgar"><img src="../img/Torgar.png" alt="Torgar"></div>
+                    <div class="actor-icon" data-name="Torgar"><img src="../img/thumbs/Torgar.png" loading="lazy" alt="Torgar"></div>
                     <div class="actor-icon" data-name="Council Rep"><img
                             src="https://ui-avatars.com/api/?name=Council&background=1a1a24&color=fff&bold=true"
                             alt="Council Rep"></div>
@@ -13706,10 +13727,10 @@
                             src="https://ui-avatars.com/api/?name=Justice+Halls&background=8b4513&color=fff&bold=true"
                             alt="Justice Halls"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Goldar Ironfist"><img src="../img/Goldar.png" alt="Goldar"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Goldar Ironfist"><img src="../img/thumbs/Goldar.png" loading="lazy" alt="Goldar"></div>
                     <div class="actor-icon" data-name="Elder Vane"><img
                             src="https://ui-avatars.com/api/?name=Elder+Vane&background=555&color=fff&bold=true"
                             alt="Elder Vane"></div>
@@ -14285,7 +14306,7 @@
                             src="https://ui-avatars.com/api/?name=Research+Suite&background=2b5b84&color=fff&bold=true"
                             alt="Research Suite"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
                 </div>
                 <hr class="title-divider">
             </div>
@@ -14618,9 +14639,9 @@
                             src="https://ui-avatars.com/api/?name=Crown+Tier&background=8b4513&color=fff&bold=true"
                             alt="Crown Tier"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Officer Denka"><img
                             src="https://ui-avatars.com/api/?name=Denka&background=000&color=0ff&bold=true" alt="Denka">
                     </div>
@@ -14915,9 +14936,9 @@
                             src="https://ui-avatars.com/api/?name=Council+Chamber&background=8b4513&color=fff&bold=true"
                             alt="Council Chamber"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
                     <div class="actor-icon" data-name="Altheris"><img
                             src="https://ui-avatars.com/api/?name=Altheris&background=4caf50&color=fff&bold=true"
                             alt="Altheris"></div>
@@ -15168,10 +15189,10 @@
                             src="https://ui-avatars.com/api/?name=Windstrider&background=2b5b84&color=fff&bold=true"
                             alt="Windstrider"></div>
                     <div class="trackboard-divider"></div>
-                    <div class="actor-icon" data-name="Lucas"><img src="../img/Lucas.png" alt="Lucas"></div>
-                    <div class="actor-icon" data-name="Mina"><img src="../img/Mina.png" alt="Mina"></div>
-                    <div class="actor-icon" data-name="Thomas"><img src="../img/Thomas.png" alt="Thomas"></div>
-                    <div class="actor-icon" data-name="Candice"><img src="../img/Candice.png" alt="Candice"></div>
+                    <div class="actor-icon" data-name="Lucas"><img src="../img/thumbs/Lucas.png" loading="lazy" alt="Lucas"></div>
+                    <div class="actor-icon" data-name="Mina"><img src="../img/thumbs/Mina.png" loading="lazy" alt="Mina"></div>
+                    <div class="actor-icon" data-name="Thomas"><img src="../img/thumbs/Thomas.png" loading="lazy" alt="Thomas"></div>
+                    <div class="actor-icon" data-name="Candice"><img src="../img/thumbs/Candice.png" loading="lazy" alt="Candice"></div>
                     <div class="actor-icon" data-name="Altheris"><img
                             src="https://ui-avatars.com/api/?name=Altheris&background=4caf50&color=fff&bold=true"
                             alt="Altheris"></div>
@@ -16421,6 +16442,200 @@
             }, { passive: true });
         });
     </script>
+
+    <!-- Système d'authentification partagé avec le Codex & Killtime -->
+    <script src="../../../users/user_store.js"></script>
+    <script src="../../../users/auth.js"></script>
+
+<!-- ================================================================= -->
+<!-- KILLTIME MANUSCRIPT LIGHTBOX ENGINE (ACTOR & LOCATION HIGH-RES) -->
+<!-- ================================================================= -->
+<div id="killtime-lightbox" class="killtime-lightbox" aria-hidden="true">
+    <div class="lightbox-overlay" onclick="closeKilltimeLightbox()"></div>
+    <div class="lightbox-container">
+        <button class="lightbox-close" onclick="closeKilltimeLightbox()" aria-label="Fermer">✕</button>
+        <div class="lightbox-loader" id="lightbox-loader">
+            <div class="lightbox-spinner"></div>
+            <span class="lightbox-loader-text">Chargement de la matrice haute résolution...</span>
+        </div>
+        <img id="lightbox-img" class="lightbox-img" src="" alt="Full view" style="display: none;">
+        <div id="lightbox-caption" class="lightbox-caption"></div>
+    </div>
+</div>
+
+<style>
+.actor-icon, .location-icon {
+    cursor: pointer !important;
+}
+.killtime-lightbox {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: 10000;
+    align-items: center;
+    justify-content: center;
+}
+.killtime-lightbox.active {
+    display: flex;
+}
+.lightbox-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(10, 14, 23, 0.94);
+    backdrop-filter: blur(8px);
+}
+.lightbox-container {
+    position: relative;
+    z-index: 10001;
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.lightbox-close {
+    position: absolute;
+    top: -45px;
+    right: 0;
+    background: transparent;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: #fff;
+    font-size: 20px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+.lightbox-close:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: #58a6ff;
+    color: #58a6ff;
+    transform: scale(1.1);
+}
+.lightbox-img {
+    max-width: 90vw;
+    max-height: 82vh;
+    object-fit: contain;
+    border-radius: 6px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.8), 0 0 1px 1px rgba(88, 166, 255, 0.3);
+    animation: fadeIn 0.25s ease-out;
+}
+.lightbox-caption {
+    margin-top: 12px;
+    color: #c9d1d9;
+    font-family: 'Segoe UI', Tahoma, sans-serif;
+    font-size: 1.05em;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.5px;
+}
+.lightbox-loader {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+.lightbox-spinner {
+    width: 44px;
+    height: 44px;
+    border: 3px solid rgba(88, 166, 255, 0.2);
+    border-top: 3px solid #58a6ff;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+}
+.lightbox-loader-text {
+    color: #58a6ff;
+    font-family: 'Courier New', monospace;
+    font-size: 0.9em;
+    letter-spacing: 1px;
+}
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+@keyframes fadeIn {
+    from { opacity: 0; transform: scale(0.97); }
+    to { opacity: 1; transform: scale(1); }
+}
+</style>
+
+<script>
+function closeKilltimeLightbox() {
+    const box = document.getElementById('killtime-lightbox');
+    const img = document.getElementById('lightbox-img');
+    if (box) {
+        box.classList.remove('active');
+        box.setAttribute('aria-hidden', 'true');
+        document.body.style.overflow = '';
+        if (img) img.src = '';
+    }
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+    const trackboardIcons = document.querySelectorAll('.actor-icon, .location-icon');
+    const box = document.getElementById('killtime-lightbox');
+    const boxImg = document.getElementById('lightbox-img');
+    const loader = document.getElementById('lightbox-loader');
+    const caption = document.getElementById('lightbox-caption');
+
+    trackboardIcons.forEach(icon => {
+        icon.addEventListener('click', function(e) {
+            const img = this.querySelector('img');
+            if (!img) return;
+
+            let thumbSrc = img.getAttribute('src');
+            if (!thumbSrc || thumbSrc.includes('ui-avatars.com')) return;
+
+            e.preventDefault();
+
+            // Reconstitution de l'URL haute définition (retrait de 'thumbs/')
+            const fullResUrl = thumbSrc.replace('/thumbs/', '/');
+
+            box.classList.add('active');
+            box.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+
+            loader.style.display = 'flex';
+            boxImg.style.display = 'none';
+            boxImg.src = '';
+
+            const name = this.getAttribute('data-name') || img.getAttribute('alt') || '';
+            caption.textContent = name;
+
+            // Chargement à la demande de l'image haute définition
+            const highRes = new Image();
+            highRes.src = fullResUrl;
+            highRes.onload = function() {
+                boxImg.src = fullResUrl;
+                loader.style.display = 'none';
+                boxImg.style.display = 'block';
+            };
+            highRes.onerror = function() {
+                // Fallback direct sur la source vignette si la HD échoue
+                boxImg.src = thumbSrc;
+                loader.style.display = 'none';
+                boxImg.style.display = 'block';
+            };
+        });
+    });
+
+    document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeKilltimeLightbox();
+    });
+});
+</script>
+
 </body>
 
 </html>

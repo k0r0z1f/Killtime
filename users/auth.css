@@ -1,7 +1,55 @@
 /* ==========================================================================
-   CODEX UNIVERSEL — AUTHENTICATION & USER PROFILE STYLES
+   CODEX UNIVERSEL & KILLTIME — AUTHENTICATION & USER PROFILE STYLES
    users/auth.css
    ========================================================================== */
+
+:root, [data-theme="dark"] {
+    --bg-void: #06080d;
+    --bg-canvas: #0b0f19;
+    --bg-surface: #111827;
+    --bg-surface-elevated: #182235;
+    --bg-surface-hover: #1f2d47;
+    --border-subtle: rgba(255, 255, 255, 0.08);
+    --border-glow: rgba(56, 189, 248, 0.25);
+    --border-accent: rgba(245, 158, 11, 0.3);
+    --text-primary: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --text-muted: #64748b;
+    --text-accent: #38bdf8;
+    --arcane-cyan: #38bdf8;
+    --arcane-cyan-glow: rgba(56, 189, 248, 0.35);
+    --temporal-amber: #f59e0b;
+    --temporal-glow: rgba(245, 158, 11, 0.25);
+    --vital-ruby: #f43f5e;
+    --vital-ruby-glow: rgba(244, 63, 94, 0.25);
+    --void-violet: #8b5cf6;
+    --font-title: 'Cinzel', serif;
+    --font-body: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --transition-smooth: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+[data-theme="light"] {
+    --bg-void: #f8fafc;
+    --bg-canvas: #f1f5f9;
+    --bg-surface: #ffffff;
+    --bg-surface-elevated: #f8fafc;
+    --bg-surface-hover: #e2e8f0;
+    --border-subtle: rgba(0, 0, 0, 0.1);
+    --border-glow: rgba(2, 132, 199, 0.25);
+    --border-accent: rgba(217, 119, 6, 0.3);
+    --text-primary: #0f172a;
+    --text-secondary: #475569;
+    --text-muted: #64748b;
+    --text-accent: #0284c7;
+    --arcane-cyan: #0284c7;
+    --arcane-cyan-glow: rgba(2, 132, 199, 0.2);
+    --temporal-amber: #d97706;
+    --temporal-glow: rgba(217, 119, 6, 0.2);
+    --vital-ruby: #e11d48;
+    --vital-ruby-glow: rgba(225, 29, 72, 0.2);
+    --void-violet: #7c3aed;
+}
 
 /* Bouton Déclencheur Topbar */
 .auth-trigger-btn {
@@ -91,7 +139,7 @@
     display: none;
     flex-direction: column;
     gap: 4px;
-    z-index: 1000;
+    z-index: 10005;
 }
 
 .user-dropdown-panel.open {
@@ -438,4 +486,29 @@
 @keyframes authFadeIn {
     from { opacity: 0; transform: scale(0.97) translateY(-4px); }
     to { opacity: 1; transform: scale(1) translateY(0); }
+}
+
+/* Intégration spécifique pour la barre de contrôles du site Killtime */
+.top-controls #authTopbarSlot {
+    display: inline-flex;
+    align-items: center;
+}
+
+.top-controls .auth-trigger-btn {
+    padding: 10px 18px;
+    font-size: 15px;
+    border-radius: 5px;
+    height: 42px;
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.top-controls .user-profile-btn {
+    padding: 4px 12px 4px 6px;
+    font-size: 14px;
+    border-radius: 24px;
+    height: 42px;
+    box-sizing: border-box;
 }
