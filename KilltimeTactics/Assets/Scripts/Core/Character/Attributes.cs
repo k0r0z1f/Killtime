@@ -84,11 +84,11 @@ namespace Killtime.Core.Character
         /// <summary>
         /// Capacité d'Encaissement : Constitution × 2
         /// </summary>
-        public int CalculateEncaissement() => Constitution * 2;
+        public int CalculateEncaissement() => Constitution * Rules.CoreRulesConfig.Instance.EncaissementMultiplier;
 
         /// <summary>
         /// Maximum Létal : Constitution × 5
         /// </summary>
-        public int CalculateLethalMaximum() => Constitution * 5;
+        public int CalculateLethalMaximum() => Constitution * Rules.CoreRulesConfig.Instance.LethalMultiplier;
     }
 }

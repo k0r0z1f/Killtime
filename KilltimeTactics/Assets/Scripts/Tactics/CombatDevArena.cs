@@ -749,6 +749,48 @@ namespace Killtime.Tactics
             }
         }
 
+        public void RemoveUnit(TacticalUnit unit)
+        {
+            if (unit == null) return;
+
+            string unitName = unit.Stats != null ? unit.Stats.Name : unit.name;
+
+            CombatUI.TacticalSelectionManager.Instance?.ClearSelection();
+
+            if (CurrentTarget == unit)
+            {
+                CurrentTarget = null;
+            }
+
+            if (PlayerUnit == unit)
+            {
+                PlayerUnit = null;
+            }
+
+            SparringDummies.Remove(unit);
+            _additionalPlayers.Remove(unit);
+            _customSpawns.RemoveAll(r => r != null && r.Sheet != null && r.Sheet.Name == unitName);
+
+            _turnManager?.UnregisterUnit(unit);
+
+            if (_grid != null)
+            {
+                var node = _grid.GetNode(unit.CurrentCoords);
+                if (node != null)
+                {
+                    node.IsOccupied = false;
+                }
+            }
+
+            if (CurrentTarget == null)
+            {
+                AutoTargetNextAlive();
+            }
+
+            Log($"🗑️ <b>{unitName}</b> a été retiré(e) du champ de bataille.");
+            Destroy(unit.gameObject);
+        }
+
         public void ResetArena()
         {
             // 1. Interrompre toutes les coroutines actives et rétablir le temps réel

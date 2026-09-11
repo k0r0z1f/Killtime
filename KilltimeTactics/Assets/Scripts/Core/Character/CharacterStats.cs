@@ -58,7 +58,7 @@ namespace Killtime.Core.Character
         {
             if (IsInLastBreath)
             {
-                CurrentActionPoints = MaxActionPoints / 2;
+                CurrentActionPoints = (int)Math.Round(MaxActionPoints * Rules.CoreRulesConfig.Instance.LastBreathAPRatio);
             }
             else
             {
@@ -70,7 +70,9 @@ namespace Killtime.Core.Character
 
         public bool ConsumeActionPoints(int cost)
         {
-            int effectiveCost = ActiveStatus.HasFlag(StatusEffect.Ralenti) ? cost * 2 : cost;
+            int effectiveCost = ActiveStatus.HasFlag(StatusEffect.Ralenti) 
+                ? cost * Rules.CoreRulesConfig.Instance.RalentiAPMultiplier 
+                : cost;
 
             if (CurrentActionPoints >= effectiveCost)
             {
@@ -95,10 +97,11 @@ namespace Killtime.Core.Character
 
         public int GetMaxAttacksAllowed(DiceType attackDie)
         {
+            var cfg = Rules.CoreRulesConfig.Instance;
             return attackDie switch
             {
-                DiceType.TwoD6 or DiceType.TwoD8 or DiceType.TwoD10 or DiceType.TwoD12 or DiceType.TwoD12Plus10 => 2,
-                _ => 1
+                DiceType.TwoD6 or DiceType.TwoD8 or DiceType.TwoD10 or DiceType.TwoD12 or DiceType.TwoD12Plus10 => cfg.MultiDiceAttackActionLimit,
+                _ => cfg.SingleAttackActionLimit
             };
         }
 
@@ -113,15 +116,18 @@ namespace Killtime.Core.Character
             AttacksThisTurn++;
         }
 
-        public bool TakeEmergencyBreath(int bonusAP = 2)
+        public bool TakeEmergencyBreath(int bonusAP = -1)
         {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            int appliedBonus = (bonusAP < 0) ? cfg.EmergencyBreathBonusAP : bonusAP;
+
             if (Essoufflement >= Attributes.Constitution)
             {
                 return false;
             }
 
-            Essoufflement += 1;
-            CurrentActionPoints += bonusAP;
+            Essoufflement += cfg.EmergencyBreathEssoufflementCost;
+            CurrentActionPoints += appliedBonus;
             return true;
         }
 

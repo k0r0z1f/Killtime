@@ -366,6 +366,20 @@ namespace Killtime.UI
             {
                 CharacterDevWindow.Open();
             }
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>🗺️ Conception de Champ de Bataille :</b>");
+            if (GUILayout.Button("🗺️ Ouvrir l'Éditeur de Carte (F2)", GUILayout.Height(32)))
+            {
+                MapEditorDevWindow.Open();
+            }
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>⚖️ Moteur de Règles & Équilibrage :</b>");
+            if (GUILayout.Button("⚖️ Table des Règles du Codex (F3)", GUILayout.Height(32)))
+            {
+                CoreRulesDevTableWindow.Open();
+            }
         }
 
         private void DrawChronomancyTab()

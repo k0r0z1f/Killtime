@@ -96,7 +96,8 @@ namespace Killtime.Tactics.Units
 
             if (targetShader == null)
             {
-                targetShader = Shader.Find("Universal Render Pipeline/Lit")
+                targetShader = Shader.Find("Killtime/TacticalLit")
+                            ?? Shader.Find("Universal Render Pipeline/Lit")
                             ?? Shader.Find("Universal Render Pipeline/Simple Lit")
                             ?? Shader.Find("Universal Render Pipeline/Unlit")
                             ?? Shader.Find("Standard")

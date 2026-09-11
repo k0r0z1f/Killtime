@@ -19,6 +19,7 @@ namespace Killtime.Tactics.Grid
         public int ActionPointCost = 1; // 1 PA par défaut pour franchir une case
         public CoverType Cover = CoverType.None;
         public bool IsOccupied = false;
+        public bool HasCustomVisual = false;
 
         public HexNode(HexCoordinates coords, Vector3 worldPos)
         {

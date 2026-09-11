@@ -1,0 +1,1358 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas 3D de l'Univers — Les 36 Zones des Élianes | Codex Hybris</title>
+    <meta name="description" content="Atlas 3D interactif et navigable de l'univers d'Hybris, des 36 zones éliennes aux corps célestes et lunes.">
+
+    <!-- Typographies Codex -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Three.js & OrbitControls -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+
+    <style>
+        :root {
+            --bg-void: #030712;
+            --panel-bg: rgba(10, 15, 29, 0.82);
+            --border-glow: rgba(56, 189, 248, 0.35);
+            --arcane-cyan: #38bdf8;
+            --temporal-amber: #fbbf24;
+            --vital-ruby: #f43f5e;
+            --matrix-green: #10b981;
+            --dark-water: #4c1d95;
+            --font-display: 'Cinzel', serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            user-select: none;
+        }
+
+        body, html {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background-color: var(--bg-void);
+            font-family: var(--font-sans);
+            color: #f8fafc;
+        }
+
+        #webgl-canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: 1;
+        }
+
+        /* SCANLINE & VIGNETTE EFFECT */
+        .crt-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 10;
+            background: radial-gradient(circle at center, transparent 55%, rgba(2, 6, 23, 0.75) 100%),
+                        linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.25) 50%);
+            background-size: 100% 100%, 100% 4px;
+        }
+
+        /* UI CONTAINER */
+        .hud-layer {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 20;
+            pointer-events: none;
+            display: grid;
+            grid-template-rows: auto 1fr auto;
+            grid-template-columns: 340px 1fr 380px;
+            padding: 20px;
+            gap: 20px;
+        }
+
+        .hud-interactive {
+            pointer-events: auto;
+        }
+
+        /* TOP BAR */
+        .topbar-hud {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 12px 24px;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .brand-box {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .brand-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            letter-spacing: 0.12em;
+            color: #fff;
+            text-transform: uppercase;
+        }
+
+        .brand-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--arcane-cyan);
+            background: rgba(56, 189, 248, 0.12);
+            padding: 3px 8px;
+            border-radius: 4px;
+            border: 1px solid var(--arcane-cyan);
+        }
+
+        .breadcrumbs-hud {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.85rem;
+        }
+
+        .bc-node {
+            cursor: pointer;
+            color: #94a3b8;
+            transition: color 0.2s;
+        }
+
+        .bc-node:hover {
+            color: var(--arcane-cyan);
+        }
+
+        .bc-node.active {
+            color: var(--temporal-amber);
+            font-weight: 700;
+        }
+
+        .bc-sep {
+            color: #475569;
+        }
+
+        /* CONTROLS BAR */
+        .controls-top {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hud-btn {
+            background: rgba(15, 23, 42, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #e2e8f0;
+            padding: 7px 14px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hud-btn:hover {
+            border-color: var(--arcane-cyan);
+            color: var(--arcane-cyan);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+        }
+
+        .hud-btn.active {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: var(--arcane-cyan);
+            color: #fff;
+        }
+
+        /* LEFT SIDEBAR: DIRECTORY / SEARCH */
+        .sidebar-left-hud {
+            grid-row: 2;
+            grid-column: 1;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 16px;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            overflow: hidden;
+        }
+
+        .hud-search-input {
+            width: 100%;
+            background: rgba(2, 6, 23, 0.8);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            color: #fff;
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            outline: none;
+        }
+
+        .hud-search-input:focus {
+            border-color: var(--arcane-cyan);
+        }
+
+        .entities-tree {
+            overflow-y: auto;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            padding-right: 4px;
+        }
+
+        .tree-category-title {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            color: #64748b;
+            letter-spacing: 0.08em;
+            margin-top: 8px;
+        }
+
+        .tree-item {
+            padding: 6px 10px;
+            border-radius: 4px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid transparent;
+            font-size: 0.82rem;
+            cursor: pointer;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            transition: all 0.15s;
+        }
+
+        .tree-item:hover {
+            background: rgba(56, 189, 248, 0.12);
+            border-color: rgba(56, 189, 248, 0.4);
+            transform: translateX(4px);
+        }
+
+        .tree-item.special-capricius {
+            border-color: rgba(244, 63, 94, 0.4);
+        }
+
+        .tree-item.special-ceylan {
+            border-color: rgba(56, 189, 248, 0.4);
+        }
+
+        .tag-indicator {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 1px 5px;
+            border-radius: 3px;
+        }
+
+        .tag-indicator.ruby { background: rgba(244, 63, 94, 0.2); color: #fda4af; }
+        .tag-indicator.cyan { background: rgba(56, 189, 248, 0.2); color: #7dd3fc; }
+        .tag-indicator.amber { background: rgba(251, 191, 36, 0.2); color: #fde68a; }
+
+        /* RIGHT SIDEBAR: TELEMETRY INSPECTOR */
+        .sidebar-right-hud {
+            grid-row: 2;
+            grid-column: 3;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 18px;
+            backdrop-filter: blur(12px);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            overflow-y: auto;
+        }
+
+        .telemetry-header-title {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 8px;
+        }
+
+        .telemetry-badge-row {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .telemetry-row {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.82rem;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.08);
+            padding: 4px 0;
+            font-family: var(--font-mono);
+        }
+
+        .telemetry-label {
+            color: #94a3b8;
+        }
+
+        .telemetry-val {
+            color: #f8fafc;
+            font-weight: 600;
+        }
+
+        .telemetry-desc {
+            font-size: 0.85rem;
+            line-height: 1.5;
+            color: #cbd5e1;
+            background: rgba(0, 0, 0, 0.25);
+            padding: 10px;
+            border-radius: 6px;
+            border-left: 3px solid var(--arcane-cyan);
+        }
+
+        /* BOTTOM NAV BAR */
+        .bottombar-hud {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--border-glow);
+            border-radius: 8px;
+            padding: 10px 20px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: #94a3b8;
+        }
+
+        .scale-indicator {
+            color: var(--arcane-cyan);
+            font-weight: bold;
+        }
+
+        /* TOOLTIP 3D IN WORLD */
+        .world-label-box {
+            position: absolute;
+            transform: translate(-50%, -120%);
+            background: rgba(2, 6, 23, 0.85);
+            border: 1px solid var(--arcane-cyan);
+            color: #fff;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-family: var(--font-mono);
+            font-size: 11px;
+            pointer-events: none;
+            white-space: nowrap;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+            display: none;
+            z-index: 30;
+        }
+
+        /* SCROLLBARS */
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: rgba(0,0,0,0.2); }
+        ::-webkit-scrollbar-thumb { background: rgba(56, 189, 248, 0.3); border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--arcane-cyan); }
+    </style>
+</head>
+
+<body>
+    <div class="crt-overlay"></div>
+    <div class="world-label-box" id="worldLabel">Target</div>
+
+    <!-- 3D WebGL Canvas -->
+    <div id="webgl-canvas"></div>
+
+    <!-- HUD INTERACTION LAYER -->
+    <div class="hud-layer">
+
+        <!-- TOP BAR -->
+        <header class="topbar-hud hud-interactive">
+            <div class="brand-box">
+                <a href="../index.html" style="text-decoration: none; color: inherit; display: flex; align-items: center; gap: 10px;">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="color: var(--arcane-cyan);">
+                        <circle cx="12" cy="12" r="10" />
+                        <path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20" />
+                        <path d="M2 12h20" />
+                    </svg>
+                    <span class="brand-title">Cosmos Éliane 3D</span>
+                </a>
+                <span class="brand-badge">Échelle 1:10^24</span>
+            </div>
+
+            <!-- Breadcrumbs -->
+            <nav class="breadcrumbs-hud" id="breadcrumbs">
+                <span class="bc-node active" onclick="zoomToTier(1)">UNIVERS</span>
+                <span class="bc-sep">/</span>
+                <span class="bc-node" id="bc-zone" onclick="zoomToTier(2)">ZONE</span>
+                <span class="bc-sep">/</span>
+                <span class="bc-node" id="bc-galaxy" onclick="zoomToTier(3)">GALAXIE</span>
+                <span class="bc-sep">/</span>
+                <span class="bc-node" id="bc-system" onclick="zoomToTier(4)">SYSTÈME</span>
+                <span class="bc-sep">/</span>
+                <span class="bc-node" id="bc-body" onclick="zoomToTier(5)">PLANÈTE &amp; LUNES</span>
+            </nav>
+
+            <!-- Navigation Controls -->
+            <div class="controls-top">
+                <button class="hud-btn" id="btnToggleDarkWater" onclick="toggleDarkWater()">
+                    <span>🌊 Eau Sombre</span>
+                </button>
+                <button class="hud-btn" id="btnResetView" onclick="resetUniverseView()">
+                    <span>↺ Dézoom Univers</span>
+                </button>
+                <a href="../livre_10.html" class="hud-btn" style="text-decoration: none;">
+                    <span>📖 Livre X</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- LEFT SIDEBAR : DIRECTORY -->
+        <aside class="sidebar-left-hud hud-interactive">
+            <input type="text" id="searchInput" class="hud-search-input" placeholder="Rechercher monde, zone, étoile..." oninput="filterEntities()">
+
+            <div class="entities-tree" id="entitiesList">
+                <div class="tree-category-title">Zones Élianes Majeures</div>
+                <div class="tree-item special-ceylan" onclick="focusOnZone('ceylan')">
+                    <span>Zone 01 — Ceylan / Hybris</span>
+                    <span class="tag-indicator cyan">Est</span>
+                </div>
+                <div class="tree-item special-capricius" onclick="focusOnZone('capricius')">
+                    <span>Zone 02 — Capricius (Aurion)</span>
+                    <span class="tag-indicator ruby">Centre-Est</span>
+                </div>
+                <div class="tree-item" onclick="focusOnZone('zone-07')">
+                    <span>Zone 07 — Anneau Nord-Est</span>
+                    <span class="tag-indicator amber">Adjacente</span>
+                </div>
+                <div class="tree-item" onclick="focusOnZone('zone-08')">
+                    <span>Zone 08 — Anneau Sud-Est</span>
+                    <span class="tag-indicator amber">Adjacente</span>
+                </div>
+
+                <div class="tree-category-title">Systèmes &amp; Mondes Clés</div>
+                <div class="tree-item" onclick="focusOnBody('hybris')">
+                    <span>Hybris (Planète Mère PJ)</span>
+                    <span class="tag-indicator cyan">1772 HSC</span>
+                </div>
+                <div class="tree-item" onclick="focusOnBody('vardis')">
+                    <span>Vardis (Bassin Industriel)</span>
+                    <span class="tag-indicator ruby">Impérial</span>
+                </div>
+                <div class="tree-item" onclick="focusOnBody('apaphis')">
+                    <span>Apaphis (Monde en Ruine)</span>
+                    <span class="tag-indicator amber">Warp</span>
+                </div>
+                <div class="tree-item" onclick="focusOnBody('cleia')">
+                    <span>Cléia (Matriarcat Alien)</span>
+                    <span class="tag-indicator cyan">Inhérente</span>
+                </div>
+                <div class="tree-item" onclick="focusOnBody('karkjiue')">
+                    <span>Karkjiue (Monde Mikyai)</span>
+                    <span class="tag-indicator ruby">Guerrier</span>
+                </div>
+                <div class="tree-item" onclick="focusOnBody('terre')">
+                    <span>Terre (Origine Déportés)</span>
+                    <span class="tag-indicator">Sol</span>
+                </div>
+            </div>
+        </aside>
+
+        <!-- RIGHT SIDEBAR : TELEMETRY INSPECTOR -->
+        <aside class="sidebar-right-hud hud-interactive" id="inspectorPanel">
+            <div class="telemetry-header-title" id="telemetryName">Univers (36 Zones Élianes)</div>
+            <div class="telemetry-badge-row" id="telemetryBadges">
+                <span class="tag-indicator cyan">Niveau 1 : Macrocosme</span>
+                <span class="tag-indicator amber">Matrice Causalité 100%</span>
+            </div>
+
+            <div class="telemetry-row">
+                <span class="telemetry-label">Coordonnées :</span>
+                <span class="telemetry-val" id="telemetryCoords">[ 0.00, 0.00, 0.00 ]</span>
+            </div>
+            <div class="telemetry-row">
+                <span class="telemetry-label">Entité Régulatrice :</span>
+                <span class="telemetry-val" id="telemetryRuler">Le Réseau des 36 Élianes</span>
+            </div>
+            <div class="telemetry-row">
+                <span class="telemetry-label">Flux Dominant :</span>
+                <span class="telemetry-val" id="telemetryFlux">Cinquième Force / Fleuve</span>
+            </div>
+            <div class="telemetry-row">
+                <span class="telemetry-label">Taux d'Eau Sombre :</span>
+                <span class="telemetry-val" id="telemetryDarkRate" style="color: var(--vital-ruby);">18.4% (Progression)</span>
+            </div>
+
+            <div class="telemetry-desc" id="telemetryDesc">
+                Vue globale de la trame universelle. 36 secteurs sous surveillance des Élianes. Au Centre-Est, Capricius panique sous l'accumulation d'Eau Sombre, tandis qu'à l'Est immédiat, la zone de Ceylan abrite le système Hybris et le point d'impact de l'An 1772 HSC.
+            </div>
+        </aside>
+
+        <!-- BOTTOM BAR -->
+        <footer class="bottombar-hud hud-interactive">
+            <div>
+                STATUT RELIQUE : <span style="color: var(--matrix-green);">SYNCHRONISÉ 0.0001%</span> | GOUVERNEUR CAUSAL : ACTIF
+            </div>
+            <div>
+                ÉCHELLE ACTUELLE : <span class="scale-indicator" id="scaleIndicator">NIVEAU 1 — VUE COSMIQUE</span>
+            </div>
+            <div>
+                NAVIGATION : CLIC GAUCHE = ORBITE | MOLETTE = ZOOM | DOUBLE-CLIC = PLONGER
+            </div>
+        </footer>
+
+    </div>
+
+    <!-- LOGIQUE DE L'ATLAS 3D -->
+    <script>
+        /* =========================================================================
+           1. DONNÉES SPATIALES & TOPOLOGIE DES 36 ÉLIANES
+           ========================================================================= */
+        const COSMOS_DATA = {
+            tier: 1, // 1: Univers, 2: Zone, 3: Galaxy, 4: System, 5: Planet
+            selectedEntity: null,
+            darkWaterVisible: true,
+            zones: [],
+            galaxies: [],
+            systems: [],
+            bodies: []
+        };
+
+        // Définition géométrique des 36 Zones
+        // Capricius: Centre-Est (X: 280, Y: 0, Z: -30)
+        // Ceylan: Est de Capricius (X: 620, Y: 10, Z: -20)
+        // 6 Zones entourant Capricius dont 2 adjacentes à Ceylan (Zone 07 NE, Zone 08 SE)
+        const ZONE_CONFIGS = [
+            { id: 'ceylan', name: 'Zone 01 — Ceylan / Hybris', x: 620, y: 15, z: -25, color: 0x38bdf8, ruler: 'Ceylan (Martyr 1754 HSC)', desc: "Secteur adjacent oriental de Capricius. Abrite la Galaxie Principale et le monde d'Hybris. Point d'ancrage de la Ligne-A.", adjacent: ['capricius', 'zone-07', 'zone-08'] },
+            { id: 'capricius', name: 'Zone 02 — Aurion Nexus (Capricius)', x: 280, y: 0, z: -35, color: 0xf43f5e, ruler: 'Capricius (Le Dieu en Panique)', desc: "Centre-Est universel. Foyer de surconsommation des courants de matière. Générateur de l'Eau Sombre et calculs psychohistoriques sur 100 000 ans.", adjacent: ['ceylan', 'zone-05', 'zone-06', 'zone-07', 'zone-08', 'zone-09', 'zone-10'] },
+            
+            // L'Anneau Hexagonal des 6 zones ceinturant Capricius :
+            { id: 'zone-05', name: 'Zone 05 — Anneau Nord-Ouest', x: 120, y: 190, z: -60, color: 0x818cf8, ruler: 'Éliane V - Morvath', desc: "Rempart supérieur ouest ceinturant le Nexus d'Aurion.", adjacent: ['capricius', 'zone-06', 'zone-10'] },
+            { id: 'zone-06', name: 'Zone 06 — Anneau Nord', x: 280, y: 230, z: -20, color: 0xa855f7, ruler: 'Éliane VI - Val-Tesh', desc: "Bordure septentrionale directe du domaine de Capricius.", adjacent: ['capricius', 'zone-05', 'zone-07'] },
+            { id: 'zone-07', name: 'Zone 07 — Anneau Nord-Est (Adjacente Ceylan)', x: 450, y: 140, z: -30, color: 0xfbbf24, ruler: 'Éliane VII - Oros-Amon', desc: "Zone carrefour septentrionale mitoyenne entre Capricius et Ceylan. Conduits d'Eau Sombre instables.", adjacent: ['capricius', 'ceylan', 'zone-06'] },
+            { id: 'zone-08', name: 'Zone 08 — Anneau Sud-Est (Adjacente Ceylan)', x: 450, y: -140, z: -30, color: 0xfbbf24, ruler: 'Éliane VIII - Tethys-Zul', desc: "Zone carrefour méridionale reliant le domaine de Capricius au secteur de Ceylan.", adjacent: ['capricius', 'ceylan', 'zone-09'] },
+            { id: 'zone-09', name: 'Zone 09 — Anneau Sud', x: 280, y: -230, z: -20, color: 0xa855f7, ruler: 'Éliane IX - Kael-Sarkon', desc: "Secteur méridional ceinturant la cuvette de Capricius.", adjacent: ['capricius', 'zone-08', 'zone-10'] },
+            { id: 'zone-10', name: 'Zone 10 — Anneau Sud-Ouest', x: 120, y: -190, z: -60, color: 0x818cf8, ruler: 'Éliane X - Xir-Nox', desc: "Bordure inférieure ouest de l'anneau de confinement de Capricius.", adjacent: ['capricius', 'zone-09', 'zone-05'] }
+        ];
+
+        // Remplissage des 26 autres zones pour compléter les 36 Élianes
+        for (let i = 11; i <= 36; i++) {
+            const angle = ((i - 11) / 26) * Math.PI * 2;
+            const radius = 550 + (i % 3) * 160;
+            const x = -150 + Math.cos(angle) * radius * 0.9;
+            const y = Math.sin(angle) * radius * 0.6;
+            const z = ((i % 5) - 2) * 140;
+
+            ZONE_CONFIGS.push({
+                id: `zone-${i}`,
+                name: `Zone ${i < 10 ? '0' + i : i} — Secteur Élien Outer-${i}`,
+                x: Math.round(x),
+                y: Math.round(y),
+                z: Math.round(z),
+                color: 0x475569,
+                ruler: `Éliane Archonte ${i}`,
+                desc: `Secteur dimensionnel ${i} stabilisé par un Archonte de la Mère. Trame de matière réelle stable.`,
+                adjacent: []
+            });
+        }
+
+        // Définition des Galaxies majeures dans Ceylan & Capricius
+        const GALAXY_CONFIGS = [
+            { id: 'gal-main', zoneId: 'ceylan', name: 'La Galaxie Principale', x: 620, y: 15, z: -25, color: 0x38bdf8, size: 80, desc: "Galaxie spirale abritant le système d'Hybris, la Terre et les colonies humaines franches." },
+            { id: 'gal-aurion', zoneId: 'capricius', name: "Galaxie d'Aurion", x: 280, y: 0, z: -35, color: 0xf43f5e, size: 90, desc: "Cœur militaro-industriel de l'Empire Intergalactique. Flottes de cuirassés et forteresses de matière noire." },
+            { id: 'gal-starless', zoneId: 'ceylan', name: "La Galaxie Sans Étoiles", x: 740, y: -70, z: 40, color: 0x8b5cf6, size: 50, desc: "Anomalie subquantique. Vestige effondré d'une chronotrame purgée par un Disciple." }
+        ];
+
+        // Systèmes Stellaires dans la Galaxie Principale & Aurion
+        const SYSTEM_CONFIGS = [
+            { id: 'sys-hybris', galaxyId: 'gal-main', name: 'Système Hybris-Prime', x: 620, y: 15, z: -25, starColor: 0xfffbeb, desc: "Étoile naine jaune Hybris-Alpha. Foyer du monde d'Hybris et de ses deux lunes arcaniques." },
+            { id: 'sys-vardis', galaxyId: 'gal-aurion', name: 'Système Vardis-Apaphis', x: 280, y: 0, z: -35, starColor: 0xf87171, desc: "Étoile binaire orangée. Bassin d'extraction d'Atraxia et champs de ruines de combat." },
+            { id: 'sys-cleia', galaxyId: 'gal-main', name: 'Système Cléia-Astra', x: 645, y: 30, z: -10, starColor: 0x67e8f9, desc: "Étoile blanche à flux constant. Civilisation matriarcale alien hautement télépathe." },
+            { id: 'sys-karkjiue', galaxyId: 'gal-aurion', name: 'Système Karkjiue', x: 260, y: -20, z: -45, starColor: 0xf97316, desc: "Géante rouge. Monde volcanique des légions de guerriers Mikyais." },
+            { id: 'sys-sol', galaxyId: 'gal-main', name: 'Système Solaire (Sol)', x: 590, y: 5, z: -40, starColor: 0xfef08a, desc: "Matrice originelle de la déportation de l'An 0." }
+        ];
+
+        // Corps Célestes (Planètes & Lunes)
+        const BODY_CONFIGS = [
+            {
+                id: 'hybris', systemId: 'sys-hybris', name: 'Planète Hybris',
+                radius: 4.8, dist: 24, speed: 0.012, color: 0x0284c7, clouds: true,
+                moons: [
+                    { id: 'lune-alpha', name: 'Lune Blanche (Nyth-1)', radius: 1.1, dist: 7.5, speed: 0.04, color: 0xe2e8f0 },
+                    { id: 'lune-beta', name: 'Lune Électrostatique (Storm-2)', radius: 0.9, dist: 11.0, speed: 0.025, color: 0x93c5fd }
+                ],
+                telemetry: {
+                    coords: "[ RA 14h 22m // Dec -12°40' ]",
+                    tech: "Médiévale à Avancée (3-4)",
+                    magic: "Normale à Inhérente (5e Force)",
+                    grav: "1.02 g",
+                    pop: "Humains, Drakkas, Tauriens, Dereks",
+                    calendar: "An 1772 HSC (Aris)",
+                    desc: "Monde des trois protagonistes (Lucas, Mina, Thomas). Écosystème enrichi par la nytharite souterraine. Cités : Kingston, Brum'korath, Haliriel."
+                }
+            },
+            {
+                id: 'vardis', systemId: 'sys-vardis', name: 'Planète Vardis',
+                radius: 5.4, dist: 22, speed: 0.015, color: 0xb91c1c, rings: true,
+                moons: [
+                    { id: 'lune-vardis-miniere', name: 'Avant-Poste K-9', radius: 0.8, dist: 8.5, speed: 0.035, color: 0x78716c }
+                ],
+                telemetry: {
+                    coords: "[ RA 04h 11m // Dec +44°19' ]",
+                    tech: "Avancée Impériale (4-5)",
+                    magic: "Limitée / Contrôlée",
+                    grav: "1.15 g (Lourde)",
+                    pop: "Garnisons Impériales, Résistance, Thaluns",
+                    calendar: "Cycle Impérial 448",
+                    desc: "Monde forteresse balafré d'usines et de miradors biométriques. Cœur du district d'Atraxia et du Nexus d'Aurion."
+                }
+            },
+            {
+                id: 'apaphis', systemId: 'sys-vardis', name: 'Planète Apaphis',
+                radius: 4.2, dist: 38, speed: 0.009, color: 0xd97706,
+                moons: [
+                    { id: 'lune-aeschylus-base', name: "Astéroïde Rebelle (Cache de l'Aeschylus)", radius: 0.6, dist: 6.8, speed: 0.05, color: 0x475569 }
+                ],
+                telemetry: {
+                    coords: "[ RA 04h 16m // Dec +43°50' ]",
+                    tech: "Récupération & Faction Clandestine",
+                    magic: "Normale (Vestiges)",
+                    grav: "0.94 g",
+                    pop: "Contrebandiers, Pirates de l'Air, Réfugiés",
+                    calendar: "Non standardisé",
+                    desc: "Cimetière d'astronefs et de cuirassés. Le pirate balafré y ravitaille l'Aeschylus en cristaux de propulsion Warp."
+                }
+            },
+            {
+                id: 'cleia', systemId: 'sys-cleia', name: 'Planète Cléia',
+                radius: 4.0, dist: 20, speed: 0.018, color: 0x06b6d4,
+                moons: [],
+                telemetry: {
+                    coords: "[ RA 18h 05m // Dec -02°11' ]",
+                    tech: "Très Avancée (5)",
+                    magic: "Inhérente (Alien)",
+                    grav: "0.88 g",
+                    pop: "Cléiennes (100% Féminines)",
+                    calendar: "Ère de Soie 900",
+                    desc: "Cités cristallines lévitant au-dessus de mers de méthane purifié. Espèce douée de télépathie chirurgicale à 6 stades."
+                }
+            },
+            {
+                id: 'karkjiue', systemId: 'sys-karkjiue', name: 'Planète Karkjiue',
+                radius: 6.2, dist: 19, speed: 0.02, color: 0xc2410c,
+                moons: [],
+                telemetry: {
+                    coords: "[ RA 08h 50m // Dec +61°05' ]",
+                    tech: "Balistique & Blindage Lourd (4)",
+                    magic: "Impossible / Réfractaire",
+                    grav: "1.28 g",
+                    pop: "Mikyais (Soldats-Lézards)",
+                    calendar: "Ère Martiale 312",
+                    desc: "Monde volcanique de basalte et de soufre. Berceau des fantassins les plus brutaux enrôlés de force par l'Empire."
+                }
+            },
+            {
+                id: 'terre', systemId: 'sys-sol', name: 'Planète Terre (XXIe Siècle)',
+                radius: 4.7, dist: 26, speed: 0.011, color: 0x2563eb, clouds: true,
+                moons: [
+                    { id: 'lune-terre', name: 'La Lune', radius: 1.2, dist: 7.8, speed: 0.038, color: 0xd6d3d1 }
+                ],
+                telemetry: {
+                    coords: "[ Sol-3 // Secteur Primitif ]",
+                    tech: "Moderne Silicium (3)",
+                    magic: "Ignorée / Dormante",
+                    grav: "1.00 g (Référence)",
+                    pop: "Humanité Terrestre",
+                    calendar: "2026 / 2035 ap. J.-C.",
+                    desc: "Matrice d'origine des 3 000 civils arrachés par téléportation lors de la Déportation de l'An 0 vers Hybris."
+                }
+            }
+        ];
+
+        /* =========================================================================
+           2. INITIALISATION MOTEUR 3D THREE.JS
+           ========================================================================= */
+        const container = document.getElementById('webgl-canvas');
+        const scene = new THREE.Scene();
+        scene.fog = new THREE.FogExp2(0x030712, 0.00035);
+
+        const camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.5, 20000);
+        camera.position.set(0, 750, 1400);
+
+        const renderer = new THREE.WebGLRenderer({ antialias: true, powerPreference: "high-performance" });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+        renderer.toneMapping = THREE.ACESFilmicToneMapping;
+        renderer.toneMappingExposure = 1.15;
+        container.appendChild(renderer.domElement);
+
+        const controls = new THREE.OrbitControls(camera, renderer.domElement);
+        controls.enableDamping = true;
+        controls.dampingFactor = 0.05;
+        controls.maxDistance = 6000;
+        controls.minDistance = 6;
+
+        // Lumières cosmiques
+        const ambientLight = new THREE.AmbientLight(0xdbeafe, 0.45);
+        scene.add(ambientLight);
+
+        const coreLight = new THREE.PointLight(0x38bdf8, 2.5, 3000);
+        coreLight.position.set(450, 100, 0);
+        scene.add(coreLight);
+
+        /* =========================================================================
+           3. GÉNÉRATEURS DE TEXTURES PROCÉDURALES
+           ========================================================================= */
+        function createStarField() {
+            const starsCount = 15000;
+            const geom = new THREE.BufferGeometry();
+            const positions = new Float32Array(starsCount * 3);
+            const colors = new Float32Array(starsCount * 3);
+
+            for (let i = 0; i < starsCount * 3; i += 3) {
+                positions[i] = (Math.random() - 0.5) * 12000;
+                positions[i + 1] = (Math.random() - 0.5) * 8000;
+                positions[i + 2] = (Math.random() - 0.5) * 12000;
+
+                const c = Math.random();
+                if (c > 0.8) {
+                    colors[i] = 0.22; colors[i + 1] = 0.74; colors[i + 2] = 0.97; // Cyan
+                } else if (c > 0.6) {
+                    colors[i] = 0.98; colors[i + 1] = 0.75; colors[i + 2] = 0.14; // Amber
+                } else {
+                    colors[i] = 0.9; colors[i + 1] = 0.95; colors[i + 2] = 1.0;   // White
+                }
+            }
+
+            geom.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+            geom.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+            const mat = new THREE.PointsMaterial({
+                size: 2.2,
+                vertexColors: true,
+                transparent: true,
+                opacity: 0.85
+            });
+
+            const pSystem = new THREE.Points(geom, mat);
+            scene.add(pSystem);
+        }
+
+        // Texture procédurale pour planètes terrestres/nuages
+        function generatePlanetTexture(baseHex, detailHex, isGas = false) {
+            const canvas = document.createElement('canvas');
+            canvas.width = 512;
+            canvas.height = 256;
+            const ctx = canvas.getContext('2d');
+
+            ctx.fillStyle = baseHex;
+            ctx.fillRect(0, 0, 512, 256);
+
+            ctx.fillStyle = detailHex;
+            for (let i = 0; i < 400; i++) {
+                const x = Math.random() * 512;
+                const y = Math.random() * 256;
+                const r = isGas ? Math.random() * 60 + 10 : Math.random() * 30 + 5;
+                ctx.beginPath();
+                ctx.arc(x, y, r, 0, Math.PI * 2);
+                ctx.filter = isGas ? 'blur(8px)' : 'blur(3px)';
+                ctx.fill();
+            }
+
+            return new THREE.CanvasTexture(canvas);
+        }
+
+        /* =========================================================================
+           4. CONSTRUCTION DES ÉCHELONS GÉOMÉTRIQUES
+           ========================================================================= */
+        const zonesGroup = new THREE.Group();
+        const conduitsGroup = new THREE.Group();
+        const galaxiesGroup = new THREE.Group();
+        const systemsGroup = new THREE.Group();
+        const bodiesGroup = new THREE.Group();
+
+        scene.add(zonesGroup);
+        scene.add(conduitsGroup);
+        scene.add(galaxiesGroup);
+        scene.add(systemsGroup);
+        scene.add(bodiesGroup);
+
+        createStarField();
+
+        // 4.1 Bâtir les 36 Zones Élianes
+        const zoneObjects = {};
+        ZONE_CONFIGS.forEach(zc => {
+            const zPivot = new THREE.Group();
+            zPivot.position.set(zc.x, zc.y, zc.z);
+            zPivot.userData = { type: 'zone', data: zc };
+
+            // Volumétrie de frontière (Polyèdre filaire)
+            const wireGeom = new THREE.IcosahedronGeometry(110, 1);
+            const wireMat = new THREE.MeshBasicMaterial({
+                color: zc.color,
+                wireframe: true,
+                transparent: true,
+                opacity: zc.id === 'capricius' || zc.id === 'ceylan' ? 0.45 : 0.16
+            });
+            const wireMesh = new THREE.Mesh(wireGeom, wireMat);
+            zPivot.add(wireMesh);
+
+            // Cœur énergétique de zone
+            const coreGeom = new THREE.SphereGeometry(14, 16, 16);
+            const coreMat = new THREE.MeshBasicMaterial({
+                color: zc.color,
+                transparent: true,
+                opacity: 0.9
+            });
+            const coreMesh = new THREE.Mesh(coreGeom, coreMat);
+            zPivot.add(coreMesh);
+
+            // Halo glow
+            const haloGeom = new THREE.SphereGeometry(24, 16, 16);
+            const haloMat = new THREE.MeshBasicMaterial({
+                color: zc.color,
+                transparent: true,
+                opacity: 0.25,
+                wireframe: false
+            });
+            zPivot.add(new THREE.Mesh(haloGeom, haloMat));
+
+            zonesGroup.add(zPivot);
+            zoneObjects[zc.id] = zPivot;
+        });
+
+        // 4.2 Lignes de conduits arcaniques & filaments d'Eau Sombre
+        function buildConduits() {
+            conduitsGroup.clear();
+            const lineMat = new THREE.LineBasicMaterial({
+                color: 0x38bdf8,
+                transparent: true,
+                opacity: 0.35
+            });
+            const darkWaterMat = new THREE.LineBasicMaterial({
+                color: 0xf43f5e,
+                transparent: true,
+                opacity: 0.85,
+                linewidth: 2
+            });
+
+            ZONE_CONFIGS.forEach(zc => {
+                if (zc.adjacent && zc.adjacent.length > 0) {
+                    zc.adjacent.forEach(adjId => {
+                        const target = ZONE_CONFIGS.find(z => z.id === adjId);
+                        if (target) {
+                            const pts = [
+                                new THREE.Vector3(zc.x, zc.y, zc.z),
+                                new THREE.Vector3(target.x, target.y, target.z)
+                            ];
+                            const geom = new THREE.BufferGeometry().setFromPoints(pts);
+                            const isCapriciusLink = zc.id === 'capricius' || target.id === 'capricius';
+                            const line = new THREE.Line(geom, isCapriciusLink ? darkWaterMat : lineMat);
+                            conduitsGroup.add(line);
+                        }
+                    });
+                }
+            });
+        }
+        buildConduits();
+
+        // 4.3 Galaxies
+        const galaxyObjects = {};
+        GALAXY_CONFIGS.forEach(gc => {
+            const gPivot = new THREE.Group();
+            gPivot.position.set(gc.x, gc.y, gc.z);
+            gPivot.userData = { type: 'galaxy', data: gc };
+
+            // Spirale de particules galactiques
+            const pCount = 3000;
+            const pGeom = new THREE.BufferGeometry();
+            const pPos = new Float32Array(pCount * 3);
+            const pCols = new Float32Array(pCount * 3);
+
+            for (let i = 0; i < pCount; i++) {
+                const r = Math.pow(Math.random(), 2) * gc.size;
+                const arms = 2;
+                const theta = (i % arms) * ((Math.PI * 2) / arms) + r * 0.08 + (Math.random() - 0.5) * 0.3;
+                const px = Math.cos(theta) * r;
+                const py = (Math.random() - 0.5) * (gc.size * 0.15) * (1 - r / gc.size);
+                const pz = Math.sin(theta) * r;
+
+                pPos[i * 3] = px;
+                pPos[i * 3 + 1] = py;
+                pPos[i * 3 + 2] = pz;
+
+                pCols[i * 3] = ((gc.color >> 16) & 255) / 255;
+                pCols[i * 3 + 1] = ((gc.color >> 8) & 255) / 255;
+                pCols[i * 3 + 2] = (gc.color & 255) / 255;
+            }
+
+            pGeom.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+            pGeom.setAttribute('color', new THREE.BufferAttribute(pCols, 3));
+            const pMat = new THREE.PointsMaterial({ size: 1.5, vertexColors: true, transparent: true, opacity: 0.7 });
+            gPivot.add(new THREE.Points(pGeom, pMat));
+
+            galaxiesGroup.add(gPivot);
+            galaxyObjects[gc.id] = gPivot;
+        });
+
+        // 4.4 Systèmes Stellaires & Planètes
+        const systemObjects = {};
+        const planetMeshes = [];
+
+        SYSTEM_CONFIGS.forEach(sc => {
+            const sPivot = new THREE.Group();
+            sPivot.position.set(sc.x, sc.y, sc.z);
+            sPivot.userData = { type: 'system', data: sc };
+
+            // Étoile centrale
+            const starGeom = new THREE.SphereGeometry(6, 24, 24);
+            const starMat = new THREE.MeshBasicMaterial({ color: sc.starColor });
+            const starMesh = new THREE.Mesh(starGeom, starMat);
+            sPivot.add(starMesh);
+
+            // Lueur corona
+            const coronaGeom = new THREE.SphereGeometry(12, 16, 16);
+            const coronaMat = new THREE.MeshBasicMaterial({ color: sc.starColor, transparent: true, opacity: 0.3 });
+            sPivot.add(new THREE.Mesh(coronaGeom, coronaMat));
+
+            systemsGroup.add(sPivot);
+            systemObjects[sc.id] = sPivot;
+        });
+
+        // Rattacher les corps planétaires à leurs systèmes
+        BODY_CONFIGS.forEach(bc => {
+            const sysObj = systemObjects[bc.systemId];
+            if (!sysObj) return;
+
+            const orbitPivot = new THREE.Group();
+            sysObj.add(orbitPivot);
+
+            // Ligne d'orbite
+            const orbitGeom = new THREE.BufferGeometry();
+            const orbitPts = [];
+            for (let a = 0; a <= Math.PI * 2; a += 0.05) {
+                orbitPts.push(new THREE.Vector3(Math.cos(a) * bc.dist, 0, Math.sin(a) * bc.dist));
+            }
+            orbitGeom.setFromPoints(orbitPts);
+            const orbitLine = new THREE.Line(orbitGeom, new THREE.LineBasicMaterial({ color: 0xffffff, transparent: true, opacity: 0.12 }));
+            sysObj.add(orbitLine);
+
+            // Sphère Planétaire
+            const pTex = generatePlanetTexture('#0f172a', '#38bdf8', false);
+            const pGeom = new THREE.SphereGeometry(bc.radius, 32, 32);
+            const pMat = new THREE.MeshStandardMaterial({
+                color: bc.color,
+                roughness: 0.6,
+                metalness: 0.2
+            });
+            const planetMesh = new THREE.Mesh(pGeom, pMat);
+            planetMesh.position.set(bc.dist, 0, 0);
+            planetMesh.userData = { type: 'body', data: bc, orbitGroup: orbitPivot };
+            orbitPivot.add(planetMesh);
+            planetMeshes.push(planetMesh);
+
+            // Anneaux si configuré
+            if (bc.rings) {
+                const ringGeom = new THREE.RingGeometry(bc.radius * 1.4, bc.radius * 2.3, 32);
+                const ringMat = new THREE.MeshBasicMaterial({ color: 0x94a3b8, side: THREE.DoubleSide, transparent: true, opacity: 0.4 });
+                const ringMesh = new THREE.Mesh(ringGeom, ringMat);
+                ringMesh.rotation.x = Math.PI / 2.3;
+                planetMesh.add(ringMesh);
+            }
+
+            // Lunes
+            if (bc.moons && bc.moons.length > 0) {
+                bc.moons.forEach(mc => {
+                    const mPivot = new THREE.Group();
+                    planetMesh.add(mPivot);
+
+                    const mGeom = new THREE.SphereGeometry(mc.radius, 16, 16);
+                    const mMat = new THREE.MeshStandardMaterial({ color: mc.color, roughness: 0.8 });
+                    const mMesh = new THREE.Mesh(mGeom, mMat);
+                    mMesh.position.set(mc.dist, 0, 0);
+                    mMesh.userData = { type: 'moon', data: mc };
+                    mPivot.add(mMesh);
+
+                    mc.meshPivot = mPivot;
+                });
+            }
+
+            bc.planetMesh = planetMesh;
+            bc.orbitPivot = orbitPivot;
+        });
+
+        /* =========================================================================
+           5. INTERPOLATION CAMÉRA & CINÉMATIQUE DE ZOOM
+           ========================================================================= */
+        let targetCameraPos = new THREE.Vector3(0, 750, 1400);
+        let targetLookAt = new THREE.Vector3(0, 0, 0);
+        let isTransitioning = false;
+        let transitionProgress = 1;
+
+        function smoothFlyTo(newPos, newLookAt, duration = 1200) {
+            targetCameraPos.copy(newPos);
+            targetLookAt.copy(newLookAt);
+            isTransitioning = true;
+            transitionProgress = 0;
+        }
+
+        function zoomToTier(tier) {
+            COSMOS_DATA.tier = tier;
+            updateBreadcrumbs();
+
+            if (tier === 1) {
+                resetUniverseView();
+            } else if (tier === 2) {
+                focusOnZone('ceylan');
+            } else if (tier === 3) {
+                focusOnGalaxy('gal-main');
+            } else if (tier === 4) {
+                focusOnSystem('sys-hybris');
+            } else if (tier === 5) {
+                focusOnBody('hybris');
+            }
+        }
+
+        function resetUniverseView() {
+            COSMOS_DATA.tier = 1;
+            COSMOS_DATA.selectedEntity = null;
+            updateBreadcrumbs();
+            smoothFlyTo(new THREE.Vector3(0, 750, 1400), new THREE.Vector3(0, 0, 0));
+
+            // Ajustement visibilités
+            galaxiesGroup.visible = true;
+            systemsGroup.visible = true;
+            zonesGroup.visible = true;
+            conduitsGroup.visible = true;
+
+            updateTelemetry({
+                name: "Univers (36 Zones Élianes)",
+                badges: ["Niveau 1 : Macrocosme", "Matrice Causalité 100%"],
+                coords: "[ 0.00, 0.00, 0.00 ]",
+                ruler: "Le Réseau des 36 Élianes",
+                flux: "Cinquième Force / Fleuve",
+                darkRate: "18.4% (Progression)",
+                desc: "Vue globale de la trame universelle. 36 secteurs sous surveillance des Élianes. Au Centre-Est, Capricius panique sous l'accumulation d'Eau Sombre, tandis qu'à l'Est immédiat, la zone de Ceylan abrite le système Hybris et le point d'impact de l'An 1772 HSC."
+            });
+            document.getElementById('scaleIndicator').textContent = "NIVEAU 1 — VUE GLOBALE COSMIQUE";
+        }
+
+        function focusOnZone(zoneId) {
+            const zc = ZONE_CONFIGS.find(z => z.id === zoneId);
+            if (!zc) return;
+
+            COSMOS_DATA.tier = 2;
+            COSMOS_DATA.selectedEntity = zc;
+            updateBreadcrumbs();
+
+            const pos = new THREE.Vector3(zc.x, zc.y + 120, zc.z + 240);
+            const look = new THREE.Vector3(zc.x, zc.y, zc.z);
+            smoothFlyTo(pos, look);
+
+            updateTelemetry({
+                name: zc.name,
+                badges: ["Niveau 2 : Zone Éliane", zc.id === 'capricius' ? "Eau Sombre Critique" : "Vecteur Harmonique"],
+                coords: `[ ${zc.x}.00, ${zc.y}.00, ${zc.z}.00 ]`,
+                ruler: zc.ruler,
+                flux: zc.id === 'capricius' ? "Répulsion Gravitationnelle & Eau Sombre" : "Cinquième Force Déployée",
+                darkRate: zc.id === 'capricius' ? "89.7% (Seuil de rupture)" : "3.1% (Stable)",
+                desc: zc.desc
+            });
+            document.getElementById('scaleIndicator').textContent = `NIVEAU 2 — ${zc.name.toUpperCase()}`;
+        }
+
+        function focusOnGalaxy(galId) {
+            const gc = GALAXY_CONFIGS.find(g => g.id === galId);
+            if (!gc) return;
+
+            COSMOS_DATA.tier = 3;
+            COSMOS_DATA.selectedEntity = gc;
+            updateBreadcrumbs();
+
+            const pos = new THREE.Vector3(gc.x, gc.y + 70, gc.z + 130);
+            const look = new THREE.Vector3(gc.x, gc.y, gc.z);
+            smoothFlyTo(pos, look);
+
+            updateTelemetry({
+                name: gc.name,
+                badges: ["Niveau 3 : Galaxie", "Filaments Stellaires"],
+                coords: `[ ${gc.x}.00, ${gc.y}.00, ${gc.z}.00 ]`,
+                ruler: "Conseil Galactique / Empire",
+                flux: "Lumière Stellaire / 5e Force",
+                darkRate: gc.id === 'gal-aurion' ? "44.2%" : "5.0%",
+                desc: gc.desc
+            });
+            document.getElementById('scaleIndicator').textContent = `NIVEAU 3 — ${gc.name.toUpperCase()}`;
+        }
+
+        function focusOnSystem(sysId) {
+            const sc = SYSTEM_CONFIGS.find(s => s.id === sysId);
+            if (!sc) return;
+
+            COSMOS_DATA.tier = 4;
+            COSMOS_DATA.selectedEntity = sc;
+            updateBreadcrumbs();
+
+            const pos = new THREE.Vector3(sc.x, sc.y + 35, sc.z + 70);
+            const look = new THREE.Vector3(sc.x, sc.y, sc.z);
+            smoothFlyTo(pos, look);
+
+            updateTelemetry({
+                name: sc.name,
+                badges: ["Niveau 4 : Système Stellaire", "Orbite Héliocentrique"],
+                coords: `[ ${sc.x}.00, ${sc.y}.00, ${sc.z}.00 ]`,
+                ruler: "Souveraineté Planétaire",
+                flux: "Thermodynamique Solaire",
+                darkRate: "Négligeable",
+                desc: sc.desc
+            });
+            document.getElementById('scaleIndicator').textContent = `NIVEAU 4 — ${sc.name.toUpperCase()}`;
+        }
+
+        function focusOnBody(bodyId) {
+            const bc = BODY_CONFIGS.find(b => b.id === bodyId);
+            if (!bc || !bc.planetMesh) return;
+
+            COSMOS_DATA.tier = 5;
+            COSMOS_DATA.selectedEntity = bc;
+            updateBreadcrumbs();
+
+            // Position mondiale de la planète
+            const worldPos = new THREE.Vector3();
+            bc.planetMesh.getWorldPosition(worldPos);
+
+            const camOffset = new THREE.Vector3(worldPos.x + bc.radius * 2.8, worldPos.y + bc.radius * 1.5, worldPos.z + bc.radius * 3.5);
+            smoothFlyTo(camOffset, worldPos);
+
+            updateTelemetry({
+                name: bc.name,
+                badges: ["Niveau 5 : Corps Céleste & Lunes", bc.telemetry.magic],
+                coords: bc.telemetry.coords,
+                ruler: bc.telemetry.pop,
+                flux: bc.telemetry.tech,
+                darkRate: `Gravité : ${bc.telemetry.grav}`,
+                desc: `${bc.telemetry.desc} | Calendrier : ${bc.telemetry.calendar}.`
+            });
+            document.getElementById('scaleIndicator').textContent = `NIVEAU 5 — ${bc.name.toUpperCase()} (ZOOM MAXIMUM)`;
+        }
+
+        function toggleDarkWater() {
+            COSMOS_DATA.darkWaterVisible = !COSMOS_DATA.darkWaterVisible;
+            const btn = document.getElementById('btnToggleDarkWater');
+            btn.classList.toggle('active', COSMOS_DATA.darkWaterVisible);
+            buildConduits();
+        }
+
+        /* =========================================================================
+           6. MISE À JOUR DU TABLEAU DE BORD & BREADCRUMBS
+           ========================================================================= */
+        function updateTelemetry(data) {
+            document.getElementById('telemetryName').textContent = data.name;
+            document.getElementById('telemetryCoords').textContent = data.coords;
+            document.getElementById('telemetryRuler').textContent = data.ruler;
+            document.getElementById('telemetryFlux').textContent = data.flux;
+            document.getElementById('telemetryDarkRate').textContent = data.darkRate;
+            document.getElementById('telemetryDesc').textContent = data.desc;
+
+            const badgeContainer = document.getElementById('telemetryBadges');
+            badgeContainer.innerHTML = '';
+            data.badges.forEach((bText, idx) => {
+                const sp = document.createElement('span');
+                sp.className = `tag-indicator ${idx === 0 ? 'cyan' : 'amber'}`;
+                sp.textContent = bText;
+                badgeContainer.appendChild(sp);
+            });
+        }
+
+        function updateBreadcrumbs() {
+            const t = COSMOS_DATA.tier;
+            document.querySelectorAll('.bc-node').forEach(el => el.classList.remove('active'));
+
+            if (t === 1) document.querySelector('.bc-node:nth-child(1)').classList.add('active');
+            if (t === 2) document.getElementById('bc-zone').classList.add('active');
+            if (t === 3) document.getElementById('bc-galaxy').classList.add('active');
+            if (t === 4) document.getElementById('bc-system').classList.add('active');
+            if (t === 5) document.getElementById('bc-body').classList.add('active');
+        }
+
+        function filterEntities() {
+            const q = document.getElementById('searchInput').value.toLowerCase();
+            const items = document.querySelectorAll('.tree-item');
+            items.forEach(it => {
+                const text = it.textContent.toLowerCase();
+                it.style.display = text.includes(q) ? 'flex' : 'none';
+            });
+        }
+
+        /* =========================================================================
+           7. RAYCASTING & INTERACTION SOURIS
+           ========================================================================= */
+        const raycaster = new THREE.Raycaster();
+        const mouse = new THREE.Vector2();
+        const labelBox = document.getElementById('worldLabel');
+
+        window.addEventListener('mousemove', (e) => {
+            mouse.x = (e.clientX / window.innerWidth) * 2 - 1;
+            mouse.y = -(e.clientY / window.innerHeight) * 2 + 1;
+
+            raycaster.setFromCamera(mouse, camera);
+
+            // Tester d'abord les planètes si zoom avancé
+            const planetHits = raycaster.intersectObjects(planetMeshes, true);
+            if (planetHits.length > 0) {
+                const hitMesh = planetHits[0].object;
+                if (hitMesh.userData && hitMesh.userData.data) {
+                    showTooltip(hitMesh.userData.data.name, e.clientX, e.clientY);
+                    document.body.style.cursor = 'pointer';
+                    return;
+                }
+            }
+
+            // Tester les zones si vue d'ensemble
+            if (COSMOS_DATA.tier <= 2) {
+                const zoneHits = raycaster.intersectObjects(zonesGroup.children, true);
+                if (zoneHits.length > 0) {
+                    let topGroup = zoneHits[0].object;
+                    while (topGroup.parent && topGroup.parent !== zonesGroup) {
+                        topGroup = topGroup.parent;
+                    }
+                    if (topGroup.userData && topGroup.userData.data) {
+                        showTooltip(topGroup.userData.data.name, e.clientX, e.clientY);
+                        document.body.style.cursor = 'pointer';
+                        return;
+                    }
+                }
+            }
+
+            labelBox.style.display = 'none';
+            document.body.style.cursor = 'default';
+        });
+
+        function showTooltip(text, x, y) {
+            labelBox.textContent = text;
+            labelBox.style.left = `${x}px`;
+            labelBox.style.top = `${y}px`;
+            labelBox.style.display = 'block';
+        }
+
+        window.addEventListener('dblclick', () => {
+            raycaster.setFromCamera(mouse, camera);
+
+            // Double clic sur planète
+            const planetHits = raycaster.intersectObjects(planetMeshes, true);
+            if (planetHits.length > 0) {
+                const hit = planetHits[0].object;
+                if (hit.userData && hit.userData.data) {
+                    focusOnBody(hit.userData.data.id);
+                    return;
+                }
+            }
+
+            // Double clic sur zone
+            const zoneHits = raycaster.intersectObjects(zonesGroup.children, true);
+            if (zoneHits.length > 0) {
+                let topGroup = zoneHits[0].object;
+                while (topGroup.parent && topGroup.parent !== zonesGroup) {
+                    topGroup = topGroup.parent;
+                }
+                if (topGroup.userData && topGroup.userData.data) {
+                    focusOnZone(topGroup.userData.data.id);
+                }
+            }
+        });
+
+        /* =========================================================================
+           8. BOUCLE DE RENDU & PHYSIQUE ORBITALE
+           ========================================================================= */
+        const clock = new THREE.Clock();
+
+        function animate() {
+            requestAnimationFrame(animate);
+
+            const delta = clock.getDelta();
+            const time = clock.getElapsedTime();
+
+            // Rotation des zones
+            zonesGroup.children.forEach(z => {
+                z.rotation.y += 0.0015;
+            });
+
+            // Rotation des galaxies
+            galaxiesGroup.children.forEach(g => {
+                g.rotation.y += 0.0008;
+            });
+
+            // Mouvement orbital des planètes
+            BODY_CONFIGS.forEach(bc => {
+                if (bc.orbitPivot) {
+                    bc.orbitPivot.rotation.y += bc.speed * 0.4;
+                }
+                if (bc.planetMesh) {
+                    bc.planetMesh.rotation.y += 0.01;
+                }
+                if (bc.moons) {
+                    bc.moons.forEach(mc => {
+                        if (mc.meshPivot) {
+                            mc.meshPivot.rotation.y += mc.speed;
+                        }
+                    });
+                }
+            });
+
+            // Lissage caméra (Interpolation douce)
+            if (isTransitioning) {
+                transitionProgress += delta * 1.6;
+                camera.position.lerp(targetCameraPos, 0.06);
+                controls.target.lerp(targetLookAt, 0.06);
+
+                if (camera.position.distanceTo(targetCameraPos) < 1.0 && controls.target.distanceTo(targetLookAt) < 1.0) {
+                    isTransitioning = false;
+                }
+            }
+
+            // Suivi dynamique si zoomé sur planète
+            if (COSMOS_DATA.tier === 5 && COSMOS_DATA.selectedEntity && COSMOS_DATA.selectedEntity.planetMesh && !isTransitioning) {
+                const targetWorldPos = new THREE.Vector3();
+                COSMOS_DATA.selectedEntity.planetMesh.getWorldPosition(targetWorldPos);
+                controls.target.copy(targetWorldPos);
+            }
+
+            controls.update();
+            renderer.render(scene, camera);
+        }
+
+        window.addEventListener('resize', () => {
+            camera.aspect = window.innerWidth / window.innerHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(window.innerWidth, window.innerHeight);
+        });
+
+        // Lancement immédiat
+        animate();
+    </script>
+</body>
+
+</html>

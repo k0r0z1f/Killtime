@@ -40,9 +40,10 @@ namespace Killtime.Core.Combat
             int defenderBonusAP = 0)
         {
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
+            var cfg = Rules.CoreRulesConfig.Instance;
 
             // 1. Temps de l'Attaquant : Coût de base + PA bonus injectés
-            int baseAttackCost = cancelPenaltyWithAP ? 3 : 2;
+            int baseAttackCost = cfg.BaseAttackAPCost + (cancelPenaltyWithAP ? cfg.CancelAimPenaltyAPCost : 0);
             int safeAttackerBonus = Math.Max(0, attackerBonusAP);
             int totalAttackerCost = baseAttackCost + safeAttackerBonus;
 
@@ -56,8 +57,8 @@ namespace Killtime.Core.Combat
                 };
             }
 
-            // 2. Temps du Défenseur : Coût de base de réaction (1 PA) + PA bonus défensifs
-            int baseDefenseCost = 1;
+            // 2. Temps du Défenseur : Coût de base de réaction + PA bonus défensifs
+            int baseDefenseCost = cfg.BaseReactionAPCost;
             bool canDefenderReact = defender.CurrentActionPoints >= baseDefenseCost;
             int actualDefenderBonus = 0;
 
@@ -83,13 +84,12 @@ namespace Killtime.Core.Combat
             }
             else
             {
-                // Défenseur surpris sans PA pour réagir : malus réflexe
-                finalDefenseMod -= 2;
+                finalDefenseMod += cfg.UnreactiveDefensePenalty;
             }
 
             // 4. Lancer des dés et différentiel net
-            var attackRoll = _diceRoller.Roll(attackDie, finalAttackMod, 10);
-            var defenseRoll = _diceRoller.Roll(defenseDie, finalDefenseMod, 10);
+            var attackRoll = _diceRoller.Roll(attackDie, finalAttackMod, cfg.StandardTargetDC);
+            var defenseRoll = _diceRoller.Roll(defenseDie, finalDefenseMod, cfg.StandardTargetDC);
 
             int differential = attackRoll.Total - defenseRoll.Total;
 

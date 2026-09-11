@@ -31,5 +31,16 @@
     "provider": "local",
     "createdAt": "2026-09-10T20:30:40.383Z",
     "characters": []
+  },
+  {
+    "id": "usr_mtvzstfs",
+    "username": "test",
+    "email": "121212@gmail.com",
+    "saltHex": "53371c3244e8aeaea60df54356a43c72",
+    "passwordHashHex": "b57be6b64343bda31d43fa4c97fc2b32242a03f8e662be89f1fe0e4779cad8a7",
+    "role": "Joueur",
+    "provider": "local",
+    "createdAt": "2026-09-10T20:41:20.392Z",
+    "characters": []
   }
 ]

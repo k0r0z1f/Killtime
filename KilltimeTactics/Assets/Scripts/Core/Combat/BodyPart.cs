@@ -28,17 +28,40 @@ namespace Killtime.Core.Combat
 
         public static BodyPartInfo GetInfo(BodyPart part)
         {
-            return part switch
+            var rule = Rules.CoreRulesConfig.Instance.GetPartRule(part);
+            string name = part switch
             {
-                BodyPart.Tete => new BodyPartInfo { Part = part, DisplayName = "Tête / Crâne", DifficultyModifier = -2, CriticalDamageMultiplier = 3, HitProbabilityWeight = 0.15f },
-                BodyPart.YeuxVisage => new BodyPartInfo { Part = part, DisplayName = "Yeux / Visage", DifficultyModifier = -3, CriticalDamageMultiplier = 3, HitProbabilityWeight = 0.10f },
-                BodyPart.CouTrachee => new BodyPartInfo { Part = part, DisplayName = "Cou / Trachée", DifficultyModifier = -3, CriticalDamageMultiplier = 3, HitProbabilityWeight = 0.10f },
-                BodyPart.CoeurPoumons => new BodyPartInfo { Part = part, DisplayName = "Cœur / Poumons", DifficultyModifier = -2, CriticalDamageMultiplier = 2, HitProbabilityWeight = 0.20f },
-                BodyPart.Torse => new BodyPartInfo { Part = part, DisplayName = "Torse / Abdomen", DifficultyModifier = 0, CriticalDamageMultiplier = 1, HitProbabilityWeight = 0.40f },
-                BodyPart.BrasDroit => new BodyPartInfo { Part = part, DisplayName = "Bras Droit (Arme)", DifficultyModifier = -1, CriticalDamageMultiplier = 1, HitProbabilityWeight = 0.25f },
-                BodyPart.BrasGauche => new BodyPartInfo { Part = part, DisplayName = "Bras Gauche (Garde)", DifficultyModifier = -1, CriticalDamageMultiplier = 1, HitProbabilityWeight = 0.25f },
-                BodyPart.Jambes => new BodyPartInfo { Part = part, DisplayName = "Jambes", DifficultyModifier = -1, CriticalDamageMultiplier = 1, HitProbabilityWeight = 0.30f },
-                _ => new BodyPartInfo { Part = part, DisplayName = "Torse", DifficultyModifier = 0, CriticalDamageMultiplier = 1, HitProbabilityWeight = 0.40f }
+                BodyPart.Tete => "Tête / Crâne",
+                BodyPart.YeuxVisage => "Yeux / Visage",
+                BodyPart.CouTrachee => "Cou / Trachée",
+                BodyPart.CoeurPoumons => "Cœur / Poumons",
+                BodyPart.Torse => "Torse / Abdomen",
+                BodyPart.BrasDroit => "Bras Droit (Arme)",
+                BodyPart.BrasGauche => "Bras Gauche (Garde)",
+                BodyPart.Jambes => "Jambes",
+                _ => "Torse"
+            };
+
+            float weight = part switch
+            {
+                BodyPart.Tete => 0.15f,
+                BodyPart.YeuxVisage => 0.10f,
+                BodyPart.CouTrachee => 0.10f,
+                BodyPart.CoeurPoumons => 0.20f,
+                BodyPart.Torse => 0.40f,
+                BodyPart.BrasDroit => 0.25f,
+                BodyPart.BrasGauche => 0.25f,
+                BodyPart.Jambes => 0.30f,
+                _ => 0.40f
+            };
+
+            return new BodyPartInfo
+            {
+                Part = part,
+                DisplayName = name,
+                DifficultyModifier = rule.DifficultyModifier,
+                CriticalDamageMultiplier = rule.CriticalDamageMultiplier,
+                HitProbabilityWeight = weight
             };
         }
     }

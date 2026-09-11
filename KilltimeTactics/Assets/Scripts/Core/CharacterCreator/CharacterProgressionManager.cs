@@ -8,8 +8,8 @@ namespace Killtime.Core.Character
     /// </summary>
     public class CharacterProgressionManager
     {
-        public const int XP_COST_TRAINING = 5;
-        public const int XP_COST_SPECIALIZATION = 5;
+        public static int XP_COST_TRAINING => Rules.CoreRulesConfig.Instance.XPCostTraining;
+        public static int XP_COST_SPECIALIZATION => Rules.CoreRulesConfig.Instance.XPCostSpecialization;
 
         public static bool GrantXP(CharacterSheet sheet, int amount)
         {

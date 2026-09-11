@@ -98,6 +98,43 @@ namespace Killtime.Tactics.TurnSystem
             _activeUnitIndex = 0;
         }
 
+        public void UnregisterUnit(TacticalUnit unit)
+        {
+            if (unit == null) return;
+
+            bool wasActive = (ActiveUnit == unit);
+            int idx = _allUnits.IndexOf(unit);
+            if (idx >= 0)
+            {
+                _allUnits.RemoveAt(idx);
+            }
+
+            if (CheckCombatOver()) return;
+
+            if (wasActive)
+            {
+                _activeUnitIndex = idx;
+                while (_activeUnitIndex < _allUnits.Count && !_allUnits[_activeUnitIndex].Stats.IsAlive)
+                {
+                    _activeUnitIndex++;
+                }
+
+                if (_activeUnitIndex >= _allUnits.Count)
+                {
+                    CurrentRound++;
+                    StartNewRound();
+                }
+                else
+                {
+                    StartUnitTurn();
+                }
+            }
+            else if (ActiveUnit != null)
+            {
+                _activeUnitIndex = _allUnits.IndexOf(ActiveUnit);
+            }
+        }
+
         public void ResetCombatState()
         {
             IsCombatOver = false;

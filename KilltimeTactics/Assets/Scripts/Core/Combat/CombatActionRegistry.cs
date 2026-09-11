@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics.Units;
+using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Combat;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
@@ -244,6 +245,27 @@ namespace Killtime.Tactics.CombatUI
                 {
                     tgt.Stats.CurrentHealth = 0;
                     tgt.Stats.ActiveStatus |= StatusEffect.Inconscient;
+                }
+            ));
+
+            actions.Add(new CombatAction(
+                "🗑️ [DEV] Retirer de la Carte (Supprimer)",
+                "Désenregistre et détruit définitivement cette unité de la grille.",
+                ActionCategory.CommandesDev,
+                0,
+                null,
+                (act, tgt) =>
+                {
+                    if (arena != null)
+                    {
+                        arena.RemoveUnit(tgt);
+                    }
+                    else
+                    {
+                        var tm = Object.FindAnyObjectByType<TurnManager>();
+                        tm?.UnregisterUnit(tgt);
+                        Object.Destroy(tgt.gameObject);
+                    }
                 }
             ));
 
