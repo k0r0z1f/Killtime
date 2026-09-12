@@ -12,12 +12,34 @@ namespace Killtime.Tactics.Grid
         [SerializeField] private int _gridRadius = 8;
         [SerializeField] private float _hexRadius = 1.0f;
         [SerializeField] private float _gridHeight = 0.05f;
+        [SerializeField] private float _ceilingHeight = 3.5f;
 
         private readonly Dictionary<HexCoordinates, HexNode> _nodes = new();
 
         public IReadOnlyDictionary<HexCoordinates, HexNode> Nodes => _nodes;
         public float HexRadius => _hexRadius;
         public int GridRadius => _gridRadius;
+        public float CeilingHeight
+        {
+            get => _ceilingHeight;
+            set => _ceilingHeight = value;
+        }
+
+        public void SetNodeCeiling(HexCoordinates coords, bool hasCeiling)
+        {
+            if (_nodes.TryGetValue(coords, out var node))
+            {
+                node.HasCeiling = hasCeiling;
+            }
+        }
+
+        public void SetAllCeilings(bool hasCeiling)
+        {
+            foreach (var node in _nodes.Values)
+            {
+                node.HasCeiling = hasCeiling;
+            }
+        }
 
         public void SetNodeCover(HexCoordinates coords, CoverType cover, bool isWalkable = true)
         {
@@ -44,6 +66,7 @@ namespace Killtime.Tactics.Grid
                 node.Cover = CoverType.None;
                 node.IsWalkable = true;
                 node.IsOccupied = false;
+                node.HasCeiling = false;
             }
         }
 

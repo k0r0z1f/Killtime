@@ -542,6 +542,7 @@ MonoBehaviour:
   _gridRadius: 6
   _hexRadius: 1
   _gridHeight: 0.05
+  _ceilingHeight: 3.5
 --- !u!114 &2000000004
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -557,6 +558,9 @@ MonoBehaviour:
   _grid: {fileID: 2000000003}
   _customTileMaterial: {fileID: 0}
   _customObstacleMaterial: {fileID: 0}
+  _customCeilingMaterial: {fileID: 0}
+  _ceilingOpacity: 0.18
+  _showCeilingInGame: 0
   _defaultTileColor: {r: 0.12, g: 0.14, b: 0.18, a: 1}
   _borderTileColor: {r: 0.08, g: 0.09, b: 0.12, a: 1}
   _reachableTileColor: {r: 0.1, g: 0.45, b: 0.65, a: 0.85}

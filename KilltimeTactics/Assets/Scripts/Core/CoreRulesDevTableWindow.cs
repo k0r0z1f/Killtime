@@ -59,12 +59,17 @@ namespace Killtime.UI
             GUI.BringWindowToFront(995);
         }
 
+        public void CloseWindow()
+        {
+            _isOpen = false;
+        }
+
         private void DrawWindowContent(int windowId)
         {
             GUI.DragWindow(new Rect(0, 0, _windowRect.width - 65, 25));
             if (GUI.Button(new Rect(_windowRect.width - 60, 4, 55, 20), "Fermer"))
             {
-                _isOpen = false;
+                CloseWindow();
             }
 
             GUILayout.Space(6);

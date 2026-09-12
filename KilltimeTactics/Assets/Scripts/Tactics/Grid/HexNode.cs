@@ -20,6 +20,7 @@ namespace Killtime.Tactics.Grid
         public CoverType Cover = CoverType.None;
         public bool IsOccupied = false;
         public bool HasCustomVisual = false;
+        public bool HasCeiling = false;
 
         public HexNode(HexCoordinates coords, Vector3 worldPos)
         {
@@ -29,6 +30,7 @@ namespace Killtime.Tactics.Grid
             ActionPointCost = 1;
             Cover = CoverType.None;
             IsOccupied = false;
+            HasCeiling = false;
         }
     }
 }
