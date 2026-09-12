@@ -10,90 +10,65 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Labyrinth of Timelines - ARCHITECT ACCESS</title>
     <style>
+        :root {
+            --bg-void: #070707;
+            --panel-bg: #0d1117;
+            --border-red: #a00000;
+            --border-dim: #21262d;
+            --text-main: #d4d4d4;
+            --text-dim: #7d8590;
+            --accent-cyan: #58a6ff;
+            --accent-amber: #f0883e;
+            --accent-green: #3fb950;
+            --accent-purple: #bc8cff;
+            --accent-red: #ff4444;
+        }
+
         body {
-            background-color: #070707;
-            color: #d4d4d4;
+            background-color: var(--bg-void);
+            color: var(--text-main);
             font-family: 'Courier New', Courier, monospace;
             margin: 0;
-            padding: 40px;
+            padding: 40px 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
         }
 
         h1 {
-            color: #a00000;
+            color: var(--border-red);
             text-shadow: 2px 2px 4px #000000;
             text-transform: uppercase;
             letter-spacing: 2px;
             border-bottom: 1px solid #333;
             padding-bottom: 10px;
             width: 100%;
-            max-width: 800px;
+            max-width: 950px;
             text-align: center;
         }
 
         .warning {
-            color: #ff4444;
+            color: var(--accent-red);
             font-weight: bold;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
             text-align: center;
-            max-width: 800px;
+            max-width: 950px;
             line-height: 1.5;
-        }
-
-        .timeline-list {
-            list-style: none;
-            padding: 0;
-            width: 100%;
-            max-width: 800px;
-        }
-
-        .timeline-list li {
-            background-color: #111;
-            margin-bottom: 15px;
-            padding: 20px;
-            border-left: 4px solid #a00000;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.5);
-            transition: transform 0.2s, background-color 0.2s;
-        }
-
-        .timeline-list li:hover {
-            transform: scale(1.02);
-            background-color: #1a1a1a;
-            border-left-color: #ff3333;
-        }
-
-        .timeline-list a {
-            text-decoration: none;
-            color: #d4d4d4;
-            display: block;
-        }
-
-        .timeline-title {
-            font-size: 1.2em;
-            color: #e0e0e0;
-            margin-bottom: 5px;
-            font-weight: bold;
-        }
-
-        .timeline-meta {
-            font-size: 0.9em;
-            color: #777;
+            letter-spacing: 1px;
         }
 
         .glitch {
             position: relative;
-            animation: glitch-anim 2s linear infinite;
+            animation: glitch-anim 2.5s linear infinite;
         }
 
         @keyframes glitch-anim {
-            0% {
-                opacity: 1;
-            }
 
-            95% {
+            0%,
+            95%,
+            100% {
                 opacity: 1;
+                transform: translate(0, 0);
             }
 
             96% {
@@ -108,27 +83,244 @@
 
             98% {
                 opacity: 1;
-                transform: translate(0, 0);
+                transform: translate(-1px, 0);
             }
+        }
 
-            100% {
-                opacity: 1;
-            }
+        /* === DIRECTOIRE DES DOSSIERS CATÉGORISÉS === */
+        .archive-browser {
+            width: 100%;
+            max-width: 950px;
+            margin-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .archive-controls {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            background: #11141a;
+            border: 1px solid #30363d;
+            border-left: 4px solid var(--accent-cyan);
+            border-radius: 4px;
+            padding: 16px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.7);
+        }
+
+        .archive-search-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .archive-search-input {
+            flex: 1;
+            background: #07090d;
+            border: 1px solid #30363d;
+            color: #fff;
+            padding: 8px 12px;
+            font-family: 'Courier New', Courier, monospace;
+            font-size: 0.9em;
+            outline: none;
+            border-radius: 3px;
+        }
+
+        .archive-search-input:focus {
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 8px rgba(88, 166, 255, 0.3);
+        }
+
+        .category-tabs {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+
+        .cat-tab {
+            background: #161b22;
+            border: 1px solid #30363d;
+            color: var(--text-dim);
+            padding: 6px 12px;
+            font-size: 0.8em;
+            font-family: 'Courier New', Courier, monospace;
+            font-weight: bold;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+            text-transform: uppercase;
+        }
+
+        .cat-tab:hover {
+            color: #fff;
+            border-color: #58a6ff;
+            background: #1c2128;
+        }
+
+        .cat-tab.active {
+            color: #fff;
+            background: #1f2937;
+            border-color: var(--accent-cyan);
+            box-shadow: 0 0 8px rgba(88, 166, 255, 0.25);
+        }
+
+        .cat-section {
+            background: #0d1117;
+            border: 1px solid #21262d;
+            border-radius: 4px;
+            overflow: hidden;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
+            transition: opacity 0.2s ease;
+        }
+
+        .cat-section.hidden {
+            display: none !important;
+        }
+
+        .cat-header {
+            background: #161b22;
+            padding: 12px 18px;
+            border-bottom: 1px solid #21262d;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cat-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .cat-badge {
+            font-size: 0.75em;
+            padding: 2px 8px;
+            border-radius: 3px;
+            border: 1px solid;
+        }
+
+        .badge-cyan {
+            color: var(--accent-cyan);
+            border-color: rgba(88, 166, 255, 0.3);
+            background: rgba(88, 166, 255, 0.08);
+        }
+
+        .badge-amber {
+            color: var(--accent-amber);
+            border-color: rgba(240, 136, 62, 0.3);
+            background: rgba(240, 136, 62, 0.08);
+        }
+
+        .badge-green {
+            color: var(--accent-green);
+            border-color: rgba(63, 185, 80, 0.3);
+            background: rgba(63, 185, 80, 0.08);
+        }
+
+        .badge-purple {
+            color: var(--accent-purple);
+            border-color: rgba(188, 140, 255, 0.3);
+            background: rgba(188, 140, 255, 0.08);
+        }
+
+        .badge-red {
+            color: var(--accent-red);
+            border-color: rgba(255, 68, 68, 0.3);
+            background: rgba(255, 68, 68, 0.08);
+        }
+
+        .archive-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 1px;
+            background: #21262d;
+        }
+
+        .archive-card {
+            background: #0d1117;
+            padding: 16px 20px;
+            text-decoration: none;
+            color: inherit;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+
+        .archive-card:hover {
+            background: #161b22;
+            padding-left: 24px;
+        }
+
+        .archive-card.featured {
+            background: rgba(88, 166, 255, 0.03);
+            border-left: 3px solid var(--accent-cyan);
+        }
+
+        .archive-card.locked {
+            opacity: 0.45;
+            cursor: not-allowed;
+            pointer-events: none;
+            border-left: 3px solid #444;
+        }
+
+        .card-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .card-title {
+            font-size: 1.05em;
+            font-weight: bold;
+            color: #f0f6fc;
+            letter-spacing: 0.5px;
+        }
+
+        .archive-card:hover .card-title {
+            color: var(--accent-cyan);
+        }
+
+        .card-status {
+            font-size: 0.75em;
+            font-family: monospace;
+            text-transform: uppercase;
+        }
+
+        .card-desc {
+            font-size: 0.88em;
+            color: var(--text-dim);
+            line-height: 1.45;
+        }
+
+        .card-quote {
+            font-size: 0.82em;
+            font-style: italic;
+            color: #8b949e;
+            border-left: 2px solid #30363d;
+            padding-left: 10px;
+            margin-top: 4px;
         }
 
         .back-link {
             margin-top: 40px;
-            color: #555;
+            color: #666;
             text-decoration: none;
             font-size: 0.9em;
             transition: color 0.3s;
         }
 
         .back-link:hover {
-            color: #a00000;
+            color: var(--accent-cyan);
         }
 
-        /* Engine UI Styles */
+        /* === ENGINE UI STYLES === */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -230,41 +422,9 @@
         }
 
         /* Fullscreen Overrides */
-        #engine-wrapper:fullscreen {
-            max-width: none !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            margin: 0 !important;
-            border: none !important;
-            border-radius: 0 !important;
-            background-color: #070707;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #engine-wrapper:-webkit-full-screen {
-            max-width: none !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            margin: 0 !important;
-            border: none !important;
-            background-color: #070707;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
+        #engine-wrapper:fullscreen,
+        #engine-wrapper:-webkit-full-screen,
         #engine-wrapper:-moz-full-screen {
-            max-width: none !important;
-            width: 100vw !important;
-            height: 100vh !important;
-            margin: 0 !important;
-            border: none !important;
-            background-color: #070707;
-            padding: 20px;
-            box-sizing: border-box;
-        }
-
-        #engine-wrapper:-ms-fullscreen {
             max-width: none !important;
             width: 100vw !important;
             height: 100vh !important;
@@ -287,7 +447,7 @@
 
     <!-- Classified Project Progression Matrix -->
     <div id="classified-progression-widget"
-        style="width: 100%; max-width: 800px; background: rgba(15, 10, 10, 0.85); border: 1px solid #5a0000; box-shadow: 0 0 15px rgba(160, 0, 0, 0.4); border-radius: 6px; padding: 15px 20px; margin-bottom: 25px; box-sizing: border-box; font-family: 'Courier New', Courier, monospace;">
+        style="width: 100%; max-width: 950px; background: rgba(15, 10, 10, 0.85); border: 1px solid #5a0000; box-shadow: 0 0 15px rgba(160, 0, 0, 0.4); border-radius: 6px; padding: 15px 20px; margin-bottom: 25px; box-sizing: border-box; font-family: 'Courier New', Courier, monospace;">
         <div
             style="display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #441111; padding-bottom: 8px; margin-bottom: 12px;">
             <span
@@ -311,13 +471,13 @@
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">Draft (40%): <span
                         style="color: #4CAF50; font-weight: bold;">100%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC1 (20%): <span id="truth-vol1-rc1-val"
-                        style="color: #FF9800; font-weight: bold;">60.03%</span></div>
+                        style="color: #FF9800; font-weight: bold;">73.96%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC2 (20%): <span
                         style="color: #777;">0%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 4px;">Gold (20%): <span
                         style="color: #777;">0%</span></div>
                 <div style="border-top: 1px dashed #442222; padding-top: 4px; font-size: 0.82em; color: #aaa;">
-                    Total: <strong id="truth-vol1-total-val" style="color: #79c0ff;">52.01%</strong>
+                    Total: <strong id="truth-vol1-total-val" style="color: #79c0ff;">54.79%</strong>
                 </div>
             </div>
 
@@ -329,7 +489,7 @@
                     VOL II: CURRENT
                 </div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">Draft (40%): <span
-                        id="truth-vol2-draft-val" style="color: #FF9800; font-weight: bold;">~3.3%</span></div>
+                        id="truth-vol2-draft-val" style="color: #FF9800; font-weight: bold;">4.9%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC1 (20%): <span
                         style="color: #777;">0%</span></div>
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 2px;">RC2 (20%): <span
@@ -337,7 +497,7 @@
                 <div style="font-size: 0.8em; color: #ccc; margin-bottom: 4px;">Gold (20%): <span
                         style="color: #777;">0%</span></div>
                 <div style="border-top: 1px dashed #442222; padding-top: 4px; font-size: 0.82em; color: #aaa;">
-                    Total: <strong id="truth-vol2-total-val" style="color: #79c0ff;">1.32%</strong>
+                    Total: <strong id="truth-vol2-total-val" style="color: #79c0ff;">1.98%</strong>
                 </div>
             </div>
 
@@ -361,7 +521,7 @@
                 </div>
             </div>
 
-            <!-- Volume IV (TOP SECRET / GHOST VOLUME) -->
+            <!-- Volume IV (TOP SECRET) -->
             <div
                 style="background: rgba(40, 10, 10, 0.7); padding: 10px; border: 1px solid #880000; border-radius: 4px; position: relative;">
                 <div
@@ -385,13 +545,14 @@
         <div
             style="display: flex; justify-content: space-between; align-items: center; margin-top: 12px; padding-top: 8px; border-top: 1px solid #441111; font-size: 0.8em; color: #888;">
             <span>TRILOGY BASELINE (VOL I-III): <strong id="truth-trilogy-baseline-val"
-                    style="color: #58a6ff;">17.78%</strong></span>
+                    style="color: #58a6ff;">18.92%</strong></span>
             <span>GHOST VECTOR: <strong style="color: #ff4444;">TIMELINE-C (4TH WALL BREACH)</strong></span>
         </div>
     </div>
 
+    <!-- RIVER OF TIME ENGINE -->
     <div id="engine-wrapper"
-        style="width: 100%; max-width: 100%; margin-bottom: 30px; resize: both; overflow: hidden; padding-bottom: 10px; display: flex; flex-direction: column;">
+        style="width: 100%; max-width: 950px; margin-bottom: 30px; resize: both; overflow: hidden; padding-bottom: 10px; display: flex; flex-direction: column;">
         <div id="engine-toolbar" style="width: 100%; display: flex; gap: 10px; margin-bottom: 5px;">
             <button id="btnAddEvent">+ Fixed Event</button>
             <button id="btnAddBranch">+ Branch</button>
@@ -414,7 +575,6 @@
             </div>
             <div id="contextMenu"
                 style="display:none; position:absolute; background:#181c22; border:1px solid #444; border-radius:4px; box-shadow:0 4px 15px rgba(0,0,0,0.8); z-index:50; font-family:monospace; font-size: 0.9em; min-width: 160px; overflow:hidden;">
-                <!-- Event Context Menu Items -->
                 <div id="ctxEventGroup">
                     <div
                         style="padding:6px 12px; font-size:10px; color:#777; background:#12151a; border-bottom:1px solid #282d35; font-weight:bold; letter-spacing:0.5px;">
@@ -433,8 +593,6 @@
                         style="padding:8px 14px; cursor:pointer; color:#ff5555; border-top:1px solid #282d35;">Remove
                         Event</div>
                 </div>
-
-                <!-- Day Title Context Menu Items -->
                 <div id="ctxDayGroup" style="display:none;">
                     <div
                         style="padding:6px 12px; font-size:10px; color:#ffd700; background:#12151a; border-bottom:1px solid #282d35; font-weight:bold; letter-spacing:0.5px;">
@@ -445,8 +603,6 @@
                         style="padding:8px 14px; cursor:pointer; color:#ff5555; border-top:1px solid #282d35;">Delete
                         Day Title</div>
                 </div>
-
-                <!-- Timeline Context Menu Items -->
                 <div id="ctxTimelineGroup" style="display:none;">
                     <div
                         style="padding:6px 12px; font-size:10px; color:#9c27b0; background:#12151a; border-bottom:1px solid #282d35; font-weight:bold; letter-spacing:0.5px;">
@@ -461,9 +617,8 @@
         </div>
     </div>
 
-    <!-- Modals -->
+    <!-- Modals Engine -->
     <div id="modalOverlay" class="modal-overlay">
-        <!-- Event Modal -->
         <div id="eventModal" class="modal" style="display:none;">
             <h2 id="eventModalTitle">Add Fixed Event (|)</h2>
             <div class="form-group">
@@ -508,24 +663,6 @@
                             style="font-size: 11px; padding: 4px 8px; background: #2a2f38; border: 1px solid #475569; color: #fff; cursor: pointer; border-radius: 4px;">Match
                             Timeline</button>
                     </div>
-                    <div style="display: flex; gap: 6px; flex-wrap: wrap; align-items: center;">
-                        <button type="button" class="btn-color-swatch" data-color="#ffffff" title="White (Default)"
-                            style="width: 24px; height: 24px; background: #ffffff; border: 1px solid #94a3b8; border-radius: 4px; cursor: pointer;"></button>
-                        <button type="button" class="btn-color-swatch" data-color="#f44336" title="Red"
-                            style="width: 24px; height: 24px; background: #f44336; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
-                        <button type="button" class="btn-color-swatch" data-color="#ffeb3b" title="Yellow"
-                            style="width: 24px; height: 24px; background: #ffeb3b; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
-                        <button type="button" class="btn-color-swatch" data-color="#2196f3" title="Blue"
-                            style="width: 24px; height: 24px; background: #2196f3; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
-                        <button type="button" class="btn-color-swatch" data-color="#4caf50" title="Green"
-                            style="width: 24px; height: 24px; background: #4caf50; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
-                        <button type="button" class="btn-color-swatch" data-color="#00ffff" title="Cyan"
-                            style="width: 24px; height: 24px; background: #00ffff; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
-                        <button type="button" class="btn-color-swatch" data-color="#9c27b0" title="Purple"
-                            style="width: 24px; height: 24px; background: #9c27b0; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
-                        <button type="button" class="btn-color-swatch" data-color="#ff9800" title="Orange"
-                            style="width: 24px; height: 24px; background: #ff9800; border: 1px solid rgba(255,255,255,0.2); border-radius: 4px; cursor: pointer;"></button>
-                    </div>
                 </div>
             </div>
             <div class="modal-buttons">
@@ -534,7 +671,6 @@
             </div>
         </div>
 
-        <!-- Day Title Modal -->
         <div id="dayTitleModal" class="modal" style="display:none;">
             <h2>Name Timeline Date</h2>
             <div class="form-group">
@@ -559,7 +695,6 @@
             </div>
         </div>
 
-        <!-- Branch Modal -->
         <div id="branchModal" class="modal" style="display:none;">
             <h2>Create Timeline Branch (o)</h2>
             <div class="form-group">
@@ -596,7 +731,6 @@
             </div>
         </div>
 
-        <!-- Timeline Edit Modal -->
         <div id="timelineModal" class="modal" style="display:none;">
             <h2>Edit Timeline</h2>
             <div class="form-group">
@@ -629,7 +763,6 @@
             </div>
         </div>
 
-        <!-- Goto Date Modal -->
         <div id="gotoModal" class="modal" style="display:none;">
             <h2>Jump to Date</h2>
             <div class="form-group">
@@ -647,170 +780,396 @@
         </div>
     </div>
 
+    <!-- Script du moteur River of Time -->
     <script src="../../scripts_and_data/river_engine.js"></script>
 
-    <ul class="timeline-list">
-        <li>
-            <a href="./lucas_journal.html">
-                <div class="timeline-title" style="color: #58a6ff;">CLASSIFIED LOG: Field Journal of Lucas-A (1772 HSC)
-                </div>
-                <div class="timeline-meta">
-                    The Raw Calculations of an Anomaly. Active field ledger acquired at the Great Bridge outpost and maintained daily
-                    through the siege of Brum'korath to the Obsidian Crypt.<br><br>
-                    <span
-                        style="color: #58a6ff; font-style: italic; font-size: 0.9em; display: block; margin-top: 5px; border-left: 2px solid #2b5b84; padding-left: 10px;">
-                        "I am looking at my own corpse. I am reading a script written by a ghost who wore my face. The
-                        only variable that remains uncertain is whether we are doomed to repeat their failure, or if we
-                        can break the causality loop before the River of Time drowns us all."
-                    </span>
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="./The%20Forward%20Propagation%20(T-0%20to%20T-A).html">
-                <div class="timeline-title">The Forward Propagation (T-0 to T-A)</div>
-                <div class="timeline-meta">
-                    Echoes of the Founders. 1,771 years of dark wait. The Baseline.<br><br>
-                    <span
-                        style="color: #999; font-style: italic; font-size: 0.9em; display: block; margin-top: 5px; border-left: 2px solid #555; padding-left: 10px;">
-                        "They allowed themselves to age. They allowed themselves to die. They were stranded and didn't
-                        have much choice, but they could have done nothing until their deaths. Instead, they forged the
-                        foundation."
-                    </span>
-                </div>
-            </a>
-        </li>
-        <li>
-            <div style="opacity: 0.4;">
-                <div class="timeline-title">Timeline-B (The Dictator)</div>
-                <div class="timeline-meta">Failed consciousness transfer. Mina absorbed. Thermodynamic dead end.
-                    [LOCKED]</div>
+    <!-- ========================================================= -->
+    <!-- DIRECTOIRE CATÉGORISÉ DES ARCHIVES & HISTOIRE TOTALE      -->
+    <!-- ========================================================= -->
+    <div class="archive-browser">
+        <div class="archive-controls">
+            <div class="archive-search-row">
+                <span style="color: var(--accent-cyan); font-weight: bold; font-size: 0.9em;">[SEARCH_MATRIX]:</span>
+                <input type="text" id="archiveSearch" class="archive-search-input"
+                    placeholder="Filtrer dossier, protocole, sujet, timeline..." autocomplete="off">
             </div>
-        </li>
-        <li>
-            <div style="opacity: 0.4;">
-                <div class="timeline-title">Timeline-C (The Golden Route)</div>
-                <div class="timeline-meta">The Architect's Sacrifice. Ghost Volume unreleased. [LOCKED]</div>
+            <div class="category-tabs">
+                <button class="cat-tab active" data-cat="all">Tous les Dossiers (20)</button>
+                <button class="cat-tab" data-cat="chronology">Chronologie &amp; Timelines</button>
+                <button class="cat-tab" data-cat="entities">Dossiers Sujets (Tri-Fusion)</button>
+                <button class="cat-tab" data-cat="powers">Physique &amp; 5e Force</button>
+                <button class="cat-tab" data-cat="empire">Cosmos &amp; Impérial</button>
+                <button class="cat-tab" data-cat="architect">Sanctuaire Architecte</button>
             </div>
-        </li>
-        <li>
-            <div style="opacity: 0.4;">
-                <div class="timeline-title">Timeline-D (The Stranded)</div>
-                <div class="timeline-meta">1621 HSC. The Giant Lake Anomaly. [LOCKED]</div>
+        </div>
+
+        <!-- 1. CHRONOLOGIE & TIMELINES -->
+        <section class="cat-section" data-category="chronology">
+            <div class="cat-header">
+                <div class="cat-title" style="color: var(--accent-cyan);">
+                    <span>✦ I. CHRONOLOGIE, MATRICE CAUSALE &amp; TIMELINES</span>
+                </div>
+                <span class="cat-badge badge-cyan">Macro-Vecteurs</span>
             </div>
-        </li>
-        <li>
-            <a href="../abilities/lucas_statsheet.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Subject Lucas-A (Statsheet)</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the chilling logic, biometrical variance, and quantum assets of
-                    Lucas-A up to RC1.
+            <div class="archive-grid">
+                <!-- NOUVEAU MASTER FILE : HISTOIRE TOTALE D'HYBRIS -->
+                <a href="./hybris_history.html" class="archive-card featured"
+                    data-keywords="histoire hybris chronologie complete an 0 1772 1775 timeline-0 timeline-a dereks capricius fleuve temps reliques">
+                    <div class="card-top">
+                        <span class="card-title" style="color: #38bdf8;">[MASTER FILE] CHRONIQUES D'HYBRIS : HISTOIRE
+                            TOTALE &amp; MATRICE CAUSALISTE</span>
+                        <span class="card-status" style="color: #38bdf8;">NOUVEAU // HOMOLOGUÉ</span>
+                    </div>
+                    <div class="card-desc">
+                        La frise causale intégrale du continuum : de la genèse primordiale des 36 Élianes et la
+                        catastrophe d'Eau Sombre de Capricius (-20 milliards HSC) jusqu'à la dérive de 1775 HSC. Intègre
+                        la Déportation de l'An 0, les Dereks natifs, la fondation des Nytharis par Party-0, la forge des
+                        Reliques en l'An 1 000 000 HSC et la rupture du Journal-0 à Brum'korath.
+                    </div>
+                    <div class="card-quote" style="border-left-color: #38bdf8; color: #a5d6ff;">
+                        "La propagation vers l'avant à travers 1 771 ans d'entropie naturelle. L'histoire absolue sous
+                        métrologie HSC."
+                    </div>
+                </a>
+
+                <a href="./lucas_journal.html" class="archive-card featured"
+                    data-keywords="journal lucas 1772 veldruk field log calculations timeline-a">
+                    <div class="card-top">
+                        <span class="card-title" style="color: var(--accent-cyan);">CLASSIFIED LOG: Field Journal of
+                            Lucas-A (1772 HSC)</span>
+                        <span class="card-status" style="color: var(--accent-cyan);">ACTIF // 32 LOGS</span>
+                    </div>
+                    <div class="card-desc">
+                        Les calculs bruts d'une anomalie. Registre physique de terrain ouvert à Veldruk au pied des
+                        Montagnes Naines et maintenu quotidiennement à travers le siège de Brum'korath jusqu'à la Crypte
+                        d'Obsidienne.
+                    </div>
+                    <div class="card-quote">
+                        "Je contemple mon propre cadavre momifié. Je lis un script rédigé par un fantôme qui portait mon
+                        visage."
+                    </div>
+                </a>
+
+                <a href="./The%20Forward%20Propagation%20(T-0%20to%20T-A).html" class="archive-card"
+                    data-keywords="forward propagation timeline-0 timeline-a brum'korath wallace 4.2s reverse butterfly effect">
+                    <div class="card-top">
+                        <span class="card-title">The Forward Propagation (T-0 to T-A)</span>
+                        <span class="card-status" style="color: var(--accent-green);">DÉCRYPTÉ</span>
+                    </div>
+                    <div class="card-desc">
+                        L'inversion du paradoxe. Au lieu de violer l'entropie à contre-courant, Party-0 accepte l'exil
+                        en l'An 0 HSC et propage son onde causale vers l'avant sur dix-sept siècles pour forger le
+                        sanctuaire de Party-A.
+                    </div>
+                    <div class="card-quote">
+                        "Ils se sont laissés vieillir. Ils se sont laissés mourir. Ils ont forgé la fondation dans la
+                        terre."
+                    </div>
+                </a>
+
+                <!-- Lignes Verrouillées -->
+                <div class="archive-card locked" data-keywords="timeline-b le tyran mina absorbee theocratie locked">
+                    <div class="card-top">
+                        <span class="card-title">Timeline-B (The Dictator / Lucas le Tyran)</span>
+                        <span class="card-status" style="color: var(--accent-red);">[LOCKED]</span>
+                    </div>
+                    <div class="card-desc">
+                        Échec du transfert d'âme. Lucas absorbe l'énergie vitale de Mina, fonde une théocratie
+                        impitoyable à Atraxia, calcule l'impasse thermodynamique sur son lit de mort et émet le signal
+                        vers Timeline-C.
+                    </div>
                 </div>
-            </a>
-        </li>
-        <li>
-            <a href="../abilities/mina_statsheet.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Subject Mina-A (Statsheet)</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the kinetic creation energy, biomancy, and untamed heat of Mina-A up
-                    to RC1.
+
+                <div class="archive-card locked"
+                    data-keywords="timeline-c the golden route route d'or architect's sacrifice locked">
+                    <div class="card-top">
+                        <span class="card-title">Timeline-C (The Golden Route)</span>
+                        <span class="card-status" style="color: var(--accent-red);">[LOCKED]</span>
+                    </div>
+                    <div class="card-desc">
+                        La résolution ultime du Tome IV (*The Architect's Sacrifice*). Réconciliation de la causalité,
+                        brèche terminale du quatrième mur et stabilisation du Fleuve du Temps.
+                    </div>
                 </div>
-            </a>
-        </li>
-        <li>
-            <a href="../abilities/thomas_statsheet.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Subject Thomas-A (Statsheet)</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the iron foundation, physical mass, and acoustic void of Thomas-A up
-                    to RC1.
+
+                <div class="archive-card locked"
+                    data-keywords="timeline-d the stranded 1621 1622 giant lake cratere locked">
+                    <div class="card-top">
+                        <span class="card-title">Timeline-D (The Stranded / Les Naufragés de 1622 HSC)</span>
+                        <span class="card-status" style="color: var(--accent-red);">[LOCKED]</span>
+                    </div>
+                    <div class="card-desc">
+                        Saut spatial instable lors de l'affrontement contre le Disciple de l'Air. Effondrement cinétique
+                        projetant Lucas et Mina 150 ans en arrière (1622 HSC), excavant le bassin du Grand Lac.
+                    </div>
                 </div>
-            </a>
-        </li>
-        <li>
-            <a href="../abilities/telepathic_bond.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Telepathic Bond</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the convergence of the chilling logic and the untamed heat.
+            </div>
+        </section>
+
+        <!-- 2. DOSSIERS SUJETS : TRI-FUSION -->
+        <section class="cat-section" data-category="entities">
+            <div class="cat-header">
+                <div class="cat-title" style="color: var(--accent-green);">
+                    <span>✦ II. DOSSIERS D'ENTITÉS &amp; STATSHEETS (TRI-FUSION)</span>
                 </div>
-            </a>
-        </li>
-        <li>
-            <a href="../abilities/pyrokinesis.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Thermodynamic Pyrokinesis</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the quantum friction and thermodynamic anomalies of the Pyrokinesis
-                    sequence.
+                <span class="cat-badge badge-green">Piliers Primordiaux</span>
+            </div>
+            <div class="archive-grid">
+                <a href="../abilities/lucas_statsheet.html" class="archive-card"
+                    data-keywords="lucas statsheet calculating void pyrokinesis telekinesis 0.0001%">
+                    <div class="card-top">
+                        <span class="card-title">Subject Lucas-A // "The Calculating Void" (Statsheet)</span>
+                        <span class="card-status" style="color: var(--accent-cyan);">CLASSE IX // ACTIF</span>
+                    </div>
+                    <div class="card-desc">
+                        Analyse biopsionique complète de Lucas-A à travers 4 checkpoints (Pré-Institut, Awakening,
+                        Égout, Brum'korath). Cartographie du zéro absolu, de la dissociation clinique et de la variance
+                        de 0.0001%.
+                    </div>
+                </a>
+
+                <a href="../abilities/mina_statsheet.html" class="archive-card"
+                    data-keywords="mina statsheet living current biomancy velocity creation">
+                    <div class="card-top">
+                        <span class="card-title">Subject Mina-A // "The Living Current" (Statsheet)</span>
+                        <span class="card-status" style="color: var(--accent-green);">CRÉATION PRIMALE</span>
+                    </div>
+                    <div class="card-desc">
+                        Cartographie de la chaleur brute, de l'impulsion cinétique et de la régénération cellulaire
+                        (biomancie). Évolution des pas invisibles jusqu'à la surcharge végétale de Brum'korath.
+                    </div>
+                </a>
+
+                <a href="../abilities/thomas_statsheet.html" class="archive-card"
+                    data-keywords="thomas statsheet iron foundation acoustic void mass immunity">
+                    <div class="card-top">
+                        <span class="card-title">Subject Thomas-A // "The Iron Foundation" (Statsheet)</span>
+                        <span class="card-status" style="color: var(--text-main);">SOCLE MINÉRAL</span>
+                    </div>
+                    <div class="card-desc">
+                        Télémétrie de l'immunité arcanique passive (*Acoustic Void*). Absence totale d'ondes magiques,
+                        ancrage de choc tellurique et analyse de la réécriture synaptique intracrânienne subie lors de
+                        la liaison de sa relique.
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 3. PHYSIQUE ARCANOTECH & 5E FORCE -->
+        <section class="cat-section" data-category="powers">
+            <div class="cat-header">
+                <div class="cat-title" style="color: var(--accent-purple);">
+                    <span>✦ III. PHYSIQUE ARCANOTECH &amp; DISCIPLINES DE LA 5E FORCE</span>
                 </div>
-            </a>
-        </li>
-        <li>
-            <a href="../abilities/telekinesis.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Spatial Calculus (Telekinesis)</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the geometric logic and gravitational manipulation of the Telekinesis
-                    sequence.
+                <span class="cat-badge badge-purple">Mécanique Quantique</span>
+            </div>
+            <div class="archive-grid">
+                <a href="../abilities/telepathic_bond.html" class="archive-card"
+                    data-keywords="telepathic bond lien telepathique resonance lucas mina convergence">
+                    <div class="card-top">
+                        <span class="card-title">Lien Télépathique : La Résonance des Deux Échos</span>
+                        <span class="card-status" style="color: var(--accent-purple);">CONVERGENCE</span>
+                    </div>
+                    <div class="card-desc">
+                        Étude du pont synaptique sans friction entre Lucas et Mina. Régulation de la température
+                        corporelle, synchronisation tactique sans dépense de PA et analyse du risque de somnambulisme
+                        cataclysmique.
+                    </div>
+                </a>
+
+                <a href="../abilities/pyrokinesis.html" class="archive-card"
+                    data-keywords="pyrokinesis calcul thermique friction flamme choc thermique">
+                    <div class="card-top">
+                        <span class="card-title">Calcul Thermique : Pyrocinésie &amp; Agitation Moléculaire</span>
+                        <span class="card-status" style="color: var(--accent-amber);">THERMODYNAMIQUE</span>
+                    </div>
+                    <div class="card-desc">
+                        La flamme comme rejet d'entropie quantique. Du contrôle d'allumage stérile au laboratoire de
+                        Kingston jusqu'à l'équation de vitrification par Choc Thermique appliquée contre le Disciple de
+                        Terre.
+                    </div>
+                </a>
+
+                <a href="../abilities/telekinesis.html" class="archive-card"
+                    data-keywords="telekinesis calcul spatial gravimetrie vecteurs">
+                    <div class="card-top">
+                        <span class="card-title">Calcul Spatial : Télékynésie &amp; Gravimétrie Vectorielle</span>
+                        <span class="card-status" style="color: var(--accent-cyan);">GÉOMÉTRIE</span>
+                    </div>
+                    <div class="card-desc">
+                        Piratage des coordonnées locales de la gravité. Manipulation multi-objets, projection de
+                        barrières stériles, déviation d'avalanches sur The Watcher et arrachage cinétique sans
+                        frottement.
+                    </div>
+                </a>
+
+                <a href="../abilities/telepathy.html" class="archive-card"
+                    data-keywords="telepathy pare feux dmn intrusion lobotomie">
+                    <div class="card-top">
+                        <span class="card-title">Architecture Neurale : Télépathie &amp; Pare-Feux du DMN</span>
+                        <span class="card-status" style="color: var(--accent-cyan);">NEURAL MESH</span>
+                    </div>
+                    <div class="card-desc">
+                        De la lecture passive des pensées errantes du réseau par défaut (DMN) jusqu'au stade VI de
+                        possession corporelle et la lobotomie acide infligée à l'assassin de l'Unbound dans la ruelle de
+                        Brum'korath.
+                    </div>
+                </a>
+
+                <a href="../abilities/power_of_creation.html" class="archive-card"
+                    data-keywords="vitalite creation biomancie flux mina">
+                    <div class="card-top">
+                        <span class="card-title">Vitalité Cinétique &amp; Pouvoir de Création Primale (Mina)</span>
+                        <span class="card-status" style="color: var(--accent-green);">BIOMANCIE</span>
+                    </div>
+                    <div class="card-desc">
+                        Tissage instinctif des quatre éléments à travers la dynamique des fluides. L'accélération de la
+                        mitose cellulaire, la rupture végétale du Bastion et le fardeau thermique imposé au métabolisme.
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 4. EMPIRE & ANOMALIES COSMIQUES -->
+        <section class="cat-section" data-category="empire">
+            <div class="cat-header">
+                <div class="cat-title" style="color: var(--accent-amber);">
+                    <span>✦ IV. THÉLÉMÉTRIE IMPÉRIALE, CAPRICIUS &amp; VECTEURS D'EXTINCTION</span>
                 </div>
-            </a>
-        </li>
-        <li>
-            <a href="../abilities/telepathy.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Neural Architecture (Telepathy)</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the psychological firewalls and frequency manipulation of solitary
-                    telepathy.
+                <span class="cat-badge badge-amber">Cosmologie Menacée</span>
+            </div>
+            <div class="archive-grid">
+                <a href="../capricius_and_empire.html" class="archive-card"
+                    data-keywords="capricius empire psychohistoire disciples eau sombre vardis atraxia">
+                    <div class="card-top">
+                        <span class="card-title">System Diagnosis: Capricius &amp; The Imperial Equation</span>
+                        <span class="card-status" style="color: var(--accent-red);">MENACE COSMIQUE</span>
+                    </div>
+                    <div class="card-desc">
+                        La panique d'un dieu de 20 milliards d'années. Submersion par l'Eau Sombre, impératif
+                        thermodynamique des 1 000 ans, psychohistoire sur 100 000 ans et doctrine des Disciples comme
+                        missiles biologiques d'extinction.
+                    </div>
+                </a>
+
+                <a href="../thematic_architecture_rc1-15.html" class="archive-card"
+                    data-keywords="thematic architecture rc1 saturation chapitres 1 16">
+                    <div class="card-top">
+                        <span class="card-title">Thematic Architecture of RC1 (Chapters 1 to 16)</span>
+                        <span class="card-status" style="color: var(--accent-cyan);">ANALYSE DE SATURATION</span>
+                    </div>
+                    <div class="card-desc">
+                        Diagnostic systémique des tensions narratives de Volume I : équilibre instable entre la science
+                        clinique (30%), l'horreur cosmique (25%), la vitalité sauvage (20%) et le socle tellurique
+                        (10%).
+                    </div>
+                </a>
+
+                <a href="../thematic_and_pacing.html" class="archive-card"
+                    data-keywords="thematic flow pacing cadence arcs narrative">
+                    <div class="card-top">
+                        <span class="card-title">Hybris Telemetry: Thematic Flow &amp; Pacing Matrix</span>
+                        <span class="card-status" style="color: #8b949e;">MATRICE CADENCE</span>
+                    </div>
+                    <div class="card-desc">
+                        Modélisation de la compression temporelle et de la gestion de la friction dramatique à travers
+                        les chapitres charnières du Volume I et du Draft Bridge.
+                    </div>
+                </a>
+            </div>
+        </section>
+
+        <!-- 5. ARCHITECTE & DEV SANCTUM -->
+        <section class="cat-section" data-category="architect">
+            <div class="cat-header">
+                <div class="cat-title" style="color: var(--accent-red);">
+                    <span>✦ V. SANCTUAIRE DE L'ARCHITECTE &amp; PROTOCOLES DE CONVERGENCE</span>
                 </div>
-            </a>
-        </li>
-        <li>
-            <a href="../abilities/power_of_creation.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Vitality & Kinetic Creation (Mina-A)</div>
-                <div class="timeline-meta">
-                    Entity Resonance Log: Mapping the fluid dynamics, organic creation, and untamed heat of instinctual
-                    magic.
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="../thematic_and_pacing.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Thematic Flow & Pacing</div>
-                <div class="timeline-meta">
-                    Hybris Telemetry: Mapping the structural pressures and pacing matrix of the narrative vectors.
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="../thematic_architecture_rc1-15.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Thematic Architecture of RC1</div>
-                <div class="timeline-meta">
-                    System Diagnosis: Mapping the unstable thermodynamic equation and core thematic vectors of the first
-                    15 chapters.
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="../capricius_and_empire.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: Capricius & The Imperial Equation</div>
-                <div class="timeline-meta">
-                    System Diagnosis: Mapping the cosmic tantrums, psychohistory, and biological extinction protocols of
-                    the Empire.
-                </div>
-            </a>
-        </li>
-        <li>
-            <a href="../CLASSIFIED_%20The%20Architect%27s%20Blueprint.html">
-                <div class="timeline-title">Synthesis Mind Data-Log: CLASSIFIED: The Architect's Blueprint</div>
-                <div class="timeline-meta">
-                    Dev Sanctum: Strategic roadmap, DOM firewalls, 4th Wall breaches, and Causal Hazard Indexing.
-                </div>
-            </a>
-        </li>
-    </ul>
+                <span class="cat-badge badge-red">Niveau Racine</span>
+            </div>
+            <div class="archive-grid">
+                <a href="../CLASSIFIED_%20The%20Architect%27s%20Blueprint.html" class="archive-card"
+                    data-keywords="architect blueprint dev sanctum 4th wall causal hazard indexing">
+                    <div class="card-top">
+                        <span class="card-title">DEV_SANCTUM: The Architect's Blueprint</span>
+                        <span class="card-status" style="color: var(--accent-red);">CLEARANCE ARCHITECTE</span>
+                    </div>
+                    <div class="card-desc">
+                        Feuille de route stratégique, protocole de violation du quatrième mur, indexation des risques de
+                        divulgation causaliste (Classes I à IV) et console de pilotage métanarrative.
+                    </div>
+                </a>
+            </div>
+        </section>
+    </div>
 
     <a href="../../../index.html" class="back-link">[ Return to False Baseline ]</a>
+
+    <!-- SCRIPTS DE CALCUL MÉTRIQUE & GOUVERNANCE DU DIRECTOIRE -->
     <script>
+        // --- 1. FILTRAGE DYNAMIQUE DU DIRECTOIRE CATÉGORISÉ ---
         document.addEventListener("DOMContentLoaded", function () {
-            let currentVol1Rc1 = 60.03;
-            let currentVol2Draft = 3.3;
+            const searchInput = document.getElementById('archiveSearch');
+            const tabs = document.querySelectorAll('.cat-tab');
+            const sections = document.querySelectorAll('.cat-section');
+            const cards = document.querySelectorAll('.archive-card');
+
+            let currentCategory = 'all';
+
+            function filterDirectory() {
+                const query = searchInput.value.trim().toLowerCase();
+
+                sections.forEach(sec => {
+                    const secCat = sec.getAttribute('data-category');
+                    const matchesCategory = (currentCategory === 'all' || currentCategory === secCat);
+
+                    if (!matchesCategory) {
+                        sec.classList.add('hidden');
+                        return;
+                    }
+
+                    let visibleCardsCount = 0;
+                    const sectionCards = sec.querySelectorAll('.archive-card');
+
+                    sectionCards.forEach(card => {
+                        const title = (card.querySelector('.card-title')?.textContent || '').toLowerCase();
+                        const desc = (card.querySelector('.card-desc')?.textContent || '').toLowerCase();
+                        const keywords = (card.getAttribute('data-keywords') || '').toLowerCase();
+
+                        const matchesQuery = query === '' || title.includes(query) || desc.includes(query) || keywords.includes(query);
+
+                        if (matchesQuery) {
+                            card.style.display = 'flex';
+                            visibleCardsCount++;
+                        } else {
+                            card.style.display = 'none';
+                        }
+                    });
+
+                    if (visibleCardsCount > 0) {
+                        sec.classList.remove('hidden');
+                    } else {
+                        sec.classList.add('hidden');
+                    }
+                });
+            }
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => t.classList.remove('active'));
+                    tab.classList.add('active');
+                    currentCategory = tab.getAttribute('data-cat');
+                    filterDirectory();
+                });
+            });
+
+            searchInput.addEventListener('input', filterDirectory);
+        });
+
+        // --- 2. CALCUL EN DIRECT DES JAUGE DE PROGRESSION ---
+        document.addEventListener("DOMContentLoaded", function () {
+            let currentVol1Rc1 = 73.96;
+            let currentVol2Draft = 4.9;
 
             function recalcTruthProgression() {
                 const vol1Draft = 100;
@@ -848,54 +1207,41 @@
                 if (elOmniverse) elOmniverse.textContent = omniverseTotal.toFixed(2) + '%';
             }
 
-            // Initial calculation
             recalcTruthProgression();
 
-            // Volume I (RC1)
+            // Hydratation via manuscrit brut Volume I si disponible
             fetch('../../manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html')
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.text();
-                })
+                .then(res => res.ok ? res.text() : Promise.reject())
                 .then(htmlText => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlText, 'text/html');
                     const chapterContent = doc.querySelector('.chapter-content');
                     if (chapterContent) {
                         const text = chapterContent.innerText || chapterContent.textContent;
-                        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
-                        const pctNum = (words.length / 180000 * 100);
-                        currentVol1Rc1 = pctNum;
-                        const elem = document.getElementById('truth-vol1-rc1-val');
-                        if (elem) elem.textContent = pctNum.toFixed(2) + '%';
+                        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
+                        currentVol1Rc1 = (words.length / 180000 * 100);
                         recalcTruthProgression();
                     }
                 })
-                .catch(err => console.error('Error fetching Volume I metrics:', err));
+                .catch(() => { });
 
-            // Volume II (Draft)
+            // Hydratation Volume II
             fetch('../../manuscripts/Killtime%20-%20Volume%20II.html')
-                .then(response => {
-                    if (!response.ok) throw new Error('Network response was not ok');
-                    return response.text();
-                })
+                .then(res => res.ok ? res.text() : Promise.reject())
                 .then(htmlText => {
                     const parser = new DOMParser();
                     const doc = parser.parseFromString(htmlText, 'text/html');
                     const container = doc.querySelector('.book-container') || doc.querySelector('.chapter-content') || doc.body;
                     if (container) {
                         const text = container.innerText || container.textContent;
-                        const words = text.trim().split(/\s+/).filter(word => word.length > 0);
+                        const words = text.trim().split(/\s+/).filter(w => w.length > 0);
                         if (words.length > 0) {
-                            const pctNum = (words.length / 180000 * 100);
-                            currentVol2Draft = pctNum;
-                            const elem = document.getElementById('truth-vol2-draft-val');
-                            if (elem) elem.textContent = pctNum.toFixed(2) + '%';
+                            currentVol2Draft = (words.length / 180000 * 100);
                             recalcTruthProgression();
                         }
                     }
                 })
-                .catch(err => console.error('Error fetching Volume II metrics:', err));
+                .catch(() => { });
         });
     </script>
 </body>

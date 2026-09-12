@@ -1,0 +1,2046 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chroniques d'Hybris — Histoire Totale & Matrice Causaliste</title>
+    <meta name="description"
+        content="Archives déclassifiées du continuum d'Hybris : histoire chronologique complète de l'univers et histoire technologique exhaustive des moteurs magiques, alliages, armements et Causal Hardware.">
+
+    <!-- Typographies Codex -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@600;700;800;900&family=JetBrains+Mono:ital,wght@0,400;0,500;0,700;1,400&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+        rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-void: #030712;
+            --panel-bg: rgba(10, 16, 31, 0.88);
+            --panel-border: rgba(56, 189, 248, 0.25);
+            --border-glow: rgba(56, 189, 248, 0.4);
+            --text-primary: #f8fafc;
+            --text-secondary: #94a3b8;
+            --text-muted: #64748b;
+            --arcane-cyan: #38bdf8;
+            --temporal-amber: #fbbf24;
+            --vital-ruby: #f43f5e;
+            --matrix-green: #10b981;
+            --void-purple: #a855f7;
+            --dark-water: #3b0764;
+            --font-display: 'Cinzel', serif;
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-sans: 'Plus Jakarta Sans', sans-serif;
+            --radius-sm: 4px;
+            --radius-md: 8px;
+            --radius-lg: 12px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bg-void);
+            color: var(--text-primary);
+            font-family: var(--font-sans);
+            line-height: 1.6;
+            overflow-x: hidden;
+            background-image:
+                radial-gradient(circle at 15% 15%, rgba(56, 189, 248, 0.05) 0%, transparent 45%),
+                radial-gradient(circle at 85% 85%, rgba(244, 63, 94, 0.04) 0%, transparent 50%),
+                linear-gradient(rgba(255, 255, 255, 0.015) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.015) 1px, transparent 1px);
+            background-size: 100% 100%, 100% 100%, 48px 48px, 48px 48px;
+            min-height: 100vh;
+        }
+
+        /* Scanline Overlay */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1000;
+            background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.18) 50%);
+            background-size: 100% 3px;
+            opacity: 0.6;
+        }
+
+        /* App Container */
+        .app-shell {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            max-width: 1720px;
+            margin: 0 auto;
+            padding: 20px 24px;
+            gap: 20px;
+        }
+
+        /* Top Bar HUD */
+        .hud-topbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 14px 24px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 4px 24px rgba(0, 0, 0, 0.6);
+        }
+
+        .hud-brand {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+
+        .hud-brand-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: var(--radius-sm);
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid var(--arcane-cyan);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--arcane-cyan);
+        }
+
+        .hud-brand-title {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: #fff;
+        }
+
+        .hud-badge {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--arcane-cyan);
+            border: 1px solid var(--arcane-cyan);
+            padding: 2px 8px;
+            border-radius: 4px;
+        }
+
+        .hud-controls {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .hud-search-box {
+            position: relative;
+            width: 280px;
+        }
+
+        .hud-search-input {
+            width: 100%;
+            background: rgba(3, 7, 18, 0.75);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+            color: #fff;
+            padding: 7px 12px 7px 34px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .hud-search-input:focus {
+            border-color: var(--arcane-cyan);
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.25);
+        }
+
+        .hud-search-icon {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            pointer-events: none;
+        }
+
+        .hud-btn {
+            background: rgba(15, 23, 42, 0.85);
+            border: 1px solid rgba(255, 255, 255, 0.14);
+            color: var(--text-secondary);
+            padding: 7px 14px;
+            border-radius: var(--radius-sm);
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .hud-btn:hover {
+            border-color: var(--arcane-cyan);
+            color: #fff;
+            box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+        }
+
+        .hud-btn.active {
+            background: rgba(56, 189, 248, 0.18);
+            border-color: var(--arcane-cyan);
+            color: #fff;
+        }
+
+        /* Nav Tabs Principaux */
+        .main-category-switcher {
+            display: flex;
+            background: rgba(15, 23, 42, 0.9);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 6px;
+            gap: 8px;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.5);
+        }
+
+        .cat-switcher-btn {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            padding: 12px 20px;
+            background: transparent;
+            border: 1px solid transparent;
+            border-radius: var(--radius-sm);
+            color: var(--text-secondary);
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            letter-spacing: 0.08em;
+            cursor: pointer;
+            transition: all 0.25s ease;
+            text-transform: uppercase;
+        }
+
+        .cat-switcher-btn:hover {
+            color: #fff;
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .cat-switcher-btn.active {
+            background: rgba(56, 189, 248, 0.15);
+            border-color: var(--arcane-cyan);
+            color: #fff;
+            box-shadow: 0 0 15px rgba(56, 189, 248, 0.25);
+            font-weight: 700;
+        }
+
+        .cat-switcher-btn.tech.active {
+            background: rgba(251, 191, 36, 0.15);
+            border-color: var(--temporal-amber);
+            box-shadow: 0 0 15px rgba(251, 191, 36, 0.25);
+        }
+
+        .view-pane {
+            display: none;
+            width: 100%;
+        }
+
+        .view-pane.active {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        /* Timeline Navigation Strip */
+        .timeline-filter-strip {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 10px 18px;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+            margin-right: 4px;
+        }
+
+        .filter-pill {
+            background: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            color: var(--text-secondary);
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .filter-pill:hover {
+            color: #fff;
+            border-color: rgba(255, 255, 255, 0.25);
+        }
+
+        .filter-pill.active {
+            background: rgba(56, 189, 248, 0.2);
+            border-color: var(--arcane-cyan);
+            color: #fff;
+            box-shadow: 0 0 8px rgba(56, 189, 248, 0.3);
+        }
+
+        .filter-pill.t0.active {
+            background: rgba(244, 63, 94, 0.25);
+            border-color: var(--vital-ruby);
+            color: #fda4af;
+        }
+
+        .filter-pill.ta.active {
+            background: rgba(16, 185, 129, 0.25);
+            border-color: var(--matrix-green);
+            color: #6ee7b7;
+        }
+
+        .filter-pill.td.active {
+            background: rgba(168, 85, 247, 0.25);
+            border-color: var(--void-purple);
+            color: #d8b4fe;
+        }
+
+        /* Workspace Grid */
+        .workspace-grid {
+            display: grid;
+            grid-template-columns: 1fr 420px;
+            gap: 20px;
+            flex-grow: 1;
+        }
+
+        /* Stream Column */
+        .stream-column {
+            display: flex;
+            flex-direction: column;
+            gap: 28px;
+            position: relative;
+        }
+
+        .era-marker {
+            position: sticky;
+            top: 20px;
+            z-index: 50;
+            background: rgba(3, 7, 18, 0.92);
+            border: 1px solid var(--panel-border);
+            border-left: 4px solid var(--arcane-cyan);
+            border-radius: var(--radius-sm);
+            padding: 12px 18px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            backdrop-filter: blur(12px);
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+        }
+
+        .era-title {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            letter-spacing: 0.08em;
+            color: #fff;
+        }
+
+        .era-epoch {
+            font-family: var(--font-mono);
+            font-size: 0.75rem;
+            color: var(--temporal-amber);
+        }
+
+        /* Timeline Event Stream */
+        .events-stream {
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            position: relative;
+            padding-left: 28px;
+        }
+
+        .events-stream::before {
+            content: '';
+            position: absolute;
+            left: 7px;
+            top: 8px;
+            bottom: 8px;
+            width: 2px;
+            background: linear-gradient(to bottom,
+                    var(--arcane-cyan) 0%,
+                    var(--temporal-amber) 40%,
+                    var(--vital-ruby) 75%,
+                    var(--void-purple) 100%);
+            opacity: 0.45;
+        }
+
+        /* Event Card */
+        .event-node {
+            position: relative;
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 16px 20px;
+            cursor: pointer;
+            transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+            backdrop-filter: blur(8px);
+        }
+
+        .event-node::before {
+            content: '';
+            position: absolute;
+            left: -26px;
+            top: 22px;
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            background: var(--text-muted);
+            border: 2px solid var(--bg-void);
+            transition: all 0.2s ease;
+        }
+
+        .event-node:hover {
+            border-color: var(--arcane-cyan);
+            transform: translateX(6px);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5), 0 0 12px rgba(56, 189, 248, 0.15);
+        }
+
+        .event-node:hover::before {
+            background: var(--arcane-cyan);
+            box-shadow: 0 0 8px var(--arcane-cyan);
+        }
+
+        .event-node.active {
+            border-color: var(--arcane-cyan);
+            background: rgba(15, 23, 42, 0.95);
+            box-shadow: 0 0 20px rgba(56, 189, 248, 0.2);
+        }
+
+        .event-node.active::before {
+            background: var(--arcane-cyan);
+            box-shadow: 0 0 10px var(--arcane-cyan);
+        }
+
+        /* Event Tags by Line */
+        .event-node.line-t0 {
+            border-left: 3px solid var(--vital-ruby);
+        }
+
+        .event-node.line-t0::before {
+            background: var(--vital-ruby);
+        }
+
+        .event-node.line-ta {
+            border-left: 3px solid var(--matrix-green);
+        }
+
+        .event-node.line-ta::before {
+            background: var(--matrix-green);
+        }
+
+        .event-node.line-td {
+            border-left: 3px solid var(--void-purple);
+        }
+
+        .event-node.line-td::before {
+            background: var(--void-purple);
+        }
+
+        .event-node.line-main {
+            border-left: 3px solid var(--temporal-amber);
+        }
+
+        .event-node.line-main::before {
+            background: var(--temporal-amber);
+        }
+
+        .event-top {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+        }
+
+        .event-date {
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--temporal-amber);
+            font-weight: 600;
+        }
+
+        .event-badges {
+            display: flex;
+            gap: 6px;
+        }
+
+        .tag-pill {
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            padding: 2px 7px;
+            border-radius: 3px;
+            letter-spacing: 0.05em;
+            text-transform: uppercase;
+        }
+
+        .tag-pill.t0 {
+            background: rgba(244, 63, 94, 0.18);
+            color: #fda4af;
+            border: 1px solid rgba(244, 63, 94, 0.35);
+        }
+
+        .tag-pill.ta {
+            background: rgba(16, 185, 129, 0.18);
+            color: #6ee7b7;
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .tag-pill.td {
+            background: rgba(168, 85, 247, 0.18);
+            color: #d8b4fe;
+            border: 1px solid rgba(168, 85, 247, 0.35);
+        }
+
+        .tag-pill.cosmic {
+            background: rgba(56, 189, 248, 0.18);
+            color: #7dd3fc;
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
+
+        .tag-pill.combat {
+            background: rgba(251, 191, 36, 0.18);
+            color: #fde68a;
+            border: 1px solid rgba(251, 191, 36, 0.35);
+        }
+
+        .event-headline {
+            font-family: var(--font-display);
+            font-size: 1.05rem;
+            color: #fff;
+            margin-bottom: 6px;
+            letter-spacing: 0.03em;
+        }
+
+        .event-excerpt {
+            font-size: 0.88rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+        }
+
+        .event-footer {
+            margin-top: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            border-top: 1px dashed rgba(255, 255, 255, 0.06);
+            padding-top: 8px;
+        }
+
+        /* Right Inspector Panel */
+        .inspector-panel {
+            position: sticky;
+            top: 20px;
+            height: calc(100vh - 120px);
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            backdrop-filter: blur(16px);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.7);
+            overflow-y: auto;
+        }
+
+        .inspector-title {
+            font-family: var(--font-display);
+            font-size: 1.2rem;
+            letter-spacing: 0.08em;
+            color: #fff;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+            padding-bottom: 10px;
+        }
+
+        .inspector-meta-row {
+            display: flex;
+            justify-content: space-between;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            padding: 6px 0;
+            border-bottom: 1px dashed rgba(255, 255, 255, 0.06);
+        }
+
+        .meta-label {
+            color: var(--text-muted);
+        }
+
+        .meta-val {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .meta-val.cyan {
+            color: var(--arcane-cyan);
+        }
+
+        .meta-val.ruby {
+            color: var(--vital-ruby);
+        }
+
+        .meta-val.amber {
+            color: var(--temporal-amber);
+        }
+
+        .telemetry-box {
+            background: rgba(2, 6, 23, 0.75);
+            border: 1px solid rgba(56, 189, 248, 0.2);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--arcane-cyan);
+            line-height: 1.5;
+        }
+
+        .inspector-narrative {
+            font-size: 0.9rem;
+            color: var(--text-secondary);
+            line-height: 1.6;
+            background: rgba(0, 0, 0, 0.2);
+            padding: 14px;
+            border-radius: var(--radius-sm);
+            border-left: 3px solid var(--arcane-cyan);
+        }
+
+        .physics-palette {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            background: rgba(15, 23, 42, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+        }
+
+        .palette-title {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            letter-spacing: 0.08em;
+        }
+
+        .palette-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 4px;
+        }
+
+        .palette-tag {
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            color: var(--text-secondary);
+            padding: 2px 6px;
+            border-radius: 3px;
+        }
+
+        /* =======================================================
+           STYLES SPECIFIQUES : HISTOIRE TECHNOLOGIQUE
+           ======================================================= */
+        .tech-manifesto {
+            background: rgba(15, 23, 42, 0.92);
+            border: 1px solid var(--panel-border);
+            border-left: 4px solid var(--temporal-amber);
+            border-radius: var(--radius-md);
+            padding: 20px 24px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+        }
+
+        .tech-manifesto h2 {
+            font-family: var(--font-display);
+            font-size: 1.25rem;
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 0.05em;
+        }
+
+        .tech-manifesto p {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .tech-tiers-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+        }
+
+        .tech-tier-card {
+            background: var(--panel-bg);
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            border-radius: var(--radius-md);
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            transition: all 0.2s ease;
+        }
+
+        .tech-tier-card:hover {
+            border-color: var(--temporal-amber);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .tier-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 8px;
+        }
+
+        .tier-title {
+            font-family: var(--font-display);
+            font-size: 0.95rem;
+            color: #fff;
+            font-weight: 700;
+        }
+
+        .tier-level-badge {
+            font-family: var(--font-mono);
+            font-size: 0.72rem;
+            padding: 2px 7px;
+            border-radius: 4px;
+        }
+
+        .tier-level-badge.amber {
+            background: rgba(251, 191, 36, 0.15);
+            color: var(--temporal-amber);
+            border: 1px solid rgba(251, 191, 36, 0.35);
+        }
+
+        .tier-level-badge.cyan {
+            background: rgba(56, 189, 248, 0.15);
+            color: var(--arcane-cyan);
+            border: 1px solid rgba(56, 189, 248, 0.35);
+        }
+
+        .tier-level-badge.green {
+            background: rgba(16, 185, 129, 0.15);
+            color: var(--matrix-green);
+            border: 1px solid rgba(16, 185, 129, 0.35);
+        }
+
+        .tier-level-badge.purple {
+            background: rgba(168, 85, 247, 0.15);
+            color: var(--void-purple);
+            border: 1px solid rgba(168, 85, 247, 0.35);
+        }
+
+        .tier-level-badge.ruby {
+            background: rgba(244, 63, 94, 0.15);
+            color: var(--vital-ruby);
+            border: 1px solid rgba(244, 63, 94, 0.35);
+        }
+
+        .tier-desc {
+            font-size: 0.84rem;
+            color: var(--text-secondary);
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+
+        .tier-specs-list {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 4px;
+            border-top: 1px dashed rgba(255, 255, 255, 0.08);
+            padding-top: 8px;
+            font-family: var(--font-mono);
+            font-size: 0.74rem;
+            color: var(--text-muted);
+        }
+
+        .tier-specs-list li span {
+            color: var(--text-primary);
+        }
+
+        /* Systèmes Technologiques Clés */
+        .tech-systems-container {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .tech-system-block {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .tech-system-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            padding-bottom: 10px;
+        }
+
+        .tech-system-title {
+            font-family: var(--font-display);
+            font-size: 1.15rem;
+            color: #fff;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .engine-components-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin-top: 8px;
+        }
+
+        .component-card {
+            background: rgba(2, 6, 23, 0.6);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            border-radius: var(--radius-sm);
+            padding: 12px;
+            font-size: 0.82rem;
+            color: var(--text-secondary);
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .component-card strong {
+            color: var(--arcane-cyan);
+            font-family: var(--font-mono);
+            font-size: 0.82rem;
+        }
+
+        /* Footer */
+        .hud-footer {
+            background: var(--panel-bg);
+            border: 1px solid var(--panel-border);
+            border-radius: var(--radius-md);
+            padding: 12px 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: var(--font-mono);
+            font-size: 0.76rem;
+            color: var(--text-muted);
+        }
+
+        /* Responsive Breakpoints */
+        @media (max-width: 1200px) {
+            .workspace-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .inspector-panel {
+                position: relative;
+                top: 0;
+                height: auto;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .hud-topbar {
+                flex-direction: column;
+                gap: 14px;
+                align-items: flex-start;
+            }
+
+            .hud-controls {
+                width: 100%;
+                justify-content: space-between;
+            }
+
+            .hud-search-box {
+                width: 100%;
+            }
+
+            .main-category-switcher {
+                flex-direction: column;
+            }
+        }
+
+        /* Custom Scrollbars */
+        ::-webkit-scrollbar {
+            width: 5px;
+            height: 5px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.3);
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(56, 189, 248, 0.25);
+            border-radius: 3px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--arcane-cyan);
+        }
+    </style>
+</head>
+
+<body>
+    <div class="scanlines"></div>
+
+    <div class="app-shell">
+        <!-- TOPBAR HUD -->
+        <header class="hud-topbar">
+            <div class="hud-brand">
+                <div class="hud-brand-icon">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <circle cx="12" cy="12" r="10" />
+                        <polyline points="12 6 12 12 14 14" />
+                    </svg>
+                </div>
+                <div>
+                    <h1 class="hud-brand-title">Chroniques d'Hybris</h1>
+                    <div style="font-family: var(--font-mono); font-size: 0.72rem; color: var(--text-muted);">
+                        REGISTRE CAUSAL &amp; ARCHIVES TECHNOLOGIQUES // ECOSYSTÈME TOTAL
+                    </div>
+                </div>
+                <span class="hud-badge">Variance : 0.0001%</span>
+            </div>
+
+            <div class="hud-controls">
+                <div class="hud-search-box">
+                    <svg class="hud-search-icon" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2">
+                        <circle cx="11" cy="11" r="8" />
+                        <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                    </svg>
+                    <input type="text" id="chronologySearch" class="hud-search-input"
+                        placeholder="Recherche générale..." autocomplete="off">
+                </div>
+                <a href="/atlas_3d.html" class="hud-btn" title="Ouvrir l'Atlas 3D">
+                    <span>🌌 Atlas 3D</span>
+                </a>
+                <a href="/index.html" class="hud-btn" title="Retour au Codex">
+                    <span>📜 Codex</span>
+                </a>
+            </div>
+        </header>
+
+        <!-- COMMUTATEUR MAÎTRE DES ONGLETS -->
+        <nav class="main-category-switcher">
+            <button class="cat-switcher-btn active" id="tabBtnHistory" onclick="switchMainTab('history')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 14 14" />
+                </svg>
+                <span>Chronique &amp; Histoire Événementielle</span>
+            </button>
+            <button class="cat-switcher-btn tech" id="tabBtnTech" onclick="switchMainTab('technology')">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polygon points="12 2 2 7 12 12 22 7 12 2" />
+                    <polyline points="2 17 12 22 22 17" />
+                    <polyline points="2 12 12 17 22 12" />
+                </svg>
+                <span>Histoire Technologique d'Hybris</span>
+            </button>
+        </nav>
+
+        <!-- ========================================================= -->
+        <!-- VUE 1 : CHRONIQUE & HISTOIRE (INTÉGRALE, INTACTE)          -->
+        <!-- ========================================================= -->
+        <div id="view-history" class="view-pane active">
+            <!-- TIMELINE FILTER STRIP -->
+            <nav class="timeline-filter-strip">
+                <div class="filter-group">
+                    <span class="filter-label">Lignes Temporelles :</span>
+                    <button class="filter-pill active" data-timeline="all">Toutes (Omnivers)</button>
+                    <button class="filter-pill t0" data-timeline="t0">Timeline-0 (Les Fantômes)</button>
+                    <button class="filter-pill ta" data-timeline="ta">Timeline-A (L'Axe Actuel)</button>
+                    <button class="filter-pill td" data-timeline="td">Timeline-D/E (Naufragés 1622 &amp; 1775)</button>
+                </div>
+                <div class="filter-group">
+                    <span class="filter-label">Échelle :</span>
+                    <button class="filter-pill active" data-scale="all">Tout</button>
+                    <button class="filter-pill" data-scale="cosmic">Cosmique</button>
+                    <button class="filter-pill" data-scale="terrestrial">Terrestre</button>
+                    <button class="filter-pill" data-scale="tactical">Tactique</button>
+                </div>
+            </nav>
+
+            <!-- MAIN WORKSPACE -->
+            <main class="workspace-grid">
+                <!-- Left Events Stream -->
+                <section class="stream-column" id="eventsContainer">
+                    <!-- Événements générés par le script JS -->
+                </section>
+
+                <!-- Right Telemetry Inspector -->
+                <aside class="inspector-panel" id="inspectorPanel">
+                    <div class="inspector-title" id="inspTitle">Sélectionnez un Vecteur</div>
+
+                    <div class="telemetry-box" id="inspTelemetry">
+                        > STATUS : VEILLE ACTIVE<br>
+                        > VECTEUR : FLEUVE DU TEMPS HYBRIS<br>
+                        > CLIQUEZ SUR UN ÉVÉNEMENT POUR AFFICHER LA TÉLÉMÉTRIE PHYSIQUE ET NARRATIVE.
+                    </div>
+
+                    <div class="inspector-meta-row">
+                        <span class="meta-label">Date HSC :</span>
+                        <span class="meta-val amber" id="inspDate">—</span>
+                    </div>
+                    <div class="inspector-meta-row">
+                        <span class="meta-label">Ligne de Causalité :</span>
+                        <span class="meta-val cyan" id="inspLine">—</span>
+                    </div>
+                    <div class="inspector-meta-row">
+                        <span class="meta-label">Localisation :</span>
+                        <span class="meta-val" id="inspLoc">—</span>
+                    </div>
+                    <div class="inspector-meta-row">
+                        <span class="meta-label">Acteurs Clés :</span>
+                        <span class="meta-val" id="inspActors">—</span>
+                    </div>
+
+                    <div class="inspector-narrative" id="inspDesc">
+                        Aucun événement sélectionné. Le visualiseur présente la chronique intégrale d'Hybris, depuis la
+                        fracture primordiale de Capricius il y a 20 milliards d'années jusqu'à la dérive de 1775 HSC.
+                    </div>
+
+                    <div class="physics-palette" id="inspPalette">
+                        <div class="palette-title">Champs de Pression &amp; Causalité</div>
+                        <div class="palette-tags" id="inspPaletteTags">
+                            <span class="palette-tag">Inertie Temporelle</span>
+                            <span class="palette-tag">Friction</span>
+                            <span class="palette-tag">5e Force</span>
+                        </div>
+                    </div>
+                </aside>
+            </main>
+        </div>
+
+        <!-- ========================================================= -->
+        <!-- VUE 2 : HISTOIRE TECHNOLOGIQUE EXHAUSTIVE D'HYBRIS        -->
+        <!-- ========================================================= -->
+        <div id="view-technology" class="view-pane">
+            <!-- MANIFESTE TECHNOLOGIQUE -->
+            <section class="tech-manifesto">
+                <div style="display: flex; justify-content: space-between; align-items: flex-start; gap: 16px;">
+                    <div>
+                        <h2>Physique de l'Ingénierie sur Hybris : La Cinquième Force &amp; La Matière</h2>
+                        <p>
+                            Sur Hybris et à travers les 36 zones des Élianes, la technologie et l'arcanisme forment une
+                            seule et même causalité thermodynamique. Au-delà de la gravité, de l'électromagnétisme et
+                            des interactions nucléaires, existe la <strong>Cinquième Force</strong> : une interaction
+                            universelle régie par des lois mathématiques inviolables.
+                        </p>
+                    </div>
+                    <span class="hud-badge" style="border-color: var(--temporal-amber); color: var(--temporal-amber);">
+                        Échelle 0 à 6 // Norme Codex
+                    </span>
+                </div>
+                <div style="margin-top: 14px; display: flex; gap: 16px; flex-wrap: wrap;">
+                    <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--arcane-cyan);">
+                        <strong>Conducteur Primaire :</strong> Cristaux de Nytharite Pure
+                    </div>
+                    <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--matrix-green);">
+                        <strong>Ratio de Conversion :</strong> 1 XP Conception = 1 PA Tactique
+                    </div>
+                    <div style="font-family: var(--font-mono); font-size: 0.8rem; color: var(--vital-ruby);">
+                        <strong>Plafond Absolu :</strong> Causal Hardware (Tolérance 0.0001%)
+                    </div>
+                </div>
+            </section>
+
+            <!-- MATRICE DES 6 PALIERS TECHNOLOGIQUES -->
+            <section>
+                <div class="era-marker" style="margin-bottom: 16px; border-left-color: var(--temporal-amber);">
+                    <span class="era-title">Classification de l'Échelle Technologique Universelle (Codex Livre I &amp;
+                        VIII)</span>
+                    <span class="era-epoch">Indices de Développement 0 à 6</span>
+                </div>
+
+                <div class="tech-tiers-grid">
+                    <!-- PALIER 0 -->
+                    <div class="tech-tier-card">
+                        <div class="tier-card-header">
+                            <span class="tier-title">Palier 0 : Primitif</span>
+                            <span class="tier-level-badge">Niveau 0</span>
+                        </div>
+                        <p class="tier-desc">
+                            Chasseurs-cueilleurs, outillage lithique taillé, propulseurs en os et bronze brut. Présent
+                            dans les tribus isolées du grand sud avant la sédentarisation nytharie.
+                        </p>
+                        <ul class="tier-specs-list">
+                            <li>Matériaux : <span>Silex, Os, Cuir bouilli</span></li>
+                            <li>Armes : <span>Épieux, Dagues de pierre (1D)</span></li>
+                            <li>Transport : <span>Foulée pédestre pure</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- PALIER 1 -->
+                    <div class="tech-tier-card">
+                        <div class="tier-card-header">
+                            <span class="tier-title">Palier 1 : Médiéval</span>
+                            <span class="tier-level-badge amber">Niveau 1</span>
+                        </div>
+                        <p class="tier-desc">
+                            Hauts-fourneaux primitifs, acier trempé replié, arbalètes à étrier et fortification
+                            maçonnée. Équipement standard des colonies humaines franches post-déportation.
+                        </p>
+                        <ul class="tier-specs-list">
+                            <li>Matériaux : <span>Acier forgé, Fer doux</span></li>
+                            <li>Armes : <span>Épées courtes (3D), Claymores (4D)</span></li>
+                            <li>Protection : <span>Mailles, Plaques ferriques</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- PALIER 2 -->
+                    <div class="tech-tier-card">
+                        <div class="tier-card-header">
+                            <span class="tier-title">Palier 2 : Industriel / Vapeur</span>
+                            <span class="tier-level-badge amber">Niveau 2</span>
+                        </div>
+                        <p class="tier-desc">
+                            Pressurisation hydraulique, forges géothermiques profondes et treuils mécaniques à vapeur.
+                            Socle technique des premières cités minières naines de Brum'korath.
+                        </p>
+                        <ul class="tier-specs-list">
+                            <li>Énergie : <span>Chaudières, Vapeur tellurique</span></li>
+                            <li>Machinerie : <span>Pistons de sas, Monte-charges</span></li>
+                            <li>Balistique : <span>Baléares d'artillerie lourde</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- PALIER 3 -->
+                    <div class="tech-tier-card">
+                        <div class="tier-card-header">
+                            <span class="tier-title">Palier 3 : Moderne / Silicium</span>
+                            <span class="tier-level-badge cyan">Niveau 3</span>
+                        </div>
+                        <p class="tier-desc">
+                            Équivalent Terre XXIe siècle. Réseaux informatiques primitifs, puces silicium, balistique
+                            chimique à douilles et télécommunications hertziennes. Origine des 3 000 déportés.
+                        </p>
+                        <ul class="tier-specs-list">
+                            <li>Standard : <span>Terre 2026/2035 ap. J.-C.</span></li>
+                            <li>Armement : <span>Fusils d'assaut, Pistolets</span></li>
+                            <li>Limites : <span>Sensibilité électromagnétique</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- PALIER 4 -->
+                    <div class="tech-tier-card">
+                        <div class="tier-card-header">
+                            <span class="tier-title">Palier 4 : Magi-Tech Avancé d'Hybris</span>
+                            <span class="tier-level-badge green">Niveau 4</span>
+                        </div>
+                        <p class="tier-desc">
+                            Hybridation de la 5e Force et des alliages élastiques. Réseau Aetheric urbain, transporteurs
+                            Hover-Pods, cristaux de résonance, chirurgie automatisée et traqueurs sub-dermiques.
+                        </p>
+                        <ul class="tier-specs-list">
+                            <li>Infrastructures : <span>Aetheric Energy Grid</span></li>
+                            <li>Véhicules : <span>Pods de transport (250 km/h)</span></li>
+                            <li>Armement : <span>Canons lourds, Drones répulsifs</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- PALIER 5 -->
+                    <div class="tech-tier-card">
+                        <div class="tier-card-header">
+                            <span class="tier-title">Palier 5 : Impérial &amp; Cléien</span>
+                            <span class="tier-level-badge purple">Niveau 5</span>
+                        </div>
+                        <p class="tier-desc">
+                            Très avancé. Moteurs Magiques à boucle fermée (Dr. Veltis), vaisseaux Warp FTL (*Starlight
+                            Voyager*), sabres et fusils laser de confinement plasma (3D à 6D, *Deglazer* 7D), boucliers
+                            personnels.
+                        </p>
+                        <ul class="tier-specs-list">
+                            <li>Moteurs : <span>Boucle dynamique Nytharite</span></li>
+                            <li>Armes : <span>Épées Laser 6D, Deglazer 7D</span></li>
+                            <li>Vaisseaux : <span>Aeschylus, Windfighters</span></li>
+                        </ul>
+                    </div>
+
+                    <!-- PALIER 6 -->
+                    <div class="tech-tier-card" style="border-color: rgba(244, 63, 94, 0.4);">
+                        <div class="tier-card-header">
+                            <span class="tier-title">Palier 6 : Causal / Godlike</span>
+                            <span class="tier-level-badge ruby">Niveau 6</span>
+                        </div>
+                        <p class="tier-desc">
+                            Manipulation directe du continuum spatio-temporel. Causal Hardware (les trois Reliques de
+                            Timeline-0 forgées en l'An 1 000 000 HSC), Sphères de Dyson, verrous ADN à tolérance 0.0001%
+                            et Disciples.
+                        </p>
+                        <ul class="tier-specs-list">
+                            <li>Hardware : <span>Reliques Tri-Fusion</span></li>
+                            <li>Chrono-physique : <span>Propagation avant / Aval</span></li>
+                            <li>Entropie : <span>Survoltage subquantique</span></li>
+                        </ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- ARBRE CHRONOLOGIQUE DE L'ÉVOLUTION TECHNOLOGIQUE -->
+            <section class="tech-systems-container">
+                <div class="era-marker" style="border-left-color: var(--arcane-cyan);">
+                    <span class="era-title">Chronologie de l'Évolution Technologique sur Hybris</span>
+                    <span class="era-epoch">De l'An 0 aux Guerres de 1775 HSC</span>
+                </div>
+
+                <!-- BLOC 1 : L'AN 0 & LA RUPTURE -->
+                <div class="tech-system-block">
+                    <div class="tech-system-header">
+                        <div class="tech-system-title">
+                            <span style="color: var(--arcane-cyan);">01.</span>
+                            L'An 0 HSC : La Déportation &amp; Le Recyclage Métallurgique des Cages
+                        </div>
+                        <span class="tag-pill ta">An 0 HSC</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem;">
+                        La déportation des 3 000 civils arrachés par téléportation s'effectue dans d'immenses conteneurs
+                        forgés en alliages réfractaires impériaux inconnus sur Hybris. Privés de leur infrastructure
+                        industrielle d'origine, les survivants désossent les cages d'atterrissage :
+                    </p>
+                    <div class="engine-components-grid">
+                        <div class="component-card">
+                            <strong>Fonderies de Brum'korath</strong>
+                            Les nains fondent les poutres d'alliage des cages pour armer leurs premiers hauts-fourneaux,
+                            découvrant que cet acier conserve une mémoire de forme élastique absorbant les chocs
+                            sismiques.
+                        </div>
+                        <div class="component-card">
+                            <strong>Machinerie des Plaines</strong>
+                            Les ingénieurs humains tentent de répliquer la balistique chimique et les circuits à
+                            silicium de la Terre du XXIe siècle, aboutissant aux premières forges mécaniques de
+                            Kingston.
+                        </div>
+                        <div class="component-card">
+                            <strong>Bio-Symbiose Taurienne</strong>
+                            Les elfes de la forêt australe refusent le travail du fer déporté et développent avec les
+                            arbres Serran une technologie d'irrigation arcanique par sève conductrice.
+                        </div>
+                        <div class="component-card">
+                            <strong>La Résonance des Dereks</strong>
+                            Espèce native souterraine d'Hybris, les Dereks maîtrisent déjà la taille du granit sans
+                            outil
+                            par résonance harmonique tellurique, repoussant les mineurs nains hors de leurs galeries.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOC 2 : LES MOTEURS MAGIQUES DU DR VELTIS -->
+                <div class="tech-system-block">
+                    <div class="tech-system-header">
+                        <div class="tech-system-title">
+                            <span style="color: var(--temporal-amber);">02.</span>
+                            L'Invention du Moteur Magique (*Magical Engine*) — Dr Eryndor Veltis
+                        </div>
+                        <span class="tag-pill cosmic">Division Physique Arcanique</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem;">
+                        L'intégration de la Cinquième Force dans la mécanique lourde franchit un cap décisif grâce aux
+                        travaux du Dr Eryndor Veltis à l'Académie Impériale. En associant la théorie quantique à la
+                        cristallographie de Nytharite, le moteur magique élimine le besoin de combustibles fossiles par
+                        un cycle auto-entretenu :
+                    </p>
+                    <div class="engine-components-grid">
+                        <div class="component-card">
+                            <strong>Chambre de Résonance</strong>
+                            Loge un cristal de Nytharite taillé selon des plans stoechiométriques stricts. Une impulsion
+                            calibrée excite le cristal, amplifiant la 5e Force ambiante en cascade auto-entretenue.
+                        </div>
+                        <div class="component-card">
+                            <strong>Stabilisateurs de Champ</strong>
+                            Anneaux magnéto-arcaniques ceinturant le cœur. Ils modulent la poussée en vecteurs
+                            directionnels nets, éliminant les frottements d'inertie violente sur l'équipage.
+                        </div>
+                        <div class="component-card">
+                            <strong>Nœuds d'Infusion</strong>
+                            Injecteurs orientant la 5e force : vecteur Air pour la sustentation sans portance alaire,
+                            vecteur Feu pour la propulsion d'assaut à haute vitesse.
+                        </div>
+                        <div class="component-card">
+                            <strong>Recyclage Dynamique</strong>
+                            Boucle fermée réabsorbant les émissions résiduelles du champ. Cette rétroaction continue
+                            autorise des mois d'opération continue sans ravitaillement.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOC 3 : LE RÉSEAU AETHERIC & LA CRISE DE 1754 -->
+                <div class="tech-system-block">
+                    <div class="tech-system-header">
+                        <div class="tech-system-title">
+                            <span style="color: var(--matrix-green);">03.</span>
+                            1754 HSC : L'Aetheric Energy Grid &amp; L'Incident de la Tempête d'Arcane
+                        </div>
+                        <span class="tag-pill ta">1754 HSC</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem;">
+                        Les cités de la surface s'unifient autour du réseau de distribution aetheric (*Aetheric Energy
+                        Grid*). Mais la Cinquième Force demeure une matière inflammable sous tension :
+                    </p>
+                    <div class="engine-components-grid">
+                        <div class="component-card">
+                            <strong>Rupture de la Maternité</strong>
+                            Le 29 août 1754 HSC, une onde de surpression d'Eau Sombre sature les transformateurs de
+                            Kingston. L'hôpital explose sous un choc thermique sans flamme. Lucas et Mina émergent
+                            irradiés de 5e force pure.
+                        </div>
+                        <div class="component-card">
+                            <strong>Laboratoire Thorne</strong>
+                            Le Dr Elias Thorne établit les protocoles de contention biométrique : traqueurs
+                            sub-dermiques à résonance aetheric (implantés sous la clavicule), serres magnétiques et
+                            enregistreurs synaptiques.
+                        </div>
+                        <div class="component-card">
+                            <strong>Alliages Élastiques</strong>
+                            Les châssis des véhicules pods adoptent un polymère métallique capable de s'étirer sous le
+                            choc sans casser, amortissant les impacts cinétiques à haute vitesse.
+                        </div>
+                        <div class="component-card">
+                            <strong>Dams Aetheric</strong>
+                            Déploiement par la Police Mondiale de barrages statiques : en saturant la grille d'un
+                            quartier, l'énergie fige instantanément les moteurs magiques en panne sèche.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOC 4 : L'AÉRONAUTIQUE D'HALIRIEL (WINDFIGHTER & WINDSTRIDER) -->
+                <div class="tech-system-block">
+                    <div class="tech-system-header">
+                        <div class="tech-system-title">
+                            <span style="color: var(--void-purple);">04.</span>
+                            Bio-Ingénierie Aérienne Elfe : La Série Windfighter (1771-1772 HSC)
+                        </div>
+                        <span class="tag-pill t0">Haliriel High Command</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem;">
+                        Refusant l'acier polluant des plaines, les maîtres de Haliriel réalisent la fusion suprême du
+                        bois enchanté régénératif et des moteurs magiques compacts :
+                    </p>
+                    <div class="engine-components-grid">
+                        <div class="component-card">
+                            <strong>Châssis 16 m &times; 7 m</strong>
+                            Structure fuselée en bois Serran imprégné d'alliages régénératifs légers. Auto-réparation
+                            des micro-fissures de coque en vol atmosphérique.
+                        </div>
+                        <div class="component-card">
+                            <strong>Voiles d'Énergie Cinétique</strong>
+                            Membranes translucides réactives modifiant leur teinte selon les flux d'arcane.
+                            Propulsion éolienne assistée par turbines de Nytharite : 250 km/h de croisière, 300 km/h en
+                            overdrive.
+                        </div>
+                        <div class="component-card">
+                            <strong>Armement Tactique</strong>
+                            Canons à décharge plasmatique focalisée, harpons d'ancrage cinétique et écran
+                            d'invisibilité thermique à dampeners d'ondes acoustiques.
+                        </div>
+                        <div class="component-card">
+                            <strong>Pilotage Neural</strong>
+                            Le dôme de cristal de l'habitacle se connecte aux impulsions télépathiques du pilote,
+                            assurant un temps de réaction réflexe de 0.05 seconde en combat aérien.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOC 5 : LE CAUSAL HARDWARE DE TIMELINE-0 (RELIQUES TRI-FUSION) -->
+                <div class="tech-system-block" style="border-left: 4px solid var(--vital-ruby);">
+                    <div class="tech-system-header">
+                        <div class="tech-system-title">
+                            <span style="color: var(--vital-ruby);">05.</span>
+                            Causal Hardware : Les Reliques Tri-Fusion &amp; Le Verrou 0.0001%
+                        </div>
+                        <span class="tag-pill ruby">Forgées en l'An 1 000 000 HSC</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem;">
+                        La technologie ultime du multivers n'appartient ni aux nains ni aux elfes. Elle a été conçue par
+                        Party-0 dans le futur terminal de l'An 1 000 000 HSC aux côtés d'une civilisation synthétique
+                        ascendante :
+                    </p>
+                    <div class="engine-components-grid">
+                        <div class="component-card">
+                            <strong>Nano-Alliage Polymorphe</strong>
+                            Métal sombre fluide à mémoire d'état instantanée. Au repos : pierre d'obsidienne mate. À
+                            l'activation : métal liquide coulant sur la peau avant de se sceller en bague rigide sans
+                            couture.
+                        </div>
+                        <div class="component-card">
+                            <strong>Verrouillage Génétique</strong>
+                            Scanne le porteur au contact cellulaire. Tolérance de rejet fixée à 0.0001% : Lucas-A est
+                            identifié comme duplicata divergent, provoquant le verrouillage des privilèges maîtres.
+                        </div>
+                        <div class="component-card">
+                            <strong>Muselière Thermique (Mina)</strong>
+                            L'anneau de cheville absorbe l'excédent de création primale, canalisant l'élan cinétique
+                            sans
+                            rupture tissulaire ni déflagration atmosphérique.
+                        </div>
+                        <div class="component-card">
+                            <strong>Réécriture Neurale (Thomas)</strong>
+                            L'armure de poignet s'enfonce dans le tissu non-magique de Thomas, initiant un écrasement
+                            synaptique violent pour interfacer son cortex avec le réseau des Reliques.
+                        </div>
+                    </div>
+                </div>
+
+                <!-- BLOC 6 : L'ARSENAL IMPÉRIAL, VARDIS & L'ESPACE PROFOND -->
+                <div class="tech-system-block">
+                    <div class="tech-system-header">
+                        <div class="tech-system-title">
+                            <span style="color: var(--arcane-cyan);">06.</span>
+                            L'Arsenal Spatial Impérial : Du Fusil Deglazer au Starlight Voyager (1775 HSC)
+                        </div>
+                        <span class="tag-pill combat">Technologie de Guerre</span>
+                    </div>
+                    <p style="color: var(--text-secondary); font-size: 0.88rem;">
+                        Dans les bassins industriels d'Atraxia sur Vardis et à bord des croiseurs de combat, la
+                        balistique
+                        conventionnelle est remplacée par la focalisation de plasma à haute densité :
+                    </p>
+                    <div class="engine-components-grid">
+                        <div class="component-card">
+                            <strong>Le Fusil Deglazer</strong>
+                            Arme de sniper d'élite (Code Codex : +1 EC passif, 7D dégâts bruts, portée 1 000 m, 4
+                            livres, 2 mains). Rayon focalisé par un prisme de nytharite taillée ignorant les armures
+                            physiques non énergétiques.
+                        </div>
+                        <div class="component-card">
+                            <strong>Épées Laser 3D à 6D</strong>
+                            Arcs de plasma stabilisés par champ magnétique compact. Du sabre léger 3D d'officier
+                            jusqu'à l'Espadon Laser Titan 6D capable de trancher les sas blindés de vaisseaux de guerre.
+                        </div>
+                        <div class="component-card">
+                            <strong>Propulsion Warp FTL</strong>
+                            Moteurs à distorsion spatiale équipant le *Starlight Voyager* de John et le croiseur
+                            *Aeschylus*, capables de sauter les corridors interstellaires en contournant le fleuve
+                            temporel.
+                        </div>
+                        <div class="component-card">
+                            <strong>Androïdes Série Syn</strong>
+                            Châssis cybernétiques autonomes à processeurs de calcul quantique, diagnostics de coque
+                            intégrés et fidélité de combat absolue sous blindage réfractaire.
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <!-- FOOTER -->
+        <footer class="hud-footer">
+            <div>GOUVERNEUR CAUSAL : ACTIF // ÉCOSYSTÈME HYBRIS UNIFIÉ</div>
+            <div>MOTEURS MAGIQUES &bull; NYTHARITE &bull; 5E FORCE &bull; CAUSAL HARDWARE 0.0001%</div>
+            <div>ARCHITECTE : ALEXIS LACASSE &bull; CODEX LIVRES I À XI &amp; KILLTIME</div>
+        </footer>
+    </div>
+
+    <!-- LOGIQUE DYNAMIQUE DES CHRONIQUES & SWITCH D'ONGLETS -->
+    <script>
+        // ==========================================
+        // SWITCH D'ONGLETS PRINCIPAUX
+        // ==========================================
+        function switchMainTab(tabId) {
+            const historyPane = document.getElementById('view-history');
+            const techPane = document.getElementById('view-technology');
+            const btnHistory = document.getElementById('tabBtnHistory');
+            const btnTech = document.getElementById('tabBtnTech');
+
+            if (tabId === 'history') {
+                historyPane.classList.add('active');
+                techPane.classList.remove('active');
+                btnHistory.classList.add('active');
+                btnTech.classList.remove('active');
+            } else if (tabId === 'technology') {
+                techPane.classList.add('active');
+                historyPane.classList.remove('active');
+                btnTech.classList.add('active');
+                btnHistory.classList.remove('active');
+            }
+        }
+
+        // ==========================================
+        // BASE CHRONOLOGIQUE EXISTANTE (INTACTE)
+        // ==========================================
+        const HYBRIS_CHRONOLOGY = [
+            // ==========================================
+            // ÈRE 0 : GENÈSE COSMOS & DÉGÂTS PRIMORDIAUX
+            // ==========================================
+            {
+                id: "cosmo-01",
+                era: "Ère 0 : Genèse Cosmique & Catastrophe de Capricius",
+                epoch: "Cosmologie Suprême",
+                dateStr: "-20 Milliards HSC",
+                floatVal: -20000000000,
+                headline: "La Création des 36 Élianes par La Mère",
+                excerpt: "La Mère engendre 36 entités dimensionnelles pour réguler les courants de matière réelle et stabiliser le Fleuve du Temps naissant.",
+                fullDesc: "Sur les rivages extérieurs du continuum macrocosmique, la conscience créatrice primordiale forge 36 Archontes (les Élianes). Chacun reçoit un cadran d'influence gravitationnelle et subquantique. Le système maintient l'entropie à l'équilibre parfait à travers les premiers âges stellaires.",
+                line: "Main Line",
+                lineClass: "line-main",
+                scale: "cosmic",
+                loc: "Le Fleuve du Temps (Multivers)",
+                actors: "La Mère, Les 36 Élianes",
+                palette: ["Vecteur Pur", "Matière Réelle", "Harmonie Subquantique"]
+            },
+            {
+                id: "cosmo-02",
+                era: "Ère 0 : Genèse Cosmique & Catastrophe de Capricius",
+                epoch: "Cosmologie Suprême",
+                dateStr: "-20 Milliards HSC",
+                floatVal: -20000000000 + 1,
+                headline: "La Faute de Capricius : L'Engorgement d'Eau Sombre",
+                excerpt: "Capricius ingère les courants scintillants de matière pure, engendrant un excédent toxique d'Eau Sombre qui noie le fleuve temporel.",
+                fullDesc: "Pris d'une panique infantile devant la vastitude du vide, l'Éliane Capricius dévore les courants scintillants de matière réelle. Cet acte thermodynamique impardonnable produit une masse toxique d'Eau Sombre (Matière Noire). Les 36 Élianes se retrouvent prisonniers d'une lente agonie de noyade. L'univers se trouve condamné à un effondrement thermodynamique irréversible dans un délai d'un millénaire.",
+                line: "Main Line",
+                lineClass: "line-main",
+                scale: "cosmic",
+                loc: "Zone 02 — Aurion Nexus",
+                actors: "Capricius, Les Élianes",
+                palette: ["Eau Sombre", "Fracture Entropique", "Effondrement"]
+            },
+            {
+                id: "cosmo-03",
+                era: "Ère 0 : Genèse Cosmique & Catastrophe de Capricius",
+                epoch: "Cosmologie Suprême",
+                dateStr: "-100 000 HSC",
+                floatVal: -100000,
+                headline: "L'Équation Psychohistorique & Les Disciples",
+                excerpt: "Paniqué par sa propre extinction, Capricius calcule l'avenir sur 100 000 ans et arme les 4 Disciples comme missiles biologiques d'extinction.",
+                fullDesc: "Enfermé dans son sanctuaire d'Aurion, Capricius passe un siècle millénaire à exécuter des calculs psychohistoriques pour écraser la moindre variable divergente. Il conçoit l'Empire Intergalactique comme un corset mécanique et envoie quatre Disciples élémentaires (Terre, Air, Feu, Eau) à travers le temps pour pulvériser toute anomalie menaçant son équation de survie.",
+                line: "Main Line",
+                lineClass: "line-main",
+                scale: "cosmic",
+                loc: "Empire d'Aurion",
+                actors: "Capricius, Les 4 Disciples",
+                palette: ["Psychohistoire", "Missiles Biologiques", "Pression Absolue"]
+            },
+
+            // ==========================================
+            // ÈRE I : L'AN 0 HSC & LA DOUBLE FONDATION
+            // ==========================================
+            {
+                id: "era1-01",
+                era: "Ère I : L'An 0 HSC & La Fondation Forcée",
+                epoch: "Origine du Calendrier HSC",
+                dateStr: "Solus-cres, Aris 0 HSC",
+                floatVal: 0,
+                headline: "L'Arrivée des 3 000 Déportés & Les Dereks Indigènes",
+                excerpt: "Trois mille prisonniers arrachés à des civilisations technologiques sont largués sur Hybris. Les Dereks, espèce native issue de l'évolution naturelle, observent l'intrusion.",
+                fullDesc: "Un largage spatial impérial dépose 3 000 déportés sur Hybris dans des cages d'alliages rares. Les survivants se scindent : les Nains s'enfoncent à l'ouest dans les montagnes, les Tauriens gagnent les forêts du sud, et les humains s'établissent dans les Terres Centrales. Les Dereks, humanoïdes souterrains à peau grise nés de l'évolution biologique naturelle d'Hybris, maintiennent leur souveraineté territoriale dans les profondeurs rocheuses.",
+                line: "Main Line",
+                lineClass: "line-main",
+                scale: "terrestrial",
+                loc: "Plaines d'Hybris & Cavités des Dereks",
+                actors: "Colonie des 3 000, Les Dereks (Espèce Native)",
+                palette: ["Évolution Naturelle", "Peau de Granit", "Déportation"]
+            },
+            {
+                id: "era1-02",
+                era: "Ère I : L'An 0 HSC & La Fondation Forcée",
+                epoch: "Boucle de Timeline-0",
+                dateStr: "Solus-cres, Aris 0 HSC",
+                floatVal: 0.001,
+                headline: "Arrivée de Party-0 depuis l'An 1 000 000 HSC",
+                excerpt: "Ayant conçu les trois Reliques dans le futur lointain avec une civilisation synthétique, Party-0 émerge en l'An 0 HSC avec les artefacts déjà forgés.",
+                fullDesc: "Après leur défaite en 1772 HSC, Party-0 est projeté en l'An 1 000 000 HSC. Dans ce futur lointain, assistés par une race synthétique aux capacités quasi-divines, ils conçoivent les trois Reliques d'alliage polymorphe dotées d'un verrouillage génétique absolu. Ils exécutent ensuite un saut rétrograde de -1 000 000 d'années pour atteindre l'An 0 HSC avec les Reliques en leur possession.",
+                line: "Timeline-0",
+                lineClass: "line-t0",
+                scale: "cosmic",
+                loc: "Secteur du Mont du Guetteur (The Watcher)",
+                actors: "Lucianae-0, Minalia-0, Thomar-0, Race Synthétique du Futur",
+                palette: ["An 1 000 000 HSC", "Causal Hardware", "Reliques Déjà Forgées"]
+            },
+            {
+                id: "era1-03",
+                era: "Ère I : L'An 0 HSC & La Fondation Forcée",
+                epoch: "Établissement des Ancres",
+                dateStr: "Septa-cres, Cygnus 0 HSC",
+                floatVal: 0.22,
+                headline: "Sauvetage des Tauriens & Naissance de la Tribu Nythari",
+                excerpt: "Party-0 guide et protège les déportés tauriens, façonnant leur culture pour devenir la tribu Nythari. Le Journal-0 est achevé dans la crypte.",
+                fullDesc: "En l'An 0 HSC, Party-0 prend sous son aile le groupe de déportés tauriens isolés dans la jungle australe. Ils les guident, assurent leur subsistance et transmettent les disciplines de survie qui transforment ces réfugiés en la tribu Nythari. Lucas-0 poursuit la rédaction du Journal-0 — entamé plus tôt à Veldruk en 1772 HSC. Thomar-0 meurt en 59 HSC, Lucianae-0 en 67 HSC et Minalia-0 en 69 HSC, scellés dans la Crypte d'Obsidienne avec le carnet complet sur son torse.",
+                line: "Timeline-0",
+                lineClass: "line-t0",
+                scale: "terrestrial",
+                loc: "Jungle du Sud & Crypte d'Obsidienne",
+                actors: "Party-0, Déportés Tauriens (Futurs Nytharis)",
+                palette: ["Guidance des Tauriens", "Crypte d'Obsidienne", "Journal-0 Complété"]
+            },
+
+            // ==========================================
+            // ÈRE II : LE MILLÉNAIRE & LE NAUFRAGE DE 1622
+            // ==========================================
+            {
+                id: "era2-01",
+                era: "Ère II : Le Millénaire de Silence & L'Anomalie de 1622 HSC",
+                epoch: "Fracture Spatio-Temporelle",
+                dateStr: "Duon-wan, Cygnus 1622 HSC",
+                floatVal: 1622.186,
+                headline: "Le Cratère du Grand Lac (Timeline-D)",
+                excerpt: "Lors d'un combat contre l'Émissaire de l'Air, un saut spatial instable catapulte Lucas et Mina 150 ans en arrière, creusant le bassin du Grand Lac.",
+                fullDesc: "Au cours des événements narrés dans le Volume II, l'affrontement contre le Disciple de l'Air brise la matrice cinétique de la Gemme de l'Âme Démoniaque. Le vecteur de quantité de mouvement s'effondre. Le saut spatial éjecte Lucas et Mina en 1622 HSC. L'onde de choc thermique de leur réémergence vaporise des millions de tonnes de terre, excavant le bassin qui deviendra le Grand Lac.",
+                line: "Timeline-D",
+                lineClass: "line-td",
+                scale: "cosmic",
+                loc: "Bassin du Grand Lac",
+                actors: "Lucas-A, Mina-A, Disciple de l'Air",
+                palette: ["Saut Spatial Instable", "Cratère Géologique", "Divergence 1622"]
+            },
+            {
+                id: "era2-02",
+                era: "Ère II : Le Millénaire de Silence & L'Anomalie de 1622 HSC",
+                epoch: "Chute de la Ligne-E",
+                dateStr: "Hexa-plen, Galen 1627 HSC",
+                floatVal: 1627.583,
+                headline: "La Séparation & Le Messie Brisé (Timeline-E)",
+                excerpt: "Une seconde dérive temporelle sépare Lucas de Mina, projetant le garçon brisé en 1775 HSC sous la surveillance de la Résistance.",
+                fullDesc: "Cinq ans après leur naufrage en 1622, une tentative de recalibration arcanique provoque une déchirure. Mina est perdue dans les remous de la chronotrame. Lucas est projeté en 1775 HSC sur Vardis : son esprit de synthèse est réduit en pièces par l'inondation d'arcane. Devenu 'Le Messie Brisé', il est transporté dans des fers par John et Erika à bord du Starlight Voyager.",
+                line: "Timeline-D",
+                lineClass: "line-td",
+                scale: "tactical",
+                loc: "Planète Vardis (Atraxia)",
+                actors: "Lucas-A22, John, Erika, Syn",
+                palette: ["Messie Brisé", "Acoustic Void", "Starlight Voyager"]
+            },
+
+            // ==========================================
+            // ÈRE III : L'ÉVEIL DE L'ORAGE (1754 - 1771 HSC)
+            // ==========================================
+            {
+                id: "era3-01",
+                era: "Ère III : L'Éveil de l'Orage & L'Isolement (1754-1771 HSC)",
+                epoch: "Crucible Biologique",
+                dateStr: "Nova-wan, Heston 1754 HSC",
+                floatVal: 1754.793,
+                headline: "La Tempête d'Arcane de Kingston",
+                excerpt: "Une tempête subquantique déchire le réseau aetheric de Kingston. Lucas et Mina naissent au cœur de la déflagration et survivent en lévitation.",
+                fullDesc: "La maternité de Kingston s'effondre sous l'impact d'une foudre arcanique de Cinquième Force pure. Tout le personnel est anéanti à l'exception d'une infirmière. Au milieu des décombres calcinés, deux nouveau-nés flottent enveloppés dans un cocon électro-mana. L'onde de choc marque définitivement leur biologie : Lucas hérite du calcul du vide spatial et de la pyrocinésie ; Mina canalise l'élan cinétique et la création primale.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "terrestrial",
+                loc: "Maternité de Kingston",
+                actors: "Lucas-A, Mina-A, L'Infirmière",
+                palette: ["Tempête d'Arcane", "Lévitation", "Saturation Manique"]
+            },
+            {
+                id: "era3-02",
+                era: "Ère III : L'Éveil de l'Orage & L'Isolement (1754-1771 HSC)",
+                epoch: "Enfermement & Observation",
+                dateStr: "Duon-cres, Galen 1766 HSC",
+                floatVal: 1766.603,
+                headline: "Libération du Laboratoire d'Elias Thorne",
+                excerpt: "Après des années d'expérimentations sous le scalpel du Dr Thorne, Lucas est déclassé comme 'variable morte' et relâché sous tutelle.",
+                fullDesc: "Considéré comme incapable de manifester un potentiel magique exploitable après avoir étouffé ses pouvoirs pour survivre, Lucas est rejeté du complexe médical secret de Kingston avec une paire de bottes trop petites et un pull usé. Il est placé dans une famille d'accueil froide et mécanique, développant une dissociation clinique pour protéger son noyau cérébral.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Medi-Laboratoire de Kingston",
+                actors: "Lucas-A, Dr Elias Thorne",
+                palette: ["Silence Clinique", "Traumatisme", "Feu Intérieur"]
+            },
+            {
+                id: "era3-03",
+                era: "Ère III : L'Éveil de l'Orage & L'Isolement (1754-1771 HSC)",
+                epoch: "L'Ancre de Fer",
+                dateStr: "Hexa-cres, Jorvan 1766 HSC",
+                floatVal: 1766.91,
+                headline: "La Découverte de l'Acoustic Void (Thomas)",
+                excerpt: "Lucas rencontre Thomas à la clôture de la colonie. Pour la première fois, son esprit télépathique rencontre un néant absolu et apaisant.",
+                fullDesc: "Alors que l'esprit de Lucas est bombardé par la statique émotionnelle de chaque passant, son radar mental heurte un mur noir : Thomas. Le garçon ne dégage aucun résidu magique. Sa constitution représente un socle tellurique inébranlable, imperméable à la Cinquième Force. Thomas devient l'ancre biologique qui empêche l'esprit de Lucas de se consumer.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Clôture de Kingston",
+                actors: "Lucas-A, Thomas-A",
+                palette: ["Acoustic Void", "Socle Minéral", "Immunité"]
+            },
+            {
+                id: "era3-04",
+                era: "Ère III : L'Éveil de l'Orage & L'Isolement (1754-1771 HSC)",
+                epoch: "La Cage Dorée",
+                dateStr: "Nova-wan, Cygnus 1768 HSC",
+                floatVal: 1768.293,
+                headline: "Le Protocole des Pas Invisibles (Mina)",
+                excerpt: "Mina bat le record national du 100 mètres en bridant artificiellement sa vitesse pour échapper aux radars de la Police Mondiale.",
+                fullDesc: "Entraînée dans le secret par son Oncle et son protecteur Wallace sur une piste d'atterrissage désaffectée, Mina apprend à canaliser son reflux cinétique dans le sol sans briser le tarmac. Lors des championnats régionaux, elle étrangle délibérément son moteur biologique pour ne gagner que par 3 millièmes de seconde (10,95 s), dissimulant sa vélocité de 70 mph sous un vernis athlétique standard.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Stade de Kingston",
+                actors: "Mina-A, L'Oncle, Wallace",
+                palette: ["Courant Vivant", "Frein Cinétique", "Sursaut"]
+            },
+            {
+                id: "era3-05",
+                era: "Ère III : L'Éveil de l'Orage & L'Isolement (1754-1771 HSC)",
+                epoch: "L'Intersection du Trio",
+                dateStr: "Deca-cres, Heston 1771 HSC",
+                floatVal: 1771.73,
+                headline: "L'Admission au Central Institute de Kingston",
+                excerpt: "Lucas démonte les tests arcaniques de l'Institut, Thomas intègre le corps athlétique et Mina rejoint les bancs : le trio converge.",
+                fullDesc: "Après avoir résolu la surchauffe d'un réseau cristallin de nytharite en traitant l'énergie comme un système racinaire vivant, Lucas décroche une bourse totale. Lors de la journée d'orientation, Mina, Thomas et Lucas se rejoignent sur le parvis central. Les portes pneumatiques se referment derrière eux : l'Institut n'est pas une école, mais un panopticon impérial.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "terrestrial",
+                loc: "Central Institute (Kingston)",
+                actors: "Lucas-A, Mina-A, Thomas-A",
+                palette: ["Panopticon", "Convergence", "Tension"]
+            },
+
+            // ==========================================
+            // ÈRE IV : L'ANNÉE 1772 HSC (TIMELINE-A)
+            // ==========================================
+            {
+                id: "era4-01",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "L'Allumage Causal",
+                dateStr: "Duon-cres, Aris 1772 HSC",
+                floatVal: 1772.003,
+                headline: "La Brèche Acoustique : Le Baiser du Parc",
+                excerpt: "Dans un parc désert de Kingston, les barrières psychiques de Lucas et Mina cèdent : leur premier baiser déclenche une fusion de télépathie pure.",
+                fullDesc: "L'esprit géométrique de Lucas plonge dans l'océan cinétique de Mina. Leurs auras fusionnent sans frottement. Pour la première fois, la parole devient inutile : la transmission de données opère à la vitesse de la pensée. Mais cette harmonie thermique réveille la signature enfouie dans leur ADN : l'atmosphère de Kingston vire instantanément au violet sombre.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Parc Municipal de Kingston",
+                actors: "Lucas-A, Mina-A",
+                palette: ["Lien Télépathique", "Cascade", "Fusion"]
+            },
+            {
+                id: "era4-02",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "L'Anomalie Lupine",
+                dateStr: "Trion-cres, Aris 1772 HSC",
+                floatVal: 1772.006,
+                headline: "Le Somnambulisme Carnassier & Le Minulican",
+                excerpt: "Tirés de leur sommeil par une résonance d'arcane, Lucas et Mina lévitent jusqu'à la place centrale. Leur contact engendre Le Minulican.",
+                fullDesc: "En état de catalepsie totale, les deux corps flottent au-dessus des pavés. Leur collision énergétique engendre une déchirure subquantique aspirant l'Eau Sombre du vide. Une déflagration d'arcane pur rase les colonnades sans tuer personne, tandis qu'un titan lupin aux cornes torsadées — Le Minulican — s'extrait du cratère, pille un cristal aetheric dans la chambre forte municipale et disparaît dans le néant.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "terrestrial",
+                loc: "Place Centrale de Kingston",
+                actors: "Lucas-A, Mina-A, Le Minulican",
+                palette: ["Eau Sombre", "Minulican", "Surcharge"]
+            },
+            {
+                id: "era4-03",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "La Grande Traque",
+                dateStr: "Trion-cres, Aris 1772 HSC",
+                floatVal: 1772.007,
+                headline: "L'Extraction du Traqueur & La Chasse en Van",
+                excerpt: "Classés 'Ennemis d'État', le groupe fuit. Lucas neutralise le Dr Thorne par intrusion mentale, et Thomas arrache le traqueur sous-cutané.",
+                fullDesc: "Refusant de se rendre à la Police Mondiale, Lucas prend le contrôle du système nerveux d'Elias Thorne pour piloter leur van de fuite. Mina saute en marche à 70 mph pour neutraliser les intercepteurs en projetant un conteneur lourd. Dans un dispensaire désaffecté, Thomas force Thorne à inciser la poitrine de Lucas pour extraire et broyer le traqueur de résonance qui les condamnait.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Banlieue de Kingston",
+                actors: "Lucas-A, Mina-A, Thomas-A, Thorne",
+                palette: ["Intrusion Mentale", "Arrachement", "Vélocité Brute"]
+            },
+            {
+                id: "era4-04",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "Montagnes Naines",
+                dateStr: "Penta-cres, Aris 1772 HSC",
+                floatVal: 1772.012,
+                headline: "Traversée du Grand Pont & Arrivée à Brum'korath",
+                excerpt: "Le trio vend un noyau de drone militaire, passe les portes de Brum'korath avec le marchand Krin et heurte le Culte des Sent Ones.",
+                fullDesc: "Dissimulés dans le trafic lourd des transporteurs magi-tech, ils franchissent le fleuve. Au pied de la montagne, ils écrasent une embuscade de bandits en 10 secondes synchronisées, gagnant la loyauté de Krin Dow-Kabar. À Tredmor, ils découvrent la fracture souterraine : le clergé des Sent Ones mené par Goldar et le culte terroriste des Unbound sous Thrainor Blackstone.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "terrestrial",
+                loc: "Le Grand Pont & Brum'korath",
+                actors: "Trio-A, Krin, Torgar",
+                palette: ["Brum'korath", "Sent Ones", "Choc Sourd"]
+            },
+            {
+                id: "era4-04b",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "Origine Parallèle des Écrits",
+                dateStr: "Quadra-cres, Aris 1772 HSC",
+                floatVal: 1772.010,
+                headline: "Amorce du Journal de Bord : Veldruk (Lucas-0 & Lucas-A)",
+                excerpt: "Au pied des Montagnes Naines, Lucas commence son journal de terrain sur du cuir brut, au même endroit exact où Lucas-0 avait commencé le sien 1 771 ans plus tôt.",
+                fullDesc: "Coupés des réseaux de Kingston après l'extraction du traqueur, Lucas-A achète un carnet de cuir brut et de l'encre acide au campement de Veldruk pour consigner les métriques de fuite. C'est à ces mêmes coordonnées spatiales et temporelles que Lucas-0 avait acheté et ouvert le Journal-0 lors de la première itération, consignant la traversée sous la pluie et la déroute à venir.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Veldruk (Pied des Montagnes Naines)",
+                actors: "Lucas-A (et trace de Lucas-0)",
+                palette: ["Amorce du Journal", "Isomorphisme Spatial", "Veldruk"]
+            },
+            {
+                id: "era4-05",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "L'Apocalypse Souterraine",
+                dateStr: "Duon-cres, Borin 1772 HSC",
+                floatVal: 1772.070,
+                headline: "La Chute du Disciple de Terre & L'Équation de Choc Thermique",
+                excerpt: "Le Disciple de Terre s'écrase sur Brum'korath. Lucas applique le Choc Thermique pour vitrifier sa carapace, permettant à Thomas d'empaler son cœur.",
+                fullDesc: "Un missile biologique impérial de silicate pur pulvérise la voûte de la cité, massacrant 47 gardes. Les armes ordinaires ricochent. Lucas calcule la solution : superchauffer l'armure minérale à blanc avant que Torgar et les cultistes ne fassent sauter les vannes de l'aqueduc municipal. Le contraste thermique foudroyant fait éclater la roche. Thomas arrache une dalle de plusieurs centaines de livres et martèle un tuyau de blindage à travers le noyau de magma. Le monstre explose.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Place de l'Aqueduc (Brum'korath)",
+                actors: "Trio-A, Wallace, Torgar, Disciple de Terre",
+                palette: ["Choc Thermique", "Vitrification", "Broyage"]
+            },
+            {
+                id: "era4-06",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "Le Point de Déviation",
+                dateStr: "Duon-cres, Borin 1772 HSC",
+                floatVal: 1772.071,
+                headline: "La Déviation Causaliste : Wallace Survit",
+                excerpt: "Contrairement au Journal-0 où Wallace mourait en 4,2 secondes, l'intervention désespérée du trio sauve l'officier, fracturant la chronotrame.",
+                fullDesc: "Dans l'itération originelle (Timeline-0), Wallace s'était sacrifié sous les décombres pour faire gagner 4,2 secondes de fuite au trio. Dans Timeline-A, Thomas et Mina bloquent la frappe descendante du titan, le repoussent et évacuent Wallace blessé mais vivant. La convergence avec le Journal-0 est définitivement rompue. La ligne temporelle plonge dans l'inconnu.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "cosmic",
+                loc: "Ruelle de l'Aqueduc",
+                actors: "Wallace, Lucas-A, Mina-A, Thomas-A",
+                palette: ["Rupture Causaliste", "Inertie", "Survie 4.2s"]
+            },
+            {
+                id: "era4-07",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "L'Inviolable 0.0001%",
+                dateStr: "Penta-cres, Borin 1772 HSC",
+                floatVal: 1772.080,
+                headline: "La Liaison des Reliques & Le Mismatch Biométrique",
+                excerpt: "Dans les cryptes profondes, les Reliques fusionnent aux membres du trio. Le système de Lucas refuse le statut de Maître pour un écart de 0.0001%.",
+                fullDesc: "Descendant sous le temple dévasté, Lucas touche le fragment d'obsidienne flottant : le métal se liquéfie et enserre son poignet. L'IA embarquée scanne son ADN et renvoie une alerte fatale : 'Écart biométrique détecté : 0.0001%'. Il n'est pas le Maître originel de l'An 0, mais un duplicata imparfait. La relique de Mina scelle sa cheville comme une muselière thermique. La relique de Thomas perfore son avant-bras et amorce une réécriture synaptique intracrânienne violente.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "tactical",
+                loc: "Cryptes Primordiales de Brum'korath",
+                actors: "Trio-A, Dira, Torgar",
+                palette: ["Relique Tri-Fusion", "Mismatch 0.0001%", "Réécriture Neurale"]
+            },
+            {
+                id: "era4-08",
+                era: "Ère IV : L'Année 1772 HSC & La Fracture de Brum'korath",
+                epoch: "L'Épreuve du Miroir",
+                dateStr: "Duon-wan, Borin 1772 HSC",
+                floatVal: 1772.183,
+                headline: "Le Sanctuaire du Guetteur & Les Sarcophages Momifiés",
+                excerpt: "Le groupe ouvre les tombes de la Crypte d'Obsidienne : ils découvrent leurs propres cadavres momifiés et le Journal-0 de l'An 0 HSC.",
+                fullDesc: "Escortés par la reine Aphyrosia et Candice jusqu'au Mont du Guetteur (The Watcher), ils pénètrent la crypte inviolée. Thomas force la dalle marquée 'Thomar'. À l'intérieur reposent leurs propres corps desséchés depuis 17 siècles. Le scanner de la Relique confirme la parité génétique : 'Statut : Propriétaire décédé'. Lucas s'empare du Journal-0 rédigé de sa propre main en l'An 0. Le mystère de leur boucle temporelle éclate au grand jour.",
+                line: "Timeline-A",
+                lineClass: "line-ta",
+                scale: "cosmic",
+                loc: "Crypte d'Obsidienne (The Watcher)",
+                actors: "Trio-A, Candice, Aphyrosia, Elias Thorne",
+                palette: ["Miroir Temporel", "Momies", "Journal-0 Décodé"]
+            }
+        ];
+
+        // Mappage des filtres et sélection
+        let currentTimeline = 'all';
+        let currentScale = 'all';
+        let searchQuery = '';
+        let selectedEventId = HYBRIS_CHRONOLOGY[0].id;
+
+        const eventsContainer = document.getElementById('eventsContainer');
+        const searchInput = document.getElementById('chronologySearch');
+        const timelinePills = document.querySelectorAll('.filter-pill[data-timeline]');
+        const scalePills = document.querySelectorAll('.filter-pill[data-scale]');
+
+        // Rendu dynamique du flux d'événements
+        function renderEvents() {
+            eventsContainer.innerHTML = '';
+            let currentEra = '';
+
+            const filtered = HYBRIS_CHRONOLOGY.filter(evt => {
+                // Filtre de ligne temporelle
+                let matchLine = false;
+                if (currentTimeline === 'all') matchLine = true;
+                else if (currentTimeline === 't0' && evt.line.includes('Timeline-0')) matchLine = true;
+                else if (currentTimeline === 'ta' && evt.line.includes('Timeline-A')) matchLine = true;
+                else if (currentTimeline === 'td' && (evt.line.includes('Timeline-D') || evt.line.includes('Timeline-E'))) matchLine = true;
+
+                // Filtre d'échelle
+                let matchScale = (currentScale === 'all' || evt.scale === currentScale);
+
+                // Filtre de recherche
+                let matchSearch = true;
+                if (searchQuery.trim() !== '') {
+                    const q = searchQuery.toLowerCase();
+                    matchSearch = evt.headline.toLowerCase().includes(q) ||
+                        evt.excerpt.toLowerCase().includes(q) ||
+                        evt.dateStr.toLowerCase().includes(q) ||
+                        evt.actors.toLowerCase().includes(q) ||
+                        evt.loc.toLowerCase().includes(q);
+                }
+
+                return matchLine && matchScale && matchSearch;
+            });
+
+            if (filtered.length === 0) {
+                eventsContainer.innerHTML = `
+                    <div style="padding: 40px; text-align: center; color: var(--text-muted); font-family: var(--font-mono);">
+                        [ AUCUN VECTEUR CAUSAL NE CORRESPOND AUX PARAMÈTRES SÉLECTIONNÉS ]
+                    </div>
+                `;
+                return;
+            }
+
+            filtered.forEach(evt => {
+                // Insertion d'un marqueur d'ère lors du changement
+                if (evt.era !== currentEra) {
+                    currentEra = evt.era;
+                    const eraEl = document.createElement('div');
+                    eraEl.className = 'era-marker';
+                    eraEl.innerHTML = `
+                        <span class="era-title">${evt.era}</span>
+                        <span class="era-epoch">${evt.epoch}</span>
+                    `;
+                    eventsContainer.appendChild(eraEl);
+                }
+
+                // Carte d'événement
+                const card = document.createElement('article');
+                card.className = `event-node ${evt.lineClass} ${evt.id === selectedEventId ? 'active' : ''}`;
+                card.id = `node-${evt.id}`;
+                card.onclick = () => selectEvent(evt.id);
+
+                let badgeMarkup = `<span class="tag-pill ${evt.scale}">${evt.scale}</span>`;
+                if (evt.line.includes('Timeline-0')) badgeMarkup += `<span class="tag-pill t0">T-0</span>`;
+                else if (evt.line.includes('Timeline-A')) badgeMarkup += `<span class="tag-pill ta">T-A</span>`;
+                else if (evt.line.includes('Timeline-D')) badgeMarkup += `<span class="tag-pill td">T-D</span>`;
+                else badgeMarkup += `<span class="tag-pill combat">Main</span>`;
+
+                card.innerHTML = `
+                    <div class="event-top">
+                        <span class="event-date">${evt.dateStr}</span>
+                        <div class="event-badges">${badgeMarkup}</div>
+                    </div>
+                    <h3 class="event-headline">${evt.headline}</h3>
+                    <p class="event-excerpt">${evt.excerpt}</p>
+                    <div class="event-footer">
+                        <span>📍 ${evt.loc}</span>
+                        <span>👥 ${evt.actors}</span>
+                    </div>
+                `;
+
+                eventsContainer.appendChild(card);
+            });
+        }
+
+        // Sélection d'un événement et mise à jour du panneau inspecteur
+        function selectEvent(id) {
+            selectedEventId = id;
+            const evt = HYBRIS_CHRONOLOGY.find(e => e.id === id);
+            if (!evt) return;
+
+            // Highlight dans le flux
+            document.querySelectorAll('.event-node').forEach(node => {
+                node.classList.remove('active');
+            });
+            const activeNode = document.getElementById(`node-${id}`);
+            if (activeNode) activeNode.classList.add('active');
+
+            // Mise à jour de l'inspecteur
+            document.getElementById('inspTitle').textContent = evt.headline;
+            document.getElementById('inspDate').textContent = evt.dateStr;
+            document.getElementById('inspLine').textContent = evt.line;
+            document.getElementById('inspLoc').textContent = evt.loc;
+            document.getElementById('inspActors').textContent = evt.actors;
+            document.getElementById('inspDesc').innerHTML = evt.fullDesc;
+
+            // Télémétrie brute
+            document.getElementById('inspTelemetry').innerHTML = `
+                > VECTEUR : ${evt.id.toUpperCase()}<br>
+                > ÉCHELLE : ${evt.scale.toUpperCase()} // ÉPOQUE : ${evt.epoch.toUpperCase()}<br>
+                > VALEUR CHRONO : ${evt.floatVal} HSC<br>
+                > INTÉGRITÉ CAUSALE : 100% [SCELLÉE]
+            `;
+
+            // Palette physique
+            const tagsContainer = document.getElementById('inspPaletteTags');
+            tagsContainer.innerHTML = '';
+            evt.palette.forEach(p => {
+                const sp = document.createElement('span');
+                sp.className = 'palette-tag';
+                sp.textContent = p;
+                tagsContainer.appendChild(sp);
+            });
+        }
+
+        // Configuration des événements d'interface
+        searchInput.addEventListener('input', (e) => {
+            searchQuery = e.target.value;
+            renderEvents();
+        });
+
+        timelinePills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                timelinePills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                currentTimeline = pill.dataset.timeline;
+                renderEvents();
+            });
+        });
+
+        scalePills.forEach(pill => {
+            pill.addEventListener('click', () => {
+                scalePills.forEach(p => p.classList.remove('active'));
+                pill.classList.add('active');
+                currentScale = pill.dataset.scale;
+                renderEvents();
+            });
+        });
+
+        // Initialisation immédiate
+        window.addEventListener('DOMContentLoaded', () => {
+            renderEvents();
+            selectEvent(HYBRIS_CHRONOLOGY[0].id);
+        });
+    </script>
+</body>
+
+</html>

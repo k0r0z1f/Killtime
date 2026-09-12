@@ -59,7 +59,7 @@ function initCharacterSheet() {
     // Racial modifiers table
     const raceModifiers = {
         humain: { for: 0, agi: 0, con: 0, rap: 0, int: 0, eru: 0, cha: 0, ins: 0, minSens: 3, note: 'Polyvalent, sens min 3' },
-        drakka: { for: 1, agi: 0, con: 1, rap: 0, int: -1, eru: 0, cha: -1, ins: 0, minSens: 3, note: '+1 FOR, +1 CON, -1 INT, -1 CHA' },
+        nain: { for: 1, agi: 0, con: 1, rap: 0, int: -1, eru: 0, cha: -1, ins: 0, minSens: 3, note: '+1 FOR, +1 CON, -1 INT, -1 CHA' },
         taurien: { for: 0, agi: 1, con: 0, rap: 1, int: 0, eru: 0, cha: 0, ins: 0, minSens: 3, note: '+1 AGI, +1 RAP, affinité Sylvestre' },
         cleien: { for: -1, agi: 0, con: -1, rap: 0, int: 1, eru: 1, cha: 0, ins: 1, minSens: 4, note: '-1 FOR, -1 CON, +1 INT, +1 ÉRU, +1 INS, sens min 4' },
         mikyai: { for: 1, agi: 0, con: 1, rap: 0, int: 0, eru: -1, cha: -1, ins: 0, minSens: 3, note: '+1 FOR, +1 CON, -1 ÉRU, -1 CHA, écailles dures' },

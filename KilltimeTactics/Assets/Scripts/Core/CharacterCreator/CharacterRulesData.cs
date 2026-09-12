@@ -6,7 +6,7 @@ namespace Killtime.Core.Character
     public enum SpeciesType
     {
         Humain,     // Multiples mondes : polyvalent, aucun malus, sens min 3
-        Drakka,     // Hybris Ouest : +1 FOR, +1 CON, -1 INT, -1 CHA, sens min 3
+        Nain,     // Hybris Ouest : +1 FOR, +1 CON, -1 INT, -1 CHA, sens min 3
         Taurien,    // Hybris Forêt : +1 AGI, +1 RAP, magie normale, sens min 3
         Cleien,     // Cléia : -1 FOR, -1 CON, +1 INT, +1 ÉRU, +1 INS, sens min 4
         Mikyai,     // Karkjiue : +1 FOR, +1 CON, -1 ÉRU, -1 CHA, sens min 3
@@ -28,7 +28,7 @@ namespace Killtime.Core.Character
             return species switch
             {
                 SpeciesType.Humain => (0, 0, 0, 0, 0, 0, 0, 0, 3),
-                SpeciesType.Drakka => (1, 0, 1, 0, -1, 0, -1, 0, 3),
+                SpeciesType.Nain => (1, 0, 1, 0, -1, 0, -1, 0, 3),
                 SpeciesType.Taurien => (0, 1, 0, 1, 0, 0, 0, 0, 3),
                 SpeciesType.Cleien => (-1, 0, -1, 0, 1, 1, 0, 1, 4),
                 SpeciesType.Mikyai => (1, 0, 1, 0, 0, -1, -1, 0, 3),
