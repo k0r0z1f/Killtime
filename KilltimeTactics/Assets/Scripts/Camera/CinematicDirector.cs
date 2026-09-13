@@ -128,17 +128,17 @@ namespace Killtime.CameraSystem
         /// <summary>
         /// Déclenche un gros plan cinématique dramatique lors d'un tir ciblé ou d'un critique.
         /// </summary>
-        public void PlayCinematicKillshot(Transform attacker, Transform target, Action onStrikePoint, Action onComplete)
+        public void PlayCinematicKillshot(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null)
         {
             if (_activeCinematicRoutine != null)
             {
                 StopCoroutine(_activeCinematicRoutine);
             }
 
-            _activeCinematicRoutine = StartCoroutine(CinematicRoutine(attacker, target, onStrikePoint, onComplete));
+            _activeCinematicRoutine = StartCoroutine(CinematicRoutine(attacker, target, onStrikePoint, onComplete, onActionStart));
         }
 
-        private IEnumerator CinematicRoutine(Transform attacker, Transform target, Action onStrikePoint, Action onComplete)
+        private IEnumerator CinematicRoutine(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null)
         {
             CurrentMode = CameraMode.CinematicAction;
             _tacticalCam.enabled = false;
@@ -159,7 +159,6 @@ namespace Killtime.CameraSystem
             Vector3 sideDir = Vector3.Cross(lineDir, Vector3.up).normalized;
             if (sideDir == Vector3.zero) sideDir = Vector3.right;
 
-            // Recul de la caméra et surélévation verticale pour dégager le champ de vision
             Vector3 cameraOffset = (sideDir * 1.5f - lineDir * 0.6f).normalized * (combatDistance * 0.85f + 4.2f) + Vector3.up * 1.75f;
             Vector3 cinematicPos = focalPoint + cameraOffset;
 
@@ -172,7 +171,7 @@ namespace Killtime.CameraSystem
 
             // 1. Transition vers le plan cinématique
             float elapsed = 0f;
-            float duration = 0.4f;
+            float duration = 0.35f;
 
             while (elapsed < duration)
             {
@@ -185,22 +184,25 @@ namespace Killtime.CameraSystem
                 yield return null;
             }
 
-            // 2. Ralenti dramatique à l'impact
-            Time.timeScale = 0.35f;
-            float slowmoTimer = 0f;
-            while (slowmoTimer < 0.4f)
+            // Déclenchement du roundkick juste avant l'impact
+            onActionStart?.Invoke();
+
+            // 2. Trajectoire de frappe en ralenti dramatique jusqu'au point de contact
+            Time.timeScale = 0.45f;
+            float windupTimer = 0f;
+            while (windupTimer < 0.22f)
             {
                 while (Time.timeScale <= 0.0001f) yield return null;
-                slowmoTimer += Time.unscaledDeltaTime;
+                windupTimer += Time.unscaledDeltaTime;
                 yield return null;
             }
 
-            // Point d'impact (résolution mathématique et affichage des textes)
+            // Point d'impact physique : calculs, flash et apparition des textes au-dessus des têtes
             onStrikePoint?.Invoke();
 
-            // Temps de lecture étendu pour assimiler les résultats
+            // Temps de lecture de l'impact pendant que la jambe termine son mouvement et que le texte flotte
             float readTimer = 0f;
-            while (readTimer < 1.5f)
+            while (readTimer < 0.85f)
             {
                 while (Time.timeScale <= 0.0001f) yield return null;
                 readTimer += Time.unscaledDeltaTime;
@@ -210,7 +212,7 @@ namespace Killtime.CameraSystem
 
             // 3. Retour fluide à la vue tactique
             elapsed = 0f;
-            duration = 0.5f;
+            duration = 0.35f;
 
             while (elapsed < duration)
             {

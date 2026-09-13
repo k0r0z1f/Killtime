@@ -40,6 +40,7 @@ namespace Killtime.Tactics.Units
         public HexCoordinates CurrentCoords { get; private set; }
         public bool IsPlayerControlled => _isPlayerControlled;
         public bool IsMoving { get; private set; }
+        public float MoveSpeed => _moveSpeed;
 
         private TacticalHexGrid _grid;
 

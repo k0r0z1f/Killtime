@@ -2,6 +2,8 @@ using System;
 using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Playables;
+using UnityEngine.Animations;
 using Killtime.Core.Character;
 using Killtime.Core.Arcanotech;
 using Killtime.Tactics;
@@ -34,15 +36,30 @@ namespace Killtime.UI
         private readonly List<string> _availableModelNames = new();
         private bool _showModelDropdown = false;
 
-        // --- Studio d'Aperçu 3D Temps Réel ---
+        // --- Studio d'Aperçu 3D Temps Réel & Animations ---
         private RenderTexture _previewRT;
         private Camera _previewCam;
         private GameObject _previewStudioRoot;
         private GameObject _currentPreviewInstance;
+        private Animator _previewAnimator;
+        private PlayableGraph _previewPlayableGraph;
         private string _lastLoadedModelName = "__UNINITIALIZED__";
         private float _previewModelYaw = 180f;
         private bool _isDraggingPreview = false;
         private Vector2 _lastMousePos;
+
+        private int _selectedPreviewAnimIndex = 0;
+        private bool _showAnimDropdown = false;
+        private readonly string[] _previewAnimationStates = {
+            "Standing Idle",
+            "Standing Idle To Fight Idle",
+            "Fight Idle",
+            "Fight Idle To Standing Idle",
+            "Action Idle To Fight Idle",
+            "Action Idle To Standing Idle",
+            "Walking",
+            "Roundkick"
+        };
 
         private Rect _windowRect;
         private Vector2 _scrollPos;
@@ -372,12 +389,14 @@ namespace Killtime.UI
 
             GUILayout.Space(6);
 
-            // Hub Visuel : Aperçu 3D du modèle sélectionné
+            // Hub Visuel : Aperçu 3D du modèle sélectionné & Contrôleur d'animations
             GUILayout.BeginHorizontal();
             GUILayout.FlexibleSpace();
             DrawPreviewViewport(210, 210);
             GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
+
+            DrawAnimationStateSelector();
         }
 
         private void EnsurePreviewStudio()
@@ -438,10 +457,12 @@ namespace Killtime.UI
                 _currentPreviewInstance = null;
             }
 
+            GameObject prefab = null;
+
             if (!string.IsNullOrEmpty(modelName) && modelName != "(Procédural)")
             {
                 string cleanName = modelName.StartsWith("Characters/") ? modelName.Substring("Characters/".Length) : modelName;
-                var prefab = Resources.Load<GameObject>($"Characters/{cleanName}") ?? Resources.Load<GameObject>(cleanName);
+                prefab = Resources.Load<GameObject>($"Characters/{cleanName}") ?? Resources.Load<GameObject>(cleanName);
 
                 if (prefab != null)
                 {
@@ -461,7 +482,152 @@ namespace Killtime.UI
             _currentPreviewInstance.transform.localPosition = Vector3.zero;
             _currentPreviewInstance.transform.localRotation = Quaternion.Euler(0f, _previewModelYaw, 0f);
 
+            SetupPreviewAnimator(_currentPreviewInstance, prefab);
+            PlayPreviewAnimation(_selectedPreviewAnimIndex);
+
             FramePreviewCamera();
+        }
+
+        private void DrawAnimationStateSelector()
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Animation :", GUILayout.Width(80));
+
+            if (GUILayout.Button("◀", GUILayout.Width(28)))
+            {
+                int next = (_selectedPreviewAnimIndex - 1 + _previewAnimationStates.Length) % _previewAnimationStates.Length;
+                PlayPreviewAnimation(next);
+            }
+
+            string currentAnimName = _previewAnimationStates[_selectedPreviewAnimIndex];
+            GUI.color = Color.cyan;
+            GUILayout.Label($"<b>🎭 {currentAnimName}</b>", GUILayout.Width(200));
+            GUI.color = Color.white;
+
+            if (GUILayout.Button("▶", GUILayout.Width(28)))
+            {
+                int next = (_selectedPreviewAnimIndex + 1) % _previewAnimationStates.Length;
+                PlayPreviewAnimation(next);
+            }
+
+            if (GUILayout.Button(_showAnimDropdown ? "▲ Liste" : "▼ Liste", GUILayout.Width(58)))
+            {
+                _showAnimDropdown = !_showAnimDropdown;
+            }
+
+            if (GUILayout.Button("↺", GUILayout.Width(30)))
+            {
+                PlayPreviewAnimation(_selectedPreviewAnimIndex);
+            }
+            GUILayout.EndHorizontal();
+
+            if (_showAnimDropdown)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("<color=#52687A><i>États d'animation disponibles (Assets/Resources/Animations) :</i></color>");
+                for (int i = 0; i < _previewAnimationStates.Length; i++)
+                {
+                    bool isSelected = (_selectedPreviewAnimIndex == i);
+                    GUI.backgroundColor = isSelected ? new Color(0.0f, 0.85f, 1.0f) : Color.white;
+                    if (GUILayout.Button($"🎬 {_previewAnimationStates[i]}"))
+                    {
+                        PlayPreviewAnimation(i);
+                        _showAnimDropdown = false;
+                    }
+                    GUI.backgroundColor = Color.white;
+                }
+                GUILayout.EndVertical();
+            }
+        }
+
+        private void SetupPreviewAnimator(GameObject instance, GameObject sourcePrefab = null)
+        {
+            _previewAnimator = instance.GetComponentInChildren<Animator>();
+            if (_previewAnimator == null)
+            {
+                _previewAnimator = instance.AddComponent<Animator>();
+            }
+
+            _previewAnimator.applyRootMotion = false;
+            _previewAnimator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+            _previewAnimator.updateMode = AnimatorUpdateMode.UnscaledTime;
+
+            if (_previewAnimator.avatar == null && sourcePrefab != null)
+            {
+                var srcAnim = sourcePrefab.GetComponentInChildren<Animator>();
+                if (srcAnim != null && srcAnim.avatar != null)
+                {
+                    _previewAnimator.avatar = srcAnim.avatar;
+                }
+            }
+        }
+
+        private void PlayPreviewAnimation(int index)
+        {
+            if (index < 0 || index >= _previewAnimationStates.Length) return;
+            _selectedPreviewAnimIndex = index;
+            string stateName = _previewAnimationStates[index];
+
+            if (_previewAnimator == null) return;
+
+            if (_previewPlayableGraph.IsValid())
+            {
+                _previewPlayableGraph.Destroy();
+            }
+
+            AnimationClip clip = LoadAnimationClip(stateName);
+            if (clip != null)
+            {
+                AnimationPlayableUtilities.PlayClip(_previewAnimator, clip, out _previewPlayableGraph);
+                _previewPlayableGraph.SetTimeUpdateMode(DirectorUpdateMode.UnscaledGameTime);
+                _previewPlayableGraph.Play();
+            }
+            else
+            {
+                _statusMessage = $"⚠️ Clip '{stateName}' introuvable dans Resources/Animations/{stateName}";
+            }
+        }
+
+        private static AnimationClip LoadAnimationClip(string clipName)
+        {
+            AnimationClip clip = null;
+
+            var subClips = Resources.LoadAll<AnimationClip>($"Animations/{clipName}");
+            if (subClips != null && subClips.Length > 0)
+            {
+                for (int i = 0; i < subClips.Length; i++)
+                {
+                    if (subClips[i] != null && !subClips[i].name.StartsWith("__preview__"))
+                    {
+                        clip = subClips[i];
+                        break;
+                    }
+                }
+            }
+
+            if (clip == null)
+            {
+                subClips = Resources.LoadAll<AnimationClip>(clipName);
+                if (subClips != null && subClips.Length > 0)
+                {
+                    for (int i = 0; i < subClips.Length; i++)
+                    {
+                        if (subClips[i] != null && !subClips[i].name.StartsWith("__preview__"))
+                        {
+                            clip = subClips[i];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (clip == null)
+            {
+                clip = Resources.Load<AnimationClip>($"Animations/{clipName}")
+                    ?? Resources.Load<AnimationClip>(clipName);
+            }
+
+            return clip;
         }
 
         private GameObject BuildProceduralPreviewModel()
@@ -593,6 +759,13 @@ namespace Killtime.UI
 
         private void CleanupPreviewStudio()
         {
+            if (_previewPlayableGraph.IsValid())
+            {
+                _previewPlayableGraph.Destroy();
+            }
+
+            _previewAnimator = null;
+
             if (_currentPreviewInstance != null)
             {
                 Destroy(_currentPreviewInstance);
@@ -1166,6 +1339,7 @@ namespace Killtime.UI
                 var go = new GameObject($"Unit_{_currentSheet.Name.Replace(" ", "_")}");
                 unit = go.AddComponent<TacticalUnit>();
                 unit.InitializeFromSheet(_currentSheet, coords, _grid, _spawnAsPlayer);
+                unit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
                 _turnManager?.RegisterUnit(unit);
             }
 

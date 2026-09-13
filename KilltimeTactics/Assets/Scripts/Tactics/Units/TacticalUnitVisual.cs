@@ -1,3 +1,5 @@
+using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -6,10 +8,21 @@ using Killtime.Core.Character;
 
 namespace Killtime.Tactics.Units
 {
+    public enum UnitAnimState
+    {
+        StandingIdle,
+        StandingIdleToFightIdle,
+        FightIdle,
+        FightIdleToStandingIdle,
+        ActionIdleToFightIdle,
+        ActionIdleToStandingIdle,
+        Walking,
+        Roundkick
+    }
+
     /// <summary>
-    /// Gestionnaire visuel 3D pour une unité tactique.
-    /// Assure la création d'avatars procéduraux protégés contre les shaders manquants,
-    /// les barres de vie en billboard et les textes de dégâts flottants.
+    /// Gestionnaire visuel 3D et machine d'états d'animation pour une unité tactique.
+    /// Orchestre les postures de combat, les transitions de garde, les flashs d'impact et les badges de statut.
     /// </summary>
     [RequireComponent(typeof(TacticalUnit))]
     public class TacticalUnitVisual : MonoBehaviour
@@ -27,13 +40,35 @@ namespace Killtime.Tactics.Units
         private MaterialPropertyBlock _propBlock;
         private bool _isCustomModel = false;
 
+        private Animator _animator;
+        private AnimatorOverrideController _animatorOverride;
+        private bool _isInCombat = true;
+        private bool _wasMoving = false;
+        private bool _isActionPlaying = false;
+        private Coroutine _actionRoutine;
+
+        private static readonly int AnimIsInCombat = Animator.StringToHash("IsInCombat");
+        private static readonly int AnimTriggerAction = Animator.StringToHash("TriggerAction");
+        private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
+        private static readonly int AnimTriggerRoundkick = Animator.StringToHash("TriggerRoundkick");
+        private static readonly int AnimWalkSpeedMultiplier = Animator.StringToHash("WalkSpeedMultiplier");
+
+        private bool _hasWalkingClip = false;
+        private bool _hasWalkMultiplierParam = false;
+        private float _naturalWalkSpeed = 1.35f;
+
+        private static readonly Dictionary<string, AnimationClip> _clipCache = new(StringComparer.OrdinalIgnoreCase);
+
         private readonly List<FloatingText> _floatingTexts = new();
         private float _hitFlashTimer = 0f;
         private Color _currentBodyColor;
 
         private static readonly Dictionary<StatusEffect, Texture2D> _statusIconCache = new();
         private StatusVisualInfo? _hoveredStatusInfo;
-        private static readonly StatusEffect[] _allStatusEffects = (StatusEffect[])System.Enum.GetValues(typeof(StatusEffect));
+        private static readonly StatusEffect[] _allStatusEffects = (StatusEffect[])Enum.GetValues(typeof(StatusEffect));
+
+        public Animator AnimatorComponent => _animator;
+        public bool IsInCombat => _isInCombat;
 
         private struct StatusVisualInfo
         {
@@ -69,13 +104,283 @@ namespace Killtime.Tactics.Units
             }
         }
 
+        private void Start()
+        {
+            if (_animator != null && _isInCombat)
+            {
+                _animator.SetBool(AnimIsInCombat, true);
+                _animator.Play("Fight Idle", 0, 0f);
+            }
+        }
+
         private void Update()
         {
             if (Time.timeScale <= 0.0001f) return;
 
+            UpdateAnimatorParameters();
             UpdateFloatingTexts();
             UpdateHitFlash();
             UpdateKOAnimation();
+        }
+
+        private void UpdateAnimatorParameters()
+        {
+            if (_animator == null) return;
+
+            bool moving = _unit != null && _unit.IsMoving;
+            _animator.SetBool(AnimIsMoving, moving);
+
+            bool alive = _unit != null && _unit.Stats != null && _unit.Stats.IsAlive;
+            _animator.SetBool(AnimIsInCombat, _isInCombat && alive);
+
+            if (_hasWalkingClip && _hasWalkMultiplierParam && _unit != null)
+            {
+                float multiplier = moving ? Mathf.Max(0.1f, _unit.MoveSpeed / _naturalWalkSpeed) : 1.0f;
+                _animator.SetFloat(AnimWalkSpeedMultiplier, multiplier);
+            }
+
+            if (moving != _wasMoving)
+            {
+                _wasMoving = moving;
+                if (moving)
+                {
+                    _animator.CrossFadeInFixedTime("Walking", 0.1f);
+                }
+                else
+                {
+                    string idleState = (_isInCombat && alive) ? "Fight Idle" : "Standing Idle";
+                    _animator.CrossFadeInFixedTime(idleState, 0.15f);
+                }
+            }
+        }
+
+        public void SetCombatStance(bool inCombat)
+        {
+            _isInCombat = inCombat;
+            if (_animator != null)
+            {
+                _animator.SetBool(AnimIsInCombat, inCombat);
+                if (inCombat)
+                {
+                    _animator.CrossFadeInFixedTime("Fight Idle", 0.1f);
+                }
+                else
+                {
+                    _animator.CrossFadeInFixedTime("Standing Idle", 0.15f);
+                }
+            }
+        }
+
+        public void TriggerActionAnimation()
+        {
+            TriggerRoundkick();
+        }
+
+        public void TriggerRoundkick()
+        {
+            if (_isActionPlaying) return;
+
+            _isInCombat = true;
+            if (_animator != null)
+            {
+                _animator.SetBool(AnimIsInCombat, true);
+                _animator.ResetTrigger(AnimTriggerAction);
+                _animator.ResetTrigger(AnimTriggerRoundkick);
+                _animator.CrossFadeInFixedTime("Roundkick", 0.08f);
+
+                if (_actionRoutine != null)
+                {
+                    StopCoroutine(_actionRoutine);
+                }
+                _actionRoutine = StartCoroutine(ActionLockRoutine());
+            }
+        }
+
+        private IEnumerator ActionLockRoutine()
+        {
+            _isActionPlaying = true;
+            yield return new WaitForSeconds(0.85f);
+            if (_animator != null)
+            {
+                _animator.ResetTrigger(AnimTriggerAction);
+                _animator.ResetTrigger(AnimTriggerRoundkick);
+            }
+            _isActionPlaying = false;
+            _actionRoutine = null;
+        }
+
+        public void PlayAnimationState(UnitAnimState state, float crossFadeDuration = 0.15f)
+        {
+            if (_animator == null) return;
+
+            string stateName = state switch
+            {
+                UnitAnimState.StandingIdle => "Standing Idle",
+                UnitAnimState.StandingIdleToFightIdle => "Standing Idle To Fight Idle",
+                UnitAnimState.FightIdle => "Fight Idle",
+                UnitAnimState.FightIdleToStandingIdle => "Fight Idle To Standing Idle",
+                UnitAnimState.ActionIdleToFightIdle => "Action Idle To Fight Idle",
+                UnitAnimState.ActionIdleToStandingIdle => "Action Idle To Standing Idle",
+                UnitAnimState.Walking => "Walking",
+                UnitAnimState.Roundkick => "Roundkick",
+                _ => "Standing Idle"
+            };
+
+            _animator.CrossFadeInFixedTime(stateName, crossFadeDuration);
+        }
+
+        private void SetupAnimator(GameObject instance, GameObject sourcePrefab = null)
+        {
+            _animator = instance.GetComponentInChildren<Animator>();
+            if (_animator == null)
+            {
+                _animator = instance.AddComponent<Animator>();
+            }
+
+            _animator.applyRootMotion = false;
+            _animator.cullingMode = AnimatorCullingMode.AlwaysAnimate;
+
+            if (_animator.avatar == null && sourcePrefab != null)
+            {
+                var srcAnim = sourcePrefab.GetComponentInChildren<Animator>();
+                if (srcAnim != null && srcAnim.avatar != null)
+                {
+                    _animator.avatar = srcAnim.avatar;
+                }
+            }
+
+            RuntimeAnimatorController baseController = _animator.runtimeAnimatorController;
+            if (baseController == null)
+            {
+                baseController = Resources.Load<RuntimeAnimatorController>("PlayerAnimator")
+                              ?? Resources.Load<RuntimeAnimatorController>("Animations/PlayerAnimator");
+            }
+
+            if (baseController != null)
+            {
+                ConfigureAnimatorClips(baseController);
+            }
+
+            if (_animator != null && _isInCombat)
+            {
+                _animator.SetBool(AnimIsInCombat, true);
+                _animator.Play("Fight Idle", 0, 0f);
+            }
+        }
+
+        private void ConfigureAnimatorClips(RuntimeAnimatorController baseController)
+        {
+            _animatorOverride = new AnimatorOverrideController(baseController);
+
+            BindClipToOverride("Standing Idle");
+            BindClipToOverride("Standing Idle To Fight Idle");
+            BindClipToOverride("Fight Idle");
+            BindClipToOverride("Fight Idle To Standing Idle");
+            BindClipToOverride("Walking");
+            BindClipToOverride("Roundkick");
+
+            _animator.runtimeAnimatorController = _animatorOverride;
+            CheckWalkingAnimationCapabilities();
+        }
+
+        private void CheckWalkingAnimationCapabilities()
+        {
+            _hasWalkingClip = false;
+            _hasWalkMultiplierParam = false;
+            _naturalWalkSpeed = 1.35f;
+
+            if (_animator == null) return;
+
+            for (int i = 0; i < _animator.parameterCount; i++)
+            {
+                if (_animator.parameters[i].nameHash == AnimWalkSpeedMultiplier)
+                {
+                    _hasWalkMultiplierParam = true;
+                    break;
+                }
+            }
+
+            AnimationClip walkingClip = null;
+            if (_animatorOverride != null)
+            {
+                walkingClip = _animatorOverride["Walking"];
+            }
+
+            if (walkingClip == null)
+            {
+                walkingClip = LoadAnimationClip("Walking");
+            }
+
+            if (walkingClip != null)
+            {
+                _hasWalkingClip = true;
+                float avgSpeed = walkingClip.averageSpeed.magnitude;
+                if (avgSpeed > 0.1f)
+                {
+                    _naturalWalkSpeed = avgSpeed;
+                }
+            }
+        }
+
+        private void BindClipToOverride(string clipName)
+        {
+            AnimationClip clip = LoadAnimationClip(clipName);
+            if (clip != null && _animatorOverride != null)
+            {
+                _animatorOverride[clipName] = clip;
+            }
+        }
+
+        private static AnimationClip LoadAnimationClip(string clipName)
+        {
+            if (_clipCache.TryGetValue(clipName, out var cached) && cached != null)
+            {
+                return cached;
+            }
+
+            AnimationClip clip = null;
+
+            var subClips = Resources.LoadAll<AnimationClip>($"Animations/{clipName}");
+            if (subClips != null && subClips.Length > 0)
+            {
+                for (int i = 0; i < subClips.Length; i++)
+                {
+                    if (subClips[i] != null && !subClips[i].name.StartsWith("__preview__"))
+                    {
+                        clip = subClips[i];
+                        break;
+                    }
+                }
+            }
+
+            if (clip == null)
+            {
+                subClips = Resources.LoadAll<AnimationClip>(clipName);
+                if (subClips != null && subClips.Length > 0)
+                {
+                    for (int i = 0; i < subClips.Length; i++)
+                    {
+                        if (subClips[i] != null && !subClips[i].name.StartsWith("__preview__"))
+                        {
+                            clip = subClips[i];
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (clip == null)
+            {
+                clip = Resources.Load<AnimationClip>($"Animations/{clipName}")
+                    ?? Resources.Load<AnimationClip>(clipName);
+            }
+
+            if (clip != null)
+            {
+                _clipCache[clipName] = clip;
+            }
+
+            return clip;
         }
 
         public void SetColor(Color bodyColor, Color visorColor)
@@ -160,6 +465,8 @@ namespace Killtime.Tactics.Units
             _customModelRenderers.AddRange(instance.GetComponentsInChildren<Renderer>());
             _bodyRenderer = instance.GetComponentInChildren<MeshRenderer>();
 
+            SetupAnimator(instance, prefab);
+
             Material baseMat = CreateSafeUnitMaterial("UnitFactionRing_Mat");
             var disk = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
             disk.name = "FactionRing";
@@ -185,8 +492,12 @@ namespace Killtime.Tactics.Units
         public void BuildProceduralAvatar()
         {
             _isCustomModel = false;
+            _hasWalkingClip = false;
+            _hasWalkMultiplierParam = false;
             _customModelRenderers.Clear();
             _teamDiskRenderer = null;
+            _animator = null;
+            _animatorOverride = null;
 
             if (_modelRoot != null) Destroy(_modelRoot.gameObject);
 
@@ -386,6 +697,7 @@ namespace Killtime.Tactics.Units
                 float uiY = Screen.height - screenPos.y;
 
                 DrawOverheadHUD(uiX, uiY);
+                DrawAnimationTelemetry(uiX, uiY);
                 DrawCircularStatusHalo(cam);
                 DrawFloatingCombatTexts(cam);
 
@@ -395,6 +707,74 @@ namespace Killtime.Tactics.Units
                     _hoveredStatusInfo = null;
                 }
             }
+        }
+
+        private void DrawAnimationTelemetry(float x, float y)
+        {
+            if (_animator == null || _animator.runtimeAnimatorController == null) return;
+
+            var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
+            var clipInfo = _animator.GetCurrentAnimatorClipInfo(0);
+            AnimationClip curClip = (clipInfo != null && clipInfo.Length > 0) ? clipInfo[0].clip : null;
+            string clipName = curClip != null ? curClip.name : "Sans Clip";
+            bool isLooping = curClip != null && curClip.isLooping;
+
+            float normTime = stateInfo.normalizedTime;
+            float cyclePct = (normTime % 1f) * 100f;
+            if (cyclePct < 0f) cyclePct += 100f;
+            int loopCount = Mathf.Max(0, (int)normTime);
+
+            bool inTrans = _animator.IsInTransition(0);
+
+            float w = 220f;
+            float h = inTrans ? 58f : 46f;
+            float topY = y - 36f - h - 6f;
+            Rect rect = new Rect(x - w * 0.5f, topY, w, h);
+
+            Color prevBg = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(0.015f, 0.035f, 0.065f, 0.94f);
+            GUI.Box(rect, GUIContent.none);
+            GUI.backgroundColor = prevBg;
+
+            Color accentCol = inTrans ? new Color(1.0f, 0.72f, 0.15f, 0.95f) : new Color(0.0f, 0.90f, 1.0f, 0.85f);
+            Color prevCol = GUI.color;
+            GUI.color = accentCol;
+            GUI.DrawTexture(new Rect(rect.x, rect.y, rect.width, 2f), Texture2D.whiteTexture);
+            GUI.color = prevCol;
+
+            string loopTag = isLooping 
+                ? "<color=#00FF88>[Loop: OUI]</color>" 
+                : "<color=#FF4444>[Loop: NON]</color>";
+
+            string line1 = $"🎬 <b>{clipName}</b>  {loopTag}";
+            string line2 = $"⏱️ Cycle: <b>{cyclePct:0}%</b> (Tour #{loopCount})";
+
+            if (inTrans)
+            {
+                var transInfo = _animator.GetAnimatorTransitionInfo(0);
+                var nextClips = _animator.GetNextAnimatorClipInfo(0);
+                string nextName = (nextClips != null && nextClips.Length > 0 && nextClips[0].clip != null) ? nextClips[0].clip.name : "Suivant";
+                line2 += $" | <color=#FFB830>➔ {nextName} ({transInfo.normalizedTime * 100f:0}%)</color>";
+            }
+
+            bool inCombat = _animator.GetBool(AnimIsInCombat);
+            bool isMoving = _animator.GetBool(AnimIsMoving);
+            string combatTag = inCombat ? "<color=#00FF88>OUI</color>" : "<color=#FF6666>NON</color>";
+            string moveTag = isMoving ? "<color=#00FF88>OUI</color>" : "<color=#8899AA>NON</color>";
+            string line3 = $"⚙️ Combat: {combatTag} | Marche: {moveTag}";
+
+            var labelStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 9,
+                richText = true,
+                alignment = TextAnchor.MiddleLeft,
+                padding = new RectOffset(6, 4, 1, 1)
+            };
+            labelStyle.normal.textColor = new Color(0.90f, 0.95f, 1.0f, 0.95f);
+
+            GUI.Label(new Rect(rect.x + 4, rect.y + 3, rect.width - 8, 14), line1, labelStyle);
+            GUI.Label(new Rect(rect.x + 4, rect.y + 17, rect.width - 8, 14), line2, labelStyle);
+            GUI.Label(new Rect(rect.x + 4, rect.y + 31, rect.width - 8, 14), line3, labelStyle);
         }
 
         private void DrawOverheadHUD(float x, float y)

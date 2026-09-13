@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics.Grid;
@@ -80,6 +81,7 @@ namespace Killtime.Tactics
 
         private TacticalMapSaveData _currentLoadedMap;
         private string _currentLoadedMapPath;
+        private bool _isAttackInProgress = false;
 
         private void Awake()
         {
@@ -112,6 +114,7 @@ namespace Killtime.Tactics
 
             // 3. Liaison avec le TurnManager
             _turnManager.OnTurnStarted += HandleTurnStarted;
+            _turnManager.OnCombatEnded += HandleCombatEnded;
 
             // 4. Sélectionner le premier mannequin par défaut
             if (SparringDummies.Count > 0)
@@ -193,9 +196,12 @@ namespace Killtime.Tactics
             SparringDummies.Add(dummyArmored);
 
             _turnManager.RegisterUnit(PlayerUnit);
+            PlayerUnit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
+
             foreach (var d in SparringDummies)
             {
                 _turnManager.RegisterUnit(d);
+                d.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
             }
 
             // 3. Recréer et réintégrer toutes les unités personnalisées spawnées
@@ -207,6 +213,7 @@ namespace Killtime.Tactics
                     var go = new GameObject($"Unit_{record.Sheet.Name.Replace(" ", "_")}");
                     var customUnit = go.AddComponent<TacticalUnit>();
                     customUnit.InitializeFromSheet(record.Sheet, record.SpawnCoords, _grid, record.IsPlayer);
+                    customUnit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
 
                     if (record.IsPlayer)
                     {
@@ -238,6 +245,7 @@ namespace Killtime.Tactics
             var go = new GameObject($"Unit_{sheet.Name.Replace(" ", "_")}");
             var unit = go.AddComponent<TacticalUnit>();
             unit.InitializeFromSheet(sheet, coords, _grid, isPlayer);
+            unit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
 
             if (isPlayer)
             {
@@ -297,6 +305,7 @@ namespace Killtime.Tactics
         public void ClearAllUnits()
         {
             StopAllCoroutines();
+            _isAttackInProgress = false;
             _aiController?.StopAITurn();
             _cinematicDirector?.ResetCinematicState();
 
@@ -348,6 +357,7 @@ namespace Killtime.Tactics
                 var go = new GameObject($"Unit_{unitData.Sheet.Name.Replace(" ", "_")}");
                 var unit = go.AddComponent<TacticalUnit>();
                 unit.InitializeFromSheet(unitData.Sheet, coords, _grid, unitData.IsPlayer);
+                unit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
 
                 if (unitData.IsPlayer)
                 {
@@ -462,12 +472,26 @@ namespace Killtime.Tactics
             Log($"📐 Layout d'arène configuré : <b>{layout}</b>");
         }
 
+        private void HandleCombatEnded(CombatOutcome outcome)
+        {
+            var units = FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < units.Length; i++)
+            {
+                var vis = units[i].GetComponent<TacticalUnitVisual>();
+                vis?.SetCombatStance(false);
+            }
+        }
+
         private void HandleTurnStarted(TacticalUnit unit)
         {
             if (_cameraController != null)
             {
                 _cameraController.FocusOn(unit.transform);
             }
+
+            // Mise en garde tactique de l'unité active
+            var visual = unit.GetComponent<TacticalUnitVisual>();
+            visual?.SetCombatStance(true);
 
             Log($"--- Tour de 10s : <b>{unit.Stats.Name}</b> (PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints}) ---");
             RecordChronoSnapshot($"Début du tour de {unit.Stats.Name}");
@@ -621,6 +645,8 @@ namespace Killtime.Tactics
             DiceType? attackDie = null,
             DiceType? defenseDie = null)
         {
+            if (_isAttackInProgress) return;
+
             var attacker = _turnManager.ActiveUnit;
             var defender = CurrentTarget;
 
@@ -656,6 +682,19 @@ namespace Killtime.Tactics
                     resolvedDefenderBonus = Mathf.Clamp(attackerBonusAP > 0 ? attackerBonusAP : 1, 0, extraAvailable);
                 }
             }
+
+            Vector3 combatDir = defender.transform.position - attacker.transform.position;
+            combatDir.y = 0f;
+            if (combatDir != Vector3.zero)
+            {
+                attacker.transform.rotation = Quaternion.LookRotation(combatDir);
+            }
+
+            var attVisual = attacker.GetComponent<TacticalUnitVisual>();
+            Action triggerKickAction = () =>
+            {
+                attVisual?.TriggerRoundkick();
+            };
 
             Action resolveAction = () =>
             {
@@ -697,15 +736,14 @@ namespace Killtime.Tactics
 
                 Log(result.CombatLog);
 
-                // Texte flottant d'effort sur l'attaquant
-                var attVisual = attacker.GetComponent<TacticalUnitVisual>();
+                // Affichage du texte flottant sur l'attaquant à l'impact exact
                 if (attVisual != null)
                 {
                     int totalCost = (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP;
                     attVisual.SpawnFloatingText($"Attaque {targetedPart} (-{totalCost} PA)", new Color(0.3f, 0.8f, 1.0f));
                 }
 
-                // Textes flottants et retours visuels sur le défenseur
+                // Textes flottants et retours visuels sur le défenseur à l'impact exact
                 var defVisual = defender.GetComponent<TacticalUnitVisual>();
                 if (defVisual != null)
                 {
@@ -787,19 +825,31 @@ namespace Killtime.Tactics
                 _turnManager?.CheckCombatOver();
             };
 
+            _isAttackInProgress = true;
+
             if (_enableCinematicKillcam && _cinematicDirector != null)
             {
                 _cinematicDirector.PlayCinematicKillshot(
                     attacker.transform,
                     defender.transform,
                     onStrikePoint: resolveAction,
-                    onComplete: () => { }
+                    onComplete: () => { _isAttackInProgress = false; },
+                    onActionStart: triggerKickAction
                 );
             }
             else
             {
-                resolveAction();
+                StartCoroutine(ExecuteAttackRoutine(triggerKickAction, resolveAction));
             }
+        }
+
+        private System.Collections.IEnumerator ExecuteAttackRoutine(Action triggerKick, Action resolveImpact)
+        {
+            triggerKick?.Invoke();
+            yield return new WaitForSeconds(0.22f);
+            resolveImpact?.Invoke();
+            yield return new WaitForSeconds(0.65f);
+            _isAttackInProgress = false;
         }
 
         public void RecordChronoSnapshot(string description)
@@ -970,6 +1020,7 @@ namespace Killtime.Tactics
         {
             // 1. Interrompre toutes les coroutines actives et rétablir le temps réel
             StopAllCoroutines();
+            _isAttackInProgress = false;
             _aiController?.StopAITurn();
             _cinematicDirector?.ResetCinematicState();
 
