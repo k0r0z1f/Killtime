@@ -1,3 +1,5 @@
+using System;
+using System.IO;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
@@ -69,6 +71,33 @@ namespace Killtime.Tactics.Grid
         private readonly HashSet<HexCoordinates> _currentReachable = new();
         private readonly List<HexCoordinates> _currentPath = new();
 
+        private readonly Dictionary<string, Material> _groundMaterialCache = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, Texture2D> _groundTextureCache = new(StringComparer.OrdinalIgnoreCase);
+
+        [Header("Sculpture & Rendu du Relief")]
+        [SerializeField] private bool _smoothSlopeTerrain = false;
+        [SerializeField] private float _groundTiling = 1.0f;
+
+        public bool SmoothSlopeTerrain
+        {
+            get => _smoothSlopeTerrain;
+            set
+            {
+                _smoothSlopeTerrain = value;
+                RefreshObstacles();
+            }
+        }
+
+        public float GroundTiling
+        {
+            get => _groundTiling;
+            set
+            {
+                _groundTiling = Mathf.Max(0.1f, value);
+                RefreshObstacles();
+            }
+        }
+
         private HexCoordinates? _currentHovered;
         private HexCoordinates? _currentTarget;
         private Transform _tilesParent;
@@ -104,7 +133,21 @@ namespace Killtime.Tactics.Grid
 
         private void Start()
         {
+            EnsureCameraAntiAliasing();
             BuildVisualGrid();
+        }
+
+        private static void EnsureCameraAntiAliasing()
+        {
+            var cam = UnityEngine.Camera.main;
+            if (cam == null) return;
+
+            var urpData = cam.GetComponent<UnityEngine.Rendering.Universal.UniversalAdditionalCameraData>();
+            if (urpData != null)
+            {
+                urpData.antialiasing = UnityEngine.Rendering.Universal.AntialiasingMode.SubpixelMorphologicalAntiAliasing;
+                urpData.antialiasingQuality = UnityEngine.Rendering.Universal.AntialiasingQuality.High;
+            }
         }
 
         private void InitializeMaterials()
@@ -267,6 +310,8 @@ namespace Killtime.Tactics.Grid
 
             if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", defaultColor);
             if (mat.HasProperty("_Color")) mat.SetColor("_Color", defaultColor);
+            if (mat.HasProperty("_Smoothness")) mat.SetFloat("_Smoothness", 0.05f);
+            if (mat.HasProperty("_Glossiness")) mat.SetFloat("_Glossiness", 0.05f);
 
             return mat;
         }
@@ -306,8 +351,6 @@ namespace Killtime.Tactics.Grid
             _obstaclesParent = new GameObject("HexObstacles").transform;
             _obstaclesParent.SetParent(transform, false);
 
-            _cachedHexMesh = GeneratePointyHexMesh(_grid.HexRadius * 0.95f, 0.08f);
-
             foreach (var kvp in _grid.Nodes)
             {
                 var coords = kvp.Key;
@@ -317,15 +360,17 @@ namespace Killtime.Tactics.Grid
                 tileObj.transform.SetParent(_tilesParent, false);
                 tileObj.transform.position = node.WorldPosition;
 
+                var mesh = GenerateSculptedTileMesh(_grid, coords, node, _grid.HexRadius * 0.95f, _smoothSlopeTerrain, _groundTiling);
+
                 var mf = tileObj.AddComponent<MeshFilter>();
-                mf.sharedMesh = _cachedHexMesh;
+                mf.sharedMesh = mesh;
 
                 var mr = tileObj.AddComponent<MeshRenderer>();
-                mr.sharedMaterial = _baseMaterial;
+                mr.sharedMaterial = GetOrCreateGroundMaterial(node.GroundTexture);
                 _tileRenderers[coords] = mr;
 
                 var col = tileObj.AddComponent<MeshCollider>();
-                col.sharedMesh = _cachedHexMesh;
+                col.sharedMesh = mesh;
 
                 UpdateCeilingVisual(coords, node);
                 UpdateObstacleVisual(coords, node);
@@ -338,13 +383,376 @@ namespace Killtime.Tactics.Grid
         public void RefreshObstacles()
         {
             if (_grid == null) return;
+
+            float hexRadius = _grid.HexRadius * 0.95f;
+
             foreach (var kvp in _grid.Nodes)
             {
-                UpdateCeilingVisual(kvp.Key, kvp.Value);
-                UpdateObstacleVisual(kvp.Key, kvp.Value);
+                var coords = kvp.Key;
+                var node = kvp.Value;
+
+                if (_tileRenderers.TryGetValue(coords, out var mr) && mr != null)
+                {
+                    mr.transform.position = node.WorldPosition;
+                    var mesh = GenerateSculptedTileMesh(_grid, coords, node, hexRadius, _smoothSlopeTerrain, _groundTiling);
+
+                    var mf = mr.GetComponent<MeshFilter>();
+                    if (mf != null) mf.sharedMesh = mesh;
+
+                    var col = mr.GetComponent<MeshCollider>();
+                    if (col != null) col.sharedMesh = mesh;
+
+                    mr.sharedMaterial = GetOrCreateGroundMaterial(node.GroundTexture);
+                }
+
+                UpdateCeilingVisual(coords, node);
+                UpdateObstacleVisual(coords, node);
             }
+
             RefreshAllTileColors();
             RefreshCeilingRenderers();
+        }
+
+        private static readonly Dictionary<string, Texture2D> _allKnownGroundTextures = new(StringComparer.OrdinalIgnoreCase);
+
+        public Material GetOrCreateGroundMaterial(string textureRelativePath)
+        {
+            if (string.IsNullOrEmpty(textureRelativePath))
+            {
+                return _baseMaterial;
+            }
+
+            if (_groundMaterialCache.TryGetValue(textureRelativePath, out var mat) && mat != null)
+            {
+                return mat;
+            }
+
+            var tex = LoadGroundTexture(textureRelativePath);
+            if (tex == null)
+            {
+                return _baseMaterial;
+            }
+
+            mat = new Material(_baseMaterial)
+            {
+                name = $"GroundMat_{tex.name}"
+            };
+
+            tex.wrapMode = TextureWrapMode.Repeat;
+            tex.filterMode = FilterMode.Trilinear;
+            tex.anisoLevel = 16;
+
+            mat.mainTexture = tex;
+            if (mat.HasProperty("_BaseMap")) mat.SetTexture("_BaseMap", tex);
+            if (mat.HasProperty("_MainTex")) mat.SetTexture("_MainTex", tex);
+            if (mat.HasProperty("_Color")) mat.SetColor("_Color", Color.white);
+            if (mat.HasProperty("_BaseColor")) mat.SetColor("_BaseColor", Color.white);
+
+            // Suppression du spéculaire pour éliminer les micro-étincelles sur les textures bruitées
+            if (mat.HasProperty("_Smoothness")) mat.SetFloat("_Smoothness", 0.0f);
+            if (mat.HasProperty("_Glossiness")) mat.SetFloat("_Glossiness", 0.0f);
+            if (mat.HasProperty("_SpecularHighlights")) mat.SetFloat("_SpecularHighlights", 0.0f);
+
+            _groundMaterialCache[textureRelativePath] = mat;
+            return mat;
+        }
+
+        public Texture2D LoadGroundTexture(string textureRelativePath)
+        {
+            if (string.IsNullOrEmpty(textureRelativePath)) return null;
+
+            if (_groundTextureCache.TryGetValue(textureRelativePath, out var cached) && cached != null)
+            {
+                return cached;
+            }
+
+            string baseName = Path.GetFileNameWithoutExtension(textureRelativePath);
+            if (_allKnownGroundTextures.TryGetValue(baseName, out var byBase) && byBase != null)
+            {
+                _groundTextureCache[textureRelativePath] = byBase;
+                return byBase;
+            }
+
+            var loaded = Resources.Load<Texture2D>($"Grounds/{textureRelativePath}")
+                      ?? Resources.Load<Texture2D>(textureRelativePath)
+                      ?? Resources.Load<Texture2D>($"Grounds/{baseName}");
+
+            if (loaded == null)
+            {
+                var allResourcesGrounds = Resources.LoadAll<Texture2D>("Grounds");
+                for (int i = 0; i < allResourcesGrounds.Length; i++)
+                {
+                    var rTex = allResourcesGrounds[i];
+                    if (rTex == null) continue;
+
+                    rTex.wrapMode = TextureWrapMode.Repeat;
+                    rTex.filterMode = FilterMode.Trilinear;
+                    rTex.anisoLevel = 16;
+                    _allKnownGroundTextures[rTex.name] = rTex;
+
+                    if (string.Equals(rTex.name, baseName, StringComparison.OrdinalIgnoreCase) ||
+                        string.Equals(rTex.name, textureRelativePath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        loaded = rTex;
+                    }
+                }
+            }
+
+            if (loaded != null)
+            {
+                loaded.wrapMode = TextureWrapMode.Repeat;
+                loaded.filterMode = FilterMode.Trilinear;
+                loaded.anisoLevel = 16;
+
+                _groundTextureCache[textureRelativePath] = loaded;
+                _allKnownGroundTextures[textureRelativePath] = loaded;
+                _allKnownGroundTextures[baseName] = loaded;
+                return loaded;
+            }
+
+            return null;
+        }
+
+#if UNITY_EDITOR
+        public static bool EnsureTextureImporterSettings(string assetPath)
+        {
+            var importer = UnityEditor.AssetImporter.GetAtPath(assetPath) as UnityEditor.TextureImporter;
+            if (importer == null) return false;
+
+            bool changed = false;
+
+            if (importer.textureType != UnityEditor.TextureImporterType.Default)
+            {
+                importer.textureType = UnityEditor.TextureImporterType.Default;
+                changed = true;
+            }
+
+            if (!importer.mipmapEnabled)
+            {
+                importer.mipmapEnabled = true;
+                importer.mipmapFilter = UnityEditor.TextureImporterMipFilter.BoxFilter;
+                changed = true;
+            }
+
+            if (importer.filterMode != FilterMode.Trilinear)
+            {
+                importer.filterMode = FilterMode.Trilinear;
+                changed = true;
+            }
+
+            if (importer.anisoLevel < 16)
+            {
+                importer.anisoLevel = 16;
+                changed = true;
+            }
+
+            if (importer.wrapMode != TextureWrapMode.Repeat)
+            {
+                importer.wrapMode = TextureWrapMode.Repeat;
+                changed = true;
+            }
+
+            if (changed)
+            {
+                importer.SaveAndReimport();
+                return true;
+            }
+
+            return false;
+        }
+
+        [UnityEditor.MenuItem("Killtime/Générer Mipmaps Textures Sols (Anti-Grésillement)")]
+        private static void MenuBatchFixAllGroundTextureAssets()
+        {
+            BatchFixAllGroundTextureAssets();
+        }
+#endif
+
+        public static void BatchFixAllGroundTextureAssets()
+        {
+#if UNITY_EDITOR
+            if (Application.isPlaying)
+            {
+                Debug.LogWarning("[HexGridVisualizer] Veuillez arrêter le mode Play avant d'exécuter la réimportation des assets sur disque.");
+                return;
+            }
+
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Resources/Grounds" });
+            int fixedCount = 0;
+
+            for (int i = 0; i < guids.Length; i++)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[i]);
+                if (EnsureTextureImporterSettings(path))
+                {
+                    fixedCount++;
+                }
+            }
+
+            UnityEditor.AssetDatabase.Refresh();
+            Debug.Log($"[HexGridVisualizer] Mipmaps & Anisotropie 16x générés avec succès sur le disque pour {fixedCount} texture(s).");
+#endif
+        }
+
+        public static Mesh GenerateSculptedTileMesh(TacticalHexGrid grid, HexCoordinates coords, HexNode node, float radius, bool smoothSlope, float uvTiling)
+        {
+            var mesh = new Mesh { name = $"SculptedHex_{coords.Q}_{coords.R}" };
+
+            var vertices = new List<Vector3>();
+            var normals = new List<Vector3>();
+            var uvs = new List<Vector2>();
+            var triangles = new List<int>();
+
+            Vector3 centerWorld = node.WorldPosition;
+            float worldTilingFactor = Mathf.Max(0.1f, radius * 2f * uvTiling);
+
+            // 1. Calcul géométrique des 6 sommets supérieurs
+            Vector3 centerTop = Vector3.zero;
+            Vector3[] topCorners = new Vector3[6];
+
+            for (int i = 0; i < 6; i++)
+            {
+                float angle = (30f + 60f * i) * Mathf.Deg2Rad;
+                float x = radius * Mathf.Cos(angle);
+                float z = radius * Mathf.Sin(angle);
+                float y = 0f;
+
+                if (smoothSlope && grid != null)
+                {
+                    var neighborA = grid.GetNode(coords.GetNeighbor(i));
+                    var neighborB = grid.GetNode(coords.GetNeighbor((i + 1) % 6));
+                    float eCur = node.Elevation;
+                    float eA = neighborA != null ? neighborA.Elevation : eCur;
+                    float eB = neighborB != null ? neighborB.Elevation : eCur;
+                    float avgCorner = (eCur + eA + eB) / 3f;
+                    y = avgCorner - eCur;
+                }
+
+                topCorners[i] = new Vector3(x, y, z);
+            }
+
+            // 2. FACE DU SOL (Horizontale, plane, normale vers le haut, enroulement horaire strict)
+            int topCenterIdx = vertices.Count;
+            vertices.Add(centerTop);
+            normals.Add(Vector3.up);
+            uvs.Add(new Vector2(0.5f, 0.5f));
+
+            int topCornerStartIdx = vertices.Count;
+            for (int i = 0; i < 6; i++)
+            {
+                vertices.Add(topCorners[i]);
+                float u = (topCorners[i].x / (radius * 2f)) * uvTiling + 0.5f;
+                float v = (topCorners[i].z / (radius * 2f)) * uvTiling + 0.5f;
+                uvs.Add(new Vector2(u, v));
+
+                if (smoothSlope)
+                {
+                    int prev = (i + 5) % 6;
+                    Vector3 edgeA = topCorners[prev] - centerTop;
+                    Vector3 edgeB = topCorners[i] - centerTop;
+                    Vector3 n = Vector3.Cross(edgeA, edgeB).normalized;
+                    if (n.y < 0f) n = -n;
+                    normals.Add(n);
+                }
+                else
+                {
+                    normals.Add(Vector3.up);
+                }
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                int next = (i + 1) % 6;
+
+                // Face supérieure unique (sens horaire strict, élimine tout Z-fighting coplanaire)
+                triangles.Add(topCenterIdx);
+                triangles.Add(topCornerStartIdx + next);
+                triangles.Add(topCornerStartIdx + i);
+            }
+
+            // 3. ÉPAISSEUR DE DALLE (8cm standard, s'étire uniquement en falaise pour joindre le voisin le plus bas)
+            float minNeighborElev = node.Elevation;
+            if (grid != null)
+            {
+                for (int d = 0; d < 6; d++)
+                {
+                    var neighbor = grid.GetNode(coords.GetNeighbor(d));
+                    if (neighbor != null && neighbor.Elevation < minNeighborElev)
+                    {
+                        minNeighborElev = neighbor.Elevation;
+                    }
+                }
+            }
+
+            float stepDrop = Mathf.Max(0f, node.Elevation - minNeighborElev);
+            float tileThickness = 0.08f;
+            float bottomLocalY = -(stepDrop + tileThickness);
+
+            for (int i = 0; i < 6; i++)
+            {
+                int next = (i + 1) % 6;
+
+                Vector3 vTL = topCorners[i];
+                Vector3 vTR = topCorners[next];
+                Vector3 vBR = new Vector3(topCorners[next].x, bottomLocalY, topCorners[next].z);
+                Vector3 vBL = new Vector3(topCorners[i].x, bottomLocalY, topCorners[i].z);
+
+                Vector3 sideNormal = Vector3.Cross(vTR - vTL, vBL - vTL).normalized;
+
+                int baseIdx = vertices.Count;
+                vertices.Add(vTL);
+                vertices.Add(vTR);
+                vertices.Add(vBR);
+                vertices.Add(vBL);
+
+                normals.Add(sideNormal);
+                normals.Add(sideNormal);
+                normals.Add(sideNormal);
+                normals.Add(sideNormal);
+
+                uvs.Add(new Vector2(0f, 1f));
+                uvs.Add(new Vector2(1f, 1f));
+                uvs.Add(new Vector2(1f, 0f));
+                uvs.Add(new Vector2(0f, 0f));
+
+                triangles.Add(baseIdx);
+                triangles.Add(baseIdx + 1);
+                triangles.Add(baseIdx + 2);
+
+                triangles.Add(baseIdx);
+                triangles.Add(baseIdx + 2);
+                triangles.Add(baseIdx + 3);
+            }
+
+            // 4. DESSOUS DE LA DALLE
+            int botCenterIdx = vertices.Count;
+            vertices.Add(new Vector3(0, bottomLocalY, 0));
+            normals.Add(Vector3.down);
+            uvs.Add(new Vector2(0.5f, 0.5f));
+
+            int botCornerStartIdx = vertices.Count;
+            for (int i = 0; i < 6; i++)
+            {
+                vertices.Add(new Vector3(topCorners[i].x, bottomLocalY, topCorners[i].z));
+                normals.Add(Vector3.down);
+                uvs.Add(new Vector2(0.5f, 0.5f));
+            }
+
+            for (int i = 0; i < 6; i++)
+            {
+                int next = (i + 1) % 6;
+                triangles.Add(botCenterIdx);
+                triangles.Add(botCornerStartIdx + i);
+                triangles.Add(botCornerStartIdx + next);
+            }
+
+            mesh.SetVertices(vertices);
+            mesh.SetNormals(normals);
+            mesh.SetUVs(0, uvs);
+            mesh.SetTriangles(triangles, 0);
+            mesh.RecalculateBounds();
+
+            return mesh;
         }
 
         public void SetCeilingVisualMode(CeilingVisualMode mode)
@@ -435,13 +843,13 @@ namespace Killtime.Tactics.Grid
             }
             else if (CurrentCeilingMode == CeilingVisualMode.EditorNonCeilingMode)
             {
-                activeAlpha = 0.018f;
-                defaultCeilCol = new Color(0.06f, 0.45f, 0.65f, activeAlpha);
+                activeAlpha = Mathf.Clamp(_ceilingOpacity, 0.22f, 0.65f);
+                defaultCeilCol = new Color(0.12f, 0.75f, 0.98f, activeAlpha);
             }
             else
             {
-                activeAlpha = 0.012f;
-                defaultCeilCol = new Color(0.06f, 0.40f, 0.60f, activeAlpha);
+                activeAlpha = Mathf.Clamp(_ceilingOpacity * 0.85f, 0.18f, 0.55f);
+                defaultCeilCol = new Color(0.10f, 0.70f, 0.95f, activeAlpha);
             }
 
             bool isVisible = (CurrentCeilingMode != CeilingVisualMode.InGame) || _showCeilingInGame;
@@ -631,32 +1039,46 @@ namespace Killtime.Tactics.Grid
                 var mr = kvp.Value;
                 if (mr == null) continue;
 
-                Color c = _defaultTileColor;
+                var node = _grid != null ? _grid.GetNode(coords) : null;
+                bool isTextured = node != null && !string.IsNullOrEmpty(node.GroundTexture);
 
-                var node = _grid.GetNode(coords);
+                Color c = isTextured ? Color.white : _defaultTileColor;
+
                 if (node != null && !node.IsWalkable)
                 {
-                    c = new Color(0.18f, 0.1f, 0.1f, 1f);
+                    c = isTextured ? new Color(0.7f, 0.25f, 0.25f, 1f) : new Color(0.18f, 0.1f, 0.1f, 1f);
                 }
                 else if (_currentHovered.HasValue && _currentHovered.Value.Equals(coords))
                 {
-                    c = _hoverTileColor;
+                    c = isTextured ? Color.Lerp(Color.white, _hoverTileColor, 0.65f) : _hoverTileColor;
                 }
                 else if (_currentTarget.HasValue && _currentTarget.Value.Equals(coords))
                 {
-                    c = _targetTileColor;
+                    c = isTextured ? Color.Lerp(Color.white, _targetTileColor, 0.70f) : _targetTileColor;
                 }
                 else if (_currentPath.Contains(coords))
                 {
-                    c = _pathTileColor;
+                    c = isTextured ? Color.Lerp(Color.white, _pathTileColor, 0.60f) : _pathTileColor;
                 }
                 else if (_currentReachable.Contains(coords))
                 {
-                    c = _reachableTileColor;
+                    c = isTextured ? Color.Lerp(Color.white, _reachableTileColor, 0.50f) : _reachableTileColor;
                 }
 
+                _propBlock.Clear();
                 _propBlock.SetColor("_BaseColor", c);
                 _propBlock.SetColor("_Color", c);
+
+                if (isTextured)
+                {
+                    var tex = LoadGroundTexture(node.GroundTexture);
+                    if (tex != null)
+                    {
+                        _propBlock.SetTexture("_BaseMap", tex);
+                        _propBlock.SetTexture("_MainTex", tex);
+                    }
+                }
+
                 mr.SetPropertyBlock(_propBlock);
             }
         }

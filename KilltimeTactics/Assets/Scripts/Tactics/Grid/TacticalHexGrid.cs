@@ -59,6 +59,23 @@ namespace Killtime.Tactics.Grid
             }
         }
 
+        public void SetNodeElevation(HexCoordinates coords, float elevation)
+        {
+            if (_nodes.TryGetValue(coords, out var node))
+            {
+                node.Elevation = elevation;
+                node.WorldPosition = coords.ToWorldPosition(_hexRadius, _gridHeight + elevation);
+            }
+        }
+
+        public void SetNodeGroundTexture(HexCoordinates coords, string textureName)
+        {
+            if (_nodes.TryGetValue(coords, out var node))
+            {
+                node.GroundTexture = textureName ?? "";
+            }
+        }
+
         public void ResetGridState()
         {
             foreach (var node in _nodes.Values)
@@ -68,6 +85,9 @@ namespace Killtime.Tactics.Grid
                 node.IsOccupied = false;
                 node.HasCeiling = false;
                 node.HasCustomVisual = false;
+                node.Elevation = 0.0f;
+                node.GroundTexture = "";
+                node.WorldPosition = node.Coordinates.ToWorldPosition(_hexRadius, _gridHeight);
             }
         }
 

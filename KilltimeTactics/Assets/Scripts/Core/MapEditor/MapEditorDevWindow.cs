@@ -20,7 +20,13 @@ namespace Killtime.UI
         AddCeiling,
         RemoveCeiling,
         PlaceProp3D,
-        EraseProp3D
+        EraseProp3D,
+        PaintGroundTexture,
+        ClearGroundTexture,
+        ElevateGround,
+        LowerGround,
+        SetElevation,
+        SmoothElevation
     }
 
     public enum PropPlacementType
@@ -39,6 +45,17 @@ namespace Killtime.UI
         public CoverType Cover;
         public bool IsWalkable;
         public bool HasCeiling;
+        public float Elevation;
+        public string GroundTexture;
+    }
+
+    [Serializable]
+    public class GroundTextureRecord
+    {
+        public string RelativePath;
+        public string Category;
+        public string DisplayName;
+        public Texture2D Texture;
     }
 
     [Serializable]
@@ -75,9 +92,11 @@ namespace Killtime.UI
         public string MapName = "Nouvelle_Carte";
         public int GridRadius = 8;
         public float CeilingHeight = 3.5f;
+        public string SaveTimestamp = "";
         public List<MapTileData> ModifiedTiles = new();
         public List<MapPropData> PlacedProps = new();
         public List<MapUnitData> PlacedUnits = new();
+        public List<Vector3> PlacedPixies = new();
     }
 
     /// <summary>
@@ -104,13 +123,25 @@ namespace Killtime.UI
         private string _gridRadiusInput = "8";
         private float _ceilingHeightInput = 3.5f;
 
-        private Rect _windowRect = new Rect(20, 60, 540, 680);
+        private Rect _windowRect = new Rect(20, 60, 560, 700);
         private Vector2 _scrollPos;
         private Vector2 _propsScrollPos;
+        private Vector2 _groundTexturesScrollPos;
         private int _selectedTab = 0;
-        private readonly string[] _tabTitles = { "🖌️ Sol & Plafond", "🏺 Objets 3D", "💾 Cartes", "📐 Grille" };
+        private readonly string[] _tabTitles = { "🖌️ Couvertures & Plafond", "🏔️ Sols & Relief", "🏺 Objets 3D", "💾 Cartes", "📐 Grille" };
 
         private HexNode _inspectedNode;
+
+        // --- Ground Creator & Sculpture du Relief ---
+        private readonly List<GroundTextureRecord> _availableGroundTextures = new();
+        private readonly List<string> _groundCategories = new();
+        private int _selectedCategoryIndex = 0;
+        private int _selectedGroundIndex = 0;
+        private float _sculptStep = 0.25f;
+        private float _targetElevation = 1.0f;
+        private int _sculptRadius = 1;
+        private bool _smoothSlopeTerrain = false;
+        private float _groundTiling = 1.0f;
 
         // --- Gestionnaire d'Objets 3D & Ancrages ---
         private readonly List<string> _availablePropNames = new();
@@ -166,6 +197,7 @@ namespace Killtime.UI
             EnsureReferences();
             EnsureDirectoryExists();
             RefreshAvailableProps();
+            RefreshAvailableGroundTextures();
             EnsurePropsRoot();
             SyncPropsFromScene();
             if (_grid != null) _ceilingHeightInput = _grid.CeilingHeight;
@@ -382,8 +414,8 @@ namespace Killtime.UI
         {
             if (UnityEngine.Camera.main == null || _grid == null) return;
 
-            Vector2 mouseScreen = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-            if (_windowRect.Contains(mouseScreen))
+            Vector2 mouseScreenPos = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+            if (_windowRect.Contains(mouseScreenPos))
             {
                 _gridVisualizer?.SetHoveredCoord(null, false);
                 return;
@@ -391,7 +423,7 @@ namespace Killtime.UI
 
             bool isCeilingTargeting = (_activeBrush == MapBrushType.AddCeiling) ||
                                       (_activeBrush == MapBrushType.RemoveCeiling) ||
-                                      (_selectedTab == 1 && _propPlacementType == PropPlacementType.Plafond) ||
+                                      (_selectedTab == 2 && _propPlacementType == PropPlacementType.Plafond) ||
                                       (_activeBrush == MapBrushType.Inspect && _inspectedNode != null && _inspectedNode.HasCeiling);
 
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
@@ -432,7 +464,8 @@ namespace Killtime.UI
                             }
                         }
                         string ceilingInfo = node.HasCeiling ? " | Plafond: OUI" : " | Plafond: NON";
-                        _statusMessage = $"Hex ({node.Coordinates.Q}, {node.Coordinates.R}) | Couverture: {node.Cover} | Praticable: {node.IsWalkable}{ceilingInfo}{propInfo}";
+                        string groundTexInfo = !string.IsNullOrEmpty(node.GroundTexture) ? $" | Texture: {node.GroundTexture}" : "";
+                        _statusMessage = $"Hex ({node.Coordinates.Q}, {node.Coordinates.R}) | Altitude: {node.Elevation:0.##}m | Couverture: {node.Cover}{ceilingInfo}{groundTexInfo}{propInfo}";
                     }
                     else if (_activeBrush == MapBrushType.PlaceProp3D)
                     {
@@ -444,14 +477,21 @@ namespace Killtime.UI
                     }
                     else
                     {
-                        ApplyTerrainBrush(node, _activeBrush);
+                        ApplyBrushWithRadius(node, _activeBrush);
                     }
                 }
                 else if (Input.GetMouseButton(0))
                 {
-                    if (_activeBrush != MapBrushType.Inspect && _activeBrush != MapBrushType.PlaceProp3D && _activeBrush != MapBrushType.EraseProp3D)
+                    if (_activeBrush == MapBrushType.PaintGroundTexture ||
+                        _activeBrush == MapBrushType.ClearGroundTexture ||
+                        _activeBrush == MapBrushType.ClearGround ||
+                        _activeBrush == MapBrushType.HalfCover ||
+                        _activeBrush == MapBrushType.FullCover ||
+                        _activeBrush == MapBrushType.ImpassableHole ||
+                        _activeBrush == MapBrushType.AddCeiling ||
+                        _activeBrush == MapBrushType.RemoveCeiling)
                     {
-                        ApplyTerrainBrush(node, _activeBrush);
+                        ApplyBrushWithRadius(node, _activeBrush);
                     }
                 }
             }
@@ -459,6 +499,41 @@ namespace Killtime.UI
             {
                 _gridVisualizer?.SetHoveredCoord(null, false);
             }
+        }
+
+        private void ApplyBrushWithRadius(HexNode centerNode, MapBrushType brush)
+        {
+            var nodes = GetNodesInBrushRadius(centerNode.Coordinates, _sculptRadius);
+            for (int i = 0; i < nodes.Count; i++)
+            {
+                ApplyTerrainBrush(nodes[i], brush);
+            }
+        }
+
+        private List<HexNode> GetNodesInBrushRadius(HexCoordinates center, int radius)
+        {
+            var list = new List<HexNode>();
+            if (_grid == null) return list;
+
+            if (radius <= 1)
+            {
+                var single = _grid.GetNode(center);
+                if (single != null) list.Add(single);
+                return list;
+            }
+
+            for (int q = -radius + 1; q < radius; q++)
+            {
+                int r1 = Mathf.Max(-radius + 1, -q - radius + 1);
+                int r2 = Mathf.Min(radius - 1, -q + radius - 1);
+                for (int r = r1; r <= r2; r++)
+                {
+                    var targetCoords = new HexCoordinates(center.Q + q, center.R + r);
+                    var node = _grid.GetNode(targetCoords);
+                    if (node != null) list.Add(node);
+                }
+            }
+            return list;
         }
 
         private void ApplyTerrainBrush(HexNode node, MapBrushType brush)
@@ -519,11 +594,133 @@ namespace Killtime.UI
                         modified = true;
                     }
                     break;
+
+                case MapBrushType.PaintGroundTexture:
+                    if (_availableGroundTextures.Count > 0 && _selectedGroundIndex < _availableGroundTextures.Count)
+                    {
+                        string selectedTexPath = _availableGroundTextures[_selectedGroundIndex].RelativePath;
+                        if (node.GroundTexture != selectedTexPath)
+                        {
+                            node.GroundTexture = selectedTexPath;
+                            modified = true;
+                        }
+                    }
+                    break;
+
+                case MapBrushType.ClearGroundTexture:
+                    if (!string.IsNullOrEmpty(node.GroundTexture))
+                    {
+                        node.GroundTexture = "";
+                        modified = true;
+                    }
+                    break;
+
+                case MapBrushType.ElevateGround:
+                    node.Elevation += _sculptStep;
+                    node.WorldPosition = node.Coordinates.ToWorldPosition(_grid != null ? _grid.HexRadius : 1.0f, (_grid != null ? 0.05f : 0f) + node.Elevation);
+                    modified = true;
+                    break;
+
+                case MapBrushType.LowerGround:
+                    node.Elevation -= _sculptStep;
+                    node.WorldPosition = node.Coordinates.ToWorldPosition(_grid != null ? _grid.HexRadius : 1.0f, (_grid != null ? 0.05f : 0f) + node.Elevation);
+                    modified = true;
+                    break;
+
+                case MapBrushType.SetElevation:
+                    node.Elevation = _targetElevation;
+                    node.WorldPosition = node.Coordinates.ToWorldPosition(_grid != null ? _grid.HexRadius : 1.0f, (_grid != null ? 0.05f : 0f) + node.Elevation);
+                    modified = true;
+                    break;
+
+                case MapBrushType.SmoothElevation:
+                    if (_grid != null)
+                    {
+                        float sum = node.Elevation;
+                        int count = 1;
+                        for (int dir = 0; dir < 6; dir++)
+                        {
+                            var neighbor = _grid.GetNode(node.Coordinates.GetNeighbor(dir));
+                            if (neighbor != null)
+                            {
+                                sum += neighbor.Elevation;
+                                count++;
+                            }
+                        }
+                        node.Elevation = sum / count;
+                        node.WorldPosition = node.Coordinates.ToWorldPosition(_grid.HexRadius, 0.05f + node.Elevation);
+                        modified = true;
+                    }
+                    break;
             }
 
             if (modified && _gridVisualizer != null)
             {
                 _gridVisualizer.RefreshObstacles();
+            }
+        }
+
+        public void RefreshAvailableGroundTextures()
+        {
+            _availableGroundTextures.Clear();
+            _groundCategories.Clear();
+            _groundCategories.Add("Tous");
+
+            var loaded = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+
+#if UNITY_EDITOR
+            string[] guids = UnityEditor.AssetDatabase.FindAssets("t:Texture2D", new[] { "Assets/Resources/Grounds" });
+            foreach (var guid in guids)
+            {
+                string path = UnityEditor.AssetDatabase.GUIDToAssetPath(guid);
+                int idx = path.IndexOf("Resources/Grounds/", StringComparison.OrdinalIgnoreCase);
+                if (idx >= 0)
+                {
+                    string rel = path.Substring(idx + "Resources/Grounds/".Length);
+                    string ext = Path.GetExtension(rel);
+                    if (!string.IsNullOrEmpty(ext)) rel = rel.Substring(0, rel.Length - ext.Length);
+
+                    if (!loaded.Contains(rel))
+                    {
+                        var tex = UnityEditor.AssetDatabase.LoadAssetAtPath<Texture2D>(path);
+                        if (tex != null)
+                        {
+                            string dir = Path.GetDirectoryName(rel).Replace('\\', '/');
+                            string cat = string.IsNullOrEmpty(dir) ? "Racine" : dir;
+                            if (!_groundCategories.Contains(cat)) _groundCategories.Add(cat);
+
+                            _availableGroundTextures.Add(new GroundTextureRecord
+                            {
+                                RelativePath = rel,
+                                Category = cat,
+                                DisplayName = Path.GetFileName(rel),
+                                Texture = tex
+                            });
+                            loaded.Add(rel);
+                        }
+                    }
+                }
+            }
+#endif
+
+            if (_availableGroundTextures.Count == 0)
+            {
+                var allTextures = Resources.LoadAll<Texture2D>("Grounds");
+                for (int i = 0; i < allTextures.Length; i++)
+                {
+                    var tex = allTextures[i];
+                    if (tex != null && !loaded.Contains(tex.name))
+                    {
+                        _availableGroundTextures.Add(new GroundTextureRecord
+                        {
+                            RelativePath = tex.name,
+                            Category = "Grounds",
+                            DisplayName = tex.name,
+                            Texture = tex
+                        });
+                        loaded.Add(tex.name);
+                    }
+                }
             }
         }
 
@@ -715,10 +912,18 @@ namespace Killtime.UI
             GUILayout.Space(6);
             int prevTab = _selectedTab;
             _selectedTab = GUILayout.Toolbar(_selectedTab, _tabTitles);
-            if (_selectedTab != prevTab && _selectedTab == 1)
+            if (_selectedTab != prevTab)
             {
-                _activeBrush = MapBrushType.PlaceProp3D;
-                _statusMessage = "Mode Objets 3D actif : cliquez sur la carte pour poser l'objet sélectionné.";
+                if (_selectedTab == 2)
+                {
+                    _activeBrush = MapBrushType.PlaceProp3D;
+                    _statusMessage = "Mode Objets 3D actif : cliquez sur la carte pour poser l'objet sélectionné.";
+                }
+                else if (_selectedTab == 1)
+                {
+                    _activeBrush = MapBrushType.Inspect;
+                    _statusMessage = "Mode Sols & Relief actif : choisissez une texture ou un outil de sculpture.";
+                }
             }
             GUILayout.Space(6);
 
@@ -734,9 +939,10 @@ namespace Killtime.UI
             switch (_selectedTab)
             {
                 case 0: DrawTerrainTab(); break;
-                case 1: DrawProps3DTab(); break;
-                case 2: DrawStorageTab(); break;
-                case 3: DrawGridSettingsTab(); break;
+                case 1: DrawGroundAndSculptTab(); break;
+                case 2: DrawProps3DTab(); break;
+                case 3: DrawStorageTab(); break;
+                case 4: DrawGridSettingsTab(); break;
             }
 
             GUILayout.EndScrollView();
@@ -1043,8 +1249,23 @@ namespace Killtime.UI
             foreach (var file in files)
             {
                 string fileName = Path.GetFileNameWithoutExtension(file);
+                string summary = "";
+                try
+                {
+                    string jsonPreview = File.ReadAllText(file);
+                    var previewData = JsonUtility.FromJson<TacticalMapSaveData>(jsonPreview);
+                    if (previewData != null)
+                    {
+                        int pCount = previewData.PlacedProps != null ? previewData.PlacedProps.Count : 0;
+                        int uCount = previewData.PlacedUnits != null ? previewData.PlacedUnits.Count : 0;
+                        int lxCount = previewData.PlacedPixies != null ? previewData.PlacedPixies.Count : 0;
+                        summary = $"<color=#88AACC>[{uCount} PJ/PNJ | {pCount} Props | {lxCount} Lum.]</color>";
+                    }
+                }
+                catch {}
+
                 GUILayout.BeginHorizontal(GUI.skin.box);
-                GUILayout.Label(fileName, GUILayout.Width(220));
+                GUILayout.Label($"<b>{fileName}</b> {summary}", GUILayout.Width(280));
 
                 GUI.backgroundColor = Color.cyan;
                 if (GUILayout.Button("Charger", GUILayout.Width(75)))
@@ -1138,7 +1359,7 @@ namespace Killtime.UI
                 foreach (var kvp in _grid.Nodes)
                 {
                     var node = kvp.Value;
-                    if (node.Cover != CoverType.None || !node.IsWalkable || node.HasCeiling)
+                    if (node.Cover != CoverType.None || !node.IsWalkable || node.HasCeiling || Mathf.Abs(node.Elevation) > 0.001f || !string.IsNullOrEmpty(node.GroundTexture))
                     {
                         data.ModifiedTiles.Add(new MapTileData
                         {
@@ -1146,7 +1367,9 @@ namespace Killtime.UI
                             R = node.Coordinates.R,
                             Cover = node.Cover,
                             IsWalkable = node.IsWalkable,
-                            HasCeiling = node.HasCeiling
+                            HasCeiling = node.HasCeiling,
+                            Elevation = node.Elevation,
+                            GroundTexture = node.GroundTexture
                         });
                     }
                 }
@@ -1181,6 +1404,18 @@ namespace Killtime.UI
                 });
             }
 
+            data.PlacedPixies.Clear();
+            var activePixies = FindObjectsByType<Killtime.Tactics.Lighting.TacticalPixieLight>();
+            for (int i = 0; i < activePixies.Length; i++)
+            {
+                if (activePixies[i] != null)
+                {
+                    data.PlacedPixies.Add(activePixies[i].transform.position);
+                }
+            }
+
+            data.SaveTimestamp = DateTime.Now.ToString("dd/MM HH:mm");
+
             string fullPath = Path.Combine(MapsDirectory, $"{safeName}.json");
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(fullPath, json);
@@ -1190,7 +1425,7 @@ namespace Killtime.UI
                 _arena.RegisterLoadedMap(data, fullPath);
             }
 
-            _statusMessage = $"Carte '{safeName}' sauvegardée ({data.ModifiedTiles.Count} tuiles, {data.PlacedProps.Count} objets 3D, {data.PlacedUnits.Count} avatar(s)).";
+            _statusMessage = $"Carte '{safeName}' sauvegardée ({data.ModifiedTiles.Count} tuiles, {data.PlacedProps.Count} objets 3D, {data.PlacedUnits.Count} avatar(s), {data.PlacedPixies.Count} pixie(s)).";
         }
 
         public void ApplyLoadedMap(TacticalMapSaveData data, string mapPath = null)
@@ -1233,6 +1468,8 @@ namespace Killtime.UI
                 var coords = new HexCoordinates(tile.Q, tile.R);
                 _grid.SetNodeCover(coords, tile.Cover, tile.IsWalkable);
                 _grid.SetNodeCeiling(coords, tile.HasCeiling);
+                _grid.SetNodeElevation(coords, tile.Elevation);
+                _grid.SetNodeGroundTexture(coords, tile.GroundTexture);
             }
 
             EnsurePropsRoot();
@@ -1341,8 +1578,25 @@ namespace Killtime.UI
                 unitLoadedCount = data.PlacedUnits.Count;
             }
 
+            var strayPixies = FindObjectsByType<Killtime.Tactics.Lighting.TacticalPixieLight>();
+            for (int i = 0; i < strayPixies.Length; i++)
+            {
+                if (strayPixies[i] != null) Destroy(strayPixies[i].gameObject);
+            }
+
+            int loadedPixiesCount = 0;
+            if (data.PlacedPixies != null)
+            {
+                for (int i = 0; i < data.PlacedPixies.Count; i++)
+                {
+                    var p = Killtime.Tactics.Lighting.TacticalPixieLight.SpawnPixie();
+                    p.transform.position = data.PlacedPixies[i];
+                    loadedPixiesCount++;
+                }
+            }
+
             _gridVisualizer?.RefreshObstacles();
-            _statusMessage = $"Carte '{data.MapName}' chargée ({loadedCount}/{data.PlacedProps.Count} objet(s) 3D, {unitLoadedCount} avatar(s), Plafond: {_grid.CeilingHeight:0.##}m).";
+            _statusMessage = $"Carte '{data.MapName}' chargée ({loadedCount} objet(s) 3D, {unitLoadedCount} avatar(s), {loadedPixiesCount} pixie(s), Plafond: {_grid.CeilingHeight:0.##}m).";
 
             if (_arena != null)
             {
@@ -1381,6 +1635,251 @@ namespace Killtime.UI
         {
             EnsureDirectoryExists();
             return new List<string>(Directory.GetFiles(MapsDirectory, "*.json"));
+        }
+
+        private void DrawGroundAndSculptTab()
+        {
+            GUILayout.Label("<b>1. Textures de Sol (Assets/Resources/Grounds) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"Textures détectées : <b>{_availableGroundTextures.Count}</b>");
+            if (GUILayout.Button("🔄 Scanner Grounds", GUILayout.Width(125)))
+            {
+                RefreshAvailableGroundTextures();
+                _statusMessage = $"{_availableGroundTextures.Count} texture(s) trouvée(s) sous Assets/Resources/Grounds.";
+            }
+            if (GUILayout.Button("🛡️ Anti-Grésillement (Mipmaps)", GUILayout.Width(180)))
+            {
+                if (Application.isPlaying)
+                {
+                    _statusMessage = "Arrêtez le mode Play dans Unity pour générer les Mipmaps sur disque.";
+                }
+                else
+                {
+#if UNITY_EDITOR
+                    HexGridVisualizer.BatchFixAllGroundTextureAssets();
+                    RefreshAvailableGroundTextures();
+                    _gridVisualizer?.RefreshObstacles();
+                    _statusMessage = "Mipmaps et Anisotropie 16x appliqués sur le disque.";
+#else
+                    _statusMessage = "Cette commande de réimportation est réservée à l'Éditeur Unity.";
+#endif
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            if (_groundCategories.Count > 1)
+            {
+                GUILayout.Space(4);
+                _selectedCategoryIndex = GUILayout.Toolbar(_selectedCategoryIndex, _groundCategories.ToArray());
+            }
+
+            string activeCat = (_selectedCategoryIndex >= 0 && _selectedCategoryIndex < _groundCategories.Count) ? _groundCategories[_selectedCategoryIndex] : "Tous";
+
+            List<GroundTextureRecord> filteredTextures = new();
+            for (int i = 0; i < _availableGroundTextures.Count; i++)
+            {
+                if (activeCat == "Tous" || _availableGroundTextures[i].Category.Equals(activeCat, StringComparison.OrdinalIgnoreCase))
+                {
+                    filteredTextures.Add(_availableGroundTextures[i]);
+                }
+            }
+
+            if (filteredTextures.Count == 0)
+            {
+                GUILayout.Label("<i>Aucune texture trouvée dans cette catégorie.</i>");
+            }
+            else
+            {
+                GUILayout.Space(6);
+                _groundTexturesScrollPos = GUILayout.BeginScrollView(_groundTexturesScrollPos, GUILayout.Height(135));
+
+                int cols = 4;
+                for (int i = 0; i < filteredTextures.Count; i += cols)
+                {
+                    GUILayout.BeginHorizontal();
+                    for (int c = 0; c < cols; c++)
+                    {
+                        int index = i + c;
+                        if (index < filteredTextures.Count)
+                        {
+                            var rec = filteredTextures[index];
+                            bool isSelected = (_availableGroundTextures.Count > _selectedGroundIndex && _availableGroundTextures[_selectedGroundIndex].RelativePath == rec.RelativePath);
+
+                            GUI.backgroundColor = isSelected ? new Color(0.0f, 0.85f, 1.0f) : Color.white;
+                            GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(110), GUILayout.Height(105));
+
+                            if (rec.Texture != null)
+                            {
+                                Rect previewRect = GUILayoutUtility.GetRect(100, 70);
+                                GUI.DrawTexture(previewRect, rec.Texture, ScaleMode.ScaleToFit);
+                            }
+
+                            if (GUILayout.Button(rec.DisplayName, GUILayout.Height(22)))
+                            {
+                                _selectedGroundIndex = _availableGroundTextures.IndexOf(rec);
+                                _activeBrush = MapBrushType.PaintGroundTexture;
+                                _statusMessage = $"Pinceau Texture Actif : {rec.RelativePath}";
+                            }
+                            GUILayout.EndVertical();
+                            GUI.backgroundColor = Color.white;
+                        }
+                    }
+                    GUILayout.EndHorizontal();
+                }
+
+                GUILayout.EndScrollView();
+            }
+
+            if (_availableGroundTextures.Count > 0 && _selectedGroundIndex < _availableGroundTextures.Count)
+            {
+                var activeRec = _availableGroundTextures[_selectedGroundIndex];
+                GUILayout.Space(6);
+                GUILayout.Label($"Texture Active : <b><color=#00E5FF>{activeRec.RelativePath}</color></b>");
+
+                GUILayout.BeginHorizontal();
+                bool isPainting = (_activeBrush == MapBrushType.PaintGroundTexture);
+                GUI.backgroundColor = isPainting ? new Color(0.1f, 0.7f, 1f) : Color.white;
+                if (GUILayout.Button("🖌️ Peindre cette Texture (Clic Carte)", GUILayout.Height(30)))
+                {
+                    _activeBrush = MapBrushType.PaintGroundTexture;
+                }
+
+                bool isClearing = (_activeBrush == MapBrushType.ClearGroundTexture);
+                GUI.backgroundColor = isClearing ? new Color(0.9f, 0.3f, 0.3f) : Color.white;
+                if (GUILayout.Button("🧹 Gomme Texture", GUILayout.Height(30)))
+                {
+                    _activeBrush = MapBrushType.ClearGroundTexture;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("🪣 Remplir Toute la Grille"))
+                {
+                    if (_grid != null)
+                    {
+                        foreach (var node in _grid.Nodes.Values)
+                        {
+                            node.GroundTexture = activeRec.RelativePath;
+                        }
+                        _gridVisualizer?.RefreshObstacles();
+                        _statusMessage = $"Texture '{activeRec.RelativePath}' appliquée à l'ensemble de la grille.";
+                    }
+                }
+                if (GUILayout.Button("🧹 Effacer Toutes les Textures"))
+                {
+                    if (_grid != null)
+                    {
+                        foreach (var node in _grid.Nodes.Values)
+                        {
+                            node.GroundTexture = "";
+                        }
+                        _gridVisualizer?.RefreshObstacles();
+                        _statusMessage = "Toutes les textures ont été retirées.";
+                    }
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.Space(4);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"Tiling UV Texture : {_groundTiling:0.##}x", GUILayout.Width(170));
+            float newTiling = GUILayout.HorizontalSlider(_groundTiling, 0.25f, 4.0f);
+            if (Mathf.Abs(newTiling - _groundTiling) > 0.01f)
+            {
+                _groundTiling = newTiling;
+                if (_gridVisualizer != null) _gridVisualizer.GroundTiling = _groundTiling;
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>2. Sculpture du Relief (Altitude & Tranchées) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.BeginHorizontal();
+            DrawBrushOption(MapBrushType.ElevateGround, "▲ Surélever (+)", $"+{_sculptStep:0.##}m par clic");
+            DrawBrushOption(MapBrushType.LowerGround, "▼ Creuser (-)", $"-{_sculptStep:0.##}m par clic");
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            DrawBrushOption(MapBrushType.SetElevation, "▬ Niveau Fixe", $"Hauteur = {_targetElevation:0.##}m");
+            DrawBrushOption(MapBrushType.SmoothElevation, "≈ Lisser Relief", "Moyenne avec voisins");
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(6);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"Pas d'Élévation : <b>{_sculptStep:0.##}m</b>", GUILayout.Width(170));
+            _sculptStep = GUILayout.HorizontalSlider(_sculptStep, 0.10f, 1.50f);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"Hauteur Fixe Cible : <b>{_targetElevation:0.##}m</b>", GUILayout.Width(170));
+            _targetElevation = GUILayout.HorizontalSlider(_targetElevation, -3.0f, 6.0f);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"Rayon Pinceau : <b>{_sculptRadius} case(s)</b>", GUILayout.Width(170));
+            _sculptRadius = (int)GUILayout.HorizontalSlider(_sculptRadius, 1, 4);
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(4);
+            bool newSmooth = GUILayout.Toggle(_smoothSlopeTerrain, "🌊 Mode Pentes Lisses Continues (Sinon Marches / Terrasses)");
+            if (newSmooth != _smoothSlopeTerrain)
+            {
+                _smoothSlopeTerrain = newSmooth;
+                if (_gridVisualizer != null) _gridVisualizer.SmoothSlopeTerrain = _smoothSlopeTerrain;
+            }
+
+            GUILayout.Space(6);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("Aplanir Tout le Sol (Y = 0)"))
+            {
+                if (_grid != null)
+                {
+                    foreach (var node in _grid.Nodes.Values)
+                    {
+                        node.Elevation = 0f;
+                        node.WorldPosition = node.Coordinates.ToWorldPosition(_grid.HexRadius, 0.05f);
+                    }
+                    _gridVisualizer?.RefreshObstacles();
+                    _statusMessage = "Tout le terrain a été aplani à Y = 0.";
+                }
+            }
+
+            if (GUILayout.Button("🌋 Cratère Central"))
+            {
+                GenerateTerrainPreset(isCrater: true);
+            }
+
+            if (GUILayout.Button("⛰️ Colline Centrale"))
+            {
+                GenerateTerrainPreset(isCrater: false);
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+        }
+
+        private void GenerateTerrainPreset(bool isCrater)
+        {
+            if (_grid == null) return;
+            float maxOffset = isCrater ? -1.8f : 2.2f;
+            int maxRadius = _grid.GridRadius;
+
+            foreach (var node in _grid.Nodes.Values)
+            {
+                int dist = node.Coordinates.DistanceTo(new HexCoordinates(0, 0));
+                float t = Mathf.Clamp01(1f - ((float)dist / Mathf.Max(1, maxRadius)));
+                node.Elevation = Mathf.SmoothStep(0f, maxOffset, t);
+                node.WorldPosition = node.Coordinates.ToWorldPosition(_grid.HexRadius, 0.05f + node.Elevation);
+            }
+
+            _gridVisualizer?.RefreshObstacles();
+            _statusMessage = isCrater ? "Cratère central généré." : "Colline centrale générée.";
         }
     }
 }

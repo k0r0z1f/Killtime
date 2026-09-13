@@ -21,6 +21,8 @@ namespace Killtime.Tactics.Grid
         public bool IsOccupied = false;
         public bool HasCustomVisual = false;
         public bool HasCeiling = false;
+        public float Elevation = 0.0f;
+        public string GroundTexture = "";
 
         public HexNode(HexCoordinates coords, Vector3 worldPos)
         {
@@ -31,6 +33,8 @@ namespace Killtime.Tactics.Grid
             Cover = CoverType.None;
             IsOccupied = false;
             HasCeiling = false;
+            Elevation = 0.0f;
+            GroundTexture = "";
         }
     }
 }

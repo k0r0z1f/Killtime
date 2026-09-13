@@ -173,9 +173,10 @@ namespace Killtime.Tactics.Units
         {
             _grid = grid;
             CurrentCoords = startCoords;
-            transform.position = startCoords.ToWorldPosition(grid.HexRadius, 0.0f);
+            var node = grid != null ? grid.GetNode(startCoords) : null;
+            float yPos = node != null ? node.WorldPosition.y : 0.0f;
+            transform.position = startCoords.ToWorldPosition(grid != null ? grid.HexRadius : 1.0f, yPos);
             
-            var node = grid.GetNode(startCoords);
             if (node != null)
             {
                 node.IsOccupied = true;
@@ -215,7 +216,9 @@ namespace Killtime.Tactics.Units
             for (int i = 1; i < path.Count; i++)
             {
                 var nextCoords = path[i];
-                var targetPos = nextCoords.ToWorldPosition(grid.HexRadius, 0.0f);
+                var nextNode = grid != null ? grid.GetNode(nextCoords) : null;
+                float yPos = nextNode != null ? nextNode.WorldPosition.y : 0.0f;
+                var targetPos = nextCoords.ToWorldPosition(grid.HexRadius, yPos);
 
                 // Rotation orientée vers la destination
                 Vector3 lookDir = (targetPos - transform.position).normalized;

@@ -407,6 +407,42 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(8);
+            GUILayout.Label("<b>💡 Éclairage & Atmosphère :</b>");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("✨ Invoquer Pixie de Test", GUILayout.Height(30)))
+            {
+                Killtime.Tactics.Lighting.TacticalPixieLight.SpawnPixie();
+            }
+            if (GUILayout.Button("🧹 Retirer Pixies", GUILayout.Height(30)))
+            {
+                var pixies = FindObjectsByType<Killtime.Tactics.Lighting.TacticalPixieLight>();
+                for (int i = 0; i < pixies.Length; i++)
+                {
+                    Destroy(pixies[i].gameObject);
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>💡 Éclairage & Atmosphère :</b>");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("✨ Invoquer Pixie de Test"))
+            {
+                var go = new GameObject("Tactical_Pixie_Light");
+                go.AddComponent<Killtime.Tactics.Lighting.TacticalPixieLight>();
+                go.transform.position = new Vector3(0f, 1.8f, 0f);
+            }
+            if (GUILayout.Button("🧹 Retirer les Pixies"))
+            {
+                var pixies = FindObjectsByType<Killtime.Tactics.Lighting.TacticalPixieLight>();
+                for (int i = 0; i < pixies.Length; i++)
+                {
+                    Destroy(pixies[i].gameObject);
+                }
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(8);
             GUILayout.Label("<b>👥 Personnages & Fiches :</b>");
             if (GUILayout.Button("🧙 Ouvrir le Créateur de Personnage (F1)", GUILayout.Height(32)))
             {
