@@ -58,7 +58,7 @@ namespace Killtime.Tactics.Units
                     ins: _instinct, 
                     mag: _magie
                 );
-                Stats = new CharacterStats(_unitName, attributes, _baseArmor);
+                Stats = new CharacterStats(_unitName, attributes, _baseArmor, Sheet);
             }
 
             if (GetComponent<TacticalUnitVisual>() == null)
@@ -136,8 +136,6 @@ namespace Killtime.Tactics.Units
                 _modelPrefabName = modelPrefab;
             }
 
-            Stats = new CharacterStats(unitName, attributes, baseArmor);
-
             Sheet = new CharacterSheet
             {
                 Name = unitName,
@@ -146,6 +144,8 @@ namespace Killtime.Tactics.Units
                 Profile = isPlayer ? CharacterProfileType.HerosPJ : CharacterProfileType.PnjNormal,
                 ModelPrefabName = _modelPrefabName
             };
+
+            Stats = new CharacterStats(unitName, attributes, baseArmor, Sheet);
         }
 
         public CharacterSheet GetOrBuildSheet()

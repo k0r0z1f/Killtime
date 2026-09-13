@@ -6,6 +6,8 @@ namespace Killtime.Core.Combat
 {
     /// <summary>
     /// Résolution mathématique intégrale des passes d'armes et tirs ciblés (Livre VI).
+    /// Conforme à l'Axiome Fondateur : Tout jet découle d'une compétence.
+    /// L'attaque est opposée par une compétence défensive, sauf décision de non-défense.
     /// </summary>
     public class CombatCalculator
     {
@@ -19,11 +21,71 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// Résout une attaque ciblée selon les règles du Chapitre 26 :
-        /// - Malus de visée (-1) ou annulation si dépense préalable de 1 PA.
-        /// - Différentiel Positif : coup chirurgical sur la zone visée, le différentiel s'ajoute aux dégâts.
-        /// - Différentiel Égal à 0 : déviation sur zone adjacente, dégâts de base.
-        /// - Différentiel Négatif : parade/esquive parfaite, 0 dégât.
+        /// Résolution officielle du Livre VI axée sur les compétences d'attaque et de défense.
+        /// </summary>
+        public DamageResult ResolveTargetedAttack(
+            CharacterStats attacker,
+            CharacterStats defender,
+            BodyPart targetedPart,
+            SkillType attackSkill,
+            SkillType defenseSkill,
+            int weaponBaseDamage = 5,
+            bool cancelPenaltyWithAP = false,
+            bool defenderWantsToDefend = true,
+            string attackerSpecialization = null,
+            string defenderSpecialization = null,
+            int defenderArmor = 0,
+            int attackerBonusAP = 0,
+            int defenderBonusAP = 0)
+        {
+            DiceType attackDie = attacker.GetSkillDie(attackSkill);
+            int attackModifier = attacker.GetSkillModifier(attackSkill, isOffensive: true);
+            if (!string.IsNullOrEmpty(attackerSpecialization) && attacker.HasSpecialization(attackerSpecialization))
+            {
+                attackModifier += 1;
+            }
+
+            DiceType defenseDie = defender.GetSkillDie(defenseSkill);
+            int defenseModifier = defender.GetSkillModifier(defenseSkill, isOffensive: false);
+
+            // Règle de Défense Non-Exclusive (Livre III) :
+            // Parer avec une arme ou mains nues sans la spé dédiée fait chuter le dé d'un niveau.
+            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
+            {
+                bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && defender.HasSpecialization(defenderSpecialization))
+                                || SkillDefinitions.HasDefensiveSpecialization(defender.Sheet, defenseSkill);
+
+                if (!hasDefSpec)
+                {
+                    defenseDie = SkillDefinitions.StepDownDie(defenseDie);
+                }
+                else
+                {
+                    defenseModifier += 1;
+                }
+            }
+
+            return ResolveTargetedAttackInternal(
+                attacker: attacker,
+                defender: defender,
+                targetedPart: targetedPart,
+                attackDie: attackDie,
+                attackModifier: attackModifier,
+                defenseDie: defenseDie,
+                defenseModifier: defenseModifier,
+                weaponBaseDamage: weaponBaseDamage,
+                cancelPenaltyWithAP: cancelPenaltyWithAP,
+                defenderWantsToDefend: defenderWantsToDefend,
+                defenderArmor: defenderArmor,
+                attackerBonusAP: attackerBonusAP,
+                defenderBonusAP: defenderBonusAP,
+                attackSkill: attackSkill,
+                defenseSkill: defenseSkill
+            );
+        }
+
+        /// <summary>
+        /// Surcharge de compatibilité descendante avec injection directe de dés.
         /// </summary>
         public DamageResult ResolveTargetedAttack(
             CharacterStats attacker,
@@ -37,12 +99,51 @@ namespace Killtime.Core.Combat
             bool cancelPenaltyWithAP = false,
             int defenderArmor = 0,
             int attackerBonusAP = 0,
-            int defenderBonusAP = 0)
+            int defenderBonusAP = 0,
+            bool defenderWantsToDefend = true,
+            SkillType attackSkill = SkillType.ManiementArmes,
+            SkillType defenseSkill = SkillType.Esquive)
+        {
+            return ResolveTargetedAttackInternal(
+                attacker: attacker,
+                defender: defender,
+                targetedPart: targetedPart,
+                attackDie: attackDie,
+                attackModifier: attackModifier,
+                defenseDie: defenseDie,
+                defenseModifier: defenseModifier,
+                weaponBaseDamage: weaponBaseDamage,
+                cancelPenaltyWithAP: cancelPenaltyWithAP,
+                defenderWantsToDefend: defenderWantsToDefend,
+                defenderArmor: defenderArmor,
+                attackerBonusAP: attackerBonusAP,
+                defenderBonusAP: defenderBonusAP,
+                attackSkill: attackSkill,
+                defenseSkill: defenseSkill
+            );
+        }
+
+        private DamageResult ResolveTargetedAttackInternal(
+            CharacterStats attacker,
+            CharacterStats defender,
+            BodyPart targetedPart,
+            DiceType attackDie,
+            int attackModifier,
+            DiceType defenseDie,
+            int defenseModifier,
+            int weaponBaseDamage,
+            bool cancelPenaltyWithAP,
+            bool defenderWantsToDefend,
+            int defenderArmor,
+            int attackerBonusAP,
+            int defenderBonusAP,
+            SkillType attackSkill,
+            SkillType defenseSkill)
         {
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
             var cfg = Rules.CoreRulesConfig.Instance;
 
-            // 1. Temps de l'Attaquant : Coût de base + PA bonus injectés
+            // 1. Dépense PA de l'Attaquant
             int baseAttackCost = cfg.BaseAttackAPCost + (cancelPenaltyWithAP ? cfg.CancelAimPenaltyAPCost : 0);
             int safeAttackerBonus = Math.Max(0, attackerBonusAP);
             int totalAttackerCost = baseAttackCost + safeAttackerBonus;
@@ -57,12 +158,14 @@ namespace Killtime.Core.Combat
                 };
             }
 
-            // 2. Temps du Défenseur : Coût de base de réaction + PA bonus défensifs
+            // 2. Décision & Dépense PA du Défenseur
             int baseDefenseCost = cfg.BaseReactionAPCost;
-            bool canDefenderReact = defender.CurrentActionPoints >= baseDefenseCost;
+            bool isDefenderIncapacitated = !defender.CanDefendActively();
+            bool effectiveDefenderWantsToDefend = defenderWantsToDefend && !isDefenderIncapacitated;
+            bool canDefenderReact = effectiveDefenderWantsToDefend && (defender.CurrentActionPoints >= baseDefenseCost);
             int actualDefenderBonus = 0;
 
-            if (canDefenderReact)
+            if (effectiveDefenderWantsToDefend && canDefenderReact)
             {
                 int requestedDefenseCost = baseDefenseCost + Math.Max(0, defenderBonusAP);
                 int affordableDefenseCost = Math.Min(defender.CurrentActionPoints, requestedDefenseCost);
@@ -70,46 +173,77 @@ namespace Killtime.Core.Combat
                 actualDefenderBonus = affordableDefenseCost - baseDefenseCost;
             }
 
-            // 3. Calcul des modificateurs finaux
+            // 3. Calcul des Modificateurs et Dés Finaux
             int finalAttackMod = attackModifier + safeAttackerBonus;
             if (!cancelPenaltyWithAP)
             {
                 finalAttackMod += targetInfo.DifficultyModifier;
             }
 
-            int finalDefenseMod = defenseModifier;
-            if (canDefenderReact)
+            var attackRoll = _diceRoller.Roll(attackDie, finalAttackMod, cfg.StandardTargetDC);
+
+            DiceRollResult defenseRoll;
+            int differential;
+            string defRollStr;
+
+            if (!effectiveDefenderWantsToDefend)
             {
-                finalDefenseMod += actualDefenderBonus;
+                defenseRoll = new DiceRollResult
+                {
+                    DieType = defenseDie,
+                    RawRoll = 0,
+                    Modifier = 0,
+                    Total = 0,
+                    TargetDC = cfg.StandardTargetDC,
+                    Differential = -cfg.StandardTargetDC,
+                    IsSuccess = false,
+                    IsCriticalSuccess = false,
+                    IsCriticalFailure = false
+                };
+                differential = attackRoll.Total;
+                string inCapReason = isDefenderIncapacitated
+                    ? $"<b>CIBLE HORS D'ÉTAT ({defender.ActiveStatus}) ➔ Parade impossible (0 PA)</b>"
+                    : "<b>DÉFENSE PASSIVE (0 PA engagé, aucune parade)</b>";
+                defRollStr = inCapReason;
             }
             else
             {
-                finalDefenseMod += cfg.UnreactiveDefensePenalty;
+                int finalDefenseMod = defenseModifier;
+                if (canDefenderReact)
+                {
+                    finalDefenseMod += actualDefenderBonus;
+                }
+                else
+                {
+                    finalDefenseMod += cfg.UnreactiveDefensePenalty;
+                }
+
+                defenseRoll = _diceRoller.Roll(defenseDie, finalDefenseMod, cfg.StandardTargetDC);
+                differential = attackRoll.Total - defenseRoll.Total;
+
+                string statusDefInfo = defender.GetStatusBreakdownString(defenseSkill, isOffensive: false);
+                string statusDefStr = !string.IsNullOrEmpty(statusDefInfo) ? $" [Malus: {statusDefInfo}]" : "";
+
+                string defPaText = canDefenderReact
+                    ? (actualDefenderBonus > 0 ? $" + PA Réaction {actualDefenderBonus}" : " + Réaction 1 PA")
+                    : $" {cfg.UnreactiveDefensePenalty} (0 PA)";
+                string critDefText = defenseRoll.IsCriticalSuccess ? " <color=#00E5FF>[CRITIQUE !]</color>" : "";
+                defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {defenseDie} [Tirage {defenseRoll.RawRoll} + Mod {defenseModifier}{statusDefStr}{defPaText} = Total {defenseRoll.Total}]{critDefText}";
             }
 
-            // 4. Lancer des dés et différentiel net
-            var attackRoll = _diceRoller.Roll(attackDie, finalAttackMod, cfg.StandardTargetDC);
-            var defenseRoll = _diceRoller.Roll(defenseDie, finalDefenseMod, cfg.StandardTargetDC);
-
-            int differential = attackRoll.Total - defenseRoll.Total;
-
+            string statusAttInfo = attacker.GetStatusBreakdownString(attackSkill, isOffensive: true);
+            string statusAttStr = !string.IsNullOrEmpty(statusAttInfo) ? $" [Malus: {statusAttInfo}]" : "";
             string aimText = cancelPenaltyWithAP ? "Visée compensée (+1 PA)" : $"Malus Visée {targetInfo.DifficultyModifier}";
             string paAttText = safeAttackerBonus > 0 ? $" + PA Bonus {safeAttackerBonus}" : "";
             string critAttText = attackRoll.IsCriticalSuccess ? " <color=#FFE600>[CRITIQUE !]</color>" : "";
-            string attackRollStr = $"{attackDie} [Tirage {attackRoll.RawRoll} + AGI {attackModifier} ({aimText}){paAttText} = Total {attackRoll.Total}]{critAttText}";
+            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {attackDie} [Tirage {attackRoll.RawRoll} + Mod {attackModifier}{statusAttStr} ({aimText}){paAttText} = Total {attackRoll.Total}]{critAttText}";
 
-            string defPaText = canDefenderReact 
-                ? (actualDefenderBonus > 0 ? $" + PA Réaction {actualDefenderBonus}" : " + Réaction 1 PA") 
-                : " - Malus Réflexe 2 (0 PA)";
-            string critDefText = defenseRoll.IsCriticalSuccess ? " <color=#00E5FF>[CRITIQUE !]</color>" : "";
-            string defenseRollStr = $"{defenseDie} [Tirage {defenseRoll.RawRoll} + AGI {defenseModifier}{defPaText} = Total {defenseRoll.Total}]{critDefText}";
-
-            // 1. Différentiel Négatif : parade/esquive complète
-            if (differential < 0)
+            // 4. Résolution du Différentiel
+            if (effectiveDefenderWantsToDefend && differential < 0)
             {
-                string blockLog = $"🛡️ <b>PARADE / ESQUIVE</b> : {attacker.Name} vise {targetInfo.DisplayName}, mais {defender.Name} neutralise l'assaut !\n";
-                blockLog += $"   🎲 <b>Dés :</b> Attaque {attackRollStr} vs Défense {defenseRollStr}\n";
-                blockLog += $"   ⚖️ <b>Différentiel Net :</b> <color=#00E5FF>{differential}</color> ➔ <b>0 dégât infligé</b> (Attaque bloquée).";
+                string blockLog = $"🛡️ <b>PARADE / ESQUIVE</b> : {attacker.Name} attaque, mais {defender.Name} neutralise l'assaut !\n";
+                blockLog += $"   🎲 <b>Compétences :</b> Attaque {attackRollStr} vs Défense {defRollStr}\n";
+                blockLog += $"   ⚖️ <b>Différentiel Net :</b> <color=#00E5FF>{differential}</color> ➔ <b>0 dégât infligé</b> (Attaque neutralisée).";
 
                 return new DamageResult
                 {
@@ -122,18 +256,10 @@ namespace Killtime.Core.Combat
                 };
             }
 
-            // 2. Différentiel Égal à 0 : Déviation sur zone adjacente
-            bool wasDeflected = (differential == 0);
-            BodyPart actualHitPart = targetedPart;
-
-            if (wasDeflected)
-            {
-                actualHitPart = GetAdjacentBodyPart(targetedPart);
-            }
-
+            bool wasDeflected = effectiveDefenderWantsToDefend && (differential == 0);
+            BodyPart actualHitPart = wasDeflected ? GetAdjacentBodyPart(targetedPart) : targetedPart;
             var actualInfo = BodyPartInfo.GetInfo(actualHitPart);
 
-            // 3. Calcul des dégâts
             int rawDamage = weaponBaseDamage;
             string dmgFormula = $"{weaponBaseDamage} (Arme)";
 
@@ -149,7 +275,6 @@ namespace Killtime.Core.Combat
                 dmgFormula += $" x{actualInfo.CriticalDamageMultiplier} (Critique {actualInfo.DisplayName})";
             }
 
-            // Réduction d'armure
             int totalArmor = defenderArmor + defender.BaseArmorAbsorption;
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = Math.Max(0, rawDamage - absorbed);
@@ -174,16 +299,18 @@ namespace Killtime.Core.Combat
                 defender.CurrentHealth -= finalDamage;
             }
 
-            string headerTag = wasDeflected 
-                ? "⚠️ <b>DÉVIATION BALISTIQUE</b>" 
-                : (attackRoll.IsCriticalSuccess ? "💥 <b>COUP CRITIQUE CHIRURGICAL</b>" : "🎯 <b>TOUCHÉ CHIRURGICAL</b>");
+            string headerTag = !effectiveDefenderWantsToDefend
+                ? (isDefenderIncapacitated ? "💥 <b>FRAPPE SUR CIBLE NEUTRALISÉE</b>" : "🎯 <b>TOUCHÉ SUR CIBLE SANS DÉFENSE</b>")
+                : (wasDeflected
+                    ? "⚠️ <b>DÉVIATION BALISTIQUE</b>"
+                    : (attackRoll.IsCriticalSuccess ? "💥 <b>COUP CRITIQUE CHIRURGICAL</b>" : "🎯 <b>TOUCHÉ CHIRURGICAL</b>"));
 
-            string hitPartStr = wasDeflected 
-                ? $"Visait <b>{targetInfo.DisplayName}</b> ➔ Dévie sur <b>{actualInfo.DisplayName}</b> (Diff 0)" 
+            string hitPartStr = wasDeflected
+                ? $"Visait <b>{targetInfo.DisplayName}</b> ➔ Dévie sur <b>{actualInfo.DisplayName}</b> (Diff 0)"
                 : $"Frappe sur <b>{actualInfo.DisplayName}</b>";
 
             string log = $"{headerTag} : {attacker.Name} ➔ {defender.Name} ({hitPartStr})\n";
-            log += $"   🎲 <b>Dés :</b> Attaque {attackRollStr} vs Défense {defenseRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
+            log += $"   🎲 <b>Compétences :</b> Attaque {attackRollStr} vs Défense {defRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
             log += $"   ⚔️ <b>Dégâts :</b> [{dmgFormula} = {rawDamage} Bruts] &minus; [Armure {totalArmor} (Absorbé: {absorbed})] ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
             log += $"   ❤️ <b>Vitalité {defender.Name} :</b> {prevHp} ➔ <b>{defender.CurrentHealth}/{defender.MaxHealth} PV</b>";
 

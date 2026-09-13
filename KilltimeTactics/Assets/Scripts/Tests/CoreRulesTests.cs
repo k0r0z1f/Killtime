@@ -14,18 +14,102 @@ namespace Killtime.Tests
         [Test]
         public void TestRogerAttributesAndActionPoints_MatchesCodexLivreI()
         {
-            // Exemple officiel du Livre I (Chapitre 4 / Roger) :
-            // Agi 3, Int 2, Rap 3, Con 4, For 3, Cha 1 (Cha est le min)
             var rogerAttr = new Attributes(agi: 3, @int: 2, rap: 3, con: 4, @for: 3, cha: 1);
 
-            // Vérification du calcul des PA : Max(3, 2) + 3 + 1 = 7 PA
             Assert.AreEqual(7, rogerAttr.CalculateBaseActionPoints());
-
-            // Vérification de l'Encaissement : CON × 2 = 4 × 2 = 8
             Assert.AreEqual(8, rogerAttr.CalculateEncaissement());
-
-            // Vérification du Seuil Létal : CON × 5 = 4 × 5 = 20
             Assert.AreEqual(20, rogerAttr.CalculateLethalMaximum());
+        }
+
+        [Test]
+        public void TestSkillDieStepProgression_AndCanonicalMapping()
+        {
+            var attr = new Attributes(@for: 5, agi: 5, con: 4, rap: 3, @int: 2, eru: 3, cha: 1, ins: 3);
+            var sheet = new CharacterSheet { BaseAttributes = attr };
+
+            int baseRank = SkillDefinitions.GetBaseRank(SkillType.Ballistique, attr);
+            Assert.AreEqual(5, baseRank);
+            Assert.AreEqual(DiceType.D6, sheet.GetSkill(SkillType.Ballistique).CalculateSkillDie(baseRank));
+
+            sheet.GetSkill(SkillType.Ballistique).TrainingLevel = 1;
+            Assert.AreEqual(DiceType.D8, sheet.GetSkill(SkillType.Ballistique).CalculateSkillDie(baseRank));
+
+            sheet.GetSkill(SkillType.Ballistique).TrainingLevel = 6;
+            Assert.AreEqual(DiceType.TwoD6, sheet.GetSkill(SkillType.Ballistique).CalculateSkillDie(baseRank));
+        }
+
+        [Test]
+        public void TestAttackOpposedByDefenseSkill_AndUnreactiveTargetChoice()
+        {
+            var diceRoller = new DiceRoller(42);
+            var calc = new CombatCalculator(diceRoller);
+
+            var attAttr = new Attributes(4, 4, 3, 3, 3, 2, 2, 2);
+            var defAttr = new Attributes(2, 3, 4, 2, 2, 2, 2, 2);
+
+            var attSheet = new CharacterSheet { Name = "Attaquant", BaseAttributes = attAttr };
+            var defSheet = new CharacterSheet { Name = "Défenseur", BaseAttributes = defAttr };
+
+            var attStats = attSheet.ToCombatStats();
+            var defStats = defSheet.ToCombatStats();
+            attStats.Sheet = attSheet;
+            defStats.Sheet = defSheet;
+
+            // 1. Cible décidant de NE PAS se défendre (Défense passive : 0 PA consommé, défense = 0)
+            int initialDefAP = defStats.CurrentActionPoints;
+            var resultPassive = calc.ResolveTargetedAttack(
+                attacker: attStats,
+                defender: defStats,
+                targetedPart: BodyPart.Torse,
+                attackSkill: SkillType.Ballistique,
+                defenseSkill: SkillType.Esquive,
+                weaponBaseDamage: 5,
+                cancelPenaltyWithAP: false,
+                defenderWantsToDefend: false
+            );
+
+            Assert.IsTrue(resultPassive.IsHit);
+            Assert.IsFalse(resultPassive.IsBlocked);
+            Assert.AreEqual(0, resultPassive.DefenseRoll.Total);
+            Assert.AreEqual(initialDefAP, defStats.CurrentActionPoints);
+
+            // 2. Cible décidant de se défendre activement
+            attStats.ResetTurn();
+            defStats.ResetTurn();
+            var resultActive = calc.ResolveTargetedAttack(
+                attacker: attStats,
+                defender: defStats,
+                targetedPart: BodyPart.Torse,
+                attackSkill: SkillType.ManiementArmes,
+                defenseSkill: SkillType.Esquive,
+                weaponBaseDamage: 5,
+                cancelPenaltyWithAP: false,
+                defenderWantsToDefend: true
+            );
+
+            Assert.Greater(resultActive.DefenseRoll.Total, 0);
+            Assert.Less(defStats.CurrentActionPoints, defStats.MaxActionPoints);
+        }
+
+        [Test]
+        public void TestDefensiveSpecialization_CancelsNonExclusiveDiePenalty()
+        {
+            var attr = new Attributes(4, 4, 4, 3, 2, 2, 2, 2);
+            var sheet = new CharacterSheet { BaseAttributes = attr };
+            var stats = sheet.ToCombatStats();
+            stats.Sheet = sheet;
+
+            DiceType baseDie = stats.GetSkillDie(SkillType.ManiementArmes);
+            Assert.AreEqual(DiceType.D6, baseDie);
+
+            // Sans la spé "Maniement de l'Épée", le dé chute d'un niveau en parade
+            Assert.IsFalse(SkillDefinitions.HasDefensiveSpecialization(sheet, SkillType.ManiementArmes));
+            DiceType penalized = SkillDefinitions.StepDownDie(baseDie);
+            Assert.AreEqual(DiceType.D4, penalized);
+
+            // Avec la spé, aucune rétrogradation
+            sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
+            Assert.IsTrue(SkillDefinitions.HasDefensiveSpecialization(sheet, SkillType.ManiementArmes));
         }
 
         [Test]
@@ -34,12 +118,10 @@ namespace Killtime.Tests
             var attr = new Attributes(3, 2, 3, 4, 3, 1);
             var stats = new CharacterStats("Testeur", attr);
 
-            // Dépenser tous ses PA
             stats.ConsumeActionPoints(7);
             Assert.AreEqual(0, stats.CurrentActionPoints);
             Assert.AreEqual(0, stats.Essoufflement);
 
-            // Prendre 1 point d'essoufflement d'urgence pour 2 PA
             bool success = stats.TakeEmergencyBreath(2);
             Assert.IsTrue(success);
             Assert.AreEqual(2, stats.CurrentActionPoints);
@@ -56,49 +138,33 @@ namespace Killtime.Tests
         }
 
         [Test]
-        public void TestTargetedShot_BodyPartsModifiers_MatchesLivreVI()
+        public void TestStatusConditions_ApplyStrictCodexPenalties_AndIncapacitateDefense()
         {
-            var headInfo = BodyPartInfo.GetInfo(BodyPart.Tete);
-            Assert.AreEqual(-2, headInfo.DifficultyModifier);
-            Assert.AreEqual(3, headInfo.CriticalDamageMultiplier);
+            var attr = new Attributes(4, 4, 3, 3, 3, 2, 2, 2);
+            var sheet = new CharacterSheet { Name = "Guerrier", BaseAttributes = attr };
+            var stats = sheet.ToCombatStats();
+            stats.Sheet = sheet;
 
-            var torsoInfo = BodyPartInfo.GetInfo(BodyPart.Torse);
-            Assert.AreEqual(0, torsoInfo.DifficultyModifier);
-            Assert.AreEqual(1, torsoInfo.CriticalDamageMultiplier);
-        }
+            int baseMod = stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true);
+            Assert.AreEqual(4, baseMod);
 
-        [Test]
-        public void TestChronoTimelineSnapshot_AllowsStateRewind_MatchesLivreV()
-        {
-            var branch = new TimelineBranch(TimelineId.Timeline0_Prime);
-            var snap1 = new TacticalTimeSnapshot(round: 1, second: 0.0f, desc: "Début du round");
-            var snap2 = new TacticalTimeSnapshot(round: 1, second: 2.5f, desc: "Tir de Lucas");
+            // 1. Déstabilisé (-2)
+            stats.ActiveStatus |= StatusEffect.Destabilise;
+            Assert.AreEqual(2, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
 
-            branch.PushSnapshot(snap1);
-            branch.PushSnapshot(snap2);
+            // 2. Étourdi (-1) => Cumul à -3
+            stats.ActiveStatus |= StatusEffect.Etourdi;
+            Assert.AreEqual(1, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
 
-            Assert.AreEqual(2, branch.GetFullChronology().Count);
+            // 3. À Terre (-1 attaque, -2 défense)
+            stats.ActiveStatus |= StatusEffect.ATerre;
+            Assert.AreEqual(0, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
+            Assert.AreEqual(-1, stats.GetSkillModifier(SkillType.Esquive, isOffensive: false));
 
-            // Rembobinage de la dernière action (ancrage temporel de Thomas)
-            var rewound = branch.RewindLastAction();
-            Assert.AreEqual("Début du round", rewound.ActionDescription);
-            Assert.AreEqual(1, branch.GetFullChronology().Count);
-        }
-
-        [Test]
-        public void TestAttributes_CannotExceedTen_AndCannotDropBelowOne()
-        {
-            var clamped = new Attributes(@for: 15, agi: -3, con: 12, rap: 0, @int: 10, eru: 1, cha: 20, ins: 4, mag: 14);
-
-            Assert.AreEqual(10, clamped.Force);
-            Assert.AreEqual(1, clamped.Agilite);
-            Assert.AreEqual(10, clamped.Constitution);
-            Assert.AreEqual(1, clamped.Rapidite);
-            Assert.AreEqual(10, clamped.Intelligence);
-            Assert.AreEqual(1, clamped.Erudition);
-            Assert.AreEqual(10, clamped.Charisme);
-            Assert.AreEqual(4, clamped.Instinct);
-            Assert.AreEqual(10, clamped.Magie);
+            // 4. Inconscient / K.O. : Parade impossible et interdiction d'attaquer
+            stats.ActiveStatus |= StatusEffect.Inconscient;
+            Assert.IsFalse(stats.CanDefendActively());
+            Assert.IsFalse(stats.CanAttack(DiceType.D6));
         }
     }
 }

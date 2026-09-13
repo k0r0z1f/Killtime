@@ -8,6 +8,7 @@ using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Character;
+using Killtime.CameraSystem;
 
 namespace Killtime.Tactics.AI
 {
@@ -44,12 +45,13 @@ namespace Killtime.Tactics.AI
         [SerializeField] private TurnManager _turnManager;
         [SerializeField] private TacticalHexGrid _grid;
         [SerializeField] private CombatDevArena _arena;
+        [SerializeField] private CinematicDirector _cinematicDirector;
 
         [Header("Paramètres de Doctrine")]
         [SerializeField] private CombatAIMode _mode = CombatAIMode.Normal;
         [SerializeField] private AIPersonality _defaultPersonality = AIPersonality.Balanced;
         [SerializeField] private bool _isAIEnabled = true;
-        [SerializeField] [Range(0.05f, 4.0f)] private float _actionDelay = 0.55f;
+        [SerializeField] [Range(0.05f, 6.0f)] private float _actionDelay = 1.0f;
 
         [Header("Paramètres de Survie & Économie")]
         [SerializeField] [Range(0.15f, 0.5f)] private float _retreatHealthRatio = 0.30f; // Fuit si PV < 30%
@@ -57,7 +59,7 @@ namespace Killtime.Tactics.AI
 
         public CombatAIMode Mode { get => _mode; set => _mode = value; }
         public bool IsAIEnabled { get => _isAIEnabled; set => _isAIEnabled = value; }
-        public float ActionDelay { get => _actionDelay; set => _actionDelay = Mathf.Clamp(value, 0.05f, 4.0f); }
+        public float ActionDelay { get => _actionDelay; set => _actionDelay = Mathf.Clamp(value, 0.05f, 10.0f); }
 
         private HexPathfinder _pathfinder;
         private Coroutine _activeTurnRoutine;
@@ -94,6 +96,7 @@ namespace Killtime.Tactics.AI
             if (_turnManager == null) _turnManager = GetComponent<TurnManager>() ?? FindAnyObjectByType<TurnManager>();
             if (_grid == null) _grid = GetComponent<TacticalHexGrid>() ?? FindAnyObjectByType<TacticalHexGrid>();
             if (_arena == null) _arena = GetComponent<CombatDevArena>() ?? FindAnyObjectByType<CombatDevArena>();
+            if (_cinematicDirector == null) _cinematicDirector = GetComponent<CinematicDirector>() ?? FindAnyObjectByType<CinematicDirector>();
         }
 
         public void StopAITurn()
@@ -131,7 +134,7 @@ namespace Killtime.Tactics.AI
         // =========================================================================
         private IEnumerator ExecuteAITurn(TacticalUnit unit)
         {
-            yield return new WaitForSeconds(_actionDelay * 0.4f);
+            yield return new WaitForSeconds(_actionDelay);
 
             if (_pathfinder == null && _grid != null) _pathfinder = new HexPathfinder(_grid);
             UpdateUnitCache();
@@ -153,8 +156,9 @@ namespace Killtime.Tactics.AI
                 // -------------------------------------------------------------
                 if (posture == TacticalPosture.TacticalRetreat)
                 {
-                    visual?.SpawnFloatingText("🚨 Repli Tactique d'Urgence", new Color(1.0f, 0.3f, 0.3f));
+                    visual?.SpawnFloatingText("[REPLI] Manoeuvre d'Urgence", new Color(1.0f, 0.3f, 0.3f));
                     yield return StartCoroutine(ExecuteRetreat(unit, target));
+                    yield return new WaitForSeconds(_actionDelay);
                     break;
                 }
 
@@ -164,8 +168,8 @@ namespace Killtime.Tactics.AI
                 if (posture == TacticalPosture.DefensiveHold)
                 {
                     // L'IA refuse de courir se suicider au contact à 0 PA
-                    visual?.SpawnFloatingText($"🛡️ Garde Défensive ({unit.Stats.CurrentActionPoints} PA)", new Color(0.3f, 0.8f, 1.0f));
-                    yield return new WaitForSeconds(_actionDelay * 0.5f);
+                    visual?.SpawnFloatingText($"[GARDE] Maintien Défensif ({unit.Stats.CurrentActionPoints} PA)", new Color(0.3f, 0.8f, 1.0f));
+                    yield return new WaitForSeconds(_actionDelay);
                     break;
                 }
 
@@ -184,13 +188,14 @@ namespace Killtime.Tactics.AI
                         if (CanTakeBreathSafely(unit))
                         {
                             unit.Stats.TakeEmergencyBreath(2);
-                            visual?.SpawnFloatingText("🫁 Souffle : Maintien de Garde (+2 PA)", Color.yellow);
-                            yield return new WaitForSeconds(_actionDelay * 0.5f);
+                            visual?.SpawnFloatingText("[SOUFFLE] Maintien de Garde (+2 PA)", Color.yellow);
+                            yield return new WaitForSeconds(_actionDelay);
                         }
                         else
                         {
                             // On refuse d'attaquer si cela annule totalement notre capacité à réagir
-                            visual?.SpawnFloatingText("🛡️ Garde Fermée (Économie Réaction)", new Color(0.2f, 0.9f, 0.6f));
+                            visual?.SpawnFloatingText("[GARDE] Réserve Réactive", new Color(0.2f, 0.9f, 0.6f));
+                            yield return new WaitForSeconds(_actionDelay);
                             break;
                         }
                     }
@@ -202,12 +207,11 @@ namespace Killtime.Tactics.AI
                         // Si posture Hit-and-Run : Utiliser les PA restants pour décrocher !
                         if (posture == TacticalPosture.HitAndRun && unit.Stats.CurrentActionPoints >= 1)
                         {
-                            yield return new WaitForSeconds(_actionDelay * 0.4f);
-                            visual?.SpawnFloatingText("⚡ Décrochage Tactique", new Color(0.9f, 0.7f, 0.2f));
+                            visual?.SpawnFloatingText("[RETRAIT] Décrochage Tactique", new Color(0.9f, 0.7f, 0.2f));
                             yield return StartCoroutine(ExecuteDisengageStep(unit, target));
                         }
 
-                        yield return new WaitForSeconds(_actionDelay * 0.5f);
+                        yield return new WaitForSeconds(_actionDelay);
                         continue;
                     }
                     break;
@@ -226,7 +230,7 @@ namespace Killtime.Tactics.AI
                         {
                             visual?.SpawnFloatingText($"Manoeuvre d'assaut (-{cost} PA)", new Color(0.2f, 0.85f, 1.0f));
                             yield return StartCoroutine(unit.MoveAlongPath(path, _grid, cost));
-                            yield return new WaitForSeconds(_actionDelay * 0.5f);
+                            yield return new WaitForSeconds(_actionDelay);
                             continue;
                         }
                     }
@@ -235,7 +239,7 @@ namespace Killtime.Tactics.AI
                 break;
             }
 
-            yield return new WaitForSeconds(0.2f);
+            yield return new WaitForSeconds(Mathf.Min(0.5f, _actionDelay * 0.25f));
             _activeTurnRoutine = null;
             _turnManager?.EndCurrentTurn();
         }
@@ -326,7 +330,7 @@ namespace Killtime.Tactics.AI
                 actor.Stats.TakeEmergencyBreath(2);
                 var visual = actor.GetComponent<TacticalUnitVisual>();
                 visual?.SpawnFloatingText("🫁 Sprint de Survie (+2 PA)", Color.red);
-                yield return new WaitForSeconds(0.25f);
+                yield return new WaitForSeconds(_actionDelay);
             }
 
             int ap = actor.Stats.CurrentActionPoints;
@@ -392,7 +396,6 @@ namespace Killtime.Tactics.AI
         private IEnumerator ExecuteTacticalAttack(TacticalUnit actor, TacticalUnit target, TacticalPosture posture)
         {
             _arena?.SelectTarget(target);
-            yield return new WaitForSeconds(0.12f);
 
             int ap = actor.Stats.CurrentActionPoints;
             int targetHp = target.Stats.CurrentHealth;
@@ -423,11 +426,38 @@ namespace Killtime.Tactics.AI
             }
 
             var visual = actor.GetComponent<TacticalUnitVisual>();
-            string partLabel = chosenPart == BodyPart.Tete ? "🎯 Tir Tête (All-In)" :
-                               chosenPart == BodyPart.BrasDroit ? "🦾 Tir Désarmement (Bras)" : "⚔️ Tir Centré (Torse)";
+            string partLabel = chosenPart == BodyPart.Tete ? "[VISÉE] Tête (All-In)" :
+                               chosenPart == BodyPart.BrasDroit ? "[VISÉE] Désarmement (Bras)" : "[VISÉE] Tir Centré (Torse)";
             visual?.SpawnFloatingText(partLabel, chosenPart == BodyPart.Tete ? Color.red : Color.cyan);
 
-            _arena?.ExecuteAttack(chosenPart, cancelPenalty, attackDie: DiceType.D6, attackerBonusAP: bonusAP);
+            // Temps de lecture de la visée par le joueur
+            yield return new WaitForSeconds(Mathf.Min(0.6f, _actionDelay * 0.35f));
+
+            SkillType attackSkill = actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1
+                ? SkillType.ManiementArmes
+                : SkillType.Ballistique;
+
+            SkillType defenseSkill = target.Stats.Attributes.Agilite >= target.Stats.Attributes.Force
+                ? SkillType.Esquive
+                : SkillType.DefenseCorporelle;
+
+            _arena?.ExecuteAttack(
+                targetedPart: chosenPart,
+                cancelPenaltyWithAP: cancelPenalty,
+                attackSkill: attackSkill,
+                defenseSkill: defenseSkill,
+                defenderWantsToDefend: true,
+                attackerBonusAP: bonusAP
+            );
+
+            // Attendre la résolution complète de la killcam cinématique si active
+            if (_cinematicDirector != null)
+            {
+                while (_cinematicDirector.CurrentMode == CameraMode.CinematicAction)
+                {
+                    yield return null;
+                }
+            }
         }
 
         // =========================================================================

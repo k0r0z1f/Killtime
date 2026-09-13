@@ -38,6 +38,21 @@ namespace Killtime.UI
         [SerializeField] private TurnManager _turnManager;
         [SerializeField] private CombatDevArena _arena;
 
+        public static bool IsPointerOverChat()
+        {
+            if (Instance == null) return false;
+            if (!Instance._isLogDrawerExpanded && !IsPaused) return false;
+
+            float drawerWidth = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
+            float drawerHeight = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
+            float margin = 20f;
+            Rect terminal = new Rect(Screen.width - drawerWidth - margin,
+                Screen.height - drawerHeight - margin, drawerWidth, drawerHeight);
+
+            Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+            return terminal.Contains(mouseGui);
+        }
+
         // --- Couleurs de la Palette Tactique (Dark Cybernetic) ---
         private static readonly Color ColorBgBase = new Color(0.03f, 0.05f, 0.08f, 0.72f);
         private static readonly Color ColorBgHover = new Color(0.05f, 0.09f, 0.14f, 0.85f);
@@ -53,6 +68,7 @@ namespace Killtime.UI
         private Vector2 _logScroll;
         private LogCategory _activeCategory = LogCategory.All;
         private bool _isLogDrawerExpanded = false;
+        private bool _scrollLock = false;
 
         private BodyPart _selectedBodyPart = BodyPart.Torse;
         private bool _cancelPenaltyWithAP = false;
@@ -312,7 +328,11 @@ namespace Killtime.UI
             });
 
             if (_logEntries.Count > 100) _logEntries.RemoveAt(0);
-            _logScroll.y = float.MaxValue;
+
+            if (!_scrollLock)
+            {
+                _logScroll.y = float.MaxValue;
+            }
         }
 
         public void TogglePause() => SetPause(!IsPaused);
@@ -730,15 +750,33 @@ namespace Killtime.UI
             DrawAccentLine(new Rect(terminal.x + 16, terminal.y, terminal.width - 32, 2f),
                 ColorCyanAccent, 0.85f);
 
-            GUI.Label(new Rect(terminal.x + 14, terminal.y + 10, terminal.width - 150, 18),
+            GUI.Label(new Rect(terminal.x + 14, terminal.y + 10, terminal.width - 265, 18),
                 "FLUX TACTIQUE // DÉTAIL DES ACTIONS", _terminalHeaderStyle);
 
+            Rect lockBtnRect = new Rect(terminal.x + terminal.width - 246, terminal.y + 8, 108, 20);
+            bool lockHover = lockBtnRect.Contains(Event.current.mousePosition);
+            DrawSoftPanel(lockBtnRect, _scrollLock
+                ? new Color(ColorAmber.r, ColorAmber.g, ColorAmber.b, 0.22f)
+                : new Color(1f, 1f, 1f, lockHover ? 0.05f : 0.018f), false);
+            DrawAccentLine(new Rect(lockBtnRect.x, lockBtnRect.y + lockBtnRect.height - 1f, lockBtnRect.width, 1f),
+                _scrollLock ? ColorAmber : (lockHover ? ColorCyanAccent : ColorCyanDim), 1f);
+
+            GUI.color = _scrollLock ? ColorAmber : (lockHover ? ColorTextBright : ColorTextMuted);
+            if (GUI.Button(lockBtnRect, _scrollLock ? "🔒 SCROLL LOCK" : "🔓 AUTO-SCROLL", _btnFlatNormal))
+            {
+                _scrollLock = !_scrollLock;
+                if (!_scrollLock)
+                {
+                    _logScroll.y = float.MaxValue;
+                }
+            }
+
             GUI.color = ColorTextMuted;
-            if (GUI.Button(new Rect(terminal.x + terminal.width - 130, terminal.y + 8, 58, 20),
+            if (GUI.Button(new Rect(terminal.x + terminal.width - 132, terminal.y + 8, 60, 20),
                 "EFFACER", _btnFlatNormal))
                 _logEntries.Clear();
 
-            if (GUI.Button(new Rect(terminal.x + terminal.width - 68, terminal.y + 8, 56, 20),
+            if (GUI.Button(new Rect(terminal.x + terminal.width - 66, terminal.y + 8, 56, 20),
                 "FERMER", _btnFlatNormal))
                 _isLogDrawerExpanded = false;
             GUI.color = Color.white;

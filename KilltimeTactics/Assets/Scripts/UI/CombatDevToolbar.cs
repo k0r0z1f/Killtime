@@ -7,44 +7,56 @@ using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Combat;
 using Killtime.Core.Dice;
+using Killtime.Core.Character;
 using Killtime.CameraSystem;
 
 namespace Killtime.UI
 {
     /// <summary>
     /// Barre d'outils et banc d'essai de développement pour le combat tactique.
-    /// Permet de manipuler en temps réel les PA, la vie, les tirs ciblés (VATS),
-    /// les layouts d'obstacles, la caméra cinématique et le rembobinage chronomantique.
+    /// Conforme à l'Axiome Fondateur du Codex : Tout jet découle d'une compétence.
     /// </summary>
     public class CombatDevToolbar : MonoBehaviour
     {
+        public static CombatDevToolbar Instance { get; private set; }
+
         [Header("Contrôleur")]
         [SerializeField] private CombatDevArena _arena;
         [SerializeField] private TurnManager _turnManager;
         [SerializeField] private CinematicDirector _cinematicDirector;
 
+        public static bool IsPointerOverToolbar()
+        {
+            if (Instance == null || !Instance._isOpen) return false;
+            Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+            return Instance._windowRect.Contains(mouseGui);
+        }
+
         [Header("Affichage")]
         [SerializeField] private bool _isOpen = true;
-        [SerializeField] private KeyCode _toggleKey = KeyCode.BackQuote; // Touche '~' ou ²
+        [SerializeField] private KeyCode _toggleKey = KeyCode.BackQuote;
 
         private readonly List<string> _logs = new();
         private Vector2 _logScroll;
         private Vector2 _toolsScroll;
+        private bool _scrollLock = false;
 
         private BodyPart _selectedPart = BodyPart.Torse;
         private bool _cancelPenaltyWithAP = false;
         private int _attackerBonusAP = 0;
         private int _defenderBonusAP = 0;
-        private DiceType _attackDie = DiceType.D6;
-        private DiceType _defenseDie = DiceType.D4;
+        private SkillType _attackSkill = SkillType.Ballistique;
+        private SkillType _defenseSkill = SkillType.Esquive;
+        private bool _defenderWantsToDefend = true;
         private int _weaponDamage = 5;
 
-        private Rect _windowRect = new Rect(20, 20, 520, 680);
+        private Rect _windowRect = new Rect(20, 20, 560, 720);
         private int _selectedTab = 0;
         private readonly string[] _tabNames = { "🎯 Tir Ciblé (VATS)", "🛠️ Outils & Cheats", "⏳ Chronomancie", "📜 Logs" };
 
         private void Awake()
         {
+            Instance = this;
             if (_arena == null) _arena = FindAnyObjectByType<CombatDevArena>();
             if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
             if (_cinematicDirector == null) _cinematicDirector = FindAnyObjectByType<CinematicDirector>();
@@ -67,12 +79,14 @@ namespace Killtime.UI
         {
             _logs.Add(msg);
             if (_logs.Count > 50) _logs.RemoveAt(0);
-            _logScroll.y = float.MaxValue; // Auto-scroll vers le bas
+            if (!_scrollLock)
+            {
+                _logScroll.y = float.MaxValue;
+            }
         }
 
         private void OnGUI()
         {
-            // Bouton discret de réouverture si minimisé
             if (!_isOpen)
             {
                 if (GUI.Button(new Rect(20, 20, 180, 32), "🛠️ Ouvrir Dev Arena"))
@@ -96,7 +110,6 @@ namespace Killtime.UI
 
             var activeUnit = _turnManager != null ? _turnManager.ActiveUnit : (_arena != null ? _arena.PlayerUnit : null);
 
-            // 1. Bandeau supérieur d'état
             DrawUnitStatusHeader(activeUnit);
 
             GUILayout.Space(6);
@@ -218,23 +231,42 @@ namespace Killtime.UI
             _cancelPenaltyWithAP = GUILayout.Toggle(_cancelPenaltyWithAP, "Dépenser +1 PA pour annuler le malus de visée");
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>3. Paramètres des Dés & Arme :</b>");
+            GUILayout.Label("<b>3. Compétences d'Attaque & Défense (Axiome du Codex) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Dé Attaque:", GUILayout.Width(80));
-            _attackDie = (DiceType)GUILayout.Toolbar((int)_attackDie, new[] { "D2", "D3", "D4", "D6", "D8", "D10", "D12", "D20" }, GUILayout.Height(22));
+            GUILayout.Label("Compétence Attaque:", GUILayout.Width(130));
+            if (GUILayout.Toggle(_attackSkill == SkillType.Ballistique, "Ballistique / Tir")) _attackSkill = SkillType.Ballistique;
+            if (GUILayout.Toggle(_attackSkill == SkillType.ManiementArmes, "Maniement d'Arme")) _attackSkill = SkillType.ManiementArmes;
+            if (GUILayout.Toggle(_attackSkill == SkillType.MainsNues, "Mains Nues")) _attackSkill = SkillType.MainsNues;
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Dé Défense:", GUILayout.Width(80));
-            _defenseDie = (DiceType)GUILayout.Toolbar((int)_defenseDie, new[] { "D2", "D3", "D4", "D6", "D8", "D10", "D12", "D20" }, GUILayout.Height(22));
+            GUILayout.Label("Défense Cible:", GUILayout.Width(130));
+            if (GUILayout.Toggle(_defenseSkill == SkillType.Esquive, "Esquive")) _defenseSkill = SkillType.Esquive;
+            if (GUILayout.Toggle(_defenseSkill == SkillType.DefenseCorporelle, "Défense Corporelle")) _defenseSkill = SkillType.DefenseCorporelle;
+            if (GUILayout.Toggle(_defenseSkill == SkillType.ManiementArmes, "Parade Arme")) _defenseSkill = SkillType.ManiementArmes;
             GUILayout.EndHorizontal();
+
+            _defenderWantsToDefend = GUILayout.Toggle(_defenderWantsToDefend, "Cible réactive (tente de parer/esquiver) / Décocher si passive (0 PA, aucune défense)");
+
+            DiceType attDie = activeUnit != null ? activeUnit.Stats.GetSkillDie(_attackSkill) : DiceType.D6;
+            DiceType defDie = target != null ? target.Stats.GetSkillDie(_defenseSkill) : DiceType.D4;
+            int attMod = activeUnit != null ? activeUnit.Stats.GetSkillModifier(_attackSkill, isOffensive: true) : 0;
+            int defMod = target != null ? target.Stats.GetSkillModifier(_defenseSkill, isOffensive: false) : 0;
+            string attStatus = activeUnit != null ? activeUnit.Stats.GetStatusBreakdownString(_attackSkill, isOffensive: true) : "";
+            string defStatus = target != null ? target.Stats.GetStatusBreakdownString(_defenseSkill, isOffensive: false) : "";
+            string attStatusDisplay = !string.IsNullOrEmpty(attStatus) ? $" [{attStatus}]" : "";
+            string defStatusDisplay = !string.IsNullOrEmpty(defStatus) ? $" [{defStatus}]" : "";
+
+            GUILayout.Label($"<color=cyan>Attaquant : {SkillDefinitions.GetDisplayName(_attackSkill)} ➔ Dé : {attDie} (Mod: {attMod:+0;-0;0}{attStatusDisplay})</color> | <color=orange>Défenseur : {(_defenderWantsToDefend ? $"{SkillDefinitions.GetDisplayName(_defenseSkill)} ➔ Dé : {defDie} (Mod: {defMod:+0;-0;0}{defStatusDisplay})" : "Sans Défense (0)")}</color>");
+            GUILayout.EndVertical();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label($"Dégâts Bruts de l'Arme : {_weaponDamage}", GUILayout.Width(200));
             _weaponDamage = (int)GUILayout.HorizontalSlider(_weaponDamage, 1, 20);
             GUILayout.EndHorizontal();
 
-            // 4. Enchère des PA Bonus (Livre VI, Chap. 24)
             GUILayout.Space(6);
             GUILayout.Label("<b>4. Injection des Points d'Action (+1 au Jet / PA) :</b>");
 
@@ -248,19 +280,21 @@ namespace Killtime.UI
             _attackerBonusAP = (int)GUILayout.HorizontalSlider(_attackerBonusAP, 0, maxAttackerBonus);
             GUILayout.EndHorizontal();
 
-            var currentDefender = _arena != null ? _arena.CurrentTarget : null;
-            int currentDefenderAP = currentDefender != null ? currentDefender.Stats.CurrentActionPoints : 0;
+            int currentDefenderAP = target != null ? target.Stats.CurrentActionPoints : 0;
             int maxDefenderBonus = Mathf.Max(0, currentDefenderAP - 1);
             _defenderBonusAP = Mathf.Clamp(_defenderBonusAP, 0, maxDefenderBonus);
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"🛡️ PA Bonus Défenseur : <b>+{_defenderBonusAP}</b>", GUILayout.Width(220));
-            _defenderBonusAP = (int)GUILayout.HorizontalSlider(_defenderBonusAP, 0, maxDefenderBonus);
-            GUILayout.EndHorizontal();
+            if (_defenderWantsToDefend)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"🛡️ PA Bonus Défenseur : <b>+{_defenderBonusAP}</b>", GUILayout.Width(220));
+                _defenderBonusAP = (int)GUILayout.HorizontalSlider(_defenderBonusAP, 0, maxDefenderBonus);
+                GUILayout.EndHorizontal();
+            }
 
-            int maxAttacks = activeUnit != null ? activeUnit.Stats.GetMaxAttacksAllowed(_attackDie) : 1;
+            int maxAttacks = activeUnit != null ? activeUnit.Stats.GetMaxAttacksAllowed(attDie) : 1;
             int attacksDone = activeUnit != null ? activeUnit.Stats.AttacksThisTurn : 0;
-            bool canAttack = activeUnit != null && activeUnit.Stats.CanAttack(_attackDie);
+            bool canAttack = activeUnit != null && activeUnit.Stats.CanAttack(attDie);
 
             GUILayout.Space(6);
             GUILayout.Label($"Attaques du tour : <b>{attacksDone} / {maxAttacks}</b> {(maxAttacks > 1 ? "<color=cyan>(Double action active)</color>" : "<color=gray>(Requis 2d6+ pour 2e attaque)</color>")}");
@@ -273,7 +307,16 @@ namespace Killtime.UI
             {
                 if (_arena != null)
                 {
-                    _arena.ExecuteAttack(_selectedPart, _cancelPenaltyWithAP, _attackDie, _defenseDie, _weaponDamage, _attackerBonusAP, _defenderBonusAP);
+                    _arena.ExecuteAttack(
+                        targetedPart: _selectedPart, 
+                        cancelPenaltyWithAP: _cancelPenaltyWithAP, 
+                        attackSkill: _attackSkill, 
+                        defenseSkill: _defenseSkill, 
+                        defenderWantsToDefend: _defenderWantsToDefend,
+                        weaponBaseDamage: _weaponDamage, 
+                        attackerBonusAP: _attackerBonusAP, 
+                        defenderBonusAP: _defenderBonusAP
+                    );
                 }
             }
             GUI.enabled = true;
@@ -312,7 +355,7 @@ namespace Killtime.UI
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Délai d'action : {ai.ActionDelay:0.00}s", GUILayout.Width(150));
-                ai.ActionDelay = GUILayout.HorizontalSlider(ai.ActionDelay, 0.05f, 4.0f);
+                ai.ActionDelay = GUILayout.HorizontalSlider(ai.ActionDelay, 0.05f, 6.0f);
                 GUILayout.EndHorizontal();
 
                 GUILayout.EndVertical();
@@ -354,12 +397,15 @@ namespace Killtime.UI
             {
                 _cinematicDirector?.ToggleFreeLook();
             }
-            if (GUILayout.Button("🔄 Réinitialiser l'Arène"))
+            string resetBtnLabel = (_arena != null && _arena.HasLoadedMap && _arena.CurrentLoadedMap != null)
+                ? $"🔄 Réinitialiser Carte ({_arena.CurrentLoadedMap.MapName})"
+                : "🔄 Réinitialiser l'Arène";
+            if (GUILayout.Button(resetBtnLabel))
             {
                 _arena?.ResetArena();
             }
             GUILayout.EndHorizontal();
-            
+
             GUILayout.Space(8);
             GUILayout.Label("<b>👥 Personnages & Fiches :</b>");
             if (GUILayout.Button("🧙 Ouvrir le Créateur de Personnage (F1)", GUILayout.Height(32)))
@@ -421,6 +467,7 @@ namespace Killtime.UI
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label("<b>Historique des Actions et Mathématiques de Combat :</b>");
+            _scrollLock = GUILayout.Toggle(_scrollLock, "🔒 Scroll Lock", GUILayout.Width(110));
             if (GUILayout.Button("Effacer", GUILayout.Width(70)))
             {
                 _logs.Clear();

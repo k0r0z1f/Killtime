@@ -31,11 +31,14 @@ namespace Killtime.Core.Character
         public bool IsInLastBreath { get; set; }
         public FatalBlowResolution LastFatalBlowResolution { get; set; } = FatalBlowResolution.None;
 
-        public CharacterStats(string name, Attributes attributes, int baseArmor = 0)
+        public CharacterSheet Sheet { get; set; }
+
+        public CharacterStats(string name, Attributes attributes, int baseArmor = 0, CharacterSheet sheet = null)
         {
             Name = name;
             Attributes = attributes;
             BaseArmorAbsorption = baseArmor;
+            Sheet = sheet;
             ActiveStatus = StatusEffect.None;
             Essoufflement = 0;
             AttacksThisTurn = 0;
@@ -44,6 +47,103 @@ namespace Killtime.Core.Character
 
             RecalculateDerivedStats();
             ResetTurn();
+        }
+
+        public DiceType GetSkillDie(SkillType skill)
+        {
+            int baseRank = SkillDefinitions.GetBaseRank(skill, Attributes);
+            int training = Sheet != null ? Sheet.GetSkill(skill).TrainingLevel : 0;
+            return SkillDefinitions.CalculateSkillDie(baseRank + training);
+        }
+
+        public int GetStatusModifier(SkillType skill, bool isOffensive = true)
+        {
+            if (ActiveStatus == StatusEffect.None) return 0;
+
+            int mod = 0;
+
+            // Livre VII : Déstabilisé (-2 à toutes les épreuves)
+            if (ActiveStatus.HasFlag(StatusEffect.Destabilise)) mod -= 2;
+
+            // Livre VII : Étourdi (-1 sur tous les jets)
+            if (ActiveStatus.HasFlag(StatusEffect.Etourdi)) mod -= 1;
+
+            // Livre VII : À Terre (-1 attaque, -2 défense/esquive)
+            if (ActiveStatus.HasFlag(StatusEffect.ATerre))
+            {
+                mod += isOffensive ? -1 : -2;
+            }
+
+            // Livre VII : Aveugle (-4 tirs distance, -2 mêlée et défense)
+            if (ActiveStatus.HasFlag(StatusEffect.Aveugle))
+            {
+                bool isRanged = (skill == SkillType.Ballistique || skill == SkillType.ProjectilesTir);
+                mod += isRanged ? -4 : -2;
+            }
+
+            // Livre VII : Immobilisé (-2 esquive active)
+            if (ActiveStatus.HasFlag(StatusEffect.Immobilise))
+            {
+                if (!isOffensive && (skill == SkillType.Esquive || skill == SkillType.Acrobatie)) mod -= 2;
+            }
+
+            // Livre VII : Agonisant (-2 détresse vitale / panique)
+            if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) mod -= 2;
+
+            return mod;
+        }
+
+        public string GetStatusBreakdownString(SkillType skill, bool isOffensive = true)
+        {
+            if (ActiveStatus == StatusEffect.None) return string.Empty;
+
+            var parts = new System.Collections.Generic.List<string>();
+            if (ActiveStatus.HasFlag(StatusEffect.Destabilise)) parts.Add("Déstabilisé -2");
+            if (ActiveStatus.HasFlag(StatusEffect.Etourdi)) parts.Add("Étourdi -1");
+            if (ActiveStatus.HasFlag(StatusEffect.ATerre)) parts.Add(isOffensive ? "À Terre -1" : "À Terre -2");
+            if (ActiveStatus.HasFlag(StatusEffect.Aveugle))
+            {
+                bool isRanged = (skill == SkillType.Ballistique || skill == SkillType.ProjectilesTir);
+                parts.Add(isRanged ? "Aveugle -4" : "Aveugle -2");
+            }
+            if (ActiveStatus.HasFlag(StatusEffect.Immobilise) && !isOffensive && (skill == SkillType.Esquive || skill == SkillType.Acrobatie))
+            {
+                parts.Add("Immobilisé -2");
+            }
+            if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) parts.Add("Agonisant -2");
+
+            return parts.Count > 0 ? string.Join(", ", parts) : string.Empty;
+        }
+
+        public int GetSkillModifier(SkillType skill, bool isOffensive = true)
+        {
+            return SkillDefinitions.GetPrimaryModifier(skill, Attributes) + GetStatusModifier(skill, isOffensive);
+        }
+
+        public int GetSkillRank(SkillType skill)
+        {
+            int baseRank = SkillDefinitions.GetBaseRank(skill, Attributes);
+            int training = Sheet != null ? Sheet.GetSkill(skill).TrainingLevel : 0;
+            return baseRank + training;
+        }
+
+        public bool HasSpecialization(string specializationName)
+        {
+            return Sheet != null && Sheet.UnlockedSpecializations != null && Sheet.UnlockedSpecializations.Contains(specializationName);
+        }
+
+        public bool CanAttackWithSkill(SkillType skill)
+        {
+            return CanAttack(GetSkillDie(skill));
+        }
+
+        public bool CanDefendActively()
+        {
+            if (!IsAlive) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Inconscient)) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Sonne)) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Paralyse)) return false;
+            return true;
         }
 
         public void RecalculateDerivedStats()
@@ -108,6 +208,12 @@ namespace Killtime.Core.Character
         public bool CanAttack(DiceType attackDie)
         {
             if (!IsAlive) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Inconscient) || 
+                ActiveStatus.HasFlag(StatusEffect.Sonne) || 
+                ActiveStatus.HasFlag(StatusEffect.Paralyse))
+            {
+                return false;
+            }
             return AttacksThisTurn < GetMaxAttacksAllowed(attackDie);
         }
 

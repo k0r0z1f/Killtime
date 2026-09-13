@@ -1,5 +1,8 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
 using Killtime.Tactics.Units;
+using Killtime.Tactics.CombatUI;
+using Killtime.UI;
 
 namespace Killtime.CameraSystem
 {
@@ -155,7 +158,12 @@ namespace Killtime.CameraSystem
 
         private void HandleZoom()
         {
-            float scroll = Input.GetAxis("Mouse ScrollWheel");
+            float scroll = 0f;
+
+            if (!IsPointerOverUI())
+            {
+                scroll = Input.GetAxis("Mouse ScrollWheel");
+            }
 
             // Raccourcis clavier (R = zoom vers le sol / F = dézoom vers le ciel)
             if (Input.GetKey(KeyCode.R)) scroll += 0.06f;
@@ -169,6 +177,33 @@ namespace Killtime.CameraSystem
             }
 
             _currentDistance = Mathf.SmoothDamp(_currentDistance, _targetDistance, ref _distanceVelocity, _zoomSmoothTime);
+        }
+
+        private bool IsPointerOverUI()
+        {
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject())
+            {
+                return true;
+            }
+
+            if (CombatHUD.IsPointerOverChat())
+            {
+                return true;
+            }
+
+            Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+
+            if (CombatContextMenuUI.IsPointerOverMenu(mouseGui))
+            {
+                return true;
+            }
+
+            if (CombatDevToolbar.IsPointerOverToolbar())
+            {
+                return true;
+            }
+
+            return false;
         }
 
         private void ApplyCameraTransform()

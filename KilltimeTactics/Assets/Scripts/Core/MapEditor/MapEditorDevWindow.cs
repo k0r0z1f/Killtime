@@ -4,6 +4,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics;
 using Killtime.Tactics.Grid;
+using Killtime.Tactics.Units;
+using Killtime.Tactics.TurnSystem;
+using Killtime.Core.Character;
 
 namespace Killtime.UI
 {
@@ -58,6 +61,15 @@ namespace Killtime.UI
     }
 
     [Serializable]
+    public class MapUnitData
+    {
+        public CharacterSheet Sheet;
+        public int Q;
+        public int R;
+        public bool IsPlayer;
+    }
+
+    [Serializable]
     public class TacticalMapSaveData
     {
         public string MapName = "Nouvelle_Carte";
@@ -65,6 +77,7 @@ namespace Killtime.UI
         public float CeilingHeight = 3.5f;
         public List<MapTileData> ModifiedTiles = new();
         public List<MapPropData> PlacedProps = new();
+        public List<MapUnitData> PlacedUnits = new();
     }
 
     /// <summary>
@@ -79,6 +92,7 @@ namespace Killtime.UI
         [SerializeField] private TacticalHexGrid _grid;
         [SerializeField] private HexGridVisualizer _gridVisualizer;
         [SerializeField] private CombatDevArena _arena;
+        [SerializeField] private TurnManager _turnManager;
 
         [Header("Affichage")]
         [SerializeField] private bool _isOpen = false;
@@ -195,6 +209,7 @@ namespace Killtime.UI
             if (_grid == null) _grid = FindAnyObjectByType<TacticalHexGrid>();
             if (_gridVisualizer == null) _gridVisualizer = FindAnyObjectByType<HexGridVisualizer>();
             if (_arena == null) _arena = FindAnyObjectByType<CombatDevArena>();
+            if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
         }
 
         private void EnsurePropsRoot()
@@ -669,6 +684,13 @@ namespace Killtime.UI
                     if (child != null) Destroy(child.gameObject);
                 }
             }
+
+            var strayProps = FindObjectsByType<MapPropInstance>();
+            for (int i = 0; i < strayProps.Length; i++)
+            {
+                if (strayProps[i] != null) Destroy(strayProps[i].gameObject);
+            }
+
             _spawnedPropInstances.Clear();
             _placedPropRecords.Clear();
         }
@@ -777,6 +799,7 @@ namespace Killtime.UI
             {
                 _grid?.ClearAllCovers();
                 ClearAllPlacedProps();
+                _arena?.ClearLoadedMap();
                 _gridVisualizer?.RefreshObstacles();
                 _statusMessage = "Carte entièrement dégagée.";
             }
@@ -799,6 +822,15 @@ namespace Killtime.UI
                 GUILayout.Label($"Praticable : {_inspectedNode.IsWalkable}");
                 GUILayout.Label($"Plafond : {(_inspectedNode.HasCeiling ? "<color=#00E5FF>OUI (Actif)</color>" : "NON")}");
                 GUILayout.Label($"Occupé : {_inspectedNode.IsOccupied}");
+
+                var unitOnNode = _arena != null ? _arena.GetUnitAtCoords(_inspectedNode.Coordinates) : null;
+                if (unitOnNode != null && unitOnNode.Stats != null)
+                {
+                    string fColor = unitOnNode.IsPlayerControlled ? "#00E5FF" : "#FF5555";
+                    string fName = unitOnNode.IsPlayerControlled ? "Joueur" : "Ennemi";
+                    GUILayout.Label($"Avatar : <b>{unitOnNode.Stats.Name}</b> [<color={fColor}>{fName}</color>] (PV: {unitOnNode.Stats.CurrentHealth}/{unitOnNode.Stats.MaxHealth})");
+                }
+
                 var inspectedProps = GetPropsAt(_inspectedNode.Coordinates);
                 for (int pIdx = 0; pIdx < inspectedProps.Count; pIdx++)
                 {
@@ -991,7 +1023,7 @@ namespace Killtime.UI
 
             GUILayout.Space(4);
             GUI.backgroundColor = new Color(0.2f, 0.7f, 0.4f);
-            if (GUILayout.Button("💾 Sauvegarder la Carte (Sol + Plafond + Objets 3D)", GUILayout.Height(34)))
+            if (GUILayout.Button("💾 Sauvegarder la Carte (Sol + Plafond + Objets 3D + Avatars)", GUILayout.Height(34)))
             {
                 SaveCurrentMap(_mapNameInput);
             }
@@ -1072,6 +1104,7 @@ namespace Killtime.UI
             if (_grid == null) return;
 
             ClearAllPlacedProps();
+            _arena?.ClearLoadedMap();
 
             var radiusField = typeof(TacticalHexGrid).GetField("_gridRadius", System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
             if (radiusField != null)
@@ -1130,28 +1163,68 @@ namespace Killtime.UI
                 }
             }
 
+            data.PlacedUnits.Clear();
+            var sceneUnits = FindObjectsByType<TacticalUnit>();
+            Array.Sort(sceneUnits, (a, b) => b.IsPlayerControlled.CompareTo(a.IsPlayerControlled));
+
+            for (int i = 0; i < sceneUnits.Length; i++)
+            {
+                var u = sceneUnits[i];
+                if (u == null || u.Stats == null) continue;
+
+                data.PlacedUnits.Add(new MapUnitData
+                {
+                    Sheet = u.GetOrBuildSheet(),
+                    Q = u.CurrentCoords.Q,
+                    R = u.CurrentCoords.R,
+                    IsPlayer = u.IsPlayerControlled
+                });
+            }
+
             string fullPath = Path.Combine(MapsDirectory, $"{safeName}.json");
             string json = JsonUtility.ToJson(data, true);
             File.WriteAllText(fullPath, json);
 
-            _statusMessage = $"Carte '{safeName}' sauvegardée ({data.ModifiedTiles.Count} tuiles, {data.PlacedProps.Count} objets 3D dont {ceilingPropsCount} au plafond).";
+            if (_arena != null)
+            {
+                _arena.RegisterLoadedMap(data, fullPath);
+            }
+
+            _statusMessage = $"Carte '{safeName}' sauvegardée ({data.ModifiedTiles.Count} tuiles, {data.PlacedProps.Count} objets 3D, {data.PlacedUnits.Count} avatar(s)).";
         }
 
-        private void LoadMap(string fullPath)
+        public void ApplyLoadedMap(TacticalMapSaveData data, string mapPath = null)
         {
-            if (!File.Exists(fullPath) || _grid == null) return;
+            if (data == null || _grid == null) return;
 
-            string json = File.ReadAllText(fullPath);
-            var data = JsonUtility.FromJson<TacticalMapSaveData>(json);
-
+            EnsureReferences();
             ClearAllPlacedProps();
-            _grid.ClearAllCovers();
-            _grid.SetAllCeilings(false);
+            _grid.ResetGridState();
 
             if (data.CeilingHeight > 0)
             {
                 _grid.CeilingHeight = data.CeilingHeight;
                 _ceilingHeightInput = data.CeilingHeight;
+            }
+
+            if (_arena != null)
+            {
+                _arena.ClearAllUnits();
+            }
+            else
+            {
+                var existingUnits = FindObjectsByType<TacticalUnit>();
+                for (int i = 0; i < existingUnits.Length; i++)
+                {
+                    if (existingUnits[i] != null)
+                    {
+                        var node = _grid.GetNode(existingUnits[i].CurrentCoords);
+                        if (node != null) node.IsOccupied = false;
+                        Destroy(existingUnits[i].gameObject);
+                    }
+                }
+                _turnManager?.ClearUnits();
+                _turnManager?.ResetCombatState();
             }
 
             for (int i = 0; i < data.ModifiedTiles.Count; i++)
@@ -1241,8 +1314,50 @@ namespace Killtime.UI
                 }
             }
 
+            int unitLoadedCount = 0;
+            if (data.PlacedUnits != null && data.PlacedUnits.Count > 0)
+            {
+                if (_arena != null)
+                {
+                    _arena.LoadUnitsFromMap(data.PlacedUnits);
+                }
+                else
+                {
+                    for (int i = 0; i < data.PlacedUnits.Count; i++)
+                    {
+                        var uData = data.PlacedUnits[i];
+                        if (uData == null || uData.Sheet == null) continue;
+
+                        var uCoords = new HexCoordinates(uData.Q, uData.R);
+                        var go = new GameObject($"Unit_{uData.Sheet.Name.Replace(" ", "_")}");
+                        var unit = go.AddComponent<TacticalUnit>();
+                        unit.InitializeFromSheet(uData.Sheet, uCoords, _grid, uData.IsPlayer);
+                        _turnManager?.RegisterUnit(unit);
+                    }
+
+                    _turnManager?.StartNewRound();
+                }
+
+                unitLoadedCount = data.PlacedUnits.Count;
+            }
+
             _gridVisualizer?.RefreshObstacles();
-            _statusMessage = $"Carte '{data.MapName}' chargée ({loadedCount}/{data.PlacedProps.Count} objet(s) 3D dont {ceilingLoadedCount} au plafond, Plafond: {_grid.CeilingHeight:0.##}m).";
+            _statusMessage = $"Carte '{data.MapName}' chargée ({loadedCount}/{data.PlacedProps.Count} objet(s) 3D, {unitLoadedCount} avatar(s), Plafond: {_grid.CeilingHeight:0.##}m).";
+
+            if (_arena != null)
+            {
+                _arena.RegisterLoadedMap(data, mapPath);
+            }
+        }
+
+        private void LoadMap(string fullPath)
+        {
+            if (!File.Exists(fullPath) || _grid == null) return;
+
+            string json = File.ReadAllText(fullPath);
+            var data = JsonUtility.FromJson<TacticalMapSaveData>(json);
+
+            ApplyLoadedMap(data, fullPath);
         }
 
         private void DeleteMap(string fullPath)

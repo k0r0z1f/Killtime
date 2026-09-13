@@ -67,6 +67,7 @@ namespace Killtime.Tactics.Grid
                 node.IsWalkable = true;
                 node.IsOccupied = false;
                 node.HasCeiling = false;
+                node.HasCustomVisual = false;
             }
         }
 

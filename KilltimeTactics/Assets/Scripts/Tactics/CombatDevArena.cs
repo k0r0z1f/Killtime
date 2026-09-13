@@ -74,6 +74,13 @@ namespace Killtime.Tactics
 
         public AI.TacticalAIController AIController => _aiController;
 
+        public TacticalMapSaveData CurrentLoadedMap => _currentLoadedMap;
+        public string CurrentLoadedMapPath => _currentLoadedMapPath;
+        public bool HasLoadedMap => _currentLoadedMap != null;
+
+        private TacticalMapSaveData _currentLoadedMap;
+        private string _currentLoadedMapPath;
+
         private void Awake()
         {
             _diceRoller = new DiceRoller();
@@ -159,20 +166,30 @@ namespace Killtime.Tactics
             PlayerUnit = CreateUnit("Roger (Opératif)", new HexCoordinates(0, 0), 
                 new Attributes(4, 3, 4, 4, 3, 2), 
                 baseArmor: 1, isPlayer: true);
+            PlayerUnit.Sheet.GetSkill(SkillType.Ballistique).TrainingLevel = 1;
+            PlayerUnit.Sheet.GetSkill(SkillType.ManiementArmes).TrainingLevel = 1;
+            PlayerUnit.Sheet.GetSkill(SkillType.Esquive).TrainingLevel = 1;
+            PlayerUnit.Sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
+            PlayerUnit.Sheet.UnlockedSpecializations.Add("Pistolet & Tir Rapide");
 
             var dummyTank = CreateUnit("Sac de Frappe (Tank)", new HexCoordinates(3, -1), 
                 new Attributes(1, 1, 1, 6, 4, 1), 
                 baseArmor: 2, isPlayer: false);
+            dummyTank.Sheet.GetSkill(SkillType.DefenseCorporelle).TrainingLevel = 1;
+            dummyTank.Sheet.UnlockedSpecializations.Add("Bloquer");
             SparringDummies.Add(dummyTank);
 
             var dummyAgile = CreateUnit("Duelliste Agile (Esquive)", new HexCoordinates(2, 2), 
                 new Attributes(6, 3, 5, 3, 2, 2), 
                 baseArmor: 0, isPlayer: false);
+            dummyAgile.Sheet.GetSkill(SkillType.Esquive).TrainingLevel = 2;
             SparringDummies.Add(dummyAgile);
 
             var dummyArmored = CreateUnit("Garde Blindé (Armure)", new HexCoordinates(-3, 2), 
                 new Attributes(2, 2, 2, 5, 4, 1), 
                 baseArmor: 4, isPlayer: false);
+            dummyArmored.Sheet.GetSkill(SkillType.DefenseCorporelle).TrainingLevel = 2;
+            dummyArmored.Sheet.UnlockedSpecializations.Add("Bloquer");
             SparringDummies.Add(dummyArmored);
 
             _turnManager.RegisterUnit(PlayerUnit);
@@ -247,6 +264,136 @@ namespace Killtime.Tactics
             _customSpawns.Clear();
         }
 
+        public void RegisterLoadedMap(TacticalMapSaveData mapData, string mapPath = null)
+        {
+            _currentLoadedMap = mapData;
+            _currentLoadedMapPath = mapPath;
+        }
+
+        public void ClearLoadedMap()
+        {
+            _currentLoadedMap = null;
+            _currentLoadedMapPath = null;
+        }
+
+        private void RestoreLoadedMap()
+        {
+            if (_currentLoadedMap == null) return;
+
+            var mapEditor = MapEditorDevWindow.Instance ?? FindAnyObjectByType<MapEditorDevWindow>();
+            if (mapEditor != null)
+            {
+                mapEditor.ApplyLoadedMap(_currentLoadedMap, _currentLoadedMapPath);
+            }
+            else
+            {
+                LoadUnitsFromMap(_currentLoadedMap.PlacedUnits);
+            }
+
+            RecordChronoSnapshot($"Réinitialisation de la Carte '{_currentLoadedMap.MapName}'");
+            Log($"🔄 Carte '<b>{_currentLoadedMap.MapName}</b>' entièrement réinitialisée.");
+        }
+
+        public void ClearAllUnits()
+        {
+            StopAllCoroutines();
+            _aiController?.StopAITurn();
+            _cinematicDirector?.ResetCinematicState();
+
+            CombatUI.CombatContextMenuUI.Instance?.CloseMenu();
+            CombatUI.TacticalSelectionManager.Instance?.ClearSelection();
+
+            var allUnits = FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < allUnits.Length; i++)
+            {
+                var u = allUnits[i];
+                if (u != null)
+                {
+                    if (_grid != null)
+                    {
+                        var node = _grid.GetNode(u.CurrentCoords);
+                        if (node != null) node.IsOccupied = false;
+                    }
+                    Destroy(u.gameObject);
+                }
+            }
+
+            PlayerUnit = null;
+            SparringDummies.Clear();
+            _additionalPlayers.Clear();
+            _customSpawns.Clear();
+            CurrentTarget = null;
+
+            _turnManager?.ClearUnits();
+            _turnManager?.ResetCombatState();
+        }
+
+        public void LoadUnitsFromMap(List<MapUnitData> mapUnits)
+        {
+            ClearAllUnits();
+
+            if (mapUnits == null || mapUnits.Count == 0)
+            {
+                RecordChronoSnapshot("Chargement de carte (0 avatar)");
+                Log("👥 Aucun avatar défini sur cette carte.");
+                return;
+            }
+
+            for (int i = 0; i < mapUnits.Count; i++)
+            {
+                var unitData = mapUnits[i];
+                if (unitData == null || unitData.Sheet == null) continue;
+
+                var coords = new HexCoordinates(unitData.Q, unitData.R);
+                var go = new GameObject($"Unit_{unitData.Sheet.Name.Replace(" ", "_")}");
+                var unit = go.AddComponent<TacticalUnit>();
+                unit.InitializeFromSheet(unitData.Sheet, coords, _grid, unitData.IsPlayer);
+
+                if (unitData.IsPlayer)
+                {
+                    if (PlayerUnit == null)
+                    {
+                        PlayerUnit = unit;
+                    }
+                    else
+                    {
+                        _additionalPlayers.Add(unit);
+                    }
+                }
+                else
+                {
+                    SparringDummies.Add(unit);
+                }
+
+                _customSpawns.Add(new CustomSpawnRecord
+                {
+                    Sheet = unitData.Sheet,
+                    SpawnCoords = coords,
+                    IsPlayer = unitData.IsPlayer
+                });
+
+                _turnManager?.RegisterUnit(unit);
+            }
+
+            if (SparringDummies.Count > 0)
+            {
+                SelectTarget(SparringDummies[0]);
+            }
+
+            if (_cameraController != null)
+            {
+                if (PlayerUnit != null)
+                    _cameraController.FocusOn(PlayerUnit.transform);
+                else if (SparringDummies.Count > 0)
+                    _cameraController.FocusOn(SparringDummies[0].transform);
+            }
+
+            _turnManager?.StartNewRound();
+
+            RecordChronoSnapshot($"Chargement des unités de la carte ({mapUnits.Count} avatars)");
+            Log($"👥 <b>{mapUnits.Count} avatar(s)</b> chargé(s) depuis la configuration de carte.");
+        }
+
         private TacticalUnit CreateUnit(string unitName, HexCoordinates coords, Attributes attributes, int baseArmor, bool isPlayer)
         {
             var go = new GameObject($"Unit_{unitName.Replace(" ", "_")}");
@@ -272,6 +419,7 @@ namespace Killtime.Tactics
 
         public void ApplyArenaLayout(ArenaLayoutType layout)
         {
+            ClearLoadedMap();
             _currentLayout = layout;
             _grid.ClearAllCovers();
 
@@ -457,15 +605,21 @@ namespace Killtime.Tactics
 
         /// <summary>
         /// Déclenche une passe d'armes ou tir ciblé selon la séquence d'injection de PA du Livre VI.
+        /// Conforme à l'Axiome Fondateur : résolution par compétence (Maniement, Ballistique, Mains Nues vs Esquive/Parade).
         /// </summary>
         public void ExecuteAttack(
             BodyPart targetedPart, 
             bool cancelPenaltyWithAP, 
-            DiceType attackDie = DiceType.D6, 
-            DiceType defenseDie = DiceType.D4, 
+            SkillType attackSkill = SkillType.Ballistique,
+            SkillType defenseSkill = SkillType.Esquive,
+            bool defenderWantsToDefend = true,
+            string attackerSpecialization = null,
+            string defenderSpecialization = null,
             int weaponBaseDamage = 5,
             int attackerBonusAP = 0,
-            int defenderBonusAP = -1)
+            int defenderBonusAP = -1,
+            DiceType? attackDie = null,
+            DiceType? defenseDie = null)
         {
             var attacker = _turnManager.ActiveUnit;
             var defender = CurrentTarget;
@@ -482,19 +636,21 @@ namespace Killtime.Tactics
                 return;
             }
 
-            int maxAttacks = attacker.Stats.GetMaxAttacksAllowed(attackDie);
-            if (!attacker.Stats.CanAttack(attackDie))
+            DiceType resolvedAttackDie = attackDie ?? attacker.Stats.GetSkillDie(attackSkill);
+            DiceType resolvedDefenseDie = defenseDie ?? defender.Stats.GetSkillDie(defenseSkill);
+
+            int maxAttacks = attacker.Stats.GetMaxAttacksAllowed(resolvedAttackDie);
+            if (!attacker.Stats.CanAttack(resolvedAttackDie))
             {
                 Log($"⚠️ <b>{attacker.Stats.Name}</b> a déjà épuisé son quota d'attaque ce tour ({attacker.Stats.AttacksThisTurn}/{maxAttacks}) ! Requis pour 2 attaques : palier 2d6, 2d8, 2d10 ou 2d12.");
                 return;
             }
 
-            // Résolution automatique de la réponse du défenseur si non spécifiée manuellement
             int resolvedDefenderBonus = defenderBonusAP;
             if (resolvedDefenderBonus < 0)
             {
                 resolvedDefenderBonus = 0;
-                if (defender.Stats.CurrentActionPoints > 1)
+                if (defenderWantsToDefend && defender.Stats.CurrentActionPoints > 1)
                 {
                     int extraAvailable = defender.Stats.CurrentActionPoints - 1;
                     resolvedDefenderBonus = Mathf.Clamp(attackerBonusAP > 0 ? attackerBonusAP : 1, 0, extraAvailable);
@@ -505,20 +661,39 @@ namespace Killtime.Tactics
             {
                 attacker.Stats.RegisterAttack();
 
-                var result = _combatCalculator.ResolveTargetedAttack(
-                    attacker: attacker.Stats,
-                    defender: defender.Stats,
-                    targetedPart: targetedPart,
-                    attackDie: attackDie,
-                    attackModifier: attacker.Stats.Attributes.Agilite,
-                    defenseDie: defenseDie,
-                    defenseModifier: defender.Stats.Attributes.Agilite,
-                    weaponBaseDamage: weaponBaseDamage,
-                    cancelPenaltyWithAP: cancelPenaltyWithAP,
-                    defenderArmor: defender.Stats.BaseArmorAbsorption,
-                    attackerBonusAP: attackerBonusAP,
-                    defenderBonusAP: resolvedDefenderBonus
-                );
+                var result = (attackDie.HasValue || defenseDie.HasValue)
+                    ? _combatCalculator.ResolveTargetedAttack(
+                        attacker: attacker.Stats,
+                        defender: defender.Stats,
+                        targetedPart: targetedPart,
+                        attackDie: resolvedAttackDie,
+                        attackModifier: attacker.Stats.GetSkillModifier(attackSkill),
+                        defenseDie: resolvedDefenseDie,
+                        defenseModifier: defender.Stats.GetSkillModifier(defenseSkill),
+                        weaponBaseDamage: weaponBaseDamage,
+                        cancelPenaltyWithAP: cancelPenaltyWithAP,
+                        defenderArmor: defender.Stats.BaseArmorAbsorption,
+                        attackerBonusAP: attackerBonusAP,
+                        defenderBonusAP: resolvedDefenderBonus,
+                        defenderWantsToDefend: defenderWantsToDefend,
+                        attackSkill: attackSkill,
+                        defenseSkill: defenseSkill
+                    )
+                    : _combatCalculator.ResolveTargetedAttack(
+                        attacker: attacker.Stats,
+                        defender: defender.Stats,
+                        targetedPart: targetedPart,
+                        attackSkill: attackSkill,
+                        defenseSkill: defenseSkill,
+                        weaponBaseDamage: weaponBaseDamage,
+                        cancelPenaltyWithAP: cancelPenaltyWithAP,
+                        defenderWantsToDefend: defenderWantsToDefend,
+                        attackerSpecialization: attackerSpecialization,
+                        defenderSpecialization: defenderSpecialization,
+                        defenderArmor: defender.Stats.BaseArmorAbsorption,
+                        attackerBonusAP: attackerBonusAP,
+                        defenderBonusAP: resolvedDefenderBonus
+                    );
 
                 Log(result.CombatLog);
 
@@ -540,17 +715,17 @@ namespace Killtime.Tactics
 
                         if (result.IsCritical)
                         {
-                            defVisual.SpawnFloatingText("💥 COUP CRITIQUE !", new Color(1.0f, 0.85f, 0.1f));
+                            defVisual.SpawnFloatingText("[CRITIQUE] COUP DÉCISIF !", new Color(1.0f, 0.85f, 0.1f));
                         }
 
                         if (result.WasDeflected)
                         {
-                            defVisual.SpawnFloatingText($"DÉVIATION ➔ {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff 0)", Color.yellow);
+                            defVisual.SpawnFloatingText($"[DÉVIATION] -> {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff 0)", Color.yellow);
                         }
                         else
                         {
                             string diffSign = result.Differential > 0 ? $"+{result.Differential}" : $"{result.Differential}";
-                            defVisual.SpawnFloatingText($"🎯 Touché {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff {diffSign})", new Color(0.9f, 0.9f, 1.0f));
+                            defVisual.SpawnFloatingText($"[TOUCHÉ] {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff {diffSign})", new Color(0.9f, 0.9f, 1.0f));
                         }
 
                         string dmgText = result.ArmorAbsorbed > 0 
@@ -560,38 +735,38 @@ namespace Killtime.Tactics
 
                         if (result.ExceededEncaissement)
                         {
-                            defVisual.SpawnFloatingText($"⚡ CHOC TRAUMATIQUE ! [{result.InflictedStatus}]", new Color(1.0f, 0.4f, 0.95f));
+                            defVisual.SpawnFloatingText($"[CHOC] TRAUMATIQUE ! [{result.InflictedStatus}]", new Color(1.0f, 0.4f, 0.95f));
                         }
 
                         if (result.FatalResolution == FatalBlowResolution.InstantDeath)
                         {
-                            defVisual.SpawnFloatingText("💀 MORT INSTANTANÉE !", Color.black);
+                            defVisual.SpawnFloatingText("[MORTEL] INSTANTANÉ !", Color.black);
                         }
                         else if (result.FatalResolution == FatalBlowResolution.MiracleSaved)
                         {
-                            defVisual.SpawnFloatingText("🔮 POINT DE MIRACLE ! (1 PV)", new Color(1.0f, 0.85f, 0.1f));
+                            defVisual.SpawnFloatingText("[MIRACLE] DESTIN SAUVÉ ! (1 PV)", new Color(1.0f, 0.85f, 0.1f));
                         }
                         else if (result.FatalResolution == FatalBlowResolution.ForcedUnconscious)
                         {
-                            defVisual.SpawnFloatingText("💥 K.O. TRAUMATIQUE FORCÉ !", Color.magenta);
+                            defVisual.SpawnFloatingText("[K.O.] SYNCOPE TRAUMATIQUE !", Color.magenta);
                         }
                         else if (result.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
                         {
                             if (!defender.IsPlayerControlled)
                             {
                                 defender.Stats.ChooseSombrer();
-                                defVisual.SpawnFloatingText("💤 SYNCOPE PROTECTRICE (0 PV)", Color.cyan);
+                                defVisual.SpawnFloatingText("[SYNCOPE] CHUTE HORS COMBAT (0 PV)", Color.cyan);
                             }
                             else
                             {
                                 defender.Stats.ChooseLastBreath();
-                                defVisual.SpawnFloatingText("🔥 DERNIER SOUFFLE (0 PV, +1 ESS/act)", new Color(1.0f, 0.5f, 0.1f));
+                                defVisual.SpawnFloatingText("[SURVIE] DERNIER SOUFFLE (0 PV)", new Color(1.0f, 0.5f, 0.1f));
                             }
                         }
                     }
                     else if (result.IsBlocked)
                     {
-                        defVisual.SpawnFloatingText($"🛡️ PARADE / ESQUIVE (Diff {result.Differential})", new Color(0.2f, 0.9f, 1.0f));
+                        defVisual.SpawnFloatingText($"[PARADE] Neutralisation (Diff {result.Differential})", new Color(0.2f, 0.9f, 1.0f));
                     }
                 }
 
@@ -816,17 +991,24 @@ namespace Killtime.Tactics
                 _gridVisualizer.SetReachableCoords(null);
             }
 
-            // 5. Recréer les unités
+            // 5. Si une carte personnalisée est chargée, la rétablir fidèlement
+            if (HasLoadedMap)
+            {
+                RestoreLoadedMap();
+                return;
+            }
+
+            // 6. Recréer les unités par défaut
             SetupArenaUnits();
 
-            // 6. Réappliquer le layout d'obstacles et cibler le premier mannequin
+            // 7. Réappliquer le layout d'obstacles et cibler le premier mannequin
             ApplyArenaLayout(_currentLayout);
             if (SparringDummies.Count > 0)
             {
                 SelectTarget(SparringDummies[0]);
             }
 
-            // 7. Recentrer la caméra sur le joueur
+            // 8. Recentrer la caméra sur le joueur
             if (_cameraController != null && PlayerUnit != null)
             {
                 _cameraController.FocusOn(PlayerUnit.transform);
