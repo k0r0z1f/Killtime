@@ -70,6 +70,9 @@ namespace Killtime.EditorTools
             EnsureParameter(controller, "IsMoving", AnimatorControllerParameterType.Bool, false);
             EnsureParameter(controller, "TriggerAction", AnimatorControllerParameterType.Trigger);
             EnsureParameter(controller, "TriggerRoundkick", AnimatorControllerParameterType.Trigger);
+            EnsureParameter(controller, "TriggerBodyBlock", AnimatorControllerParameterType.Trigger);
+            EnsureParameter(controller, "TriggerFallingBackDeath", AnimatorControllerParameterType.Trigger);
+            EnsureParameter(controller, "IsKO", AnimatorControllerParameterType.Bool, false);
             EnsureParameter(controller, "WalkSpeedMultiplier", AnimatorControllerParameterType.Float, 1f);
         }
 
@@ -232,15 +235,102 @@ namespace Killtime.EditorTools
                 t.canTransitionToSelf = false;
             }
 
+            var bodyBlockChild = sm.states.FirstOrDefault(s => s.state.name == "Body Block");
+            AnimatorState bodyBlockState = bodyBlockChild.state;
+            if (bodyBlockState == null)
+            {
+                bodyBlockState = sm.AddState("Body Block", new Vector3(800, 190, 0));
+            }
+
+            var deathChild = sm.states.FirstOrDefault(s => s.state.name == "Falling Back Death");
+            AnimatorState deathState = deathChild.state;
+            if (deathState == null)
+            {
+                deathState = sm.AddState("Falling Back Death", new Vector3(800, 300, 0));
+            }
+
+            if (fightIdle != null)
+            {
+                var staleBlock = fightIdle.transitions.Where(t => t.destinationState == bodyBlockState).ToArray();
+                for (int i = 0; i < staleBlock.Length; i++) fightIdle.RemoveTransition(staleBlock[i]);
+
+                var tBlock = fightIdle.AddTransition(bodyBlockState);
+                tBlock.AddCondition(AnimatorConditionMode.If, 0, "TriggerBodyBlock");
+                tBlock.hasExitTime = false;
+                tBlock.duration = 0.1f;
+                tBlock.canTransitionToSelf = false;
+            }
+
+            if (standingIdle != null)
+            {
+                var staleBlock = standingIdle.transitions.Where(t => t.destinationState == bodyBlockState).ToArray();
+                for (int i = 0; i < staleBlock.Length; i++) standingIdle.RemoveTransition(staleBlock[i]);
+
+                var tBlock = standingIdle.AddTransition(bodyBlockState);
+                tBlock.AddCondition(AnimatorConditionMode.If, 0, "TriggerBodyBlock");
+                tBlock.hasExitTime = false;
+                tBlock.duration = 0.1f;
+                tBlock.canTransitionToSelf = false;
+            }
+
+            var staleFromBlock = bodyBlockState.transitions.Where(t => t.destinationState == fightIdle).ToArray();
+            for (int i = 0; i < staleFromBlock.Length; i++) bodyBlockState.RemoveTransition(staleFromBlock[i]);
+
+            if (fightIdle != null)
+            {
+                var tBack = bodyBlockState.AddTransition(fightIdle);
+                tBack.hasExitTime = true;
+                tBack.exitTime = 0.85f;
+                tBack.duration = 0.15f;
+                tBack.canTransitionToSelf = false;
+            }
+
+            AnimatorState[] sourceStatesForDeath = { fightIdle, standingIdle, walkingState, roundkickState, bodyBlockState };
+            for (int i = 0; i < sourceStatesForDeath.Length; i++)
+            {
+                var src = sourceStatesForDeath[i];
+                if (src == null) continue;
+
+                var staleDeath = src.transitions.Where(t => t.destinationState == deathState).ToArray();
+                for (int j = 0; j < staleDeath.Length; j++) src.RemoveTransition(staleDeath[j]);
+
+                var tDeath = src.AddTransition(deathState);
+                tDeath.AddCondition(AnimatorConditionMode.If, 0, "TriggerFallingBackDeath");
+                tDeath.hasExitTime = false;
+                tDeath.duration = 0.12f;
+                tDeath.canTransitionToSelf = false;
+
+                var tDeathKO = src.AddTransition(deathState);
+                tDeathKO.AddCondition(AnimatorConditionMode.If, 0, "IsKO");
+                tDeathKO.hasExitTime = false;
+                tDeathKO.duration = 0.12f;
+                tDeathKO.canTransitionToSelf = false;
+            }
+
+            var staleFromDeath = deathState.transitions.Where(t => t.destinationState == fightIdle).ToArray();
+            for (int i = 0; i < staleFromDeath.Length; i++) deathState.RemoveTransition(staleFromDeath[i]);
+
+            if (fightIdle != null)
+            {
+                var tRevive = deathState.AddTransition(fightIdle);
+                tRevive.AddCondition(AnimatorConditionMode.IfNot, 0, "IsKO");
+                tRevive.hasExitTime = false;
+                tRevive.duration = 0.25f;
+                tRevive.canTransitionToSelf = false;
+            }
+
             RemoveSelfTransitions(fightIdle);
             RemoveSelfTransitions(standingIdle);
             RemoveSelfTransitions(walkingState);
+            RemoveSelfTransitions(roundkickState);
+            RemoveSelfTransitions(bodyBlockState);
+            RemoveSelfTransitions(deathState);
 
             if (fightIdle != null)
             {
                 foreach (var t in fightIdle.transitions)
                 {
-                    if (t.destinationState == walkingState || t.destinationState == roundkickState)
+                    if (t.destinationState == walkingState || t.destinationState == roundkickState || t.destinationState == bodyBlockState || t.destinationState == deathState)
                     {
                         t.hasExitTime = false;
                     }

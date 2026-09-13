@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.Grid;
+using Killtime.Core.Character;
 
 namespace Killtime.Tactics.TurnSystem
 {
@@ -33,6 +34,7 @@ namespace Killtime.Tactics.TurnSystem
         public event Action<TacticalUnit> OnTurnStarted;
         public event Action<int> OnRoundStarted;
         public event Action<CombatOutcome> OnCombatEnded;
+        public event Action<TacticalUnit, List<StatusEffect>> OnUnitStatusExpired;
 
         private void Start()
         {
@@ -217,6 +219,20 @@ namespace Killtime.Tactics.TurnSystem
         public void EndCurrentTurn()
         {
             if (CheckCombatOver()) return;
+
+            if (ActiveUnit != null && ActiveUnit.Stats != null)
+            {
+                var expired = ActiveUnit.Stats.TickTurnStatusDurations();
+                if (expired.Count > 0)
+                {
+                    var vis = ActiveUnit.GetComponent<TacticalUnitVisual>();
+                    for (int i = 0; i < expired.Count; i++)
+                    {
+                        vis?.SpawnFloatingText($"[{expired[i]}] Dissipé", new Color(0.4f, 0.9f, 1.0f));
+                    }
+                    OnUnitStatusExpired?.Invoke(ActiveUnit, expired);
+                }
+            }
 
             _activeUnitIndex++;
 

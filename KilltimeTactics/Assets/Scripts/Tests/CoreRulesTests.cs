@@ -166,6 +166,29 @@ namespace Killtime.Tests
             Assert.IsFalse(stats.CanDefendActively());
             Assert.IsFalse(stats.CanAttack(DiceType.D6));
         }
+
+        [Test]
+        public void TestStatusConditions_ExpireAfterOneTurn_UnlessPersistent()
+        {
+            var attr = new Attributes(4, 4, 3, 3, 3, 2, 2, 2);
+            var sheet = new CharacterSheet { Name = "Guerrier", BaseAttributes = attr };
+            var stats = sheet.ToCombatStats();
+            stats.Sheet = sheet;
+
+            // 1. Application d'un statut temporaire (1 tour par défaut) et d'un statut persistant
+            stats.ApplyStatus(StatusEffect.Destabilise, 1);
+            stats.ApplyStatus(StatusEffect.Inconscient);
+
+            Assert.IsTrue(stats.ActiveStatus.HasFlag(StatusEffect.Destabilise));
+            Assert.IsTrue(stats.ActiveStatus.HasFlag(StatusEffect.Inconscient));
+
+            // 2. Fin de tour : Décrémentation
+            var expired = stats.TickTurnStatusDurations();
+
+            Assert.IsTrue(expired.Contains(StatusEffect.Destabilise));
+            Assert.IsFalse(stats.ActiveStatus.HasFlag(StatusEffect.Destabilise));
+            Assert.IsTrue(stats.ActiveStatus.HasFlag(StatusEffect.Inconscient));
+        }
     }
 }
 #endif

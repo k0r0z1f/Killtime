@@ -5,6 +5,7 @@ using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Combat;
 using Killtime.Core.Dice;
+using Killtime.Core.Character;
 using Killtime.CameraSystem;
 using Killtime.UI;
 using Killtime.WebGL;
@@ -133,6 +134,20 @@ namespace Killtime.Tactics
                 return;
             }
 
+            var attVisual = attacker.GetComponent<TacticalUnitVisual>();
+            var defVisual = target.GetComponent<TacticalUnitVisual>();
+
+            Vector3 combatDir = target.transform.position - attacker.transform.position;
+            combatDir.y = 0f;
+            if (combatDir != Vector3.zero)
+            {
+                attacker.transform.rotation = Quaternion.LookRotation(combatDir);
+                if (target.Stats.CanDefendActively())
+                {
+                    target.transform.rotation = Quaternion.LookRotation(-combatDir);
+                }
+            }
+
             // Lancer le plan cinématique dynamique
             _cinematicDirector.PlayCinematicKillshot(
                 attacker.transform,
@@ -155,6 +170,11 @@ namespace Killtime.Tactics
 
                     _hud?.AddCombatLog(result.CombatLog);
 
+                    if (!target.Stats.IsAlive || target.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient))
+                    {
+                        defVisual?.TriggerFallingBackDeath();
+                    }
+
                     // Notification WebGL
                     WebBridgeManager.Instance?.SendCombatEvent(
                         result.IsHit ? "HIT" : "MISS",
@@ -165,6 +185,14 @@ namespace Killtime.Tactics
                 onComplete: () =>
                 {
                     // Fin de la transition cinématique
+                },
+                onActionStart: () => attVisual?.TriggerRoundkick(),
+                onDefenseStart: () =>
+                {
+                    if (target.Stats.CanDefendActively())
+                    {
+                        defVisual?.TriggerBodyBlock();
+                    }
                 }
             );
         }

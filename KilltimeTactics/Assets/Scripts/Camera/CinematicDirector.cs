@@ -128,17 +128,17 @@ namespace Killtime.CameraSystem
         /// <summary>
         /// Déclenche un gros plan cinématique dramatique lors d'un tir ciblé ou d'un critique.
         /// </summary>
-        public void PlayCinematicKillshot(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null)
+        public void PlayCinematicKillshot(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null, Action onDefenseStart = null)
         {
             if (_activeCinematicRoutine != null)
             {
                 StopCoroutine(_activeCinematicRoutine);
             }
 
-            _activeCinematicRoutine = StartCoroutine(CinematicRoutine(attacker, target, onStrikePoint, onComplete, onActionStart));
+            _activeCinematicRoutine = StartCoroutine(CinematicRoutine(attacker, target, onStrikePoint, onComplete, onActionStart, onDefenseStart));
         }
 
-        private IEnumerator CinematicRoutine(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null)
+        private IEnumerator CinematicRoutine(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null, Action onDefenseStart = null)
         {
             CurrentMode = CameraMode.CinematicAction;
             _tacticalCam.enabled = false;
@@ -184,17 +184,31 @@ namespace Killtime.CameraSystem
                 yield return null;
             }
 
-            // Déclenchement du roundkick juste avant l'impact
+            // Déclenchement de l'attaque
             onActionStart?.Invoke();
 
             // 2. Trajectoire de frappe en ralenti dramatique jusqu'au point de contact
             Time.timeScale = 0.45f;
             float windupTimer = 0f;
+            bool defenseTriggered = false;
+
             while (windupTimer < 0.22f)
             {
                 while (Time.timeScale <= 0.0001f) yield return null;
                 windupTimer += Time.unscaledDeltaTime;
+
+                if (!defenseTriggered && windupTimer >= 0.05f)
+                {
+                    defenseTriggered = true;
+                    onDefenseStart?.Invoke();
+                }
+
                 yield return null;
+            }
+
+            if (!defenseTriggered)
+            {
+                onDefenseStart?.Invoke();
             }
 
             // Point d'impact physique : calculs, flash et apparition des textes au-dessus des têtes

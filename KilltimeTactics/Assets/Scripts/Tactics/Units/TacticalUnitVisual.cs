@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 using Killtime.Tactics.Units;
+using Killtime.Tactics.CombatUI;
 using Killtime.Core.Character;
 
 namespace Killtime.Tactics.Units
@@ -17,7 +18,9 @@ namespace Killtime.Tactics.Units
         ActionIdleToFightIdle,
         ActionIdleToStandingIdle,
         Walking,
-        Roundkick
+        Roundkick,
+        BodyBlock,
+        FallingBackDeath
     }
 
     /// <summary>
@@ -51,11 +54,15 @@ namespace Killtime.Tactics.Units
         private static readonly int AnimTriggerAction = Animator.StringToHash("TriggerAction");
         private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
         private static readonly int AnimTriggerRoundkick = Animator.StringToHash("TriggerRoundkick");
+        private static readonly int AnimTriggerBodyBlock = Animator.StringToHash("TriggerBodyBlock");
+        private static readonly int AnimTriggerFallingBackDeath = Animator.StringToHash("TriggerFallingBackDeath");
+        private static readonly int AnimIsKO = Animator.StringToHash("IsKO");
         private static readonly int AnimWalkSpeedMultiplier = Animator.StringToHash("WalkSpeedMultiplier");
 
         private bool _hasWalkingClip = false;
         private bool _hasWalkMultiplierParam = false;
         private float _naturalWalkSpeed = 1.35f;
+        private bool _isUnconscious = false;
 
         private static readonly Dictionary<string, AnimationClip> _clipCache = new(StringComparer.OrdinalIgnoreCase);
 
@@ -209,6 +216,32 @@ namespace Killtime.Tactics.Units
             _actionRoutine = null;
         }
 
+        public void TriggerBodyBlock()
+        {
+            if (_unit != null && _unit.Stats != null && !_unit.Stats.CanDefendActively()) return;
+
+            _isInCombat = true;
+            if (_animator != null)
+            {
+                _animator.SetBool(AnimIsInCombat, true);
+                _animator.ResetTrigger(AnimTriggerBodyBlock);
+                _animator.SetTrigger(AnimTriggerBodyBlock);
+                _animator.CrossFadeInFixedTime("Body Block", 0.08f);
+            }
+        }
+
+        public void TriggerFallingBackDeath()
+        {
+            _isUnconscious = true;
+            if (_animator != null)
+            {
+                _animator.SetBool(AnimIsKO, true);
+                _animator.ResetTrigger(AnimTriggerFallingBackDeath);
+                _animator.SetTrigger(AnimTriggerFallingBackDeath);
+                _animator.CrossFadeInFixedTime("Falling Back Death", 0.12f);
+            }
+        }
+
         public void PlayAnimationState(UnitAnimState state, float crossFadeDuration = 0.15f)
         {
             if (_animator == null) return;
@@ -223,6 +256,8 @@ namespace Killtime.Tactics.Units
                 UnitAnimState.ActionIdleToStandingIdle => "Action Idle To Standing Idle",
                 UnitAnimState.Walking => "Walking",
                 UnitAnimState.Roundkick => "Roundkick",
+                UnitAnimState.BodyBlock => "Body Block",
+                UnitAnimState.FallingBackDeath => "Falling Back Death",
                 _ => "Standing Idle"
             };
 
@@ -278,6 +313,8 @@ namespace Killtime.Tactics.Units
             BindClipToOverride("Fight Idle To Standing Idle");
             BindClipToOverride("Walking");
             BindClipToOverride("Roundkick");
+            BindClipToOverride("Body Block");
+            BindClipToOverride("Falling Back Death");
 
             _animator.runtimeAnimatorController = _animatorOverride;
             CheckWalkingAnimationCapabilities();
@@ -619,17 +656,43 @@ namespace Killtime.Tactics.Units
 
         private void UpdateKOAnimation()
         {
-            if (_unit.Stats != null && !_unit.Stats.IsAlive)
+            bool isDown = _unit.Stats != null && (!_unit.Stats.IsAlive || _unit.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient));
+
+            if (isDown)
             {
-                Quaternion targetRot = Quaternion.Euler(-80, transform.rotation.eulerAngles.y, 0);
-                if (_modelRoot != null)
+                if (!_isUnconscious)
                 {
-                    _modelRoot.localRotation = Quaternion.Slerp(_modelRoot.localRotation, targetRot, Time.deltaTime * 6f);
-                    _modelRoot.localPosition = Vector3.Lerp(_modelRoot.localPosition, new Vector3(0, -0.4f, 0), Time.deltaTime * 6f);
+                    _isUnconscious = true;
+                    TriggerFallingBackDeath();
+                }
+
+                if (!_isCustomModel)
+                {
+                    Quaternion targetRot = Quaternion.Euler(-80, transform.rotation.eulerAngles.y, 0);
+                    if (_modelRoot != null)
+                    {
+                        _modelRoot.localRotation = Quaternion.Slerp(_modelRoot.localRotation, targetRot, Time.deltaTime * 6f);
+                        _modelRoot.localPosition = Vector3.Lerp(_modelRoot.localPosition, new Vector3(0, -0.4f, 0), Time.deltaTime * 6f);
+                    }
+                }
+                else if (_modelRoot != null)
+                {
+                    _modelRoot.localRotation = Quaternion.Slerp(_modelRoot.localRotation, Quaternion.identity, Time.deltaTime * 6f);
+                    _modelRoot.localPosition = Vector3.Lerp(_modelRoot.localPosition, Vector3.zero, Time.deltaTime * 6f);
                 }
             }
             else
             {
+                if (_isUnconscious)
+                {
+                    _isUnconscious = false;
+                    if (_animator != null)
+                    {
+                        _animator.SetBool(AnimIsKO, false);
+                        _animator.CrossFadeInFixedTime(_isInCombat ? "Fight Idle" : "Standing Idle", 0.25f);
+                    }
+                }
+
                 if (_modelRoot != null)
                 {
                     _modelRoot.localRotation = Quaternion.Slerp(_modelRoot.localRotation, Quaternion.identity, Time.deltaTime * 6f);
@@ -640,12 +703,16 @@ namespace Killtime.Tactics.Units
 
         public void SpawnFloatingText(string message, Color color)
         {
-            float stackOffset = _floatingTexts.Count * 0.42f;
+            float stackOffset = _floatingTexts.Count * 0.38f;
+            Vector3 headPos = GetHeadWorldPosition();
+            bool hasStatus = _unit != null && _unit.Stats != null && _unit.Stats.ActiveStatus != StatusEffect.None;
+            float baseHeight = hasStatus ? 0.95f : 0.65f;
+
             _floatingTexts.Add(new FloatingText
             {
                 Text = message,
                 Color = color,
-                WorldPos = transform.position + Vector3.up * (2.2f + stackOffset),
+                WorldPos = headPos + Vector3.up * (baseHeight + stackOffset),
                 Lifetime = 3.6f,
                 MaxLifetime = 3.6f
             });
@@ -657,7 +724,7 @@ namespace Killtime.Tactics.Units
             {
                 var ft = _floatingTexts[i];
                 ft.Lifetime -= Time.unscaledDeltaTime;
-                ft.WorldPos += Vector3.up * (0.22f * Time.unscaledDeltaTime);
+                ft.WorldPos += Vector3.up * (0.35f * Time.unscaledDeltaTime);
 
                 if (ft.Lifetime <= 0f)
                 {
@@ -680,6 +747,8 @@ namespace Killtime.Tactics.Units
             return transform.position + Vector3.up * (1.85f * _unitScale);
         }
 
+        public static bool ShowAnimationTelemetry = false;
+
         private void OnGUI()
         {
             var cam = UnityEngine.Camera.main;
@@ -697,7 +766,10 @@ namespace Killtime.Tactics.Units
                 float uiY = Screen.height - screenPos.y;
 
                 DrawOverheadHUD(uiX, uiY);
-                DrawAnimationTelemetry(uiX, uiY);
+                if (ShowAnimationTelemetry)
+                {
+                    DrawAnimationTelemetry(uiX, uiY);
+                }
                 DrawCircularStatusHalo(cam);
                 DrawFloatingCombatTexts(cam);
 
@@ -712,6 +784,10 @@ namespace Killtime.Tactics.Units
         private void DrawAnimationTelemetry(float x, float y)
         {
             if (_animator == null || _animator.runtimeAnimatorController == null) return;
+
+            bool isSelected = TacticalSelectionManager.Instance != null && TacticalSelectionManager.Instance.PrimarySelected == _unit;
+            bool isActive = _unit.IsPlayerControlled && _unit.Stats.IsAlive;
+            if (!isSelected && !isActive) return;
 
             var stateInfo = _animator.GetCurrentAnimatorStateInfo(0);
             var clipInfo = _animator.GetCurrentAnimatorClipInfo(0);
@@ -780,25 +856,37 @@ namespace Killtime.Tactics.Units
         private void DrawOverheadHUD(float x, float y)
         {
             var stats = _unit.Stats;
-            float width = 150;
-            float height = 36;
+            float width = 170f;
+            float height = 34f;
             Rect rect = new Rect(x - width * 0.5f, y - height, width, height);
 
+            Color prevBg = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(0.015f, 0.025f, 0.045f, 0.88f);
             GUI.Box(rect, GUIContent.none);
+            GUI.backgroundColor = prevBg;
 
-            GUILayout.BeginArea(rect);
-
-            GUI.color = _unit.IsPlayerControlled ? new Color(0.4f, 0.8f, 1f) : new Color(1f, 0.4f, 0.4f);
-            GUILayout.Label($"<b>{stats.Name}</b>", new GUIStyle(GUI.skin.label) { fontSize = 10, alignment = TextAnchor.MiddleCenter });
+            Color nameCol = _unit.IsPlayerControlled ? new Color(0.35f, 0.80f, 1f) : new Color(1f, 0.35f, 0.35f);
+            var nameStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 10,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                wordWrap = false
+            };
+            nameStyle.normal.textColor = nameCol;
+            GUI.Label(new Rect(rect.x + 4, rect.y + 2, rect.width - 8, 15), stats.Name, nameStyle);
 
             float hpPct = Mathf.Clamp01((float)stats.CurrentHealth / Mathf.Max(1, stats.MaxHealth));
-            Color hpColor = hpPct > 0.5f ? Color.green : (hpPct > 0.25f ? Color.yellow : Color.red);
-            GUI.color = hpColor;
-            GUILayout.Label($"PV: {stats.CurrentHealth}/{stats.MaxHealth} | PA: {stats.CurrentActionPoints}/{stats.MaxActionPoints}", 
-                new GUIStyle(GUI.skin.label) { fontSize = 9, alignment = TextAnchor.MiddleCenter });
-
-            GUI.color = Color.white;
-            GUILayout.EndArea();
+            Color hpColor = hpPct > 0.5f ? new Color(0.2f, 0.9f, 0.4f) : (hpPct > 0.25f ? Color.yellow : new Color(1f, 0.3f, 0.3f));
+            var statStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 9,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                wordWrap = false
+            };
+            statStyle.normal.textColor = hpColor;
+            GUI.Label(new Rect(rect.x + 4, rect.y + 16, rect.width - 8, 15), $"PV: {stats.CurrentHealth}/{stats.MaxHealth} | PA: {stats.CurrentActionPoints}/{stats.MaxActionPoints}", statStyle);
         }
 
         private void DrawCircularStatusHalo(UnityEngine.Camera cam)
@@ -868,10 +956,28 @@ namespace Killtime.Tactics.Units
 
         private void DrawStatusTooltip(StatusVisualInfo info, Vector2 mousePos)
         {
-            float width = 230f;
-            float height = 46f;
-            float x = Mathf.Clamp(mousePos.x + 16f, 10f, Screen.width - width - 10f);
-            float y = Mathf.Clamp(mousePos.y - 24f, 10f, Screen.height - height - 10f);
+            var titleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 11,
+                fontStyle = FontStyle.Bold,
+                wordWrap = false
+            };
+            titleStyle.normal.textColor = info.PrimaryColor;
+
+            var descStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 9,
+                wordWrap = true
+            };
+            descStyle.normal.textColor = new Color(0.82f, 0.90f, 0.98f, 0.95f);
+
+            float width = 250f;
+            float textW = width - 20f;
+            float descHeight = Mathf.Max(20f, descStyle.CalcHeight(new GUIContent(info.Description), textW));
+            float height = 24f + descHeight + 10f;
+
+            float x = Mathf.Clamp(mousePos.x + 14f, 10f, Screen.width - width - 10f);
+            float y = Mathf.Clamp(mousePos.y - height - 6f, 10f, Screen.height - height - 10f);
             Rect rect = new Rect(x, y, width, height);
 
             Color prevBg = GUI.backgroundColor;
@@ -883,24 +989,10 @@ namespace Killtime.Tactics.Units
             GUI.color = info.PrimaryColor;
             GUI.DrawTexture(new Rect(rect.x, rect.y, 3f, rect.height), Texture2D.whiteTexture);
             GUI.DrawTexture(new Rect(rect.x, rect.y, rect.width, 1f), Texture2D.whiteTexture);
-
-            var titleStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 11,
-                fontStyle = FontStyle.Bold
-            };
-            titleStyle.normal.textColor = info.PrimaryColor;
-            GUI.Label(new Rect(rect.x + 10f, rect.y + 4f, rect.width - 18f, 18f), $"[{info.Tag}] {info.Name}", titleStyle);
-
-            var descStyle = new GUIStyle(GUI.skin.label)
-            {
-                fontSize = 9,
-                wordWrap = true
-            };
-            descStyle.normal.textColor = new Color(0.80f, 0.88f, 0.96f, 0.92f);
-            GUI.Label(new Rect(rect.x + 10f, rect.y + 22f, rect.width - 18f, 22f), info.Description, descStyle);
-
             GUI.color = prevCol;
+
+            GUI.Label(new Rect(rect.x + 10f, rect.y + 4f, textW, 18f), $"[{info.Tag}] {info.Name}", titleStyle);
+            GUI.Label(new Rect(rect.x + 10f, rect.y + 22f, textW, descHeight), info.Description, descStyle);
         }
 
         private static Texture2D GetStatusIconTexture(StatusEffect status, Color primary)
@@ -1139,24 +1231,30 @@ namespace Killtime.Tactics.Units
                     Color c = ft.Color;
                     c.a = alpha;
 
-                    float clampedX = Mathf.Clamp(sp.x, 160, Screen.width - 160);
-                    float clampedY = Mathf.Clamp(Screen.height - sp.y - (i * 28), 40, Screen.height - 45);
+                    var style = new GUIStyle(GUI.skin.label)
+                    {
+                        fontSize = 13,
+                        fontStyle = FontStyle.Bold,
+                        alignment = TextAnchor.MiddleCenter,
+                        wordWrap = false
+                    };
 
-                    Rect boxRect = new Rect(clampedX - 150, clampedY - 15, 300, 28);
+                    GUIContent content = new GUIContent(ft.Text);
+                    Vector2 size = style.CalcSize(content);
+                    float boxWidth = Mathf.Max(size.x + 24f, 150f);
+                    float boxHeight = Mathf.Max(size.y + 6f, 24f);
+
+                    float clampedX = Mathf.Clamp(sp.x, boxWidth * 0.5f + 10f, Screen.width - boxWidth * 0.5f - 10f);
+                    float clampedY = Mathf.Clamp(Screen.height - sp.y, boxHeight * 0.5f + 10f, Screen.height - boxHeight * 0.5f - 10f);
+
+                    Rect boxRect = new Rect(clampedX - boxWidth * 0.5f, clampedY - boxHeight * 0.5f, boxWidth, boxHeight);
 
                     Color prevBg = GUI.backgroundColor;
-                    GUI.backgroundColor = new Color(0.04f, 0.05f, 0.09f, 0.88f * alpha);
+                    GUI.backgroundColor = new Color(0.02f, 0.035f, 0.06f, 0.90f * alpha);
                     GUI.Box(boxRect, GUIContent.none);
                     GUI.backgroundColor = prevBg;
 
-                    var style = new GUIStyle(GUI.skin.label)
-                    {
-                        fontSize = 15,
-                        fontStyle = FontStyle.Bold,
-                        alignment = TextAnchor.MiddleCenter
-                    };
-
-                    style.normal.textColor = new Color(0f, 0f, 0f, 0.9f * alpha);
+                    style.normal.textColor = new Color(0f, 0f, 0f, 0.95f * alpha);
                     GUI.Label(new Rect(boxRect.x + 1, boxRect.y + 1, boxRect.width, boxRect.height), ft.Text, style);
 
                     style.normal.textColor = c;

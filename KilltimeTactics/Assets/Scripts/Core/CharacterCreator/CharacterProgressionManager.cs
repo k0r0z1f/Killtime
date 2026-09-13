@@ -19,22 +19,31 @@ namespace Killtime.Core.Character
             return true;
         }
 
+        public const int MAX_SKILL_TRAINING = 3;
+
         /// <summary>
-        /// Augmente le niveau d'entraînement d'une compétence d'un cran (+1 palier de dé).
+        /// Augmente le niveau d'entraînement d'une compétence d'un cran (+1 palier de dé). Plafond : 3 paliers maximum.
         /// </summary>
         public static bool TrainSkill(CharacterSheet sheet, SkillType skill, out string message)
         {
+            var entry = sheet.GetSkill(skill);
+
+            if (entry.TrainingLevel >= MAX_SKILL_TRAINING)
+            {
+                message = $"Plafond d'entraînement atteint pour {SkillDefinitions.GetDisplayName(skill)} (+{MAX_SKILL_TRAINING} max).";
+                return false;
+            }
+
             if (sheet.AvailableXP < XP_COST_TRAINING)
             {
                 message = $"XP insuffisant ({sheet.AvailableXP}/{XP_COST_TRAINING} requis).";
                 return false;
             }
 
-            var entry = sheet.GetSkill(skill);
             sheet.AvailableXP -= XP_COST_TRAINING;
             entry.TrainingLevel++;
 
-            message = $"Entraînement acquis pour {skill} ! Niveau actuel : +{entry.TrainingLevel} dé(s).";
+            message = $"Entraînement acquis pour {SkillDefinitions.GetDisplayName(skill)} ! Niveau actuel : +{entry.TrainingLevel} dé(s).";
             return true;
         }
 

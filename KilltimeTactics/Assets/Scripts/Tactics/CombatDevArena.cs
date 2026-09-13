@@ -115,6 +115,7 @@ namespace Killtime.Tactics
             // 3. Liaison avec le TurnManager
             _turnManager.OnTurnStarted += HandleTurnStarted;
             _turnManager.OnCombatEnded += HandleCombatEnded;
+            _turnManager.OnUnitStatusExpired += HandleUnitStatusExpired;
 
             // 4. Sélectionner le premier mannequin par défaut
             if (SparringDummies.Count > 0)
@@ -472,6 +473,14 @@ namespace Killtime.Tactics
             Log($"📐 Layout d'arène configuré : <b>{layout}</b>");
         }
 
+        private void HandleUnitStatusExpired(TacticalUnit unit, List<StatusEffect> expiredList)
+        {
+            for (int i = 0; i < expiredList.Count; i++)
+            {
+                Log($"⏳ <b>{unit.Stats.Name}</b> : L'altération <b>[{expiredList[i]}]</b> s'est dissipée (Fin de tour).");
+            }
+        }
+
         private void HandleCombatEnded(CombatOutcome outcome)
         {
             var units = FindObjectsByType<TacticalUnit>();
@@ -688,12 +697,26 @@ namespace Killtime.Tactics
             if (combatDir != Vector3.zero)
             {
                 attacker.transform.rotation = Quaternion.LookRotation(combatDir);
+                if (defender.Stats.CanDefendActively())
+                {
+                    defender.transform.rotation = Quaternion.LookRotation(-combatDir);
+                }
             }
 
             var attVisual = attacker.GetComponent<TacticalUnitVisual>();
+            var defVisual = defender.GetComponent<TacticalUnitVisual>();
+
             Action triggerKickAction = () =>
             {
                 attVisual?.TriggerRoundkick();
+            };
+
+            Action triggerDefenseAction = () =>
+            {
+                if (defender != null && defender.Stats != null && defender.Stats.CanDefendActively())
+                {
+                    defVisual?.TriggerBodyBlock();
+                }
             };
 
             Action resolveAction = () =>
@@ -779,14 +802,17 @@ namespace Killtime.Tactics
                         if (result.FatalResolution == FatalBlowResolution.InstantDeath)
                         {
                             defVisual.SpawnFloatingText("[MORTEL] INSTANTANÉ !", Color.black);
+                            defVisual.TriggerFallingBackDeath();
                         }
                         else if (result.FatalResolution == FatalBlowResolution.MiracleSaved)
                         {
                             defVisual.SpawnFloatingText("[MIRACLE] DESTIN SAUVÉ ! (1 PV)", new Color(1.0f, 0.85f, 0.1f));
+                            defVisual.TriggerFallingBackDeath();
                         }
                         else if (result.FatalResolution == FatalBlowResolution.ForcedUnconscious)
                         {
                             defVisual.SpawnFloatingText("[K.O.] SYNCOPE TRAUMATIQUE !", Color.magenta);
+                            defVisual.TriggerFallingBackDeath();
                         }
                         else if (result.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
                         {
@@ -794,6 +820,7 @@ namespace Killtime.Tactics
                             {
                                 defender.Stats.ChooseSombrer();
                                 defVisual.SpawnFloatingText("[SYNCOPE] CHUTE HORS COMBAT (0 PV)", Color.cyan);
+                                defVisual.TriggerFallingBackDeath();
                             }
                             else
                             {
@@ -834,19 +861,22 @@ namespace Killtime.Tactics
                     defender.transform,
                     onStrikePoint: resolveAction,
                     onComplete: () => { _isAttackInProgress = false; },
-                    onActionStart: triggerKickAction
+                    onActionStart: triggerKickAction,
+                    onDefenseStart: triggerDefenseAction
                 );
             }
             else
             {
-                StartCoroutine(ExecuteAttackRoutine(triggerKickAction, resolveAction));
+                StartCoroutine(ExecuteAttackRoutine(triggerKickAction, triggerDefenseAction, resolveAction));
             }
         }
 
-        private System.Collections.IEnumerator ExecuteAttackRoutine(Action triggerKick, Action resolveImpact)
+        private System.Collections.IEnumerator ExecuteAttackRoutine(Action triggerKick, Action triggerDefense, Action resolveImpact)
         {
             triggerKick?.Invoke();
-            yield return new WaitForSeconds(0.22f);
+            yield return new WaitForSeconds(0.06f);
+            triggerDefense?.Invoke();
+            yield return new WaitForSeconds(0.16f);
             resolveImpact?.Invoke();
             yield return new WaitForSeconds(0.65f);
             _isAttackInProgress = false;
@@ -938,7 +968,7 @@ namespace Killtime.Tactics
             if (PlayerUnit != null)
             {
                 PlayerUnit.Stats.CurrentHealth = PlayerUnit.Stats.MaxHealth;
-                PlayerUnit.Stats.ActiveStatus = StatusEffect.None;
+                PlayerUnit.Stats.ClearAllStatus();
                 PlayerUnit.Stats.Essoufflement = 0;
             }
             foreach (var p in _additionalPlayers)
@@ -946,7 +976,7 @@ namespace Killtime.Tactics
                 if (p != null)
                 {
                     p.Stats.CurrentHealth = p.Stats.MaxHealth;
-                    p.Stats.ActiveStatus = StatusEffect.None;
+                    p.Stats.ClearAllStatus();
                     p.Stats.Essoufflement = 0;
                 }
             }
@@ -955,7 +985,7 @@ namespace Killtime.Tactics
                 if (d != null)
                 {
                     d.Stats.CurrentHealth = d.Stats.MaxHealth;
-                    d.Stats.ActiveStatus = StatusEffect.None;
+                    d.Stats.ClearAllStatus();
                     d.Stats.Essoufflement = 0;
                 }
             }
@@ -969,6 +999,7 @@ namespace Killtime.Tactics
                 CurrentTarget.Stats.CurrentHealth = 0;
                 CurrentTarget.Stats.ActiveStatus |= StatusEffect.Inconscient;
                 var vis = CurrentTarget.GetComponent<TacticalUnitVisual>();
+                vis?.TriggerFallingBackDeath();
                 vis?.SpawnFloatingText("K.O. TOTAL!", Color.red);
                 Log($"💀 {CurrentTarget.Stats.Name} a été terrassé par commande développeur.");
             }

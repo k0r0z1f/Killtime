@@ -22,7 +22,20 @@ namespace Killtime.Core.Character
         public int CurrentActionPoints { get; set; }
 
         public int Essoufflement { get; set; }
-        public StatusEffect ActiveStatus { get; set; }
+
+        private StatusEffect _activeStatus = StatusEffect.None;
+        public StatusEffect ActiveStatus
+        {
+            get => _activeStatus;
+            set
+            {
+                _activeStatus = value;
+                SynchronizeDurationsFromActiveStatus();
+            }
+        }
+
+        private readonly System.Collections.Generic.Dictionary<StatusEffect, int> _statusDurations = new();
+        public System.Collections.Generic.IReadOnlyDictionary<StatusEffect, int> StatusDurations => _statusDurations;
 
         public int BaseArmorAbsorption { get; set; }
         public int AttacksThisTurn { get; private set; }
@@ -144,6 +157,119 @@ namespace Killtime.Core.Character
             if (ActiveStatus.HasFlag(StatusEffect.Sonne)) return false;
             if (ActiveStatus.HasFlag(StatusEffect.Paralyse)) return false;
             return true;
+        }
+
+        public static bool IsPersistentStatus(StatusEffect effect)
+        {
+            return effect == StatusEffect.Inconscient
+                || effect == StatusEffect.Agonisant
+                || effect == StatusEffect.Saignement
+                || effect == StatusEffect.Empoisonne
+                || effect == StatusEffect.EnFeu
+                || effect == StatusEffect.ChronoFracture;
+        }
+
+        public void ApplyStatus(StatusEffect effect, int durationInTurns = 1)
+        {
+            if (effect == StatusEffect.None) return;
+
+            _activeStatus |= effect;
+
+            var allEffects = (StatusEffect[])Enum.GetValues(typeof(StatusEffect));
+            for (int i = 0; i < allEffects.Length; i++)
+            {
+                var flag = allEffects[i];
+                if (flag == StatusEffect.None) continue;
+                if (effect.HasFlag(flag))
+                {
+                    if (IsPersistentStatus(flag))
+                    {
+                        _statusDurations[flag] = -1;
+                    }
+                    else
+                    {
+                        int existing = _statusDurations.TryGetValue(flag, out int d) ? d : 0;
+                        _statusDurations[flag] = Math.Max(existing, Math.Max(1, durationInTurns));
+                    }
+                }
+            }
+        }
+
+        public void RemoveStatus(StatusEffect effect)
+        {
+            if (effect == StatusEffect.None) return;
+
+            var allEffects = (StatusEffect[])Enum.GetValues(typeof(StatusEffect));
+            for (int i = 0; i < allEffects.Length; i++)
+            {
+                var flag = allEffects[i];
+                if (flag != StatusEffect.None && effect.HasFlag(flag))
+                {
+                    _statusDurations.Remove(flag);
+                    _activeStatus &= ~flag;
+                }
+            }
+        }
+
+        public void ClearAllStatus()
+        {
+            _statusDurations.Clear();
+            _activeStatus = StatusEffect.None;
+        }
+
+        private void SynchronizeDurationsFromActiveStatus()
+        {
+            var allEffects = (StatusEffect[])Enum.GetValues(typeof(StatusEffect));
+            for (int i = 0; i < allEffects.Length; i++)
+            {
+                var flag = allEffects[i];
+                if (flag == StatusEffect.None) continue;
+
+                if (_activeStatus.HasFlag(flag))
+                {
+                    if (!_statusDurations.ContainsKey(flag))
+                    {
+                        _statusDurations[flag] = IsPersistentStatus(flag) ? -1 : 1;
+                    }
+                }
+                else
+                {
+                    _statusDurations.Remove(flag);
+                }
+            }
+        }
+
+        public System.Collections.Generic.List<StatusEffect> TickTurnStatusDurations()
+        {
+            var expired = new System.Collections.Generic.List<StatusEffect>();
+            var keys = new System.Collections.Generic.List<StatusEffect>(_statusDurations.Keys);
+
+            for (int i = 0; i < keys.Count; i++)
+            {
+                var flag = keys[i];
+                int rem = _statusDurations[flag];
+
+                if (rem > 0)
+                {
+                    rem--;
+                    if (rem <= 0)
+                    {
+                        expired.Add(flag);
+                    }
+                    else
+                    {
+                        _statusDurations[flag] = rem;
+                    }
+                }
+            }
+
+            for (int i = 0; i < expired.Count; i++)
+            {
+                _statusDurations.Remove(expired[i]);
+                _activeStatus &= ~expired[i];
+            }
+
+            return expired;
         }
 
         public void RecalculateDerivedStats()

@@ -58,7 +58,9 @@ namespace Killtime.UI
             "Action Idle To Fight Idle",
             "Action Idle To Standing Idle",
             "Walking",
-            "Roundkick"
+            "Roundkick",
+            "Body Block",
+            "Falling Back Death"
         };
 
         private Rect _windowRect;
@@ -1149,14 +1151,31 @@ namespace Killtime.UI
             foreach (var entry in _currentSheet.Skills)
             {
                 GUILayout.BeginHorizontal(GUI.skin.box);
-                GUILayout.Label($"<b>{entry.Skill}</b> (Niveau +{entry.TrainingLevel})", GUILayout.Width(250));
-                if (GUILayout.Button("Entraîner (+1 Palier / 5 XP)", GUILayout.Width(190)))
+                string skillName = SkillDefinitions.GetDisplayName(entry.Skill);
+                bool isMax = entry.TrainingLevel >= CharacterProgressionManager.MAX_SKILL_TRAINING;
+
+                GUILayout.Label($"<b>{skillName}</b> (+{entry.TrainingLevel}/{CharacterProgressionManager.MAX_SKILL_TRAINING})", GUILayout.Width(220));
+
+                if (isMax)
                 {
-                    if (CharacterProgressionManager.TrainSkill(_currentSheet, entry.Skill, out string msg))
-                        _statusMessage = msg;
-                    else
-                        _statusMessage = msg;
+                    GUI.color = Color.green;
+                    GUILayout.Label("✅ Plafond Max (+3)", GUILayout.Width(180));
+                    GUI.color = Color.white;
                 }
+                else
+                {
+                    bool canAfford = _currentSheet.AvailableXP >= CharacterProgressionManager.XP_COST_TRAINING;
+                    GUI.enabled = canAfford;
+                    if (GUILayout.Button($"Entraîner ({CharacterProgressionManager.XP_COST_TRAINING} XP)", GUILayout.Width(180)))
+                    {
+                        if (CharacterProgressionManager.TrainSkill(_currentSheet, entry.Skill, out string msg))
+                            _statusMessage = msg;
+                        else
+                            _statusMessage = msg;
+                    }
+                    GUI.enabled = true;
+                }
+
                 GUILayout.EndHorizontal();
             }
 
