@@ -9,6 +9,7 @@ using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Character;
 using Killtime.CameraSystem;
+using Killtime.Multi;
 
 namespace Killtime.UI
 {
@@ -16,25 +17,21 @@ namespace Killtime.UI
     /// Barre d'outils et banc d'essai de développement pour le combat tactique.
     /// Conforme à l'Axiome Fondateur du Codex : Tout jet découle d'une compétence.
     /// </summary>
-    public class CombatDevToolbar : MonoBehaviour
+    public class CombatDevToolbar : FloatingWindow<CombatDevToolbar>
     {
-        public static CombatDevToolbar Instance { get; private set; }
+        protected override int WindowId => 999;
+        protected override string Title => "Dev Arena — Combat & VATS";
+        protected override Vector2 MinSize => _minSize;
+        protected override Rect DefaultRect => new Rect(20f, 94f, 560f, Mathf.Min(700f, Screen.height - 110f));
+        protected override KeyCode[] ToggleKeys => _toggleKeys;
+
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.BackQuote, KeyCode.Tab };
+        private static readonly Vector2 _minSize = new Vector2(360, 220);
 
         [Header("Contrôleur")]
         [SerializeField] private CombatDevArena _arena;
         [SerializeField] private TurnManager _turnManager;
         [SerializeField] private CinematicDirector _cinematicDirector;
-
-        public static bool IsPointerOverToolbar()
-        {
-            if (Instance == null || !Instance._isOpen) return false;
-            Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-            return Instance._windowRect.Contains(mouseGui);
-        }
-
-        [Header("Affichage")]
-        [SerializeField] private bool _isOpen = true;
-        [SerializeField] private KeyCode _toggleKey = KeyCode.BackQuote;
 
         private readonly List<string> _logs = new();
         private Vector2 _logScroll;
@@ -50,13 +47,12 @@ namespace Killtime.UI
         private bool _defenderWantsToDefend = true;
         private int _weaponDamage = 5;
 
-        private Rect _windowRect = new Rect(20, 20, 560, 720);
         private int _selectedTab = 0;
         private readonly string[] _tabNames = { "🎯 Tir Ciblé (VATS)", "🛠️ Outils & Cheats", "⏳ Chronomancie", "📜 Logs" };
 
-        private void Awake()
+        protected override void Awake()
         {
-            Instance = this;
+            base.Awake();
             if (_arena == null) _arena = FindAnyObjectByType<CombatDevArena>();
             if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
             if (_cinematicDirector == null) _cinematicDirector = FindAnyObjectByType<CinematicDirector>();
@@ -65,13 +61,48 @@ namespace Killtime.UI
             {
                 _arena.OnCombatLogMessage += AddLog;
             }
+
+            // Bloque les clics/déplacements/zoom 3D quand la souris survole la fenêtre (ou le bouton de réouverture).
+            FloatingWindowChrome.RegisterWindow(999,
+                () => _isOpen ? _windowRect : new Rect(20, 20, 180, 32),
+                () => isActiveAndEnabled);
         }
 
-        private void Update()
+        protected override void OnEnable()
         {
-            if (Input.GetKeyDown(_toggleKey) || Input.GetKeyDown(KeyCode.Tab))
+            base.OnEnable();
+            FloatingWindowChrome.RegisterWindow(999,
+                () => _isOpen ? _windowRect : new Rect(20, 20, 180, 32),
+                () => isActiveAndEnabled);
+        }
+
+        private void LateUpdate()
+        {
+            // Les 4 fenêtres dev (F1-F4) ne sont pas dans la scène : aucun Update ne les écoute
+            // tant qu'elles n'ont pas été créées via Open(). On les crée+ouvre ici à la première
+            // pression ; une fois existantes et actives, leur propre Update gère le toggle tout seul.
+            // LateUpdate tourne après tous les Update : pas de double-toggle le même frame.
+            if (Input.GetKeyDown(KeyCode.F1)) EnsureDevWindow(CharacterDevWindow.Instance, CharacterDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F2)) EnsureDevWindow(MapEditorDevWindow.Instance, MapEditorDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F3)) EnsureDevWindow(CoreRulesDevTableWindow.Instance, CoreRulesDevTableWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F4)) EnsureDevWindow(VTTRoomWindow.Instance, VTTRoomWindow.Open);
+        }
+
+        /// <summary>
+        /// Crée+ouvre une fenêtre dev si elle n'existe pas encore (ou si désactivée).
+        /// Si elle existe et est active, son propre Update a déjà traité la touche : ne rien faire.
+        /// </summary>
+        private static void EnsureDevWindow(MonoBehaviour instance, System.Action open)
+        {
+            if (instance == null)
             {
-                _isOpen = !_isOpen;
+                open();
+            }
+            else if (!instance.isActiveAndEnabled)
+            {
+                instance.gameObject.SetActive(true);
+                instance.enabled = true;
+                open();
             }
         }
 
@@ -85,29 +116,16 @@ namespace Killtime.UI
             }
         }
 
-        private void OnGUI()
+        protected override void DrawClosedState()
         {
-            if (!_isOpen)
+            if (GUI.Button(new Rect(20, 20, 180, 32), "🛠️ Ouvrir Dev Arena"))
             {
-                if (GUI.Button(new Rect(20, 20, 180, 32), "🛠️ Ouvrir Dev Arena"))
-                {
-                    _isOpen = true;
-                }
-                return;
+                OpenInstance();
             }
-
-            _windowRect = GUI.Window(999, _windowRect, DrawWindowContent, "⚔️ Killtime — Combat Development Arena & VATS Sandbox");
         }
 
-        private void DrawWindowContent(int windowId)
+        protected override void DrawContent()
         {
-            GUI.DragWindow(new Rect(0, 0, _windowRect.width - 60, 25));
-
-            if (GUI.Button(new Rect(_windowRect.width - 55, 4, 50, 20), "Réduire"))
-            {
-                _isOpen = false;
-            }
-
             var activeUnit = _turnManager != null ? _turnManager.ActiveUnit : (_arena != null ? _arena.PlayerUnit : null);
 
             DrawUnitStatusHeader(activeUnit);
@@ -250,7 +268,7 @@ namespace Killtime.UI
 
             _defenderWantsToDefend = GUILayout.Toggle(_defenderWantsToDefend, "Cible réactive (tente de parer/esquiver) / Décocher si passive (0 PA, aucune défense)");
 
-            DiceType attDie = activeUnit != null ? activeUnit.Stats.GetSkillDie(_attackSkill) : DiceType.D6;
+            DiceType attDie = activeUnit != null ? activeUnit.Stats.GetSkillDie(_attackSkill, true) : DiceType.D6;
             DiceType defDie = target != null ? target.Stats.GetSkillDie(_defenseSkill) : DiceType.D4;
             int attMod = activeUnit != null ? activeUnit.Stats.GetSkillModifier(_attackSkill, isOffensive: true) : 0;
             int defMod = target != null ? target.Stats.GetSkillModifier(_defenseSkill, isOffensive: false) : 0;
@@ -259,7 +277,7 @@ namespace Killtime.UI
             string attStatusDisplay = !string.IsNullOrEmpty(attStatus) ? $" [{attStatus}]" : "";
             string defStatusDisplay = !string.IsNullOrEmpty(defStatus) ? $" [{defStatus}]" : "";
 
-            GUILayout.Label($"<color=cyan>Attaquant : {SkillDefinitions.GetDisplayName(_attackSkill)} ➔ Dé : {attDie} (Mod: {attMod:+0;-0;0}{attStatusDisplay})</color> | <color=orange>Défenseur : {(_defenderWantsToDefend ? $"{SkillDefinitions.GetDisplayName(_defenseSkill)} ➔ Dé : {defDie} (Mod: {defMod:+0;-0;0}{defStatusDisplay})" : "Sans Défense (0)")}</color>");
+            GUILayout.Label($"<color=cyan>Attaquant : {SkillDefinitions.GetDisplayName(_attackSkill)} ➔ Dé : {attDie} (États: {attMod:+0;-0;0}{attStatusDisplay})</color> | <color=orange>Défenseur : {(_defenderWantsToDefend ? $"{SkillDefinitions.GetDisplayName(_defenseSkill)} ➔ Dé : {defDie} (États: {defMod:+0;-0;0}{defStatusDisplay})" : "Sans Défense (0)")}</color>");
             GUILayout.EndVertical();
 
             GUILayout.BeginHorizontal();
@@ -461,6 +479,13 @@ namespace Killtime.UI
             if (GUILayout.Button("⚖️ Table des Règles du Codex (F3)", GUILayout.Height(32)))
             {
                 CoreRulesDevTableWindow.Open();
+            }
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>🌐 Multijoueur (Table Virtuelle) :</b>");
+            if (GUILayout.Button("🌐 Ouvrir la Room Multijoueur (F4)", GUILayout.Height(32)))
+            {
+                VTTRoomWindow.Open();
             }
         }
 

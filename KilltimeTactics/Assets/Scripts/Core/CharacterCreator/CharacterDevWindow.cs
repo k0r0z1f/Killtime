@@ -16,18 +16,21 @@ namespace Killtime.UI
     /// <summary>
     /// Créateur & Gestionnaire de Personnages avec auto-instanciation et placement sur la grille.
     /// </summary>
-    public class CharacterDevWindow : MonoBehaviour
+    public class CharacterDevWindow : FloatingWindow<CharacterDevWindow>
     {
-        public static CharacterDevWindow Instance { get; private set; }
+        protected override int WindowId => 888;
+        protected override string Title => "Créateur de Personnages";
+        protected override Vector2 MinSize => _minSize;
+        protected override Rect DefaultRect => new Rect(Screen.width - 660f - 20f, 92f, 660f, Mathf.Min(720f, Screen.height - 110f));
+        protected override KeyCode[] ToggleKeys => _toggleKeys;
+
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F1 };
+        private static readonly Vector2 _minSize = new Vector2(380, 240);
 
         [Header("Systèmes")]
         [SerializeField] private TacticalHexGrid _grid;
         [SerializeField] private TurnManager _turnManager;
         [SerializeField] private CombatDevArena _arena;
-
-        [Header("Affichage")]
-        [SerializeField] private bool _isOpen = false;
-        [SerializeField] private KeyCode _toggleKey = KeyCode.F1;
 
         private CharacterSheet _currentSheet = new();
         private int _selectedTab = 0;
@@ -63,8 +66,8 @@ namespace Killtime.UI
             "Falling Back Death"
         };
 
-        private Rect _windowRect;
         private Vector2 _scrollPos;
+
         private string _statusMessage = "Prêt.";
         private string _spawnQStr = "0";
         private string _spawnRStr = "1";
@@ -75,23 +78,10 @@ namespace Killtime.UI
         private int _customSpellDamage = 6;
         private int _customSpellCost = 3;
 
-        /// <summary>
-        /// Ouvre la fenêtre et crée l'objet dans la scène s'il n'existe pas encore.
-        /// </summary>
-        public static void Open()
+        protected override void OnOpened()
         {
-            if (Instance == null)
-            {
-                Instance = FindAnyObjectByType<CharacterDevWindow>();
-                if (Instance == null)
-                {
-                    var go = new GameObject("[UI] CharacterDevWindow");
-                    Instance = go.AddComponent<CharacterDevWindow>();
-                }
-            }
-
-            Instance._isOpen = true;
-            Instance.EnsureReferences();
+            EnsureReferences();
+            EnsurePreviewStudio();
         }
 
         public static void OpenForUnit(TacticalUnit unit)
@@ -105,31 +95,28 @@ namespace Killtime.UI
             if (unit == null) return;
             _currentSheet = unit.GetOrBuildSheet();
             _statusMessage = $"Inspection active : {unit.Stats.Name} (PV: {unit.Stats.CurrentHealth}/{unit.Stats.MaxHealth} | PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints})";
-            _isOpen = true;
             _selectedTab = 0;
+            OpenInstance();
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null) Instance = this;
+            base.Awake();
             EnsureReferences();
             CharacterStorageService.EnsureDirectoryExists();
             RefreshAvailableModels();
             EnsurePreviewStudio();
-
-            // Positionne la fenêtre sur la droite de l'écran
-            float width = 660;
-            float height = Mathf.Min(760, Screen.height - 40);
-            _windowRect = new Rect(Screen.width - width - 20, 20, width, height);
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             CleanupPreviewStudio();
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             CleanupPreviewStudio();
         }
 
@@ -159,17 +146,9 @@ namespace Killtime.UI
             if (_arena == null) _arena = FindAnyObjectByType<CombatDevArena>();
         }
 
-        private void Update()
+        protected override void Update()
         {
-            if (Input.GetKeyDown(_toggleKey))
-            {
-                _isOpen = !_isOpen;
-                if (_isOpen)
-                {
-                    EnsureReferences();
-                    EnsurePreviewStudio();
-                }
-            }
+            base.Update();
 
             if (_isOpen && (_selectedTab == 0 || _selectedTab == 4))
             {
@@ -178,30 +157,8 @@ namespace Killtime.UI
             }
         }
 
-        public void OpenWindow()
+        protected override void DrawContent()
         {
-            _isOpen = true;
-            EnsureReferences();
-        }
-
-        private void OnGUI()
-        {
-            if (!_isOpen) return;
-
-            // Garde la fenêtre visible à l'écran
-            _windowRect.height = Mathf.Min(780, Screen.height - 40);
-            _windowRect = GUI.Window(888, _windowRect, DrawWindowContent, "⚔️ Killtime — Créateur de Personnages (Héros & PNJ)");
-            GUI.BringWindowToFront(888);
-        }
-
-        private void DrawWindowContent(int windowId)
-        {
-            GUI.DragWindow(new Rect(0, 0, _windowRect.width - 70, 25));
-            if (GUI.Button(new Rect(_windowRect.width - 65, 4, 60, 20), "Fermer"))
-            {
-                _isOpen = false;
-            }
-
             GUILayout.Space(6);
             _selectedTab = GUILayout.Toolbar(_selectedTab, _tabTitles);
             GUILayout.Space(6);
@@ -1342,9 +1299,27 @@ namespace Killtime.UI
                 return;
             }
 
-            if (node.IsOccupied)
+            if (!node.IsWalkable)
             {
-                _statusMessage = $"La case ({q}, {r}) est déjà occupée !";
+                _statusMessage = $"La case ({q}, {r}) est impraticable (obstacle) !";
+                return;
+            }
+
+            bool isOccupiedByUnit = false;
+            var existingUnits = FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < existingUnits.Length; i++)
+            {
+                if (existingUnits[i] != null && existingUnits[i].Stats != null && existingUnits[i].Stats.IsAlive && existingUnits[i].CurrentCoords.Equals(coords))
+                {
+                    isOccupiedByUnit = true;
+                    break;
+                }
+            }
+
+            if (node.IsOccupied || isOccupiedByUnit)
+            {
+                node.IsOccupied = true;
+                _statusMessage = $"La case ({q}, {r}) est déjà occupée par un autre avatar !";
                 return;
             }
 
@@ -1352,6 +1327,15 @@ namespace Killtime.UI
             if (_arena != null)
             {
                 unit = _arena.SpawnCustomCharacter(_currentSheet, coords, _spawnAsPlayer);
+                if (unit == null)
+                {
+                    _statusMessage = $"Échec d'insertion en ({q}, {r}) : case indisponible.";
+                    return;
+                }
+                // L'arène a pu relocaliser (anti-empilement) : on affiche la case réelle.
+                coords = unit.CurrentCoords;
+                q = coords.Q;
+                r = coords.R;
             }
             else
             {

@@ -535,7 +535,7 @@ function initDiceRoller() {
             const diff = totalScore - defScore;
 
             dieFaceVal.textContent = totalScore;
-            dieSubText.textContent = `Dés [${rolls.join(', ')}] ${cfg.mod !== 0 ? (cfg.mod > 0 ? '+' + cfg.mod : cfg.mod) : ''} + ${paBonus} PA + ${otherMod} Mod`;
+            dieSubText.textContent = `Dés [${rolls.join(', ')}] ${cfg.mod !== 0 ? (cfg.mod > 0 ? '+' + cfg.mod : cfg.mod) : ''} + ${paBonus} PA + ${otherMod} situationnel (jamais mod carac)`;
 
             // Reset banner classes
             bannerTotal.className = 'dice-total-banner';

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using UnityEngine;
+using Killtime.Audio;
 
 namespace Killtime.CameraSystem
 {
@@ -31,6 +32,12 @@ namespace Killtime.CameraSystem
 
         public CameraMode CurrentMode { get; private set; } = CameraMode.TacticalIsometric;
 
+        /// <summary>
+        /// Vrai quand l'utilisateur pilote la caméra librement : aucune cinématique
+        /// (killshot d'attaque ou autre) ne doit s'enclencher ni lui voler la caméra.
+        /// </summary>
+        public bool IsFreeLook => CurrentMode == CameraMode.FreeLook;
+
         private float _freePitch = 0.0f;
         private float _freeYaw = 0.0f;
         private Coroutine _activeCinematicRoutine;
@@ -44,6 +51,8 @@ namespace Killtime.CameraSystem
             }
 
             Time.timeScale = 1.0f;
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.ExitCinematicMode();
 
             if (_tacticalCam != null)
             {
@@ -127,21 +136,48 @@ namespace Killtime.CameraSystem
 
         /// <summary>
         /// Déclenche un gros plan cinématique dramatique lors d'un tir ciblé ou d'un critique.
+        /// En mode Free Look, la cinématique est inhibée : les callbacks s'enchaînent
+        /// sans prise de contrôle caméra, sans ralenti ni changement de FOV.
         /// </summary>
         public void PlayCinematicKillshot(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null, Action onDefenseStart = null)
         {
             if (_activeCinematicRoutine != null)
             {
                 StopCoroutine(_activeCinematicRoutine);
+                _activeCinematicRoutine = null;
+            }
+
+            if (IsFreeLook)
+            {
+                _activeCinematicRoutine = StartCoroutine(NonCinematicRoutine(onStrikePoint, onComplete, onActionStart, onDefenseStart));
+                return;
             }
 
             _activeCinematicRoutine = StartCoroutine(CinematicRoutine(attacker, target, onStrikePoint, onComplete, onActionStart, onDefenseStart));
+        }
+
+        /// <summary>
+        /// Séquence d'attaque sans cinéma (Free Look) : même ordre d'appels que la
+        /// routine non-cinématique de l'arène, sans toucher caméra / timeScale / FOV.
+        /// </summary>
+        private IEnumerator NonCinematicRoutine(Action onStrikePoint, Action onComplete, Action onActionStart = null, Action onDefenseStart = null)
+        {
+            onActionStart?.Invoke();
+            yield return new WaitForSeconds(0.06f);
+            onDefenseStart?.Invoke();
+            yield return new WaitForSeconds(0.16f);
+            onStrikePoint?.Invoke();
+            yield return new WaitForSeconds(0.65f);
+            _activeCinematicRoutine = null;
+            onComplete?.Invoke();
         }
 
         private IEnumerator CinematicRoutine(Transform attacker, Transform target, Action onStrikePoint, Action onComplete, Action onActionStart = null, Action onDefenseStart = null)
         {
             CurrentMode = CameraMode.CinematicAction;
             _tacticalCam.enabled = false;
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.EnterCinematicMode();
 
             Vector3 startCamPos = transform.position;
             Quaternion startCamRot = transform.rotation;
@@ -186,6 +222,8 @@ namespace Killtime.CameraSystem
 
             // Déclenchement de l'attaque
             onActionStart?.Invoke();
+            if (KilltimeAudioManager.Instance != null && attacker != null)
+                KilltimeAudioManager.Instance.PlayAt(SoundId.Attack_Whoosh, attacker.position, 0.8f);
 
             // 2. Trajectoire de frappe en ralenti dramatique jusqu'au point de contact
             Time.timeScale = 0.45f;
@@ -242,6 +280,8 @@ namespace Killtime.CameraSystem
             _tacticalCam.enabled = true;
             CurrentMode = CameraMode.TacticalIsometric;
             _activeCinematicRoutine = null;
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.ExitCinematicMode();
             onComplete?.Invoke();
         }
     }

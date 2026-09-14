@@ -488,16 +488,21 @@
                         Le score de base d'une compétence est égal à la <strong>moyenne arithmétique de ses attributs
                             associés</strong> (arrondie au chiffre le plus proche). Si la compétence n'est liée qu'à un
                         seul attribut, elle prend directement la valeur de cet attribut.
+                        <br><strong>Exception générale — Corps Augmenté :</strong> en attaque offensive à <em>Mains
+                            Nues</em>, un personnage éveillé (MAG &gt; 0) peut substituer sa Magie à sa Force pour ce
+                        calcul (on retient la meilleure des deux). Voir §11.1.
                     </p>
                     <ul>
                         <li><em>Exemple 1 :</em> <strong>Maniement des armes de contact (FOR, AGI)</strong>. Avec Force
-                            5 et Agilité 3, la moyenne est (5 + 3) / 2 = <strong>4</strong> (Dé associé :
-                            <strong>1d6</strong>).
+                            5 et Agilité 3, la moyenne est (5 + 3) / 2 = <strong>4</strong> → <strong>+1 niveau de
+                                dé</strong> (Dé associé sans entraînement : <strong>1d4</strong>).
                         </li>
                         <li><em>Exemple 2 :</em> <strong>Premiers Soins (ÉRU)</strong>. Avec Érudition 3, le score de
-                            base est <strong>3</strong> (Dé associé : <strong>1d4</strong>).</li>
+                            base est <strong>3</strong> → <strong>+1 niveau</strong> (Dé associé :
+                            <strong>1d4</strong>).</li>
                         <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Avec Con 4, For 5, Agi 3,
-                            la moyenne est (4 + 5 + 3) / 3 = <strong>4</strong> (Dé associé : <strong>1d6</strong>).
+                            la moyenne est (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (Dé associé
+                            : <strong>1d4</strong>).
                         </li>
                     </ul>
 
@@ -548,7 +553,7 @@
                         <div class="callout-body">
                             On peut utiliser une compétence de type défensif pour parer ou réagir à une attaque.
                             Cependant, <strong>si la compétence utilisée n'est pas exclusivement défensive</strong> (ex: parer avec <em>Maniement d'Arme</em> ou <em>Mains Nues</em>), un <strong>malus de 1 niveau de dé (Die-Step Down)</strong> est appliqué. Détenir la <strong>spécialisation dédiée</strong> (ex: <em>Spécialisation Épée</em> pour une épée, ou <em>Arts Martiaux</em> pour les mains nues) annule immédiatement ce malus et rétablit le plein dé de la compétence. (ex: spécialisation <em>Bloquer</em> ou <em>Maniement de
-                                l'épée</em>).
+                                l'épée</em>). La spécialisation n'ajoute <strong>aucun +1 flat</strong> au tirage, et <strong>aucun modificateur de caractéristique n'est ajouté</strong> : le total vaut <strong>Tirage du dé + PA + malus situationnels</strong>.
                         </div>
                     </div>
 
@@ -565,6 +570,24 @@
                         port d'armures imposantes.
                     </p>
 
+                    <div class="callout arcane" style="margin-bottom: 20px;">
+                        <div class="callout-header">
+                            <strong>Règle Générale : Corps Augmenté (Mains Nues offensives, MAG &gt; 0)</strong>
+                        </div>
+                        <div class="callout-body">
+                            Tout personnage éveillé (Magie &gt; 0) dont le corps est augmenté par la 5e Force peut
+                            canaliser sa magie dans ses frappes à <strong>mains nues offensives</strong> : sa
+                            <strong>Magie devient la caractéristique de référence</strong> à la place de la moyenne
+                            FOR / AGI (on retient la meilleure des deux valeurs, jamais de malus). Les
+                            <strong>entraînements Mains Nues</strong> ajoutent ensuite +1 niveau chacun.<br>
+                            <em>Exemple :</em> MAG 5 (<strong>+2 niveaux</strong>) + 3 entraînements = <strong>5
+                                niveaux</strong> depuis le d2 → <strong>D12</strong> en attaque.<br>
+                            La <strong>défense et les parades</strong> restent calculées en FOR / AGI : le Corps Augmenté
+                            ne s'applique qu'à l'attaque. <strong>Aucun modificateur n'est ajouté au tirage</strong> : la
+                            magie fixe le dé, puis le total vaut Tirage + PA + malus situationnels.
+                        </div>
+                    </div>
+
                     <div class="table-container">
                         <table class="codex-table">
                             <thead>
@@ -578,7 +601,7 @@
                             <tbody>
                                 <tr>
                                     <td><strong>Mains Nues</strong></td>
-                                    <td>Force ou (Force, Agilité)</td>
+                                    <td>Force ou (Force, Agilité) — <em>Corps Augmenté : MAG devient la référence en offensif si éveillé</em></td>
                                     <td>Offensif, Défensif, Utilitaire</td>
                                     <td>Arts Martiaux, Agripper, Frapper, Étrangler</td>
                                 </tr>

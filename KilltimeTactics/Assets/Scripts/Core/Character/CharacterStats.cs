@@ -40,6 +40,11 @@ namespace Killtime.Core.Character
         public int BaseArmorAbsorption { get; set; }
         public int AttacksThisTurn { get; private set; }
 
+        // Jet d'initiative (Livre I §4.3) : valeurs roulées par le TurnManager au début du
+        // combat, stockées sur l'unité elle-même (meurt avec elle, pas de dictionnaire d'objets).
+        public int InitiativeRollTotal { get; set; } = int.MinValue;
+        public DiceType InitiativeDie { get; set; } = DiceType.D2;
+
         public bool IsDead { get; set; }
         public bool IsInLastBreath { get; set; }
         public FatalBlowResolution LastFatalBlowResolution { get; set; } = FatalBlowResolution.None;
@@ -62,11 +67,25 @@ namespace Killtime.Core.Character
             ResetTurn();
         }
 
-        public DiceType GetSkillDie(SkillType skill)
+        /// <summary>
+        /// Dé de compétence (rang de base + entraînements). En offensif, applique la règle
+        /// générale « Corps Augmenté » (Mains Nues : MAG substituable à FOR si éveillé).
+        /// </summary>
+        public DiceType GetSkillDie(SkillType skill, bool isOffensive = false)
         {
-            int baseRank = SkillDefinitions.GetBaseRank(skill, Attributes);
+            int baseRank = SkillDefinitions.GetBaseRank(skill, Attributes, isOffensive);
             int training = Sheet != null ? Sheet.GetSkill(skill).TrainingLevel : 0;
-            return SkillDefinitions.CalculateSkillDie(baseRank + training);
+            return SkillDefinitions.DieFromTotalSteps(
+                SkillDefinitions.CharacteristicSteps(baseRank) + training);
+        }
+
+        /// <summary>
+        /// Vrai si ce jet bénéficie du Corps Augmenté (Mains Nues offensif, MAG &gt; 0).
+        /// Sert à l'affichage du log de combat.
+        /// </summary>
+        public bool IsMagicAugmented(SkillType skill, bool isOffensive)
+        {
+            return SkillDefinitions.UsesMagicAugmentation(skill, Attributes, isOffensive);
         }
 
         public int GetStatusModifier(SkillType skill, bool isOffensive = true)
@@ -128,16 +147,77 @@ namespace Killtime.Core.Character
             return parts.Count > 0 ? string.Join(", ", parts) : string.Empty;
         }
 
+        /// <summary>
+        /// RÈGLE CODEX (Livres I-III) : le jet = Dé de compétence + PA injectés + malus situationnels.
+        /// Aucun modificateur de caractéristique n'est ajouté : les caracs fixent le dé via GetSkillDie.
+        /// Retourne donc uniquement le malus d'états (Livre VII).
+        /// </summary>
         public int GetSkillModifier(SkillType skill, bool isOffensive = true)
         {
-            return SkillDefinitions.GetPrimaryModifier(skill, Attributes) + GetStatusModifier(skill, isOffensive);
+            return GetStatusModifier(skill, isOffensive);
         }
 
-        public int GetSkillRank(SkillType skill)
+        public int GetSkillRank(SkillType skill, bool isOffensive = false)
         {
-            int baseRank = SkillDefinitions.GetBaseRank(skill, Attributes);
+            int baseRank = SkillDefinitions.GetBaseRank(skill, Attributes, isOffensive);
             int training = Sheet != null ? Sheet.GetSkill(skill).TrainingLevel : 0;
             return baseRank + training;
+        }
+
+        /// <summary>
+        /// INITIATIVE (Livre I §4.3) : base = max(Rapidité, Agilité, Intelligence).
+        /// Convertie en dé via l'échelle en paliers (Livre II §6) : 1-2 → d2, 3-4 → d4,
+        /// 5-6 → d6, 7-8 → d8, 9-10 → d10. Jet effectué au début du combat (TurnManager).
+        /// </summary>
+        public int GetInitiativeBaseValue()
+        {
+            int m = Attributes.Rapidite;
+            if (Attributes.Agilite > m) m = Attributes.Agilite;
+            if (Attributes.Intelligence > m) m = Attributes.Intelligence;
+            return m;
+        }
+
+        public DiceType GetInitiativeDie()
+        {
+            return SkillDefinitions.DieFromTotalSteps(
+                SkillDefinitions.CharacteristicSteps(GetInitiativeBaseValue()));
+        }
+
+        /// <summary>
+        /// Désigne la meilleure compétence de contact pour une attaque en mêlée
+        /// (distance ≤ 1) : compare les dés effectifs offensifs (paliers carac, Corps Augmenté
+        /// inclus, + entraînements). Ex : Mina frappe en Mains Nues (MAG 5 + 3 entraînements
+        /// = 5 niveaux → D12) plutôt qu'au Maniement d'Arme non entraîné.
+        /// Égalité → plus entraînée, puis Mains Nues.
+        /// </summary>
+        public SkillType GetBestMeleeAttackSkill()
+        {
+            SkillType[] candidates = new SkillType[]
+            {
+                SkillType.MainsNues,
+                SkillType.ManiementArmes,
+                SkillType.ArmesContondantes,
+                SkillType.ArmesPercantes
+            };
+
+            SkillType best = candidates[0];
+            DiceType bestDie = GetSkillDie(best, true);
+            int bestTraining = Sheet != null ? Sheet.GetSkill(best).TrainingLevel : 0;
+
+            for (int i = 1; i < candidates.Length; i++)
+            {
+                DiceType die = GetSkillDie(candidates[i], true);
+                int training = Sheet != null ? Sheet.GetSkill(candidates[i]).TrainingLevel : 0;
+                if ((int)die > (int)bestDie
+                    || ((int)die == (int)bestDie && training > bestTraining))
+                {
+                    best = candidates[i];
+                    bestDie = die;
+                    bestTraining = training;
+                }
+            }
+
+            return best;
         }
 
         public bool HasSpecialization(string specializationName)
@@ -147,7 +227,7 @@ namespace Killtime.Core.Character
 
         public bool CanAttackWithSkill(SkillType skill)
         {
-            return CanAttack(GetSkillDie(skill));
+            return CanAttack(GetSkillDie(skill, true));
         }
 
         public bool CanDefendActively()

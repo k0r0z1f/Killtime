@@ -9,69 +9,23 @@ namespace Killtime.UI
     /// Tableau de bord développeur interactif pour piloter et ajuster
     /// en temps réel l'ensemble des constantes mathématiques et mécaniques du jeu.
     /// </summary>
-    public class CoreRulesDevTableWindow : MonoBehaviour
+    public class CoreRulesDevTableWindow : FloatingWindow<CoreRulesDevTableWindow>
     {
-        public static CoreRulesDevTableWindow Instance { get; private set; }
+        protected override int WindowId => 995;
+        protected override string Title => "Règles & Constantes";
+        protected override Vector2 MinSize => _minSize;
+        protected override Rect DefaultRect => new Rect(70, 60, 620, 680);
+        protected override KeyCode[] ToggleKeys => _toggleKeys;
 
-        [Header("Affichage")]
-        [SerializeField] private bool _isOpen = false;
-        [SerializeField] private KeyCode _toggleKey = KeyCode.F3;
-
-        private Rect _windowRect = new Rect(40, 40, 620, 680);
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F3 };
+        private static readonly Vector2 _minSize = new Vector2(360, 220);
         private Vector2 _scrollPos;
         private int _selectedTab = 0;
         private readonly string[] _tabNames = { "❤️ Vitalité & PA", "⚔️ Combat & VATS", "📈 Progression", "💾 Presets" };
         private string _statusMsg = "Constantes du Codex actives.";
 
-        public static void Open()
+        protected override void DrawContent()
         {
-            if (Instance == null)
-            {
-                Instance = FindAnyObjectByType<CoreRulesDevTableWindow>();
-                if (Instance == null)
-                {
-                    var go = new GameObject("[UI] CoreRulesDevTableWindow");
-                    Instance = go.AddComponent<CoreRulesDevTableWindow>();
-                }
-            }
-            Instance._isOpen = true;
-        }
-
-        private void Awake()
-        {
-            if (Instance == null) Instance = this;
-        }
-
-        private void Update()
-        {
-            if (Input.GetKeyDown(_toggleKey))
-            {
-                _isOpen = !_isOpen;
-            }
-        }
-
-        private void OnGUI()
-        {
-            if (!_isOpen) return;
-
-            _windowRect.height = Mathf.Min(720, Screen.height - 60);
-            _windowRect = GUI.Window(995, _windowRect, DrawWindowContent, "⚖️ Killtime — Table de Contrôle des Règles & Constantes");
-            GUI.BringWindowToFront(995);
-        }
-
-        public void CloseWindow()
-        {
-            _isOpen = false;
-        }
-
-        private void DrawWindowContent(int windowId)
-        {
-            GUI.DragWindow(new Rect(0, 0, _windowRect.width - 65, 25));
-            if (GUI.Button(new Rect(_windowRect.width - 60, 4, 55, 20), "Fermer"))
-            {
-                CloseWindow();
-            }
-
             GUILayout.Space(6);
             _selectedTab = GUILayout.Toolbar(_selectedTab, _tabNames);
             GUILayout.Space(6);

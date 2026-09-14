@@ -14,6 +14,20 @@ namespace Killtime.Tactics.CombatUI
     /// </summary>
     public static class CombatActionRegistry
     {
+        /// <summary>
+        /// Compétence d'attaque par défaut : meilleure mêlée au contact (≤ 1 case),
+        /// Ballistique à distance. Évite d'imposer Maniement d'Arme à un mains-nues entraîné.
+        /// </summary>
+        private static SkillType ResolveContactSkill(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor != null && target != null
+                && actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1)
+            {
+                return actor.Stats.GetBestMeleeAttackSkill();
+            }
+            return SkillType.Ballistique;
+        }
+
         public static List<CombatAction> GetAvailableActions(TacticalUnit actor, TacticalUnit target, CombatDevArena arena)
         {
             var actions = new List<CombatAction>();
@@ -35,7 +49,8 @@ namespace Killtime.Tactics.CombatUI
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
                     (act, tgt) => act.Stats.CurrentActionPoints >= 2,
-                    (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false)
+                    (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false,
+                        attackSkill: ResolveContactSkill(act, tgt))
                 ));
 
                 // Visée Chirurgicale Tête
@@ -45,7 +60,8 @@ namespace Killtime.Tactics.CombatUI
                     ActionCategory.AttaqueEtPassesDarmes,
                     3,
                     (act, tgt) => act.Stats.CurrentActionPoints >= 3,
-                    (act, tgt) => arena.ExecuteAttack(BodyPart.Tete, cancelPenaltyWithAP: true)
+                    (act, tgt) => arena.ExecuteAttack(BodyPart.Tete, cancelPenaltyWithAP: true,
+                        attackSkill: ResolveContactSkill(act, tgt))
                 ));
 
                 // Désarmement (Bras Droit)
@@ -55,7 +71,8 @@ namespace Killtime.Tactics.CombatUI
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
                     (act, tgt) => act.Stats.CurrentActionPoints >= 2,
-                    (act, tgt) => arena.ExecuteAttack(BodyPart.BrasDroit, cancelPenaltyWithAP: false)
+                    (act, tgt) => arena.ExecuteAttack(BodyPart.BrasDroit, cancelPenaltyWithAP: false,
+                        attackSkill: ResolveContactSkill(act, tgt))
                 ));
 
                 // Faucher (Jambes)
@@ -65,7 +82,8 @@ namespace Killtime.Tactics.CombatUI
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
                     (act, tgt) => act.Stats.CurrentActionPoints >= 2,
-                    (act, tgt) => arena.ExecuteAttack(BodyPart.Jambes, cancelPenaltyWithAP: false)
+                    (act, tgt) => arena.ExecuteAttack(BodyPart.Jambes, cancelPenaltyWithAP: false,
+                        attackSkill: ResolveContactSkill(act, tgt))
                 ));
             }
 

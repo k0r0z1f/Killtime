@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Killtime.Audio;
 using Killtime.Core.Character;
 using Killtime.Tactics.Grid;
 
@@ -43,6 +44,7 @@ namespace Killtime.Tactics.Units
         public float MoveSpeed => _moveSpeed;
 
         private TacticalHexGrid _grid;
+        private bool _hasPosition;
 
         private void Awake()
         {
@@ -70,11 +72,10 @@ namespace Killtime.Tactics.Units
 
         private void OnDestroy()
         {
-            // Libère la case de la grille si l'unité est détruite (évite les cases fantômes bloquées)
             if (_grid != null)
             {
                 var node = _grid.GetNode(CurrentCoords);
-                if (node != null)
+                if (node != null && !IsAnyOtherUnitAt(CurrentCoords))
                 {
                     node.IsOccupied = false;
                 }
@@ -87,13 +88,58 @@ namespace Killtime.Tactics.Units
         /// </summary>
         public void InitializeFromSheet(CharacterSheet sheet, HexCoordinates coords, TacticalHexGrid grid, bool isPlayerControlled)
         {
-            Sheet = sheet;
             _grid = grid;
             _modelPrefabName = sheet.ModelPrefabName;
 
             var effective = sheet.GetEffectiveAttributes();
             ConfigureStats(sheet.Name, effective, sheet.BaseArmor, isPlayerControlled, sheet.ModelPrefabName);
+
+            // ConfigureStats recrée une fiche vierge : on y recopie la progression
+            // de la fiche source (entraînements, spécialisations, sorts, XP).
+            // Sans ça, les entraînements (ex: Mains Nues +3) et spés (ex: Arts Martiaux)
+            // de l'avatar sont perdus sur la carte et ignorés en combat.
+            // Note : on ne recopie NI l'espèce NI les attributs de base (effective déjà
+            // appliquée ci-dessus, sinon les modificateurs raciaux seraient comptés deux fois).
+            if (Sheet != null && sheet != null && !object.ReferenceEquals(Sheet, sheet))
+            {
+                Sheet.Skills.Clear();
+                for (int i = 0; i < sheet.Skills.Count; i++)
+                {
+                    var src = sheet.Skills[i];
+                    if (src != null)
+                    {
+                        Sheet.Skills.Add(new SkillProgressionEntry(src.Skill, src.TrainingLevel));
+                    }
+                }
+
+                Sheet.UnlockedSpecializations.Clear();
+                if (sheet.UnlockedSpecializations != null)
+                {
+                    Sheet.UnlockedSpecializations.AddRange(sheet.UnlockedSpecializations);
+                }
+
+                Sheet.LearnedSpells.Clear();
+                if (sheet.LearnedSpells != null)
+                {
+                    Sheet.LearnedSpells.AddRange(sheet.LearnedSpells);
+                }
+
+                Sheet.AvailableXP = sheet.AvailableXP;
+                Sheet.TotalEarnedXP = sheet.TotalEarnedXP;
+                Sheet.LoreNotes = sheet.LoreNotes;
+            }
+
             InitializePosition(coords, grid);
+            // Filet de sécurité : si l'appelant n'a pas résolu une case libre
+            // (ex: chargement direct sans arène), on relocalise au lieu d'empiler.
+            if (!_hasPosition && grid != null && grid.TryFindNearestFreeCell(coords, out var sheetFallback, 8))
+            {
+                InitializePosition(sheetFallback, grid);
+                if (_hasPosition && !sheetFallback.Equals(coords))
+                {
+                    Debug.Log($"[TacticalUnit] '{_unitName}' relocalisé en {sheetFallback} (demandé {coords} occupé).");
+                }
+            }
 
             var visual = GetComponent<TacticalUnitVisual>();
             if (visual != null)
@@ -166,12 +212,36 @@ namespace Killtime.Tactics.Units
                     ModelPrefabName = _modelPrefabName
                 };
             }
+            // Maintient le lien fiche ↔ stats : la fiche affichée/éditée doit être
+            // celle lue par GetSkillDie / HasSpecialization en combat.
+            if (Stats != null && !object.ReferenceEquals(Stats.Sheet, Sheet))
+            {
+                Stats.Sheet = Sheet;
+            }
             return Sheet;
         }
 
         public void InitializePosition(HexCoordinates startCoords, TacticalHexGrid grid)
         {
+            // Invariant : 1 case = 1 avatar max. Refuse toute superposition.
+            if (grid != null && IsOccupiedByOther(startCoords, grid))
+            {
+                Debug.LogWarning($"[TacticalUnit] Placement refusé pour '{_unitName}' en {startCoords} : case déjà occupée.");
+                return;
+            }
+
             _grid = grid;
+            // Libère l'ancienne case si on repositionne une unité déjà placée.
+            if (_hasPosition && _grid != null && !CurrentCoords.Equals(startCoords))
+            {
+                var previousNode = _grid.GetNode(CurrentCoords);
+                // Ne libère que si aucun autre avatar n'y réside (anti-fantôme).
+                if (previousNode != null && previousNode.IsOccupied && !IsAnyOtherUnitAt(CurrentCoords))
+                {
+                    previousNode.IsOccupied = false;
+                }
+            }
+
             CurrentCoords = startCoords;
             var node = grid != null ? grid.GetNode(startCoords) : null;
             float yPos = node != null ? node.WorldPosition.y : 0.0f;
@@ -181,43 +251,142 @@ namespace Killtime.Tactics.Units
             {
                 node.IsOccupied = true;
             }
+            _hasPosition = true;
         }
 
-        public void TeleportTo(HexCoordinates coords, TacticalHexGrid grid)
+        /// <summary>
+        /// Vrai si un autre avatar occupe ces coordonnées.
+        /// La présence physique d'une unité vivante fait foi et répare le nœud.
+        /// </summary>
+        private bool IsOccupiedByOther(HexCoordinates coords, TacticalHexGrid grid)
         {
+            if (grid == null) return false;
+            var node = grid.GetNode(coords);
+            if (node == null || !node.IsWalkable) return true;
+
+            if (_hasPosition && CurrentCoords.Equals(coords)) return false;
+
+            if (IsAnyOtherUnitAt(coords))
+            {
+                node.IsOccupied = true;
+                return true;
+            }
+
+            return node.IsOccupied;
+        }
+
+        private bool IsAnyOtherUnitAt(HexCoordinates coords)
+        {
+            var all = FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                var u = all[i];
+                if (u == null || u == this) continue;
+                if (u.gameObject == null) continue;
+                if (u.Stats != null && !u.Stats.IsAlive) continue;
+                if (u._hasPosition && u.CurrentCoords.Equals(coords)) return true;
+            }
+            return false;
+        }
+
+        public bool TeleportTo(HexCoordinates coords, TacticalHexGrid grid)
+        {
+            grid ??= _grid;
+            if (grid == null) return false;
+
+            // Rester sur place : toujours autorisé.
+            if (_hasPosition && CurrentCoords.Equals(coords))
+            {
+                _grid = grid;
+                return true;
+            }
+
+            if (IsOccupiedByOther(coords, grid))
+            {
+                Debug.LogWarning($"[TacticalUnit] Téléportation refusée pour '{_unitName}' vers {coords} : case déjà occupée.");
+                return false;
+            }
+
             _grid = grid;
-            var oldNode = grid.GetNode(CurrentCoords);
-            if (oldNode != null)
+            var oldNode = _hasPosition ? grid.GetNode(CurrentCoords) : null;
+            if (oldNode != null && !IsAnyOtherUnitAt(CurrentCoords))
             {
                 oldNode.IsOccupied = false;
             }
 
             InitializePosition(coords, grid);
+            return _hasPosition && CurrentCoords.Equals(coords);
         }
 
         /// <summary>
         /// Déplace l'unité case par case le long d'un chemin d'hexagones en consommant ses PA.
+        /// Refuse tout mouvement vers / à travers une case occupée (1 case = 1 avatar).
         /// </summary>
         public IEnumerator MoveAlongPath(List<HexCoordinates> path, TacticalHexGrid grid, int apCost)
         {
             if (path == null || path.Count <= 1) yield break;
+            if (grid == null) yield break;
 
             _grid = grid;
+
+            // Le chemin doit partir de notre position réelle.
+            if (!path[0].Equals(CurrentCoords))
+            {
+                Debug.LogWarning($"[TacticalUnit] Déplacement refusé pour '{_unitName}' : départ {path[0]} != position {CurrentCoords}.");
+                yield break;
+            }
+
+            // Validation préalable : aucune étape (sauf départ) ne doit être occupée.
+            for (int v = 1; v < path.Count; v++)
+            {
+                if (IsOccupiedByOther(path[v], grid))
+                {
+                    Debug.LogWarning($"[TacticalUnit] Déplacement refusé pour '{_unitName}' : {path[v]} occupée.");
+                    yield break;
+                }
+                var vNode = grid.GetNode(path[v]);
+                if (vNode == null || !vNode.IsWalkable)
+                {
+                    Debug.LogWarning($"[TacticalUnit] Déplacement refusé pour '{_unitName}' : {path[v]} impraticable.");
+                    yield break;
+                }
+            }
+
+            var destNode = grid.GetNode(path[^1]);
+            if (destNode != null)
+            {
+                destNode.IsOccupied = true;
+            }
+
             IsMoving = true;
             Stats.ConsumeActionPoints(apCost);
 
-            // Libérer la case de départ
-            var oldNode = grid.GetNode(CurrentCoords);
-            if (oldNode != null)
-            {
-                oldNode.IsOccupied = false;
-            }
+            HexCoordinates previous = path[0];
 
             for (int i = 1; i < path.Count; i++)
             {
                 var nextCoords = path[i];
-                var nextNode = grid != null ? grid.GetNode(nextCoords) : null;
-                float yPos = nextNode != null ? nextNode.WorldPosition.y : 0.0f;
+
+                if (IsOccupiedByOther(nextCoords, grid) && !nextCoords.Equals(path[^1]))
+                {
+                    Debug.LogWarning($"[TacticalUnit] Déplacement interrompu pour '{_unitName}' : {nextCoords} devenue occupée.");
+                    var fallbackNode = grid.GetNode(CurrentCoords);
+                    if (fallbackNode != null) fallbackNode.IsOccupied = true;
+                    if (destNode != null && !destNode.Coordinates.Equals(CurrentCoords)) destNode.IsOccupied = false;
+                    IsMoving = false;
+                    yield break;
+                }
+
+                var nextNode = grid.GetNode(nextCoords);
+                if (nextNode == null || !nextNode.IsWalkable)
+                {
+                    var fallbackNode2 = grid.GetNode(CurrentCoords);
+                    if (fallbackNode2 != null) fallbackNode2.IsOccupied = true;
+                    IsMoving = false;
+                    yield break;
+                }
+
+                float yPos = nextNode.WorldPosition.y;
                 var targetPos = nextCoords.ToWorldPosition(grid.HexRadius, yPos);
 
                 // Rotation orientée vers la destination
@@ -240,14 +409,19 @@ namespace Killtime.Tactics.Units
                 }
 
                 transform.position = targetPos;
+                // L'occupation suit l'unité : libère la précédente, occupe la nouvelle.
+                var prevNode = grid.GetNode(previous);
+                if (prevNode != null && !IsAnyOtherUnitAt(previous))
+                {
+                    prevNode.IsOccupied = false;
+                }
                 CurrentCoords = nextCoords;
-            }
-
-            // Marquer la case d'arrivée comme occupée
-            var newNode = grid.GetNode(CurrentCoords);
-            if (newNode != null)
-            {
-                newNode.IsOccupied = true;
+                nextNode.IsOccupied = true;
+                previous = nextCoords;
+                _hasPosition = true;
+                // SFX : pas spatialisé à chaque case (cooldown interne anti-spam).
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Footstep, transform.position, 0.8f);
             }
 
             IsMoving = false;

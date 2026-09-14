@@ -149,9 +149,11 @@ namespace Killtime.CameraSystem
             if (Input.GetKey(KeyCode.Q)) _currentYaw -= _keyboardRotateSpeed * Time.deltaTime;
             if (Input.GetKey(KeyCode.E)) _currentYaw += _keyboardRotateSpeed * Time.deltaTime;
 
-            // Rotation libre au maintien du clic droit
+            // Rotation libre au maintien du clic droit — bloquée au survol UI
+            // (sinon, orbiter depuis une fenêtre flottante fait tourner la carte derrière).
             if (Input.GetMouseButton(1))
             {
+                if (IsPointerOverUI()) return;
                 _currentYaw += Input.GetAxis("Mouse X") * _mouseOrbitSpeed;
             }
         }
@@ -186,19 +188,10 @@ namespace Killtime.CameraSystem
                 return true;
             }
 
-            if (CombatHUD.IsPointerOverChat())
-            {
-                return true;
-            }
-
-            Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-
-            if (CombatContextMenuUI.IsPointerOverMenu(mouseGui))
-            {
-                return true;
-            }
-
-            if (CombatDevToolbar.IsPointerOverToolbar())
+            // Registre central : les 6 fenêtres flottantes + panels HUD interactifs + resize en cours.
+            // Remplace les anciens checks partiels (Chat/Menu/Toolbar) qui laissaient passer
+            // le zoom/clic à travers CharacterDevWindow, MapEditor, CoreRules et VTTRoom.
+            if (FloatingWindowChrome.IsPointerOverAnyWindow())
             {
                 return true;
             }

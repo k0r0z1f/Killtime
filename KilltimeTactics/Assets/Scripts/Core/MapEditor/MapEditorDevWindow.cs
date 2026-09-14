@@ -103,9 +103,16 @@ namespace Killtime.UI
     /// Éditeur de carte tactique avec placement dynamique d'obstacles procéduraux,
     /// gestion des dalles de plafond et d'objets 3D personnalisés configurables (Sol, Plafond, Mur, Flottant).
     /// </summary>
-    public class MapEditorDevWindow : MonoBehaviour
+    public class MapEditorDevWindow : FloatingWindow<MapEditorDevWindow>
     {
-        public static MapEditorDevWindow Instance { get; private set; }
+        protected override int WindowId => 890;
+        protected override string Title => "Éditeur de Cartes 3D";
+        protected override Vector2 MinSize => _minSize;
+        protected override Rect DefaultRect => new Rect(120, 100, 560, 700);
+        protected override KeyCode[] ToggleKeys => _toggleKeys;
+
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F2 };
+        private static readonly Vector2 _minSize = new Vector2(360, 220);
 
         [Header("Systèmes")]
         [SerializeField] private TacticalHexGrid _grid;
@@ -113,17 +120,12 @@ namespace Killtime.UI
         [SerializeField] private CombatDevArena _arena;
         [SerializeField] private TurnManager _turnManager;
 
-        [Header("Affichage")]
-        [SerializeField] private bool _isOpen = false;
-        [SerializeField] private KeyCode _toggleKey = KeyCode.F2;
-
         private MapBrushType _activeBrush = MapBrushType.HalfCover;
         private string _mapNameInput = "Killzone_Alpha";
         private string _statusMessage = "Prêt.";
         private string _gridRadiusInput = "8";
         private float _ceilingHeightInput = 3.5f;
 
-        private Rect _windowRect = new Rect(20, 60, 560, 700);
         private Vector2 _scrollPos;
         private Vector2 _propsScrollPos;
         private Vector2 _groundTexturesScrollPos;
@@ -175,25 +177,14 @@ namespace Killtime.UI
 
         private static string MapsDirectory => Path.Combine(Application.persistentDataPath, "Maps");
 
-        public static void Open()
+        protected override void OnOpened()
         {
-            if (Instance == null)
-            {
-                Instance = FindAnyObjectByType<MapEditorDevWindow>();
-                if (Instance == null)
-                {
-                    var go = new GameObject("[UI] MapEditorDevWindow");
-                    Instance = go.AddComponent<MapEditorDevWindow>();
-                }
-            }
-
-            Instance._isOpen = true;
-            Instance.EnsureReferences();
+            EnsureReferences();
         }
 
-        private void Awake()
+        protected override void Awake()
         {
-            if (Instance == null) Instance = this;
+            base.Awake();
             EnsureReferences();
             EnsureDirectoryExists();
             RefreshAvailableProps();
@@ -203,8 +194,9 @@ namespace Killtime.UI
             if (_grid != null) _ceilingHeightInput = _grid.CeilingHeight;
         }
 
-        private void OnEnable()
+        protected override void OnEnable()
         {
+            base.OnEnable();
             SyncPropsFromScene();
         }
 
@@ -226,13 +218,15 @@ namespace Killtime.UI
             }
         }
 
-        private void OnDisable()
+        protected override void OnDisable()
         {
+            base.OnDisable();
             _gridVisualizer?.SetCeilingVisualMode(CeilingVisualMode.InGame);
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             _gridVisualizer?.SetCeilingVisualMode(CeilingVisualMode.InGame);
         }
 
@@ -352,28 +346,14 @@ namespace Killtime.UI
             return prefab;
         }
 
-        public void CloseWindow()
+        protected override void OnClosed()
         {
-            _isOpen = false;
             _gridVisualizer?.SetCeilingVisualMode(CeilingVisualMode.InGame);
         }
 
-        private void Update()
+        protected override void Update()
         {
-            if (Input.GetKeyDown(_toggleKey))
-            {
-                if (_isOpen)
-                {
-                    CloseWindow();
-                }
-                else
-                {
-                    _isOpen = true;
-                    EnsureReferences();
-                    EnsurePropsRoot();
-                    if (_availablePropNames.Count == 0) RefreshAvailableProps();
-                }
-            }
+            base.Update();
 
             if (_isOpen)
             {
@@ -415,7 +395,9 @@ namespace Killtime.UI
             if (UnityEngine.Camera.main == null || _grid == null) return;
 
             Vector2 mouseScreenPos = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-            if (_windowRect.Contains(mouseScreenPos))
+            // Toute fenêtre flottante ou panel HUD bloque la peinture (pas seulement notre fenêtre).
+            // Évite de peindre la carte en cliquant dans le Créateur de Personnage, la Table des Règles, etc.
+            if (Killtime.UI.FloatingWindowChrome.IsPointerOverAnyWindow(mouseScreenPos))
             {
                 _gridVisualizer?.SetHoveredCoord(null, false);
                 return;
@@ -450,6 +432,8 @@ namespace Killtime.UI
 
                 if (Input.GetMouseButtonDown(0))
                 {
+                    // Clic carte 3D : repli auto des fenêtres flottantes en coins (fantômes).
+                    Killtime.UI.FloatingWindowChrome.OnMapClicked();
                     if (_activeBrush == MapBrushType.Inspect)
                     {
                         _inspectedNode = node;
@@ -892,22 +876,8 @@ namespace Killtime.UI
             _placedPropRecords.Clear();
         }
 
-        private void OnGUI()
+        protected override void DrawContent()
         {
-            if (!_isOpen) return;
-
-            _windowRect.height = Mathf.Min(720, Screen.height - 60);
-            _windowRect = GUI.Window(890, _windowRect, DrawWindowContent, "🗺️ Killtime — Créateur & Éditeur de Cartes 3D");
-            GUI.BringWindowToFront(890);
-        }
-
-        private void DrawWindowContent(int windowId)
-        {
-            GUI.DragWindow(new Rect(0, 0, _windowRect.width - 65, 25));
-            if (GUI.Button(new Rect(_windowRect.width - 60, 4, 55, 20), "Fermer"))
-            {
-                CloseWindow();
-            }
 
             GUILayout.Space(6);
             int prevTab = _selectedTab;

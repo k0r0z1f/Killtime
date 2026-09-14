@@ -35,6 +35,16 @@ namespace Killtime.Tactics.Units
         [SerializeField] private Color _visorColor = new Color(0.0f, 0.9f, 1.0f);
         [SerializeField] private float _unitScale = 1.0f;
 
+        [Header("HUD — Transparence Vision")]
+        [Tooltip("Alpha appliqué aux icônes/HUD quand cet avatar est plus loin qu'un autre dans la vision (masqué).")]
+        [SerializeField, Range(0.05f, 1f)] private float _occludedIconAlpha = 0.25f;
+        [Tooltip("Rayon écran (px) dans lequel un avatar plus proche masque les icônes d'un avatar lointain.")]
+        [SerializeField] private float _occlusionScreenRadiusPx = 110f;
+        [Tooltip("Marge de profondeur (m) exigée pour considérer qu'un avatar est devant un autre.")]
+        [SerializeField] private float _occlusionDepthBias = 0.6f;
+        [Tooltip("Rayon corporel (m) utilisé pour le test volumétrique 3D. Quand la caméra est collée à un avatar, sa tête sort de l'écran : seul ce test rayon/segment détecte encore qu'il bouche la vue.")]
+        [SerializeField] private float _occlusionBodyRadius = 0.55f;
+
         private TacticalUnit _unit;
         private Transform _modelRoot;
         private MeshRenderer _bodyRenderer;
@@ -765,13 +775,17 @@ namespace Killtime.Tactics.Units
                 float uiX = screenPos.x;
                 float uiY = Screen.height - screenPos.y;
 
-                DrawOverheadHUD(uiX, uiY);
+                // Liste des unités mise en cache pour un seul appel : sert à tous les tests de profondeur.
+                var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                float hudAlpha = ComputeVisionAlpha(cam, hudBoxPos, allUnits);
+
+                DrawOverheadHUD(uiX, uiY, hudAlpha);
                 if (ShowAnimationTelemetry)
                 {
                     DrawAnimationTelemetry(uiX, uiY);
                 }
-                DrawCircularStatusHalo(cam);
-                DrawFloatingCombatTexts(cam);
+                DrawCircularStatusHalo(cam, allUnits);
+                DrawFloatingCombatTexts(cam, allUnits);
 
                 if (_hoveredStatusInfo.HasValue)
                 {
@@ -779,6 +793,90 @@ namespace Killtime.Tactics.Units
                     _hoveredStatusInfo = null;
                 }
             }
+        }
+
+        /// <summary>
+        /// Alpha de vision : 1 si lisible, <see cref="_occludedIconAlpha"/> si cet avatar est
+        /// plus loin qu'un autre dans la vision (masqué derrière un avatar ou un décor).
+        /// Combine occlusion décor (raycast) + test écran/profondeur inter-avatars
+        /// (les avatars procéduraux n'ont pas de colliders, d'où le test manuel).
+        /// </summary>
+        private float ComputeVisionAlpha(UnityEngine.Camera cam, Vector3 worldPos, TacticalUnit[] allUnits)
+        {
+            if (cam == null) return 1f;
+            float myDist = Vector3.Distance(cam.transform.position, worldPos);
+            if (myDist < 0.001f) return 1f;
+
+            Vector3 toIcon = worldPos - cam.transform.position;
+            float dist = toIcon.magnitude;
+            if (dist < 0.001f) return 1f;
+            Vector3 rayDir = toIcon / dist;
+
+            // 1) Décor / obstacle devant l'icône (covers, props, murs).
+            if (dist > 0.5f)
+            {
+                var ray = new Ray(cam.transform.position, toIcon / dist);
+                if (Physics.Raycast(ray, out RaycastHit hit, dist - 0.4f))
+                {
+                    var hitUnit = hit.transform != null ? hit.transform.GetComponentInParent<TacticalUnit>() : null;
+                    if (hitUnit == null || hitUnit != _unit)
+                    {
+                        return _occludedIconAlpha;
+                    }
+                }
+            }
+
+            // 2) Un autre avatar plus proche dans la même zone d'écran masque celui-ci.
+            Vector3 myScreen = cam.WorldToScreenPoint(worldPos);
+            if (myScreen.z < 0.1f) return 1f;
+
+            if (allUnits == null || allUnits.Length == 0) return 1f;
+
+            for (int i = 0; i < allUnits.Length; i++)
+            {
+                var other = allUnits[i];
+                if (other == null || other == _unit || other.Stats == null) continue;
+
+                Vector3 otherHead = other.transform.position + Vector3.up * 1.85f;
+                float otherDist = Vector3.Distance(cam.transform.position, otherHead);
+                if (otherDist + _occlusionDepthBias >= myDist) continue;
+
+                // 2a) Test volumétrique 3D : le rayon caméra -> icône traverse-t-il le corps
+                // de l'avatar plus proche ? Indispensable quand la caméra est collée à
+                // l'avatar : sa tête est alors hors écran (ou derrière le near plane) donc
+                // le test écran ci-dessous ne peut plus le détecter, alors que son corps
+                // remplit l'écran et bouche la vue (cas du screenshot).
+                Vector3 otherFeet = other.transform.position + Vector3.up * 0.15f;
+                Vector3 otherCenter = other.transform.position + Vector3.up * 1.0f;
+                float tBody = Vector3.Dot(otherCenter - cam.transform.position, rayDir);
+                if (tBody > 0.05f && tBody + _occlusionDepthBias < myDist)
+                {
+                    Vector3 closestOnRay = cam.transform.position + rayDir * tBody;
+                    float qy = Mathf.Clamp(closestOnRay.y, otherFeet.y, otherHead.y);
+                    Vector3 closestOnBody = new Vector3(other.transform.position.x, qy, other.transform.position.z);
+                    if (Vector3.Distance(closestOnRay, closestOnBody) < _occlusionBodyRadius)
+                    {
+                        return _occludedIconAlpha;
+                    }
+                }
+
+                Vector3 otherScreen = cam.WorldToScreenPoint(otherHead);
+                if (otherScreen.z < 0.1f) continue;
+
+                float pixelDist = Vector2.Distance(
+                    new Vector2(myScreen.x, myScreen.y),
+                    new Vector2(otherScreen.x, otherScreen.y));
+
+                // La borne haute est volontairement large : de près, l'avatar occupe une
+                // grande partie de l'écran, le rayon de masquage doit grandir en conséquence.
+                float adaptiveRadius = _occlusionScreenRadiusPx * Mathf.Clamp(10f / Mathf.Max(1f, otherDist), 0.6f, 6f);
+                if (pixelDist < adaptiveRadius)
+                {
+                    return _occludedIconAlpha;
+                }
+            }
+
+            return 1f;
         }
 
         private void DrawAnimationTelemetry(float x, float y)
@@ -853,19 +951,22 @@ namespace Killtime.Tactics.Units
             GUI.Label(new Rect(rect.x + 4, rect.y + 31, rect.width - 8, 14), line3, labelStyle);
         }
 
-        private void DrawOverheadHUD(float x, float y)
+        private void DrawOverheadHUD(float x, float y, float visionAlpha = 1f)
         {
             var stats = _unit.Stats;
             float width = 170f;
             float height = 34f;
             Rect rect = new Rect(x - width * 0.5f, y - height, width, height);
 
+            float a = Mathf.Clamp01(visionAlpha);
+
             Color prevBg = GUI.backgroundColor;
-            GUI.backgroundColor = new Color(0.015f, 0.025f, 0.045f, 0.88f);
+            GUI.backgroundColor = new Color(0.015f, 0.025f, 0.045f, 0.88f * a);
             GUI.Box(rect, GUIContent.none);
             GUI.backgroundColor = prevBg;
 
             Color nameCol = _unit.IsPlayerControlled ? new Color(0.35f, 0.80f, 1f) : new Color(1f, 0.35f, 0.35f);
+            nameCol.a *= a;
             var nameStyle = new GUIStyle(GUI.skin.label)
             {
                 fontSize = 10,
@@ -878,6 +979,7 @@ namespace Killtime.Tactics.Units
 
             float hpPct = Mathf.Clamp01((float)stats.CurrentHealth / Mathf.Max(1, stats.MaxHealth));
             Color hpColor = hpPct > 0.5f ? new Color(0.2f, 0.9f, 0.4f) : (hpPct > 0.25f ? Color.yellow : new Color(1f, 0.3f, 0.3f));
+            hpColor.a *= a;
             var statStyle = new GUIStyle(GUI.skin.label)
             {
                 fontSize = 9,
@@ -889,7 +991,7 @@ namespace Killtime.Tactics.Units
             GUI.Label(new Rect(rect.x + 4, rect.y + 16, rect.width - 8, 15), $"PV: {stats.CurrentHealth}/{stats.MaxHealth} | PA: {stats.CurrentActionPoints}/{stats.MaxActionPoints}", statStyle);
         }
 
-        private void DrawCircularStatusHalo(UnityEngine.Camera cam)
+        private void DrawCircularStatusHalo(UnityEngine.Camera cam, TacticalUnit[] allUnits = null)
         {
             if (_unit == null || _unit.Stats == null) return;
 
@@ -945,9 +1047,14 @@ namespace Killtime.Tactics.Units
                 Vector2 pos2D = new Vector2(screenPoint.x, Screen.height - screenPoint.y);
                 Rect badgeRect = new Rect(pos2D.x - badgeSize * 0.5f, pos2D.y - badgeSize * 0.5f, badgeSize, badgeSize);
 
+                // Icône plus loin qu'un autre avatar dans la vision -> transparente.
+                float iconAlpha = ComputeVisionAlpha(cam, worldPos, allUnits);
+                Color prevIconCol = GUI.color;
+                GUI.color = new Color(1f, 1f, 1f, Mathf.Clamp01(iconAlpha));
                 GUI.DrawTexture(badgeRect, iconTex);
+                GUI.color = prevIconCol;
 
-                if (badgeRect.Contains(Event.current.mousePosition))
+                if (iconAlpha > 0.6f && badgeRect.Contains(Event.current.mousePosition))
                 {
                     _hoveredStatusInfo = info;
                 }
@@ -1052,7 +1159,9 @@ namespace Killtime.Tactics.Units
                         continue;
                     }
 
-                    Color bg = new Color(0.02f, 0.04f, 0.07f, 0.96f);
+                    // Fond en verre fumé semi-transparent : la scène 3D reste visible
+                    // à travers le badge (seuls l'anneau et le glyphe restent opaques).
+                    Color bg = new Color(0.02f, 0.04f, 0.07f, 0.35f);
                     if (r >= 0.72f)
                     {
                         float edge = (r - 0.72f) / 0.08f;
@@ -1219,7 +1328,7 @@ namespace Killtime.Tactics.Units
             };
         }
 
-        private void DrawFloatingCombatTexts(UnityEngine.Camera cam)
+        private void DrawFloatingCombatTexts(UnityEngine.Camera cam, TacticalUnit[] allUnits = null)
         {
             for (int i = 0; i < _floatingTexts.Count; i++)
             {
@@ -1227,7 +1336,9 @@ namespace Killtime.Tactics.Units
                 Vector3 sp = cam.WorldToScreenPoint(ft.WorldPos);
                 if (sp.z > 0.3f)
                 {
-                    float alpha = Mathf.Clamp01(ft.Lifetime / (ft.MaxLifetime * 0.35f));
+                    float lifetimeAlpha = Mathf.Clamp01(ft.Lifetime / (ft.MaxLifetime * 0.35f));
+                    float visionAlpha = ComputeVisionAlpha(cam, ft.WorldPos, allUnits);
+                    float alpha = lifetimeAlpha * Mathf.Clamp01(visionAlpha);
                     Color c = ft.Color;
                     c.a = alpha;
 

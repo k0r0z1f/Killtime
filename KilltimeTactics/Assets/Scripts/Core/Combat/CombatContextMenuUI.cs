@@ -1,6 +1,7 @@
 // [CODE MIS À JOUR]
 using System.Collections.Generic;
 using UnityEngine;
+using Killtime.UI;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Character;
@@ -11,30 +12,28 @@ namespace Killtime.Tactics.CombatUI
     /// Interface utilisateur contextuelle apparaissant sous le curseur lors d'un clic droit.
     /// Affiche les actions possibles catégorisées avec consommation de PA en temps réel.
     /// </summary>
-    public class CombatContextMenuUI : MonoBehaviour
+    public class CombatContextMenuUI : FloatingWindow<CombatContextMenuUI>
     {
+        protected override int WindowId => 777;
+        protected override string Title => _contextTarget != null ? $"Actions : {_contextTarget.Stats.Name}" : "Actions";
+        protected override Vector2 MinSize => _minSize;
+        protected override Rect DefaultRect => new Rect(100, 100, 340, 400);
+        protected override bool CanDraw => _contextTarget != null;
+
         [Header("Systèmes")]
         [SerializeField] private TacticalSelectionManager _selectionManager;
         [SerializeField] private TurnManager _turnManager;
         [SerializeField] private CombatDevArena _arena;
 
-        public static CombatContextMenuUI Instance { get; private set; }
-
-        private bool _isVisible = false;
-        private Rect _menuRect;
+        private static readonly Vector2 _minSize = new Vector2(300, 180);
         private TacticalUnit _contextTarget;
         private List<CombatAction> _cachedActions = new();
         private ActionCategory _selectedCategory = ActionCategory.AttaqueEtPassesDarmes;
         private int _openFrame;
 
-        public static bool IsPointerOverMenu(Vector2 mouseScreenPos)
+        protected override void Awake()
         {
-            return Instance != null && Instance._isVisible && Instance._menuRect.Contains(mouseScreenPos);
-        }
-
-        private void Awake()
-        {
-            if (Instance == null) Instance = this;
+            base.Awake();
             if (_selectionManager == null) _selectionManager = FindAnyObjectByType<TacticalSelectionManager>();
             if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
             if (_arena == null) _arena = FindAnyObjectByType<CombatDevArena>();
@@ -46,8 +45,9 @@ namespace Killtime.Tactics.CombatUI
             }
         }
 
-        private void OnDestroy()
+        protected override void OnDestroy()
         {
+            base.OnDestroy();
             if (_selectionManager != null)
             {
                 _selectionManager.OnOpenContextMenuRequested -= OpenMenu;
@@ -55,15 +55,16 @@ namespace Killtime.Tactics.CombatUI
             }
         }
 
-        private void Update()
+        protected override void Update()
         {
-            if (_isVisible && Time.frameCount > _openFrame)
+            base.Update();
+            if (_isOpen && Time.frameCount > _openFrame)
             {
                 // Fermer si clic en dehors du rectangle du menu
                 if (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1))
                 {
                     Vector2 mousePos = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-                    if (!_menuRect.Contains(mousePos))
+                    if (!_windowRect.Contains(mousePos))
                     {
                         CloseMenu();
                     }
@@ -80,20 +81,39 @@ namespace Killtime.Tactics.CombatUI
 
             _cachedActions = CombatActionRegistry.GetAvailableActions(activeUnit, target, _arena);
 
-            float width = 340;
-            float height = 400;
+            float width = Mathf.Max(_minSize.x, 340);
+            float height = Mathf.Max(_minSize.y, 400);
+
+            // Restaure la taille utilisateur : si minimisé, reprend _savedSize ; sinon conserve le rect.
+            if (_isMinimized && _savedSize.x > 100f && _savedSize.y > 30f)
+            {
+                width = _savedSize.x;
+                height = _savedSize.y;
+            }
+            else if (_windowRect.width > 100f && _windowRect.height > Killtime.UI.FloatingWindowChrome.CollapsedHeight + 1f)
+            {
+                width = _windowRect.width;
+                height = _windowRect.height;
+            }
+            width = Mathf.Clamp(width, _minSize.x, Mathf.Max(_minSize.x, Screen.width - 20));
+            height = Mathf.Clamp(height, _minSize.y, Mathf.Max(_minSize.y, Screen.height - 20));
 
             float clampedX = Mathf.Clamp(screenPos.x, 10, Screen.width - width - 10);
             float clampedY = Mathf.Clamp(screenPos.y, 10, Screen.height - height - 10);
 
-            _menuRect = new Rect(clampedX, clampedY, width, height);
-            _isVisible = true;
+            _windowRect = new Rect(clampedX, clampedY, width, height);
+            OpenInstance();
             _openFrame = Time.frameCount;
         }
 
         public void CloseMenu()
         {
-            _isVisible = false;
+            CloseWindow();
+        }
+
+        public override void CloseWindow()
+        {
+            base.CloseWindow();
             _contextTarget = null;
         }
 
@@ -105,15 +125,7 @@ namespace Killtime.Tactics.CombatUI
             return _contextTarget;
         }
 
-        private void OnGUI()
-        {
-            if (!_isVisible || _contextTarget == null) return;
-
-            _menuRect = GUI.Window(777, _menuRect, DrawContextMenuContent, $"⚙️ Actions : {_contextTarget.Stats.Name}");
-            GUI.BringWindowToFront(777);
-        }
-
-        private void DrawContextMenuContent(int windowId)
+        protected override void DrawContent()
         {
             var activeActor = GetActiveActor();
             if (activeActor == null || _contextTarget == null)
@@ -201,6 +213,7 @@ namespace Killtime.Tactics.CombatUI
             if (GUILayout.Button("Fermer le Menu", GUILayout.Height(24)))
             {
                 CloseMenu();
+                return;
             }
             GUI.backgroundColor = Color.white;
         }

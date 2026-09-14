@@ -4,6 +4,7 @@ using UnityEngine;
 using Killtime.Core.Combat;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
+using Killtime.Audio;
 using Killtime.Tactics;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
@@ -51,6 +52,105 @@ namespace Killtime.UI
 
             Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
             return terminal.Contains(mouseGui);
+        }
+
+        /// <summary>
+        /// Teste si la souris survole un panel HUD interactif (cartes, ribbon, matrice VATS,
+        /// terminal/feed, pause, modales). Les logs éphémères (display only) ne bloquent pas.
+        /// Rects synchronisés avec Draw*() — toute modification des Draw doit mettre à jour ici.
+        /// Enregistré comme ExtraBlocker dans FloatingWindowChrome pour bloquer clics/zoom 3D.
+        /// </summary>
+        public static bool IsPointerOverHUD(Vector2 mouseGui)
+        {
+            if (Instance == null || !Instance.isActiveAndEnabled) return false;
+
+            float pauseW = 80f;
+            float margin = 20f;
+            Rect pauseRect = new Rect(Screen.width - pauseW - margin, 22f, pauseW, 24f);
+
+            // Pastille Pause (toujours visible en haut à droite)
+            if (pauseRect.Contains(mouseGui))
+                return true;
+
+            bool paused = IsPaused;
+            bool combatOver = Instance._turnManager != null && Instance._turnManager.IsCombatOver;
+
+            if (paused)
+            {
+                // Modale de stase (centre)
+                if (new Rect((Screen.width - 390f) * 0.5f, (Screen.height - 178f) * 0.46f, 390f, 178f).Contains(mouseGui))
+                    return true;
+                // Terminal-PLus en pause (toujours étendu)
+                float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
+                float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
+                if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
+                    return true;
+                return false;
+            }
+
+            if (combatOver)
+            {
+                if (new Rect((Screen.width - 420f) * 0.5f, (Screen.height - 164f) * 0.44f, 420f, 164f).Contains(mouseGui))
+                    return true;
+                float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
+                float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
+                if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
+                    return true;
+                return false;
+            }
+
+            var activeUnit = Instance._turnManager != null ? Instance._turnManager.ActiveUnit : (Instance._arena != null ? Instance._arena.PlayerUnit : null);
+            if (activeUnit == null || activeUnit.Stats == null) return false;
+
+            // Carte joueur (haut-gauche)
+            float pw = Mathf.Clamp(Screen.width * 0.27f, 250f, 340f);
+            if (new Rect(24f, 22f, pw, 62f).Contains(mouseGui))
+                return true;
+
+            // Carte cible (haut-droite, positionnée à gauche de la pause sans chevauchement)
+            var target = Instance._arena != null ? Instance._arena.CurrentTarget : null;
+            if (target != null && target.Stats != null && target.Stats.IsAlive)
+            {
+                float tw = Mathf.Clamp(Screen.width * 0.20f, 200f, 280f);
+                float tx = pauseRect.x - 12f - tw;
+                if (new Rect(tx, 22f, tw, 56f).Contains(mouseGui))
+                    return true;
+            }
+
+            // Ruban d'actions (bas-centre)
+            {
+                float w = Mathf.Clamp(Screen.width * 0.40f, 360f, 520f);
+                float h = 46f;
+                float bottom = 18f + (Instance._showAnatomyDrawer ? 214f : 0f);
+                if (new Rect((Screen.width - w) * 0.5f, Screen.height - h - bottom, w, h).Contains(mouseGui))
+                    return true;
+            }
+
+            // Matrice de ciblage VATS (si ouverte ou en animation)
+            if (Instance._showAnatomyDrawer || Instance._anatomyOpenAnim > 0.02f)
+            {
+                float w = Mathf.Clamp(Screen.width * 0.34f, 330f, 460f);
+                float h = 216f;
+                float y = Screen.height - h - 76f;
+                if (new Rect((Screen.width - w) * 0.5f, y, w, h).Contains(mouseGui))
+                    return true;
+            }
+
+            // Terminal étendu ou bouton FEED (bas-droite)
+            if (Instance._isLogDrawerExpanded)
+            {
+                float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
+                float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
+                if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
+                    return true;
+            }
+            else
+            {
+                if (new Rect(Screen.width - 92f - 20f, Screen.height - 30f - 20f, 92f, 22f).Contains(mouseGui))
+                    return true;
+            }
+
+            return false;
         }
 
         // --- Couleurs de la Palette Tactique (Dark Cybernetic) ---
@@ -114,11 +214,61 @@ namespace Killtime.UI
             }
         }
 
+        private Func<Rect> _playerCardZone;
+        private Func<Rect> _targetCardZone;
+        private Func<Rect> _pausePillZone;
+        private Func<Rect> _bottomFeedZone;
+
         private void Awake()
         {
             if (Instance == null) Instance = this;
             EnsureReferences();
             InitProceduralTextures();
+            FloatingWindowChrome.RegisterExtraBlocker(IsPointerOverHUD);
+            RegisterHudExclusionZones();
+        }
+
+        private void OnEnable()
+        {
+            FloatingWindowChrome.RegisterExtraBlocker(IsPointerOverHUD);
+            RegisterHudExclusionZones();
+        }
+
+        private void OnDisable()
+        {
+            FloatingWindowChrome.UnregisterExtraBlocker(IsPointerOverHUD);
+            UnregisterHudExclusionZones();
+        }
+
+        private void RegisterHudExclusionZones()
+        {
+            _playerCardZone ??= () => new Rect(24f, 16f, Mathf.Clamp(Screen.width * 0.27f, 250f, 340f), 72f);
+            _pausePillZone ??= () => new Rect(Screen.width - 80f - 20f, 16f, 80f, 32f);
+            _targetCardZone ??= () =>
+            {
+                if (_arena == null || _arena.CurrentTarget == null || _arena.CurrentTarget.Stats == null || !_arena.CurrentTarget.Stats.IsAlive)
+                    return Rect.zero;
+
+                float tw = Mathf.Clamp(Screen.width * 0.20f, 200f, 280f);
+                float tx = Screen.width - 80f - 20f - 12f - tw;
+                return new Rect(tx, 16f, tw, 66f);
+            };
+            _bottomFeedZone ??= () => _isLogDrawerExpanded
+                ? new Rect(Screen.width - Mathf.Clamp(Screen.width * 0.44f, 480f, 660f) - 20f, Screen.height - Mathf.Clamp(Screen.height * 0.35f, 220f, 320f) - 20f, Mathf.Clamp(Screen.width * 0.44f, 480f, 660f), Mathf.Clamp(Screen.height * 0.35f, 220f, 320f))
+                : new Rect(Screen.width - 92f - 20f, Screen.height - 30f - 20f, 92f, 26f);
+
+            FloatingWindowChrome.RegisterExclusionZone(_playerCardZone);
+            FloatingWindowChrome.RegisterExclusionZone(_targetCardZone);
+            FloatingWindowChrome.RegisterExclusionZone(_pausePillZone);
+            FloatingWindowChrome.RegisterExclusionZone(_bottomFeedZone);
+        }
+
+        private void UnregisterHudExclusionZones()
+        {
+            if (_playerCardZone != null) FloatingWindowChrome.UnregisterExclusionZone(_playerCardZone);
+            if (_targetCardZone != null) FloatingWindowChrome.UnregisterExclusionZone(_targetCardZone);
+            if (_pausePillZone != null) FloatingWindowChrome.UnregisterExclusionZone(_pausePillZone);
+            if (_bottomFeedZone != null) FloatingWindowChrome.UnregisterExclusionZone(_bottomFeedZone);
         }
 
         private void Start()
@@ -222,11 +372,15 @@ namespace Killtime.UI
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             {
                 _showAnatomyDrawer = !_showAnatomyDrawer;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(_showAnatomyDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
             }
 
             if (Input.GetKeyDown(KeyCode.L))
             {
                 _isLogDrawerExpanded = !_isLogDrawerExpanded;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Toggle, 0.6f);
             }
 
             if (Input.GetKeyDown(KeyCode.Space))
@@ -347,18 +501,30 @@ namespace Killtime.UI
                 _prePauseTimeScale = Time.timeScale > 0.001f ? Time.timeScale : 1.0f;
                 Time.timeScale = 0f;
                 AudioListener.pause = true;
+                if (KilltimeAudioManager.Instance != null)
+                {
+                    KilltimeAudioManager.Instance.EnterPauseMode();
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Open, 0.7f);
+                }
                 AddAdvancedLog("⏸ Stase tactique engagée.", LogCategory.MovementAndTurns, "[STASE]", ColorCyanAccent);
             }
             else
             {
                 Time.timeScale = _prePauseTimeScale;
                 AudioListener.pause = false;
+                if (KilltimeAudioManager.Instance != null)
+                {
+                    KilltimeAudioManager.Instance.ExitPauseMode();
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Close, 0.7f);
+                }
                 AddAdvancedLog("▶ Reprise de la dynamique causale.", LogCategory.MovementAndTurns, "[REPRISE]", Color.green);
             }
         }
 
         private void OnDestroy()
         {
+            FloatingWindowChrome.UnregisterExtraBlocker(IsPointerOverHUD);
+            UnregisterHudExclusionZones();
             UnbindEventListeners();
             if (IsPaused)
             {
@@ -419,7 +585,8 @@ namespace Killtime.UI
                 fontSize = 12,
                 fontStyle = FontStyle.Bold,
                 alignment = TextAnchor.MiddleLeft,
-                richText = false
+                richText = false,
+                wordWrap = false
             };
             _hudNameStyle.normal.textColor = ColorTextBright;
 
@@ -480,6 +647,31 @@ namespace Killtime.UI
         // =========================================================================
         // CARTE JOUEUR — FICHE DE STATUT DISCRÈTE
         // =========================================================================
+        /// <summary>
+        /// Tronque un texte avec "…" pour qu'il tienne dans availWidth (mesuré avec le style).
+        /// Évite les retours à la ligne et les chevauchements dans les cartes HUD à largeur fixe.
+        /// </summary>
+        private static string TruncateToFit(string text, GUIStyle style, float availWidth)
+        {
+            if (string.IsNullOrEmpty(text) || availWidth <= 0f) return "";
+            if (style.CalcSize(new GUIContent(text)).x <= availWidth) return text;
+            const string ellipsis = "…";
+            float ellW = style.CalcSize(new GUIContent(ellipsis)).x;
+            int len = text.Length;
+            while (len > 1 && style.CalcSize(new GUIContent(text.Substring(0, len) + ellipsis)).x > availWidth)
+            {
+                len--;
+            }
+            if (len <= 1) return ellipsis;
+            // Garantit que même avec l'ellipse ça passe (polices proportionnelles).
+            string candidate = text.Substring(0, len) + ellipsis;
+            while (candidate.Length > 2 && style.CalcSize(new GUIContent(candidate)).x > availWidth + ellW * 0.5f)
+            {
+                candidate = candidate.Substring(0, candidate.Length - 2) + ellipsis;
+            }
+            return candidate;
+        }
+
         private void DrawTacticalPlayerCard(TacticalUnit unit)
         {
             float width = Mathf.Clamp(Screen.width * 0.27f, 250f, 340f);
@@ -490,14 +682,33 @@ namespace Killtime.UI
             DrawAccentLine(new Rect(rect.x, rect.y, rect.width, 2f),
                 Color.Lerp(ColorCyanDim, ColorCyanAccent, hovered ? 1f : 0.62f), 0.78f);
 
-            GUI.Label(new Rect(rect.x + 14, rect.y + 7, width - 150, 19),
-                unit.Stats.Name.ToUpperInvariant(), _hudNameStyle);
+            // Ligne titre : [Nom tronqué] [SOUFF.?] [ROUND nn] — sans chevauchement.
+            const float roundW = 78f;
+            Rect roundRect = new Rect(rect.x + width - 14f - roundW, rect.y + 8, roundW, 16);
+            float nameRight = roundRect.x - 4f;
+            Rect souffRect = new Rect();
+            bool hasSouff = unit.Stats.Essoufflement > 0;
+            if (hasSouff)
+            {
+                const float souffW = 52f;
+                souffRect = new Rect(nameRight - souffW, rect.y + 8, souffW, 16);
+                nameRight = souffRect.x - 6f;
+            }
+            float nameAvail = Mathf.Max(20f, nameRight - (rect.x + 14f));
+            string name = TruncateToFit(unit.Stats.Name.ToUpperInvariant(), _hudNameStyle, nameAvail);
+            GUI.Label(new Rect(rect.x + 14, rect.y + 7, nameAvail, 19), name, _hudNameStyle);
 
             int round = _turnManager != null ? _turnManager.CurrentRound : 1;
             GUI.color = ColorTextMuted;
-            GUI.Label(new Rect(rect.x + width - 88, rect.y + 8, 74, 16),
-                $"ROUND {round:00}", _hudSubStyle);
+            GUI.Label(roundRect, $"ROUND {round:00}", _hudSubStyle);
             GUI.color = Color.white;
+
+            if (hasSouff)
+            {
+                GUI.color = ColorAmber;
+                GUI.Label(souffRect, "SOUFF.", _hudSubStyle);
+                GUI.color = Color.white;
+            }
 
             float maxHp = Mathf.Max(1f, unit.Stats.MaxHealth);
             float hpRatio = Mathf.Clamp01(_smoothPlayerHealth / maxHp);
@@ -521,13 +732,21 @@ namespace Killtime.UI
             float apY = rect.y + 45f;
 
             GUI.color = ColorTextMuted;
-            GUI.Label(new Rect(rect.x + 14, apY - 2, 32, 16), "PA", _hudSubStyle);
+            GUI.Label(new Rect(rect.x + 14, apY - 2, 26, 16), "PA", _hudSubStyle);
             GUI.color = Color.white;
 
-            float pipW = Mathf.Min(15f, (width - 98f) / maxAp);
+            // Compteur à droite, pips dans l'espace restant — jamais de chevauchement même à 13+ PA.
+            const float countW = 46f;
+            Rect countRect = new Rect(rect.x + width - 12f - countW, apY - 3, countW, 17);
+            float pipsStart = rect.x + 44f;
+            float pipsAvail = Mathf.Max(0f, countRect.x - 6f - pipsStart);
+            float pipW = maxAp > 0
+                ? Mathf.Clamp((pipsAvail - (maxAp - 1) * 3f) / maxAp, 3f, 15f)
+                : 15f;
             for (int i = 0; i < maxAp; i++)
             {
-                float x = rect.x + 44f + i * (pipW + 3f);
+                float x = pipsStart + i * (pipW + 3f);
+                if (x + pipW > countRect.x - 2f) break; // sécurité : ne jamais écrire sous le compteur
                 bool filled = i < curAp;
                 float pulse = filled ? 0.76f + 0.24f * Mathf.Sin(_hudPulse * 4f + i) : 0f;
                 DrawSolidRect(new Rect(x, apY + 2f, pipW, 4f),
@@ -536,28 +755,23 @@ namespace Killtime.UI
             }
 
             GUI.color = ColorTextBright;
-            GUI.Label(new Rect(rect.x + width - 50, apY - 3, 38, 17),
-                $"{curAp}/{maxAp}", _hudStatStyle);
+            GUI.Label(countRect, $"{curAp}/{maxAp}", _hudStatStyle);
             GUI.color = Color.white;
-
-            if (unit.Stats.Essoufflement > 0)
-            {
-                GUI.color = ColorAmber;
-                GUI.Label(new Rect(rect.x + width - 138, rect.y + 8, 45, 16), "SOUFF.", _hudSubStyle);
-                GUI.color = Color.white;
-            }
         }
 
         // =========================================================================
-        // CARTE CIBLE — PRESQUE INVISIBLE HORS CONTEXTE
+        // CARTE CIBLE — POSITIONNÉE À GAUCHE DU BOUTON PAUSE
         // =========================================================================
         private void DrawTacticalTargetCard()
         {
             if (_arena == null || _arena.CurrentTarget == null || !_arena.CurrentTarget.Stats.IsAlive) return;
 
             var target = _arena.CurrentTarget;
-            float width = Mathf.Clamp(Screen.width * 0.22f, 210f, 300f);
-            Rect rect = new Rect(Screen.width - width - 24f, 22f, width, 56f);
+            float pauseW = 80f;
+            float margin = 20f;
+            float width = Mathf.Clamp(Screen.width * 0.20f, 200f, 280f);
+            float x = Screen.width - margin - pauseW - 12f - width;
+            Rect rect = new Rect(x, 22f, width, 56f);
             bool hovered = rect.Contains(Event.current.mousePosition);
 
             DrawSoftPanel(rect, new Color(0.055f, 0.025f, 0.035f, hovered ? 0.70f : 0.54f));
@@ -565,11 +779,13 @@ namespace Killtime.UI
                 rect.width * 0.45f, 2f), ColorCrimson, 0.9f);
 
             GUI.color = ColorCrimson;
-            GUI.Label(new Rect(rect.x + 12, rect.y + 7, width - 80, 19),
-                target.Stats.Name.ToUpperInvariant(), _hudNameStyle);
+            const float armW = 58f;
+            Rect armRect = new Rect(rect.x + width - 12f - armW, rect.y + 8, armW, 15);
+            float targetNameAvail = Mathf.Max(20f, armRect.x - 4f - (rect.x + 12f));
+            GUI.Label(new Rect(rect.x + 12, rect.y + 7, targetNameAvail, 19),
+                TruncateToFit(target.Stats.Name.ToUpperInvariant(), _hudNameStyle, targetNameAvail), _hudNameStyle);
             GUI.color = ColorTextMuted;
-            GUI.Label(new Rect(rect.x + width - 66, rect.y + 8, 54, 15),
-                $"ARM {target.Stats.BaseArmorAbsorption}", _hudSubStyle);
+            GUI.Label(armRect, $"ARM {target.Stats.BaseArmorAbsorption}", _hudSubStyle);
 
             float maxHp = Mathf.Max(1f, target.Stats.MaxHealth);
             float ratio = Mathf.Clamp01(_smoothTargetHealth / maxHp);
@@ -602,7 +818,11 @@ namespace Killtime.UI
 
             Rect vats = new Rect(dock.x + 7f, y, bw, 34f);
             if (DrawTacticalButton(vats, "CIBLAGE", "1", _showAnatomyDrawer, ColorCyanAccent))
+            {
                 _showAnatomyDrawer = !_showAnatomyDrawer;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(_showAnatomyDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
+            }
 
             Rect breath = new Rect(vats.xMax + gap, y, bw, 34f);
             bool canBreath = unit.Stats.Essoufflement < unit.Stats.Attributes.Constitution;
@@ -612,7 +832,13 @@ namespace Killtime.UI
                 {
                     AddAdvancedLog($"{unit.Stats.Name} force sa ventilation d'urgence (+2 PA) !",
                         LogCategory.ReactionAndAP, "[SOUFFLE]", ColorAmber);
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayUI(SoundId.Breath_Emergency, 0.85f);
                     OnEmergencyBreathRequested?.Invoke();
+                }
+                else if (KilltimeAudioManager.Instance != null)
+                {
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
                 }
             }
 
@@ -648,6 +874,8 @@ namespace Killtime.UI
             if (GUI.Button(close, "×", _btnFlatNormal))
             {
                 _showAnatomyDrawer = false;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.VATS_Close, 0.6f);
                 GUI.color = Color.white;
                 return;
             }
@@ -683,7 +911,11 @@ namespace Killtime.UI
                 GUI.color = Color.white;
 
                 if (GUI.Button(row, GUIContent.none, GUIStyle.none))
+                {
+                    if (_selectedBodyPart != p && KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayUI(SoundId.VATS_TargetChange, 0.55f);
                     _selectedBodyPart = p;
+                }
 
                 rowY += rowH + 2f;
             }
@@ -695,8 +927,16 @@ namespace Killtime.UI
                 "Visée compensée  ·  +1 PA", _hudSubStyle);
             GUI.color = Color.white;
 
+            // Au contact : meilleure mêlée de l'attaquant (ex : Mains Nues entraînées),
+            // à distance : Ballistique. Jamais de Maniement d'Arme imposé par défaut.
+            var hudTarget = _arena != null ? _arena.CurrentTarget : null;
+            SkillType hudAttackSkill = (hudTarget != null
+                && unit.CurrentCoords.DistanceTo(hudTarget.CurrentCoords) <= 1)
+                ? unit.Stats.GetBestMeleeAttackSkill()
+                : SkillType.Ballistique;
+
             int apCost = _cancelPenaltyWithAP ? 3 : 2;
-            bool canAttack = unit.Stats.CurrentActionPoints >= apCost && unit.Stats.CanAttack(DiceType.D6);
+            bool canAttack = unit.Stats.CurrentActionPoints >= apCost && unit.Stats.CanAttack(unit.Stats.GetSkillDie(hudAttackSkill, true));
 
             Rect fire = new Rect(rect.x + 12f, rect.y + height - 38f, width - 24f, 28f);
             if (DrawTacticalButton(fire,
@@ -704,7 +944,7 @@ namespace Killtime.UI
                 null, false, canAttack ? ColorCrimson : ColorTextMuted, canAttack))
             {
                 _showAnatomyDrawer = false;
-                _arena?.ExecuteAttack(_selectedBodyPart, _cancelPenaltyWithAP);
+                _arena?.ExecuteAttack(_selectedBodyPart, _cancelPenaltyWithAP, attackSkill: hudAttackSkill);
                 OnAttackRequested?.Invoke(_selectedBodyPart, _cancelPenaltyWithAP);
             }
         }
@@ -712,6 +952,8 @@ namespace Killtime.UI
         private void TriggerEndTurn()
         {
             _showAnatomyDrawer = false;
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.PlayUI(SoundId.Turn_End, 0.7f);
             _turnManager?.EndCurrentTurn();
             OnEndTurnRequested?.Invoke();
         }
@@ -874,8 +1116,9 @@ namespace Killtime.UI
 
         private void DrawTopRightPausePill()
         {
-            float width = 84f;
-            Rect rect = new Rect(Screen.width - width - 20f, 20f, width, 22f);
+            float width = 80f;
+            float margin = 20f;
+            Rect rect = new Rect(Screen.width - width - margin, 22f, width, 24f);
             bool hovered = rect.Contains(Event.current.mousePosition);
 
             DrawSoftPanel(rect,

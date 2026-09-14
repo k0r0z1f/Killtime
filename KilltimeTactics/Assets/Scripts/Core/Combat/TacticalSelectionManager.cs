@@ -56,8 +56,9 @@ namespace Killtime.Tactics.CombatUI
 
             Vector2 mouseScreenPos = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
 
-            // Bloque les clics 3D si la souris est au-dessus du menu contextuel
-            if (CombatContextMenuUI.IsPointerOverMenu(mouseScreenPos))
+            // Bloque sélection + menu contextuel si la souris est sur une fenêtre flottante ou le HUD.
+            // Sans ça, un clic dans une fenêtre sélectionne aussi une unité derrière.
+            if (FloatingWindowChrome.IsPointerOverAnyWindow(mouseScreenPos))
             {
                 return;
             }
@@ -67,6 +68,8 @@ namespace Killtime.Tactics.CombatUI
             // 1. CLIC GAUCHE : SÉLECTION / MULTI-SÉLECTION
             if (Input.GetMouseButtonDown(0))
             {
+                // Clic carte 3D : repli auto des fenêtres flottantes en coins (fantômes).
+                FloatingWindowChrome.OnMapClicked();
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {

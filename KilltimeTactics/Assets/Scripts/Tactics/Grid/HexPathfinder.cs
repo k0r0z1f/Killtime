@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Killtime.Tactics.Units;
 
 namespace Killtime.Tactics.Grid
 {
@@ -27,6 +28,22 @@ namespace Killtime.Tactics.Grid
             var targetNode = _grid.GetNode(target);
 
             if (startNode == null || targetNode == null || !targetNode.IsWalkable)
+            {
+                return path;
+            }
+
+            var occupiedCoords = new HashSet<HexCoordinates>();
+            var allUnits = Object.FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < allUnits.Length; i++)
+            {
+                var u = allUnits[i];
+                if (u != null && u.Stats != null && u.Stats.IsAlive && !u.CurrentCoords.Equals(start))
+                {
+                    occupiedCoords.Add(u.CurrentCoords);
+                }
+            }
+
+            if (!start.Equals(target) && (targetNode.IsOccupied || occupiedCoords.Contains(target)))
             {
                 return path;
             }
@@ -73,7 +90,7 @@ namespace Killtime.Tactics.Grid
                     var neighbor = current.GetNeighbor(dir);
                     var neighborNode = _grid.GetNode(neighbor);
 
-                    if (neighborNode == null || !neighborNode.IsWalkable || neighborNode.IsOccupied)
+                    if (neighborNode == null || !neighborNode.IsWalkable || neighborNode.IsOccupied || occupiedCoords.Contains(neighbor))
                     {
                         continue;
                     }
@@ -113,6 +130,17 @@ namespace Killtime.Tactics.Grid
             var frontier = new Queue<HexCoordinates>();
             frontier.Enqueue(center);
 
+            var occupiedCoords = new HashSet<HexCoordinates>();
+            var allUnits = Object.FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < allUnits.Length; i++)
+            {
+                var u = allUnits[i];
+                if (u != null && u.Stats != null && u.Stats.IsAlive && !u.CurrentCoords.Equals(center))
+                {
+                    occupiedCoords.Add(u.CurrentCoords);
+                }
+            }
+
             while (frontier.Count > 0)
             {
                 var current = frontier.Dequeue();
@@ -123,7 +151,7 @@ namespace Killtime.Tactics.Grid
                     var neighbor = current.GetNeighbor(dir);
                     var node = _grid.GetNode(neighbor);
 
-                    if (node == null || !node.IsWalkable || node.IsOccupied) continue;
+                    if (node == null || !node.IsWalkable || node.IsOccupied || occupiedCoords.Contains(neighbor)) continue;
 
                     int newCost = currentCost + node.ActionPointCost;
                     if (newCost <= maxAP && (!costSoFar.ContainsKey(neighbor) || newCost < costSoFar[neighbor]))

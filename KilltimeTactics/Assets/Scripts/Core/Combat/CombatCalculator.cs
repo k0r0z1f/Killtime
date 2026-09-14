@@ -38,18 +38,17 @@ namespace Killtime.Core.Combat
             int attackerBonusAP = 0,
             int defenderBonusAP = 0)
         {
-            DiceType attackDie = attacker.GetSkillDie(attackSkill);
-            int attackModifier = attacker.GetSkillModifier(attackSkill, isOffensive: true);
-            if (!string.IsNullOrEmpty(attackerSpecialization) && attacker.HasSpecialization(attackerSpecialization))
-            {
-                attackModifier += 1;
-            }
+            // RÈGLE CODEX : aucun mod de caractéristique ajouté. Malus d'états uniquement.
+            // Le dé offensif applique le Corps Augmenté (Mains Nues : MAG substituable à FOR).
+            DiceType attackDie = attacker.GetSkillDie(attackSkill, true);
+            int attackModifier = attacker.GetStatusModifier(attackSkill, isOffensive: true);
 
             DiceType defenseDie = defender.GetSkillDie(defenseSkill);
-            int defenseModifier = defender.GetSkillModifier(defenseSkill, isOffensive: false);
+            int defenseModifier = defender.GetStatusModifier(defenseSkill, isOffensive: false);
 
             // Règle de Défense Non-Exclusive (Livre III) :
             // Parer avec une arme ou mains nues sans la spé dédiée fait chuter le dé d'un niveau.
+            // La spécialisation annule ce malus (aucun +1 flat, conforme au Codex).
             if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
             {
                 bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && defender.HasSpecialization(defenderSpecialization))
@@ -58,10 +57,6 @@ namespace Killtime.Core.Combat
                 if (!hasDefSpec)
                 {
                     defenseDie = SkillDefinitions.StepDownDie(defenseDie);
-                }
-                else
-                {
-                    defenseModifier += 1;
                 }
             }
 
@@ -174,6 +169,8 @@ namespace Killtime.Core.Combat
             }
 
             // 3. Calcul des Modificateurs et Dés Finaux
+            // RÈGLE CODEX : Jet = Tirage du dé de compétence + PA injectés + malus situationnels.
+            // Aucun mod de caractéristique. attackModifier = malus d'états uniquement.
             int finalAttackMod = attackModifier + safeAttackerBonus;
             if (!cancelPenaltyWithAP)
             {
@@ -222,21 +219,27 @@ namespace Killtime.Core.Combat
                 differential = attackRoll.Total - defenseRoll.Total;
 
                 string statusDefInfo = defender.GetStatusBreakdownString(defenseSkill, isOffensive: false);
-                string statusDefStr = !string.IsNullOrEmpty(statusDefInfo) ? $" [Malus: {statusDefInfo}]" : "";
 
                 string defPaText = canDefenderReact
-                    ? (actualDefenderBonus > 0 ? $" + PA Réaction {actualDefenderBonus}" : " + Réaction 1 PA")
+                    ? (actualDefenderBonus > 0 ? $" + PA {actualDefenderBonus}" : " + PA 0")
                     : $" {cfg.UnreactiveDefensePenalty} (0 PA)";
                 string critDefText = defenseRoll.IsCriticalSuccess ? " <color=#00E5FF>[CRITIQUE !]</color>" : "";
-                defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {defenseDie} [Tirage {defenseRoll.RawRoll} + Mod {defenseModifier}{statusDefStr}{defPaText} = Total {defenseRoll.Total}]{critDefText}";
+                string defStatusDetail = !string.IsNullOrEmpty(statusDefInfo) ? $" {statusDefInfo}" : " 0";
+                defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {defenseDie} [Tirage {defenseRoll.RawRoll} + États {defenseModifier} ({defStatusDetail}){defPaText} = Total {defenseRoll.Total}]{critDefText}";
             }
 
             string statusAttInfo = attacker.GetStatusBreakdownString(attackSkill, isOffensive: true);
-            string statusAttStr = !string.IsNullOrEmpty(statusAttInfo) ? $" [Malus: {statusAttInfo}]" : "";
+            string statusAttDetail = !string.IsNullOrEmpty(statusAttInfo) ? statusAttInfo : "0";
             string aimText = cancelPenaltyWithAP ? "Visée compensée (+1 PA)" : $"Malus Visée {targetInfo.DifficultyModifier}";
-            string paAttText = safeAttackerBonus > 0 ? $" + PA Bonus {safeAttackerBonus}" : "";
+            string paAttText = $" + PA {safeAttackerBonus}";
             string critAttText = attackRoll.IsCriticalSuccess ? " <color=#FFE600>[CRITIQUE !]</color>" : "";
-            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {attackDie} [Tirage {attackRoll.RawRoll} + Mod {attackModifier}{statusAttStr} ({aimText}){paAttText} = Total {attackRoll.Total}]{critAttText}";
+            // Tag affiché seulement si MAG surpasse réellement la moyenne FOR/AGI.
+            int normalRef = (attacker.Attributes.Force + attacker.Attributes.Agilite + 1) / 2;
+            string augText = (attacker.IsMagicAugmented(attackSkill, true)
+                    && attacker.Attributes.Magie > normalRef)
+                ? $" [Corps Augmenté : MAG {attacker.Attributes.Magie} (+{SkillDefinitions.CharacteristicSteps(attacker.Attributes.Magie)} paliers)]"
+                : "";
+            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {attackDie} [Tirage {attackRoll.RawRoll} + États {attackModifier} ({statusAttDetail}) + ({aimText}){paAttText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
             // 4. Résolution du Différentiel
             if (effectiveDefenderWantsToDefend && differential < 0)

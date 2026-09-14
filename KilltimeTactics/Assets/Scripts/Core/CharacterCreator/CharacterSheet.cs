@@ -84,6 +84,9 @@ namespace Killtime.Core.Character
         {
             var effective = GetEffectiveAttributes();
             var stats = new CharacterStats(Name, effective, BaseArmor);
+            // Lie la fiche : sans ça, entraînements (GetSkillDie) et spécialisations
+            // (HasSpecialization) sont ignorés (training forcé à 0, spés introuvables).
+            stats.Sheet = this;
             return stats;
         }
     }

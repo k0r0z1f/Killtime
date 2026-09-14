@@ -35,7 +35,8 @@ namespace Killtime.Tests
             Assert.AreEqual(DiceType.D8, sheet.GetSkill(SkillType.Ballistique).CalculateSkillDie(baseRank));
 
             sheet.GetSkill(SkillType.Ballistique).TrainingLevel = 6;
-            Assert.AreEqual(DiceType.TwoD6, sheet.GetSkill(SkillType.Ballistique).CalculateSkillDie(baseRank));
+            // Paliers : carac 5 (+2) + 6 entraînements = 8 niveaux → 2d10.
+            Assert.AreEqual(DiceType.TwoD10, sheet.GetSkill(SkillType.Ballistique).CalculateSkillDie(baseRank));
         }
 
         [Test]
@@ -99,17 +100,76 @@ namespace Killtime.Tests
             var stats = sheet.ToCombatStats();
             stats.Sheet = sheet;
 
+            // Paliers : moyenne (4+4+1)/2 = 4 → +1 niveau → d4.
             DiceType baseDie = stats.GetSkillDie(SkillType.ManiementArmes);
-            Assert.AreEqual(DiceType.D6, baseDie);
+            Assert.AreEqual(DiceType.D4, baseDie);
 
             // Sans la spé "Maniement de l'Épée", le dé chute d'un niveau en parade
             Assert.IsFalse(SkillDefinitions.HasDefensiveSpecialization(sheet, SkillType.ManiementArmes));
             DiceType penalized = SkillDefinitions.StepDownDie(baseDie);
-            Assert.AreEqual(DiceType.D4, penalized);
+            Assert.AreEqual(DiceType.D2, penalized);
 
             // Avec la spé, aucune rétrogradation
             sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
             Assert.IsTrue(SkillDefinitions.HasDefensiveSpecialization(sheet, SkillType.ManiementArmes));
+        }
+
+        [Test]
+        public void TestCombatStats_KeepsSheetTrainingsAndSpecializations()
+        {
+            // Non-régression : les entraînements et spés de la fiche (ex: Mina,
+            // Mains Nues +3 + Arts Martiaux) doivent survivre à ToCombatStats.
+            // Stats réelles de Mina : FOR 3, AGI 5, MAG 5 (éveillée → Corps Augmenté).
+            var attr = new Attributes(@for: 3, agi: 5, con: 3, rap: 4, @int: 3, eru: 2, cha: 3, ins: 3, mag: 5);
+            var sheet = new CharacterSheet { Name = "Mina", BaseAttributes = attr };
+            sheet.GetSkill(SkillType.MainsNues).TrainingLevel = 3;
+            sheet.UnlockedSpecializations.Add("Arts Martiaux");
+
+            var stats = sheet.ToCombatStats();
+
+            Assert.IsTrue(object.ReferenceEquals(sheet, stats.Sheet));
+            // Hors attaque (paliers) : valeur 4 → +1 ; +3 entraînements = 4 niveaux → D10.
+            Assert.AreEqual(DiceType.D10, stats.GetSkillDie(SkillType.MainsNues));
+            Assert.AreEqual(7, stats.GetSkillRank(SkillType.MainsNues));
+            Assert.IsTrue(stats.HasSpecialization("Arts Martiaux"));
+            Assert.IsTrue(SkillDefinitions.HasDefensiveSpecialization(stats.Sheet, SkillType.MainsNues));
+
+            // En mêlée, Mina frappe en Mains Nues (Corps Augmenté → D12, voir test dédié)
+            // et non au Maniement d'Arme (valeur 4 → +1 → D4).
+            Assert.AreEqual(DiceType.D4, stats.GetSkillDie(SkillType.ManiementArmes));
+            Assert.AreEqual(SkillType.MainsNues, stats.GetBestMeleeAttackSkill());
+        }
+
+        [Test]
+        public void TestMagicAugmentedBody_ReplacesForceWithMagicOnOffensiveUnarmed()
+        {
+            // Règle générale « Corps Augmenté » : Mains Nues offensif, MAG > 0 →
+            // FOR substituée par MAG (meilleure des deux), entraînements inchangés.
+            var attr = new Attributes(@for: 3, agi: 5, con: 3, rap: 4, @int: 3, eru: 2, cha: 3, ins: 3, mag: 5);
+            var sheet = new CharacterSheet { Name = "Mina", BaseAttributes = attr };
+            sheet.GetSkill(SkillType.MainsNues).TrainingLevel = 3;
+            var stats = sheet.ToCombatStats();
+
+            Assert.IsTrue(stats.IsMagicAugmented(SkillType.MainsNues, true));
+            Assert.IsFalse(stats.IsMagicAugmented(SkillType.MainsNues, false));
+            Assert.IsFalse(stats.IsMagicAugmented(SkillType.ManiementArmes, true));
+
+            // Offensif (paliers) : MAG 5 → +2 ; +3 entraînements = 5 niveaux → D12.
+            Assert.AreEqual(8, stats.GetSkillRank(SkillType.MainsNues, true));
+            Assert.AreEqual(DiceType.D12, stats.GetSkillDie(SkillType.MainsNues, true));
+            // Défensif : inchangé, valeur 4 → +1 ; +3 = 4 niveaux → D10.
+            Assert.AreEqual(7, stats.GetSkillRank(SkillType.MainsNues, false));
+            Assert.AreEqual(DiceType.D10, stats.GetSkillDie(SkillType.MainsNues, false));
+
+            // Non-éveillé (MAG 0) : offensif = défensif, aucune augmentation.
+            var plainAttr = new Attributes(@for: 5, agi: 5, con: 4, rap: 3, @int: 2, eru: 3, cha: 1, ins: 3, mag: 0);
+            var plainSheet = new CharacterSheet { Name = "Brute", BaseAttributes = plainAttr };
+            plainSheet.GetSkill(SkillType.MainsNues).TrainingLevel = 1;
+            var plainStats = plainSheet.ToCombatStats();
+
+            Assert.IsFalse(plainStats.IsMagicAugmented(SkillType.MainsNues, true));
+            Assert.AreEqual(plainStats.GetSkillDie(SkillType.MainsNues, false),
+                plainStats.GetSkillDie(SkillType.MainsNues, true));
         }
 
         [Test]
@@ -145,21 +205,22 @@ namespace Killtime.Tests
             var stats = sheet.ToCombatStats();
             stats.Sheet = sheet;
 
+            // RÈGLE CODEX : aucun mod carac ajouté. Base = 0, seuls les états modifient.
             int baseMod = stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true);
-            Assert.AreEqual(4, baseMod);
+            Assert.AreEqual(0, baseMod);
 
             // 1. Déstabilisé (-2)
             stats.ActiveStatus |= StatusEffect.Destabilise;
-            Assert.AreEqual(2, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
+            Assert.AreEqual(-2, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
 
             // 2. Étourdi (-1) => Cumul à -3
             stats.ActiveStatus |= StatusEffect.Etourdi;
-            Assert.AreEqual(1, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
+            Assert.AreEqual(-3, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
 
             // 3. À Terre (-1 attaque, -2 défense)
             stats.ActiveStatus |= StatusEffect.ATerre;
-            Assert.AreEqual(0, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
-            Assert.AreEqual(-1, stats.GetSkillModifier(SkillType.Esquive, isOffensive: false));
+            Assert.AreEqual(-4, stats.GetSkillModifier(SkillType.ManiementArmes, isOffensive: true));
+            Assert.AreEqual(-5, stats.GetSkillModifier(SkillType.Esquive, isOffensive: false));
 
             // 4. Inconscient / K.O. : Parade impossible et interdiction d'attaquer
             stats.ActiveStatus |= StatusEffect.Inconscient;

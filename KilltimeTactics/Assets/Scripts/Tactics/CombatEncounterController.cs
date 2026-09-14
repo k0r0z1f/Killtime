@@ -9,6 +9,7 @@ using Killtime.Core.Character;
 using Killtime.CameraSystem;
 using Killtime.UI;
 using Killtime.WebGL;
+using Killtime.Audio;
 
 namespace Killtime.Tactics
 {
@@ -95,8 +96,23 @@ namespace Killtime.Tactics
                 return;
             }
 
+            // Mode FullAuto : l'IA contrôle aussi les alliés, aucun déplacement manuel.
+            var ai = GetComponent<AI.TacticalAIController>() ?? FindAnyObjectByType<AI.TacticalAIController>();
+            if (ai != null && ai.Mode == AI.CombatAIMode.FullAuto)
+            {
+                return;
+            }
+
+            // Fenêtre flottante/HUD survolée : pas de déplacement 3D (clic réservé à l'UI).
+            if (FloatingWindowChrome.IsPointerOverAnyWindow())
+            {
+                return;
+            }
+
             if (Input.GetMouseButtonDown(0))
             {
+                // Clic carte 3D : repli auto des fenêtres flottantes en coins (fantômes).
+                FloatingWindowChrome.OnMapClicked();
                 Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
@@ -154,21 +170,31 @@ namespace Killtime.Tactics
                 target.transform,
                 onStrikePoint: () =>
                 {
-                    // Résolution mathématique du coup au moment de l'impact
+                    // Résolution mathématique du coup au moment de l'impact.
+                    // Au contact : meilleure compétence de mêlée de l'attaquant
+                    // (jamais de Maniement d'Arme imposé à un mains-nues entraîné).
+                    SkillType encounterAttackSkill = attacker.Stats.GetBestMeleeAttackSkill();
                     var result = _combatCalculator.ResolveTargetedAttack(
                         attacker: attacker.Stats,
                         defender: target.Stats,
                         targetedPart: part,
-                        attackDie: DiceType.D6,
-                        attackModifier: attacker.Stats.Attributes.Agilite,
-                        defenseDie: DiceType.D4,
-                        defenseModifier: target.Stats.Attributes.Agilite,
+                        attackDie: attacker.Stats.GetSkillDie(encounterAttackSkill, true),
+                        attackModifier: attacker.Stats.GetStatusModifier(encounterAttackSkill, isOffensive: true),
+                        defenseDie: target.Stats.GetSkillDie(SkillType.Esquive),
+                        defenseModifier: target.Stats.GetStatusModifier(SkillType.Esquive, isOffensive: false),
+                        attackSkill: encounterAttackSkill,
                         weaponBaseDamage: 4,
                         cancelPenaltyWithAP: cancelPenaltyWithAP,
                         defenderArmor: target.Stats.BaseArmorAbsorption
                     );
 
                     _hud?.AddCombatLog(result.CombatLog);
+
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayCombatResult(
+                            result.IsHit, result.IsBlocked, result.IsCritical,
+                            result.ArmorAbsorbed > 0, result.ExceededEncaissement,
+                            result.FatalResolution.ToString(), target.transform.position);
 
                     if (!target.Stats.IsAlive || target.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient))
                     {

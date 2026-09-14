@@ -483,7 +483,8 @@
                             <strong>Axiome de Résolution :</strong> Tout Jet Est Lié à Une Compétence
                         </div>
                         <div class="callout-body">
-                            Une Épreuve de Caractéristique (EC) ne teste jamais un attribut nu. Elle mesure toujours l'expression d'une <strong>compétence précise</strong>. Le rang effectif de la compétence (Moyenne des attributs liés + Entraînements) détermine le calibre du dé polyédrique lancé.
+                            Une Épreuve de Caractéristique (EC) ne teste jamais un attribut nu. Elle mesure toujours l'expression d'une <strong>compétence précise</strong>. La valeur de référence de la compétence (moyenne des attributs liés) donne des <strong>niveaux de dés</strong> (1-2 : +0, 3-4 : +1, 5-6 : +2, 7-8 : +3, 9-10 : +4), chaque <strong>entraînement</strong> ajoute +1 niveau, et le total fait monter le dé depuis le d2.<br>
+                            <strong>Interdit : aucun modificateur de caractéristique n'est ajouté au tirage.</strong> Les attributs fixent uniquement le dé. Seuls les <strong>PA injectés (+1 / PA)</strong> et les <strong>malus situationnels</strong> (visée, états du Livre VII) modifient le total. Formule officielle : <strong>Total = Tirage du dé de compétence + PA + malus situationnels</strong>.
                         </div>
                     </div>
                     <p class="lead">
@@ -493,10 +494,14 @@
                         supérieure, repoussant le plafond de vos réussites.
                     </p>
 
-                    <h3>6.1 Table de Correspondance Attribut ➔ Dé</h3>
+                    <h3>6.1 Règle de Base : Caractéristique ➔ Niveaux de Dés</h3>
                     <p>
-                        La valeur d'un attribut ou le rang moyen d'une compétence détermine directement le dé
-                        polyédrique lancé lors d'une Épreuve de Caractéristique (EC) :
+                        Une caractéristique ne donne pas directement un dé : elle donne des <strong>niveaux de
+                            dés</strong> ajoutés à partir du <strong>d2</strong>, selon l'échelle inviolable ci-dessous.
+                        Chaque <strong>entraînement</strong> ajoute <strong>+1 niveau</strong>. On monte ensuite
+                        l'échelle des dés : d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ d12 ➔ 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12 ➔ 2d12+10.<br>
+                        <em>Exemple :</em> Magie 5 (+2 niveaux) + 3 entraînements = <strong>5 niveaux</strong> →
+                        <strong>d12</strong>.
                     </p>
 
                     <div class="callout ruby"
@@ -512,11 +517,10 @@
                             Axiome Inviolable : Plafond d'Attribut Fixé à 10
                         </div>
                         <div class="callout-body">
-                            <strong>Un attribut brut ne peut JAMAIS dépasser 10.</strong> Le rang 10 (dé 1d12) constitue
-                            le sommet biologique et arcanique absolu de tout profil. Les paliers d'élite situés au-delà
-                            (2d6 à 2d12+10) ne s'atteignent <em>que</em> par le <strong>Rang Effectif de
-                                Compétence</strong> (Attribut brut [max 10] + Niveaux d'Entraînement de compétences [+1
-                            palier par 5 XP] + Bonus matériels).
+                            <strong>Un attribut brut ne peut JAMAIS dépasser 10.</strong> La valeur 10 (+4 niveaux, dé
+                            1d10 sans entraînement) constitue le sommet biologique et arcanique absolu de tout profil.
+                            Les paliers d'élite situés au-delà (d12 à 2d12+10) ne s'atteignent <em>que</em> par
+                            l'ajout de <strong>Niveaux d'Entraînement de compétences</strong> [+1 palier par 5 XP].
                         </div>
                     </div>
 
@@ -524,74 +528,50 @@
                         <table class="codex-table">
                             <thead>
                                 <tr>
-                                    <th>Attribut Brut (Max 10) / Rang Effectif (Entraîné)</th>
-                                    <th>Palier & Dé Associé</th>
-                                    <th>Moyenne</th>
-                                    <th>Statut & Source d'Élévation</th>
+                                    <th>Valeur de Caractéristique (Max 10)</th>
+                                    <th>Niveaux de Dés Ajoutés</th>
+                                    <th>Dé sans Entraînement</th>
+                                    <th>Statut</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td><strong>1 – 2</strong></td>
+                                    <td><span class="pill-badge ruby">+0</span></td>
                                     <td><span class="pill-badge ruby">1d2</span></td>
-                                    <td>1.5</td>
                                     <td>Atrophie ou infirmité sévère. Jet binaire.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>3</strong></td>
+                                    <td><strong>3 – 4</strong></td>
+                                    <td><span class="pill-badge amber">+1</span></td>
                                     <td><span class="pill-badge amber">1d4</span></td>
-                                    <td>2.5</td>
                                     <td>Moyenne naturelle d'un adulte sain non entraîné.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>4 – 5</strong></td>
+                                    <td><strong>5 – 6</strong></td>
+                                    <td><span class="pill-badge cyan">+2</span></td>
                                     <td><span class="pill-badge cyan">1d6</span></td>
-                                    <td>3.5</td>
                                     <td>Condition physique ou intellectuelle supérieure.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>6 – 7</strong></td>
+                                    <td><strong>7 – 8</strong></td>
+                                    <td><span class="pill-badge cyan">+3</span></td>
                                     <td><span class="pill-badge cyan">1d8</span></td>
-                                    <td>4.5</td>
                                     <td>Vétéran ou pratique professionnelle affirmée.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>8 – 9</strong></td>
-                                    <td><span class="pill-badge cyan">1d10</span></td>
-                                    <td>5.5</td>
-                                    <td>Haut niveau d'expertise, talents d'élite.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>10</strong></td>
-                                    <td><span class="pill-badge emerald">1d12</span></td>
-                                    <td>6.5</td>
+                                    <td><strong>9 – 10</strong></td>
+                                    <td><span class="pill-badge emerald">+4</span></td>
+                                    <td><span class="pill-badge emerald">1d10</span></td>
                                     <td><strong>Plafond Absolu d'Attribut Brut.</strong> Maîtrise d'élite vivante.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Rang Effectif 11 – 13</strong></td>
-                                    <td><span class="pill-badge emerald">2d6</span></td>
-                                    <td>7.0</td>
-                                    <td>Attribut 10 + 1 à 3 Entraînements (Courbe en cloche, double action offensive).
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Rang Effectif 14 – 16</strong></td>
-                                    <td><span class="pill-badge emerald">2d8</span></td>
-                                    <td>9.0</td>
-                                    <td>Attribut + Entraînements avancés (Cinétique majeure).</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Rang Effectif 17 – 19</strong></td>
-                                    <td><span class="pill-badge emerald">2d10</span></td>
-                                    <td>11.0</td>
-                                    <td>Attribut + Maîtrise héroïque / Moteurs de 5e force.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Rang Effectif 20+</strong></td>
-                                    <td><span class="pill-badge emerald">2d12</span> ➔ <span
-                                            class="pill-badge emerald">2d12+10</span></td>
-                                    <td>13.0+</td>
-                                    <td>Plafond absolu de compétence (Échelle cosmique 34).</td>
+                                    <td><strong>+1 Entraînement</strong></td>
+                                    <td><span class="pill-badge emerald">+1 / entraînement</span></td>
+                                    <td>d2 ➔ d4 ➔ d6 ➔ d8 ➔ d10 ➔ <strong>d12</strong> ➔ 2d6 ➔ 2d8 ➔ 2d10 ➔ 2d12 ➔
+                                        2d12+10</td>
+                                    <td>5 XP par entraînement (max +3). Les paliers doubles (2d6+) autorisent la double
+                                        action offensive.</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -818,8 +798,8 @@
                         Force vs Force) :
                     </p>
                     <ul>
-                        <li>Chaque protagoniste effectue son jet de dé, applique ses entraînements et ajoute ses points
-                            d'action investis.</li>
+                        <li>Chaque protagoniste lance le <strong>dé de sa compétence</strong> (les entraînements ont déjà élevé le palier du dé, ils ne s'ajoutent pas au total), puis ajoute ses <strong>points
+                            d'action investis (+1 / PA)</strong> et applique les <strong>malus situationnels</strong> (visée, états). <strong>Aucun modificateur de caractéristique n'est ajouté.</strong></li>
                         <li>On soustrait le score du défenseur de celui de l'attaquant : ce résultat est le
                             <strong>Différentiel Net</strong>.
                         </li>

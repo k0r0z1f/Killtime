@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Killtime.Tactics.Units;
 
 namespace Killtime.Tactics.Grid
 {
@@ -89,6 +90,88 @@ namespace Killtime.Tactics.Grid
                 node.GroundTexture = "";
                 node.WorldPosition = node.Coordinates.ToWorldPosition(_hexRadius, _gridHeight);
             }
+        }
+
+        /// <summary>
+        /// Libère uniquement les marqueurs d'occupation (1 case = 1 avatar).
+        /// À appeler avant tout (re)placement d'unités pour éviter les drapeaux
+        /// fantômes laissés par des Destroy() différés à la fin de frame.
+        /// </summary>
+        public void ClearOccupancy()
+        {
+            foreach (var node in _nodes.Values)
+            {
+                node.IsOccupied = false;
+            }
+        }
+
+        /// <summary>
+        /// Vrai si la case existe, est praticable et libre de tout avatar.
+        /// Vérifie le drapeau logique et la présence physique d'une unité vivante.
+        /// </summary>
+        public bool IsCellFree(HexCoordinates coords)
+        {
+            if (!_nodes.TryGetValue(coords, out var node)) return false;
+            if (!node.IsWalkable || node.IsOccupied) return false;
+
+            var all = FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                var u = all[i];
+                if (u != null && u.Stats != null && u.Stats.IsAlive && u.CurrentCoords.Equals(coords))
+                {
+                    node.IsOccupied = true;
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// Cherche la case libre la plus proche (BFS en anneaux) pour éviter
+        /// tout empilement d'avatars sur la même case.
+        /// </summary>
+        public bool TryFindNearestFreeCell(HexCoordinates origin, out HexCoordinates freeCoords, int maxRadius = 8, HashSet<HexCoordinates> extraReserved = null)
+        {
+            freeCoords = origin;
+            if (IsCellFree(origin) && (extraReserved == null || !extraReserved.Contains(origin)))
+            {
+                return true;
+            }
+
+            var visited = new HashSet<HexCoordinates> { origin };
+            var frontier = new Queue<HexCoordinates>();
+            frontier.Enqueue(origin);
+
+            int guard = 0;
+            while (frontier.Count > 0 && guard++ < 2000)
+            {
+                var current = frontier.Dequeue();
+                if (current.DistanceTo(origin) > maxRadius) continue;
+
+                for (int dir = 0; dir < 6; dir++)
+                {
+                    var neighbor = current.GetNeighbor(dir);
+                    if (!visited.Add(neighbor)) continue;
+                    if (neighbor.DistanceTo(origin) > maxRadius) continue;
+
+                    if (IsCellFree(neighbor) && (extraReserved == null || !extraReserved.Contains(neighbor)))
+                    {
+                        freeCoords = neighbor;
+                        return true;
+                    }
+
+                    // On traverse même les cases occupées pour explorer l'anneau suivant,
+                    // mais jamais les cases inexistantes ou non praticables.
+                    if (_nodes.TryGetValue(neighbor, out var node) && node.IsWalkable)
+                    {
+                        frontier.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            return false;
         }
 
         private void Awake()

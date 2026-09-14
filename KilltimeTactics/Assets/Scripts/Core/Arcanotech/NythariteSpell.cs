@@ -56,7 +56,8 @@ namespace Killtime.Core.Arcanotech
             }
 
             int prevHp = target.CurrentHealth;
-            var roll = diceRoller.Roll(DiceType.D10, caster.Attributes.Intelligence, 10);
+            // RÈGLE CODEX : aucun mod de caractéristique ajouté, même en magie. Jet sec 1d10 vs SD 10.
+            var roll = diceRoller.Roll(DiceType.D10, 0, 10);
             if (roll.IsSuccess)
             {
                 int diffBonus = Math.Max(0, roll.Differential);
@@ -68,7 +69,7 @@ namespace Killtime.Core.Arcanotech
                 }
 
                 log = $"🔮 <b>CANALISATION ARCANOTECH : {Name}</b> (5e Force — {Discipline})\n";
-                log += $"   🎲 <b>Jet de Nytharite :</b> 1d10 [Tirage {roll.RawRoll} + INT {caster.Attributes.Intelligence} = {roll.Total}] vs SD 10 ➔ <b>Différentiel Net : +{roll.Differential}</b>\n";
+                log += $"   🎲 <b>Jet de Nytharite :</b> 1d10 [Tirage {roll.RawRoll} = {roll.Total}] vs SD 10 ➔ <b>Différentiel Net : +{roll.Differential}</b>\n";
                 log += $"   ⚡ <b>Dégâts Arcaniques :</b> {BaseArcaneDamage} (Base) + {diffBonus} (Diff &Delta;) = <b><color=#00E5FF>{totalDamage} Absolus</color></b> (Ignore l'armure)\n";
                 log += $"   ❤️ <b>Vitalité {target.Name} :</b> {prevHp} ➔ <b>{target.CurrentHealth}/{target.MaxHealth} PV</b>";
                 if (InflictedStatus != StatusEffect.None)
@@ -80,7 +81,7 @@ namespace Killtime.Core.Arcanotech
             else
             {
                 log = $"🔮 <b>ÉCHEC DE CANALISATION : {Name}</b>\n";
-                log += $"   🎲 <b>Jet de Nytharite :</b> 1d10 [Tirage {roll.RawRoll} + INT {caster.Attributes.Intelligence} = {roll.Total}] vs SD 10 (Différentiel: {roll.Differential}) ➔ Flux arcanique dissipé.";
+                log += $"   🎲 <b>Jet de Nytharite :</b> 1d10 [Tirage {roll.RawRoll} = {roll.Total}] vs SD 10 (Différentiel: {roll.Differential}) ➔ Flux arcanique dissipé.";
                 return false;
             }
         }

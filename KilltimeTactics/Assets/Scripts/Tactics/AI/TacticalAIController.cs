@@ -8,6 +8,7 @@ using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Character;
+using Killtime.Core.Arcanotech;
 using Killtime.CameraSystem;
 
 namespace Killtime.Tactics.AI
@@ -20,24 +21,23 @@ namespace Killtime.Tactics.AI
 
     public enum AIPersonality
     {
-        Balanced,   // Équilibre attaque, réserve défensive et survie
-        Aggressive, // Dépense tout, prend des risques pour tuer vite
-        Tactician,  // Privilégie la réserve de parade, le hit-and-run et les membres
-        Survivor    // Fuit très vite si blessé, joue l'attrition à distance
+        Balanced,   // Équilibre attaque soutenue, réserve minimale (1 PA) et survie
+        Aggressive, // Dépense 100% de ses PA, injection maximale, aucune réserve
+        Tactician,  // Privilégie la visée des membres, 1 PA de réserve, sorts et hit-and-run
+        Survivor    // Repli si PV critiques, sinon attrition
     }
 
     public enum TacticalPosture
     {
-        AllInLethal,     // Opportunité d'élimination : dépense tous ses PA pour tuer
-        CalculatedStrike,// Attaque tout en conservant une réserve de PA pour parer/esquiver
-        HitAndRun,       // Frappe puis recule pour forcer l'ennemi à marcher
-        TacticalRetreat, // En danger mortel : repli, gain de distance, souffle de fuite
-        DefensiveHold    // Trop loin pour frapper sans s'exposer : attend en garde haute
+        AllInLethal,      // Opportunité d'élimination : dépense et injection maximales
+        CalculatedStrike, // Attaque engagée avec injection des PA excédentaires
+        HitAndRun,        // Frappe puis décrochage d'une case
+        TacticalRetreat   // Danger mortel : repli vers la distance maximale
     }
 
     /// <summary>
     /// Contrôleur d'IA Tactique Militaire.
-    /// Gère l'économie stricte des PA (défense vs attaque), les décrochages et la survie.
+    /// Exploite activement l'économie des PA en sachant qu'ils sont réinitialisés à chaque tour.
     /// </summary>
     public class TacticalAIController : MonoBehaviour
     {
@@ -51,11 +51,11 @@ namespace Killtime.Tactics.AI
         [SerializeField] private CombatAIMode _mode = CombatAIMode.Normal;
         [SerializeField] private AIPersonality _defaultPersonality = AIPersonality.Balanced;
         [SerializeField] private bool _isAIEnabled = true;
-        [SerializeField] [Range(0.05f, 6.0f)] private float _actionDelay = 1.0f;
+        [SerializeField] [Range(0.05f, 6.0f)] private float _actionDelay = 0.8f;
 
         [Header("Paramètres de Survie & Économie")]
-        [SerializeField] [Range(0.15f, 0.5f)] private float _retreatHealthRatio = 0.30f; // Fuit si PV < 30%
-        [SerializeField] [Range(0, 3)] private int _baseDefensiveAPReserve = 1;         // PA gardés pour les réactions
+        [SerializeField] [Range(0.15f, 0.4f)] private float _retreatHealthRatio = 0.25f;
+        [SerializeField] [Range(0, 2)] private int _baseDefensiveAPReserve = 1;
 
         public CombatAIMode Mode { get => _mode; set => _mode = value; }
         public bool IsAIEnabled { get => _isAIEnabled; set => _isAIEnabled = value; }
@@ -115,7 +115,6 @@ namespace Killtime.Tactics.AI
             if (_turnManager != null && _turnManager.IsCombatOver) return;
             if (!_isAIEnabled || unit == null || unit.Stats == null) return;
 
-            // Sécurité anti-blocage : si l'IA reçoit le tour d'une unité morte, libérer le tour immédiatement
             if (!unit.Stats.IsAlive)
             {
                 _turnManager?.EndCurrentTurn();
@@ -141,9 +140,9 @@ namespace Killtime.Tactics.AI
 
             var visual = unit.GetComponent<TacticalUnitVisual>();
             int loopGuard = 0;
-            const int maxSteps = 6;
+            const int maxSteps = 8;
 
-            while (unit.Stats.IsAlive && loopGuard++ < maxSteps)
+            while (unit.Stats.IsAlive && loopGuard++ < maxSteps && unit.Stats.CurrentActionPoints > 0)
             {
                 var target = EvaluateBestTarget(unit);
                 if (target == null) break;
@@ -152,7 +151,7 @@ namespace Killtime.Tactics.AI
                 var posture = EvaluateTacticalPosture(unit, target, dist);
 
                 // -------------------------------------------------------------
-                // CAS 1 : RETRAITE STRATÉGIQUE / SURVIE CRITIQUE
+                // 1. RETRAITE CRITIQUE (Danger mortel)
                 // -------------------------------------------------------------
                 if (posture == TacticalPosture.TacticalRetreat)
                 {
@@ -163,83 +162,71 @@ namespace Killtime.Tactics.AI
                 }
 
                 // -------------------------------------------------------------
-                // CAS 2 : EMBUSCADE / DÉFENSE (Trop loin pour frapper ce tour-ci)
+                // 2. SORTS ARCANOTECH À DISTANCE (Livre IV)
                 // -------------------------------------------------------------
-                if (posture == TacticalPosture.DefensiveHold)
+                if (dist > 1 && TryCastBestSpell(unit, target))
                 {
-                    // L'IA refuse de courir se suicider au contact à 0 PA
-                    visual?.SpawnFloatingText($"[GARDE] Maintien Défensif ({unit.Stats.CurrentActionPoints} PA)", new Color(0.3f, 0.8f, 1.0f));
                     yield return new WaitForSeconds(_actionDelay);
-                    break;
+                    continue;
                 }
 
                 // -------------------------------------------------------------
-                // CAS 3 : COMBAT AU CONTACT (Distance == 1)
+                // 3. COMBAT AU CONTACT (Distance == 1)
                 // -------------------------------------------------------------
                 if (dist == 1)
                 {
-                    int reserveNeeded = GetRequiredDefensiveReserve(unit, posture);
-                    int apAfterAttack = unit.Stats.CurrentActionPoints - 2;
+                    SkillType attackSkill = unit.Stats.GetBestMeleeAttackSkill();
+                    DiceType attackDie = unit.Stats.GetSkillDie(attackSkill, true);
 
-                    // Si attaquer nous laisse à 0 PA et sans défense contre un adversaire redoutable
-                    if (apAfterAttack < reserveNeeded && posture != TacticalPosture.AllInLethal)
-                    {
-                        // Peut-on utiliser le souffle pour financer l'attaque ET garder la réserve ?
-                        if (CanTakeBreathSafely(unit))
-                        {
-                            unit.Stats.TakeEmergencyBreath(2);
-                            visual?.SpawnFloatingText("[SOUFFLE] Maintien de Garde (+2 PA)", Color.yellow);
-                            yield return new WaitForSeconds(_actionDelay);
-                        }
-                        else
-                        {
-                            // On refuse d'attaquer si cela annule totalement notre capacité à réagir
-                            visual?.SpawnFloatingText("[GARDE] Réserve Réactive", new Color(0.2f, 0.9f, 0.6f));
-                            yield return new WaitForSeconds(_actionDelay);
-                            break;
-                        }
-                    }
-
-                    if (unit.Stats.CurrentActionPoints >= 2 && unit.Stats.CanAttack(DiceType.D6))
+                    if (unit.Stats.CanAttack(attackDie) && unit.Stats.CurrentActionPoints >= 2)
                     {
                         yield return StartCoroutine(ExecuteTacticalAttack(unit, target, posture));
 
-                        // Si posture Hit-and-Run : Utiliser les PA restants pour décrocher !
                         if (posture == TacticalPosture.HitAndRun && unit.Stats.CurrentActionPoints >= 1)
                         {
-                            visual?.SpawnFloatingText("[RETRAIT] Décrochage Tactique", new Color(0.9f, 0.7f, 0.2f));
+                            visual?.SpawnFloatingText("[RETRAIT] Décrochage", new Color(0.9f, 0.7f, 0.2f));
                             yield return StartCoroutine(ExecuteDisengageStep(unit, target));
+                            break;
                         }
 
                         yield return new WaitForSeconds(_actionDelay);
                         continue;
                     }
+                    else if (unit.Stats.CanAttack(attackDie) && unit.Stats.CurrentActionPoints < 2 && CanTakeBreathSafely(unit))
+                    {
+                        unit.Stats.TakeEmergencyBreath(2);
+                        visual?.SpawnFloatingText("🫁 Souffle d'Attaque (+2 PA)", Color.yellow);
+                        yield return new WaitForSeconds(_actionDelay);
+                        continue;
+                    }
+
                     break;
                 }
 
                 // -------------------------------------------------------------
-                // CAS 4 : APPROCHE COORDONNÉE (Budget Déplacement + Attaque)
+                // 4. APPROCHE VERS LA CIBLE (Distance > 1)
                 // -------------------------------------------------------------
-                if (unit.Stats.CurrentActionPoints >= 3)
+                int availableAP = unit.Stats.CurrentActionPoints;
+                if (availableAP >= 1)
                 {
-                    var approachHex = FindSmartApproachHex(unit, target);
-                    if (approachHex.HasValue)
+                    int reserve = GetRequiredDefensiveReserve(unit, posture);
+                    int moveBudget = Mathf.Max(1, availableAP - reserve);
+
+                    var pathToTarget = FindPathTowardsTarget(unit, target, moveBudget);
+                    if (pathToTarget != null && pathToTarget.Count > 1)
                     {
-                        var path = _pathfinder.FindPath(unit.CurrentCoords, approachHex.Value, unit.Stats.CurrentActionPoints, out int cost);
-                        if (path != null && path.Count > 1)
-                        {
-                            visual?.SpawnFloatingText($"Manoeuvre d'assaut (-{cost} PA)", new Color(0.2f, 0.85f, 1.0f));
-                            yield return StartCoroutine(unit.MoveAlongPath(path, _grid, cost));
-                            yield return new WaitForSeconds(_actionDelay);
-                            continue;
-                        }
+                        int steps = pathToTarget.Count - 1;
+                        visual?.SpawnFloatingText($"Avance tactique (-{steps} PA)", new Color(0.2f, 0.85f, 1.0f));
+                        yield return StartCoroutine(unit.MoveAlongPath(pathToTarget, _grid, steps));
+                        yield return new WaitForSeconds(_actionDelay);
+                        continue;
                     }
                 }
 
                 break;
             }
 
-            yield return new WaitForSeconds(Mathf.Min(0.5f, _actionDelay * 0.25f));
+            yield return new WaitForSeconds(Mathf.Min(0.4f, _actionDelay * 0.25f));
             _activeTurnRoutine = null;
             _turnManager?.EndCurrentTurn();
         }
@@ -252,34 +239,18 @@ namespace Killtime.Tactics.AI
             float hpRatio = (float)actor.Stats.CurrentHealth / Mathf.Max(1, actor.Stats.MaxHealth);
             bool isMortalDanger = hpRatio <= _retreatHealthRatio;
 
-            // 1. Survie : Si gravement blessé et pas au contact immédiat avec une cible achevable
             if (isMortalDanger && !CanKillTargetThisTurn(actor, target))
             {
                 return TacticalPosture.TacticalRetreat;
             }
 
-            // 2. All-In Létal : Si on a les moyens mathématiques d'éliminer la cible ce tour-ci
             if (CanKillTargetThisTurn(actor, target))
             {
                 return TacticalPosture.AllInLethal;
             }
 
-            // 3. Cas où l'ennemi est hors de portée de coup direct ce tour-ci
-            if (dist > 1)
-            {
-                int moveCostNeeded = dist - 1; // Coût approx en PA
-                int apAfterMove = actor.Stats.CurrentActionPoints - moveCostNeeded;
-
-                // ANTI-SUICIDE : Si s'approcher au contact nous vide nos PA (< 2 PA restants)
-                // L'IA refuse de courir se livrer sans pouvoir frapper ni parer.
-                if (apAfterMove < 2)
-                {
-                    return TacticalPosture.DefensiveHold;
-                }
-            }
-
-            // 4. Hit-and-Run : Si tactique ou agile, avec des PA pour taper et reculer
-            if ((_defaultPersonality == AIPersonality.Tactician || _defaultPersonality == AIPersonality.Survivor) && actor.Stats.CurrentActionPoints >= 3)
+            if ((_defaultPersonality == AIPersonality.Tactician || _defaultPersonality == AIPersonality.Survivor)
+                && dist == 1 && actor.Stats.CurrentActionPoints >= 4)
             {
                 return TacticalPosture.HitAndRun;
             }
@@ -291,9 +262,9 @@ namespace Killtime.Tactics.AI
         {
             if (posture == TacticalPosture.AllInLethal) return 0;
             if (_defaultPersonality == AIPersonality.Aggressive) return 0;
-            if (_defaultPersonality == AIPersonality.Tactician) return 2; // Garde toujours de quoi faire une parade active
 
-            return _baseDefensiveAPReserve;
+            // 1 PA suffit pour réagir (BaseReactionAPCost). Tout garder au-delà est un gâchis net.
+            return Mathf.Clamp(_baseDefensiveAPReserve, 0, 1);
         }
 
         private bool CanKillTargetThisTurn(TacticalUnit actor, TacticalUnit target)
@@ -307,11 +278,10 @@ namespace Killtime.Tactics.AI
 
             if (apForAttacks < 2) return false;
 
-            // Estimation des dégâts d'une frappe tête (critique x2) vs PV cible
             int targetHp = target.Stats.CurrentHealth;
-            int estimatedHeadDmg = Mathf.Max(3, (8 - target.Stats.BaseArmorAbsorption) * 2);
+            int estimatedDmg = Mathf.Max(4, (7 - target.Stats.BaseArmorAbsorption) * 2);
 
-            return targetHp <= estimatedHeadDmg;
+            return targetHp <= estimatedDmg;
         }
 
         private bool CanTakeBreathSafely(TacticalUnit unit)
@@ -320,11 +290,54 @@ namespace Killtime.Tactics.AI
         }
 
         // =========================================================================
+        // SORTS ARCANOTECH (LIVRE IV)
+        // =========================================================================
+        private bool TryCastBestSpell(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor.Sheet == null || actor.Sheet.LearnedSpells == null || actor.Sheet.LearnedSpells.Count == 0) return false;
+            int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+
+            NythariteSpell bestSpell = null;
+            int highestDmg = -1;
+
+            for (int i = 0; i < actor.Sheet.LearnedSpells.Count; i++)
+            {
+                var spell = actor.Sheet.LearnedSpells[i];
+                if (spell == null) continue;
+                if (spell.RangeInTiles >= dist && actor.Stats.CurrentActionPoints >= spell.ActionPointCost)
+                {
+                    if (spell.BaseArcaneDamage > highestDmg)
+                    {
+                        highestDmg = spell.BaseArcaneDamage;
+                        bestSpell = spell;
+                    }
+                }
+            }
+
+            if (bestSpell != null)
+            {
+                var dice = new DiceRoller();
+                var vis = target.GetComponent<TacticalUnitVisual>();
+                var actorVis = actor.GetComponent<TacticalUnitVisual>();
+                actorVis?.SpawnFloatingText($"🔮 {bestSpell.Name} (-{bestSpell.ActionPointCost} PA)", Color.cyan);
+
+                if (bestSpell.Cast(actor.Stats, target.Stats, dice, out string log))
+                {
+                    vis?.TriggerHitFlash();
+                    vis?.SpawnFloatingText($"-{bestSpell.BaseArcaneDamage} Arcanique", Color.magenta);
+                }
+
+                return true;
+            }
+
+            return false;
+        }
+
+        // =========================================================================
         // RETRAITE STRATÉGIQUE & DÉCROCHAGE
         // =========================================================================
         private IEnumerator ExecuteRetreat(TacticalUnit actor, TacticalUnit nearestThreat)
         {
-            // Sprint de survie : si on a du souffle, on l'utilise pour fuir plus loin
             if (CanTakeBreathSafely(actor) && actor.Stats.CurrentActionPoints < 3)
             {
                 actor.Stats.TakeEmergencyBreath(2);
@@ -348,7 +361,6 @@ namespace Killtime.Tactics.AI
 
         private IEnumerator ExecuteDisengageStep(TacticalUnit actor, TacticalUnit threat)
         {
-            // Recule d'un hexagone pour forcer l'adversaire à dépenser 1 PA de marche au tour prochain
             int ap = actor.Stats.CurrentActionPoints;
             if (ap <= 0) yield break;
 
@@ -368,7 +380,6 @@ namespace Killtime.Tactics.AI
             HexCoordinates? bestHex = null;
             float maxThreatDistance = current.DistanceTo(threatCoords);
 
-            // Explore les hexagones atteignables dans le budget PA
             for (int dir = 0; dir < 6; dir++)
             {
                 var step = current.GetNeighbor(dir);
@@ -391,51 +402,60 @@ namespace Killtime.Tactics.AI
         }
 
         // =========================================================================
-        // ATTAQUE CHIRURGICALE ADAPTIVE
+        // ATTAQUE TACTIQUE & INJECTION DES PA (LIVRE VI)
         // =========================================================================
         private IEnumerator ExecuteTacticalAttack(TacticalUnit actor, TacticalUnit target, TacticalPosture posture)
         {
             _arena?.SelectTarget(target);
 
-            int ap = actor.Stats.CurrentActionPoints;
-            int targetHp = target.Stats.CurrentHealth;
-            int targetArmor = target.Stats.BaseArmorAbsorption;
+            int availableAP = actor.Stats.CurrentActionPoints;
+            int reserveNeeded = GetRequiredDefensiveReserve(actor, posture);
+
+            SkillType attackSkill = actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1
+                ? actor.Stats.GetBestMeleeAttackSkill()
+                : SkillType.Ballistique;
+
+            DiceType attackDie = actor.Stats.GetSkillDie(attackSkill, true);
+            int maxAttacks = actor.Stats.GetMaxAttacksAllowed(attackDie);
+            bool canAttackAgainLater = (actor.Stats.AttacksThisTurn + 1 < maxAttacks) && (availableAP >= 4 + reserveNeeded);
 
             BodyPart chosenPart = BodyPart.Torse;
             bool cancelPenalty = false;
-            int bonusAP = 0;
 
-            // En All-In Létal : On tente la tête en maximisant l'investissement de PA
-            if (posture == TacticalPosture.AllInLethal && ap >= 3)
+            if (posture == TacticalPosture.AllInLethal && availableAP >= 3)
             {
                 chosenPart = BodyPart.Tete;
                 cancelPenalty = true;
-                if (ap >= 4) bonusAP = 1;
             }
-            // Ciblage membre si posture tactique
-            else if (_defaultPersonality == AIPersonality.Tactician && target.Stats.CurrentActionPoints > 3 && ap >= 3)
+            else if (_defaultPersonality == AIPersonality.Tactician && availableAP >= 3 && target.Stats.CurrentActionPoints > 2)
             {
-                chosenPart = BodyPart.BrasDroit; // Neutralisation offensive
+                chosenPart = BodyPart.BrasDroit;
                 cancelPenalty = true;
             }
-            // Frappe au torse économique et sûre
+
+            int baseCost = cancelPenalty ? 3 : 2;
+            int apAfterBase = availableAP - baseCost;
+
+            // Conversion intégrale des PA excédentaires en bonus de touche & différentiel
+            int bonusAP = 0;
+            if (canAttackAgainLater)
+            {
+                int spendableForBonus = apAfterBase - 2 - reserveNeeded;
+                bonusAP = Mathf.Clamp(spendableForBonus, 0, 3);
+            }
             else
             {
-                chosenPart = BodyPart.Torse;
-                cancelPenalty = false;
+                int spendableForBonus = apAfterBase - reserveNeeded;
+                bonusAP = Mathf.Clamp(spendableForBonus, 0, 4);
             }
 
             var visual = actor.GetComponent<TacticalUnitVisual>();
-            string partLabel = chosenPart == BodyPart.Tete ? "[VISÉE] Tête (All-In)" :
-                               chosenPart == BodyPart.BrasDroit ? "[VISÉE] Désarmement (Bras)" : "[VISÉE] Tir Centré (Torse)";
+            string partLabel = chosenPart == BodyPart.Tete ? "[VISÉE] Tête" :
+                               chosenPart == BodyPart.BrasDroit ? "[VISÉE] Désarmement" : "[VISÉE] Torse";
+            if (bonusAP > 0) partLabel += $" (+{bonusAP} PA Inj.)";
+
             visual?.SpawnFloatingText(partLabel, chosenPart == BodyPart.Tete ? Color.red : Color.cyan);
-
-            // Temps de lecture de la visée par le joueur
-            yield return new WaitForSeconds(Mathf.Min(0.6f, _actionDelay * 0.35f));
-
-            SkillType attackSkill = actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1
-                ? SkillType.ManiementArmes
-                : SkillType.Ballistique;
+            yield return new WaitForSeconds(Mathf.Min(0.5f, _actionDelay * 0.35f));
 
             SkillType defenseSkill = target.Stats.Attributes.Agilite >= target.Stats.Attributes.Force
                 ? SkillType.Esquive
@@ -450,7 +470,6 @@ namespace Killtime.Tactics.AI
                 attackerBonusAP: bonusAP
             );
 
-            // Attendre la résolution complète de la killcam cinématique si active
             if (_cinematicDirector != null)
             {
                 while (_cinematicDirector.CurrentMode == CameraMode.CinematicAction)
@@ -461,33 +480,67 @@ namespace Killtime.Tactics.AI
         }
 
         // =========================================================================
-        // SÉLECTION DE LA CIBLE ET POSITIONNEMENT SMART
+        // APPROCHE FLUIDE PAR TRONÇONNAGE DU CHEMIN
         // =========================================================================
-        private HexCoordinates? FindSmartApproachHex(TacticalUnit actor, TacticalUnit target)
+        private List<HexCoordinates> FindPathTowardsTarget(TacticalUnit actor, TacticalUnit target, int apBudget)
         {
-            int ap = actor.Stats.CurrentActionPoints;
-            HexCoordinates? bestHex = null;
-            int lowestCost = int.MaxValue;
+            if (_pathfinder == null || _grid == null || apBudget <= 0) return null;
+
+            HexCoordinates bestNeighbor = target.CurrentCoords;
+            int minDistance = int.MaxValue;
 
             for (int dir = 0; dir < 6; dir++)
             {
-                var neighbor = target.CurrentCoords.GetNeighbor(dir);
-                var node = _grid.GetNode(neighbor);
-                if (node == null || !node.IsWalkable || (node.IsOccupied && !neighbor.Equals(actor.CurrentCoords))) continue;
-
-                var path = _pathfinder.FindPath(actor.CurrentCoords, neighbor, ap, out int cost);
-                if (path != null && path.Count > 0 && cost < lowestCost)
+                var n = target.CurrentCoords.GetNeighbor(dir);
+                var nNode = _grid.GetNode(n);
+                if (nNode != null && nNode.IsWalkable && (!nNode.IsOccupied || n.Equals(actor.CurrentCoords)))
                 {
-                    // Ne retient que si on conserve au moins de quoi porter une attaque après la marche
-                    if ((ap - cost) >= 2 || _defaultPersonality == AIPersonality.Aggressive)
+                    int d = actor.CurrentCoords.DistanceTo(n);
+                    if (d < minDistance)
                     {
-                        lowestCost = cost;
-                        bestHex = neighbor;
+                        minDistance = d;
+                        bestNeighbor = n;
                     }
                 }
             }
 
-            return bestHex;
+            if (actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1)
+            {
+                return null;
+            }
+
+            // Tracé global sans restriction de budget immédiat (capé à 50)
+            var fullPath = _pathfinder.FindPath(actor.CurrentCoords, bestNeighbor, 50, out _);
+            if (fullPath == null || fullPath.Count <= 1)
+            {
+                return null;
+            }
+
+            // Tronçonnage à la limite stricte du budget de marche alloué ce tour
+            var truncatedPath = new List<HexCoordinates> { fullPath[0] };
+            int accumulatedCost = 0;
+
+            for (int i = 1; i < fullPath.Count; i++)
+            {
+                var step = fullPath[i];
+                var stepNode = _grid.GetNode(step);
+                int stepCost = stepNode != null ? stepNode.ActionPointCost : 1;
+
+                if (accumulatedCost + stepCost > apBudget)
+                {
+                    break;
+                }
+
+                if (stepNode != null && (stepNode.IsOccupied || !stepNode.IsWalkable))
+                {
+                    break;
+                }
+
+                accumulatedCost += stepCost;
+                truncatedPath.Add(step);
+            }
+
+            return truncatedPath.Count > 1 ? truncatedPath : null;
         }
 
         private TacticalUnit EvaluateBestTarget(TacticalUnit actor)
@@ -507,12 +560,11 @@ namespace Killtime.Tactics.AI
                 int dist = actor.CurrentCoords.DistanceTo(potential.CurrentCoords);
                 float curHp = potential.Stats.CurrentHealth;
 
-                // Score de priorité opérationnelle
-                float score = 60f - (dist * 9f);
-                score += (1.0f - (curHp / Mathf.Max(1, potential.Stats.MaxHealth))) * 40f; // Focus faibles
+                float score = 70f - (dist * 7f);
+                score += (1.0f - (curHp / Mathf.Max(1, potential.Stats.MaxHealth))) * 35f;
 
-                if (dist == 1) score += 30f; // Menace directe
-                if (curHp <= 6) score += 40f; // Cible achevable
+                if (dist == 1) score += 40f;
+                if (curHp <= 6) score += 45f;
 
                 if (score > highestScore)
                 {
