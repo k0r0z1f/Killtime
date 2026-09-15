@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Core.Arcanotech;
+using Killtime.Core.Inventory;
 
 namespace Killtime.Core.Character
 {
@@ -25,10 +26,12 @@ namespace Killtime.Core.Character
         public int BaseArmor = 1;
         public int AvailableXP = 0;
         public int TotalEarnedXP = 0;
+        public int CreditsCE = 8000;
 
         public List<SkillProgressionEntry> Skills = new();
         public List<string> UnlockedSpecializations = new();
         public List<NythariteSpell> LearnedSpells = new();
+        public List<InventoryItem> Inventory = new();
 
         public CharacterSheet()
         {
@@ -53,6 +56,80 @@ namespace Killtime.Core.Character
                 Skills.Add(entry);
             }
             return entry;
+        }
+
+        public InventoryItem GetEquippedWeapon()
+        {
+            if (Inventory == null) return null;
+            return Inventory.Find(i => i != null && i.IsEquipped && i.Type == ItemType.Weapon);
+        }
+
+        public bool EquipItem(string itemId)
+        {
+            if (Inventory == null) return false;
+            var item = Inventory.Find(i => i != null && i.ItemId == itemId);
+            if (item == null) return false;
+
+            if (item.Type == ItemType.Weapon)
+            {
+                for (int i = 0; i < Inventory.Count; i++)
+                {
+                    if (Inventory[i] != null && Inventory[i].Type == ItemType.Weapon)
+                    {
+                        Inventory[i].IsEquipped = false;
+                    }
+                }
+            }
+
+            item.IsEquipped = true;
+            return true;
+        }
+
+        public bool UnequipItem(string itemId)
+        {
+            if (Inventory == null) return false;
+            var item = Inventory.Find(i => i != null && i.ItemId == itemId);
+            if (item == null) return false;
+            item.IsEquipped = false;
+            return true;
+        }
+
+        public void AddItem(InventoryItem item)
+        {
+            if (item == null) return;
+            Inventory ??= new List<InventoryItem>();
+            Inventory.Add(item);
+        }
+
+        public bool RemoveItem(string itemId)
+        {
+            if (Inventory == null) return false;
+            return Inventory.RemoveAll(i => i != null && i.ItemId == itemId) > 0;
+        }
+
+        public float GetTotalWeightKg()
+        {
+            float total = 0f;
+            if (Inventory == null) return 0f;
+            for (int i = 0; i < Inventory.Count; i++)
+                if (Inventory[i] != null) total += Inventory[i].WeightKg * Mathf.Max(1, Inventory[i].Quantity);
+            return total;
+        }
+
+        public bool CanAfford(int priceCE) => CreditsCE >= priceCE;
+
+        public bool SpendCredits(int amount)
+        {
+            if (amount < 0) return false;
+            if (CreditsCE < amount) return false;
+            CreditsCE -= amount;
+            return true;
+        }
+
+        public void EarnCredits(int amount)
+        {
+            if (amount < 0) return;
+            CreditsCE += amount;
         }
 
         /// <summary>
@@ -84,8 +161,6 @@ namespace Killtime.Core.Character
         {
             var effective = GetEffectiveAttributes();
             var stats = new CharacterStats(Name, effective, BaseArmor);
-            // Lie la fiche : sans ça, entraînements (GetSkillDie) et spécialisations
-            // (HasSpecialization) sont ignorés (training forcé à 0, spés introuvables).
             stats.Sheet = this;
             return stats;
         }

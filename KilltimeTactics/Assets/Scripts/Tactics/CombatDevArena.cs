@@ -10,6 +10,7 @@ using Killtime.Core.Character;
 using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Chrono;
+using Killtime.Core.Inventory;
 using Killtime.CameraSystem;
 using Killtime.WebGL;
 using Killtime.UI;
@@ -84,6 +85,8 @@ namespace Killtime.Tactics
         private TacticalMapSaveData _currentLoadedMap;
         private string _currentLoadedMapPath;
         private bool _isAttackInProgress = false;
+        /// <summary>Vrai pendant une passe d'armes OU un lancer de grenade (anti double-clic / attente IA).</summary>
+        public bool IsResolving => _isAttackInProgress;
 
         private void Awake()
         {
@@ -180,6 +183,14 @@ namespace Killtime.Tactics
             // sinon les nouvelles unités verraient des cases fantômes occupées.
             _grid?.ClearOccupancy();
 
+            // Suspendre le démarrage auto du TurnManager pendant l'enregistrement en masse :
+            // sinon le 1er RegisterUnit déclenche StartNewRound (et l'IA en FullAuto),
+            // puis le StartNewRound final coupe cette IA en plein vol et laisse
+            // _isAttackInProgress / cinématique bloqués. Un seul démarrage à la fin.
+            bool prevSuspend = _turnManager != null && _turnManager.SuspendAutoStart;
+            if (_turnManager != null) _turnManager.SuspendAutoStart = true;
+            try
+            {
             // 2. Unités de base de l'arène
             PlayerUnit = CreateUnit("Roger (Opératif)", new HexCoordinates(0, 0), 
                 new Attributes(4, 3, 4, 4, 3, 2), 
@@ -244,8 +255,17 @@ namespace Killtime.Tactics
                     _turnManager.RegisterUnit(customUnit);
                 }
             }
+            }
+            finally
+            {
+                if (_turnManager != null) _turnManager.SuspendAutoStart = prevSuspend;
+            }
 
             // 4. Démarre le premier tour pour assigner l'unité active
+            // État verrouillé avant démarrage : aucune attaque/cinématique orpheline.
+            _isAttackInProgress = false;
+            _aiController?.StopAITurn();
+            _cinematicDirector?.ResetCinematicState();
             _turnManager.StartNewRound();
         }
 
@@ -357,6 +377,13 @@ namespace Killtime.Tactics
             }
 
             RecordChronoSnapshot($"Réinitialisation de la Carte '{_currentLoadedMap.MapName}'");
+            if (KilltimeAudioManager.Instance != null)
+            {
+                KilltimeAudioManager.Instance.Play(SoundId.Arena_Reset, 0.8f);
+                _adaptiveTurnCount = 0;
+                KilltimeAudioManager.Instance.PlayMusic(MusicMood.Combat, 0, 0.5f, forceRestart: true);
+                UpdateAdaptiveMusic();
+            }
             Log($"🔄 Carte '<b>{_currentLoadedMap.MapName}</b>' entièrement réinitialisée.");
         }
 
@@ -410,6 +437,10 @@ namespace Killtime.Tactics
 
             var reserved = new HashSet<HexCoordinates>();
             int relocated = 0;
+            bool prevSuspendLoad = _turnManager != null && _turnManager.SuspendAutoStart;
+            if (_turnManager != null) _turnManager.SuspendAutoStart = true;
+            try
+            {
             for (int i = 0; i < mapUnits.Count; i++)
             {
                 var unitData = mapUnits[i];
@@ -464,6 +495,11 @@ namespace Killtime.Tactics
 
                 _turnManager?.RegisterUnit(unit);
             }
+            }
+            finally
+            {
+                if (_turnManager != null) _turnManager.SuspendAutoStart = prevSuspendLoad;
+            }
 
             if (SparringDummies.Count > 0)
             {
@@ -478,6 +514,11 @@ namespace Killtime.Tactics
                     _cameraController.FocusOn(SparringDummies[0].transform);
             }
 
+            // État verrouillé avant démarrage : évite un _isAttackInProgress orphelin
+            // qui ferait ignorer toutes les attaques suivantes (IA bloquée en FullAuto).
+            _isAttackInProgress = false;
+            _aiController?.StopAITurn();
+            _cinematicDirector?.ResetCinematicState();
             _turnManager?.StartNewRound();
 
             RecordChronoSnapshot($"Chargement des unités de la carte ({reserved.Count} avatars)");
@@ -800,8 +841,10 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// Déclenche une passe d'armes ou tir ciblé selon la séquence d'injection de PA du Livre VI.
-        /// Conforme à l'Axiome Fondateur : résolution par compétence (Maniement, Ballistique, Mains Nues vs Esquive/Parade).
+        /// Déclenche une passe d'armes ou tir ciblé selon la séquence officielle du Livre VI §24.1 :
+        /// attaque (jet puis PA bonus après tirage) -> défense (jet puis PA bonus après tirage)
+        /// -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
+        /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
         /// </summary>
         public void ExecuteAttack(
             BodyPart targetedPart, 
@@ -817,7 +860,11 @@ namespace Killtime.Tactics
             DiceType? attackDie = null,
             DiceType? defenseDie = null)
         {
-            if (_isAttackInProgress) return;
+            if (_isAttackInProgress)
+            {
+                Log("⚠️ Attaque ignorée : une résolution est déjà en cours (anti double-clic).");
+                return;
+            }
 
             var attacker = _turnManager.ActiveUnit;
             var defender = CurrentTarget;
@@ -844,16 +891,12 @@ namespace Killtime.Tactics
                 return;
             }
 
-            int resolvedDefenderBonus = defenderBonusAP;
-            if (resolvedDefenderBonus < 0)
-            {
-                resolvedDefenderBonus = 0;
-                if (defenderWantsToDefend && defender.Stats.CurrentActionPoints > 1)
-                {
-                    int extraAvailable = defender.Stats.CurrentActionPoints - 1;
-                    resolvedDefenderBonus = Mathf.Clamp(attackerBonusAP > 0 ? attackerBonusAP : 1, 0, extraAvailable);
-                }
-            }
+            // Séquence officielle Livre VI §24.1 : les PA bonus s'injectent APRÈS les tirages.
+            // Bonus explicite (>= 0) : appliqué post-tirage dans le calculateur.
+            // Bonus auto (< 0) : défense réactive — calculée APRÈS révélation du total final
+            // attaquant et du brut défensif (besoin = attaque finale - défense brute + 1).
+            bool autoReactiveDefense = defenderBonusAP < 0;
+            int resolvedDefenderBonus = autoReactiveDefense ? 0 : Mathf.Max(0, defenderBonusAP);
 
             Vector3 combatDir = defender.transform.position - attacker.transform.position;
             combatDir.y = 0f;
@@ -868,10 +911,19 @@ namespace Killtime.Tactics
 
             var attVisual = attacker.GetComponent<TacticalUnitVisual>();
             var defVisual = defender.GetComponent<TacticalUnitVisual>();
+            bool isMeleeStrike = (attackSkill == SkillType.MainsNues || attackSkill == SkillType.ManiementArmes || attackSkill == SkillType.ArmesContondantes || attackSkill == SkillType.ArmesPercantes);
 
             Action triggerKickAction = () =>
             {
-                attVisual?.TriggerRoundkick();
+                if (isMeleeStrike)
+                {
+                    attVisual?.TriggerRoundkick(forceKick: true);
+                }
+                else
+                {
+                    attVisual?.TriggerRoundkick();
+                }
+
                 if (KilltimeAudioManager.Instance != null && attacker != null)
                     KilltimeAudioManager.Instance.PlayAt(SoundId.Attack_Whoosh, attacker.transform.position, 0.7f);
             };
@@ -890,8 +942,72 @@ namespace Killtime.Tactics
             {
                 attacker.Stats.RegisterAttack();
 
-                var result = (attackDie.HasValue || defenseDie.HasValue)
-                    ? _combatCalculator.ResolveTargetedAttack(
+                int effectiveWeaponDamage = weaponBaseDamage;
+                var equippedWeapon = attacker.Sheet?.GetEquippedWeapon();
+                if (equippedWeapon != null && equippedWeapon.BaseDamage > 0)
+                {
+                    effectiveWeaponDamage = equippedWeapon.BaseDamage;
+                }
+
+                // Règle Livre VI §26.2 : le malus Canon Entravé dépend de la présence d'UN
+                // ennemi au contact de l'attaquant (IsCanonEntrave), pas de la distance
+                // à la cible visée. Un tir de portée sur cible lointaine reste à -2
+                // tant qu'un adversaire conscient colle l'attaquant.
+                _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
+
+                DamageResult result;
+                if (autoReactiveDefense)
+                {
+                    // Duel séquentiel réactif : attaque -> PA attaquant post-tirage ->
+                    // défense -> PA défenseur post-tirage (besoin réel) -> résolution normale.
+                    AttackDuel duel = null;
+                    string duelError = null;
+                    if (attackDie.HasValue || defenseDie.HasValue)
+                    {
+                        // Applique la règle non-exclusive sur le dé défensif explicite si besoin.
+                        DiceType reactiveDefDie = resolvedDefenseDie;
+                        if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
+                        {
+                            bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && defender.Stats.HasSpecialization(defenderSpecialization))
+                                            || SkillDefinitions.HasDefensiveSpecialization(defender.Stats.Sheet, defenseSkill);
+                            // Ne rétrograde que si le dé a été dérivé de la compétence (pas de dé forcé custom).
+                            if (!defenseDie.HasValue && !hasDefSpec)
+                                reactiveDefDie = SkillDefinitions.StepDownDie(reactiveDefDie);
+                        }
+                        duel = _combatCalculator.BeginDuel(
+                            attacker.Stats, defender.Stats, targetedPart,
+                            resolvedAttackDie, attacker.Stats.GetSkillModifier(attackSkill, isOffensive: true),
+                            reactiveDefDie, defender.Stats.GetSkillModifier(defenseSkill, isOffensive: false),
+                            effectiveWeaponDamage, cancelPenaltyWithAP, defenderWantsToDefend,
+                            defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError);
+                    }
+                    else
+                    {
+                        duel = _combatCalculator.BeginSkillDuel(
+                            attacker.Stats, defender.Stats, targetedPart,
+                            attackSkill, defenseSkill, weaponBaseDamage, cancelPenaltyWithAP,
+                            defenderWantsToDefend, attackerSpecialization, defenderSpecialization,
+                            defender.Stats.BaseArmorAbsorption, out duelError);
+                    }
+                    if (duel == null)
+                    {
+                        // Échec du coût de base (PA insuffisants) : BeginDuel n'a rien débité.
+                        Log(duelError ?? "⚠️ Attaque impossible : PA insuffisants pour le coût de base.");
+                        return;
+                    }
+                    else
+                    {
+                        _combatCalculator.RollAttackerRaw(duel);
+                        _combatCalculator.AddAttackerBonusPA(duel, attackerBonusAP);
+                        _combatCalculator.RollDefenderRaw(duel);
+                        int reactiveBonus = _combatCalculator.ComputeReactiveDefenseBonus(duel);
+                        _combatCalculator.AddDefenderBonusPA(duel, reactiveBonus);
+                        result = _combatCalculator.FinishDuel(duel);
+                    }
+                }
+                else if (attackDie.HasValue || defenseDie.HasValue)
+                {
+                    result = _combatCalculator.ResolveTargetedAttack(
                         attacker: attacker.Stats,
                         defender: defender.Stats,
                         targetedPart: targetedPart,
@@ -899,7 +1015,7 @@ namespace Killtime.Tactics
                         attackModifier: attacker.Stats.GetSkillModifier(attackSkill, isOffensive: true),
                         defenseDie: resolvedDefenseDie,
                         defenseModifier: defender.Stats.GetSkillModifier(defenseSkill, isOffensive: false),
-                        weaponBaseDamage: weaponBaseDamage,
+                        weaponBaseDamage: effectiveWeaponDamage,
                         cancelPenaltyWithAP: cancelPenaltyWithAP,
                         defenderArmor: defender.Stats.BaseArmorAbsorption,
                         attackerBonusAP: attackerBonusAP,
@@ -907,8 +1023,11 @@ namespace Killtime.Tactics
                         defenderWantsToDefend: defenderWantsToDefend,
                         attackSkill: attackSkill,
                         defenseSkill: defenseSkill
-                    )
-                    : _combatCalculator.ResolveTargetedAttack(
+                    );
+                }
+                else
+                {
+                    result = _combatCalculator.ResolveTargetedAttack(
                         attacker: attacker.Stats,
                         defender: defender.Stats,
                         targetedPart: targetedPart,
@@ -923,8 +1042,19 @@ namespace Killtime.Tactics
                         attackerBonusAP: attackerBonusAP,
                         defenderBonusAP: resolvedDefenderBonus
                     );
+                }
 
                 Log(result.CombatLog);
+
+                var laserWeapon = attacker.GetComponentInChildren<LaserRifleWeapon>();
+                // Un roundkick / une frappe au corps-à-corps (Mains Nues, Maniement, Contondantes,
+                // Perçantes) ne doit jamais déclencher le rayon laser + sons de tir, même si un
+                // laser est équipé visuellement. Seul un vrai tir (Ballistique) tire au laser.
+                if (attackSkill == SkillType.Ballistique && !isMeleeStrike && laserWeapon != null && defender != null)
+                {
+                    Vector3 targetCenter = defender.transform.position + Vector3.up * 1.15f;
+                    laserWeapon.FireLaser(targetCenter, result.IsHit);
+                }
 
                 // SFX combat : mapping complet du résultat (hybride procédural/clips).
                 if (KilltimeAudioManager.Instance != null && defender != null)
@@ -973,6 +1103,11 @@ namespace Killtime.Tactics
                         if (result.ExceededEncaissement)
                         {
                             defVisual.SpawnFloatingText($"[CHOC] TRAUMATIQUE ! [{result.InflictedStatus}]", new Color(1.0f, 0.4f, 0.95f));
+                        }
+
+                        if (result.CausedKnockback)
+                        {
+                            TryApplyKnockback(attacker, defender);
                         }
 
                         if (result.FatalResolution == FatalBlowResolution.InstantDeath)
@@ -1062,6 +1197,408 @@ namespace Killtime.Tactics
             resolveImpact?.Invoke();
             yield return new WaitForSeconds(0.65f);
             _isAttackInProgress = false;
+        }
+
+        // =====================================================================
+        // GRENADES : viser (case) -> lancer (main / lance-grenade) -> dispersion ->
+        // impact -> explosion + shrapnels + statuts (Livre VIII §31.3, Livre VI §24).
+        // =====================================================================
+
+        /// <summary>Inventaire lançable de l'unité (grenades main + compatibles lanceur).</summary>
+        public static List<InventoryItem> GetThrowableGrenades(CharacterSheet sheet)
+        {
+            var list = new List<InventoryItem>();
+            if (sheet?.Inventory == null) return list;
+            for (int i = 0; i < sheet.Inventory.Count; i++)
+            {
+                var it = sheet.Inventory[i];
+                if (it != null && it.IsThrowableGrenade()) list.Add(it);
+            }
+            return list;
+        }
+
+        public static InventoryItem GetEquippedLauncher(CharacterSheet sheet)
+        {
+            if (sheet?.Inventory == null) return null;
+            for (int i = 0; i < sheet.Inventory.Count; i++)
+            {
+                var it = sheet.Inventory[i];
+                if (it != null && it.IsLauncher && it.IsEquipped) return it;
+            }
+            return null;
+        }
+
+        public static InventoryItem GetAnyLauncher(CharacterSheet sheet)
+        {
+            if (sheet?.Inventory == null) return null;
+            var eq = GetEquippedLauncher(sheet);
+            if (eq != null) return eq;
+            for (int i = 0; i < sheet.Inventory.Count; i++)
+            {
+                var it = sheet.Inventory[i];
+                if (it != null && it.IsLauncher) return it;
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Déclenche un lancer de grenade sur une CASE (pas une cible anatomique) :
+        /// paie les PA (2 main / 3 lanceur + 1 visée + bonus), consomme 1 grenade du stock,
+        /// anime le lancer, disperse en cas d'échec Ballistique, puis fait détoner la zone.
+        /// </summary>
+        public void ExecuteGrenadeThrow(
+            HexCoordinates targetCoords,
+            string grenadeItemId,
+            bool useLauncher,
+            bool aimed,
+            int attackerBonusAP = 0)
+        {
+            if (_isAttackInProgress)
+            {
+                Log("⚠️ Lancer ignoré : une résolution est déjà en cours (anti double-clic).");
+                return;
+            }
+
+            var attacker = _turnManager != null ? _turnManager.ActiveUnit : PlayerUnit;
+            if (attacker == null || attacker.Stats == null)
+            {
+                Log("⚠️ Impossible de lancer : aucune unité active.");
+                return;
+            }
+            if (!attacker.Stats.IsAlive)
+            {
+                Log($"⚠️ {attacker.Stats.Name} est hors de combat !");
+                return;
+            }
+
+            var sheet = attacker.GetOrBuildSheet();
+            InventoryItem grenade = null;
+            if (!string.IsNullOrEmpty(grenadeItemId) && sheet.Inventory != null)
+                grenade = sheet.Inventory.Find(i => i != null && i.ItemId == grenadeItemId && i.IsThrowableGrenade());
+            if (grenade == null)
+            {
+                var throwables = GetThrowableGrenades(sheet);
+                grenade = throwables.Count > 0 ? throwables[0] : null;
+            }
+            if (grenade == null)
+            {
+                Log($"⚠️ {attacker.Stats.Name} n'a aucune grenade en inventaire ! Achetez-en au marché (Grenades).");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
+            InventoryItem launcher = null;
+            if (useLauncher)
+            {
+                launcher = GetAnyLauncher(sheet);
+                if (launcher == null)
+                {
+                    Log($"⚠️ Aucun lance-grenades en inventaire : lancer à la main ({grenade.Name}).");
+                    useLauncher = false;
+                }
+                else if (!grenade.LauncherCompatible)
+                {
+                    Log($"⚠️ {grenade.Name} incompatible avec un lanceur (poudre noire / inerte) : lancer à la main.");
+                    launcher = null;
+                    useLauncher = false;
+                }
+            }
+
+            int maxRange = GrenadeRules.ComputeMaxRange(grenade, launcher);
+            int dist = attacker.CurrentCoords.DistanceTo(targetCoords);
+            if (dist > maxRange)
+            {
+                Log($"⚠️ Hors de portée : {dist} cases > {maxRange} ({(launcher != null ? launcher.Name : "main")}). Rapprochez-vous ou équipez un lanceur.");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.Move_Denied, 0.6f);
+                return;
+            }
+
+            int baseCost = GrenadeRules.ComputeAPCost(launcher, aimed);
+            int bonusWant = Mathf.Max(0, attackerBonusAP);
+            DiceType atkDie = attacker.Stats.GetSkillDie(SkillType.Ballistique, true);
+            if (!attacker.Stats.CanAttack(atkDie))
+            {
+                int maxAtt = attacker.Stats.GetMaxAttacksAllowed(atkDie);
+                Log($"⚠️ <b>{attacker.Stats.Name}</b> a épuisé son quota d'attaque ({attacker.Stats.AttacksThisTurn}/{maxAtt}) !");
+                return;
+            }
+            if (!InfiniteAP && attacker.Stats.CurrentActionPoints < baseCost)
+            {
+                Log($"⚠️ PA insuffisants : lancer {(launcher != null ? "au lanceur" : "à la main")}{(aimed ? " visé" : "")} = {baseCost} PA (reste {attacker.Stats.CurrentActionPoints}).");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
+            // Débit PA de base puis bonus d'injection (plafonné au reste, comme les passes d'armes).
+            if (!InfiniteAP)
+            {
+                attacker.Stats.ConsumeActionPoints(baseCost);
+                int applied = 0;
+                for (int i = 0; i < bonusWant; i++)
+                {
+                    if (attacker.Stats.ConsumeActionPoints(1)) applied++;
+                    else break;
+                }
+                bonusWant = applied;
+            }
+            attacker.Stats.RegisterAttack();
+
+            // Consomme 1 grenade du stock (décrémente la pile ou retire l'item).
+            var grenadeDef = grenade.Clone();
+            if (grenade.IsStackable && grenade.Quantity > 1)
+            {
+                grenade.Quantity--;
+            }
+            else
+            {
+                sheet.RemoveItem(grenade.ItemId);
+            }
+            attacker.NotifyInventoryChanged(true);
+
+            // Orientation + animation de lancer.
+            var targetNode = _grid != null ? _grid.GetNode(targetCoords) : null;
+            Vector3 targetWorld = targetNode != null ? targetNode.WorldPosition
+                : targetCoords.ToWorldPosition(_grid != null ? _grid.HexRadius : 1f, 0f);
+            Vector3 dir = targetWorld - attacker.transform.position;
+            dir.y = 0f;
+            if (dir != Vector3.zero) attacker.transform.rotation = Quaternion.LookRotation(dir);
+            var attVisual = attacker.GetComponent<TacticalUnitVisual>();
+            attVisual?.TriggerGrenadeThrow();
+
+            // Jet de précision immédiat (pour connaître le point de chute avant l'arc visuel).
+            var calc = new GrenadeCalculator(_diceRoller);
+            var throwOutcome = calc.ResolveThrow(attacker.Stats, dist, grenadeDef, launcher, bonusWant, aimed);
+            var blastCoords = ResolveScatterCoords(targetCoords, throwOutcome);
+
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.PlayUI(SoundId.VATS_Fire, 0.85f);
+            attVisual?.SpawnFloatingText(
+                $"💣 {grenadeDef.Name} (-{baseCost + bonusWant} PA)", new Color(1f, 0.72f, 0.15f));
+
+            _isAttackInProgress = true;
+            StartCoroutine(GrenadeThrowRoutine(attacker, grenadeDef, launcher, targetCoords, blastCoords, throwOutcome, dist, maxRange, baseCost + bonusWant));
+        }
+
+        private HexCoordinates ResolveScatterCoords(HexCoordinates target, GrenadeThrowOutcome outcome)
+        {
+            if (outcome.IsOnTarget || outcome.ScatterDistance <= 0 || _grid == null) return target;
+            var cur = target;
+            for (int i = 0; i < outcome.ScatterDistance; i++)
+            {
+                var next = cur.GetNeighbor(Mathf.Max(0, outcome.ScatterDirIndex));
+                if (_grid.GetNode(next) == null) break;
+                cur = next;
+            }
+            return cur;
+        }
+
+        private IEnumerator GrenadeThrowRoutine(
+            TacticalUnit attacker, InventoryItem grenadeDef, InventoryItem launcher,
+            HexCoordinates aimedCoords, HexCoordinates blastCoords,
+            GrenadeThrowOutcome throwOutcome, int dist, int maxRange, int totalPa)
+        {
+            Vector3 start = attacker.transform.position + Vector3.up * 1.4f;
+            var blastNode = _grid != null ? _grid.GetNode(blastCoords) : null;
+            Vector3 blastPos = blastNode != null ? blastNode.WorldPosition
+                : blastCoords.ToWorldPosition(_grid != null ? _grid.HexRadius : 1f, 0f);
+            blastPos.y = (blastNode != null ? blastNode.WorldPosition.y : 0f) + 0.05f;
+
+            bool impacted = false;
+            bool withLauncher = launcher != null && launcher.IsLauncher;
+            GrenadeProjectile.Launch(start, blastPos, grenadeDef, withLauncher, () => { impacted = true; });
+
+            float timeout = 4f;
+            float waited = 0f;
+            while (!impacted && waited < timeout)
+            {
+                waited += Time.deltaTime;
+                yield return null;
+            }
+
+            GrenadeExplosionFX.Detonate(blastPos, grenadeDef, Mathf.Max(0, grenadeDef.BlastRadius), _grid != null ? _grid.HexRadius : 1f);
+
+            ResolveGrenadeBlast(attacker, grenadeDef, launcher, aimedCoords, blastCoords, throwOutcome, dist, maxRange, totalPa, blastPos);
+
+            yield return new WaitForSeconds(0.55f);
+            _isAttackInProgress = false;
+        }
+
+        private void ResolveGrenadeBlast(
+            TacticalUnit attacker, InventoryItem grenadeDef, InventoryItem launcher,
+            HexCoordinates aimedCoords, HexCoordinates blastCoords,
+            GrenadeThrowOutcome throwOutcome, int dist, int maxRange, int totalPa, Vector3 blastPos)
+        {
+            var calc = new GrenadeCalculator(_diceRoller);
+            int diceTotal = calc.RollBlastDice(Mathf.Max(0, grenadeDef.DamageDiceCount), out _, out string diceDetail);
+            int blastR = Mathf.Max(0, grenadeDef.BlastRadius);
+            bool isMortar = launcher != null && (launcher.Name ?? "").Contains("Mortier");
+
+            var allUnits = FindObjectsByType<TacticalUnit>();
+            var hits = new List<GrenadeHitResult>();
+            int totalDealt = 0;
+
+            for (int i = 0; i < allUnits.Length; i++)
+            {
+                var u = allUnits[i];
+                if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
+                int d = u.CurrentCoords.DistanceTo(blastCoords);
+                if (d > blastR) continue;
+                int cover = 0;
+                var node = _grid != null ? _grid.GetNode(u.CurrentCoords) : null;
+                if (node != null)
+                {
+                    if (node.Cover == CoverType.Full) cover = 2;
+                    else if (node.Cover == CoverType.Half) cover = isMortar ? 0 : 1;
+                }
+                var hit = calc.ResolveHitOnTarget(u.Stats, grenadeDef, diceTotal, d, cover, d == 0);
+                hits.Add(hit);
+                totalDealt += hit.FinalDamage;
+            }
+
+            // --- Log tactique ---
+            string via = (launcher != null && launcher.IsLauncher) ? $" au <b>{launcher.Name}</b>" : " à la main";
+            string aimTag = throwOutcome.DistancePenalty != 0 ? $" (malus dist {throwOutcome.DistancePenalty})" : "";
+            string scatterTag = throwOutcome.IsOnTarget
+                ? $"pile sur <b>({blastCoords.Q},{blastCoords.R})</b>"
+                : $"dispersée en <b>({blastCoords.Q},{blastCoords.R})</b> (visé ({aimedCoords.Q},{aimedCoords.R}), déviation {throwOutcome.ScatterDistance})";
+            string log = $"💣 <b>GRENADE</b> : {attacker.Stats.Name} lance <b>{grenadeDef.Name}</b> [{grenadeDef.Era} / {grenadeDef.GrenadeKind}]{via} à {dist} cases (max {maxRange}, -{totalPa} PA){aimTag} ➔ {scatterTag}\n";
+            log += $"   🎲 Lancer : {throwOutcome.LogFragment}\n";
+            log += $"   💥 Souffle R{blastR} : [{grenadeDef.BaseDamage} + {diceDetail} ({grenadeDef.DamageDiceCount}d10) = {grenadeDef.BaseDamage + diceTotal}] x falloff (-25%/case, min 25%) + shrapnels +{grenadeDef.ShrapnelDamage} ➔ {hits.Count} cible(s) dans la zone.";
+            if (hits.Count == 0) log += " <i>Souffle dans le vide.</i>";
+
+            // --- Retours visuels/sonores par cible ---
+            for (int i = 0; i < hits.Count; i++)
+            {
+                var h = hits[i];
+                var unit = FindUnitByName(h.TargetName);
+                string allyTag = "";
+                if (unit != null && unit != attacker && unit.IsPlayerControlled == attacker.IsPlayerControlled)
+                    allyTag = " ⚠️<b>TIR ALLIÉ</b>";
+                string hpTag = unit != null ? unit.Stats.CurrentHealth + "/" + unit.Stats.MaxHealth + " PV" : "?";
+                log += $"\n   • <b>{h.TargetName}</b>{allyTag} à {h.DistanceFromBlast} case(s) : bruts {h.RawDamage} − couv {h.CoverReduction} − armure {h.ArmorAbsorbed} ➔ <color=#FF3B5C><b>{h.FinalDamage} PV</b></color> ({hpTag})";
+                if (h.InflictedStatus != StatusEffect.None)
+                    log += $" | [{GrenadeCalculator.StatusesToLabel(h.InflictedStatus)}]";
+                if (h.ExceededEncaissement) log += " | ⚡<b>CHOC</b>";
+                if (h.FatalResolution == FatalBlowResolution.InstantDeath) log += " | 💀<b>MORT</b>";
+                else if (h.FatalResolution == FatalBlowResolution.MiracleSaved) log += " | 🔮<b>MIRACLE</b>";
+                else if (h.FatalResolution == FatalBlowResolution.ForcedUnconscious) log += " | 💥<b>K.O.</b>";
+                else if (h.FatalResolution == FatalBlowResolution.EligibleForLastBreath) log += " | ⚡<b>0 PV</b>";
+
+                if (unit == null) continue;
+                var vis = unit.GetComponent<TacticalUnitVisual>();
+                if (h.FinalDamage > 0)
+                {
+                    vis?.TriggerHitFlash();
+                    vis?.SpawnFloatingText($"-{h.FinalDamage} PV (💣)", new Color(1f, 0.30f, 0.20f));
+                    if (h.InflictedStatus != StatusEffect.None)
+                        vis?.SpawnFloatingText($"[{GrenadeCalculator.StatusesToLabel(h.InflictedStatus)}]", new Color(1f, 0.4f, 0.95f));
+                    if (KilltimeAudioManager.Instance != null)
+                    {
+                        KilltimeAudioManager.Instance.PlayAt(SoundId.Hurt_Heavy, unit.transform.position, 0.8f);
+                        if (h.ExceededEncaissement)
+                            KilltimeAudioManager.Instance.PlayAt(SoundId.Trauma_Shock, unit.transform.position, 0.8f);
+                    }
+                    // Refoulement radial pour les gros calibres au contact du souffle.
+                    bool heavy = grenadeDef.DamageDiceCount >= 3 || grenadeDef.BaseDamage >= 12;
+                    if (heavy && h.DistanceFromBlast <= 1)
+                        TryApplyBlastKnockback(unit, blastCoords);
+                }
+                else
+                {
+                    vis?.SpawnFloatingText(h.CoverReduction > 0 ? $"[COUVERT] Souffle absorbé (-{h.CoverReduction})" : "[SOUFFLE] 0 PV", new Color(0.4f, 0.85f, 1f));
+                }
+
+                if (h.FatalResolution == FatalBlowResolution.InstantDeath)
+                {
+                    vis?.SpawnFloatingText("[MORTEL] INSTANTANÉ !", Color.black);
+                    vis?.TriggerFallingBackDeath();
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayAt(SoundId.Death_Instant, unit.transform.position, 0.9f);
+                }
+                else if (h.FatalResolution == FatalBlowResolution.MiracleSaved)
+                {
+                    vis?.SpawnFloatingText("[MIRACLE] DESTIN SAUVÉ ! (1 PV)", new Color(1f, 0.85f, 0.1f));
+                    vis?.TriggerFallingBackDeath();
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayAt(SoundId.Miracle_Saved, unit.transform.position, 0.9f);
+                }
+                else if (h.FatalResolution == FatalBlowResolution.ForcedUnconscious)
+                {
+                    vis?.SpawnFloatingText("[K.O.] SYNCOPE TRAUMATIQUE !", Color.magenta);
+                    vis?.TriggerFallingBackDeath();
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayAt(SoundId.KO_Fall, unit.transform.position, 0.9f);
+                }
+                else if (h.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
+                {
+                    if (!unit.IsPlayerControlled)
+                    {
+                        unit.Stats.ChooseSombrer();
+                        vis?.SpawnFloatingText("[SYNCOPE] CHUTE HORS COMBAT (0 PV)", Color.cyan);
+                        vis?.TriggerFallingBackDeath();
+                    }
+                    else
+                    {
+                        unit.Stats.ChooseLastBreath();
+                        vis?.SpawnFloatingText("[SURVIE] DERNIER SOUFFLE (0 PV)", new Color(1f, 0.5f, 0.1f));
+                    }
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayAt(SoundId.LastBreath, unit.transform.position, 0.9f);
+                }
+            }
+
+            Log(log);
+
+            WebBridgeManager.Instance?.SendCombatEvent("GRENADE", log, totalDealt);
+            RecordChronoSnapshot($"Grenade {grenadeDef.Name} en ({blastCoords.Q},{blastCoords.R})");
+            if (CurrentTarget != null && !CurrentTarget.Stats.IsAlive) AutoTargetNextAlive();
+            UpdateAdaptiveMusic();
+            _turnManager?.CheckCombatOver();
+        }
+
+        private TacticalUnit FindUnitByName(string unitName)
+        {
+            if (string.IsNullOrEmpty(unitName)) return null;
+            if (PlayerUnit != null && PlayerUnit.Stats != null && PlayerUnit.Stats.Name == unitName) return PlayerUnit;
+            for (int i = 0; i < _additionalPlayers.Count; i++)
+                if (_additionalPlayers[i] != null && _additionalPlayers[i].Stats != null && _additionalPlayers[i].Stats.Name == unitName)
+                    return _additionalPlayers[i];
+            for (int i = 0; i < SparringDummies.Count; i++)
+                if (SparringDummies[i] != null && SparringDummies[i].Stats != null && SparringDummies[i].Stats.Name == unitName)
+                    return SparringDummies[i];
+            var all = FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < all.Length; i++)
+                if (all[i] != null && all[i].Stats != null && all[i].Stats.Name == unitName)
+                    return all[i];
+            return null;
+        }
+
+        /// <summary>Refoulement radial : repousse la cible sur le voisin le plus loin du souffle.</summary>
+        public bool TryApplyBlastKnockback(TacticalUnit defender, HexCoordinates blastCoords)
+        {
+            if (defender == null || _grid == null) return false;
+            HexCoordinates best = defender.CurrentCoords;
+            int bestDist = defender.CurrentCoords.DistanceTo(blastCoords);
+            for (int dir = 0; dir < 6; dir++)
+            {
+                var n = defender.CurrentCoords.GetNeighbor(dir);
+                var node = _grid.GetNode(n);
+                if (node == null || !node.IsWalkable || node.IsOccupied) continue;
+                int d = n.DistanceTo(blastCoords);
+                if (d > bestDist) { bestDist = d; best = n; }
+            }
+            if (!best.Equals(defender.CurrentCoords) && defender.TeleportTo(best, _grid))
+            {
+                var vis = defender.GetComponent<TacticalUnitVisual>();
+                vis?.SpawnFloatingText("[SOUFFLE] Projeté !", Color.yellow);
+                Log($"💨 <b>SOUFFLE</b> : {defender.Stats.Name} est projeté(e) en ({best.Q}, {best.R}) !");
+                return true;
+            }
+            defender.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+            return false;
         }
 
         public void RecordChronoSnapshot(string description)
@@ -1302,7 +1839,7 @@ namespace Killtime.Tactics
             {
                 KilltimeAudioManager.Instance.Play(SoundId.Arena_Reset, 0.8f);
                 _adaptiveTurnCount = 0;
-                KilltimeAudioManager.Instance.PlayMusic(MusicMood.Combat, 0.5f, true);
+                KilltimeAudioManager.Instance.PlayMusic(MusicMood.Combat, 0, 0.5f, forceRestart: true);
                 UpdateAdaptiveMusic();
             }
             Log("🔄 Arène entièrement réinitialisée et stabilisée.");
@@ -1338,6 +1875,34 @@ namespace Killtime.Tactics
                 mgr.NotifyBattleState(ratio, alliesAlive, enemiesAlive, _adaptiveTurnCount);
             }
             catch (System.Exception) { /* audio jamais bloquant */ }
+        }
+
+        public bool TryApplyKnockback(TacticalUnit attacker, TacticalUnit defender)
+        {
+            if (attacker == null || defender == null || _grid == null) return false;
+
+            int dq = defender.CurrentCoords.Q - attacker.CurrentCoords.Q;
+            int dr = defender.CurrentCoords.R - attacker.CurrentCoords.R;
+
+            var targetCoords = new HexCoordinates(defender.CurrentCoords.Q + dq, defender.CurrentCoords.R + dr);
+            var node = _grid.GetNode(targetCoords);
+
+            if (node != null && node.IsWalkable && !node.IsOccupied)
+            {
+                defender.TeleportTo(targetCoords, _grid);
+                var defVis = defender.GetComponent<TacticalUnitVisual>();
+                defVis?.SpawnFloatingText("[REFOULEMENT] Repoussé !", Color.yellow);
+                Log($"💨 <b>REFOULEMENT (Push-Kick)</b> : {defender.Stats.Name} est repoussé(e) en ({targetCoords.Q}, {targetCoords.R}) !");
+                return true;
+            }
+            else
+            {
+                defender.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+                var defVis = defender.GetComponent<TacticalUnitVisual>();
+                defVis?.SpawnFloatingText("[IMPACT PAROI] Déstabilisé !", Color.red);
+                Log($"💥 <b>IMPACT CONTRE OBSTACLE</b> : {defender.Stats.Name} heurte la paroi et subit [Déstabilisé] !");
+                return false;
+            }
         }
 
         private void Log(string message)

@@ -14,7 +14,7 @@ namespace Killtime.UI
         protected override int WindowId => 995;
         protected override string Title => "Règles & Constantes";
         protected override Vector2 MinSize => _minSize;
-        protected override Rect DefaultRect => new Rect(70, 60, 620, 680);
+        protected override Rect DefaultRect => new Rect(80, 128, 620, 680);
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
         private static readonly KeyCode[] _toggleKeys = { KeyCode.F3 };

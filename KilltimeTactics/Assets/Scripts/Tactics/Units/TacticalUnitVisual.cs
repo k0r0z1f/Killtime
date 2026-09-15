@@ -35,6 +35,10 @@ namespace Killtime.Tactics.Units
         [SerializeField] private Color _visorColor = new Color(0.0f, 0.9f, 1.0f);
         [SerializeField] private float _unitScale = 1.0f;
 
+        [Header("Ancrage de l'Arme en Main")]
+        [SerializeField] private Vector3 _weaponPositionOffset = Vector3.zero;
+        [SerializeField] private Vector3 _weaponRotationOffset = new Vector3(-75f, 180f, 0f);
+
         [Header("HUD — Transparence Vision")]
         [Tooltip("Alpha appliqué aux icônes/HUD quand cet avatar est plus loin qu'un autre dans la vision (masqué).")]
         [SerializeField, Range(0.05f, 1f)] private float _occludedIconAlpha = 0.25f;
@@ -60,14 +64,21 @@ namespace Killtime.Tactics.Units
         private bool _isActionPlaying = false;
         private Coroutine _actionRoutine;
 
+        private GameObject _equippedWeaponInstance;
+        private string _lastEquippedItemId;
+        private bool _currentWeaponIsRifle;
+        private Coroutine _putAwayRoutine;
+
         private static readonly int AnimIsInCombat = Animator.StringToHash("IsInCombat");
         private static readonly int AnimTriggerAction = Animator.StringToHash("TriggerAction");
         private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
         private static readonly int AnimTriggerRoundkick = Animator.StringToHash("TriggerRoundkick");
+        private static readonly int AnimTriggerFiringRifle = Animator.StringToHash("TriggerFiringRifle");
         private static readonly int AnimTriggerBodyBlock = Animator.StringToHash("TriggerBodyBlock");
         private static readonly int AnimTriggerFallingBackDeath = Animator.StringToHash("TriggerFallingBackDeath");
         private static readonly int AnimIsKO = Animator.StringToHash("IsKO");
         private static readonly int AnimWalkSpeedMultiplier = Animator.StringToHash("WalkSpeedMultiplier");
+        private static readonly int AnimWeaponType = Animator.StringToHash("WeaponType");
 
         private bool _hasWalkingClip = false;
         private bool _hasWalkMultiplierParam = false;
@@ -121,12 +132,220 @@ namespace Killtime.Tactics.Units
             }
         }
 
+        public bool HasRifleEquipped()
+        {
+            var weapon = _unit != null && _unit.Sheet != null ? _unit.Sheet.GetEquippedWeapon() : null;
+            return IsRifleWeapon(weapon);
+        }
+
+        public static bool IsRifleWeapon(Core.Inventory.InventoryItem item)
+        {
+            if (item == null || item.Type != Core.Inventory.ItemType.Weapon) return false;
+            if (item.EquipSlot == Core.Inventory.ItemEquipSlot.TwoHands) return true;
+            if (item.AssociatedSkill == SkillType.Ballistique) return true;
+            string n = ((item.Name ?? "") + " " + (item.PrefabPath ?? "")).ToLowerInvariant();
+            return n.Contains("rifle") || n.Contains("gun") || n.Contains("fusil") || n.Contains("shotgun");
+        }
+
+        public void RefreshEquippedWeaponVisual()
+        {
+            UpdateEquippedWeaponVisual();
+        }
+
+        private void UpdateEquippedWeaponVisual()
+        {
+            if (_unit == null || _unit.Sheet == null) return;
+
+            var equipped = _unit.Sheet.GetEquippedWeapon();
+            string currentId = equipped != null ? equipped.ItemId : null;
+
+            if (currentId == _lastEquippedItemId) return;
+
+            _lastEquippedItemId = currentId;
+
+            if (equipped == null)
+            {
+                if (_currentWeaponIsRifle)
+                {
+                    StartPutAwayWeapon();
+                }
+                else
+                {
+                    ClearEquippedWeaponInstance();
+                }
+                _currentWeaponIsRifle = false;
+            }
+            else
+            {
+                AttachEquippedWeapon(equipped);
+            }
+        }
+
+        private void AttachEquippedWeapon(Core.Inventory.InventoryItem item)
+        {
+            if (_putAwayRoutine != null)
+            {
+                StopCoroutine(_putAwayRoutine);
+                _putAwayRoutine = null;
+            }
+            ClearEquippedWeaponInstance();
+
+            if (item == null) return;
+
+            // Les consommables / munitions / misc ne s'attachent pas en main.
+            if (item.Type != Core.Inventory.ItemType.Weapon) return;
+
+            GameObject instance = null;
+            if (!string.IsNullOrEmpty(item.PrefabPath))
+            {
+                var prefab = LoadWeaponPrefab(item.PrefabPath);
+                if (prefab != null) instance = Instantiate(prefab, GetRightHandSocket());
+            }
+            // Repli : placeholder procédural (armurerie complète sans prefabs).
+            if (instance == null)
+            {
+                Transform socket = GetRightHandSocket();
+                instance = Core.Inventory.ArmoryPlaceholderFactory.ResolveOrBuild(item, socket);
+                if (instance.transform.parent != socket) instance.transform.SetParent(socket, false);
+            }
+            _equippedWeaponInstance = instance;
+            _equippedWeaponInstance.name = "Equipped_" + item.Name;
+            _equippedWeaponInstance.transform.localPosition = _weaponPositionOffset;
+            _equippedWeaponInstance.transform.localRotation = Quaternion.Euler(_weaponRotationOffset);
+
+            var colliders = _equippedWeaponInstance.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < colliders.Length; i++)
+            {
+                colliders[i].enabled = false;
+            }
+
+            var animators = _equippedWeaponInstance.GetComponentsInChildren<Animator>();
+            for (int i = 0; i < animators.Length; i++)
+            {
+                animators[i].enabled = false;
+            }
+
+            _equippedWeaponInstance.layer = 2;
+
+            _currentWeaponIsRifle = IsRifleWeapon(item);
+            if (_animator != null)
+            {
+                _animator.SetInteger(AnimWeaponType, _currentWeaponIsRifle ? 1 : 0);
+                if (_currentWeaponIsRifle && _isInCombat)
+                {
+                    _animator.CrossFadeInFixedTime("Rifle Idle", 0.1f);
+                }
+            }
+        }
+
+        private void StartPutAwayWeapon()
+        {
+            if (_putAwayRoutine != null)
+            {
+                StopCoroutine(_putAwayRoutine);
+            }
+            _putAwayRoutine = StartCoroutine(PutAwayWeaponRoutine());
+        }
+
+        private IEnumerator PutAwayWeaponRoutine()
+        {
+            if (_animator != null)
+            {
+                _animator.SetInteger(AnimWeaponType, 0);
+                _animator.CrossFadeInFixedTime("Rifle Put Away", 0.08f);
+            }
+
+            yield return new WaitForSeconds(0.65f);
+
+            ClearEquippedWeaponInstance();
+            _putAwayRoutine = null;
+        }
+
+        private void ClearEquippedWeaponInstance()
+        {
+            if (_equippedWeaponInstance != null)
+            {
+                Destroy(_equippedWeaponInstance);
+                _equippedWeaponInstance = null;
+            }
+        }
+
+        private static void DisableWeaponPhysics(GameObject root)
+        {
+            if (root == null) return;
+            var cols = root.GetComponentsInChildren<Collider>();
+            for (int i = 0; i < cols.Length; i++) cols[i].enabled = false;
+            var anims = root.GetComponentsInChildren<Animator>();
+            for (int i = 0; i < anims.Length; i++) anims[i].enabled = false;
+        }
+
+        private Transform GetRightHandSocket()
+        {
+            if (_animator != null && _animator.isHuman)
+            {
+                var bone = _animator.GetBoneTransform(HumanBodyBones.RightHand);
+                if (bone != null) return bone;
+            }
+
+            Transform found = FindBoneRecursive(transform, "RightHand", "Right_Hand", "Hand.R", "hand.r", "mixamorig:RightHand", "weapon_r", "Bip001 R Hand");
+            if (found != null) return found;
+
+            if (_modelRoot != null) return _modelRoot;
+            return transform;
+        }
+
+        private static Transform FindBoneRecursive(Transform parent, params string[] names)
+        {
+            for (int i = 0; i < parent.childCount; i++)
+            {
+                var child = parent.GetChild(i);
+                for (int j = 0; j < names.Length; j++)
+                {
+                    if (child.name.IndexOf(names[j], StringComparison.OrdinalIgnoreCase) >= 0)
+                        return child;
+                }
+                var deep = FindBoneRecursive(child, names);
+                if (deep != null) return deep;
+            }
+            return null;
+        }
+
+        private static GameObject LoadWeaponPrefab(string path)
+        {
+            if (string.IsNullOrEmpty(path)) return null;
+
+            string clean = path;
+            if (clean.StartsWith("Guns/", StringComparison.OrdinalIgnoreCase))
+                clean = clean.Substring(5);
+
+            var loaded = Resources.Load<GameObject>($"Guns/{clean}")
+                      ?? Resources.Load<GameObject>(clean)
+                      ?? Resources.Load<GameObject>($"Objects/{clean}")
+                      ?? Resources.Load<GameObject>(path);
+
+#if UNITY_EDITOR
+            if (loaded == null)
+            {
+                string fName = System.IO.Path.GetFileName(clean);
+                string[] guids = UnityEditor.AssetDatabase.FindAssets($"{fName} t:Prefab", new[] { "Assets/Resources/Guns", "Assets/Resources/Objects" });
+                if (guids != null && guids.Length > 0)
+                {
+                    string p = UnityEditor.AssetDatabase.GUIDToAssetPath(guids[0]);
+                    loaded = UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(p);
+                }
+            }
+#endif
+            return loaded;
+        }
+
         private void Start()
         {
             if (_animator != null && _isInCombat)
             {
+                bool hasRifle = HasRifleEquipped();
                 _animator.SetBool(AnimIsInCombat, true);
-                _animator.Play("Fight Idle", 0, 0f);
+                _animator.SetInteger(AnimWeaponType, hasRifle ? 1 : 0);
+                _animator.Play(hasRifle ? "Rifle Idle" : "Fight Idle", 0, 0f);
             }
         }
 
@@ -134,10 +353,29 @@ namespace Killtime.Tactics.Units
         {
             if (Time.timeScale <= 0.0001f) return;
 
+            UpdateEquippedWeaponVisual();
             UpdateAnimatorParameters();
             UpdateFloatingTexts();
             UpdateHitFlash();
             UpdateKOAnimation();
+
+#if UNITY_EDITOR
+            if (_equippedWeaponInstance != null)
+            {
+                _equippedWeaponInstance.transform.localPosition = _weaponPositionOffset;
+                _equippedWeaponInstance.transform.localRotation = Quaternion.Euler(_weaponRotationOffset);
+            }
+#endif
+        }
+
+        private void OnDestroy()
+        {
+            if (_putAwayRoutine != null)
+            {
+                StopCoroutine(_putAwayRoutine);
+                _putAwayRoutine = null;
+            }
+            ClearEquippedWeaponInstance();
         }
 
         private void UpdateAnimatorParameters()
@@ -150,6 +388,9 @@ namespace Killtime.Tactics.Units
             bool alive = _unit != null && _unit.Stats != null && _unit.Stats.IsAlive;
             _animator.SetBool(AnimIsInCombat, _isInCombat && alive);
 
+            bool hasRifle = HasRifleEquipped();
+            _animator.SetInteger(AnimWeaponType, hasRifle ? 1 : 0);
+
             if (_hasWalkingClip && _hasWalkMultiplierParam && _unit != null)
             {
                 float multiplier = moving ? Mathf.Max(0.1f, _unit.MoveSpeed / _naturalWalkSpeed) : 1.0f;
@@ -161,11 +402,12 @@ namespace Killtime.Tactics.Units
                 _wasMoving = moving;
                 if (moving)
                 {
-                    _animator.CrossFadeInFixedTime("Walking", 0.1f);
+                    string walkState = hasRifle ? "Rifle Walk To Stop" : "Walking";
+                    _animator.CrossFadeInFixedTime(walkState, 0.1f);
                 }
                 else
                 {
-                    string idleState = (_isInCombat && alive) ? "Fight Idle" : "Standing Idle";
+                    string idleState = hasRifle ? "Rifle Idle" : ((_isInCombat && alive) ? "Fight Idle" : "Standing Idle");
                     _animator.CrossFadeInFixedTime(idleState, 0.15f);
                 }
             }
@@ -177,9 +419,12 @@ namespace Killtime.Tactics.Units
             if (_animator != null)
             {
                 _animator.SetBool(AnimIsInCombat, inCombat);
+                bool hasRifle = HasRifleEquipped();
+                _animator.SetInteger(AnimWeaponType, hasRifle ? 1 : 0);
+
                 if (inCombat)
                 {
-                    _animator.CrossFadeInFixedTime("Fight Idle", 0.1f);
+                    _animator.CrossFadeInFixedTime(hasRifle ? "Rifle Idle" : "Fight Idle", 0.1f);
                 }
                 else
                 {
@@ -190,17 +435,31 @@ namespace Killtime.Tactics.Units
 
         public void TriggerActionAnimation()
         {
-            TriggerRoundkick();
+            if (HasRifleEquipped())
+            {
+                TriggerFiringRifle();
+            }
+            else
+            {
+                TriggerRoundkick();
+            }
         }
 
-        public void TriggerRoundkick()
+        public void TriggerRoundkick(bool forceKick = false)
         {
+            if (HasRifleEquipped() && !forceKick)
+            {
+                TriggerFiringRifle();
+                return;
+            }
+
             if (_isActionPlaying) return;
 
             _isInCombat = true;
             if (_animator != null)
             {
                 _animator.SetBool(AnimIsInCombat, true);
+                _animator.SetInteger(AnimWeaponType, 0);
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerRoundkick);
                 _animator.CrossFadeInFixedTime("Roundkick", 0.08f);
@@ -213,6 +472,74 @@ namespace Killtime.Tactics.Units
             }
         }
 
+        public void TriggerFiringRifle()
+        {
+            if (_isActionPlaying) return;
+
+            _isInCombat = true;
+            if (_animator != null)
+            {
+                _animator.SetBool(AnimIsInCombat, true);
+                _animator.SetInteger(AnimWeaponType, 1);
+                _animator.ResetTrigger(AnimTriggerAction);
+                _animator.ResetTrigger(AnimTriggerFiringRifle);
+                _animator.CrossFadeInFixedTime("Firing Rifle", 0.05f);
+
+                if (_actionRoutine != null)
+                {
+                    StopCoroutine(_actionRoutine);
+                }
+                _actionRoutine = StartCoroutine(ActionLockRoutine());
+            }
+        }
+
+        /// <summary>
+        /// Animation de lancer de grenade : lever de bras + projection.
+        /// Si un lance-grenades est équipé visuellement (arme 2H/Ballistique),
+        /// joue le tir épaulé ; sinon le geste de lancer à la main.
+        /// Repli procédural (lean arrière) si aucun clip disponible.
+        /// </summary>
+        public void TriggerGrenadeThrow()
+        {
+            if (_isActionPlaying) return;
+            _isInCombat = true;
+            // Lanceur épaulé => même posture que le tir au fusil.
+            bool hasLauncher = false;
+            try
+            {
+                var sheet = _unit != null ? _unit.GetOrBuildSheet() : null;
+                if (sheet != null && sheet.Inventory != null)
+                {
+                    for (int i = 0; i < sheet.Inventory.Count; i++)
+                    {
+                        var it = sheet.Inventory[i];
+                        if (it != null && it.IsLauncher && it.IsEquipped) { hasLauncher = true; break; }
+                    }
+                }
+            }
+            catch { hasLauncher = false; }
+            if (hasLauncher || HasRifleEquipped())
+            {
+                TriggerFiringRifle();
+                return;
+            }
+            if (_animator != null)
+            {
+                _animator.SetBool(AnimIsInCombat, true);
+                _animator.SetInteger(AnimWeaponType, 0);
+                _animator.ResetTrigger(AnimTriggerAction);
+                _animator.ResetTrigger(AnimTriggerRoundkick);
+                _animator.CrossFadeInFixedTime("Roundkick", 0.08f);
+                if (_actionRoutine != null) StopCoroutine(_actionRoutine);
+                _actionRoutine = StartCoroutine(ActionLockRoutine());
+            }
+            else
+            {
+                // Repli procédural : pas d'Animator (avatar capsule) => on garde la garde.
+                _isInCombat = true;
+            }
+        }
+
         private IEnumerator ActionLockRoutine()
         {
             _isActionPlaying = true;
@@ -221,6 +548,7 @@ namespace Killtime.Tactics.Units
             {
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerRoundkick);
+                _animator.ResetTrigger(AnimTriggerFiringRifle);
             }
             _isActionPlaying = false;
             _actionRoutine = null;
@@ -325,6 +653,10 @@ namespace Killtime.Tactics.Units
             BindClipToOverride("Roundkick");
             BindClipToOverride("Body Block");
             BindClipToOverride("Falling Back Death");
+            BindClipToOverride("Rifle Idle");
+            BindClipToOverride("Rifle Walk To Stop");
+            BindClipToOverride("Firing Rifle");
+            BindClipToOverride("Rifle Put Away");
 
             _animator.runtimeAnimatorController = _animatorOverride;
             CheckWalkingAnimationCapabilities();

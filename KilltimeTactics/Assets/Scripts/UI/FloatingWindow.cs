@@ -50,6 +50,9 @@ namespace Killtime.UI
             if (!enabled) enabled = true;
             _isOpen = true;
             _isMinimized = false;
+            // Anti-chevauchement : décale la fenêtre si son rect recouvre le HUD ou une autre fenêtre.
+            try { _windowRect = FloatingWindowChrome.FindNonOverlappingRect(_windowRect, WindowId); }
+            catch { /* ignore : l'ouverture ne doit jamais échouer */ }
             FloatingWindowChrome.FocusWindow(WindowId);
             OnOpened();
         }
@@ -172,29 +175,33 @@ namespace Killtime.UI
             FloatingWindowChrome.DrawTitleBar(ref _windowRect, ref _isOpen, ref _isMinimized, ref _savedSize, WindowId, CloseWindow, Title);
             if (_isMinimized) return;
 
-            bool prevEnabled = GUI.enabled;
             if (isDocked)
             {
+                // Contenu docké non utilisable / non cliquable : consomme l'event AVANT
+                // que les contrôles enfants ne le voient (infranchissable même si un
+                // contenu force GUI.enabled=true). Barre de titre déjà dessinée : intacte.
+                FloatingWindowChrome.ConsumeDockedContentEvent(_windowRect);
+
+                bool prevEnabled = GUI.enabled;
                 GUI.enabled = false;
-            }
 
-            try
-            {
-                DrawContent();
-            }
-            finally
-            {
-                GUI.enabled = prevEnabled;
-            }
+                try
+                {
+                    DrawContent();
+                }
+                finally
+                {
+                    GUI.enabled = prevEnabled;
+                }
 
-            if (isDocked)
-            {
+                // Voile visuel seul (la restauration au clic est gérée en pré-Window).
                 FloatingWindowChrome.DrawDockVeil(ref _windowRect, WindowId);
+                return;
             }
-            else
-            {
-                FloatingWindowChrome.DrawResizeHandle(ref _windowRect, WindowId, MinSize, _isMinimized);
-            }
+
+            DrawContent();
+
+            FloatingWindowChrome.DrawResizeHandle(ref _windowRect, WindowId, MinSize, _isMinimized);
         }
     }
 }

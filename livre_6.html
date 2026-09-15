@@ -521,18 +521,17 @@
                         </div>
                         <div class="formula-desc">
                             <strong>Axiome de Confrontation :</strong> L'attaque oppose une compétence offensive (<em>Maniement d'Arme</em>, <em>Ballistique</em>, <em>Mains Nues</em>) à une compétence défensive (<em>Esquive</em>, <em>Défense Corporelle</em>) ou à une cible sans défense.<br>
-                            Chaque PA bonus engagé confère <strong>+1 point direct</strong> au résultat du jet respectif. La séquence se déroule impérativement en 3 temps :<br>
-                            <strong>1. Enchère de l'Attaquant :</strong> L'attaquant paie le coût de base de son coup (2
-                            PA standard, ou 3 PA pour annuler le malus de visée) et déclare le montant de <strong>PA
-                                bonus</strong> qu'il injecte.<br>
-                            <strong>2. Arbitrage & Réaction du Défenseur :</strong> La cible décide si elle engage une défense active ou si elle reste passive :
+                            Chaque PA bonus engagé confère <strong>+1 point direct</strong> au résultat du jet respectif, et il est <strong>injecté après avoir vu son propre tirage</strong> — jamais en enchère aveugle préalable. La séquence se déroule impérativement en 3 temps :<br>
+                            <strong>1. Attaque de l'Attaquant :</strong> L'attaquant désigne sa cible, paie le coût de base de son coup (2
+                            PA standard, ou 3 PA pour annuler le malus de visée), puis <strong>lance le dé correspondant au niveau de sa compétence</strong> (entraînements + paliers de caractéristique depuis le d2) et applique les malus situationnels = <strong>Total brut d'attaque</strong>. <em>Exemple : Mains Nues +2 entraînements, FOR 5 = +2 niveaux → 4 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ d8 ➔ <strong>d10</strong>).</em> <strong>Après avoir vu son résultat</strong>, l'attaquant peut ajouter des PA bonus (+1 / PA, débités aussitôt) pour améliorer son total. Le <strong>Total final d'attaque</strong> est alors fixé.<br>
+                            <strong>2. Défense de la Cible :</strong> La cible décide si elle engage une défense active ou si elle reste passive :
                             <ul>
-                                <li><strong>Défense Active (Habituelle) :</strong> Le défenseur paie son coût de base de réaction (1 PA) avec sa compétence (<em>Esquive</em> ou <em>Parade / Défense Corporelle</em>, avec malus d'1 niveau de dé si paré à l'arme sans spé Épée) et peut injecter des PA bonus.</li>
-                                <li><strong>Défense Passive (Choix Tactique) :</strong> Le défenseur <strong>décide de ne pas se défendre</strong> (pour préserver ses PA ou s'il est surpris). Il ne consomme aucun PA, son score de défense est égal à <strong>0</strong>, et l'attaque touche automatiquement avec la marge totale du jet attaquant !</li>
-                            </ul> S'il n'a aucun PA pour payer la réaction de base
-                            (0 PA), il ne peut réagir et subit une pénalité réflexe de -2.<br>
-                            <strong>3. Résolution Simultanée :</strong> Les deux dés sont lancés. Le différentiel net
-                            (Attaque - Défense) détermine la touche chirurgicale et les dégâts réels.
+                                <li><strong>Défense Active (Habituelle) :</strong> Le défenseur paie son coût de base de réaction (1 PA), <strong>lance le dé de sa compétence défensive</strong> (<em>Esquive</em> ou <em>Parade / Défense Corporelle</em>, avec malus d'1 niveau de dé si paré à l'arme sans spé Épée) et applique les malus situationnels = <strong>Total brut de défense</strong>. <em>Exemple : Esquive 1 entraînement, AGI 5 = +2 niveaux → 3 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ <strong>d8</strong>).</em> <strong>Après avoir vu son résultat</strong> (et le total final de l'attaquant), le défenseur peut ajouter des PA bonus (+1 / PA, débités aussitôt). Le <strong>Total final de défense</strong> est alors fixé.</li>
+                                <li><strong>Défense Passive (Choix Tactique) :</strong> Le défenseur <strong>décide de ne pas se défendre</strong> (pour préserver ses PA ou s'il est surpris). Il ne consomme aucun PA, ne lance aucun dé, son score de défense est égal à <strong>0</strong>, et l'attaque touche automatiquement avec la marge totale du jet attaquant !</li>
+                            </ul> S'il veut réagir mais n'a aucun PA pour payer la réaction de base
+                            (0 PA), il ne peut réagir activement : il subit une pénalité réflexe de -2.<br>
+                            <strong>3. Résolution Normale :</strong> Le différentiel net
+                            (Attaque finale − Défense finale) détermine la touche chirurgicale et les dégâts réels, exactement comme prévu (blocage si négatif, déviation si 0, touche + différentiel en dégâts si positif, puis armure, encaissement et états).
                         </div>
                     </div>
 
@@ -568,9 +567,7 @@
                                 Chaque combattant a droit à <strong>une réaction par tour</strong> en réponse à une
                                 offensive ennemie. Une réaction est soit une parade, soit une esquive, soit une manœuvre
                                 non-offensive d'urgence.<br><br>
-                                <strong>Ajustement de Dernière Seconde :</strong> Si le défenseur constate que son jet
-                                initial est insuffisant, il peut immédiatement griller des PA résiduels supplémentaires
-                                pour combler l'écart !
+                                <strong>Injection Après Tirage (Règle Normale) :</strong> Chaque camp injecte ses PA bonus <strong>après avoir vu son tirage</strong> : l'attaquant ajuste son total juste après son jet, puis le défenseur ajuste le sien après le sien (en connaissant le total final de l'attaquant). Il ne s'agit pas d'une exception, mais du déroulement standard du duel !
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Esquive / Parade</span>
@@ -854,7 +851,67 @@
                         </div>
                     </div>
 
-                    <h3>26.2 Combat Impliquant des Véhicules</h3>
+                    <h3>26.2 La Condition « Canon Entravé » & Combat Rapproché à l'Arme Longue</h3>
+                    <p>
+                        Lorsqu'un combattant équipé d'une arme à distance ou arme longue (fusil laser, carabine, arme à deux mains ou portée &gt; 1) se retrouve au contact direct d'un adversaire conscient (Distance = 1 case), il subit la contrainte spatiale d'encombrement <strong>« Canon Entravé »</strong> :
+                    </p>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Manœuvre Tactique au Contact</th>
+                                    <th>Coût en PA</th>
+                                    <th>Compétence</th>
+                                    <th>Résolution Mécanique & Impact</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Tir en Rétention</strong></td>
+                                    <td>2 PA</td>
+                                    <td>Ballistique</td>
+                                    <td><strong>Malus net de -2</strong> au jet. En cas de parade adverse réussie (Diff &lt; 0), l'arme est déviée.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tir Visé de Rétention</strong></td>
+                                    <td>3 PA</td>
+                                    <td>Ballistique</td>
+                                    <td>Dépense <strong>+1 PA</strong> pour annuler le malus de Canon Entravé et autoriser la visée d'un membre.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Coup de Crosse / Canon</strong></td>
+                                    <td>2 PA</td>
+                                    <td>Armes Contondantes</td>
+                                    <td>Dégâts bruts réduits (3-4 PV). Si les dégâts dépassent l'Encaissement (CON &times; 2), la cible subit l'état <em>Déstabilisé</em>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Frappe Martiale (Arts Martiaux)</strong></td>
+                                    <td>2 PA</td>
+                                    <td>Mains Nues</td>
+                                    <td><strong>Exemption totale :</strong> kick ou coup de genou à plein dé sans malus. Déclenche le <em>Refoulement</em> sur choc ou critique.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Décrochage (Recul)</strong></td>
+                                    <td>1 PA</td>
+                                    <td>Mouvement</td>
+                                    <td>Recule d'1 case (Distance = 2). Rompt immédiatement la condition <em>Canon Entravé</em>.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div class="callout vital">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                            </svg>
+                            Mécanique de Refoulement (Push-Kick / Knockback)
+                        </div>
+                        <div class="callout-body">
+                            Tout combattant maîtrisant la spécialisation <em>Arts Martiaux</em> qui délivre une frappe à mains nues réussissant avec dépassement de l'Encaissement adverse, sur coup critique ou différentiel net &ge; 4, repousse physiquement la cible d'<strong>1 case en arrière</strong>. Si la case arrière est occupée ou bloquée par un obstacle infranchissable, la cible heurte la paroi et subit immédiatement l'état <strong>Déstabilisé</strong>.
+                        </div>
+                    </div>
+
+                    <h3>26.3 Combat Impliquant des Véhicules</h3>
                     <p>
                         Qu'il s'agisse d'une charrette médiévale, d'un tank d'assaut, d'un speeder de combat ou d'un
                         croiseur stellaire, les règles mécaniques sont unifiées.

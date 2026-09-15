@@ -46,6 +46,46 @@ namespace Killtime.Tactics.Units
         private TacticalHexGrid _grid;
         private bool _hasPosition;
 
+        public bool IsCanonEntrave()
+        {
+            if (_grid == null) return false;
+            var weapon = Sheet != null ? Sheet.GetEquippedWeapon() : null;
+            bool hasLongWeapon = (weapon != null && (weapon.RangeInTiles > 1
+                                                     || weapon.AssociatedSkill == SkillType.Ballistique
+                                                     || weapon.AssociatedSkill == SkillType.ProjectilesTir
+                                                     || weapon.EquipSlot == Killtime.Core.Inventory.ItemEquipSlot.TwoHands))
+                                 || (GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true);
+            if (!hasLongWeapon) return false;
+
+            var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+            for (int i = 0; i < allUnits.Length; i++)
+            {
+                var other = allUnits[i];
+                if (other == null || other == this || other.Stats == null || !other.Stats.CanDefendActively()) continue;
+                if (other.IsPlayerControlled != this.IsPlayerControlled)
+                {
+                    // N'importe quel ennemi conscient au contact de l'ATTAQUANT suffit,
+                    // même si la cible du tir est lointaine (Livre VI §26.2).
+                    if (this.CurrentCoords.DistanceTo(other.CurrentCoords) == 1)
+                    {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        public void NotifyInventoryChanged(bool saveToDisk = true)
+        {
+            var visual = GetComponent<TacticalUnitVisual>();
+            visual?.RefreshEquippedWeaponVisual();
+
+            if (Sheet != null && saveToDisk)
+            {
+                CharacterStorageService.SaveCharacter(Sheet);
+            }
+        }
+
         private void Awake()
         {
             if (Stats == null)
@@ -102,6 +142,7 @@ namespace Killtime.Tactics.Units
             // appliquée ci-dessus, sinon les modificateurs raciaux seraient comptés deux fois).
             if (Sheet != null && sheet != null && !object.ReferenceEquals(Sheet, sheet))
             {
+                Sheet.SheetId = sheet.SheetId;
                 Sheet.Skills.Clear();
                 for (int i = 0; i < sheet.Skills.Count; i++)
                 {
@@ -124,8 +165,20 @@ namespace Killtime.Tactics.Units
                     Sheet.LearnedSpells.AddRange(sheet.LearnedSpells);
                 }
 
+                Sheet.Inventory.Clear();
+                if (sheet.Inventory != null)
+                {
+                    for (int i = 0; i < sheet.Inventory.Count; i++)
+                    {
+                        var it = sheet.Inventory[i];
+                        if (it != null) Sheet.Inventory.Add(it.Clone());
+                    }
+                }
+
                 Sheet.AvailableXP = sheet.AvailableXP;
                 Sheet.TotalEarnedXP = sheet.TotalEarnedXP;
+                Sheet.CreditsCE = sheet.CreditsCE;
+                Sheet.BaseArmor = sheet.BaseArmor;
                 Sheet.LoreNotes = sheet.LoreNotes;
             }
 

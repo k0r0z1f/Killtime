@@ -22,7 +22,7 @@ namespace Killtime.Audio
         public static AudioClip GetClip(SoundId id)
         {
             if (id == SoundId.None) return null;
-            if (_sfxCache.TryGetValue(id, out var cached) && cached != null) return cached;
+            if (_sfxCache.TryGetValue(id, out var cached) && IsClipUsable(cached)) return cached;
             var clip = Generate(id);
             if (clip != null) _sfxCache[id] = clip;
             return clip;
@@ -52,16 +52,36 @@ namespace Killtime.Audio
             trackIndex = Mathf.Clamp(trackIndex, 0, Mathf.Max(0, trackCount - 1));
 
             int key = ((int)mood * 100) + (trackIndex * 10) + level;
-            if (_musicCache.TryGetValue(key, out var cached) && cached != null) return cached;
+            // Un clip en cache peut devenir vide/déchargé côté Unity (vu en console :
+            // 2e lecture de Combat T0 rendue avec 0 spl). On ne rejoue jamais un
+            // clip vide : on régénère et on écrase le cache.
+            if (_musicCache.TryGetValue(key, out var cached) && IsClipUsable(cached)) return cached;
             var clip = GenerateMusic(mood, trackIndex, level);
             if (clip != null) _musicCache[key] = clip;
             return clip;
         }
 
+        /// <summary>Un clip procédural n'est réutilisable que s'il est vivant,
+        /// chargé et non vide. Sinon on régénère (anti "piste muette").</summary>
+        private static bool IsClipUsable(AudioClip clip)
+        {
+            if (clip == null) return false;
+            try
+            {
+                if (clip.samples <= 0) return false;
+                if (clip.loadState != AudioDataLoadState.Loaded) return false;
+            }
+            catch (System.Exception)
+            {
+                return false; // objet Unity détruit (fake-null) ou illisible
+            }
+            return true;
+        }
+
         public static AudioClip GetStinger(MusicMood mood)
         {
             if (mood == MusicMood.None) return null;
-            if (_stingerCache.TryGetValue(mood, out var cached) && cached != null) return cached;
+            if (_stingerCache.TryGetValue(mood, out var cached) && IsClipUsable(cached)) return cached;
             var clip = GenerateStinger(mood);
             if (clip != null) _stingerCache[mood] = clip;
             return clip;
@@ -69,7 +89,7 @@ namespace Killtime.Audio
 
         public static AudioClip GetAmbienceLoop()
         {
-            if (_ambienceCache != null) return _ambienceCache;
+            if (IsClipUsable(_ambienceCache)) return _ambienceCache;
             _ambienceCache = GenerateAmbience();
             return _ambienceCache;
         }
@@ -121,6 +141,18 @@ namespace Killtime.Audio
                 case SoundId.Armor_Absorb: return Metallic("Armor", 820f, 587f, 0.2f, 0.5f);
                 case SoundId.Trauma_Shock: return ShockSound();
                 case SoundId.Status_Expired: return Sweep("StatusOff", 900f, 420f, 0.18f, 0.4f);
+                case SoundId.Weapon_Laser_Fire: return LaserShotSound();
+                case SoundId.Weapon_Laser_Impact: return LaserImpactSound();
+                case SoundId.Grenade_Pin: return Metallic("Pin", 3200f, 4200f, 0.09f, 0.5f);
+                case SoundId.Grenade_Throw: return NoiseWhoosh("Throw", 0.22f, 0.5f);
+                case SoundId.Grenade_Bounce: return GrenadeBounceSound();
+                case SoundId.Grenade_Explosion_Frag: return GrenadeExplosionSound(false);
+                case SoundId.Grenade_Explosion_Heavy: return GrenadeExplosionSound(true);
+                case SoundId.Grenade_Flash: return GrenadeFlashSound();
+                case SoundId.Grenade_Smoke: return GrenadeSmokeSound();
+                case SoundId.Grenade_Shrapnel: return ShrapnelSound();
+                case SoundId.Launcher_Thump: return Thud("Thump", 130f, 0.22f, 0.9f, 5150);
+                case SoundId.Grenade_Gas: return GrenadeSmokeSound();
 
                 case SoundId.Hurt_Light: return Hurt(220f, 0.16f, 0.6f);
                 case SoundId.Hurt_Heavy: return Hurt(140f, 0.3f, 0.85f);
@@ -200,18 +232,21 @@ namespace Killtime.Audio
                 case MusicMood.Combat:
                     if (trackIndex == 0)
                     {
-                        AddSubRumble(s, 41.2f, 0.08f + 0.05f * level);
-                        if (level >= 2) AddIndustrialClang(s, bpm, 0.12f);
+                        AddSubRumble(s, 65.4f, 0.12f + 0.04f * level);
+                        AddPulseStaccatoStrings(s, chords, bpm, 0.20f + 0.06f * level);
+                        AddAnvilBeat(s, bpm, 0.14f + 0.04f * level);
+                        if (level >= 1) AddIndustrialClang(s, bpm, 0.14f + 0.04f * level);
+                        if (level >= 2) AddCyberDjentChug(s, sidechain, rng, roots, bpm, 0.18f, level);
                     }
                     else if (trackIndex == 1)
                     {
-                        AddSubRumble(s, 55.0f, 0.09f + 0.04f * level);
-                        AddPulseStaccatoStrings(s, chords, bpm, 0.13f + 0.05f * level);
+                        AddSubRumble(s, 55.0f, 0.10f + 0.04f * level);
+                        AddPulseStaccatoStrings(s, chords, bpm, 0.14f + 0.05f * level);
                         if (level >= 1) AddAnvilBeat(s, bpm, 0.11f + 0.04f * level);
                     }
                     else
                     {
-                        AddSubRumble(s, 36.7f, 0.12f + 0.05f * level);
+                        AddSubRumble(s, 48.0f, 0.12f + 0.05f * level);
                         AddCyberDjentChug(s, sidechain, rng, roots, bpm, 0.26f + 0.08f * level, level);
                         AddNeuroCyberBass(s, roots, bpm, 0.16f + 0.06f * level);
                         if (level >= 1) AddIndustrialClang(s, bpm, 0.15f);
@@ -258,33 +293,33 @@ namespace Killtime.Audio
                     {
                         chords = new[]
                         {
-                            new[] { 40, 47, 54, 55, 59 },
                             new[] { 40, 47, 52, 55, 59 },
-                            new[] { 36, 48, 54, 55, 59 },
-                            new[] { 36, 47, 52, 55, 60 },
-                            new[] { 33, 45, 52, 55, 59 },
-                            new[] { 33, 48, 52, 57, 60 },
-                            new[] { 41, 47, 53, 57, 60 },
-                            new[] { 35, 47, 53, 56, 59 },
+                            new[] { 43, 47, 50, 55, 59 },
+                            new[] { 36, 48, 52, 55, 60 },
+                            new[] { 38, 50, 53, 57, 62 },
+                            new[] { 33, 45, 52, 57, 60 },
+                            new[] { 36, 48, 55, 59, 64 },
+                            new[] { 41, 48, 53, 57, 60 },
+                            new[] { 35, 47, 53, 59, 62 },
                         };
-                        roots = new[] { 40, 40, 36, 36, 33, 33, 41, 35 };
-                        bpm = 120f; padVol = 0.16f; drumAmount = 1.0f; arpRate = 4f; arpVol = 0.11f;
+                        roots = new[] { 40, 43, 36, 38, 33, 36, 41, 35 };
+                        bpm = 120f; padVol = 0.26f; drumAmount = 1.25f; arpRate = 4f; arpVol = 0.20f;
                     }
                     else if (trackIndex == 1)
                     {
                         chords = new[]
                         {
-                            new[] { 33, 45, 52, 59, 60, 64 },
-                            new[] { 29, 41, 48, 53, 59, 64 },
-                            new[] { 36, 48, 55, 59, 62, 64 },
-                            new[] { 38, 50, 57, 60, 64, 66 },
-                            new[] { 29, 41, 48, 52, 57, 60 },
-                            new[] { 31, 43, 50, 55, 59, 62 },
-                            new[] { 38, 50, 53, 57, 60, 64 },
-                            new[] { 40, 47, 53, 56, 62, 65 },
+                            new[] { 45, 52, 57, 60, 64 },
+                            new[] { 41, 48, 53, 57, 64 },
+                            new[] { 48, 55, 59, 62, 64 },
+                            new[] { 50, 57, 60, 64, 66 },
+                            new[] { 41, 48, 52, 57, 60 },
+                            new[] { 43, 50, 55, 59, 62 },
+                            new[] { 50, 53, 57, 60, 64 },
+                            new[] { 47, 53, 56, 62, 65 },
                         };
-                        roots = new[] { 33, 29, 36, 38, 29, 31, 38, 40 };
-                        bpm = 120f; padVol = 0.17f; drumAmount = 1.05f; arpRate = 4f; arpVol = 0.12f;
+                        roots = new[] { 45, 41, 48, 50, 41, 43, 50, 47 };
+                        bpm = 120f; padVol = 0.22f; drumAmount = 1.15f; arpRate = 4f; arpVol = 0.15f;
                     }
                     else
                     {
@@ -477,13 +512,15 @@ namespace Killtime.Audio
                 float t = i / (float)SampleRate;
                 float lfo = 0.5f + 0.5f * Mathf.Sin(2f * Mathf.PI * 0.09f * t);
                 float noise = (float)(rng.NextDouble() * 2.0 - 1.0);
-                lp += (0.04f + 0.22f * lfo) * (noise - lp);
-                s[i] += lp * 0.55f;
-                s[i] += Mathf.Sin(2f * Mathf.PI * 55f * t) * 0.06f;
-                s[i] += Mathf.Sin(2f * Mathf.PI * 660f * t + Mathf.Sin(t * 1.7f)) * 0.012f;
+                // Lit sonore très sombre : filtre presque fermé (aucun sifflement)
+                // et niveau bas — c'est un fond, pas un effet.
+                lp += (0.02f + 0.04f * lfo) * (noise - lp);
+                s[i] += lp * 0.25f;
+                s[i] += Mathf.Sin(2f * Mathf.PI * 55f * t) * 0.05f;
+                s[i] += Mathf.Sin(2f * Mathf.PI * 660f * t + Mathf.Sin(t * 1.7f)) * 0.005f;
             }
             LoopCrossfade(s, SampleRate);
-            Normalize(s, 0.4f);
+            Normalize(s, 0.15f);
             return MakeClip("Ambience_Wind", s);
         }
 
@@ -603,7 +640,7 @@ namespace Killtime.Audio
                 }
 
                 float duck = (level >= 1 && sidechain != null && i < sidechain.Length) ? (1.0f - 0.65f * sidechain[i]) : 1.0f;
-                float finalSample = v * (vol / (freqs.Length * 1.25f)) * attack * release * lfoFilter * duck;
+                float finalSample = v * (vol / Mathf.Max(1f, Mathf.Sqrt(freqs.Length * 1.4f))) * attack * release * lfoFilter * duck;
 
                 s[i] += (float)Math.Tanh(finalSample * 1.2);
             }
@@ -626,8 +663,11 @@ namespace Killtime.Audio
                 int chordIdx = Math.Min(roots.Length - 1, (int)(stepTime / chordDur));
                 int rootMidi = roots[chordIdx];
 
+                while (rootMidi < 34) rootMidi += 12;
+                while (rootMidi > 46) rootMidi -= 12;
+
                 int octaveShift = (step % 8 == 6) ? 7 : ((step % 16 == 10) ? 12 : 0);
-                float f = MidiToFreq(rootMidi - 12 + octaveShift);
+                float f = MidiToFreq(rootMidi + octaveShift);
 
                 int start = (int)(stepTime * SampleRate);
                 int noteSamples = Math.Min((int)(sixteenth * 1.9f * SampleRate), s.Length - start);
@@ -1378,6 +1418,49 @@ namespace Killtime.Audio
             return MakeClip(name, s);
         }
 
+        private static AudioClip LaserShotSound()
+        {
+            int n = (int)(SampleRate * 0.16f);
+            float[] s = new float[n];
+            float phase = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                float t = i / (float)SampleRate;
+                float env = Mathf.Exp(-14f * t);
+                float f = 2600f * Mathf.Exp(-22f * t) + 240f;
+                phase += 2f * Mathf.PI * f / SampleRate;
+
+                float sine = Mathf.Sin(phase);
+                float square = Mathf.Sign(sine) * 0.25f;
+                s[i] = (sine * 0.75f + square) * env * 0.85f;
+            }
+            Normalize(s, 0.88f);
+            return MakeClip("LaserShot", s);
+        }
+
+        private static AudioClip LaserImpactSound()
+        {
+            int n = (int)(SampleRate * 0.13f);
+            float[] s = new float[n];
+            var rng = new System.Random(8812);
+            float hp = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                float t = i / (float)SampleRate;
+                float env = Mathf.Exp(-18f * t);
+                float f = 900f * Mathf.Exp(-28f * t) + 110f;
+                float pop = Mathf.Sin(2f * Mathf.PI * f * t);
+
+                float noise = (float)(rng.NextDouble() * 2.0 - 1.0);
+                hp += 0.45f * (noise - hp);
+                float hiss = (noise - hp) * Mathf.Exp(-12f * t);
+
+                s[i] = (pop * 0.6f + hiss * 0.65f) * env;
+            }
+            Normalize(s, 0.85f);
+            return MakeClip("LaserImpact", s);
+        }
+
         private static AudioClip SpellCast()
         {
             int n = (int)(SampleRate * 0.7f);
@@ -1409,6 +1492,109 @@ namespace Killtime.Audio
                 s[i] = lp * env * 0.5f;
             }
             return MakeClip("Whisper", s);
+        }
+
+        private static AudioClip GrenadeBounceSound()
+        {
+            int n = (int)(SampleRate * 0.18f);
+            float[] s = new float[n];
+            var rng = new System.Random(1915);
+            for (int i = 0; i < n; i++)
+            {
+                float t = i / (float)SampleRate;
+                float env = Mathf.Exp(-22f * t);
+                float tone = Mathf.Sin(2f * Mathf.PI * 620f * Mathf.Exp(-6f * t) * t);
+                float noise = (float)(rng.NextDouble() * 2 - 1) * Mathf.Exp(-30f * t) * 0.4f;
+                s[i] = (tone * 0.6f + noise) * env * 0.7f;
+            }
+            // Second rebond atténué à 90ms.
+            int second = (int)(SampleRate * 0.09f);
+            for (int i = second; i < n; i++)
+            {
+                float t = (i - second) / (float)SampleRate;
+                s[i] += Mathf.Sin(2f * Mathf.PI * 480f * t) * Mathf.Exp(-28f * t) * 0.3f;
+            }
+            Normalize(s, 0.7f);
+            return MakeClip("Bounce", s);
+        }
+
+        private static AudioClip GrenadeExplosionSound(bool heavy)
+        {
+            float dur = heavy ? 1.6f : 1.1f;
+            int n = (int)(SampleRate * dur);
+            float[] s = new float[n];
+            var rng = new System.Random(heavy ? 1942 : 1968);
+            float lp = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                float t = i / (float)SampleRate;
+                float tn = i / (float)n;
+                // Attaque quasi instantanée puis décroissance.
+                float env = Mathf.Exp(-(heavy ? 3.2f : 4.5f) * tn) * Mathf.Min(1f, t * 220f);
+                float sub = Mathf.Sin(2f * Mathf.PI * (heavy ? 42f : 52f) * Mathf.Exp(-1.8f * tn) * t);
+                float noise = (float)(rng.NextDouble() * 2 - 1);
+                lp += (heavy ? 0.06f : 0.10f) * (noise - lp);
+                float crack = (noise - lp * 0.4f) * Mathf.Exp(-9f * tn);
+                float ring = Mathf.Sin(2f * Mathf.PI * 2400f * t) * Mathf.Exp(-16f * tn) * 0.25f;
+                s[i] = (sub * 1.1f + lp * 0.8f + crack * 0.9f + ring) * env;
+            }
+            Normalize(s, heavy ? 1.0f : 0.95f);
+            return MakeClip(heavy ? "GrenadeHeavy" : "GrenadeFrag", s);
+        }
+
+        private static AudioClip GrenadeFlashSound()
+        {
+            int n = (int)(SampleRate * 0.7f);
+            float[] s = new float[n];
+            for (int i = 0; i < n; i++)
+            {
+                float t = i / (float)SampleRate;
+                float env = Mathf.Exp(-6f * t);
+                float bang = Mathf.Sin(2f * Mathf.PI * 3400f * t) * 0.5f
+                           + Mathf.Sin(2f * Mathf.PI * 5100f * t) * 0.3f
+                           + Mathf.Sin(2f * Mathf.PI * 180f * t) * 0.6f;
+                s[i] = bang * env * 0.8f;
+            }
+            Normalize(s, 0.9f);
+            return MakeClip("Flash", s);
+        }
+
+        private static AudioClip GrenadeSmokeSound()
+        {
+            float dur = 1.4f;
+            int n = (int)(SampleRate * dur);
+            float[] s = new float[n];
+            var rng = new System.Random(1960);
+            float lp = 0f;
+            for (int i = 0; i < n; i++)
+            {
+                float t = (float)i / n;
+                float env = Mathf.Sin(Mathf.PI * Mathf.Clamp01(t * 1.1f));
+                float noise = (float)(rng.NextDouble() * 2 - 1);
+                lp += 0.12f * (noise - lp);
+                s[i] = lp * env * 0.6f;
+            }
+            Normalize(s, 0.5f);
+            return MakeClip("Smoke", s);
+        }
+
+        private static AudioClip ShrapnelSound()
+        {
+            int n = (int)(SampleRate * 0.5f);
+            float[] s = new float[n];
+            var rng = new System.Random(7777);
+            for (int i = 0; i < n; i++)
+            {
+                float t = i / (float)SampleRate;
+                float env = Mathf.Exp(-7f * t);
+                // Sifflements d'éclats : 3 partiels descendants + bruit métallique.
+                float whistle = Mathf.Sin(2f * Mathf.PI * (2800f * Mathf.Exp(-4f * t) + 400f) * t) * 0.35f
+                              + Mathf.Sin(2f * Mathf.PI * (1900f * Mathf.Exp(-5f * t) + 300f) * t) * 0.25f;
+                float noise = (float)(rng.NextDouble() * 2 - 1) * Mathf.Exp(-10f * t) * 0.5f;
+                s[i] = (whistle + noise) * env;
+            }
+            Normalize(s, 0.65f);
+            return MakeClip("Shrapnel", s);
         }
 
         private static void Normalize(float[] s, float peak)

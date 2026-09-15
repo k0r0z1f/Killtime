@@ -100,21 +100,42 @@ namespace Killtime.Audio
                 mgr.NextCombatTrack();
             }
             GUI.enabled = true;
+
+            if (mgr.CurrentMood == MusicMood.Combat && trackCount > 1)
+            {
+                GUILayout.BeginHorizontal();
+                for (int tIdx = 0; tIdx < trackCount; tIdx++)
+                {
+                    bool isCurrent = (mgr.CurrentTrackIndex == tIdx);
+                    Color prevBtn = GUI.backgroundColor;
+                    if (isCurrent) GUI.backgroundColor = new Color(0f, 0.85f, 1f);
+                    if (GUILayout.Button($"Piste {tIdx + 1}", GUILayout.Height(18)))
+                    {
+                        mgr.PlayMusic(MusicMood.Combat, tIdx, mgr.CurrentIntensity, forceRestart: true);
+                    }
+                    GUI.backgroundColor = prevBtn;
+                }
+                GUILayout.EndHorizontal();
+            }
+
             GUILayout.EndVertical();
 
             GUILayout.Space(4);
 
             // 1.b Module Caméléon (Écoute & Imitation Système)
-            var chameleon = Experimental.SystemAudioChameleon.Instance;
+            // Pas de AddComponent pendant l'OnGUI : la création à la volée jouait
+            // son Start (AudioSettings.Reset) et coupait la musique à la 1re
+            // ouverture. Le composant est pré-créé par l'AutoBootstrap.
+            var chameleon = Experimental.SystemAudioChameleon.Instance
+                ?? FindAnyObjectByType<Experimental.SystemAudioChameleon>();
             if (chameleon == null)
             {
-                chameleon = FindAnyObjectByType<Experimental.SystemAudioChameleon>();
-                if (chameleon == null)
-                {
-                    var cGo = new GameObject("[Audio] SystemAudioChameleon");
-                    chameleon = cGo.AddComponent<Experimental.SystemAudioChameleon>();
-                }
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("<color=gray><i>🦎 Caméléon indisponible (bootstrap audio incomplet).</i></color>", RichLabel());
+                GUILayout.EndVertical();
             }
+            else
+            {
 
             GUILayout.BeginVertical(GUI.skin.box);
             bool prevActive = chameleon.IsActive;
@@ -555,6 +576,7 @@ namespace Killtime.Audio
                 }
             }
             GUILayout.EndVertical();
+            } // fin else (caméléon présent)
 
             GUILayout.Space(4);
 
@@ -661,13 +683,17 @@ namespace Killtime.Audio
                     mgr.PlayStinger(MusicMood.CombatBoss);
                     mgr.PlayMusic(MusicMood.CombatBoss, MusicIntensity.Intense, true);
                 }
+                else if (mood == MusicMood.Combat)
+                {
+                    mgr.PlayMusic(MusicMood.Combat, 0, mgr.CurrentIntensity, forceRestart: true);
+                }
                 else if (mood == MusicMood.Tension)
                 {
-                    mgr.PlayMusic(MusicMood.Tension, Mathf.Max(mgr.CurrentIntensity, 0.7f));
+                    mgr.PlayMusic(MusicMood.Tension, Mathf.Max(mgr.CurrentIntensity, 0.7f), true);
                 }
                 else
                 {
-                    mgr.PlayMusic(mood, mgr.CurrentIntensity);
+                    mgr.PlayMusic(mood, mgr.CurrentIntensity, true);
                 }
             }
 

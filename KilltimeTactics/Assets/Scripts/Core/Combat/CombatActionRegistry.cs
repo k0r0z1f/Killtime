@@ -5,6 +5,7 @@ using Killtime.Tactics.TurnSystem;
 using Killtime.Core.Combat;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
+using Killtime.Core.Inventory;
 using Killtime.UI;
 
 namespace Killtime.Tactics.CombatUI
@@ -85,6 +86,45 @@ namespace Killtime.Tactics.CombatUI
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Jambes, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt))
                 ));
+
+                // --- Grenades : lancer à la main sur la case de la cible ---
+                InventoryItem firstGrenade = null;
+                InventoryItem anyLauncher = null;
+                if (actor.Sheet != null && actor.Sheet.Inventory != null)
+                {
+                    for (int i = 0; i < actor.Sheet.Inventory.Count; i++)
+                    {
+                        var it = actor.Sheet.Inventory[i];
+                        if (it == null) continue;
+                        if (firstGrenade == null && it.IsThrowableGrenade()) firstGrenade = it;
+                        if (anyLauncher == null && it.IsLauncher) anyLauncher = it;
+                    }
+                }
+                if (firstGrenade != null)
+                {
+                    var gCap = firstGrenade;
+                    actions.Add(new CombatAction(
+                        $"💣 Grenade : {gCap.Name} (2 PA, main)",
+                        $"Souffle R{gCap.BlastRadius} : {gCap.BaseDamage}+{gCap.DamageDiceCount}d10 + shrap {gCap.ShrapnelDamage}. Vise la case de la cible.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive,
+                        (act, tgt) => arena.ExecuteGrenadeThrow(tgt.CurrentCoords, gCap.ItemId, false, false, 0)
+                    ));
+                    if (anyLauncher != null)
+                    {
+                        var lCap = anyLauncher;
+                        var gCap2 = firstGrenade;
+                        actions.Add(new CombatAction(
+                            $"💣 Lance-grenades : {gCap2.Name} via {lCap.Name} (3 PA)",
+                            $"Portée {GrenadeRules.ComputeMaxRange(gCap2, lCap)} cases, dispersion réduite. Vise la case de la cible.",
+                            ActionCategory.AttaqueEtPassesDarmes,
+                            3,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 3 && targetIsAlive,
+                            (act, tgt) => arena.ExecuteGrenadeThrow(tgt.CurrentCoords, gCap2.ItemId, true, false, 0)
+                        ));
+                    }
+                }
             }
 
             // =========================================================================
@@ -228,6 +268,19 @@ namespace Killtime.Tactics.CombatUI
                 0,
                 null,
                 (act, tgt) => CharacterDevWindow.OpenForUnit(tgt)
+            ));
+
+            actions.Add(new CombatAction(
+                "🎒 [DEV] Gérer l'Inventaire & Armes",
+                "Ouvre la fenêtre d'inventaire et d'armurerie 3D pour cette unité.",
+                ActionCategory.CommandesDev,
+                0,
+                null,
+                (act, tgt) =>
+                {
+                    InventoryDevWindow.Open();
+                    InventoryDevWindow.Instance?.InspectUnit(tgt);
+                }
             ));
 
             actions.Add(new CombatAction(

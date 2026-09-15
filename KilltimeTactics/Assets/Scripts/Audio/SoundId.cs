@@ -45,6 +45,16 @@ namespace Killtime.Audio
         Armor_Absorb = 307,
         Trauma_Shock = 308,
         Status_Expired = 309,
+        Weapon_Laser_Fire = 310,
+        Weapon_Laser_Impact = 311,
+        Grenade_Pin = 312,
+        Grenade_Throw = 313,
+        Grenade_Bounce = 314,
+        Grenade_Explosion_Frag = 315,
+        Grenade_Explosion_Heavy = 316,
+        Grenade_Flash = 317,
+        Grenade_Smoke = 318,
+        Grenade_Shrapnel = 319,
 
         // --- Vitalité ---
         Hurt_Light = 320,
@@ -55,6 +65,8 @@ namespace Killtime.Audio
         LastBreath = 325,
         Heal = 326,
         Breath_Emergency = 327,
+        Launcher_Thump = 328,
+        Grenade_Gas = 329,
 
         // --- Dés / PA / Chrono ---
         Dice_Roll = 340,

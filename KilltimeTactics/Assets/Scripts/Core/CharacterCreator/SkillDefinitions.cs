@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Killtime.Core.Dice;
 
 namespace Killtime.Core.Character
@@ -263,6 +264,108 @@ namespace Killtime.Core.Character
                 SkillType.Communication => "Communication",
                 _ => skill.ToString()
             };
+        }
+
+        private static Dictionary<string, SkillType> _displayNameLookup;
+
+        /// <summary>
+        /// Retrouve une compétence depuis son nom tel qu'affiché dans les logs
+        /// ("Armes Perçantes", "Ballistique / Tir", "Esquive"… ou nom brut).
+        /// </summary>
+        public static bool TryParseDisplayName(string name, out SkillType skill)
+        {
+            skill = default;
+            if (string.IsNullOrWhiteSpace(name)) return false;
+            if (_displayNameLookup == null)
+            {
+                _displayNameLookup = new Dictionary<string, SkillType>(StringComparer.OrdinalIgnoreCase);
+                foreach (SkillType s in Enum.GetValues(typeof(SkillType)))
+                {
+                    string disp = GetDisplayName(s);
+                    if (!_displayNameLookup.ContainsKey(disp)) _displayNameLookup[disp] = s;
+                    string raw = s.ToString();
+                    if (!_displayNameLookup.ContainsKey(raw)) _displayNameLookup[raw] = s;
+                }
+            }
+            return _displayNameLookup.TryGetValue(name.Trim(), out skill);
+        }
+
+        private static string AvgRank(string a, int va, string b, int vb)
+        {
+            return $"({a} {va}+{b} {vb})/2={(va + vb + 1) / 2}";
+        }
+
+        /// <summary>
+        /// Décompose le rang de base en chaîne concise pour les tooltips
+        /// (ex "AGI 5", "(FOR 4+AGI 6)/2=5", "MAG 5 ★"). Miroir de GetBaseRank :
+        /// toute formule modifiée là-bas doit l'être ici aussi.
+        /// </summary>
+        public static string DescribeBaseRank(SkillType skill, Attributes attr, bool isOffensive)
+        {
+            if (UsesMagicAugmentation(skill, attr, isOffensive))
+            {
+                int normalRank = (attr.Force + attr.Agilite + 1) / 2;
+                if (attr.Magie >= normalRank) return $"MAG {attr.Magie} ★";
+                return $"(FOR {attr.Force}+AGI {attr.Agilite})/2={normalRank}";
+            }
+
+            switch (skill)
+            {
+                case SkillType.MainsNues:
+                case SkillType.ManiementArmes:
+                    return AvgRank("FOR", attr.Force, "AGI", attr.Agilite);
+                case SkillType.ArmesContondantes:
+                    return $"FOR {attr.Force}";
+                case SkillType.ArmesPercantes:
+                    return $"AGI {attr.Agilite}";
+                case SkillType.DefenseCorporelle:
+                    return AvgRank("FOR", attr.Force, "CON", attr.Constitution);
+                case SkillType.Athletisme:
+                    return $"(FOR {attr.Force}+CON {attr.Constitution}+AGI {attr.Agilite})/3={(attr.Force + attr.Constitution + attr.Agilite + 1) / 3}";
+                case SkillType.Ballistique:
+                    return $"AGI {attr.Agilite}";
+                case SkillType.Esquive:
+                case SkillType.Acrobatie:
+                case SkillType.ConduitePilotage:
+                    return AvgRank("AGI", attr.Agilite, "RAP", attr.Rapidite);
+                case SkillType.Discretion:
+                case SkillType.Subterfuge:
+                    return AvgRank("AGI", attr.Agilite, "INT", attr.Intelligence);
+                case SkillType.EndurancePhysique:
+                    return AvgRank("CON", attr.Constitution, "FOR", attr.Force);
+                case SkillType.Cardio:
+                case SkillType.SystemeImmunitaire:
+                    return $"CON {attr.Constitution}";
+                case SkillType.Academie:
+                case SkillType.MedecineAvancee:
+                    return AvgRank("ERU", attr.Erudition, "INT", attr.Intelligence);
+                case SkillType.PremiersSoins:
+                    return $"ERU {attr.Erudition}";
+                case SkillType.IngenierieArcanotech:
+                    return AvgRank("INT", attr.Intelligence, "ERU", attr.Erudition);
+                case SkillType.TactiqueStrategie:
+                    return $"INT {attr.Intelligence}";
+                case SkillType.Communication:
+                case SkillType.Leadership:
+                    return AvgRank("CHA", attr.Charisme, "INT", attr.Intelligence);
+                case SkillType.Intimidation:
+                    return AvgRank("CHA", attr.Charisme, "FOR", attr.Force);
+                case SkillType.Observation:
+                    return AvgRank("VUE", attr.Vision, "INS", attr.Instinct);
+                case SkillType.Ecoute:
+                    return AvgRank("OUIE", attr.Ouie, "INS", attr.Instinct);
+                case SkillType.Intuition:
+                case SkillType.Artisanat:
+                    return AvgRank("INS", attr.Instinct, "INT", attr.Intelligence);
+                case SkillType.NatureSurvie:
+                    return AvgRank("INS", attr.Instinct, "ERU", attr.Erudition);
+                case SkillType.MagieElementale:
+                case SkillType.MagiePrimale:
+                case SkillType.MagieEsprit:
+                    return AvgRank("MAG", attr.Magie, "INT", attr.Intelligence);
+                default:
+                    return "Fixe 3";
+            }
         }
     }
 }

@@ -22,11 +22,18 @@ namespace Killtime.UI
         protected override int WindowId => 999;
         protected override string Title => "Dev Arena — Combat & VATS";
         protected override Vector2 MinSize => _minSize;
-        protected override Rect DefaultRect => new Rect(20f, 94f, 560f, Mathf.Min(700f, Screen.height - 110f));
+        protected override Rect DefaultRect => new Rect(20f, 100f, 560f, Mathf.Min(700f, Screen.height - 116f));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
         private static readonly KeyCode[] _toggleKeys = { KeyCode.BackQuote, KeyCode.Tab };
         private static readonly Vector2 _minSize = new Vector2(360, 220);
+
+        /// <summary>
+        /// Bouton de réouverture quand la fenêtre est fermée : sous la carte joueur HUD
+        /// (carte en 24,22,340x62 → bas à y=84, zone d'exclusion jusqu'à 88),
+        /// donc y=96 garantit 8px sans chevauchement.
+        /// </summary>
+        private static Rect ClosedButtonRect => new Rect(24f, 96f, 180f, 28f);
 
         [Header("Contrôleur")]
         [SerializeField] private CombatDevArena _arena;
@@ -37,6 +44,10 @@ namespace Killtime.UI
         private Vector2 _logScroll;
         private Vector2 _toolsScroll;
         private bool _scrollLock = false;
+        // Même pattern robuste que CombatHUD : la demande de retour en bas est
+        // consommée dans le Draw, juste avant le BeginScrollView. Quand le verrou
+        // est actif, _logScroll n'est jamais modifié : la lecture reste figée.
+        private bool _logScrollToBottomPending = false;
 
         private BodyPart _selectedPart = BodyPart.Torse;
         private bool _cancelPenaltyWithAP = false;
@@ -63,8 +74,9 @@ namespace Killtime.UI
             }
 
             // Bloque les clics/déplacements/zoom 3D quand la souris survole la fenêtre (ou le bouton de réouverture).
+            // Bouton fermé sous la carte joueur HUD : voir ClosedButtonRect (sans chevauchement).
             FloatingWindowChrome.RegisterWindow(999,
-                () => _isOpen ? _windowRect : new Rect(20, 20, 180, 32),
+                () => _isOpen ? _windowRect : ClosedButtonRect,
                 () => isActiveAndEnabled);
         }
 
@@ -72,13 +84,13 @@ namespace Killtime.UI
         {
             base.OnEnable();
             FloatingWindowChrome.RegisterWindow(999,
-                () => _isOpen ? _windowRect : new Rect(20, 20, 180, 32),
+                () => _isOpen ? _windowRect : ClosedButtonRect,
                 () => isActiveAndEnabled);
         }
 
         private void LateUpdate()
         {
-            // Les 4 fenêtres dev (F1-F4) ne sont pas dans la scène : aucun Update ne les écoute
+            // Les fenêtres dev ne sont pas dans la scène : aucun Update ne les écoute
             // tant qu'elles n'ont pas été créées via Open(). On les crée+ouvre ici à la première
             // pression ; une fois existantes et actives, leur propre Update gère le toggle tout seul.
             // LateUpdate tourne après tous les Update : pas de double-toggle le même frame.
@@ -86,6 +98,7 @@ namespace Killtime.UI
             else if (Input.GetKeyDown(KeyCode.F2)) EnsureDevWindow(MapEditorDevWindow.Instance, MapEditorDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F3)) EnsureDevWindow(CoreRulesDevTableWindow.Instance, CoreRulesDevTableWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F4)) EnsureDevWindow(VTTRoomWindow.Instance, VTTRoomWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.I)) EnsureDevWindow(InventoryDevWindow.Instance, InventoryDevWindow.Open);
         }
 
         /// <summary>
@@ -110,15 +123,17 @@ namespace Killtime.UI
         {
             _logs.Add(msg);
             if (_logs.Count > 50) _logs.RemoveAt(0);
+            // Verrou actif => ne jamais toucher au scroll. Sinon on reporte la
+            // demande au Draw (hauteur réelle connue là-bas).
             if (!_scrollLock)
             {
-                _logScroll.y = float.MaxValue;
+                _logScrollToBottomPending = true;
             }
         }
 
         protected override void DrawClosedState()
         {
-            if (GUI.Button(new Rect(20, 20, 180, 32), "🛠️ Ouvrir Dev Arena"))
+            if (GUI.Button(ClosedButtonRect, "🛠️ Ouvrir Dev Arena"))
             {
                 OpenInstance();
             }
@@ -131,8 +146,23 @@ namespace Killtime.UI
             DrawUnitStatusHeader(activeUnit);
 
             GUILayout.Space(6);
-            _selectedTab = GUILayout.Toolbar(_selectedTab, _tabNames);
+            int newTab = GUILayout.Toolbar(_selectedTab, _tabNames);
+            if (newTab != _selectedTab)
+            {
+                _selectedTab = newTab;
+                // En revenant sur les logs en auto-scroll, on repart en bas.
+                if (_selectedTab == 3 && !_scrollLock) _logScrollToBottomPending = true;
+            }
             GUILayout.Space(8);
+
+            // L'onglet Logs a son propre scroll interne : on ne l'imbrique PAS dans
+            // le scroll vertical des outils, sinon la molette pilote les deux et le
+            // verrou semble ne pas bloquer l'auto-scroll.
+            if (_selectedTab == 3)
+            {
+                DrawLogsTab();
+                return;
+            }
 
             _toolsScroll = GUILayout.BeginScrollView(_toolsScroll);
 
@@ -146,9 +176,6 @@ namespace Killtime.UI
                     break;
                 case 2:
                     DrawChronomancyTab();
-                    break;
-                case 3:
-                    DrawLogsTab();
                     break;
             }
 
@@ -184,6 +211,12 @@ namespace Killtime.UI
             if (GUILayout.Button("📜 Fiche", GUILayout.Width(70)))
             {
                 CharacterDevWindow.OpenForUnit(unit);
+            }
+
+            if (GUILayout.Button("🎒 Sac", GUILayout.Width(60)))
+            {
+                InventoryDevWindow.Open();
+                InventoryDevWindow.Instance?.InspectUnit(unit);
             }
 
             if (GUILayout.Button("⏭️ Fin du Tour", GUILayout.Width(110)))
@@ -286,7 +319,8 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>4. Injection des Points d'Action (+1 au Jet / PA) :</b>");
+            GUILayout.Label("<b>4. Injection des PA après tirage (+1 / PA, séquentiel Livre VI §24.1) :</b>");
+            GUILayout.Label("<i>Attaquant d'abord (après son jet), défenseur ensuite (après le sien, en voyant l'attaque finale). Pas d'enchère aveugle.</i>");
 
             int baseCost = _cancelPenaltyWithAP ? 3 : 2;
             int currentAttackerAP = activeUnit != null ? activeUnit.Stats.CurrentActionPoints : 0;
@@ -294,7 +328,7 @@ namespace Killtime.UI
             _attackerBonusAP = Mathf.Clamp(_attackerBonusAP, 0, maxAttackerBonus);
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"⚡ PA Bonus Attaquant : <b>+{_attackerBonusAP}</b>", GUILayout.Width(220));
+            GUILayout.Label($"⚡ PA Bonus Attaquant (après tirage) : <b>+{_attackerBonusAP}</b>", GUILayout.Width(260));
             _attackerBonusAP = (int)GUILayout.HorizontalSlider(_attackerBonusAP, 0, maxAttackerBonus);
             GUILayout.EndHorizontal();
 
@@ -305,7 +339,7 @@ namespace Killtime.UI
             if (_defenderWantsToDefend)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label($"🛡️ PA Bonus Défenseur : <b>+{_defenderBonusAP}</b>", GUILayout.Width(220));
+                GUILayout.Label($"🛡️ PA Bonus Défenseur (après tirage) : <b>+{_defenderBonusAP}</b>", GUILayout.Width(260));
                 _defenderBonusAP = (int)GUILayout.HorizontalSlider(_defenderBonusAP, 0, maxDefenderBonus);
                 GUILayout.EndHorizontal();
             }
@@ -487,6 +521,13 @@ namespace Killtime.UI
             {
                 VTTRoomWindow.Open();
             }
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>🎒 Inventaire, Armurerie & Marché :</b>");
+            if (GUILayout.Button("🎒🏪 Inventaire / Armurerie / Marché (F5 / I)", GUILayout.Height(32)))
+            {
+                InventoryDevWindow.Open();
+            }
         }
 
         private void DrawChronomancyTab()
@@ -528,15 +569,36 @@ namespace Killtime.UI
         {
             GUILayout.BeginHorizontal();
             GUILayout.Label("<b>Historique des Actions et Mathématiques de Combat :</b>");
-            _scrollLock = GUILayout.Toggle(_scrollLock, "🔒 Scroll Lock", GUILayout.Width(110));
+            bool newLock = GUILayout.Toggle(_scrollLock, "🔒 Scroll Lock", GUILayout.Width(110));
+            if (newLock != _scrollLock)
+            {
+                _scrollLock = newLock;
+                if (!_scrollLock) _logScrollToBottomPending = true;
+                else _logScrollToBottomPending = false;
+            }
             if (GUILayout.Button("Effacer", GUILayout.Width(70)))
             {
                 _logs.Clear();
+                _logScroll.y = 0f;
+                _logScrollToBottomPending = false;
             }
             GUILayout.EndHorizontal();
 
+            if (_scrollLock)
+            {
+                // Verrou : fige la position lue par l'utilisateur.
+                _logScrollToBottomPending = false;
+            }
+            else if (_logScrollToBottomPending)
+            {
+                _logScroll.y = float.MaxValue;
+                _logScrollToBottomPending = false;
+            }
+
             _logScroll = GUILayout.BeginScrollView(_logScroll, GUILayout.Height(320));
-            for (int i = _logs.Count - 1; i >= 0; i--)
+            // Ordre chronologique (ancien en haut, récent en bas) comme le feed
+            // tactique : l'auto-scroll va en bas vers le plus récent.
+            for (int i = 0; i < _logs.Count; i++)
             {
                 GUILayout.Label(_logs[i]);
             }

@@ -43,6 +43,14 @@ namespace Killtime.Tactics.TurnSystem
         public bool IsCombatOver { get; private set; } = false;
         public CombatOutcome CurrentOutcome { get; private set; } = CombatOutcome.InProgress;
 
+        /// <summary>
+        /// Quand vrai, RegisterUnit se contente d'ajouter sans démarrer de round.
+        /// Utilisé par CombatDevArena pendant les enregistrements en masse (Reset/Setup/Load)
+        /// pour éviter un double StartNewRound qui lance l'IA en prématuré puis la coupe,
+        /// laissant _isAttackInProgress / cinématique en état bloqué (surtout en FullAuto).
+        /// </summary>
+        public bool SuspendAutoStart { get; set; } = false;
+
         private int _activeUnitIndex = 0;
 
         // Jet d'initiative (Livre I §4.3) : DiceRoller dédié (injectable pour tests
@@ -112,13 +120,13 @@ namespace Killtime.Tactics.TurnSystem
                 CurrentOutcome = CombatOutcome.InProgress;
                 CurrentRound = 1;
                 _needsInitiativeRoll = true;
-                StartNewRound();
+                if (!SuspendAutoStart) StartNewRound();
                 return;
             }
 
             if (ActiveUnit == null || !_allUnits.Contains(ActiveUnit))
             {
-                StartNewRound();
+                if (!SuspendAutoStart) StartNewRound();
                 return;
             }
 

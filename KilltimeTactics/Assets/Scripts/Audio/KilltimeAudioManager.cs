@@ -34,8 +34,8 @@ namespace Killtime.Audio
         [SerializeField] private string _ambienceParam = "AmbienceVol";
 
         [Header("Pools")]
-        [SerializeField, Range(8, 32)] private int _pool2DSize = 18;
-        [SerializeField, Range(4, 24)] private int _pool3DSize = 12;
+        [SerializeField, Range(8, 32)] private int _pool2DSize = 24;
+        [SerializeField, Range(4, 24)] private int _pool3DSize = 20;
         [SerializeField, Range(0.5f, 4f)] private float _musicCrossfade = 1.6f;
 
         [Header("Musique adaptative")]
@@ -60,8 +60,12 @@ namespace Killtime.Audio
 
         [Header("Bullet-time")]
         [SerializeField, Range(0.4f, 1f)] private float _slowMoSfxPitch = 0.72f;
+#pragma warning disable CS0414 // Legacy : musique verrouillée à pitch 1, champ conservé pour compatibilité Inspecteur.
+        [Tooltip("Legacy : la musique reste désormais à pitch 1 pendant les cinématiques (non-régression ralenti). Conservé pour compatibilité Inspecteur.")]
         [SerializeField, Range(0.4f, 1f)] private float _slowMoMusicPitch = 0.62f;
-        [SerializeField] private float _slowMoLowpass = 750f;
+#pragma warning restore CS0414
+        [Tooltip("Plafond du filtre bullet-time : 3800 Hz adoucit les SFX sans effet 'sous l'eau' sur tout le master (750 Hz étouffait aussi la musique).")]
+        [SerializeField] private float _slowMoLowpass = 3800f;
 
         private const string PP_MASTER = "KT_Audio_Master";
         private const string PP_MUSIC = "KT_Audio_Music";
@@ -122,6 +126,14 @@ namespace Killtime.Audio
                 var ui = new GameObject("[Audio] KilltimeAudioSettingsUI");
                 ui.AddComponent<KilltimeAudioSettingsUI>();
             }
+            // Pré-créé au démarrage (et non à la 1re ouverture du panneau F9) :
+            // son Start() ne doit plus jamais couper la musique en cours.
+            if (Experimental.SystemAudioChameleon.Instance == null
+                && FindAnyObjectByType<Experimental.SystemAudioChameleon>() == null)
+            {
+                var cGo = new GameObject("[Audio] SystemAudioChameleon");
+                cGo.AddComponent<Experimental.SystemAudioChameleon>();
+            }
         }
 
         private void Awake()
@@ -134,14 +146,39 @@ namespace Killtime.Audio
             Instance = this;
             DontDestroyOnLoad(gameObject);
 
+            ProceduralAudioFactory.ClearCache();
             LoadVolumes();
             BuildPools();
-            _masterLowpass = gameObject.GetComponent<AudioLowPassFilter>();
-            if (_masterLowpass == null) _masterLowpass = gameObject.AddComponent<AudioLowPassFilter>();
-            _masterLowpass.enabled = false;
-            _masterLowpass.cutoffFrequency = 22000f;
+            // Lowpass global (bullet-time) : doit vivre sur un objet avec
+            // AudioListener/AudioSource, sinon AddComponent loggue une erreur native
+            // "Add required component..." à chaque lancement. Le manager n'en a pas
+            // (sources sur enfants), donc on tente le Listener principal, sinon on
+            // reste sans filtre (Update() gère déjà _masterLowpass == null).
+            _masterLowpass = null;
+            try
+            {
+                var listener = FindAnyObjectByType<AudioListener>();
+                GameObject host = listener != null ? listener.gameObject : gameObject;
+                bool hostHasAudio = host.GetComponent<AudioListener>() != null
+                    || host.GetComponent<AudioSource>() != null;
+                if (hostHasAudio)
+                {
+                    _masterLowpass = host.GetComponent<AudioLowPassFilter>();
+                    if (_masterLowpass == null) _masterLowpass = host.AddComponent<AudioLowPassFilter>();
+                    if (_masterLowpass != null)
+                    {
+                        _masterLowpass.enabled = false;
+                        _masterLowpass.cutoffFrequency = 22000f;
+                    }
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[Audio] Lowpass global désactivé : {ex.Message}");
+                _masterLowpass = null;
+            }
             ApplyAllVolumes();
-        }
+        }   
 
         private void Start()
         {
@@ -153,8 +190,13 @@ namespace Killtime.Audio
 
         private void Update()
         {
-            // Suit le timeScale pour le bullet-time même si le hook ciné est oublié.
-            float targetSlow = (Time.timeScale < 0.7f && Time.timeScale > 0.0001f) ? 1f : _cinematicDuck * 0.5f;
+            // Le ralenti dramatique des cinématiques (timeScale 0.45 dans
+            // CinematicDirector) ne doit JAMAIS ralentir la musique : pitch
+            // verrouillé à 1. Seuls les SFX plongent (pitch + lowpass), la
+            // musique ne fait que ducker en volume (voir ApplyAllVolumes).
+            // Donc _slowMoWeight ne suit QUE le vrai timeScale, sans résiduel
+            // _cinematicDuck*0.5 qui pitchait déjà à 0.81 pendant le zoom.
+            float targetSlow = (Time.timeScale < 0.7f && Time.timeScale > 0.0001f) ? 1f : 0f;
             _slowMoWeight = Mathf.MoveTowards(_slowMoWeight, targetSlow, Time.unscaledDeltaTime * 5f);
 
             if (_masterLowpass != null)
@@ -165,10 +207,13 @@ namespace Killtime.Audio
                     _masterLowpass.cutoffFrequency = Mathf.Lerp(22000f, _slowMoLowpass, _slowMoWeight);
             }
 
-            if (_musicA != null)
-                _musicA.pitch = Mathf.Lerp(1f, _slowMoMusicPitch, _slowMoWeight);
-            if (_musicB != null)
-                _musicB.pitch = Mathf.Lerp(1f, _slowMoMusicPitch, _slowMoWeight);
+            // Musique : pitch constant. Le bullet-time ne s'applique qu'aux SFX
+            // (voir ConfigureAndPlay avec _slowMoSfxPitch). Forcer 1f corrige
+            // aussi les sessions où un ancien _slowMoWeight l'avait descendu.
+            if (_musicA != null && _musicA.pitch != 1f)
+                _musicA.pitch = 1f;
+            if (_musicB != null && _musicB.pitch != 1f)
+                _musicB.pitch = 1f;
 
             if (_targetMood == MusicMood.Combat && !_isFading)
             {
@@ -208,7 +253,7 @@ namespace Killtime.Audio
             if (!CheckCooldown(def)) return;
             var clip = PickClip(def);
             if (clip == null) return;
-            var src = Next2D();
+            var src = Next2D(isUI: true);
             ConfigureAndPlay(src, def, clip, volumeScale, 1f, Vector3.zero, false, forceCategory: SoundCategory.UI);
         }
 
@@ -250,6 +295,31 @@ namespace Killtime.Audio
             }
         }
 
+        /// <summary>
+        /// Séquence sonore complète d'une grenade : goupille -&gt; lancer (ou thump lanceur) -&gt;
+        /// rebond -&gt; détonation (frag lourde / flash / fumée) + shrapnels. Appelé par l'arène/FX.
+        /// kind : GrenadeKind brut ("Flash", "Fumigene", "Gaz", ...). heavy = gros calibre / thermobarique / plasma.
+        /// </summary>
+        public void PlayGrenadeThrow(Vector3 fromPos, bool withLauncher)
+        {
+            PlayAt(SoundId.Grenade_Pin, fromPos, 0.7f);
+            if (withLauncher) PlayAt(SoundId.Launcher_Thump, fromPos, 1f);
+            else PlayAt(SoundId.Grenade_Throw, fromPos, 0.8f);
+        }
+
+        public void PlayGrenadeDetonation(Vector3 atPos, string kind, bool heavy)
+        {
+            string k = (kind ?? "").ToLowerInvariant();
+            bool isFlash = k.Contains("flash") || k.Contains("stun") || k.Contains("sonique");
+            bool isSmoke = k.Contains("fumi") || k.Contains("smoke");
+            bool isGas = k.Contains("gaz") || k.Contains("gas");
+            if (isFlash) { PlayAt(SoundId.Grenade_Flash, atPos, 1f); PlayAt(SoundId.Impact_DeepBoom, atPos, 0.4f); return; }
+            if (isSmoke || isGas) { PlayAt(SoundId.Grenade_Smoke, atPos, 1f); PlayAt(SoundId.Grenade_Gas, atPos, 0.8f); return; }
+            PlayAt(heavy ? SoundId.Grenade_Explosion_Heavy : SoundId.Grenade_Explosion_Frag, atPos, 1f);
+            PlayAt(SoundId.Grenade_Shrapnel, atPos, 0.7f);
+            PlayAt(SoundId.Impact_DeepBoom, atPos, heavy ? 0.9f : 0.5f);
+        }
+
         // --- Musique adaptative ---
         /// <summary>Bascule d'humeur en conservant l'intensité courante (compat ascendante).</summary>
         public void PlayMusic(MusicMood mood, bool forceRestart = false)
@@ -269,7 +339,7 @@ namespace Killtime.Audio
         /// </summary>
         public void PlayMusic(MusicMood mood, float intensity01, bool forceRestart = false)
         {
-            if (mood != _targetMood)
+            if (mood != _targetMood || forceRestart)
             {
                 _currentTrackIndex = 0;
                 _combatTrackTimer = 0f;
@@ -291,13 +361,20 @@ namespace Killtime.Audio
                 return;
             }
 
+            bool isSameTrackIntensityShift = (mood == _targetMood && trackIndex == _currentTrackIndex && !forceRestart);
+
             _targetMood = mood;
             _currentTrackIndex = trackIndex;
             _targetIntensity01 = intensity01;
             _lastAdaptiveSwitchTime = Time.unscaledTime;
+            // Nouvelle piste combat => on repart sur un cycle complet de 48s.
+            // Sans ce reset, un clic manuel sur "Piste 1" juste avant l'échéance
+            // se faisait voler aussitôt par la rotation auto (impression "piste 1 ne joue pas").
+            if (mood == MusicMood.Combat)
+                _combatTrackTimer = 0f;
 
             if (_musicRoutine != null) StopCoroutine(_musicRoutine);
-            _musicRoutine = StartCoroutine(CrossfadeMusicRoutine(mood, trackIndex, level, intensity01));
+            _musicRoutine = StartCoroutine(CrossfadeMusicRoutine(mood, trackIndex, level, intensity01, isSameTrackIntensityShift));
         }
 
         public void NextCombatTrack()
@@ -341,7 +418,8 @@ namespace Killtime.Audio
             src.loop = false;
             src.spatialBlend = 0f;
             src.priority = 64;
-            src.pitch = Mathf.Lerp(1f, _slowMoMusicPitch, _slowMoWeight);
+            // Stinger musical : jamais ralenti, même en pleine cinématique.
+            src.pitch = 1f;
             src.volume = (_muted ? 0f : 1f) * _masterVolume * _musicVolume * _stingerVolume * volumeScale;
             src.Play();
         }
@@ -378,15 +456,16 @@ namespace Killtime.Audio
         public void EnterCinematicMode()
         {
             _cinematicDuck = 1f;
+            // Uniquement le whoosh d'air : le sweep SlowMo_Enter (800->120 Hz)
+            // joué pendant le zoom-in sonnait comme un doppler/compression.
             Play(SoundId.Cinematic_WhooshIn, 0.8f);
-            Play(SoundId.SlowMo_Enter, 0.7f);
         }
 
         public void ExitCinematicMode()
         {
             _cinematicDuck = 0f;
+            // Idem en sortie : WhooshOut seul, sans sweep SlowMo_Exit.
             Play(SoundId.Cinematic_WhooshOut, 0.7f);
-            Play(SoundId.SlowMo_Exit, 0.6f);
         }
 
         public void EnterPauseMode()
@@ -402,19 +481,25 @@ namespace Killtime.Audio
         }
 
         // --- Volumes ---
-        public void SetCategoryVolume(SoundCategory cat, float v01)
+        /// <summary>
+        /// Règle un volume. Si save=false, ne touche pas aux PlayerPrefs
+        /// (réservé aux ducks temporaires, ex. Caméléon qui isole la musique :
+        /// on ne doit jamais persister le 0 temporaire, sinon la musique
+        /// reste à 0% au redémarrage suivant).
+        /// </summary>
+        public void SetCategoryVolume(SoundCategory cat, float v01, bool save = true)
         {
             v01 = Mathf.Clamp01(v01);
             switch (cat)
             {
-                case SoundCategory.Master: _masterVolume = v01; PlayerPrefs.SetFloat(PP_MASTER, v01); break;
-                case SoundCategory.Music: _musicVolume = v01; PlayerPrefs.SetFloat(PP_MUSIC, v01); break;
-                case SoundCategory.Ambience: _ambienceVolume = v01; PlayerPrefs.SetFloat(PP_AMB, v01); break;
-                case SoundCategory.SFX: _sfxVolume = v01; PlayerPrefs.SetFloat(PP_SFX, v01); break;
-                case SoundCategory.UI: _uiVolume = v01; PlayerPrefs.SetFloat(PP_UI, v01); break;
+                case SoundCategory.Master: _masterVolume = v01; if (save) PlayerPrefs.SetFloat(PP_MASTER, v01); break;
+                case SoundCategory.Music: _musicVolume = v01; if (save) PlayerPrefs.SetFloat(PP_MUSIC, v01); break;
+                case SoundCategory.Ambience: _ambienceVolume = v01; if (save) PlayerPrefs.SetFloat(PP_AMB, v01); break;
+                case SoundCategory.SFX: _sfxVolume = v01; if (save) PlayerPrefs.SetFloat(PP_SFX, v01); break;
+                case SoundCategory.UI: _uiVolume = v01; if (save) PlayerPrefs.SetFloat(PP_UI, v01); break;
                 case SoundCategory.Cinematic: _cinematicVolume = v01; break;
             }
-            PlayerPrefs.Save();
+            if (save) PlayerPrefs.Save();
             ApplyAllVolumes();
         }
 
@@ -462,10 +547,10 @@ namespace Killtime.Audio
                 go.transform.SetParent(root3D.transform, false);
                 var src = go.AddComponent<AudioSource>();
                 src.playOnAwake = false;
-                src.spatialBlend = 1f;
-                src.rolloffMode = AudioRolloffMode.Logarithmic;
-                src.minDistance = 4f;
-                src.maxDistance = 30f;
+                src.spatialBlend = 0.35f;
+                src.rolloffMode = AudioRolloffMode.Linear;
+                src.minDistance = 18f;
+                src.maxDistance = 85f;
                 src.dopplerLevel = 0f;
                 _pool3D.Add(src);
             }
@@ -492,16 +577,35 @@ namespace Killtime.Audio
             _ambienceSource.volume = 0.4f;
         }
 
-        private AudioSource Next2D()
+        private AudioSource Next2D(bool isUI = false)
         {
-            // Vol de voix : oldest-first circulaire, écrase le plus ancien.
+            for (int i = 0; i < _pool2D.Count; i++)
+            {
+                var s = _pool2D[(_cursor2D + i) % _pool2D.Count];
+                if (!s.isPlaying)
+                {
+                    _cursor2D = (_cursor2D + i + 1) % _pool2D.Count;
+                    s.ignoreListenerPause = isUI;
+                    return s;
+                }
+            }
             var src = _pool2D[_cursor2D % _pool2D.Count];
             _cursor2D++;
+            src.ignoreListenerPause = isUI;
             return src;
         }
 
         private AudioSource Next3D()
         {
+            for (int i = 0; i < _pool3D.Count; i++)
+            {
+                var s = _pool3D[(_cursor3D + i) % _pool3D.Count];
+                if (!s.isPlaying)
+                {
+                    _cursor3D = (_cursor3D + i + 1) % _pool3D.Count;
+                    return s;
+                }
+            }
             var src = _pool3D[_cursor3D % _pool3D.Count];
             _cursor3D++;
             return src;
@@ -510,18 +614,17 @@ namespace Killtime.Audio
         public static SoundDefinition CreateDefaultDefinition(SoundId id)
         {
             var def = new SoundDefinition { Id = id };
-            // Réglages par famille
             int code = (int)id;
-            if (code >= 100 && code < 200) { def.Category = SoundCategory.UI; def.Volume = 0.6f; def.Cooldown = 0.05f; def.SpatialBlend = 0f; }
-            else if (code >= 200 && code < 300) { def.Category = SoundCategory.SFX; def.Volume = 0.75f; def.Cooldown = 0.09f; def.SpatialBlend = 1f; }
-            else if (code >= 300 && code < 380) { def.Category = SoundCategory.SFX; def.Volume = 0.9f; def.Cooldown = 0.05f; def.SpatialBlend = 1f; }
-            else if (code >= 380 && code < 400) { def.Category = SoundCategory.Cinematic; def.Volume = 0.85f; def.Cooldown = 0.2f; def.SpatialBlend = 0f; }
-            else { def.Category = SoundCategory.SFX; def.Volume = 0.8f; def.Cooldown = 0.1f; def.SpatialBlend = 0.5f; }
+            if (code >= 100 && code < 200) { def.Category = SoundCategory.UI; def.Volume = 0.65f; def.Cooldown = 0.03f; def.SpatialBlend = 0f; }
+            else if (code >= 200 && code < 300) { def.Category = SoundCategory.SFX; def.Volume = 0.85f; def.Cooldown = 0.06f; def.SpatialBlend = 0.35f; }
+            else if (code >= 300 && code < 380) { def.Category = SoundCategory.SFX; def.Volume = 1.0f; def.Cooldown = 0.01f; def.SpatialBlend = 0.35f; }
+            else if (code >= 380 && code < 400) { def.Category = SoundCategory.Cinematic; def.Volume = 0.95f; def.Cooldown = 0.1f; def.SpatialBlend = 0f; }
+            else { def.Category = SoundCategory.SFX; def.Volume = 0.85f; def.Cooldown = 0.04f; def.SpatialBlend = 0.35f; }
 
             if (id == SoundId.Attack_Impact_Crit || id == SoundId.Impact_DeepBoom || id == SoundId.Death_Instant)
-                def.Volume = 1f;
+                def.Volume = 1.15f;
             if (id == SoundId.UI_Hover || id == SoundId.Move_PathTick)
-                def.Cooldown = 0.08f;
+                def.Cooldown = 0.04f;
             return def;
         }
 
@@ -574,8 +677,13 @@ namespace Killtime.Audio
             src.clip = clip;
             src.loop = def.Loop;
             src.priority = def.Priority;
-            src.spatialBlend = is3D ? Mathf.Max(def.SpatialBlend, 0.7f) : 0f;
-            if (is3D) { src.minDistance = 4f; src.maxDistance = def.MaxDistance; src.transform.position = pos; }
+            src.spatialBlend = is3D ? Mathf.Clamp(def.SpatialBlend, 0.20f, 0.45f) : 0f;
+            if (is3D)
+            {
+                src.minDistance = 18f;
+                src.maxDistance = Mathf.Max(def.MaxDistance, 85f);
+                src.transform.position = pos;
+            }
 
             float catVol = CategoryVolume(cat);
             float duck = cat == SoundCategory.Music ? (1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck)
@@ -604,59 +712,142 @@ namespace Killtime.Audio
             };
         }
 
-        private IEnumerator CrossfadeMusicRoutine(MusicMood mood, int trackIndex, int level, float intensity01)
+        private IEnumerator CrossfadeMusicRoutine(MusicMood mood, int trackIndex, int level, float intensity01, bool syncPhaseWithPrevious = false)
         {
-            var clip = ProceduralAudioFactory.GetMusicLoop(mood, trackIndex, level);
-            // Si un jour un SoundBank musical existe, on le préférera ici.
-            if (clip == null) yield break;
+            AudioClip clip = null;
+            try
+            {
+                clip = ProceduralAudioFactory.GetMusicLoop(mood, trackIndex, level);
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[Audio] GetMusicLoop({mood} T{trackIndex} L{level}) a levé : {ex.GetType().Name}: {ex.Message}");
+                _isFading = false;
+                yield break;
+            }
+            if (clip == null)
+            {
+                Debug.LogError($"[Audio] Boucle introuvable : {mood} T{trackIndex} L{level} (piste silencieuse).");
+                _isFading = false;
+                yield break;
+            }
+
+            var fadeIn = _musicFlip ? _musicA : _musicB;
+            var fadeOut = _musicFlip ? _musicB : _musicA;
+            if (fadeIn == null)
+            {
+                Debug.LogError("[Audio] Source musique fadeIn manquante (BuildPools non appelé ?).");
+                _isFading = false;
+                yield break;
+            }
 
             _isFading = true;
             _currentMood = mood;
             _currentLevel = level;
             _currentIntensity01 = intensity01;
-            var fadeIn = _musicFlip ? _musicA : _musicB;
-            var fadeOut = _musicFlip ? _musicB : _musicA;
             _musicFlip = !_musicFlip;
 
-            fadeIn.clip = clip;
-            fadeIn.loop = true;
-            fadeIn.pitch = Mathf.Lerp(1f, _slowMoMusicPitch, _slowMoWeight);
-            fadeIn.volume = 0f;
-            fadeIn.Play();
-            // Aligne la phase sur la boucle sortante : les downbeats restent en place,
-            // la transition sonne comme un vrai changement d'arrangement, pas un saut.
+            // Setup sans yield => try/catch autorisé (une exception ici ne doit
+            // jamais laisser _isFading bloqué à true, sinon la rotation s'arrête).
             try
             {
-                if (fadeOut != null && fadeOut.isPlaying && fadeOut.clip != null && fadeOut.time > 0.05f)
-                    fadeIn.time = fadeOut.time % clip.length;
+                fadeIn.clip = clip;
+                fadeIn.loop = true;
+                // Boucle musicale : pitch toujours 1 (pas de ralenti cinématique).
+                fadeIn.pitch = 1f;
+                fadeIn.volume = 0f;
+                fadeIn.Play();
+
+                if (syncPhaseWithPrevious)
+                {
+                    try
+                    {
+                        if (fadeOut != null && fadeOut.isPlaying && fadeOut.clip != null && fadeOut.time > 0.05f)
+                            fadeIn.time = fadeOut.time % clip.length;
+                    }
+                    catch (System.Exception) { /* WebGL-safe : ignore le seek si refusé */ }
+                }
+                else
+                {
+                    // WebGL-safe : le seek immédiat après Play() peut être refusé.
+                    try { fadeIn.time = 0f; }
+                    catch (System.Exception) { }
+                }
+
+                _activeMusic = fadeIn;
+                // Diagnostic "piste 1 muette" : la 2e lecture de T0 rendait un clip
+                // à 0 samples côté Unity alors que la synthèse est saine hors Unity.
+                // On sonde les données réelles pour trancher cache vide vs données zéros.
+                float probePeak = -1f;
+                string loadState = "?";
+                try
+                {
+                    loadState = clip.loadState == AudioDataLoadState.Loaded ? "ready" : clip.loadState.ToString().ToLowerInvariant();
+                    int probeN = System.Math.Min(2048, clip.samples);
+                    if (probeN > 0)
+                    {
+                        float[] probe = new float[probeN];
+                        if (clip.GetData(probe, 0))
+                        {
+                            float pk = 0f;
+                            for (int i = 0; i < probe.Length; i++)
+                            {
+                                float a = System.Math.Abs(probe[i]);
+                                if (a > pk) pk = a;
+                            }
+                            probePeak = pk;
+                        }
+                        else probePeak = -2f; // GetData refusé (données déchargées ?)
+                    }
+                    else probePeak = 0f;
+                }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"[Audio] Sonde {mood} T{trackIndex} L{level} impossible : {ex.GetType().Name}: {ex.Message}");
+                }
+                Debug.Log($"[Audio] ▶ {mood} piste {trackIndex + 1} L{level} : clip='{clip.name}' {clip.samples} spl ({clip.length:F1}s) load={loadState} peak1k={probePeak:F3} src={(fadeIn == _musicA ? "A" : "B")} volMus={_musicVolume:F2} volMast={_masterVolume:F2} mute={_muted}");
             }
-            catch (System.Exception) { /* WebGL-safe : ignore le seek si refusé */ }
-            _activeMusic = fadeIn;
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[Audio] Démarrage {mood} T{trackIndex} L{level} impossible : {ex.GetType().Name}: {ex.Message}");
+                _isFading = false;
+                ApplyAllVolumes();
+                yield break;
+            }
 
             float t = 0f;
             bool isFinale = mood == MusicMood.Victory || mood == MusicMood.Defeat;
             float dur = isFinale ? Mathf.Max(_musicCrossfade, _finaleCrossfade) : Mathf.Max(0.4f, _musicCrossfade);
-            while (t < dur)
+
+            // Boucle de fondu avec yield => try/finally uniquement (pas de catch,
+            // sinon CS1626 : yield interdit dans un try avec catch).
+            try
             {
-                t += Time.unscaledDeltaTime;
-                float k = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / dur));
-                // Equal-power : pas de creux au milieu du crossfade (vs linéaire k / 1-k).
-                float gIn = Mathf.Sin(k * Mathf.PI * 0.5f);
-                float gOut = Mathf.Cos(k * Mathf.PI * 0.5f);
-                float targetVol = _musicVolume * _masterVolume; // relu chaque frame : suit les sliders
-                float duck = Mathf.Max(0f, 1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck);
-                float mute = _muted ? 0f : 1f;
-                fadeIn.volume = mute * targetVol * gIn * duck;
-                if (fadeOut != null) fadeOut.volume = mute * targetVol * gOut * duck;
-                yield return null;
+                while (t < dur)
+                {
+                    t += Time.unscaledDeltaTime;
+                    float k = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / dur));
+                    float gIn = Mathf.Sin(k * Mathf.PI * 0.5f);
+                    float gOut = Mathf.Cos(k * Mathf.PI * 0.5f);
+                    float targetVol = _musicVolume * _masterVolume;
+                    float duck = Mathf.Max(0f, 1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck);
+                    float mute = _muted ? 0f : 1f;
+                    fadeIn.volume = mute * targetVol * gIn * duck;
+                    if (fadeOut != null) fadeOut.volume = mute * targetVol * gOut * duck;
+                    yield return null;
+                }
+
+                if (fadeOut != null)
+                {
+                    fadeOut.Stop();
+                    fadeOut.volume = 0f;
+                }
             }
-            if (fadeOut != null)
+            finally
             {
-                fadeOut.Stop();
-                fadeOut.volume = 0f;
+                _isFading = false;
+                ApplyAllVolumes();
             }
-            _isFading = false;
-            ApplyAllVolumes();
         }
 
         private void LoadVolumes()
@@ -702,6 +893,8 @@ namespace Killtime.Audio
         {
             _pool2DSize = Mathf.Clamp(_pool2DSize, 8, 32);
             _pool3DSize = Mathf.Clamp(_pool3DSize, 4, 24);
+            // Clamp du champ legacy (CS0414 déjà masqué par pragma au niveau du champ).
+            _slowMoMusicPitch = Mathf.Clamp(_slowMoMusicPitch, 0.4f, 1f);
             if (Application.isPlaying) ApplyAllVolumes();
         }
 #endif

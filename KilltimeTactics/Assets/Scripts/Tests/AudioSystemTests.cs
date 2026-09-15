@@ -111,6 +111,36 @@ namespace Killtime.Tests
         }
 
         [Test]
+        public void CombatPlaylist_AllTracksAreAudible()
+        {
+            // Non-régression "piste 1 ne joue pas" : chaque piste doit contenir
+            // du signal (pas de boucle silencieuse / que des zéros).
+            for (int t = 0; t < 3; t++)
+            {
+                for (int level = 0; level <= 2; level++)
+                {
+                    var clip = ProceduralAudioFactory.GetMusicLoop(MusicMood.Combat, t, level);
+                    Assert.IsNotNull(clip, $"Piste {t + 1} L{level} introuvable");
+                    float[] s = new float[clip.samples];
+                    clip.GetData(s, 0);
+                    float peak = 0f;
+                    double sumSq = 0;
+                    int n = 0;
+                    for (int i = 0; i < s.Length; i += 7)
+                    {
+                        float a = System.Math.Abs(s[i]);
+                        if (a > peak) peak = a;
+                        sumSq += s[i] * s[i];
+                        n++;
+                    }
+                    double rms = System.Math.Sqrt(sumSq / System.Math.Max(1, n));
+                    Assert.Greater(peak, 0.05f, $"Piste {t + 1} L{level} silencieuse (peak={peak})");
+                    Assert.Greater(rms, 0.01, $"Piste {t + 1} L{level} quasi-silencieuse (rms={rms})");
+                }
+            }
+        }
+
+        [Test]
         public void Stingers_ExistAndAreShort()
         {
             foreach (MusicMood mood in System.Enum.GetValues(typeof(MusicMood)))

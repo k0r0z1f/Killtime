@@ -144,27 +144,88 @@ namespace Killtime.UI
         }
 
         /// <summary>
-        /// Voile fantôme peint par-dessus le contenu replié.
-        /// Intercepte tout clic sur la fenêtre dockée pour restaurer la taille normale sans actionner les contrôles.
+        /// Voile fantôme peint par-dessus le contenu replié (visuel seul).
+        /// La restauration au clic est gérée en amont par HandleResizeEvents (pré-Window),
+        /// et le blocage des interactions par ConsumeDockedContentEvent (pré-contenu) :
+        /// ce voile ne doit PAS être un bouton, sinon l'ordre de dessin IMGUI laisserait
+        /// les contrôles du contenu (dessinés avant) consommer le clic en premier,
+        /// et GUI.enabled=false serait contourné par les contenus qui forcent GUI.enabled=true.
         /// </summary>
         public static void DrawDockVeil(ref Rect rect, int windowId)
         {
             float g = DockGhostT(windowId);
             Rect contentRect = new Rect(0f, TitleHeight, rect.width, Mathf.Max(0f, rect.height - TitleHeight));
-
-            Color prevBg = GUI.backgroundColor;
-            GUI.backgroundColor = Color.clear;
-            if (GUI.Button(contentRect, GUIContent.none, GUIStyle.none))
-            {
-                RestoreAll();
-            }
-            GUI.backgroundColor = prevBg;
+            if (contentRect.width <= 0f || contentRect.height <= 0f) return;
 
             if (g <= 0.01f) return;
             Color prev = GUI.color;
             GUI.color = new Color(0.02f, 0.03f, 0.06f, 0.9f * g);
             GUI.DrawTexture(contentRect, BgTex());
             GUI.color = prev;
+        }
+
+        /// <summary>
+        /// Bloque toute interaction avec le contenu d'une fenêtre dockée.
+        /// À appeler DANS le callback GUI.Window, APRÈS DrawTitleBar (titre toujours
+        /// utilisable : drag / minimiser / fermer) et AVANT le contenu.
+        /// Consomme l'événement courant s'il tombe dans la zone contenu, AVANT que les
+        /// contrôles enfants ne le voient. Infranchissable même si un contenu force
+        /// GUI.enabled=true : un événement consommé (Used) ne déclenche plus aucun contrôle.
+        /// e.mousePosition est ici en coordonnées locales fenêtre (repère GUI.Window).
+        /// Laisse passer Layout / Repaint / Used / Ignore pour ne pas casser le dessin.
+        /// </summary>
+        /// <returns>true si l'événement a été consommé (contenu non cliquable ce frame).</returns>
+        public static bool ConsumeDockedContentEvent(Rect windowRectLocal)
+        {
+            Event e = Event.current;
+            if (e == null) return false;
+            if (e.type == EventType.Used || e.type == EventType.Ignore) return false;
+            if (e.type == EventType.Layout || e.type == EventType.Repaint) return false;
+
+            // Clavier : un champ docké pourrait garder le focus un frame (avant SanitizeGuiState).
+            // Avale la frappe pour qu'elle n'édite rien. Les raccourcis globaux (ToggleKeys)
+            // passent par Update/Input, pas par IMGUI : non impactés.
+            if (e.type == EventType.KeyDown || e.type == EventType.KeyUp)
+            {
+                if (GUIUtility.keyboardControl != 0)
+                {
+                    e.Use();
+                    return true;
+                }
+                return false;
+            }
+
+            switch (e.type)
+            {
+                case EventType.MouseDown:
+                case EventType.MouseUp:
+                case EventType.MouseDrag:
+                case EventType.MouseMove:
+                case EventType.ContextClick:
+                case EventType.ScrollWheel:
+                case EventType.DragUpdated:
+                case EventType.DragPerform:
+                case EventType.DragExited:
+                    break;
+                default:
+                    return false;
+            }
+
+            Rect contentRect = new Rect(0f, TitleHeight, windowRectLocal.width, Mathf.Max(0f, windowRectLocal.height - TitleHeight));
+            if (contentRect.width <= 0f || contentRect.height <= 0f) return false;
+            if (contentRect.Contains(e.mousePosition))
+            {
+                // Filet de sécurité : si le pré-Window (HandleResizeEvents) a raté le
+                // MouseDown (cas limite de repère), restaure ici plutôt que de l'avaler
+                // silencieusement : un clic contenu docké ne doit jamais l'actionner.
+                if (e.type == EventType.MouseDown && e.button == 0)
+                {
+                    try { RestoreAll(); } catch { /* ignore */ }
+                }
+                e.Use();
+                return true;
+            }
+            return false;
         }
 
         private static bool ProviderVisible(int windowId)
@@ -594,9 +655,14 @@ namespace Killtime.UI
                 return;
             }
 
-            // Molette sur une repliée : consommée sans restaurer (contenu non interactif :
-            // ni scroll fantôme, ni zoom caméra derrière).
-            if (e.type == EventType.ScrollWheel && HitsDockedStrip(e.mousePosition))
+            // Fenêtre repliée : contenu non utilisable / non cliquable.
+            // Consomme les autres événements souris sur le strip (sans restaurer) pour éviter
+            // tout click-through : ni activation d'un contrôle pendant la restauration animée
+            // (le MouseUp suit le MouseDown de restauration), ni scroll fantôme, ni zoom/orbit
+            // caméra derrière, ni clic 3D. La barre de titre reste utilisable (gérée intra-Window).
+            if ((e.type == EventType.MouseUp || e.type == EventType.MouseDrag
+                    || e.type == EventType.ContextClick || e.type == EventType.ScrollWheel)
+                && HitsDockedStrip(e.mousePosition))
             {
                 e.Use();
                 return;
@@ -682,6 +748,107 @@ namespace Killtime.UI
             r.y = Mathf.Clamp(r.y, 0f, Mathf.Max(0f, Screen.height - 30f));
             r.width = Mathf.Clamp(r.width, 200f, Screen.width);
             r.height = Mathf.Clamp(r.height, CollapsedHeight, Screen.height);
+        }
+
+        private const float OverlapMargin = 8f;
+
+        /// <summary>
+        /// Teste si un rect chevauche une zone HUD ou une autre fenêtre visible.
+        /// Marge de 8px pour garantir un espace visuel (jamais de fenêtres collées / superposées).
+        /// </summary>
+        private static bool OverlapsBlockers(Rect candidate, int selfId)
+        {
+            Rect expanded = new Rect(
+                candidate.x - OverlapMargin, candidate.y - OverlapMargin,
+                candidate.width + OverlapMargin * 2f, candidate.height + OverlapMargin * 2f);
+
+            // 1. Zones d'exclusion HUD enregistrées (carte joueur, cible, pause, feed, ruban).
+            for (int i = 0; i < _exclusionZones.Count; i++)
+            {
+                var provider = _exclusionZones[i];
+                if (provider == null) continue;
+                Rect zone;
+                try { zone = provider(); } catch { continue; }
+                if (zone.width <= 0f || zone.height <= 0f) continue;
+                if (expanded.Overlaps(zone, true)) return true;
+            }
+
+            // 2. Filet de sécurité HUD (si CombatHUD pas encore enregistré) : carte joueur + pause.
+            // Le bouton fermé Dev Arena est déjà couvert par le provider de la fenêtre 999
+            // (ouvert = grande fenêtre, fermé = petit bouton) : pas de doublon statique ici.
+            if (Screen.width > 0 && Screen.height > 0)
+            {
+                float pw = Mathf.Clamp(Screen.width * 0.27f, 250f, 340f);
+                if (expanded.Overlaps(new Rect(24f, 16f, pw, 72f), true)) return true;
+                if (expanded.Overlaps(new Rect(Screen.width - 100f, 16f, 80f, 32f), true)) return true;
+            }
+
+            // 3. Autres fenêtres flottantes visibles.
+            foreach (var kvp in _rectProviders)
+            {
+                int id = kvp.Key;
+                if (id == selfId) continue;
+                if (id == NoDockWindowId) continue; // menu contextuel transitoire : peut recouvrir
+                try
+                {
+                    if (_visibilityProviders.TryGetValue(id, out var isVisible) && isVisible != null && !isVisible())
+                        continue;
+                    var getRect = kvp.Value;
+                    if (getRect == null) continue;
+                    Rect r = getRect();
+                    if (r.width <= 0f || r.height <= 0f) continue;
+                    if (expanded.Overlaps(r, true)) return true;
+                }
+                catch
+                {
+                    // Provider détruit : ignore ce frame.
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Retourne un rect sans chevauchement pour l'ouverture d'une fenêtre.
+        /// Cascade diagonale (32x24) avec retour à la ligne, en restant sous le HUD haut (y>=96)
+        /// et à l'écran. Garantit : deux fenêtres ne s'ouvrent jamais l'une sur l'autre,
+        /// ni sur la carte joueur / pause / bouton Dev Arena.
+        /// À appeler dans OpenInstance() avant FocusWindow().
+        /// </summary>
+        public static Rect FindNonOverlappingRect(Rect desired, int selfId)
+        {
+            if (Screen.width <= 0 || Screen.height <= 0) return desired;
+            if (selfId == NoDockWindowId) return desired; // menu contextuel : suit le curseur, pas de cascade
+
+            float w = Mathf.Clamp(desired.width, 200f, Screen.width - 20f);
+            float h = Mathf.Clamp(desired.height, CollapsedHeight, Screen.height - 20f);
+            float minY = 96f; // sous carte joueur (zone d'exclusion 16->88) + 8px de marge
+            Rect candidate = new Rect(
+                Mathf.Clamp(desired.x, 10f, Mathf.Max(10f, Screen.width - w - 10f)),
+                Mathf.Clamp(desired.y, minY, Mathf.Max(minY, Screen.height - h - 10f)),
+                w, h);
+
+            if (!OverlapsBlockers(candidate, selfId)) return candidate;
+
+            const float stepX = 32f;
+            const float stepY = 24f;
+            for (int attempt = 1; attempt <= 60; attempt++)
+            {
+                float nx = candidate.x + stepX;
+                float ny = candidate.y + stepY;
+                // Retour à la ligne : si on sort à droite/bas, on repart à gauche/haut (sous le HUD).
+                if (nx + w > Screen.width - 10f)
+                    nx = 10f + (attempt % 5) * stepX;
+                if (ny + h > Screen.height - 10f)
+                    ny = minY + (attempt % 7) * stepY;
+                nx = Mathf.Clamp(nx, 10f, Mathf.Max(10f, Screen.width - w - 10f));
+                ny = Mathf.Clamp(ny, minY, Mathf.Max(minY, Screen.height - h - 10f));
+                candidate.x = nx;
+                candidate.y = ny;
+                if (!OverlapsBlockers(candidate, selfId)) return candidate;
+            }
+
+            return candidate;
         }
 
         public static bool IsResizing(int windowId)

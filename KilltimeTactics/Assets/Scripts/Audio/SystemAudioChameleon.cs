@@ -103,6 +103,11 @@ namespace Killtime.Audio.Experimental
         [SerializeField] [Range(0f, 250f)] private float _latencyCompensationMs = 95f;
 
         private float _savedGameMusicVolume = -1f;
+        // Gain Master global du jeu (KilltimeAudioManager Master + Mute), caché sur le
+        // thread principal (Update) car OnAudioFilterRead tourne sur le thread audio.
+        // La sortie Caméléon (AudioSource sans Mixer) le bypassait et restait à fond
+        // quand l'utilisateur baissait le volume global.
+        private volatile float _cachedMasterGain = 1f;
         private AudioSource _audioSource;
         private AudioClip _micClip;
         private string _activeDeviceName;
@@ -352,11 +357,18 @@ namespace Killtime.Audio.Experimental
             _audioSource.loop = true;
             _audioSource.playOnAwake = false;
             _audioSource.spatialBlend = 0f;
+            // Le volume global est appliqué manuellement dans OnAudioFilterRead
+            // (gain Master caché) : on verrouille le volume source à 1 pour éviter
+            // toute double atténuation.
+            _audioSource.volume = 1f;
+            RefreshMasterGain();
         }
 
         private void Start()
         {
-            OptimizeAudioConfiguration();
+            // Pas de AudioSettings.Reset ici : il coupe toutes les sources en cours
+            // (c'était le "la musique se coupe à la 1re ouverture de F9", le panneau
+            // créant ce composant à la volée). Le Reset vit dans StartCapture().
             if (_enableChameleonMode)
             {
                 StartCapture();
@@ -375,10 +387,42 @@ namespace Killtime.Audio.Experimental
 
         private void Update()
         {
+            // Toujours suivre le volume global, même en veille : sinon un changement
+            // de Master pendant que le Caméléon est inactif serait ignoré à la reprise.
+            RefreshMasterGain();
             if (!_enableChameleonMode) return;
 
             AnalyzeIncomingAudio();
             UpdateHarmonicParameters();
+        }
+
+        /// <summary>
+        /// Met en cache le volume sonore global du jeu (Master + Mute).
+        /// Appelé sur le thread principal uniquement ; OnAudioFilterRead ne fait
+        /// que lire _cachedMasterGain (thread audio : pas d'accès Unity direct).
+        /// </summary>
+        private void RefreshMasterGain()
+        {
+            try
+            {
+                var mgr = KilltimeAudioManager.Instance;
+                if (mgr == null)
+                {
+                    _cachedMasterGain = 1f;
+                }
+                else
+                {
+                    _cachedMasterGain = mgr.IsMuted
+                        ? 0f
+                        : Mathf.Clamp01(mgr.GetCategoryVolume(SoundCategory.Master));
+                }
+                if (_audioSource != null && _audioSource.volume != 1f)
+                    _audioSource.volume = 1f;
+            }
+            catch
+            {
+                _cachedMasterGain = 1f;
+            }
         }
 
         private void OnDestroy()
@@ -399,6 +443,18 @@ namespace Killtime.Audio.Experimental
         public void StartCapture()
         {
             StopCapture();
+            RefreshMasterGain();
+
+            // Latence DSP faible requise pour l'analyse : on l'applique juste avant
+            // d'ouvrir le micro (jamais à la création / ouverture du panneau).
+            // Le Reset peut stopper les sources en cours => on relance l'humeur
+            // courante juste après (le mute d'isolation, lui, s'applique ensuite).
+            OptimizeAudioConfiguration();
+            var musicMgr = KilltimeAudioManager.Instance;
+            if (musicMgr != null && musicMgr.CurrentMood != MusicMood.None)
+            {
+                musicMgr.PlayMusic(musicMgr.CurrentMood, musicMgr.CurrentTrackIndex, musicMgr.CurrentIntensity, forceRestart: true);
+            }
 
             var devices = Microphone.devices;
             if (devices == null || devices.Length == 0)
@@ -433,7 +489,9 @@ namespace Killtime.Audio.Experimental
             if (_isolateByMutingGameMusic && KilltimeAudioManager.Instance != null)
             {
                 _savedGameMusicVolume = KilltimeAudioManager.Instance.GetCategoryVolume(SoundCategory.Music);
-                KilltimeAudioManager.Instance.SetCategoryVolume(SoundCategory.Music, 0f);
+                // Duck temporaire : ne jamais persister le 0, sinon la musique
+                // reste à 0% au redémarrage (PlayerPrefs écrasé).
+                KilltimeAudioManager.Instance.SetCategoryVolume(SoundCategory.Music, 0f, save: false);
             }
 
             _audioSource.clip = _micClip;
@@ -485,7 +543,7 @@ namespace Killtime.Audio.Experimental
 
             if (_savedGameMusicVolume >= 0f && KilltimeAudioManager.Instance != null)
             {
-                KilltimeAudioManager.Instance.SetCategoryVolume(SoundCategory.Music, _savedGameMusicVolume);
+                KilltimeAudioManager.Instance.SetCategoryVolume(SoundCategory.Music, _savedGameMusicVolume, save: false);
                 _savedGameMusicVolume = -1f;
             }
 
@@ -1748,9 +1806,12 @@ namespace Killtime.Audio.Experimental
                 }
 
                 // 5. Sommation Stéréo & Limiteur Analogique
+                // Masterisé par le volume sonore global du jeu (Master + Mute) :
+                // sans ça la sortie Caméléon (hors Mixer) restait à fond même à Master 0.
+                float masterGain = _cachedMasterGain;
                 float sharedElements = (synthSample * 0.45f) + (choirSample * 0.70f) + (vocalSample * 0.88f) + (drumMix * 1.10f);
-                float finalL = (float)Math.Tanh((sharedElements + (bassSampleL * 0.92f)) * 0.92);
-                float finalR = (float)Math.Tanh((sharedElements + (bassSampleR * 0.92f)) * 0.92);
+                float finalL = (float)Math.Tanh((sharedElements + (bassSampleL * 0.92f)) * 0.92) * masterGain;
+                float finalR = (float)Math.Tanh((sharedElements + (bassSampleR * 0.92f)) * 0.92) * masterGain;
 
                 if (channels == 1)
                 {

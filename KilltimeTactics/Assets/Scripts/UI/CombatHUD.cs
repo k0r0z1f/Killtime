@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using System.Text;
+using System.Text.RegularExpressions;
 using UnityEngine;
 using Killtime.Core.Combat;
 using Killtime.Core.Character;
@@ -136,6 +138,16 @@ namespace Killtime.UI
                     return true;
             }
 
+            // Panneau grenades (si ouvert ou en animation)
+            if (Instance._showGrenadeDrawer || Instance._grenadeOpenAnim > 0.02f)
+            {
+                float w = Mathf.Clamp(Screen.width * 0.38f, 360f, 500f);
+                float h = 264f;
+                float y = Screen.height - h - 76f;
+                if (new Rect((Screen.width - w) * 0.5f, y, w, h).Contains(mouseGui))
+                    return true;
+            }
+
             // Terminal étendu ou bouton FEED (bas-droite)
             if (Instance._isLogDrawerExpanded)
             {
@@ -169,11 +181,35 @@ namespace Killtime.UI
         private LogCategory _activeCategory = LogCategory.All;
         private bool _isLogDrawerExpanded = false;
         private bool _scrollLock = false;
+        // Demande de retour en bas reportée au prochain Draw (où la hauteur exacte
+        // du contenu est connue). Évite le float.MaxValue fragile et garantit que
+        // le verrou (_scrollLock) n'est jamais contourné : quand il est actif,
+        // seul un clamp de sécurité s'applique, jamais un retour en bas.
+        private bool _scrollToBottomPending = false;
+
+        // --- Tooltip des dés du feed : 1 s de survol sur une mention (D6, D12…)
+        // --- => formule de calcul concise du niveau de dé.
+        private const float DiceTooltipDelay = 1.0f;
+        private readonly Dictionary<string, DiceLineLayout> _diceLayoutCache = new();
+        private readonly List<DiceHitRect> _diceHitRects = new();
+        private string _diceHoverKey;
+        private float _diceHoverStart;
+        private DiceHitRect _diceHoverHit;
+        private bool _diceHoverValid;
 
         private BodyPart _selectedBodyPart = BodyPart.Torse;
         private bool _cancelPenaltyWithAP = false;
         private bool _showAnatomyDrawer = false;
         private float _prePauseTimeScale = 1.0f;
+
+        // --- Grenades (Livre VIII §31.3) : viser la case de la cible verrouillée,
+        // --- lancer main (2 PA / 8 cases) ou lanceur (3 PA / 20 cases), visée +1 PA.
+        private bool _showGrenadeDrawer = false;
+        private float _grenadeOpenAnim;
+        private string _selectedGrenadeId;
+        private bool _grenadeUseLauncher = true;
+        private bool _grenadeAimed = false;
+        private int _grenadeBonusPA;
 
         // Gauges dynamiques lissées
         private float _smoothPlayerHealth = -1f;
@@ -199,10 +235,12 @@ namespace Killtime.UI
         private static GUIStyle _floatingLogStyle;
         private static GUIStyle _terminalHeaderStyle;
         private static GUIStyle _terminalBodyStyle;
+        private static GUIStyle _terminalDiceStyle;
 
         public event Action<BodyPart, bool> OnAttackRequested;
         public event Action OnEndTurnRequested;
         public event Action OnEmergencyBreathRequested;
+        public event Action<string, bool, bool, int> OnGrenadeRequested;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AutoInitialize()
@@ -372,8 +410,17 @@ namespace Killtime.UI
             if (Input.GetKeyDown(KeyCode.Alpha1) || Input.GetKeyDown(KeyCode.Keypad1))
             {
                 _showAnatomyDrawer = !_showAnatomyDrawer;
+                if (_showAnatomyDrawer) _showGrenadeDrawer = false;
                 if (KilltimeAudioManager.Instance != null)
                     KilltimeAudioManager.Instance.PlayUI(_showAnatomyDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
+            }
+
+            if (Input.GetKeyDown(KeyCode.Alpha2) || Input.GetKeyDown(KeyCode.Keypad2))
+            {
+                _showGrenadeDrawer = !_showGrenadeDrawer;
+                if (_showGrenadeDrawer) _showAnatomyDrawer = false;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(_showGrenadeDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
             }
 
             if (Input.GetKeyDown(KeyCode.L))
@@ -391,6 +438,7 @@ namespace Killtime.UI
             float dt = Time.unscaledDeltaTime;
             _hudPulse += dt;
             _anatomyOpenAnim = Mathf.MoveTowards(_anatomyOpenAnim, _showAnatomyDrawer ? 1f : 0f, dt * 10f);
+            _grenadeOpenAnim = Mathf.MoveTowards(_grenadeOpenAnim, _showGrenadeDrawer ? 1f : 0f, dt * 10f);
             _logFlash = Mathf.MoveTowards(_logFlash, 0f, dt * 2.5f);
             if (_lastLogCount != _logEntries.Count)
             {
@@ -483,9 +531,13 @@ namespace Killtime.UI
 
             if (_logEntries.Count > 100) _logEntries.RemoveAt(0);
 
+            // Verrou actif => on ne touche jamais au scroll : l'utilisateur reste
+            // exactement où il lit, même si des logs arrivent en rafale.
+            // Verrou inactif => on demande un recalage en bas, appliqué dans le Draw
+            // avec la hauteur réelle du contenu (pas de float.MaxValue).
             if (!_scrollLock)
             {
-                _logScroll.y = float.MaxValue;
+                _scrollToBottomPending = true;
             }
         }
 
@@ -572,6 +624,12 @@ namespace Killtime.UI
                 DrawSurgicalTargetingMatrix(activeUnit);
             }
 
+            // 4b. Panneau grenades (visée de case, lanceur, souffle)
+            if (_showGrenadeDrawer)
+            {
+                DrawGrenadeTargetingPanel(activeUnit);
+            }
+
             // 5. Flux d'informations (Logs)
             DrawAdvancedLogSystem(isPauseActive: false);
         }
@@ -642,6 +700,12 @@ namespace Killtime.UI
                 richText = true
             };
             _terminalBodyStyle.normal.textColor = new Color(0.86f, 0.90f, 0.95f, 0.90f);
+
+            _terminalDiceStyle = new GUIStyle(_terminalBodyStyle)
+            {
+                fontStyle = FontStyle.Bold
+            };
+            _terminalDiceStyle.normal.textColor = ColorCyanAccent;
         }
 
         // =========================================================================
@@ -803,9 +867,9 @@ namespace Killtime.UI
         // =========================================================================
         private void DrawFloatingActionRibbon(TacticalUnit unit)
         {
-            float width = Mathf.Clamp(Screen.width * 0.40f, 360f, 520f);
+            float width = Mathf.Clamp(Screen.width * 0.52f, 460f, 640f);
             float height = 46f;
-            float bottom = 18f + (_showAnatomyDrawer ? 214f : 0f);
+            float bottom = 18f + (_showAnatomyDrawer ? 214f : 0f) + (_showGrenadeDrawer ? 264f : 0f);
             Rect dock = new Rect((Screen.width - width) * 0.5f,
                 Screen.height - height - bottom, width, height);
 
@@ -813,18 +877,28 @@ namespace Killtime.UI
             DrawAccentLine(new Rect(dock.x + 28f, dock.y, dock.width - 56f, 1f), ColorCyanDim, 1f);
 
             float gap = 5f;
-            float bw = (width - 14f - gap * 2f) / 3f;
+            float bw = (width - 14f - gap * 3f) / 4f;
             float y = dock.y + 6f;
 
             Rect vats = new Rect(dock.x + 7f, y, bw, 34f);
             if (DrawTacticalButton(vats, "CIBLAGE", "1", _showAnatomyDrawer, ColorCyanAccent))
             {
                 _showAnatomyDrawer = !_showAnatomyDrawer;
+                if (_showAnatomyDrawer) _showGrenadeDrawer = false;
                 if (KilltimeAudioManager.Instance != null)
                     KilltimeAudioManager.Instance.PlayUI(_showAnatomyDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
             }
 
-            Rect breath = new Rect(vats.xMax + gap, y, bw, 34f);
+            Rect grenade = new Rect(vats.xMax + gap, y, bw, 34f);
+            if (DrawTacticalButton(grenade, "GRENADE", "2", _showGrenadeDrawer, ColorAmber))
+            {
+                _showGrenadeDrawer = !_showGrenadeDrawer;
+                if (_showGrenadeDrawer) _showAnatomyDrawer = false;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(_showGrenadeDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
+            }
+
+            Rect breath = new Rect(grenade.xMax + gap, y, bw, 34f);
             bool canBreath = unit.Stats.Essoufflement < unit.Stats.Attributes.Constitution;
             if (DrawTacticalButton(breath, "SOUFFLE", "+2", false, ColorAmber, canBreath))
             {
@@ -949,9 +1023,159 @@ namespace Killtime.UI
             }
         }
 
+        // =========================================================================
+        // PANNEAU GRENADES — VISÉE DE CASE + LANCEUR + SOUFFLE
+        // =========================================================================
+        private void DrawGrenadeTargetingPanel(TacticalUnit unit)
+        {
+            float width = Mathf.Clamp(Screen.width * 0.38f, 360f, 500f);
+            float height = 264f;
+            float targetY = Screen.height - height - 76f;
+            float y = Mathf.Lerp(Screen.height + 10f, targetY, _grenadeOpenAnim);
+            Rect rect = new Rect((Screen.width - width) * 0.5f, y, width, height);
+
+            DrawSoftPanel(rect, new Color(0.030f, 0.028f, 0.020f, 0.95f));
+            DrawAccentLine(new Rect(rect.x, rect.y, rect.width, 2f), ColorAmber, 0.9f);
+
+            GUI.Label(new Rect(rect.x + 14, rect.y + 10, width - 60, 19),
+                "GRENADE // SOUFFLE DE ZONE", _hudNameStyle);
+            var tgt = _arena != null ? _arena.CurrentTarget : null;
+            string tgtLabel = (tgt != null && tgt.Stats != null && tgt.Stats.IsAlive)
+                ? $"Case visée : ({tgt.CurrentCoords.Q},{tgt.CurrentCoords.R}) — {tgt.Stats.Name}"
+                : "Aucune cible verrouillée (sélectionnez un mannequin).";
+            GUI.color = ColorTextMuted;
+            GUI.Label(new Rect(rect.x + 14, rect.y + 29, width - 55, 14), tgtLabel, _hudSubStyle);
+            GUI.color = Color.white;
+
+            Rect close = new Rect(rect.x + width - 34, rect.y + 8, 22, 22);
+            bool closeHover = close.Contains(Event.current.mousePosition);
+            GUI.color = closeHover ? ColorCrimson : ColorTextMuted;
+            if (GUI.Button(close, "×", _btnFlatNormal))
+            {
+                _showGrenadeDrawer = false;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.VATS_Close, 0.6f);
+                GUI.color = Color.white;
+                return;
+            }
+            GUI.color = Color.white;
+
+            var sheet = unit.GetOrBuildSheet();
+            var throwables = CombatDevArena.GetThrowableGrenades(sheet);
+            var launcher = CombatDevArena.GetAnyLauncher(sheet);
+            int maxRange = 8;
+            try
+            {
+                var sel = throwables.Find(g => g != null && g.ItemId == _selectedGrenadeId) ?? (throwables.Count > 0 ? throwables[0] : null);
+                if (sel != null)
+                {
+                    _selectedGrenadeId = sel.ItemId;
+                    maxRange = Killtime.Core.Combat.GrenadeRules.ComputeMaxRange(sel, (_grenadeUseLauncher ? launcher : null));
+                }
+            }
+            catch { }
+
+            float rowY = rect.y + 50f;
+            // Sélecteur de grenade (cycle).
+            Rect selRect = new Rect(rect.x + 12f, rowY, width - 24f, 26f);
+            string selName = "— aucune grenade (marché : Grenades) —";
+            string selSub = "";
+            var current = throwables.Find(g => g != null && g.ItemId == _selectedGrenadeId);
+            if (current == null && throwables.Count > 0) { current = throwables[0]; _selectedGrenadeId = current.ItemId; }
+            if (current != null)
+            {
+                int stock = current.IsStackable ? Mathf.Max(1, current.Quantity) : 1;
+                selName = $"{current.Name} x{stock}";
+                selSub = $"{current.Era} • {current.GrenadeKind} • R{current.BlastRadius} • {current.BaseDamage}+{current.DamageDiceCount}d10";
+            }
+            if (GUI.Button(selRect, GUIContent.none, GUIStyle.none))
+            {
+                if (throwables.Count > 1)
+                {
+                    int idx = throwables.FindIndex(g => g != null && g.ItemId == _selectedGrenadeId);
+                    int next = (idx + 1) % throwables.Count;
+                    _selectedGrenadeId = throwables[next].ItemId;
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayUI(SoundId.VATS_TargetChange, 0.55f);
+                }
+            }
+            GUI.color = ColorAmber;
+            GUI.Label(new Rect(selRect.x + 8, selRect.y + 1, selRect.width - 16, 15), selName.ToUpperInvariant(), _hudSubStyle);
+            GUI.color = ColorTextMuted;
+            GUI.Label(new Rect(selRect.x + 8, selRect.y + 13, selRect.width - 16, 12), selSub, _hudSubStyle);
+            GUI.color = Color.white;
+            DrawSolidRect(new Rect(selRect.x, selRect.yMax - 1, selRect.width, 1), new Color(1f, 0.72f, 0.15f, 0.25f));
+
+            rowY += 30f;
+            // Toggles lanceur + visée.
+            GUI.color = ColorTextMuted;
+            bool hasLauncher = launcher != null;
+            GUI.enabled = hasLauncher;
+            bool wantLauncher = GUI.Toggle(new Rect(rect.x + 14f, rowY, (width - 28f) * 0.55f, 18f),
+                _grenadeUseLauncher && hasLauncher,
+                hasLauncher ? $"Lanceur : {launcher.Name} (+{launcher.LauncherRangeBonus})" : "Lanceur : — (main 8 cases)", _hudSubStyle);
+            GUI.enabled = true;
+            if (wantLauncher != _grenadeUseLauncher)
+            {
+                _grenadeUseLauncher = wantLauncher && hasLauncher;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Toggle, 0.55f);
+            }
+            _grenadeAimed = GUI.Toggle(
+                new Rect(rect.x + 14f + (width - 28f) * 0.58f, rowY, (width - 28f) * 0.42f, 18f),
+                _grenadeAimed, "Visée +1 PA", _hudSubStyle);
+            GUI.color = Color.white;
+
+            rowY += 20f;
+            // Injection PA post-tirage (+1 / PA).
+            GUI.color = ColorTextMuted;
+            GUI.Label(new Rect(rect.x + 14f, rowY, 120f, 18f), $"Injection : +{_grenadeBonusPA} PA", _hudSubStyle);
+            GUI.color = Color.white;
+            float newBonus = GUI.HorizontalSlider(new Rect(rect.x + 140f, rowY + 4f, width - 154f, 14f), _grenadeBonusPA, 0f, 4f);
+            int rounded = Mathf.RoundToInt(newBonus);
+            if (rounded != _grenadeBonusPA) _grenadeBonusPA = rounded;
+
+            rowY += 22f;
+            int dist = -1;
+            if (tgt != null) dist = unit.CurrentCoords.DistanceTo(tgt.CurrentCoords);
+            int baseCost = (_grenadeUseLauncher && hasLauncher)
+                ? Killtime.Core.Combat.GrenadeRules.LauncherShotAPCost
+                : Killtime.Core.Combat.GrenadeRules.HandThrowAPCost;
+            int apCost = baseCost + (_grenadeAimed ? 1 : 0) + _grenadeBonusPA;
+            string rangeTxt = dist >= 0 ? $"Dist {dist} / Max {maxRange}" : $"Max {maxRange}";
+            bool inRange = dist < 0 || dist <= maxRange;
+            bool canThrow = current != null && tgt != null && inRange
+                && unit.Stats.CurrentActionPoints >= apCost
+                && unit.Stats.CanAttack(unit.Stats.GetSkillDie(SkillType.Ballistique, true));
+            GUI.color = inRange ? ColorTextMuted : ColorCrimson;
+            GUI.Label(new Rect(rect.x + 14f, rowY, width - 28f, 15f),
+                $"{rangeTxt} • Coût {apCost} PA • Blast R{(current != null ? current.BlastRadius : 0)}", _hudSubStyle);
+            GUI.color = Color.white;
+
+            Rect launch = new Rect(rect.x + 12f, rect.y + height - 38f, width - 24f, 28f);
+            if (DrawTacticalButton(launch,
+                !canThrow ? "LANCER INDISPONIBLE" : $"💣 LANCER  ·  {apCost} PA",
+                null, false, canThrow ? ColorAmber : ColorTextMuted, canThrow))
+            {
+                var targetUnit = _arena != null ? _arena.CurrentTarget : null;
+                if (targetUnit != null && current != null)
+                {
+                    _showGrenadeDrawer = false;
+                    var coords = targetUnit.CurrentCoords;
+                    var gid = current.ItemId;
+                    bool useL = _grenadeUseLauncher && hasLauncher;
+                    bool aim = _grenadeAimed;
+                    int bonus = _grenadeBonusPA;
+                    _arena.ExecuteGrenadeThrow(coords, gid, useL, aim, bonus);
+                    OnGrenadeRequested?.Invoke(gid, useL, aim, bonus);
+                }
+            }
+        }
+
         private void TriggerEndTurn()
         {
             _showAnatomyDrawer = false;
+            _showGrenadeDrawer = false;
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.PlayUI(SoundId.Turn_End, 0.7f);
             _turnManager?.EndCurrentTurn();
@@ -962,6 +1186,358 @@ namespace Killtime.UI
         // =========================================================================
         // SYSTÈME DE LOGS — FEED LÉGER
         // =========================================================================
+        /// <summary>Segment de ligne du feed après découpe (tags rich text préservés).</summary>
+        private struct DiceLineSegment
+        {
+            public string Text; // texte à dessiner, tags inclus
+            public float X, Y, W, H; // relatifs à l'origine du message
+            public bool IsDie;
+            public DiceType Die;
+            // Contexte du jet (si la mention "Attaque/Défense {comp} : {dé}" a été reconnue) :
+            public bool HasContext;
+            public DieMentionRole Role;
+            public string SkillName;
+            public string Attacker;
+            public string Defender;
+            // Rôle du jet d'après la phase ("Phase 1/2 … lance {dé}"), pour hériter
+            // ensuite du contexte du jet opposé de même rôle et même dé.
+            public bool HasPhaseRole;
+            public DieMentionRole PhaseRole;
+        }
+
+        /// <summary>Mise en page pré-calculée (et mise en cache) d'une ligne du feed.</summary>
+        private class DiceLineLayout
+        {
+            public readonly List<DiceLineSegment> Segments = new();
+            public float Height;
+            public bool HasDice;
+        }
+
+        /// <summary>Zone survolable d'une mention de dé, en coordonnées du contenu scrollé.</summary>
+        private struct DiceHitRect
+        {
+            public Rect Rect;
+            public DiceType Die;
+            public string Key;
+            public bool HasContext;
+            public DieMentionRole Role;
+            public string SkillName;
+            public string Attacker;
+            public string Defender;
+        }
+
+        private static readonly Regex DiceTagStripRegex = new Regex("<[^>]*>", RegexOptions.Compiled);
+
+        /// <summary>
+        /// Hauteur d'une entrée du feed : layout segmenté si elle mentionne des dés
+        /// (même mesure que la passe de dessin), sinon mesure Unity inchangée.
+        /// </summary>
+        private float GetLogEntryHeight(CombatLogEntry entry, float textW)
+        {
+            var layout = GetDiceLineLayout(entry.RawMessage, textW);
+            if (layout.HasDice) return layout.Height;
+            return Mathf.Max(20f, _terminalBodyStyle.CalcHeight(new GUIContent(entry.RawMessage), textW));
+        }
+
+        /// <summary>
+        /// Découpe une ligne du feed en segments positionnés (retours à la ligne manuels),
+        /// en repérant les mentions de dés. Résultat mis en cache (clé = message + largeur).
+        /// </summary>
+        private DiceLineLayout GetDiceLineLayout(string message, float availW)
+        {
+            var layout = new DiceLineLayout { Height = 20f };
+            if (string.IsNullOrEmpty(message)) return layout;
+            string key = message + "\n" + ((int)availW);
+            if (_diceLayoutCache.TryGetValue(key, out var cached))
+                return cached;
+            layout = BuildDiceLineLayout(message, availW);
+            if (_diceLayoutCache.Count > 300)
+                _diceLayoutCache.Clear();
+            _diceLayoutCache[key] = layout;
+            return layout;
+        }
+
+        private DiceLineLayout BuildDiceLineLayout(string message, float availW)
+        {
+            var layout = new DiceLineLayout();
+            float lineH = Mathf.Max(14f, _terminalBodyStyle.CalcSize(new GUIContent("Mg")).y);
+            float spaceW = _terminalBodyStyle.CalcSize(new GUIContent(" ")).x;
+            // Contexte des jets : noms des protagonistes (1re ligne) + pour chaque dé,
+            // regard-arrière "Attaque/Défense {comp} :" (aucun décalage possible même
+            // si un dé isolé apparaît ailleurs dans le message).
+            string plainMessage = DiceTagStripRegex.Replace(message, "");
+            string firstLine = plainMessage;
+            int nl = plainMessage.IndexOf('\n');
+            if (nl >= 0) firstLine = plainMessage.Substring(0, nl);
+            var parties = DiceLogParser.ParseParties(firstLine);
+            float y = 0f;
+            string pendingTags = "";
+            var linePlain = new StringBuilder(256);
+            string[] lines = message.Split('\n');
+            for (int li = 0; li < lines.Length; li++)
+            {
+                float x = 0f;
+                bool firstOnLine = true;
+                linePlain.Length = 0;
+                string[] tokens = lines[li].Split(' ');
+                for (int ti = 0; ti < tokens.Length; ti++)
+                {
+                    string raw = tokens[ti];
+                    if (raw.Length == 0) continue; // espaces multiples : repliés
+                    string plain = DiceTagStripRegex.Replace(raw, "");
+                    if (plain.Length == 0) { pendingTags += raw; continue; } // tag seul : reporté
+                    string tok = pendingTags + raw;
+                    pendingTags = "";
+                    bool isDie = DiceTypeHints.TryParseLogToken(plain, out DiceType die);
+                    float w = (isDie ? _terminalDiceStyle : _terminalBodyStyle).CalcSize(new GUIContent(tok)).x;
+                    if (!firstOnLine && x + w > availW)
+                    {
+                        y += lineH;
+                        x = 0f;
+                        firstOnLine = true;
+                    }
+                    if (isDie) layout.HasDice = true;
+                    var seg = new DiceLineSegment
+                    {
+                        Text = tok,
+                        X = x,
+                        Y = y,
+                        W = w,
+                        H = lineH,
+                        IsDie = isDie,
+                        Die = die
+                    };
+                    if (isDie && parties.HasParties
+                        && DiceLogParser.TryParseTrailingMention(linePlain.ToString(), out var dieRole, out var dieSkill))
+                    {
+                        seg.HasContext = true;
+                        seg.Role = dieRole;
+                        seg.SkillName = dieSkill;
+                        seg.Attacker = parties.Attacker;
+                        seg.Defender = parties.Defender;
+                    }
+                    else if (isDie && DiceLogParser.TryParseTrailingPhaseRole(linePlain.ToString(), out var phaseRole))
+                    {
+                        seg.HasPhaseRole = true;
+                        seg.PhaseRole = phaseRole;
+                    }
+                    layout.Segments.Add(seg);
+                    linePlain.Append(plain).Append(' ');
+                    x += w + spaceW;
+                    firstOnLine = false;
+                }
+                y += lineH;
+            }
+            // Passe 2 : les dés des phases ("Phase 1/2 … lance {dé} → brut…", sans
+            // mention de compétence) héritent du contexte du jet opposé de même
+            // rôle et même dé (même variable dans CombatCalculator).
+            for (int i = 0; i < layout.Segments.Count; i++)
+            {
+                var s = layout.Segments[i];
+                if (!s.IsDie || s.HasContext || !s.HasPhaseRole) continue;
+                for (int j = 0; j < layout.Segments.Count; j++)
+                {
+                    var c = layout.Segments[j];
+                    if (c.IsDie && c.HasContext && c.Die == s.Die && c.Role == s.PhaseRole)
+                    {
+                        s.HasContext = true;
+                        s.Role = c.Role;
+                        s.SkillName = c.SkillName;
+                        s.Attacker = c.Attacker;
+                        s.Defender = c.Defender;
+                        layout.Segments[i] = s;
+                        break;
+                    }
+                }
+            }
+            layout.Height = Mathf.Max(20f, y);
+            return layout;
+        }
+
+        /// <summary>Dessine une ligne contenant des mentions de dés, segment par segment.</summary>
+        private void DrawDiceLineSegments(DiceLineLayout layout, CombatLogEntry entry, float yEntry)
+        {
+            int msgHash = entry.RawMessage != null ? entry.RawMessage.GetHashCode() : 0;
+            for (int s = 0; s < layout.Segments.Count; s++)
+            {
+                var seg = layout.Segments[s];
+                Rect r = new Rect(116f + seg.X, yEntry + seg.Y, seg.W + 2f, seg.H);
+                GUI.Label(r, seg.Text, seg.IsDie ? _terminalDiceStyle : _terminalBodyStyle);
+                // Seuls les dés à contexte expliqué sont survolables : aucun tooltip
+                // générique ("D4 : 1-4 + mod") n'est affiché pour les autres.
+                if (seg.IsDie && seg.HasContext)
+                {
+                    string key = msgHash + ":" + s;
+                    _diceHitRects.Add(new DiceHitRect
+                    {
+                        Rect = r,
+                        Die = seg.Die,
+                        Key = key,
+                        HasContext = seg.HasContext,
+                        Role = seg.Role,
+                        SkillName = seg.SkillName,
+                        Attacker = seg.Attacker,
+                        Defender = seg.Defender
+                    });
+                    if (key == _diceHoverKey)
+                        DrawAccentLine(new Rect(r.x, r.y + r.height - 2f, seg.W, 1f), ColorCyanAccent, 0.9f);
+                }
+            }
+        }
+
+        /// <summary>
+        /// Survol des mentions de dés : après 1 s immobile sur un dé, affiche sa
+        /// formule de calcul (très concise) dans un tooltip près du curseur.
+        /// </summary>
+        private void DrawDiceHoverTooltip(Rect scrollRect)
+        {
+            Vector2 mouse = Event.current.mousePosition;
+            Vector2 local = new Vector2(mouse.x - scrollRect.x + _logScroll.x,
+                mouse.y - scrollRect.y + _logScroll.y);
+
+            string hitKey = null;
+            DiceHitRect hit = default;
+            for (int i = 0; i < _diceHitRects.Count; i++)
+            {
+                if (_diceHitRects[i].Rect.Contains(local))
+                {
+                    hitKey = _diceHitRects[i].Key;
+                    hit = _diceHitRects[i];
+                    break;
+                }
+            }
+
+            float now = Time.realtimeSinceStartup;
+            if (hitKey == null || hitKey != _diceHoverKey)
+            {
+                _diceHoverKey = hitKey;
+                _diceHoverStart = now;
+                _diceHoverHit = hit;
+                _diceHoverValid = hitKey != null;
+                if (hitKey != null && hit.HasContext
+                    && !TryResolveDieContext(hit, out _, out _, out string failReason))
+                {
+                    Debug.LogWarning($"[DiceTooltip] Aucun tooltip ({failReason}) "
+                        + $"pour '{hit.SkillName}' ({hit.Role}) : {hit.Attacker} ➔ {hit.Defender}.");
+                }
+            }
+
+            if (!_diceHoverValid || Event.current.type != EventType.Repaint)
+                return;
+            if (now - _diceHoverStart < DiceTooltipDelay)
+                return;
+
+            string text = BuildDieBreakdownText(_diceHoverHit);
+            if (string.IsNullOrEmpty(text)) return;
+            float padX = 10f, padY = 6f;
+            float maxLine = 0f;
+            foreach (string ln in text.Split('\n'))
+                maxLine = Mathf.Max(maxLine, _terminalBodyStyle.CalcSize(new GUIContent(ln)).x);
+            float w = Mathf.Clamp(maxLine + padX * 2f, 140f, 320f);
+            float h = _terminalBodyStyle.CalcHeight(new GUIContent(text), w - padX * 2f) + padY * 2f;
+            float x = Mathf.Clamp(mouse.x + 16f, 8f, Mathf.Max(8f, Screen.width - w - 8f));
+            float y = mouse.y - h - 14f;
+            if (y < 8f) y = mouse.y + 20f;
+            Rect box = new Rect(x, y, w, h);
+
+            DrawSoftPanel(box, new Color(0.01f, 0.02f, 0.035f, 0.96f));
+            DrawAccentLine(new Rect(box.x, box.y, box.width, 2f), ColorCyanAccent, 0.9f);
+            GUI.color = ColorTextBright;
+            GUI.Label(new Rect(box.x + padX, box.y + padY, w - padX * 2f, h - padY * 2f), text, _terminalBodyStyle);
+            GUI.color = Color.white;
+        }
+
+        /// <summary>
+        /// Retrouve une unité du combat par son nom tel que loggé : exact, puis
+        /// insensible à la casse, puis par contenance (surnoms/tronquages).
+        /// </summary>
+        private TacticalUnit FindUnitByName(string name)
+        {
+            if (string.IsNullOrEmpty(name) || _turnManager == null) return null;
+            var order = _turnManager.TurnOrder;
+            for (int i = 0; i < order.Count; i++)
+            {
+                var u = order[i];
+                if (u != null && u.Stats != null && u.Stats.Name == name) return u;
+            }
+            for (int i = 0; i < order.Count; i++)
+            {
+                var u = order[i];
+                if (u != null && u.Stats != null
+                    && string.Equals(u.Stats.Name, name, StringComparison.OrdinalIgnoreCase)) return u;
+            }
+            for (int i = 0; i < order.Count; i++)
+            {
+                var u = order[i];
+                if (u == null || u.Stats == null || string.IsNullOrEmpty(u.Stats.Name)) continue;
+                if (u.Stats.Name.IndexOf(name, StringComparison.OrdinalIgnoreCase) >= 0
+                    || name.IndexOf(u.Stats.Name, StringComparison.OrdinalIgnoreCase) >= 0) return u;
+            }
+            return null;
+        }
+
+        private static string TrainingPips(int training)
+        {
+            int full = Mathf.Clamp(training, 0, CharacterProgressionManager.MAX_SKILL_TRAINING);
+            string pips = new string('●', full)
+                + new string('○', CharacterProgressionManager.MAX_SKILL_TRAINING - full);
+            if (training > CharacterProgressionManager.MAX_SKILL_TRAINING) pips += "+";
+            return pips;
+        }
+
+        /// <summary>
+        /// Résout le contexte d'un dé survolé (compétence + unité). False + raison
+        /// si le tooltip doit retomber sur la formule concise du dé.
+        /// </summary>
+        private bool TryResolveDieContext(DiceHitRect hit, out SkillType skill, out TacticalUnit unit, out string failReason)
+        {
+            skill = default;
+            unit = null;
+            failReason = null;
+            if (!hit.HasContext) { failReason = "mention Attaque/Défense non reconnue"; return false; }
+            if (!SkillDefinitions.TryParseDisplayName(hit.SkillName, out skill))
+            {
+                failReason = $"compétence '{hit.SkillName}' non reconnue";
+                return false;
+            }
+            bool isOffensive = hit.Role == DieMentionRole.Attack;
+            string unitName = isOffensive ? hit.Attacker : hit.Defender;
+            unit = FindUnitByName(unitName);
+            if (unit == null || unit.Stats == null)
+            {
+                failReason = $"unité '{unitName}' introuvable au tour en cours";
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Décompose pourquoi le dé est de ce type : compétence, rang de base
+        /// (caracs), paliers, entraînements (icônes + niveau) et total.
+        /// Null si le contexte est introuvable (aucun tooltip affiché dans ce cas).
+        /// </summary>
+        private string BuildDieBreakdownText(DiceHitRect hit)
+        {
+            if (!TryResolveDieContext(hit, out SkillType skill, out TacticalUnit unit, out _))
+                return null;
+            bool isOffensive = hit.Role == DieMentionRole.Attack;
+            string unitName = isOffensive ? hit.Attacker : hit.Defender;
+
+            var stats = unit.Stats;
+            int rank = SkillDefinitions.GetBaseRank(skill, stats.Attributes, isOffensive);
+            int steps = SkillDefinitions.CharacteristicSteps(rank);
+            int training = stats.Sheet != null ? stats.Sheet.GetSkill(skill).TrainingLevel : 0;
+            int total = steps + training;
+            string label = DiceTypeHints.GetShortLabel(hit.Die);
+
+            string text = $"{SkillDefinitions.GetDisplayName(skill)} — {unitName} : {label}\n"
+                + $"Base {SkillDefinitions.DescribeBaseRank(skill, stats.Attributes, isOffensive)} → +{steps}\n"
+                + $"Entraînement {TrainingPips(training)} {training}/{CharacterProgressionManager.MAX_SKILL_TRAINING} → +{training}\n"
+                + $"Total {total} → {label}";
+            if (stats.IsMagicAugmented(skill, isOffensive)) text += "\n★ Corps Augmenté";
+            return text;
+        }
+
         private void DrawAdvancedLogSystem(bool isPauseActive)
         {
             float drawerWidth = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
@@ -1009,14 +1585,26 @@ namespace Killtime.UI
                 _scrollLock = !_scrollLock;
                 if (!_scrollLock)
                 {
-                    _logScroll.y = float.MaxValue;
+                    // Déverrouillage => retour immédiat en bas (consommé plus bas
+                    // dans ce même Draw, une fois totalContentHeight connu).
+                    _scrollToBottomPending = true;
+                }
+                else
+                {
+                    // Verrouillage => on annule toute demande en cours pour ne pas
+                    // sauter en bas juste après avoir verrouillé.
+                    _scrollToBottomPending = false;
                 }
             }
 
             GUI.color = ColorTextMuted;
             if (GUI.Button(new Rect(terminal.x + terminal.width - 132, terminal.y + 8, 60, 20),
                 "EFFACER", _btnFlatNormal))
+            {
                 _logEntries.Clear();
+                _logScroll.y = 0f;
+                _scrollToBottomPending = false;
+            }
 
             if (GUI.Button(new Rect(terminal.x + terminal.width - 66, terminal.y + 8, 56, 20),
                 "FERMER", _btnFlatNormal))
@@ -1037,33 +1625,54 @@ namespace Killtime.UI
             {
                 var entry = _logEntries[i];
                 if (_activeCategory != LogCategory.All && entry.Category != _activeCategory) continue;
-                float h = Mathf.Max(20f, _terminalBodyStyle.CalcHeight(new GUIContent(entry.RawMessage), textW));
+                float h = GetLogEntryHeight(entry, textW);
                 totalContentHeight += h + 6f;
             }
 
             Rect scrollRect = new Rect(terminal.x + 12, terminal.y + 58, terminal.width - 24, terminal.height - 70);
+            float maxScrollY = Mathf.Max(0f, totalContentHeight + 10f - scrollRect.height);
+            if (_scrollLock)
+            {
+                // Verrou : on reste exactement où l'utilisateur a scrollé.
+                // On clamp au cas où le contenu a rétréci (filtre, EFFACER) et on
+                // oublie toute demande de retour en bas.
+                _scrollToBottomPending = false;
+                _logScroll.y = Mathf.Clamp(_logScroll.y, 0f, maxScrollY);
+            }
+            else if (_scrollToBottomPending)
+            {
+                _logScroll.y = maxScrollY;
+                _scrollToBottomPending = false;
+            }
             _logScroll = GUI.BeginScrollView(scrollRect, _logScroll,
                 new Rect(0, 0, terminal.width - 42, Mathf.Max(scrollRect.height, totalContentHeight + 10f)));
 
             float y = 2f;
+            _diceHitRects.Clear();
             for (int i = 0; i < _logEntries.Count; i++)
             {
                 var entry = _logEntries[i];
                 if (_activeCategory != LogCategory.All && entry.Category != _activeCategory) continue;
 
-                float msgH = Mathf.Max(20f, _terminalBodyStyle.CalcHeight(new GUIContent(entry.RawMessage), textW));
+                var layout = GetDiceLineLayout(entry.RawMessage, textW);
+                float msgH = layout.HasDice ? layout.Height
+                    : Mathf.Max(20f, _terminalBodyStyle.CalcHeight(new GUIContent(entry.RawMessage), textW));
 
                 GUI.color = entry.TagColor;
                 GUI.Label(new Rect(0, y, 70, 18), entry.HeaderTag, _terminalHeaderStyle);
                 GUI.color = ColorTextMuted;
                 GUI.Label(new Rect(72, y, 42, 18), entry.Timestamp, _hudSubStyle);
                 GUI.color = ColorTextBright;
-                GUI.Label(new Rect(116, y, textW, msgH), entry.RawMessage, _terminalBodyStyle);
+                if (layout.HasDice)
+                    DrawDiceLineSegments(layout, entry, y);
+                else
+                    GUI.Label(new Rect(116, y, textW, msgH), entry.RawMessage, _terminalBodyStyle);
                 GUI.color = Color.white;
 
                 y += msgH + 6f;
             }
             GUI.EndScrollView();
+            DrawDiceHoverTooltip(scrollRect);
         }
 
         private void DrawFilterPill(Rect r, string label, LogCategory cat)
@@ -1075,7 +1684,16 @@ namespace Killtime.UI
                          : new Color(1f, 1f, 1f, hover ? 0.05f : 0.018f), false);
 
             GUI.color = selected ? ColorCyanAccent : (hover ? ColorTextBright : ColorTextMuted);
-            if (GUI.Button(r, label, _btnFlatNormal)) _activeCategory = cat;
+            if (GUI.Button(r, label, _btnFlatNormal))
+            {
+                if (_activeCategory != cat)
+                {
+                    _activeCategory = cat;
+                    // Changement de filtre : en mode auto-scroll on repart en bas,
+                    // en mode verrou on reste où l'utilisateur lit.
+                    if (!_scrollLock) _scrollToBottomPending = true;
+                }
+            }
             GUI.color = Color.white;
         }
 

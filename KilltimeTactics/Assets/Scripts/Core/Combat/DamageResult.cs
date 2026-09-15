@@ -35,6 +35,8 @@ namespace Killtime.Core.Combat
         public bool ExceededEncaissement;
         public StatusEffect InflictedStatus;
         public FatalBlowResolution FatalResolution;
+        public bool CausedKnockback;
+        public bool IsCanonEntrave;
         public string CombatLog;
 
         public override string ToString() => CombatLog;

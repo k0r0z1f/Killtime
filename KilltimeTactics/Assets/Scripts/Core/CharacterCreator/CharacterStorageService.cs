@@ -22,12 +22,35 @@ namespace Killtime.Core.Character
 
         public static string SaveCharacter(CharacterSheet sheet)
         {
+            if (sheet == null) return null;
             EnsureDirectoryExists();
+            if (string.IsNullOrEmpty(sheet.SheetId))
+            {
+                sheet.SheetId = Guid.NewGuid().ToString("N");
+            }
+
             string safeName = string.Join("_", sheet.Name.Split(Path.GetInvalidFileNameChars()));
             if (string.IsNullOrWhiteSpace(safeName)) safeName = "Unnamed";
 
-            string fileName = $"{safeName}_{sheet.SheetId[..8]}.json";
+            string idPrefix = sheet.SheetId.Length >= 8 ? sheet.SheetId[..8] : sheet.SheetId;
+            string fileName = $"{safeName}_{idPrefix}.json";
             string fullPath = Path.Combine(StorageDirectory, fileName);
+
+            try
+            {
+                string[] existingFiles = Directory.GetFiles(StorageDirectory, $"*_{idPrefix}.json");
+                for (int i = 0; i < existingFiles.Length; i++)
+                {
+                    if (!string.Equals(existingFiles[i], fullPath, StringComparison.OrdinalIgnoreCase))
+                    {
+                        File.Delete(existingFiles[i]);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[CharacterStorageService] Nettoyage ancien fichier : {ex.Message}");
+            }
 
             string json = JsonUtility.ToJson(sheet, true);
             File.WriteAllText(fullPath, json);

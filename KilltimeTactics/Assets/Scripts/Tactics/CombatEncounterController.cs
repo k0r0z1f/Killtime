@@ -170,10 +170,16 @@ namespace Killtime.Tactics
                 target.transform,
                 onStrikePoint: () =>
                 {
-                    // Résolution mathématique du coup au moment de l'impact.
+                    // Résolution mathématique du coup au moment de l'impact (séquence Livre VI §24.1 :
+                    // jet attaquant puis PA post-tirage, jet défenseur puis PA post-tirage, résolution normale).
                     // Au contact : meilleure compétence de mêlée de l'attaquant
                     // (jamais de Maniement d'Arme imposé à un mains-nues entraîné).
+                    // Règle Livre VI §26.2 : si l'attaquant fait un tir de portée alors que
+                    // N'IMPORTE QUEL ennemi est au contact de l'attaquant (pas forcément
+                    // la cible), Canon Entravé (-2) s'applique. IsCanonEntrave balaie déjà
+                    // tous les ennemis à distance 1, indépendamment de la cible visée.
                     SkillType encounterAttackSkill = attacker.Stats.GetBestMeleeAttackSkill();
+                    _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
                     var result = _combatCalculator.ResolveTargetedAttack(
                         attacker: attacker.Stats,
                         defender: target.Stats,

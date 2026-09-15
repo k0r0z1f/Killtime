@@ -9,6 +9,7 @@ using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Character;
 using Killtime.Core.Arcanotech;
+using Killtime.Core.Inventory;
 using Killtime.CameraSystem;
 
 namespace Killtime.Tactics.AI
@@ -150,6 +151,10 @@ namespace Killtime.Tactics.AI
                 int dist = unit.CurrentCoords.DistanceTo(target.CurrentCoords);
                 var posture = EvaluateTacticalPosture(unit, target, dist);
 
+                bool isRanged = HasRangedWeapon(unit, out int maxRange, out int minRange, out SkillType attackSkill);
+                bool hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords);
+                bool inAttackRange = isRanged ? (dist <= maxRange && hasLOS) : (dist == 1);
+
                 // -------------------------------------------------------------
                 // 1. RETRAITE CRITIQUE (Danger mortel)
                 // -------------------------------------------------------------
@@ -162,25 +167,75 @@ namespace Killtime.Tactics.AI
                 }
 
                 // -------------------------------------------------------------
-                // 2. SORTS ARCANOTECH À DISTANCE (Livre IV)
+                // 2. CONTACT DIRECT (Distance == 1) : Kick Martial ou Dégagement
                 // -------------------------------------------------------------
-                if (dist > 1 && TryCastBestSpell(unit, target))
+                if (isRanged && dist == 1)
+                {
+                    bool hasMartialArts = unit.Stats.HasSpecialization("Arts Martiaux");
+                    DiceType unarmedDie = unit.Stats.GetSkillDie(SkillType.MainsNues, true);
+
+                    if (hasMartialArts && unit.Stats.CanAttack(unarmedDie) && unit.Stats.CurrentActionPoints >= 2)
+                    {
+                        visual?.SpawnFloatingText("🥋 [TEEP] Frappe Martiale de Rupture", Color.cyan);
+                        yield return StartCoroutine(ExecuteTacticalAttack(unit, target, posture, isRanged: false, SkillType.MainsNues));
+                        yield return new WaitForSeconds(_actionDelay);
+
+                        dist = unit.CurrentCoords.DistanceTo(target.CurrentCoords);
+                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords);
+                        inAttackRange = (dist <= maxRange && hasLOS);
+
+                        if (inAttackRange && dist > 1 && unit.Stats.CurrentActionPoints >= 2)
+                        {
+                            continue;
+                        }
+                    }
+                    else if (unit.Stats.CurrentActionPoints >= 3)
+                    {
+                        visual?.SpawnFloatingText("[DÉGAGEMENT] Recul Tactique", new Color(0.2f, 0.85f, 1.0f));
+                        yield return StartCoroutine(ExecuteDisengageStep(unit, target));
+                        yield return new WaitForSeconds(_actionDelay);
+
+                        dist = unit.CurrentCoords.DistanceTo(target.CurrentCoords);
+                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords);
+                        inAttackRange = (dist <= maxRange && hasLOS);
+                    }
+                }
+
+                // -------------------------------------------------------------
+                // 3. SORTS ARCANOTECH À DISTANCE (Livre IV)
+                // -------------------------------------------------------------
+                if (!isRanged && dist > 1 && TryCastBestSpell(unit, target))
                 {
                     yield return new WaitForSeconds(_actionDelay);
                     continue;
                 }
 
                 // -------------------------------------------------------------
-                // 3. COMBAT AU CONTACT (Distance == 1)
+                // 3b. GRENADES DE ZONE (Livre VIII §31.3) : cluster >= 2 hostiles,
+                // jamais de suicide (lanceur exclu si souffle ami), 1 lancer / tour.
                 // -------------------------------------------------------------
-                if (dist == 1)
+                if (TryThrowGrenadeAI(unit, posture))
                 {
-                    SkillType attackSkill = unit.Stats.GetBestMeleeAttackSkill();
+                    float waitElapsed = 0f;
+                    while (_arena != null && _arena.IsResolving && waitElapsed < 6f)
+                    {
+                        yield return null;
+                        waitElapsed += Time.deltaTime;
+                    }
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
+                // -------------------------------------------------------------
+                // 4. ATTAQUE (Portée Balistique ou Contact Melee)
+                // -------------------------------------------------------------
+                if (inAttackRange)
+                {
                     DiceType attackDie = unit.Stats.GetSkillDie(attackSkill, true);
 
                     if (unit.Stats.CanAttack(attackDie) && unit.Stats.CurrentActionPoints >= 2)
                     {
-                        yield return StartCoroutine(ExecuteTacticalAttack(unit, target, posture));
+                        yield return StartCoroutine(ExecuteTacticalAttack(unit, target, posture, isRanged, attackSkill));
 
                         if (posture == TacticalPosture.HitAndRun && unit.Stats.CurrentActionPoints >= 1)
                         {
@@ -204,7 +259,7 @@ namespace Killtime.Tactics.AI
                 }
 
                 // -------------------------------------------------------------
-                // 4. APPROCHE VERS LA CIBLE (Distance > 1)
+                // 5. APPROCHE VERS LA LIGNE DE TIR OU CONTACT
                 // -------------------------------------------------------------
                 int availableAP = unit.Stats.CurrentActionPoints;
                 if (availableAP >= 1)
@@ -212,12 +267,16 @@ namespace Killtime.Tactics.AI
                     int reserve = GetRequiredDefensiveReserve(unit, posture);
                     int moveBudget = Mathf.Max(1, availableAP - reserve);
 
-                    var pathToTarget = FindPathTowardsTarget(unit, target, moveBudget);
-                    if (pathToTarget != null && pathToTarget.Count > 1)
+                    var pathToFiringPos = isRanged
+                        ? FindPathTowardsRangedPosition(unit, target, maxRange, moveBudget)
+                        : FindPathTowardsTarget(unit, target, moveBudget);
+
+                    if (pathToFiringPos != null && pathToFiringPos.Count > 1)
                     {
-                        int steps = pathToTarget.Count - 1;
-                        visual?.SpawnFloatingText($"Avance tactique (-{steps} PA)", new Color(0.2f, 0.85f, 1.0f));
-                        yield return StartCoroutine(unit.MoveAlongPath(pathToTarget, _grid, steps));
+                        int steps = pathToFiringPos.Count - 1;
+                        string moveMsg = isRanged ? $"Mise en position de tir (-{steps} PA)" : $"Avance tactique (-{steps} PA)";
+                        visual?.SpawnFloatingText(moveMsg, new Color(0.2f, 0.85f, 1.0f));
+                        yield return StartCoroutine(unit.MoveAlongPath(pathToFiringPos, _grid, steps));
                         yield return new WaitForSeconds(_actionDelay);
                         continue;
                     }
@@ -273,13 +332,34 @@ namespace Killtime.Tactics.AI
             if (CanTakeBreathSafely(actor)) maxPotentialAP += 2;
 
             int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
-            int apToReach = (dist > 1) ? (dist - 1) : 0;
-            int apForAttacks = maxPotentialAP - apToReach;
+            bool isRanged = HasRangedWeapon(actor, out int maxRange, out _, out _);
 
+            int apToReach = 0;
+            if (isRanged)
+            {
+                if (dist <= maxRange && HasLineOfSight(actor.CurrentCoords, target.CurrentCoords))
+                {
+                    apToReach = 0;
+                }
+                else
+                {
+                    apToReach = Mathf.Max(0, dist - maxRange);
+                }
+            }
+            else
+            {
+                apToReach = (dist > 1) ? (dist - 1) : 0;
+            }
+
+            int apForAttacks = maxPotentialAP - apToReach;
             if (apForAttacks < 2) return false;
 
             int targetHp = target.Stats.CurrentHealth;
-            int estimatedDmg = Mathf.Max(4, (7 - target.Stats.BaseArmorAbsorption) * 2);
+            int weaponDmg = 5;
+            var weapon = actor.Sheet?.GetEquippedWeapon();
+            if (weapon != null && weapon.BaseDamage > 0) weaponDmg = weapon.BaseDamage;
+
+            int estimatedDmg = Mathf.Max(4, (weaponDmg + 2 - target.Stats.BaseArmorAbsorption) * 2);
 
             return targetHp <= estimatedDmg;
         }
@@ -331,6 +411,96 @@ namespace Killtime.Tactics.AI
             }
 
             return false;
+        }
+
+        // =========================================================================
+        // GRENADES DE ZONE (LIVRE VIII §31.3)
+        // =========================================================================
+        private bool TryThrowGrenadeAI(TacticalUnit actor, TacticalPosture posture)
+        {
+            if (_arena == null || actor?.Stats == null || actor.Sheet == null) return false;
+            if (_arena.IsResolving) return false;
+            var throwables = CombatDevArena.GetThrowableGrenades(actor.Sheet);
+            if (throwables.Count == 0) return false;
+            DiceType atkDie = actor.Stats.GetSkillDie(SkillType.Ballistique, true);
+            if (!actor.Stats.CanAttack(atkDie)) return false;
+
+            UpdateUnitCache();
+            var launcher = CombatDevArena.GetAnyLauncher(actor.Sheet);
+
+            InventoryItem bestGrenade = null;
+            TacticalUnit bestCell = null;
+            bool bestUseLauncher = false;
+            float bestScore = float.MinValue;
+            int bestCost = 99;
+
+            for (int gi = 0; gi < throwables.Count; gi++)
+            {
+                var g = throwables[gi];
+                if (g == null) continue;
+                // L'utilitaire (flash/fumi) ne vaut le coup qu'en posture calculée + cible groupée.
+                bool isUtility = (g.GrenadeKind ?? "").Contains("Flash") || (g.GrenadeKind ?? "").Contains("Fumi")
+                    || (g.GrenadeKind ?? "").Contains("Gaz") && g.BaseDamage <= 2;
+                for (int li = 0; li < 2; li++)
+                {
+                    bool useL = (li == 1);
+                    InventoryItem l = useL ? launcher : null;
+                    if (useL && (launcher == null || !g.LauncherCompatible)) continue;
+                    int maxRange = GrenadeRules.ComputeMaxRange(g, l);
+                    int cost = GrenadeRules.ComputeAPCost(l, false);
+                    if (actor.Stats.CurrentActionPoints < cost) continue;
+                    float expected = g.BaseDamage + g.DamageDiceCount * 5.5f;
+
+                    for (int i = 0; i < _cachedUnits.Count; i++)
+                    {
+                        var enemy = _cachedUnits[i];
+                        if (enemy == null || enemy == actor || enemy.Stats == null || !enemy.Stats.IsAlive) continue;
+                        bool hostile = actor.IsPlayerControlled ? !enemy.IsPlayerControlled : enemy.IsPlayerControlled;
+                        if (_mode == CombatAIMode.FullAuto && enemy.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
+                        if (!hostile) continue;
+                        int dThrow = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords);
+                        if (dThrow > maxRange) continue;
+                        // Jamais de suicide : le lanceur reste hors de son propre souffle.
+                        if (actor.CurrentCoords.DistanceTo(enemy.CurrentCoords) <= Mathf.Max(0, g.BlastRadius)) continue;
+
+                        int foes = 0, allies = 0;
+                        for (int j = 0; j < _cachedUnits.Count; j++)
+                        {
+                            var u = _cachedUnits[j];
+                            if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
+                            if (u.CurrentCoords.DistanceTo(enemy.CurrentCoords) > Mathf.Max(0, g.BlastRadius)) continue;
+                            bool uHostile = actor.IsPlayerControlled ? !u.IsPlayerControlled : u.IsPlayerControlled;
+                            if (_mode == CombatAIMode.FullAuto && u.IsPlayerControlled != actor.IsPlayerControlled) uHostile = true;
+                            if (u == actor || !uHostile) allies += (u == actor) ? 2 : 1;
+                            else foes++;
+                        }
+                        if (allies > 0 && posture != TacticalPosture.AllInLethal) continue;
+                        float score = foes * (10f + expected) - allies * 22f + (isUtility ? -6f : 0f);
+                        // Bonus opportuniste : cible affaiblie dans la zone.
+                        if (enemy.Stats.CurrentHealth <= expected) score += 8f;
+                        if (score > bestScore)
+                        {
+                            bestScore = score;
+                            bestGrenade = g;
+                            bestCell = enemy;
+                            bestUseLauncher = useL;
+                            bestCost = cost;
+                        }
+                    }
+                }
+            }
+
+            // Seuil : au moins 2 hostiles (ou 1 + létal), jamais pour un seul éclaireur isolé.
+            if (bestGrenade == null || bestCell == null || bestScore < 18f) return false;
+            if (actor.Stats.CurrentActionPoints < bestCost) return false;
+
+            var visual = actor.GetComponent<TacticalUnitVisual>();
+            visual?.SpawnFloatingText(
+                bestUseLauncher ? $"💣 [IA] Tir {bestGrenade.Name}" : $"💣 [IA] Lancer {bestGrenade.Name}",
+                new Color(1f, 0.6f, 0.15f));
+            int bonus = (posture == TacticalPosture.AllInLethal) ? Mathf.Min(2, actor.Stats.CurrentActionPoints - bestCost) : 0;
+            _arena.ExecuteGrenadeThrow(bestCell.CurrentCoords, bestGrenade.ItemId, bestUseLauncher, false, Mathf.Max(0, bonus));
+            return true;
         }
 
         // =========================================================================
@@ -404,16 +574,12 @@ namespace Killtime.Tactics.AI
         // =========================================================================
         // ATTAQUE TACTIQUE & INJECTION DES PA (LIVRE VI)
         // =========================================================================
-        private IEnumerator ExecuteTacticalAttack(TacticalUnit actor, TacticalUnit target, TacticalPosture posture)
+        private IEnumerator ExecuteTacticalAttack(TacticalUnit actor, TacticalUnit target, TacticalPosture posture, bool isRanged, SkillType attackSkill)
         {
             _arena?.SelectTarget(target);
 
             int availableAP = actor.Stats.CurrentActionPoints;
             int reserveNeeded = GetRequiredDefensiveReserve(actor, posture);
-
-            SkillType attackSkill = actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1
-                ? actor.Stats.GetBestMeleeAttackSkill()
-                : SkillType.Ballistique;
 
             DiceType attackDie = actor.Stats.GetSkillDie(attackSkill, true);
             int maxAttacks = actor.Stats.GetMaxAttacksAllowed(attackDie);
@@ -422,21 +588,44 @@ namespace Killtime.Tactics.AI
             BodyPart chosenPart = BodyPart.Torse;
             bool cancelPenalty = false;
 
-            if (posture == TacticalPosture.AllInLethal && availableAP >= 3)
+            if (isRanged)
             {
-                chosenPart = BodyPart.Tete;
-                cancelPenalty = true;
+                if (posture == TacticalPosture.AllInLethal && availableAP >= 3)
+                {
+                    chosenPart = BodyPart.Tete;
+                    cancelPenalty = true;
+                }
+                else if (target.CurrentCoords.DistanceTo(actor.CurrentCoords) <= 3 && availableAP >= 3)
+                {
+                    chosenPart = BodyPart.Jambes;
+                    cancelPenalty = true;
+                }
+                else if (availableAP >= 3)
+                {
+                    chosenPart = BodyPart.Torse;
+                    cancelPenalty = true;
+                }
             }
-            else if (_defaultPersonality == AIPersonality.Tactician && availableAP >= 3 && target.Stats.CurrentActionPoints > 2)
+            else
             {
-                chosenPart = BodyPart.BrasDroit;
-                cancelPenalty = true;
+                if (posture == TacticalPosture.AllInLethal && availableAP >= 3)
+                {
+                    chosenPart = BodyPart.Tete;
+                    cancelPenalty = true;
+                }
+                else if (_defaultPersonality == AIPersonality.Tactician && availableAP >= 3 && target.Stats.CurrentActionPoints > 2)
+                {
+                    chosenPart = BodyPart.BrasDroit;
+                    cancelPenalty = true;
+                }
             }
 
+            // Séquence officielle Livre VI §24.1 : le bonus PA est une intention post-tirage
+            // (appliquée après le jet d'attaque, +1 / PA). L'IA réserve ici un budget max,
+            // débité seulement après tirage dans la limite des PA restants.
             int baseCost = cancelPenalty ? 3 : 2;
             int apAfterBase = availableAP - baseCost;
 
-            // Conversion intégrale des PA excédentaires en bonus de touche & différentiel
             int bonusAP = 0;
             if (canAttackAgainLater)
             {
@@ -451,7 +640,9 @@ namespace Killtime.Tactics.AI
 
             var visual = actor.GetComponent<TacticalUnitVisual>();
             string partLabel = chosenPart == BodyPart.Tete ? "[VISÉE] Tête" :
-                               chosenPart == BodyPart.BrasDroit ? "[VISÉE] Désarmement" : "[VISÉE] Torse";
+                               chosenPart == BodyPart.BrasDroit ? "[VISÉE] Désarmement" :
+                               chosenPart == BodyPart.Jambes ? "[VISÉE] Jambes" : "[VISÉE] Torse";
+            if (isRanged) partLabel = $"🎯 Tir {partLabel}";
             if (bonusAP > 0) partLabel += $" (+{bonusAP} PA Inj.)";
 
             visual?.SpawnFloatingText(partLabel, chosenPart == BodyPart.Tete ? Color.red : Color.cyan);
@@ -472,9 +663,13 @@ namespace Killtime.Tactics.AI
 
             if (_cinematicDirector != null)
             {
-                while (_cinematicDirector.CurrentMode == CameraMode.CinematicAction)
+                // Timeout de sécurité : si la cinématique reste bloquée
+                // (ex: reset en pleine attaque), ne jamais pendre le tour de l'IA.
+                float waitElapsed = 0f;
+                while (_cinematicDirector.CurrentMode == CameraMode.CinematicAction && waitElapsed < 5f)
                 {
                     yield return null;
+                    waitElapsed += Time.deltaTime;
                 }
             }
         }
@@ -543,10 +738,162 @@ namespace Killtime.Tactics.AI
             return truncatedPath.Count > 1 ? truncatedPath : null;
         }
 
+        private bool HasRangedWeapon(TacticalUnit unit, out int maxRange, out int minRange, out SkillType attackSkill)
+        {
+            maxRange = 1;
+            minRange = 1;
+            attackSkill = unit != null && unit.Stats != null ? unit.Stats.GetBestMeleeAttackSkill() : SkillType.MainsNues;
+
+            if (unit == null || unit.Stats == null) return false;
+
+            var sheet = unit.Sheet ?? unit.GetOrBuildSheet();
+            var weapon = sheet?.GetEquippedWeapon();
+
+            if (weapon != null && weapon.Type == ItemType.Weapon)
+            {
+                if (weapon.AssociatedSkill == SkillType.Ballistique || weapon.RangeInTiles > 1 || TacticalUnitVisual.IsRifleWeapon(weapon))
+                {
+                    maxRange = Mathf.Max(2, weapon.RangeInTiles);
+                    minRange = 1;
+                    attackSkill = SkillType.Ballistique;
+                    return true;
+                }
+            }
+
+            var visual = unit.GetComponent<TacticalUnitVisual>();
+            if (visual != null && visual.HasRifleEquipped())
+            {
+                maxRange = 10;
+                minRange = 1;
+                attackSkill = SkillType.Ballistique;
+                return true;
+            }
+
+            int balRank = unit.Stats.GetSkillRank(SkillType.Ballistique, true);
+            int meleeRank = unit.Stats.GetSkillRank(attackSkill, true);
+            if (balRank > meleeRank + 2)
+            {
+                maxRange = 8;
+                minRange = 1;
+                attackSkill = SkillType.Ballistique;
+                return true;
+            }
+
+            return false;
+        }
+
+        private bool HasLineOfSight(HexCoordinates from, HexCoordinates to)
+        {
+            if (_grid == null) return true;
+            int dist = from.DistanceTo(to);
+            if (dist <= 1) return true;
+
+            for (int i = 1; i < dist; i++)
+            {
+                float t = (float)i / dist;
+                float q = Mathf.Lerp(from.Q, to.Q, t);
+                float r = Mathf.Lerp(from.R, to.R, t);
+                float s = -q - r;
+
+                int rq = Mathf.RoundToInt(q);
+                int rr = Mathf.RoundToInt(r);
+                int rs = Mathf.RoundToInt(s);
+
+                float qDiff = Mathf.Abs(rq - q);
+                float rDiff = Mathf.Abs(rr - r);
+                float sDiff = Mathf.Abs(rs - s);
+
+                if (qDiff > rDiff && qDiff > sDiff)
+                    rq = -rr - rs;
+                else if (rDiff > sDiff)
+                    rr = -rq - rs;
+
+                var node = _grid.GetNode(new HexCoordinates(rq, rr));
+                if (node != null && node.Cover == CoverType.Full)
+                {
+                    return false;
+                }
+            }
+
+            return true;
+        }
+
+        private List<HexCoordinates> FindPathTowardsRangedPosition(TacticalUnit actor, TacticalUnit target, int maxRange, int apBudget)
+        {
+            if (_pathfinder == null || _grid == null || apBudget <= 0) return null;
+
+            int curDist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            if (curDist <= maxRange && HasLineOfSight(actor.CurrentCoords, target.CurrentCoords))
+            {
+                return null;
+            }
+
+            HexCoordinates bestNeighbor = target.CurrentCoords;
+            int minDistance = int.MaxValue;
+
+            for (int dir = 0; dir < 6; dir++)
+            {
+                var n = target.CurrentCoords.GetNeighbor(dir);
+                var nNode = _grid.GetNode(n);
+                if (nNode != null && nNode.IsWalkable && (!nNode.IsOccupied || n.Equals(actor.CurrentCoords)))
+                {
+                    int d = actor.CurrentCoords.DistanceTo(n);
+                    if (d < minDistance)
+                    {
+                        minDistance = d;
+                        bestNeighbor = n;
+                    }
+                }
+            }
+
+            var fullPath = _pathfinder.FindPath(actor.CurrentCoords, bestNeighbor, 50, out _);
+            if (fullPath == null || fullPath.Count <= 1)
+            {
+                return null;
+            }
+
+            int targetStepIndex = fullPath.Count - 1;
+            for (int i = 1; i < fullPath.Count; i++)
+            {
+                int d = fullPath[i].DistanceTo(target.CurrentCoords);
+                if (d <= maxRange && HasLineOfSight(fullPath[i], target.CurrentCoords))
+                {
+                    targetStepIndex = i;
+                    break;
+                }
+            }
+
+            var truncatedPath = new List<HexCoordinates> { fullPath[0] };
+            int accumulatedCost = 0;
+
+            for (int i = 1; i <= targetStepIndex; i++)
+            {
+                var step = fullPath[i];
+                var stepNode = _grid.GetNode(step);
+                int stepCost = stepNode != null ? stepNode.ActionPointCost : 1;
+
+                if (accumulatedCost + stepCost > apBudget)
+                {
+                    break;
+                }
+
+                if (stepNode != null && (stepNode.IsOccupied || !stepNode.IsWalkable))
+                {
+                    break;
+                }
+
+                accumulatedCost += stepCost;
+                truncatedPath.Add(step);
+            }
+
+            return truncatedPath.Count > 1 ? truncatedPath : null;
+        }
+
         private TacticalUnit EvaluateBestTarget(TacticalUnit actor)
         {
             TacticalUnit bestTarget = null;
             float highestScore = float.MinValue;
+            bool isRanged = HasRangedWeapon(actor, out int maxRange, out _, out _);
 
             for (int i = 0; i < _cachedUnits.Count; i++)
             {
@@ -560,10 +907,34 @@ namespace Killtime.Tactics.AI
                 int dist = actor.CurrentCoords.DistanceTo(potential.CurrentCoords);
                 float curHp = potential.Stats.CurrentHealth;
 
-                float score = 70f - (dist * 7f);
-                score += (1.0f - (curHp / Mathf.Max(1, potential.Stats.MaxHealth))) * 35f;
+                float score = 70f;
 
-                if (dist == 1) score += 40f;
+                if (isRanged)
+                {
+                    bool inRangedZone = (dist <= maxRange);
+                    bool hasLOS = HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords);
+
+                    if (inRangedZone && hasLOS)
+                    {
+                        score += 50f;
+                        if (dist >= 2 && dist <= maxRange) score += 15f;
+                    }
+                    else if (inRangedZone && !hasLOS)
+                    {
+                        score += 15f;
+                    }
+                    else
+                    {
+                        score -= (dist - maxRange) * 5f;
+                    }
+                }
+                else
+                {
+                    score -= (dist * 7f);
+                    if (dist == 1) score += 40f;
+                }
+
+                score += (1.0f - (curHp / Mathf.Max(1, potential.Stats.MaxHealth))) * 35f;
                 if (curHp <= 6) score += 45f;
 
                 if (score > highestScore)

@@ -17,13 +17,15 @@ namespace Killtime.Multi
         protected override int WindowId => 886;
         protected override string Title => "Room Multijoueur";
         protected override Vector2 MinSize => _minSize;
-        protected override Rect DefaultRect => new Rect(600, 40, 420, 560);
+        protected override Rect DefaultRect => new Rect(600, 96, 420, 560);
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
         private static readonly KeyCode[] _toggleKeys = { KeyCode.F4 };
         private static readonly Vector2 _minSize = new Vector2(320, 200);
         private Vector2 _scrollPos;
         private Vector2 _chatScroll;
+        private bool _chatScrollLock = false;
+        private bool _chatScrollToBottomPending = false;
         private string _statusMessage = "Prêt. Connectez-vous puis créez ou rejoignez une room.";
 
         private string _serverUrl = VTTProtocol.DefaultHubUrl;
@@ -467,8 +469,26 @@ namespace Killtime.Multi
 
         private void DrawChatSection()
         {
+            GUILayout.BeginHorizontal();
             Label("<b>5. Chat de table :</b>");
+            bool newLock = GUILayout.Toggle(_chatScrollLock, "🔒 Scroll Lock", GUILayout.Width(110));
+            if (newLock != _chatScrollLock)
+            {
+                _chatScrollLock = newLock;
+                if (!_chatScrollLock) _chatScrollToBottomPending = true;
+                else _chatScrollToBottomPending = false;
+            }
+            GUILayout.EndHorizontal();
             GUILayout.BeginVertical(GUI.skin.box);
+            if (_chatScrollLock)
+            {
+                _chatScrollToBottomPending = false;
+            }
+            else if (_chatScrollToBottomPending)
+            {
+                _chatScroll.y = float.MaxValue;
+                _chatScrollToBottomPending = false;
+            }
             _chatScroll = GUILayout.BeginScrollView(_chatScroll, GUILayout.Height(120));
             if (_chatLog.Count == 0)
             {
@@ -507,7 +527,11 @@ namespace Killtime.Multi
         {
             _chatLog.Add(line);
             if (_chatLog.Count > 50) _chatLog.RemoveAt(0);
-            _chatScroll.y = float.MaxValue;
+            // Verrou actif => la lecture reste figée ; sinon retour en bas.
+            if (!_chatScrollLock)
+            {
+                _chatScrollToBottomPending = true;
+            }
         }
 
         // ---------- Événements réseau -> UI ----------

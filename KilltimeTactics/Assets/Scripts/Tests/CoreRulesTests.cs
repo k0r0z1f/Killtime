@@ -12,6 +12,57 @@ namespace Killtime.Tests
     public class CoreRulesTests
     {
         [Test]
+        public void TestCanonEntrave_AppliesPenaltyToBallistique_UnlessCompensatedOrMartialArts()
+        {
+            var diceRoller = new DiceRoller(1234);
+            var calc = new CombatCalculator(diceRoller);
+
+            var attAttr = new Attributes(4, 4, 3, 3, 3, 2, 2, 2);
+            var defAttr = new Attributes(2, 3, 4, 2, 2, 2, 2, 2);
+
+            var attSheet = new CharacterSheet { Name = "Tireur", BaseAttributes = attAttr };
+            var defSheet = new CharacterSheet { Name = "Cible", BaseAttributes = defAttr };
+
+            var attStats = attSheet.ToCombatStats();
+            var defStats = defSheet.ToCombatStats();
+
+            // 1. Tir au contact sans compensation : malus net de -2
+            calc.SetContactDistanceState(true);
+            var resultPenalized = calc.ResolveTargetedAttack(
+                attacker: attStats,
+                defender: defStats,
+                targetedPart: BodyPart.Torse,
+                attackSkill: SkillType.Ballistique,
+                defenseSkill: SkillType.Esquive,
+                weaponBaseDamage: 6,
+                cancelPenaltyWithAP: false,
+                defenderWantsToDefend: false
+            );
+
+            Assert.IsTrue(resultPenalized.IsCanonEntrave);
+            StringAssert.Contains("Canon Entravé : -2", resultPenalized.CombatLog);
+
+            // 2. Frappe martiale avec Arts Martiaux au contact : pas de malus
+            attStats.ResetTurn();
+            attSheet.UnlockedSpecializations.Add("Arts Martiaux");
+
+            var resultMartial = calc.ResolveTargetedAttack(
+                attacker: attStats,
+                defender: defStats,
+                targetedPart: BodyPart.Torse,
+                attackSkill: SkillType.MainsNues,
+                defenseSkill: SkillType.Esquive,
+                weaponBaseDamage: 4,
+                cancelPenaltyWithAP: false,
+                defenderWantsToDefend: false
+            );
+
+            Assert.IsFalse(resultMartial.IsCanonEntrave);
+            StringAssert.Contains("Arts Martiaux : Exemption Totale", resultMartial.CombatLog);
+            calc.SetContactDistanceState(false);
+        }
+
+        [Test]
         public void TestRogerAttributesAndActionPoints_MatchesCodexLivreI()
         {
             var rogerAttr = new Attributes(agi: 3, @int: 2, rap: 3, con: 4, @for: 3, cha: 1);
@@ -226,6 +277,110 @@ namespace Killtime.Tests
             stats.ActiveStatus |= StatusEffect.Inconscient;
             Assert.IsFalse(stats.CanDefendActively());
             Assert.IsFalse(stats.CanAttack(DiceType.D6));
+        }
+
+        [Test]
+        public void TestSkillDiceExamples_MainsNuesD10_EsquiveD8_MatchesCodex()
+        {
+            // Exemple canonique du Codex : Mains Nues +2 entr., FOR 5 (+2) = 4 niveaux -> d10.
+            // Esquive 1 entr., réf. 5 (+2) = 3 niveaux -> d8.
+            var attr = new Attributes(@for: 5, agi: 5, con: 4, rap: 5, @int: 2, eru: 3, cha: 1, ins: 3);
+            var sheet = new CharacterSheet { BaseAttributes = attr };
+            sheet.GetSkill(SkillType.MainsNues).TrainingLevel = 2;
+            sheet.GetSkill(SkillType.Esquive).TrainingLevel = 1;
+            var stats = sheet.ToCombatStats();
+
+            // Mains Nues offensif : (5+5+1)/2 = 5 -> +2 paliers + 2 entr. = 4 -> D10.
+            Assert.AreEqual(DiceType.D10, stats.GetSkillDie(SkillType.MainsNues, true));
+            // Esquive : (5+5+1)/2 = 5 -> +2 paliers + 1 entr. = 3 -> D8.
+            Assert.AreEqual(DiceType.D8, stats.GetSkillDie(SkillType.Esquive, false));
+        }
+
+        [Test]
+        public void TestSequentialDuel_BonusPAAppliedAfterRoll_AttackerThenDefender()
+        {
+            // Séquence Livre VI §24.1 : jet attaquant -> PA attaquant post-tirage ->
+            // jet défenseur -> PA défenseur post-tirage -> résolution normale.
+            var diceRoller = new DiceRoller(7);
+            var calc = new CombatCalculator(diceRoller);
+
+            var attAttr = new Attributes(4, 4, 3, 3, 3, 2, 2, 2);
+            var defAttr = new Attributes(2, 3, 4, 2, 2, 2, 2, 2);
+            var attSheet = new CharacterSheet { Name = "Attaquant", BaseAttributes = attAttr };
+            var defSheet = new CharacterSheet { Name = "Défenseur", BaseAttributes = defAttr };
+            var attStats = attSheet.ToCombatStats();
+            var defStats = defSheet.ToCombatStats();
+
+            int attPABefore = attStats.CurrentActionPoints;
+            int defPABefore = defStats.CurrentActionPoints;
+
+            // Duel pas-à-pas : vérifie que les bonus sont bien post-tirage.
+            var duel = calc.BeginSkillDuel(
+                attStats, defStats, BodyPart.Torse,
+                SkillType.ManiementArmes, SkillType.Esquive,
+                5, false, true, null, null, 0, out string err);
+            Assert.IsNotNull(duel, err);
+            Assert.IsTrue(string.IsNullOrEmpty(err));
+            // Coûts de base débités, aucun bonus encore.
+            Assert.AreEqual(attPABefore - 2, attStats.CurrentActionPoints);
+            Assert.AreEqual(defPABefore - 1, defStats.CurrentActionPoints);
+
+            var attRaw = calc.RollAttackerRaw(duel);
+            int appliedAtt = calc.AddAttackerBonusPA(duel, 2);
+            Assert.AreEqual(2, appliedAtt);
+            Assert.AreEqual(attRaw.Total + 2, duel.AttackFinalRoll.Total);
+            Assert.AreEqual(attPABefore - 2 - 2, attStats.CurrentActionPoints);
+
+            var defRaw = calc.RollDefenderRaw(duel);
+            int appliedDef = calc.AddDefenderBonusPA(duel, 3);
+            Assert.AreEqual(3, appliedDef);
+            Assert.AreEqual(defRaw.Total + 3, duel.DefenseFinalRoll.Total);
+
+            var result = calc.FinishDuel(duel);
+            Assert.AreEqual(duel.AttackFinalRoll.Total - duel.DefenseFinalRoll.Total, result.Differential);
+            StringAssert.Contains("Phase 1", result.CombatLog);
+            StringAssert.Contains("Phase 2", result.CombatLog);
+            StringAssert.Contains("après tirage", result.CombatLog.ToLower());
+
+            // API classique : mêmes totaux (bonus post-tirage, pas d'enchère aveugle).
+            attStats.ResetTurn();
+            defStats.ResetTurn();
+            var classic = calc.ResolveTargetedAttack(
+                attacker: attStats, defender: defStats, targetedPart: BodyPart.Torse,
+                attackSkill: SkillType.ManiementArmes, defenseSkill: SkillType.Esquive,
+                weaponBaseDamage: 5, cancelPenaltyWithAP: false, defenderWantsToDefend: true,
+                attackerBonusAP: 2, defenderBonusAP: 1);
+            // PA totaux = bases (2+1) + bonus post-tirage (2+1).
+            Assert.AreEqual(attStats.MaxActionPoints - 4, attStats.CurrentActionPoints);
+            Assert.AreEqual(defStats.MaxActionPoints - 2, defStats.CurrentActionPoints);
+            StringAssert.Contains("Phase 1", classic.CombatLog);
+            StringAssert.Contains("Phase 2", classic.CombatLog);
+        }
+
+        [Test]
+        public void TestReactiveDefense_ComputesExactNeedAfterAttackReveal()
+        {
+            var diceRoller = new DiceRoller(11);
+            var calc = new CombatCalculator(diceRoller);
+            var attAttr = new Attributes(4, 4, 3, 3, 3, 2, 2, 2);
+            var defAttr = new Attributes(2, 3, 4, 2, 2, 2, 2, 2);
+            var attSheet = new CharacterSheet { Name = "Att", BaseAttributes = attAttr };
+            var defSheet = new CharacterSheet { Name = "Def", BaseAttributes = defAttr };
+            var attStats = attSheet.ToCombatStats();
+            var defStats = defSheet.ToCombatStats();
+
+            var duel = calc.BeginSkillDuel(
+                attStats, defStats, BodyPart.Torse,
+                SkillType.ManiementArmes, SkillType.Esquive,
+                5, false, true, null, null, 0, out string duelErr);
+            Assert.IsNotNull(duel, duelErr);
+            calc.RollAttackerRaw(duel);
+            calc.AddAttackerBonusPA(duel, 0);
+            calc.RollDefenderRaw(duel);
+            int need = calc.ComputeReactiveDefenseBonus(duel);
+            int expected = duel.AttackFinalRoll.Total - duel.DefenseRawRoll.Total + 1;
+            if (expected < 0) expected = 0;
+            Assert.AreEqual(expected, need);
         }
 
         [Test]
