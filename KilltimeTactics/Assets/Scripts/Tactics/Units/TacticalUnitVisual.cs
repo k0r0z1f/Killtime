@@ -1010,11 +1010,11 @@ namespace Killtime.Tactics.Units
 
                 if (!_isCustomModel)
                 {
-                    Quaternion targetRot = Quaternion.Euler(-80, transform.rotation.eulerAngles.y, 0);
+                    Quaternion targetRot = Quaternion.Euler(-80f, 0f, 0f);
                     if (_modelRoot != null)
                     {
                         _modelRoot.localRotation = Quaternion.Slerp(_modelRoot.localRotation, targetRot, Time.deltaTime * 6f);
-                        _modelRoot.localPosition = Vector3.Lerp(_modelRoot.localPosition, new Vector3(0, -0.4f, 0), Time.deltaTime * 6f);
+                        _modelRoot.localPosition = Vector3.Lerp(_modelRoot.localPosition, new Vector3(0f, 0.1f, 0f), Time.deltaTime * 6f);
                     }
                 }
                 else if (_modelRoot != null)
@@ -1077,14 +1077,15 @@ namespace Killtime.Tactics.Units
 
         private Vector3 GetHeadWorldPosition()
         {
+            bool isDown = _unit.Stats != null && (!_unit.Stats.IsAlive || _unit.Stats.IsDead || _unit.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient));
+            if (isDown)
+            {
+                return transform.position + Vector3.up * 0.75f;
+            }
+
             if (_modelRoot != null)
             {
-                Vector3 p = _modelRoot.TransformPoint(new Vector3(0, 1.85f * _unitScale, 0));
-                if (_unit.Stats != null && !_unit.Stats.IsAlive)
-                {
-                    p.y = Mathf.Max(p.y, transform.position.y + 0.75f);
-                }
-                return p;
+                return _modelRoot.TransformPoint(new Vector3(0, 1.85f * _unitScale, 0));
             }
             return transform.position + Vector3.up * (1.85f * _unitScale);
         }

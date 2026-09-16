@@ -54,6 +54,24 @@ namespace Killtime.Tactics
 
         public bool InfiniteAP { get; set; } = false;
 
+        public bool EnableCinematicKillcam
+        {
+            get => _enableCinematicKillcam;
+            set
+            {
+                _enableCinematicKillcam = value;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.EnableCinematicKillcam = value;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* prefs optionnelles */ }
+            }
+        }
+
         [Serializable]
         public class CustomSpawnRecord
         {
@@ -81,6 +99,11 @@ namespace Killtime.Tactics
         public TacticalMapSaveData CurrentLoadedMap => _currentLoadedMap;
         public string CurrentLoadedMapPath => _currentLoadedMapPath;
         public bool HasLoadedMap => _currentLoadedMap != null;
+        /// <summary>
+        /// Émis lorsqu'une carte devient la carte active de l'arène. Le VTT s'en
+        /// sert pour publier le chargement du GM sans coupler l'arène au réseau.
+        /// </summary>
+        public event Action<TacticalMapSaveData> OnLoadedMapRegistered;
 
         private TacticalMapSaveData _currentLoadedMap;
         private string _currentLoadedMapPath;
@@ -96,6 +119,32 @@ namespace Killtime.Tactics
 
             EnsureDependencies();
             EnsureAIController();
+            try { LoadDevUIPrefs(); } catch { /* prefs optionnelles */ }
+        }
+
+        private void LoadDevUIPrefs()
+        {
+            var p = Killtime.UI.DevUIPreferences.Current;
+            if (p == null) return;
+            InfiniteAP = p.InfiniteAP;
+            int layoutCount = Enum.GetValues(typeof(ArenaLayoutType)).Length;
+            int savedLayout = Mathf.Clamp(p.ArenaLayout, 0, Mathf.Max(0, layoutCount - 1));
+            _initialLayout = (ArenaLayoutType)savedLayout;
+            _enableCinematicKillcam = p.EnableCinematicKillcam;
+        }
+
+        private void SaveArenaLayoutPref()
+        {
+            try
+            {
+                var p = Killtime.UI.DevUIPreferences.Current;
+                if (p == null) return;
+                p.ArenaLayout = (int)_currentLayout;
+                p.InfiniteAP = InfiniteAP;
+                p.EnableCinematicKillcam = _enableCinematicKillcam;
+                Killtime.UI.DevUIPreferences.MarkDirty();
+            }
+            catch { /* ignore */ }
         }
 
         private void EnsureAIController()
@@ -110,6 +159,8 @@ namespace Killtime.Tactics
         private void Start()
         {
             _pathfinder = new HexPathfinder(_grid);
+            TacticalUnit.OnAnyUnitMoved += HandleTargetMovedFollow;
+            TacticalUnit.OnAnyUnitTeleported += HandleTargetTeleportedFollow;
 
             // 1. Initialiser le layout d'obstacles
             ApplyArenaLayout(_initialLayout);
@@ -122,6 +173,9 @@ namespace Killtime.Tactics
             _turnManager.OnCombatEnded += HandleCombatEnded;
             _turnManager.OnUnitStatusExpired += HandleUnitStatusExpired;
             _turnManager.OnInitiativeRolled += HandleInitiativeRolled;
+
+            TacticalUnit.OnAnyUnitMoved += HandleTargetMovedFollow;
+            TacticalUnit.OnAnyUnitTeleported += HandleTargetTeleportedFollow;
 
             // 4. Sélectionner le premier mannequin par défaut
             if (SparringDummies.Count > 0)
@@ -140,6 +194,7 @@ namespace Killtime.Tactics
                 UpdateAdaptiveMusic();
             }
             Log("⚔️ <b>Arène de Combat Killtime Initialisée !</b> Prête pour les tests.");
+            _aiController?.TriggerAITurnIfApplicable();
         }
 
         private void EnsureDependencies()
@@ -171,16 +226,39 @@ namespace Killtime.Tactics
 
         private void SetupArenaUnits()
         {
-            // 1. Purger les instances de jeu actives
-            if (PlayerUnit != null) Destroy(PlayerUnit.gameObject);
-            foreach (var d in SparringDummies) if (d != null) Destroy(d.gameObject);
+            // 1. Purger et neutraliser immédiatement les instances actives (anti-fantômes même frame)
+            if (PlayerUnit != null)
+            {
+                PlayerUnit.gameObject.SetActive(false);
+                PlayerUnit.gameObject.name = "[Disposed]";
+                Destroy(PlayerUnit.gameObject);
+                PlayerUnit = null;
+            }
+
+            for (int i = 0; i < SparringDummies.Count; i++)
+            {
+                var d = SparringDummies[i];
+                if (d != null)
+                {
+                    d.gameObject.SetActive(false);
+                    d.gameObject.name = "[Disposed]";
+                    Destroy(d.gameObject);
+                }
+            }
             SparringDummies.Clear();
 
-            foreach (var p in _additionalPlayers) if (p != null) Destroy(p.gameObject);
+            for (int i = 0; i < _additionalPlayers.Count; i++)
+            {
+                var p = _additionalPlayers[i];
+                if (p != null)
+                {
+                    p.gameObject.SetActive(false);
+                    p.gameObject.name = "[Disposed]";
+                    Destroy(p.gameObject);
+                }
+            }
             _additionalPlayers.Clear();
 
-            // Les Destroy() sont différés : on purge les drapeaux d'occupation
-            // sinon les nouvelles unités verraient des cases fantômes occupées.
             _grid?.ClearOccupancy();
 
             // Suspendre le démarrage auto du TurnManager pendant l'enregistrement en masse :
@@ -267,6 +345,7 @@ namespace Killtime.Tactics
             _aiController?.StopAITurn();
             _cinematicDirector?.ResetCinematicState();
             _turnManager.StartNewRound();
+            _aiController?.TriggerAITurnIfApplicable();
         }
 
         public TacticalUnit SpawnCustomCharacter(CharacterSheet sheet, HexCoordinates coords, bool isPlayer)
@@ -354,6 +433,8 @@ namespace Killtime.Tactics
         {
             _currentLoadedMap = mapData;
             _currentLoadedMapPath = mapPath;
+            try { OnLoadedMapRegistered?.Invoke(mapData); }
+            catch (Exception e) { Debug.LogException(e); }
         }
 
         public void ClearLoadedMap()
@@ -408,6 +489,8 @@ namespace Killtime.Tactics
                         var node = _grid.GetNode(u.CurrentCoords);
                         if (node != null) node.IsOccupied = false;
                     }
+                    u.gameObject.SetActive(false);
+                    u.gameObject.name = "[Disposed]";
                     Destroy(u.gameObject);
                 }
             }
@@ -420,6 +503,7 @@ namespace Killtime.Tactics
 
             _turnManager?.ClearUnits();
             _turnManager?.ResetCombatState();
+            _grid?.ClearOccupancy();
         }
 
         public void LoadUnitsFromMap(List<MapUnitData> mapUnits)
@@ -465,10 +549,25 @@ namespace Killtime.Tactics
                 if (!coords.Equals(requested)) relocated++;
                 reserved.Add(coords);
 
-                var go = new GameObject($"Unit_{unitData.Sheet.Name.Replace(" ", "_")}");
+                string unitObjName = !string.IsNullOrEmpty(unitData.UnitId) 
+                    ? unitData.UnitId 
+                    : $"Unit_{unitData.Sheet.Name.Replace(" ", "_")}";
+
+                var go = new GameObject(unitObjName);
                 var unit = go.AddComponent<TacticalUnit>();
                 unit.InitializeFromSheet(unitData.Sheet, coords, _grid, unitData.IsPlayer);
                 unit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
+
+                if (unitData.currentHealth > 0 && unit.Stats != null)
+                {
+                    unit.Stats.CurrentHealth = unitData.currentHealth;
+                    unit.Stats.CurrentActionPoints = unitData.currentAP;
+                    unit.Stats.Essoufflement = unitData.essoufflement;
+                    if (unitData.activeStatus != 0)
+                    {
+                        unit.Stats.ActiveStatus = (StatusEffect)unitData.activeStatus;
+                    }
+                }
 
                 if (unitData.IsPlayer)
                 {
@@ -519,7 +618,15 @@ namespace Killtime.Tactics
             _isAttackInProgress = false;
             _aiController?.StopAITurn();
             _cinematicDirector?.ResetCinematicState();
-            _turnManager?.StartNewRound();
+
+            bool isRemoteClient = TurnManager.IsMultiplayerPlayerClient()
+                || (Killtime.Multi.VTTTableSync.Instance != null && Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction);
+
+            if (!isRemoteClient)
+            {
+                _turnManager?.StartNewRound();
+                _aiController?.TriggerAITurnIfApplicable();
+            }
 
             RecordChronoSnapshot($"Chargement des unités de la carte ({reserved.Count} avatars)");
             string relocateInfo = relocated > 0 ? $" ({relocated} relocalisé(s) anti-empilement)" : "";
@@ -592,6 +699,7 @@ namespace Killtime.Tactics
                 _gridVisualizer.RefreshObstacles();
             }
 
+            SaveArenaLayoutPref();
             Log($"📐 Layout d'arène configuré : <b>{layout}</b>");
         }
 
@@ -648,9 +756,13 @@ namespace Killtime.Tactics
                 _cameraController.FocusOn(unit.transform);
             }
 
-            // Mise en garde tactique de l'unité active
             var visual = unit.GetComponent<TacticalUnitVisual>();
             visual?.SetCombatStance(true);
+
+            if (CurrentTarget == null || CurrentTarget == unit || !CurrentTarget.Stats.IsAlive)
+            {
+                AutoTargetOpponent(unit);
+            }
 
             if (KilltimeAudioManager.Instance != null && unit != null)
                 KilltimeAudioManager.Instance.PlayAt(SoundId.Turn_Start, unit.transform.position, 0.6f);
@@ -806,8 +918,11 @@ namespace Killtime.Tactics
 
         public void SelectTarget(TacticalUnit target)
         {
+            if (target == null) return;
+            if (CurrentTarget == target) return;
+
             CurrentTarget = target;
-            if (_gridVisualizer != null && target != null)
+            if (_gridVisualizer != null)
             {
                 _gridVisualizer.SetTargetCoord(target.CurrentCoords);
             }
@@ -815,6 +930,64 @@ namespace Killtime.Tactics
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.PlayUI(SoundId.VATS_Lock, 0.7f);
             Log($"🎯 Cible verrouillée : <b>{target.Stats.Name}</b> ({target.Stats.CurrentHealth}/{target.Stats.MaxHealth} PV)");
+
+            if (Killtime.Multi.VTTTableSync.Instance != null 
+                && !Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction 
+                && Killtime.Multi.VTTRoomManager.Instance != null 
+                && Killtime.Multi.VTTRoomManager.Instance.InRoom)
+            {
+                if (Killtime.Multi.VTTRoomManager.Instance.IsGM)
+                {
+                    Killtime.Multi.VTTTableSync.Instance.BroadcastTargetSelection(target);
+                }
+                else
+                {
+                    Killtime.Multi.VTTTableSync.Instance.RequestTargetSelection(target);
+                }
+            }
+        }
+
+        public void AutoTargetOpponent(TacticalUnit activeUnit)
+        {
+            if (activeUnit == null) return;
+
+            if (activeUnit.IsPlayerControlled)
+            {
+                AutoTargetNextAlive();
+            }
+            else
+            {
+                if (PlayerUnit != null && PlayerUnit.Stats != null && PlayerUnit.Stats.IsAlive)
+                {
+                    SelectTarget(PlayerUnit);
+                    return;
+                }
+                for (int i = 0; i < _additionalPlayers.Count; i++)
+                {
+                    var p = _additionalPlayers[i];
+                    if (p != null && p.Stats != null && p.Stats.IsAlive)
+                    {
+                        SelectTarget(p);
+                        return;
+                    }
+                }
+            }
+        }
+
+        private void HandleTargetMovedFollow(TacticalUnit unit, List<HexCoordinates> path, int apCost)
+        {
+            if (CurrentTarget != null && CurrentTarget == unit && _gridVisualizer != null && path != null && path.Count > 0)
+            {
+                _gridVisualizer.SetTargetCoord(path[path.Count - 1]);
+            }
+        }
+
+        private void HandleTargetTeleportedFollow(TacticalUnit unit, HexCoordinates coords)
+        {
+            if (CurrentTarget != null && CurrentTarget == unit && _gridVisualizer != null)
+            {
+                _gridVisualizer.SetTargetCoord(coords);
+            }
         }
 
         public void CycleTarget()
@@ -868,6 +1041,23 @@ namespace Killtime.Tactics
 
             var attacker = _turnManager.ActiveUnit;
             var defender = CurrentTarget;
+
+            if (TurnManager.IsMultiplayerPlayerClient())
+            {
+                if (attacker != null && defender != null)
+                {
+                    Killtime.Multi.VTTTableSync.Instance?.RequestAttack(
+                        attacker,
+                        defender,
+                        targetedPart,
+                        cancelPenaltyWithAP,
+                        attackSkill,
+                        defenseSkill,
+                        attackerBonusAP
+                    );
+                }
+                return;
+            }
 
             if (attacker == null || defender == null)
             {
@@ -1056,6 +1246,24 @@ namespace Killtime.Tactics
                     laserWeapon.FireLaser(targetCenter, result.IsHit);
                 }
 
+                // Télémétrie d'engagement
+                bool isTargetDeadOrDown = !defender.Stats.IsAlive || result.FatalResolution != FatalBlowResolution.None;
+                CombatHUD.RecordCombatAction(
+                    attacker.Stats.Name,
+                    defender.Stats.Name,
+                    attacker.IsPlayerControlled,
+                    defender.IsPlayerControlled,
+                    result.IsHit,
+                    result.IsCritical,
+                    result.IsBlocked,
+                    result.RawDamage,
+                    result.ArmorAbsorbed,
+                    result.FinalDamageApplied,
+                    result.ExceededEncaissement,
+                    isTargetDeadOrDown,
+                    (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP
+                );
+
                 // SFX combat : mapping complet du résultat (hybride procédural/clips).
                 if (KilltimeAudioManager.Instance != null && defender != null)
                 {
@@ -1154,6 +1362,48 @@ namespace Killtime.Tactics
                 );
 
                 RecordChronoSnapshot($"Attaque sur {defender.Stats.Name} ({targetedPart})");
+
+                // Diffusion VTT Multijoueur si GM
+                if (Killtime.Multi.VTTTableSync.Instance != null 
+                    && !Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction 
+                    && Killtime.Multi.VTTRoomManager.Instance != null 
+                    && Killtime.Multi.VTTRoomManager.Instance.InRoom 
+                    && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+                {
+                    var actionPayload = new Killtime.Multi.VTTCombatActionPayload
+                    {
+                        action = "attack",
+                        actorId = Killtime.Multi.VTTTableSync.UnitIdOf(attacker),
+                        targetId = Killtime.Multi.VTTTableSync.UnitIdOf(defender),
+                        targetedPart = (int)targetedPart,
+                        actualHitPart = (int)result.ActualHitPart,
+                        attackSkill = (int)attackSkill,
+                        defenseSkill = (int)defenseSkill,
+                        isHit = result.IsHit,
+                        isCritical = result.IsCritical,
+                        wasDeflected = result.WasDeflected,
+                        finalDamageApplied = result.FinalDamageApplied,
+                        rawDamage = result.RawDamage,
+                        armorAbsorbed = result.ArmorAbsorbed,
+                        differential = result.Differential,
+                        inflictedStatus = result.InflictedStatus.ToString(),
+                        isMeleeStrike = isMeleeStrike,
+                        attackerCostAP = (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP,
+                        defenderCostAP = resolvedDefenderBonus,
+                        attackerNewAP = attacker.Stats.CurrentActionPoints,
+                        defenderNewAP = defender.Stats.CurrentActionPoints,
+                        defenderNewHealth = defender.Stats.CurrentHealth,
+                        defenderNewActiveStatus = (int)defender.Stats.ActiveStatus,
+                        defenderIsDead = defender.Stats.IsDead || !defender.Stats.IsAlive,
+                        actorRotationY = attacker.transform.rotation.eulerAngles.y,
+                        defenderRotationY = defender.transform.rotation.eulerAngles.y,
+                        defenderNewQ = defender.CurrentCoords.Q,
+                        defenderNewR = defender.CurrentCoords.R,
+                        combatLog = result.CombatLog
+                    };
+                    Killtime.Multi.VTTTableSync.Instance.BroadcastCombatAction(actionPayload);
+                    Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
+                }
 
                 if (!defender.Stats.IsAlive)
                 {
@@ -1260,6 +1510,22 @@ namespace Killtime.Tactics
             }
 
             var attacker = _turnManager != null ? _turnManager.ActiveUnit : PlayerUnit;
+
+            if (TurnManager.IsMultiplayerPlayerClient())
+            {
+                if (attacker != null)
+                {
+                    Killtime.Multi.VTTTableSync.Instance?.RequestGrenade(
+                        attacker,
+                        targetCoords,
+                        grenadeItemId,
+                        useLauncher,
+                        aimed,
+                        attackerBonusAP
+                    );
+                }
+                return;
+            }
             if (attacker == null || attacker.Stats == null)
             {
                 Log("⚠️ Impossible de lancer : aucune unité active.");
@@ -1489,6 +1755,23 @@ namespace Killtime.Tactics
 
                 if (unit == null) continue;
                 var vis = unit.GetComponent<TacticalUnitVisual>();
+                bool isGrenadeFatal = (unit != null && !unit.Stats.IsAlive) || h.FatalResolution != FatalBlowResolution.None;
+                CombatHUD.RecordCombatAction(
+                    attacker.Stats.Name,
+                    h.TargetName,
+                    attacker.IsPlayerControlled,
+                    unit != null && unit.IsPlayerControlled,
+                    h.FinalDamage > 0,
+                    false,
+                    false,
+                    h.RawDamage,
+                    h.CoverReduction + h.ArmorAbsorbed,
+                    h.FinalDamage,
+                    h.ExceededEncaissement,
+                    isGrenadeFatal,
+                    0
+                );
+
                 if (h.FinalDamage > 0)
                 {
                     vis?.TriggerHitFlash();
@@ -1554,6 +1837,30 @@ namespace Killtime.Tactics
 
             WebBridgeManager.Instance?.SendCombatEvent("GRENADE", log, totalDealt);
             RecordChronoSnapshot($"Grenade {grenadeDef.Name} en ({blastCoords.Q},{blastCoords.R})");
+
+            // Diffusion VTT Multijoueur si GM
+            if (Killtime.Multi.VTTTableSync.Instance != null 
+                && !Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction 
+                && Killtime.Multi.VTTRoomManager.Instance != null 
+                && Killtime.Multi.VTTRoomManager.Instance.InRoom 
+                && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+            {
+                var actionPayload = new Killtime.Multi.VTTCombatActionPayload
+                {
+                    action = "grenade",
+                    actorId = Killtime.Multi.VTTTableSync.UnitIdOf(attacker),
+                    destQ = blastCoords.Q,
+                    destR = blastCoords.R,
+                    grenadeItemId = grenadeDef != null ? grenadeDef.ItemId : "",
+                    useLauncher = launcher != null && launcher.IsLauncher,
+                    aimed = throwOutcome.IsOnTarget,
+                    blastRadius = grenadeDef != null ? grenadeDef.BlastRadius : 0,
+                    attackerCostAP = totalPa,
+                    combatLog = log
+                };
+                Killtime.Multi.VTTTableSync.Instance.BroadcastCombatAction(actionPayload);
+            }
+
             if (CurrentTarget != null && !CurrentTarget.Stats.IsAlive) AutoTargetNextAlive();
             UpdateAdaptiveMusic();
             _turnManager?.CheckCombatOver();
@@ -1733,13 +2040,22 @@ namespace Killtime.Tactics
             if (CurrentTarget != null)
             {
                 CurrentTarget.Stats.CurrentHealth = 0;
-                CurrentTarget.Stats.ActiveStatus |= StatusEffect.Inconscient;
+                CurrentTarget.Stats.IsDead = true;
+                CurrentTarget.Stats.ActiveStatus |= StatusEffect.Inconscient | StatusEffect.ATerre;
                 var vis = CurrentTarget.GetComponent<TacticalUnitVisual>();
                 vis?.TriggerFallingBackDeath();
                 vis?.SpawnFloatingText("K.O. TOTAL!", Color.red);
                 if (KilltimeAudioManager.Instance != null)
                     KilltimeAudioManager.Instance.PlayAt(SoundId.Death_Instant, CurrentTarget.transform.position, 0.9f);
                 Log($"💀 {CurrentTarget.Stats.Name} a été terrassé par commande développeur.");
+
+                if (Killtime.Multi.VTTTableSync.Instance != null 
+                    && Killtime.Multi.VTTRoomManager.Instance != null 
+                    && Killtime.Multi.VTTRoomManager.Instance.InRoom 
+                    && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+                {
+                    Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
+                }
             }
         }
 
@@ -1787,6 +2103,8 @@ namespace Killtime.Tactics
 
         public void ResetArena()
         {
+            CombatHUD.ResetTelemetry();
+
             // 1. Interrompre toutes les coroutines actives et rétablir le temps réel
             StopAllCoroutines();
             _isAttackInProgress = false;
@@ -1834,7 +2152,16 @@ namespace Killtime.Tactics
                 _cameraController.FocusOn(PlayerUnit.transform);
             }
 
-            RecordChronoSnapshot("Réinitialisation de l'Arène");
+            if (Killtime.Multi.VTTTableSync.Instance != null 
+                && !Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction 
+                && Killtime.Multi.VTTRoomManager.Instance != null 
+                && Killtime.Multi.VTTRoomManager.Instance.InRoom 
+                && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+            {
+                Killtime.Multi.VTTTableSync.Instance.BroadcastArenaReset((int)_currentLayout);
+            }
+
+            RecordChronoSnapshot("Réinitialisation de l'Arène");    
             if (KilltimeAudioManager.Instance != null)
             {
                 KilltimeAudioManager.Instance.Play(SoundId.Arena_Reset, 0.8f);
@@ -1905,9 +2232,15 @@ namespace Killtime.Tactics
             }
         }
 
-        private void Log(string message)
+        public void Log(string message)
         {
             OnCombatLogMessage?.Invoke($"[{DateTime.Now:HH:mm:ss}] {message}");
+        }
+
+        private void OnDisable()
+        {
+            TacticalUnit.OnAnyUnitMoved -= HandleTargetMovedFollow;
+            TacticalUnit.OnAnyUnitTeleported -= HandleTargetTeleportedFollow;
         }
     }
 }

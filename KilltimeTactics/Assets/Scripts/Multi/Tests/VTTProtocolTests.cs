@@ -43,6 +43,14 @@ namespace Killtime.Multi.Tests
         }
 
         [Test]
+        public void MapOps_AreDeclaredForTableSynchronization()
+        {
+            Assert.AreEqual("map_load", VTTProtocol.OpMapLoad);
+            Assert.AreEqual("map_request", VTTProtocol.OpMapRequest);
+            Assert.AreEqual("voice", VTTProtocol.OpVoice);
+        }
+
+        [Test]
         public void BuildSetRole_AndKick_ContainTarget()
         {
             StringAssert.Contains("\"targetId\":\"c_abc\"", VTTProtocol.BuildSetRole("c_abc", "gm"));
@@ -110,6 +118,99 @@ namespace Killtime.Multi.Tests
             // Le JSON doit rester un objet valide avec le champ op présent.
             Assert.AreEqual("op", VTTProtocol.PeekType(json));
             StringAssert.Contains("\\\"go\\\"", json);
+        }
+
+        [Test]
+        public void SubActionConstants_AreDefinedCorrectly()
+        {
+            Assert.AreEqual("round_start", VTTProtocol.TurnActionRoundStart);
+            Assert.AreEqual("turn_start", VTTProtocol.TurnActionTurnStart);
+            Assert.AreEqual("end_turn", VTTProtocol.TurnActionEndTurn);
+            Assert.AreEqual("combat_ended", VTTProtocol.TurnActionCombatEnded);
+            Assert.AreEqual("state_sync", VTTProtocol.TurnActionStateSync);
+
+            Assert.AreEqual("move", VTTProtocol.CombatActionMove);
+            Assert.AreEqual("attack", VTTProtocol.CombatActionAttack);
+            Assert.AreEqual("grenade", VTTProtocol.CombatActionGrenade);
+            Assert.AreEqual("spell", VTTProtocol.CombatActionSpell);
+            Assert.AreEqual("breath", VTTProtocol.CombatActionBreath);
+
+            Assert.AreEqual("ping_hex", VTTProtocol.SceneActionPingHex);
+            Assert.AreEqual("focus_camera", VTTProtocol.SceneActionFocusCamera);
+            Assert.AreEqual("fog_reveal", VTTProtocol.SceneActionFogReveal);
+            Assert.AreEqual("fog_hide", VTTProtocol.SceneActionFogHide);
+            Assert.AreEqual("set_lighting", VTTProtocol.SceneActionSetLighting);
+        }
+
+        [Test]
+        public void IsGMOp_IdentifiesGMOnlyOperations()
+        {
+            Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpTurnControl));
+            Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpCombatAction));
+            Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpSceneControl));
+            Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpRoomSettings));
+            Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpMapLoad));
+
+            Assert.IsFalse(VTTProtocol.IsGMOp(VTTProtocol.OpChat));
+            Assert.IsFalse(VTTProtocol.IsGMOp(VTTProtocol.OpDice));
+            Assert.IsFalse(VTTProtocol.IsGMOp(VTTProtocol.OpUnitMove));
+            Assert.IsFalse(VTTProtocol.IsGMOp(VTTProtocol.OpMapRequest));
+        }
+
+        [Test]
+        public void BuildDiceOp_GeneratesValidOp()
+        {
+            string json = VTTProtocol.BuildDiceOp(73, "1D100", "(73)", "Attaque laser", true, false);
+            Assert.AreEqual("op", VTTProtocol.PeekType(json));
+            StringAssert.Contains("\"op\":\"dice\"", json);
+            StringAssert.Contains("\"roll\":73", json);
+            StringAssert.Contains("\"formula\":\"1D100\"", json);
+            StringAssert.Contains("\"detail\":\"(73)\"", json);
+            StringAssert.Contains("\"reason\":\"Attaque laser\"", json);
+            StringAssert.Contains("\"isCritical\":true", json);
+        }
+
+        [Test]
+        public void BuildSceneControlOp_GeneratesValidOp()
+        {
+            string pingJson = VTTProtocol.BuildScenePingHexOp(2, -3, "#FF5500", "Ennemi repéré!");
+            Assert.AreEqual("op", VTTProtocol.PeekType(pingJson));
+            StringAssert.Contains("\"op\":\"scene_control\"", pingJson);
+            StringAssert.Contains("\"action\":\"ping_hex\"", pingJson);
+            StringAssert.Contains("\"targetQ\":2", pingJson);
+            StringAssert.Contains("\"targetR\":-3", pingJson);
+
+            string camJson = VTTProtocol.BuildSceneFocusCameraOp(12.5f, 8.0f, 1.5f);
+            Assert.AreEqual("op", VTTProtocol.PeekType(camJson));
+            StringAssert.Contains("\"op\":\"scene_control\"", camJson);
+            StringAssert.Contains("\"action\":\"focus_camera\"", camJson);
+        }
+
+        [Test]
+        public void BuildMapOps_GenerateValidOps()
+        {
+            string loadJson = VTTProtocol.BuildMapLoadOp("{\"MapName\":\"Bunker\"}");
+            Assert.AreEqual("op", VTTProtocol.PeekType(loadJson));
+            StringAssert.Contains("\"op\":\"map_load\"", loadJson);
+            StringAssert.Contains("\"map\":{\"MapName\":\"Bunker\"}", loadJson);
+
+            string reqJson = VTTProtocol.BuildMapRequestOp();
+            Assert.AreEqual("op", VTTProtocol.PeekType(reqJson));
+            StringAssert.Contains("\"op\":\"map_request\"", reqJson);
+        }
+
+        [Test]
+        public void ExtractHelpers_ExtractObjectsAndStrings()
+        {
+            string json = "{\"user\":\"Alpha\",\"data\":{\"x\":10,\"y\":20},\"flag\":true}";
+            string extractedData = VTTProtocol.ExtractObject(json, "data");
+            Assert.AreEqual("{\"x\":10,\"y\":20}", extractedData);
+
+            string extractedUser = VTTProtocol.ExtractString(json, "user");
+            Assert.AreEqual("Alpha", extractedUser);
+
+            string fallback = VTTProtocol.ExtractString(json, "unknown", "def");
+            Assert.AreEqual("def", fallback);
         }
     }
 }

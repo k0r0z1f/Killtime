@@ -10,6 +10,7 @@ using Killtime.Core.Dice;
 using Killtime.Core.Character;
 using Killtime.CameraSystem;
 using Killtime.Multi;
+using Killtime.Story;
 
 namespace Killtime.UI
 {
@@ -68,6 +69,8 @@ namespace Killtime.UI
             if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
             if (_cinematicDirector == null) _cinematicDirector = FindAnyObjectByType<CinematicDirector>();
 
+            try { LoadDevPrefs(); } catch { /* prefs optionnelles */ }
+
             if (_arena != null)
             {
                 _arena.OnCombatLogMessage += AddLog;
@@ -78,6 +81,84 @@ namespace Killtime.UI
             FloatingWindowChrome.RegisterWindow(999,
                 () => _isOpen ? _windowRect : ClosedButtonRect,
                 () => isActiveAndEnabled);
+        }
+
+        protected override void OnOpened()
+        {
+            try { LoadDevPrefs(); } catch { /* ignore */ }
+        }
+
+        protected override void OnClosed()
+        {
+            try { CaptureDevPrefs(); DevUIPreferences.SaveNow(); } catch { /* ignore */ }
+        }
+
+        private void LoadDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            int partCount = Enum.GetValues(typeof(BodyPart)).Length;
+            _selectedPart = (BodyPart)Mathf.Clamp(p.VatsSelectedPart, 0, Math.Max(0, partCount - 1));
+            _cancelPenaltyWithAP = p.VatsCancelPenalty;
+            _attackerBonusAP = Mathf.Clamp(p.VatsAttackerBonus, 0, 10);
+            _defenderBonusAP = Mathf.Clamp(p.VatsDefenderBonus, 0, 10);
+            _attackSkill = SafeSkill(p.VatsAttackSkill, SkillType.Ballistique);
+            _defenseSkill = SafeSkill(p.VatsDefenseSkill, SkillType.Esquive);
+            _defenderWantsToDefend = p.VatsDefenderWantsToDefend;
+            _weaponDamage = Mathf.Clamp(p.VatsWeaponDamage, 1, 30);
+            _selectedTab = Mathf.Clamp(p.CombatToolbarTab, 0, _tabNames.Length - 1);
+            _scrollLock = p.CombatLogScrollLock;
+        }
+
+        private static SkillType SafeSkill(int raw, SkillType fallback)
+        {
+            try
+            {
+                if (Enum.IsDefined(typeof(SkillType), raw)) return (SkillType)raw;
+            }
+            catch { /* ignore */ }
+            return fallback;
+        }
+
+        private void CaptureDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            p.VatsSelectedPart = (int)_selectedPart;
+            p.VatsCancelPenalty = _cancelPenaltyWithAP;
+            p.VatsAttackerBonus = _attackerBonusAP;
+            p.VatsDefenderBonus = _defenderBonusAP;
+            p.VatsAttackSkill = (int)_attackSkill;
+            p.VatsDefenseSkill = (int)_defenseSkill;
+            p.VatsDefenderWantsToDefend = _defenderWantsToDefend;
+            p.VatsWeaponDamage = _weaponDamage;
+            p.CombatToolbarTab = _selectedTab;
+            p.CombatLogScrollLock = _scrollLock;
+            if (_arena != null)
+            {
+                p.InfiniteAP = _arena.InfiniteAP;
+                p.ArenaLayout = (int)_arena.CurrentLayout;
+                try { p.EnableCinematicKillcam = _arena.EnableCinematicKillcam; } catch { /* ignore */ }
+            }
+            try
+            {
+                var ai = (_arena != null ? _arena.AIController : null) ?? FindAnyObjectByType<TacticalAIController>();
+                if (ai != null)
+                {
+                    p.AiMode = (int)ai.Mode;
+                    p.AiEnabled = ai.IsAIEnabled;
+                    p.AiActionDelay = ai.ActionDelay;
+                    try
+                    {
+                        p.AiPersonality = (int)ai.DefaultPersonality;
+                        p.AiRetreatRatio = ai.RetreatHealthRatio;
+                        p.AiDefensiveReserve = ai.DefensiveAPReserve;
+                    }
+                    catch { /* ignore */ }
+                }
+            }
+            catch { /* ignore */ }
+            DevUIPreferences.MarkDirty();
         }
 
         protected override void OnEnable()
@@ -99,6 +180,8 @@ namespace Killtime.UI
             else if (Input.GetKeyDown(KeyCode.F3)) EnsureDevWindow(CoreRulesDevTableWindow.Instance, CoreRulesDevTableWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F4)) EnsureDevWindow(VTTRoomWindow.Instance, VTTRoomWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.I)) EnsureDevWindow(InventoryDevWindow.Instance, InventoryDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F6)) EnsureDevWindow(Killtime.Multi.Video.VTTVideoRoomWindow.Instance, Killtime.Multi.Video.VTTVideoRoomWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F7)) EnsureDevWindow(ScenarioDevWindow.Instance, ScenarioDevWindow.Open);
         }
 
         /// <summary>
@@ -161,6 +244,10 @@ namespace Killtime.UI
             if (_selectedTab == 3)
             {
                 DrawLogsTab();
+                if (GUI.changed)
+                {
+                    try { CaptureDevPrefs(); } catch { /* ignore */ }
+                }
                 return;
             }
 
@@ -180,6 +267,11 @@ namespace Killtime.UI
             }
 
             GUILayout.EndScrollView();
+
+            if (GUI.changed)
+            {
+                try { CaptureDevPrefs(); } catch { /* ignore */ }
+            }
         }
 
         private void DrawUnitStatusHeader(TacticalUnit unit)
@@ -383,6 +475,31 @@ namespace Killtime.UI
                 GUILayout.Label("<b>🤖 Automatisation Tactique (IA) :</b>");
                 GUILayout.BeginVertical(GUI.skin.box);
 
+                bool inRoom = VTTRoomManager.Instance != null && VTTRoomManager.Instance.InRoom;
+                bool isGM = inRoom && VTTRoomManager.Instance.IsGM;
+                bool isPlayer = inRoom && !isGM;
+
+                if (isPlayer)
+                {
+                    GUI.color = new Color(1f, 0.75f, 0.2f);
+                    GUILayout.Label("🔒 <b>Paramètres d'IA sous contrôle du GM</b> (L'IA s'exécute côté GM)");
+                    GUI.color = Color.white;
+                }
+                else if (isGM)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUI.color = new Color(0.4f, 0.9f, 1.0f);
+                    GUILayout.Label("👑 <b>Maître du Jeu (GM)</b> — Paramètres synchronisés aux joueurs");
+                    GUI.color = Color.white;
+                    if (GUILayout.Button("🔄 Synchroniser", GUILayout.Width(100)))
+                    {
+                        VTTTableSync.Instance?.BroadcastRoomSettings();
+                    }
+                    GUILayout.EndHorizontal();
+                }
+
+                GUI.enabled = !isPlayer;
+
                 ai.IsAIEnabled = GUILayout.Toggle(ai.IsAIEnabled, "Activer le Contrôleur d'IA");
 
                 GUILayout.BeginHorizontal();
@@ -407,8 +524,15 @@ namespace Killtime.UI
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label($"Délai d'action : {ai.ActionDelay:0.00}s", GUILayout.Width(150));
-                ai.ActionDelay = GUILayout.HorizontalSlider(ai.ActionDelay, 0.05f, 6.0f);
+                float curDelay = ai.ActionDelay;
+                float newDelay = GUILayout.HorizontalSlider(curDelay, 0.05f, 6.0f);
+                if (Mathf.Abs(newDelay - curDelay) > 0.01f)
+                {
+                    ai.ActionDelay = newDelay;
+                }
                 GUILayout.EndHorizontal();
+
+                GUI.enabled = true;
 
                 GUILayout.EndVertical();
                 GUILayout.Space(6);
@@ -516,11 +640,24 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(4);
+            GUILayout.Label("<b>🎬 Campagne narrative :</b>");
+            if (GUILayout.Button("🎬 Scènes & Choix — Volume I (F7)", GUILayout.Height(32)))
+            {
+                ScenarioDevWindow.Open();
+            }
+
+            GUILayout.Space(4);
             GUILayout.Label("<b>🌐 Multijoueur (Table Virtuelle) :</b>");
-            if (GUILayout.Button("🌐 Ouvrir la Room Multijoueur (F4)", GUILayout.Height(32)))
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🌐 Room VTT (F4)", GUILayout.Height(32)))
             {
                 VTTRoomWindow.Open();
             }
+            if (GUILayout.Button("📹 Salon Vidéo (F6)", GUILayout.Height(32)))
+            {
+                Killtime.Multi.Video.VTTVideoRoomWindow.Open();
+            }
+            GUILayout.EndHorizontal();
 
             GUILayout.Space(4);
             GUILayout.Label("<b>🎒 Inventaire, Armurerie & Marché :</b>");

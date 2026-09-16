@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -42,6 +43,9 @@ namespace Killtime.Tactics.Units
         public bool IsPlayerControlled => _isPlayerControlled;
         public bool IsMoving { get; private set; }
         public float MoveSpeed => _moveSpeed;
+
+        public static event Action<TacticalUnit, List<HexCoordinates>, int> OnAnyUnitMoved;
+        public static event Action<TacticalUnit, HexCoordinates> OnAnyUnitTeleported;
 
         private TacticalHexGrid _grid;
         private bool _hasPosition;
@@ -368,7 +372,9 @@ namespace Killtime.Tactics.Units
             }
 
             InitializePosition(coords, grid);
-            return _hasPosition && CurrentCoords.Equals(coords);
+            bool success = _hasPosition && CurrentCoords.Equals(coords);
+            if (success) OnAnyUnitTeleported?.Invoke(this, coords);
+            return success;
         }
 
         /// <summary>
@@ -382,11 +388,10 @@ namespace Killtime.Tactics.Units
 
             _grid = grid;
 
-            // Le chemin doit partir de notre position réelle.
+            // En cas de léger décalage réseau ou rejeu, recalage immédiat sur le départ du chemin
             if (!path[0].Equals(CurrentCoords))
             {
-                Debug.LogWarning($"[TacticalUnit] Déplacement refusé pour '{_unitName}' : départ {path[0]} != position {CurrentCoords}.");
-                yield break;
+                TeleportTo(path[0], grid);
             }
 
             // Validation préalable : aucune étape (sauf départ) ne doit être occupée.
@@ -413,6 +418,7 @@ namespace Killtime.Tactics.Units
 
             IsMoving = true;
             Stats.ConsumeActionPoints(apCost);
+            OnAnyUnitMoved?.Invoke(this, path, apCost);
 
             HexCoordinates previous = path[0];
 

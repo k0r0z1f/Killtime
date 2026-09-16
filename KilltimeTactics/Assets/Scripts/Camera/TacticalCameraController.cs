@@ -44,6 +44,7 @@ namespace Killtime.CameraSystem
         private Vector3 _panVelocity;
         private float _targetDistance;
         private float _distanceVelocity;
+        private float _nextCamPrefSave;
 
         private void OnValidate()
         {
@@ -54,6 +55,7 @@ namespace Killtime.CameraSystem
 
         private void Start()
         {
+            try { LoadCameraPrefs(); } catch { /* prefs optionnelles */ }
             _targetDistance = Mathf.Clamp(_currentDistance, _minDistance, _maxDistance);
             _currentDistance = _targetDistance;
 
@@ -119,6 +121,49 @@ namespace Killtime.CameraSystem
             HandleRotation();
             HandleZoom();
             ApplyCameraTransform();
+            try { MaybeSaveCameraPrefs(); } catch { /* ignore */ }
+        }
+
+        private void LoadCameraPrefs()
+        {
+            var p = Killtime.UI.DevUIPreferences.Current;
+            if (p == null) return;
+            _currentDistance = Mathf.Clamp(p.CamDistance, _minDistance, _maxDistance);
+            _currentYaw = p.CamYaw;
+            _pitchAngle = Mathf.Clamp(p.CamPitch, 30f, 60f);
+        }
+
+        private void MaybeSaveCameraPrefs()
+        {
+            var p = Killtime.UI.DevUIPreferences.Current;
+            if (p == null) return;
+            bool changed =
+                Mathf.Abs(p.CamDistance - _targetDistance) > 0.05f ||
+                Mathf.Abs(p.CamYaw - _currentYaw) > 0.5f ||
+                Mathf.Abs(p.CamPitch - _pitchAngle) > 0.1f;
+            if (!changed) return;
+            if (Time.realtimeSinceStartup < _nextCamPrefSave) return;
+            p.CamDistance = _targetDistance;
+            p.CamYaw = _currentYaw;
+            p.CamPitch = _pitchAngle;
+            Killtime.UI.DevUIPreferences.MarkDirty(1.5f);
+            _nextCamPrefSave = Time.realtimeSinceStartup + 2f;
+        }
+
+        private void OnDisable()
+        {
+            try
+            {
+                var p = Killtime.UI.DevUIPreferences.Current;
+                if (p != null)
+                {
+                    p.CamDistance = _targetDistance;
+                    p.CamYaw = _currentYaw;
+                    p.CamPitch = _pitchAngle;
+                    Killtime.UI.DevUIPreferences.MarkDirty(0.2f);
+                }
+            }
+            catch { /* ignore */ }
         }
 
         private void HandleKeyboardMovement()

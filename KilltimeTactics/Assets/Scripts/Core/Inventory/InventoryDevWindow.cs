@@ -75,6 +75,7 @@ namespace Killtime.UI
             RefreshSceneUnits();
             RefreshGunCatalog();
             EnsurePreviewStudio();
+            try { LoadDevPrefs(); } catch { /* ignore */ }
         }
 
         protected override void Awake()
@@ -83,11 +84,41 @@ namespace Killtime.UI
             EnsureReferences();
             RefreshGunCatalog();
             EnsurePreviewStudio();
+            try { LoadDevPrefs(); } catch { /* ignore */ }
+        }
+
+        protected override void OnClosed()
+        {
+            try { CaptureDevPrefs(); DevUIPreferences.SaveNow(); } catch { /* ignore */ }
+        }
+
+        private void LoadDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            _selectedTab = Mathf.Clamp(p.InventoryTab, 0, _tabs.Length - 1);
+            _searchFilter = p.InventorySearch ?? "";
+            _categoryFilter = p.InventoryCategory;
+            _affordableOnly = p.InventoryAffordableOnly;
+            _showOnlyRealPrefabs = p.InventoryRealPrefabsOnly;
+        }
+
+        private void CaptureDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            p.InventoryTab = _selectedTab;
+            p.InventorySearch = _searchFilter ?? "";
+            p.InventoryCategory = _categoryFilter;
+            p.InventoryAffordableOnly = _affordableOnly;
+            p.InventoryRealPrefabsOnly = _showOnlyRealPrefabs;
+            DevUIPreferences.MarkDirty();
         }
 
         protected override void OnDisable()
         {
             base.OnDisable();
+            try { CaptureDevPrefs(); } catch { /* ignore */ }
             CleanupPreviewStudio();
         }
 
@@ -227,6 +258,11 @@ namespace Killtime.UI
             }
 
             GUILayout.EndScrollView();
+
+            if (GUI.changed)
+            {
+                try { CaptureDevPrefs(); } catch { /* ignore */ }
+            }
         }
 
         private void DrawLeftTab()

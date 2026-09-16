@@ -80,10 +80,16 @@ namespace Killtime.UI
     [Serializable]
     public class MapUnitData
     {
+        public string UnitId;
         public CharacterSheet Sheet;
         public int Q;
         public int R;
         public bool IsPlayer;
+        public int currentHealth;
+        public int currentAP;
+        public int essoufflement;
+        public int activeStatus;
+        public List<string> statusEffects = new();
     }
 
     [Serializable]
@@ -180,6 +186,7 @@ namespace Killtime.UI
         protected override void OnOpened()
         {
             EnsureReferences();
+            try { LoadDevPrefs(); } catch { /* ignore */ }
         }
 
         protected override void Awake()
@@ -192,6 +199,85 @@ namespace Killtime.UI
             EnsurePropsRoot();
             SyncPropsFromScene();
             if (_grid != null) _ceilingHeightInput = _grid.CeilingHeight;
+            try { LoadDevPrefs(); } catch { /* ignore */ }
+        }
+
+        protected override void OnClosed()
+        {
+            try { CaptureDevPrefs(); DevUIPreferences.SaveNow(); } catch { /* ignore */ }
+            _gridVisualizer?.SetCeilingVisualMode(CeilingVisualMode.InGame);
+        }
+
+        private void LoadDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            int brushCount = Enum.GetValues(typeof(MapBrushType)).Length;
+            _activeBrush = (MapBrushType)Mathf.Clamp(p.MapBrush, 0, Math.Max(0, brushCount - 1));
+            if (!string.IsNullOrEmpty(p.MapName)) _mapNameInput = p.MapName;
+            if (!string.IsNullOrEmpty(p.GridRadiusInput)) _gridRadiusInput = p.GridRadiusInput;
+            _ceilingHeightInput = Mathf.Clamp(p.CeilingHeight, 2f, 8f);
+            _selectedTab = Mathf.Clamp(p.MapEditorTab, 0, _tabTitles.Length - 1);
+            _sculptStep = Mathf.Clamp(p.SculptStep, 0.05f, 2f);
+            _targetElevation = Mathf.Clamp(p.TargetElevation, -5f, 8f);
+            _sculptRadius = Mathf.Clamp(p.SculptRadius, 1, 5);
+            _smoothSlopeTerrain = p.SmoothSlope;
+            _groundTiling = Mathf.Clamp(p.GroundTiling, 0.1f, 8f);
+            _selectedPropIndex = Math.Max(0, p.SelectedPropIndex);
+            if (_availablePropNames.Count > 0)
+                _selectedPropIndex = Mathf.Clamp(_selectedPropIndex, 0, _availablePropNames.Count - 1);
+            _propRotationY = p.PropRotationY;
+            _propScale = Mathf.Clamp(p.PropScale, 0.2f, 3f);
+            int coverCount = Enum.GetValues(typeof(CoverType)).Length;
+            _propCover = (CoverType)Mathf.Clamp(p.PropCover, 0, Math.Max(0, coverCount - 1));
+            _propIsWalkable = p.PropWalkable;
+            int placeCount = Enum.GetValues(typeof(PropPlacementType)).Length;
+            _propPlacementType = (PropPlacementType)Mathf.Clamp(p.PropPlacement, 0, Math.Max(0, placeCount - 1));
+            _propHeightOffset = Mathf.Clamp(p.PropHeightOffset, -2f, 4f);
+            _selectedGroundIndex = Math.Max(0, p.SelectedGroundIndex);
+            _selectedCategoryIndex = Math.Max(0, p.SelectedCategoryIndex);
+            if (_grid != null) _grid.CeilingHeight = _ceilingHeightInput;
+            if (_gridVisualizer != null)
+            {
+                _gridVisualizer.CeilingOpacity = Mathf.Clamp(p.CeilingOpacity, 0.01f, 0.8f);
+                _gridVisualizer.ShowCeilingInGame = p.ShowCeilingInGame;
+                _gridVisualizer.SmoothSlopeTerrain = p.SmoothSlope;
+                _gridVisualizer.GroundTiling = Mathf.Clamp(p.GroundTiling, 0.1f, 8f);
+            }
+        }
+
+        private void CaptureDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            p.MapBrush = (int)_activeBrush;
+            p.MapName = _mapNameInput ?? "Killzone_Alpha";
+            p.GridRadiusInput = _gridRadiusInput ?? "8";
+            p.CeilingHeight = _ceilingHeightInput;
+            p.MapEditorTab = _selectedTab;
+            p.SculptStep = _sculptStep;
+            p.TargetElevation = _targetElevation;
+            p.SculptRadius = _sculptRadius;
+            p.SmoothSlope = _smoothSlopeTerrain;
+            p.GroundTiling = _groundTiling;
+            p.SelectedPropIndex = _selectedPropIndex;
+            p.PropRotationY = _propRotationY;
+            p.PropScale = _propScale;
+            p.PropCover = (int)_propCover;
+            p.PropWalkable = _propIsWalkable;
+            p.PropPlacement = (int)_propPlacementType;
+            p.PropHeightOffset = _propHeightOffset;
+            p.SelectedGroundIndex = _selectedGroundIndex;
+            p.SelectedCategoryIndex = _selectedCategoryIndex;
+            if (_grid != null) p.CeilingHeight = _grid.CeilingHeight;
+            if (_gridVisualizer != null)
+            {
+                p.CeilingOpacity = _gridVisualizer.CeilingOpacity;
+                p.ShowCeilingInGame = _gridVisualizer.ShowCeilingInGame;
+                p.SmoothSlope = _gridVisualizer.SmoothSlopeTerrain;
+                p.GroundTiling = _gridVisualizer.GroundTiling;
+            }
+            DevUIPreferences.MarkDirty();
         }
 
         protected override void OnEnable()
@@ -221,6 +307,7 @@ namespace Killtime.UI
         protected override void OnDisable()
         {
             base.OnDisable();
+            try { CaptureDevPrefs(); } catch { /* ignore */ }
             _gridVisualizer?.SetCeilingVisualMode(CeilingVisualMode.InGame);
         }
 
@@ -344,11 +431,6 @@ namespace Killtime.UI
             }
 
             return prefab;
-        }
-
-        protected override void OnClosed()
-        {
-            _gridVisualizer?.SetCeilingVisualMode(CeilingVisualMode.InGame);
         }
 
         protected override void Update()
@@ -916,6 +998,11 @@ namespace Killtime.UI
             }
 
             GUILayout.EndScrollView();
+
+            if (GUI.changed)
+            {
+                try { CaptureDevPrefs(); } catch { /* ignore */ }
+            }
         }
 
         private void DrawTerrainTab()
@@ -1365,13 +1452,25 @@ namespace Killtime.UI
                 var u = sceneUnits[i];
                 if (u == null || u.Stats == null) continue;
 
-                data.PlacedUnits.Add(new MapUnitData
+                var entry = new MapUnitData
                 {
+                    UnitId = u.gameObject.name,
                     Sheet = u.GetOrBuildSheet(),
                     Q = u.CurrentCoords.Q,
                     R = u.CurrentCoords.R,
-                    IsPlayer = u.IsPlayerControlled
-                });
+                    IsPlayer = u.IsPlayerControlled,
+                    currentHealth = u.Stats.CurrentHealth,
+                    currentAP = u.Stats.CurrentActionPoints,
+                    essoufflement = u.Stats.Essoufflement,
+                    activeStatus = (int)u.Stats.ActiveStatus
+                };
+
+                if (u.Stats.ActiveStatus != StatusEffect.None)
+                {
+                    entry.statusEffects.Add(u.Stats.ActiveStatus.ToString());
+                }
+
+                data.PlacedUnits.Add(entry);
             }
 
             data.PlacedPixies.Clear();

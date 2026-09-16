@@ -44,6 +44,15 @@ namespace Killtime.Tactics.Grid
             {
                 _ceilingOpacity = Mathf.Clamp(value, 0.01f, 0.80f);
                 RefreshCeilingRenderers();
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.CeilingOpacity = _ceilingOpacity;
+                        Killtime.UI.DevUIPreferences.MarkDirty(1.2f);
+                    }
+                }
+                catch { /* ignore */ }
             }
         }
 
@@ -54,6 +63,15 @@ namespace Killtime.Tactics.Grid
             {
                 _showCeilingInGame = value;
                 RefreshCeilingRenderers();
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.ShowCeilingInGame = value;
+                        Killtime.UI.DevUIPreferences.MarkDirty(1.2f);
+                    }
+                }
+                catch { /* ignore */ }
             }
         }
 
@@ -85,6 +103,15 @@ namespace Killtime.Tactics.Grid
             {
                 _smoothSlopeTerrain = value;
                 RefreshObstacles();
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.SmoothSlope = value;
+                        Killtime.UI.DevUIPreferences.MarkDirty(1.2f);
+                    }
+                }
+                catch { /* ignore */ }
             }
         }
 
@@ -95,6 +122,15 @@ namespace Killtime.Tactics.Grid
             {
                 _groundTiling = Mathf.Max(0.1f, value);
                 RefreshObstacles();
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.GroundTiling = _groundTiling;
+                        Killtime.UI.DevUIPreferences.MarkDirty(1.2f);
+                    }
+                }
+                catch { /* ignore */ }
             }
         }
 
@@ -128,6 +164,8 @@ namespace Killtime.Tactics.Grid
                 _grid = GetComponent<TacticalHexGrid>() ?? FindAnyObjectByType<TacticalHexGrid>();
             }
 
+            try { LoadVisualPrefs(); } catch { /* prefs optionnelles */ }
+
             SetupPathLineRenderer();
         }
 
@@ -135,6 +173,17 @@ namespace Killtime.Tactics.Grid
         {
             EnsureCameraAntiAliasing();
             BuildVisualGrid();
+        }
+
+        private void LoadVisualPrefs()
+        {
+            var p = Killtime.UI.DevUIPreferences.Current;
+            if (p == null) return;
+            // Affectation directe des champs pour éviter de re-marquer dirty au chargement.
+            _ceilingOpacity = Mathf.Clamp(p.CeilingOpacity, 0.01f, 0.80f);
+            _showCeilingInGame = p.ShowCeilingInGame;
+            _smoothSlopeTerrain = p.SmoothSlope;
+            _groundTiling = Mathf.Max(0.1f, p.GroundTiling);
         }
 
         private static void EnsureCameraAntiAliasing()

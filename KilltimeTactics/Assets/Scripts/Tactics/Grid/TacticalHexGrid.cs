@@ -23,7 +23,19 @@ namespace Killtime.Tactics.Grid
         public float CeilingHeight
         {
             get => _ceilingHeight;
-            set => _ceilingHeight = value;
+            set
+            {
+                _ceilingHeight = value;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.CeilingHeight = Mathf.Clamp(value, 1f, 12f);
+                        Killtime.UI.DevUIPreferences.MarkDirty(1.2f);
+                    }
+                }
+                catch { /* ignore */ }
+            }
         }
 
         public void SetNodeCeiling(HexCoordinates coords, bool hasCeiling)
@@ -176,6 +188,12 @@ namespace Killtime.Tactics.Grid
 
         private void Awake()
         {
+            try
+            {
+                var p = Killtime.UI.DevUIPreferences.Current;
+                if (p != null) _ceilingHeight = UnityEngine.Mathf.Clamp(p.CeilingHeight, 1f, 12f);
+            }
+            catch { /* prefs optionnelles */ }
             GenerateGrid();
         }
 

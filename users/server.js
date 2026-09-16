@@ -1183,12 +1183,14 @@ function vttHandleMessage(conn, msg) {
         const op = String(msg.op || '');
         if (!op || op.length > 64) { vttSendError(conn, 'Champ "op" manquant ou invalide.'); return; }
         // Garde-fou GM minimal : seul le GM peut émettre les ops de contrôle de table.
-        const gmOnlyOps = new Set(['turn_control', 'scene_control', 'room_settings']);
+        const gmOnlyOps = new Set(['turn_control', 'scene_control', 'room_settings', 'map_load']);
         if (gmOnlyOps.has(op) && conn.role !== 'gm' && room.gmId !== conn.id) {
             vttSendError(conn, `Op "${op}" réservée au GM.`, 'forbidden');
             return;
         }
         room.lastActive = Date.now();
+        // Pour les paquets voix, on évite d'émettre l'écho à l'expéditeur afin d'économiser sa bande passante.
+        const exceptSender = (op === 'voice') ? conn.id : null;
         vttBroadcast(room, {
             type: 'op',
             from: conn.id,
@@ -1197,7 +1199,7 @@ function vttHandleMessage(conn, msg) {
             op,
             payload: (msg.payload !== undefined ? msg.payload : {}),
             at: Date.now()
-        }, null);
+        }, exceptSender);
         return;
     }
 

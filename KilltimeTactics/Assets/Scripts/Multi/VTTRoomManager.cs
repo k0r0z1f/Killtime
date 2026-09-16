@@ -274,6 +274,24 @@ namespace Killtime.Multi
                         string payload = ExtractObjectField(json, "payload");
                         if (op != null)
                         {
+                            if (op.op == VTTProtocol.OpVoice)
+                            {
+                                if (op.from != ClientId)
+                                {
+                                    Voice.VTTVoiceManager.Instance?.ReceiveVoicePacket(op.from, op.fromName, payload);
+                                }
+                                break;
+                            }
+
+                            if (op.op == VTTProtocol.OpVideo)
+                            {
+                                if (op.from != ClientId)
+                                {
+                                    Video.VTTVideoManager.Instance?.ReceiveVideoPacket(op.from, op.fromName, payload);
+                                }
+                                break;
+                            }
+
                             if (op.from == ClientId)
                             {
                                 // Écho local : le hub diffuse aussi à l'expéditeur.
@@ -343,45 +361,15 @@ namespace Killtime.Multi
             try { OnError?.Invoke(message); } catch (Exception e) { Debug.LogException(e); }
         }
 
-        // --- Mini-extracteurs (évitent une dépendance JSON externe) ---
+        // --- Mini-extracteurs (délégation vers VTTProtocol) ---
         private static string ExtractStringField(string json, string field, string fallback)
         {
-            string key = "\"" + field + "\"";
-            int i = json.IndexOf(key, StringComparison.Ordinal);
-            if (i < 0) return fallback;
-            int colon = json.IndexOf(':', i);
-            if (colon < 0) return fallback;
-            int q1 = json.IndexOf('"', colon);
-            if (q1 < 0) return fallback;
-            int q2 = json.IndexOf('"', q1 + 1);
-            if (q2 < 0) return fallback;
-            return json.Substring(q1 + 1, q2 - q1 - 1);
+            return VTTProtocol.ExtractString(json, field, fallback);
         }
 
         private static string ExtractObjectField(string json, string field)
         {
-            string key = "\"" + field + "\"";
-            int i = json.IndexOf(key, StringComparison.Ordinal);
-            if (i < 0) return "{}";
-            int colon = json.IndexOf(':', i);
-            if (colon < 0) return "{}";
-            int start = json.IndexOf('{', colon);
-            if (start < 0) return "{}";
-            int depth = 0;
-            bool inStr = false;
-            for (int k = start; k < json.Length; k++)
-            {
-                char c = json[k];
-                if (c == '"' && (k == 0 || json[k - 1] != '\\')) inStr = !inStr;
-                if (inStr) continue;
-                if (c == '{') depth++;
-                else if (c == '}')
-                {
-                    depth--;
-                    if (depth == 0) return json.Substring(start, k - start + 1);
-                }
-            }
-            return "{}";
+            return VTTProtocol.ExtractObject(json, field);
         }
     }
 }

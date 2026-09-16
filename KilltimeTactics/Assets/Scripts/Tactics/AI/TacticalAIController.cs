@@ -58,25 +58,237 @@ namespace Killtime.Tactics.AI
         [SerializeField] [Range(0.15f, 0.4f)] private float _retreatHealthRatio = 0.25f;
         [SerializeField] [Range(0, 2)] private int _baseDefensiveAPReserve = 1;
 
-        public CombatAIMode Mode { get => _mode; set => _mode = value; }
-        public bool IsAIEnabled { get => _isAIEnabled; set => _isAIEnabled = value; }
-        public float ActionDelay { get => _actionDelay; set => _actionDelay = Mathf.Clamp(value, 0.05f, 10.0f); }
+        public CombatAIMode Mode
+        {
+            get => _mode;
+            set
+            {
+                if (_mode == value) return;
+                _mode = value;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.AiMode = (int)_mode;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* prefs optionnelles */ }
+
+                NotifySettingsChangedIfGM();
+                TriggerAITurnIfApplicable();
+            }
+        }
+        public bool IsAIEnabled
+        {
+            get => _isAIEnabled;
+            set
+            {
+                if (_isAIEnabled == value) return;
+                _isAIEnabled = value;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.AiEnabled = value;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* ignore */ }
+
+                NotifySettingsChangedIfGM();
+                if (_isAIEnabled) TriggerAITurnIfApplicable();
+                else StopAITurn();
+            }
+        }
+        public float ActionDelay
+        {
+            get => _actionDelay;
+            set
+            {
+                float clamped = Mathf.Clamp(value, 0.05f, 10.0f);
+                if (Mathf.Abs(_actionDelay - clamped) < 0.01f) return;
+                _actionDelay = clamped;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.AiActionDelay = _actionDelay;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* ignore */ }
+                NotifySettingsChangedIfGM();
+            }
+        }
+        public AIPersonality DefaultPersonality
+        {
+            get => _defaultPersonality;
+            set
+            {
+                if (_defaultPersonality == value) return;
+                _defaultPersonality = value;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.AiPersonality = (int)_defaultPersonality;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* ignore */ }
+                NotifySettingsChangedIfGM();
+            }
+        }
+        public float RetreatHealthRatio
+        {
+            get => _retreatHealthRatio;
+            set
+            {
+                float clamped = Mathf.Clamp(value, 0.05f, 0.6f);
+                if (Mathf.Abs(_retreatHealthRatio - clamped) < 0.01f) return;
+                _retreatHealthRatio = clamped;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.AiRetreatRatio = _retreatHealthRatio;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* ignore */ }
+                NotifySettingsChangedIfGM();
+            }
+        }
+        public int DefensiveAPReserve
+        {
+            get => _baseDefensiveAPReserve;
+            set
+            {
+                int clamped = Mathf.Clamp(value, 0, 2);
+                if (_baseDefensiveAPReserve == clamped) return;
+                _baseDefensiveAPReserve = clamped;
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.AiDefensiveReserve = _baseDefensiveAPReserve;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* ignore */ }
+                NotifySettingsChangedIfGM();
+            }
+        }
+
+        public static bool IsInMultiplayerNonGM()
+        {
+            var room = Killtime.Multi.VTTRoomManager.Instance;
+            return room != null && room.InRoom && !room.IsGM;
+        }
+
+        public void ApplyGMSettings(Killtime.Multi.VTTRoomSettingsPayload settings)
+        {
+            if (settings == null) return;
+            _isAIEnabled = settings.isAIEnabled;
+            _mode = (CombatAIMode)Mathf.Clamp(settings.aiMode, 0, Enum.GetValues(typeof(CombatAIMode)).Length - 1);
+            _defaultPersonality = (AIPersonality)Mathf.Clamp(settings.aiPersonality, 0, Enum.GetValues(typeof(AIPersonality)).Length - 1);
+            _actionDelay = Mathf.Clamp(settings.aiActionDelay, 0.05f, 10f);
+            _retreatHealthRatio = Mathf.Clamp(settings.aiRetreatRatio, 0.05f, 0.6f);
+            _baseDefensiveAPReserve = Mathf.Clamp(settings.aiDefensiveReserve, 0, 2);
+
+            try
+            {
+                if (Killtime.UI.DevUIPreferences.Current != null)
+                {
+                    var p = Killtime.UI.DevUIPreferences.Current;
+                    p.AiMode = (int)_mode;
+                    p.AiPersonality = (int)_defaultPersonality;
+                    p.AiEnabled = _isAIEnabled;
+                    p.AiActionDelay = _actionDelay;
+                    p.AiRetreatRatio = _retreatHealthRatio;
+                    p.AiDefensiveReserve = _baseDefensiveAPReserve;
+                    Killtime.UI.DevUIPreferences.MarkDirty();
+                }
+            }
+            catch { /* ignore */ }
+
+            if (IsInMultiplayerNonGM())
+            {
+                StopAITurn();
+            }
+            else if (_isAIEnabled)
+            {
+                TriggerAITurnIfApplicable();
+            }
+        }
+
+        private float _lastBroadcastTime;
+        private void NotifySettingsChangedIfGM()
+        {
+            var room = Killtime.Multi.VTTRoomManager.Instance;
+            if (room != null && room.InRoom && room.IsGM)
+            {
+                if (Time.unscaledTime - _lastBroadcastTime < 0.15f) return;
+                _lastBroadcastTime = Time.unscaledTime;
+                Killtime.Multi.VTTTableSync.Instance?.BroadcastRoomSettings();
+            }
+        }
 
         private HexPathfinder _pathfinder;
         private Coroutine _activeTurnRoutine;
         private readonly List<TacticalUnit> _cachedUnits = new();
 
-        private void Awake() => EnsureDependencies();
+        private void Awake()
+        {
+            EnsureDependencies();
+            try { LoadDevUIPrefs(); } catch { /* prefs optionnelles */ }
+        }
 
         private void Start()
         {
             EnsureDependencies();
+            try { LoadDevUIPrefs(); } catch { /* prefs optionnelles */ }
             if (_grid != null) _pathfinder = new HexPathfinder(_grid);
 
             if (_turnManager != null)
             {
+                _turnManager.OnTurnStarted -= HandleTurnStarted;
                 _turnManager.OnTurnStarted += HandleTurnStarted;
+
+                _turnManager.OnCombatEnded -= HandleCombatEnded;
                 _turnManager.OnCombatEnded += HandleCombatEnded;
+            }
+
+            var room = Killtime.Multi.VTTRoomManager.Instance;
+            if (room != null)
+            {
+                room.OnJoined -= HandleRoomStateChanged;
+                room.OnJoined += HandleRoomStateChanged;
+                room.OnRoleChanged -= HandleRoomRoleChanged;
+                room.OnRoleChanged += HandleRoomRoleChanged;
+                room.OnLeft -= HandleRoomLeft;
+                room.OnLeft += HandleRoomLeft;
+            }
+
+            TriggerAITurnIfApplicable();
+        }
+
+        public void TriggerAITurnIfApplicable()
+        {
+            if (IsInMultiplayerNonGM())
+            {
+                StopAITurn();
+                return;
+            }
+            if (!_isAIEnabled || _turnManager == null || _turnManager.IsCombatOver) return;
+            var active = _turnManager.ActiveUnit;
+            if (active == null || active.Stats == null || !active.Stats.IsAlive) return;
+
+            bool shouldControl = (_mode == CombatAIMode.FullAuto) || (!active.IsPlayerControlled);
+            if (shouldControl && _activeTurnRoutine == null)
+            {
+                _activeTurnRoutine = StartCoroutine(ExecuteAITurn(active));
             }
         }
 
@@ -87,7 +299,31 @@ namespace Killtime.Tactics.AI
                 _turnManager.OnTurnStarted -= HandleTurnStarted;
                 _turnManager.OnCombatEnded -= HandleCombatEnded;
             }
+            var room = Killtime.Multi.VTTRoomManager.Instance;
+            if (room != null)
+            {
+                room.OnJoined -= HandleRoomStateChanged;
+                room.OnRoleChanged -= HandleRoomRoleChanged;
+                room.OnLeft -= HandleRoomLeft;
+            }
             StopAITurn();
+        }
+
+        private void HandleRoomStateChanged()
+        {
+            if (IsInMultiplayerNonGM()) StopAITurn();
+            else if (_isAIEnabled) TriggerAITurnIfApplicable();
+        }
+
+        private void HandleRoomRoleChanged(string targetId, string role)
+        {
+            if (IsInMultiplayerNonGM()) StopAITurn();
+            else if (_isAIEnabled) TriggerAITurnIfApplicable();
+        }
+
+        private void HandleRoomLeft(string reason)
+        {
+            if (_isAIEnabled) TriggerAITurnIfApplicable();
         }
 
         private void HandleCombatEnded(CombatOutcome outcome) => StopAITurn();
@@ -98,6 +334,20 @@ namespace Killtime.Tactics.AI
             if (_grid == null) _grid = GetComponent<TacticalHexGrid>() ?? FindAnyObjectByType<TacticalHexGrid>();
             if (_arena == null) _arena = GetComponent<CombatDevArena>() ?? FindAnyObjectByType<CombatDevArena>();
             if (_cinematicDirector == null) _cinematicDirector = GetComponent<CinematicDirector>() ?? FindAnyObjectByType<CinematicDirector>();
+        }
+
+        private void LoadDevUIPrefs()
+        {
+            var p = Killtime.UI.DevUIPreferences.Current;
+            if (p == null) return;
+            int modeCount = Enum.GetValues(typeof(CombatAIMode)).Length;
+            int persCount = Enum.GetValues(typeof(AIPersonality)).Length;
+            _mode = (CombatAIMode)Mathf.Clamp(p.AiMode, 0, Mathf.Max(0, modeCount - 1));
+            _defaultPersonality = (AIPersonality)Mathf.Clamp(p.AiPersonality, 0, Mathf.Max(0, persCount - 1));
+            _isAIEnabled = p.AiEnabled;
+            _actionDelay = Mathf.Clamp(p.AiActionDelay, 0.05f, 10f);
+            _retreatHealthRatio = Mathf.Clamp(p.AiRetreatRatio, 0.05f, 0.6f);
+            _baseDefensiveAPReserve = Mathf.Clamp(p.AiDefensiveReserve, 0, 2);
         }
 
         public void StopAITurn()
@@ -113,6 +363,7 @@ namespace Killtime.Tactics.AI
         {
             StopAITurn();
 
+            if (IsInMultiplayerNonGM()) return;
             if (_turnManager != null && _turnManager.IsCombatOver) return;
             if (!_isAIEnabled || unit == null || unit.Stats == null) return;
 
@@ -145,6 +396,11 @@ namespace Killtime.Tactics.AI
 
             while (unit.Stats.IsAlive && loopGuard++ < maxSteps && unit.Stats.CurrentActionPoints > 0)
             {
+                while (Killtime.UI.CombatHUD.IsPaused)
+                {
+                    yield return null;
+                }
+
                 var target = EvaluateBestTarget(unit);
                 if (target == null) break;
 
@@ -645,6 +901,11 @@ namespace Killtime.Tactics.AI
             if (isRanged) partLabel = $"🎯 Tir {partLabel}";
             if (bonusAP > 0) partLabel += $" (+{bonusAP} PA Inj.)";
 
+            while (Killtime.UI.CombatHUD.IsPaused)
+            {
+                yield return null;
+            }
+
             visual?.SpawnFloatingText(partLabel, chosenPart == BodyPart.Tete ? Color.red : Color.cyan);
             yield return new WaitForSeconds(Mathf.Min(0.5f, _actionDelay * 0.35f));
 
@@ -661,10 +922,17 @@ namespace Killtime.Tactics.AI
                 attackerBonusAP: bonusAP
             );
 
-            if (_cinematicDirector != null)
+            if (_arena != null)
             {
-                // Timeout de sécurité : si la cinématique reste bloquée
-                // (ex: reset en pleine attaque), ne jamais pendre le tour de l'IA.
+                float waitElapsed = 0f;
+                while (_arena.IsResolving && waitElapsed < 6f)
+                {
+                    yield return null;
+                    waitElapsed += Time.deltaTime;
+                }
+            }
+            else if (_cinematicDirector != null)
+            {
                 float waitElapsed = 0f;
                 while (_cinematicDirector.CurrentMode == CameraMode.CinematicAction && waitElapsed < 5f)
                 {

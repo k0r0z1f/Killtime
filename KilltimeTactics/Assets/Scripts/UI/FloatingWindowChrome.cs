@@ -24,7 +24,10 @@ namespace Killtime.UI
         private const float BtnW = 26f;
         private const float BtnH = 18f;
         private const float Pad = 4f;
-        private const float GripSize = 20f;
+        // Réserve un coin suffisamment large pour rester utilisable même lorsqu'un
+        // contenu possède une scrollbar verticale collée au bord droit.
+        /// <summary>Taille de la zone réservée à la poignée de redimensionnement.</summary>
+        public const float ResizeGripSize = 28f;
 
         private static readonly Dictionary<int, bool> _resizing = new();
         private static readonly Dictionary<int, Vector2> _grabOffset = new();
@@ -43,8 +46,16 @@ namespace Killtime.UI
         }
         private static readonly Dictionary<int, DockState> _docked = new();
         private const float DockMargin = 10f;
+        private const float DockRestoreAllButtonWidth = 26f;
+        private const float DockRestoreAllButtonHeight = 46f;
+        private const float DockRestoreAllButtonGap = 5f;
+        // Réserve une gouttière entre le bord de l'écran et les docks pour la
+        // commande « restaurer tout » affichée au survol.
+        private const float DockColumnEdgeInset = DockRestoreAllButtonWidth + DockRestoreAllButtonGap * 2f;
         private const float DockAnimDuration = 0.35f;
-        public const float DockedAlpha = 0.12f;
+        // Les fenêtres dockées restent suffisamment lisibles pour servir d'aperçu,
+        // tout en signalant clairement qu'elles sont en lecture seule.
+        public const float DockedAlpha = 0.62f;
         private const int NoDockWindowId = 777; // menu contextuel : transitoire, se ferme seul au clic map
 
         // Registre central des fenêtres flottantes pour bloquer les interactions 3D au survol.
@@ -116,6 +127,31 @@ namespace Killtime.UI
         public static bool IsDocked(int windowId)
             => _docked.ContainsKey(windowId);
 
+        /// <summary>
+        /// Restaure un dock déjà mémorisé. Le rect fourni reste le rect normal de
+        /// la fenêtre ; la vignette dockée est recalculée pour la résolution courante.
+        /// </summary>
+        public static void RestoreDockedWindow(int windowId, Rect fullRect)
+        {
+            if (fullRect.width <= 0f || fullRect.height <= 0f) return;
+
+            _docked[windowId] = new DockState
+            {
+                fullRect = fullRect,
+                animFrom = fullRect,
+                // État stable immédiatement : pas d'animation de repli au lancement.
+                animStart = Time.realtimeSinceStartup - DockAnimDuration,
+                restoring = false
+            };
+            RecalculateDockTargets();
+        }
+
+        /// <summary>Supprime un dock sans modifier le rect normal mémorisé.</summary>
+        public static void ClearDockedWindow(int windowId)
+        {
+            if (_docked.Remove(windowId)) RecalculateDockTargets();
+        }
+
         private static float Ease01(float t)
         {
             t = Mathf.Clamp01(t);
@@ -144,24 +180,46 @@ namespace Killtime.UI
         }
 
         /// <summary>
+        /// Échelle uniforme issue de la largeur : un dock représente une réduction
+        /// proportionnelle de la fenêtre normale, sans déformation ni recadrage.
+        /// </summary>
+        public static float DockContentScale(int windowId, Rect dockedRect)
+        {
+            if (!_docked.TryGetValue(windowId, out var d)) return 1f;
+
+            float sourceWidth = Mathf.Max(1f, d.fullRect.width);
+            float targetWidth = Mathf.Max(1f, dockedRect.width);
+            return Mathf.Clamp01(targetWidth / sourceWidth);
+        }
+
+        /// <summary>Rect logique complet à dessiner pour un aperçu docké mis à l'échelle.</summary>
+        public static bool TryGetDockSourceRect(int windowId, out Rect sourceRect)
+        {
+            sourceRect = default;
+            if (!_docked.TryGetValue(windowId, out var d)) return false;
+            if (d.fullRect.width <= 0f || d.fullRect.height <= 0f) return false;
+            sourceRect = d.fullRect;
+            return true;
+        }
+
+        /// <summary>
         /// Voile fantôme peint par-dessus le contenu replié (visuel seul).
         /// La restauration au clic est gérée en amont par HandleResizeEvents (pré-Window),
         /// et le blocage des interactions par ConsumeDockedContentEvent (pré-contenu) :
         /// ce voile ne doit PAS être un bouton, sinon l'ordre de dessin IMGUI laisserait
-        /// les contrôles du contenu (dessinés avant) consommer le clic en premier,
-        /// et GUI.enabled=false serait contourné par les contenus qui forcent GUI.enabled=true.
+        /// les contrôles du contenu (dessinés avant) consommer le clic en premier.
         /// </summary>
         public static void DrawDockVeil(ref Rect rect, int windowId)
         {
-            float g = DockGhostT(windowId);
-            Rect contentRect = new Rect(0f, TitleHeight, rect.width, Mathf.Max(0f, rect.height - TitleHeight));
-            if (contentRect.width <= 0f || contentRect.height <= 0f) return;
+            float ghost = DockGhostT(windowId);
+            Rect contentRect = new Rect(0f, TitleHeight, rect.width,
+                Mathf.Max(0f, rect.height - TitleHeight));
+            if (ghost <= 0.01f || contentRect.width <= 0f || contentRect.height <= 0f) return;
 
-            if (g <= 0.01f) return;
-            Color prev = GUI.color;
-            GUI.color = new Color(0.02f, 0.03f, 0.06f, 0.9f * g);
+            Color previousColor = GUI.color;
+            GUI.color = new Color(0.02f, 0.03f, 0.06f, 0.28f * ghost);
             GUI.DrawTexture(contentRect, BgTex());
-            GUI.color = prev;
+            GUI.color = previousColor;
         }
 
         /// <summary>
@@ -175,7 +233,7 @@ namespace Killtime.UI
         /// Laisse passer Layout / Repaint / Used / Ignore pour ne pas casser le dessin.
         /// </summary>
         /// <returns>true si l'événement a été consommé (contenu non cliquable ce frame).</returns>
-        public static bool ConsumeDockedContentEvent(Rect windowRectLocal)
+        public static bool ConsumeDockedContentEvent(Rect windowRectLocal, int windowId)
         {
             Event e = Event.current;
             if (e == null) return false;
@@ -216,11 +274,12 @@ namespace Killtime.UI
             if (contentRect.Contains(e.mousePosition))
             {
                 // Filet de sécurité : si le pré-Window (HandleResizeEvents) a raté le
-                // MouseDown (cas limite de repère), restaure ici plutôt que de l'avaler
-                // silencieusement : un clic contenu docké ne doit jamais l'actionner.
+                // MouseDown (cas limite de repère), restaure cette fenêtre plutôt que
+                // de l'avaler silencieusement : un clic contenu docké ne doit jamais
+                // l'actionner, ni réouvrir les autres aperçus.
                 if (e.type == EventType.MouseDown && e.button == 0)
                 {
-                    try { RestoreAll(); } catch { /* ignore */ }
+                    try { RestoreDockedWindow(windowId); } catch { /* ignore */ }
                 }
                 e.Use();
                 return true;
@@ -255,25 +314,21 @@ namespace Killtime.UI
                 int id = _zOrder[i];
                 if (id == NoDockWindowId) continue;
                 if (!ProviderVisible(id)) continue;
+                // Un aperçu docké est déjà à son état cible : le relancer à chaque
+                // clic carte le ferait repartir de son rect courant et scintiller.
+                // Même pendant son animation de restauration, on le laisse finir
+                // naturellement plutôt que de l'inverser au clic suivant.
+                if (_docked.ContainsKey(id)) continue;
                 if (!ProviderRect(id, out Rect cur)) continue;
                 if (cur.height <= CollapsedHeight + 1f) continue;
 
-                if (_docked.TryGetValue(id, out var ex))
+                _docked[id] = new DockState
                 {
-                    ex.restoring = false;
-                    ex.animFrom = cur;
-                    ex.animStart = now;
-                }
-                else
-                {
-                    _docked[id] = new DockState
-                    {
-                        fullRect = cur,
-                        animFrom = cur,
-                        animStart = now,
-                        restoring = false
-                    };
-                }
+                    fullRect = cur,
+                    animFrom = cur,
+                    animStart = now,
+                    restoring = false
+                };
             }
 
             RecalculateDockTargets();
@@ -293,6 +348,16 @@ namespace Killtime.UI
                 kvp.Value.restoring = true;
                 kvp.Value.animStart = now;
             }
+            return true;
+        }
+
+        /// <summary>Restaure une seule fenêtre dockée, sans toucher aux autres.</summary>
+        public static bool RestoreDockedWindow(int windowId)
+        {
+            if (!_docked.TryGetValue(windowId, out DockState state) || state.restoring) return false;
+            if (ProviderRect(windowId, out Rect current)) state.animFrom = current;
+            state.restoring = true;
+            state.animStart = Time.realtimeSinceStartup;
             return true;
         }
 
@@ -342,15 +407,15 @@ namespace Killtime.UI
             int count = list.Count;
             if (count == 0) return;
 
-            float w = Mathf.Clamp(Screen.width * 0.18f, 240f, 320f);
-            float colX = isRight ? Mathf.Max(DockMargin, Screen.width - DockMargin - w) : DockMargin;
+            float w = Mathf.Clamp(Screen.width * 0.13f, 160f, 210f);
+            float colX = isRight
+                ? Mathf.Max(DockMargin, Screen.width - DockColumnEdgeInset - w)
+                : DockColumnEdgeInset;
             Rect colRect = new Rect(colX, 0f, w, Screen.height);
 
-            // Planchers de sécurité : protège les cartes HUD (Joueur à gauche, Cible et Pause à droite)
             float topSafeY = isRight ? 90f : 94f;
             float bottomSafeY = Screen.height - 60f;
 
-            // Détection dynamique des zones d'exclusion enregistrées (cartes HUD, barres, menus)
             for (int i = 0; i < _exclusionZones.Count; i++)
             {
                 var provider = _exclusionZones[i];
@@ -375,54 +440,41 @@ namespace Killtime.UI
                 }
             }
 
-            float maxAvailableHeight = Mathf.Max(100f, bottomSafeY - topSafeY - (count - 1) * DockMargin);
-            float baseH = Mathf.Clamp((Screen.height - 20f) / 3f - DockMargin, 160f, 260f);
-
-            float h = (count * baseH > maxAvailableHeight && count > 0)
-                ? Mathf.Max(100f, maxAvailableHeight / count)
-                : baseH;
-
-            // Tri par hauteur d'origine pour préserver l'ordre spatial
             list.Sort((a, b) => a.state.fullRect.y.CompareTo(b.state.fullRect.y));
 
+            // Une carte dockée garde le ratio de sa fenêtre d'origine. Si la pile ne
+            // tient pas, c'est la largeur commune de la colonne qui diminue : contenu,
+            // largeur et hauteur sont alors tous réduits dans les mêmes proportions.
+            float availableHeight = Mathf.Max(44f, bottomSafeY - topSafeY);
+            float totalContentAspect = 0f;
+            for (int i = 0; i < count; i++)
+            {
+                Rect source = list[i].state.fullRect;
+                totalContentAspect += Mathf.Max(0.05f,
+                    Mathf.Max(1f, source.height - TitleHeight) / Mathf.Max(1f, source.width));
+            }
+
+            float widthToFitStack = (availableHeight - count * TitleHeight - (count - 1) * DockMargin)
+                / Mathf.Max(0.05f, totalContentAspect);
+            w = Mathf.Clamp(Mathf.Min(w, widthToFitStack), 48f, w);
+            colX = isRight
+                ? Mathf.Max(DockMargin, Screen.width - DockColumnEdgeInset - w)
+                : DockColumnEdgeInset;
+
+            float[] heights = new float[count];
             float[] ys = new float[count];
-            float maxBottomY = Mathf.Max(topSafeY, bottomSafeY - h);
             for (int i = 0; i < count; i++)
             {
-                ys[i] = Mathf.Clamp(list[i].state.fullRect.y, topSafeY, maxBottomY);
-            }
-
-            // 1. Balayage avant : interdit le chevauchement vers le bas
-            for (int i = 1; i < count; i++)
-            {
-                if (ys[i] < ys[i - 1] + h + DockMargin)
-                    ys[i] = ys[i - 1] + h + DockMargin;
-            }
-
-            // 2. Balayage arrière : interdit le débordement sous la zone basse
-            if (ys[count - 1] > maxBottomY)
-            {
-                ys[count - 1] = maxBottomY;
-                for (int i = count - 2; i >= 0; i--)
-                {
-                    if (ys[i] + h + DockMargin > ys[i + 1])
-                        ys[i] = ys[i + 1] - h - DockMargin;
-                }
-            }
-
-            // 3. Répartition uniforme si la colonne complète dépasse l'espace utile
-            if (ys[0] < topSafeY)
-            {
-                float step = (count > 1)
-                    ? (bottomSafeY - topSafeY - h) / (count - 1)
-                    : 0f;
-                for (int i = 0; i < count; i++)
-                    ys[i] = topSafeY + i * step;
+                Rect source = list[i].state.fullRect;
+                float contentAspect = Mathf.Max(0.05f,
+                    Mathf.Max(1f, source.height - TitleHeight) / Mathf.Max(1f, source.width));
+                heights[i] = TitleHeight + contentAspect * w;
+                ys[i] = i == 0 ? topSafeY : ys[i - 1] + heights[i - 1] + DockMargin;
             }
 
             for (int i = 0; i < count; i++)
             {
-                list[i].state.targetDockRect = new Rect(colX, ys[i], w, h);
+                list[i].state.targetDockRect = new Rect(colX, ys[i], w, heights[i]);
             }
         }
 
@@ -460,29 +512,83 @@ namespace Killtime.UI
             return true;
         }
 
-        /// <summary>
-        /// Vrai si le point touche une fenêtre repliée (rect affiché réel, suit l'animation).
-        /// </summary>
-        private static bool HitsDockedStrip(Vector2 mp)
+        private static Rect DockRestoreAllButtonRect(Rect dockRect)
         {
+            bool isLeft = dockRect.center.x < Screen.width * 0.5f;
+            float x = isLeft
+                ? Mathf.Max(2f, dockRect.xMin - DockRestoreAllButtonGap - DockRestoreAllButtonWidth)
+                : Mathf.Min(Screen.width - DockRestoreAllButtonWidth - 2f,
+                    dockRect.xMax + DockRestoreAllButtonGap);
+            float y = Mathf.Clamp(dockRect.center.y - DockRestoreAllButtonHeight * 0.5f, 4f,
+                Mathf.Max(4f, Screen.height - DockRestoreAllButtonHeight - 4f));
+            return new Rect(x, y, DockRestoreAllButtonWidth, DockRestoreAllButtonHeight);
+        }
+
+        /// <summary>
+        /// Retrouve le dock survolé. La zone de sa commande latérale reste active
+        /// afin que le bouton ne disparaisse pas pendant le déplacement de souris.
+        /// </summary>
+        private static bool TryGetHoveredDock(Vector2 mp, out int windowId, out Rect dockRect)
+        {
+            windowId = 0;
+            dockRect = default;
             if (_docked.Count == 0) return false;
             foreach (var kvp in _docked)
             {
                 if (kvp.Value.restoring) continue;
                 if (!ProviderVisible(kvp.Key)) continue;
-                if (ProviderRect(kvp.Key, out Rect live) && live.Contains(mp)) return true;
+                if (!ProviderRect(kvp.Key, out Rect live)) continue;
+                if (live.Contains(mp) || DockRestoreAllButtonRect(live).Contains(mp))
+                {
+                    windowId = kvp.Key;
+                    dockRect = live;
+                    return true;
+                }
             }
             return false;
         }
 
         /// <summary>
-        /// Clic gauche sur une fenêtre repliée → restaure tout, clic consommé.
+        /// Gère les clics autour d'un aperçu docké avant le rendu des GUI.Window.
+        /// Le bouton latéral est testé avant l'aperçu lui-même, ce qui garantit le
+        /// même comportement aux deux bords de l'écran, indépendamment de l'ordre
+        /// de rendu IMGUI des fenêtres.
         /// </summary>
-        private static bool RestoreClickConsumed(Vector2 mp)
+        private static bool ConsumeDockedClick(Vector2 mp)
         {
-            if (!HitsDockedStrip(mp)) return false;
-            RestoreAll();
-            return true;
+            if (!TryGetHoveredDock(mp, out int hoveredId, out Rect dockRect)) return false;
+
+            if (DockRestoreAllButtonRect(dockRect).Contains(mp))
+            {
+                RestoreAll();
+                return true;
+            }
+
+            if (dockRect.Contains(mp))
+            {
+                RestoreDockedWindow(hoveredId);
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Dessine le bouton latéral de restauration globale pour la fenêtre dockée
+        /// actuellement survolée. Chaque fenêtre appelle cette méthode, mais seule
+        /// celle qui est survolée effectue le rendu.
+        /// </summary>
+        public static void DrawDockRestoreAllButton(int windowId)
+        {
+            Event e = Event.current;
+            if (e == null || !TryGetHoveredDock(e.mousePosition, out int hoveredId, out Rect dockRect)
+                || hoveredId != windowId)
+                return;
+
+            Rect buttonRect = DockRestoreAllButtonRect(dockRect);
+            // L'action est traitée en pré-fenêtre par ConsumeDockedClick : cette
+            // boîte conserve le visuel de bouton sans dépendre du hot-control IMGUI.
+            GUI.Box(buttonRect, new GUIContent("↔", "Restaurer toutes les fenêtres dockées"), GUI.skin.button);
         }
 
         private static GUIStyle TitleStyle()
@@ -515,13 +621,11 @@ namespace Killtime.UI
         }
 
         /// <summary>
-        /// Sécurise l'état GUI après chaque fenêtre (appelé en finally) : le focus clavier
-        /// est lâché quand des fenêtres sont repliées (contenu non interactif).
-        /// Sans effet dans tous les autres cas.
+        /// Sécurise l'état GUI après chaque fenêtre (appelé en finally).
+        /// Ne réinitialise jamais keyboardControl globalement pour préserver la saisie dans les champs texte.
         /// </summary>
         public static void SanitizeGuiState()
         {
-            if (_docked.Count > 0 && GUIUtility.keyboardControl != 0) GUIUtility.keyboardControl = 0;
         }
 
         private static Texture2D BgTex()
@@ -533,6 +637,20 @@ namespace Killtime.UI
                 _bgTex.Apply();
             }
             return _bgTex;
+        }
+
+        /// <summary>
+        /// Dessine une ligne/zone d'accent sans laisser sa couleur contaminer le GUI suivant.
+        /// </summary>
+        private static void DrawAccentLine(Rect rect, Color color, float alpha)
+        {
+            if (rect.width <= 0f || rect.height <= 0f || alpha <= 0f) return;
+
+            Color previousColor = GUI.color;
+            color.a *= alpha;
+            GUI.color = color;
+            GUI.DrawTexture(rect, BgTex());
+            GUI.color = previousColor;
         }
 
         private static void TouchZ(int windowId)
@@ -572,25 +690,31 @@ namespace Killtime.UI
         public static void DrawTitleBar(ref Rect rect, ref bool isOpen, ref bool isMinimized,
             ref Vector2 savedSize, int windowId, Action onClose = null, string title = "")
         {
-            // Fond : suit l'opacité entrante (fantôme quand replié), jamais forcé opaque.
+            float g = DockGhostT(windowId);
+            float bgAlpha = Mathf.Lerp(0.96f, 0.22f, g);
+
             Color prevFill = GUI.color;
-            GUI.color = new Color(0.05f, 0.07f, 0.11f, 0.97f * prevFill.a);
+            GUI.color = new Color(0.02f, 0.035f, 0.06f, bgAlpha);
             GUI.DrawTexture(new Rect(0, 0, rect.width, rect.height), BgTex());
+
             GUI.color = prevFill;
 
             float dragW = Mathf.Max(20f, rect.width - (BtnW * 2f + Pad * 3f));
             GUI.DragWindow(new Rect(0, 0, dragW, TitleHeight));
 
-            // Titre dessiné par nous (garanti visible) : le titre natif de GUI.Window reste vide.
-            // Lisible même en fantôme : alpha propre, pas celle du fondu global.
             if (!string.IsNullOrEmpty(title))
             {
                 Rect titleRect = new Rect(8f, 2f, Mathf.Max(10f, dragW - 10f), 20f);
                 Color prevTitleCol = GUI.color;
-                GUI.color = new Color(0.92f, 0.96f, 1f, IsDocked(windowId) ? 0.85f : 1f);
+                GUI.color = new Color(0.92f, 0.96f, 1f, IsDocked(windowId) ? 0.75f : 1f);
                 GUI.Label(titleRect, TruncateTitle(title, titleRect.width), TitleStyle());
                 GUI.color = prevTitleCol;
             }
+
+            // Le chrome d'un dock est peint séparément dans les coordonnées écran.
+            // Ne jamais laisser la version réduite de GUI.Window dessiner une
+            // seconde paire de commandes par-dessus celle-ci.
+            if (IsDocked(windowId)) return;
 
             Rect minR = new Rect(rect.width - (BtnW * 2f + Pad * 2f), Pad, BtnW, BtnH);
             Rect closeR = new Rect(rect.width - (BtnW + Pad), Pad, BtnW, BtnH);
@@ -627,6 +751,85 @@ namespace Killtime.UI
         }
 
         /// <summary>
+        /// Peint le fond d'un aperçu docké dans les coordonnées écran. Contrairement
+        /// à DrawTitleBar, cette méthode ne passe pas par GUI.Window : elle ne peut
+        /// donc pas hériter de l'échelle utilisée pour le contenu de l'aperçu.
+        /// À appeler avant le rendu du contenu réduit.
+        /// </summary>
+        public static void DrawDockedFrameBackground(Rect rect, int windowId)
+        {
+            if (rect.width <= 0f || rect.height <= 0f) return;
+
+            float ghost = DockGhostT(windowId);
+            Color previousColor = GUI.color;
+            GUI.color = new Color(0.02f, 0.035f, 0.06f,
+                Mathf.Lerp(0.96f, 0.22f, ghost) * previousColor.a);
+            GUI.DrawTexture(rect, BgTex());
+            GUI.color = previousColor;
+        }
+
+        /// <summary>
+        /// Dessine le contour, le titre et les commandes d'un aperçu docké dans les
+        /// coordonnées écran. Il reste ainsi aligné avec le rect docké même lorsque
+        /// GUI.Window réduit le contenu dans son propre repère.
+        /// À appeler après le rendu du contenu réduit afin que ses commandes restent
+        /// toujours visibles au premier plan.
+        /// </summary>
+        public static void DrawDockedFrameForeground(Rect rect, ref bool isOpen, ref bool isMinimized,
+            ref Vector2 savedSize, int windowId, Action onClose = null, string title = "")
+        {
+            if (rect.width <= 0f || rect.height <= 0f) return;
+
+            float ghost = DockGhostT(windowId);
+            Color borderCol = new Color(0.0f, 0.85f, 1.0f, 0.35f * Mathf.Max(ghost, 0.2f));
+            DrawAccentLine(new Rect(rect.x, rect.y, rect.width, 1f), borderCol, 1f);
+            DrawAccentLine(new Rect(rect.x, rect.yMax - 1f, rect.width, 1f), borderCol, 0.7f);
+            DrawAccentLine(new Rect(rect.x, rect.y, 1f, rect.height), borderCol, 0.7f);
+            DrawAccentLine(new Rect(rect.xMax - 1f, rect.y, 1f, rect.height), borderCol, 0.7f);
+
+            float dragW = Mathf.Max(20f, rect.width - (BtnW * 2f + Pad * 3f));
+            if (!string.IsNullOrEmpty(title))
+            {
+                Rect titleRect = new Rect(rect.x + 8f, rect.y + 2f, Mathf.Max(10f, dragW - 10f), 20f);
+                Color previousTitleColor = GUI.color;
+                GUI.color = new Color(0.92f, 0.96f, 1f, 0.75f);
+                GUI.Label(titleRect, TruncateTitle(title, titleRect.width), TitleStyle());
+                GUI.color = previousTitleColor;
+            }
+
+            Rect minR = new Rect(rect.x + rect.width - (BtnW * 2f + Pad * 2f), rect.y + Pad, BtnW, BtnH);
+            Rect closeR = new Rect(rect.x + rect.width - (BtnW + Pad), rect.y + Pad, BtnW, BtnH);
+
+            string minLabel = isMinimized ? "▢" : "–";
+            if (GUI.Button(minR, new GUIContent(minLabel, isMinimized ? "Restaurer" : "Minimiser")))
+            {
+                if (!isMinimized)
+                {
+                    savedSize = new Vector2(rect.width, rect.height);
+                    isMinimized = true;
+                }
+                else
+                {
+                    isMinimized = false;
+                    savedSize = Vector2.zero;
+                }
+            }
+
+            Color previousBackground = GUI.backgroundColor;
+            GUI.backgroundColor = new Color(1f, 0.38f, 0.38f, 1f);
+            if (GUI.Button(closeR, new GUIContent("✕", "Fermer")))
+            {
+                isOpen = false;
+                isMinimized = false;
+                savedSize = Vector2.zero;
+                if (_resizing.ContainsKey(windowId)) _resizing[windowId] = false;
+                _grabOffset.Remove(windowId);
+                try { onClose?.Invoke(); } catch (Exception e) { Debug.LogWarning($"[FloatingWindowChrome] onClose: {e.Message}"); }
+            }
+            GUI.backgroundColor = previousBackground;
+        }
+
+        /// <summary>
         /// Traite les événements pré-fenêtre : premier plan + poignée de resize.
         /// À appeler dans OnGUI JUSTE AVANT GUI.Window (dans le callback ce serait écrasé
         /// par la valeur de retour de GUI.Window, qui prend le rect par valeur).
@@ -640,29 +843,33 @@ namespace Killtime.UI
         public static void HandleResizeEvents(ref Rect rect, int windowId, Vector2 minSize, bool isMinimized = false)
         {
             Event e = Event.current;
+            int resizeControlId = GUIUtility.GetControlID(windowId, FocusType.Passive);
             if (_pendingFront.Remove(windowId))
             {
                 TouchZ(windowId);
-                if (e != null) GUI.BringWindowToFront(windowId);
+                if (e != null)
+                {
+                    GUI.BringWindowToFront(windowId);
+                    GUI.FocusWindow(windowId);
+                }
             }
             if (e == null) return;
 
-            // Clic gauche sur une fenêtre repliée → restaure toutes les fenêtres, clic consommé.
-            // Avant tout le reste : ce clic ne doit ni focuser ni redimensionner ni agir en 3D.
-            if (e.type == EventType.MouseDown && e.button == 0 && RestoreClickConsumed(e.mousePosition))
+            // Clic gauche sur un aperçu docké → restaure uniquement cet aperçu ;
+            // clic sur le bouton latéral → restaure tout. Ces actions ne doivent
+            // ni focuser ni redimensionner ni agir en 3D.
+            if (e.type == EventType.MouseDown && e.button == 0 && ConsumeDockedClick(e.mousePosition))
             {
                 e.Use();
                 return;
             }
 
             // Fenêtre repliée : contenu non utilisable / non cliquable.
-            // Consomme les autres événements souris sur le strip (sans restaurer) pour éviter
-            // tout click-through : ni activation d'un contrôle pendant la restauration animée
-            // (le MouseUp suit le MouseDown de restauration), ni scroll fantôme, ni zoom/orbit
-            // caméra derrière, ni clic 3D. La barre de titre reste utilisable (gérée intra-Window).
+            // Consomme les autres événements souris sur l'aperçu et le bouton
+            // latéral pour éviter tout click-through vers la carte.
             if ((e.type == EventType.MouseUp || e.type == EventType.MouseDrag
                     || e.type == EventType.ContextClick || e.type == EventType.ScrollWheel)
-                && HitsDockedStrip(e.mousePosition))
+                && TryGetHoveredDock(e.mousePosition, out _, out _))
             {
                 e.Use();
                 return;
@@ -674,6 +881,7 @@ namespace Killtime.UI
             if (resizing && e.type != EventType.MouseDrag && e.type != EventType.MouseDown && !Input.GetMouseButton(0))
             {
                 _resizing[windowId] = false;
+                if (GUIUtility.hotControl == resizeControlId) GUIUtility.hotControl = 0;
                 return;
             }
 
@@ -683,20 +891,27 @@ namespace Killtime.UI
             // (Sans Use() : titre, boutons et drag reçoivent l'event normalement.)
             if (e.type == EventType.MouseDown && !resizing && IsTopmostAt(windowId, mp, ref rect))
             {
-                TouchZ(windowId);
-                GUI.BringWindowToFront(windowId);
+                int myIdx = _zOrder.IndexOf(windowId);
+                if (myIdx != _zOrder.Count - 1)
+                {
+                    TouchZ(windowId);
+                    GUI.BringWindowToFront(windowId);
+                    GUI.FocusWindow(windowId);
+                }
             }
 
             if (isMinimized || _docked.ContainsKey(windowId)) return;
-            if (rect.width < GripSize * 2f || rect.height < GripSize * 2f) return;
+            if (rect.width < ResizeGripSize * 2f || rect.height < ResizeGripSize * 2f) return;
 
-            Rect gripScreen = new Rect(rect.x + rect.width - GripSize, rect.y + rect.height - GripSize, GripSize, GripSize);
+            Rect gripScreen = new Rect(rect.x + rect.width - ResizeGripSize, rect.y + rect.height - ResizeGripSize,
+                ResizeGripSize, ResizeGripSize);
 
             if (e.type == EventType.MouseDown && e.button == 0 && !resizing
                 && gripScreen.Contains(mp) && IsTopmostAt(windowId, mp, ref rect))
             {
                 _resizing[windowId] = true;
                 _grabOffset[windowId] = new Vector2((rect.x + rect.width) - mp.x, (rect.y + rect.height) - mp.y);
+                GUIUtility.hotControl = resizeControlId;
                 TouchZ(windowId);
                 GUI.BringWindowToFront(windowId);
                 e.Use();
@@ -715,6 +930,7 @@ namespace Killtime.UI
             else if (e.type == EventType.MouseUp && e.button == 0 && resizing)
             {
                 _resizing[windowId] = false;
+                if (GUIUtility.hotControl == resizeControlId) GUIUtility.hotControl = 0;
                 e.Use();
             }
         }
@@ -728,9 +944,10 @@ namespace Killtime.UI
         public static void DrawResizeHandle(ref Rect rect, int windowId, Vector2 minSize, bool isMinimized = false)
         {
             if (isMinimized || _docked.ContainsKey(windowId)) return;
-            if (rect.width < GripSize * 2f || rect.height < GripSize * 2f) return;
+            if (rect.width < ResizeGripSize * 2f || rect.height < ResizeGripSize * 2f) return;
 
-            Rect gripRect = new Rect(rect.width - GripSize, rect.height - GripSize, GripSize, GripSize);
+            Rect gripRect = new Rect(rect.width - ResizeGripSize, rect.height - ResizeGripSize,
+                ResizeGripSize, ResizeGripSize);
             bool resizing = _resizing.TryGetValue(windowId, out bool r) && r;
             Color prev = GUI.backgroundColor;
             if (resizing) GUI.backgroundColor = new Color(0.2f, 0.9f, 1f, 1f);
@@ -898,6 +1115,10 @@ namespace Killtime.UI
                     // Provider détruit (changement de scène) : ignore ce frame.
                 }
             }
+
+            // La gouttière du bouton « restaurer tout » est en dehors du rect de
+            // la fenêtre : elle doit néanmoins bloquer les interactions 3D.
+            if (TryGetHoveredDock(mouseGui, out _, out _)) return true;
 
             for (int i = 0; i < _extraBlockers.Count; i++)
             {

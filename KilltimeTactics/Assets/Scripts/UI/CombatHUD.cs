@@ -92,8 +92,20 @@ namespace Killtime.UI
 
             if (combatOver)
             {
-                if (new Rect((Screen.width - 420f) * 0.5f, (Screen.height - 164f) * 0.44f, 420f, 164f).Contains(mouseGui))
-                    return true;
+                if (Instance._hideOutcomeCardForReview)
+                {
+                    Rect reviewPill = new Rect((Screen.width - 190f) * 0.5f, 22f, 190f, 26f);
+                    if (reviewPill.Contains(mouseGui))
+                        return true;
+                }
+                else
+                {
+                    float ow = Mathf.Clamp(Screen.width * 0.46f, 520f, 620f);
+                    bool isPlayerClient = TurnManager.IsMultiplayerPlayerClient();
+                    float oh = isPlayerClient ? 285f : 335f;
+                    if (new Rect((Screen.width - ow) * 0.5f, (Screen.height - oh) * 0.44f, ow, oh).Contains(mouseGui))
+                        return true;
+                }
                 float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
                 float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
                 if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
@@ -176,6 +188,103 @@ namespace Killtime.UI
         private static readonly Color ColorTextBright = new Color(0.94f, 0.97f, 1.0f, 0.98f);
         private static readonly Color ColorTextMuted = new Color(0.52f, 0.64f, 0.75f, 0.80f);
 
+        public class CombatTelemetry
+        {
+            public int TotalAttacks;
+            public int SuccessfulHits;
+            public int CriticalHits;
+            public int DeflectedOrParried;
+            public int DamageDealtByAllies;
+            public int DamageTakenByAllies;
+            public int ArmorAbsorbedByAllies;
+            public int ArmorAbsorbedByEnemies;
+            public int TraumaShocks;
+            public int EnemiesNeutralized;
+            public int AlliesDown;
+            public string TopDamageDealer = "—";
+            public int TopDamageAmount = 0;
+            private readonly Dictionary<string, int> _damageByUnit = new(StringComparer.OrdinalIgnoreCase);
+
+            public void Reset()
+            {
+                TotalAttacks = 0;
+                SuccessfulHits = 0;
+                CriticalHits = 0;
+                DeflectedOrParried = 0;
+                DamageDealtByAllies = 0;
+                DamageTakenByAllies = 0;
+                ArmorAbsorbedByAllies = 0;
+                ArmorAbsorbedByEnemies = 0;
+                TraumaShocks = 0;
+                EnemiesNeutralized = 0;
+                AlliesDown = 0;
+                TopDamageDealer = "—";
+                TopDamageAmount = 0;
+                _damageByUnit.Clear();
+            }
+
+            public void RecordAttack(string attacker, string defender, bool isAttackerPlayer, bool isDefenderPlayer,
+                bool isHit, bool isCrit, bool isBlocked, int rawDmg, int armorAbsorbed, int finalDmg,
+                bool causedShock, bool isFatal, int apCost)
+            {
+                TotalAttacks++;
+                if (isHit)
+                {
+                    SuccessfulHits++;
+                    if (isCrit) CriticalHits++;
+                    if (causedShock) TraumaShocks++;
+
+                    if (isAttackerPlayer)
+                    {
+                        DamageDealtByAllies += finalDmg;
+                        ArmorAbsorbedByEnemies += armorAbsorbed;
+                        if (!string.IsNullOrEmpty(attacker))
+                        {
+                            int cur = _damageByUnit.TryGetValue(attacker, out int d) ? d : 0;
+                            cur += finalDmg;
+                            _damageByUnit[attacker] = cur;
+                            if (cur > TopDamageAmount)
+                            {
+                                TopDamageAmount = cur;
+                                TopDamageDealer = attacker;
+                            }
+                        }
+                    }
+                    if (isDefenderPlayer)
+                    {
+                        DamageTakenByAllies += finalDmg;
+                        ArmorAbsorbedByAllies += armorAbsorbed;
+                    }
+
+                    if (isFatal)
+                    {
+                        if (isDefenderPlayer) AlliesDown++;
+                        else EnemiesNeutralized++;
+                    }
+                }
+                else if (isBlocked)
+                {
+                    DeflectedOrParried++;
+                }
+            }
+        }
+
+        public static CombatTelemetry Telemetry { get; } = new();
+
+        public static void RecordCombatAction(string attacker, string defender, bool isAttackerPlayer, bool isDefenderPlayer,
+            bool isHit, bool isCrit, bool isBlocked, int rawDmg, int armorAbsorbed, int finalDmg,
+            bool causedShock, bool isFatal, int apCost = 0)
+        {
+            Telemetry.RecordAttack(attacker, defender, isAttackerPlayer, isDefenderPlayer, isHit, isCrit, isBlocked,
+                rawDmg, armorAbsorbed, finalDmg, causedShock, isFatal, apCost);
+        }
+
+        public static void ResetTelemetry()
+        {
+            Telemetry.Reset();
+        }
+
+        private bool _hideOutcomeCardForReview = false;
         private readonly List<CombatLogEntry> _logEntries = new();
         private Vector2 _logScroll;
         private LogCategory _activeCategory = LogCategory.All;
@@ -362,6 +471,11 @@ namespace Killtime.UI
 
         private void HandleRoundStarted(int roundNumber)
         {
+            if (roundNumber <= 1)
+            {
+                Telemetry.Reset();
+                _hideOutcomeCardForReview = false;
+            }
             AddAdvancedLog($"⏳ <b>CYCLE DE PHASE : ROUND {roundNumber:00}</b>", LogCategory.MovementAndTurns, "[PHASE]", ColorCyanAccent);
         }
 
@@ -570,6 +684,22 @@ namespace Killtime.UI
                     KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Close, 0.7f);
                 }
                 AddAdvancedLog("▶ Reprise de la dynamique causale.", LogCategory.MovementAndTurns, "[REPRISE]", Color.green);
+            }
+
+            // Diffusion multijoueur si GM
+            var room = Killtime.Multi.VTTRoomManager.Instance;
+            if (room != null && room.InRoom && room.IsGM)
+            {
+                var payload = new Killtime.Multi.VTTTurnControlPayload
+                {
+                    action = pause ? Killtime.Multi.VTTProtocol.TurnActionPause : Killtime.Multi.VTTProtocol.TurnActionResume,
+                    round = Killtime.Multi.VTTTableSync.Instance != null ? Killtime.Multi.VTTTableSync.Instance.CurrentRound : 1
+                };
+                Killtime.Multi.VTTTableSync.Instance?.BroadcastTurnControl(payload);
+                if (pause)
+                {
+                    Killtime.Multi.VTTTableSync.Instance?.BroadcastFullCombatState();
+                }
             }
         }
 
@@ -902,17 +1032,24 @@ namespace Killtime.UI
             bool canBreath = unit.Stats.Essoufflement < unit.Stats.Attributes.Constitution;
             if (DrawTacticalButton(breath, "SOUFFLE", "+2", false, ColorAmber, canBreath))
             {
-                if (unit.Stats.TakeEmergencyBreath(2))
+                if (TurnManager.IsMultiplayerPlayerClient())
                 {
-                    AddAdvancedLog($"{unit.Stats.Name} force sa ventilation d'urgence (+2 PA) !",
-                        LogCategory.ReactionAndAP, "[SOUFFLE]", ColorAmber);
-                    if (KilltimeAudioManager.Instance != null)
-                        KilltimeAudioManager.Instance.PlayUI(SoundId.Breath_Emergency, 0.85f);
-                    OnEmergencyBreathRequested?.Invoke();
+                    Killtime.Multi.VTTTableSync.Instance?.RequestBreath(2);
                 }
-                else if (KilltimeAudioManager.Instance != null)
+                else
                 {
-                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                    if (unit.Stats.TakeEmergencyBreath(2))
+                    {
+                        AddAdvancedLog($"{unit.Stats.Name} force sa ventilation d'urgence (+2 PA) !",
+                            LogCategory.ReactionAndAP, "[SOUFFLE]", ColorAmber);
+                        if (KilltimeAudioManager.Instance != null)
+                            KilltimeAudioManager.Instance.PlayUI(SoundId.Breath_Emergency, 0.85f);
+                        OnEmergencyBreathRequested?.Invoke();
+                    }
+                    else if (KilltimeAudioManager.Instance != null)
+                    {
+                        KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                    }
                 }
             }
 
@@ -1178,7 +1315,15 @@ namespace Killtime.UI
             _showGrenadeDrawer = false;
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.PlayUI(SoundId.Turn_End, 0.7f);
-            _turnManager?.EndCurrentTurn();
+
+            if (TurnManager.IsMultiplayerPlayerClient())
+            {
+                Killtime.Multi.VTTTableSync.Instance?.RequestEndTurn();
+            }
+            else
+            {
+                _turnManager?.EndCurrentTurn();
+            }
             OnEndTurnRequested?.Invoke();
         }
 
@@ -1794,38 +1939,183 @@ namespace Killtime.UI
 
         private void DrawOutcomeCard()
         {
+            if (_hideOutcomeCardForReview)
+            {
+                Rect reviewPill = new Rect((Screen.width - 190f) * 0.5f, 22f, 190f, 26f);
+                DrawSoftPanel(reviewPill, new Color(0.018f, 0.032f, 0.05f, 0.92f), false);
+                DrawAccentLine(new Rect(reviewPill.x, reviewPill.y + reviewPill.height - 1f, reviewPill.width, 1f), ColorCyanAccent, 1f);
+                GUI.color = ColorCyanAccent;
+                if (GUI.Button(reviewPill, "📊 RAPPORT D'ENGAGEMENT", _btnFlatNormal))
+                {
+                    _hideOutcomeCardForReview = false;
+                }
+                GUI.color = Color.white;
+                return;
+            }
+
             bool isVictory = _turnManager.CurrentOutcome == CombatOutcome.Victory;
             Color accent = isVictory ? ColorCyanAccent : ColorCrimson;
-            float width = 420f;
-            float height = 164f;
+            bool isPlayerClient = TurnManager.IsMultiplayerPlayerClient();
+
+            float width = Mathf.Clamp(Screen.width * 0.46f, 520f, 620f);
+            float height = isPlayerClient ? 285f : 335f;
 
             DrawSolidRect(new Rect(0, 0, Screen.width, Screen.height),
-                new Color(0.005f, 0.010f, 0.018f, 0.45f));
+                new Color(0.005f, 0.010f, 0.018f, 0.55f));
 
             Rect rect = new Rect((Screen.width - width) * 0.5f,
                 (Screen.height - height) * 0.44f, width, height);
 
-            DrawSoftPanel(rect, new Color(0.018f, 0.032f, 0.05f, 0.97f));
+            DrawSoftPanel(rect, new Color(0.014f, 0.025f, 0.042f, 0.98f));
             DrawAccentLine(new Rect(rect.x, rect.y, rect.width, 2f), accent, 1f);
 
-            GUI.color = accent;
-            GUI.Label(new Rect(rect.x + 24, rect.y + 22, width - 48, 25),
-                isVictory ? "ENGAGEMENT TERMINÉ" : "ENGAGEMENT PERDU", _hudNameStyle);
+            int roundCount = _turnManager != null ? _turnManager.CurrentRound : 1;
+            int causalSeconds = roundCount * 10;
 
+            string title = isPlayerClient
+                ? (isVictory ? "🏆 ENGAGEMENT REMPORTÉ" : "💀 SIGNAUX VITAUX ROMPUS")
+                : (isVictory ? "🏆 ENGAGEMENT TERMINÉ (GM)" : "💀 SIGNAUX VITAUX ROMPUS (GM)");
+
+            string subtitle = isVictory
+                ? "Menace neutralisée. Télémétrie causale synchronisée avec les 11 Livres du Codex."
+                : "L'escouade a succombé au combat. Données vitales archivées.";
+
+            GUI.color = accent;
+            GUI.Label(new Rect(rect.x + 20, rect.y + 16, width - 40, 20), title, _hudNameStyle);
             GUI.color = ColorTextMuted;
-            GUI.Label(new Rect(rect.x + 24, rect.y + 53, width - 48, 28),
-                isVictory ? "Menace neutralisée. Le champ est sécurisé."
-                          : "Signaux vitaux rompus. Repositionnement recommandé.",
-                _terminalBodyStyle);
+            GUI.Label(new Rect(rect.x + 20, rect.y + 36, width - 40, 16), subtitle, _hudSubStyle);
             GUI.color = Color.white;
 
-            Rect rewind = new Rect(rect.x + 24, rect.y + 103, (width - 54f) * 0.5f, 30f);
-            if (DrawTacticalButton(rewind, "REMBOBINER", null, false, ColorCyanAccent))
-                _arena?.RewindLastSnapshot();
+            var allUnits = FindObjectsByType<TacticalUnit>();
+            int liveAllies = 0, deadAllies = 0, deadEnemies = 0;
+            for (int i = 0; i < allUnits.Length; i++)
+            {
+                var u = allUnits[i];
+                if (u == null || u.Stats == null) continue;
+                if (u.IsPlayerControlled)
+                {
+                    if (u.Stats.IsAlive) liveAllies++;
+                    else deadAllies++;
+                }
+                else
+                {
+                    if (!u.Stats.IsAlive) deadEnemies++;
+                }
+            }
 
-            Rect reset = new Rect(rewind.xMax + 6f, rewind.y, rewind.width, 30f);
-            if (DrawTacticalButton(reset, "NOUVEL ESSAI", null, false, accent))
-                _arena?.ResetArena();
+            int finalNeutralized = Mathf.Max(Telemetry.EnemiesNeutralized, deadEnemies);
+            int finalAlliesDown = Mathf.Max(Telemetry.AlliesDown, deadAllies);
+            int totalAttacks = Telemetry.TotalAttacks;
+            int hits = Telemetry.SuccessfulHits;
+            int hitPct = totalAttacks > 0 ? Mathf.RoundToInt(((float)hits / totalAttacks) * 100f) : 0;
+
+            float gridY = rect.y + 60f;
+            float cellW = (width - 48f) / 3f;
+            float cellH = 46f;
+            float gapX = 4f;
+            float gapY = 4f;
+
+            DrawMetricCell(new Rect(rect.x + 20f, gridY, cellW, cellH), "CYCLES CAUSAUX", $"ROUND {roundCount:00}", $"{causalSeconds}s de combat (L. VI)", ColorCyanAccent);
+            DrawMetricCell(new Rect(rect.x + 20f + cellW + gapX, gridY, cellW, cellH), "PRÉCISION BALISTIQUE", $"{hitPct}%", $"{hits}/{totalAttacks} touches ({Telemetry.CriticalHits} crits)", ColorAmber);
+            DrawMetricCell(new Rect(rect.x + 20f + (cellW + gapX) * 2f, gridY, cellW, cellH), "DÉGÂTS INFLIGÉS", $"{Telemetry.DamageDealtByAllies} PV", $"{Telemetry.ArmorAbsorbedByEnemies} absorbés armure", Color.green);
+
+            float row2Y = gridY + cellH + gapY;
+            DrawMetricCell(new Rect(rect.x + 20f, row2Y, cellW, cellH), "DÉGÂTS SUBIS", $"{Telemetry.DamageTakenByAllies} PV", $"{Telemetry.ArmorAbsorbedByAllies} encaissés", ColorCrimson);
+            DrawMetricCell(new Rect(rect.x + 20f + cellW + gapX, row2Y, cellW, cellH), "NEUTRALISATIONS", $"{finalNeutralized} cibles", $"{Telemetry.TraumaShocks} chocs traumatiques", Color.Lerp(ColorCrimson, ColorAmber, 0.5f));
+            DrawMetricCell(new Rect(rect.x + 20f + (cellW + gapX) * 2f, row2Y, cellW, cellH), "BILAN ESCOUADE", $"{liveAllies} vivant(s)", $"{finalAlliesDown} hors de combat", liveAllies > 0 ? ColorCyanAccent : ColorCrimson);
+
+            float mvpY = row2Y + cellH + gapY;
+            Rect mvpRect = new Rect(rect.x + 20f, mvpY, width - 40f, 24f);
+            DrawSolidRect(mvpRect, new Color(0.025f, 0.045f, 0.07f, 0.70f));
+            DrawAccentLine(new Rect(mvpRect.x, mvpRect.y, 2f, mvpRect.height), ColorCyanDim, 1f);
+
+            GUI.color = ColorTextMuted;
+            GUI.Label(new Rect(mvpRect.x + 8f, mvpY + 4f, 120f, 16f), "IMPACT MAJEUR :", _hudSubStyle);
+            GUI.color = ColorTextBright;
+            string mvpText = Telemetry.TopDamageAmount > 0
+                ? $"<b>{Telemetry.TopDamageDealer}</b> ({Telemetry.TopDamageAmount} PV infligés) • {Telemetry.DeflectedOrParried} parades/esquives réussies"
+                : "Aucune frappe décisive enregistrée ce cycle.";
+            GUI.Label(new Rect(mvpRect.x + 115f, mvpY + 4f, mvpRect.width - 125f, 16f), mvpText, _hudSubStyle);
+            GUI.color = Color.white;
+
+            DrawAccentLine(new Rect(rect.x + 20f, mvpRect.yMax + 8f, width - 40f, 1f), ColorCyanDim, 0.45f);
+
+            if (isPlayerClient)
+            {
+                float bottomY = mvpRect.yMax + 14f;
+                Rect statusRect = new Rect(rect.x + 20f, bottomY, width - 165f, 30f);
+                DrawSolidRect(statusRect, new Color(0.02f, 0.05f, 0.08f, 0.75f));
+                DrawAccentLine(new Rect(statusRect.x, statusRect.y, 2f, statusRect.height), ColorAmber, 0.9f);
+
+                GUI.color = ColorAmber;
+                GUI.Label(new Rect(statusRect.x + 8f, bottomY + 3f, statusRect.width - 16f, 14f), "● EN ATTENTE DU MAÎTRE DU JEU", _hudSubStyle);
+                GUI.color = ColorTextMuted;
+                GUI.Label(new Rect(statusRect.x + 8f, bottomY + 15f, statusRect.width - 16f, 12f), "Le MJ administre le flux temporel et la réinitialisation.", _hudSubStyle);
+                GUI.color = Color.white;
+
+                Rect observeBtn = new Rect(statusRect.xMax + 6f, bottomY, 119f, 30f);
+                if (DrawTacticalButton(observeBtn, "OBSERVER", null, false, ColorCyanAccent))
+                {
+                    _hideOutcomeCardForReview = true;
+                }
+            }
+            else
+            {
+                float bottomY = mvpRect.yMax + 14f;
+                float btnW = (width - 40f - 12f) / 3f;
+
+                Rect rewindBtn = new Rect(rect.x + 20f, bottomY, btnW, 30f);
+                if (DrawTacticalButton(rewindBtn, "REMBOBINER", null, false, ColorCyanAccent))
+                {
+                    _arena?.RewindLastSnapshot();
+                }
+
+                Rect resetBtn = new Rect(rewindBtn.xMax + 6f, bottomY, btnW, 30f);
+                if (DrawTacticalButton(resetBtn, "NOUVEL ESSAI", null, false, accent))
+                {
+                    _arena?.ResetArena();
+                }
+
+                Rect observeBtn = new Rect(resetBtn.xMax + 6f, bottomY, btnW, 30f);
+                if (DrawTacticalButton(observeBtn, "OBSERVER", null, false, ColorTextMuted))
+                {
+                    _hideOutcomeCardForReview = true;
+                }
+            }
+        }
+
+        private static void DrawMetricCell(Rect r, string label, string mainValue, string subValue, Color accentColor)
+        {
+            DrawSolidRect(r, new Color(0.02f, 0.038f, 0.06f, 0.85f));
+            DrawAccentLine(new Rect(r.x, r.y, 2f, r.height), accentColor, 0.8f);
+
+            var labelStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 8,
+                alignment = TextAnchor.UpperLeft,
+                fontStyle = FontStyle.Normal
+            };
+            labelStyle.normal.textColor = ColorTextMuted;
+
+            var valStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 12,
+                alignment = TextAnchor.MiddleLeft,
+                fontStyle = FontStyle.Bold
+            };
+            valStyle.normal.textColor = accentColor;
+
+            var subStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 8,
+                alignment = TextAnchor.LowerLeft,
+                fontStyle = FontStyle.Normal
+            };
+            subStyle.normal.textColor = new Color(0.72f, 0.82f, 0.92f, 0.85f);
+
+            GUI.Label(new Rect(r.x + 8f, r.y + 2f, r.width - 12f, 12f), label, labelStyle);
+            GUI.Label(new Rect(r.x + 8f, r.y + 12f, r.width - 12f, 18f), mainValue, valStyle);
+            GUI.Label(new Rect(r.x + 8f, r.y + 28f, r.width - 12f, 14f), subValue, subStyle);
         }
 
         // =========================================================================

@@ -23,6 +23,49 @@ namespace Killtime.UI
         private int _selectedTab = 0;
         private readonly string[] _tabNames = { "❤️ Vitalité & PA", "⚔️ Combat & VATS", "📈 Progression", "💾 Presets" };
         private string _statusMsg = "Constantes du Codex actives.";
+        private float _pendingCoreSaveTime = -1f;
+        private const float CoreAutoSaveDelay = 1.0f;
+
+        protected override void OnUpdate()
+        {
+            if (_pendingCoreSaveTime > 0f && Time.realtimeSinceStartup >= _pendingCoreSaveTime)
+            {
+                FlushPendingCoreSave();
+            }
+        }
+
+        protected override void OnClosed()
+        {
+            FlushPendingCoreSave();
+        }
+
+        protected override void OnDisable()
+        {
+            base.OnDisable();
+            FlushPendingCoreSave();
+        }
+
+        private void ScheduleCoreAutoSave()
+        {
+            _pendingCoreSaveTime = Time.realtimeSinceStartup + CoreAutoSaveDelay;
+        }
+
+        private void FlushPendingCoreSave()
+        {
+            if (_pendingCoreSaveTime < 0f) return;
+            _pendingCoreSaveTime = -1f;
+            try
+            {
+                var cfg = CoreRulesConfig.Instance;
+                cfg.SaveToDisk();
+                cfg.PropagateLiveChanges();
+                _statusMsg = "Modifications auto-sauvegardées sur disque (rechargées au prochain lancement).";
+            }
+            catch (Exception e)
+            {
+                _statusMsg = $"Échec auto-sauvegarde : {e.Message}";
+            }
+        }
 
         protected override void DrawContent()
         {
@@ -41,6 +84,7 @@ namespace Killtime.UI
             GUI.backgroundColor = new Color(0.2f, 0.7f, 0.4f);
             if (GUILayout.Button("⚡ Propager aux Unités", GUILayout.Width(160)))
             {
+                FlushPendingCoreSave();
                 cfg.PropagateLiveChanges();
                 _statusMsg = "Constantes propagées et métriques recalculées.";
             }
@@ -59,6 +103,12 @@ namespace Killtime.UI
             }
 
             GUILayout.EndScrollView();
+
+            if (GUI.changed && _selectedTab != 3)
+            {
+                ScheduleCoreAutoSave();
+                _statusMsg = "Modifications détectées… auto-sauvegarde dans 1 s (conservées au redémarrage).";
+            }
         }
 
         private void DrawVitalityAndAPTab(CoreRulesConfig cfg)
@@ -148,9 +198,12 @@ namespace Killtime.UI
             GUILayout.Label("<b>Gestion de la Configuration :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
+            GUILayout.Label("<i>Autosauvegarde active : chaque réglage des onglets est enregistré sur disque ~1 s après modification et rechargé au lancement.</i>");
+
             GUI.backgroundColor = new Color(0.2f, 0.7f, 0.4f);
             if (GUILayout.Button("💾 Sauvegarder la Configuration sur Disque", GUILayout.Height(32)))
             {
+                _pendingCoreSaveTime = -1f;
                 cfg.SaveToDisk();
                 cfg.PropagateLiveChanges();
                 _statusMsg = "Configuration enregistrée sur disque.";
@@ -161,6 +214,7 @@ namespace Killtime.UI
             GUI.backgroundColor = new Color(0.9f, 0.3f, 0.3f);
             if (GUILayout.Button("↺ Rétablir les Valeurs Officielles du Codex", GUILayout.Height(32)))
             {
+                _pendingCoreSaveTime = -1f;
                 cfg.ResetToCodexDefaults();
                 cfg.SaveToDisk();
                 cfg.PropagateLiveChanges();
@@ -168,6 +222,37 @@ namespace Killtime.UI
             }
             GUI.backgroundColor = Color.white;
 
+            GUILayout.EndVertical();
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>Préférences des Dev UI (positions, onglets, IA, arène, éditeurs) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("💾 Sauver les Préférences Dev", GUILayout.Height(28)))
+            {
+                try
+                {
+                    DevUIPreferences.SaveNow();
+                    _statusMsg = "Préférences Dev UI enregistrées (DevUIPreferences.json).";
+                }
+                catch (Exception e)
+                {
+                    _statusMsg = $"Échec sauvegarde prefs Dev : {e.Message}";
+                }
+            }
+            if (GUILayout.Button("↺ Réinitialiser les Préférences Dev", GUILayout.Height(28)))
+            {
+                try
+                {
+                    DevUIPreferences.ResetToDefaults();
+                    _statusMsg = "Préférences Dev UI réinitialisées (redémarrez ou rouvrez les fenêtres).";
+                }
+                catch (Exception e)
+                {
+                    _statusMsg = $"Échec reset prefs Dev : {e.Message}";
+                }
+            }
+            GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 

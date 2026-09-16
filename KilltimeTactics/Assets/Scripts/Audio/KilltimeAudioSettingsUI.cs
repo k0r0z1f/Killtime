@@ -590,6 +590,34 @@ namespace Killtime.Audio
             DrawSliderRow(mgr, SoundCategory.UI, "Interface");
             GUILayout.EndVertical();
 
+            // 2.b Voix Multijoueur VTT
+            var voiceMgr = Killtime.Multi.Voice.VTTVoiceManager.Instance;
+            if (voiceMgr != null)
+            {
+                GUILayout.Space(4);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("🎙️ Voix VTT :", GUILayout.Width(85));
+                float curVoiceVol = voiceMgr.MasterOutputVolume;
+                float newVoiceVol = GUILayout.HorizontalSlider(curVoiceVol, 0f, 2f);
+                if (!Mathf.Approximately(curVoiceVol, newVoiceVol))
+                {
+                    voiceMgr.SetMasterOutputVolume(newVoiceVol);
+                }
+                GUILayout.Label($"{Mathf.RoundToInt(newVoiceVol * 100)}%", GUILayout.Width(38));
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                string micStatus = voiceMgr.IsMuted ? "<color=red>🔇 Muet</color>" : (voiceMgr.IsLocalSpeaking ? "<color=#00FF88>● En parole</color>" : "<color=gray>○ Écoute</color>");
+                GUILayout.Label($"Micro : {micStatus}", RichLabel(), GUILayout.ExpandWidth(true));
+                if (GUILayout.Button("⚙️ Config Voix (F4)", GUILayout.Width(130), GUILayout.Height(20)))
+                {
+                    Killtime.Multi.VTTRoomWindow.Open();
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+            }
+
             GUILayout.Space(4);
 
             // 3. Intensité de l'arrangement adaptatif

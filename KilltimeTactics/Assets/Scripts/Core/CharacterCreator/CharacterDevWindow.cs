@@ -95,6 +95,12 @@ namespace Killtime.UI
         {
             EnsureReferences();
             EnsurePreviewStudio();
+            try { LoadDevPrefs(); } catch { /* ignore */ }
+        }
+
+        protected override void OnClosed()
+        {
+            try { CaptureDevPrefs(); DevUIPreferences.SaveNow(); } catch { /* ignore */ }
         }
 
         public static void OpenForUnit(TacticalUnit unit)
@@ -120,6 +126,32 @@ namespace Killtime.UI
             RefreshAvailableModels();
             RefreshGunCatalog();
             EnsurePreviewStudio();
+            try { LoadDevPrefs(); } catch { /* ignore */ }
+        }
+
+        private void LoadDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            _selectedTab = Mathf.Clamp(p.CharacterTab, 0, _tabTitles.Length - 1);
+            _previewModelYaw = p.PreviewYaw;
+            _selectedPreviewAnimIndex = Mathf.Clamp(p.PreviewAnimIndex, 0, _previewAnimationStates.Length - 1);
+            if (!string.IsNullOrEmpty(p.SpawnQ)) _spawnQStr = p.SpawnQ;
+            if (!string.IsNullOrEmpty(p.SpawnR)) _spawnRStr = p.SpawnR;
+            _spawnAsPlayer = p.SpawnAsPlayer;
+        }
+
+        private void CaptureDevPrefs()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+            p.CharacterTab = _selectedTab;
+            p.PreviewYaw = _previewModelYaw;
+            p.PreviewAnimIndex = _selectedPreviewAnimIndex;
+            p.SpawnQ = _spawnQStr ?? "0";
+            p.SpawnR = _spawnRStr ?? "1";
+            p.SpawnAsPlayer = _spawnAsPlayer;
+            DevUIPreferences.MarkDirty();
         }
 
         private void RefreshGunCatalog()
@@ -169,6 +201,7 @@ namespace Killtime.UI
         protected override void OnDisable()
         {
             base.OnDisable();
+            try { CaptureDevPrefs(); } catch { /* ignore */ }
             CleanupPreviewStudio();
         }
 
@@ -241,6 +274,11 @@ namespace Killtime.UI
             }
 
             GUILayout.EndScrollView();
+
+            if (GUI.changed)
+            {
+                try { CaptureDevPrefs(); } catch { /* ignore */ }
+            }
         }
 
         private void SaveCharacterAndSyncUnits(CharacterSheet sheet)
@@ -1439,6 +1477,14 @@ namespace Killtime.UI
             if (GUILayout.Button("+10 XP", GUILayout.Width(70))) CharacterProgressionManager.GrantXP(_currentSheet, 10);
             if (GUILayout.Button("+50 XP", GUILayout.Width(70))) CharacterProgressionManager.GrantXP(_currentSheet, 50);
             GUILayout.EndHorizontal();
+
+            GUILayout.Space(4);
+            GUI.backgroundColor = new Color(0.1f, 0.75f, 1.0f);
+            if (GUILayout.Button("🌌 OUVRIR LA VOÛTE CÉLESTE (Arbre Cosmique 3D / Constellations)", GUILayout.Height(30)))
+            {
+                SkillTreeCosmosWindow.OpenForCharacter(_currentSheet);
+            }
+            GUI.backgroundColor = Color.white;
 
             GUILayout.Space(6);
             GUILayout.Label("<b>Arbres de Compétences (5 XP = +1 Palier de Dé) :</b>");
