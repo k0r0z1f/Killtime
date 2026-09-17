@@ -44,7 +44,7 @@ namespace Killtime.UI
         public static bool IsPointerOverChat()
         {
             if (Instance == null) return false;
-            if (!Instance._isLogDrawerExpanded && !IsPaused) return false;
+            if (!Instance._isLogDrawerExpanded) return false;
 
             float drawerWidth = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
             float drawerHeight = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
@@ -82,11 +82,19 @@ namespace Killtime.UI
                 // Modale de stase (centre)
                 if (new Rect((Screen.width - 390f) * 0.5f, (Screen.height - 178f) * 0.46f, 390f, 178f).Contains(mouseGui))
                     return true;
-                // Terminal-PLus en pause (toujours étendu)
-                float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
-                float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
-                if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
-                    return true;
+                // Terminal étendu ou bouton FEED
+                if (Instance._isLogDrawerExpanded)
+                {
+                    float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
+                    float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
+                    if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
+                        return true;
+                }
+                else
+                {
+                    if (new Rect(Screen.width - 92f - 20f, Screen.height - 30f - 20f, 92f, 22f).Contains(mouseGui))
+                        return true;
+                }
                 return false;
             }
 
@@ -106,10 +114,18 @@ namespace Killtime.UI
                     if (new Rect((Screen.width - ow) * 0.5f, (Screen.height - oh) * 0.44f, ow, oh).Contains(mouseGui))
                         return true;
                 }
-                float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
-                float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
-                if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
-                    return true;
+                if (Instance._isLogDrawerExpanded)
+                {
+                    float dw = Mathf.Clamp(Screen.width * 0.44f, 480f, 660f);
+                    float dh = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
+                    if (new Rect(Screen.width - dw - 20f, Screen.height - dh - 20f, dw, dh).Contains(mouseGui))
+                        return true;
+                }
+                else
+                {
+                    if (new Rect(Screen.width - 92f - 20f, Screen.height - 30f - 20f, 92f, 22f).Contains(mouseGui))
+                        return true;
+                }
                 return false;
             }
 
@@ -131,21 +147,12 @@ namespace Killtime.UI
                     return true;
             }
 
-            // Ruban d'actions (bas-centre)
-            {
-                float w = Mathf.Clamp(Screen.width * 0.40f, 360f, 520f);
-                float h = 46f;
-                float bottom = 18f + (Instance._showAnatomyDrawer ? 214f : 0f);
-                if (new Rect((Screen.width - w) * 0.5f, Screen.height - h - bottom, w, h).Contains(mouseGui))
-                    return true;
-            }
-
             // Matrice de ciblage VATS (si ouverte ou en animation)
             if (Instance._showAnatomyDrawer || Instance._anatomyOpenAnim > 0.02f)
             {
                 float w = Mathf.Clamp(Screen.width * 0.34f, 330f, 460f);
                 float h = 216f;
-                float y = Screen.height - h - 76f;
+                float y = Screen.height - h - 24f;
                 if (new Rect((Screen.width - w) * 0.5f, y, w, h).Contains(mouseGui))
                     return true;
             }
@@ -155,7 +162,7 @@ namespace Killtime.UI
             {
                 float w = Mathf.Clamp(Screen.width * 0.38f, 360f, 500f);
                 float h = 264f;
-                float y = Screen.height - h - 76f;
+                float y = Screen.height - h - 24f;
                 if (new Rect((Screen.width - w) * 0.5f, y, w, h).Contains(mouseGui))
                     return true;
             }
@@ -348,7 +355,6 @@ namespace Killtime.UI
 
         public event Action<BodyPart, bool> OnAttackRequested;
         public event Action OnEndTurnRequested;
-        public event Action OnEmergencyBreathRequested;
         public event Action<string, bool, bool, int> OnGrenadeRequested;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
@@ -546,7 +552,10 @@ namespace Killtime.UI
 
             if (Input.GetKeyDown(KeyCode.Space))
             {
-                TriggerEndTurn();
+                if (_turnManager != null && !_turnManager.IsInExploration)
+                {
+                    TriggerEndTurn();
+                }
             }
 
             float dt = Time.unscaledDeltaTime;
@@ -731,12 +740,18 @@ namespace Killtime.UI
                 return;
             }
 
-            if (_turnManager != null && _turnManager.IsCombatOver)
+            bool inStoryScene = Killtime.Story.StorySceneManager.Instance != null
+                && Killtime.Story.StorySceneManager.Instance.CurrentSceneController != null;
+
+            if (_turnManager != null && _turnManager.IsCombatOver && !inStoryScene)
             {
                 DrawOutcomeCard();
                 DrawAdvancedLogSystem(isPauseActive: true);
                 return;
             }
+
+            // Flux d'informations toujours actif (forme réduite [FEED] ou tiroir étendu)
+            DrawAdvancedLogSystem(isPauseActive: false);
 
             var activeUnit = _turnManager != null ? _turnManager.ActiveUnit : (_arena != null ? _arena.PlayerUnit : null);
             if (activeUnit == null || activeUnit.Stats == null) return;
@@ -745,23 +760,17 @@ namespace Killtime.UI
             DrawTacticalPlayerCard(activeUnit);
             DrawTacticalTargetCard();
 
-            // 3. Ruban d'actions en bas d'écran (Action Ribbon flottant)
-            DrawFloatingActionRibbon(activeUnit);
-
-            // 4. Matrice de ciblage anatomique (VATS épuré)
+            // 3. Matrice de ciblage anatomique (VATS épuré)
             if (_showAnatomyDrawer)
             {
                 DrawSurgicalTargetingMatrix(activeUnit);
             }
 
-            // 4b. Panneau grenades (visée de case, lanceur, souffle)
+            // 4. Panneau grenades (visée de case, lanceur, souffle)
             if (_showGrenadeDrawer)
             {
                 DrawGrenadeTargetingPanel(activeUnit);
             }
-
-            // 5. Flux d'informations (Logs)
-            DrawAdvancedLogSystem(isPauseActive: false);
         }
 
         private void EnsureStyles()
@@ -894,7 +903,8 @@ namespace Killtime.UI
 
             int round = _turnManager != null ? _turnManager.CurrentRound : 1;
             GUI.color = ColorTextMuted;
-            GUI.Label(roundRect, $"ROUND {round:00}", _hudSubStyle);
+            string roundLabel = (_turnManager != null && _turnManager.IsInExploration) ? "EXPLORE" : $"ROUND {round:00}";
+            GUI.Label(roundRect, roundLabel, _hudSubStyle);
             GUI.color = Color.white;
 
             if (hasSouff)
@@ -993,79 +1003,13 @@ namespace Killtime.UI
         }
 
         // =========================================================================
-        // RUBAN D'ACTIONS — DOCK MINIMAL
-        // =========================================================================
-        private void DrawFloatingActionRibbon(TacticalUnit unit)
-        {
-            float width = Mathf.Clamp(Screen.width * 0.52f, 460f, 640f);
-            float height = 46f;
-            float bottom = 18f + (_showAnatomyDrawer ? 214f : 0f) + (_showGrenadeDrawer ? 264f : 0f);
-            Rect dock = new Rect((Screen.width - width) * 0.5f,
-                Screen.height - height - bottom, width, height);
-
-            DrawSoftPanel(dock, new Color(0.02f, 0.035f, 0.05f, 0.72f));
-            DrawAccentLine(new Rect(dock.x + 28f, dock.y, dock.width - 56f, 1f), ColorCyanDim, 1f);
-
-            float gap = 5f;
-            float bw = (width - 14f - gap * 3f) / 4f;
-            float y = dock.y + 6f;
-
-            Rect vats = new Rect(dock.x + 7f, y, bw, 34f);
-            if (DrawTacticalButton(vats, "CIBLAGE", "1", _showAnatomyDrawer, ColorCyanAccent))
-            {
-                _showAnatomyDrawer = !_showAnatomyDrawer;
-                if (_showAnatomyDrawer) _showGrenadeDrawer = false;
-                if (KilltimeAudioManager.Instance != null)
-                    KilltimeAudioManager.Instance.PlayUI(_showAnatomyDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
-            }
-
-            Rect grenade = new Rect(vats.xMax + gap, y, bw, 34f);
-            if (DrawTacticalButton(grenade, "GRENADE", "2", _showGrenadeDrawer, ColorAmber))
-            {
-                _showGrenadeDrawer = !_showGrenadeDrawer;
-                if (_showGrenadeDrawer) _showAnatomyDrawer = false;
-                if (KilltimeAudioManager.Instance != null)
-                    KilltimeAudioManager.Instance.PlayUI(_showGrenadeDrawer ? SoundId.VATS_Open : SoundId.VATS_Close, 0.7f);
-            }
-
-            Rect breath = new Rect(grenade.xMax + gap, y, bw, 34f);
-            bool canBreath = unit.Stats.Essoufflement < unit.Stats.Attributes.Constitution;
-            if (DrawTacticalButton(breath, "SOUFFLE", "+2", false, ColorAmber, canBreath))
-            {
-                if (TurnManager.IsMultiplayerPlayerClient())
-                {
-                    Killtime.Multi.VTTTableSync.Instance?.RequestBreath(2);
-                }
-                else
-                {
-                    if (unit.Stats.TakeEmergencyBreath(2))
-                    {
-                        AddAdvancedLog($"{unit.Stats.Name} force sa ventilation d'urgence (+2 PA) !",
-                            LogCategory.ReactionAndAP, "[SOUFFLE]", ColorAmber);
-                        if (KilltimeAudioManager.Instance != null)
-                            KilltimeAudioManager.Instance.PlayUI(SoundId.Breath_Emergency, 0.85f);
-                        OnEmergencyBreathRequested?.Invoke();
-                    }
-                    else if (KilltimeAudioManager.Instance != null)
-                    {
-                        KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
-                    }
-                }
-            }
-
-            Rect endTurn = new Rect(breath.xMax + gap, y, bw, 34f);
-            if (DrawTacticalButton(endTurn, "PASSER", "ESPACE", false, ColorCrimson))
-                TriggerEndTurn();
-        }
-
-        // =========================================================================
         // MATRICE DE CIBLAGE — DRAWER COMPACT
         // =========================================================================
         private void DrawSurgicalTargetingMatrix(TacticalUnit unit)
         {
             float width = Mathf.Clamp(Screen.width * 0.34f, 330f, 460f);
             float height = 216f;
-            float targetY = Screen.height - height - 76f;
+            float targetY = Screen.height - height - 24f;
             float y = Mathf.Lerp(Screen.height + 10f, targetY, _anatomyOpenAnim);
             Rect rect = new Rect((Screen.width - width) * 0.5f, y, width, height);
 
@@ -1167,7 +1111,7 @@ namespace Killtime.UI
         {
             float width = Mathf.Clamp(Screen.width * 0.38f, 360f, 500f);
             float height = 264f;
-            float targetY = Screen.height - height - 76f;
+            float targetY = Screen.height - height - 24f;
             float y = Mathf.Lerp(Screen.height + 10f, targetY, _grenadeOpenAnim);
             Rect rect = new Rect((Screen.width - width) * 0.5f, y, width, height);
 
@@ -1689,9 +1633,12 @@ namespace Killtime.UI
             float drawerHeight = Mathf.Clamp(Screen.height * 0.35f, 220f, 320f);
             float margin = 20f;
 
-            if (!_isLogDrawerExpanded && !isPauseActive)
+            if (!_isLogDrawerExpanded)
             {
-                DrawFloatingEphemeralLogs();
+                if (!isPauseActive)
+                {
+                    DrawFloatingEphemeralLogs();
+                }
 
                 Rect toggle = new Rect(Screen.width - 92f - margin, Screen.height - 30f - margin, 92f, 22f);
                 bool hover = toggle.Contains(Event.current.mousePosition);
@@ -1753,7 +1700,11 @@ namespace Killtime.UI
 
             if (GUI.Button(new Rect(terminal.x + terminal.width - 66, terminal.y + 8, 56, 20),
                 "FERMER", _btnFlatNormal))
+            {
                 _isLogDrawerExpanded = false;
+                GUIUtility.hotControl = 0;
+                GUIUtility.keyboardControl = 0;
+            }
             GUI.color = Color.white;
 
             Rect filters = new Rect(terminal.x + 12, terminal.y + 34, terminal.width - 24, 20);

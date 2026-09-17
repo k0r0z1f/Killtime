@@ -182,6 +182,7 @@ namespace Killtime.UI
             else if (Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.I)) EnsureDevWindow(InventoryDevWindow.Instance, InventoryDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F6)) EnsureDevWindow(Killtime.Multi.Video.VTTVideoRoomWindow.Instance, Killtime.Multi.Video.VTTVideoRoomWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F7)) EnsureDevWindow(ScenarioDevWindow.Instance, ScenarioDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F8)) EnsureDevWindow(ScenarioEditorDevWindow.Instance, ScenarioEditorDevWindow.Open);
         }
 
         /// <summary>
@@ -600,25 +601,6 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>💡 Éclairage & Atmosphère :</b>");
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("✨ Invoquer Pixie de Test"))
-            {
-                var go = new GameObject("Tactical_Pixie_Light");
-                go.AddComponent<Killtime.Tactics.Lighting.TacticalPixieLight>();
-                go.transform.position = new Vector3(0f, 1.8f, 0f);
-            }
-            if (GUILayout.Button("🧹 Retirer les Pixies"))
-            {
-                var pixies = FindObjectsByType<Killtime.Tactics.Lighting.TacticalPixieLight>();
-                for (int i = 0; i < pixies.Length; i++)
-                {
-                    Destroy(pixies[i].gameObject);
-                }
-            }
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(8);
             GUILayout.Label("<b>👥 Personnages & Fiches :</b>");
             if (GUILayout.Button("🧙 Ouvrir le Créateur de Personnage (F1)", GUILayout.Height(32)))
             {
@@ -641,10 +623,16 @@ namespace Killtime.UI
 
             GUILayout.Space(4);
             GUILayout.Label("<b>🎬 Campagne narrative :</b>");
-            if (GUILayout.Button("🎬 Scènes & Choix — Volume I (F7)", GUILayout.Height(32)))
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🎬 Scènes & Choix (Lecteur F7)", GUILayout.Height(32)))
             {
                 ScenarioDevWindow.Open();
             }
+            if (GUILayout.Button("🛠️ Éditeur de Scènes JSON (F8)", GUILayout.Height(32)))
+            {
+                ScenarioEditorDevWindow.Open();
+            }
+            GUILayout.EndHorizontal();
 
             GUILayout.Space(4);
             GUILayout.Label("<b>🌐 Multijoueur (Table Virtuelle) :</b>");
@@ -665,6 +653,7 @@ namespace Killtime.UI
             {
                 InventoryDevWindow.Open();
             }
+            GUILayout.Space(16);
         }
 
         private void DrawChronomancyTab()

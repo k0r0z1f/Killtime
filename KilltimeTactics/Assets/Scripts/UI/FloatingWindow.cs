@@ -125,6 +125,7 @@ namespace Killtime.UI
                     {
                         _savedSize = new Vector2(entry.W, entry.H);
                     }
+                    FloatingWindowChrome.ClampToScreen(ref _windowRect, MinSize);
                 }
             }
             catch { /* garde le défaut */ }
@@ -248,20 +249,23 @@ namespace Killtime.UI
             {
                 _windowRect.height = FloatingWindowChrome.CollapsedHeight;
             }
-            else
+            else if (_savedSize.y > 30f && _windowRect.height <= FloatingWindowChrome.CollapsedHeight + 1f)
             {
-                if (_savedSize.y > 30f && _windowRect.height <= FloatingWindowChrome.CollapsedHeight + 1f)
-                {
-                    _windowRect.height = _savedSize.y;
-                    _windowRect.width = _savedSize.x;
-                    _savedSize = Vector2.zero;
-                }
-                _windowRect.width = Mathf.Clamp(_windowRect.width, MinSize.x, Mathf.Max(MinSize.x, Screen.width - 20));
-                _windowRect.height = Mathf.Clamp(_windowRect.height, MinSize.y, Mathf.Max(MinSize.y, Screen.height - 20));
+                _windowRect.height = _savedSize.y;
+                _windowRect.width = _savedSize.x;
+                _savedSize = Vector2.zero;
             }
 
+            if (!FloatingWindowChrome.IsDocked(WindowId))
+            {
+                FloatingWindowChrome.ClampToScreen(ref _windowRect, MinSize);
+            }
             FloatingWindowChrome.HandleResizeEvents(ref _windowRect, WindowId, MinSize, _isMinimized);
             FloatingWindowChrome.ApplyDockedRect(ref _windowRect, WindowId);
+            if (!FloatingWindowChrome.IsDocked(WindowId))
+            {
+                FloatingWindowChrome.ClampToScreen(ref _windowRect, MinSize);
+            }
             Color prevDockCol = GUI.color;
             Color fadedDockCol = prevDockCol; fadedDockCol.a *= FloatingWindowChrome.DockAlpha(WindowId);
             GUI.color = fadedDockCol;
@@ -297,7 +301,10 @@ namespace Killtime.UI
                 GUI.color = prevDockCol;
                 FloatingWindowChrome.SanitizeGuiState();
             }
-            FloatingWindowChrome.ClampToScreen(ref _windowRect);
+            if (!FloatingWindowChrome.IsResizing(WindowId) && !FloatingWindowChrome.IsDocked(WindowId))
+            {
+                FloatingWindowChrome.ClampToScreen(ref _windowRect, MinSize);
+            }
             if (drawIndependentDockChrome && _isOpen)
             {
                 FloatingWindowChrome.DrawDockedFrameForeground(_windowRect, ref _isOpen, ref _isMinimized,
@@ -331,12 +338,9 @@ namespace Killtime.UI
                 GUI.enabled = false;
                 try
                 {
-                    // GUI.Window ne propage pas systématiquement la matrice externe
-                    // à ses contrôles enfants. Appliquer l'échelle ici évite que le
-                    // contenu (tabs, scrollbars, boutons) déborde du cadre docké.
                     float logicalHeight = Mathf.Max(_dockRenderSourceRect.height,
                         _windowRect.height / Mathf.Max(0.01f, _dockContentScale));
-                    DrawContentBelowTitle(_dockRenderSourceRect.width, logicalHeight, _dockContentScale);
+                    DrawContentBelowTitle(_dockRenderSourceRect.width, logicalHeight);
                 }
                 finally
                 {
@@ -346,43 +350,54 @@ namespace Killtime.UI
                 return;
             }
 
-            DrawContentBelowTitle(drawingRect.width, drawingRect.height, reserveResizeCorner: true);
-
+            FloatingWindowChrome.ConsumeResizeGripEvent(drawingRect, WindowId, ref _windowRect, _isMinimized);
+            DrawContentBelowTitle(drawingRect.width, drawingRect.height);
             FloatingWindowChrome.DrawResizeHandle(ref _windowRect, WindowId, MinSize, _isMinimized);
         }
 
-        /// <summary>
-        /// Réserve la barre de titre au-dessus du contenu. Sans ce groupe, les
-        /// premiers contrôles GUILayout commencent à y = 0 et recouvrent les boutons
-        /// réduire / fermer dès que le chrome est affiché à sa taille normale.
-        /// </summary>
-        private void DrawContentBelowTitle(float width, float height, float contentScale = 1f,
-            bool reserveResizeCorner = false)
+        private void DrawContentBelowTitle(float width, float height)
         {
             float contentTop = FloatingWindowChrome.TitleHeight;
-            float resizeReserve = reserveResizeCorner ? FloatingWindowChrome.ResizeGripSize : 0f;
-            GUI.BeginGroup(new Rect(0f, contentTop, Mathf.Max(0f, width),
-                Mathf.Max(0f, height - contentTop - resizeReserve)));
+            float gripSize = FloatingWindowChrome.ResizeGripSize;
+            float availableWidth = Mathf.Max(10f, width);
+            float availableHeight = Mathf.Max(10f, height - contentTop);
+
+            int origVPadBottom = 0;
+            int origHPadRight = 0;
+            bool skinModified = false;
+
+            if (GUI.skin != null)
+            {
+                if (GUI.skin.verticalScrollbar != null)
+                {
+                    origVPadBottom = GUI.skin.verticalScrollbar.padding.bottom;
+                    GUI.skin.verticalScrollbar.padding.bottom = (int)gripSize;
+                    skinModified = true;
+                }
+                if (GUI.skin.horizontalScrollbar != null)
+                {
+                    origHPadRight = GUI.skin.horizontalScrollbar.padding.right;
+                    GUI.skin.horizontalScrollbar.padding.right = (int)gripSize;
+                    skinModified = true;
+                }
+            }
+
+            Rect areaRect = new Rect(0f, contentTop, availableWidth, availableHeight);
+            GUILayout.BeginArea(areaRect);
             try
             {
-                Matrix4x4 previousContentMatrix = GUI.matrix;
-                try
-                {
-                    if (!Mathf.Approximately(contentScale, 1f))
-                    {
-                        GUI.matrix = GUI.matrix * Matrix4x4.Scale(
-                            new Vector3(contentScale, contentScale, 1f));
-                    }
-                    DrawContent();
-                }
-                finally
-                {
-                    GUI.matrix = previousContentMatrix;
-                }
+                DrawContent();
             }
             finally
             {
-                GUI.EndGroup();
+                GUILayout.EndArea();
+                if (skinModified && GUI.skin != null)
+                {
+                    if (GUI.skin.verticalScrollbar != null)
+                        GUI.skin.verticalScrollbar.padding.bottom = origVPadBottom;
+                    if (GUI.skin.horizontalScrollbar != null)
+                        GUI.skin.horizontalScrollbar.padding.right = origHPadRight;
+                }
             }
         }
     }

@@ -11,17 +11,23 @@ namespace Killtime.Story
     {
         protected override int WindowId => 990;
         protected override string Title => "Campagne — Scènes & Choix";
-        protected override Vector2 MinSize => new(520f, 480f);
-        protected override Rect DefaultRect => new(640f, 100f, 620f, 700f);
+        protected override Vector2 MinSize => _minSize;
+        protected override Rect DefaultRect => new Rect(
+            Mathf.Max(10f, Screen.width - 640f - 20f),
+            96f,
+            Mathf.Min(620f, Mathf.Max(_minSize.x, Screen.width - 40f)),
+            Mathf.Min(660f, Mathf.Max(_minSize.y, Screen.height - 110f)));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
         private static readonly KeyCode[] _toggleKeys = { KeyCode.F7 };
+        private static readonly Vector2 _minSize = new Vector2(520f, 480f);
         private Vector2 _scroll;
         private bool _showJournal;
 
         protected override void OnOpened()
         {
             ScenarioDirector.EnsureInstance();
+            StorySceneManager.EnsureInstance();
         }
 
         protected override void DrawContent()
@@ -53,10 +59,18 @@ namespace Killtime.Story
                 ? "Aucune scène active. Lancez une scène depuis le catalogue."
                 : $"<color=cyan>{scenario.Volume}</color>  •  {scenario.CanonReference}");
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"Route: <b>{RouteLabel(director.State.Route)}</b>", GUILayout.Width(190));
-            GUILayout.Label($"Confiance John–Erika: <b>{director.State.GetInt("john_erika_trust")}</b>");
+            GUILayout.Label($"Route: <b>{RouteLabel(director.State.Route)}</b>", GUILayout.Width(150));
+            GUILayout.Label($"Compteurs: <b>{CountersSummary(director)}</b>");
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("↺ Réinitialiser", GUILayout.Width(105))) director.ResetCampaign();
+            if (GUILayout.Button("🛠️ Éditeur (F8)", GUILayout.Width(110)))
+            {
+                ScenarioEditorDevWindow.Open();
+            }
+            if (GUILayout.Button("↺ Réinitialiser", GUILayout.Width(105)))
+            {
+                director.ResetCampaign();
+                StorySceneManager.EnsureInstance().CleanupCurrentScene();
+            }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
@@ -71,7 +85,7 @@ namespace Killtime.Story
                 GUILayout.Label($"{definition.Volume} • {definition.CanonReference}");
                 if (GUILayout.Button("▶ Lancer cette scène", GUILayout.Height(32)))
                 {
-                    director.StartScenario(definition.Id);
+                    StorySceneManager.EnsureInstance().StartScenario(definition.Id);
                     _scroll = Vector2.zero;
                 }
                 GUILayout.EndVertical();
@@ -82,11 +96,26 @@ namespace Killtime.Story
 
         private void DrawActiveScene(ScenarioDirector director, ScenarioDefinition scenario)
         {
+            var sceneMgr = StorySceneManager.EnsureInstance();
+            if (sceneMgr.CurrentSceneController == null && !sceneMgr.IsSceneLoading)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
+                if (GUILayout.Button("🚀 Déployer la Scène 3D & l'Environnement", GUILayout.Height(36)))
+                {
+                    sceneMgr.StartScenario(scenario.Id);
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.Label("<color=yellow>Campagne active en mémoire mais environnement 3D non instancié.</color>");
+                GUILayout.EndVertical();
+                GUILayout.Space(6);
+            }
+
             var node = director.CurrentNode;
             if (node == null)
             {
                 GUILayout.Label("<color=red>Le nœud de scène actif est introuvable.</color>");
-                if (GUILayout.Button("↺ Recharger la scène 01")) director.StartScenario(scenario.Id);
+                if (GUILayout.Button("↺ Recharger la scène")) sceneMgr.StartScenario(scenario.Id);
                 return;
             }
 
@@ -120,13 +149,14 @@ namespace Killtime.Story
                 GUI.backgroundColor = Color.white;
                 if (director.State.ActiveScenarioCompleted)
                 {
-                    GUILayout.Label("<color=green>Scène 01 terminée. La scène 02 pourra lire la route et les drapeaux de campagne.</color>");
+                    GUILayout.Label("<color=green>Scène terminée. La scène suivante pourra lire la route et les drapeaux de campagne.</color>");
                 }
             }
 
             GUILayout.Space(8);
             DrawState(director);
             DrawJournal(director);
+            GUILayout.Space(16);
         }
 
         private static void DrawObjectives(ScenarioDirector director, ScenarioNode node)
@@ -185,11 +215,23 @@ namespace Killtime.Story
         {
             return route switch
             {
-                StoryRoute.Vardis => "Vardis — voie du manuscrit",
-                StoryRoute.Independent => "Fuite indépendante",
-                StoryRoute.Imperial => "Évasion hostile",
+                StoryRoute.Vardis => "Vardis",
+                StoryRoute.Independent => "Indépendante",
+                StoryRoute.Imperial => "Impériale",
                 _ => "Non définie"
             };
+        }
+
+        private static string CountersSummary(ScenarioDirector director)
+        {
+            if (director == null || director.State == null || director.State.Integers.Count == 0) return "—";
+            var parts = new System.Collections.Generic.List<string>();
+            for (int i = 0; i < director.State.Integers.Count; i++)
+            {
+                var entry = director.State.Integers[i];
+                if (entry != null) parts.Add($"{entry.Key}: {entry.Value}");
+            }
+            return parts.Count == 0 ? "—" : string.Join(" • ", parts);
         }
     }
 }

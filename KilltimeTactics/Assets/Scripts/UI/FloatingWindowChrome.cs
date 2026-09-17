@@ -24,10 +24,7 @@ namespace Killtime.UI
         private const float BtnW = 26f;
         private const float BtnH = 18f;
         private const float Pad = 4f;
-        // Réserve un coin suffisamment large pour rester utilisable même lorsqu'un
-        // contenu possède une scrollbar verticale collée au bord droit.
-        /// <summary>Taille de la zone réservée à la poignée de redimensionnement.</summary>
-        public const float ResizeGripSize = 28f;
+        public const float ResizeGripSize = 16f;
 
         private static readonly Dictionary<int, bool> _resizing = new();
         private static readonly Dictionary<int, Vector2> _grabOffset = new();
@@ -497,8 +494,10 @@ namespace Killtime.UI
                 rect = LerpRect(d.animFrom, d.fullRect, t);
                 if (t >= 1f)
                 {
+                    rect = d.fullRect;
                     _docked.Remove(windowId);
                     RecalculateDockTargets();
+                    FocusWindow(windowId);
                 }
                 return false;
             }
@@ -877,18 +876,14 @@ namespace Killtime.UI
 
             bool resizing = _resizing.TryGetValue(windowId, out bool r) && r;
 
-            // Filet de sécurité : MouseUp perdu (relâché hors de la vue) → ne pas rester collé.
-            if (resizing && e.type != EventType.MouseDrag && e.type != EventType.MouseDown && !Input.GetMouseButton(0))
+            if (resizing && (e.rawType == EventType.MouseUp || (!Input.GetMouseButton(0) && e.type != EventType.MouseDrag)))
             {
                 _resizing[windowId] = false;
-                if (GUIUtility.hotControl == resizeControlId) GUIUtility.hotControl = 0;
-                return;
+                resizing = false;
             }
 
             Vector2 mp = e.mousePosition;
 
-            // Clic n'importe où dans la fenêtre → premier plan si on est déjà la plus haute dessous.
-            // (Sans Use() : titre, boutons et drag reçoivent l'event normalement.)
             if (e.type == EventType.MouseDown && !resizing && IsTopmostAt(windowId, mp, ref rect))
             {
                 int myIdx = _zOrder.IndexOf(windowId);
@@ -911,26 +906,23 @@ namespace Killtime.UI
             {
                 _resizing[windowId] = true;
                 _grabOffset[windowId] = new Vector2((rect.x + rect.width) - mp.x, (rect.y + rect.height) - mp.y);
-                GUIUtility.hotControl = resizeControlId;
                 TouchZ(windowId);
                 GUI.BringWindowToFront(windowId);
+                GUI.FocusWindow(windowId);
                 e.Use();
             }
             else if (e.type == EventType.MouseDrag && resizing)
             {
                 Vector2 off = _grabOffset.TryGetValue(windowId, out Vector2 o) ? o : Vector2.zero;
-                float maxW = Screen.width > 0 ? Screen.width : 4096f;
-                float maxH = Screen.height > 0 ? Screen.height : 4096f;
+                float maxW = Mathf.Max(minSize.x, Screen.width - rect.x - 10f);
+                float maxH = Mathf.Max(minSize.y, Screen.height - rect.y - 10f);
                 rect.width = Mathf.Clamp(mp.x + off.x - rect.x, minSize.x, maxW);
                 rect.height = Mathf.Clamp(mp.y + off.y - rect.y, minSize.y, maxH);
-                rect.x = Mathf.Clamp(rect.x, -rect.width + 100f, Screen.width - 100f);
-                rect.y = Mathf.Clamp(rect.y, 0f, Mathf.Max(0f, Screen.height - 30f));
                 e.Use();
             }
             else if (e.type == EventType.MouseUp && e.button == 0 && resizing)
             {
                 _resizing[windowId] = false;
-                if (GUIUtility.hotControl == resizeControlId) GUIUtility.hotControl = 0;
                 e.Use();
             }
         }
@@ -941,30 +933,131 @@ namespace Killtime.UI
         /// Masquée si minimisé ou suivi (repli/restauration : le rect est piloté).
         /// Doit être le dernier appel de DrawWindowContent (ne rien dessiner après).
         /// </summary>
+        private static GUIStyle _resizeGripStyle;
+        private static GUIStyle ResizeGripStyle()
+        {
+            if (_resizeGripStyle == null)
+            {
+                _resizeGripStyle = new GUIStyle(GUI.skin.label)
+                {
+                    fontSize = 12,
+                    fontStyle = FontStyle.Bold,
+                    alignment = TextAnchor.MiddleCenter,
+                    padding = new RectOffset(0, 0, 0, 0),
+                    margin = new RectOffset(0, 0, 0, 0)
+                };
+            }
+            return _resizeGripStyle;
+        }
+
+        /// <summary>
+        /// Bloque toute interaction du contenu avec le coin de la poignée de redimensionnement (bas-droite).
+        /// À appeler dans GUI.Window AVANT le contenu pour empêcher les scrollbars invisibles
+        /// d'intercepter les clics ou la molette dans ce coin.
+        /// </summary>
+        public static bool ConsumeResizeGripEvent(Rect windowRectLocal, int windowId, ref Rect rect, bool isMinimized = false)
+        {
+            if (isMinimized || _docked.ContainsKey(windowId)) return false;
+            if (windowRectLocal.width < ResizeGripSize * 2f || windowRectLocal.height < ResizeGripSize * 2f) return false;
+
+            Event e = Event.current;
+            if (e == null) return false;
+            if (e.type == EventType.Used || e.type == EventType.Ignore) return false;
+            if (e.type == EventType.Layout || e.type == EventType.Repaint) return false;
+
+            Rect gripRect = new Rect(windowRectLocal.width - ResizeGripSize, windowRectLocal.height - ResizeGripSize,
+                ResizeGripSize, ResizeGripSize);
+
+            if (!gripRect.Contains(e.mousePosition)) return false;
+
+            if (e.type == EventType.MouseDown && e.button == 0)
+            {
+                _resizing[windowId] = true;
+                Vector2 screenMouse = GUIUtility.GUIToScreenPoint(e.mousePosition);
+                _grabOffset[windowId] = new Vector2((rect.x + rect.width) - screenMouse.x, (rect.y + rect.height) - screenMouse.y);
+                TouchZ(windowId);
+                GUI.BringWindowToFront(windowId);
+                GUI.FocusWindow(windowId);
+                e.Use();
+                return true;
+            }
+
+            switch (e.type)
+            {
+                case EventType.MouseDown:
+                case EventType.MouseUp:
+                case EventType.MouseDrag:
+                case EventType.ContextClick:
+                case EventType.ScrollWheel:
+                    e.Use();
+                    return true;
+            }
+
+            return false;
+        }
+
         public static void DrawResizeHandle(ref Rect rect, int windowId, Vector2 minSize, bool isMinimized = false)
         {
             if (isMinimized || _docked.ContainsKey(windowId)) return;
-            if (rect.width < ResizeGripSize * 2f || rect.height < ResizeGripSize * 2f) return;
+            if (rect.width < 40f || rect.height < 40f) return;
 
             Rect gripRect = new Rect(rect.width - ResizeGripSize, rect.height - ResizeGripSize,
                 ResizeGripSize, ResizeGripSize);
             bool resizing = _resizing.TryGetValue(windowId, out bool r) && r;
-            Color prev = GUI.backgroundColor;
-            if (resizing) GUI.backgroundColor = new Color(0.2f, 0.9f, 1f, 1f);
-            GUI.Box(gripRect, "◢");
-            GUI.backgroundColor = prev;
+            Vector2 mouseLocal = Event.current != null ? Event.current.mousePosition : Vector2.zero;
+            bool hovered = gripRect.Contains(mouseLocal);
+
+            Color prevCol = GUI.color;
+            GUI.color = new Color(0.02f, 0.035f, 0.06f, 1f);
+            GUI.DrawTexture(gripRect, BgTex());
+            GUI.color = (resizing || hovered) ? new Color(0f, 1f, 1f, 1f) : new Color(0f, 0.90f, 1f, 0.75f);
+            GUI.Label(gripRect, "◢", ResizeGripStyle());
+            GUI.color = prevCol;
         }
 
         /// <summary>
-        /// Maintient la fenêtre visible à l'écran après GUI.Window.
+        /// Maintient la fenêtre entièrement visible à l'écran :
+        /// interdit tout débordement en bas, en haut, à gauche ou à droite.
         /// </summary>
-        public static void ClampToScreen(ref Rect r)
+        public static void ClampToScreen(ref Rect r, Vector2 minSize = default)
         {
             if (Screen.width <= 0 || Screen.height <= 0) return;
-            r.x = Mathf.Clamp(r.x, -r.width + 100f, Screen.width - 100f);
-            r.y = Mathf.Clamp(r.y, 0f, Mathf.Max(0f, Screen.height - 30f));
-            r.width = Mathf.Clamp(r.width, 200f, Screen.width);
-            r.height = Mathf.Clamp(r.height, CollapsedHeight, Screen.height);
+
+            const float margin = 10f;
+            float minW = minSize.x > 50f ? minSize.x : 200f;
+            float minH = (r.height <= CollapsedHeight + 2f) ? CollapsedHeight : (minSize.y > 30f ? minSize.y : CollapsedHeight);
+
+            float maxW = Mathf.Max(minW, Screen.width - margin * 2f);
+            float maxH = Mathf.Max(minH, Screen.height - margin * 2f);
+
+            r.width = Mathf.Clamp(r.width, minW, maxW);
+            r.height = Mathf.Clamp(r.height, minH, maxH);
+
+            if (r.yMax > Screen.height - margin)
+            {
+                r.y = Screen.height - margin - r.height;
+            }
+            if (r.y < margin)
+            {
+                r.y = margin;
+                if (r.height > Screen.height - margin * 2f)
+                {
+                    r.height = Screen.height - margin * 2f;
+                }
+            }
+
+            if (r.xMax > Screen.width - margin)
+            {
+                r.x = Screen.width - margin - r.width;
+            }
+            if (r.x < margin)
+            {
+                r.x = margin;
+                if (r.width > Screen.width - margin * 2f)
+                {
+                    r.width = Screen.width - margin * 2f;
+                }
+            }
         }
 
         private const float OverlapMargin = 8f;
@@ -1037,9 +1130,10 @@ namespace Killtime.UI
             if (Screen.width <= 0 || Screen.height <= 0) return desired;
             if (selfId == NoDockWindowId) return desired; // menu contextuel : suit le curseur, pas de cascade
 
-            float w = Mathf.Clamp(desired.width, 200f, Screen.width - 20f);
-            float h = Mathf.Clamp(desired.height, CollapsedHeight, Screen.height - 20f);
             float minY = 96f; // sous carte joueur (zone d'exclusion 16->88) + 8px de marge
+            float maxAllowedH = Mathf.Max(CollapsedHeight, Screen.height - minY - 12f);
+            float w = Mathf.Clamp(desired.width, 200f, Screen.width - 20f);
+            float h = Mathf.Clamp(desired.height, CollapsedHeight, maxAllowedH);
             Rect candidate = new Rect(
                 Mathf.Clamp(desired.x, 10f, Mathf.Max(10f, Screen.width - w - 10f)),
                 Mathf.Clamp(desired.y, minY, Mathf.Max(minY, Screen.height - h - 10f)),

@@ -11,13 +11,16 @@ namespace Killtime.Tactics.TurnSystem
     public enum CombatOutcome
     {
         InProgress,
-        Victory, // Tous les ennemis neutralisés
-        Defeat   // Tous les héros/joueurs neutralisés
+        Victory,
+        Defeat
     }
 
-    /// <summary>
-    /// Résultat d'un jet d'initiative (Livre I §4.3).
-    /// </summary>
+    public enum TurnSystemMode
+    {
+        Exploration,
+        CombatTurnBased
+    }
+
     [Serializable]
     public struct InitiativeRollResult
     {
@@ -27,16 +30,14 @@ namespace Killtime.Tactics.TurnSystem
         public int Total;
     }
 
-    /// <summary>
-    /// Gestionnaire de la séquence de tour (Le Tour de 10 Secondes du Livre VI).
-    /// Initiative (Livre I §4.3) : jet au début du combat sur max(RAP, AGI, INT),
-    /// ordre conservé ensuite. Réévalue en temps réel les conditions de victoire ou défaite.
-    /// </summary>
     public class TurnManager : MonoBehaviour
     {
         [Header("Références")]
         [SerializeField] private TacticalHexGrid _grid;
         [SerializeField] private List<TacticalUnit> _allUnits = new();
+
+        public TurnSystemMode SystemMode { get; private set; } = TurnSystemMode.Exploration;
+        public bool IsInExploration => SystemMode == TurnSystemMode.Exploration;
 
         public int CurrentRound { get; private set; } = 1;
         public TacticalUnit ActiveUnit { get; private set; }
@@ -109,11 +110,106 @@ namespace Killtime.Tactics.TurnSystem
 
         private void Start()
         {
-            if (IsMultiplayerPlayerClient()) return; // En multijoueur, le joueur attend le round_start du GM
-            if (_allUnits.Count > 0)
+            if (IsMultiplayerPlayerClient()) return;
+            if (_allUnits.Count > 0 && SystemMode == TurnSystemMode.CombatTurnBased)
             {
                 StartNewRound();
             }
+        }
+
+        public void SetExplorationMode(bool active, TacticalUnit defaultUnit = null)
+        {
+            var ai = FindAnyObjectByType<Killtime.Tactics.AI.TacticalAIController>();
+
+            if (active)
+            {
+                SystemMode = TurnSystemMode.Exploration;
+                IsCombatOver = false;
+                CurrentOutcome = CombatOutcome.InProgress;
+
+                if (ai != null)
+                {
+                    ai.StopAITurn();
+                    ai.IsAIEnabled = false;
+                    ai.enabled = false;
+                }
+
+                for (int i = 0; i < _allUnits.Count; i++)
+                {
+                    var u = _allUnits[i];
+                    if (u != null && u.Stats != null)
+                    {
+                        u.Stats.CurrentActionPoints = u.Stats.MaxActionPoints;
+                    }
+                }
+
+                if (defaultUnit != null && _allUnits.Contains(defaultUnit))
+                {
+                    ActiveUnit = defaultUnit;
+                }
+                else if (ActiveUnit == null && _allUnits.Count > 0)
+                {
+                    ActiveUnit = _allUnits.Find(u => u != null && u.IsPlayerControlled) ?? _allUnits[0];
+                }
+
+                if (ActiveUnit != null)
+                {
+                    OnTurnStarted?.Invoke(ActiveUnit);
+                }
+
+                if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                {
+                    Killtime.Audio.KilltimeAudioManager.Instance.PlayMusic(Killtime.Audio.MusicMood.Explore, Killtime.Audio.MusicIntensity.Calm, true);
+                }
+            }
+            else
+            {
+                EnterCombatMode();
+            }
+        }
+
+        public void EnterCombatMode(TacticalUnit triggeringUnit = null)
+        {
+            if (SystemMode == TurnSystemMode.CombatTurnBased && !IsCombatOver) return;
+
+            SystemMode = TurnSystemMode.CombatTurnBased;
+            IsCombatOver = false;
+            CurrentOutcome = CombatOutcome.InProgress;
+            _needsInitiativeRoll = true;
+            CurrentRound = 1;
+
+            var ai = FindAnyObjectByType<Killtime.Tactics.AI.TacticalAIController>();
+            if (ai != null)
+            {
+                ai.enabled = true;
+            }
+
+            if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+            {
+                Killtime.Audio.KilltimeAudioManager.Instance.Play(Killtime.Audio.SoundId.Round_Start, 0.9f);
+                Killtime.Audio.KilltimeAudioManager.Instance.PlayMusic(Killtime.Audio.MusicMood.Combat, Killtime.Audio.MusicIntensity.Intense, true);
+            }
+
+            StartNewRound();
+
+            if (triggeringUnit != null && _allUnits.Contains(triggeringUnit))
+            {
+                int triggerIdx = _allUnits.IndexOf(triggeringUnit);
+                if (triggerIdx >= 0)
+                {
+                    _activeUnitIndex = triggerIdx;
+                    ActiveUnit = triggeringUnit;
+                    OnTurnStarted?.Invoke(ActiveUnit);
+                }
+            }
+        }
+
+        public void SetActiveUnitExplicit(TacticalUnit unit)
+        {
+            if (unit == null || !_allUnits.Contains(unit)) return;
+            ActiveUnit = unit;
+            _activeUnitIndex = _allUnits.IndexOf(unit);
+            OnTurnStarted?.Invoke(ActiveUnit);
         }
 
         public void RegisterUnit(TacticalUnit unit)
@@ -129,7 +225,16 @@ namespace Killtime.Tactics.TurnSystem
 
             if (IsMultiplayerPlayerClient())
             {
-                // En multijoueur joueur : on enregistre sans lancer de round autonome
+                return;
+            }
+
+            if (IsInExploration)
+            {
+                if (ActiveUnit == null && unit.IsPlayerControlled)
+                {
+                    ActiveUnit = unit;
+                    OnTurnStarted?.Invoke(ActiveUnit);
+                }
                 return;
             }
 
@@ -150,7 +255,7 @@ namespace Killtime.Tactics.TurnSystem
             }
 
             InsertUnitIntoCurrentRound(unit);
-        }
+        }   
 
         private void InsertUnitIntoCurrentRound(TacticalUnit newUnit)
         {
@@ -251,6 +356,7 @@ namespace Killtime.Tactics.TurnSystem
             _activeUnitIndex = 0;
             _allUnits.RemoveAll(u => u == null);
             _needsInitiativeRoll = true;
+            SystemMode = TurnSystemMode.Exploration;
         }
 
         /// <summary>
@@ -316,6 +422,7 @@ namespace Killtime.Tactics.TurnSystem
 
         public bool CheckCombatOver()
         {
+            if (IsInExploration) return false;
             if (IsCombatOver) return true;
             if (_allUnits.Count == 0) return false;
 
@@ -358,6 +465,7 @@ namespace Killtime.Tactics.TurnSystem
 
         public void StartNewRound()
         {
+            if (IsInExploration) return;
             _allUnits.RemoveAll(u => u == null);
 
             if (CheckCombatOver()) return;
@@ -412,6 +520,7 @@ namespace Killtime.Tactics.TurnSystem
 
         public void EndCurrentTurn()
         {
+            if (IsInExploration) return;
             if (CheckCombatOver()) return;
 
             if (ActiveUnit != null && ActiveUnit.Stats != null)

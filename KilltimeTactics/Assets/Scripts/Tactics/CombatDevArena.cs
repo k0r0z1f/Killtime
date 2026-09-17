@@ -751,12 +751,17 @@ namespace Killtime.Tactics
 
         private void HandleTurnStarted(TacticalUnit unit)
         {
-            if (_cameraController != null)
+            if (_cameraController != null && unit != null)
             {
                 _cameraController.FocusOn(unit.transform);
             }
 
-            var visual = unit.GetComponent<TacticalUnitVisual>();
+            if (_turnManager != null && _turnManager.IsInExploration)
+            {
+                return;
+            }
+
+            var visual = unit != null ? unit.GetComponent<TacticalUnitVisual>() : null;
             visual?.SetCombatStance(true);
 
             if (CurrentTarget == null || CurrentTarget == unit || !CurrentTarget.Stats.IsAlive)
@@ -770,8 +775,11 @@ namespace Killtime.Tactics
             _adaptiveTurnCount++;
             UpdateAdaptiveMusic();
 
-            Log($"--- Tour de 10s : <b>{unit.Stats.Name}</b> (PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints}) ---");
-            RecordChronoSnapshot($"Début du tour de {unit.Stats.Name}");
+            if (unit != null)
+            {
+                Log($"--- Tour de 10s : <b>{unit.Stats.Name}</b> (PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints}) ---");
+                RecordChronoSnapshot($"Début du tour de {unit.Stats.Name}");
+            }
         }
 
         /// <summary>
@@ -783,9 +791,26 @@ namespace Killtime.Tactics
         private bool IsPlayerManualControl(TacticalUnit unit)
         {
             if (unit == null || !unit.IsPlayerControlled || unit.IsMoving) return false;
+            if (_turnManager != null && _turnManager.IsInExploration) return true;
             if (_aiController == null) EnsureAIController();
             if (_aiController != null && _aiController.Mode == AI.CombatAIMode.FullAuto) return false;
             return true;
+        }
+
+        public void RegisterSceneParty(TacticalUnit player, IEnumerable<TacticalUnit> allies)
+        {
+            PlayerUnit = player;
+            _additionalPlayers.Clear();
+            if (allies != null)
+            {
+                foreach (var ally in allies)
+                {
+                    if (ally != null && ally != player)
+                    {
+                        _additionalPlayers.Add(ally);
+                    }
+                }
+            }
         }
 
         private void HandleMouseInteraction()
@@ -815,14 +840,19 @@ namespace Killtime.Tactics
                         var start = activeUnit.CurrentCoords;
                         var target = hoveredNode.Coordinates;
 
-                        // Vérifier si un clic est effectué
                         if (Input.GetMouseButtonDown(0))
                         {
-                            // Clic carte 3D : repli auto des fenêtres flottantes en coins (fantômes).
                             Killtime.UI.FloatingWindowChrome.OnMapClicked();
                             var clickedUnit = GetUnitAtCoords(target);
+
                             if (clickedUnit != null && clickedUnit != activeUnit)
                             {
+                                if (_turnManager != null && _turnManager.IsInExploration && clickedUnit.IsPlayerControlled)
+                                {
+                                    SwitchActiveExplorer(clickedUnit);
+                                    return;
+                                }
+
                                 SelectTarget(clickedUnit);
                                 return;
                             }
@@ -830,20 +860,28 @@ namespace Killtime.Tactics
                             bool isTargetOccupied = clickedUnit != null || hoveredNode.IsOccupied;
                             if (!start.Equals(target) && hoveredNode.IsWalkable && !isTargetOccupied)
                             {
-                                var path = _pathfinder.FindPath(start, target, activeUnit.Stats.CurrentActionPoints, out int apCost);
+                                bool inExploration = _turnManager != null && _turnManager.IsInExploration;
+                                int availableAP = inExploration ? 99 : activeUnit.Stats.CurrentActionPoints;
+                                var path = _pathfinder.FindPath(start, target, availableAP, out int apCost);
+
                                 if (path.Count > 0)
                                 {
-                                    int remainingAP = activeUnit.Stats.CurrentActionPoints - apCost;
-                                    Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{apCost} PA | Restant: {remainingAP} PA]");
-
-                                    var unitVis = activeUnit.GetComponent<TacticalUnitVisual>();
-                                    unitVis?.SpawnFloatingText($"Déplacement (-{apCost} PA)", new Color(0.2f, 0.85f, 1.0f));
+                                    int finalCost = inExploration ? 0 : apCost;
+                                    if (!inExploration)
+                                    {
+                                        int remainingAP = activeUnit.Stats.CurrentActionPoints - apCost;
+                                        Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{apCost} PA | Restant: {remainingAP} PA]");
+                                        activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"Déplacement (-{apCost} PA)", new Color(0.2f, 0.85f, 1.0f));
+                                    }
+                                    else
+                                    {
+                                        activeUnit.Stats.CurrentActionPoints = activeUnit.Stats.MaxActionPoints;
+                                    }
 
                                     _gridVisualizer.ClearPathPreview();
                                     if (KilltimeAudioManager.Instance != null)
                                         KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Dash, activeUnit.transform.position, 0.5f);
-                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, apCost));
-                                    RecordChronoSnapshot($"Déplacement vers ({target.Q}, {target.R})");
+                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, finalCost));
                                 }
                             }
                         }
@@ -1019,6 +1057,21 @@ namespace Killtime.Tactics
         /// -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
         /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
         /// </summary>
+        public void SwitchActiveExplorer(TacticalUnit unit)
+        {
+            if (unit == null) return;
+            _turnManager?.SetActiveUnitExplicit(unit);
+            if (_cameraController != null)
+            {
+                _cameraController.FocusOn(unit.transform);
+            }
+            var vis = unit.GetComponent<TacticalUnitVisual>();
+            vis?.SpawnFloatingText($"Opérateur : {unit.Stats.Name}", Color.cyan);
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Filter, 0.5f);
+            Log($"🕹️ Contrôle basculé sur <b>{unit.Stats.Name}</b>.");
+        }
+
         public void ExecuteAttack(
             BodyPart targetedPart, 
             bool cancelPenaltyWithAP, 
@@ -1041,6 +1094,12 @@ namespace Killtime.Tactics
 
             var attacker = _turnManager.ActiveUnit;
             var defender = CurrentTarget;
+
+            if (_turnManager != null && _turnManager.IsInExploration)
+            {
+                Log("🚨 <b>COUP DE FEU EN EXPLORATION !</b> Passage immédiat en combat tactique.");
+                _turnManager.EnterCombatMode(attacker);
+            }
 
             if (TurnManager.IsMultiplayerPlayerClient())
             {

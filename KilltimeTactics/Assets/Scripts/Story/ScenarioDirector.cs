@@ -119,6 +119,14 @@ namespace Killtime.Story
             return true;
         }
 
+        public bool GoToNode(string nodeId)
+        {
+            if (string.IsNullOrWhiteSpace(nodeId)) return false;
+            if (ActiveScenario?.FindNode(nodeId) == null) return false;
+            MoveTo(nodeId);
+            return true;
+        }
+
         public void CompleteActiveScenario()
         {
             if (ActiveScenario == null) return;
@@ -144,7 +152,7 @@ namespace Killtime.Story
             if (node != null) ApplyEffects(node.EnterEffects);
         }
 
-        private void ApplyEffects(System.Collections.Generic.List<ScenarioEffect> effects)
+        public void ApplyEffects(System.Collections.Generic.List<ScenarioEffect> effects)
         {
             if (effects == null) return;
             foreach (var effect in effects)
@@ -165,6 +173,7 @@ namespace Killtime.Story
                         break;
                 }
             }
+            Commit();
         }
 
         private void Load()

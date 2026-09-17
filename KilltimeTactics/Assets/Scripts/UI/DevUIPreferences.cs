@@ -58,6 +58,10 @@ namespace Killtime.UI
         public float AiRetreatRatio = 0.25f;
         public int AiDefensiveReserve = 1;
 
+        // --- Éditeur de scénario (F8) ---
+        public int ScenarioEditorTab = 0;
+        public string ActiveScenarioFileName = "volume_1_scene_01.json";
+
         // --- Éditeur de carte (F2) ---
         public int MapBrush = 2; // HalfCover
         public string MapName = "Killzone_Alpha";
