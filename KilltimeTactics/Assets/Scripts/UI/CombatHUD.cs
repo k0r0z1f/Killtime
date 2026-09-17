@@ -132,6 +132,13 @@ namespace Killtime.UI
             var activeUnit = Instance._turnManager != null ? Instance._turnManager.ActiveUnit : (Instance._arena != null ? Instance._arena.PlayerUnit : null);
             if (activeUnit == null || activeUnit.Stats == null) return false;
 
+            // Menu contextuel spatialisé sur l'unité active
+            if (Instance._showActiveUnitContextMenu
+                && Instance._activeUnitContextMenuRect.width > 0f
+                && Instance._activeUnitContextMenuRect.height > 0f
+                && Instance._activeUnitContextMenuRect.Contains(mouseGui))
+                return true;
+
             // Carte joueur (haut-gauche)
             float pw = Mathf.Clamp(Screen.width * 0.27f, 250f, 340f);
             if (new Rect(24f, 22f, pw, 62f).Contains(mouseGui))
@@ -317,6 +324,24 @@ namespace Killtime.UI
         private bool _cancelPenaltyWithAP = false;
         private bool _showAnatomyDrawer = false;
         private float _prePauseTimeScale = 1.0f;
+        private bool _showActiveUnitContextMenu = true;
+        private Rect _activeUnitContextMenuRect = Rect.zero;
+
+        public void ToggleActiveUnitContextMenu()
+        {
+            _showActiveUnitContextMenu = !_showActiveUnitContextMenu;
+        }
+
+        public void OpenActiveUnitContextMenu()
+        {
+            _showActiveUnitContextMenu = true;
+        }
+
+        public void CloseActiveUnitContextMenu()
+        {
+            _showActiveUnitContextMenu = false;
+            _activeUnitContextMenuRect = Rect.zero;
+        }
 
         // --- Grenades (Livre VIII §31.3) : viser la case de la cible verrouillée,
         // --- lancer main (2 PA / 8 cases) ou lanceur (3 PA / 20 cases), visée +1 PA.
@@ -489,10 +514,13 @@ namespace Killtime.UI
         {
             Color teamCol = unit.IsPlayerControlled ? ColorCyanAccent : ColorCrimson;
             AddAdvancedLog($"Engagement : <b>{unit.Stats.Name}</b> (PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints})", LogCategory.MovementAndTurns, "[INIT]", teamCol);
+            _showActiveUnitContextMenu = unit != null && unit.IsPlayerControlled && (_turnManager != null && !_turnManager.IsInExploration);
         }
 
         private void HandleCombatEnded(CombatOutcome outcome)
         {
+            _showActiveUnitContextMenu = false;
+            _activeUnitContextMenuRect = Rect.zero;
             string outcomeStr = outcome == CombatOutcome.Victory ? "🏆 ENGAGEMENT REMPORTÉ" : "💀 SIGNAUX VITAUX ROMPUS";
             Color col = outcome == CombatOutcome.Victory ? Color.green : ColorCrimson;
             AddAdvancedLog(outcomeStr, LogCategory.Combat, "[RÉSOLUTION]", col);
@@ -1253,10 +1281,80 @@ namespace Killtime.UI
             }
         }
 
+        private void DrawActiveUnitContextMenu(TacticalUnit unit)
+        {
+            if (_turnManager == null || _turnManager.IsInExploration || _turnManager.IsCombatOver)
+            {
+                _activeUnitContextMenuRect = Rect.zero;
+                return;
+            }
+
+            if (unit == null || unit.Stats == null || !unit.Stats.IsAlive || !unit.IsPlayerControlled)
+            {
+                _activeUnitContextMenuRect = Rect.zero;
+                return;
+            }
+
+            UnityEngine.Camera cam = UnityEngine.Camera.main;
+            if (cam == null)
+            {
+                _activeUnitContextMenuRect = Rect.zero;
+                return;
+            }
+
+            Vector3 worldPos = unit.transform.position + Vector3.up * 2.30f;
+            Vector3 screenPos = cam.WorldToScreenPoint(worldPos);
+
+            if (screenPos.z <= 0f)
+            {
+                _activeUnitContextMenuRect = Rect.zero;
+                return;
+            }
+
+            float menuWidth = 194f;
+            float menuHeight = 58f;
+            float x = screenPos.x - (menuWidth * 0.5f);
+            float y = Screen.height - screenPos.y - menuHeight;
+
+            x = Mathf.Clamp(x, 10f, Screen.width - menuWidth - 10f);
+            y = Mathf.Clamp(y, 10f, Screen.height - menuHeight - 10f);
+
+            Rect menuRect = new Rect(x, y, menuWidth, menuHeight);
+            _activeUnitContextMenuRect = menuRect;
+
+            bool isHovered = menuRect.Contains(Event.current.mousePosition);
+            DrawSoftPanel(menuRect, new Color(0.018f, 0.034f, 0.052f, isHovered ? 0.96f : 0.88f), true);
+            DrawAccentLine(new Rect(menuRect.x, menuRect.y, menuRect.width, 2f), ColorCyanAccent, 0.95f);
+
+            GUI.color = ColorCyanAccent;
+            GUI.Label(new Rect(menuRect.x + 8f, menuRect.y + 4f, menuRect.width - 32f, 15f), unit.Stats.Name.ToUpperInvariant(), _hudNameStyle);
+            GUI.color = ColorTextMuted;
+
+            if (GUI.Button(new Rect(menuRect.x + menuRect.width - 20f, menuRect.y + 2f, 16f, 16f), "×", _btnFlatNormal))
+            {
+                CloseActiveUnitContextMenu();
+                return;
+            }
+
+            int currentAp = unit.Stats.CurrentActionPoints;
+            string reserveLabel = currentAp > 0 ? $"Réserve : {currentAp} PA (Réaction)" : "0 PA résiduel";
+            GUI.color = currentAp > 0 ? ColorAmber : ColorTextMuted;
+            GUI.Label(new Rect(menuRect.x + 8f, menuRect.y + 19f, menuRect.width - 16f, 13f), reserveLabel, _hudSubStyle);
+            GUI.color = Color.white;
+
+            Rect btnRect = new Rect(menuRect.x + 6f, menuRect.y + 33f, menuRect.width - 12f, 20f);
+            if (DrawTacticalButton(btnRect, "⌛ TERMINER LE TOUR", "ESPACE", false, ColorCyanAccent, true))
+            {
+                TriggerEndTurn();
+            }
+        }
+
         private void TriggerEndTurn()
         {
             _showAnatomyDrawer = false;
             _showGrenadeDrawer = false;
+            _showActiveUnitContextMenu = false;
+            _activeUnitContextMenuRect = Rect.zero;
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.PlayUI(SoundId.Turn_End, 0.7f);
 

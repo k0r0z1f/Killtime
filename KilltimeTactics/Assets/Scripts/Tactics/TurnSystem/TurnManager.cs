@@ -130,8 +130,6 @@ namespace Killtime.Tactics.TurnSystem
                 if (ai != null)
                 {
                     ai.StopAITurn();
-                    ai.IsAIEnabled = false;
-                    ai.enabled = false;
                 }
 
                 for (int i = 0; i < _allUnits.Count; i++)
@@ -182,6 +180,7 @@ namespace Killtime.Tactics.TurnSystem
             if (ai != null)
             {
                 ai.enabled = true;
+                ai.LoadDevUIPrefs();
             }
 
             if (Killtime.Audio.KilltimeAudioManager.Instance != null)
@@ -201,6 +200,11 @@ namespace Killtime.Tactics.TurnSystem
                     ActiveUnit = triggeringUnit;
                     OnTurnStarted?.Invoke(ActiveUnit);
                 }
+            }
+
+            if (ActiveUnit != null)
+            {
+                ai?.TriggerAITurnIfApplicable();
             }
         }
 

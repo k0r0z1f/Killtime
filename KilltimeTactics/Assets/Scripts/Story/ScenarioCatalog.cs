@@ -12,12 +12,26 @@ namespace Killtime.Story
     {
         private static readonly Dictionary<string, ScenarioDefinition> Definitions = new();
 
-        public static IEnumerable<ScenarioDefinition> All => Definitions.Values;
+        public static IEnumerable<ScenarioDefinition> All
+        {
+            get
+            {
+                if (Definitions.Count == 0)
+                {
+                    ReloadFromDisk();
+                }
+                return Definitions.Values;
+            }
+        }
 
         public static ScenarioDefinition Find(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) return null;
-            Definitions.TryGetValue(id, out var definition);
+            if (!Definitions.TryGetValue(id, out var definition))
+            {
+                ReloadFromDisk();
+                Definitions.TryGetValue(id, out definition);
+            }
             return definition;
         }
 
@@ -25,6 +39,26 @@ namespace Killtime.Story
         {
             if (definition == null || string.IsNullOrWhiteSpace(definition.Id)) return;
             Definitions[definition.Id] = definition;
+        }
+
+        public static bool Unregister(string id)
+        {
+            if (string.IsNullOrWhiteSpace(id)) return false;
+            return Definitions.Remove(id);
+        }
+
+        public static void ReloadFromDisk()
+        {
+            Definitions.Clear();
+            var scenes = StorySceneRepository.LoadAllScenes();
+            for (int i = 0; i < scenes.Count; i++)
+            {
+                var def = FromSceneData(scenes[i]);
+                if (def != null)
+                {
+                    Register(def);
+                }
+            }
         }
 
         public static ScenarioDefinition FromSceneData(StorySceneData data)

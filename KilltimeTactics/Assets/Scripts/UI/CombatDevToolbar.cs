@@ -470,7 +470,7 @@ namespace Killtime.UI
 
         private void DrawCheatsAndToolsTab()
         {
-            var ai = _arena != null ? _arena.AIController : null;
+            var ai = (_arena != null ? _arena.AIController : null) ?? FindAnyObjectByType<TacticalAIController>();
             if (ai != null)
             {
                 GUILayout.Label("<b>🤖 Automatisation Tactique (IA) :</b>");
@@ -501,7 +501,16 @@ namespace Killtime.UI
 
                 GUI.enabled = !isPlayer;
 
-                ai.IsAIEnabled = GUILayout.Toggle(ai.IsAIEnabled, "Activer le Contrôleur d'IA");
+                bool newAiEnabled = GUILayout.Toggle(ai.IsAIEnabled, "Activer le Contrôleur d'IA");
+                if (newAiEnabled != ai.IsAIEnabled)
+                {
+                    ai.IsAIEnabled = newAiEnabled;
+                    if (DevUIPreferences.Current != null)
+                    {
+                        DevUIPreferences.Current.AiEnabled = newAiEnabled;
+                        DevUIPreferences.MarkDirty();
+                    }
+                }
 
                 GUILayout.BeginHorizontal();
                 GUILayout.Label("Mode IA :", GUILayout.Width(80));
@@ -513,12 +522,22 @@ namespace Killtime.UI
                 if (GUILayout.Button("Mode Normal (Ennemis IA)"))
                 {
                     ai.Mode = CombatAIMode.Normal;
+                    if (DevUIPreferences.Current != null)
+                    {
+                        DevUIPreferences.Current.AiMode = (int)CombatAIMode.Normal;
+                        DevUIPreferences.MarkDirty();
+                    }
                 }
 
                 GUI.backgroundColor = isFullAuto ? new Color(1f, 0.4f, 0.2f) : Color.white;
                 if (GUILayout.Button("Mode Full Auto (100% IA)"))
                 {
                     ai.Mode = CombatAIMode.FullAuto;
+                    if (DevUIPreferences.Current != null)
+                    {
+                        DevUIPreferences.Current.AiMode = (int)CombatAIMode.FullAuto;
+                        DevUIPreferences.MarkDirty();
+                    }
                 }
                 GUI.backgroundColor = Color.white;
                 GUILayout.EndHorizontal();
@@ -530,6 +549,11 @@ namespace Killtime.UI
                 if (Mathf.Abs(newDelay - curDelay) > 0.01f)
                 {
                     ai.ActionDelay = newDelay;
+                    if (DevUIPreferences.Current != null)
+                    {
+                        DevUIPreferences.Current.AiActionDelay = newDelay;
+                        DevUIPreferences.MarkDirty();
+                    }
                 }
                 GUILayout.EndHorizontal();
 

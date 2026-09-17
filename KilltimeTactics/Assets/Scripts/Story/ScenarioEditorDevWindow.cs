@@ -72,9 +72,12 @@ namespace Killtime.Story
         private string _hoverTitle = "";
         private string _hoverBody = "";
         private Vector2 _hoverScreenPos;
+        // Position écran stable pour les infobulles : les cartes sont dessinées dans un BeginGroup.
+        private Vector2 _graphMouseScreenPos;
 
         private readonly List<string> _availableCharacterFiles = new();
         private readonly List<string> _availableMapFiles = new();
+        private readonly List<string> _availableSceneFiles = new();
 
         protected override void OnAwake()
         {
@@ -108,6 +111,63 @@ namespace Killtime.Story
                     _availableMapFiles.Add(Path.GetFileNameWithoutExtension(f));
                 }
             }
+
+            _availableSceneFiles.Clear();
+            string sceneDir = Path.Combine(Application.persistentDataPath, "Scenarios");
+            if (!Directory.Exists(sceneDir)) Directory.CreateDirectory(sceneDir);
+            foreach (var f in Directory.GetFiles(sceneDir, "*.json"))
+            {
+                _availableSceneFiles.Add(f);
+            }
+        }
+
+        public void LoadSceneFromPath(string path)
+        {
+            if (!File.Exists(path)) return;
+            try
+            {
+                string json = File.ReadAllText(path);
+                var loaded = JsonUtility.FromJson<StorySceneData>(json);
+                if (loaded != null)
+                {
+                    StorySceneData.EnsureDeepDefaults(loaded);
+                    _data = loaded;
+                    _activeFilePath = path;
+                    _hasInitializedLayout = false;
+                    _selectedActorIndex = 0;
+                    _selectedInteractableIndex = 0;
+                    _focusedNodeIndex = 0;
+                    CombatHUD.Instance?.AddAdvancedLog($"📖 Scène chargée : <b>{_data.Title}</b> [{_data.SceneId}]", LogCategory.MovementAndTurns, "[ÉDITEUR]", Color.cyan);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"[ScenarioEditor] Échec du chargement de '{path}' : {ex.Message}");
+            }
+        }
+
+        public void CreateNewEmptyScene()
+        {
+            _data = new StorySceneData
+            {
+                SceneId = $"nouvelle_scene_{_availableSceneFiles.Count + 1}",
+                Title = "Nouvelle Scène",
+                Volume = "Livre I / Volume 1",
+                FirstNodeId = "node_1"
+            };
+            _data.Nodes.Add(new SceneNodeData
+            {
+                NodeId = "node_1",
+                Title = "Introduction",
+                GraphPosX = 60f,
+                GraphPosY = 60f
+            });
+            StorySceneData.EnsureDeepDefaults(_data);
+            _activeFilePath = "";
+            _hasInitializedLayout = false;
+            _selectedActorIndex = 0;
+            _selectedInteractableIndex = 0;
+            _focusedNodeIndex = 0;
         }
 
         private void CreateDefaultSceneTemplate()
@@ -162,6 +222,51 @@ namespace Killtime.Story
 
         private void DrawMetadataTab()
         {
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>Scène Active :</b>", GUILayout.Width(130));
+
+            if (_availableSceneFiles.Count == 0)
+            {
+                GUILayout.Label("<color=grey>(Aucune scène sur disque)</color>");
+            }
+            else
+            {
+                int currentSceneIdx = _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase) || string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase));
+                if (currentSceneIdx < 0) currentSceneIdx = 0;
+
+                if (GUILayout.Button("◀", GUILayout.Width(26)))
+                {
+                    currentSceneIdx = (currentSceneIdx - 1 + _availableSceneFiles.Count) % _availableSceneFiles.Count;
+                    LoadSceneFromPath(_availableSceneFiles[currentSceneIdx]);
+                }
+
+                string currentFileName = Path.GetFileName(_availableSceneFiles[currentSceneIdx]);
+                GUILayout.Label($"<b>{currentFileName}</b>", GUILayout.Width(230));
+
+                if (GUILayout.Button("▶", GUILayout.Width(26)))
+                {
+                    currentSceneIdx = (currentSceneIdx + 1) % _availableSceneFiles.Count;
+                    LoadSceneFromPath(_availableSceneFiles[currentSceneIdx]);
+                }
+            }
+
+            if (GUILayout.Button("🔄 Scanner", GUILayout.Width(80)))
+            {
+                RefreshCatalogCache();
+            }
+
+            GUI.backgroundColor = new Color(0.2f, 0.8f, 0.4f);
+            if (GUILayout.Button("+ Nouvelle Scène", GUILayout.Width(130)))
+            {
+                CreateNewEmptyScene();
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+
+            GUILayout.Space(4);
+
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label("<b>Paramètres Généraux du Scénario</b>");
 
@@ -312,6 +417,36 @@ namespace Killtime.Story
             GUILayout.Label("Arme Équipée :", GUILayout.Width(95));
             actor.EquippedWeaponName = GUILayout.TextField(actor.EquippedWeaponName);
             GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            actor.SpawnInitially = GUILayout.Toggle(actor.SpawnInitially, "Apparition Initiale", GUILayout.Width(140));
+            GUILayout.Label("Si Nœud ID :", GUILayout.Width(80));
+            actor.SpawnOnNodeId = GUILayout.TextField(actor.SpawnOnNodeId ?? "", GUILayout.Width(140));
+            GUILayout.EndHorizontal();
+
+            actor.EmbeddedSheet ??= new CharacterSheet();
+            var attr = actor.EmbeddedSheet.BaseAttributes;
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("FOR:", GUILayout.Width(32));
+            int.TryParse(GUILayout.TextField(attr.Force.ToString(), GUILayout.Width(28)), out attr.Force);
+            GUILayout.Label("AGI:", GUILayout.Width(30));
+            int.TryParse(GUILayout.TextField(attr.Agilite.ToString(), GUILayout.Width(28)), out attr.Agilite);
+            GUILayout.Label("CON:", GUILayout.Width(32));
+            int.TryParse(GUILayout.TextField(attr.Constitution.ToString(), GUILayout.Width(28)), out attr.Constitution);
+            GUILayout.Label("RAP:", GUILayout.Width(30));
+            int.TryParse(GUILayout.TextField(attr.Rapidite.ToString(), GUILayout.Width(28)), out attr.Rapidite);
+            GUILayout.Label("INT:", GUILayout.Width(28));
+            int.TryParse(GUILayout.TextField(attr.Intelligence.ToString(), GUILayout.Width(28)), out attr.Intelligence);
+            GUILayout.Label("ERU:", GUILayout.Width(30));
+            int.TryParse(GUILayout.TextField(attr.Erudition.ToString(), GUILayout.Width(28)), out attr.Erudition);
+            GUILayout.Label("CHA:", GUILayout.Width(30));
+            int.TryParse(GUILayout.TextField(attr.Charisme.ToString(), GUILayout.Width(28)), out attr.Charisme);
+            GUILayout.Label("INS:", GUILayout.Width(28));
+            int.TryParse(GUILayout.TextField(attr.Instinct.ToString(), GUILayout.Width(28)), out attr.Instinct);
+            GUILayout.Label("MAG:", GUILayout.Width(32));
+            int.TryParse(GUILayout.TextField(attr.Magie.ToString(), GUILayout.Width(28)), out attr.Magie);
+            actor.EmbeddedSheet.BaseAttributes = attr;
+            GUILayout.EndHorizontal();
         }
 
         private void DrawInteractablesTab()
@@ -429,18 +564,50 @@ namespace Killtime.Story
 
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.BeginHorizontal();
+
+            if (_availableSceneFiles.Count > 1)
+            {
+                int sceneIdx = _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase) || string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase));
+                if (sceneIdx < 0) sceneIdx = 0;
+                if (GUILayout.Button("◀", GUILayout.Width(24), GUILayout.Height(22)))
+                {
+                    sceneIdx = (sceneIdx - 1 + _availableSceneFiles.Count) % _availableSceneFiles.Count;
+                    LoadSceneFromPath(_availableSceneFiles[sceneIdx]);
+                }
+                if (GUILayout.Button("▶", GUILayout.Width(24), GUILayout.Height(22)))
+                {
+                    sceneIdx = (sceneIdx + 1) % _availableSceneFiles.Count;
+                    LoadSceneFromPath(_availableSceneFiles[sceneIdx]);
+                }
+            }
+
             GUILayout.Label($"<b>■ SCÈNE : {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color>)", GUILayout.ExpandWidth(true));
 
             GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
             if (GUILayout.Button("+ Nouveau Nœud", GUILayout.Width(120), GUILayout.Height(22)))
             {
-                float newX = 60f + _data.Nodes.Count * 480f;
+                float newX = 60f;
+                float newY = 60f;
+                if (_data.Nodes.Count > 0)
+                {
+                    if (GetSceneContentBounds(out float _, out float _, out float maxX, out float _))
+                    {
+                        newX = maxX + 60f;
+                        newY = 60f;
+                    }
+                    else
+                    {
+                        var lastBox = ComputeNodeBoundingBox(_data.Nodes[_data.Nodes.Count - 1]);
+                        newX = lastBox.xMax + 60f;
+                        newY = lastBox.yMin;
+                    }
+                }
                 _data.Nodes.Add(new SceneNodeData
                 {
                     NodeId = $"node_{_data.Nodes.Count + 1}",
                     Title = "Nouveau Nœud",
                     GraphPosX = newX,
-                    GraphPosY = 100f
+                    GraphPosY = newY
                 });
             }
             GUI.backgroundColor = Color.white;
@@ -515,12 +682,14 @@ namespace Killtime.Story
                 _hasInitializedLayout = true;
                 if (_data.Nodes.Count > 0)
                 {
-                    // Première ouverture : une grille responsive utilise la largeur ET la
-                    // hauteur du viewport. L'ancien flux narratif en X envoyait #3 à droite,
-                    // puis laissait une grande zone vide sous #1/#2 selon la taille de fenêtre.
-                    // La grille est appliquée une seule fois ; l'utilisateur garde ensuite le
-                    // déplacement manuel et les deux dispositions explicites de la barre.
-                    AutoLayoutMosaic(canvasRect);
+                    if (CheckIfSceneNeedsInitialLayout(_data))
+                    {
+                        AutoLayoutMosaic(canvasRect);
+                    }
+                    else
+                    {
+                        FocusAllNodes(canvasRect);
+                    }
                     _focusedNodeIndex = 0;
                 }
             }
@@ -555,12 +724,74 @@ namespace Killtime.Story
 
         private static bool CheckIfSceneNeedsInitialLayout(StorySceneData data)
         {
-            if (data == null || data.Nodes == null || data.Nodes.Count <= 1) return false;
+            if (data == null || data.Nodes == null || data.Nodes.Count == 0) return false;
             for (int i = 0; i < data.Nodes.Count; i++)
             {
-                if (data.Nodes[i].GraphPosY < 0f || data.Nodes[i].GraphPosX == 0f) return true;
+                var n = data.Nodes[i];
+                if (n == null) continue;
+                if (n.GraphPosX <= 0f && n.GraphPosY <= 0f) return true;
             }
             return false;
+        }
+
+        private static void LayoutCardsInsideNode(SceneNodeData node)
+        {
+            if (node == null) return;
+            float cardStartX = node.GraphPosX + 20f;
+            float cardStartY = node.GraphPosY + 48f;
+            const int maxCardsPerRow = 3;
+            const float gapCardsX = 18f;
+            const float gapCardsY = 18f;
+
+            float curY = cardStartY;
+            int totalDialogues = node.Dialogues != null ? node.Dialogues.Count : 0;
+
+            for (int rowStart = 0; rowStart < totalDialogues; rowStart += maxCardsPerRow)
+            {
+                int rowEnd = Mathf.Min(rowStart + maxCardsPerRow, totalDialogues);
+                float rowHeight = 0f;
+                for (int d = rowStart; d < rowEnd; d++)
+                {
+                    Vector2 s = GetDialogueCardSize(node.Dialogues[d]);
+                    rowHeight = Mathf.Max(rowHeight, s.y);
+                }
+
+                for (int d = rowStart; d < rowEnd; d++)
+                {
+                    int col = d - rowStart;
+                    node.Dialogues[d].GraphPosX = cardStartX + col * (DlgCardDefaultW + gapCardsX);
+                    node.Dialogues[d].GraphPosY = curY;
+                }
+
+                curY += rowHeight + gapCardsY;
+            }
+
+            int totalEvents = node.Events != null ? node.Events.Count : 0;
+            if (totalEvents > 0)
+            {
+                float evtStartY = (totalDialogues > 0) ? curY + 10f : cardStartY;
+                float curEvtY = evtStartY;
+
+                for (int rowStart = 0; rowStart < totalEvents; rowStart += maxCardsPerRow)
+                {
+                    int rowEnd = Mathf.Min(rowStart + maxCardsPerRow, totalEvents);
+                    float rowHeight = 0f;
+                    for (int e = rowStart; e < rowEnd; e++)
+                    {
+                        Vector2 s = GetEventCardSize(node.Events[e]);
+                        rowHeight = Mathf.Max(rowHeight, s.y);
+                    }
+
+                    for (int e = rowStart; e < rowEnd; e++)
+                    {
+                        int col = e - rowStart;
+                        node.Events[e].GraphPosX = cardStartX + col * (EvtCardDefaultW + gapCardsX);
+                        node.Events[e].GraphPosY = curEvtY;
+                    }
+
+                    curEvtY += rowHeight + 14f;
+                }
+            }
         }
 
         private bool IsMouseOverAnyNodeOrCard(Vector2 mouseWorld)
@@ -601,14 +832,17 @@ namespace Killtime.Story
         private System.Collections.Generic.Dictionary<string, int> ComputeNodeDepths()
         {
             var depths = new System.Collections.Generic.Dictionary<string, int>(System.StringComparer.OrdinalIgnoreCase);
-            if (_data == null || _data.Nodes == null) return depths;
+            if (_data == null || _data.Nodes == null || _data.Nodes.Count == 0) return depths;
+
+            string rootId = _data.FirstNodeId;
+            if (string.IsNullOrEmpty(rootId) || !_data.Nodes.Exists(n => n != null && string.Equals(n.NodeId, rootId, System.StringComparison.OrdinalIgnoreCase)))
+            {
+                rootId = _data.Nodes[0].NodeId;
+            }
 
             var queue = new System.Collections.Generic.Queue<string>();
-            if (!string.IsNullOrEmpty(_data.FirstNodeId))
-            {
-                depths[_data.FirstNodeId] = 0;
-                queue.Enqueue(_data.FirstNodeId);
-            }
+            depths[rootId] = 0;
+            queue.Enqueue(rootId);
 
             while (queue.Count > 0)
             {
@@ -620,9 +854,27 @@ namespace Killtime.Story
                 var targets = new System.Collections.Generic.List<string>();
                 if (!string.IsNullOrEmpty(node.NextNodeId)) targets.Add(node.NextNodeId);
                 if (node.Choices != null)
+                {
                     for (int c = 0; c < node.Choices.Count; c++)
                         if (node.Choices[c] != null && !string.IsNullOrEmpty(node.Choices[c].NextNodeId))
                             targets.Add(node.Choices[c].NextNodeId);
+                }
+                if (node.Dialogues != null)
+                {
+                    for (int d = 0; d < node.Dialogues.Count; d++)
+                    {
+                        var dlg = node.Dialogues[d];
+                        if (dlg == null) continue;
+                        if (!string.IsNullOrEmpty(dlg.NextLineId) && _data.Nodes.Exists(n => n != null && string.Equals(n.NodeId, dlg.NextLineId, System.StringComparison.OrdinalIgnoreCase)))
+                            targets.Add(dlg.NextLineId);
+                        if (dlg.Choices != null)
+                        {
+                            for (int dc = 0; dc < dlg.Choices.Count; dc++)
+                                if (dlg.Choices[dc] != null && !string.IsNullOrEmpty(dlg.Choices[dc].NextLineId) && _data.Nodes.Exists(n => n != null && string.Equals(n.NodeId, dlg.Choices[dc].NextLineId, System.StringComparison.OrdinalIgnoreCase)))
+                                    targets.Add(dlg.Choices[dc].NextLineId);
+                        }
+                    }
+                }
 
                 for (int i = 0; i < targets.Count; i++)
                 {
@@ -634,25 +886,18 @@ namespace Killtime.Story
                 }
             }
 
-            int maxDepth = -1;
-            foreach (var kvp in depths) maxDepth = System.Math.Max(maxDepth, kvp.Value);
-            if (_data.Triggers != null)
-            {
-                for (int t = 0; t < _data.Triggers.Count; t++)
-                {
-                    var trg = _data.Triggers[t];
-                    if (trg == null || string.IsNullOrEmpty(trg.TargetNodeId) || depths.ContainsKey(trg.TargetNodeId)) continue;
-                    if (!string.IsNullOrEmpty(trg.SourceNodeId) && depths.TryGetValue(trg.SourceNodeId, out var sd))
-                        depths[trg.TargetNodeId] = sd + 1;
-                }
-                foreach (var kvp in depths) maxDepth = System.Math.Max(maxDepth, kvp.Value);
-            }
+            int currentMax = 0;
+            foreach (var kvp in depths) currentMax = System.Math.Max(currentMax, kvp.Value);
 
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
                 var node = _data.Nodes[n];
-                if (node == null || string.IsNullOrEmpty(node.NodeId) || depths.ContainsKey(node.NodeId)) continue;
-                depths[node.NodeId] = maxDepth + 1;
+                if (node == null || string.IsNullOrEmpty(node.NodeId)) continue;
+                if (!depths.ContainsKey(node.NodeId))
+                {
+                    currentMax++;
+                    depths[node.NodeId] = currentMax;
+                }
             }
 
             return depths;
@@ -660,162 +905,147 @@ namespace Killtime.Story
 
         private void AutoLayoutGlobalScene(Rect? canvasRect = null)
         {
-            var depths = ComputeNodeDepths();
-            var depthRows = new System.Collections.Generic.Dictionary<int, int>();
+            if (_data.Nodes.Count == 0) return;
 
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
                 var node = _data.Nodes[n];
                 EnsureDialogueGraphIntegrity(node);
                 StorySceneData.EnsureNodeLists(node);
-
-                int depth = depths.TryGetValue(node.NodeId, out var dd) ? dd : 0;
-                int row = depthRows.TryGetValue(depth, out var rr) ? rr : 0;
-                depthRows[depth] = row + 1;
-
-                node.GraphPosX = 60f + depth * 1250f;
-                node.GraphPosY = 120f + row * 560f;
-
-                float cardX = node.GraphPosX + 20f;
-                float cardY = node.GraphPosY + 50f;
-                for (int d = 0; d < node.Dialogues.Count; d++)
-                {
-                    node.Dialogues[d].GraphPosX = cardX;
-                    node.Dialogues[d].GraphPosY = cardY;
-                    Vector2 s = GetDialogueCardSize(node.Dialogues[d]);
-                    cardX += s.x + 18f;
-                }
-
-                float evtX = node.GraphPosX + 20f;
-                float evtY = cardY + 220f;
-                for (int e = 0; e < node.Events.Count; e++)
-                {
-                    node.Events[e].GraphPosX = evtX;
-                    node.Events[e].GraphPosY = evtY;
-                    Vector2 s = GetEventCardSize(node.Events[e]);
-                    evtX += s.x + 18f;
-                }
-
-                StorySceneData.EnsureNodeLists(node);
             }
 
+            // Normalisation immédiate de tous les dialogues internes en 3 colonnes régulières
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                LayoutCardsInsideNode(_data.Nodes[n]);
+            }
+
+            const float startX = 60f;
+            const float startY = 60f;
+            const float gapX = 50f;
+            const float gapY = 28f;
+
+            // Placement structuré en flux 2D compact
+            var rootNode = _data.Nodes[0];
+            rootNode.GraphPosX = startX;
+            rootNode.GraphPosY = startY;
+            LayoutCardsInsideNode(rootNode);
+            Rect rootBox = ComputeNodeBoundingBox(rootNode);
+
+            float col2X = rootBox.xMax + gapX;
+            float col2CurY = startY;
+            float maxSceneH = rootBox.height;
+
+            for (int n = 1; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                node.GraphPosX = col2X;
+                node.GraphPosY = col2CurY;
+                LayoutCardsInsideNode(node);
+                Rect b = ComputeNodeBoundingBox(node);
+
+                col2CurY += b.height + gapY;
+                maxSceneH = Mathf.Max(maxSceneH, col2CurY - startY);
+            }
+
+            if (_data.Triggers != null && _data.Triggers.Count > 0)
+            {
+                float trigX = startX;
+                float trigY = startY + maxSceneH + 36f;
+                for (int t = 0; t < _data.Triggers.Count; t++)
+                {
+                    var trg = _data.Triggers[t];
+                    if (trg == null) continue;
+                    trg.GraphPosX = trigX;
+                    trg.GraphPosY = trigY;
+                    Vector2 s = GetTriggerCardSize(trg);
+                    trigX += s.x + 20f;
+                }
+            }
+
+            _focusedNodeIndex = 0;
             FocusAllNodes(canvasRect);
         }
 
         private void AutoLayoutMosaic(Rect? canvasRect = null)
         {
-            // Mosaïque compacte : tasse les FRAMES de nœuds (layout interne intact : chaque
-            // nœud + ses cartes sont translatés en bloc) en lignes qui tiennent à l'écran.
-            // But : voir TOUS les nœuds à zoom lisible (~60%+) au lieu du spread narratif 4000px.
-            // ↺ Auto-Disposition restaure le flux narratif large.
             if (_data.Nodes.Count == 0) return;
             Vector2 view = ResolveViewSize(canvasRect);
-            float rowMaxW = Mathf.Max(1200f, (view.x - 120f) / 0.6f);
-            const float gapX = 48f, gapY = 40f, startX = 60f, startY = 60f;
+            float maxRowWidth = Mathf.Max(1800f, view.x / Mathf.Clamp(_zoom, 0.35f, 1f));
+            const float gapX = 50f;
+            const float gapY = 36f;
+            const float startX = 60f;
+            const float startY = 60f;
 
-            float x = startX, y = startY, rowH = 0f;
-            var placed = new System.Collections.Generic.List<Rect>();
+            float curX = startX;
+            float curY = startY;
+            float currentRowHeight = 0f;
+            var placedBoxes = new List<Rect>();
+
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
                 var node = _data.Nodes[n];
                 EnsureDialogueGraphIntegrity(node);
                 StorySceneData.EnsureNodeLists(node);
-                // Assainit d'abord : une coordonnée NaN/Infinity (drag corrompu, JSON édité à la
-                // main) empilait les frames au même endroit → nœud invisible sous un autre.
-                node.GraphPosX = SanitizeCoord(node.GraphPosX, x);
-                node.GraphPosY = SanitizeCoord(node.GraphPosY, y);
-                for (int d = 0; d < node.Dialogues.Count; d++)
+
+                node.GraphPosX = curX;
+                node.GraphPosY = curY;
+                LayoutCardsInsideNode(node);
+
+                Rect box = ComputeNodeBoundingBox(node);
+                if (curX + box.width > startX + maxRowWidth && curX > startX)
                 {
-                    node.Dialogues[d].GraphPosX = SanitizeCoord(node.Dialogues[d].GraphPosX, x + 20f);
-                    node.Dialogues[d].GraphPosY = SanitizeCoord(node.Dialogues[d].GraphPosY, y + 50f);
+                    curX = startX;
+                    curY += currentRowHeight + gapY;
+                    currentRowHeight = 0f;
+
+                    node.GraphPosX = curX;
+                    node.GraphPosY = curY;
+                    LayoutCardsInsideNode(node);
+                    box = ComputeNodeBoundingBox(node);
                 }
-                for (int e = 0; e < node.Events.Count; e++)
-                {
-                    node.Events[e].GraphPosX = SanitizeCoord(node.Events[e].GraphPosX, x + 20f);
-                    node.Events[e].GraphPosY = SanitizeCoord(node.Events[e].GraphPosY, y + 300f);
-                }
-                Rect b = ComputeNodeBoundingBox(node);
-                if (b.width <= 0f || b.height <= 0f) continue;
-                if (x + b.width > startX + rowMaxW && x > startX)
-                {
-                    x = startX;
-                    y += rowH + gapY;
-                    rowH = 0f;
-                }
-                // Anti-recouvrement : si la frame chevauche une frame déjà posée (données
-                // tassées par un drag ou un layout précédent), glisse à droite jusqu'au jour.
-                // Sans ça, un nœud rendu sous un autre opaque est perçu comme "manquant".
-                Rect candidate = new Rect(x, y, b.width, b.height);
-                bool moved;
+
+                Rect candidate = new Rect(curX, curY, box.width, box.height);
+                bool collision;
                 int guard = 0;
                 do
                 {
-                    moved = false;
-                    for (int p = 0; p < placed.Count && guard < 64; p++)
+                    collision = false;
+                    for (int p = 0; p < placedBoxes.Count && guard < 64; p++)
                     {
-                        if (placed[p].Overlaps(candidate))
+                        if (placedBoxes[p].Overlaps(candidate))
                         {
-                            candidate.x = placed[p].xMax + gapX;
-                            if (candidate.x + candidate.width > startX + rowMaxW && candidate.x > startX)
-                            {
-                                candidate.x = startX;
-                                candidate.y += rowH + gapY;
-                            }
-                            moved = true;
+                            candidate.y = placedBoxes[p].yMax + gapY;
+                            collision = true;
                             guard++;
                             break;
                         }
                     }
-                } while (moved);
-                x = candidate.x;
-                y = candidate.y;
-                Vector2 delta = new Vector2(x - b.xMin, y - b.yMin);
-                node.GraphPosX += delta.x;
-                node.GraphPosY += delta.y;
-                for (int d = 0; d < node.Dialogues.Count; d++)
-                {
-                    node.Dialogues[d].GraphPosX += delta.x;
-                    node.Dialogues[d].GraphPosY += delta.y;
-                }
-                for (int e = 0; e < node.Events.Count; e++)
-                {
-                    node.Events[e].GraphPosX += delta.x;
-                    node.Events[e].GraphPosY += delta.y;
-                }
-                placed.Add(new Rect(x, y, b.width, b.height));
-                x += b.width + gapX;
-                rowH = Mathf.Max(rowH, b.height);
+                } while (collision);
+
+                node.GraphPosX = candidate.x;
+                node.GraphPosY = candidate.y;
+                LayoutCardsInsideNode(node);
+                box = ComputeNodeBoundingBox(node);
+
+                placedBoxes.Add(box);
+                curX += box.width + gapX;
+                currentRowHeight = Mathf.Max(currentRowHeight, box.height);
             }
 
-            // Déclencheurs autonomes : assainis puis dégagés sous les nœuds en cas de recouvrement.
-            if (_data.Triggers != null)
+            if (_data.Triggers != null && _data.Triggers.Count > 0)
             {
+                GetSceneContentBounds(out float _, out float _, out float _, out float maxY);
+                float trigX = startX;
+                float trigY = maxY + 50f;
                 for (int t = 0; t < _data.Triggers.Count; t++)
                 {
                     var trg = _data.Triggers[t];
                     if (trg == null) continue;
-                    trg.GraphPosX = SanitizeCoord(trg.GraphPosX, startX);
-                    trg.GraphPosY = SanitizeCoord(trg.GraphPosY, startY);
-                    Vector2 tsize = GetTriggerCardSize(trg);
-                    Rect tr = new Rect(trg.GraphPosX, trg.GraphPosY, tsize.x, tsize.y);
-                    int guard = 0;
-                    bool moved;
-                    do
-                    {
-                        moved = false;
-                        for (int p = 0; p < placed.Count && guard < 64; p++)
-                        {
-                            if (placed[p].Overlaps(tr))
-                            {
-                                tr.y = placed[p].yMax + gapY;
-                                moved = true;
-                                guard++;
-                                break;
-                            }
-                        }
-                    } while (moved);
-                    trg.GraphPosX = tr.x;
-                    trg.GraphPosY = tr.y;
+                    trg.GraphPosX = trigX;
+                    trg.GraphPosY = trigY;
+                    Vector2 s = GetTriggerCardSize(trg);
+                    trigX += s.x + 30f;
                 }
             }
 
@@ -914,20 +1144,36 @@ namespace Killtime.Story
 
         private void ClampPanToContent(Rect? canvasRect = null)
         {
-            // Empêche de perdre le contenu hors cadre : on garde toujours ≥120px (X) / 80px (Y)
-            // de la bounding box globale visibles dans le canvas, en zoom in comme en zoom out.
             if (!GetSceneContentBounds(out float minX, out float minY, out float maxX, out float maxY)) return;
             Vector2 view = ResolveViewSize(canvasRect);
-            const float keepX = 120f;
-            const float keepY = 80f;
-            float loX = keepX - maxX * _zoom;
-            float hiX = view.x - keepX - minX * _zoom;
-            float loY = keepY - maxY * _zoom;
-            float hiY = view.y - keepY - minY * _zoom;
-            if (loX > hiX) { float m = (loX + hiX) * 0.5f; loX = hiX = m; }
-            if (loY > hiY) { float m = (loY + hiY) * 0.5f; loY = hiY = m; }
-            _graphPan.x = Mathf.Clamp(_graphPan.x, loX, hiX);
-            _graphPan.y = Mathf.Clamp(_graphPan.y, loY, hiY);
+
+            const float edgePadding = 40f;
+            float contentW = (maxX - minX) * _zoom;
+            float contentH = (maxY - minY) * _zoom;
+
+            if (contentW <= view.x - edgePadding * 2f)
+            {
+                float idealX = (view.x - (minX + maxX) * _zoom) * 0.5f;
+                _graphPan.x = Mathf.Clamp(_graphPan.x, idealX - 180f, idealX + 180f);
+            }
+            else
+            {
+                float minPanX = view.x - edgePadding - maxX * _zoom;
+                float maxPanX = edgePadding - minX * _zoom;
+                _graphPan.x = Mathf.Clamp(_graphPan.x, minPanX, maxPanX);
+            }
+
+            if (contentH <= view.y - edgePadding * 2f)
+            {
+                float idealY = (view.y - (minY + maxY) * _zoom) * 0.5f;
+                _graphPan.y = Mathf.Clamp(_graphPan.y, idealY - 140f, idealY + 140f);
+            }
+            else
+            {
+                float minPanY = view.y - edgePadding - maxY * _zoom;
+                float maxPanY = edgePadding - minY * _zoom;
+                _graphPan.y = Mathf.Clamp(_graphPan.y, minPanY, maxPanY);
+            }
         }
 
         private void CenterViewOnNode(SceneNodeData node, Rect? canvasRect = null)
@@ -936,11 +1182,10 @@ namespace Killtime.Story
             Rect box = ComputeNodeBoundingBox(node);
             Vector2 view = ResolveViewSize(canvasRect);
             _lastCanvasSize = view;
-            // Zoom adaptatif : 100% si le nœud tient dans la vue, sinon dézoom juste assez
-            // pour l'encadrer ENTIÈREMENT (fini le nœud coupé au bord du cadre en zoom in).
-            float fitZX = (view.x - 60f) / Mathf.Max(1f, box.width);
-            float fitZY = (view.y - 60f) / Mathf.Max(1f, box.height);
-            _zoom = Mathf.Clamp(Mathf.Min(1.0f, fitZX, fitZY), 0.12f, 1.0f);
+
+            float fitZX = (view.x - 80f) / Mathf.Max(1f, box.width);
+            float fitZY = (view.y - 80f) / Mathf.Max(1f, box.height);
+            _zoom = Mathf.Clamp(Mathf.Min(1.0f, fitZX, fitZY), 0.35f, 1.0f);
             _graphPan = new Vector2(
                 (view.x * 0.5f) - box.center.x * _zoom,
                 (view.y * 0.5f) - box.center.y * _zoom
@@ -973,12 +1218,10 @@ namespace Killtime.Story
             Vector2 view = ResolveViewSize(canvasRect);
             _lastCanvasSize = view;
 
-            float targetZoomX = (view.x - 120f) / width;
-            float targetZoomY = (view.y - 120f) / height;
-            // Vue d'ensemble : on cadre VRAIMENT tout (borne basse 0.12 pour les grandes scènes
-            // de 4000px). C'est un mode "aperçu" volontairement petit : cliquer Aller à / ◀ ▶
-            // pour éditer un nœud à zoom lisible.
-            _zoom = Mathf.Clamp(Mathf.Min(targetZoomX, targetZoomY), 0.12f, 1.0f);
+            const float padView = 50f;
+            float targetZoomX = (view.x - padView * 2f) / width;
+            float targetZoomY = (view.y - padView * 2f) / height;
+            _zoom = Mathf.Clamp(Mathf.Min(targetZoomX, targetZoomY), 0.15f, 1.0f);
 
             _graphPan = new Vector2(
                 (view.x * 0.5f) - (minX + width * 0.5f) * _zoom,
@@ -1030,14 +1273,16 @@ namespace Killtime.Story
             }
         }
 
+        private static GUIStyle _nodeBodyMeasureStyle;
+
         private static Rect ComputeNodeBoundingBox(SceneNodeData node)
         {
             float nx = SanitizeCoord(node.GraphPosX, 60f);
             float ny = SanitizeCoord(node.GraphPosY, 60f);
             float minX = nx;
             float minY = ny;
-            float maxX = nx + 420f;
-            float maxY = ny + 200f;
+            float maxX = nx + 560f;
+            float maxY = ny + 220f;
 
             bool hasEntries = false;
             if (node.Dialogues != null && node.Dialogues.Count > 0)
@@ -1091,17 +1336,32 @@ namespace Killtime.Story
 
             if (!hasEntries)
             {
-                float customH = 80f + (node.Choices.Count * 36f);
-                return new Rect(node.GraphPosX, node.GraphPosY, 500f, Mathf.Max(180f, customH));
+                float w = node.FrameWidth > 400f ? node.FrameWidth : 560f;
+                float bodyH = 0f;
+                if (!string.IsNullOrEmpty(node.Body))
+                {
+                    if (_nodeBodyMeasureStyle == null)
+                    {
+                        _nodeBodyMeasureStyle = new GUIStyle(GUI.skin.label)
+                        {
+                            wordWrap = true,
+                            richText = true
+                        };
+                    }
+                    bodyH = Mathf.Max(46f, _nodeBodyMeasureStyle.CalcHeight(new GUIContent(node.Body), w - 32f) + 12f);
+                }
+                float objH = (node.Objectives != null) ? node.Objectives.Count * 28f : 0f;
+                float choiceH = (node.Choices != null) ? node.Choices.Count * 32f : 0f;
+                float customH = 50f + bodyH + objH + choiceH + 24f;
+                return new Rect(nx, ny, w, Mathf.Max(200f, customH));
             }
 
-            // Marges resserrées et compactes (pad 14 px)
             float pad = 14f;
             float topHeaderH = 34f;
+            minX = Mathf.Min(nx, minX);
+            minY = Mathf.Min(ny + topHeaderH, minY);
             Rect r = new Rect(minX - pad, minY - topHeaderH - pad, (maxX - minX) + pad * 2f, (maxY - minY) + topHeaderH + pad * 2f);
-            // Largeur minimale = header complet (titre + ID + 3 boutons ≈ 490px) : en dessous,
-            // les boutons "+ Événement" se retrouvaient coupés au bord du cadre.
-            if (r.width < 500f) r.width = 500f;
+            if (r.width < 560f) r.width = 560f;
             return r;
         }
 
@@ -1110,30 +1370,87 @@ namespace Killtime.Story
             return (float.IsNaN(v) || float.IsInfinity(v)) ? fallback : Mathf.Clamp(v, -20000f, 20000f);
         }
 
+        // ---------------------------------------------------------------------
+        // Transformation du graphe sans GUI.matrix : le clipping reste toujours
+        // dans l'espace écran du BeginGroup. Toutes les coordonnées du graphe
+        // sont conservées en espace monde et converties seulement au rendu.
+        // ---------------------------------------------------------------------
+        private Vector2 GraphPoint(Vector2 world)
+        {
+            return _graphPan + world * _zoom;
+        }
+
+        private Rect GraphRect(Rect worldRect)
+        {
+            Vector2 p = GraphPoint(worldRect.position);
+            return new Rect(p.x, p.y, worldRect.width * _zoom, worldRect.height * _zoom);
+        }
+
+        private void GraphLabel(Rect worldRect, string text)
+        {
+            GUI.Label(GraphRect(worldRect), text);
+        }
+
+        private void GraphLabel(Rect worldRect, string text, GUIStyle style)
+        {
+            GUI.Label(GraphRect(worldRect), text, style);
+        }
+
+        private bool GraphButton(Rect worldRect, string text)
+        {
+            return GUI.Button(GraphRect(worldRect), text);
+        }
+
+        private string GraphTextField(Rect worldRect, string text)
+        {
+            return GUI.TextField(GraphRect(worldRect), text);
+        }
+
+        private string GraphTextArea(Rect worldRect, string text)
+        {
+            return GUI.TextArea(GraphRect(worldRect), text);
+        }
+
+        private bool GraphToggle(Rect worldRect, bool value, string text)
+        {
+            return GUI.Toggle(GraphRect(worldRect), value, text);
+        }
+
+        private int GraphToolbar(Rect worldRect, int selected, string[] contents)
+        {
+            return GUI.Toolbar(GraphRect(worldRect), selected, contents);
+        }
+
+        private void DrawGraphSolidRect(Rect worldRect, Color color)
+        {
+            DrawSolidRect(GraphRect(worldRect), color);
+        }
+
         private readonly Dictionary<string, Vector2> _cachedNodeInputSockets = new();
 
         private void DrawNodeGraphCanvas(Rect canvasRect)
         {
             _lastCanvasSize = new Vector2(canvasRect.width, canvasRect.height);
             _hasHoverCard = false;
-            GUI.Box(canvasRect, GUIContent.none);
 
             Event evt = Event.current;
             Vector2 mouseLocal = evt.mousePosition - canvasRect.min;
-            Vector2 mouseWorld = (mouseLocal - _graphPan) / _zoom;
+            Vector2 mouseWorld = (mouseLocal - _graphPan) / Mathf.Max(0.0001f, _zoom);
+            _graphMouseScreenPos = evt.mousePosition;
 
-            // Zoom multiplicatif centré sur le curseur
+            // Zoom centré sur le curseur. IMPORTANT : aucun scale de GUI.matrix n'est utilisé
+            // pour le graphe. Le clipping du BeginGroup reste donc en coordonnées écran 1:1.
             if (evt.type == EventType.ScrollWheel && canvasRect.Contains(evt.mousePosition))
             {
                 float zoomFactor = evt.delta.y > 0 ? 0.88f : 1.14f;
                 float oldZoom = _zoom;
-                _zoom = Mathf.Clamp(_zoom * zoomFactor, 0.12f, 2.0f);
-                _graphPan = mouseLocal - (mouseLocal - _graphPan) * (_zoom / oldZoom);
+                _zoom = Mathf.Clamp(_zoom * zoomFactor, 0.15f, 2.0f);
+                _graphPan = mouseLocal - (mouseLocal - _graphPan) * (_zoom / Mathf.Max(0.0001f, oldZoom));
                 ClampPanToContent(canvasRect);
                 evt.Use();
             }
 
-            // Panoramique fluide (Clic droit et molette universels ; Clic gauche uniquement sur le fond vide)
+            // Panoramique fluide (Clic droit et molette universels ; Clic gauche uniquement sur le fond vide).
             bool isOverInteractiveElement = (_draggingCardKey != null || _draggingNodeId != null || _resizingCardKey != null || _wireDraft.IsActive || IsMouseOverAnyNodeOrCard(mouseWorld));
             if (evt.type == EventType.MouseDown && canvasRect.Contains(evt.mousePosition))
             {
@@ -1157,38 +1474,23 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            // Filet de sécurité : même après un drag de nœud/carte, le contenu reste joignable.
             ClampPanToContent(canvasRect);
 
-            DrawGraphGridBackground(canvasRect);
-
-            // GUI.matrix transforme AUSSI les rectangles de clipping d'IMGUI. Le viewport
-            // doit donc être exprimé à l'échelle inverse, et le pan injecté dans le scroll
-            // offset de BeginClip. Ainsi, après la matrice de zoom, les bords du clip restent
-            // exactement ceux du canvas : aucune frame/carte ne peut sortir de l'éditeur.
-            float inverseZoom = 1f / Mathf.Max(0.01f, _zoom);
-            Rect zoomInvariantClip = new Rect(
-                canvasRect.x * inverseZoom,
-                canvasRect.y * inverseZoom,
-                canvasRect.width * inverseZoom,
-                canvasRect.height * inverseZoom);
-            GUI.BeginClip(zoomInvariantClip, _graphPan * inverseZoom, Vector2.zero, false);
-            Matrix4x4 oldMatrix = GUI.matrix;
-            GUI.matrix = Matrix4x4.Scale(new Vector3(_zoom, _zoom, 1f)) * GUI.matrix;
+            // Le groupe de clipping reste strictement à 1:1.
+            // Le zoom/pan sont appliqués explicitement par GraphRect()/GraphPoint().
+            GUI.BeginGroup(canvasRect);
+            DrawGraphGridBackground(new Rect(0f, 0f, canvasRect.width, canvasRect.height));
 
             _cachedInputSockets.Clear();
             _cachedNodeInputSockets.Clear();
             _cachedTriggerOutSockets.Clear();
 
-            // 1. Enregistrement spatial de TOUS les nœuds et cartes de la scène
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
                 var node = _data.Nodes[n];
                 EnsureDialogueGraphIntegrity(node);
                 StorySceneData.EnsureNodeLists(node);
 
-                // Assainissement live : une coordonnée NaN/Infinity (drag interrompu, JSON
-                // édité à la main) rend carte/frame invisibles sans erreur → nœud "manquant".
                 node.GraphPosX = SanitizeCoord(node.GraphPosX, 60f + n * 500f);
                 node.GraphPosY = SanitizeCoord(node.GraphPosY, 220f);
                 for (int d = 0; d < node.Dialogues.Count; d++)
@@ -1224,8 +1526,6 @@ namespace Killtime.Story
                 }
             }
 
-            // 1b. Enregistrement spatial des Déclencheurs autonomes (niveau scène :
-            // sortie seule vers l'entrée d'un nœud, sans port d'entrée).
             if (_data.Triggers == null) _data.Triggers = new System.Collections.Generic.List<SceneTriggerData>();
             {
                 var seenTriggerIds = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
@@ -1244,21 +1544,17 @@ namespace Killtime.Story
 
             Rect visibleWorld = GetVisibleWorldRect(canvasRect);
 
-            // 2. Rendu des Super-Cartes de Nœuds. Unity IMGUI laisse encore quelques
-            // pixels s'échapper du clip quand une matrice zoomée rencontre le bord gauche.
-            // Ne rendre que les nœuds entièrement dans le viewport ferme cette dernière
-            // échappée (et un glissement/pan les ramène dès qu'ils rentrent dans le cadre).
+            // Passe 1 : frames et connexions globales.
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
-                if (IsWorldRectFullyVisible(ComputeNodeBoundingBox(_data.Nodes[n]), visibleWorld))
+                Rect nodeBox = ComputeNodeBoundingBox(_data.Nodes[n]);
+                if (visibleWorld.Overlaps(nodeBox))
                     DrawNodeFrame(_data.Nodes[n], n, mouseWorld);
             }
 
-            // 3. Rendu de TOUS les Câbles Bézier Connectés (Intra-Nœud & Macro Inter-Nœuds)
             DrawGlobalSceneWires(visibleWorld);
 
-            // 4. Câble temporaire interactif lors d'un drag de connexion
-            if (_wireDraft.IsActive && IsWorldPointVisible(_wireDraft.StartPos, visibleWorld) && IsWorldPointVisible(mouseWorld, visibleWorld))
+            if (_wireDraft.IsActive)
             {
                 DrawBezierWire(_wireDraft.StartPos, mouseWorld, Color.yellow, 3.5f);
                 if (evt.type == EventType.MouseUp && evt.button == 0)
@@ -1269,22 +1565,29 @@ namespace Killtime.Story
                 }
             }
 
-            // 5. Rendu des Cartes Enfants (Dialogues, Événements et Déclencheurs de tous les nœuds)
+            // Passe 2 : cartes internes par-dessus les fils.
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
                 var node = _data.Nodes[n];
-                if (!IsWorldRectFullyVisible(ComputeNodeBoundingBox(node), visibleWorld)) continue;
+                Rect nodeBox = ComputeNodeBoundingBox(node);
+                if (!visibleWorld.Overlaps(nodeBox)) continue;
+
                 for (int d = 0; d < node.Dialogues.Count; d++)
                 {
-                    DrawDialogueCard(node.Dialogues[d], d, node, mouseWorld);
+                    var dlg = node.Dialogues[d];
+                    Vector2 size = GetDialogueCardSize(dlg);
+                    if (visibleWorld.Overlaps(new Rect(dlg.GraphPosX, dlg.GraphPosY, size.x, size.y)))
+                        DrawDialogueCard(dlg, d, node, mouseWorld);
                 }
                 for (int e = 0; e < node.Events.Count; e++)
                 {
-                    DrawEventCard(node.Events[e], e, node, mouseWorld);
+                    var ev = node.Events[e];
+                    Vector2 size = GetEventCardSize(ev);
+                    if (visibleWorld.Overlaps(new Rect(ev.GraphPosX, ev.GraphPosY, size.x, size.y)))
+                        DrawEventCard(ev, e, node, mouseWorld);
                 }
             }
 
-            // 5b. Rendu des Déclencheurs autonomes (niveau scène, sortie seule).
             if (_data.Triggers != null)
             {
                 for (int t = 0; t < _data.Triggers.Count; t++)
@@ -1292,25 +1595,20 @@ namespace Killtime.Story
                     var trg = _data.Triggers[t];
                     if (trg == null) continue;
                     Vector2 tsize = GetTriggerCardSize(trg);
-                    if (!visibleWorld.Overlaps(new Rect(trg.GraphPosX, trg.GraphPosY, tsize.x, tsize.y))) continue;
-                    DrawTriggerCard(trg, t, mouseWorld);
+                    if (visibleWorld.Overlaps(new Rect(trg.GraphPosX, trg.GraphPosY, tsize.x, tsize.y)))
+                        DrawTriggerCard(trg, t, mouseWorld);
                 }
             }
 
-            GUI.matrix = oldMatrix;
-            GUI.EndClip();
+            // Le seul clip du graphe est terminé ici, avant tous les overlays écran.
+            GUI.EndGroup();
 
-            // Superposition HUD de Zoom & Contrôles
             DrawZoomControlsOverlay(canvasRect);
 
-            // Inspecteur du nœud focalisé (optionnel, dessiné hors zoom).
             if (_showNodeInspector) DrawNodeInspectorOverlay(canvasRect);
 
-            // Infobulle de survol : texte à taille normale, ancrée au curseur, calée au canvas.
             if (_hasHoverCard && Event.current.type == EventType.Repaint)
-            {
                 DrawCardHoverTooltip(canvasRect);
-            }
         }
 
         private bool _showNodeInspector = false;
@@ -1380,23 +1678,18 @@ namespace Killtime.Story
             {
                 var node = _data.Nodes[n];
                 Rect nodeBox = ComputeNodeBoundingBox(node);
-                if (!IsWorldRectFullyVisible(nodeBox, visibleWorld)) continue;
 
-                // Câblage macro inter-nœuds (NextNodeId direct du nœud)
                 if (!string.IsNullOrEmpty(node.NextNodeId)
-                    && IsNodeFullyVisible(node.NextNodeId, visibleWorld)
                     && _cachedNodeInputSockets.TryGetValue(node.NextNodeId, out var targetNodeIn))
                 {
                     Vector2 nodeOut = new Vector2(nodeBox.xMax, nodeBox.yMin + 18f);
                     DrawBezierWire(nodeOut, targetNodeIn, new Color(1.0f, 0.6f, 0.1f, 0.95f), 4.5f);
                 }
 
-                // Câblage des choix majeurs du nœud vers les nœuds de destination (alignement exact sur les sockets de choix)
                 for (int c = 0; c < node.Choices.Count; c++)
                 {
                     var choice = node.Choices[c];
                     if (!string.IsNullOrEmpty(choice.NextNodeId)
-                        && IsNodeFullyVisible(choice.NextNodeId, visibleWorld)
                         && _cachedNodeInputSockets.TryGetValue(choice.NextNodeId, out var choiceNodeIn))
                     {
                         float choiceRowY = nodeBox.yMin + 60f + (c * 36f);
@@ -1406,11 +1699,9 @@ namespace Killtime.Story
                     }
                 }
 
-                // Câblage intra-nœud des dialogues enfants
                 DrawConnectedGraphWires(node, visibleWorld);
             }
 
-            // Câblage des Déclencheurs autonomes : sortie seule vers l'entrée du nœud cible.
             if (_data.Triggers != null)
             {
                 for (int t = 0; t < _data.Triggers.Count; t++)
@@ -1418,25 +1709,12 @@ namespace Killtime.Story
                     var trg = _data.Triggers[t];
                     if (trg == null || string.IsNullOrEmpty(trg.TargetNodeId)) continue;
                     if (_cachedTriggerOutSockets.TryGetValue(trg.TriggerId, out var trgOut)
-                        && _cachedNodeInputSockets.TryGetValue(trg.TargetNodeId, out var targetIn)
-                        && IsWorldPointVisible(trgOut, visibleWorld)
-                        && IsWorldPointVisible(targetIn, visibleWorld))
+                        && _cachedNodeInputSockets.TryGetValue(trg.TargetNodeId, out var targetIn))
                     {
                         DrawBezierWire(trgOut, targetIn, new Color(1.0f, 0.85f, 0.25f, 0.95f), 3.5f);
                     }
                 }
             }
-        }
-
-        private bool IsNodeFullyVisible(string nodeId, Rect visibleWorld)
-        {
-            for (int i = 0; i < _data.Nodes.Count; i++)
-            {
-                var candidate = _data.Nodes[i];
-                if (candidate.NodeId == nodeId)
-                    return IsWorldRectFullyVisible(ComputeNodeBoundingBox(candidate), visibleWorld);
-            }
-            return false;
         }
 
         private void FinalizeGlobalWireDraft(Vector2 mousePos)
@@ -1568,48 +1846,41 @@ namespace Killtime.Story
                 _ => new Color(0.5f, 0.5f, 0.5f, 0.75f)
             };
 
-            // Conteneur d'arrière-plan englobant
-            DrawSolidRect(frameRect, new Color(0.025f, 0.04f, 0.065f, 0.75f));
-            DrawSolidRect(headerRect, new Color(frameBorderCol.r, frameBorderCol.g, frameBorderCol.b, 0.25f));
+            DrawGraphSolidRect(frameRect, new Color(0.025f, 0.04f, 0.065f, 0.75f));
+            DrawGraphSolidRect(headerRect, new Color(frameBorderCol.r, frameBorderCol.g, frameBorderCol.b, 0.25f));
 
-            // Bordures rectilignes précises dessinées sans rotation
-            DrawSolidRect(new Rect(frameRect.x, frameRect.y, frameRect.width, 2.5f), frameBorderCol);
-            DrawSolidRect(new Rect(frameRect.x, frameRect.yMax - 1.5f, frameRect.width, 1.5f), frameBorderCol);
-            DrawSolidRect(new Rect(frameRect.x, frameRect.y, 1.5f, frameRect.height), frameBorderCol);
-            DrawSolidRect(new Rect(frameRect.xMax - 1.5f, frameRect.y, 1.5f, frameRect.height), frameBorderCol);
+            DrawGraphSolidRect(new Rect(frameRect.x, frameRect.y, frameRect.width, 2.5f), frameBorderCol);
+            DrawGraphSolidRect(new Rect(frameRect.x, frameRect.yMax - 1.5f, frameRect.width, 1.5f), frameBorderCol);
+            DrawGraphSolidRect(new Rect(frameRect.x, frameRect.y, 1.5f, frameRect.height), frameBorderCol);
+            DrawGraphSolidRect(new Rect(frameRect.xMax - 1.5f, frameRect.y, 1.5f, frameRect.height), frameBorderCol);
 
-            // Port Entrée Macro Nœud
-            DrawSolidRect(nodeInSocket, frameBorderCol);
+            DrawGraphSolidRect(nodeInSocket, frameBorderCol);
 
-            // Titre, Lieu et Actions de Nœud (largeurs relatives au frame pour éviter tout débordement)
             GUI.color = Color.white;
             float titleW = Mathf.Max(120f, frameRect.width - 380f);
-            GUI.Label(new Rect(headerRect.x + 16f, headerRect.y + 8f, titleW, 22f), $"<b>■ NŒUD #{nodeIndex + 1} : {node.Title.ToUpperInvariant()}</b> [{node.Kind}]");
+            GraphLabel(new Rect(headerRect.x + 16f, headerRect.y + 8f, titleW, 22f), $"<b>■ NŒUD #{nodeIndex + 1} : {node.Title.ToUpperInvariant()}</b> [{node.Kind}]");
 
             GUI.color = new Color(1f, 1f, 1f, 0.75f);
             float idLabelW = Mathf.Max(60f, Mathf.Min(220f, frameRect.width - titleW - 260f));
-            GUI.Label(new Rect(headerRect.x + 16f + titleW + 4f, headerRect.y + 8f, idLabelW, 20f), $"ID: <i>{node.NodeId}</i>");
+            GraphLabel(new Rect(headerRect.x + 16f + titleW + 4f, headerRect.y + 8f, idLabelW, 20f), $"ID: <i>{node.NodeId}</i>");
             GUI.color = Color.white;
 
-            // Boutons d'ajout directs (GUI absolu : GUILayout est incompatible avec la matrice zoomée)
             float btnY = headerRect.y + 7f;
             float btnH = 22f;
             float bx = headerRect.xMax - 10f;
             Color prevBg = GUI.backgroundColor;
             GUI.backgroundColor = new Color(0.85f, 0.2f, 0.2f);
             Rect delBtn = new Rect(bx - 26f, btnY, 26f, btnH);
-            bool deleteNode = GUI.Button(delBtn, "✕");
+            bool deleteNode = GraphButton(delBtn, "✕");
             bx -= 26f + 6f;
             GUI.backgroundColor = new Color(1f, 0.45f, 0.2f);
             Rect evtBtn = new Rect(bx - 95f, btnY, 95f, btnH);
-            bool addEvt = GUI.Button(evtBtn, "+ Événement");
+            bool addEvt = GraphButton(evtBtn, "+ Événement");
             bx -= 95f + 6f;
             GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
             Rect dlgBtn = new Rect(bx - 90f, btnY, 90f, btnH);
-            bool addDlg = GUI.Button(dlgBtn, "+ Dialogue");
+            bool addDlg = GraphButton(dlgBtn, "+ Dialogue");
             GUI.backgroundColor = prevBg;
-            // (La protection du drag utilise la zone estimée en tête de méthode, volontairement
-            // un peu plus large que les boutons pour éviter tout drag accidentel.)
 
             if (addDlg)
             {
@@ -1619,9 +1890,10 @@ namespace Killtime.Story
                     LineId = $"line_{nodeIndex + 1}_{nextIdx}",
                     SpeakerId = "",
                     Speech = "Nouvelle réplique...",
-                    GraphPosX = node.GraphPosX + 40f + (node.Dialogues.Count * 380f),
+                    GraphPosX = node.GraphPosX + 40f,
                     GraphPosY = node.GraphPosY + 70f
                 });
+                LayoutCardsInsideNode(node);
             }
 
             if (addEvt)
@@ -1631,9 +1903,10 @@ namespace Killtime.Story
                 {
                     EventId = $"evt_{nodeIndex + 1}_{nextIdx}",
                     Title = "Action Scénique",
-                    GraphPosX = node.GraphPosX + 40f + (node.Events.Count * 380f),
+                    GraphPosX = node.GraphPosX + 40f,
                     GraphPosY = node.GraphPosY + 320f
                 });
+                LayoutCardsInsideNode(node);
             }
 
             if (deleteNode)
@@ -1642,29 +1915,63 @@ namespace Killtime.Story
                 return;
             }
 
-            // Port Sortie Macro Nœud
-            if (node.Choices.Count == 0 && !string.IsNullOrEmpty(node.NextNodeId))
+            if (!string.IsNullOrEmpty(node.NextNodeId))
             {
-                DrawSolidRect(nodeOutSocket, new Color(1.0f, 0.65f, 0.15f));
+                DrawGraphSolidRect(nodeOutSocket, new Color(1.0f, 0.65f, 0.15f));
             }
 
-            // Affichage spécifique des Choix Majeurs
-            if (node.Kind == ScenarioNodeKind.Choice && node.Choices.Count > 0)
+            float contentY = frameRect.y + 46f;
+            if (node.Dialogues.Count == 0 && node.Events.Count == 0)
             {
-                Rect choicesPanel = new Rect(frameRect.x + 24f, frameRect.y + 60f, frameRect.width - 48f, node.Choices.Count * 36f);
+                if (!string.IsNullOrEmpty(node.Body))
+                {
+                    if (_nodeBodyMeasureStyle == null)
+                    {
+                        _nodeBodyMeasureStyle = new GUIStyle(GUI.skin.label)
+                        {
+                            wordWrap = true,
+                            richText = true
+                        };
+                    }
+                    float bodyH = Mathf.Max(42f, _nodeBodyMeasureStyle.CalcHeight(new GUIContent(node.Body), frameRect.width - 32f) + 6f);
+                    GUI.color = new Color(1f, 1f, 1f, 0.85f);
+                    GraphLabel(new Rect(frameRect.x + 16f, contentY, frameRect.width - 32f, bodyH), $"<i>{node.Body}</i>", _nodeBodyMeasureStyle);
+                    GUI.color = Color.white;
+                    contentY += bodyH + 8f;
+                }
+
+                if (node.Objectives != null && node.Objectives.Count > 0)
+                {
+                    for (int o = 0; o < node.Objectives.Count; o++)
+                    {
+                        var obj = node.Objectives[o];
+                        if (obj == null) continue;
+                        Rect objRow = new Rect(frameRect.x + 16f, contentY, frameRect.width - 32f, 24f);
+                        DrawGraphSolidRect(objRow, new Color(0.04f, 0.14f, 0.10f, 0.85f));
+                        string optTag = obj.Optional ? "<color=#AAAAAA>[Optionnel]</color> " : "<color=#00E5FF>[Principal]</color> ";
+                        GraphLabel(new Rect(objRow.x + 8f, objRow.y + 3f, objRow.width - 16f, 18f), $"🎯 {optTag}<b>{obj.Label}</b> (<i>{obj.Id}</i>)");
+                        contentY += 26f;
+                    }
+                }
+            }
+
+            if (node.Choices != null && node.Choices.Count > 0)
+            {
                 for (int c = 0; c < node.Choices.Count; c++)
                 {
                     var ch = node.Choices[c];
-                    Rect choiceRow = new Rect(choicesPanel.x, choicesPanel.y + (c * 36f), choicesPanel.width, 30f);
-                    DrawSolidRect(choiceRow, new Color(0.08f, 0.12f, 0.17f, 0.90f));
+                    if (ch == null) continue;
+                    Rect choiceRow = new Rect(frameRect.x + 16f, contentY, frameRect.width - 32f, 26f);
+                    DrawGraphSolidRect(choiceRow, new Color(0.08f, 0.12f, 0.17f, 0.90f));
 
-                    GUI.Label(new Rect(choiceRow.x + 10f, choiceRow.y + 5f, choiceRow.width - 250f, 20f), $"<b>Choix #{c + 1} :</b> {ch.Label}");
+                    GraphLabel(new Rect(choiceRow.x + 8f, choiceRow.y + 3f, choiceRow.width - 200f, 20f), $"<b>Choix #{c + 1} :</b> {ch.Label}");
                     GUI.color = new Color(1f, 0.75f, 0.2f);
-                    GUI.Label(new Rect(choiceRow.xMax - 240f, choiceRow.y + 5f, 230f, 20f), $"➔ Cible: <b>{ch.NextNodeId}</b>");
+                    GraphLabel(new Rect(choiceRow.xMax - 190f, choiceRow.y + 3f, 180f, 20f), $"➔ <b>{ch.NextNodeId}</b>");
                     GUI.color = Color.white;
 
-                    Rect choiceSocket = new Rect(frameRect.xMax - 8f, choiceRow.y + 7f, 16f, 16f);
-                    DrawSolidRect(choiceSocket, ch.Id.Contains("hostile") ? new Color(1.0f, 0.35f, 0.35f) : new Color(0.2f, 0.92f, 0.45f));
+                    Rect choiceSocket = new Rect(frameRect.xMax - 8f, choiceRow.y + 5f, 16f, 16f);
+                    DrawGraphSolidRect(choiceSocket, ch.Id.Contains("hostile") ? new Color(1.0f, 0.35f, 0.35f) : new Color(0.2f, 0.92f, 0.45f));
+                    contentY += 28f;
                 }
             }
         }
@@ -1694,24 +2001,15 @@ namespace Killtime.Story
 
         private Rect GetVisibleWorldRect(Rect canvasRect)
         {
-            Vector2 wMin = (Vector2.zero - _graphPan) / _zoom;
-            Vector2 wMax = (new Vector2(canvasRect.width, canvasRect.height) - _graphPan) / _zoom;
+            float zoom = Mathf.Max(0.0001f, _zoom);
+            Vector2 wMin = (Vector2.zero - _graphPan) / zoom;
+            Vector2 wMax = (new Vector2(canvasRect.width, canvasRect.height) - _graphPan) / zoom;
             return Rect.MinMaxRect(wMin.x, wMin.y, wMax.x, wMax.y);
         }
 
-        private static bool IsWorldRectFullyVisible(Rect content, Rect viewport)
+        private static bool IsWorldRectVisible(Rect content, Rect viewport)
         {
-            const float edgeTolerance = 0.5f;
-            return content.xMin >= viewport.xMin - edgeTolerance
-                && content.yMin >= viewport.yMin - edgeTolerance
-                && content.xMax <= viewport.xMax + edgeTolerance
-                && content.yMax <= viewport.yMax + edgeTolerance;
-        }
-
-        private static bool IsWorldPointVisible(Vector2 point, Rect viewport)
-        {
-            return point.x >= viewport.xMin && point.x <= viewport.xMax
-                && point.y >= viewport.yMin && point.y <= viewport.yMax;
+            return viewport.Overlaps(content);
         }
 
         private void DrawZoomControlsOverlay(Rect canvasRect)
@@ -1817,21 +2115,17 @@ namespace Killtime.Story
                 Vector2 size = GetDialogueCardSize(line);
                 Vector2 cardPos = new Vector2(line.GraphPosX, line.GraphPosY);
 
-                // Sortie séquentielle directe
                 if (!string.IsNullOrEmpty(line.NextLineId)
-                    && IsInputFullyVisible(line.NextLineId, visibleWorld)
                     && _cachedInputSockets.TryGetValue(line.NextLineId, out var targetIn))
                 {
                     Vector2 outSocket = new Vector2(cardPos.x + size.x, cardPos.y + 26f);
                     DrawBezierWire(outSocket, targetIn, new Color(0.0f, 0.85f, 1.0f, 0.95f), 3.5f);
                 }
 
-                // Sorties des choix multiples (alignées sur les ports GUI absolus : première rangée à +100, pas de 22)
                 for (int c = 0; c < line.Choices.Count; c++)
                 {
                     var ch = line.Choices[c];
                     if (!string.IsNullOrEmpty(ch.NextLineId)
-                        && IsInputFullyVisible(ch.NextLineId, visibleWorld)
                         && _cachedInputSockets.TryGetValue(ch.NextLineId, out var chTargetIn))
                     {
                         Vector2 chOutSocket = new Vector2(cardPos.x + size.x, cardPos.y + 110f + (c * 22f));
@@ -1839,17 +2133,14 @@ namespace Killtime.Story
                     }
                 }
 
-                // Sorties de test automatique
                 if (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck)
                 {
                     if (!string.IsNullOrEmpty(line.AutoSkillCheck.SuccessNextLineId)
-                        && IsInputFullyVisible(line.AutoSkillCheck.SuccessNextLineId, visibleWorld)
                         && _cachedInputSockets.TryGetValue(line.AutoSkillCheck.SuccessNextLineId, out var sIn))
                     {
                         DrawBezierWire(new Vector2(cardPos.x + size.x, cardPos.y + 70f), sIn, Color.green, 2.5f);
                     }
                     if (!string.IsNullOrEmpty(line.AutoSkillCheck.FailureNextLineId)
-                        && IsInputFullyVisible(line.AutoSkillCheck.FailureNextLineId, visibleWorld)
                         && _cachedInputSockets.TryGetValue(line.AutoSkillCheck.FailureNextLineId, out var fIn))
                     {
                         DrawBezierWire(new Vector2(cardPos.x + size.x, cardPos.y + 90f), fIn, new Color(1f, 0.35f, 0.35f), 2.5f);
@@ -1863,28 +2154,12 @@ namespace Killtime.Story
                 Vector2 size = GetEventCardSize(ev);
                 Vector2 cardPos = new Vector2(ev.GraphPosX, ev.GraphPosY);
                 if (!string.IsNullOrEmpty(ev.NextEventId)
-                    && IsInputFullyVisible(ev.NextEventId, visibleWorld)
                     && _cachedInputSockets.TryGetValue(ev.NextEventId, out var targetIn))
                 {
                     Vector2 outSocket = new Vector2(cardPos.x + size.x, cardPos.y + 26f);
                     DrawBezierWire(outSocket, targetIn, new Color(0.85f, 0.45f, 1.0f, 0.95f), 3.5f);
                 }
             }
-        }
-
-        private bool IsInputFullyVisible(string inputId, Rect visibleWorld)
-        {
-            for (int n = 0; n < _data.Nodes.Count; n++)
-            {
-                var node = _data.Nodes[n];
-                if (!IsWorldRectFullyVisible(ComputeNodeBoundingBox(node), visibleWorld)) continue;
-
-                for (int d = 0; d < node.Dialogues.Count; d++)
-                    if (node.Dialogues[d].LineId == inputId) return true;
-                for (int e = 0; e < node.Events.Count; e++)
-                    if (node.Events[e].EventId == inputId) return true;
-            }
-            return false;
         }
 
         private void DrawDialogueCard(SceneDialogueLineData line, int index, SceneNodeData node, Vector2 mouseWorld)
@@ -1952,27 +2227,27 @@ namespace Killtime.Story
             }
 
             // 1. Rendu d'arrière-plan de la Carte et de l'En-tête
-            DrawSolidRect(cardRect, new Color(0.08f, 0.11f, 0.15f, 0.95f));
+            DrawGraphSolidRect(cardRect, new Color(0.08f, 0.11f, 0.15f, 0.95f));
             Color headerCol = line.Choices.Count > 0 ? new Color(0.35f, 0.24f, 0.05f) : (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck ? new Color(0.25f, 0.12f, 0.35f) : new Color(0.08f, 0.28f, 0.36f));
-            DrawSolidRect(headerRect, headerCol);
+            DrawGraphSolidRect(headerRect, headerCol);
 
             // Bordure de carte nette
-            DrawSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), headerCol * 1.4f);
-            DrawSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
-            DrawSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
-            DrawSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), headerCol * 1.4f);
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
 
             // 2. Port d'Entrée
             Rect inPort = new Rect(cardRect.x - 7f, cardRect.y + 19f, 14f, 14f);
-            DrawSolidRect(inPort, Color.cyan);
+            DrawGraphSolidRect(inPort, Color.cyan);
 
             // 3. Titre & Locuteur
-            GUI.Label(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>◆ {line.SpeakerId}</b> (<i>{line.LineId}</i>)");
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>◆ {line.SpeakerId}</b> (<i>{line.LineId}</i>)");
 
             // 4. Bouton Supprimer
             GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
             GUI.color = Color.white;
-            if (GUI.Button(closeRect, "✕"))
+            if (GraphButton(closeRect, "✕"))
             {
                 node.Dialogues.RemoveAt(index);
                 if (_draggingCardKey == dragKey)
@@ -1988,10 +2263,10 @@ namespace Killtime.Story
 
             // 5. Poignée de redimensionnement
             GUI.color = new Color(1f, 1f, 1f, 0.4f);
-            GUI.Label(resizeGripRect, "◢");
+            GraphLabel(resizeGripRect, "◢");
             GUI.color = Color.white;
 
-            // Survol du header : mémorise une infobulle lisible (dessinée hors zoom après EndGroup).
+            // Survol du header : mémorise une infobulle lisible (dessinée après la fermeture du clip).
             if (_zoom < 0.85f && !_isPanning && _draggingCardKey == null && _resizingCardKey == null && !_wireDraft.IsActive
                 && headerRect.Contains(mouseWorld))
             {
@@ -2016,7 +2291,7 @@ namespace Killtime.Story
                 _hasHoverCard = true;
                 _hoverTitle = $"◆ {line.SpeakerId}  ({line.LineId})";
                 _hoverBody = sb.ToString().Trim();
-                _hoverScreenPos = Event.current.mousePosition;
+                _hoverScreenPos = _graphMouseScreenPos;
             }
 
             // 6. Contenu ÉDITABLE en GUI ABSOLU (pas de GUILayout : incompatible avec la matrice zoomée,
@@ -2025,14 +2300,14 @@ namespace Killtime.Story
             float innerW = cardW - 16f;
             float y = cardRect.y + 30f;
 
-            GUI.Label(new Rect(innerX, y, 22f, 18f), "ID:");
-            line.LineId = GUI.TextField(new Rect(innerX + 24f, y, 70f, 18f), line.LineId ?? "");
-            GUI.Label(new Rect(innerX + 98f, y, 28f, 18f), "Loc:");
-            line.SpeakerId = GUI.TextField(new Rect(innerX + 128f, y, 80f, 18f), line.SpeakerId ?? "");
-            line.StageDirection = GUI.TextField(new Rect(innerX + 212f, y, Mathf.Max(40f, innerW - 212f), 18f), line.StageDirection ?? "");
+            GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
+            line.LineId = GraphTextField(new Rect(innerX + 24f, y, 70f, 18f), line.LineId ?? "");
+            GraphLabel(new Rect(innerX + 98f, y, 28f, 18f), "Loc:");
+            line.SpeakerId = GraphTextField(new Rect(innerX + 128f, y, 80f, 18f), line.SpeakerId ?? "");
+            line.StageDirection = GraphTextField(new Rect(innerX + 212f, y, Mathf.Max(40f, innerW - 212f), 18f), line.StageDirection ?? "");
             y += 20f;
 
-            line.Speech = GUI.TextArea(new Rect(innerX, y, innerW, 48f), line.Speech ?? "");
+            line.Speech = GraphTextArea(new Rect(innerX, y, innerW, 48f), line.Speech ?? "");
             y += 50f;
 
             // Choix Multiples / Liaison : première rangée à cardY+100, pas vertical de 22 (référence des wires).
@@ -2042,39 +2317,39 @@ namespace Killtime.Story
                 {
                     var ch = line.Choices[c];
                     float labelW = Mathf.Max(60f, innerW - 124f);
-                    ch.Label = GUI.TextField(new Rect(innerX, y, labelW, 20f), ch.Label ?? "");
-                    GUI.Label(new Rect(innerX + labelW + 2f, y, 16f, 20f), "➔");
-                    ch.NextLineId = GUI.TextField(new Rect(innerX + labelW + 20f, y, 80f, 20f), ch.NextLineId ?? "");
-                    if (GUI.Button(new Rect(innerX + labelW + 102f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
+                    ch.Label = GraphTextField(new Rect(innerX, y, labelW, 20f), ch.Label ?? "");
+                    GraphLabel(new Rect(innerX + labelW + 2f, y, 16f, 20f), "➔");
+                    ch.NextLineId = GraphTextField(new Rect(innerX + labelW + 20f, y, 80f, 20f), ch.NextLineId ?? "");
+                    if (GraphButton(new Rect(innerX + labelW + 102f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
                     y += 22f;
                 }
             }
             else
             {
-                GUI.Label(new Rect(innerX, y, 65f, 20f), "Liaison ➔ :");
-                line.NextLineId = GUI.TextField(new Rect(innerX + 67f, y, Mathf.Max(60f, innerW - 67f - 26f), 20f), line.NextLineId ?? "");
-                if (GUI.Button(new Rect(innerX + innerW - 22f, y, 22f, 20f), "⊘")) line.NextLineId = "";
+                GraphLabel(new Rect(innerX, y, 65f, 20f), "Liaison ➔ :");
+                line.NextLineId = GraphTextField(new Rect(innerX + 67f, y, Mathf.Max(60f, innerW - 67f - 26f), 20f), line.NextLineId ?? "");
+                if (GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 20f), "⊘")) line.NextLineId = "";
                 y += 22f;
             }
 
             // Rangée basse : +Choix / toggles (protégée du débordement par CardHeight auto).
             if (y + 20f <= cardRect.yMax - 4f)
             {
-                if (GUI.Button(new Rect(innerX, y, 64f, 18f), "+ Choix"))
+                if (GraphButton(new Rect(innerX, y, 64f, 18f), "+ Choix"))
                 {
                     line.Choices.Add(new SceneDialogueChoiceData { ChoiceId = $"ch_{line.Choices.Count + 1}", Label = "Option..." });
                 }
-                line.Ambience.HasAmbience = GUI.Toggle(new Rect(innerX + 68f, y, 90f, 18f), line.Ambience.HasAmbience, "Ambiance");
-                line.Prerequisite.HasPrerequisite = GUI.Toggle(new Rect(innerX + 160f, y, Mathf.Max(60f, innerW - 160f), 18f), line.Prerequisite.HasPrerequisite, "Prérequis");
+                line.Ambience.HasAmbience = GraphToggle(new Rect(innerX + 68f, y, 90f, 18f), line.Ambience.HasAmbience, "Ambiance");
+                line.Prerequisite.HasPrerequisite = GraphToggle(new Rect(innerX + 160f, y, Mathf.Max(60f, innerW - 160f), 18f), line.Prerequisite.HasPrerequisite, "Prérequis");
             }
-            else if (GUI.Button(new Rect(innerX, cardRect.yMax - 22f, 64f, 18f), "+ Choix"))
+            else if (GraphButton(new Rect(innerX, cardRect.yMax - 22f, 64f, 18f), "+ Choix"))
             {
                 line.Choices.Add(new SceneDialogueChoiceData { ChoiceId = $"ch_{line.Choices.Count + 1}", Label = "Option..." });
             }
 
             // Port de Sortie Principal
             Rect outPort = new Rect(cardRect.xMax - 8f, cardRect.y + 18f, 16f, 16f);
-            DrawSolidRect(outPort, new Color(0f, 0.85f, 1f));
+            DrawGraphSolidRect(outPort, new Color(0f, 0.85f, 1f));
 
             if (evt.type == EventType.MouseDown && evt.button == 0 && outPort.Contains(mouseWorld))
             {
@@ -2093,7 +2368,7 @@ namespace Killtime.Story
             {
                 var ch = line.Choices[c];
                 Rect chOutPort = new Rect(cardRect.xMax - 7f, cardRect.y + 103f + (c * 22f), 14f, 14f);
-                DrawSolidRect(chOutPort, new Color(1f, 0.8f, 0.2f));
+                DrawGraphSolidRect(chOutPort, new Color(1f, 0.8f, 0.2f));
 
                 if (evt.type == EventType.MouseDown && evt.button == 0 && chOutPort.Contains(mouseWorld))
                 {
@@ -2172,26 +2447,26 @@ namespace Killtime.Story
             }
 
             // 1. Rendu d'arrière-plan de la Carte et de l'En-tête
-            DrawSolidRect(cardRect, new Color(0.12f, 0.08f, 0.12f, 0.95f));
-            DrawSolidRect(headerRect, new Color(0.40f, 0.15f, 0.15f));
+            DrawGraphSolidRect(cardRect, new Color(0.12f, 0.08f, 0.12f, 0.95f));
+            DrawGraphSolidRect(headerRect, new Color(0.40f, 0.15f, 0.15f));
 
             // Bordures
-            DrawSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), new Color(0.85f, 0.3f, 0.3f, 0.8f));
-            DrawSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
-            DrawSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
-            DrawSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), new Color(0.85f, 0.3f, 0.3f, 0.8f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
 
             // 2. Port d'Entrée
             Rect inPort = new Rect(cardRect.x - 7f, cardRect.y + 19f, 14f, 14f);
-            DrawSolidRect(inPort, new Color(0.85f, 0.4f, 1f));
+            DrawGraphSolidRect(inPort, new Color(0.85f, 0.4f, 1f));
 
             // 3. Titre & Nature de l'Événement
-            GUI.Label(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>▲ {ev.Title}</b> [{ev.Kind}]");
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>▲ {ev.Title}</b> [{ev.Kind}]");
 
             // 4. Bouton Supprimer
             GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
             GUI.color = Color.white;
-            if (GUI.Button(closeRect, "✕"))
+            if (GraphButton(closeRect, "✕"))
             {
                 node.Events.RemoveAt(index);
                 if (_draggingCardKey == dragKey)
@@ -2207,7 +2482,7 @@ namespace Killtime.Story
 
             // 5. Poignée de redimensionnement
             GUI.color = new Color(1f, 1f, 1f, 0.4f);
-            GUI.Label(resizeGripRect, "◢");
+            GraphLabel(resizeGripRect, "◢");
             GUI.color = Color.white;
 
             // Survol du header : infobulle lisible (cf. cartes dialogue).
@@ -2217,27 +2492,27 @@ namespace Killtime.Story
                 _hasHoverCard = true;
                 _hoverTitle = $"▲ {ev.Title}  ({ev.EventId}) [{ev.Kind}]";
                 _hoverBody = string.IsNullOrEmpty(ev.Description) ? "(aucune description)" : ev.Description;
-                _hoverScreenPos = Event.current.mousePosition;
+                _hoverScreenPos = _graphMouseScreenPos;
             }
 
-            // Contenu en GUI ABSOLU (même raison que les cartes dialogue : GUILayout + zoom = rendu cassé).
+            // Contenu éditable en coordonnées monde, converti en coordonnées écran par GraphRect().
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
             float y = cardRect.y + 30f;
 
-            GUI.Label(new Rect(innerX, y, 22f, 18f), "ID:");
-            ev.EventId = GUI.TextField(new Rect(innerX + 24f, y, 70f, 18f), ev.EventId ?? "");
-            GUI.Label(new Rect(innerX + 98f, y, 35f, 18f), "Titre:");
-            ev.Title = GUI.TextField(new Rect(innerX + 135f, y, Mathf.Max(40f, innerW - 135f), 18f), ev.Title ?? "");
+            GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
+            ev.EventId = GraphTextField(new Rect(innerX + 24f, y, 70f, 18f), ev.EventId ?? "");
+            GraphLabel(new Rect(innerX + 98f, y, 35f, 18f), "Titre:");
+            ev.Title = GraphTextField(new Rect(innerX + 135f, y, Mathf.Max(40f, innerW - 135f), 18f), ev.Title ?? "");
             y += 20f;
 
-            GUI.Label(new Rect(innerX, y, 45f, 18f), "Action:");
-            ev.Kind = (SceneEventKind)GUI.Toolbar(new Rect(innerX + 47f, y, Mathf.Max(80f, innerW - 47f), 18f), (int)ev.Kind, new[] { "Normal", "Combat", "Spawn", "Cam" });
+            GraphLabel(new Rect(innerX, y, 45f, 18f), "Action:");
+            ev.Kind = (SceneEventKind)GraphToolbar(new Rect(innerX + 47f, y, Mathf.Max(80f, innerW - 47f), 18f), (int)ev.Kind, new[] { "Normal", "Combat", "Spawn", "Cam" });
             y += 22f;
 
             Color prevBg = GUI.backgroundColor;
             GUI.backgroundColor = new Color(1f, 0.7f, 0.2f);
-            if (GUI.Button(new Rect(innerX, y, innerW, 20f), "▲ Tester en Direct"))
+            if (GraphButton(new Rect(innerX, y, innerW, 20f), "▲ Tester en Direct"))
             {
                 var controller = FindAnyObjectByType<Scenes.JsonStorySceneController>();
                 controller?.ExecuteScenicEvent(ev);
@@ -2245,7 +2520,7 @@ namespace Killtime.Story
             GUI.backgroundColor = prevBg;
 
             Rect outPort = new Rect(cardRect.xMax - 7f, cardRect.y + 19f, 14f, 14f);
-            DrawSolidRect(outPort, new Color(0.85f, 0.4f, 1f));
+            DrawGraphSolidRect(outPort, new Color(0.85f, 0.4f, 1f));
 
             if (evt.type == EventType.MouseDown && evt.button == 0 && outPort.Contains(mouseWorld))
             {
@@ -2321,20 +2596,20 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            DrawSolidRect(cardRect, new Color(0.13f, 0.10f, 0.05f, 0.95f));
+            DrawGraphSolidRect(cardRect, new Color(0.13f, 0.10f, 0.05f, 0.95f));
             Color headerCol = new Color(0.45f, 0.32f, 0.08f);
-            DrawSolidRect(headerRect, headerCol);
+            DrawGraphSolidRect(headerRect, headerCol);
 
-            DrawSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), new Color(1f, 0.85f, 0.25f, 0.8f));
-            DrawSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
-            DrawSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
-            DrawSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), new Color(1f, 0.85f, 0.25f, 0.8f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
 
-            GUI.Label(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>▼ {trg.Label}</b> [{trg.TriggerId}]");
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>▼ {trg.Label}</b> [{trg.TriggerId}]");
 
             GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
             GUI.color = Color.white;
-            if (GUI.Button(closeRect, "✕"))
+            if (GraphButton(closeRect, "✕"))
             {
                 if (_data.Triggers != null) _data.Triggers.RemoveAt(index);
                 if (_draggingCardKey == dragKey)
@@ -2349,7 +2624,7 @@ namespace Killtime.Story
             GUI.backgroundColor = Color.white;
 
             GUI.color = new Color(1f, 1f, 1f, 0.4f);
-            GUI.Label(resizeGripRect, "◢");
+            GraphLabel(resizeGripRect, "◢");
             GUI.color = Color.white;
 
             if (_zoom < 0.85f && !_isPanning && _draggingCardKey == null && _resizingCardKey == null && !_wireDraft.IsActive
@@ -2358,82 +2633,82 @@ namespace Killtime.Story
                 _hasHoverCard = true;
                 _hoverTitle = $"▼ {trg.Label}  ({trg.TriggerId})";
                 _hoverBody = $"{trg.GetSummary()}\n➔ {targetDisplay}";
-                _hoverScreenPos = Event.current.mousePosition;
+                _hoverScreenPos = _graphMouseScreenPos;
             }
 
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
             float y = cardRect.y + 30f;
 
-            GUI.Label(new Rect(innerX, y, 24f, 18f), "ID:");
-            trg.TriggerId = GUI.TextField(new Rect(innerX + 26f, y, 100f, 18f), trg.TriggerId ?? "");
+            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+            trg.TriggerId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), trg.TriggerId ?? "");
             GUI.color = new Color(1f, 0.85f, 0.25f);
-            GUI.Label(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), $"➔ {targetDisplay}");
+            GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), $"➔ {targetDisplay}");
             GUI.color = Color.white;
             y += 20f;
 
-            GUI.Label(new Rect(innerX, y, 42f, 18f), "Titre:");
-            trg.Label = GUI.TextField(new Rect(innerX + 44f, y, Mathf.Max(40f, innerW - 44f), 18f), trg.Label ?? "");
+            GraphLabel(new Rect(innerX, y, 42f, 18f), "Titre:");
+            trg.Label = GraphTextField(new Rect(innerX + 44f, y, Mathf.Max(40f, innerW - 44f), 18f), trg.Label ?? "");
             y += 20f;
 
-            trg.Kind = (SceneTriggerKind)GUI.Toolbar(new Rect(innerX, y, innerW, 18f), (int)trg.Kind, new[] { "Action", "Objectif", "Flag", "Acteur" });
+            trg.Kind = (SceneTriggerKind)GraphToolbar(new Rect(innerX, y, innerW, 18f), (int)trg.Kind, new[] { "Action", "Objectif", "Flag", "Acteur" });
             y += 22f;
 
             if (trg.Kind == SceneTriggerKind.InteractableActivated)
             {
-                GUI.Label(new Rect(innerX, y, 95f, 18f), "Action carte :");
-                trg.InteractableId = GUI.TextField(new Rect(innerX + 97f, y, Mathf.Max(40f, innerW - 97f), 18f), trg.InteractableId ?? "");
+                GraphLabel(new Rect(innerX, y, 95f, 18f), "Action carte :");
+                trg.InteractableId = GraphTextField(new Rect(innerX + 97f, y, Mathf.Max(40f, innerW - 97f), 18f), trg.InteractableId ?? "");
                 y += 20f;
             }
             else if (trg.Kind == SceneTriggerKind.ObjectiveCompleted)
             {
-                GUI.Label(new Rect(innerX, y, 65f, 18f), "Objectif :");
-                trg.ObjectiveId = GUI.TextField(new Rect(innerX + 67f, y, Mathf.Max(40f, innerW - 67f), 18f), trg.ObjectiveId ?? "");
+                GraphLabel(new Rect(innerX, y, 65f, 18f), "Objectif :");
+                trg.ObjectiveId = GraphTextField(new Rect(innerX + 67f, y, Mathf.Max(40f, innerW - 67f), 18f), trg.ObjectiveId ?? "");
                 y += 20f;
             }
             else if (trg.Kind == SceneTriggerKind.CampaignFlagSet)
             {
-                GUI.Label(new Rect(innerX, y, 42f, 18f), "Flag :");
-                trg.FlagKey = GUI.TextField(new Rect(innerX + 44f, y, 150f, 18f), trg.FlagKey ?? "");
-                trg.FlagMustBeSet = GUI.Toggle(new Rect(innerX + 198f, y, Mathf.Max(60f, innerW - 198f), 18f), trg.FlagMustBeSet, "Présent");
+                GraphLabel(new Rect(innerX, y, 42f, 18f), "Flag :");
+                trg.FlagKey = GraphTextField(new Rect(innerX + 44f, y, 150f, 18f), trg.FlagKey ?? "");
+                trg.FlagMustBeSet = GraphToggle(new Rect(innerX + 198f, y, Mathf.Max(60f, innerW - 198f), 18f), trg.FlagMustBeSet, "Présent");
                 y += 20f;
             }
             else
             {
-                GUI.Label(new Rect(innerX, y, 58f, 18f), "Acteur :");
-                trg.ActorId = GUI.TextField(new Rect(innerX + 60f, y, 110f, 18f), trg.ActorId ?? "");
-                trg.ActorCondition = (SceneActorConditionKind)GUI.Toolbar(new Rect(innerX + 174f, y, Mathf.Max(60f, innerW - 174f), 18f), (int)trg.ActorCondition, new[] { "Statut", "PV < %" });
+                GraphLabel(new Rect(innerX, y, 58f, 18f), "Acteur :");
+                trg.ActorId = GraphTextField(new Rect(innerX + 60f, y, 110f, 18f), trg.ActorId ?? "");
+                trg.ActorCondition = (SceneActorConditionKind)GraphToolbar(new Rect(innerX + 174f, y, Mathf.Max(60f, innerW - 174f), 18f), (int)trg.ActorCondition, new[] { "Statut", "PV < %" });
                 y += 22f;
                 if (trg.ActorCondition == SceneActorConditionKind.HasStatus)
                 {
-                    GUI.Label(new Rect(innerX, y, 58f, 18f), "Statut :");
-                    trg.StatusName = GUI.TextField(new Rect(innerX + 60f, y, Mathf.Max(40f, innerW - 60f), 18f), trg.StatusName ?? "");
+                    GraphLabel(new Rect(innerX, y, 58f, 18f), "Statut :");
+                    trg.StatusName = GraphTextField(new Rect(innerX + 60f, y, Mathf.Max(40f, innerW - 60f), 18f), trg.StatusName ?? "");
                 }
                 else
                 {
-                    GUI.Label(new Rect(innerX, y, 45f, 18f), "PV <");
-                    int.TryParse(GUI.TextField(new Rect(innerX + 47f, y, 45f, 18f), trg.HPPercentThreshold.ToString()), out trg.HPPercentThreshold);
+                    GraphLabel(new Rect(innerX, y, 45f, 18f), "PV <");
+                    int.TryParse(GraphTextField(new Rect(innerX + 47f, y, 45f, 18f), trg.HPPercentThreshold.ToString()), out trg.HPPercentThreshold);
                     trg.HPPercentThreshold = Mathf.Clamp(trg.HPPercentThreshold, 1, 100);
-                    GUI.Label(new Rect(innerX + 96f, y, Mathf.Max(30f, innerW - 96f), 18f), "% max");
+                    GraphLabel(new Rect(innerX + 96f, y, Mathf.Max(30f, innerW - 96f), 18f), "% max");
                 }
                 y += 20f;
             }
 
-            GUI.Label(new Rect(innerX, y, 68f, 18f), "Si nœud :");
-            trg.SourceNodeId = GUI.TextField(new Rect(innerX + 70f, y, 120f, 18f), trg.SourceNodeId ?? "");
-            trg.OneShot = GUI.Toggle(new Rect(innerX + 194f, y, Mathf.Max(60f, innerW - 194f), 18f), trg.OneShot, "Unique");
+            GraphLabel(new Rect(innerX, y, 68f, 18f), "Si nœud :");
+            trg.SourceNodeId = GraphTextField(new Rect(innerX + 70f, y, 120f, 18f), trg.SourceNodeId ?? "");
+            trg.OneShot = GraphToggle(new Rect(innerX + 194f, y, Mathf.Max(60f, innerW - 194f), 18f), trg.OneShot, "Unique");
             y += 20f;
 
             if (y + 4f <= cardRect.yMax)
             {
                 GUI.color = new Color(1f, 1f, 1f, 0.55f);
-                GUI.Label(new Rect(innerX, y, innerW, 18f), trg.GetSummary());
+                GraphLabel(new Rect(innerX, y, innerW, 18f), trg.GetSummary());
                 GUI.color = Color.white;
             }
 
             // Sortie seule : pas de port d'entrée sur un déclencheur.
             Rect outPort = new Rect(cardRect.xMax - 8f, cardRect.y + 18f, 16f, 16f);
-            DrawSolidRect(outPort, new Color(1f, 0.85f, 0.25f));
+            DrawGraphSolidRect(outPort, new Color(1f, 0.85f, 0.25f));
 
             if (evt.type == EventType.MouseDown && evt.button == 0 && outPort.Contains(mouseWorld))
             {
@@ -2489,8 +2764,11 @@ namespace Killtime.Story
             }
         }
 
-        private static void DrawBezierWire(Vector2 start, Vector2 end, Color color, float width = 3.5f)
+        private void DrawBezierWire(Vector2 start, Vector2 end, Color color, float width = 3.5f)
         {
+            // Wires sont également en espace monde; conversion unique au rendu.
+            start = GraphPoint(start);
+            end = GraphPoint(end);
             float dx = end.x - start.x;
             float tangentDist = Mathf.Clamp(Mathf.Abs(dx) * 0.5f, 40f, 220f);
             Vector2 startTan = start + new Vector2(tangentDist, 0f);
@@ -2515,26 +2793,6 @@ namespace Killtime.Story
 
             Vector2 mid = 0.125f * start + 0.375f * startTan + 0.375f * endTan + 0.125f * end;
             DrawSolidRect(new Rect(mid.x - 4f, mid.y - 4f, 8f, 8f), color);
-        }
-
-        private static void DrawLine(Vector2 pointA, Vector2 pointB, Color color, float width)
-        {
-            float dx = pointB.x - pointA.x;
-            float dy = pointB.y - pointA.y;
-            float length = Mathf.Sqrt(dx * dx + dy * dy);
-            if (length < 0.001f) return;
-
-            float angle = Mathf.Atan2(dy, dx) * Mathf.Rad2Deg;
-
-            Color savedColor = GUI.color;
-            GUI.color = color;
-
-            Matrix4x4 savedMatrix = GUI.matrix;
-            GUIUtility.RotateAroundPivot(angle, pointA);
-            GUI.DrawTexture(new Rect(pointA.x, pointA.y - width * 0.5f, length + 0.5f, width), PureWhiteTex);
-            GUI.matrix = savedMatrix;
-
-            GUI.color = savedColor;
         }
 
         private static void DrawSolidRect(Rect r, Color c)
@@ -3192,6 +3450,7 @@ namespace Killtime.Story
                 string json = JsonUtility.ToJson(_data, true);
                 File.WriteAllText(path, json);
                 _activeFilePath = path;
+                RefreshCatalogCache();
                 Debug.Log($"[ScenarioEditor] Scène enregistrée sous : {path}");
             }
 
@@ -3202,14 +3461,88 @@ namespace Killtime.Story
                 string path = Path.Combine(directory, $"{filename}.json");
                 if (File.Exists(path))
                 {
-                    string json = File.ReadAllText(path);
-                    _data = JsonUtility.FromJson<StorySceneData>(json);
-                    StorySceneData.EnsureDeepDefaults(_data);
-                    _activeFilePath = path;
+                    LoadSceneFromPath(path);
                 }
             }
             GUI.backgroundColor = Color.white;
             GUILayout.EndHorizontal();
+
+            GUILayout.Space(8);
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"<b>Scènes Détectées sur Disque ({_availableSceneFiles.Count})</b>");
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("🔄 Actualiser", GUILayout.Width(100)))
+            {
+                RefreshCatalogCache();
+            }
+            GUILayout.EndHorizontal();
+
+            for (int i = 0; i < _availableSceneFiles.Count; i++)
+            {
+                string filePath = _availableSceneFiles[i];
+                string fName = Path.GetFileName(filePath);
+                bool isActive = string.Equals(filePath, _activeFilePath, StringComparison.OrdinalIgnoreCase)
+                             || string.Equals(Path.GetFileNameWithoutExtension(filePath), _data.SceneId, StringComparison.OrdinalIgnoreCase);
+
+                GUILayout.BeginHorizontal(isActive ? GUI.skin.box : GUI.skin.textArea);
+                string activeMarker = isActive ? "<color=#00E5FF>● [ACTIVE]</color> " : "○ ";
+                GUILayout.Label($"{activeMarker}<b>{fName}</b>", GUILayout.Width(230));
+
+                if (File.Exists(filePath))
+                {
+                    var fileInfo = new FileInfo(filePath);
+                    GUILayout.Label($"<color=grey>{fileInfo.Length / 1024f:0.0} Ko — {fileInfo.LastWriteTime:dd/MM HH:mm}</color>", GUILayout.Width(160));
+                }
+
+                GUILayout.FlexibleSpace();
+                if (!isActive)
+                {
+                    GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
+                    if (GUILayout.Button("Ouvrir", GUILayout.Width(70), GUILayout.Height(20)))
+                    {
+                        LoadSceneFromPath(filePath);
+                    }
+                    GUI.backgroundColor = Color.white;
+                }
+                else
+                {
+                    GUILayout.Label("<color=#7CFF9B><b>En cours</b></color>", GUILayout.Width(70));
+                }
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.Space(6);
+            if (_confirmDeleteScene)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label($"<color=#FF5555><b>Supprimer définitivement '{_data.SceneId}.json' sur le disque ?</b></color>");
+                GUILayout.BeginHorizontal();
+                GUI.backgroundColor = new Color(1f, 0.25f, 0.25f);
+                if (GUILayout.Button("⚠ Confirmer la destruction du JSON", GUILayout.Height(34)))
+                {
+                    DeleteCurrentSceneJson();
+                    _confirmDeleteScene = false;
+                }
+                GUI.backgroundColor = Color.gray;
+                if (GUILayout.Button("Annuler", GUILayout.Width(90), GUILayout.Height(34)))
+                {
+                    _confirmDeleteScene = false;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+            }
+            else
+            {
+                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
+                if (GUILayout.Button("🗑 Supprimer la scène (détruire le JSON sur disque)", GUILayout.Height(30)))
+                {
+                    _confirmDeleteScene = true;
+                }
+                GUI.backgroundColor = Color.white;
+            }
 
             GUILayout.Space(8);
             GUI.backgroundColor = new Color(1.0f, 0.55f, 0.1f);
@@ -3224,6 +3557,28 @@ namespace Killtime.Story
             string preview = JsonUtility.ToJson(_data, true);
             GUILayout.TextArea(preview, GUILayout.Height(170));
             GUILayout.EndVertical();
+        }
+
+        private bool _confirmDeleteScene = false;
+
+        private void DeleteCurrentSceneJson()
+        {
+            string sceneId = _data.SceneId;
+            if (string.IsNullOrWhiteSpace(sceneId)) return;
+
+            var director = ScenarioDirector.EnsureInstance();
+            if (director.ActiveScenario != null && string.Equals(director.ActiveScenario.Id, sceneId, StringComparison.OrdinalIgnoreCase))
+            {
+                director.ResetCampaign();
+                StorySceneManager.EnsureInstance().CleanupCurrentScene();
+            }
+
+            StorySceneRepository.DeleteScene(sceneId);
+            ScenarioCatalog.Unregister(sceneId);
+            ScenarioCatalog.ReloadFromDisk();
+
+            CombatHUD.Instance?.AddAdvancedLog($"🗑 Scène '{sceneId}' et son JSON supprimés.", LogCategory.MovementAndTurns, "[SCÈNE]", Color.yellow);
+            CreateDefaultSceneTemplate();
         }
 
         private void DeployCurrentSceneToRuntime()

@@ -281,6 +281,8 @@ namespace Killtime.Tactics.AI
                 StopAITurn();
                 return;
             }
+            if (_turnManager != null && _turnManager.IsInExploration) return;
+            LoadDevUIPrefs();
             if (!_isAIEnabled || _turnManager == null || _turnManager.IsCombatOver) return;
             var active = _turnManager.ActiveUnit;
             if (active == null || active.Stats == null || !active.Stats.IsAlive) return;
@@ -336,7 +338,7 @@ namespace Killtime.Tactics.AI
             if (_cinematicDirector == null) _cinematicDirector = GetComponent<CinematicDirector>() ?? FindAnyObjectByType<CinematicDirector>();
         }
 
-        private void LoadDevUIPrefs()
+        public void LoadDevUIPrefs()
         {
             var p = Killtime.UI.DevUIPreferences.Current;
             if (p == null) return;
@@ -364,7 +366,8 @@ namespace Killtime.Tactics.AI
             StopAITurn();
 
             if (IsInMultiplayerNonGM()) return;
-            if (_turnManager != null && _turnManager.IsCombatOver) return;
+            if (_turnManager != null && (_turnManager.IsCombatOver || _turnManager.IsInExploration)) return;
+            LoadDevUIPrefs();
             if (!_isAIEnabled || unit == null || unit.Stats == null) return;
 
             if (!unit.Stats.IsAlive)

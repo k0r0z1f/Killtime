@@ -22,6 +22,9 @@ namespace Killtime.Story.Data
         public string EquippedWeaponName = "";
         public int BaseArmor = 1;
         public bool StartInCombatStance = false;
+        public bool SpawnInitially = true;
+        public string SpawnOnNodeId = "";
+        public CharacterSheet EmbeddedSheet = new();
     }
 
     [Serializable]
@@ -424,6 +427,17 @@ namespace Killtime.Story.Data
             data.Interactables ??= new List<SceneInteractableSpawnData>();
             data.Nodes ??= new List<SceneNodeData>();
             data.Triggers ??= new List<SceneTriggerData>();
+
+            for (int a = 0; a < data.Actors.Count; a++)
+            {
+                var actor = data.Actors[a];
+                if (actor == null) continue;
+                actor.EmbeddedSheet ??= new CharacterSheet();
+                actor.EmbeddedSheet.Skills ??= new List<SkillProgressionEntry>();
+                actor.EmbeddedSheet.UnlockedSpecializations ??= new List<string>();
+                actor.EmbeddedSheet.LearnedSpells ??= new();
+                actor.EmbeddedSheet.Inventory ??= new List<Killtime.Core.Inventory.InventoryItem>();
+            }
 
             for (int n = 0; n < data.Nodes.Count; n++)
             {

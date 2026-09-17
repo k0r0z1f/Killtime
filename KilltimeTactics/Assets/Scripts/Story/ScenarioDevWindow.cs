@@ -23,11 +23,13 @@ namespace Killtime.Story
         private static readonly Vector2 _minSize = new Vector2(520f, 480f);
         private Vector2 _scroll;
         private bool _showJournal;
+        private string _confirmDeleteId = null;
 
         protected override void OnOpened()
         {
             ScenarioDirector.EnsureInstance();
             StorySceneManager.EnsureInstance();
+            ScenarioCatalog.ReloadFromDisk();
         }
 
         protected override void DrawContent()
@@ -78,20 +80,101 @@ namespace Killtime.Story
         private void DrawSceneLauncher(ScenarioDirector director)
         {
             GUILayout.Label("<b>Scènes disponibles</b>");
-            foreach (var definition in ScenarioCatalog.All)
+            var allDefinitions = new System.Collections.Generic.List<ScenarioDefinition>(ScenarioCatalog.All);
+
+            if (allDefinitions.Count == 0)
             {
                 GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.Label($"<b>{definition.Title}</b>");
-                GUILayout.Label($"{definition.Volume} • {definition.CanonReference}");
-                if (GUILayout.Button("▶ Lancer cette scène", GUILayout.Height(32)))
+                GUILayout.Label("<color=grey>Aucune scène trouvée dans Scenarios/*.json.</color>");
+                if (GUILayout.Button("🛠️ Ouvrir l'Éditeur (F8) pour créer une scène", GUILayout.Height(30)))
                 {
-                    StorySceneManager.EnsureInstance().StartScenario(definition.Id);
-                    _scroll = Vector2.zero;
+                    ScenarioEditorDevWindow.Open();
                 }
                 GUILayout.EndVertical();
             }
+            else
+            {
+                for (int i = 0; i < allDefinitions.Count; i++)
+                {
+                    var definition = allDefinitions[i];
+                    if (definition == null) continue;
+
+                    GUILayout.BeginVertical(GUI.skin.box);
+                    GUILayout.Label($"<b>{definition.Title}</b>");
+                    string subtitle = $"{definition.Volume} • {definition.CanonReference}".Trim(' ', '•');
+                    if (!string.IsNullOrEmpty(subtitle))
+                    {
+                        GUILayout.Label(subtitle);
+                    }
+
+                    if (_confirmDeleteId == definition.Id)
+                    {
+                        GUILayout.Space(4);
+                        GUILayout.Label("<color=#FF5555><b>Supprimer définitivement cette scène et détruire son fichier JSON ?</b></color>");
+                        GUILayout.BeginHorizontal();
+                        GUI.backgroundColor = new Color(1f, 0.25f, 0.25f);
+                        if (GUILayout.Button("⚠ Oui, détruire le JSON", GUILayout.Height(30)))
+                        {
+                            DeleteScenario(definition.Id);
+                            _confirmDeleteId = null;
+                            GUI.backgroundColor = Color.white;
+                            GUILayout.EndHorizontal();
+                            GUILayout.EndVertical();
+                            break;
+                        }
+                        GUI.backgroundColor = Color.gray;
+                        if (GUILayout.Button("Annuler", GUILayout.Width(90), GUILayout.Height(30)))
+                        {
+                            _confirmDeleteId = null;
+                        }
+                        GUI.backgroundColor = Color.white;
+                        GUILayout.EndHorizontal();
+                    }
+                    else
+                    {
+                        GUILayout.BeginHorizontal();
+                        GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
+                        if (GUILayout.Button("▶ Lancer cette scène", GUILayout.Height(32)))
+                        {
+                            StorySceneManager.EnsureInstance().StartScenario(definition.Id);
+                            _scroll = Vector2.zero;
+                        }
+                        GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
+                        if (GUILayout.Button("🗑 Supprimer", GUILayout.Width(110), GUILayout.Height(32)))
+                        {
+                            _confirmDeleteId = definition.Id;
+                        }
+                        GUI.backgroundColor = Color.white;
+                        GUILayout.EndHorizontal();
+                    }
+
+                    GUILayout.EndVertical();
+                    GUILayout.Space(2);
+                }
+            }
 
             DrawJournal(director);
+        }
+
+        private void DeleteScenario(string scenarioId)
+        {
+            if (string.IsNullOrWhiteSpace(scenarioId)) return;
+
+            var director = ScenarioDirector.EnsureInstance();
+            if (director.ActiveScenario != null && string.Equals(director.ActiveScenario.Id, scenarioId, System.StringComparison.OrdinalIgnoreCase))
+            {
+                director.ResetCampaign();
+                StorySceneManager.EnsureInstance().CleanupCurrentScene();
+            }
+
+            bool deletedOnDisk = Data.StorySceneRepository.DeleteScene(scenarioId);
+            ScenarioCatalog.Unregister(scenarioId);
+            ScenarioCatalog.ReloadFromDisk();
+
+            if (deletedOnDisk)
+            {
+                CombatHUD.Instance?.AddAdvancedLog($"🗑 Scène '{scenarioId}' et son fichier JSON détruits.", LogCategory.MovementAndTurns, "[SCÈNE]", Color.yellow);
+            }
         }
 
         private void DrawActiveScene(ScenarioDirector director, ScenarioDefinition scenario)
@@ -154,6 +237,41 @@ namespace Killtime.Story
             }
 
             GUILayout.Space(8);
+
+            if (_confirmDeleteId == scenario.Id)
+            {
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.Label("<color=#FF5555><b>Supprimer définitivement la scène active et son fichier JSON ?</b></color>");
+                GUILayout.BeginHorizontal();
+                GUI.backgroundColor = new Color(1f, 0.25f, 0.25f);
+                if (GUILayout.Button("⚠ Confirmer destruction du JSON", GUILayout.Height(30)))
+                {
+                    DeleteScenario(scenario.Id);
+                    _confirmDeleteId = null;
+                    GUI.backgroundColor = Color.white;
+                    GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
+                    return;
+                }
+                GUI.backgroundColor = Color.gray;
+                if (GUILayout.Button("Annuler", GUILayout.Width(90), GUILayout.Height(30)))
+                {
+                    _confirmDeleteId = null;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+                GUILayout.EndVertical();
+            }
+            else
+            {
+                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
+                if (GUILayout.Button("🗑 Supprimer cette scène (détruire le JSON)", GUILayout.Height(28)))
+                {
+                    _confirmDeleteId = scenario.Id;
+                }
+                GUI.backgroundColor = Color.white;
+            }
+
             DrawState(director);
             DrawJournal(director);
             GUILayout.Space(16);

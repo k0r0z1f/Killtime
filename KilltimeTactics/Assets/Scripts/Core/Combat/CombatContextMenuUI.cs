@@ -81,6 +81,11 @@ namespace Killtime.Tactics.CombatUI
 
             _cachedActions = CombatActionRegistry.GetAvailableActions(activeUnit, target, _arena);
 
+            if (_turnManager != null && _turnManager.ActiveUnit == target)
+            {
+                _selectedCategory = ActionCategory.TactiqueEtOrdres;
+            }
+
             float width = Mathf.Max(_minSize.x, 340);
             float height = Mathf.Max(_minSize.y, 400);
 
@@ -167,6 +172,38 @@ namespace Killtime.Tactics.CombatUI
             GUILayout.Label($"Acteur : <b>{activeActor.Stats.Name}</b> (PA Disponibles: <b>{activeActor.Stats.CurrentActionPoints}</b>)");
             GUI.color = Color.white;
 
+            bool isCurrentTurnUnit = _turnManager != null
+                && !_turnManager.IsInExploration
+                && !_turnManager.IsCombatOver
+                && _turnManager.ActiveUnit == _contextTarget
+                && _contextTarget.IsPlayerControlled;
+
+            if (isCurrentTurnUnit)
+            {
+                int remAP = _contextTarget.Stats.CurrentActionPoints;
+                string reserveLabel = remAP > 0 ? $"Réserve : {remAP} PA (Réaction)" : "0 PA résiduel";
+
+                GUILayout.Space(2);
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginHorizontal();
+                GUI.color = Color.yellow;
+                GUILayout.Label("<b>⚡ EN COURS D'INITIATIVE</b>");
+                GUI.color = remAP > 0 ? Color.cyan : Color.gray;
+                GUILayout.Label(reserveLabel, GUILayout.Width(170));
+                GUI.color = Color.white;
+                GUILayout.EndHorizontal();
+
+                GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
+                if (GUILayout.Button("⌛ <b>Terminer le tour</b> [Espace]", GUILayout.Height(30)))
+                {
+                    EndActiveUnitTurn();
+                    CloseMenu();
+                    return;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndVertical();
+            }
+
             GUILayout.Space(4);
 
             // 3. Barre des Catégories
@@ -186,7 +223,19 @@ namespace Killtime.Tactics.CombatUI
             // 4. Liste des Actions de la Catégorie
             var actionsInCategory = _cachedActions.FindAll(a => a.Category == _selectedCategory);
 
-            if (actionsInCategory.Count == 0)
+            if (_selectedCategory == ActionCategory.TactiqueEtOrdres && isCurrentTurnUnit)
+            {
+                GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
+                if (GUILayout.Button("⌛ Terminer le tour [Espace]", GUILayout.Height(30)))
+                {
+                    EndActiveUnitTurn();
+                    CloseMenu();
+                    return;
+                }
+                GUI.backgroundColor = Color.white;
+            }
+
+            if (actionsInCategory.Count == 0 && !(_selectedCategory == ActionCategory.TactiqueEtOrdres && isCurrentTurnUnit))
             {
                 GUILayout.Label("<i>Aucune action disponible dans cette catégorie.</i>", GUI.skin.box);
             }
@@ -216,6 +265,23 @@ namespace Killtime.Tactics.CombatUI
                 return;
             }
             GUI.backgroundColor = Color.white;
+        }
+
+        private void EndActiveUnitTurn()
+        {
+            if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+            {
+                Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.Turn_End, 0.7f);
+            }
+
+            if (TurnManager.IsMultiplayerPlayerClient())
+            {
+                Killtime.Multi.VTTTableSync.Instance?.RequestEndTurn();
+            }
+            else
+            {
+                _turnManager?.EndCurrentTurn();
+            }
         }
 
         private bool DrawCategoryTab(string label, ActionCategory cat)

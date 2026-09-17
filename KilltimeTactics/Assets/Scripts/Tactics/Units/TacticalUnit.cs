@@ -112,6 +112,14 @@ namespace Killtime.Tactics.Units
             {
                 gameObject.AddComponent<TacticalUnitVisual>();
             }
+
+            if (GetComponent<Collider>() == null)
+            {
+                var col = gameObject.AddComponent<CapsuleCollider>();
+                col.center = new Vector3(0f, 0.9f, 0f);
+                col.radius = 0.35f;
+                col.height = 1.8f;
+            }
         }
 
         private void OnDestroy()

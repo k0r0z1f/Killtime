@@ -128,7 +128,17 @@ namespace Killtime.Story.Scenes
             _firedTriggerIds.Clear();
             _activatedInteractableIds.Clear();
 
+            if (_arena != null)
+            {
+                _arena.ClearAllUnits();
+            }
+
             yield return LoadLinkedMapRoutine();
+
+            if (_arena != null)
+            {
+                _arena.ClearAllUnits();
+            }
 
             SpawnActors();
             SpawnInteractables();
@@ -173,7 +183,16 @@ namespace Killtime.Story.Scenes
 
             if (_sceneData.EmbeddedMap != null && _sceneData.EmbeddedMap.ModifiedTiles.Count > 0)
             {
-                mapEditor.ApplyLoadedMap(_sceneData.EmbeddedMap);
+                var cachedUnits = _sceneData.EmbeddedMap.PlacedUnits;
+                _sceneData.EmbeddedMap.PlacedUnits = null;
+                try
+                {
+                    mapEditor.ApplyLoadedMap(_sceneData.EmbeddedMap);
+                }
+                finally
+                {
+                    _sceneData.EmbeddedMap.PlacedUnits = cachedUnits;
+                }
                 yield return null;
             }
             else if (!string.IsNullOrEmpty(_sceneData.LinkedMapName))
@@ -192,6 +211,7 @@ namespace Killtime.Story.Scenes
                     var mapData = JsonUtility.FromJson<TacticalMapSaveData>(json);
                     if (mapData != null)
                     {
+                        mapData.PlacedUnits = null;
                         mapEditor.ApplyLoadedMap(mapData, mapPath);
                         yield return null;
                     }
@@ -212,56 +232,120 @@ namespace Killtime.Story.Scenes
             _spawnedActors.Clear();
             _playerParty.Clear();
 
+            for (int i = 0; i < _sceneData.Actors.Count; i++)
+            {
+                var actorData = _sceneData.Actors[i];
+                if (actorData == null) continue;
+                if (!actorData.SpawnInitially && !string.IsNullOrEmpty(actorData.SpawnOnNodeId)) continue;
+
+                SpawnSingleActor(actorData);
+            }
+        }
+
+        public TacticalUnit SpawnSingleActor(SceneActorSpawnData actorData)
+        {
+            if (actorData == null) return null;
+            if (_spawnedActors.TryGetValue(actorData.ActorId, out var existing) && existing != null)
+                return existing;
+
+            CharacterSheet sheet = null;
             string charFolder = Path.Combine(Application.persistentDataPath, "Characters");
+
+            if (!string.IsNullOrEmpty(actorData.CharacterSheetFileName))
+            {
+                string sheetPath = Path.Combine(charFolder, actorData.CharacterSheetFileName.EndsWith(".json") ? actorData.CharacterSheetFileName : $"{actorData.CharacterSheetFileName}.json");
+                if (File.Exists(sheetPath))
+                {
+                    sheet = CharacterStorageService.LoadCharacter(sheetPath);
+                }
+            }
+
+            if (sheet == null && actorData.EmbeddedSheet != null && !string.IsNullOrEmpty(actorData.EmbeddedSheet.Name))
+            {
+                sheet = JsonUtility.FromJson<CharacterSheet>(JsonUtility.ToJson(actorData.EmbeddedSheet));
+            }
+
+            if (sheet == null)
+            {
+                sheet = new CharacterSheet
+                {
+                    Name = actorData.DisplayName,
+                    BaseAttributes = new Attributes(3, 3, 3, 3, 2, 2, 1, 2, 0),
+                    BaseArmor = actorData.BaseArmor,
+                    Profile = actorData.IsPlayer ? CharacterProfileType.HerosPJ : CharacterProfileType.PnjNormal,
+                    ModelPrefabName = actorData.ModelPrefabName
+                };
+            }
+
+            if (!string.IsNullOrEmpty(actorData.EquippedWeaponName) && sheet.GetEquippedWeapon() == null)
+            {
+                bool isRanged = actorData.EquippedWeaponName.ToLowerInvariant().Contains("laser")
+                             || actorData.EquippedWeaponName.ToLowerInvariant().Contains("pistolet")
+                             || actorData.EquippedWeaponName.ToLowerInvariant().Contains("fusil")
+                             || actorData.EquippedWeaponName.ToLowerInvariant().Contains("blaster");
+
+                var weapon = new InventoryItem
+                {
+                    ItemId = $"weapon_{actorData.ActorId}",
+                    Name = actorData.EquippedWeaponName,
+                    Type = ItemType.Weapon,
+                    AssociatedSkill = isRanged ? SkillType.Ballistique : SkillType.ManiementArmes,
+                    RangeInTiles = isRanged ? 8 : 1,
+                    BaseDamage = isRanged ? 5 : 4,
+                    IsEquipped = true
+                };
+                sheet.AddItem(weapon);
+                if (sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel == 0)
+                    sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel = 1;
+            }
+
+            var coords = new HexCoordinates(actorData.Q, actorData.R);
+            var go = new GameObject($"Actor_{actorData.ActorId}");
+            var unit = go.AddComponent<TacticalUnit>();
+            unit.InitializeFromSheet(sheet, coords, _grid, actorData.IsPlayer);
+
+            var visual = unit.GetComponent<TacticalUnitVisual>();
+            if (visual != null)
+            {
+                visual.SetColor(actorData.PrimaryColor, actorData.AccentColor);
+                visual.SetCombatStance(actorData.StartInCombatStance);
+            }
+
+            if (actorData.FacingAngle != 0f)
+            {
+                unit.transform.rotation = Quaternion.Euler(0f, actorData.FacingAngle, 0f);
+            }
+
+            _spawnedActors[actorData.ActorId] = unit;
+
+            if (actorData.IsPlayer)
+            {
+                _playerParty.Add(unit);
+            }
+
+            return unit;
+        }
+
+        public void SpawnActorsForNode(string nodeId)
+        {
+            if (_sceneData == null || _sceneData.Actors == null || string.IsNullOrEmpty(nodeId)) return;
 
             for (int i = 0; i < _sceneData.Actors.Count; i++)
             {
                 var actorData = _sceneData.Actors[i];
                 if (actorData == null) continue;
+                if (_spawnedActors.ContainsKey(actorData.ActorId)) continue;
+                if (!string.Equals(actorData.SpawnOnNodeId, nodeId, StringComparison.OrdinalIgnoreCase)) continue;
 
-                CharacterSheet sheet = null;
-
-                if (!string.IsNullOrEmpty(actorData.CharacterSheetFileName))
+                var unit = SpawnSingleActor(actorData);
+                if (unit != null)
                 {
-                    string sheetPath = Path.Combine(charFolder, actorData.CharacterSheetFileName.EndsWith(".json") ? actorData.CharacterSheetFileName : $"{actorData.CharacterSheetFileName}.json");
-                    if (File.Exists(sheetPath))
+                    _turnManager?.RegisterUnit(unit);
+                    if (!actorData.IsPlayer)
                     {
-                        sheet = CharacterStorageService.LoadCharacter(sheetPath);
+                        _arena?.RegisterHostileUnit(unit);
+                        _arena?.SelectTarget(unit);
                     }
-                }
-
-                if (sheet == null)
-                {
-                    sheet = new CharacterSheet
-                    {
-                        Name = actorData.DisplayName,
-                        BaseArmor = actorData.BaseArmor,
-                        ModelPrefabName = actorData.ModelPrefabName
-                    };
-                }
-
-                var coords = new HexCoordinates(actorData.Q, actorData.R);
-                var go = new GameObject($"Actor_{actorData.ActorId}");
-                var unit = go.AddComponent<TacticalUnit>();
-                unit.InitializeFromSheet(sheet, coords, _grid, actorData.IsPlayer);
-
-                var visual = unit.GetComponent<TacticalUnitVisual>();
-                if (visual != null)
-                {
-                    visual.SetColor(actorData.PrimaryColor, actorData.AccentColor);
-                    visual.SetCombatStance(actorData.StartInCombatStance);
-                }
-
-                if (actorData.FacingAngle != 0f)
-                {
-                    unit.transform.rotation = Quaternion.Euler(0f, actorData.FacingAngle, 0f);
-                }
-
-                _spawnedActors[actorData.ActorId] = unit;
-
-                if (actorData.IsPlayer)
-                {
-                    _playerParty.Add(unit);
                 }
             }
         }
@@ -519,8 +603,8 @@ namespace Killtime.Story.Scenes
 
                     if (dataNode.TriggerCombatOnEnter && _turnManager != null && _turnManager.IsInExploration)
                     {
-                        SpawnHostileDrones();
-                        _turnManager.EnterCombatMode(_playerParty.Count > 0 ? _playerParty[0] : null);
+                        SpawnActorsForNode(node.Id);
+                        _turnManager.EnterCombatMode();
                     }
                 }
 
@@ -536,37 +620,6 @@ namespace Killtime.Story.Scenes
             {
                 TryFireReadyTrigger();
             }
-        }
-
-        private void SpawnHostileDrones()
-        {
-            if (_spawnedActors.ContainsKey("drone_a")) return;
-
-            var droneAttr = new Attributes(@for: 3, agi: 4, con: 3, rap: 4, @int: 2, eru: 1, cha: 1, ins: 3, mag: 0);
-            SpawnSingleDrone("drone_a", "Drone Sécurité A", new HexCoordinates(-2, 0), droneAttr);
-            SpawnSingleDrone("drone_b", "Drone Sécurité B", new HexCoordinates(-1, 2), droneAttr);
-        }
-
-        private void SpawnSingleDrone(string id, string displayName, HexCoordinates coords, Attributes attr)
-        {
-            var sheet = new CharacterSheet
-            {
-                Name = displayName,
-                BaseArmor = 2,
-                Profile = CharacterProfileType.PnjSbire
-            };
-
-            var go = new GameObject($"Actor_{id}");
-            var unit = go.AddComponent<TacticalUnit>();
-            unit.InitializeFromSheet(sheet, coords, _grid, false);
-
-            var visual = unit.GetComponent<TacticalUnitVisual>();
-            visual?.SetColor(new Color(0.85f, 0.25f, 0.2f), new Color(1.0f, 0.75f, 0.1f));
-            visual?.SetCombatStance(true);
-
-            _spawnedActors[id] = unit;
-            _turnManager?.RegisterUnit(unit);
-            _arena?.SelectTarget(unit);
         }
 
         private void ApplyCameraFocusForCurrentLine()
@@ -751,13 +804,14 @@ namespace Killtime.Story.Scenes
             switch (evt.Kind)
             {
                 case SceneEventKind.TriggerCombat:
-                    SpawnHostileDrones();
-                    _turnManager?.EnterCombatMode(_playerParty.Count > 0 ? _playerParty[0] : null);
+                    SpawnActorsForNode(_director?.CurrentNode?.Id);
+                    _turnManager?.EnterCombatMode();
                     CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>ÉVÉNEMENT :</b> Combat déclenché [{evt.Title}].", LogCategory.Combat, "[COMBAT]", Color.red);
                     break;
 
                 case SceneEventKind.SpawnEnemies:
-                    SpawnHostileDrones();
+                    SpawnActorsForNode(_director?.CurrentNode?.Id);
+                    _turnManager?.EnterCombatMode();
                     CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>ÉVÉNEMENT :</b> Déploiement d'unités [{evt.Title}].", LogCategory.Combat, "[RENFORTS]", Color.red);
                     break;
 
@@ -1009,8 +1063,8 @@ namespace Killtime.Story.Scenes
 
                 if (challenge.FailureTriggersCombat)
                 {
-                    SpawnHostileDrones();
-                    _turnManager?.EnterCombatMode(_playerParty.Count > 0 ? _playerParty[0] : null);
+                    SpawnActorsForNode(_director?.CurrentNode?.Id);
+                    _turnManager?.EnterCombatMode();
                     CombatHUD.Instance?.AddAdvancedLog("🚨 <b>ÉCHEC CRITIQUE :</b> Alerte déclenchée ! Déploiement d'urgence hostile.", LogCategory.Combat, "[ALERTE]", Color.red);
                 }
 

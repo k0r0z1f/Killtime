@@ -122,15 +122,17 @@ namespace Killtime.Tactics
             try { LoadDevUIPrefs(); } catch { /* prefs optionnelles */ }
         }
 
-        private void LoadDevUIPrefs()
+        public void LoadDevUIPrefs()
         {
             var p = Killtime.UI.DevUIPreferences.Current;
             if (p == null) return;
+            if (p.ArenaLayout >= 0 && Enum.IsDefined(typeof(ArenaLayoutType), p.ArenaLayout))
+            {
+                _currentLayout = (ArenaLayoutType)p.ArenaLayout;
+            }
             InfiniteAP = p.InfiniteAP;
-            int layoutCount = Enum.GetValues(typeof(ArenaLayoutType)).Length;
-            int savedLayout = Mathf.Clamp(p.ArenaLayout, 0, Mathf.Max(0, layoutCount - 1));
-            _initialLayout = (ArenaLayoutType)savedLayout;
             _enableCinematicKillcam = p.EnableCinematicKillcam;
+            _aiController?.LoadDevUIPrefs();
         }
 
         private void SaveArenaLayoutPref()
@@ -173,9 +175,6 @@ namespace Killtime.Tactics
             _turnManager.OnCombatEnded += HandleCombatEnded;
             _turnManager.OnUnitStatusExpired += HandleUnitStatusExpired;
             _turnManager.OnInitiativeRolled += HandleInitiativeRolled;
-
-            TacticalUnit.OnAnyUnitMoved += HandleTargetMovedFollow;
-            TacticalUnit.OnAnyUnitTeleported += HandleTargetTeleportedFollow;
 
             // 4. Sélectionner le premier mannequin par défaut
             if (SparringDummies.Count > 0)
@@ -840,10 +839,27 @@ namespace Killtime.Tactics
                         var start = activeUnit.CurrentCoords;
                         var target = hoveredNode.Coordinates;
 
+                        var hitUnit = hit.collider.GetComponentInParent<TacticalUnit>() ?? GetUnitAtCoords(target);
+
+                        if (Input.GetMouseButtonDown(1))
+                        {
+                            if (hitUnit != null && hitUnit == activeUnit)
+                            {
+                                CombatHUD.Instance?.ToggleActiveUnitContextMenu();
+                                return;
+                            }
+                        }
+
                         if (Input.GetMouseButtonDown(0))
                         {
                             Killtime.UI.FloatingWindowChrome.OnMapClicked();
-                            var clickedUnit = GetUnitAtCoords(target);
+                            var clickedUnit = hitUnit;
+
+                            if (clickedUnit == activeUnit)
+                            {
+                                CombatHUD.Instance?.ToggleActiveUnitContextMenu();
+                                return;
+                            }
 
                             if (clickedUnit != null && clickedUnit != activeUnit)
                             {
@@ -1038,6 +1054,16 @@ namespace Killtime.Tactics
             SelectTarget(SparringDummies[nextIdx]);
         }
 
+        public void RegisterHostileUnit(TacticalUnit unit)
+        {
+            if (unit == null || SparringDummies.Contains(unit)) return;
+            SparringDummies.Add(unit);
+            if (CurrentTarget == null || !CurrentTarget.Stats.IsAlive)
+            {
+                SelectTarget(unit);
+            }
+        }
+
         public void AutoTargetNextAlive()
         {
             for (int i = 0; i < SparringDummies.Count; i++)
@@ -1049,14 +1075,22 @@ namespace Killtime.Tactics
                     return;
                 }
             }
+
+            if (_turnManager != null)
+            {
+                var units = _turnManager.TurnOrder;
+                for (int i = 0; i < units.Count; i++)
+                {
+                    var u = units[i];
+                    if (u != null && !u.IsPlayerControlled && u.Stats != null && u.Stats.IsAlive)
+                    {
+                        SelectTarget(u);
+                        return;
+                    }
+                }
+            }
         }
 
-        /// <summary>
-        /// Déclenche une passe d'armes ou tir ciblé selon la séquence officielle du Livre VI §24.1 :
-        /// attaque (jet puis PA bonus après tirage) -> défense (jet puis PA bonus après tirage)
-        /// -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
-        /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
-        /// </summary>
         public void SwitchActiveExplorer(TacticalUnit unit)
         {
             if (unit == null) return;
@@ -1072,6 +1106,12 @@ namespace Killtime.Tactics
             Log($"🕹️ Contrôle basculé sur <b>{unit.Stats.Name}</b>.");
         }
 
+        /// <summary>
+        /// Déclenche une passe d'armes ou tir ciblé selon la séquence officielle du Livre VI §24.1 :
+        /// attaque (jet puis PA bonus après tirage) -> défense (jet puis PA bonus après tirage)
+        /// -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
+        /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
+        /// </summary>
         public void ExecuteAttack(
             BodyPart targetedPart, 
             bool cancelPenaltyWithAP, 
