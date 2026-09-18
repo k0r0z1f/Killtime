@@ -5,6 +5,7 @@ using UnityEngine;
 using Killtime.UI;
 using Killtime.Story.Data;
 using Killtime.Core.Character;
+using Killtime.Core.Inventory;
 using Killtime.Tactics;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.TurnSystem;
@@ -48,10 +49,16 @@ namespace Killtime.Story
             public bool IsAutoSuccess;
             public bool IsEvent;
             public bool IsTrigger;
+            public bool FromConsequence;
+            public bool ConsLinkToCons;
+            public bool FromChallengeLink;
+            public bool ChallengeLinkIsSuccess;
             public SceneDialogueLineData SourceLine;
             public SceneDialogueChoiceData SourceChoice;
+            public SceneDialogueChallengeData SourceChallenge;
             public SceneEventData SourceEvent;
             public SceneTriggerData SourceTrigger;
+            public SceneConsequenceData SourceConsequence;
             public Vector2 StartPos;
         }
 
@@ -893,45 +900,37 @@ namespace Killtime.Story
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.BeginHorizontal();
 
-            if (_availableSceneFiles.Count > 1)
+            // # de la scène tel qu'affiché dans la liste "Scènes Détectées sur Disque" (onglet Scène & Fichier : #{i+1}).
+            int activeSceneIdx = -1;
+            if (_availableSceneFiles.Count > 0)
             {
-                int sceneIdx = !string.IsNullOrEmpty(_activeFilePath)
+                activeSceneIdx = !string.IsNullOrEmpty(_activeFilePath)
                     ? _availableSceneFiles.FindIndex(f => string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase))
                     : _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase));
-                if (sceneIdx < 0) sceneIdx = 0;
+            }
+
+            if (_availableSceneFiles.Count > 1)
+            {
+                int navIdx = activeSceneIdx >= 0 ? activeSceneIdx : 0;
                 if (GUILayout.Button("◀", GUILayout.Width(24), GUILayout.Height(22)))
                 {
-                    sceneIdx = (sceneIdx - 1 + _availableSceneFiles.Count) % _availableSceneFiles.Count;
-                    LoadSceneFromPath(_availableSceneFiles[sceneIdx]);
+                    navIdx = (navIdx - 1 + _availableSceneFiles.Count) % _availableSceneFiles.Count;
+                    LoadSceneFromPath(_availableSceneFiles[navIdx]);
                 }
                 if (GUILayout.Button("▶", GUILayout.Width(24), GUILayout.Height(22)))
                 {
-                    sceneIdx = (sceneIdx + 1) % _availableSceneFiles.Count;
-                    LoadSceneFromPath(_availableSceneFiles[sceneIdx]);
+                    navIdx = (navIdx + 1) % _availableSceneFiles.Count;
+                    LoadSceneFromPath(_availableSceneFiles[navIdx]);
                 }
             }
 
-            GUILayout.Label($"<b>■ SCÈNE : {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color>)", GUILayout.ExpandWidth(true));
+            string sceneNumPrefix = activeSceneIdx >= 0 ? $"#{activeSceneIdx + 1} " : "";
+            GUILayout.Label($"<b>■ SCÈNE {sceneNumPrefix}: {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color>)", GUILayout.ExpandWidth(true));
 
             GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
             if (GUILayout.Button("+ Nouveau Nœud", GUILayout.Width(120), GUILayout.Height(22)))
             {
-                float newX = 60f;
-                float newY = 60f;
-                if (_data.Nodes.Count > 0)
-                {
-                    if (GetSceneContentBounds(out float _, out float _, out float maxX, out float _))
-                    {
-                        newX = maxX + 60f;
-                        newY = 60f;
-                    }
-                    else
-                    {
-                        var lastBox = ComputeNodeBoundingBox(_data.Nodes[_data.Nodes.Count - 1]);
-                        newX = lastBox.xMax + 60f;
-                        newY = lastBox.yMin;
-                    }
-                }
+                ComputeNewNodeSpawn(out float newX, out float newY);
                 _data.Nodes.Add(new SceneNodeData
                 {
                     NodeId = $"node_{_data.Nodes.Count + 1}",
@@ -939,6 +938,23 @@ namespace Killtime.Story
                     GraphPosX = newX,
                     GraphPosY = newY
                 });
+            }
+            GUI.backgroundColor = new Color(0.2f, 0.92f, 0.45f);
+            if (GUILayout.Button("+ Nœud Objectif", GUILayout.Width(120), GUILayout.Height(22)))
+            {
+                ComputeNewNodeSpawn(out float newX, out float newY);
+                var objNode = new SceneNodeData
+                {
+                    NodeId = $"node_{_data.Nodes.Count + 1}",
+                    Title = "Nouvel Objectif",
+                    Kind = ScenarioNodeKind.Objective,
+                    Body = "Texte descriptif ou récapitulatif du segment...",
+                    GraphPosX = newX,
+                    GraphPosY = newY
+                };
+                objNode.Objectives.Add(new ScenarioObjective { Id = "obj_1", Label = "Objectif principal...", Optional = false });
+                objNode.Objectives.Add(new ScenarioObjective { Id = "obj_2", Label = "Objectif optionnel...", Optional = true });
+                _data.Nodes.Add(objNode);
             }
             GUI.backgroundColor = Color.white;
 
@@ -1097,10 +1113,11 @@ namespace Killtime.Story
             }
 
             int totalEvents = node.Events != null ? node.Events.Count : 0;
+            float curEvtY = curY;
             if (totalEvents > 0)
             {
                 float evtStartY = (totalDialogues > 0) ? curY + 10f : cardStartY;
-                float curEvtY = evtStartY;
+                curEvtY = evtStartY;
 
                 for (int rowStart = 0; rowStart < totalEvents; rowStart += maxCardsPerRow)
                 {
@@ -1122,6 +1139,270 @@ namespace Killtime.Story
                     curEvtY += rowHeight + 14f;
                 }
             }
+
+            int totalCons = node.Consequences != null ? node.Consequences.Count : 0;
+            if (totalCons > 0)
+            {
+                float consStartY = (totalDialogues > 0 || totalEvents > 0) ? curEvtY + 10f : cardStartY;
+                float curConsY = consStartY;
+
+                for (int rowStart = 0; rowStart < totalCons; rowStart += maxCardsPerRow)
+                {
+                    int rowEnd = Mathf.Min(rowStart + maxCardsPerRow, totalCons);
+                    float rowHeight = 0f;
+                    for (int k = rowStart; k < rowEnd; k++)
+                    {
+                        Vector2 s = GetConsequenceCardSize(node.Consequences[k]);
+                        rowHeight = Mathf.Max(rowHeight, s.y);
+                    }
+
+                    for (int k = rowStart; k < rowEnd; k++)
+                    {
+                        int col = k - rowStart;
+                        node.Consequences[k].GraphPosX = cardStartX + col * (ConsCardDefaultW + gapCardsX);
+                        node.Consequences[k].GraphPosY = curConsY;
+                    }
+
+                    curConsY += rowHeight + 14f;
+                }
+            }
+        }
+
+        // Spot libre pour une NOUVELLE carte : ne touche JAMAIS aux cartes existantes.
+        // L'ajout (+ Dialogue / + Événement / + Conséq.) place la carte sous le contenu
+        // existant, alignée sur la colonne la plus à gauche, sans regrouper/re-griller
+        // les positions manuelles de l'utilisateur. Seuls Auto-Disposition / Mosaïque
+        // appellent LayoutCardsInsideNode (regroupement explicite voulu).
+        private static void ComputeFreeSpotForNewCard(SceneNodeData node, out float x, out float y)
+        {
+            float baseX = (node != null ? node.GraphPosX : 60f) + 20f;
+            float baseY = (node != null ? node.GraphPosY : 60f) + 48f;
+            if (node == null)
+            {
+                x = baseX;
+                y = baseY;
+                return;
+            }
+
+            bool has = false;
+            float minLeft = float.MaxValue;
+            float maxBottom = float.MinValue;
+
+            if (node.Dialogues != null)
+            {
+                for (int i = 0; i < node.Dialogues.Count; i++)
+                {
+                    var d = node.Dialogues[i];
+                    if (d == null) continue;
+                    Vector2 s = GetDialogueCardSize(d);
+                    minLeft = Mathf.Min(minLeft, d.GraphPosX);
+                    maxBottom = Mathf.Max(maxBottom, d.GraphPosY + s.y);
+                    has = true;
+                }
+            }
+            if (node.Events != null)
+            {
+                for (int i = 0; i < node.Events.Count; i++)
+                {
+                    var e = node.Events[i];
+                    if (e == null) continue;
+                    Vector2 s = GetEventCardSize(e);
+                    minLeft = Mathf.Min(minLeft, e.GraphPosX);
+                    maxBottom = Mathf.Max(maxBottom, e.GraphPosY + s.y);
+                    has = true;
+                }
+            }
+            if (node.Consequences != null)
+            {
+                for (int i = 0; i < node.Consequences.Count; i++)
+                {
+                    var k = node.Consequences[i];
+                    if (k == null) continue;
+                    Vector2 s = GetConsequenceCardSize(k);
+                    minLeft = Mathf.Min(minLeft, k.GraphPosX);
+                    maxBottom = Mathf.Max(maxBottom, k.GraphPosY + s.y);
+                    has = true;
+                }
+            }
+
+            if (!has)
+            {
+                x = baseX;
+                y = baseY;
+                return;
+            }
+
+            x = (minLeft != float.MaxValue) ? minLeft : baseX;
+            y = maxBottom + 18f;
+        }
+
+        // ------------------------------------------------------------------
+        // Entrées / sorties de nœud (routage explicite : vide = fin du nœud).
+        // - Carte sans lien entrant = point d'entrée (input vert, plus gros).
+        // - Carte sans lien sortant = point de sortie (output principal rouge, plus gros).
+        // - Plusieurs entrées dialogue = erreur utilisateur (carré vert, cadre rouge).
+        // Comparaisons insensibles à la casse, sans allocation (éditeur 60fps).
+        // ------------------------------------------------------------------
+        private static bool DialogueIdHasIncoming(SceneNodeData node, string lineId)
+        {
+            if (node == null || string.IsNullOrEmpty(lineId)) return false;
+            if (node.Dialogues != null)
+            {
+                for (int i = 0; i < node.Dialogues.Count; i++)
+                {
+                    var l = node.Dialogues[i];
+                    if (l == null) continue;
+                    if (string.Equals(l.NextLineId, lineId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                    if (l.Choices != null)
+                    {
+                        for (int c = 0; c < l.Choices.Count; c++)
+                        {
+                            var ch = l.Choices[c];
+                            if (ch == null) continue;
+                            if (string.Equals(ch.NextLineId, lineId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                            var chal = ch.Challenge;
+                            if (chal != null && chal.HasChallenge)
+                            {
+                                if (string.Equals(chal.SuccessNextLineId, lineId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                                if (string.Equals(chal.FailureNextLineId, lineId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                            }
+                        }
+                    }
+                    if (l.AutoSkillCheck != null && l.AutoSkillCheck.HasAutoCheck)
+                    {
+                        if (string.Equals(l.AutoSkillCheck.SuccessNextLineId, lineId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                        if (string.Equals(l.AutoSkillCheck.FailureNextLineId, lineId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                    }
+                }
+            }
+            if (node.Consequences != null)
+            {
+                for (int k = 0; k < node.Consequences.Count; k++)
+                {
+                    var cons = node.Consequences[k];
+                    if (cons == null) continue;
+                    if (string.Equals(cons.NextLineId, lineId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool ConsIdHasIncoming(SceneNodeData node, string consId)
+        {
+            if (node == null || string.IsNullOrEmpty(consId)) return false;
+            if (node.Dialogues != null)
+            {
+                for (int i = 0; i < node.Dialogues.Count; i++)
+                {
+                    var l = node.Dialogues[i];
+                    if (l == null || l.Choices == null) continue;
+                    for (int c = 0; c < l.Choices.Count; c++)
+                    {
+                        var ch = l.Choices[c];
+                        if (ch == null) continue;
+                        if (string.Equals(ch.NextLineId, consId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                        var chal = ch.Challenge;
+                        if (chal != null && chal.HasChallenge)
+                        {
+                            if (string.Equals(chal.SuccessConsequenceId, consId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                            if (string.Equals(chal.FailureConsequenceId, consId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                        }
+                    }
+                }
+            }
+            if (node.Consequences != null)
+            {
+                for (int k = 0; k < node.Consequences.Count; k++)
+                {
+                    var cons = node.Consequences[k];
+                    if (cons == null) continue;
+                    if (string.Equals(cons.NextConsequenceId, consId, System.StringComparison.OrdinalIgnoreCase)) return true;
+                }
+            }
+            return false;
+        }
+
+        private static bool EventIdHasIncoming(SceneNodeData node, string evtId)
+        {
+            if (node == null || string.IsNullOrEmpty(evtId) || node.Events == null) return false;
+            for (int i = 0; i < node.Events.Count; i++)
+            {
+                var e = node.Events[i];
+                if (e == null) continue;
+                if (string.Equals(e.NextEventId, evtId, System.StringComparison.OrdinalIgnoreCase)) return true;
+            }
+            return false;
+        }
+
+        private static int CountDialogueEntries(SceneNodeData node)
+        {
+            if (node == null || node.Dialogues == null) return 0;
+            int count = 0;
+            for (int i = 0; i < node.Dialogues.Count; i++)
+            {
+                var l = node.Dialogues[i];
+                if (l == null || string.IsNullOrEmpty(l.LineId)) continue;
+                if (!DialogueIdHasIncoming(node, l.LineId)) count++;
+            }
+            return count;
+        }
+
+        private static bool DialogueHasOutgoing(SceneDialogueLineData line)
+        {
+            if (line == null) return false;
+            if (!string.IsNullOrEmpty(line.NextLineId)) return true;
+            if (line.Choices != null)
+            {
+                for (int c = 0; c < line.Choices.Count; c++)
+                {
+                    var ch = line.Choices[c];
+                    if (ch == null) continue;
+                    if (!string.IsNullOrEmpty(ch.NextLineId)) return true;
+                    var chal = ch.Challenge;
+                    if (chal != null && chal.HasChallenge)
+                    {
+                        if (!string.IsNullOrEmpty(chal.SuccessNextLineId)) return true;
+                        if (!string.IsNullOrEmpty(chal.FailureNextLineId)) return true;
+                        if (!string.IsNullOrEmpty(chal.SuccessConsequenceId)) return true;
+                        if (!string.IsNullOrEmpty(chal.FailureConsequenceId)) return true;
+                    }
+                }
+            }
+            if (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck)
+            {
+                if (!string.IsNullOrEmpty(line.AutoSkillCheck.SuccessNextLineId)) return true;
+                if (!string.IsNullOrEmpty(line.AutoSkillCheck.FailureNextLineId)) return true;
+            }
+            return false;
+        }
+
+        private static bool ConsHasOutgoing(SceneConsequenceData cons)
+        {
+            if (cons == null) return false;
+            return !string.IsNullOrEmpty(cons.NextLineId) || !string.IsNullOrEmpty(cons.NextConsequenceId);
+        }
+
+        private static bool EventHasOutgoing(SceneEventData ev)
+        {
+            if (ev == null) return false;
+            return !string.IsNullOrEmpty(ev.NextEventId);
+        }
+
+        private static readonly Color EntryGreen = new Color(0.2f, 1f, 0.4f);
+        private static readonly Color ExitRed = new Color(1f, 0.25f, 0.25f);
+
+        // Input : normal 14px couleur d'origine, entrée = carré vert 20px,
+        // erreur multi-entrées = cadre rouge 24px autour du carré vert.
+        private void DrawEntryInputPort(Rect cardRect, Color normalColor, bool isEntry, bool entryError)
+        {
+            if (!isEntry)
+            {
+                DrawGraphSolidRect(new Rect(cardRect.x - 7f, cardRect.y + 19f, 14f, 14f), normalColor);
+                return;
+            }
+            if (entryError)
+                DrawGraphSolidRect(new Rect(cardRect.x - 12f, cardRect.y + 14f, 24f, 24f), ExitRed);
+            DrawGraphSolidRect(new Rect(cardRect.x - 10f, cardRect.y + 16f, 20f, 20f), EntryGreen);
         }
 
         private bool IsMouseOverAnyNodeOrCard(Vector2 mouseWorld)
@@ -1144,6 +1425,17 @@ namespace Killtime.Story
                     var ev = node.Events[e];
                     Vector2 s = GetEventCardSize(ev);
                     if (new Rect(ev.GraphPosX, ev.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
+                }
+
+                if (node.Consequences != null)
+                {
+                    for (int k = 0; k < node.Consequences.Count; k++)
+                    {
+                        var cs = node.Consequences[k];
+                        if (cs == null) continue;
+                        Vector2 s = GetConsequenceCardSize(cs);
+                        if (new Rect(cs.GraphPosX, cs.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
+                    }
                 }
             }
             if (_data.Triggers != null)
@@ -1388,9 +1680,77 @@ namespace Killtime.Story
         private const float DlgCardDefaultW = 360f;
         private const float EvtCardDefaultW = 360f;
         private const float EvtCardDefaultH = 155f;
+        private const float ConsCardDefaultW = 360f;
+        private const float ConsCardDefaultH = 250f;
         private const float TrigCardDefaultW = 340f;
         private const float TrigCardDefaultH = 215f;
         private static float DlgCardDefaultH(int choiceCount) => 215f + choiceCount * 28f;
+
+        // Nombre de lignes de config d'un défi (sans les lignes-liens).
+        private static int GetChallengeConfigRows(SceneDialogueChallengeData ch)
+        {
+            if (ch == null || !ch.HasChallenge) return 0;
+            return ch.IsOpposed ? 2 : 1;
+        }
+
+        // Toutes les lignes de détail sous la rangée principale d'un choix :
+        // config défi + liens ✔/✕, méta (prérequis/effets).
+        // Routage direct vers fenêtres normales : plus de dialogue embarqué
+        // (↳ réponse, discours succès/échec supprimés).
+        // Doit correspondre EXACTEMENT à l'ordre de dessin dans DrawDialogueCard.
+        private static int GetChoiceDetailRows(SceneDialogueChoiceData ch)
+        {
+            if (ch == null) return 0;
+            int rows = 0;
+            var chal = ch.Challenge;
+            if (chal != null && chal.HasChallenge)
+                rows += GetChallengeConfigRows(chal) + 2; // config + liens ✔/✕
+            bool hasPre = ch.Prerequisite != null && ch.Prerequisite.HasPrerequisite;
+            bool hasFx = ch.Effects != null && ch.Effects.Count > 0;
+            if (hasPre || hasFx) rows += 1; // méta 🔒/fx
+            return rows;
+        }
+
+        // Y (relatif au haut de la carte) de la rangée principale de chaque choix.
+        // Doit rester identique entre GetDialogueCardSize, DrawDialogueCard et DrawConnectedGraphWires.
+        private static void GetDialogueChoiceRowOffsets(SceneDialogueLineData line, List<float> outOffsets)
+        {
+            outOffsets.Clear();
+            if (line == null || line.Choices == null) return;
+            float y = 100f;
+            for (int c = 0; c < line.Choices.Count; c++)
+            {
+                outOffsets.Add(y);
+                y += 22f;
+                y += GetChoiceDetailRows(line.Choices[c]) * 20f;
+            }
+        }
+
+        private static float GetDialogueCardNeededHeight(SceneDialogueLineData line)
+        {
+            int cc = line != null && line.Choices != null ? line.Choices.Count : 0;
+            float needed = 132f + cc * 22f + 24f;
+            if (line != null && line.Choices != null)
+            {
+                for (int c = 0; c < line.Choices.Count; c++)
+                {
+                    needed += GetChoiceDetailRows(line.Choices[c]) * 20f;
+                }
+                needed += GetDialogueLineSummaryRows(line) * 18f;
+            }
+            return needed;
+        }
+
+        // Lignes de résumé de la réplique (sous les choix) : prérequis / test auto / ambiance.
+        private static int GetDialogueLineSummaryRows(SceneDialogueLineData line)
+        {
+            if (line == null) return 0;
+            int rows = 0;
+            if (line.Prerequisite != null && line.Prerequisite.HasPrerequisite) rows++;
+            if (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck) rows++;
+            if (line.Ambience != null && line.Ambience.HasAmbience) rows++;
+            return rows;
+        }
 
         private static Vector2 GetDialogueCardSize(SceneDialogueLineData line)
         {
@@ -1398,8 +1758,7 @@ namespace Killtime.Story
             float w = line.CardWidth > 100f ? line.CardWidth : DlgCardDefaultW;
             float h = line.CardHeight > 80f ? line.CardHeight : DlgCardDefaultH(line.Choices != null ? line.Choices.Count : 0);
             // Hauteur minimale pour que le contenu GUI absolu ne déborde jamais de la carte.
-            int cc = line.Choices != null ? line.Choices.Count : 0;
-            float needed = 132f + cc * 22f;
+            float needed = GetDialogueCardNeededHeight(line);
             if (needed > h) h = needed;
             return new Vector2(w, h);
         }
@@ -1409,6 +1768,31 @@ namespace Killtime.Story
             if (ev == null) return new Vector2(EvtCardDefaultW, EvtCardDefaultH);
             float w = ev.CardWidth > 100f ? ev.CardWidth : EvtCardDefaultW;
             float h = ev.CardHeight > 80f ? ev.CardHeight : EvtCardDefaultH;
+            return new Vector2(w, h);
+        }
+
+        // Hauteur carte conséquence : 30 (haut) + 22 (ID/titre) + 20 (toggles)
+        // + dialogue éventuel (22 locuteur + 44 speech) + 22 (liens) + 22 (+XP/+CE)
+        // + 20 × (1 + N items) + 10 (marge).
+        private static float GetConsequenceCardNeededHeight(SceneConsequenceData cons)
+        {
+            float needed = 30f + 22f + 20f + 22f + 22f + 20f + 10f;
+            if (cons != null)
+            {
+                if (cons.HasDialogue) needed += 22f + 44f;
+                int extras = cons.Rewards?.AdditionalItems != null ? cons.Rewards.AdditionalItems.Count : 0;
+                needed += Mathf.Max(0, extras) * 20f;
+            }
+            return needed;
+        }
+
+        private static Vector2 GetConsequenceCardSize(SceneConsequenceData cons)
+        {
+            if (cons == null) return new Vector2(ConsCardDefaultW, ConsCardDefaultH);
+            float w = cons.CardWidth > 100f ? cons.CardWidth : ConsCardDefaultW;
+            float h = cons.CardHeight > 80f ? cons.CardHeight : ConsCardDefaultH;
+            float needed = GetConsequenceCardNeededHeight(cons);
+            if (needed > h) h = needed;
             return new Vector2(w, h);
         }
 
@@ -1603,7 +1987,25 @@ namespace Killtime.Story
             }
         }
 
-        private static GUIStyle _nodeBodyMeasureStyle;
+        private void ComputeNewNodeSpawn(out float x, out float y)
+        {
+            x = 60f;
+            y = 60f;
+            if (_data.Nodes.Count > 0)
+            {
+                if (GetSceneContentBounds(out float _, out float _, out float maxX, out float _))
+                {
+                    x = maxX + 60f;
+                    y = 60f;
+                }
+                else
+                {
+                    var lastBox = ComputeNodeBoundingBox(_data.Nodes[_data.Nodes.Count - 1]);
+                    x = lastBox.xMax + 60f;
+                    y = lastBox.yMin;
+                }
+            }
+        }
 
         private static Rect ComputeNodeBoundingBox(SceneNodeData node)
         {
@@ -1664,26 +2066,40 @@ namespace Killtime.Story
                 }
             }
 
+            if (node.Consequences != null && node.Consequences.Count > 0)
+            {
+                for (int i = 0; i < node.Consequences.Count; i++)
+                {
+                    var k = node.Consequences[i];
+                    if (k == null) continue;
+                    Vector2 s = GetConsequenceCardSize(k);
+                    if (!hasEntries)
+                    {
+                        minX = k.GraphPosX;
+                        minY = k.GraphPosY;
+                        maxX = k.GraphPosX + s.x;
+                        maxY = k.GraphPosY + s.y;
+                        hasEntries = true;
+                    }
+                    else
+                    {
+                        minX = Mathf.Min(minX, k.GraphPosX);
+                        minY = Mathf.Min(minY, k.GraphPosY);
+                        maxX = Mathf.Max(maxX, k.GraphPosX + s.x);
+                        maxY = Mathf.Max(maxY, k.GraphPosY + s.y);
+                    }
+                }
+            }
+
             if (!hasEntries)
             {
                 float w = node.FrameWidth > 400f ? node.FrameWidth : 560f;
-                float bodyH = 0f;
-                if (!string.IsNullOrEmpty(node.Body))
-                {
-                    if (_nodeBodyMeasureStyle == null)
-                    {
-                        _nodeBodyMeasureStyle = new GUIStyle(GUI.skin.label)
-                        {
-                            wordWrap = true,
-                            richText = true
-                        };
-                    }
-                    bodyH = Mathf.Max(46f, _nodeBodyMeasureStyle.CalcHeight(new GUIContent(node.Body), w - 32f) + 12f);
-                }
-                float objH = (node.Objectives != null) ? node.Objectives.Count * 28f : 0f;
+                // Éditeurs inline de la frame vide : 46 (header) + 26 (type) + 26 (titre)
+                // + 78 (narration) + 26 (entête objectifs) + 28 / objectif + 10 (marge).
+                int objCount = (node.Objectives != null) ? node.Objectives.Count : 0;
                 float choiceH = (node.Choices != null) ? node.Choices.Count * 32f : 0f;
-                float customH = 50f + bodyH + objH + choiceH + 24f;
-                return new Rect(nx, ny, w, Mathf.Max(200f, customH));
+                float customH = 208f + objCount * 28f + choiceH + 10f;
+                return new Rect(nx, ny, w, Mathf.Max(220f, customH));
             }
 
             float pad = 14f;
@@ -1716,6 +2132,13 @@ namespace Killtime.Story
             return new Rect(p.x, p.y, worldRect.width * _zoom, worldRect.height * _zoom);
         }
 
+        private bool GraphPrimaryDown(Vector2 mouseWorld, Rect worldRect)
+        {
+            if (_pickerCapturesMouse) return false;
+            Event evt = Event.current;
+            return evt.type == EventType.MouseDown && evt.button == 0 && worldRect.Contains(mouseWorld);
+        }
+
         private void GraphLabel(Rect worldRect, string text)
         {
             GUI.Label(GraphRect(worldRect), text);
@@ -1728,27 +2151,32 @@ namespace Killtime.Story
 
         private bool GraphButton(Rect worldRect, string text)
         {
-            return GUI.Button(GraphRect(worldRect), text);
+            bool pressed = GUI.Button(GraphRect(worldRect), text);
+            return pressed && !_pickerCapturesMouse;
         }
 
         private string GraphTextField(Rect worldRect, string text)
         {
-            return GUI.TextField(GraphRect(worldRect), text);
+            string result = GUI.TextField(GraphRect(worldRect), text);
+            return _pickerCapturesMouse ? text : result;
         }
 
         private string GraphTextArea(Rect worldRect, string text)
         {
-            return GUI.TextArea(GraphRect(worldRect), text);
+            string result = GUI.TextArea(GraphRect(worldRect), text);
+            return _pickerCapturesMouse ? text : result;
         }
 
         private bool GraphToggle(Rect worldRect, bool value, string text)
         {
-            return GUI.Toggle(GraphRect(worldRect), value, text);
+            bool result = GUI.Toggle(GraphRect(worldRect), value, text);
+            return _pickerCapturesMouse ? value : result;
         }
 
         private int GraphToolbar(Rect worldRect, int selected, string[] contents)
         {
-            return GUI.Toolbar(GraphRect(worldRect), selected, contents);
+            int result = GUI.Toolbar(GraphRect(worldRect), selected, contents);
+            return _pickerCapturesMouse ? selected : result;
         }
 
         private void DrawGraphSolidRect(Rect worldRect, Color color)
@@ -1767,10 +2195,17 @@ namespace Killtime.Story
             Vector2 mouseLocal = evt.mousePosition - canvasRect.min;
             Vector2 mouseWorld = (mouseLocal - _graphPan) / Mathf.Max(0.0001f, _zoom);
             _graphMouseScreenPos = evt.mousePosition;
+            _pickerCapturesMouse = (IsItemPickerOpen() && GetItemPickerRect(canvasRect).Contains(evt.mousePosition))
+                || (_actorDropKey != null && WorldToScreenRect(canvasRect, _actorDropWorld).Contains(evt.mousePosition));
+
+            // Clic hors du dropdown locuteurs => le refermer (sauf sur son bouton ▼).
+            if (_actorDropKey != null && evt.type == EventType.MouseDown
+                && !_actorDropWorld.Contains(mouseWorld) && !_actorDropAnchorWorld.Contains(mouseWorld))
+                _actorDropKey = null;
 
             // Zoom centré sur le curseur. IMPORTANT : aucun scale de GUI.matrix n'est utilisé
             // pour le graphe. Le clipping du BeginGroup reste donc en coordonnées écran 1:1.
-            if (evt.type == EventType.ScrollWheel && canvasRect.Contains(evt.mousePosition))
+            if (evt.type == EventType.ScrollWheel && canvasRect.Contains(evt.mousePosition) && !_pickerCapturesMouse)
             {
                 float zoomFactor = evt.delta.y > 0 ? 0.88f : 1.14f;
                 float oldZoom = _zoom;
@@ -1782,9 +2217,10 @@ namespace Killtime.Story
 
             // Panoramique fluide (Clic droit et molette universels ; Clic gauche uniquement sur le fond vide).
             bool isOverInteractiveElement = (_draggingCardKey != null || _draggingNodeId != null || _resizingCardKey != null || _wireDraft.IsActive || IsMouseOverAnyNodeOrCard(mouseWorld));
+            bool pickerBlocksMouse = _pickerCapturesMouse;
             if (evt.type == EventType.MouseDown && canvasRect.Contains(evt.mousePosition))
             {
-                if (evt.button == 1 || evt.button == 2 || (evt.button == 0 && !isOverInteractiveElement))
+                if (evt.button == 1 || evt.button == 2 || (evt.button == 0 && !isOverInteractiveElement && !pickerBlocksMouse))
                 {
                     _isPanning = true;
                     _panStartMouse = evt.mousePosition;
@@ -1837,6 +2273,14 @@ namespace Killtime.Story
                     ev0.GraphPosX = SanitizeCoord(ev0.GraphPosX, node.GraphPosX + 20f);
                     ev0.GraphPosY = SanitizeCoord(ev0.GraphPosY, node.GraphPosY + 300f);
                 }
+                if (node.Consequences == null) node.Consequences = new System.Collections.Generic.List<SceneConsequenceData>();
+                for (int k = 0; k < node.Consequences.Count; k++)
+                {
+                    var cs0 = node.Consequences[k];
+                    if (cs0 == null) continue;
+                    cs0.GraphPosX = SanitizeCoord(cs0.GraphPosX, node.GraphPosX + 20f);
+                    cs0.GraphPosY = SanitizeCoord(cs0.GraphPosY, node.GraphPosY + 560f);
+                }
 
                 Rect box = ComputeNodeBoundingBox(node);
                 _cachedNodeInputSockets[node.NodeId] = new Vector2(box.xMin, box.yMin + 18f);
@@ -1853,6 +2297,15 @@ namespace Killtime.Story
                     var ev = node.Events[e];
                     if (string.IsNullOrEmpty(ev.EventId)) ev.EventId = $"evt_{e + 1}";
                     _cachedInputSockets[ev.EventId] = new Vector2(ev.GraphPosX, ev.GraphPosY + 26f);
+                }
+
+                if (node.Consequences == null) node.Consequences = new System.Collections.Generic.List<SceneConsequenceData>();
+                for (int k = 0; k < node.Consequences.Count; k++)
+                {
+                    var cons = node.Consequences[k];
+                    if (cons == null) continue;
+                    if (string.IsNullOrEmpty(cons.ConsequenceId)) cons.ConsequenceId = $"cons_{k + 1}";
+                    _cachedInputSockets[cons.ConsequenceId] = new Vector2(cons.GraphPosX, cons.GraphPosY + 26f);
                 }
             }
 
@@ -1887,7 +2340,7 @@ namespace Killtime.Story
             if (_wireDraft.IsActive)
             {
                 DrawBezierWire(_wireDraft.StartPos, mouseWorld, Color.yellow, 3.5f);
-                if (evt.type == EventType.MouseUp && evt.button == 0)
+                if (evt.type == EventType.MouseUp && evt.button == 0 && !_pickerCapturesMouse)
                 {
                     FinalizeGlobalWireDraft(mouseWorld);
                     _wireDraft.IsActive = false;
@@ -1916,6 +2369,17 @@ namespace Killtime.Story
                     if (visibleWorld.Overlaps(new Rect(ev.GraphPosX, ev.GraphPosY, size.x, size.y)))
                         DrawEventCard(ev, e, node, mouseWorld);
                 }
+                if (node.Consequences != null)
+                {
+                    for (int k = 0; k < node.Consequences.Count; k++)
+                    {
+                        var cons = node.Consequences[k];
+                        if (cons == null) continue;
+                        Vector2 size = GetConsequenceCardSize(cons);
+                        if (visibleWorld.Overlaps(new Rect(cons.GraphPosX, cons.GraphPosY, size.x, size.y)))
+                            DrawConsequenceCard(cons, k, node, mouseWorld);
+                    }
+                }
             }
 
             if (_data.Triggers != null)
@@ -1930,19 +2394,46 @@ namespace Killtime.Story
                 }
             }
 
+            // Dropdown locuteurs par-dessus tout le graphe.
+            DrawActorDropdownPopup();
+
             // Le seul clip du graphe est terminé ici, avant tous les overlays écran.
             GUI.EndGroup();
 
             DrawZoomControlsOverlay(canvasRect);
 
-            if (_showNodeInspector) DrawNodeInspectorOverlay(canvasRect);
+            if (_showNodeInspector && !IsItemPickerOpen()) DrawNodeInspectorOverlay(canvasRect);
 
-            if (_hasHoverCard && Event.current.type == EventType.Repaint)
+            if (_hasHoverCard && !IsItemPickerOpen() && Event.current.type == EventType.Repaint)
                 DrawCardHoverTooltip(canvasRect);
+
+            DrawItemPickerPanel(canvasRect);
         }
 
         private bool _showNodeInspector = false;
         private Vector2 _inspectorScroll;
+
+        // Moteur de recherche d'item du catalogue (récompense de défi, ligne ✔ des cartes + inspecteur).
+        // État purement éditeur : rien n'est sérialisé dans le JSON de scène.
+        private SceneDialogueChoiceData _itemPickerTarget = null;
+        private SceneConsequenceData _itemPickerCons = null;
+        private int _itemPickerEntry = -1; // -1 = récompense principale, >= 0 = AdditionalItems[i]
+        private string _itemPickerSearch = "";
+        private int _itemPickerCat = -1; // -1 = toutes catégories
+        private Vector2 _itemPickerScroll;
+        private bool _itemPickerFocusSearch = false;
+        // Vrai quand le sélecteur catalogue est ouvert et que la souris est dessus :
+        // le panneau est modal, tout le graphe derrière devient inerte (pas de drag,
+        // pas de wire, pas de zoom, boutons/champs sans effet).
+        private bool _pickerCapturesMouse = false;
+
+        // Dropdown des locuteurs (champs Loc: des cartes) : alimenté par les acteurs
+        // de la scène + les noms déjà utilisés. Pur état éditeur.
+        private string _actorDropKey = null;
+        private Rect _actorDropAnchorWorld = new Rect(-10000f, -10000f, 0f, 0f);
+        private Rect _actorDropWorld = new Rect(-10000f, -10000f, 0f, 0f);
+        private System.Action<string> _actorDropSetter = null;
+        private string _actorDropCurrent = "";
 
         private void DrawNodeInspectorOverlay(Rect canvasRect)
         {
@@ -1966,6 +2457,421 @@ namespace Killtime.Story
             }
             GUILayout.EndScrollView();
             GUILayout.EndArea();
+        }
+
+        private bool IsItemPickerOpen()
+        {
+            return _itemPickerTarget != null || _itemPickerCons != null;
+        }
+
+        private SceneDialogueRewardData PickerRewards()
+        {
+            if (_itemPickerTarget != null) return _itemPickerTarget.Challenge?.SuccessRewards;
+            if (_itemPickerCons != null) return _itemPickerCons.Rewards;
+            return null;
+        }
+
+        private string PickerOwnerLabel()
+        {
+            if (_itemPickerTarget != null) return _itemPickerTarget.Label ?? "";
+            if (_itemPickerCons != null) return _itemPickerCons.Title ?? "";
+            return "";
+        }
+
+        private void OpenItemPicker(SceneDialogueChoiceData choice, int entryIndex = -1)
+        {
+            if (choice == null) return;
+            choice.Challenge ??= new SceneDialogueChallengeData();
+            choice.Challenge.SuccessRewards ??= new SceneDialogueRewardData();
+            StorySceneData.EnsureRewardDefaults(choice.Challenge.SuccessRewards);
+            if (entryIndex >= 0)
+            {
+                var list = choice.Challenge.SuccessRewards.AdditionalItems;
+                if (list == null || entryIndex >= list.Count) return;
+            }
+            _itemPickerTarget = choice;
+            _itemPickerCons = null;
+            _itemPickerEntry = entryIndex;
+            _itemPickerSearch = GetPickerItemName();
+            _itemPickerCat = -1;
+            _itemPickerScroll = Vector2.zero;
+            _itemPickerFocusSearch = true;
+        }
+
+        private void OpenItemPicker(SceneConsequenceData cons, int entryIndex = -1)
+        {
+            if (cons == null) return;
+            cons.Rewards ??= new SceneDialogueRewardData();
+            StorySceneData.EnsureRewardDefaults(cons.Rewards);
+            if (entryIndex >= 0)
+            {
+                var list = cons.Rewards.AdditionalItems;
+                if (list == null || entryIndex >= list.Count) return;
+            }
+            _itemPickerCons = cons;
+            _itemPickerTarget = null;
+            _itemPickerEntry = entryIndex;
+            _itemPickerSearch = GetPickerItemName();
+            _itemPickerCat = -1;
+            _itemPickerScroll = Vector2.zero;
+            _itemPickerFocusSearch = true;
+        }
+
+        private bool IsPickerOpenForCons(SceneConsequenceData cons, int entry)
+        {
+            return cons != null && ReferenceEquals(_itemPickerCons, cons) && _itemPickerEntry == entry;
+        }
+
+        private string GetPickerItemName()
+        {
+            var rew = PickerRewards();
+            if (rew == null) return "";
+            if (_itemPickerEntry >= 0)
+            {
+                if (rew.AdditionalItems == null || _itemPickerEntry >= rew.AdditionalItems.Count) return "";
+                return rew.AdditionalItems[_itemPickerEntry]?.ItemName ?? "";
+            }
+            return rew.ItemRewardName ?? "";
+        }
+
+        private void SetPickerItem(InventoryItem def)
+        {
+            var rew = PickerRewards();
+            if (rew == null || def == null) return;
+            if (_itemPickerEntry >= 0)
+            {
+                if (rew.AdditionalItems == null || _itemPickerEntry >= rew.AdditionalItems.Count) return;
+                var entry = rew.AdditionalItems[_itemPickerEntry];
+                if (entry == null) return;
+                entry.ItemName = def.Name;
+                entry.ItemRewardType = def.Type;
+            }
+            else
+            {
+                rew.ItemRewardName = def.Name;
+                rew.ItemRewardType = def.Type;
+            }
+            CloseItemPicker();
+        }
+
+        private void ClearPickerItem()
+        {
+            var rew = PickerRewards();
+            if (rew == null) return;
+            if (_itemPickerEntry >= 0)
+            {
+                if (rew.AdditionalItems != null && _itemPickerEntry < rew.AdditionalItems.Count)
+                    rew.AdditionalItems.RemoveAt(_itemPickerEntry);
+            }
+            else
+            {
+                rew.ItemRewardName = "";
+            }
+            CloseItemPicker();
+        }
+
+        private void CloseItemPicker()
+        {
+            _itemPickerTarget = null;
+            _itemPickerCons = null;
+        }
+
+        private bool ValidateItemPickerTarget()
+        {
+            if (_data == null || _data.Nodes == null) return false;
+            if (_itemPickerTarget != null)
+            {
+                if (_itemPickerTarget.Challenge == null) return false;
+                if (_itemPickerEntry >= 0)
+                {
+                    var list = _itemPickerTarget.Challenge.SuccessRewards?.AdditionalItems;
+                    if (list == null || _itemPickerEntry >= list.Count) return false;
+                }
+            }
+            else if (_itemPickerCons != null)
+            {
+                if (_itemPickerEntry >= 0)
+                {
+                    var list = _itemPickerCons.Rewards?.AdditionalItems;
+                    if (list == null || _itemPickerEntry >= list.Count) return false;
+                }
+            }
+            else return false;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node == null) continue;
+                if (_itemPickerTarget != null && node.Dialogues != null)
+                {
+                    for (int d = 0; d < node.Dialogues.Count; d++)
+                    {
+                        var line = node.Dialogues[d];
+                        if (line == null || line.Choices == null) continue;
+                        for (int c = 0; c < line.Choices.Count; c++)
+                        {
+                            if (ReferenceEquals(line.Choices[c], _itemPickerTarget)) return true;
+                        }
+                    }
+                }
+                if (_itemPickerCons != null && node.Consequences != null)
+                {
+                    for (int k = 0; k < node.Consequences.Count; k++)
+                    {
+                        if (ReferenceEquals(node.Consequences[k], _itemPickerCons)) return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        private static string NormalizeForSearch(string s)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            string decomposed = s.ToLowerInvariant().Normalize(System.Text.NormalizationForm.FormD);
+            var sb = new System.Text.StringBuilder(decomposed.Length);
+            for (int i = 0; i < decomposed.Length; i++)
+            {
+                char ch = decomposed[i];
+                if (System.Globalization.CharUnicodeInfo.GetUnicodeCategory(ch) != System.Globalization.UnicodeCategory.NonSpacingMark)
+                    sb.Append(ch);
+            }
+            return sb.ToString().Normalize(System.Text.NormalizationForm.FormC);
+        }
+
+        private Rect GetItemPickerRect(Rect canvasRect)
+        {
+            float pw = Mathf.Min(540f, canvasRect.width - 30f);
+            float ph = Mathf.Min(430f, canvasRect.height - 70f);
+            return new Rect(canvasRect.x + (canvasRect.width - pw) * 0.5f, canvasRect.y + (canvasRect.height - ph) * 0.5f, pw, ph);
+        }
+
+        private void DrawItemPickerPanel(Rect canvasRect)
+        {
+            if (!IsItemPickerOpen()) return;
+            if (!ValidateItemPickerTarget()) { CloseItemPicker(); return; }
+
+            Rect panel = GetItemPickerRect(canvasRect);
+            if (panel.width < 300f || panel.height < 220f) return;
+            Event evt = Event.current;
+
+            DrawSolidRect(panel, new Color(0.02f, 0.03f, 0.05f, 0.97f));
+            DrawSolidRect(new Rect(panel.x, panel.y, panel.width, 2f), new Color(0.35f, 1f, 0.55f, 0.9f));
+
+            float x = panel.x + 10f;
+            float y = panel.y + 10f;
+            float w = panel.width - 20f;
+
+            GUI.Label(new Rect(x, y, w - 40f, 22f), $"<b>🎁 Catalogue — récompense</b> <color=grey>« {PickerOwnerLabel()} »{(_itemPickerEntry >= 0 ? $" (item #{_itemPickerEntry + 2})" : "")}</color>");
+            if (GUI.Button(new Rect(panel.xMax - 34f, y, 26f, 22f), "✕")) { CloseItemPicker(); return; }
+            y += 26f;
+
+            string current = GetPickerItemName();
+            if (string.IsNullOrEmpty(current)) current = "(aucun)";
+            GUI.Label(new Rect(x, y, w - 90f, 20f), $"Actuel : <b>{current}</b>");
+            GUI.backgroundColor = new Color(0.85f, 0.35f, 0.35f);
+            if (GUI.Button(new Rect(panel.xMax - 94f, y, 84f, 20f), "Effacer"))
+            {
+                ClearPickerItem();
+                GUI.backgroundColor = Color.white;
+                return;
+            }
+            GUI.backgroundColor = Color.white;
+            y += 24f;
+
+            GUI.Label(new Rect(x, y, 30f, 20f), "🔍");
+            GUI.SetNextControlName("ItemPickerSearch");
+            _itemPickerSearch = GUI.TextField(new Rect(x + 32f, y, w - 32f - 190f, 20f), _itemPickerSearch ?? "");
+            if (_itemPickerFocusSearch) { GUI.FocusControl("ItemPickerSearch"); _itemPickerFocusSearch = false; }
+            float cx = x + w - 186f;
+            if (GUI.Button(new Rect(cx, y, 24f, 20f), "◀"))
+            {
+                _itemPickerCat--;
+                if (_itemPickerCat < -1) _itemPickerCat = ArmoryCatalog.Categories.Length - 1;
+                _itemPickerScroll = Vector2.zero;
+            }
+            string catLabel = _itemPickerCat < 0 ? "Toutes" : ArmoryCatalog.Categories[_itemPickerCat];
+            GUI.Label(new Rect(cx + 26f, y, 132f, 20f), $"<b>{catLabel}</b>");
+            if (GUI.Button(new Rect(cx + 160f, y, 24f, 20f), "▶"))
+            {
+                _itemPickerCat++;
+                if (_itemPickerCat >= ArmoryCatalog.Categories.Length) _itemPickerCat = -1;
+                _itemPickerScroll = Vector2.zero;
+            }
+            y += 24f;
+
+            // Filtrage : normalisé sans accents, préfixe d'abord, puis contenu, puis catégorie.
+            string normSearch = NormalizeForSearch(_itemPickerSearch);
+            var matches = new List<KeyValuePair<int, InventoryItem>>();
+            var all = ArmoryCatalog.All;
+            for (int i = 0; i < all.Count; i++)
+            {
+                var def = all[i];
+                if (def == null || string.IsNullOrEmpty(def.Name)) continue;
+                if (_itemPickerCat >= 0 && !string.Equals(def.Category, ArmoryCatalog.Categories[_itemPickerCat], StringComparison.OrdinalIgnoreCase)) continue;
+                if (normSearch.Length > 0)
+                {
+                    string nName = NormalizeForSearch(def.Name);
+                    int score;
+                    if (nName.StartsWith(normSearch, StringComparison.Ordinal)) score = 0;
+                    else if (nName.Contains(normSearch)) score = 1;
+                    else if (NormalizeForSearch(def.Category ?? "").Contains(normSearch)) score = 2;
+                    else continue;
+                    matches.Add(new KeyValuePair<int, InventoryItem>(score, def));
+                }
+                else
+                {
+                    matches.Add(new KeyValuePair<int, InventoryItem>(3, def));
+                }
+            }
+            matches.Sort((a, b) =>
+            {
+                int d = a.Key.CompareTo(b.Key);
+                return d != 0 ? d : string.Compare(a.Value.Name, b.Value.Name, StringComparison.OrdinalIgnoreCase);
+            });
+            if (matches.Count > 200) matches.RemoveRange(200, matches.Count - 200);
+
+            GUI.Label(new Rect(x, y, w, 18f), $"<color=grey>{matches.Count} résultat(s) — Entrée = premier, Échap = fermer</color>");
+            y += 20f;
+
+            if (evt.type == EventType.KeyDown && evt.keyCode == KeyCode.Escape) { CloseItemPicker(); evt.Use(); return; }
+            if (evt.type == EventType.KeyDown && (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter) && matches.Count > 0)
+            {
+                SetPickerItem(matches[0].Value);
+                evt.Use();
+                return;
+            }
+
+            Rect listRect = new Rect(x, y, w, panel.yMax - 8f - y);
+            if (listRect.height < 40f) return;
+            float rowH = 22f;
+            Rect viewRect = new Rect(0f, 0f, listRect.width - 16f, matches.Count * rowH);
+            _itemPickerScroll = GUI.BeginScrollView(listRect, _itemPickerScroll, viewRect);
+            for (int i = 0; i < matches.Count; i++)
+            {
+                var def = matches[i].Value;
+                if (GUI.Button(new Rect(0f, i * rowH, viewRect.width, rowH - 2f),
+                    $"{def.Name} — <color=grey>{def.Category} · {def.PriceCE} CE · {def.Rarity}</color>"))
+                {
+                    SetPickerItem(def);
+                    GUI.EndScrollView();
+                    return;
+                }
+            }
+            if (matches.Count == 0)
+                GUI.Label(new Rect(0f, 0f, viewRect.width, 22f), "<color=grey>(aucun résultat — modifiez la recherche)</color>");
+            GUI.EndScrollView();
+        }
+
+        private Rect WorldToScreenRect(Rect canvasRect, Rect world)
+        {
+            Vector2 p = GraphPoint(world.position);
+            return new Rect(canvasRect.x + p.x, canvasRect.y + p.y, world.width * _zoom, world.height * _zoom);
+        }
+
+        private void OpenActorDropdown(string key, Rect anchorWorld, string current, System.Action<string> setter)
+        {
+            _actorDropKey = key;
+            _actorDropAnchorWorld = anchorWorld;
+            _actorDropCurrent = current ?? "";
+            _actorDropSetter = setter;
+        }
+
+        private System.Collections.Generic.List<string> BuildActorCandidates()
+        {
+            var list = new System.Collections.Generic.List<string>();
+            var seen = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+            System.Action<string> add = n =>
+            {
+                if (string.IsNullOrWhiteSpace(n)) return;
+                n = n.Trim();
+                if (seen.Add(n)) list.Add(n);
+            };
+            if (_data != null && _data.Actors != null)
+            {
+                for (int i = 0; i < _data.Actors.Count; i++)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    add(a.DisplayName);
+                    if (!string.IsNullOrWhiteSpace(a.ActorId) && !string.Equals(a.ActorId, a.DisplayName, System.StringComparison.OrdinalIgnoreCase))
+                        add(a.ActorId);
+                }
+            }
+            if (_data != null && _data.Nodes != null)
+            {
+                for (int n = 0; n < _data.Nodes.Count; n++)
+                {
+                    var node = _data.Nodes[n];
+                    if (node == null) continue;
+                    if (node.Dialogues != null)
+                    {
+                        for (int d = 0; d < node.Dialogues.Count; d++)
+                        {
+                            var line = node.Dialogues[d];
+                            if (line == null) continue;
+                            add(line.SpeakerId);
+                        }
+                    }
+                    if (node.Consequences != null)
+                    {
+                        for (int k = 0; k < node.Consequences.Count; k++)
+                        {
+                            var cons = node.Consequences[k];
+                            if (cons == null) continue;
+                            add(cons.SpeakerId);
+                        }
+                    }
+                }
+            }
+            if (list.Count > 40) list.RemoveRange(40, list.Count - 40);
+            return list;
+        }
+
+        private void DrawActorDropdownPopup()
+        {
+            if (_actorDropKey == null) return;
+            Event evt = Event.current;
+            var candidates = BuildActorCandidates();
+
+            const float rowH = 20f;
+            const float popW = 210f;
+            float popH = (candidates.Count > 0 ? candidates.Count : 1) * rowH + 6f;
+            Rect pop = new Rect(_actorDropAnchorWorld.x, _actorDropAnchorWorld.yMax + 2f, popW, popH);
+            _actorDropWorld = pop;
+
+            DrawGraphSolidRect(pop, new Color(0.03f, 0.05f, 0.08f, 0.97f));
+            DrawGraphSolidRect(new Rect(pop.x, pop.y, pop.width, 1.5f), new Color(0.0f, 0.85f, 1f, 0.9f));
+            DrawGraphSolidRect(new Rect(pop.x, pop.yMax - 1f, pop.width, 1f), new Color(1f, 1f, 1f, 0.15f));
+            DrawGraphSolidRect(new Rect(pop.x, pop.y, 1f, pop.height), new Color(1f, 1f, 1f, 0.15f));
+            DrawGraphSolidRect(new Rect(pop.xMax - 1f, pop.y, 1f, pop.height), new Color(1f, 1f, 1f, 0.15f));
+
+            if (candidates.Count == 0)
+            {
+                GUI.Label(GraphRect(new Rect(pop.x + 6f, pop.y + 3f, popW - 12f, rowH)), "<color=grey>(aucun acteur — saisie libre)</color>");
+            }
+            else
+            {
+                for (int i = 0; i < candidates.Count; i++)
+                {
+                    Rect r = new Rect(pop.x + 3f, pop.y + 3f + i * rowH, popW - 6f, rowH - 2f);
+                    string label = string.Equals(candidates[i], _actorDropCurrent, System.StringComparison.OrdinalIgnoreCase)
+                        ? $"► {candidates[i]}" : candidates[i];
+                    // Bouton brut (pas de wrapper) : la popup reste cliquable en mode modal.
+                    if (GUI.Button(GraphRect(r), label))
+                    {
+                        _actorDropSetter?.Invoke(candidates[i]);
+                        _actorDropKey = null;
+                        evt.Use();
+                        return;
+                    }
+                }
+            }
+
+            if (evt.type == EventType.KeyDown && evt.keyCode == KeyCode.Escape)
+            {
+                _actorDropKey = null;
+                evt.Use();
+            }
         }
 
         private static GUIStyle _hoverBodyStyle;
@@ -2047,6 +2953,38 @@ namespace Killtime.Story
             }
         }
 
+        private bool SceneContainsLine(string id)
+        {
+            if (string.IsNullOrEmpty(id) || _data == null || _data.Nodes == null) return false;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node == null || node.Dialogues == null) continue;
+                for (int d = 0; d < node.Dialogues.Count; d++)
+                {
+                    var line = node.Dialogues[d];
+                    if (line != null && string.Equals(line.LineId, id, StringComparison.OrdinalIgnoreCase)) return true;
+                }
+            }
+            return false;
+        }
+
+        private bool SceneContainsConsequence(string id)
+        {
+            if (string.IsNullOrEmpty(id) || _data == null || _data.Nodes == null) return false;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node == null || node.Consequences == null) continue;
+                for (int k = 0; k < node.Consequences.Count; k++)
+                {
+                    var cons = node.Consequences[k];
+                    if (cons != null && string.Equals(cons.ConsequenceId, id, StringComparison.OrdinalIgnoreCase)) return true;
+                }
+            }
+            return false;
+        }
+
         private void FinalizeGlobalWireDraft(Vector2 mousePos)
         {
             // Déclencheur : déposé sur l'entrée d'un nœud, sa sortie entre dans ce nœud.
@@ -2065,25 +3003,30 @@ namespace Killtime.Story
 
             string targetId = null;
 
-            // 1. Test de collision avec les sockets de dialogue/événement
+            // 1. Socket de dialogue/événement/conséquence LA PLUS PROCHE (pas la première
+            // du dictionnaire : en graphe dense plusieurs sockets sont dans le rayon).
+            float bestDist = 32f;
             foreach (var kvp in _cachedInputSockets)
             {
-                if (Vector2.Distance(kvp.Value, mousePos) < 32f)
+                float dist = Vector2.Distance(kvp.Value, mousePos);
+                if (dist < bestDist)
                 {
+                    bestDist = dist;
                     targetId = kvp.Key;
-                    break;
                 }
             }
 
             // 2. Test de collision avec les sockets de Nœud complet
             if (string.IsNullOrEmpty(targetId))
             {
+                float bestNodeDist = 36f;
                 foreach (var kvp in _cachedNodeInputSockets)
                 {
-                    if (Vector2.Distance(kvp.Value, mousePos) < 36f)
+                    float dist = Vector2.Distance(kvp.Value, mousePos);
+                    if (dist < bestNodeDist)
                     {
+                        bestNodeDist = dist;
                         targetId = kvp.Key;
-                        break;
                     }
                 }
             }
@@ -2093,6 +3036,52 @@ namespace Killtime.Story
             if (_wireDraft.IsEvent && _wireDraft.SourceEvent != null)
             {
                 _wireDraft.SourceEvent.NextEventId = targetId;
+            }
+            else if (_wireDraft.FromChallengeLink && _wireDraft.SourceChallenge != null)
+            {
+                // La sortie ✔/✕ accepte une conséquence (prioritaire) ou un dialogue normal.
+                // Le wire fait foi : le champ concurrent est effacé pour éviter toute ambiguïté.
+                if (SceneContainsConsequence(targetId))
+                {
+                    if (_wireDraft.ChallengeLinkIsSuccess)
+                    {
+                        _wireDraft.SourceChallenge.SuccessConsequenceId = targetId;
+                        _wireDraft.SourceChallenge.SuccessNextLineId = "";
+                    }
+                    else
+                    {
+                        _wireDraft.SourceChallenge.FailureConsequenceId = targetId;
+                        _wireDraft.SourceChallenge.FailureNextLineId = "";
+                    }
+                }
+                else if (SceneContainsLine(targetId))
+                {
+                    if (_wireDraft.ChallengeLinkIsSuccess)
+                    {
+                        _wireDraft.SourceChallenge.SuccessNextLineId = targetId;
+                        _wireDraft.SourceChallenge.SuccessConsequenceId = "";
+                    }
+                    else
+                    {
+                        _wireDraft.SourceChallenge.FailureNextLineId = targetId;
+                        _wireDraft.SourceChallenge.FailureConsequenceId = "";
+                    }
+                }
+            }
+            else if (_wireDraft.FromConsequence && _wireDraft.SourceConsequence != null)
+            {
+                // Les deux sorties (→Diag et →Cons) acceptent répliques comme conséquences.
+                // Le wire fait foi : le champ concurrent est effacé pour éviter toute ambiguïté.
+                if (SceneContainsConsequence(targetId))
+                {
+                    _wireDraft.SourceConsequence.NextConsequenceId = targetId;
+                    _wireDraft.SourceConsequence.NextLineId = "";
+                }
+                else if (SceneContainsLine(targetId))
+                {
+                    _wireDraft.SourceConsequence.NextLineId = targetId;
+                    _wireDraft.SourceConsequence.NextConsequenceId = "";
+                }
             }
             else if (_wireDraft.FromChoice && _wireDraft.SourceChoice != null)
             {
@@ -2113,8 +3102,8 @@ namespace Killtime.Story
         {
             Rect frameRect = ComputeNodeBoundingBox(node);
             Rect headerRect = new Rect(frameRect.x, frameRect.y, frameRect.width, 38f);
-            // Zone boutons réelle : 90 + 95 + 26 + espacements ≈ 225px calée à droite.
-            Rect actionsArea = new Rect(headerRect.xMax - 235f, headerRect.y + 5f, 225f, 26f);
+            // Zone boutons réelle : 90 + 82 + 95 + 26 + espacements ≈ 315px calée à droite.
+            Rect actionsArea = new Rect(headerRect.xMax - 325f, headerRect.y + 5f, 315f, 26f);
             Rect nodeInSocket = new Rect(frameRect.x - 9f, frameRect.y + 10f, 18f, 18f);
             Rect nodeOutSocket = new Rect(frameRect.xMax - 9f, frameRect.y + 10f, 18f, 18f);
 
@@ -2126,14 +3115,14 @@ namespace Killtime.Story
 
             // Double-clic sur la frame = cadrer ce nœud en lisible (raccourci direct vers
             // le focus, sans passer par Aller à / ◀ ▶).
-            if (evt.type == EventType.MouseDown && evt.button == 0 && evt.clickCount == 2 && frameRect.Contains(mouseWorld))
+            if (evt.type == EventType.MouseDown && evt.button == 0 && evt.clickCount == 2 && !_pickerCapturesMouse && frameRect.Contains(mouseWorld))
             {
                 _draggingNodeId = null;
                 GUIUtility.hotControl = 0;
                 FocusNodeByIndex(nodeIndex);
                 evt.Use();
             }
-            else if (evt.type == EventType.MouseDown && evt.button == 0 && evt.clickCount < 2 && isOverHeaderDragZone)
+            else if (evt.type == EventType.MouseDown && evt.button == 0 && evt.clickCount < 2 && !_pickerCapturesMouse && isOverHeaderDragZone)
             {
                 GUIUtility.hotControl = nodeControlId;
                 _draggingNodeId = node.NodeId;
@@ -2157,6 +3146,15 @@ namespace Killtime.Story
                 {
                     node.Events[e].GraphPosX += delta.x;
                     node.Events[e].GraphPosY += delta.y;
+                }
+                if (node.Consequences != null)
+                {
+                    for (int k = 0; k < node.Consequences.Count; k++)
+                    {
+                        if (node.Consequences[k] == null) continue;
+                        node.Consequences[k].GraphPosX += delta.x;
+                        node.Consequences[k].GraphPosY += delta.y;
+                    }
                 }
                 evt.Use();
             }
@@ -2187,11 +3185,11 @@ namespace Killtime.Story
             DrawGraphSolidRect(nodeInSocket, frameBorderCol);
 
             GUI.color = Color.white;
-            float titleW = Mathf.Max(120f, frameRect.width - 380f);
+            float titleW = Mathf.Max(90f, frameRect.width - 475f);
             GraphLabel(new Rect(headerRect.x + 16f, headerRect.y + 8f, titleW, 22f), $"<b>■ NŒUD #{nodeIndex + 1} : {node.Title.ToUpperInvariant()}</b> [{node.Kind}]");
 
             GUI.color = new Color(1f, 1f, 1f, 0.75f);
-            float idLabelW = Mathf.Max(60f, Mathf.Min(220f, frameRect.width - titleW - 260f));
+            float idLabelW = Mathf.Max(40f, Mathf.Min(130f, frameRect.width - titleW - 350f));
             GraphLabel(new Rect(headerRect.x + 16f + titleW + 4f, headerRect.y + 8f, idLabelW, 20f), $"ID: <i>{node.NodeId}</i>");
             GUI.color = Color.white;
 
@@ -2207,6 +3205,10 @@ namespace Killtime.Story
             Rect evtBtn = new Rect(bx - 95f, btnY, 95f, btnH);
             bool addEvt = GraphButton(evtBtn, "+ Événement");
             bx -= 95f + 6f;
+            GUI.backgroundColor = new Color(0.35f, 0.85f, 0.45f);
+            Rect consBtn = new Rect(bx - 82f, btnY, 82f, btnH);
+            bool addCons = GraphButton(consBtn, "+ Conséq.");
+            bx -= 82f + 6f;
             GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
             Rect dlgBtn = new Rect(bx - 90f, btnY, 90f, btnH);
             bool addDlg = GraphButton(dlgBtn, "+ Dialogue");
@@ -2215,28 +3217,42 @@ namespace Killtime.Story
             if (addDlg)
             {
                 int nextIdx = node.Dialogues.Count + 1;
+                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
                 node.Dialogues.Add(new SceneDialogueLineData
                 {
                     LineId = $"line_{nodeIndex + 1}_{nextIdx}",
                     SpeakerId = "",
                     Speech = "Nouvelle réplique...",
-                    GraphPosX = node.GraphPosX + 40f,
-                    GraphPosY = node.GraphPosY + 70f
+                    GraphPosX = freeX,
+                    GraphPosY = freeY
                 });
-                LayoutCardsInsideNode(node);
             }
 
             if (addEvt)
             {
                 int nextIdx = node.Events.Count + 1;
+                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
                 node.Events.Add(new SceneEventData
                 {
                     EventId = $"evt_{nodeIndex + 1}_{nextIdx}",
                     Title = "Action Scénique",
-                    GraphPosX = node.GraphPosX + 40f,
-                    GraphPosY = node.GraphPosY + 320f
+                    GraphPosX = freeX,
+                    GraphPosY = freeY
                 });
-                LayoutCardsInsideNode(node);
+            }
+
+            if (addCons)
+            {
+                if (node.Consequences == null) node.Consequences = new System.Collections.Generic.List<SceneConsequenceData>();
+                int nextIdx = node.Consequences.Count + 1;
+                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
+                node.Consequences.Add(new SceneConsequenceData
+                {
+                    ConsequenceId = $"cons_{nodeIndex + 1}_{nextIdx}",
+                    Title = "Récompense",
+                    GraphPosX = freeX,
+                    GraphPosY = freeY
+                });
             }
 
             if (deleteNode)
@@ -2251,38 +3267,62 @@ namespace Killtime.Story
             }
 
             float contentY = frameRect.y + 46f;
-            if (node.Dialogues.Count == 0 && node.Events.Count == 0)
+            if (node.Dialogues.Count == 0 && node.Events.Count == 0 && (node.Consequences == null || node.Consequences.Count == 0))
             {
-                if (!string.IsNullOrEmpty(node.Body))
-                {
-                    if (_nodeBodyMeasureStyle == null)
-                    {
-                        _nodeBodyMeasureStyle = new GUIStyle(GUI.skin.label)
-                        {
-                            wordWrap = true,
-                            richText = true
-                        };
-                    }
-                    float bodyH = Mathf.Max(42f, _nodeBodyMeasureStyle.CalcHeight(new GUIContent(node.Body), frameRect.width - 32f) + 6f);
-                    GUI.color = new Color(1f, 1f, 1f, 0.85f);
-                    GraphLabel(new Rect(frameRect.x + 16f, contentY, frameRect.width - 32f, bodyH), $"<i>{node.Body}</i>", _nodeBodyMeasureStyle);
-                    GUI.color = Color.white;
-                    contentY += bodyH + 8f;
-                }
+                node.Objectives ??= new System.Collections.Generic.List<ScenarioObjective>();
+                float innerObjX = frameRect.x + 16f;
+                float innerObjW = frameRect.width - 32f;
 
-                if (node.Objectives != null && node.Objectives.Count > 0)
+                // Sélecteur de type : transforme n'importe quel nœud en nœud Objectif (vert) comme le nœud #2.
+                GraphLabel(new Rect(innerObjX, contentY, 45f, 22f), "Type :");
+                int kindCount = Enum.GetValues(typeof(ScenarioNodeKind)).Length;
+                if (GraphButton(new Rect(innerObjX + 47f, contentY, 22f, 22f), "◀"))
+                    node.Kind = (ScenarioNodeKind)(((int)node.Kind - 1 + kindCount) % kindCount);
+                GraphLabel(new Rect(innerObjX + 71f, contentY, 95f, 22f), $"<b>{node.Kind}</b>");
+                if (GraphButton(new Rect(innerObjX + 168f, contentY, 22f, 22f), "▶"))
+                    node.Kind = (ScenarioNodeKind)(((int)node.Kind + 1) % kindCount);
+                contentY += 26f;
+
+                GraphLabel(new Rect(innerObjX, contentY, 45f, 22f), "Titre :");
+                node.Title = GraphTextField(new Rect(innerObjX + 47f, contentY, Mathf.Max(60f, innerObjW - 47f), 22f), node.Title ?? "");
+                contentY += 26f;
+
+                GraphLabel(new Rect(innerObjX, contentY, innerObjW, 18f), "<color=grey>Narration :</color>");
+                contentY += 18f;
+                node.Body = GraphTextArea(new Rect(innerObjX, contentY, innerObjW, 54f), node.Body ?? "");
+                contentY += 60f;
+
+                GraphLabel(new Rect(innerObjX, contentY, 140f, 22f), $"<b>Objectifs ({node.Objectives.Count})</b>");
+                Color prevFrameBg = GUI.backgroundColor;
+                GUI.backgroundColor = new Color(0.2f, 0.92f, 0.45f);
+                if (GraphButton(new Rect(innerObjX + innerObjW - 92f, contentY, 92f, 22f), "+ Objectif"))
+                    node.Objectives.Add(new ScenarioObjective { Id = $"obj_{node.Objectives.Count + 1}", Label = "Nouvel objectif...", Optional = false });
+                GUI.backgroundColor = prevFrameBg;
+                contentY += 26f;
+
+                for (int o = 0; o < node.Objectives.Count; o++)
                 {
-                    for (int o = 0; o < node.Objectives.Count; o++)
+                    var obj = node.Objectives[o];
+                    if (obj == null) continue;
+                    Rect objRow = new Rect(innerObjX, contentY, innerObjW, 24f);
+                    DrawGraphSolidRect(objRow, new Color(0.04f, 0.14f, 0.10f, 0.85f));
+                    Color prevObjBg = GUI.backgroundColor;
+                    GUI.backgroundColor = obj.Optional ? new Color(0.45f, 0.45f, 0.48f) : new Color(0.2f, 0.75f, 1f);
+                    if (GraphButton(new Rect(objRow.x + 2f, objRow.y + 2f, 56f, 20f), obj.Optional ? "Opt." : "Princ."))
+                        obj.Optional = !obj.Optional;
+                    GUI.backgroundColor = prevObjBg;
+                    obj.Label = GraphTextField(new Rect(objRow.x + 62f, objRow.y + 2f, Mathf.Max(40f, objRow.width - 62f - 28f), 20f), obj.Label ?? "");
+                    GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
+                    if (GraphButton(new Rect(objRow.xMax - 24f, objRow.y + 2f, 22f, 20f), "✕"))
                     {
-                        var obj = node.Objectives[o];
-                        if (obj == null) continue;
-                        Rect objRow = new Rect(frameRect.x + 16f, contentY, frameRect.width - 32f, 24f);
-                        DrawGraphSolidRect(objRow, new Color(0.04f, 0.14f, 0.10f, 0.85f));
-                        string optTag = obj.Optional ? "<color=#AAAAAA>[Optionnel]</color> " : "<color=#00E5FF>[Principal]</color> ";
-                        GraphLabel(new Rect(objRow.x + 8f, objRow.y + 3f, objRow.width - 16f, 18f), $"🎯 {optTag}<b>{obj.Label}</b> (<i>{obj.Id}</i>)");
-                        contentY += 26f;
+                        node.Objectives.RemoveAt(o);
+                        GUI.backgroundColor = Color.white;
+                        break;
                     }
+                    GUI.backgroundColor = Color.white;
+                    contentY += 28f;
                 }
+                contentY += 6f;
             }
 
             if (node.Choices != null && node.Choices.Count > 0)
@@ -2452,14 +3492,45 @@ namespace Killtime.Story
                     DrawBezierWire(outSocket, targetIn, new Color(0.0f, 0.85f, 1.0f, 0.95f), 3.5f);
                 }
 
+                var choiceRowYs = new List<float>();
+                GetDialogueChoiceRowOffsets(line, choiceRowYs);
                 for (int c = 0; c < line.Choices.Count; c++)
                 {
                     var ch = line.Choices[c];
+                    if (ch == null) continue;
                     if (!string.IsNullOrEmpty(ch.NextLineId)
                         && _cachedInputSockets.TryGetValue(ch.NextLineId, out var chTargetIn))
                     {
-                        Vector2 chOutSocket = new Vector2(cardPos.x + size.x, cardPos.y + 110f + (c * 22f));
-                        DrawBezierWire(chOutSocket, chTargetIn, new Color(1.0f, 0.8f, 0.2f, 0.95f), 3.0f);
+                        // Aligné sur la rangée GUI réelle (cf. DrawDialogueCard : +100 + extras).
+                        float rowY = (c >= 0 && c < choiceRowYs.Count)
+                            ? cardPos.y + choiceRowYs[c] + 10f
+                            : cardPos.y + 110f + (c * 22f);
+                        Vector2 chOutSocket = new Vector2(cardPos.x + size.x, rowY);
+                        bool wVs = ch.Challenge != null && ch.Challenge.HasChallenge && ch.Challenge.IsOpposed;
+                        bool wChal = ch.Challenge != null && ch.Challenge.HasChallenge;
+                        DrawBezierWire(chOutSocket, chTargetIn, wVs ? new Color(1f, 0.55f, 0.2f, 0.95f) : (wChal ? new Color(1f, 0.85f, 0.3f, 0.95f) : new Color(1.0f, 0.8f, 0.2f, 0.95f)), 3.0f);
+                    }
+
+                    // Liens du défi : ✔ et ✕ vers cartes Conséquence OU répliques directes.
+                    if (ch.Challenge != null && ch.Challenge.HasChallenge)
+                    {
+                        float linkTop = (c >= 0 && c < choiceRowYs.Count)
+                            ? choiceRowYs[c] + 22f + GetChallengeConfigRows(ch.Challenge) * 20f
+                            : 122f + (c * 22f);
+                        string okId = !string.IsNullOrEmpty(ch.Challenge.SuccessConsequenceId)
+                            ? ch.Challenge.SuccessConsequenceId : ch.Challenge.SuccessNextLineId;
+                        if (!string.IsNullOrEmpty(okId)
+                            && _cachedInputSockets.TryGetValue(okId, out var okIn))
+                        {
+                            DrawBezierWire(new Vector2(cardPos.x + size.x, cardPos.y + linkTop + 10f), okIn, new Color(0.35f, 1f, 0.55f, 0.95f), 3.0f);
+                        }
+                        string koId = !string.IsNullOrEmpty(ch.Challenge.FailureConsequenceId)
+                            ? ch.Challenge.FailureConsequenceId : ch.Challenge.FailureNextLineId;
+                        if (!string.IsNullOrEmpty(koId)
+                            && _cachedInputSockets.TryGetValue(koId, out var koIn))
+                        {
+                            DrawBezierWire(new Vector2(cardPos.x + size.x, cardPos.y + linkTop + 30f), koIn, new Color(1f, 0.4f, 0.35f, 0.95f), 3.0f);
+                        }
                     }
                 }
 
@@ -2490,6 +3561,35 @@ namespace Killtime.Story
                     DrawBezierWire(outSocket, targetIn, new Color(0.85f, 0.45f, 1.0f, 0.95f), 3.5f);
                 }
             }
+
+            if (node.Consequences != null)
+            {
+                for (int k = 0; k < node.Consequences.Count; k++)
+                {
+                    var cons = node.Consequences[k];
+                    if (cons == null) continue;
+                    Vector2 size = GetConsequenceCardSize(cons);
+                    Vector2 cardPos = new Vector2(cons.GraphPosX, cons.GraphPosY);
+                    if (!string.IsNullOrEmpty(cons.NextLineId)
+                        && _cachedInputSockets.TryGetValue(cons.NextLineId, out var lineIn))
+                    {
+                        DrawBezierWire(new Vector2(cardPos.x + size.x, cardPos.y + 26f), lineIn, new Color(0.0f, 0.85f, 1.0f, 0.95f), 3.0f);
+                    }
+                    if (!string.IsNullOrEmpty(cons.NextConsequenceId)
+                        && _cachedInputSockets.TryGetValue(cons.NextConsequenceId, out var consIn))
+                    {
+                        float nextRowTop = 72f + (cons.HasDialogue ? 66f : 0f);
+                        DrawBezierWire(new Vector2(cardPos.x + size.x, cardPos.y + nextRowTop + 10f), consIn, new Color(0.4f, 1.0f, 0.5f, 0.95f), 3.0f);
+                    }
+                }
+            }
+        }
+
+        private static string TrimHover(string s, int max)
+        {
+            if (string.IsNullOrEmpty(s)) return "";
+            s = s.Replace("\n", " ").Replace("\r", "").Trim();
+            return s.Length > max ? s.Substring(0, max) + "…" : s;
         }
 
         private void DrawDialogueCard(SceneDialogueLineData line, int index, SceneNodeData node, Vector2 mouseWorld)
@@ -2498,6 +3598,7 @@ namespace Killtime.Story
             if (line.Choices == null) line.Choices = new System.Collections.Generic.List<SceneDialogueChoiceData>();
             if (line.Ambience == null) line.Ambience = new SceneAmbienceData();
             if (line.Prerequisite == null) line.Prerequisite = new ScenePrerequisiteData();
+            if (line.AutoSkillCheck == null) line.AutoSkillCheck = new SceneAutoSkillCheckData();
 
             Vector2 size = GetDialogueCardSize(line);
             float cardW = size.x;
@@ -2516,7 +3617,7 @@ namespace Killtime.Story
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
             // Redimensionnement de la carte
-            if (evt.type == EventType.MouseDown && evt.button == 0 && resizeGripRect.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
@@ -2536,7 +3637,7 @@ namespace Killtime.Story
             }
 
             // Déplacement de la carte
-            if (evt.type == EventType.MouseDown && evt.button == 0 && dragHeaderRect.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
@@ -2558,7 +3659,19 @@ namespace Killtime.Story
 
             // 1. Rendu d'arrière-plan de la Carte et de l'En-tête
             DrawGraphSolidRect(cardRect, new Color(0.08f, 0.11f, 0.15f, 0.95f));
+            int chalSDCount = 0;
+            int chalVSCount = 0;
+            for (int hc0 = 0; hc0 < line.Choices.Count; hc0++)
+            {
+                var hx = line.Choices[hc0];
+                if (hx != null && hx.Challenge != null && hx.Challenge.HasChallenge)
+                {
+                    if (hx.Challenge.IsOpposed) chalVSCount++;
+                    else chalSDCount++;
+                }
+            }
             Color headerCol = line.Choices.Count > 0 ? new Color(0.35f, 0.24f, 0.05f) : (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck ? new Color(0.25f, 0.12f, 0.35f) : new Color(0.08f, 0.28f, 0.36f));
+            if (chalVSCount > 0) headerCol = new Color(0.42f, 0.24f, 0.08f);
             DrawGraphSolidRect(headerRect, headerCol);
 
             // Bordure de carte nette
@@ -2567,12 +3680,15 @@ namespace Killtime.Story
             DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
             DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
 
-            // 2. Port d'Entrée
-            Rect inPort = new Rect(cardRect.x - 7f, cardRect.y + 19f, 14f, 14f);
-            DrawGraphSolidRect(inPort, Color.cyan);
+            // 2. Port d'Entrée : vert + gros si point d'entrée, cadre rouge si
+            // plusieurs entrées (erreur utilisateur).
+            DrawEntryInputPort(cardRect, Color.cyan,
+                !DialogueIdHasIncoming(node, line.LineId),
+                CountDialogueEntries(node) > 1);
 
             // 3. Titre & Locuteur
-            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>◆ {line.SpeakerId}</b> (<i>{line.LineId}</i>)");
+            string chalBadge = chalVSCount > 0 ? $" ⚔️x{chalVSCount}" : (chalSDCount > 0 ? $" 🎲x{chalSDCount}" : "");
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>◆ {line.SpeakerId}</b> (<i>{line.LineId}</i>){chalBadge}");
 
             // 4. Bouton Supprimer
             GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
@@ -2611,13 +3727,47 @@ namespace Killtime.Story
                         if (hch == null) continue;
                         string hl = hch.Label ?? "";
                         if (hl.Length > 90) hl = hl.Substring(0, 90) + "…";
-                        sb.AppendLine($"• {hl}");
+                        string tag = "";
+                        if (hch.Challenge != null && hch.Challenge.HasChallenge)
+                        {
+                            tag = hch.Challenge.IsOpposed ? $" [⚔️ {hch.Challenge.GetShortLabel()}]" : $" [🎲 {hch.Challenge.GetShortLabel()}]";
+                            if (!string.IsNullOrEmpty(hch.Challenge.SuccessConsequenceId)) tag += $" ✔→🎁{hch.Challenge.SuccessConsequenceId}";
+                            if (!string.IsNullOrEmpty(hch.Challenge.FailureConsequenceId)) tag += $" ✕→🎁{hch.Challenge.FailureConsequenceId}";
+                            var hrw = hch.Challenge.SuccessRewards;
+                            if (hrw != null)
+                            {
+                                if (hrw.EarnXP > 0) tag += $" +{hrw.EarnXP}XP";
+                                if (hrw.EarnCredits > 0) tag += $" +{hrw.EarnCredits}CE";
+                                var itemBits = new System.Collections.Generic.List<string>();
+                                if (!string.IsNullOrEmpty(hrw.ItemRewardName))
+                                    itemBits.Add(hrw.ItemRewardQuantity > 1 ? $"{hrw.ItemRewardName} x{hrw.ItemRewardQuantity}" : hrw.ItemRewardName);
+                                if (hrw.AdditionalItems != null)
+                                {
+                                    for (int hi = 0; hi < hrw.AdditionalItems.Count; hi++)
+                                    {
+                                        var he = hrw.AdditionalItems[hi];
+                                        if (he == null || string.IsNullOrEmpty(he.ItemName)) continue;
+                                        itemBits.Add(he.Quantity > 1 ? $"{he.ItemName} x{he.Quantity}" : he.ItemName);
+                                    }
+                                }
+                                if (itemBits.Count > 0) tag += " [" + string.Join(", ", itemBits) + "]";
+                            }
+                            if (hch.Challenge.FailureTriggersCombat) tag += " ✕⚔";
+                        }
+                        if (hch.Prerequisite != null && hch.Prerequisite.HasPrerequisite) tag += $" 🔒{hch.Prerequisite.GetSummary()}";
+                        sb.AppendLine($"• {hl}{tag}");
                     }
                 }
                 else if (!string.IsNullOrEmpty(line.NextLineId))
                 {
                     sb.AppendLine($"➔ {line.NextLineId}");
                 }
+                if (line.Prerequisite != null && line.Prerequisite.HasPrerequisite)
+                    sb.AppendLine($"🔒 Prérequis : {line.Prerequisite.GetSummary()}");
+                if (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck)
+                    sb.AppendLine($"🎲 Auto : {SkillDefinitions.GetDisplayName(line.AutoSkillCheck.RequiredSkill)} SD {line.AutoSkillCheck.TargetDC}");
+                if (line.Ambience != null && line.Ambience.HasAmbience && !string.IsNullOrEmpty(line.Ambience.SoundCueId))
+                    sb.AppendLine($"🔊 {line.Ambience.SoundCueId}");
                 _hasHoverCard = true;
                 _hoverTitle = $"◆ {line.SpeakerId}  ({line.LineId})";
                 _hoverBody = sb.ToString().Trim();
@@ -2633,25 +3783,197 @@ namespace Killtime.Story
             GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
             line.LineId = GraphTextField(new Rect(innerX + 24f, y, 70f, 18f), line.LineId ?? "");
             GraphLabel(new Rect(innerX + 98f, y, 28f, 18f), "Loc:");
-            line.SpeakerId = GraphTextField(new Rect(innerX + 128f, y, 80f, 18f), line.SpeakerId ?? "");
+            line.SpeakerId = GraphTextField(new Rect(innerX + 128f, y, 60f, 18f), line.SpeakerId ?? "");
+            {
+                Rect dropBtn = new Rect(innerX + 190f, y, 20f, 18f);
+                string dropKey = $"dlg_{line.LineId}";
+                if (GraphButton(dropBtn, "▼"))
+                {
+                    if (_actorDropKey == dropKey) _actorDropKey = null;
+                    else OpenActorDropdown(dropKey, dropBtn, line.SpeakerId ?? "", v => line.SpeakerId = v);
+                }
+            }
             line.StageDirection = GraphTextField(new Rect(innerX + 212f, y, Mathf.Max(40f, innerW - 212f), 18f), line.StageDirection ?? "");
             y += 20f;
 
             line.Speech = GraphTextArea(new Rect(innerX, y, innerW, 48f), line.Speech ?? "");
             y += 50f;
 
-            // Choix Multiples / Liaison : première rangée à cardY+100, pas vertical de 22 (référence des wires).
+            // Choix Multiples / Liaison : première rangée à cardY+100, pas vertical de 22 + 20/ligne de défi (référence des wires).
+            var cardChoiceOffsets = new List<float>();
+            GetDialogueChoiceRowOffsets(line, cardChoiceOffsets);
             if (line.Choices.Count > 0)
             {
+                int skillCount = Enum.GetValues(typeof(SkillType)).Length;
                 for (int c = 0; c < line.Choices.Count; c++)
                 {
                     var ch = line.Choices[c];
-                    float labelW = Mathf.Max(60f, innerW - 124f);
-                    ch.Label = GraphTextField(new Rect(innerX, y, labelW, 20f), ch.Label ?? "");
-                    GraphLabel(new Rect(innerX + labelW + 2f, y, 16f, 20f), "➔");
-                    ch.NextLineId = GraphTextField(new Rect(innerX + labelW + 20f, y, 80f, 20f), ch.NextLineId ?? "");
-                    if (GraphButton(new Rect(innerX + labelW + 102f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
+                    if (ch == null) { y += 22f; continue; }
+                    ch.Challenge ??= new SceneDialogueChallengeData();
+                    var chal = ch.Challenge;
+
+                    // Rangée principale : [mode 30][label][➔][next 70][⊘].
+                    string modeLabel = !chal.HasChallenge ? "–" : (chal.IsOpposed ? "VS" : "SD");
+                    Color prevBg = GUI.backgroundColor;
+                    GUI.backgroundColor = !chal.HasChallenge ? new Color(0.35f, 0.38f, 0.42f)
+                        : (chal.IsOpposed ? new Color(1.0f, 0.55f, 0.2f) : new Color(1.0f, 0.78f, 0.25f));
+                    if (GraphButton(new Rect(innerX, y, 30f, 20f), modeLabel))
+                    {
+                        if (!chal.HasChallenge) { chal.HasChallenge = true; chal.IsOpposed = false; if (chal.TargetDC <= 0) chal.TargetDC = 10; }
+                        else if (!chal.IsOpposed) { chal.IsOpposed = true; }
+                        else { chal.HasChallenge = false; chal.IsOpposed = false; }
+                    }
+                    GUI.backgroundColor = prevBg;
+
+                    float labelW = Mathf.Max(40f, innerW - 32f - 122f);
+                    ch.Label = GraphTextField(new Rect(innerX + 32f, y, labelW, 20f), ch.Label ?? "");
+                    GraphLabel(new Rect(innerX + 32f + labelW + 2f, y, 16f, 20f), "➔");
+                    ch.NextLineId = GraphTextField(new Rect(innerX + 32f + labelW + 20f, y, 70f, 20f), ch.NextLineId ?? "");
+                    if (GraphButton(new Rect(innerX + 32f + labelW + 92f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
                     y += 22f;
+
+                    if (chal.HasChallenge && !chal.IsOpposed)
+                    {
+                        // Sous-rangée test SD : [<][compétence][>][SD][val][Acteur].
+                        float sx = innerX + 12f;
+                        if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
+                        {
+                            int si = ((int)chal.RequiredSkill - 1 + skillCount) % skillCount;
+                            chal.RequiredSkill = (SkillType)si;
+                        }
+                        sx += 20f;
+                        GraphLabel(new Rect(sx, y, 95f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.RequiredSkill)}</b>");
+                        sx += 97f;
+                        if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
+                        {
+                            int si = ((int)chal.RequiredSkill + 1) % skillCount;
+                            chal.RequiredSkill = (SkillType)si;
+                        }
+                        sx += 20f;
+                        GraphLabel(new Rect(sx, y, 24f, 18f), "SD:");
+                        sx += 26f;
+                        string sdTxt = GraphTextField(new Rect(sx, y, 30f, 18f), chal.TargetDC.ToString());
+                        int.TryParse(sdTxt, out chal.TargetDC);
+                        sx += 32f;
+                        GraphLabel(new Rect(sx, y, 28f, 18f), "Act:");
+                        sx += 30f;
+                        chal.SpecificActorId = GraphTextField(new Rect(sx, y, Mathf.Max(30f, innerX + innerW - sx), 18f), chal.SpecificActorId ?? "");
+                        y += 20f;
+                    }
+                    else if (chal.HasChallenge && chal.IsOpposed)
+                    {
+                        // Sous-rangée 1 : compétence joueur vs compétence adverse.
+                        float sx = innerX + 12f;
+                        GraphLabel(new Rect(sx, y, 18f, 18f), "J:");
+                        sx += 20f;
+                        if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
+                        {
+                            int si = ((int)chal.RequiredSkill - 1 + skillCount) % skillCount;
+                            chal.RequiredSkill = (SkillType)si;
+                        }
+                        sx += 20f;
+                        GraphLabel(new Rect(sx, y, 72f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.RequiredSkill)}</b>");
+                        sx += 74f;
+                        if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
+                        {
+                            int si = ((int)chal.RequiredSkill + 1) % skillCount;
+                            chal.RequiredSkill = (SkillType)si;
+                        }
+                        sx += 20f;
+                        GraphLabel(new Rect(sx, y, 22f, 18f), "vs");
+                        sx += 24f;
+                        if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
+                        {
+                            int oi = ((int)chal.OpposedSkill - 1 + skillCount) % skillCount;
+                            chal.OpposedSkill = (SkillType)oi;
+                        }
+                        sx += 20f;
+                        GraphLabel(new Rect(sx, y, 72f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.OpposedSkill)}</b>");
+                        sx += 74f;
+                        if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
+                        {
+                            int oi = ((int)chal.OpposedSkill + 1) % skillCount;
+                            chal.OpposedSkill = (SkillType)oi;
+                        }
+                        y += 20f;
+
+                        // Sous-rangée 2 : opposant + bonus + SD de repli (total fixe si opposant introuvable).
+                        float qx = innerX + 12f;
+                        GraphLabel(new Rect(qx, y, 32f, 18f), "Adv:");
+                        qx += 34f;
+                        chal.OpposedActorId = GraphTextField(new Rect(qx, y, 80f, 18f), chal.OpposedActorId ?? "");
+                        qx += 82f;
+                        GraphLabel(new Rect(qx, y, 26f, 18f), "+B:");
+                        qx += 28f;
+                        string bTxt = GraphTextField(new Rect(qx, y, 30f, 18f), chal.OpposedBonus.ToString());
+                        int.TryParse(bTxt, out chal.OpposedBonus);
+                        qx += 32f;
+                        GraphLabel(new Rect(qx, y, 44f, 18f), "SD fix:");
+                        qx += 46f;
+                        string fixTxt = GraphTextField(new Rect(qx, y, 30f, 18f), chal.TargetDC.ToString());
+                        int.TryParse(fixTxt, out chal.TargetDC);
+                        y += 20f;
+                    }
+
+                    if (chal.HasChallenge)
+                    {
+                        chal.SuccessEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+                        chal.FailureEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+
+                        // Sortie succès : vers carte Conséquence (prioritaire) + lien direct vers réplique.
+                        {
+                            float rx = innerX + 12f;
+                            GUI.color = new Color(0.35f, 1f, 0.55f);
+                            GraphLabel(new Rect(rx, y, 18f, 18f), "✔");
+                            GUI.color = Color.white;
+                            rx += 20f;
+                            GraphLabel(new Rect(rx, y, 52f, 18f), "→Cons:");
+                            rx += 54f;
+                            chal.SuccessConsequenceId = GraphTextField(new Rect(rx, y, 84f, 18f), chal.SuccessConsequenceId ?? "");
+                            rx += 86f;
+                            GraphLabel(new Rect(rx, y, 14f, 18f), "→");
+                            rx += 16f;
+                            chal.SuccessNextLineId = GraphTextField(new Rect(rx, y, Mathf.Max(30f, innerX + innerW - rx), 18f), chal.SuccessNextLineId ?? "");
+                            y += 20f;
+                        }
+
+                        // Sortie échec : vers carte Conséquence (prioritaire) + lien direct vers réplique.
+                        {
+                            float fx2 = innerX + 12f;
+                            GUI.color = new Color(1f, 0.45f, 0.4f);
+                            GraphLabel(new Rect(fx2, y, 18f, 18f), "✕");
+                            GUI.color = Color.white;
+                            fx2 += 20f;
+                            GraphLabel(new Rect(fx2, y, 52f, 18f), "→Cons:");
+                            fx2 += 54f;
+                            chal.FailureConsequenceId = GraphTextField(new Rect(fx2, y, 84f, 18f), chal.FailureConsequenceId ?? "");
+                            fx2 += 86f;
+                            GraphLabel(new Rect(fx2, y, 14f, 18f), "→");
+                            fx2 += 16f;
+                            chal.FailureNextLineId = GraphTextField(new Rect(fx2, y, Mathf.Max(30f, innerX + innerW - fx2), 18f), chal.FailureNextLineId ?? "");
+                            y += 20f;
+                        }
+
+                    }
+
+                    // Méta du choix : prérequis et effets (résumé visible, détail inspecteur).
+                    {
+                        bool hasPre = ch.Prerequisite != null && ch.Prerequisite.HasPrerequisite;
+                        int fxCount = ch.Effects != null ? ch.Effects.Count : 0;
+                        int sfx = (chal.HasChallenge && chal.SuccessEffects != null) ? chal.SuccessEffects.Count : 0;
+                        int ffx = (chal.HasChallenge && chal.FailureEffects != null) ? chal.FailureEffects.Count : 0;
+                        if (hasPre || fxCount > 0 || sfx + ffx > 0)
+                        {
+                            string meta = "";
+                            if (hasPre) meta += $"🔒 {ch.Prerequisite.GetSummary()}  ";
+                            if (fxCount > 0) meta += $" +fx:{fxCount}";
+                            if (sfx + ffx > 0) meta += $" 🎲fx:{sfx}/{ffx}";
+                            GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                            GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f), meta);
+                            GUI.color = Color.white;
+                            y += 20f;
+                        }
+                    }
                 }
             }
             else
@@ -2660,6 +3982,33 @@ namespace Killtime.Story
                 line.NextLineId = GraphTextField(new Rect(innerX + 67f, y, Mathf.Max(60f, innerW - 67f - 26f), 20f), line.NextLineId ?? "");
                 if (GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 20f), "⊘")) line.NextLineId = "";
                 y += 22f;
+            }
+
+            // Résumés de la réplique (rien de caché : prérequis / test auto / ambiance).
+            if (line.Prerequisite != null && line.Prerequisite.HasPrerequisite)
+            {
+                GUI.color = new Color(1f, 1f, 1f, 0.6f);
+                GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f), $"🔒 Prérequis : {line.Prerequisite.GetSummary()}");
+                GUI.color = Color.white;
+                y += 18f;
+            }
+            if (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck)
+            {
+                var auto = line.AutoSkillCheck;
+                GUI.color = new Color(0.7f, 0.85f, 1f, 0.65f);
+                GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f),
+                    $"🎲 Auto : {SkillDefinitions.GetDisplayName(auto.RequiredSkill)} SD {auto.TargetDC} ✔→{auto.SuccessNextLineId} ✕→{auto.FailureNextLineId}");
+                GUI.color = Color.white;
+                y += 18f;
+            }
+            if (line.Ambience != null && line.Ambience.HasAmbience)
+            {
+                var amb = line.Ambience;
+                GUI.color = new Color(1f, 1f, 1f, 0.6f);
+                GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f),
+                    $"🔊 Ambiance : {amb.SoundCueId}{(amb.ChangeMusic ? $" ♪{amb.MusicMood}/{amb.MusicIntensity}" : "")}{(amb.TriggerAlarm ? " 🚨" : "")}");
+                GUI.color = Color.white;
+                y += 18f;
             }
 
             // Rangée basse : +Choix / toggles (protégée du débordement par CardHeight auto).
@@ -2677,11 +4026,14 @@ namespace Killtime.Story
                 line.Choices.Add(new SceneDialogueChoiceData { ChoiceId = $"ch_{line.Choices.Count + 1}", Label = "Option..." });
             }
 
-            // Port de Sortie Principal
-            Rect outPort = new Rect(cardRect.xMax - 8f, cardRect.y + 18f, 16f, 16f);
-            DrawGraphSolidRect(outPort, new Color(0f, 0.85f, 1f));
+            // Port de Sortie Principal : rouge + gros si point de sortie (sans liaison).
+            bool dlgIsExit = !DialogueHasOutgoing(line);
+            Rect outPort = dlgIsExit
+                ? new Rect(cardRect.xMax - 10f, cardRect.y + 16f, 20f, 20f)
+                : new Rect(cardRect.xMax - 8f, cardRect.y + 18f, 16f, 16f);
+            DrawGraphSolidRect(outPort, dlgIsExit ? ExitRed : new Color(0f, 0.85f, 1f));
 
-            if (evt.type == EventType.MouseDown && evt.button == 0 && outPort.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, outPort))
             {
                 _wireDraft = new WireConnectionDraft
                 {
@@ -2693,14 +4045,19 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            // Ports de Sortie des Choix (alignés sur les rangées GUI : +100, pas 22)
+            // Ports de Sortie des Choix (alignés sur les rangées GUI : offsets réels avec défis).
+            GetDialogueChoiceRowOffsets(line, cardChoiceOffsets);
             for (int c = 0; c < line.Choices.Count; c++)
             {
                 var ch = line.Choices[c];
-                Rect chOutPort = new Rect(cardRect.xMax - 7f, cardRect.y + 103f + (c * 22f), 14f, 14f);
-                DrawGraphSolidRect(chOutPort, new Color(1f, 0.8f, 0.2f));
+                float rowTop = (c >= 0 && c < cardChoiceOffsets.Count) ? cardChoiceOffsets[c] : (100f + c * 22f);
+                Rect chOutPort = new Rect(cardRect.xMax - 7f, cardRect.y + rowTop + 3f, 14f, 14f);
+                var chal = ch != null ? ch.Challenge : null;
+                bool isChal = chal != null && chal.HasChallenge;
+                bool isVs = isChal && chal.IsOpposed;
+                DrawGraphSolidRect(chOutPort, isVs ? new Color(1f, 0.55f, 0.2f) : (isChal ? new Color(1f, 0.85f, 0.3f) : new Color(1f, 0.8f, 0.2f)));
 
-                if (evt.type == EventType.MouseDown && evt.button == 0 && chOutPort.Contains(mouseWorld))
+                if (ch != null && GraphPrimaryDown(mouseWorld, chOutPort))
                 {
                     _wireDraft = new WireConnectionDraft
                     {
@@ -2711,6 +4068,40 @@ namespace Killtime.Story
                         StartPos = chOutPort.center
                     };
                     evt.Use();
+                }
+
+                // Sorties du défi : ✔ (succès → conséquence) et ✕ (échec → conséquence).
+                if (isChal)
+                {
+                    float linkTop = rowTop + 22f + GetChallengeConfigRows(chal) * 20f;
+                    Rect okPort = new Rect(cardRect.xMax - 7f, cardRect.y + linkTop + 3f, 14f, 14f);
+                    DrawGraphSolidRect(okPort, new Color(0.35f, 1f, 0.55f));
+                    if (ch != null && GraphPrimaryDown(mouseWorld, okPort))
+                    {
+                        _wireDraft = new WireConnectionDraft
+                        {
+                            IsActive = true,
+                            FromChallengeLink = true,
+                            ChallengeLinkIsSuccess = true,
+                            SourceChallenge = chal,
+                            StartPos = okPort.center
+                        };
+                        evt.Use();
+                    }
+                    Rect koPort = new Rect(cardRect.xMax - 7f, cardRect.y + linkTop + 23f, 14f, 14f);
+                    DrawGraphSolidRect(koPort, new Color(1f, 0.4f, 0.35f));
+                    if (ch != null && GraphPrimaryDown(mouseWorld, koPort))
+                    {
+                        _wireDraft = new WireConnectionDraft
+                        {
+                            IsActive = true,
+                            FromChallengeLink = true,
+                            ChallengeLinkIsSuccess = false,
+                            SourceChallenge = chal,
+                            StartPos = koPort.center
+                        };
+                        evt.Use();
+                    }
                 }
             }
         }
@@ -2736,7 +4127,7 @@ namespace Killtime.Story
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
             // Redimensionnement de la carte d'événement
-            if (evt.type == EventType.MouseDown && evt.button == 0 && resizeGripRect.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
@@ -2756,7 +4147,7 @@ namespace Killtime.Story
             }
 
             // Déplacement de la carte d'événement
-            if (evt.type == EventType.MouseDown && evt.button == 0 && dragHeaderRect.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
@@ -2786,9 +4177,9 @@ namespace Killtime.Story
             DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
             DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
 
-            // 2. Port d'Entrée
-            Rect inPort = new Rect(cardRect.x - 7f, cardRect.y + 19f, 14f, 14f);
-            DrawGraphSolidRect(inPort, new Color(0.85f, 0.4f, 1f));
+            // 2. Port d'Entrée : vert + gros si point d'entrée (sans lien entrant).
+            DrawEntryInputPort(cardRect, new Color(0.85f, 0.4f, 1f),
+                !EventIdHasIncoming(node, ev.EventId), false);
 
             // 3. Titre & Nature de l'Événement
             GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>▲ {ev.Title}</b> [{ev.Kind}]");
@@ -2849,10 +4240,13 @@ namespace Killtime.Story
             }
             GUI.backgroundColor = prevBg;
 
-            Rect outPort = new Rect(cardRect.xMax - 7f, cardRect.y + 19f, 14f, 14f);
-            DrawGraphSolidRect(outPort, new Color(0.85f, 0.4f, 1f));
+            bool evtIsExit = !EventHasOutgoing(ev);
+            Rect outPort = evtIsExit
+                ? new Rect(cardRect.xMax - 10f, cardRect.y + 16f, 20f, 20f)
+                : new Rect(cardRect.xMax - 7f, cardRect.y + 19f, 14f, 14f);
+            DrawGraphSolidRect(outPort, evtIsExit ? ExitRed : new Color(0.85f, 0.4f, 1f));
 
-            if (evt.type == EventType.MouseDown && evt.button == 0 && outPort.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, outPort))
             {
                 _wireDraft = new WireConnectionDraft
                 {
@@ -2860,6 +4254,269 @@ namespace Killtime.Story
                     IsEvent = true,
                     SourceEvent = ev,
                     StartPos = outPort.center
+                };
+                evt.Use();
+            }
+        }
+
+        private void DrawConsequenceCard(SceneConsequenceData cons, int index, SceneNodeData node, Vector2 mouseWorld)
+        {
+            if (string.IsNullOrEmpty(cons.ConsequenceId)) cons.ConsequenceId = $"cons_{index + 1}";
+            cons.Rewards ??= new SceneDialogueRewardData();
+            StorySceneData.EnsureRewardDefaults(cons.Rewards);
+            cons.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
+            var rew = cons.Rewards;
+
+            Vector2 size = GetConsequenceCardSize(cons);
+            float cardW = size.x;
+            float cardH = size.y;
+
+            Rect cardRect = new Rect(cons.GraphPosX, cons.GraphPosY, cardW, cardH);
+            Rect headerRect = new Rect(cardRect.x, cardRect.y, cardW, 26f);
+            Rect closeRect = new Rect(headerRect.xMax - 22f, headerRect.y + 3f, 18f, 18f);
+            Rect dragHeaderRect = new Rect(headerRect.x, headerRect.y, headerRect.width - 26f, headerRect.height);
+            Rect resizeGripRect = new Rect(cardRect.xMax - 14f, cardRect.yMax - 14f, 14f, 14f);
+
+            Event evt = Event.current;
+            string dragKey = $"cons_{index}_{cons.ConsequenceId}";
+            string resizeKey = $"resize_{dragKey}";
+            int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
+            int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
+
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            {
+                GUIUtility.hotControl = resizeControlId;
+                _resizingCardKey = resizeKey;
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
+            {
+                cons.CardWidth = Mathf.Clamp(mouseWorld.x - cardRect.x, 320f, 750f);
+                cons.CardHeight = Mathf.Clamp(mouseWorld.y - cardRect.y, 160f, 650f);
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == resizeControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _resizingCardKey = null;
+                evt.Use();
+            }
+
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            {
+                GUIUtility.hotControl = dragControlId;
+                _draggingCardKey = dragKey;
+                _dragOffset = mouseWorld - new Vector2(cons.GraphPosX, cons.GraphPosY);
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
+            {
+                cons.GraphPosX = mouseWorld.x - _dragOffset.x;
+                cons.GraphPosY = mouseWorld.y - _dragOffset.y;
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == dragControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _draggingCardKey = null;
+                evt.Use();
+            }
+
+            Color headerCol = new Color(0.30f, 0.42f, 0.12f);
+            DrawGraphSolidRect(cardRect, new Color(0.10f, 0.13f, 0.08f, 0.95f));
+            DrawGraphSolidRect(headerRect, headerCol);
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), headerCol * 1.4f);
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+
+            DrawEntryInputPort(cardRect, new Color(0.35f, 1f, 0.55f),
+                !ConsIdHasIncoming(node, cons.ConsequenceId), false);
+
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>🎁 {cons.Title}</b> (<i>{cons.ConsequenceId}</i>)");
+
+            GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
+            GUI.color = Color.white;
+            if (GraphButton(closeRect, "✕"))
+            {
+                node.Consequences.RemoveAt(index);
+                if (_draggingCardKey == dragKey)
+                {
+                    _draggingCardKey = null;
+                    GUIUtility.hotControl = 0;
+                }
+                GUI.backgroundColor = Color.white;
+                evt.Use();
+                return;
+            }
+            GUI.backgroundColor = Color.white;
+
+            GUI.color = new Color(1f, 1f, 1f, 0.4f);
+            GraphLabel(resizeGripRect, "◢");
+            GUI.color = Color.white;
+
+            if (_zoom < 0.85f && !_isPanning && _draggingCardKey == null && _resizingCardKey == null && !_wireDraft.IsActive
+                && !_pickerCapturesMouse && headerRect.Contains(mouseWorld))
+            {
+                _hasHoverCard = true;
+                _hoverTitle = $"🎁 {cons.Title}  ({cons.ConsequenceId})";
+                var hb = new System.Text.StringBuilder();
+                if (cons.HasDialogue && !string.IsNullOrEmpty(cons.Speech)) hb.AppendLine(cons.Speech);
+                hb.AppendLine(cons.GetSummary());
+                _hoverBody = hb.ToString().Trim();
+                _hoverScreenPos = _graphMouseScreenPos;
+            }
+
+            float innerX = cardRect.x + 8f;
+            float innerW = cardW - 16f;
+            float y = cardRect.y + 30f;
+
+            GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
+            cons.ConsequenceId = GraphTextField(new Rect(innerX + 24f, y, 80f, 18f), cons.ConsequenceId ?? "");
+            GraphLabel(new Rect(innerX + 108f, y, 38f, 18f), "Titre:");
+            cons.Title = GraphTextField(new Rect(innerX + 148f, y, Mathf.Max(40f, innerW - 148f), 18f), cons.Title ?? "");
+            y += 22f;
+
+            cons.HasDialogue = GraphToggle(new Rect(innerX, y, 110f, 18f), cons.HasDialogue, "💬 Dialogue");
+            cons.TriggersCombat = GraphToggle(new Rect(innerX + 114f, y, 100f, 18f), cons.TriggersCombat, "⚔ Combat");
+            GUI.color = new Color(1f, 1f, 1f, 0.55f);
+            GraphLabel(new Rect(innerX + 218f, y, Mathf.Max(40f, innerW - 218f), 18f), cons.Effects.Count > 0 ? $"+fx:{cons.Effects.Count}" : "");
+            GUI.color = Color.white;
+            y += 20f;
+
+            if (cons.HasDialogue)
+            {
+                GraphLabel(new Rect(innerX, y, 30f, 18f), "Loc:");
+                cons.SpeakerId = GraphTextField(new Rect(innerX + 32f, y, 64f, 18f), cons.SpeakerId ?? "");
+                {
+                    Rect dropBtn = new Rect(innerX + 98f, y, 20f, 18f);
+                    string dropKey = $"cons_{cons.ConsequenceId}";
+                    if (GraphButton(dropBtn, "▼"))
+                    {
+                        if (_actorDropKey == dropKey) _actorDropKey = null;
+                        else OpenActorDropdown(dropKey, dropBtn, cons.SpeakerId ?? "", v => cons.SpeakerId = v);
+                    }
+                }
+                cons.StageDirection = GraphTextField(new Rect(innerX + 122f, y, Mathf.Max(40f, innerW - 122f), 18f), cons.StageDirection ?? "");
+                y += 22f;
+                cons.Speech = GraphTextArea(new Rect(innerX, y, innerW, 42f), cons.Speech ?? "");
+                y += 44f;
+            }
+
+            float nextRowTop = y - cardRect.y;
+            GraphLabel(new Rect(innerX, y, 52f, 18f), "→Diag:");
+            cons.NextLineId = GraphTextField(new Rect(innerX + 54f, y, 84f, 18f), cons.NextLineId ?? "");
+            GraphLabel(new Rect(innerX + 142f, y, 52f, 18f), "→Cons:");
+            cons.NextConsequenceId = GraphTextField(new Rect(innerX + 196f, y, Mathf.Max(40f, innerW - 196f), 18f), cons.NextConsequenceId ?? "");
+            y += 22f;
+
+            GraphLabel(new Rect(innerX, y, 30f, 18f), "+XP");
+            string cxp = GraphTextField(new Rect(innerX + 32f, y, 34f, 18f), rew.EarnXP.ToString());
+            int.TryParse(cxp, out rew.EarnXP);
+            GraphLabel(new Rect(innerX + 70f, y, 30f, 18f), "+CE");
+            string cce = GraphTextField(new Rect(innerX + 102f, y, 34f, 18f), rew.EarnCredits.ToString());
+            int.TryParse(cce, out rew.EarnCredits);
+            GraphLabel(new Rect(innerX + 140f, y, 30f, 18f), "Obj:");
+            rew.CompletionObjectiveId = GraphTextField(new Rect(innerX + 172f, y, Mathf.Max(40f, innerW - 172f), 18f), rew.CompletionObjectiveId ?? "");
+            y += 22f;
+
+            // Ligne item principal.
+            {
+                float ix = innerX + 12f;
+                GraphLabel(new Rect(ix, y, 20f, 18f), "🎁");
+                ix += 22f;
+                float tailW = 14f + 2f + 30f + 2f + 22f + 2f + 22f;
+                rew.ItemRewardName = GraphTextField(new Rect(ix, y, Mathf.Max(40f, innerX + innerW - ix - tailW), 18f), rew.ItemRewardName ?? "");
+                ix = innerX + innerW - tailW;
+                GraphLabel(new Rect(ix, y, 14f, 18f), "x");
+                ix += 16f;
+                string cq = GraphTextField(new Rect(ix, y, 30f, 18f), rew.ItemRewardQuantity.ToString());
+                int.TryParse(cq, out rew.ItemRewardQuantity);
+                if (rew.ItemRewardQuantity < 1) rew.ItemRewardQuantity = 1;
+                ix += 32f;
+                Color prevPkM = GUI.backgroundColor;
+                if (IsPickerOpenForCons(cons, -1)) GUI.backgroundColor = new Color(0.35f, 1f, 0.55f);
+                if (GraphButton(new Rect(ix, y, 22f, 18f), "🔍"))
+                {
+                    if (IsPickerOpenForCons(cons, -1)) CloseItemPicker();
+                    else OpenItemPicker(cons, -1);
+                }
+                GUI.backgroundColor = prevPkM;
+                ix += 24f;
+                if (GraphButton(new Rect(ix, y, 22f, 18f), "+"))
+                {
+                    rew.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
+                }
+                y += 20f;
+            }
+
+            // Lignes items supplémentaires.
+            for (int ri = 0; ri < rew.AdditionalItems.Count; ri++)
+            {
+                var entry = rew.AdditionalItems[ri];
+                if (entry == null) { rew.AdditionalItems.RemoveAt(ri); break; }
+                float ix = innerX + 12f;
+                GraphLabel(new Rect(ix, y, 20f, 18f), "🎁");
+                ix += 22f;
+                float tailW = 14f + 2f + 30f + 2f + 22f + 2f + 22f;
+                entry.ItemName = GraphTextField(new Rect(ix, y, Mathf.Max(40f, innerX + innerW - ix - tailW), 18f), entry.ItemName ?? "");
+                ix = innerX + innerW - tailW;
+                GraphLabel(new Rect(ix, y, 14f, 18f), "x");
+                ix += 16f;
+                string eq2 = GraphTextField(new Rect(ix, y, 30f, 18f), entry.Quantity.ToString());
+                int.TryParse(eq2, out entry.Quantity);
+                if (entry.Quantity < 1) entry.Quantity = 1;
+                ix += 32f;
+                Color prevPkC = GUI.backgroundColor;
+                if (IsPickerOpenForCons(cons, ri)) GUI.backgroundColor = new Color(0.35f, 1f, 0.55f);
+                if (GraphButton(new Rect(ix, y, 22f, 18f), "🔍"))
+                {
+                    if (IsPickerOpenForCons(cons, ri)) CloseItemPicker();
+                    else OpenItemPicker(cons, ri);
+                }
+                GUI.backgroundColor = prevPkC;
+                ix += 24f;
+                GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
+                if (GraphButton(new Rect(ix, y, 22f, 18f), "✕"))
+                {
+                    rew.AdditionalItems.RemoveAt(ri);
+                    GUI.backgroundColor = Color.white;
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+                y += 20f;
+            }
+
+            // Ports de sortie : → réplique (cyan, rouge + gros si sortie) et → conséquence (vert).
+            bool consIsExit = !ConsHasOutgoing(cons);
+            Rect outLinePort = consIsExit
+                ? new Rect(cardRect.xMax - 10f, cardRect.y + 16f, 20f, 20f)
+                : new Rect(cardRect.xMax - 8f, cardRect.y + 18f, 16f, 16f);
+            DrawGraphSolidRect(outLinePort, consIsExit ? ExitRed : new Color(0f, 0.85f, 1f));
+            if (GraphPrimaryDown(mouseWorld, outLinePort))
+            {
+                _wireDraft = new WireConnectionDraft
+                {
+                    IsActive = true,
+                    FromConsequence = true,
+                    ConsLinkToCons = false,
+                    SourceConsequence = cons,
+                    StartPos = outLinePort.center
+                };
+                evt.Use();
+            }
+
+            Rect outConsPort = new Rect(cardRect.xMax - 7f, cardRect.y + nextRowTop + 3f, 14f, 14f);
+            DrawGraphSolidRect(outConsPort, new Color(0.4f, 1.0f, 0.5f));
+            if (GraphPrimaryDown(mouseWorld, outConsPort))
+            {
+                _wireDraft = new WireConnectionDraft
+                {
+                    IsActive = true,
+                    FromConsequence = true,
+                    ConsLinkToCons = true,
+                    SourceConsequence = cons,
+                    StartPos = outConsPort.center
                 };
                 evt.Use();
             }
@@ -2887,7 +4544,7 @@ namespace Killtime.Story
             int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
-            if (evt.type == EventType.MouseDown && evt.button == 0 && resizeGripRect.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
@@ -2906,7 +4563,7 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            if (evt.type == EventType.MouseDown && evt.button == 0 && dragHeaderRect.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
@@ -3040,7 +4697,7 @@ namespace Killtime.Story
             Rect outPort = new Rect(cardRect.xMax - 8f, cardRect.y + 18f, 16f, 16f);
             DrawGraphSolidRect(outPort, new Color(1f, 0.85f, 0.25f));
 
-            if (evt.type == EventType.MouseDown && evt.button == 0 && outPort.Contains(mouseWorld))
+            if (GraphPrimaryDown(mouseWorld, outPort))
             {
                 _wireDraft = new WireConnectionDraft
                 {
@@ -3080,17 +4737,9 @@ namespace Killtime.Story
                     line.LineId = $"line_{i + 1}";
                 }
 
-                if (string.IsNullOrEmpty(line.NextLineId) && (line.Choices == null || line.Choices.Count == 0))
-                {
-                    if (i < node.Dialogues.Count - 1)
-                    {
-                        if (string.IsNullOrEmpty(node.Dialogues[i + 1].LineId))
-                        {
-                            node.Dialogues[i + 1].LineId = $"line_{i + 2}";
-                        }
-                        line.NextLineId = node.Dialogues[i + 1].LineId;
-                    }
-                }
+                // Pas de remplissage auto de NextLineId : vide = ordre séquentiel
+                // au runtime. L'auto-liaison écrasait le bouton ⊘ (vider la liaison)
+                // dès la frame suivante, donnant l'impression qu'il ne fonctionne pas.
             }
         }
 
@@ -3238,8 +4887,7 @@ namespace Killtime.Story
                     line.Choices.Add(new SceneDialogueChoiceData
                     {
                         ChoiceId = $"choice_{d + 1}_{line.Choices.Count + 1}",
-                        Label = "Option de réponse du joueur...",
-                        ReactionSpeech = "Réaction du personnage..."
+                        Label = "Option de réponse du joueur..."
                     });
                 }
                 GUILayout.EndHorizontal();
@@ -3264,13 +4912,6 @@ namespace Killtime.Story
                     GUILayout.EndHorizontal();
 
                     GUILayout.BeginHorizontal();
-                    GUILayout.Label("Réponse PNJ :", GUILayout.Width(85));
-                    choice.ReactionSpeech = GUILayout.TextField(choice.ReactionSpeech);
-                    GUILayout.Label("Didascalie :", GUILayout.Width(75));
-                    choice.ReactionStageDirection = GUILayout.TextField(choice.ReactionStageDirection, GUILayout.Width(100));
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
                     GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
                     choice.NextLineId = GUILayout.TextField(choice.NextLineId, GUILayout.Width(110));
                     GUILayout.Label("<color=grey>(Vide = ligne suivante)</color>");
@@ -3289,11 +4930,134 @@ namespace Killtime.Story
 
             if (GUILayout.Button("+ Ajouter une Réplique", GUILayout.Height(24)))
             {
-                node.Dialogues.Add(new SceneDialogueLineData { SpeakerId = "", Speech = "..." });
+                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
+                node.Dialogues.Add(new SceneDialogueLineData { SpeakerId = "", Speech = "...", GraphPosX = freeX, GraphPosY = freeY });
             }
 
             GUILayout.Space(10);
             DrawNodeEventsEditor(node);
+            GUILayout.Space(10);
+            DrawNodeConsequencesEditor(node);
+        }
+
+        private void DrawNodeConsequencesEditor(SceneNodeData node)
+        {
+            if (node.Consequences == null) node.Consequences = new System.Collections.Generic.List<SceneConsequenceData>();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"<b>🎁 Conséquences Récompense / Punition ({node.Consequences.Count})</b>");
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("+ Ajouter Conséquence", GUILayout.Width(170), GUILayout.Height(20)))
+            {
+                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
+                node.Consequences.Add(new SceneConsequenceData
+                {
+                    ConsequenceId = $"cons_{node.Consequences.Count + 1}",
+                    Title = "Récompense",
+                    GraphPosX = freeX,
+                    GraphPosY = freeY
+                });
+            }
+            GUILayout.EndHorizontal();
+
+            for (int k = 0; k < node.Consequences.Count; k++)
+            {
+                var cons = node.Consequences[k];
+                if (cons == null) continue;
+                cons.Rewards ??= new SceneDialogueRewardData();
+                StorySceneData.EnsureRewardDefaults(cons.Rewards);
+                cons.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
+                var rew = cons.Rewards;
+
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"<b>#{k + 1}</b>", GUILayout.Width(25));
+                GUILayout.Label("ID :", GUILayout.Width(30));
+                cons.ConsequenceId = GUILayout.TextField(cons.ConsequenceId, GUILayout.Width(90));
+                GUILayout.Label("Titre :", GUILayout.Width(45));
+                cons.Title = GUILayout.TextField(cons.Title, GUILayout.Width(140));
+                cons.TriggersCombat = GUILayout.Toggle(cons.TriggersCombat, "⚔ Combat");
+                GUILayout.FlexibleSpace();
+                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
+                if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
+                {
+                    node.Consequences.RemoveAt(k);
+                    GUI.backgroundColor = Color.white;
+                    GUILayout.EndHorizontal();
+                    GUILayout.EndVertical();
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+
+                cons.HasDialogue = GUILayout.Toggle(cons.HasDialogue, "<b>💬 Dialogue affiché à l'exécution (comme une réplique)</b>");
+                if (cons.HasDialogue)
+                {
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label("Locuteur :", GUILayout.Width(70));
+                    cons.SpeakerId = GUILayout.TextField(cons.SpeakerId, GUILayout.Width(110));
+                    GUILayout.Label("Didascalie :", GUILayout.Width(75));
+                    cons.StageDirection = GUILayout.TextField(cons.StageDirection);
+                    GUILayout.EndHorizontal();
+                    GUILayout.Label("Réplique :");
+                    cons.Speech = GUILayout.TextField(cons.Speech);
+                }
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
+                cons.NextLineId = GUILayout.TextField(cons.NextLineId, GUILayout.Width(110));
+                GUILayout.Label("Vers Conséq. (ID) :", GUILayout.Width(125));
+                cons.NextConsequenceId = GUILayout.TextField(cons.NextConsequenceId, GUILayout.Width(110));
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("+ Crédits CE :", GUILayout.Width(85));
+                int.TryParse(GUILayout.TextField(rew.EarnCredits.ToString(), GUILayout.Width(50)), out rew.EarnCredits);
+                GUILayout.Label("+ XP :", GUILayout.Width(40));
+                int.TryParse(GUILayout.TextField(rew.EarnXP.ToString(), GUILayout.Width(40)), out rew.EarnXP);
+                GUILayout.Label("Obj. Validé (ID) :", GUILayout.Width(105));
+                rew.CompletionObjectiveId = GUILayout.TextField(rew.CompletionObjectiveId);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Item :", GUILayout.Width(90));
+                rew.ItemRewardName = GUILayout.TextField(rew.ItemRewardName, GUILayout.Width(140));
+                if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(cons, -1);
+                GUILayout.Label("Qté :", GUILayout.Width(35));
+                int.TryParse(GUILayout.TextField(rew.ItemRewardQuantity.ToString(), GUILayout.Width(35)), out rew.ItemRewardQuantity);
+                if (rew.ItemRewardQuantity < 1) rew.ItemRewardQuantity = 1;
+                GUILayout.Label($"Items suppl. ({rew.AdditionalItems.Count})", GUILayout.Width(110));
+                if (GUILayout.Button("+ Item", GUILayout.Width(65), GUILayout.Height(18)))
+                    rew.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
+                GUILayout.EndHorizontal();
+
+                for (int ri = 0; ri < rew.AdditionalItems.Count; ri++)
+                {
+                    var entry = rew.AdditionalItems[ri];
+                    if (entry == null) { rew.AdditionalItems.RemoveAt(ri); break; }
+                    GUILayout.BeginHorizontal();
+                    GUILayout.Label($"#{ri + 2}", GUILayout.Width(30));
+                    entry.ItemName = GUILayout.TextField(entry.ItemName);
+                    if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(cons, ri);
+                    GUILayout.Label("x", GUILayout.Width(15));
+                    int.TryParse(GUILayout.TextField(entry.Quantity.ToString(), GUILayout.Width(35)), out entry.Quantity);
+                    if (entry.Quantity < 1) entry.Quantity = 1;
+                    GUI.backgroundColor = new Color(1f, 0.3f, 0.3f);
+                    if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
+                    {
+                        rew.AdditionalItems.RemoveAt(ri);
+                        GUI.backgroundColor = Color.white;
+                        GUILayout.EndHorizontal();
+                        break;
+                    }
+                    GUI.backgroundColor = Color.white;
+                    GUILayout.EndHorizontal();
+                }
+
+                DrawEffectListMini("Effets Conséquence", cons.Effects);
+
+                GUILayout.EndVertical();
+                GUILayout.Space(2);
+            }
         }
 
         private void DrawNodeChoicesEditor(SceneNodeData node)
@@ -3525,10 +5289,13 @@ namespace Killtime.Story
             GUILayout.FlexibleSpace();
             if (GUILayout.Button("+ Ajouter un Événement", GUILayout.Width(180), GUILayout.Height(22)))
             {
+                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
                 node.Events.Add(new SceneEventData
                 {
                     EventId = $"event_{node.Events.Count + 1}",
-                    Title = "Nouvel Événement"
+                    Title = "Nouvel Événement",
+                    GraphPosX = freeX,
+                    GraphPosY = freeY
                 });
             }
             GUILayout.EndHorizontal();
@@ -3624,11 +5391,25 @@ namespace Killtime.Story
 
         private void DrawChallengeEditor(SceneDialogueChoiceData choice)
         {
+            if (choice == null) return;
+            choice.Challenge ??= new SceneDialogueChallengeData();
             var ch = choice.Challenge;
             ch.HasChallenge = GUILayout.Toggle(ch.HasChallenge, "<b>🎲 Défi de Compétence (Jet de Dé & Événements)</b>");
             if (!ch.HasChallenge) return;
+            ch.SuccessRewards ??= new SceneDialogueRewardData();
+            StorySceneData.EnsureRewardDefaults(ch.SuccessRewards);
 
             GUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Mode :", GUILayout.Width(45));
+            int modeIdx = ch.IsOpposed ? 1 : 0;
+            int newMode = GUILayout.Toolbar(modeIdx, new[] { "🎲 Test SD", "⚔️ Défi Opposé" }, GUILayout.Height(20), GUILayout.Width(260));
+            if (newMode != modeIdx) ch.IsOpposed = newMode == 1;
+            GUILayout.Label(ch.IsOpposed
+                ? "<color=grey>(jet joueur vs jet opposant)</color>"
+                : "<color=grey>(jet joueur vs SD fixe)</color>");
+            GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Compétence :", GUILayout.Width(90));
@@ -3653,6 +5434,35 @@ namespace Killtime.Story
             ch.SpecificActorId = GUILayout.TextField(ch.SpecificActorId, GUILayout.Width(90));
             GUILayout.EndHorizontal();
 
+            if (ch.IsOpposed)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Comp. Adverse :", GUILayout.Width(90));
+                int oppCount = Enum.GetValues(typeof(SkillType)).Length;
+                int oppIdx = (int)ch.OpposedSkill;
+                if (GUILayout.Button("◀", GUILayout.Width(22)))
+                {
+                    oppIdx = (oppIdx - 1 + oppCount) % oppCount;
+                    ch.OpposedSkill = (SkillType)oppIdx;
+                }
+                GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(ch.OpposedSkill)}</b>", GUILayout.Width(150));
+                if (GUILayout.Button("▶", GUILayout.Width(22)))
+                {
+                    oppIdx = (oppIdx + 1) % oppCount;
+                    ch.OpposedSkill = (SkillType)oppIdx;
+                }
+                GUILayout.Label("Opposant (ID) :", GUILayout.Width(90));
+                ch.OpposedActorId = GUILayout.TextField(ch.OpposedActorId, GUILayout.Width(90));
+                GUILayout.Label("+ Bonus :", GUILayout.Width(60));
+                int.TryParse(GUILayout.TextField(ch.OpposedBonus.ToString(), GUILayout.Width(35)), out ch.OpposedBonus);
+                GUILayout.EndHorizontal();
+                GUILayout.Label("<color=grey>(Vide = locuteur de la réplique ; si introuvable, total adverse fixe = SD + Bonus)</color>");
+            }
+            else
+            {
+                GUILayout.Label("<color=grey>(SD fixe : le joueur lance Compétence contre Seuil SD)</color>");
+            }
+
             // Branche de Succès
             GUILayout.Space(2);
             GUI.backgroundColor = new Color(0.15f, 0.4f, 0.25f);
@@ -3661,15 +5471,13 @@ namespace Killtime.Story
             GUILayout.Label("<color=#55FF88><b>✔ BRANCHE EN CAS DE SUCCÈS</b></color>");
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Réponse PNJ :", GUILayout.Width(90));
-            ch.SuccessSpeech = GUILayout.TextField(ch.SuccessSpeech);
-            GUILayout.Label("Didascalie :", GUILayout.Width(75));
-            ch.SuccessStageDirection = GUILayout.TextField(ch.SuccessStageDirection, GUILayout.Width(95));
+            GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
+            ch.SuccessNextLineId = GUILayout.TextField(ch.SuccessNextLineId, GUILayout.Width(110));
+            GUILayout.Label("Vers Conséq. (ID) :", GUILayout.Width(125));
+            ch.SuccessConsequenceId = GUILayout.TextField(ch.SuccessConsequenceId, GUILayout.Width(110));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
-            ch.SuccessNextLineId = GUILayout.TextField(ch.SuccessNextLineId, GUILayout.Width(110));
             GUILayout.Label("+ Crédits CE :", GUILayout.Width(80));
             int.TryParse(GUILayout.TextField(ch.SuccessRewards.EarnCredits.ToString(), GUILayout.Width(50)), out ch.SuccessRewards.EarnCredits);
             GUILayout.Label("+ XP :", GUILayout.Width(40));
@@ -3679,9 +5487,42 @@ namespace Killtime.Story
             GUILayout.BeginHorizontal();
             GUILayout.Label("Item Obtenu :", GUILayout.Width(90));
             ch.SuccessRewards.ItemRewardName = GUILayout.TextField(ch.SuccessRewards.ItemRewardName, GUILayout.Width(140));
+            if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(choice);
             GUILayout.Label("Obj. Validé (ID) :", GUILayout.Width(105));
             ch.SuccessRewards.CompletionObjectiveId = GUILayout.TextField(ch.SuccessRewards.CompletionObjectiveId);
             GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Qté item :", GUILayout.Width(90));
+            int.TryParse(GUILayout.TextField(ch.SuccessRewards.ItemRewardQuantity.ToString(), GUILayout.Width(40)), out ch.SuccessRewards.ItemRewardQuantity);
+            if (ch.SuccessRewards.ItemRewardQuantity < 1) ch.SuccessRewards.ItemRewardQuantity = 1;
+            GUILayout.Label($"Items suppl. ({ch.SuccessRewards.AdditionalItems.Count})", GUILayout.Width(130));
+            if (GUILayout.Button("+ Item", GUILayout.Width(70), GUILayout.Height(18)))
+                ch.SuccessRewards.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
+            GUILayout.EndHorizontal();
+
+            for (int ri = 0; ri < ch.SuccessRewards.AdditionalItems.Count; ri++)
+            {
+                var entry = ch.SuccessRewards.AdditionalItems[ri];
+                if (entry == null) { ch.SuccessRewards.AdditionalItems.RemoveAt(ri); break; }
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"#{ri + 2}", GUILayout.Width(30));
+                entry.ItemName = GUILayout.TextField(entry.ItemName);
+                if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(choice, ri);
+                GUILayout.Label("x", GUILayout.Width(15));
+                int.TryParse(GUILayout.TextField(entry.Quantity.ToString(), GUILayout.Width(35)), out entry.Quantity);
+                if (entry.Quantity < 1) entry.Quantity = 1;
+                GUI.backgroundColor = new Color(1f, 0.3f, 0.3f);
+                if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
+                {
+                    ch.SuccessRewards.AdditionalItems.RemoveAt(ri);
+                    GUI.backgroundColor = Color.white;
+                    GUILayout.EndHorizontal();
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+            }
 
             DrawEffectListMini("Effets Succès", ch.SuccessEffects);
 
@@ -3695,15 +5536,13 @@ namespace Killtime.Story
             GUILayout.Label("<color=#FF6655><b>✕ BRANCHE EN CAS D'ÉCHEC</b></color>");
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Réponse PNJ :", GUILayout.Width(90));
-            ch.FailureSpeech = GUILayout.TextField(ch.FailureSpeech);
-            GUILayout.Label("Didascalie :", GUILayout.Width(75));
-            ch.FailureStageDirection = GUILayout.TextField(ch.FailureStageDirection, GUILayout.Width(95));
+            GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
+            ch.FailureNextLineId = GUILayout.TextField(ch.FailureNextLineId, GUILayout.Width(110));
+            GUILayout.Label("Vers Conséq. (ID) :", GUILayout.Width(125));
+            ch.FailureConsequenceId = GUILayout.TextField(ch.FailureConsequenceId, GUILayout.Width(110));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
-            ch.FailureNextLineId = GUILayout.TextField(ch.FailureNextLineId, GUILayout.Width(110));
             ch.FailureTriggersCombat = GUILayout.Toggle(ch.FailureTriggersCombat, "<b>Déclencher Combat Immédiat</b>");
             GUILayout.EndHorizontal();
 
@@ -3868,6 +5707,7 @@ namespace Killtime.Story
 
             ScenarioCatalog.Register(definition);
             director.StartScenario(_data.SceneId);
+            sceneMgr.NotifyExternalScenarioStarted(_data.SceneId);
             StartCoroutine(controller.InitializeSceneRoutine(grid, turnManager, arena, director));
         }
 

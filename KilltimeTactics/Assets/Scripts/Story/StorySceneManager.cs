@@ -129,22 +129,36 @@ namespace Killtime.Story
         {
             if (IsTransitioning) return;
 
+            string currentId = _activeScenarioId;
+            if (string.IsNullOrWhiteSpace(currentId) && _director != null && _director.ActiveScenario != null)
+                currentId = _director.ActiveScenario.Id;
+
             string nextId = overrideNextScenarioId;
             if (string.IsNullOrWhiteSpace(nextId))
             {
-                nextId = ScenarioCatalog.GetNextScenarioId(_activeScenarioId);
+                nextId = ScenarioCatalog.GetNextScenarioId(currentId);
             }
 
             if (!string.IsNullOrWhiteSpace(nextId))
             {
-                Debug.Log($"[StorySceneManager] Enchaînement de la scène '{_activeScenarioId}' vers '{nextId}'");
+                Debug.Log($"[StorySceneManager] Enchaînement de la scène '{currentId}' vers '{nextId}'");
                 StartScenario(nextId, useTransition: true);
             }
             else
             {
-                Debug.Log($"[StorySceneManager] Aucune scène suivante détectée après '{_activeScenarioId}'. Fin de séquence.");
+                Debug.Log($"[StorySceneManager] Aucune scène suivante détectée après '{currentId}'. Fin de séquence.");
                 StartCoroutine(HandleCampaignCompleteRoutine());
             }
+        }
+
+        /// <summary>
+        /// Déclare une scène démarrée hors manager (ex : bouton DÉPLOYER de l'éditeur)
+        /// pour que l'enchaînement automatique retrouve la scène suivante dans la liste.
+        /// </summary>
+        public void NotifyExternalScenarioStarted(string scenarioId)
+        {
+            if (string.IsNullOrWhiteSpace(scenarioId)) return;
+            _activeScenarioId = scenarioId;
         }
 
         private IEnumerator HandleCampaignCompleteRoutine()

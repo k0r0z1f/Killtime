@@ -395,8 +395,61 @@ namespace Killtime.UI
                     rightList.Add(new DockEntry { id = kvp.Key, state = state });
             }
 
+            // Écran étroit : les deux colonnes se recouvriraient horizontalement
+            // (une colonne standard fait 160px + 36px de gouttière) -> une seule pile.
+            if (leftList.Count > 0 && rightList.Count > 0 && Screen.width > 0f
+                && Screen.width < (DockColumnEdgeInset + 160f) * 2f)
+            {
+                leftList.AddRange(rightList);
+                rightList.Clear();
+            }
+
             LayoutDockColumn(leftList, isRight: false);
             LayoutDockColumn(rightList, isRight: true);
+            // Colonne gauche et droite peuvent se recouvrir (écran étroit : les deux
+            // premières vignettes atterrissent à la même hauteur et se chevauchent
+            // côte à côte). Passe globale : aucune paire de vignettes ne se recouvre.
+            ResolveAllDockOverlaps(leftList, rightList);
+        }
+
+        /// <summary>
+        /// Passe globale anti-chevauchement sur TOUTES les vignettes (gauche + droite).
+        /// Traite de haut en bas : chaque dock qui en recouvre un déjà placé descend
+        /// sous lui. Couvre les collisions inter-colonnes (écran étroit) et tout résidu
+        /// intra-colonne (ex : clamp écran après poussée anti-bloqueur).
+        /// </summary>
+        private static void ResolveAllDockOverlaps(List<DockEntry> leftList, List<DockEntry> rightList)
+        {
+            int total = leftList.Count + rightList.Count;
+            if (total < 2) return;
+            var all = new List<DockEntry>(total);
+            all.AddRange(leftList);
+            all.AddRange(rightList);
+            all.Sort((a, b) => a.state.targetDockRect.y.CompareTo(b.state.targetDockRect.y));
+            for (int i = 0; i < all.Count; i++)
+            {
+                Rect r = all[i].state.targetDockRect;
+                if (r.width <= 0f || r.height <= 0f) continue;
+                int guard = 0;
+                bool moved;
+                do
+                {
+                    moved = false;
+                    for (int j = 0; j < i; j++)
+                    {
+                        Rect p = all[j].state.targetDockRect;
+                        if (p.width <= 0f || p.height <= 0f) continue;
+                        if (r.Overlaps(p))
+                        {
+                            r.y = p.yMax + DockMargin;
+                            moved = true;
+                        }
+                    }
+                } while (moved && guard++ < 32);
+                float maxY = Mathf.Max(0f, Screen.height - 12f - r.height);
+                if (r.y > maxY) r.y = maxY;
+                all[i].state.targetDockRect = r;
+            }
         }
 
         private static void LayoutDockColumn(List<DockEntry> list, bool isRight)
@@ -467,6 +520,56 @@ namespace Killtime.UI
                     Mathf.Max(1f, source.height - TitleHeight) / Mathf.Max(1f, source.width));
                 heights[i] = TitleHeight + contentAspect * w;
                 ys[i] = i == 0 ? topSafeY : ys[i - 1] + heights[i - 1] + DockMargin;
+            }
+
+            // Les vignettes dockées ne doivent jamais recouvrir l'élément derrière
+            // (fenêtre normale/minimisée restée visible au bord, panneau HUD latéral...).
+            // Chaque dock qui chevauche un bloqueur descend sous celui-ci ; l'ordre
+            // haut->bas de la pile est préservé.
+            for (int i = 0; i < count; i++)
+            {
+                Rect r = new Rect(colX, ys[i], w, heights[i]);
+                int guard = 0;
+                bool moved;
+                do
+                {
+                    moved = false;
+                    foreach (var kvp in _rectProviders)
+                    {
+                        int id = kvp.Key;
+                        if (id == NoDockWindowId) continue;
+                        if (_docked.ContainsKey(id)) continue; // autres docks : gérés par la pile elle-même
+                        Rect b;
+                        try
+                        {
+                            if (_visibilityProviders.TryGetValue(id, out var vis) && vis != null && !vis()) continue;
+                            if (kvp.Value == null) continue;
+                            b = kvp.Value();
+                        }
+                        catch { continue; }
+                        if (b.width <= 0f || b.height <= 0f) continue;
+                        if (b.xMax <= r.xMin || b.xMin >= r.xMax) continue; // hors colonne : ignore
+                        if (r.Overlaps(b))
+                        {
+                            r.y = b.yMax + DockMargin;
+                            moved = true;
+                        }
+                    }
+                    for (int j = 0; j < i; j++)
+                    {
+                        Rect prev = new Rect(colX, ys[j], w, heights[j]);
+                        if (r.Overlaps(prev))
+                        {
+                            r.y = prev.yMax + DockMargin;
+                            moved = true;
+                        }
+                    }
+                } while (moved && guard++ < 24);
+                // Reste à l'écran : au pire on remonte (colonne saturée, cas pathologique
+                // où un chevauchement résiduel est préférable à une vignette inaccessible).
+                float maxY = Mathf.Max(topSafeY, Screen.height - 12f - r.height);
+                if (r.y > maxY) r.y = maxY;
+                ys[i] = r.y;
             }
 
             for (int i = 0; i < count; i++)
@@ -828,6 +931,56 @@ namespace Killtime.UI
             GUI.backgroundColor = previousBackground;
         }
 
+        private static float _lastDockAvoidRecalc;
+
+        /// <summary>
+        /// Teste si une cible de dock recouvre une fenêtre visible non dockée.
+        /// Rects seuls, sans allocation : appelé chaque frame via HandleResizeEvents.
+        /// </summary>
+        private static bool DockTargetOverlapsBlocker(Rect target, int selfId)
+        {
+            if (target.width <= 0f || target.height <= 0f) return false;
+            foreach (var kvp in _rectProviders)
+            {
+                int id = kvp.Key;
+                if (id == selfId || id == NoDockWindowId) continue;
+                if (_docked.ContainsKey(id)) continue;
+                Rect b;
+                try
+                {
+                    if (_visibilityProviders.TryGetValue(id, out var vis) && vis != null && !vis()) continue;
+                    if (kvp.Value == null) continue;
+                    b = kvp.Value();
+                }
+                catch { continue; }
+                if (b.width <= 0f || b.height <= 0f) continue;
+                if (target.Overlaps(b)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Garde-fou temps réel : si une fenêtre a été déplacée ou ouverte sous une
+        /// vignette dockée existante, la pile se décale pour libérer l'élément derrière.
+        /// Recalcul throttlé (la pile converge en un passage, pas de ping-pong).
+        /// </summary>
+        private static void RefreshDockLayoutIfOverlapping()
+        {
+            if (_docked.Count == 0) return;
+            if (Time.realtimeSinceStartup - _lastDockAvoidRecalc < 0.25f) return;
+            foreach (var kvp in _docked)
+            {
+                if (kvp.Value.restoring) continue;
+                if (kvp.Value.targetDockRect.width <= 0f) continue;
+                if (DockTargetOverlapsBlocker(kvp.Value.targetDockRect, kvp.Key))
+                {
+                    _lastDockAvoidRecalc = Time.realtimeSinceStartup;
+                    RecalculateDockTargets();
+                    return;
+                }
+            }
+        }
+
         /// <summary>
         /// Traite les événements pré-fenêtre : premier plan + poignée de resize.
         /// À appeler dans OnGUI JUSTE AVANT GUI.Window (dans le callback ce serait écrasé
@@ -841,6 +994,9 @@ namespace Killtime.UI
         /// </summary>
         public static void HandleResizeEvents(ref Rect rect, int windowId, Vector2 minSize, bool isMinimized = false)
         {
+            // Les docks ne recouvrent jamais l'élément derrière : si une fenêtre est
+            // passée sous une vignette existante, la pile se décale (throttlé).
+            RefreshDockLayoutIfOverlapping();
             Event e = Event.current;
             int resizeControlId = GUIUtility.GetControlID(windowId, FocusType.Passive);
             if (_pendingFront.Remove(windowId))

@@ -30,6 +30,15 @@ namespace Killtime.Story.Scenes
         private readonly List<TacticalInteractable> _interactables = new();
         private readonly HashSet<string> _firedTriggerIds = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> _activatedInteractableIds = new(StringComparer.OrdinalIgnoreCase);
+        // Nœud courant au moment de chaque activation : un trigger InteractableActivated
+        // scoped sur un nœud source ne tire que si l'activation a eu lieu PENDANT ce
+        // nœud (sinon une utilisation précoce au nœud précédent skippe instantanément
+        // le nœud source dès son entrée). Triggers globaux (Source vide) : inchangés.
+        private readonly Dictionary<string, string> _activationNodeIds = new(StringComparer.OrdinalIgnoreCase);
+        // Positions du groupe à l'entrée du nœud courant : la validation par proximité
+        // exige un déplacement (ou un hors-portée initial), sinon un spawn sur l'objectif
+        // valide gratuitement dès la première frame et skippe le nœud.
+        private readonly Dictionary<TacticalUnit, HexCoordinates> _nodeEnterCoords = new();
 
         private int _currentDialogueIndex = 0;
         private string _lastNodeId = "";
@@ -54,11 +63,35 @@ namespace Killtime.Story.Scenes
         private void OnEnable()
         {
             FloatingWindowChrome.RegisterExtraBlocker(IsPointerOverSceneChat);
+            RegisterSceneHudExclusionZones();
         }
 
         private void OnDisable()
         {
             FloatingWindowChrome.UnregisterExtraBlocker(IsPointerOverSceneChat);
+            UnregisterSceneHudExclusionZones();
+        }
+
+        // Zones d'exclusion story (barre party, boîte dialogue) : en mode story scene
+        // le HUD a des boutons de plus que le HUD combat ; sans ça les vignettes
+        // dockées et les ouvertures de fenêtres les recouvrent.
+        private System.Func<Rect> _partyBarZone;
+        private System.Func<Rect> _dialogueBoxZone;
+
+        private void RegisterSceneHudExclusionZones()
+        {
+            _partyBarZone ??= () => (_hasPartyBar && _partyBarRect.width > 0f && _partyBarRect.height > 0f)
+                ? _partyBarRect : Rect.zero;
+            _dialogueBoxZone ??= () => (_dialogueRect.width > 0f && _dialogueRect.height > 0f)
+                ? _dialogueRect : Rect.zero;
+            FloatingWindowChrome.RegisterExclusionZone(_partyBarZone);
+            FloatingWindowChrome.RegisterExclusionZone(_dialogueBoxZone);
+        }
+
+        private void UnregisterSceneHudExclusionZones()
+        {
+            if (_partyBarZone != null) FloatingWindowChrome.UnregisterExclusionZone(_partyBarZone);
+            if (_dialogueBoxZone != null) FloatingWindowChrome.UnregisterExclusionZone(_dialogueBoxZone);
         }
 
         /// <summary>
@@ -127,6 +160,8 @@ namespace Killtime.Story.Scenes
 
             _firedTriggerIds.Clear();
             _activatedInteractableIds.Clear();
+            _activationNodeIds.Clear();
+            _nodeEnterCoords.Clear();
 
             if (_arena != null)
             {
@@ -375,7 +410,7 @@ namespace Killtime.Story.Scenes
                 {
                     if (!string.IsNullOrEmpty(data.InteractableId))
                     {
-                        _activatedInteractableIds.Add(data.InteractableId);
+                        MarkInteractableActivated(data.InteractableId);
                     }
                     if (!string.IsNullOrEmpty(objId))
                     {
@@ -495,18 +530,34 @@ namespace Killtime.Story.Scenes
                     var it = _sceneData.Interactables[i];
                     if (!string.IsNullOrEmpty(it.CompletionObjectiveId) && !_director.IsObjectiveComplete(it.CompletionObjectiveId))
                     {
-                        if (member.CurrentCoords.DistanceTo(new HexCoordinates(it.Q, it.R)) <= it.Radius)
+                        var target = new HexCoordinates(it.Q, it.R);
+                        if (member.CurrentCoords.DistanceTo(target) <= it.Radius)
                         {
+                            // Pas de validation gratuite : un membre immobile depuis l'entrée
+                            // du nœud et déjà à portée (spawn sur l'objectif) ne valide pas.
+                            // Il faut s'éloigner/revenir, bouger, ou activer à la main (E).
+                            bool hasEntry = _nodeEnterCoords.TryGetValue(member, out var enterCoords);
+                            bool moved = !hasEntry || !enterCoords.Equals(member.CurrentCoords);
+                            bool wasInRange = hasEntry && enterCoords.DistanceTo(target) <= it.Radius;
+                            if (!moved && wasInRange) continue;
                             _director.SetObjectiveComplete(it.CompletionObjectiveId, true);
                             if (!string.IsNullOrEmpty(it.InteractableId))
                             {
-                                _activatedInteractableIds.Add(it.InteractableId);
+                                MarkInteractableActivated(it.InteractableId);
                             }
                             member.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"✔ Objectif Validé", Color.green);
                         }
                     }
                 }
             }
+        }
+
+        private void MarkInteractableActivated(string interactableId)
+        {
+            if (string.IsNullOrEmpty(interactableId)) return;
+            _activatedInteractableIds.Add(interactableId);
+            try { _activationNodeIds[interactableId] = _director != null && _director.CurrentNode != null ? _director.CurrentNode.Id : ""; }
+            catch { _activationNodeIds[interactableId] = ""; }
         }
 
         private bool CurrentLineHasPendingChoice()
@@ -525,7 +576,15 @@ namespace Killtime.Story.Scenes
             switch (trigger.Kind)
             {
                 case SceneTriggerKind.InteractableActivated:
-                    return !string.IsNullOrEmpty(trigger.InteractableId) && _activatedInteractableIds.Contains(trigger.InteractableId);
+                    if (string.IsNullOrEmpty(trigger.InteractableId) || !_activatedInteractableIds.Contains(trigger.InteractableId))
+                        return false;
+                    // Trigger scopé sur un nœud : l'activation doit dater de ce nœud,
+                    // sinon une utilisation précoce skippe le nœud dès son entrée.
+                    if (!string.IsNullOrEmpty(trigger.SourceNodeId)
+                        && (!_activationNodeIds.TryGetValue(trigger.InteractableId, out string atNode)
+                            || !string.Equals(atNode, trigger.SourceNodeId, StringComparison.OrdinalIgnoreCase)))
+                        return false;
+                    return true;
 
                 case SceneTriggerKind.ObjectiveCompleted:
                     return !string.IsNullOrEmpty(trigger.ObjectiveId) && _director != null && _director.IsObjectiveComplete(trigger.ObjectiveId);
@@ -590,13 +649,23 @@ namespace Killtime.Story.Scenes
             if (_lastNodeId != node.Id)
             {
                 _lastNodeId = node.Id;
-                _currentDialogueIndex = 0;
                 _activeReactionChoice = null;
                 _activeReactionPromptLine = null;
                 _activeChallengeSummary = "";
                 _activeChallengeRewards = "";
 
                 var dataNode = _sceneData != null ? _sceneData.FindNode(node.Id) : null;
+                // Entrée du nœud = carte sans lien entrant (routage explicite),
+                // repli sur l'index 0 si cycle ou setempat ambigu.
+                _currentDialogueIndex = FindEntryDialogueIndex(dataNode);
+                // Snapshot des positions : anti validation par proximité gratuite
+                // (spawn sur l'objectif qui skippe le nœud dès son entrée).
+                _nodeEnterCoords.Clear();
+                for (int p = 0; p < _playerParty.Count; p++)
+                {
+                    var u = _playerParty[p];
+                    if (u != null) _nodeEnterCoords[u] = u.CurrentCoords;
+                }
                 if (dataNode != null)
                 {
                     ExecuteNodeEvents(dataNode);
@@ -858,43 +927,43 @@ namespace Killtime.Story.Scenes
 
         private void AdvanceDialogueOrNode()
         {
+            AdvanceDialogueOrNodeInternal(null, false);
+        }
+
+        private void AdvanceDialogueOrNodeInternal(HashSet<string> visited, bool skipLink = false)
+        {
             var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
             if (dataNode != null && _currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count)
             {
                 var currentLine = dataNode.Dialogues[_currentDialogueIndex];
-                if (!string.IsNullOrEmpty(currentLine.NextLineId))
+                if (!skipLink && !string.IsNullOrEmpty(currentLine.NextLineId))
                 {
-                    int targetIdx = dataNode.FindDialogueIndex(currentLine.NextLineId);
-                    if (targetIdx >= 0)
-                    {
-                        _currentDialogueIndex = targetIdx;
-                        ApplyCameraFocusForCurrentLine();
-                        return;
-                    }
+                    if (TryAdvanceToId(currentLine.NextLineId, visited)) return;
                 }
 
-                if (_currentDialogueIndex < dataNode.Dialogues.Count - 1)
-                {
-                    _currentDialogueIndex++;
-                    ApplyCameraFocusForCurrentLine();
-                    return;
-                }
+                // Liaison vide ou cible introuvable = fin du nœud (pas de fallback
+                // séquentiel : le routage est explicite via les fenêtres normales).
             }
 
             var node = _director.CurrentNode;
             if (node == null) return;
 
-            if (node.Kind == ScenarioNodeKind.Briefing)
-            {
-                if (!TryFireReadyTrigger()) _director.Continue();
-            }
-            else if (node.Kind == ScenarioNodeKind.Objective && _director.AreRequiredObjectivesComplete())
-            {
-                if (!TryFireReadyTrigger()) _director.Continue();
-            }
-            else if (node.Kind == ScenarioNodeKind.Resolution)
+            if (node.Kind == ScenarioNodeKind.Resolution)
             {
                 if (!TryFireReadyTrigger()) _director.CompleteActiveScenario();
+            }
+            else if (node.Kind == ScenarioNodeKind.Objective && !_director.AreRequiredObjectivesComplete())
+            {
+                // Objectifs requis incomplets : on reste (pas de fuite en avant),
+                // mais on l'explique au lieu de rester muet.
+                if (!TryFireReadyTrigger())
+                    CombatHUD.Instance?.AddAdvancedLog("🎯 <b>Objectifs requis incomplets.</b> Terminez les objectifs principaux pour poursuivre.", LogCategory.MovementAndTurns, "[OBJECTIF]", Color.yellow);
+            }
+            else
+            {
+                // Nœud épuisé (Briefing / Choice / Objective validé) : on suit le lien
+                // vers le nœud suivant, sinon la scène est terminée -> transition + scène suivante.
+                if (!TryFireReadyTrigger() && !_director.Continue()) _director.CompleteActiveScenario();
             }
         }
 
@@ -915,34 +984,238 @@ namespace Killtime.Story.Scenes
 
             CombatHUD.Instance?.AddAdvancedLog($"💬 [Choix] {choice.Label}", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.white);
 
-            if (!string.IsNullOrWhiteSpace(choice.ReactionSpeech))
+            // Routage direct vers fenêtre normale : pas d'écran de réaction intermédiaire.
+            // Choix sans cible = fin du nœud (routage explicite, pas de séquentiel).
+            if (!string.IsNullOrEmpty(choice.NextLineId))
             {
-                SetupReactionDisplay(promptLine, choice.ReactionSpeech, choice.ReactionStageDirection, choice.NextLineId);
+                if (TryAdvanceToId(choice.NextLineId, null)) return;
+            }
+
+            AdvanceDialogueOrNode();
+        }
+
+        private void GrantRewardItem(CharacterSheet sheet, string itemName, ItemType itemType, int quantity, ref string rewardsSummary)
+        {
+            if (sheet == null || string.IsNullOrEmpty(itemName)) return;
+            int qty = Mathf.Max(1, quantity);
+            var catalogDef = ArmoryCatalog.GetByName(itemName);
+            InventoryItem rewardItem;
+            if (catalogDef != null)
+            {
+                rewardItem = catalogDef.Clone();
+                rewardItem.Quantity = qty;
+                rewardItem.IsEquipped = false;
             }
             else
             {
-                var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
-                if (dataNode != null && !string.IsNullOrEmpty(choice.NextLineId))
+                rewardItem = new InventoryItem
                 {
-                    int targetIdx = dataNode.FindDialogueIndex(choice.NextLineId);
-                    if (targetIdx >= 0)
+                    Name = itemName,
+                    Type = itemType,
+                    PriceCE = 100,
+                    Quantity = qty
+                };
+            }
+            sheet.AddItem(rewardItem);
+            rewardsSummary += qty > 1 ? $"[{itemName} x{qty}]  " : $"[{itemName}]  ";
+        }
+
+        // Avance vers une réplique ou une conséquence (carte 🎁). Retourne false si l'id
+        // est vide, introuvable, ou si une chaîne de conséquences boucle (anti-blocage).
+        private bool TryAdvanceToId(string id, HashSet<string> visited)
+        {
+            if (string.IsNullOrEmpty(id)) return false;
+            var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
+            if (dataNode == null) return false;
+
+            int targetIdx = dataNode.FindDialogueIndex(id);
+            if (targetIdx >= 0)
+            {
+                _currentDialogueIndex = targetIdx;
+                ApplyCameraFocusForCurrentLine();
+                return true;
+            }
+
+            var cons = dataNode.FindConsequence(id);
+            if (cons != null)
+            {
+                SceneDialogueLineData prompt = null;
+                if (_currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count)
+                    prompt = dataNode.Dialogues[_currentDialogueIndex];
+                return ExecuteConsequenceChain(cons, prompt, visited ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+            }
+
+            return false;
+        }
+
+        // Entrée du nœud = première carte dialogue sans lien entrant (routage explicite).
+        // Repli sur 0 si aucune (cycle) ou liste vide.
+        private static int FindEntryDialogueIndex(SceneNodeData dataNode)
+        {
+            if (dataNode == null || dataNode.Dialogues == null || dataNode.Dialogues.Count == 0) return 0;
+            if (dataNode.Dialogues.Count == 1) return 0;
+            var incoming = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < dataNode.Dialogues.Count; i++)
+            {
+                var l = dataNode.Dialogues[i];
+                if (l == null) continue;
+                if (!string.IsNullOrEmpty(l.NextLineId)) incoming.Add(l.NextLineId);
+                if (l.Choices != null)
+                {
+                    for (int c = 0; c < l.Choices.Count; c++)
                     {
-                        _currentDialogueIndex = targetIdx;
+                        var ch = l.Choices[c];
+                        if (ch == null) continue;
+                        if (!string.IsNullOrEmpty(ch.NextLineId)) incoming.Add(ch.NextLineId);
+                        var chal = ch.Challenge;
+                        if (chal != null && chal.HasChallenge)
+                        {
+                            if (!string.IsNullOrEmpty(chal.SuccessNextLineId)) incoming.Add(chal.SuccessNextLineId);
+                            if (!string.IsNullOrEmpty(chal.FailureNextLineId)) incoming.Add(chal.FailureNextLineId);
+                        }
+                    }
+                }
+                if (l.AutoSkillCheck != null && l.AutoSkillCheck.HasAutoCheck)
+                {
+                    if (!string.IsNullOrEmpty(l.AutoSkillCheck.SuccessNextLineId)) incoming.Add(l.AutoSkillCheck.SuccessNextLineId);
+                    if (!string.IsNullOrEmpty(l.AutoSkillCheck.FailureNextLineId)) incoming.Add(l.AutoSkillCheck.FailureNextLineId);
+                }
+            }
+            if (dataNode.Consequences != null)
+            {
+                for (int k = 0; k < dataNode.Consequences.Count; k++)
+                {
+                    var cons = dataNode.Consequences[k];
+                    if (cons == null) continue;
+                    if (!string.IsNullOrEmpty(cons.NextLineId)) incoming.Add(cons.NextLineId);
+                }
+            }
+            for (int i = 0; i < dataNode.Dialogues.Count; i++)
+            {
+                var l = dataNode.Dialogues[i];
+                if (l == null || string.IsNullOrEmpty(l.LineId)) continue;
+                if (!incoming.Contains(l.LineId)) return i;
+            }
+            return 0;
+        }
+
+        private void ApplyConsequencePayload(SceneConsequenceData cons, out string rewardsSummary)
+        {
+            rewardsSummary = "";
+            if (cons == null) return;
+
+            TacticalUnit unit = null;
+            if (_turnManager != null && _turnManager.ActiveUnit != null && _turnManager.ActiveUnit.IsPlayerControlled)
+                unit = _turnManager.ActiveUnit;
+            else if (_playerParty.Count > 0)
+                unit = _playerParty[0];
+            var sheet = unit != null ? unit.Sheet : null;
+
+            var rew = cons.Rewards;
+            if (rew != null && sheet != null)
+            {
+                if (rew.EarnCredits > 0)
+                {
+                    sheet.EarnCredits(rew.EarnCredits);
+                    rewardsSummary += $"+{rew.EarnCredits} CE  ";
+                }
+                if (rew.EarnXP > 0)
+                {
+                    sheet.AvailableXP += rew.EarnXP;
+                    sheet.TotalEarnedXP += rew.EarnXP;
+                    rewardsSummary += $"+{rew.EarnXP} XP  ";
+                }
+                if (!string.IsNullOrEmpty(rew.ItemRewardName))
+                    GrantRewardItem(sheet, rew.ItemRewardName, rew.ItemRewardType, rew.ItemRewardQuantity, ref rewardsSummary);
+                if (rew.AdditionalItems != null)
+                {
+                    for (int i = 0; i < rew.AdditionalItems.Count; i++)
+                    {
+                        var extra = rew.AdditionalItems[i];
+                        if (extra == null || string.IsNullOrEmpty(extra.ItemName)) continue;
+                        GrantRewardItem(sheet, extra.ItemName, extra.ItemRewardType, extra.Quantity, ref rewardsSummary);
+                    }
+                }
+                if (!string.IsNullOrEmpty(rew.CompletionObjectiveId))
+                {
+                    _director?.SetObjectiveComplete(rew.CompletionObjectiveId, true);
+                    rewardsSummary += "✔ Objectif validé  ";
+                }
+            }
+
+            if (cons.Effects != null && cons.Effects.Count > 0 && _director != null)
+                _director.ApplyEffects(cons.Effects);
+
+            string who = sheet != null ? sheet.Name : "Escouade";
+            string fxTag = cons.Effects != null && cons.Effects.Count > 0 ? $" (+{cons.Effects.Count} effet(s))" : "";
+            CombatHUD.Instance?.AddAdvancedLog(
+                $"🎁 <b>[CONSÉQUENCE]</b> {who} — <b>{cons.Title}</b>{(string.IsNullOrEmpty(rewardsSummary) ? "" : $" : {rewardsSummary}")}{fxTag}",
+                LogCategory.MovementAndTurns,
+                "[BUTIN]",
+                Color.yellow
+            );
+
+            if (cons.TriggersCombat)
+            {
+                SpawnActorsForNode(_director?.CurrentNode?.Id);
+                _turnManager?.EnterCombatMode();
+                CombatHUD.Instance?.AddAdvancedLog("🚨 <b>CONSÉQUENCE :</b> Combat déclenché !", LogCategory.Combat, "[ALERTE]", Color.red);
+            }
+        }
+
+        // Exécute une conséquence et sa chaîne (cons → cons). Retourne true si le flux a
+        // progressé (saut de réplique, affichage dialogue, avance d'index).
+        private bool ExecuteConsequenceChain(SceneConsequenceData first, SceneDialogueLineData promptLine, HashSet<string> visited)
+        {
+            if (first == null) return false;
+            visited ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
+            if (dataNode == null) return false;
+
+            var cons = first;
+            int guard = 0;
+            while (cons != null && guard++ < 8)
+            {
+                if (!visited.Add(cons.ConsequenceId)) return false;
+
+                ApplyConsequencePayload(cons, out string rewardsSummary);
+                string onwardId = !string.IsNullOrEmpty(cons.NextLineId) ? cons.NextLineId : cons.NextConsequenceId;
+
+                if (cons.HasDialogue && !string.IsNullOrWhiteSpace(cons.Speech))
+                {
+                    var displayPrompt = new SceneDialogueLineData
+                    {
+                        SpeakerId = !string.IsNullOrEmpty(cons.SpeakerId) ? cons.SpeakerId : (promptLine != null ? promptLine.SpeakerId : "???"),
+                        StageDirection = cons.StageDirection ?? "",
+                        CameraFocusActorId = promptLine != null ? promptLine.CameraFocusActorId : "",
+                        CameraPitch = promptLine != null ? promptLine.CameraPitch : 42f,
+                        CameraDistance = promptLine != null ? promptLine.CameraDistance : 9.5f
+                    };
+                    SetupReactionDisplay(displayPrompt, cons.Speech, cons.StageDirection, onwardId, $"🎁 {cons.Title}", rewardsSummary);
+                    return true;
+                }
+
+                if (!string.IsNullOrEmpty(cons.NextConsequenceId))
+                {
+                    var next = dataNode.FindConsequence(cons.NextConsequenceId);
+                    if (next != null) { cons = next; continue; }
+                }
+                if (!string.IsNullOrEmpty(cons.NextLineId))
+                {
+                    int idx = dataNode.FindDialogueIndex(cons.NextLineId);
+                    if (idx >= 0)
+                    {
+                        _currentDialogueIndex = idx;
                         ApplyCameraFocusForCurrentLine();
-                        return;
+                        return true;
                     }
                 }
 
-                if (dataNode != null && _currentDialogueIndex < dataNode.Dialogues.Count - 1)
-                {
-                    _currentDialogueIndex++;
-                    ApplyCameraFocusForCurrentLine();
-                }
-                else
-                {
-                    AdvanceDialogueOrNode();
-                }
+                // Cul-de-sac : avancer sans rejouer le lien d'origine (skipLink).
+                AdvanceDialogueOrNodeInternal(visited, true);
+                return true;
             }
+            return true;
         }
 
         private void ExecuteSkillChallenge(SceneDialogueChoiceData choice, SceneDialogueLineData promptLine)
@@ -972,22 +1245,71 @@ namespace Killtime.Story.Scenes
             int training = sheet != null ? sheet.GetSkill(challenge.RequiredSkill).TrainingLevel : 0;
             DiceType skillDie = SkillDefinitions.DieFromTotalSteps(steps + training);
 
-            var roller = new DiceRoller();
-            var result = roller.Roll(skillDie, modifier: 0, targetDC: challenge.TargetDC);
-
             string skillName = SkillDefinitions.GetDisplayName(challenge.RequiredSkill);
+            var roller = new DiceRoller();
+
+            DiceRollResult result;
+            string vsLabel;
+            string oppSkillName = "";
+            string oppName = "";
+            int oppTotal = 0;
+
+            if (challenge.IsOpposed)
+            {
+                // Résolution opposée : joueur vs opposant (jet contre jet).
+                TacticalUnit oppUnit = null;
+                if (!string.IsNullOrEmpty(challenge.OpposedActorId))
+                    _spawnedActors.TryGetValue(challenge.OpposedActorId, out oppUnit);
+                else if (promptLine != null && !string.IsNullOrEmpty(promptLine.SpeakerId))
+                    _spawnedActors.TryGetValue(promptLine.SpeakerId, out oppUnit);
+
+                oppSkillName = SkillDefinitions.GetDisplayName(challenge.OpposedSkill);
+                if (oppUnit != null && oppUnit.Sheet != null)
+                {
+                    var oppSheet = oppUnit.Sheet;
+                    oppName = !string.IsNullOrEmpty(oppSheet.Name) ? oppSheet.Name : challenge.OpposedActorId;
+                    Attributes oppAttr = oppSheet.GetEffectiveAttributes();
+                    int oppRank = SkillDefinitions.GetBaseRank(challenge.OpposedSkill, oppAttr, false);
+                    int oppTraining = oppSheet.GetSkill(challenge.OpposedSkill).TrainingLevel;
+                    DiceType oppDie = SkillDefinitions.DieFromTotalSteps(SkillDefinitions.CharacteristicSteps(oppRank) + oppTraining);
+                    var oppRoll = roller.Roll(oppDie, modifier: challenge.OpposedBonus, targetDC: 0);
+                    oppTotal = oppRoll.Total;
+                    // Mémorise le brut pour le log.
+                    result = roller.Roll(skillDie, modifier: 0, targetDC: oppTotal);
+                    vsLabel = $"{actorName} [{skillName} {skillDie}={result.RawRoll} → {result.Total}] vs {oppName} [{oppSkillName} {oppDie}={oppRoll.RawRoll}{(challenge.OpposedBonus != 0 ? $" +{challenge.OpposedBonus}" : "")} → {oppTotal}]";
+                }
+                else
+                {
+                    oppName = !string.IsNullOrEmpty(challenge.OpposedActorId) ? challenge.OpposedActorId : "Opposition";
+                    oppTotal = challenge.TargetDC + challenge.OpposedBonus;
+                    result = roller.Roll(skillDie, modifier: 0, targetDC: oppTotal);
+                    vsLabel = $"{actorName} [{skillName} {skillDie}={result.RawRoll} → {result.Total}] vs {oppName} [{oppSkillName} fixe {oppTotal}]";
+                }
+            }
+            else
+            {
+                result = roller.Roll(skillDie, modifier: 0, targetDC: challenge.TargetDC);
+                vsLabel = $"{actorName} teste <b>{skillName}</b> ({skillDie}) contre SD {challenge.TargetDC}";
+            }
+
             string outcomeTag = result.IsSuccess ? (result.IsCriticalSuccess ? "RÉUSSITE CRITIQUE" : "SUCCÈS") : (result.IsCriticalFailure ? "ÉCHEC CRITIQUE" : "ÉCHEC");
             Color outcomeCol = result.IsSuccess ? (result.IsCriticalSuccess ? new Color(1f, 0.85f, 0.2f) : Color.green) : (result.IsCriticalFailure ? Color.red : new Color(1f, 0.5f, 0.2f));
 
+            string defiTag = challenge.IsOpposed ? "DÉFI OPPOSÉ" : "DÉFI";
+            string detailRes = challenge.IsOpposed
+                ? $"Résultat: <b>{result.Total} vs {oppTotal}</b> (Diff: {result.Differential:+0;-0;0})"
+                : $"Résultat: <b>{result.Total}</b> (Brut {result.RawRoll}, Diff: {result.Differential:+0;-0;0})";
+
             CombatHUD.Instance?.AddAdvancedLog(
-                $"🎲 <b>[DÉFI]</b> {actorName} teste <b>{skillName}</b> ({skillDie}) contre SD {challenge.TargetDC} ➔ Résultat: <b>{result.Total}</b> (Brut {result.RawRoll}, Diff: {result.Differential:+0;-0;0}) — <color=#{ColorUtility.ToHtmlStringRGB(outcomeCol)}>{outcomeTag}</color>",
+                $"{(challenge.IsOpposed ? "⚔️" : "🎲")} <b>[{defiTag}]</b> {vsLabel} ➔ {detailRes} — <color=#{ColorUtility.ToHtmlStringRGB(outcomeCol)}>{outcomeTag}</color>",
                 LogCategory.Combat,
                 "[DÉFI]",
                 outcomeCol
             );
 
+            string floatVs = challenge.IsOpposed ? $"{result.Total} vs {oppTotal}" : $"{result.Total} vs SD {challenge.TargetDC}";
             actorUnit?.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
-                $"{outcomeTag} ({result.Total} vs SD {challenge.TargetDC})",
+                $"{outcomeTag} ({floatVs})",
                 outcomeCol
             );
 
@@ -1024,15 +1346,16 @@ namespace Killtime.Story.Scenes
                     }
                     if (!string.IsNullOrEmpty(rew.ItemRewardName) && sheet != null)
                     {
-                        var rewardItem = new InventoryItem
+                        GrantRewardItem(sheet, rew.ItemRewardName, rew.ItemRewardType, rew.ItemRewardQuantity, ref rewardsSummary);
+                    }
+                    if (rew.AdditionalItems != null)
+                    {
+                        for (int ri = 0; ri < rew.AdditionalItems.Count; ri++)
                         {
-                            Name = rew.ItemRewardName,
-                            Type = rew.ItemRewardType,
-                            PriceCE = 100,
-                            Quantity = 1
-                        };
-                        sheet.AddItem(rewardItem);
-                        rewardsSummary += $"[{rew.ItemRewardName}]  ";
+                            var extra = rew.AdditionalItems[ri];
+                            if (extra == null || string.IsNullOrEmpty(extra.ItemName)) continue;
+                            GrantRewardItem(sheet, extra.ItemName, extra.ItemRewardType, extra.Quantity, ref rewardsSummary);
+                        }
                     }
                     if (!string.IsNullOrEmpty(rew.CompletionObjectiveId))
                     {
@@ -1046,11 +1369,15 @@ namespace Killtime.Story.Scenes
                     CombatHUD.Instance?.AddAdvancedLog($"🎁 <b>Récompenses obtenues :</b> {rewardsSummary}", LogCategory.MovementAndTurns, "[BUTIN]", Color.yellow);
                 }
 
-                string replySpeech = !string.IsNullOrWhiteSpace(challenge.SuccessSpeech) ? challenge.SuccessSpeech : choice.ReactionSpeech;
-                string replyStage = !string.IsNullOrWhiteSpace(challenge.SuccessStageDirection) ? challenge.SuccessStageDirection : choice.ReactionStageDirection;
-                string targetLineId = !string.IsNullOrWhiteSpace(challenge.SuccessNextLineId) ? challenge.SuccessNextLineId : choice.NextLineId;
+                string targetLineId = !string.IsNullOrWhiteSpace(challenge.SuccessConsequenceId) ? challenge.SuccessConsequenceId
+                    : (!string.IsNullOrWhiteSpace(challenge.SuccessNextLineId) ? challenge.SuccessNextLineId : choice.NextLineId);
+                string successVs = challenge.IsOpposed ? $"{result.Total} vs {oppTotal}" : $"{result.Total} vs SD {challenge.TargetDC}";
+                string successSkill = challenge.IsOpposed ? $"{skillName} vs {oppSkillName}" : skillName;
 
-                SetupReactionDisplay(promptLine, replySpeech, replyStage, targetLineId, $"✔ {outcomeTag} ({result.Total} vs SD {challenge.TargetDC}) — {skillName}", rewardsSummary);
+                // Routage direct vers fenêtre normale (pas de réaction intermédiaire).
+                CombatHUD.Instance?.AddAdvancedLog($"✔ {outcomeTag} ({successVs}) — {successSkill}{(string.IsNullOrEmpty(rewardsSummary) ? "" : $" 🎁 {rewardsSummary}")}", LogCategory.Combat, "[DÉFI]", Color.green);
+                if (!TryAdvanceToId(targetLineId, null))
+                    AdvanceDialogueOrNode();
             }
             else
             {
@@ -1072,11 +1399,15 @@ namespace Killtime.Story.Scenes
                     CombatHUD.Instance?.AddAdvancedLog("🚨 <b>ÉCHEC CRITIQUE :</b> Alerte déclenchée ! Déploiement d'urgence hostile.", LogCategory.Combat, "[ALERTE]", Color.red);
                 }
 
-                string replySpeech = !string.IsNullOrWhiteSpace(challenge.FailureSpeech) ? challenge.FailureSpeech : "Votre tentative se solde par un échec.";
-                string replyStage = challenge.FailureStageDirection;
-                string targetLineId = challenge.FailureNextLineId;
+                string targetLineId = !string.IsNullOrWhiteSpace(challenge.FailureConsequenceId) ? challenge.FailureConsequenceId
+                    : (!string.IsNullOrWhiteSpace(challenge.FailureNextLineId) ? challenge.FailureNextLineId : choice.NextLineId);
+                string failVs = challenge.IsOpposed ? $"{result.Total} vs {oppTotal}" : $"{result.Total} vs SD {challenge.TargetDC}";
+                string failSkill = challenge.IsOpposed ? $"{skillName} vs {oppSkillName}" : skillName;
 
-                SetupReactionDisplay(promptLine, replySpeech, replyStage, targetLineId, $"✕ {outcomeTag} ({result.Total} vs SD {challenge.TargetDC}) — {skillName}", "");
+                // Routage direct vers fenêtre normale (pas de réaction intermédiaire).
+                CombatHUD.Instance?.AddAdvancedLog($"✕ {outcomeTag} ({failVs}) — {failSkill}", LogCategory.Combat, "[DÉFI]", new Color(1f, 0.5f, 0.2f));
+                if (!TryAdvanceToId(targetLineId, null))
+                    AdvanceDialogueOrNode();
             }
         }
 
@@ -1122,29 +1453,13 @@ namespace Killtime.Story.Scenes
             _activeChallengeSummary = "";
             _activeChallengeRewards = "";
 
-            var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
-            if (dataNode == null) return;
-
             if (!string.IsNullOrEmpty(choice.NextLineId))
             {
-                int targetIdx = dataNode.FindDialogueIndex(choice.NextLineId);
-                if (targetIdx >= 0)
-                {
-                    _currentDialogueIndex = targetIdx;
-                    ApplyCameraFocusForCurrentLine();
-                    return;
-                }
+                if (TryAdvanceToId(choice.NextLineId, null)) return;
             }
 
-            if (_currentDialogueIndex < dataNode.Dialogues.Count - 1)
-            {
-                _currentDialogueIndex++;
-                ApplyCameraFocusForCurrentLine();
-            }
-            else
-            {
-                AdvanceDialogueOrNode();
-            }
+            // Sans cible = fin du nœud (routage explicite).
+            AdvanceDialogueOrNodeInternal(null, true);
         }
 
         private void OnGUI()
@@ -1156,7 +1471,11 @@ namespace Killtime.Story.Scenes
             DrawInteractablesWorldOverlay();
 
             var node = _director != null ? _director.CurrentNode : null;
-            if (node == null) return;
+            if (node == null)
+            {
+                _dialogueRect = Rect.zero;
+                return;
+            }
 
             DrawDialogueBox(node);
         }
@@ -1327,16 +1646,25 @@ namespace Killtime.Story.Scenes
                         bool isMet = choice.Prerequisite == null || !choice.Prerequisite.HasPrerequisite || choice.Prerequisite.IsMet(_playerParty, _turnManager?.ActiveUnit, _director);
 
                         bool hasChallenge = choice.Challenge != null && choice.Challenge.HasChallenge;
+                        bool isOpposed = hasChallenge && choice.Challenge.IsOpposed;
                         string prefix = !isMet
                             ? $"🔒 [{choice.Prerequisite.GetSummary()}] "
-                            : (hasChallenge ? $"🎲 [SD {choice.Challenge.TargetDC} · {SkillDefinitions.GetDisplayName(choice.Challenge.RequiredSkill)}] " : "➤  ");
+                            : (hasChallenge
+                                ? (isOpposed
+                                    ? $"⚔️ [{choice.Challenge.GetShortLabel()}] "
+                                    : $"🎲 [{choice.Challenge.GetShortLabel()}] ")
+                                : "➤  ");
+                        if (isMet && !string.IsNullOrEmpty(choice.NextLineId) && dataNode != null && dataNode.FindConsequence(choice.NextLineId) != null)
+                            prefix += "🎁 ";
 
                         string btnLabel = $"{prefix}{choice.Label}";
 
                         GUI.enabled = isMet;
                         GUI.backgroundColor = !isMet
                             ? Color.gray
-                            : (hasChallenge ? new Color(1.0f, 0.78f, 0.25f) : new Color(0.25f, 0.75f, 1.0f));
+                            : (hasChallenge
+                                ? (isOpposed ? new Color(1.0f, 0.55f, 0.25f) : new Color(1.0f, 0.78f, 0.25f))
+                                : new Color(0.25f, 0.75f, 1.0f));
 
                         if (GUILayout.Button(btnLabel, GUILayout.Height(30)))
                         {
@@ -1353,7 +1681,9 @@ namespace Killtime.Story.Scenes
                     GUILayout.BeginHorizontal();
                     GUILayout.FlexibleSpace();
 
-                    if (_currentDialogueIndex < dataNode.Dialogues.Count - 1 || !string.IsNullOrEmpty(line.NextLineId))
+                    // Liaison vide = fin du nœud : on montre les actions de sortie,
+                    // sinon bouton Suivant vers la cible routée.
+                    if (!string.IsNullOrEmpty(line.NextLineId))
                     {
                         if (GUILayout.Button("Suivant (Espace) ➔", GUILayout.Width(170), GUILayout.Height(28)))
                         {

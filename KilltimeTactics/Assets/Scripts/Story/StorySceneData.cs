@@ -244,12 +244,22 @@ namespace Killtime.Story.Data
     }
 
     [Serializable]
+    public class SceneItemRewardEntry
+    {
+        public string ItemName = "";
+        public Killtime.Core.Inventory.ItemType ItemRewardType = Killtime.Core.Inventory.ItemType.Misc;
+        public int Quantity = 1;
+    }
+
+    [Serializable]
     public class SceneDialogueRewardData
     {
         public int EarnCredits = 0;
         public int EarnXP = 0;
         public string ItemRewardName = "";
         public Killtime.Core.Inventory.ItemType ItemRewardType = Killtime.Core.Inventory.ItemType.Misc;
+        public int ItemRewardQuantity = 1;
+        public List<SceneItemRewardEntry> AdditionalItems = new();
         public string CompletionObjectiveId = "";
     }
 
@@ -261,6 +271,19 @@ namespace Killtime.Story.Data
         public int TargetDC = 10;
         public string SpecificActorId = "";
 
+        // Défi opposé : jet joueur vs jet opposant (au lieu de SD fixe).
+        // Si OpposedActorId est vide ou introuvable au runtime, TargetDC + OpposedBonus sert de total adverse fixe.
+        public bool IsOpposed = false;
+        public SkillType OpposedSkill = SkillType.Communication;
+        public string OpposedActorId = "";
+        public int OpposedBonus = 0;
+
+        // Sorties vers des cartes Conséquence (prioritaires sur les liens directs ci-dessous).
+        public string SuccessConsequenceId = "";
+        public string FailureConsequenceId = "";
+
+        // OBSOLÈTE (routage direct vers fenêtres normales) : conservés pour compat JSON,
+        // non édités, non lus par le runtime des choix.
         public string SuccessSpeech = "";
         public string SuccessStageDirection = "";
         public string SuccessNextLineId = "";
@@ -272,6 +295,14 @@ namespace Killtime.Story.Data
         public string FailureNextLineId = "";
         public bool FailureTriggersCombat = false;
         public List<ScenarioEffect> FailureEffects = new();
+
+        public string GetShortLabel()
+        {
+            if (!HasChallenge) return "";
+            if (IsOpposed)
+                return $"VS {SkillDefinitions.GetDisplayName(RequiredSkill)} vs {SkillDefinitions.GetDisplayName(OpposedSkill)}";
+            return $"SD {TargetDC} · {SkillDefinitions.GetDisplayName(RequiredSkill)}";
+        }
     }
 
     [Serializable]
@@ -279,6 +310,7 @@ namespace Killtime.Story.Data
     {
         public string ChoiceId = "choice_1";
         public string Label = "Option de dialogue...";
+        // OBSOLÈTES (routage direct vers fenêtres normales) : conservés pour compat JSON.
         public string ReactionSpeech = "";
         public string ReactionStageDirection = "";
         public string NextLineId = "";
@@ -348,6 +380,60 @@ namespace Killtime.Story.Data
     }
 
     [Serializable]
+    public class SceneConsequenceData
+    {
+        public string ConsequenceId = "cons_1";
+        public string Title = "Conséquence";
+
+        // Dialogue optionnel affiché à l'exécution (comme une réplique normale).
+        public bool HasDialogue = false;
+        public string SpeakerId = "";
+        public string StageDirection = "";
+        public string Speech = "";
+
+        // Charge utile : récompense et/ou punition.
+        public SceneDialogueRewardData Rewards = new();
+        public List<ScenarioEffect> Effects = new();
+        public bool TriggersCombat = false;
+
+        // Chaînage : vers une réplique et/ou vers une autre conséquence.
+        public string NextLineId = "";
+        public string NextConsequenceId = "";
+
+        public float GraphPosX = 0f;
+        public float GraphPosY = 0f;
+        public float CardWidth = 360f;
+        public float CardHeight = 0f;
+
+        public string GetSummary()
+        {
+            var bits = new List<string>();
+            if (Rewards != null)
+            {
+                if (Rewards.EarnXP > 0) bits.Add($"+{Rewards.EarnXP}XP");
+                if (Rewards.EarnCredits > 0) bits.Add($"+{Rewards.EarnCredits}CE");
+                if (!string.IsNullOrEmpty(Rewards.ItemRewardName))
+                    bits.Add(Rewards.ItemRewardQuantity > 1 ? $"{Rewards.ItemRewardName} x{Rewards.ItemRewardQuantity}" : Rewards.ItemRewardName);
+                if (Rewards.AdditionalItems != null)
+                {
+                    for (int i = 0; i < Rewards.AdditionalItems.Count; i++)
+                    {
+                        var extra = Rewards.AdditionalItems[i];
+                        if (extra == null || string.IsNullOrEmpty(extra.ItemName)) continue;
+                        bits.Add(extra.Quantity > 1 ? $"{extra.ItemName} x{extra.Quantity}" : extra.ItemName);
+                    }
+                }
+            }
+            if (Effects != null && Effects.Count > 0) bits.Add($"fx:{Effects.Count}");
+            if (TriggersCombat) bits.Add("⚔");
+            string payload = bits.Count > 0 ? string.Join(", ", bits) : "(vide)";
+            string target = !string.IsNullOrEmpty(NextLineId) ? $"➔ {NextLineId}"
+                : (!string.IsNullOrEmpty(NextConsequenceId) ? $"➔ {NextConsequenceId}" : "(fin)");
+            return $"{payload} {target}";
+        }
+    }
+
+    [Serializable]
     public class SceneNodeData
     {
         public string NodeId = "nouveau_noeud";
@@ -364,6 +450,7 @@ namespace Killtime.Story.Data
         public float FrameHeight = 0f;
         public List<SceneDialogueLineData> Dialogues = new();
         public List<SceneEventData> Events = new();
+        public List<SceneConsequenceData> Consequences = new();
         public List<ScenarioObjective> Objectives = new();
         public List<ScenarioChoice> Choices = new();
         public List<ScenarioEffect> EnterEffects = new();
@@ -384,6 +471,18 @@ namespace Killtime.Story.Data
         {
             if (string.IsNullOrEmpty(eventId)) return null;
             return Events.Find(e => e != null && string.Equals(e.EventId, eventId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public SceneConsequenceData FindConsequence(string consequenceId)
+        {
+            if (string.IsNullOrEmpty(consequenceId)) return null;
+            return Consequences.Find(c => c != null && string.Equals(c.ConsequenceId, consequenceId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public int FindConsequenceIndex(string consequenceId)
+        {
+            if (string.IsNullOrEmpty(consequenceId)) return -1;
+            return Consequences.FindIndex(c => c != null && string.Equals(c.ConsequenceId, consequenceId, StringComparison.OrdinalIgnoreCase));
         }
     }
 
@@ -416,9 +515,22 @@ namespace Killtime.Story.Data
             if (node == null) return;
             node.Dialogues ??= new List<SceneDialogueLineData>();
             node.Events ??= new List<SceneEventData>();
+            node.Consequences ??= new List<SceneConsequenceData>();
             node.Objectives ??= new List<ScenarioObjective>();
             node.Choices ??= new List<ScenarioChoice>();
             node.EnterEffects ??= new List<ScenarioEffect>();
+        }
+
+        public static void EnsureRewardDefaults(SceneDialogueRewardData rewards)
+        {
+            if (rewards == null) return;
+            rewards.AdditionalItems ??= new List<SceneItemRewardEntry>();
+            for (int i = rewards.AdditionalItems.Count - 1; i >= 0; i--)
+            {
+                if (rewards.AdditionalItems[i] == null)
+                    rewards.AdditionalItems.RemoveAt(i);
+            }
+            if (rewards.ItemRewardQuantity < 1) rewards.ItemRewardQuantity = 1;
         }
 
         public static void EnsureDeepDefaults(StorySceneData data)
@@ -454,6 +566,7 @@ namespace Killtime.Story.Data
                     line.Ambience ??= new SceneAmbienceData();
                     line.AutoSkillCheck ??= new SceneAutoSkillCheckData();
                     line.AutoSkillCheck.SuccessRewards ??= new SceneDialogueRewardData();
+                    EnsureRewardDefaults(line.AutoSkillCheck.SuccessRewards);
                     line.AutoSkillCheck.SuccessEffects ??= new List<ScenarioEffect>();
                     line.AutoSkillCheck.FailureEffects ??= new List<ScenarioEffect>();
                     line.Choices ??= new List<SceneDialogueChoiceData>();
@@ -465,6 +578,7 @@ namespace Killtime.Story.Data
                         choice.Prerequisite ??= new ScenePrerequisiteData();
                         choice.Challenge ??= new SceneDialogueChallengeData();
                         choice.Challenge.SuccessRewards ??= new SceneDialogueRewardData();
+                        EnsureRewardDefaults(choice.Challenge.SuccessRewards);
                         choice.Challenge.SuccessEffects ??= new List<ScenarioEffect>();
                         choice.Challenge.FailureEffects ??= new List<ScenarioEffect>();
                         choice.Effects ??= new List<ScenarioEffect>();
@@ -479,14 +593,26 @@ namespace Killtime.Story.Data
                     evt.Ambience ??= new SceneAmbienceData();
                     evt.AutoSkillCheck ??= new SceneAutoSkillCheckData();
                     evt.AutoSkillCheck.SuccessRewards ??= new SceneDialogueRewardData();
+                    EnsureRewardDefaults(evt.AutoSkillCheck.SuccessRewards);
                     evt.AutoSkillCheck.SuccessEffects ??= new List<ScenarioEffect>();
                     evt.AutoSkillCheck.FailureEffects ??= new List<ScenarioEffect>();
                     evt.Challenge ??= new SceneDialogueChallengeData();
                     evt.Challenge.SuccessRewards ??= new SceneDialogueRewardData();
+                    EnsureRewardDefaults(evt.Challenge.SuccessRewards);
                     evt.Challenge.SuccessEffects ??= new List<ScenarioEffect>();
                     evt.Challenge.FailureEffects ??= new List<ScenarioEffect>();
                     evt.Effects ??= new List<ScenarioEffect>();
                     evt.Rewards ??= new SceneDialogueRewardData();
+                    EnsureRewardDefaults(evt.Rewards);
+
+                    for (int k = 0; k < node.Consequences.Count; k++)
+                    {
+                        var cons = node.Consequences[k];
+                        if (cons == null) continue;
+                        cons.Rewards ??= new SceneDialogueRewardData();
+                        EnsureRewardDefaults(cons.Rewards);
+                        cons.Effects ??= new List<ScenarioEffect>();
+                    }
                 }
             }
         }

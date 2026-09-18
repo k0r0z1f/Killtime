@@ -117,34 +117,34 @@ namespace Killtime.Story
                 return current.NextSceneId.Trim();
             }
 
-            // Priorité 2 : Ordre personnalisé des scènes de l'éditeur (persistance PlayerPrefs)
+            // Priorité 2 : Ordre personnalisé des scènes de l'éditeur (persistance PlayerPrefs).
+            // On résout le SceneId réel de chaque entrée (le nom de fichier peut différer
+            // du SceneId) et on ignore les fichiers supprimés depuis.
             string savedOrder = UnityEngine.PlayerPrefs.GetString("ScenarioEditor_SceneOrder", "");
             if (!string.IsNullOrEmpty(savedOrder))
             {
                 string[] entries = savedOrder.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries);
-                int currentOrderIdx = -1;
+                var orderedIds = new System.Collections.Generic.List<string>(entries.Length);
                 for (int i = 0; i < entries.Length; i++)
                 {
-                    string fNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(entries[i]);
-                    if (string.Equals(entries[i], currentScenarioId, System.StringComparison.OrdinalIgnoreCase)
-                        || string.Equals(fNameWithoutExt, currentScenarioId, System.StringComparison.OrdinalIgnoreCase))
-                    {
-                        currentOrderIdx = i;
-                        break;
-                    }
+                    string entry = entries[i];
+                    if (string.IsNullOrWhiteSpace(entry)) continue;
+                    string fullPath = System.IO.Path.IsPathRooted(entry)
+                        ? entry
+                        : StorySceneRepository.GetSceneFilePath(System.IO.Path.GetFileNameWithoutExtension(entry));
+                    if (!System.IO.File.Exists(fullPath)) continue;
+                    string id = StorySceneRepository.GetSceneIdFromPath(fullPath);
+                    if (!string.IsNullOrWhiteSpace(id)) orderedIds.Add(id);
                 }
 
+                int currentOrderIdx = orderedIds.FindIndex(id => string.Equals(id, currentScenarioId, System.StringComparison.OrdinalIgnoreCase));
                 if (currentOrderIdx >= 0)
                 {
-                    for (int nextIdx = currentOrderIdx + 1; nextIdx < entries.Length; nextIdx++)
+                    if (currentOrderIdx + 1 < orderedIds.Count)
                     {
-                        string nextEntryName = System.IO.Path.GetFileNameWithoutExtension(entries[nextIdx]);
-                        string p = StorySceneRepository.GetSceneFilePath(nextEntryName);
-                        if (System.IO.File.Exists(p))
-                        {
-                            var nextDef = Find(nextEntryName);
-                            return nextDef != null ? nextDef.Id : nextEntryName;
-                        }
+                        string nextId = orderedIds[currentOrderIdx + 1];
+                        var nextDef = Find(nextId);
+                        return nextDef != null ? nextDef.Id : nextId;
                     }
                     // Fin de la chaîne ordonnée : aucune scène suivante
                     return null;
