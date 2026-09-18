@@ -875,7 +875,10 @@ namespace Killtime.Multi
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            Label($"Capture : {(_voice.IsCapturing ? "<color=#00FF88>● Active</color>" : "<color=orange>○ Inactive</color>")}");
+            string capStatus = _voice.IsCapturing 
+                ? $"<color=#00FF88>● Active</color> ({_voice.CapturedSampleRate / 1000} kHz {(_voice.CapturedChannels > 1 ? "stéréo" : "mono")})" 
+                : "<color=orange>○ Inactive</color>";
+            Label($"Capture : {capStatus}");
             if (!_voice.IsCapturing && GUILayout.Button("Démarrer Capture", GUILayout.Width(130), GUILayout.Height(18)))
             {
                 _voice.StartCapture();
@@ -938,10 +941,21 @@ namespace Killtime.Multi
             GUILayout.BeginHorizontal();
             Label("Gain Micro :", GUILayout.Width(110));
             float curGain = _voice.Dsp != null ? _voice.Dsp.InputGain : 1.0f;
-            float newGain = GUILayout.HorizontalSlider(curGain, 0.2f, 2.5f);
+            float newGain = GUILayout.HorizontalSlider(curGain, 0.2f, 5.0f);
             if (!Mathf.Approximately(curGain, newGain)) _voice.SetInputGain(newGain);
             Label($"{newGain:0.0}x", GUILayout.Width(40));
             GUILayout.EndHorizontal();
+
+            // Auto-Gain Dynamique (AGC)
+            bool prevAgc = _voice.AutoGainEnabled;
+            GUILayout.BeginHorizontal();
+            bool newAgc = GUILayout.Toggle(prevAgc, " <b>Auto-Gain (AGC)</b> (Amplification auto micro faible)", RichToggle(), GUILayout.ExpandWidth(true));
+            GUILayout.Label(newAgc ? "<color=#00FF88>● ACTIF</color>" : "<color=gray>○ MANUEL</color>", RichLabel(), GUILayout.Width(75));
+            GUILayout.EndHorizontal();
+            if (newAgc != prevAgc)
+            {
+                _voice.SetAutoGainEnabled(newAgc);
+            }
 
             GUILayout.BeginHorizontal();
             Label("Volume Voix :", GUILayout.Width(110));
@@ -1297,8 +1311,8 @@ namespace Killtime.Multi
                     GUILayout.BeginHorizontal();
                     Label($"{speakIcon} <b>{m.username}</b>", GUILayout.Width(100));
 
-                    player.PlayerVolume = GUILayout.HorizontalSlider(player.PlayerVolume, 0f, 2f);
-                    Label($"{Mathf.RoundToInt(player.PlayerVolume * 100)}%", GUILayout.Width(35));
+                    player.PlayerVolume = GUILayout.HorizontalSlider(player.PlayerVolume, 0f, 3.0f);
+                    Label($"{Mathf.RoundToInt(player.PlayerVolume * 100)}%", GUILayout.Width(40));
 
                     Color prevPlayerBg = GUI.backgroundColor;
                     if (player.IsMuted) GUI.backgroundColor = new Color(1f, 0.4f, 0.4f);

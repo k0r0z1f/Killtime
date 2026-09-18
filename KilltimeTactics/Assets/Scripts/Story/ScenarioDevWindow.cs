@@ -227,12 +227,20 @@ namespace Killtime.Story
             }
             else if (node.Kind == ScenarioNodeKind.Resolution)
             {
+                string nextScen = ScenarioCatalog.GetNextScenarioId(scenario.Id);
+                string btnLabel = string.IsNullOrEmpty(nextScen)
+                    ? $"{node.ContinueLabel} (Fin de Volume)"
+                    : $"{node.ContinueLabel} ➔ {nextScen}";
+
                 GUI.backgroundColor = new Color(0.22f, 0.72f, 0.42f);
-                if (GUILayout.Button(node.ContinueLabel, GUILayout.Height(36))) director.CompleteActiveScenario();
+                if (GUILayout.Button(btnLabel, GUILayout.Height(36)))
+                {
+                    director.CompleteActiveScenario();
+                }
                 GUI.backgroundColor = Color.white;
                 if (director.State.ActiveScenarioCompleted)
                 {
-                    GUILayout.Label("<color=green>Scène terminée. La scène suivante pourra lire la route et les drapeaux de campagne.</color>");
+                    GUILayout.Label("<color=green>Scène terminée. Transition vers la scène suivante en cours...</color>");
                 }
             }
 

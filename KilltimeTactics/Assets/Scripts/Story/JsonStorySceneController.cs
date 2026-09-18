@@ -401,7 +401,7 @@ namespace Killtime.Story.Scenes
 
         private void Update()
         {
-            if (CombatHUD.IsPaused) return;
+            if (CombatHUD.IsPaused || (StorySceneManager.Instance != null && StorySceneManager.Instance.IsTransitioning)) return;
 
             HandlePartyInput();
             HandleDialoguesInput();
@@ -892,6 +892,10 @@ namespace Killtime.Story.Scenes
             {
                 if (!TryFireReadyTrigger()) _director.Continue();
             }
+            else if (node.Kind == ScenarioNodeKind.Resolution)
+            {
+                if (!TryFireReadyTrigger()) _director.CompleteActiveScenario();
+            }
         }
 
         private void SelectDialogueChoice(SceneDialogueChoiceData choice, SceneDialogueLineData promptLine)
@@ -1145,7 +1149,7 @@ namespace Killtime.Story.Scenes
 
         private void OnGUI()
         {
-            if (CombatHUD.IsPaused) return;
+            if (CombatHUD.IsPaused || (StorySceneManager.Instance != null && StorySceneManager.Instance.IsTransitioning)) return;
 
             _interactButtonRects.Clear();
             DrawPartySwitchBar();
@@ -1414,7 +1418,8 @@ namespace Killtime.Story.Scenes
             else if (node.Kind == ScenarioNodeKind.Resolution)
             {
                 GUI.backgroundColor = new Color(0.2f, 0.9f, 0.5f);
-                if (GUILayout.Button($"✔ {node.ContinueLabel}", GUILayout.Width(280), GUILayout.Height(28)))
+                string btnText = string.IsNullOrWhiteSpace(node.ContinueLabel) ? "✔ Conclure & Scène Suivante ➔" : $"✔ {node.ContinueLabel} ➔";
+                if (GUILayout.Button(btnText, GUILayout.Width(280), GUILayout.Height(28)))
                 {
                     if (!TryFireReadyTrigger()) _director.CompleteActiveScenario();
                 }

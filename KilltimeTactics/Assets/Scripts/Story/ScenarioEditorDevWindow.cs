@@ -19,9 +19,10 @@ namespace Killtime.Story
         protected override Rect DefaultRect => new Rect(20f, 40f, Mathf.Min(1280f, Screen.width - 40f), Mathf.Min(840f, Screen.height - 60f));
         protected override KeyCode[] ToggleKeys => new[] { KeyCode.F8 };
 
-        private readonly string[] _tabs = { "📋 Scène & Carte", "👥 Acteurs", "🔧 Interactables", "🎬 Nœuds & Graphe Nodal", "💾 JSON & Disque" };
+        private readonly string[] _tabs = { "📋 Scène & Fichier", "👥 Acteurs", "🔧 Interactables", "🎬 Nœuds & Graphe Nodal" };
         private int _selectedTab = 3;
         private Vector2 _scroll;
+        private bool _showRawJsonPreview = false;
 
         private StorySceneData _data = new();
         private string _activeFilePath = "";
@@ -79,6 +80,13 @@ namespace Killtime.Story
         private readonly List<string> _availableMapFiles = new();
         private readonly List<string> _availableSceneFiles = new();
 
+        // Drag & Drop pour la réorganisation des scènes dans la liste
+        private int _draggedSceneIndex = -1;
+        private int _dropTargetSceneIndex = -1;
+        private bool _isDraggingSceneItem = false;
+        private Vector2 _dragSceneMouseStart;
+        private readonly List<Rect> _sceneRowRects = new();
+
         protected override void OnAwake()
         {
             RefreshCatalogCache();
@@ -115,10 +123,37 @@ namespace Killtime.Story
             _availableSceneFiles.Clear();
             string sceneDir = Path.Combine(Application.persistentDataPath, "Scenarios");
             if (!Directory.Exists(sceneDir)) Directory.CreateDirectory(sceneDir);
-            foreach (var f in Directory.GetFiles(sceneDir, "*.json"))
+
+            string[] diskFiles = Directory.GetFiles(sceneDir, "*.json");
+            var diskFileSet = new HashSet<string>(diskFiles, StringComparer.OrdinalIgnoreCase);
+
+            // Restaurer l'ordre personnalisé si enregistré
+            string savedOrder = PlayerPrefs.GetString("ScenarioEditor_SceneOrder", "");
+            if (!string.IsNullOrEmpty(savedOrder))
             {
-                _availableSceneFiles.Add(f);
+                string[] savedNames = savedOrder.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                for (int s = 0; s < savedNames.Length; s++)
+                {
+                    string target = Path.Combine(sceneDir, savedNames[s]);
+                    if (diskFileSet.Contains(target) && !_availableSceneFiles.Contains(target))
+                    {
+                        _availableSceneFiles.Add(target);
+                    }
+                }
             }
+
+            // Ajouter les fichiers restants (ou par défaut, tri alphabétique)
+            Array.Sort(diskFiles, (a, b) => string.Compare(Path.GetFileName(a), Path.GetFileName(b), StringComparison.OrdinalIgnoreCase));
+            for (int i = 0; i < diskFiles.Length; i++)
+            {
+                if (!_availableSceneFiles.Contains(diskFiles[i]))
+                {
+                    _availableSceneFiles.Add(diskFiles[i]);
+                }
+            }
+
+            // Mettre à jour l'ordre sauvegardé pour éliminer les fichiers supprimés
+            SaveSceneOrder();
         }
 
         public void LoadSceneFromPath(string path)
@@ -211,28 +246,30 @@ namespace Killtime.Story
                 _scroll = GUILayout.BeginScrollView(_scroll);
                 switch (_selectedTab)
                 {
-                    case 0: DrawMetadataTab(); break;
+                    case 0: DrawSceneAndDiskTab(); break;
                     case 1: DrawActorsTab(); break;
                     case 2: DrawInteractablesTab(); break;
-                    case 4: DrawJsonDiskTab(); break;
                 }
                 GUILayout.EndScrollView();
             }
         }
 
-        private void DrawMetadataTab()
+        private void DrawSceneAndDiskTab()
         {
+            // 1. BARRE D'ACTIONS RAPIDES & FICHIER ACTIF
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.BeginHorizontal();
-            GUILayout.Label("<b>Scène Active :</b>", GUILayout.Width(130));
+            GUILayout.Label("<b>Scène Active :</b>", GUILayout.Width(100));
 
             if (_availableSceneFiles.Count == 0)
             {
-                GUILayout.Label("<color=grey>(Aucune scène sur disque)</color>");
+                GUILayout.Label("<color=grey>(Aucune scène sur disque)</color>", GUILayout.Width(180));
             }
             else
             {
-                int currentSceneIdx = _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase) || string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase));
+                int currentSceneIdx = !string.IsNullOrEmpty(_activeFilePath)
+                    ? _availableSceneFiles.FindIndex(f => string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase))
+                    : _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase));
                 if (currentSceneIdx < 0) currentSceneIdx = 0;
 
                 if (GUILayout.Button("◀", GUILayout.Width(26)))
@@ -242,7 +279,7 @@ namespace Killtime.Story
                 }
 
                 string currentFileName = Path.GetFileName(_availableSceneFiles[currentSceneIdx]);
-                GUILayout.Label($"<b>{currentFileName}</b>", GUILayout.Width(230));
+                GUILayout.Label($"<b>{currentFileName}</b>", GUILayout.Width(180));
 
                 if (GUILayout.Button("▶", GUILayout.Width(26)))
                 {
@@ -251,22 +288,71 @@ namespace Killtime.Story
                 }
             }
 
-            if (GUILayout.Button("🔄 Scanner", GUILayout.Width(80)))
+            GUILayout.FlexibleSpace();
+
+            GUI.backgroundColor = new Color(0.2f, 0.75f, 0.4f);
+            if (GUILayout.Button("💾 Enregistrer", GUILayout.Width(105), GUILayout.Height(24)))
             {
-                RefreshCatalogCache();
+                SaveCurrentSceneJson();
+            }
+
+            GUI.backgroundColor = new Color(0.2f, 0.6f, 0.9f);
+            if (GUILayout.Button("📁 Recharger", GUILayout.Width(95), GUILayout.Height(24)))
+            {
+                ReloadCurrentSceneJson();
             }
 
             GUI.backgroundColor = new Color(0.2f, 0.8f, 0.4f);
-            if (GUILayout.Button("+ Nouvelle Scène", GUILayout.Width(130)))
+            if (GUILayout.Button("+ Nouvelle Scène", GUILayout.Width(125), GUILayout.Height(24)))
             {
                 CreateNewEmptyScene();
             }
+
             GUI.backgroundColor = Color.white;
             GUILayout.EndHorizontal();
+
+            // Confirmation de suppression si engagée
+            if (_confirmDeleteScene)
+            {
+                GUILayout.Space(4);
+                GUILayout.BeginHorizontal(GUI.skin.box);
+                string deleteFileName = !string.IsNullOrEmpty(_activeFilePath) ? Path.GetFileName(_activeFilePath) : $"{_data.SceneId}.json";
+                GUILayout.Label($"<color=#FF5555><b>Supprimer définitivement '{deleteFileName}' du disque ?</b></color>");
+                GUILayout.FlexibleSpace();
+                GUI.backgroundColor = new Color(1f, 0.25f, 0.25f);
+                if (GUILayout.Button("⚠ Confirmer destruction", GUILayout.Width(170), GUILayout.Height(22)))
+                {
+                    DeleteCurrentSceneJson();
+                    _confirmDeleteScene = false;
+                }
+                GUI.backgroundColor = Color.gray;
+                if (GUILayout.Button("Annuler", GUILayout.Width(80), GUILayout.Height(22)))
+                {
+                    _confirmDeleteScene = false;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+            }
+            else
+            {
+                GUILayout.Space(2);
+                GUILayout.BeginHorizontal();
+                string directory = Path.Combine(Application.persistentDataPath, "Scenarios");
+                GUILayout.Label($"<color=grey>Dossier : {directory}</color>");
+                GUILayout.FlexibleSpace();
+                GUI.backgroundColor = new Color(1f, 0.4f, 0.4f);
+                if (GUILayout.Button("🗑 Supprimer ce JSON", GUILayout.Width(150), GUILayout.Height(20)))
+                {
+                    _confirmDeleteScene = true;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+            }
             GUILayout.EndVertical();
 
-            GUILayout.Space(4);
+            GUILayout.Space(6);
 
+            // 2. PARAMÈTRES GÉNÉRAUX DU SCÉNARIO
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.Label("<b>Paramètres Généraux du Scénario</b>");
 
@@ -319,6 +405,248 @@ namespace Killtime.Story
             _data.FirstNodeId = GUILayout.TextField(_data.FirstNodeId);
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Scène Suivante :", GUILayout.Width(130));
+            _data.NextSceneId = GUILayout.TextField(_data.NextSceneId ?? "", GUILayout.Width(160));
+
+            if (_availableSceneFiles != null && _availableSceneFiles.Count > 0)
+            {
+                var sceneNames = new List<string> { "(Automatique)" };
+                for (int i = 0; i < _availableSceneFiles.Count; i++)
+                {
+                    string name = Path.GetFileNameWithoutExtension(_availableSceneFiles[i]);
+                    if (!string.Equals(name, _data.SceneId, StringComparison.OrdinalIgnoreCase))
+                    {
+                        sceneNames.Add(name);
+                    }
+                }
+
+                int selIdx = 0;
+                if (!string.IsNullOrEmpty(_data.NextSceneId))
+                {
+                    selIdx = sceneNames.FindIndex(s => string.Equals(s, _data.NextSceneId, StringComparison.OrdinalIgnoreCase));
+                    if (selIdx < 0) selIdx = 0;
+                }
+
+                if (GUILayout.Button("◀", GUILayout.Width(22)))
+                {
+                    selIdx = (selIdx - 1 + sceneNames.Count) % sceneNames.Count;
+                    _data.NextSceneId = selIdx == 0 ? "" : sceneNames[selIdx];
+                }
+                string currentTargetLabel = string.IsNullOrEmpty(_data.NextSceneId) ? "(Auto)" : _data.NextSceneId;
+                GUILayout.Label($"<b>{currentTargetLabel}</b>", GUILayout.Width(140));
+                if (GUILayout.Button("▶", GUILayout.Width(22)))
+                {
+                    selIdx = (selIdx + 1) % sceneNames.Count;
+                    _data.NextSceneId = selIdx == 0 ? "" : sceneNames[selIdx];
+                }
+            }
+
+            string autoNext = GetAutoNextScenarioId();
+            string hint = string.IsNullOrEmpty(_data.NextSceneId)
+                ? (string.IsNullOrEmpty(autoNext) ? "<color=grey>(Dernière scène — aucune suite)</color>" : $"<color=cyan>(Auto : {autoNext})</color>")
+                : "<color=#88DDAA>(Cible explicite)</color>";
+            GUILayout.Label(hint);
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+
+            GUILayout.Space(6);
+
+            // 3. DÉPLOIEMENT RUNTIME
+            GUI.backgroundColor = new Color(1.0f, 0.55f, 0.1f);
+            if (GUILayout.Button("🚀 DÉPLOYER & TESTER CETTE SCÈNE EN DIRECT DANS LA VUE 3D", GUILayout.Height(38)))
+            {
+                DeployCurrentSceneToRuntime();
+            }
+            GUI.backgroundColor = Color.white;
+
+            GUILayout.Space(6);
+
+            // 4. SCÈNES DÉTECTÉES SUR DISQUE (Glisser-Déposer / Réorganisation)
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"<b>Scènes Détectées sur Disque ({_availableSceneFiles.Count})</b>");
+            GUILayout.Label("<color=grey>(Glisser-déposer ⠿ pour réordonner la liste)</color>");
+            GUILayout.FlexibleSpace();
+            if (GUILayout.Button("🔄 Actualiser le catalogue", GUILayout.Width(170)))
+            {
+                RefreshCatalogCache();
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.Space(2);
+
+            Event evt = Event.current;
+
+            for (int i = 0; i < _availableSceneFiles.Count; i++)
+            {
+                string filePath = _availableSceneFiles[i];
+                string fName = Path.GetFileName(filePath);
+                bool isActive = !string.IsNullOrEmpty(_activeFilePath)
+                    ? string.Equals(filePath, _activeFilePath, StringComparison.OrdinalIgnoreCase)
+                    : string.Equals(Path.GetFileNameWithoutExtension(filePath), _data.SceneId, StringComparison.OrdinalIgnoreCase);
+
+                bool isBeingDragged = _isDraggingSceneItem && _draggedSceneIndex == i;
+                bool isDropTarget = _isDraggingSceneItem && _dropTargetSceneIndex == i;
+
+                if (isDropTarget)
+                {
+                    DrawDropInsertionLine();
+                }
+
+                Color prevGuiCol = GUI.color;
+                if (isBeingDragged)
+                {
+                    GUI.color = new Color(1f, 1f, 1f, 0.35f);
+                }
+
+                GUILayout.BeginHorizontal(isActive ? GUI.skin.box : GUI.skin.textArea);
+
+                // Poignée de glisser-déposer
+                int handleControlId = GUIUtility.GetControlID(FocusType.Passive);
+                Rect handleRect = GUILayoutUtility.GetRect(new GUIContent(" ⠿ "), GUI.skin.label, GUILayout.Width(24), GUILayout.Height(22));
+                GUI.Label(handleRect, isBeingDragged ? "<color=#00E5FF><b> ⠿ </b></color>" : "<color=#FFD700><b> ⠿ </b></color>");
+
+                // Ordre dans la liste
+                GUILayout.Label($"<color=grey>#{i + 1}</color>", GUILayout.Width(26));
+
+                // Statut actif et nom de fichier
+                string activeMarker = isActive ? "<color=#00E5FF>● [ACTIVE]</color> " : "○ ";
+                GUILayout.Label($"{activeMarker}<b>{fName}</b>", GUILayout.Width(230));
+
+                if (File.Exists(filePath))
+                {
+                    var fileInfo = new FileInfo(filePath);
+                    GUILayout.Label($"<color=grey>{fileInfo.Length / 1024f:0.0} Ko — {fileInfo.LastWriteTime:dd/MM HH:mm}</color>", GUILayout.Width(160));
+                }
+
+                GUILayout.FlexibleSpace();
+
+                // Boutons de déplacement rapide ▲ / ▼
+                GUI.enabled = i > 0 && !_isDraggingSceneItem;
+                if (GUILayout.Button("▲", GUILayout.Width(22), GUILayout.Height(20)))
+                {
+                    MoveSceneInList(i, i - 1);
+                }
+                GUI.enabled = i < _availableSceneFiles.Count - 1 && !_isDraggingSceneItem;
+                if (GUILayout.Button("▼", GUILayout.Width(22), GUILayout.Height(20)))
+                {
+                    MoveSceneInList(i, i + 1);
+                }
+                GUI.enabled = true;
+
+                GUILayout.Space(6);
+
+                // Bouton Ouvrir / En cours
+                if (!isActive)
+                {
+                    GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
+                    if (GUILayout.Button("Ouvrir", GUILayout.Width(65), GUILayout.Height(20)))
+                    {
+                        LoadSceneFromPath(filePath);
+                    }
+                    GUI.backgroundColor = Color.white;
+                }
+                else
+                {
+                    GUILayout.Label("<color=#7CFF9B><b>En cours</b></color>", GUILayout.Width(65));
+                }
+
+                GUILayout.EndHorizontal();
+                GUI.color = prevGuiCol;
+
+                Rect rowRect = GUILayoutUtility.GetLastRect();
+                if (_sceneRowRects.Count <= i)
+                    _sceneRowRects.Add(rowRect);
+                else
+                    _sceneRowRects[i] = rowRect;
+
+                // Clic pour démarrer le drag sur la poignée ou le début de la ligne
+                if (evt.type == EventType.MouseDown && evt.button == 0)
+                {
+                    if (handleRect.Contains(evt.mousePosition) || (rowRect.Contains(evt.mousePosition) && evt.mousePosition.x < rowRect.x + 280f))
+                    {
+                        GUIUtility.hotControl = handleControlId;
+                        _draggedSceneIndex = i;
+                        _dropTargetSceneIndex = i;
+                        _dragSceneMouseStart = evt.mousePosition;
+                        _isDraggingSceneItem = false;
+                        evt.Use();
+                    }
+                }
+            }
+
+            // Indicateur de drop en fin de liste
+            if (_isDraggingSceneItem && _dropTargetSceneIndex == _availableSceneFiles.Count)
+            {
+                DrawDropInsertionLine();
+            }
+
+            GUILayout.EndVertical();
+
+            // Traitement du glisser-déposer
+            if (_draggedSceneIndex >= 0)
+            {
+                if (evt.type == EventType.MouseDrag && evt.button == 0)
+                {
+                    if (!_isDraggingSceneItem && Vector2.Distance(evt.mousePosition, _dragSceneMouseStart) > 4f)
+                    {
+                        _isDraggingSceneItem = true;
+                    }
+
+                    if (_isDraggingSceneItem)
+                    {
+                        UpdateDropTargetIndex(evt.mousePosition.y);
+                        evt.Use();
+                    }
+                }
+                else if (evt.type == EventType.MouseUp || evt.rawType == EventType.MouseUp)
+                {
+                    if (_isDraggingSceneItem && _draggedSceneIndex >= 0 && _dropTargetSceneIndex >= 0)
+                    {
+                        int fromIdx = _draggedSceneIndex;
+                        int toIdx = _dropTargetSceneIndex;
+                        int targetInsertIdx = toIdx > fromIdx ? toIdx - 1 : toIdx;
+                        if (targetInsertIdx != fromIdx && targetInsertIdx >= 0 && targetInsertIdx < _availableSceneFiles.Count)
+                        {
+                            MoveSceneInList(fromIdx, targetInsertIdx);
+                        }
+                        evt.Use();
+                    }
+                    GUIUtility.hotControl = 0;
+                    _isDraggingSceneItem = false;
+                    _draggedSceneIndex = -1;
+                    _dropTargetSceneIndex = -1;
+                }
+
+                // Vignette d'information flottante sous le curseur
+                if (_isDraggingSceneItem && _draggedSceneIndex >= 0 && _draggedSceneIndex < _availableSceneFiles.Count)
+                {
+                    string draggedName = Path.GetFileName(_availableSceneFiles[_draggedSceneIndex]);
+                    Rect badgeRect = new Rect(evt.mousePosition.x + 14f, evt.mousePosition.y - 12f, 250f, 26f);
+                    Color prevCol = GUI.color;
+                    GUI.color = new Color(0.08f, 0.12f, 0.18f, 0.95f);
+                    GUI.DrawTexture(badgeRect, PureWhiteTex);
+                    GUI.color = Color.cyan;
+                    GUI.Box(badgeRect, $" ↕ <b>{draggedName}</b>");
+                    GUI.color = prevCol;
+                }
+            }
+
+            GUILayout.Space(6);
+
+            // 5. APERÇU JSON BRUT (DÉPLIABLE)
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            _showRawJsonPreview = GUILayout.Toggle(_showRawJsonPreview, _showRawJsonPreview ? "▼ Masquer l'Aperçu JSON brut" : "▶ Afficher l'Aperçu JSON brut", GUI.skin.button, GUILayout.Height(22));
+            GUILayout.EndHorizontal();
+
+            if (_showRawJsonPreview)
+            {
+                GUILayout.Space(4);
+                string preview = JsonUtility.ToJson(_data, true);
+                GUILayout.TextArea(preview, GUILayout.Height(170));
+            }
             GUILayout.EndVertical();
         }
 
@@ -567,7 +895,9 @@ namespace Killtime.Story
 
             if (_availableSceneFiles.Count > 1)
             {
-                int sceneIdx = _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase) || string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase));
+                int sceneIdx = !string.IsNullOrEmpty(_activeFilePath)
+                    ? _availableSceneFiles.FindIndex(f => string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase))
+                    : _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase));
                 if (sceneIdx < 0) sceneIdx = 0;
                 if (GUILayout.Button("◀", GUILayout.Width(24), GUILayout.Height(22)))
                 {
@@ -3430,133 +3760,48 @@ namespace Killtime.Story
             }
         }
 
-        private void DrawJsonDiskTab()
+        private void SaveCurrentSceneJson()
         {
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.Label("<b>Sauvegarde, Chargement & Exécution</b>");
-
             string directory = Path.Combine(Application.persistentDataPath, "Scenarios");
             if (!Directory.Exists(directory)) Directory.CreateDirectory(directory);
 
-            GUILayout.Label($"Dossier cible : <color=grey>{directory}</color>");
-            GUILayout.Space(6);
-
-            GUILayout.BeginHorizontal();
-            GUI.backgroundColor = new Color(0.2f, 0.75f, 0.4f);
-            if (GUILayout.Button("💾 Enregistrer JSON", GUILayout.Height(36)))
+            // Sauvegarder vers le fichier d'origine si chargé depuis un fichier existant,
+            // sinon construire le chemin à partir du SceneId (nouvelle scène).
+            string path;
+            if (!string.IsNullOrEmpty(_activeFilePath) && File.Exists(_activeFilePath))
             {
-                string filename = string.IsNullOrWhiteSpace(_data.SceneId) ? "scene_export" : _data.SceneId;
-                string path = Path.Combine(directory, $"{filename}.json");
-                string json = JsonUtility.ToJson(_data, true);
-                File.WriteAllText(path, json);
-                _activeFilePath = path;
-                RefreshCatalogCache();
-                Debug.Log($"[ScenarioEditor] Scène enregistrée sous : {path}");
-            }
-
-            GUI.backgroundColor = new Color(0.2f, 0.6f, 0.9f);
-            if (GUILayout.Button("📁 Recharger depuis Fichier", GUILayout.Height(36)))
-            {
-                string filename = string.IsNullOrWhiteSpace(_data.SceneId) ? "scene_export" : _data.SceneId;
-                string path = Path.Combine(directory, $"{filename}.json");
-                if (File.Exists(path))
-                {
-                    LoadSceneFromPath(path);
-                }
-            }
-            GUI.backgroundColor = Color.white;
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(8);
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<b>Scènes Détectées sur Disque ({_availableSceneFiles.Count})</b>");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("🔄 Actualiser", GUILayout.Width(100)))
-            {
-                RefreshCatalogCache();
-            }
-            GUILayout.EndHorizontal();
-
-            for (int i = 0; i < _availableSceneFiles.Count; i++)
-            {
-                string filePath = _availableSceneFiles[i];
-                string fName = Path.GetFileName(filePath);
-                bool isActive = string.Equals(filePath, _activeFilePath, StringComparison.OrdinalIgnoreCase)
-                             || string.Equals(Path.GetFileNameWithoutExtension(filePath), _data.SceneId, StringComparison.OrdinalIgnoreCase);
-
-                GUILayout.BeginHorizontal(isActive ? GUI.skin.box : GUI.skin.textArea);
-                string activeMarker = isActive ? "<color=#00E5FF>● [ACTIVE]</color> " : "○ ";
-                GUILayout.Label($"{activeMarker}<b>{fName}</b>", GUILayout.Width(230));
-
-                if (File.Exists(filePath))
-                {
-                    var fileInfo = new FileInfo(filePath);
-                    GUILayout.Label($"<color=grey>{fileInfo.Length / 1024f:0.0} Ko — {fileInfo.LastWriteTime:dd/MM HH:mm}</color>", GUILayout.Width(160));
-                }
-
-                GUILayout.FlexibleSpace();
-                if (!isActive)
-                {
-                    GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
-                    if (GUILayout.Button("Ouvrir", GUILayout.Width(70), GUILayout.Height(20)))
-                    {
-                        LoadSceneFromPath(filePath);
-                    }
-                    GUI.backgroundColor = Color.white;
-                }
-                else
-                {
-                    GUILayout.Label("<color=#7CFF9B><b>En cours</b></color>", GUILayout.Width(70));
-                }
-                GUILayout.EndHorizontal();
-            }
-            GUILayout.EndVertical();
-
-            GUILayout.Space(6);
-            if (_confirmDeleteScene)
-            {
-                GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.Label($"<color=#FF5555><b>Supprimer définitivement '{_data.SceneId}.json' sur le disque ?</b></color>");
-                GUILayout.BeginHorizontal();
-                GUI.backgroundColor = new Color(1f, 0.25f, 0.25f);
-                if (GUILayout.Button("⚠ Confirmer la destruction du JSON", GUILayout.Height(34)))
-                {
-                    DeleteCurrentSceneJson();
-                    _confirmDeleteScene = false;
-                }
-                GUI.backgroundColor = Color.gray;
-                if (GUILayout.Button("Annuler", GUILayout.Width(90), GUILayout.Height(34)))
-                {
-                    _confirmDeleteScene = false;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-                GUILayout.EndVertical();
+                path = _activeFilePath;
             }
             else
             {
-                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
-                if (GUILayout.Button("🗑 Supprimer la scène (détruire le JSON sur disque)", GUILayout.Height(30)))
-                {
-                    _confirmDeleteScene = true;
-                }
-                GUI.backgroundColor = Color.white;
+                string filename = string.IsNullOrWhiteSpace(_data.SceneId) ? "scene_export" : _data.SceneId;
+                path = Path.Combine(directory, $"{filename}.json");
             }
 
-            GUILayout.Space(8);
-            GUI.backgroundColor = new Color(1.0f, 0.55f, 0.1f);
-            if (GUILayout.Button("🚀 DÉPLOYER & TESTER CETTE SCÈNE EN DIRECT DANS LA VUE 3D", GUILayout.Height(40)))
+            string json = JsonUtility.ToJson(_data, true);
+            File.WriteAllText(path, json);
+            _activeFilePath = path;
+            RefreshCatalogCache();
+            Debug.Log($"[ScenarioEditor] Scène enregistrée sous : {path}");
+        }
+
+        private void ReloadCurrentSceneJson()
+        {
+            // Recharger depuis le fichier réel si disponible
+            if (!string.IsNullOrEmpty(_activeFilePath) && File.Exists(_activeFilePath))
             {
-                DeployCurrentSceneToRuntime();
+                LoadSceneFromPath(_activeFilePath);
+                return;
             }
-            GUI.backgroundColor = Color.white;
 
-            GUILayout.Space(8);
-            GUILayout.Label("<b>Aperçu JSON brut :</b>");
-            string preview = JsonUtility.ToJson(_data, true);
-            GUILayout.TextArea(preview, GUILayout.Height(170));
-            GUILayout.EndVertical();
+            // Fallback : reconstruction du chemin depuis SceneId (nouvelles scènes)
+            string directory = Path.Combine(Application.persistentDataPath, "Scenarios");
+            string filename = string.IsNullOrWhiteSpace(_data.SceneId) ? "scene_export" : _data.SceneId;
+            string path = Path.Combine(directory, $"{filename}.json");
+            if (File.Exists(path))
+            {
+                LoadSceneFromPath(path);
+            }
         }
 
         private bool _confirmDeleteScene = false;
@@ -3573,11 +3818,26 @@ namespace Killtime.Story
                 StorySceneManager.EnsureInstance().CleanupCurrentScene();
             }
 
-            StorySceneRepository.DeleteScene(sceneId);
+            // Supprimer par le chemin réel du fichier chargé, pas par reconstruction
+            // depuis SceneId (qui peut pointer vers un autre fichier si le nom diffère).
+            string deletedName;
+            if (!string.IsNullOrEmpty(_activeFilePath) && File.Exists(_activeFilePath))
+            {
+                deletedName = Path.GetFileName(_activeFilePath);
+                StorySceneRepository.DeleteSceneByPath(_activeFilePath);
+            }
+            else
+            {
+                deletedName = $"{sceneId}.json";
+                StorySceneRepository.DeleteScene(sceneId);
+            }
+
             ScenarioCatalog.Unregister(sceneId);
             ScenarioCatalog.ReloadFromDisk();
 
-            CombatHUD.Instance?.AddAdvancedLog($"🗑 Scène '{sceneId}' et son JSON supprimés.", LogCategory.MovementAndTurns, "[SCÈNE]", Color.yellow);
+            CombatHUD.Instance?.AddAdvancedLog($"🗑 Fichier '{deletedName}' supprimé.", LogCategory.MovementAndTurns, "[SCÈNE]", Color.yellow);
+            _activeFilePath = "";
+            RefreshCatalogCache();
             CreateDefaultSceneTemplate();
         }
 
@@ -3597,6 +3857,7 @@ namespace Killtime.Story
             var go = new GameObject($"[SceneRuntime] {_data.SceneId}");
             var controller = go.AddComponent<Scenes.JsonStorySceneController>();
             controller.SetSceneData(_data);
+            sceneMgr.CurrentSceneController = controller;
 
             var definition = ScenarioCatalog.FromSceneData(_data);
             if (definition == null)
@@ -3608,6 +3869,109 @@ namespace Killtime.Story
             ScenarioCatalog.Register(definition);
             director.StartScenario(_data.SceneId);
             StartCoroutine(controller.InitializeSceneRoutine(grid, turnManager, arena, director));
+        }
+
+        private void MoveSceneInList(int fromIdx, int toIdx)
+        {
+            if (fromIdx < 0 || fromIdx >= _availableSceneFiles.Count) return;
+            if (toIdx < 0 || toIdx >= _availableSceneFiles.Count) return;
+            if (fromIdx == toIdx) return;
+
+            string movedFilePath = _availableSceneFiles[fromIdx];
+
+            // Réordonner la liste des fichiers en mémoire
+            _availableSceneFiles.RemoveAt(fromIdx);
+            _availableSceneFiles.Insert(toIdx, movedFilePath);
+
+            // Enregistrer l'ordre personnalisé
+            SaveSceneOrder();
+
+            CombatHUD.Instance?.AddAdvancedLog(
+                $"↕ Scène '{Path.GetFileName(movedFilePath)}' repositionnée en #{toIdx + 1}.",
+                LogCategory.MovementAndTurns,
+                "[SCÈNE]",
+                Color.cyan
+            );
+        }
+
+        private void SaveSceneOrder()
+        {
+            var names = new List<string>(_availableSceneFiles.Count);
+            for (int i = 0; i < _availableSceneFiles.Count; i++)
+            {
+                names.Add(Path.GetFileName(_availableSceneFiles[i]));
+            }
+            PlayerPrefs.SetString("ScenarioEditor_SceneOrder", string.Join(";", names));
+            PlayerPrefs.Save();
+        }
+
+        private string GetAutoNextScenarioId()
+        {
+            // 1. Détection prioritaire par position séquentielle dans la liste ordonnée des scènes
+            if (_availableSceneFiles != null && _availableSceneFiles.Count > 0)
+            {
+                int currentIdx = !string.IsNullOrEmpty(_activeFilePath)
+                    ? _availableSceneFiles.FindIndex(f => string.Equals(f, _activeFilePath, StringComparison.OrdinalIgnoreCase))
+                    : _availableSceneFiles.FindIndex(f => string.Equals(Path.GetFileNameWithoutExtension(f), _data.SceneId, StringComparison.OrdinalIgnoreCase));
+
+                if (currentIdx >= 0)
+                {
+                    // Si c'est la dernière scène de la liste de l'éditeur, aucune suite automatique
+                    if (currentIdx + 1 >= _availableSceneFiles.Count)
+                    {
+                        return null;
+                    }
+
+                    string nextFilePath = _availableSceneFiles[currentIdx + 1];
+                    if (File.Exists(nextFilePath))
+                    {
+                        string nextSceneId = StorySceneRepository.GetSceneIdFromPath(nextFilePath);
+                        if (!string.IsNullOrWhiteSpace(nextSceneId))
+                        {
+                            return nextSceneId;
+                        }
+                        return Path.GetFileNameWithoutExtension(nextFilePath);
+                    }
+                }
+            }
+
+            // 2. Fallback via le catalogue global
+            return ScenarioCatalog.GetNextScenarioId(_data.SceneId);
+        }
+
+        private void UpdateDropTargetIndex(float mouseY)
+        {
+            if (_sceneRowRects == null || _sceneRowRects.Count == 0) return;
+            if (mouseY < _sceneRowRects[0].y + _sceneRowRects[0].height * 0.5f)
+            {
+                _dropTargetSceneIndex = 0;
+                return;
+            }
+            if (mouseY > _sceneRowRects[_sceneRowRects.Count - 1].y + _sceneRowRects[_sceneRowRects.Count - 1].height * 0.5f)
+            {
+                _dropTargetSceneIndex = _sceneRowRects.Count;
+                return;
+            }
+            for (int k = 0; k < _sceneRowRects.Count; k++)
+            {
+                Rect r = _sceneRowRects[k];
+                if (mouseY >= r.y && mouseY <= r.yMax)
+                {
+                    _dropTargetSceneIndex = mouseY < r.y + r.height * 0.5f ? k : k + 1;
+                    return;
+                }
+            }
+        }
+
+        private void DrawDropInsertionLine()
+        {
+            GUILayout.Space(2);
+            Rect r = GUILayoutUtility.GetRect(GUIContent.none, GUIStyle.none, GUILayout.Height(4f));
+            Color prevColor = GUI.color;
+            GUI.color = new Color(0f, 0.95f, 1f, 0.95f);
+            GUI.DrawTexture(new Rect(r.x + 2f, r.y + 1f, r.width - 4f, 2f), PureWhiteTex);
+            GUI.color = prevColor;
+            GUILayout.Space(2);
         }
     }
 }

@@ -71,7 +71,8 @@ namespace Killtime.Story
                 Volume = data.Volume,
                 Title = data.Title,
                 CanonReference = data.CanonReference,
-                FirstNodeId = data.FirstNodeId
+                FirstNodeId = data.FirstNodeId,
+                NextSceneId = data.NextSceneId
             };
 
             if (data.Nodes != null)
@@ -97,6 +98,119 @@ namespace Killtime.Story
             }
 
             return definition;
+        }
+
+        /// <summary>
+        /// Détermine l'identifiant de la scène suivante.
+        /// Priorité 1 : NextSceneId explicitement renseigné sur la scène.
+        /// Priorité 2 : Ordre personnalisé des scènes de l'éditeur (persistance PlayerPrefs).
+        /// Priorité 3 : Déduction numérique (ex: volume_1_scene_01 -> volume_1_scene_02 ou nouvelle_scene_5).
+        /// Priorité 4 : Élément suivant dans la liste ordonnée des scénarios disponibles.
+        /// </summary>
+        public static string GetNextScenarioId(string currentScenarioId)
+        {
+            if (string.IsNullOrWhiteSpace(currentScenarioId)) return null;
+
+            var current = Find(currentScenarioId);
+            if (current != null && !string.IsNullOrWhiteSpace(current.NextSceneId))
+            {
+                return current.NextSceneId.Trim();
+            }
+
+            // Priorité 2 : Ordre personnalisé des scènes de l'éditeur (persistance PlayerPrefs)
+            string savedOrder = UnityEngine.PlayerPrefs.GetString("ScenarioEditor_SceneOrder", "");
+            if (!string.IsNullOrEmpty(savedOrder))
+            {
+                string[] entries = savedOrder.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries);
+                int currentOrderIdx = -1;
+                for (int i = 0; i < entries.Length; i++)
+                {
+                    string fNameWithoutExt = System.IO.Path.GetFileNameWithoutExtension(entries[i]);
+                    if (string.Equals(entries[i], currentScenarioId, System.StringComparison.OrdinalIgnoreCase)
+                        || string.Equals(fNameWithoutExt, currentScenarioId, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        currentOrderIdx = i;
+                        break;
+                    }
+                }
+
+                if (currentOrderIdx >= 0)
+                {
+                    for (int nextIdx = currentOrderIdx + 1; nextIdx < entries.Length; nextIdx++)
+                    {
+                        string nextEntryName = System.IO.Path.GetFileNameWithoutExtension(entries[nextIdx]);
+                        string p = StorySceneRepository.GetSceneFilePath(nextEntryName);
+                        if (System.IO.File.Exists(p))
+                        {
+                            var nextDef = Find(nextEntryName);
+                            return nextDef != null ? nextDef.Id : nextEntryName;
+                        }
+                    }
+                    // Fin de la chaîne ordonnée : aucune scène suivante
+                    return null;
+                }
+            }
+
+            // Priorité 3 : Déduction numérique
+            var match = System.Text.RegularExpressions.Regex.Match(currentScenarioId, @"^(.*[_\-\s])(\d+)$");
+            if (match.Success)
+            {
+                string prefix = match.Groups[1].Value;
+                string numStr = match.Groups[2].Value;
+                if (int.TryParse(numStr, out int num))
+                {
+                    int nextNum = num + 1;
+                    string candidatePadded = $"{prefix}{nextNum.ToString(new string('0', numStr.Length))}";
+                    if (Find(candidatePadded) != null && System.IO.File.Exists(StorySceneRepository.GetSceneFilePath(candidatePadded)))
+                    {
+                        return candidatePadded;
+                    }
+
+                    string candidateSimple = $"{prefix}{nextNum}";
+                    if (Find(candidateSimple) != null && System.IO.File.Exists(StorySceneRepository.GetSceneFilePath(candidateSimple)))
+                    {
+                        return candidateSimple;
+                    }
+
+                    // Déduction souple : chercher tout scénario enregistré dont le suffixe numérique est nextNum
+                    foreach (var def in All)
+                    {
+                        var m = System.Text.RegularExpressions.Regex.Match(def.Id, @"[_\-\s](\d+)$");
+                        if (m.Success && int.TryParse(m.Groups[1].Value, out int defNum) && defNum == nextNum)
+                        {
+                            string p = StorySceneRepository.GetSceneFilePath(def.Id);
+                            if (System.IO.File.Exists(p))
+                            {
+                                return def.Id;
+                            }
+                        }
+                    }
+                }
+            }
+
+            // Priorité 4 : Fallback par position dans le catalogue trié naturellement
+            var allList = new List<ScenarioDefinition>(All);
+            allList.Sort((a, b) =>
+            {
+                int volComp = string.Compare(a.Volume, b.Volume, System.StringComparison.OrdinalIgnoreCase);
+                if (volComp != 0) return volComp;
+
+                var ma = System.Text.RegularExpressions.Regex.Match(a.Id, @"(\d+)$");
+                var mb = System.Text.RegularExpressions.Regex.Match(b.Id, @"(\d+)$");
+                if (ma.Success && mb.Success && int.TryParse(ma.Value, out int na) && int.TryParse(mb.Value, out int nb) && na != nb)
+                {
+                    return na.CompareTo(nb);
+                }
+                return string.Compare(a.Id, b.Id, System.StringComparison.OrdinalIgnoreCase);
+            });
+
+            int currentIndex = allList.FindIndex(s => string.Equals(s.Id, currentScenarioId, System.StringComparison.OrdinalIgnoreCase));
+            if (currentIndex >= 0 && currentIndex + 1 < allList.Count)
+            {
+                return allList[currentIndex + 1].Id;
+            }
+
+            return null;
         }
     }
 }

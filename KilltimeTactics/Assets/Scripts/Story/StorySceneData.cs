@@ -398,6 +398,7 @@ namespace Killtime.Story.Data
         public string LinkedMapName = "";
         public string FirstNodeId = "";
         public string EnvironmentId = "";
+        public string NextSceneId = "";
 
         public Killtime.UI.TacticalMapSaveData EmbeddedMap;
         public List<SceneActorSpawnData> Actors = new();

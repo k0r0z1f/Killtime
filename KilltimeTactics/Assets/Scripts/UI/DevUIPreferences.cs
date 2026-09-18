@@ -117,10 +117,11 @@ namespace Killtime.UI
         public bool VoiceEnabled = true;
         public string VoiceInputDevice = "";
         public float VoiceOutputVolume = 1.0f;
-        public float VoiceInputGain = 1.0f;
+        public float VoiceInputGain = 1.25f;
+        public bool VoiceAgcEnabled = true;
         public int VoiceActivationMode = 0; // 0 = VAD (Détection vocale), 1 = PTT (Push-to-Talk), 2 = Continu
-        public float VoiceVadThreshold = 0.02f; // ~ -34 dB
-        public float VoiceVadHangoverMs = 350f;
+        public float VoiceVadThreshold = 0.008f; // ~ -42 dB (sensibilité adaptée pour micros portables calmes)
+        public float VoiceVadHangoverMs = 400f; // Maintien doux entre les mots pour éliminer les coupures
         public int VoicePttKey = 118; // (int)KeyCode.V
         public bool VoiceNoiseGateEnabled = true;
         public bool VoiceNoiseReductionEnabled = true;

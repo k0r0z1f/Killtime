@@ -16,7 +16,7 @@ namespace Killtime.Multi.Voice
         public string Username { get; private set; }
 
         [Header("Contrôle Audio Joueur")]
-        [Range(0f, 2f)] public float PlayerVolume = 1.0f;
+        [Range(0f, 3f)] public float PlayerVolume = 1.0f;
         public bool IsMuted = false;
 
         public bool IsSpeaking { get; private set; }
@@ -39,8 +39,12 @@ namespace Killtime.Multi.Voice
         private int _sourceSampleRate = 16000;
         private double _readFraction = 0.0;
         private bool _isPrebuffering = true;
-        private const int PrebufferThresholdSamples = 960; // 1 trame à 16kHz (60ms) pour reprise immédiate
         private float _fadeGain = 0.0f;
+
+        // Cache thread-safe pour OnAudioFilterRead (évite les appels Unity API depuis le thread audio FMOD)
+        private volatile int _cachedOutputRate = 48000;
+        private float _cachedMasterVoiceGain = 1.0f;
+        private bool _cachedIsDeafened = false;
 
         private float _lastAudioPacketTime = -999f;
         private const float SpeakingTimeoutSec = 0.35f;
@@ -62,6 +66,7 @@ namespace Killtime.Multi.Voice
 
             int outputRate = AudioSettings.outputSampleRate;
             if (outputRate <= 0) outputRate = 48000;
+            _cachedOutputRate = outputRate;
 
             // Clip silencieux infini pour déclencher OnAudioFilterRead
             if (_silentClip == null)
@@ -83,6 +88,20 @@ namespace Killtime.Multi.Voice
             {
                 try { OnSpeakingChanged?.Invoke(ClientId, IsSpeaking); }
                 catch (Exception e) { Debug.LogException(e); }
+            }
+
+            // Rafraîchissement sécurisé des états pour le thread audio
+            int currentRate = AudioSettings.outputSampleRate;
+            if (currentRate > 0 && currentRate != _cachedOutputRate)
+            {
+                _cachedOutputRate = currentRate;
+            }
+
+            var mgr = VTTVoiceManager.Instance;
+            if (mgr != null)
+            {
+                _cachedMasterVoiceGain = mgr.MasterOutputVolume;
+                _cachedIsDeafened = mgr.IsDeafened;
             }
         }
 
@@ -121,12 +140,15 @@ namespace Killtime.Multi.Voice
                     _bufferedSamples++;
                 }
 
-                if (_isPrebuffering && _bufferedSamples >= PrebufferThresholdSamples)
+                int prebufferThreshold = Mathf.Max(480, (_sourceSampleRate * 90) / 1000);
+                if (_isPrebuffering && _bufferedSamples >= prebufferThreshold)
                 {
                     _isPrebuffering = false;
                 }
             }
         }
+
+        private float _smoothedMakeup = 1.0f;
 
         /// <summary>
         /// Callback audio Unity (s'exécute sur le thread audio à AudioSettings.outputSampleRate, ex: 48 kHz).
@@ -134,32 +156,35 @@ namespace Killtime.Multi.Voice
         /// </summary>
         private void OnAudioFilterRead(float[] data, int channels)
         {
-            float masterVoiceGain = VTTVoiceManager.Instance != null ? VTTVoiceManager.Instance.MasterOutputVolume : 1.0f;
-            bool isDeafened = VTTVoiceManager.Instance != null && VTTVoiceManager.Instance.IsDeafened;
-            float effectiveGain = (IsMuted || isDeafened) ? 0.0f : (PlayerVolume * masterVoiceGain);
+            // Normalisation douce si le pair distant a un micro particulièrement faible (< -26 dBFS)
+            float peerRms = CurrentPeerRms;
+            float targetMakeup = (peerRms > 0.002f && peerRms < 0.05f) ? Mathf.Clamp(0.075f / Mathf.Max(0.012f, peerRms), 1.0f, 2.4f) : 1.0f;
+            _smoothedMakeup = Mathf.Lerp(_smoothedMakeup, targetMakeup, 0.01f);
 
-            int outputRate = AudioSettings.outputSampleRate;
-            if (outputRate <= 0) outputRate = 48000;
+            float effectiveGain = (IsMuted || _cachedIsDeafened) ? 0.0f : (PlayerVolume * _cachedMasterVoiceGain * _smoothedMakeup);
 
+            int outputRate = _cachedOutputRate > 0 ? _cachedOutputRate : 48000;
             double baseStep = (double)_sourceSampleRate / (double)outputRate;
             int samplesNeeded = data.Length / channels;
 
             lock (_bufferLock)
             {
                 // Asservissement de vitesse de lecture pour compenser la dérive d'horloge matérielle
-                int targetBuffer = 960;
+                int targetBuffer = Mathf.Max(480, (_sourceSampleRate * 90) / 1000);
+                int marginHigh = targetBuffer / 2;
+                int marginLow = targetBuffer / 3;
                 double driftFactor = 1.0;
-                if (_bufferedSamples > targetBuffer + 480)
+                if (_bufferedSamples > targetBuffer + marginHigh)
                 {
                     driftFactor = 1.012; // Écoulement accéléré imperceptible pour résorber l'excédent
                 }
-                else if (_bufferedSamples < targetBuffer - 320 && _bufferedSamples > 0)
+                else if (_bufferedSamples < targetBuffer - marginLow && _bufferedSamples > 0)
                 {
                     driftFactor = 0.988; // Écoulement ralenti imperceptible pour éviter la disette
                 }
                 double step = baseStep * driftFactor;
 
-                float fadeStep = 1f / 32f;
+                float fadeStep = 1f / 48f;
 
                 for (int i = 0; i < samplesNeeded; i++)
                 {
@@ -187,14 +212,15 @@ namespace Killtime.Multi.Voice
                             {
                                 _bufferedSamples = 0;
                                 _readFraction = 0.0;
-                                _fadeGain = 0.0f;
+                                _isPrebuffering = true; // Réarme le prébuffering pour éviter la famine et le hachage
                                 break;
                             }
                         }
                     }
                     else
                     {
-                        _fadeGain = 0.0f;
+                        // En disette ou prébuffering, déclin progressif pour éviter tout pop de coupure brutale
+                        _fadeGain = Mathf.MoveTowards(_fadeGain, 0.0f, fadeStep);
                     }
 
                     for (int ch = 0; ch < channels; ch++)

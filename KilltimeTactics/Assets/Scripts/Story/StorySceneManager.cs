@@ -20,6 +20,7 @@ namespace Killtime.Story
         [SerializeField] private TacticalHexGrid _grid;
         [SerializeField] private TurnManager _turnManager;
         [SerializeField] private CombatDevArena _arena;
+        [SerializeField] private SceneTransitionOverlay _transitionOverlay;
 
         [Header("État de Scène")]
         [SerializeField] private string _activeScenarioId = "";
@@ -27,11 +28,14 @@ namespace Killtime.Story
         [SerializeField] private bool _autoPlayOnStart = false;
 
         public bool IsSceneLoading { get; private set; }
-        public IStorySceneController CurrentSceneController { get; private set; }
+        public bool IsTransitioning => (_transitionOverlay != null && _transitionOverlay.IsTransitioning) || IsSceneLoading;
+        public IStorySceneController CurrentSceneController { get; set; }
+        public string ActiveScenarioId => _activeScenarioId;
 
         public event Action<string> OnSceneLoadStarted;
         public event Action<string> OnSceneLoadCompleted;
         public event Action OnSceneCleanedUp;
+        public event Action<string, string> OnSceneTransitionStarted; // (fromSceneId, toSceneId)
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Bootstrap() => EnsureInstance();
@@ -64,30 +68,148 @@ namespace Killtime.Story
             EnsureDependencies();
         }
 
+        private void OnEnable()
+        {
+            EnsureDependencies();
+            SubscribeEvents();
+        }
+
+        private void OnDisable()
+        {
+            UnsubscribeEvents();
+        }
+
         private void Start()
         {
             EnsureDependencies();
+            SubscribeEvents();
+
             if (_autoPlayOnStart && string.IsNullOrEmpty(_activeScenarioId))
             {
-                StartScenario(_autoPlayScenarioId);
+                StartScenario(_autoPlayScenarioId, useTransition: true);
             }
         }
 
         private void EnsureDependencies()
         {
             if (_director == null) _director = ScenarioDirector.EnsureInstance();
+            if (_transitionOverlay == null) _transitionOverlay = SceneTransitionOverlay.EnsureInstance();
             if (_grid == null) _grid = FindAnyObjectByType<TacticalHexGrid>();
             if (_turnManager == null) _turnManager = FindAnyObjectByType<TurnManager>();
             if (_arena == null) _arena = FindAnyObjectByType<CombatDevArena>();
         }
 
+        private void SubscribeEvents()
+        {
+            if (_director != null)
+            {
+                _director.ScenarioCompleted -= HandleScenarioCompleted;
+                _director.ScenarioCompleted += HandleScenarioCompleted;
+            }
+        }
+
+        private void UnsubscribeEvents()
+        {
+            if (_director != null)
+            {
+                _director.ScenarioCompleted -= HandleScenarioCompleted;
+            }
+        }
+
+        private void HandleScenarioCompleted(ScenarioDefinition scenario)
+        {
+            CompleteCurrentSceneAndAdvance();
+        }
+
+        /// <summary>
+        /// Conclut la scène actuelle et enchaîne directement avec la scène suivante,
+        /// en appliquant l'effet de transition cinématique.
+        /// </summary>
+        public void CompleteCurrentSceneAndAdvance(string overrideNextScenarioId = null)
+        {
+            if (IsTransitioning) return;
+
+            string nextId = overrideNextScenarioId;
+            if (string.IsNullOrWhiteSpace(nextId))
+            {
+                nextId = ScenarioCatalog.GetNextScenarioId(_activeScenarioId);
+            }
+
+            if (!string.IsNullOrWhiteSpace(nextId))
+            {
+                Debug.Log($"[StorySceneManager] Enchaînement de la scène '{_activeScenarioId}' vers '{nextId}'");
+                StartScenario(nextId, useTransition: true);
+            }
+            else
+            {
+                Debug.Log($"[StorySceneManager] Aucune scène suivante détectée après '{_activeScenarioId}'. Fin de séquence.");
+                StartCoroutine(HandleCampaignCompleteRoutine());
+            }
+        }
+
+        private IEnumerator HandleCampaignCompleteRoutine()
+        {
+            var def = _director?.ActiveScenario;
+            string vol = def != null ? def.Volume : "CAMPAGNE TERMINÉE";
+            string title = def != null ? def.Title : "Fin de Mission";
+
+            EnsureDependencies();
+            yield return _transitionOverlay.PlayCampaignCompleteRoutine(vol, title, () =>
+            {
+                // Retour à l'état neutre après fermeture de l'écran de fin
+                CleanupCurrentScene();
+            });
+        }
+
+        /// <summary>
+        /// Démarre un scénario avec ou sans transition cinématique.
+        /// </summary>
+        public void StartScenario(string scenarioId, bool useTransition = true)
+        {
+            if (IsTransitioning) return;
+
+            if (useTransition)
+            {
+                StartCoroutine(LoadScenarioWithTransitionRoutine(scenarioId));
+            }
+            else
+            {
+                StartCoroutine(LoadScenarioRoutine(scenarioId));
+            }
+        }
+
         public void StartScenario(string scenarioId)
         {
-            if (IsSceneLoading) return;
-            StartCoroutine(LoadScenarioRoutine(scenarioId));
+            StartScenario(scenarioId, useTransition: true);
+        }
+
+        private IEnumerator LoadScenarioWithTransitionRoutine(string scenarioId)
+        {
+            EnsureDependencies();
+            OnSceneTransitionStarted?.Invoke(_activeScenarioId, scenarioId);
+
+            // Charger les métadonnées de la scène suivante pour alimenter le carton de titre
+            string nextVolume = "MISSION TACTIQUE";
+            string nextTitle = scenarioId;
+            string nextCanon = "";
+
+            if (Story.Data.StorySceneRepository.TryLoadSceneData(scenarioId, out var previewData))
+            {
+                if (!string.IsNullOrWhiteSpace(previewData.Volume)) nextVolume = previewData.Volume;
+                if (!string.IsNullOrWhiteSpace(previewData.Title)) nextTitle = previewData.Title;
+                if (!string.IsNullOrWhiteSpace(previewData.CanonReference)) nextCanon = previewData.CanonReference;
+            }
+
+            // Lancer la transition cinématique
+            yield return _transitionOverlay.PlaySceneTransitionRoutine(nextVolume, nextTitle, nextCanon, () => LoadScenarioCoreRoutine(scenarioId));
         }
 
         private IEnumerator LoadScenarioRoutine(string scenarioId)
+        {
+            yield return LoadScenarioCoreRoutine(scenarioId);
+        }
+
+        private IEnumerator LoadScenarioCoreRoutine(string scenarioId)
         {
             IsSceneLoading = true;
             OnSceneLoadStarted?.Invoke(scenarioId);
@@ -178,7 +300,7 @@ namespace Killtime.Story
 
         public void ProgressToNextNode()
         {
-            if (IsSceneLoading || CombatHUD.IsPaused) return;
+            if (IsTransitioning || CombatHUD.IsPaused) return;
             _director?.Continue();
         }
     }

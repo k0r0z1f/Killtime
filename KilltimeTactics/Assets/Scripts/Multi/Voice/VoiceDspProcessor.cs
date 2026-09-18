@@ -24,12 +24,18 @@ namespace Killtime.Multi.Voice
         public bool AntiKeyboardFilterEnabled = true;
         public bool IsKeyboardDetected { get; private set; }
 
-        /// <summary>Seuil d'ouverture du Noise Gate en valeur linéaire [0.001f .. 0.25f] (ex: 0.02f ~ -34 dB).</summary>
-        public float GateThreshold = 0.02f;
+        /// <summary>Contrôle automatique du gain (AGC) pour normaliser les micros de PC portables trop faibles.</summary>
+        public bool AutoGainEnabled = true;
+        public float TargetSpeechRms = 0.09f; // ~ -21 dBFS (volume nominal clair)
+        public float CurrentAgcGain => _currentAgcGain;
+        private float _currentAgcGain = 1.0f;
+
+        /// <summary>Seuil d'ouverture du Noise Gate en valeur linéaire [0.001f .. 0.25f] (ex: 0.008f ~ -42 dB).</summary>
+        public float GateThreshold = 0.008f;
         /// <summary>Durée de maintien du Gate ouvert après passage sous le seuil (secondes).</summary>
-        public float GateHoldTimeSec = 0.18f;
+        public float GateHoldTimeSec = 0.35f;
         /// <summary>Durée du fondu de fermeture (secondes).</summary>
-        public float GateReleaseTimeSec = 0.08f;
+        public float GateReleaseTimeSec = 0.10f;
         /// <summary>Durée du fondu d'ouverture (secondes).</summary>
         public float GateAttackTimeSec = 0.01f;
 
@@ -170,13 +176,13 @@ namespace Killtime.Multi.Voice
 
             // 2b. Analyse multi-blocs pour discrimination des bruits d'impact (clavier / souris)
             bool isKeyboardTransient = false;
-            if (AntiKeyboardFilterEnabled && rms >= GateThreshold)
+            if (AntiKeyboardFilterEnabled && rms >= GateThreshold && rms < 0.15f)
             {
                 int subBlockSize = count / 8;
                 float maxSubRms = 0f;
                 float minSubRms = float.MaxValue;
                 int activeSubBlocks = 0;
-                float subThreshold = Mathf.Max(0.008f, GateThreshold * 0.70f);
+                float subThreshold = Mathf.Max(0.005f, GateThreshold * 0.60f);
 
                 for (int b = 0; b < 8; b++)
                 {
@@ -196,7 +202,8 @@ namespace Killtime.Multi.Voice
                 }
 
                 float crestFactor = (rms > 0.001f) ? (peak / rms) : 0f;
-                if (activeSubBlocks <= 2 && maxSubRms > 2.2f * (minSubRms + 0.002f) && crestFactor > 2.8f)
+                // Un clic clavier réel est un pic isolé (1 seul sous-bloc actif) et un facteur de crête extrême (> 4.0)
+                if (activeSubBlocks <= 1 && maxSubRms > 3.8f * (minSubRms + 0.003f) && crestFactor > 4.0f)
                 {
                     isKeyboardTransient = true;
                 }
@@ -224,19 +231,34 @@ namespace Killtime.Multi.Voice
                 }
             }
 
+            // 3b. Contrôle Automatique de Gain (AGC) pour amplifier dynamiquement les micros trop faibles
+            if (AutoGainEnabled)
+            {
+                if (IsGateOpen && rms > 0.002f)
+                {
+                    float targetGain = Mathf.Clamp(TargetSpeechRms / Mathf.Max(0.005f, rms), 0.8f, 5.0f);
+                    float agcRate = (targetGain < _currentAgcGain) ? 0.20f : 0.04f;
+                    _currentAgcGain = Mathf.Lerp(_currentAgcGain, targetGain, agcRate);
+                }
+            }
+            else
+            {
+                _currentAgcGain = Mathf.MoveTowards(_currentAgcGain, 1.0f, 0.05f);
+            }
+
             float targetGateGain = (!NoiseGateEnabled || IsGateOpen) ? 1.0f : 0.0f;
             float sampleAttack = 1f - Mathf.Exp(-1f / (_sampleRate * Mathf.Max(0.001f, GateAttackTimeSec)));
             float sampleRelease = 1f - Mathf.Exp(-1f / (_sampleRate * Mathf.Max(0.001f, GateReleaseTimeSec)));
 
-            // 4. Expandeur descendant progressif & lissage de porte continu sans clics
+            // 4. Expandeur descendant progressif (actif uniquement hors parole pour ne jamais étouffer la voix)
             float bassSum = 0f, lowMidSum = 0f, highMidSum = 0f, trebleSum = 0f;
             float snr = rms / Mathf.Max(0.001f, _noiseFloorRms);
             float expansionGain = 1.0f;
 
-            if (NoiseReductionEnabled && _noiseFloorRms > 0.001f && snr < 2.5f)
+            if (NoiseReductionEnabled && !IsGateOpen && _noiseFloorRms > 0.001f && snr < 1.5f)
             {
-                float normalizedSnr = Mathf.Clamp01((snr - 1.0f) / 1.5f);
-                expansionGain = Mathf.Lerp(0.20f, 1.0f, normalizedSnr);
+                float normalizedSnr = Mathf.Clamp01((snr - 1.0f) / 0.5f);
+                expansionGain = Mathf.Lerp(0.35f, 1.0f, normalizedSnr);
             }
 
             for (int i = 0; i < count; i++)
@@ -254,17 +276,20 @@ namespace Killtime.Multi.Voice
                 }
                 else if (AntiKeyboardFilterEnabled && IsGateOpen)
                 {
-                    float maxAllowed = Mathf.Max(0.025f, rms * 2.8f);
+                    float maxAllowed = Mathf.Max(0.04f, rms * 3.5f);
                     if (Mathf.Abs(s) > maxAllowed)
                     {
                         float excess = Mathf.Abs(s) - maxAllowed;
-                        s = Mathf.Sign(s) * (maxAllowed + 0.25f * excess);
+                        s = Mathf.Sign(s) * (maxAllowed + 0.35f * excess);
                     }
                 }
 
                 float gateCoeff = (targetGateGain > _currentGateGain) ? sampleAttack : sampleRelease;
                 _currentGateGain += gateCoeff * (targetGateGain - _currentGateGain);
                 s *= _currentGateGain;
+
+                // Application du gain automatique (AGC)
+                s *= _currentAgcGain;
 
                 if (LimiterEnabled)
                 {

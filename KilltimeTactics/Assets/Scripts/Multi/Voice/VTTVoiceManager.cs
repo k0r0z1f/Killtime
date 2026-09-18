@@ -94,7 +94,23 @@ namespace Killtime.Multi.Voice
         private AudioClip _micClip;
         private bool _isRecording;
         private int _lastReadHead;
+        private bool _capturePrimed = false;
         private readonly List<string> _availableDevices = new();
+
+        // Fréquence matérielle et canaux du microphone (détectés dynamiquement)
+        private int _capturedSampleRate = 16000;
+        private int _capturedChannels = 1;
+        public int CapturedSampleRate => _capturedSampleRate;
+        public int CapturedChannels => _capturedChannels;
+
+        // Rééchantillonneur temps réel Microphone -> Pipeline
+        private double _resamplePos = 1.0;
+        private float _lastInputSample = 0f;
+
+        // Filtre anti-repliement biquad passe-bas (si sous-échantillonnage micro 48k/44k -> 16k)
+        private bool _antiAliasingNeeded = false;
+        private float _aaB0, _aaB1, _aaB2, _aaA1, _aaA2;
+        private float _aaX1, _aaX2, _aaY1, _aaY2;
 
         // Tampons d'accumulation audio (60ms par trame @ 16kHz = 960 échantillons)
         private const int FrameDurationMs = 60;
@@ -105,7 +121,7 @@ namespace Killtime.Multi.Voice
 
         // VAD / PTT state
         private bool _isLocalSpeaking;
-        private float _vadHangoverSec = 0.35f;
+        private float _vadHangoverSec = 0.42f;
         private float _vadHangoverTimer;
         private int _packetSequence;
         private bool _wasTransmitting;
@@ -153,6 +169,55 @@ namespace Killtime.Multi.Voice
             _dsp.AntiKeyboardFilterEnabled = _antiKeyboardFilterEnabled || _radioCommsEffectEnabled;
             if (_voiceChanger == null) _voiceChanger = new VoiceChangerProcessor(_sampleRate);
             else _voiceChanger.SetSampleRate(_sampleRate);
+
+            _resamplePos = 1.0;
+            _lastInputSample = 0f;
+            _accumCount = 0;
+            SetupAntiAliasingFilter(_capturedSampleRate, _sampleRate);
+        }
+
+        private void SetupAntiAliasingFilter(int inRate, int outRate)
+        {
+            _aaX1 = _aaX2 = _aaY1 = _aaY2 = 0f;
+            if (inRate <= outRate)
+            {
+                _antiAliasingNeeded = false;
+                return;
+            }
+
+            _antiAliasingNeeded = true;
+            float fs = inRate;
+            float fc = Mathf.Min(7200f, outRate * 0.44f);
+            float w0 = 2f * Mathf.PI * fc / fs;
+            float cosW0 = Mathf.Cos(w0);
+            float sinW0 = Mathf.Sin(w0);
+            float alpha = sinW0 / (2f * 0.7071f);
+
+            float a0 = 1f + alpha;
+            _aaB0 = ((1f - cosW0) / 2f) / a0;
+            _aaB1 = (1f - cosW0) / a0;
+            _aaB2 = ((1f - cosW0) / 2f) / a0;
+            _aaA1 = (-2f * cosW0) / a0;
+            _aaA2 = (1f - alpha) / a0;
+        }
+
+        private void ApplyAntiAliasingFilter(float[] samples, int count)
+        {
+            if (!_antiAliasingNeeded || samples == null || count <= 0) return;
+            for (int i = 0; i < count; i++)
+            {
+                float x = samples[i];
+                float y = _aaB0 * x + _aaB1 * _aaX1 + _aaB2 * _aaX2 - _aaA1 * _aaY1 - _aaA2 * _aaY2;
+                if (Mathf.Abs(y) < 1e-15f) y = 0f;
+                else if (y > 1.0f) y = 1.0f;
+                else if (y < -1.0f) y = -1.0f;
+
+                _aaX2 = _aaX1;
+                _aaX1 = x;
+                _aaY2 = _aaY1;
+                _aaY1 = y;
+                samples[i] = y;
+            }
         }
 
         private void OnEnable()
@@ -232,9 +297,17 @@ namespace Killtime.Multi.Voice
                 _micClip = Microphone.Start(device, true, 10, targetFreq);
                 _isRecording = (_micClip != null);
                 _lastReadHead = 0;
+                _capturePrimed = false;
                 _accumCount = 0;
+                _resamplePos = 1.0;
+                _lastInputSample = 0f;
+
+                _capturedSampleRate = (_micClip != null && _micClip.frequency > 0) ? _micClip.frequency : targetFreq;
+                _capturedChannels = (_micClip != null && _micClip.channels > 0) ? _micClip.channels : 1;
+                SetupAntiAliasingFilter(_capturedSampleRate, _sampleRate);
+
                 _dsp?.Reset();
-                Debug.Log($"[VTTVoiceManager] Capture démarrée sur '{device ?? "Défaut"}' @ {targetFreq} Hz.");
+                Debug.Log($"[VTTVoiceManager] Capture démarrée sur '{device ?? "Défaut"}' @ {_capturedSampleRate} Hz ({_capturedChannels} ch) -> pipeline {_sampleRate} Hz.");
             }
             catch (Exception e)
             {
@@ -263,66 +336,175 @@ namespace Killtime.Multi.Voice
             }
         }
 
+        /// <summary>
+        /// Rééchantillonne un flux ou tampon audio d'une fréquence source vers une fréquence cible (ex: 48k -> 16k).
+        /// </summary>
+        public static float[] ResampleBuffer(float[] input, int inRate, int outRate)
+        {
+            if (input == null || input.Length == 0) return Array.Empty<float>();
+            if (inRate <= 0 || outRate <= 0 || inRate == outRate) return (float[])input.Clone();
+
+            double step = (double)inRate / (double)outRate;
+            int outCount = Mathf.RoundToInt((float)(input.Length * (double)outRate / (double)inRate));
+            float[] output = new float[outCount];
+
+            double pos = 0.0;
+            int inLen = input.Length;
+
+            for (int i = 0; i < outCount; i++)
+            {
+                int idx = (int)pos;
+                float frac = (float)(pos - idx);
+                float s0 = (idx < inLen) ? input[idx] : 0f;
+                float s1 = (idx + 1 < inLen) ? input[idx + 1] : s0;
+                output[i] = s0 + frac * (s1 - s0);
+                pos += step;
+            }
+
+            return output;
+        }
+
+        /// <summary>
+        /// Extrait le canal mono principal (Canal 0) d'un flux audio entrelacé multicanal.
+        /// Évite absolument l'annulation de phase fatale ((L+R)/2 = 0) causée par l'inversion de phase des micros arrays Windows,
+        /// et garantit l'absence totale de sauts de phase (popping / craquements) dus à des commutations intempestives de canal.
+        /// </summary>
+        public static float[] ExtractPrimaryMonoChannel(float[] rawBuffer, int channels, int samplesToRead)
+        {
+            if (rawBuffer == null || samplesToRead <= 0) return Array.Empty<float>();
+            if (channels <= 1) return rawBuffer;
+
+            float[] monoSamples = new float[samplesToRead];
+            for (int i = 0; i < samplesToRead; i++)
+            {
+                monoSamples[i] = rawBuffer[i * channels];
+            }
+            return monoSamples;
+        }
+
         private void Update()
         {
             if (!_isRecording || _micClip == null) return;
 
             string device = string.IsNullOrEmpty(_selectedDevice) ? null : _selectedDevice;
             int currentHead = Microphone.GetPosition(device);
-            if (currentHead < 0 || currentHead == _lastReadHead) return;
+            if (currentHead < 0) return;
 
             int clipSamples = _micClip.samples;
-            int samplesToRead;
-            if (currentHead >= _lastReadHead)
+            // Marge de sécurité (25ms) pour éviter de lire sur la tête d'écriture matérielle de Windows (WASAPI race condition / crackles)
+            int safetyMargin = Mathf.Max(512, (_capturedSampleRate * 25) / 1000);
+
+            if (!_capturePrimed)
             {
-                samplesToRead = currentHead - _lastReadHead;
+                // Attente d'un tampon initial suffisant avant d'engager la lecture
+                if (currentHead < safetyMargin * 2) return;
+                _lastReadHead = (currentHead - safetyMargin + clipSamples) % clipSamples;
+                _capturePrimed = true;
+                return;
             }
-            else
-            {
-                samplesToRead = (clipSamples - _lastReadHead) + currentHead;
-            }
+
+            int targetHead = (currentHead - safetyMargin + clipSamples) % clipSamples;
+            if (targetHead == _lastReadHead) return;
+
+            int samplesToRead = (targetHead >= _lastReadHead)
+                ? (targetHead - _lastReadHead)
+                : ((clipSamples - _lastReadHead) + targetHead);
 
             if (samplesToRead <= 0) return;
 
-            // Lecture et accumulation
-            float[] tempBuffer = new float[samplesToRead];
-            if (currentHead >= _lastReadHead)
+            // Détection de décrochage anormal (si l'application a gelé)
+            if (samplesToRead >= clipSamples - safetyMargin)
             {
-                _micClip.GetData(tempBuffer, _lastReadHead);
+                _lastReadHead = (currentHead - safetyMargin + clipSamples) % clipSamples;
+                return;
+            }
+
+            // Lecture et accumulation (gestion mono / multi-canaux)
+            int channels = _capturedChannels > 0 ? _capturedChannels : 1;
+            int totalFloats = samplesToRead * channels;
+            float[] rawBuffer = new float[totalFloats];
+
+            if (_lastReadHead + samplesToRead <= clipSamples)
+            {
+                _micClip.GetData(rawBuffer, _lastReadHead);
             }
             else
             {
                 int part1 = clipSamples - _lastReadHead;
-                float[] b1 = new float[part1];
+                float[] b1 = new float[part1 * channels];
                 _micClip.GetData(b1, _lastReadHead);
-                Array.Copy(b1, 0, tempBuffer, 0, part1);
+                Array.Copy(b1, 0, rawBuffer, 0, b1.Length);
 
-                if (currentHead > 0)
+                int part2 = samplesToRead - part1;
+                if (part2 > 0)
                 {
-                    float[] b2 = new float[currentHead];
+                    float[] b2 = new float[part2 * channels];
                     _micClip.GetData(b2, 0);
-                    Array.Copy(b2, 0, tempBuffer, part1, currentHead);
+                    Array.Copy(b2, 0, rawBuffer, b1.Length, b2.Length);
                 }
             }
-            _lastReadHead = currentHead;
+            _lastReadHead = (_lastReadHead + samplesToRead) % clipSamples;
 
-            // Découpage en trames de 60ms
-            int readOffset = 0;
-            while (readOffset < samplesToRead)
+            // Conversion en mono si le micro capture en stéréo ou plus (cas des micros arrays de PC portables) :
+            // Ne JAMAIS moyenner aveuglément L et R (risque fatal d'opposition de phase 180° et de filtre en peigne destructeur).
+            // On sélectionne le canal principal (Canal 0) ou le canal le plus dynamique s'il est plus fort.
+            float[] monoSamples = ExtractPrimaryMonoChannel(rawBuffer, channels, samplesToRead);
+
+            // Filtre anti-repliement si la fréquence du micro dépasse la fréquence du codec (ex: 48kHz -> 16kHz)
+            if (_antiAliasingNeeded)
             {
-                int needed = _frameSize - _accumCount;
-                int available = samplesToRead - readOffset;
-                int toCopy = Mathf.Min(needed, available);
+                ApplyAntiAliasingFilter(monoSamples, samplesToRead);
+            }
 
-                Array.Copy(tempBuffer, readOffset, _accumulator, _accumCount, toCopy);
-                _accumCount += toCopy;
-                readOffset += toCopy;
-
-                if (_accumCount >= _frameSize)
+            // Découpage et rééchantillonnage continu vers les trames de 60ms du codec
+            if (_capturedSampleRate == _sampleRate)
+            {
+                // Fréquences identiques (ex: 16 kHz sous Linux) : transfert direct
+                int readOffset = 0;
+                while (readOffset < samplesToRead)
                 {
-                    ProcessAudioFrame(_accumulator, _frameSize);
-                    _accumCount = 0;
+                    int needed = _frameSize - _accumCount;
+                    int available = samplesToRead - readOffset;
+                    int toCopy = Mathf.Min(needed, available);
+
+                    Array.Copy(monoSamples, readOffset, _accumulator, _accumCount, toCopy);
+                    _accumCount += toCopy;
+                    readOffset += toCopy;
+
+                    if (_accumCount >= _frameSize)
+                    {
+                        ProcessAudioFrame(_accumulator, _frameSize);
+                        _accumCount = 0;
+                    }
                 }
+            }
+            else
+            {
+                // Fréquences différentes (ex: 48 kHz ou 44.1 kHz sous Windows vers 16 kHz) :
+                // Rééchantillonneur continu par interpolation linéaire sans à-coup entre les blocs
+                double step = (double)_capturedSampleRate / (double)_sampleRate;
+                int M = samplesToRead;
+
+                while (_resamplePos <= M)
+                {
+                    int i = (int)_resamplePos;
+                    float frac = (float)(_resamplePos - i);
+                    float s0 = (i == 0) ? _lastInputSample : monoSamples[i - 1];
+                    float s1 = (i < M) ? monoSamples[i] : s0;
+                    float sample = s0 + frac * (s1 - s0);
+
+                    _accumulator[_accumCount++] = sample;
+                    if (_accumCount >= _frameSize)
+                    {
+                        ProcessAudioFrame(_accumulator, _frameSize);
+                        _accumCount = 0;
+                    }
+
+                    _resamplePos += step;
+                }
+
+                _resamplePos -= M;
+                _lastInputSample = monoSamples[M - 1];
             }
         }
 
@@ -458,8 +640,9 @@ namespace Killtime.Multi.Voice
                 ApplyLimiterBuffer(decoded, decoded.Length);
             }
 
+            int packetSampleRate = (payload.sampleRate > 0) ? payload.sampleRate : codec.SampleRate;
             var player = GetOrCreateRemotePlayer(fromClientId, fromUsername);
-            player.EnqueueSamples(decoded);
+            player.EnqueueSamples(decoded, packetSampleRate);
         }
 
         public VTTRemoteVoicePlayer GetOrCreateRemotePlayer(string clientId, string username)
@@ -604,6 +787,14 @@ namespace Killtime.Multi.Voice
             SavePreferences();
         }
 
+        public bool AutoGainEnabled => _dsp != null && _dsp.AutoGainEnabled;
+
+        public void SetAutoGainEnabled(bool enabled)
+        {
+            if (_dsp != null) _dsp.AutoGainEnabled = enabled;
+            SavePreferences();
+        }
+
         public void SetOutputLimiterEnabled(bool enabled)
         {
             _outputLimiterEnabled = enabled;
@@ -744,8 +935,8 @@ namespace Killtime.Multi.Voice
             if (_gateDeleterEnabled)
             {
                 float targetGain = isSpeaking ? 1.0f : 0.0f;
-                float attackStep = 1f - Mathf.Exp(-1f / (_sampleRate * 0.012f));
-                float releaseStep = 1f - Mathf.Exp(-1f / (_sampleRate * 0.045f));
+                float attackStep = 1f - Mathf.Exp(-1f / (_sampleRate * 0.015f));
+                float releaseStep = 1f - Mathf.Exp(-1f / (_sampleRate * 0.120f));
 
                 for (int i = 0; i < count; i++)
                 {
@@ -838,6 +1029,7 @@ namespace Killtime.Multi.Voice
             _clarityBoostAmount = p.VoiceClarityAmount > 0.01f ? p.VoiceClarityAmount : 0.65f;
             if (_dsp != null)
             {
+                _dsp.AutoGainEnabled = p.VoiceAgcEnabled;
                 _dsp.InputGain = p.VoiceInputGain;
                 _dsp.GateThreshold = p.VoiceVadThreshold;
                 _dsp.NoiseGateEnabled = p.VoiceNoiseGateEnabled;
@@ -882,6 +1074,7 @@ namespace Killtime.Multi.Voice
             p.VoiceClarityAmount = _clarityBoostAmount;
             if (_dsp != null)
             {
+                p.VoiceAgcEnabled = _dsp.AutoGainEnabled;
                 p.VoiceInputGain = _dsp.InputGain;
                 p.VoiceVadThreshold = _dsp.GateThreshold;
                 p.VoiceNoiseGateEnabled = _dsp.NoiseGateEnabled;

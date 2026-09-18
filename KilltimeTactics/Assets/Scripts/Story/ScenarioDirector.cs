@@ -13,6 +13,7 @@ namespace Killtime.Story
         public static ScenarioDirector Instance { get; private set; }
         public CampaignState State { get; private set; } = new();
         public event Action StateChanged;
+        public event Action<ScenarioDefinition> ScenarioCompleted;
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.BeforeSceneLoad)]
         private static void Bootstrap() => EnsureInstance();
@@ -130,9 +131,11 @@ namespace Killtime.Story
         public void CompleteActiveScenario()
         {
             if (ActiveScenario == null) return;
+            var completedScenario = ActiveScenario;
             State.ActiveScenarioCompleted = true;
-            State.AddJournal($"Scène terminée: {ActiveScenario.Title}.");
+            State.AddJournal($"Scène terminée: {completedScenario.Title}.");
             Commit();
+            ScenarioCompleted?.Invoke(completedScenario);
         }
 
         private void MoveTo(string nodeId)

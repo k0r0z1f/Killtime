@@ -16,7 +16,8 @@ namespace Killtime.Story
         SetRoute,
         AddFlag,
         AddInteger,
-        AddJournal
+        AddJournal,
+        LoadScene
     }
 
     [Serializable]
@@ -77,6 +78,7 @@ namespace Killtime.Story
         public string Title;
         public string CanonReference;
         public string FirstNodeId;
+        public string NextSceneId;
         public List<ScenarioNode> Nodes = new();
 
         public ScenarioNode FindNode(string nodeId) => Nodes.Find(node => node.Id == nodeId);
