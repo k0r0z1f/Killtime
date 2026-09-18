@@ -20,15 +20,13 @@ namespace Killtime.Story
         protected override Rect DefaultRect => new Rect(20f, 40f, Mathf.Min(1280f, Screen.width - 40f), Mathf.Min(840f, Screen.height - 60f));
         protected override KeyCode[] ToggleKeys => new[] { KeyCode.F8 };
 
-        private readonly string[] _tabs = { "📋 Scène & Fichier", "👥 Acteurs", "🔧 Interactables", "🎬 Nœuds & Graphe Nodal" };
-        private int _selectedTab = 3;
+        private readonly string[] _tabs = { "📋 Scène & Fichier", "🎬 Nœuds & Graphe Nodal" };
+        private int _selectedTab = 1;
         private Vector2 _scroll;
         private bool _showRawJsonPreview = false;
 
         private StorySceneData _data = new();
         private string _activeFilePath = "";
-        private int _selectedActorIndex = 0;
-        private int _selectedInteractableIndex = 0;
 
         private Vector2 _graphPan = new Vector2(80f, 80f);
         private float _zoom = 1.0f;
@@ -49,6 +47,10 @@ namespace Killtime.Story
             public bool IsAutoSuccess;
             public bool IsEvent;
             public bool IsTrigger;
+            public bool IsInteractable;
+            public bool IsNode;
+            public bool IsNodeChoice;
+            public int NodeChoiceIndex;
             public bool FromConsequence;
             public bool ConsLinkToCons;
             public bool FromChallengeLink;
@@ -58,6 +60,8 @@ namespace Killtime.Story
             public SceneDialogueChallengeData SourceChallenge;
             public SceneEventData SourceEvent;
             public SceneTriggerData SourceTrigger;
+            public SceneInteractableSpawnData SourceInteractable;
+            public SceneNodeData SourceNode;
             public SceneConsequenceData SourceConsequence;
             public Vector2 StartPos;
         }
@@ -65,6 +69,8 @@ namespace Killtime.Story
         private WireConnectionDraft _wireDraft;
         private readonly Dictionary<string, Vector2> _cachedInputSockets = new();
         private readonly Dictionary<string, Vector2> _cachedTriggerOutSockets = new();
+        private readonly Dictionary<string, Vector2> _cachedInteractableOutSockets = new();
+        private readonly Dictionary<string, Vector2> _cachedActorInSockets = new();
         private bool _hasInitializedLayout = false;
 
         // Vue : suivi du dernier cadrage pour recadrer quand la fenêtre est redimensionnée.
@@ -176,8 +182,6 @@ namespace Killtime.Story
                     _data = loaded;
                     _activeFilePath = path;
                     _hasInitializedLayout = false;
-                    _selectedActorIndex = 0;
-                    _selectedInteractableIndex = 0;
                     _focusedNodeIndex = 0;
                     CombatHUD.Instance?.AddAdvancedLog($"📖 Scène chargée : <b>{_data.Title}</b> [{_data.SceneId}]", LogCategory.MovementAndTurns, "[ÉDITEUR]", Color.cyan);
                 }
@@ -207,8 +211,6 @@ namespace Killtime.Story
             StorySceneData.EnsureDeepDefaults(_data);
             _activeFilePath = "";
             _hasInitializedLayout = false;
-            _selectedActorIndex = 0;
-            _selectedInteractableIndex = 0;
             _focusedNodeIndex = 0;
         }
 
@@ -244,19 +246,14 @@ namespace Killtime.Story
             _selectedTab = GUILayout.Toolbar(_selectedTab, _tabs, GUILayout.Height(28));
             GUILayout.Space(6);
 
-            if (_selectedTab == 3)
+            if (_selectedTab == 1)
             {
                 DrawNodesAndDialoguesTab();
             }
             else
             {
                 _scroll = GUILayout.BeginScrollView(_scroll);
-                switch (_selectedTab)
-                {
-                    case 0: DrawSceneAndDiskTab(); break;
-                    case 1: DrawActorsTab(); break;
-                    case 2: DrawInteractablesTab(); break;
-                }
+                DrawSceneAndDiskTab();
                 GUILayout.EndScrollView();
             }
         }
@@ -657,238 +654,13 @@ namespace Killtime.Story
             GUILayout.EndVertical();
         }
 
-        private void DrawActorsTab()
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<b>Acteurs Déployés ({_data.Actors.Count})</b>");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("+ Ajouter un Acteur", GUILayout.Width(150)))
-            {
-                _data.Actors.Add(new SceneActorSpawnData
-                {
-                    ActorId = $"actor_{_data.Actors.Count + 1}",
-                    DisplayName = "Nouvel Acteur",
-                    Q = 0,
-                    R = 0
-                });
-                _selectedActorIndex = _data.Actors.Count - 1;
-            }
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(4);
-
-            for (int i = 0; i < _data.Actors.Count; i++)
-            {
-                var actor = _data.Actors[i];
-                bool isSelected = (_selectedActorIndex == i);
-
-                GUILayout.BeginVertical(isSelected ? GUI.skin.box : GUI.skin.textArea);
-                GUILayout.BeginHorizontal();
-
-                string factionTag = actor.IsPlayer ? "<color=#00E5FF>[PJ]</color>" : "<color=#FF5555>[PNJ]</color>";
-                if (GUILayout.Toggle(isSelected, $"{factionTag} <b>{actor.DisplayName}</b> (<i>{actor.ActorId}</i>) — Hex ({actor.Q}, {actor.R})"))
-                {
-                    _selectedActorIndex = i;
-                }
-
-                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
-                if (GUILayout.Button("✕", GUILayout.Width(26), GUILayout.Height(18)))
-                {
-                    _data.Actors.RemoveAt(i);
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-
-                if (isSelected)
-                {
-                    DrawActorEditor(actor);
-                }
-                GUILayout.EndVertical();
-                GUILayout.Space(2);
-            }
-        }
-
-        private void DrawActorEditor(SceneActorSpawnData actor)
-        {
-            GUILayout.Space(4);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("ID Script :", GUILayout.Width(90));
-            actor.ActorId = GUILayout.TextField(actor.ActorId, GUILayout.Width(140));
-            GUILayout.Label("Nom Affiché :", GUILayout.Width(90));
-            actor.DisplayName = GUILayout.TextField(actor.DisplayName);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Position Hex Q :", GUILayout.Width(90));
-            int.TryParse(GUILayout.TextField(actor.Q.ToString(), GUILayout.Width(45)), out actor.Q);
-            GUILayout.Label("R :", GUILayout.Width(20));
-            int.TryParse(GUILayout.TextField(actor.R.ToString(), GUILayout.Width(45)), out actor.R);
-            GUILayout.Label("Orientation (°) :", GUILayout.Width(95));
-            float.TryParse(GUILayout.TextField(actor.FacingAngle.ToString("0"), GUILayout.Width(45)), out actor.FacingAngle);
-            actor.IsPlayer = GUILayout.Toggle(actor.IsPlayer, "Joueur (Allié)");
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Fiche Personnage :", GUILayout.Width(120));
-            int charIdx = Mathf.Max(0, _availableCharacterFiles.IndexOf(actor.CharacterSheetFileName));
-            if (GUILayout.Button("◀", GUILayout.Width(24)))
-            {
-                charIdx = (charIdx - 1 + _availableCharacterFiles.Count) % _availableCharacterFiles.Count;
-                actor.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
-            }
-            string charDisplay = string.IsNullOrEmpty(actor.CharacterSheetFileName) ? "(Défaut)" : actor.CharacterSheetFileName;
-            GUILayout.Label($"<b>{charDisplay}</b>", GUILayout.Width(160));
-            if (GUILayout.Button("▶", GUILayout.Width(24)))
-            {
-                charIdx = (charIdx + 1) % _availableCharacterFiles.Count;
-                actor.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
-            }
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Modèle 3D :", GUILayout.Width(90));
-            actor.ModelPrefabName = GUILayout.TextField(actor.ModelPrefabName, GUILayout.Width(140));
-            GUILayout.Label("Arme Équipée :", GUILayout.Width(95));
-            actor.EquippedWeaponName = GUILayout.TextField(actor.EquippedWeaponName);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            actor.SpawnInitially = GUILayout.Toggle(actor.SpawnInitially, "Apparition Initiale", GUILayout.Width(140));
-            GUILayout.Label("Si Nœud ID :", GUILayout.Width(80));
-            actor.SpawnOnNodeId = GUILayout.TextField(actor.SpawnOnNodeId ?? "", GUILayout.Width(140));
-            GUILayout.EndHorizontal();
-
-            actor.EmbeddedSheet ??= new CharacterSheet();
-            var attr = actor.EmbeddedSheet.BaseAttributes;
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("FOR:", GUILayout.Width(32));
-            int.TryParse(GUILayout.TextField(attr.Force.ToString(), GUILayout.Width(28)), out attr.Force);
-            GUILayout.Label("AGI:", GUILayout.Width(30));
-            int.TryParse(GUILayout.TextField(attr.Agilite.ToString(), GUILayout.Width(28)), out attr.Agilite);
-            GUILayout.Label("CON:", GUILayout.Width(32));
-            int.TryParse(GUILayout.TextField(attr.Constitution.ToString(), GUILayout.Width(28)), out attr.Constitution);
-            GUILayout.Label("RAP:", GUILayout.Width(30));
-            int.TryParse(GUILayout.TextField(attr.Rapidite.ToString(), GUILayout.Width(28)), out attr.Rapidite);
-            GUILayout.Label("INT:", GUILayout.Width(28));
-            int.TryParse(GUILayout.TextField(attr.Intelligence.ToString(), GUILayout.Width(28)), out attr.Intelligence);
-            GUILayout.Label("ERU:", GUILayout.Width(30));
-            int.TryParse(GUILayout.TextField(attr.Erudition.ToString(), GUILayout.Width(28)), out attr.Erudition);
-            GUILayout.Label("CHA:", GUILayout.Width(30));
-            int.TryParse(GUILayout.TextField(attr.Charisme.ToString(), GUILayout.Width(28)), out attr.Charisme);
-            GUILayout.Label("INS:", GUILayout.Width(28));
-            int.TryParse(GUILayout.TextField(attr.Instinct.ToString(), GUILayout.Width(28)), out attr.Instinct);
-            GUILayout.Label("MAG:", GUILayout.Width(32));
-            int.TryParse(GUILayout.TextField(attr.Magie.ToString(), GUILayout.Width(28)), out attr.Magie);
-            actor.EmbeddedSheet.BaseAttributes = attr;
-            GUILayout.EndHorizontal();
-        }
-
-        private void DrawInteractablesTab()
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<b>Éléments de Décor Interactifs ({_data.Interactables.Count})</b>");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("+ Ajouter Interactable", GUILayout.Width(160)))
-            {
-                _data.Interactables.Add(new SceneInteractableSpawnData
-                {
-                    InteractableId = $"obj_{_data.Interactables.Count + 1}",
-                    DisplayName = "Terminal d'Accès",
-                    Q = 0,
-                    R = 0
-                });
-                _selectedInteractableIndex = _data.Interactables.Count - 1;
-            }
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(4);
-
-            for (int i = 0; i < _data.Interactables.Count; i++)
-            {
-                var item = _data.Interactables[i];
-                bool isSelected = (_selectedInteractableIndex == i);
-
-                GUILayout.BeginVertical(isSelected ? GUI.skin.box : GUI.skin.textArea);
-                GUILayout.BeginHorizontal();
-
-                if (GUILayout.Toggle(isSelected, $"🔧 <b>{item.DisplayName}</b> [{item.ActionLabel}] — Hex ({item.Q}, {item.R})"))
-                {
-                    _selectedInteractableIndex = i;
-                }
-
-                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
-                if (GUILayout.Button("✕", GUILayout.Width(26), GUILayout.Height(18)))
-                {
-                    _data.Interactables.RemoveAt(i);
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-
-                if (isSelected)
-                {
-                    DrawInteractableEditor(item);
-                }
-                GUILayout.EndVertical();
-                GUILayout.Space(2);
-            }
-        }
-
-        private void DrawInteractableEditor(SceneInteractableSpawnData item)
-        {
-            GUILayout.Space(4);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("ID :", GUILayout.Width(60));
-            item.InteractableId = GUILayout.TextField(item.InteractableId, GUILayout.Width(130));
-            GUILayout.Label("Nom :", GUILayout.Width(45));
-            item.DisplayName = GUILayout.TextField(item.DisplayName);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Action :", GUILayout.Width(60));
-            item.ActionLabel = GUILayout.TextField(item.ActionLabel, GUILayout.Width(130));
-            GUILayout.Label("Hex Q :", GUILayout.Width(45));
-            int.TryParse(GUILayout.TextField(item.Q.ToString(), GUILayout.Width(40)), out item.Q);
-            GUILayout.Label("R :", GUILayout.Width(20));
-            int.TryParse(GUILayout.TextField(item.R.ToString(), GUILayout.Width(40)), out item.R);
-            GUILayout.Label("Rayon :", GUILayout.Width(50));
-            int.TryParse(GUILayout.TextField(item.Radius.ToString(), GUILayout.Width(35)), out item.Radius);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Compétence Requise :", GUILayout.Width(140));
-            int skillCount = Enum.GetValues(typeof(SkillType)).Length;
-            int skillIdx = (int)item.RequiredSkill;
-            if (GUILayout.Button("◀", GUILayout.Width(24)))
-            {
-                skillIdx = (skillIdx - 1 + skillCount) % skillCount;
-                item.RequiredSkill = (SkillType)skillIdx;
-            }
-            GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(item.RequiredSkill)}</b>", GUILayout.Width(160));
-            if (GUILayout.Button("▶", GUILayout.Width(24)))
-            {
-                skillIdx = (skillIdx + 1) % skillCount;
-                item.RequiredSkill = (SkillType)skillIdx;
-            }
-            GUILayout.Label("Seuil SD :", GUILayout.Width(60));
-            int.TryParse(GUILayout.TextField(item.SkillThreshold.ToString(), GUILayout.Width(40)), out item.SkillThreshold);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Objectif Débloqué (ID) :", GUILayout.Width(150));
-            item.CompletionObjectiveId = GUILayout.TextField(item.CompletionObjectiveId);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Message Succès :", GUILayout.Width(110));
-            item.SuccessLog = GUILayout.TextField(item.SuccessLog);
-            GUILayout.EndHorizontal();
-        }
-
         private void DrawNodesAndDialoguesTab()
         {
-            if (_data.Nodes.Count == 0)
+            bool hasGlobalsOnly = _data.Nodes.Count == 0
+                && ((_data.Triggers != null && _data.Triggers.Count > 0)
+                    || (_data.Interactables != null && _data.Interactables.Count > 0)
+                    || (_data.Actors != null && _data.Actors.Count > 0));
+            if (_data.Nodes.Count == 0 && !hasGlobalsOnly)
             {
                 if (GUILayout.Button("+ Créer le premier Nœud de Scène", GUILayout.Height(36)))
                 {
@@ -925,7 +697,10 @@ namespace Killtime.Story
             }
 
             string sceneNumPrefix = activeSceneIdx >= 0 ? $"#{activeSceneIdx + 1} " : "";
-            GUILayout.Label($"<b>■ SCÈNE {sceneNumPrefix}: {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color>)", GUILayout.ExpandWidth(true));
+            int trigCount = _data.Triggers != null ? _data.Triggers.Count : 0;
+            int interCount = _data.Interactables != null ? _data.Interactables.Count : 0;
+            int actorCount = _data.Actors != null ? _data.Actors.Count : 0;
+            GUILayout.Label($"<b>■ SCÈNE {sceneNumPrefix}: {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color> + <color=#FFD75E>{trigCount} ▼</color> + <color=#33E6CC>{interCount} 🔧</color> + <color=#7CB3FF>{actorCount} 👥</color>)", GUILayout.ExpandWidth(true));
 
             GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
             if (GUILayout.Button("+ Nouveau Nœud", GUILayout.Width(120), GUILayout.Height(22)))
@@ -973,6 +748,39 @@ namespace Killtime.Story
                     GraphPosY = worldCenter.y - 100f
                 });
             }
+            GUI.backgroundColor = new Color(0.2f, 0.9f, 0.85f);
+            if (GUILayout.Button("+ Interactable", GUILayout.Width(110), GUILayout.Height(22)))
+            {
+                if (_data.Interactables == null) _data.Interactables = new System.Collections.Generic.List<SceneInteractableSpawnData>();
+                Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
+                Vector2 worldCenter = (viewCenter - _graphPan) / Mathf.Max(0.01f, _zoom);
+                _data.Interactables.Add(new SceneInteractableSpawnData
+                {
+                    InteractableId = $"obj_{_data.Interactables.Count + 1}",
+                    DisplayName = "Nouvel interactable",
+                    ActionLabel = "Interagir",
+                    Q = 0,
+                    R = 0,
+                    GraphPosX = worldCenter.x - 170f,
+                    GraphPosY = worldCenter.y + 60f
+                });
+            }
+            GUI.backgroundColor = new Color(0.35f, 0.6f, 1f);
+            if (GUILayout.Button("+ Acteur", GUILayout.Width(90), GUILayout.Height(22)))
+            {
+                if (_data.Actors == null) _data.Actors = new System.Collections.Generic.List<SceneActorSpawnData>();
+                Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
+                Vector2 worldCenter = (viewCenter - _graphPan) / Mathf.Max(0.01f, _zoom);
+                _data.Actors.Add(new SceneActorSpawnData
+                {
+                    ActorId = $"actor_{_data.Actors.Count + 1}",
+                    DisplayName = "Nouvel Acteur",
+                    Q = 0,
+                    R = 0,
+                    GraphPosX = worldCenter.x - 170f,
+                    GraphPosY = worldCenter.y + 220f
+                });
+            }
             GUI.backgroundColor = Color.white;
 
             GUILayout.Space(6);
@@ -996,7 +804,6 @@ namespace Killtime.Story
             }
             GUI.backgroundColor = Color.white;
             GUILayout.Space(6);
-            _showNodeInspector = GUILayout.Toggle(_showNodeInspector, "🔧 Inspecteur", GUILayout.Width(105), GUILayout.Height(22));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -1011,7 +818,7 @@ namespace Killtime.Story
             }
 
             GUILayout.FlexibleSpace();
-            GUILayout.Label("<color=grey>Molette = Zoom  ·  Clic Droit = Pan  ·  Double-clic nœud = cadrer  ·  Survol carte = lire</color>");
+            GUILayout.Label("<color=grey>Molette = Zoom  ·  Clic Droit = Pan  ·  Double-clic nœud = cadrer  ·  Drag port = lier (vide = effacer)  ·  Tag bord = suivre</color>");
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
@@ -1026,7 +833,11 @@ namespace Killtime.Story
             if (!_hasInitializedLayout)
             {
                 _hasInitializedLayout = true;
-                if (_data.Nodes.Count > 0)
+                bool hasContent = _data.Nodes.Count > 0
+                    || (_data.Triggers != null && _data.Triggers.Count > 0)
+                    || (_data.Interactables != null && _data.Interactables.Count > 0)
+                    || (_data.Actors != null && _data.Actors.Count > 0);
+                if (hasContent)
                 {
                     if (CheckIfSceneNeedsInitialLayout(_data))
                     {
@@ -1051,7 +862,8 @@ namespace Killtime.Story
                 float dh = Mathf.Abs(canvasRect.height - _lastCanvasSize.y);
                 if (dw > canvasRect.width * 0.04f || dh > canvasRect.height * 0.04f)
                 {
-                    if (_data.Nodes.Count == 0) { /* rien à cadrer */ }
+                    bool hasNodes = _data.Nodes.Count > 0;
+                    if (!hasNodes && (_data.Triggers == null || _data.Triggers.Count == 0) && (_data.Interactables == null || _data.Interactables.Count == 0) && (_data.Actors == null || _data.Actors.Count == 0)) { /* rien à cadrer */ }
                     else if (_lastViewWasAll && _zoom <= _fitZoom + 0.02f) FocusAllNodes(canvasRect);
                     else if (!_lastViewWasAll && _focusedNodeIndex >= 0 && _focusedNodeIndex < _data.Nodes.Count) RecenterNode(_data.Nodes[_focusedNodeIndex], canvasRect);
                     else
@@ -1070,17 +882,49 @@ namespace Killtime.Story
 
         private static bool CheckIfSceneNeedsInitialLayout(StorySceneData data)
         {
-            if (data == null || data.Nodes == null || data.Nodes.Count == 0) return false;
-            for (int i = 0; i < data.Nodes.Count; i++)
+            if (data == null) return false;
+            if (data.Nodes != null)
             {
-                var n = data.Nodes[i];
-                if (n == null) continue;
-                if (n.GraphPosX <= 0f && n.GraphPosY <= 0f) return true;
+                for (int i = 0; i < data.Nodes.Count; i++)
+                {
+                    var n = data.Nodes[i];
+                    if (n == null) continue;
+                    if (n.GraphPosX <= 0f && n.GraphPosY <= 0f) return true;
+                }
+            }
+            if (data.Triggers != null)
+            {
+                for (int t = 0; t < data.Triggers.Count; t++)
+                {
+                    var trg = data.Triggers[t];
+                    if (trg == null) continue;
+                    if (trg.GraphPosX <= 0f && trg.GraphPosY <= 0f) return true;
+                }
+            }
+            // Interactables historiques sans position graphe (0,0) → auto-dispose.
+            if (data.Interactables != null)
+            {
+                for (int i = 0; i < data.Interactables.Count; i++)
+                {
+                    var it = data.Interactables[i];
+                    if (it == null) continue;
+                    if (it.GraphPosX <= 0f && it.GraphPosY <= 0f) return true;
+                }
+            }
+            // Acteurs historiques sans position graphe (0,0) → auto-dispose.
+            if (data.Actors != null)
+            {
+                for (int i = 0; i < data.Actors.Count; i++)
+                {
+                    var a = data.Actors[i];
+                    if (a == null) continue;
+                    if (a.GraphPosX <= 0f && a.GraphPosY <= 0f) return true;
+                }
             }
             return false;
         }
 
-        private static void LayoutCardsInsideNode(SceneNodeData node)
+        private void LayoutCardsInsideNode(SceneNodeData node)
         {
             if (node == null) return;
             float cardStartX = node.GraphPosX + 20f;
@@ -1173,7 +1017,7 @@ namespace Killtime.Story
         // existant, alignée sur la colonne la plus à gauche, sans regrouper/re-griller
         // les positions manuelles de l'utilisateur. Seuls Auto-Disposition / Mosaïque
         // appellent LayoutCardsInsideNode (regroupement explicite voulu).
-        private static void ComputeFreeSpotForNewCard(SceneNodeData node, out float x, out float y)
+        private void ComputeFreeSpotForNewCard(SceneNodeData node, out float x, out float y)
         {
             float baseX = (node != null ? node.GraphPosX : 60f) + 20f;
             float baseY = (node != null ? node.GraphPosY : 60f) + 48f;
@@ -1405,6 +1249,374 @@ namespace Killtime.Story
             DrawGraphSolidRect(new Rect(cardRect.x - 10f, cardRect.y + 16f, 20f, 20f), EntryGreen);
         }
 
+        // ------------------------------------------------------------------
+        // Sections repliables des cartes/frames — TOUT est éditable dans le graphe.
+        // État purement éditeur (HashSet en mémoire) : RIEN n'est sérialisé en JSON.
+        // Règle d'or : chaque bloc détail a sa mesure (lignes × 20px) utilisée à la
+        // FOIS par les calculs de taille et par le dessin, dans le même ordre.
+        // ------------------------------------------------------------------
+        private readonly HashSet<string> _expandedSections = new();
+        private static string SKey(object o, string tag)
+        {
+            return (o == null ? "null" : o.GetHashCode().ToString("X8")) + ":" + tag;
+        }
+        private static bool SectionOpen(HashSet<string> expanded, object o, string tag)
+        {
+            return expanded != null && o != null && expanded.Contains(SKey(o, tag));
+        }
+        // Bouton ▸/▾ qui bascule la section. Retourne l'état après clic.
+        private bool FoldoutButton(Rect worldRect, object o, string tag, string label)
+        {
+            string key = SKey(o, tag);
+            bool open = _expandedSections.Contains(key);
+            if (GraphButton(worldRect, (open ? "▾ " : "▸ ") + label))
+            {
+                if (open) _expandedSections.Remove(key);
+                else _expandedSections.Add(key);
+                open = !open;
+            }
+            return open;
+        }
+
+        // --- Listes d'effets en GUI absolu (lignes de 20px) ---
+        private static int MeasureEffectsBlock(System.Collections.Generic.List<ScenarioEffect> list, bool open, bool alwaysHeader)
+        {
+            int n = list != null ? list.Count : 0;
+            if (!alwaysHeader && !open) return 0;
+            return 1 + (open ? n : 0);
+        }
+        // En-tête (toujours si alwaysHeader, sinon seulement si ouvert) + lignes si ouvert.
+        private void DrawEffectsBlock(ref float y, float x, float w, System.Collections.Generic.List<ScenarioEffect> list, object owner, string tag, string label, bool alwaysHeader)
+        {
+            if (list == null) return;
+            bool open = SectionOpen(_expandedSections, owner, tag);
+            if (alwaysHeader || open)
+            {
+                FoldoutButton(new Rect(x, y, Mathf.Max(60f, w - 70f), 20f), owner, tag, $"{label} ({list.Count})");
+                if (GraphButton(new Rect(x + w - 66f, y, 66f, 20f), "+ Effet"))
+                    list.Add(new ScenarioEffect { Type = ScenarioEffectType.AddFlag, Key = "nouveau_flag" });
+                y += 20f;
+                open = SectionOpen(_expandedSections, owner, tag);
+            }
+            if (!open) return;
+            for (int i = 0; i < list.Count; i++)
+            {
+                var eff = list[i];
+                if (eff == null) { list.RemoveAt(i); i--; continue; }
+                float ex = x;
+                eff.Type = (ScenarioEffectType)GraphToolbar(new Rect(ex, y, 128f, 18f), (int)eff.Type, new[] { "Route", "Flag", "Int", "Journal" });
+                ex += 130f;
+                float tailW = 22f;
+                switch (eff.Type)
+                {
+                    case ScenarioEffectType.SetRoute:
+                        eff.Route = (StoryRoute)GraphToolbar(new Rect(ex, y, Mathf.Max(40f, x + w - ex - tailW), 18f), (int)eff.Route, new[] { "None", "Vardis", "Indep", "Imper" });
+                        break;
+                    case ScenarioEffectType.AddFlag:
+                        GraphLabel(new Rect(ex, y, 34f, 18f), "Clé:");
+                        ex += 36f;
+                        eff.Key = GraphTextField(new Rect(ex, y, Mathf.Max(30f, x + w - ex - tailW), 18f), eff.Key ?? "");
+                        break;
+                    case ScenarioEffectType.AddInteger:
+                        GraphLabel(new Rect(ex, y, 32f, 18f), "Clé:");
+                        ex += 34f;
+                        eff.Key = GraphTextField(new Rect(ex, y, 62f, 18f), eff.Key ?? "");
+                        ex += 64f;
+                        GraphLabel(new Rect(ex, y, 30f, 18f), "Qté:");
+                        ex += 32f;
+                        string amtTxt = GraphTextField(new Rect(ex, y, Mathf.Max(28f, x + w - ex - tailW), 18f), eff.Amount.ToString());
+                        int.TryParse(amtTxt, out eff.Amount);
+                        break;
+                    case ScenarioEffectType.AddJournal:
+                        GraphLabel(new Rect(ex, y, 32f, 18f), "Txt:");
+                        ex += 34f;
+                        eff.Text = GraphTextField(new Rect(ex, y, Mathf.Max(30f, x + w - ex - tailW), 18f), eff.Text ?? "");
+                        break;
+                }
+                if (GraphButton(new Rect(x + w - 20f, y, 20f, 18f), "✕"))
+                {
+                    list.RemoveAt(i);
+                    break;
+                }
+                y += 20f;
+            }
+        }
+
+        // --- Prérequis en GUI absolu : 1 (toggle+type) + 0/1 (kind) + 0/1 (acteur) ---
+        private static int MeasurePrereqDetail(ScenePrerequisiteData pre, bool open)
+        {
+            if (!open || pre == null) return 0;
+            if (!pre.HasPrerequisite) return 1;
+            return 3 + (pre.Kind == PrerequisiteKind.None ? 0 : 1);
+        }
+        private void DrawPrereqDetail(ref float y, float x, float w, ScenePrerequisiteData pre)
+        {
+            if (pre == null) return;
+            float px = x;
+            pre.HasPrerequisite = GraphToggle(new Rect(px, y, 62f, 20f), pre.HasPrerequisite, "🔒");
+            px += 64f;
+            GraphLabel(new Rect(px, y, 42f, 20f), "Type:");
+            px += 44f;
+            pre.Kind = (PrerequisiteKind)GraphToolbar(new Rect(px, y, Mathf.Max(60f, x + w - px), 20f), (int)pre.Kind, new[] { "None", "Compét.", "Spécia.", "Carac", "Flag", "Item", "Route" });
+            y += 20f;
+            if (!pre.HasPrerequisite) return;
+            if (pre.Kind != PrerequisiteKind.None)
+            {
+                float qx = x + 12f;
+                float qw = w - 12f;
+                switch (pre.Kind)
+                {
+                    case PrerequisiteKind.SkillTraining:
+                    {
+                        int skillCount = Enum.GetValues(typeof(SkillType)).Length;
+                        if (GraphButton(new Rect(qx, y, 18f, 18f), "◀"))
+                            pre.RequiredSkill = (SkillType)(((int)pre.RequiredSkill - 1 + skillCount) % skillCount);
+                        qx += 20f;
+                        GraphLabel(new Rect(qx, y, 108f, 18f), $"<b>{SkillDefinitions.GetDisplayName(pre.RequiredSkill)}</b>");
+                        qx += 110f;
+                        if (GraphButton(new Rect(qx, y, 18f, 18f), "▶"))
+                            pre.RequiredSkill = (SkillType)(((int)pre.RequiredSkill + 1) % skillCount);
+                        qx += 20f;
+                        GraphLabel(new Rect(qx, y, 52f, 18f), "Palier:");
+                        qx += 54f;
+                        string palTxt = GraphTextField(new Rect(qx, y, Mathf.Max(28f, x + w - qx), 18f), pre.MinTrainingLevel.ToString());
+                        int.TryParse(palTxt, out pre.MinTrainingLevel);
+                        break;
+                    }
+                    case PrerequisiteKind.Specialization:
+                        GraphLabel(new Rect(qx, y, 62f, 18f), "Spécia.:");
+                        pre.SpecializationName = GraphTextField(new Rect(qx + 64f, y, Mathf.Max(40f, x + w - qx - 64f), 18f), pre.SpecializationName ?? "");
+                        break;
+                    case PrerequisiteKind.AttributeThreshold:
+                        GraphLabel(new Rect(qx, y, 52f, 18f), "Attribut:");
+                        pre.AttributeName = GraphTextField(new Rect(qx + 54f, y, 76f, 18f), pre.AttributeName ?? "");
+                        GraphLabel(new Rect(qx + 132f, y, 40f, 18f), "Min:");
+                        string attrTxt = GraphTextField(new Rect(qx + 174f, y, Mathf.Max(28f, x + w - qx - 174f), 18f), pre.MinAttributeValue.ToString());
+                        int.TryParse(attrTxt, out pre.MinAttributeValue);
+                        break;
+                    case PrerequisiteKind.CampaignFlag:
+                        GraphLabel(new Rect(qx, y, 36f, 18f), "Clé:");
+                        pre.FlagKey = GraphTextField(new Rect(qx + 38f, y, 104f, 18f), pre.FlagKey ?? "");
+                        pre.FlagMustBeSet = GraphToggle(new Rect(qx + 144f, y, Mathf.Max(60f, x + w - qx - 144f), 18f), pre.FlagMustBeSet, "Posé");
+                        break;
+                    case PrerequisiteKind.ItemInInventory:
+                        GraphLabel(new Rect(qx, y, 52f, 18f), "Objet:");
+                        pre.ItemName = GraphTextField(new Rect(qx + 54f, y, Mathf.Max(40f, x + w - qx - 54f), 18f), pre.ItemName ?? "");
+                        break;
+                    case PrerequisiteKind.StoryRouteRequired:
+                        GraphLabel(new Rect(qx, y, 52f, 18f), "Route:");
+                        pre.RequiredRoute = (StoryRoute)GraphToolbar(new Rect(qx + 54f, y, Mathf.Max(60f, x + w - qx - 54f), 18f), (int)pre.RequiredRoute, new[] { "None", "Vardis", "Indep", "Imper" });
+                        break;
+                }
+                y += 20f;
+            }
+            GraphLabel(new Rect(x + 12f, y, 62f, 18f), "Acteur:");
+            pre.SpecificActorId = GraphTextField(new Rect(x + 76f, y, Mathf.Max(40f, x + w - x - 76f), 18f), pre.SpecificActorId ?? "");
+            y += 20f;
+        }
+
+        // --- Ambiance en GUI absolu : 2 + 0/1 (musique) ---
+        private static int MeasureAmbienceDetail(SceneAmbienceData amb, bool open)
+        {
+            if (!open || amb == null) return 0;
+            return 2 + (amb.ChangeMusic ? 1 : 0);
+        }
+        private void DrawAmbienceDetail(ref float y, float x, float w, SceneAmbienceData amb)
+        {
+            if (amb == null) return;
+            GraphLabel(new Rect(x, y, 40f, 18f), "Cue:");
+            amb.SoundCueId = GraphTextField(new Rect(x + 42f, y, 92f, 18f), amb.SoundCueId ?? "");
+            GraphLabel(new Rect(x + 136f, y, 36f, 18f), "Sec:");
+            string shakeTxt = GraphTextField(new Rect(x + 174f, y, 34f, 18f), amb.CameraShakeIntensity.ToString("0.0"));
+            float.TryParse(shakeTxt, out amb.CameraShakeIntensity);
+            amb.TriggerAlarm = GraphToggle(new Rect(x + 210f, y, Mathf.Max(60f, x + w - x - 210f), 18f), amb.TriggerAlarm, "Alarme");
+            y += 20f;
+            amb.ChangeMusic = GraphToggle(new Rect(x, y, 110f, 20f), amb.ChangeMusic, "Musique");
+            if (amb.ChangeMusic)
+            {
+                amb.MusicMood = (Killtime.Audio.MusicMood)GraphToolbar(new Rect(x + 112f, y, Mathf.Max(60f, x + w - x - 112f), 20f), (int)amb.MusicMood, new[] { "Explore", "Combat", "Stealth", "Mystery" });
+                y += 20f;
+                GraphLabel(new Rect(x + 12f, y, 70f, 18f), "Intensité:");
+                amb.MusicIntensity = (Killtime.Audio.MusicIntensity)GraphToolbar(new Rect(x + 84f, y, Mathf.Max(60f, x + w - x - 84f), 18f), (int)amb.MusicIntensity, new[] { "Calm", "Low", "Mid", "High" });
+                y += 20f;
+            }
+            else y += 20f;
+        }
+
+        // --- Récompenses en GUI absolu : 2 + M (items suppl.) ; picker si supporté ---
+        private static int MeasureRewardsBlock(SceneDialogueRewardData rew)
+        {
+            if (rew == null) return 0;
+            int m = rew.AdditionalItems != null ? rew.AdditionalItems.Count : 0;
+            return 2 + m;
+        }
+        // picker: null = sans loupe ; sinon OpenItemPicker est appelé (challenge).
+        private void DrawRewardsBlock(ref float y, float x, float w, SceneDialogueRewardData rew, SceneDialogueChoiceData pickerChoice)
+        {
+            if (rew == null) return;
+            StorySceneData.EnsureRewardDefaults(rew);
+            GraphLabel(new Rect(x, y, 36f, 18f), "+XP");
+            string xpTxt = GraphTextField(new Rect(x + 38f, y, 34f, 18f), rew.EarnXP.ToString());
+            int.TryParse(xpTxt, out rew.EarnXP);
+            GraphLabel(new Rect(x + 74f, y, 34f, 18f), "+CE");
+            string ceTxt = GraphTextField(new Rect(x + 108f, y, 36f, 18f), rew.EarnCredits.ToString());
+            int.TryParse(ceTxt, out rew.EarnCredits);
+            GraphLabel(new Rect(x + 146f, y, 34f, 18f), "Obj:");
+            rew.CompletionObjectiveId = GraphTextField(new Rect(x + 182f, y, Mathf.Max(40f, x + w - x - 182f), 18f), rew.CompletionObjectiveId ?? "");
+            y += 20f;
+            float ix = x;
+            GraphLabel(new Rect(ix, y, 44f, 18f), "Item:");
+            ix += 46f;
+            bool hasPicker = pickerChoice != null;
+            float tailW = (hasPicker ? 26f : 0f) + 16f + 32f + 2f + 24f;
+            rew.ItemRewardName = GraphTextField(new Rect(ix, y, Mathf.Max(40f, x + w - ix - tailW), 18f), rew.ItemRewardName ?? "");
+            ix = x + w - tailW;
+            if (hasPicker)
+            {
+                if (GraphButton(new Rect(ix, y, 24f, 18f), "🔍")) OpenItemPicker(pickerChoice);
+                ix += 26f;
+            }
+            GraphLabel(new Rect(ix, y, 14f, 18f), "x");
+            ix += 16f;
+            string qTxt = GraphTextField(new Rect(ix, y, 30f, 18f), rew.ItemRewardQuantity.ToString());
+            int.TryParse(qTxt, out rew.ItemRewardQuantity);
+            if (rew.ItemRewardQuantity < 1) rew.ItemRewardQuantity = 1;
+            ix += 32f;
+            if (GraphButton(new Rect(ix, y, 22f, 18f), "+"))
+                rew.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
+            y += 20f;
+            for (int ri = 0; ri < rew.AdditionalItems.Count; ri++)
+            {
+                var entry = rew.AdditionalItems[ri];
+                if (entry == null) { rew.AdditionalItems.RemoveAt(ri); ri--; continue; }
+                float jx = x + 12f;
+                GraphLabel(new Rect(jx, y, 30f, 18f), $"#{ri + 2}");
+                jx += 32f;
+                float jtail = (hasPicker ? 26f : 0f) + 16f + 34f + 2f + 22f;
+                entry.ItemName = GraphTextField(new Rect(jx, y, Mathf.Max(30f, x + w - jx - jtail), 18f), entry.ItemName ?? "");
+                jx = x + w - jtail;
+                if (hasPicker)
+                {
+                    if (GraphButton(new Rect(jx, y, 24f, 18f), "🔍")) OpenItemPicker(pickerChoice, ri);
+                    jx += 26f;
+                }
+                GraphLabel(new Rect(jx, y, 14f, 18f), "x");
+                jx += 16f;
+                string eqTxt = GraphTextField(new Rect(jx, y, 32f, 18f), entry.Quantity.ToString());
+                int.TryParse(eqTxt, out entry.Quantity);
+                if (entry.Quantity < 1) entry.Quantity = 1;
+                jx += 34f;
+                GUI.backgroundColor = new Color(1f, 0.3f, 0.3f);
+                if (GraphButton(new Rect(jx, y, 20f, 18f), "✕"))
+                {
+                    rew.AdditionalItems.RemoveAt(ri);
+                    GUI.backgroundColor = Color.white;
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+                y += 20f;
+            }
+        }
+
+        // --- Test auto en GUI absolu : 1 + (11+M+S+F si actif) ---
+        private static int MeasureAutoDetail(SceneAutoSkillCheckData auto, bool open)
+        {
+            if (!open || auto == null) return 0;
+            if (!auto.HasAutoCheck) return 1;
+            int m = auto.SuccessRewards?.AdditionalItems != null ? auto.SuccessRewards.AdditionalItems.Count : 0;
+            int s = auto.SuccessEffects != null ? auto.SuccessEffects.Count : 0;
+            int f = auto.FailureEffects != null ? auto.FailureEffects.Count : 0;
+            return 11 + m + s + f;
+        }
+        private void DrawAutoDetail(ref float y, float x, float w, SceneAutoSkillCheckData auto)
+        {
+            if (auto == null) return;
+            auto.HasAutoCheck = GraphToggle(new Rect(x, y, Mathf.Max(120f, w), 20f), auto.HasAutoCheck, "🎲 Test auto");
+            y += 20f;
+            if (!auto.HasAutoCheck) return;
+            auto.SuccessRewards ??= new SceneDialogueRewardData();
+            StorySceneData.EnsureRewardDefaults(auto.SuccessRewards);
+            auto.SuccessEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+            auto.FailureEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+            int skillCount = Enum.GetValues(typeof(SkillType)).Length;
+            float sx = x + 12f;
+            if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
+                auto.RequiredSkill = (SkillType)(((int)auto.RequiredSkill - 1 + skillCount) % skillCount);
+            sx += 20f;
+            GraphLabel(new Rect(sx, y, 96f, 18f), $"<b>{SkillDefinitions.GetDisplayName(auto.RequiredSkill)}</b>");
+            sx += 98f;
+            if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
+                auto.RequiredSkill = (SkillType)(((int)auto.RequiredSkill + 1) % skillCount);
+            sx += 20f;
+            GraphLabel(new Rect(sx, y, 26f, 18f), "SD:");
+            sx += 28f;
+            string sdTxt = GraphTextField(new Rect(sx, y, 30f, 18f), auto.TargetDC.ToString());
+            int.TryParse(sdTxt, out auto.TargetDC);
+            sx += 32f;
+            GraphLabel(new Rect(sx, y, 32f, 18f), "Act:");
+            sx += 34f;
+            auto.SpecificActorId = GraphTextField(new Rect(sx, y, Mathf.Max(30f, x + w - sx), 18f), auto.SpecificActorId ?? "");
+            y += 20f;
+            GUI.color = new Color(0.35f, 1f, 0.55f);
+            GraphLabel(new Rect(x + 12f, y, 20f, 18f), "✔");
+            GUI.color = Color.white;
+            auto.SuccessSpeech = GraphTextField(new Rect(x + 34f, y, Mathf.Max(40f, x + w - x - 34f), 18f), auto.SuccessSpeech ?? "");
+            y += 20f;
+            GraphLabel(new Rect(x + 34f, y, 42f, 18f), "✔ →");
+            auto.SuccessNextLineId = GraphTextField(new Rect(x + 78f, y, Mathf.Max(40f, x + w - x - 78f), 18f), auto.SuccessNextLineId ?? "");
+            y += 20f;
+            DrawRewardsBlock(ref y, x + 12f, w - 12f, auto.SuccessRewards, null);
+            DrawEffectsBlock(ref y, x + 12f, w - 12f, auto.SuccessEffects, auto, "sfx", "fx ✔", true);
+            GUI.color = new Color(1f, 0.45f, 0.4f);
+            GraphLabel(new Rect(x + 12f, y, 20f, 18f), "✕");
+            GUI.color = Color.white;
+            auto.FailureSpeech = GraphTextField(new Rect(x + 34f, y, Mathf.Max(40f, x + w - x - 34f), 18f), auto.FailureSpeech ?? "");
+            y += 20f;
+            GraphLabel(new Rect(x + 34f, y, 42f, 18f), "✕ →");
+            auto.FailureNextLineId = GraphTextField(new Rect(x + 78f, y, Mathf.Max(40f, x + w - x - 78f), 18f), auto.FailureNextLineId ?? "");
+            y += 20f;
+            DrawEffectsBlock(ref y, x + 12f, w - 12f, auto.FailureEffects, auto, "ffx", "fx ✕", true);
+        }
+
+        // --- Caméra réplique : 2 lignes ---
+        private void DrawCameraDetail(ref float y, float x, float w, SceneDialogueLineData line)
+        {
+            GraphLabel(new Rect(x, y, 52f, 18f), "Focus:");
+            line.CameraFocusActorId = GraphTextField(new Rect(x + 54f, y, Mathf.Max(40f, x + w - x - 54f), 18f), line.CameraFocusActorId ?? "");
+            y += 20f;
+            GraphLabel(new Rect(x, y, 46f, 18f), "Pitch:");
+            string pTxt = GraphTextField(new Rect(x + 48f, y, 40f, 18f), line.CameraPitch.ToString("0.0"));
+            float.TryParse(pTxt, out line.CameraPitch);
+            GraphLabel(new Rect(x + 92f, y, 40f, 18f), "Dist:");
+            string dTxt = GraphTextField(new Rect(x + 134f, y, Mathf.Max(30f, x + w - x - 134f), 18f), line.CameraDistance.ToString("0.0"));
+            float.TryParse(dTxt, out line.CameraDistance);
+            y += 20f;
+        }
+
+        // --- Détail défi (carte) : récompenses + effets + combat : 5+M+S+F ---
+        private static int MeasureChallengeDetail(SceneDialogueChallengeData chal, bool open)
+        {
+            if (!open || chal == null || !chal.HasChallenge) return 0;
+            int m = chal.SuccessRewards?.AdditionalItems != null ? chal.SuccessRewards.AdditionalItems.Count : 0;
+            int s = chal.SuccessEffects != null ? chal.SuccessEffects.Count : 0;
+            int f = chal.FailureEffects != null ? chal.FailureEffects.Count : 0;
+            return 5 + m + s + f;
+        }
+        private void DrawChallengeDetail(ref float y, float x, float w, SceneDialogueChoiceData choice)
+        {
+            var chal = choice != null ? choice.Challenge : null;
+            if (chal == null || !chal.HasChallenge) return;
+            chal.SuccessRewards ??= new SceneDialogueRewardData();
+            StorySceneData.EnsureRewardDefaults(chal.SuccessRewards);
+            chal.SuccessEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+            chal.FailureEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+            DrawRewardsBlock(ref y, x, w, chal.SuccessRewards, choice);
+            DrawEffectsBlock(ref y, x, w, chal.SuccessEffects, chal, "sfx", "fx ✔", true);
+            DrawEffectsBlock(ref y, x, w, chal.FailureEffects, chal, "ffx", "fx ✕", true);
+            chal.FailureTriggersCombat = GraphToggle(new Rect(x, y, Mathf.Max(150f, w), 20f), chal.FailureTriggersCombat, "✕→Combat immédiat");
+            y += 20f;
+        }
+
         private bool IsMouseOverAnyNodeOrCard(Vector2 mouseWorld)
         {
             for (int n = 0; n < _data.Nodes.Count; n++)
@@ -1446,6 +1658,26 @@ namespace Killtime.Story
                     if (trg == null) continue;
                     Vector2 s = GetTriggerCardSize(trg);
                     if (new Rect(trg.GraphPosX, trg.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
+                }
+            }
+            if (_data.Interactables != null)
+            {
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null) continue;
+                    Vector2 s = GetInteractableCardSize(it);
+                    if (new Rect(it.GraphPosX, it.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
+                }
+            }
+            if (_data.Actors != null)
+            {
+                for (int i = 0; i < _data.Actors.Count; i++)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    Vector2 s = GetActorCardSize(a);
+                    if (new Rect(a.GraphPosX, a.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
                 }
             }
             return false;
@@ -1527,7 +1759,11 @@ namespace Killtime.Story
 
         private void AutoLayoutGlobalScene(Rect? canvasRect = null)
         {
-            if (_data.Nodes.Count == 0) return;
+            bool hasNodes = _data.Nodes.Count > 0;
+            bool hasGlobals = (_data.Triggers != null && _data.Triggers.Count > 0)
+                || (_data.Interactables != null && _data.Interactables.Count > 0)
+                || (_data.Actors != null && _data.Actors.Count > 0);
+            if (!hasNodes && !hasGlobals) return;
 
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
@@ -1547,27 +1783,31 @@ namespace Killtime.Story
             const float gapX = 50f;
             const float gapY = 28f;
 
-            // Placement structuré en flux 2D compact
-            var rootNode = _data.Nodes[0];
-            rootNode.GraphPosX = startX;
-            rootNode.GraphPosY = startY;
-            LayoutCardsInsideNode(rootNode);
-            Rect rootBox = ComputeNodeBoundingBox(rootNode);
-
-            float col2X = rootBox.xMax + gapX;
-            float col2CurY = startY;
-            float maxSceneH = rootBox.height;
-
-            for (int n = 1; n < _data.Nodes.Count; n++)
+            float maxSceneH = 0f;
+            if (hasNodes)
             {
-                var node = _data.Nodes[n];
-                node.GraphPosX = col2X;
-                node.GraphPosY = col2CurY;
-                LayoutCardsInsideNode(node);
-                Rect b = ComputeNodeBoundingBox(node);
+                // Placement structuré en flux 2D compact
+                var rootNode = _data.Nodes[0];
+                rootNode.GraphPosX = startX;
+                rootNode.GraphPosY = startY;
+                LayoutCardsInsideNode(rootNode);
+                Rect rootBox = ComputeNodeBoundingBox(rootNode);
 
-                col2CurY += b.height + gapY;
-                maxSceneH = Mathf.Max(maxSceneH, col2CurY - startY);
+                float col2X = rootBox.xMax + gapX;
+                float col2CurY = startY;
+                maxSceneH = rootBox.height;
+
+                for (int n = 1; n < _data.Nodes.Count; n++)
+                {
+                    var node = _data.Nodes[n];
+                    node.GraphPosX = col2X;
+                    node.GraphPosY = col2CurY;
+                    LayoutCardsInsideNode(node);
+                    Rect b = ComputeNodeBoundingBox(node);
+
+                    col2CurY += b.height + gapY;
+                    maxSceneH = Mathf.Max(maxSceneH, col2CurY - startY);
+                }
             }
 
             if (_data.Triggers != null && _data.Triggers.Count > 0)
@@ -1583,6 +1823,56 @@ namespace Killtime.Story
                     Vector2 s = GetTriggerCardSize(trg);
                     trigX += s.x + 20f;
                 }
+                // Les cartes Interactables vivent sur la rangée sous les déclencheurs.
+                if (_data.Interactables != null && _data.Interactables.Count > 0)
+                {
+                    GetSceneContentBounds(out float _, out float _, out float _, out float trigMaxY);
+                    float interX = startX;
+                    float interY = trigMaxY + 30f;
+                    for (int i = 0; i < _data.Interactables.Count; i++)
+                    {
+                        var it = _data.Interactables[i];
+                        if (it == null) continue;
+                        it.GraphPosX = interX;
+                        it.GraphPosY = interY;
+                        Vector2 s = GetInteractableCardSize(it);
+                        interX += s.x + 20f;
+                    }
+                }
+            }
+            else if (_data.Interactables != null && _data.Interactables.Count > 0)
+            {
+                float interX = startX;
+                float interY = startY + maxSceneH + 36f;
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null) continue;
+                    it.GraphPosX = interX;
+                    it.GraphPosY = interY;
+                    Vector2 s = GetInteractableCardSize(it);
+                    interX += s.x + 20f;
+                }
+            }
+            // Les cartes Acteurs vivent sur la rangée sous les interactables.
+            if (_data.Actors != null && _data.Actors.Count > 0)
+            {
+                float actorY = startY + maxSceneH + 36f;
+                if ((_data.Triggers != null && _data.Triggers.Count > 0) || (_data.Interactables != null && _data.Interactables.Count > 0))
+                {
+                    GetSceneContentBounds(out float _, out float _, out float _, out float placedMaxY);
+                    actorY = placedMaxY + 30f;
+                }
+                float actorX = startX;
+                for (int i = 0; i < _data.Actors.Count; i++)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    a.GraphPosX = actorX;
+                    a.GraphPosY = actorY;
+                    Vector2 s = GetActorCardSize(a);
+                    actorX += s.x + 20f;
+                }
             }
 
             _focusedNodeIndex = 0;
@@ -1591,7 +1881,11 @@ namespace Killtime.Story
 
         private void AutoLayoutMosaic(Rect? canvasRect = null)
         {
-            if (_data.Nodes.Count == 0) return;
+            bool hasNodes = _data.Nodes.Count > 0;
+            bool hasGlobals = (_data.Triggers != null && _data.Triggers.Count > 0)
+                || (_data.Interactables != null && _data.Interactables.Count > 0)
+                || (_data.Actors != null && _data.Actors.Count > 0);
+            if (!hasNodes && !hasGlobals) return;
             Vector2 view = ResolveViewSize(canvasRect);
             float maxRowWidth = Mathf.Max(1800f, view.x / Mathf.Clamp(_zoom, 0.35f, 1f));
             const float gapX = 50f;
@@ -1670,6 +1964,36 @@ namespace Killtime.Story
                     trigX += s.x + 30f;
                 }
             }
+            if (_data.Interactables != null && _data.Interactables.Count > 0)
+            {
+                GetSceneContentBounds(out float _, out float _, out float _, out float maxY2);
+                float interX = startX;
+                float interY = maxY2 + 50f;
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null) continue;
+                    it.GraphPosX = interX;
+                    it.GraphPosY = interY;
+                    Vector2 s = GetInteractableCardSize(it);
+                    interX += s.x + 30f;
+                }
+            }
+            if (_data.Actors != null && _data.Actors.Count > 0)
+            {
+                GetSceneContentBounds(out float _, out float _, out float _, out float maxY3);
+                float actorX = startX;
+                float actorY = maxY3 + 50f;
+                for (int i = 0; i < _data.Actors.Count; i++)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    a.GraphPosX = actorX;
+                    a.GraphPosY = actorY;
+                    Vector2 s = GetActorCardSize(a);
+                    actorX += s.x + 30f;
+                }
+            }
 
             _focusedNodeIndex = 0;
             FocusAllNodes(canvasRect);
@@ -1684,6 +2008,10 @@ namespace Killtime.Story
         private const float ConsCardDefaultH = 250f;
         private const float TrigCardDefaultW = 340f;
         private const float TrigCardDefaultH = 215f;
+        private const float InterCardDefaultW = 340f;
+        private const float InterCardDefaultH = 252f;
+        private const float ActorCardDefaultW = 340f;
+        private const float ActorCardDefaultH = 208f;
         private static float DlgCardDefaultH(int choiceCount) => 215f + choiceCount * 28f;
 
         // Nombre de lignes de config d'un défi (sans les lignes-liens).
@@ -1694,11 +2022,10 @@ namespace Killtime.Story
         }
 
         // Toutes les lignes de détail sous la rangée principale d'un choix :
-        // config défi + liens ✔/✕, méta (prérequis/effets).
-        // Routage direct vers fenêtres normales : plus de dialogue embarqué
-        // (↳ réponse, discours succès/échec supprimés).
+        // config défi + liens ✔/✕, méta (prérequis/effets), détails repliables
+        // (prérequis / effets / défi : préfixés APRÈS, les offsets de fils restent justes).
         // Doit correspondre EXACTEMENT à l'ordre de dessin dans DrawDialogueCard.
-        private static int GetChoiceDetailRows(SceneDialogueChoiceData ch)
+        private int GetChoiceDetailRows(SceneDialogueChoiceData ch)
         {
             if (ch == null) return 0;
             int rows = 0;
@@ -1708,12 +2035,16 @@ namespace Killtime.Story
             bool hasPre = ch.Prerequisite != null && ch.Prerequisite.HasPrerequisite;
             bool hasFx = ch.Effects != null && ch.Effects.Count > 0;
             if (hasPre || hasFx) rows += 1; // méta 🔒/fx
+            rows += MeasurePrereqDetail(ch.Prerequisite, SectionOpen(_expandedSections, ch, "pre"));
+            rows += MeasureEffectsBlock(ch.Effects, SectionOpen(_expandedSections, ch, "fx"), false);
+            if (chal != null)
+                rows += MeasureChallengeDetail(chal, SectionOpen(_expandedSections, ch, "chd"));
             return rows;
         }
 
         // Y (relatif au haut de la carte) de la rangée principale de chaque choix.
         // Doit rester identique entre GetDialogueCardSize, DrawDialogueCard et DrawConnectedGraphWires.
-        private static void GetDialogueChoiceRowOffsets(SceneDialogueLineData line, List<float> outOffsets)
+        private void GetDialogueChoiceRowOffsets(SceneDialogueLineData line, List<float> outOffsets)
         {
             outOffsets.Clear();
             if (line == null || line.Choices == null) return;
@@ -1726,7 +2057,7 @@ namespace Killtime.Story
             }
         }
 
-        private static float GetDialogueCardNeededHeight(SceneDialogueLineData line)
+        private float GetDialogueCardNeededHeight(SceneDialogueLineData line)
         {
             int cc = line != null && line.Choices != null ? line.Choices.Count : 0;
             float needed = 132f + cc * 22f + 24f;
@@ -1737,6 +2068,14 @@ namespace Killtime.Story
                     needed += GetChoiceDetailRows(line.Choices[c]) * 20f;
                 }
                 needed += GetDialogueLineSummaryRows(line) * 18f;
+            }
+            needed += 20f; // strip détails 🎥🔒🔊🎲
+            if (line != null)
+            {
+                if (SectionOpen(_expandedSections, line, "cam")) needed += 40f;
+                needed += MeasurePrereqDetail(line.Prerequisite, SectionOpen(_expandedSections, line, "pre")) * 20f;
+                needed += MeasureAmbienceDetail(line.Ambience, SectionOpen(_expandedSections, line, "amb")) * 20f;
+                needed += MeasureAutoDetail(line.AutoSkillCheck, SectionOpen(_expandedSections, line, "auto")) * 20f;
             }
             return needed;
         }
@@ -1752,7 +2091,7 @@ namespace Killtime.Story
             return rows;
         }
 
-        private static Vector2 GetDialogueCardSize(SceneDialogueLineData line)
+        private Vector2 GetDialogueCardSize(SceneDialogueLineData line)
         {
             if (line == null) return new Vector2(DlgCardDefaultW, DlgCardDefaultH(0));
             float w = line.CardWidth > 100f ? line.CardWidth : DlgCardDefaultW;
@@ -1763,18 +2102,34 @@ namespace Killtime.Story
             return new Vector2(w, h);
         }
 
-        private static Vector2 GetEventCardSize(SceneEventData ev)
+        private float GetEventCardNeededHeight(SceneEventData ev)
+        {
+            // ID 20 + Kind 22 + strip 20 + détails + Tester 20 + marges.
+            float needed = 124f;
+            if (ev != null)
+            {
+                needed += MeasurePrereqDetail(ev.Prerequisite, SectionOpen(_expandedSections, ev, "pre")) * 20f;
+                needed += MeasureAmbienceDetail(ev.Ambience, SectionOpen(_expandedSections, ev, "amb")) * 20f;
+                needed += MeasureAutoDetail(ev.AutoSkillCheck, SectionOpen(_expandedSections, ev, "auto")) * 20f;
+                needed += MeasureEffectsBlock(ev.Effects, SectionOpen(_expandedSections, ev, "fx"), true) * 20f;
+            }
+            return needed;
+        }
+
+        private Vector2 GetEventCardSize(SceneEventData ev)
         {
             if (ev == null) return new Vector2(EvtCardDefaultW, EvtCardDefaultH);
             float w = ev.CardWidth > 100f ? ev.CardWidth : EvtCardDefaultW;
             float h = ev.CardHeight > 80f ? ev.CardHeight : EvtCardDefaultH;
+            float needed = GetEventCardNeededHeight(ev);
+            if (needed > h) h = needed;
             return new Vector2(w, h);
         }
 
         // Hauteur carte conséquence : 30 (haut) + 22 (ID/titre) + 20 (toggles)
-        // + dialogue éventuel (22 locuteur + 44 speech) + 22 (liens) + 22 (+XP/+CE)
-        // + 20 × (1 + N items) + 10 (marge).
-        private static float GetConsequenceCardNeededHeight(SceneConsequenceData cons)
+        // + dialogue éventuel (22 locuteur + 44 speech) + bloc fx (1 + N si ouvert)
+        // + 22 (liens) + 22 (+XP/+CE) + 20 × (1 + N items) + 10 (marge).
+        private float GetConsequenceCardNeededHeight(SceneConsequenceData cons)
         {
             float needed = 30f + 22f + 20f + 22f + 22f + 20f + 10f;
             if (cons != null)
@@ -1783,10 +2138,11 @@ namespace Killtime.Story
                 int extras = cons.Rewards?.AdditionalItems != null ? cons.Rewards.AdditionalItems.Count : 0;
                 needed += Mathf.Max(0, extras) * 20f;
             }
+            needed += MeasureEffectsBlock(cons != null ? cons.Effects : null, SectionOpen(_expandedSections, cons, "fx"), true) * 20f;
             return needed;
         }
 
-        private static Vector2 GetConsequenceCardSize(SceneConsequenceData cons)
+        private Vector2 GetConsequenceCardSize(SceneConsequenceData cons)
         {
             if (cons == null) return new Vector2(ConsCardDefaultW, ConsCardDefaultH);
             float w = cons.CardWidth > 100f ? cons.CardWidth : ConsCardDefaultW;
@@ -1796,6 +2152,15 @@ namespace Killtime.Story
             return new Vector2(w, h);
         }
 
+        // Offset Y (relatif carte) de la rangée →Diag/→Cons. Source unique pour
+        // le dessin (DrawConsequenceCard) et les fils (DrawConnectedGraphWires).
+        private float GetConsLinkRowTop(SceneConsequenceData cons)
+        {
+            float top = 72f + ((cons != null && cons.HasDialogue) ? 66f : 0f);
+            top += MeasureEffectsBlock(cons != null ? cons.Effects : null, SectionOpen(_expandedSections, cons, "fx"), true) * 20f;
+            return top;
+        }
+
         private static Vector2 GetTriggerCardSize(SceneTriggerData trg)
         {
             if (trg == null) return new Vector2(TrigCardDefaultW, TrigCardDefaultH);
@@ -1803,6 +2168,24 @@ namespace Killtime.Story
             float h = trg.CardHeight > 80f ? trg.CardHeight : TrigCardDefaultH;
             float needed = trg.Kind == SceneTriggerKind.ActorCondition ? 238f : 196f;
             if (h < needed) h = needed;
+            return new Vector2(w, h);
+        }
+
+        private static Vector2 GetInteractableCardSize(SceneInteractableSpawnData it)
+        {
+            if (it == null) return new Vector2(InterCardDefaultW, InterCardDefaultH);
+            float w = it.CardWidth > 100f ? it.CardWidth : InterCardDefaultW;
+            float h = it.CardHeight > 80f ? it.CardHeight : InterCardDefaultH;
+            if (h < InterCardDefaultH) h = InterCardDefaultH;
+            return new Vector2(w, h);
+        }
+
+        private static Vector2 GetActorCardSize(SceneActorSpawnData a)
+        {
+            if (a == null) return new Vector2(ActorCardDefaultW, ActorCardDefaultH);
+            float w = a.CardWidth > 100f ? a.CardWidth : ActorCardDefaultW;
+            float h = a.CardHeight > 80f ? a.CardHeight : ActorCardDefaultH;
+            if (h < ActorCardDefaultH) h = ActorCardDefaultH;
             return new Vector2(w, h);
         }
 
@@ -1831,7 +2214,11 @@ namespace Killtime.Story
         {
             minX = float.MaxValue; minY = float.MaxValue;
             maxX = float.MinValue; maxY = float.MinValue;
-            if (_data.Nodes.Count == 0) return false;
+            bool hasNodes = _data != null && _data.Nodes != null && _data.Nodes.Count > 0;
+            bool hasTriggers = _data != null && _data.Triggers != null && _data.Triggers.Count > 0;
+            bool hasInters = _data != null && _data.Interactables != null && _data.Interactables.Count > 0;
+            bool hasActors = _data != null && _data.Actors != null && _data.Actors.Count > 0;
+            if (!hasNodes && !hasTriggers && !hasInters && !hasActors) return false;
             for (int i = 0; i < _data.Nodes.Count; i++)
             {
                 Rect b = ComputeNodeBoundingBox(_data.Nodes[i]);
@@ -1851,6 +2238,32 @@ namespace Killtime.Story
                     minY = Mathf.Min(minY, trg.GraphPosY);
                     maxX = Mathf.Max(maxX, trg.GraphPosX + tsize.x);
                     maxY = Mathf.Max(maxY, trg.GraphPosY + tsize.y);
+                }
+            }
+            if (_data.Interactables != null)
+            {
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null) continue;
+                    Vector2 isize = GetInteractableCardSize(it);
+                    minX = Mathf.Min(minX, it.GraphPosX);
+                    minY = Mathf.Min(minY, it.GraphPosY);
+                    maxX = Mathf.Max(maxX, it.GraphPosX + isize.x);
+                    maxY = Mathf.Max(maxY, it.GraphPosY + isize.y);
+                }
+            }
+            if (_data.Actors != null)
+            {
+                for (int i = 0; i < _data.Actors.Count; i++)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    Vector2 asize = GetActorCardSize(a);
+                    minX = Mathf.Min(minX, a.GraphPosX);
+                    minY = Mathf.Min(minY, a.GraphPosY);
+                    maxX = Mathf.Max(maxX, a.GraphPosX + asize.x);
+                    maxY = Mathf.Max(maxY, a.GraphPosY + asize.y);
                 }
             }
             return (maxX > minX) && (maxY > minY);
@@ -1921,8 +2334,6 @@ namespace Killtime.Story
 
         private void FocusAllNodes(Rect? canvasRect = null)
         {
-            if (_data.Nodes.Count == 0) return;
-
             if (!GetSceneContentBounds(out float minX, out float minY, out float maxX, out float maxY)) return;
 
             float width = maxX - minX;
@@ -2007,7 +2418,7 @@ namespace Killtime.Story
             }
         }
 
-        private static Rect ComputeNodeBoundingBox(SceneNodeData node)
+        private Rect ComputeNodeBoundingBox(SceneNodeData node)
         {
             float nx = SanitizeCoord(node.GraphPosX, 60f);
             float ny = SanitizeCoord(node.GraphPosY, 60f);
@@ -2094,12 +2505,9 @@ namespace Killtime.Story
             if (!hasEntries)
             {
                 float w = node.FrameWidth > 400f ? node.FrameWidth : 560f;
-                // Éditeurs inline de la frame vide : 46 (header) + 26 (type) + 26 (titre)
-                // + 78 (narration) + 26 (entête objectifs) + 28 / objectif + 10 (marge).
-                int objCount = (node.Objectives != null) ? node.Objectives.Count : 0;
-                float choiceH = (node.Choices != null) ? node.Choices.Count * 32f : 0f;
-                float customH = 208f + objCount * 28f + choiceH + 10f;
-                return new Rect(nx, ny, w, Mathf.Max(220f, customH));
+                // Frame vide : header 38 + section détails (ex-inspecteur + ex-inline).
+                float sh = GetNodeSectionHeight(node);
+                return new Rect(nx, ny, w, Mathf.Max(120f, 38f + 10f + sh + 14f));
             }
 
             float pad = 14f;
@@ -2108,6 +2516,8 @@ namespace Killtime.Story
             minY = Mathf.Min(ny + topHeaderH, minY);
             Rect r = new Rect(minX - pad, minY - topHeaderH - pad, (maxX - minX) + pad * 2f, (maxY - minY) + topHeaderH + pad * 2f);
             if (r.width < 560f) r.width = 560f;
+            // Section détails du nœud sous les cartes.
+            r.height += 10f + GetNodeSectionHeight(node) + 14f;
             return r;
         }
 
@@ -2195,6 +2605,9 @@ namespace Killtime.Story
             Vector2 mouseLocal = evt.mousePosition - canvasRect.min;
             Vector2 mouseWorld = (mouseLocal - _graphPan) / Mathf.Max(0.0001f, _zoom);
             _graphMouseScreenPos = evt.mousePosition;
+            // Tags de bord AVANT toute interaction : un tag sous le curseur bloque le
+            // pan (clic = cadrer la cible) et sert de cible de drop pendant un drag.
+            CollectOffscreenLinkTags(canvasRect);
             _pickerCapturesMouse = (IsItemPickerOpen() && GetItemPickerRect(canvasRect).Contains(evt.mousePosition))
                 || (_actorDropKey != null && WorldToScreenRect(canvasRect, _actorDropWorld).Contains(evt.mousePosition));
 
@@ -2216,7 +2629,12 @@ namespace Killtime.Story
             }
 
             // Panoramique fluide (Clic droit et molette universels ; Clic gauche uniquement sur le fond vide).
-            bool isOverInteractiveElement = (_draggingCardKey != null || _draggingNodeId != null || _resizingCardKey != null || _wireDraft.IsActive || IsMouseOverAnyNodeOrCard(mouseWorld));
+            bool mouseOverTag = false;
+            for (int tg = 0; tg < _offscreenTags.Count; tg++)
+            {
+                if (_offscreenTags[tg].ScreenRect.Contains(evt.mousePosition)) { mouseOverTag = true; break; }
+            }
+            bool isOverInteractiveElement = (_draggingCardKey != null || _draggingNodeId != null || _resizingCardKey != null || _wireDraft.IsActive || mouseOverTag || IsMouseOverAnyNodeOrCard(mouseWorld));
             bool pickerBlocksMouse = _pickerCapturesMouse;
             if (evt.type == EventType.MouseDown && canvasRect.Contains(evt.mousePosition))
             {
@@ -2250,6 +2668,8 @@ namespace Killtime.Story
             _cachedInputSockets.Clear();
             _cachedNodeInputSockets.Clear();
             _cachedTriggerOutSockets.Clear();
+            _cachedInteractableOutSockets.Clear();
+            _cachedActorInSockets.Clear();
 
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
@@ -2325,6 +2745,51 @@ namespace Killtime.Story
                 }
             }
 
+            if (_data.Interactables == null) _data.Interactables = new System.Collections.Generic.List<SceneInteractableSpawnData>();
+            {
+                var seenInterIds = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null) continue;
+                    it.GraphPosX = SanitizeCoord(it.GraphPosX, 60f + i * 380f);
+                    it.GraphPosY = SanitizeCoord(it.GraphPosY, 1250f);
+                    // Les anciennes scènes ont souvent GraphPos = 0,0 → on les décale
+                    // en cascade pour éviter l'empilement avant le prochain Auto-Layout.
+                    if (it.GraphPosX <= 1f && it.GraphPosY <= 1f)
+                    {
+                        it.GraphPosX = 60f + i * 380f;
+                        it.GraphPosY = 1250f;
+                    }
+                    if (string.IsNullOrEmpty(it.InteractableId)) it.InteractableId = $"obj_{i + 1}";
+                    if (!seenInterIds.Add(it.InteractableId)) it.InteractableId = $"{it.InteractableId}_{i + 1}";
+                    Vector2 isize = GetInteractableCardSize(it);
+                    _cachedInteractableOutSockets[it.InteractableId] = new Vector2(it.GraphPosX + isize.x, it.GraphPosY + 26f);
+                }
+            }
+
+            if (_data.Actors == null) _data.Actors = new System.Collections.Generic.List<SceneActorSpawnData>();
+            {
+                var seenActorIds = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+                for (int i = 0; i < _data.Actors.Count; i++)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    a.GraphPosX = SanitizeCoord(a.GraphPosX, 60f + i * 380f);
+                    a.GraphPosY = SanitizeCoord(a.GraphPosY, 1600f);
+                    // Anciennes scènes : GraphPos = 0,0 → cascade sous les interactables.
+                    if (a.GraphPosX <= 1f && a.GraphPosY <= 1f)
+                    {
+                        a.GraphPosX = 60f + i * 380f;
+                        a.GraphPosY = 1600f;
+                    }
+                    if (string.IsNullOrEmpty(a.ActorId)) a.ActorId = $"actor_{i + 1}";
+                    if (!seenActorIds.Add(a.ActorId)) a.ActorId = $"{a.ActorId}_{i + 1}";
+                    Vector2 asize = GetActorCardSize(a);
+                    _cachedActorInSockets[a.ActorId] = new Vector2(a.GraphPosX, a.GraphPosY + 26f);
+                }
+            }
+
             Rect visibleWorld = GetVisibleWorldRect(canvasRect);
 
             // Passe 1 : frames et connexions globales.
@@ -2394,6 +2859,30 @@ namespace Killtime.Story
                 }
             }
 
+            if (_data.Interactables != null)
+            {
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null) continue;
+                    Vector2 isize = GetInteractableCardSize(it);
+                    if (visibleWorld.Overlaps(new Rect(it.GraphPosX, it.GraphPosY, isize.x, isize.y)))
+                        DrawInteractableCard(it, i, mouseWorld);
+                }
+            }
+
+            if (_data.Actors != null)
+            {
+                for (int i = 0; i < _data.Actors.Count; i++)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    Vector2 asize = GetActorCardSize(a);
+                    if (visibleWorld.Overlaps(new Rect(a.GraphPosX, a.GraphPosY, asize.x, asize.y)))
+                        DrawActorCard(a, i, mouseWorld);
+                }
+            }
+
             // Dropdown locuteurs par-dessus tout le graphe.
             DrawActorDropdownPopup();
 
@@ -2401,8 +2890,7 @@ namespace Killtime.Story
             GUI.EndGroup();
 
             DrawZoomControlsOverlay(canvasRect);
-
-            if (_showNodeInspector && !IsItemPickerOpen()) DrawNodeInspectorOverlay(canvasRect);
+            DrawOffscreenLinkTags();
 
             if (_hasHoverCard && !IsItemPickerOpen() && Event.current.type == EventType.Repaint)
                 DrawCardHoverTooltip(canvasRect);
@@ -2410,10 +2898,7 @@ namespace Killtime.Story
             DrawItemPickerPanel(canvasRect);
         }
 
-        private bool _showNodeInspector = false;
-        private Vector2 _inspectorScroll;
-
-        // Moteur de recherche d'item du catalogue (récompense de défi, ligne ✔ des cartes + inspecteur).
+        // Moteur de recherche d'item du catalogue (récompenses des cartes).
         // État purement éditeur : rien n'est sérialisé dans le JSON de scène.
         private SceneDialogueChoiceData _itemPickerTarget = null;
         private SceneConsequenceData _itemPickerCons = null;
@@ -2434,30 +2919,6 @@ namespace Killtime.Story
         private Rect _actorDropWorld = new Rect(-10000f, -10000f, 0f, 0f);
         private System.Action<string> _actorDropSetter = null;
         private string _actorDropCurrent = "";
-
-        private void DrawNodeInspectorOverlay(Rect canvasRect)
-        {
-            float w = Mathf.Min(440f, canvasRect.width * 0.5f);
-            if (w < 260f || canvasRect.height < 200f) return;
-            Rect panel = new Rect(canvasRect.xMax - w - 8f, canvasRect.y + 40f, w, canvasRect.height - 48f);
-            DrawSolidRect(panel, new Color(0.02f, 0.03f, 0.05f, 0.96f));
-            DrawSolidRect(new Rect(panel.x, panel.y, panel.width, 2f), new Color(0.2f, 0.75f, 1f, 0.9f));
-            GUILayout.BeginArea(panel);
-            _inspectorScroll = GUILayout.BeginScrollView(_inspectorScroll);
-            if (_focusedNodeIndex >= 0 && _focusedNodeIndex < _data.Nodes.Count && _data.Nodes[_focusedNodeIndex] != null)
-            {
-                var node = _data.Nodes[_focusedNodeIndex];
-                GUILayout.Label($"<b>🔧 Nœud #{_focusedNodeIndex + 1} : {node.Title}</b> [{node.Kind}]");
-                StorySceneData.EnsureDeepDefaults(_data);
-                DrawNodeEditor(node);
-            }
-            else
-            {
-                GUILayout.Label("Aucun nœud focalisé.");
-            }
-            GUILayout.EndScrollView();
-            GUILayout.EndArea();
-        }
 
         private bool IsItemPickerOpen()
         {
@@ -2908,6 +3369,180 @@ namespace Killtime.Story
             GUI.Label(new Rect(tip.x + 8f, tip.y + 26f, tip.width - 16f, bodyH), _hoverBody, _hoverBodyStyle);
         }
 
+        // --- Ports de sortie des frames de nœud : source unique de vérité partagée
+        // entre le dessin (DrawNodeFrame) et les wires (DrawGlobalSceneWires).
+        // - Sortie principale (NextNodeId) : flanc droit, yMin+18.
+        // - Sorties choix majeurs : flanc droit, une par choix, espacées de 36px.
+        private static Vector2 GetNodeMainOutCenter(Rect nodeBox)
+        {
+            return new Vector2(nodeBox.xMax, nodeBox.yMin + 18f);
+        }
+
+        private static Vector2 GetNodeChoiceOutCenter(Rect nodeBox, int choiceIndex)
+        {
+            return new Vector2(nodeBox.xMax, nodeBox.yMin + 60f + (choiceIndex * 36f) + 14f);
+        }
+
+        private static Rect GetNodeChoicePortRect(Rect nodeBox, int choiceIndex)
+        {
+            Vector2 c = GetNodeChoiceOutCenter(nodeBox, choiceIndex);
+            return new Rect(c.x - 7f, c.y - 7f, 14f, 14f);
+        }
+
+        private static bool IsOverNodeChoicePort(Rect nodeBox, SceneNodeData node, Vector2 mouseWorld)
+        {
+            if (node == null || node.Choices == null) return false;
+            for (int c = 0; c < node.Choices.Count; c++)
+            {
+                if (node.Choices[c] == null) continue;
+                if (GetNodeChoicePortRect(nodeBox, c).Contains(mouseWorld)) return true;
+            }
+            return false;
+        }
+
+        private int FindNodeIndex(string nodeId)
+        {
+            if (string.IsNullOrEmpty(nodeId) || _data == null || _data.Nodes == null) return -1;
+            return _data.Nodes.FindIndex(n => n != null && string.Equals(n.NodeId, nodeId, System.StringComparison.OrdinalIgnoreCase));
+        }
+
+        // --- Tags de bord "bords" : quand la cible d'un lien est hors-champ, un tag
+        // cliquable "→ id" reste ancré au bord du viewport dans sa direction.
+        // Clic = cadrer le nœud cible. Pendant un drag de wire, drop sur le tag = lier.
+        // Pur état éditeur, calculé en coordonnées pures (aucun cache de sockets).
+        private struct OffscreenLinkTag
+        {
+            public string TargetNodeId;
+            public int TargetNodeIndex;
+            public string Label;
+            public Color Color;
+            public Vector2 WorldPos;
+            public Rect ScreenRect;
+        }
+
+        private readonly List<OffscreenLinkTag> _offscreenTags = new();
+
+        private void CollectOffscreenLinkTags(Rect canvasRect)
+        {
+            _offscreenTags.Clear();
+            if (_data == null || _data.Nodes == null || _pickerCapturesMouse) return;
+            Rect view = GetVisibleWorldRect(canvasRect);
+            float zoom = Mathf.Max(0.0001f, _zoom);
+            float mX = 100f / zoom;
+            float mY = 30f / zoom;
+
+            void TryAddTag(Rect sourceRect, Vector2 targetCenter, string targetId, string label, Color col)
+            {
+                if (string.IsNullOrEmpty(targetId)) return;
+                if (!sourceRect.Overlaps(view)) return;
+                if (view.Contains(targetCenter)) return;
+                int idx = FindNodeIndex(targetId);
+                if (idx < 0) return;
+                float cx = (view.xMin + mX < view.xMax - mX)
+                    ? Mathf.Clamp(targetCenter.x, view.xMin + mX, view.xMax - mX)
+                    : view.center.x;
+                float cy = (view.yMin + mY < view.yMax - mY)
+                    ? Mathf.Clamp(targetCenter.y, view.yMin + mY, view.yMax - mY)
+                    : view.center.y;
+                Vector2 worldPos = new Vector2(cx, cy);
+                Vector2 screen = new Vector2(canvasRect.x, canvasRect.y) + GraphPoint(worldPos);
+                const float tagW = 160f;
+                const float tagH = 22f;
+                float tx = Mathf.Clamp(screen.x - tagW * 0.5f, canvasRect.x + 6f, canvasRect.xMax - 6f - tagW);
+                float ty = Mathf.Clamp(screen.y - tagH * 0.5f, canvasRect.y + 6f, canvasRect.yMax - 6f - tagH);
+                _offscreenTags.Add(new OffscreenLinkTag
+                {
+                    TargetNodeId = targetId,
+                    TargetNodeIndex = idx,
+                    Label = label,
+                    Color = col,
+                    WorldPos = worldPos,
+                    ScreenRect = new Rect(tx, ty, tagW, tagH)
+                });
+            }
+
+            Vector2 NodeTargetCenter(string targetId, out bool found)
+            {
+                found = false;
+                var target = _data.FindNode(targetId);
+                if (target == null) return Vector2.zero;
+                found = true;
+                return ComputeNodeBoundingBox(target).center;
+            }
+
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node == null) continue;
+                Rect nodeBox = ComputeNodeBoundingBox(node);
+                if (!string.IsNullOrEmpty(node.NextNodeId))
+                {
+                    Vector2 c = NodeTargetCenter(node.NextNodeId, out bool ok);
+                    if (ok) TryAddTag(nodeBox, c, node.NextNodeId, $"■→ {node.NextNodeId}", new Color(1.0f, 0.6f, 0.1f));
+                }
+                if (node.Choices != null)
+                {
+                    for (int c = 0; c < node.Choices.Count; c++)
+                    {
+                        var ch = node.Choices[c];
+                        if (ch == null || string.IsNullOrEmpty(ch.NextNodeId)) continue;
+                        Vector2 cc = NodeTargetCenter(ch.NextNodeId, out bool ok);
+                        if (!ok) continue;
+                        Color wcol = ch.Id.Contains("hostile") ? new Color(1.0f, 0.35f, 0.35f) : new Color(0.2f, 0.92f, 0.45f);
+                        TryAddTag(nodeBox, cc, ch.NextNodeId, $"◆→ {ch.NextNodeId}", wcol);
+                    }
+                }
+            }
+
+            if (_data.Triggers != null)
+            {
+                for (int t = 0; t < _data.Triggers.Count; t++)
+                {
+                    var trg = _data.Triggers[t];
+                    if (trg == null || string.IsNullOrEmpty(trg.TargetNodeId)) continue;
+                    Vector2 c = NodeTargetCenter(trg.TargetNodeId, out bool ok);
+                    if (!ok) continue;
+                    Vector2 ts = GetTriggerCardSize(trg);
+                    TryAddTag(new Rect(trg.GraphPosX, trg.GraphPosY, ts.x, ts.y), c, trg.TargetNodeId, $"▼→ {trg.TargetNodeId}", new Color(1.0f, 0.85f, 0.25f));
+                }
+            }
+
+            if (_data.Interactables != null)
+            {
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null || string.IsNullOrEmpty(it.TriggerNodeId)) continue;
+                    Vector2 c = NodeTargetCenter(it.TriggerNodeId, out bool ok);
+                    if (!ok) continue;
+                    Vector2 ins = GetInteractableCardSize(it);
+                    TryAddTag(new Rect(it.GraphPosX, it.GraphPosY, ins.x, ins.y), c, it.TriggerNodeId, $"🔧→ {it.TriggerNodeId}", new Color(0.2f, 0.95f, 0.85f));
+                }
+            }
+        }
+
+        private void DrawOffscreenLinkTags()
+        {
+            if (_offscreenTags.Count == 0 || _pickerCapturesMouse) return;
+            bool quiet = _wireDraft.IsActive;
+            for (int i = 0; i < _offscreenTags.Count; i++)
+            {
+                var tag = _offscreenTags[i];
+                DrawSolidRect(tag.ScreenRect, new Color(0.02f, 0.04f, 0.07f, 0.92f));
+                DrawSolidRect(new Rect(tag.ScreenRect.x, tag.ScreenRect.y, tag.ScreenRect.width, 2f), tag.Color);
+                if (quiet)
+                {
+                    GUI.Label(new Rect(tag.ScreenRect.x + 6f, tag.ScreenRect.y + 2f, tag.ScreenRect.width - 12f, tag.ScreenRect.height - 4f), $"<b>{tag.Label}</b>");
+                }
+                else if (GUI.Button(tag.ScreenRect, tag.Label))
+                {
+                    FocusNodeByIndex(tag.TargetNodeIndex);
+                    Event.current.Use();
+                    return;
+                }
+            }
+        }
+
         private void DrawGlobalSceneWires(Rect visibleWorld)
         {
             for (int n = 0; n < _data.Nodes.Count; n++)
@@ -2918,8 +3553,7 @@ namespace Killtime.Story
                 if (!string.IsNullOrEmpty(node.NextNodeId)
                     && _cachedNodeInputSockets.TryGetValue(node.NextNodeId, out var targetNodeIn))
                 {
-                    Vector2 nodeOut = new Vector2(nodeBox.xMax, nodeBox.yMin + 18f);
-                    DrawBezierWire(nodeOut, targetNodeIn, new Color(1.0f, 0.6f, 0.1f, 0.95f), 4.5f);
+                    DrawBezierWire(GetNodeMainOutCenter(nodeBox), targetNodeIn, new Color(1.0f, 0.6f, 0.1f, 0.95f), 4.5f);
                 }
 
                 for (int c = 0; c < node.Choices.Count; c++)
@@ -2928,10 +3562,29 @@ namespace Killtime.Story
                     if (!string.IsNullOrEmpty(choice.NextNodeId)
                         && _cachedNodeInputSockets.TryGetValue(choice.NextNodeId, out var choiceNodeIn))
                     {
-                        float choiceRowY = nodeBox.yMin + 60f + (c * 36f);
-                        Vector2 choiceOut = new Vector2(nodeBox.xMax, choiceRowY + 14f);
+                        Vector2 choiceOut = GetNodeChoiceOutCenter(nodeBox, c);
                         Color choiceWireCol = choice.Id.Contains("hostile") ? new Color(1.0f, 0.35f, 0.35f, 0.95f) : new Color(0.2f, 0.92f, 0.45f, 0.95f);
                         DrawBezierWire(choiceOut, choiceNodeIn, choiceWireCol, 3.5f);
+                    }
+                }
+
+                // Wires Nœud → Acteur (apparition différée : SpawnOnNodeId) : la source
+                // est le flanc droit du nœud (yMin+34, sous le wire NextNodeId), la cible
+                // le port d'entrée de la carte acteur. Couleur faction si effectif,
+                // gris atténué si l'acteur spawn déjà à l'initiale (SpawnOnNodeId redondant).
+                if (_data.Actors != null && !string.IsNullOrEmpty(node.NodeId))
+                {
+                    for (int ai = 0; ai < _data.Actors.Count; ai++)
+                    {
+                        var a = _data.Actors[ai];
+                        if (a == null || string.IsNullOrEmpty(a.SpawnOnNodeId)) continue;
+                        if (!string.Equals(a.SpawnOnNodeId, node.NodeId, System.StringComparison.OrdinalIgnoreCase)) continue;
+                        if (!_cachedActorInSockets.TryGetValue(a.ActorId, out var actorIn)) continue;
+                        Vector2 actorOut = new Vector2(nodeBox.xMax, nodeBox.yMin + 34f);
+                        Color actorWireCol = !a.SpawnInitially
+                            ? (a.IsPlayer ? new Color(0.0f, 0.85f, 1.0f, 0.95f) : new Color(1.0f, 0.4f, 0.4f, 0.95f))
+                            : new Color(0.6f, 0.6f, 0.6f, 0.5f);
+                        DrawBezierWire(actorOut, actorIn, actorWireCol, 2.5f);
                     }
                 }
 
@@ -2948,6 +3601,21 @@ namespace Killtime.Story
                         && _cachedNodeInputSockets.TryGetValue(trg.TargetNodeId, out var targetIn))
                     {
                         DrawBezierWire(trgOut, targetIn, new Color(1.0f, 0.85f, 0.25f, 0.95f), 3.5f);
+                    }
+                }
+            }
+
+            // Wires Interactables → Nœud cible (TriggerNodeId) : teal distinct des triggers.
+            if (_data.Interactables != null)
+            {
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null || string.IsNullOrEmpty(it.TriggerNodeId)) continue;
+                    if (_cachedInteractableOutSockets.TryGetValue(it.InteractableId, out var itOut)
+                        && _cachedNodeInputSockets.TryGetValue(it.TriggerNodeId, out var targetIn))
+                    {
+                        DrawBezierWire(itOut, targetIn, new Color(0.2f, 0.95f, 0.85f, 0.95f), 3.5f);
                     }
                 }
             }
@@ -2987,6 +3655,88 @@ namespace Killtime.Story
 
         private void FinalizeGlobalWireDraft(Vector2 mousePos)
         {
+            // Cible nœud la plus proche du drop (auto-lien exclu), sinon tag de bord
+            // hors-champ sous le curseur. Faux si rien d'acceptable sous la souris.
+            bool TryPickNodeTarget(Vector2 at, string selfId, out string picked)
+            {
+                picked = null;
+                float best = 36f;
+                foreach (var kvp in _cachedNodeInputSockets)
+                {
+                    if (string.Equals(kvp.Key, selfId, System.StringComparison.OrdinalIgnoreCase)) continue;
+                    float dist = Vector2.Distance(kvp.Value, at);
+                    if (dist < best)
+                    {
+                        best = dist;
+                        picked = kvp.Key;
+                    }
+                }
+                if (!string.IsNullOrEmpty(picked)) return true;
+                for (int i = 0; i < _offscreenTags.Count; i++)
+                {
+                    var tag = _offscreenTags[i];
+                    if (string.Equals(tag.TargetNodeId, selfId, System.StringComparison.OrdinalIgnoreCase)) continue;
+                    if (tag.ScreenRect.Contains(_graphMouseScreenPos))
+                    {
+                        picked = tag.TargetNodeId;
+                        return true;
+                    }
+                }
+                return false;
+            }
+
+            void PlayWireSoundLocal()
+            {
+                if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                {
+                    Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.UI_Filter, 0.6f);
+                }
+            }
+
+            // Nœud → nœud (sortie principale NextNodeId) : drop sur l'entrée d'un
+            // nœud = lier (auto-lien refusé), drop sur un tag de bord = lier la cible
+            // hors-champ, drop dans le vide = effacer le lien.
+            if (_wireDraft.IsNode && _wireDraft.SourceNode != null)
+            {
+                var src = _wireDraft.SourceNode;
+                // Simple clic sans drag = annulation (pas d'effacement accidentel).
+                if (Vector2.Distance(mousePos, _wireDraft.StartPos) * _zoom <= 6f) return;
+                if (_data.Nodes.Contains(src))
+                {
+                    if (TryPickNodeTarget(mousePos, src.NodeId, out string picked))
+                    {
+                        src.NextNodeId = picked;
+                        PlayWireSoundLocal();
+                    }
+                    else
+                    {
+                        src.NextNodeId = "";
+                    }
+                }
+                return;
+            }
+            // Choix majeur → nœud : même routage vers Choices[i].NextNodeId.
+            if (_wireDraft.IsNodeChoice && _wireDraft.SourceNode != null)
+            {
+                var src = _wireDraft.SourceNode;
+                int ci = _wireDraft.NodeChoiceIndex;
+                bool valid = _data.Nodes.Contains(src) && src.Choices != null && ci >= 0 && ci < src.Choices.Count && src.Choices[ci] != null;
+                // Simple clic sans drag = annulation (pas d'effacement accidentel).
+                if (valid && Vector2.Distance(mousePos, _wireDraft.StartPos) * _zoom <= 6f) return;
+                if (valid)
+                {
+                    if (TryPickNodeTarget(mousePos, src.NodeId, out string picked))
+                    {
+                        src.Choices[ci].NextNodeId = picked;
+                        PlayWireSoundLocal();
+                    }
+                    else
+                    {
+                        src.Choices[ci].NextNodeId = "";
+                    }
+                }
+                return;
+            }
             // Déclencheur : déposé sur l'entrée d'un nœud, sa sortie entre dans ce nœud.
             if (_wireDraft.IsTrigger && _wireDraft.SourceTrigger != null)
             {
@@ -2995,6 +3745,19 @@ namespace Killtime.Story
                     if (Vector2.Distance(kvp.Value, mousePos) < 36f)
                     {
                         _wireDraft.SourceTrigger.TargetNodeId = kvp.Key;
+                        return;
+                    }
+                }
+                return;
+            }
+            // Interactable : même routage, la cible est TriggerNodeId (saut runtime existant).
+            if (_wireDraft.IsInteractable && _wireDraft.SourceInteractable != null)
+            {
+                foreach (var kvp in _cachedNodeInputSockets)
+                {
+                    if (Vector2.Distance(kvp.Value, mousePos) < 36f)
+                    {
+                        _wireDraft.SourceInteractable.TriggerNodeId = kvp.Key;
                         return;
                     }
                 }
@@ -3098,24 +3861,187 @@ namespace Killtime.Story
             }
         }
 
+        // ------------------------------------------------------------------
+        // Section détails du nœud (ex-inspecteur) : dessinée SOUS les cartes,
+        // incluse dans la bounding box. Repliée par défaut si le nœud a des cartes.
+        // ------------------------------------------------------------------
+        private readonly Dictionary<string, bool> _nodeSecState = new();
+        private static bool NodeHasCards(SceneNodeData node)
+        {
+            if (node == null) return false;
+            return (node.Dialogues != null && node.Dialogues.Count > 0)
+                || (node.Events != null && node.Events.Count > 0)
+                || (node.Consequences != null && node.Consequences.Count > 0);
+        }
+        private bool IsNodeSecOpen(SceneNodeData node)
+        {
+            if (node == null) return false;
+            if (_nodeSecState.TryGetValue(SKey(node, "sec"), out bool v)) return v;
+            return !NodeHasCards(node);
+        }
+        private float GetNodeSectionHeight(SceneNodeData node)
+        {
+            if (node == null) return 24f;
+            if (!IsNodeSecOpen(node)) return 24f;
+            float h = 22f; // header ▾
+            h += 22f + 22f + 20f + 18f + 54f + 22f + 22f; // id/titre, lieu/type, combat, narr, bouton, next
+            h += 22f; // header choix majeurs
+            if (node.Choices != null)
+            {
+                for (int c = 0; c < node.Choices.Count; c++)
+                {
+                    if (node.Choices[c] == null) continue;
+                    h += 66f; // id/cible, libellé, conséquence
+                    h += MeasureEffectsBlock(node.Choices[c].Effects, SectionOpen(_expandedSections, node.Choices[c], "nfx"), true) * 20f;
+                }
+            }
+            h += 22f; // header objectifs
+            if (node.Objectives != null)
+            {
+                for (int o = 0; o < node.Objectives.Count; o++)
+                {
+                    if (node.Objectives[o] == null) continue;
+                    h += 44f; // ligne + détail
+                }
+            }
+            h += MeasureEffectsBlock(node.EnterEffects, SectionOpen(_expandedSections, node, "nenter"), true) * 20f;
+            return h;
+        }
+        private void DrawNodeSection(SceneNodeData node, float secX, float secY, float secW)
+        {
+            if (node == null) return;
+            node.Choices ??= new System.Collections.Generic.List<ScenarioChoice>();
+            node.Objectives ??= new System.Collections.Generic.List<ScenarioObjective>();
+            node.EnterEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+            bool open = IsNodeSecOpen(node);
+            if (!open)
+            {
+                if (GraphButton(new Rect(secX, secY, secW, 20f), $"▸ ⚙ Nœud : {node.Title}"))
+                    _nodeSecState[SKey(node, "sec")] = true;
+                return;
+            }
+            float y = secY;
+            if (GraphButton(new Rect(secX, y, secW, 22f), $"▾ ⚙ Nœud : {node.Title}"))
+                _nodeSecState[SKey(node, "sec")] = false;
+            y += 22f;
+            GraphLabel(new Rect(secX, y, 30f, 20f), "ID:");
+            node.NodeId = GraphTextField(new Rect(secX + 32f, y, 130f, 20f), node.NodeId ?? "");
+            GraphLabel(new Rect(secX + 166f, y, 45f, 20f), "Titre:");
+            node.Title = GraphTextField(new Rect(secX + 213f, y, Mathf.Max(60f, secX + secW - secX - 213f), 20f), node.Title ?? "");
+            y += 22f;
+            GraphLabel(new Rect(secX, y, 45f, 20f), "Lieu:");
+            node.Location = GraphTextField(new Rect(secX + 47f, y, 110f, 20f), node.Location ?? "");
+            GraphLabel(new Rect(secX + 161f, y, 45f, 20f), "Type:");
+            {
+                int kindCount = Enum.GetValues(typeof(ScenarioNodeKind)).Length;
+                if (GraphButton(new Rect(secX + 208f, y, 20f, 20f), "◀"))
+                    node.Kind = (ScenarioNodeKind)(((int)node.Kind - 1 + kindCount) % kindCount);
+                GraphLabel(new Rect(secX + 230f, y, 84f, 20f), $"<b>{node.Kind}</b>");
+                if (GraphButton(new Rect(secX + 316f, y, 20f, 20f), "▶"))
+                    node.Kind = (ScenarioNodeKind)(((int)node.Kind + 1) % kindCount);
+            }
+            y += 22f;
+            node.TriggerCombatOnEnter = GraphToggle(new Rect(secX, y, Mathf.Max(200f, secW), 20f), node.TriggerCombatOnEnter, "⚔ Combat à l'entrée");
+            y += 20f;
+            GraphLabel(new Rect(secX, y, secW, 18f), "<color=grey>Narration :</color>");
+            y += 18f;
+            node.Body = GraphTextArea(new Rect(secX, y, secW, 54f), node.Body ?? "");
+            y += 54f;
+            GraphLabel(new Rect(secX, y, 70f, 20f), "Bouton :");
+            node.ContinueLabel = GraphTextField(new Rect(secX + 72f, y, Mathf.Max(60f, secX + secW - secX - 72f), 20f), node.ContinueLabel ?? "");
+            y += 22f;
+            GraphLabel(new Rect(secX, y, 110f, 20f), "Nœud Suivant :");
+            node.NextNodeId = GraphTextField(new Rect(secX + 112f, y, Mathf.Max(60f, secX + secW - secX - 112f), 20f), node.NextNodeId ?? "");
+            y += 22f;
+            GUI.backgroundColor = new Color(0.2f, 0.75f, 0.45f);
+            if (GraphButton(new Rect(secX + secW - 92f, y, 92f, 20f), "+ Choix"))
+                node.Choices.Add(new ScenarioChoice { Id = $"choice_{node.Choices.Count + 1}", Label = "Nouveau choix", NextNodeId = "" });
+            GUI.backgroundColor = Color.white;
+            GraphLabel(new Rect(secX, y, Mathf.Max(80f, secW - 96f), 20f), $"<b>Choix majeurs ({node.Choices.Count})</b>");
+            y += 22f;
+            for (int c = 0; c < node.Choices.Count; c++)
+            {
+                var chx = node.Choices[c];
+                if (chx == null) continue;
+                chx.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
+                chx.Id = GraphTextField(new Rect(secX, y, 100f, 20f), chx.Id ?? "");
+                GraphLabel(new Rect(secX + 102f, y, 20f, 20f), "➔");
+                chx.NextNodeId = GraphTextField(new Rect(secX + 124f, y, 100f, 20f), chx.NextNodeId ?? "");
+                GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
+                if (GraphButton(new Rect(secX + 226f, y, 22f, 20f), "✕"))
+                {
+                    node.Choices.RemoveAt(c);
+                    GUI.backgroundColor = Color.white;
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+                DrawGraphSolidRect(new Rect(secX + secW - 18f, y + 2f, 16f, 16f),
+                    chx.Id.Contains("hostile") ? new Color(1.0f, 0.35f, 0.35f) : new Color(0.2f, 0.92f, 0.45f));
+                y += 22f;
+                GraphLabel(new Rect(secX, y, 70f, 20f), "Libellé :");
+                chx.Label = GraphTextField(new Rect(secX + 72f, y, Mathf.Max(60f, secX + secW - secX - 72f), 20f), chx.Label ?? "");
+                y += 22f;
+                GraphLabel(new Rect(secX, y, 95f, 20f), "Conséquence :");
+                chx.Consequence = GraphTextField(new Rect(secX + 97f, y, Mathf.Max(60f, secX + secW - secX - 97f), 20f), chx.Consequence ?? "");
+                y += 22f;
+                DrawEffectsBlock(ref y, secX + 12f, secW - 12f, chx.Effects, chx, "nfx", "+fx", true);
+            }
+            GUI.backgroundColor = new Color(0.2f, 0.92f, 0.45f);
+            if (GraphButton(new Rect(secX + secW - 100f, y, 100f, 20f), "+ Objectif"))
+                node.Objectives.Add(new ScenarioObjective { Id = $"obj_{node.Objectives.Count + 1}", Label = "Nouvel objectif...", Optional = false });
+            GUI.backgroundColor = Color.white;
+            GraphLabel(new Rect(secX, y, Mathf.Max(80f, secW - 104f), 20f), $"<b>Objectifs ({node.Objectives.Count})</b>");
+            y += 22f;
+            for (int o = 0; o < node.Objectives.Count; o++)
+            {
+                var obj = node.Objectives[o];
+                if (obj == null) continue;
+                Color prevObjBg = GUI.backgroundColor;
+                GUI.backgroundColor = obj.Optional ? new Color(0.45f, 0.45f, 0.48f) : new Color(0.2f, 0.75f, 1f);
+                if (GraphButton(new Rect(secX, y, 56f, 20f), obj.Optional ? "Opt." : "Princ."))
+                    obj.Optional = !obj.Optional;
+                GUI.backgroundColor = prevObjBg;
+                obj.Label = GraphTextField(new Rect(secX + 60f, y, Mathf.Max(40f, secX + secW - secX - 60f - 26f), 20f), obj.Label ?? "");
+                GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
+                if (GraphButton(new Rect(secX + secW - 22f, y, 22f, 20f), "✕"))
+                {
+                    node.Objectives.RemoveAt(o);
+                    GUI.backgroundColor = Color.white;
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+                y += 22f;
+                GraphLabel(new Rect(secX, y, 30f, 20f), "ID:");
+                obj.Id = GraphTextField(new Rect(secX + 32f, y, 90f, 20f), obj.Id ?? "");
+                GraphLabel(new Rect(secX + 126f, y, 55f, 20f), "Détail:");
+                obj.Detail = GraphTextField(new Rect(secX + 183f, y, Mathf.Max(40f, secX + secW - secX - 183f), 20f), obj.Detail ?? "");
+                y += 22f;
+            }
+            DrawEffectsBlock(ref y, secX, secW, node.EnterEffects, node, "nenter", "Effets d'entrée", true);
+        }
+
         private void DrawNodeFrame(SceneNodeData node, int nodeIndex, Vector2 mouseWorld)
         {
             Rect frameRect = ComputeNodeBoundingBox(node);
             Rect headerRect = new Rect(frameRect.x, frameRect.y, frameRect.width, 38f);
-            // Zone boutons réelle : 90 + 82 + 95 + 26 + espacements ≈ 315px calée à droite.
-            Rect actionsArea = new Rect(headerRect.xMax - 325f, headerRect.y + 5f, 315f, 26f);
+            // Zone boutons réelle : ⚙ + 90 + 82 + 95 + 26 + espacements ≈ 350px calée à droite.
+            Rect actionsArea = new Rect(headerRect.xMax - 360f, headerRect.y + 5f, 350f, 26f);
             Rect nodeInSocket = new Rect(frameRect.x - 9f, frameRect.y + 10f, 18f, 18f);
             Rect nodeOutSocket = new Rect(frameRect.xMax - 9f, frameRect.y + 10f, 18f, 18f);
 
             Event evt = Event.current;
             int nodeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
-            // Glissement du Nœud Englobant dans l'espace monde (protection stricte des boutons d'actions)
-            bool isOverHeaderDragZone = headerRect.Contains(mouseWorld) && !actionsArea.Contains(mouseWorld);
+            // Glissement du Nœud Englobant dans l'espace monde (protection stricte des boutons d'actions
+            // ET des ports de sortie : un port reste un port, pas une poignée de déplacement).
+            bool isOverHeaderDragZone = headerRect.Contains(mouseWorld) && !actionsArea.Contains(mouseWorld)
+                && !nodeOutSocket.Contains(mouseWorld);
 
             // Double-clic sur la frame = cadrer ce nœud en lisible (raccourci direct vers
-            // le focus, sans passer par Aller à / ◀ ▶).
-            if (evt.type == EventType.MouseDown && evt.button == 0 && evt.clickCount == 2 && !_pickerCapturesMouse && frameRect.Contains(mouseWorld))
+            // le focus, sans passer par Aller à / ◀ ▶). Hors ports : double-cliquer un port
+            // ne doit ni déplacer ni effacer le lien.
+            if (evt.type == EventType.MouseDown && evt.button == 0 && evt.clickCount == 2 && !_pickerCapturesMouse && frameRect.Contains(mouseWorld)
+                && !nodeOutSocket.Contains(mouseWorld) && !IsOverNodeChoicePort(frameRect, node, mouseWorld))
             {
                 _draggingNodeId = null;
                 GUIUtility.hotControl = 0;
@@ -3185,7 +4111,7 @@ namespace Killtime.Story
             DrawGraphSolidRect(nodeInSocket, frameBorderCol);
 
             GUI.color = Color.white;
-            float titleW = Mathf.Max(90f, frameRect.width - 475f);
+            float titleW = Mathf.Max(90f, frameRect.width - 507f);
             GraphLabel(new Rect(headerRect.x + 16f, headerRect.y + 8f, titleW, 22f), $"<b>■ NŒUD #{nodeIndex + 1} : {node.Title.ToUpperInvariant()}</b> [{node.Kind}]");
 
             GUI.color = new Color(1f, 1f, 1f, 0.75f);
@@ -3197,6 +4123,10 @@ namespace Killtime.Story
             float btnH = 22f;
             float bx = headerRect.xMax - 10f;
             Color prevBg = GUI.backgroundColor;
+            bool secOpen = IsNodeSecOpen(node);
+            if (GraphButton(new Rect(bx - 26f, btnY, 26f, btnH), secOpen ? "⚙▾" : "⚙▸"))
+                _nodeSecState[SKey(node, "sec")] = !secOpen;
+            bx -= 26f + 6f;
             GUI.backgroundColor = new Color(0.85f, 0.2f, 0.2f);
             Rect delBtn = new Rect(bx - 26f, btnY, 26f, btnH);
             bool deleteNode = GraphButton(delBtn, "✕");
@@ -3261,88 +4191,60 @@ namespace Killtime.Story
                 return;
             }
 
-            if (!string.IsNullOrEmpty(node.NextNodeId))
+            // Sortie principale (NextNodeId) : toujours visible (atténuée si vide),
+            // drag vers l'entrée d'un nœud = lier, drop dans le vide = effacer.
+            bool hasNext = !string.IsNullOrEmpty(node.NextNodeId);
+            Color nextPortCol = hasNext ? new Color(1.0f, 0.65f, 0.15f) : new Color(1.0f, 0.65f, 0.15f, 0.35f);
+            DrawGraphSolidRect(nodeOutSocket, nextPortCol);
+
+            if (evt.clickCount < 2 && GraphPrimaryDown(mouseWorld, nodeOutSocket))
             {
-                DrawGraphSolidRect(nodeOutSocket, new Color(1.0f, 0.65f, 0.15f));
+                _wireDraft = new WireConnectionDraft
+                {
+                    IsActive = true,
+                    IsNode = true,
+                    SourceNode = node,
+                    StartPos = GetNodeMainOutCenter(frameRect)
+                };
+                evt.Use();
             }
 
-            float contentY = frameRect.y + 46f;
-            if (node.Dialogues.Count == 0 && node.Events.Count == 0 && (node.Consequences == null || node.Consequences.Count == 0))
+            // Sorties choix majeurs : un port par choix sur le flanc droit, aux mêmes
+            // positions que les origines des wires (GetNodeChoiceOutCenter).
+            if (node.Choices != null)
             {
-                node.Objectives ??= new System.Collections.Generic.List<ScenarioObjective>();
-                float innerObjX = frameRect.x + 16f;
-                float innerObjW = frameRect.width - 32f;
-
-                // Sélecteur de type : transforme n'importe quel nœud en nœud Objectif (vert) comme le nœud #2.
-                GraphLabel(new Rect(innerObjX, contentY, 45f, 22f), "Type :");
-                int kindCount = Enum.GetValues(typeof(ScenarioNodeKind)).Length;
-                if (GraphButton(new Rect(innerObjX + 47f, contentY, 22f, 22f), "◀"))
-                    node.Kind = (ScenarioNodeKind)(((int)node.Kind - 1 + kindCount) % kindCount);
-                GraphLabel(new Rect(innerObjX + 71f, contentY, 95f, 22f), $"<b>{node.Kind}</b>");
-                if (GraphButton(new Rect(innerObjX + 168f, contentY, 22f, 22f), "▶"))
-                    node.Kind = (ScenarioNodeKind)(((int)node.Kind + 1) % kindCount);
-                contentY += 26f;
-
-                GraphLabel(new Rect(innerObjX, contentY, 45f, 22f), "Titre :");
-                node.Title = GraphTextField(new Rect(innerObjX + 47f, contentY, Mathf.Max(60f, innerObjW - 47f), 22f), node.Title ?? "");
-                contentY += 26f;
-
-                GraphLabel(new Rect(innerObjX, contentY, innerObjW, 18f), "<color=grey>Narration :</color>");
-                contentY += 18f;
-                node.Body = GraphTextArea(new Rect(innerObjX, contentY, innerObjW, 54f), node.Body ?? "");
-                contentY += 60f;
-
-                GraphLabel(new Rect(innerObjX, contentY, 140f, 22f), $"<b>Objectifs ({node.Objectives.Count})</b>");
-                Color prevFrameBg = GUI.backgroundColor;
-                GUI.backgroundColor = new Color(0.2f, 0.92f, 0.45f);
-                if (GraphButton(new Rect(innerObjX + innerObjW - 92f, contentY, 92f, 22f), "+ Objectif"))
-                    node.Objectives.Add(new ScenarioObjective { Id = $"obj_{node.Objectives.Count + 1}", Label = "Nouvel objectif...", Optional = false });
-                GUI.backgroundColor = prevFrameBg;
-                contentY += 26f;
-
-                for (int o = 0; o < node.Objectives.Count; o++)
+                for (int cp = 0; cp < node.Choices.Count; cp++)
                 {
-                    var obj = node.Objectives[o];
-                    if (obj == null) continue;
-                    Rect objRow = new Rect(innerObjX, contentY, innerObjW, 24f);
-                    DrawGraphSolidRect(objRow, new Color(0.04f, 0.14f, 0.10f, 0.85f));
-                    Color prevObjBg = GUI.backgroundColor;
-                    GUI.backgroundColor = obj.Optional ? new Color(0.45f, 0.45f, 0.48f) : new Color(0.2f, 0.75f, 1f);
-                    if (GraphButton(new Rect(objRow.x + 2f, objRow.y + 2f, 56f, 20f), obj.Optional ? "Opt." : "Princ."))
-                        obj.Optional = !obj.Optional;
-                    GUI.backgroundColor = prevObjBg;
-                    obj.Label = GraphTextField(new Rect(objRow.x + 62f, objRow.y + 2f, Mathf.Max(40f, objRow.width - 62f - 28f), 20f), obj.Label ?? "");
-                    GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
-                    if (GraphButton(new Rect(objRow.xMax - 24f, objRow.y + 2f, 22f, 20f), "✕"))
+                    var chx = node.Choices[cp];
+                    if (chx == null) continue;
+                    Vector2 choiceCenter = GetNodeChoiceOutCenter(frameRect, cp);
+                    Rect choicePort = GetNodeChoicePortRect(frameRect, cp);
+                    bool hasChoiceLink = !string.IsNullOrEmpty(chx.NextNodeId);
+                    Color baseChoiceCol = chx.Id.Contains("hostile") ? new Color(1.0f, 0.35f, 0.35f) : new Color(0.2f, 0.92f, 0.45f);
+                    if (!hasChoiceLink) baseChoiceCol.a = 0.35f;
+                    DrawGraphSolidRect(choicePort, baseChoiceCol);
+
+                    if (evt.clickCount < 2 && GraphPrimaryDown(mouseWorld, choicePort))
                     {
-                        node.Objectives.RemoveAt(o);
-                        GUI.backgroundColor = Color.white;
-                        break;
+                        _wireDraft = new WireConnectionDraft
+                        {
+                            IsActive = true,
+                            IsNodeChoice = true,
+                            NodeChoiceIndex = cp,
+                            SourceNode = node,
+                            StartPos = choiceCenter
+                        };
+                        evt.Use();
                     }
-                    GUI.backgroundColor = Color.white;
-                    contentY += 28f;
                 }
-                contentY += 6f;
             }
 
-            if (node.Choices != null && node.Choices.Count > 0)
+            // Section détails du nœud (ex-inspecteur + ex-inline) : sous les cartes,
+            // incluse dans la bounding box.
             {
-                for (int c = 0; c < node.Choices.Count; c++)
-                {
-                    var ch = node.Choices[c];
-                    if (ch == null) continue;
-                    Rect choiceRow = new Rect(frameRect.x + 16f, contentY, frameRect.width - 32f, 26f);
-                    DrawGraphSolidRect(choiceRow, new Color(0.08f, 0.12f, 0.17f, 0.90f));
-
-                    GraphLabel(new Rect(choiceRow.x + 8f, choiceRow.y + 3f, choiceRow.width - 200f, 20f), $"<b>Choix #{c + 1} :</b> {ch.Label}");
-                    GUI.color = new Color(1f, 0.75f, 0.2f);
-                    GraphLabel(new Rect(choiceRow.xMax - 190f, choiceRow.y + 3f, 180f, 20f), $"➔ <b>{ch.NextNodeId}</b>");
-                    GUI.color = Color.white;
-
-                    Rect choiceSocket = new Rect(frameRect.xMax - 8f, choiceRow.y + 5f, 16f, 16f);
-                    DrawGraphSolidRect(choiceSocket, ch.Id.Contains("hostile") ? new Color(1.0f, 0.35f, 0.35f) : new Color(0.2f, 0.92f, 0.45f));
-                    contentY += 28f;
-                }
+                float sectionH = GetNodeSectionHeight(node);
+                float secW = frameRect.width - 32f;
+                DrawNodeSection(node, frameRect.x + 16f, frameRect.yMax - 14f - sectionH, secW);
             }
         }
 
@@ -3578,7 +4480,7 @@ namespace Killtime.Story
                     if (!string.IsNullOrEmpty(cons.NextConsequenceId)
                         && _cachedInputSockets.TryGetValue(cons.NextConsequenceId, out var consIn))
                     {
-                        float nextRowTop = 72f + (cons.HasDialogue ? 66f : 0f);
+                        float nextRowTop = GetConsLinkRowTop(cons);
                         DrawBezierWire(new Vector2(cardPos.x + size.x, cardPos.y + nextRowTop + 10f), consIn, new Color(0.4f, 1.0f, 0.5f, 0.95f), 3.0f);
                     }
                 }
@@ -3810,9 +4712,11 @@ namespace Killtime.Story
                     var ch = line.Choices[c];
                     if (ch == null) { y += 22f; continue; }
                     ch.Challenge ??= new SceneDialogueChallengeData();
+                    ch.Prerequisite ??= new ScenePrerequisiteData();
+                    ch.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
                     var chal = ch.Challenge;
 
-                    // Rangée principale : [mode 30][label][➔][next 70][⊘].
+                    // Rangée principale : [mode 30][label][➔][next 70][⋯][⊘].
                     string modeLabel = !chal.HasChallenge ? "–" : (chal.IsOpposed ? "VS" : "SD");
                     Color prevBg = GUI.backgroundColor;
                     GUI.backgroundColor = !chal.HasChallenge ? new Color(0.35f, 0.38f, 0.42f)
@@ -3825,11 +4729,24 @@ namespace Killtime.Story
                     }
                     GUI.backgroundColor = prevBg;
 
-                    float labelW = Mathf.Max(40f, innerW - 32f - 122f);
+                    float labelW = Mathf.Max(40f, innerW - 32f - 144f);
                     ch.Label = GraphTextField(new Rect(innerX + 32f, y, labelW, 20f), ch.Label ?? "");
                     GraphLabel(new Rect(innerX + 32f + labelW + 2f, y, 16f, 20f), "➔");
                     ch.NextLineId = GraphTextField(new Rect(innerX + 32f + labelW + 20f, y, 70f, 20f), ch.NextLineId ?? "");
-                    if (GraphButton(new Rect(innerX + 32f + labelW + 92f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
+                    bool detAny = SectionOpen(_expandedSections, ch, "pre") || SectionOpen(_expandedSections, ch, "fx") || SectionOpen(_expandedSections, ch, "chd");
+                    if (GraphButton(new Rect(innerX + 32f + labelW + 92f, y, 20f, 20f), detAny ? "▾" : "▸"))
+                    {
+                        _expandedSections.Remove(SKey(ch, "pre"));
+                        _expandedSections.Remove(SKey(ch, "fx"));
+                        _expandedSections.Remove(SKey(ch, "chd"));
+                        if (!detAny)
+                        {
+                            _expandedSections.Add(SKey(ch, "pre"));
+                            _expandedSections.Add(SKey(ch, "fx"));
+                            _expandedSections.Add(SKey(ch, "chd"));
+                        }
+                    }
+                    if (GraphButton(new Rect(innerX + 32f + labelW + 114f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
                     y += 22f;
 
                     if (chal.HasChallenge && !chal.IsOpposed)
@@ -3956,7 +4873,7 @@ namespace Killtime.Story
 
                     }
 
-                    // Méta du choix : prérequis et effets (résumé visible, détail inspecteur).
+                    // Méta du choix : prérequis et effets (résumé).
                     {
                         bool hasPre = ch.Prerequisite != null && ch.Prerequisite.HasPrerequisite;
                         int fxCount = ch.Effects != null ? ch.Effects.Count : 0;
@@ -3974,6 +4891,13 @@ namespace Killtime.Story
                             y += 20f;
                         }
                     }
+
+                    // Détails repliables du choix (ex-inspecteur) : prérequis / effets / défi.
+                    if (SectionOpen(_expandedSections, ch, "pre"))
+                        DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, ch.Prerequisite);
+                    DrawEffectsBlock(ref y, innerX + 12f, innerW - 12f, ch.Effects, ch, "fx", "+fx", false);
+                    if (chal.HasChallenge && SectionOpen(_expandedSections, ch, "chd"))
+                        DrawChallengeDetail(ref y, innerX + 12f, innerW - 12f, ch);
                 }
             }
             else
@@ -4009,6 +4933,20 @@ namespace Killtime.Story
                     $"🔊 Ambiance : {amb.SoundCueId}{(amb.ChangeMusic ? $" ♪{amb.MusicMood}/{amb.MusicIntensity}" : "")}{(amb.TriggerAlarm ? " 🚨" : "")}");
                 GUI.color = Color.white;
                 y += 18f;
+            }
+
+            // Strip détails (ex-inspecteur) : 🎥 caméra, 🔒 prérequis, 🔊 ambiance, 🎲 test auto.
+            {
+                float stripX = innerX;
+                bool camOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "cam", "🎥"); stripX += 48f;
+                bool preOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "pre", "🔒"); stripX += 48f;
+                bool ambOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "amb", "🔊"); stripX += 48f;
+                bool autoOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "auto", "🎲");
+                y += 20f;
+                if (camOpen) DrawCameraDetail(ref y, innerX + 12f, innerW - 12f, line);
+                if (preOpen) DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, line.Prerequisite);
+                if (ambOpen) DrawAmbienceDetail(ref y, innerX + 12f, innerW - 12f, line.Ambience);
+                if (autoOpen) DrawAutoDetail(ref y, innerX + 12f, innerW - 12f, line.AutoSkillCheck);
             }
 
             // Rangée basse : +Choix / toggles (protégée du débordement par CardHeight auto).
@@ -4228,8 +5166,28 @@ namespace Killtime.Story
             y += 20f;
 
             GraphLabel(new Rect(innerX, y, 45f, 18f), "Action:");
-            ev.Kind = (SceneEventKind)GraphToolbar(new Rect(innerX + 47f, y, Mathf.Max(80f, innerW - 47f), 18f), (int)ev.Kind, new[] { "Normal", "Combat", "Spawn", "Cam" });
+            {
+                int kindCount = Enum.GetValues(typeof(SceneEventKind)).Length;
+                if (GraphButton(new Rect(innerX + 47f, y, 20f, 18f), "◀"))
+                    ev.Kind = (SceneEventKind)(((int)ev.Kind - 1 + kindCount) % kindCount);
+                GraphLabel(new Rect(innerX + 69f, y, Mathf.Max(40f, innerW - 69f - 22f), 18f), $"<b>{ev.Kind}</b>");
+                if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                    ev.Kind = (SceneEventKind)(((int)ev.Kind + 1) % kindCount);
+            }
             y += 22f;
+
+            // Strip + détails (ex-inspecteur) : prérequis, ambiance, test auto, effets.
+            {
+                float stripX = innerX;
+                bool preOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "pre", "🔒"); stripX += 48f;
+                bool ambOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "amb", "🔊"); stripX += 48f;
+                bool autoOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "auto", "🎲");
+                y += 20f;
+                if (preOpen) DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, ev.Prerequisite);
+                if (ambOpen) DrawAmbienceDetail(ref y, innerX + 12f, innerW - 12f, ev.Ambience);
+                if (autoOpen) DrawAutoDetail(ref y, innerX + 12f, innerW - 12f, ev.AutoSkillCheck);
+            }
+            DrawEffectsBlock(ref y, innerX + 12f, innerW - 12f, ev.Effects, ev, "fx", "+fx", true);
 
             Color prevBg = GUI.backgroundColor;
             GUI.backgroundColor = new Color(1f, 0.7f, 0.2f);
@@ -4402,6 +5360,9 @@ namespace Killtime.Story
                 cons.Speech = GraphTextArea(new Rect(innerX, y, innerW, 42f), cons.Speech ?? "");
                 y += 44f;
             }
+
+            cons.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
+            DrawEffectsBlock(ref y, innerX, innerW, cons.Effects, cons, "fx", "+fx", true);
 
             float nextRowTop = y - cardRect.y;
             GraphLabel(new Rect(innerX, y, 52f, 18f), "→Diag:");
@@ -4644,7 +5605,24 @@ namespace Killtime.Story
             if (trg.Kind == SceneTriggerKind.InteractableActivated)
             {
                 GraphLabel(new Rect(innerX, y, 95f, 18f), "Action carte :");
-                trg.InteractableId = GraphTextField(new Rect(innerX + 97f, y, Mathf.Max(40f, innerW - 97f), 18f), trg.InteractableId ?? "");
+                float fldX = innerX + 97f;
+                bool hasInters = _data.Interactables != null && _data.Interactables.Count > 0;
+                float arrowsW = hasInters ? 44f : 0f;
+                trg.InteractableId = GraphTextField(new Rect(fldX, y, Mathf.Max(40f, innerW - 97f - arrowsW), 18f), trg.InteractableId ?? "");
+                if (hasInters)
+                {
+                    int curIdx = _data.Interactables.FindIndex(a => a != null && string.Equals(a.InteractableId, trg.InteractableId, System.StringComparison.OrdinalIgnoreCase));
+                    if (GraphButton(new Rect(innerX + innerW - 42f, y, 20f, 18f), "◀"))
+                    {
+                        curIdx = (curIdx < 0 ? _data.Interactables.Count - 1 : (curIdx - 1 + _data.Interactables.Count) % _data.Interactables.Count);
+                        trg.InteractableId = _data.Interactables[curIdx]?.InteractableId ?? "";
+                    }
+                    if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                    {
+                        curIdx = (curIdx < 0 ? 0 : (curIdx + 1) % _data.Interactables.Count);
+                        trg.InteractableId = _data.Interactables[curIdx]?.InteractableId ?? "";
+                    }
+                }
                 y += 20f;
             }
             else if (trg.Kind == SceneTriggerKind.ObjectiveCompleted)
@@ -4707,6 +5685,461 @@ namespace Killtime.Story
                     StartPos = outPort.center
                 };
                 evt.Use();
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // Carte Interactable : objet physique persistant niveau scène (comme un
+        // Trigger global, PAS un Nœud narratif). Source seule : aucun port
+        // d'entrée, une sortie teal vers le Nœud cible (TriggerNodeId).
+        // Réponse à la question nodes-vs-cartes : les Nœuds = étapes narratives
+        // (frames avec dialogues/events/conséquences) ; les Interactables = sources
+        // ponctuelles → cartes flottantes globales, même rangée que les Triggers.
+        // ------------------------------------------------------------------
+        private void DrawInteractableCard(SceneInteractableSpawnData it, int index, Vector2 mouseWorld)
+        {
+            if (it == null) return;
+            if (string.IsNullOrEmpty(it.InteractableId)) it.InteractableId = $"obj_{index + 1}";
+            string targetDisplay = string.IsNullOrEmpty(it.TriggerNodeId) ? "(sans cible)" : it.TriggerNodeId;
+
+            Vector2 size = GetInteractableCardSize(it);
+            float cardW = size.x;
+            float cardH = size.y;
+
+            Rect cardRect = new Rect(it.GraphPosX, it.GraphPosY, cardW, cardH);
+            Rect headerRect = new Rect(cardRect.x, cardRect.y, cardW, 26f);
+            Rect closeRect = new Rect(headerRect.xMax - 22f, headerRect.y + 3f, 18f, 18f);
+            Rect dragHeaderRect = new Rect(headerRect.x, headerRect.y, headerRect.width - 26f, headerRect.height);
+            Rect resizeGripRect = new Rect(cardRect.xMax - 14f, cardRect.yMax - 14f, 14f, 14f);
+
+            Event evt = Event.current;
+            string dragKey = $"inter_{index}_{it.InteractableId}";
+            string resizeKey = $"resize_{dragKey}";
+            int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
+            int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
+
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            {
+                GUIUtility.hotControl = resizeControlId;
+                _resizingCardKey = resizeKey;
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
+            {
+                it.CardWidth = Mathf.Clamp(mouseWorld.x - cardRect.x, 300f, 750f);
+                it.CardHeight = Mathf.Clamp(mouseWorld.y - cardRect.y, 200f, 500f);
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == resizeControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _resizingCardKey = null;
+                evt.Use();
+            }
+
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            {
+                GUIUtility.hotControl = dragControlId;
+                _draggingCardKey = dragKey;
+                _dragOffset = mouseWorld - new Vector2(it.GraphPosX, it.GraphPosY);
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
+            {
+                it.GraphPosX = mouseWorld.x - _dragOffset.x;
+                it.GraphPosY = mouseWorld.y - _dragOffset.y;
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == dragControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _draggingCardKey = null;
+                evt.Use();
+            }
+
+            DrawGraphSolidRect(cardRect, new Color(0.05f, 0.12f, 0.12f, 0.95f));
+            Color headerCol = new Color(0.08f, 0.45f, 0.42f);
+            DrawGraphSolidRect(headerRect, headerCol);
+
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), new Color(0.2f, 0.95f, 0.85f, 0.8f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+
+            string headerName = string.IsNullOrEmpty(it.DisplayName) ? "(sans nom)" : it.DisplayName;
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>🔧 {headerName}</b> [{it.InteractableId}]");
+
+            GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
+            GUI.color = Color.white;
+            if (GraphButton(closeRect, "✕"))
+            {
+                if (_data.Interactables != null) _data.Interactables.RemoveAt(index);
+                if (_draggingCardKey == dragKey)
+                {
+                    _draggingCardKey = null;
+                    GUIUtility.hotControl = 0;
+                }
+                GUI.backgroundColor = Color.white;
+                evt.Use();
+                return;
+            }
+            GUI.backgroundColor = Color.white;
+
+            GUI.color = new Color(1f, 1f, 1f, 0.4f);
+            GraphLabel(resizeGripRect, "◢");
+            GUI.color = Color.white;
+
+            if (_zoom < 0.85f && !_isPanning && _draggingCardKey == null && _resizingCardKey == null && !_wireDraft.IsActive
+                && headerRect.Contains(mouseWorld))
+            {
+                _hasHoverCard = true;
+                _hoverTitle = $"🔧 {headerName}  ({it.InteractableId})";
+                _hoverBody = $"{it.GetSummary()}\nAction : {it.ActionLabel}\n{(string.IsNullOrEmpty(it.SuccessLog) ? "(aucun log)" : it.SuccessLog)}";
+                _hoverScreenPos = _graphMouseScreenPos;
+            }
+
+            float innerX = cardRect.x + 8f;
+            float innerW = cardW - 16f;
+            float y = cardRect.y + 30f;
+
+            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+            it.InteractableId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), it.InteractableId ?? "");
+            GUI.color = new Color(0.2f, 0.95f, 0.85f);
+            GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), $"➔ {targetDisplay}");
+            GUI.color = Color.white;
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 36f, 18f), "Nom:");
+            it.DisplayName = GraphTextField(new Rect(innerX + 38f, y, Mathf.Max(40f, innerW - 38f), 18f), it.DisplayName ?? "");
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 48f, 18f), "Action:");
+            it.ActionLabel = GraphTextField(new Rect(innerX + 50f, y, Mathf.Max(40f, innerW - 50f), 18f), it.ActionLabel ?? "");
+            y += 20f;
+
+            // Position hex + rayon sur une ligne compacte.
+            GraphLabel(new Rect(innerX, y, 16f, 18f), "Q:");
+            int.TryParse(GraphTextField(new Rect(innerX + 18f, y, 36f, 18f), it.Q.ToString()), out it.Q);
+            GraphLabel(new Rect(innerX + 58f, y, 14f, 18f), "R:");
+            int.TryParse(GraphTextField(new Rect(innerX + 72f, y, 36f, 18f), it.R.ToString()), out it.R);
+            GraphLabel(new Rect(innerX + 112f, y, 44f, 18f), "Rayon:");
+            int.TryParse(GraphTextField(new Rect(innerX + 158f, y, 32f, 18f), it.Radius.ToString()), out it.Radius);
+            it.Radius = Mathf.Clamp(it.Radius, 0, 12);
+            it.IsOneShot = GraphToggle(new Rect(innerX + 194f, y, Mathf.Max(60f, innerW - 194f), 18f), it.IsOneShot, "Unique");
+            y += 20f;
+
+            // Compétence requise + SD.
+            GraphLabel(new Rect(innerX, y, 46f, 18f), "Test :");
+            {
+                int skillCount = Enum.GetValues(typeof(SkillType)).Length;
+                int skillIdx = (int)it.RequiredSkill;
+                if (GraphButton(new Rect(innerX + 48f, y, 20f, 18f), "◀"))
+                {
+                    skillIdx = (skillIdx - 1 + skillCount) % skillCount;
+                    it.RequiredSkill = (SkillType)skillIdx;
+                }
+                GraphLabel(new Rect(innerX + 70f, y, Mathf.Max(40f, innerW - 70f - 72f), 18f), $"<b>{SkillDefinitions.GetDisplayName(it.RequiredSkill)}</b>");
+                if (GraphButton(new Rect(innerX + innerW - 70f, y, 20f, 18f), "▶"))
+                {
+                    skillIdx = (skillIdx + 1) % skillCount;
+                    it.RequiredSkill = (SkillType)skillIdx;
+                }
+                GraphLabel(new Rect(innerX + innerW - 48f, y, 20f, 18f), "SD:");
+                int.TryParse(GraphTextField(new Rect(innerX + innerW - 26f, y, 26f, 18f), it.SkillThreshold.ToString()), out it.SkillThreshold);
+            }
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 68f, 18f), "→ Nœud :");
+            it.TriggerNodeId = GraphTextField(new Rect(innerX + 70f, y, Mathf.Max(40f, innerW - 70f), 18f), it.TriggerNodeId ?? "");
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 66f, 18f), "Objectif :");
+            it.CompletionObjectiveId = GraphTextField(new Rect(innerX + 68f, y, Mathf.Max(40f, innerW - 68f), 18f), it.CompletionObjectiveId ?? "");
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 66f, 18f), "Log ✔ :");
+            it.SuccessLog = GraphTextField(new Rect(innerX + 68f, y, Mathf.Max(40f, innerW - 68f), 18f), it.SuccessLog ?? "");
+            y += 20f;
+
+            if (y + 4f <= cardRect.yMax)
+            {
+                GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                GraphLabel(new Rect(innerX, y, innerW, 18f), it.GetSummary());
+                GUI.color = Color.white;
+            }
+
+            // Sortie seule : pas de port d'entrée sur un interactable.
+            Rect outPort2 = new Rect(cardRect.xMax - 8f, cardRect.y + 18f, 16f, 16f);
+            DrawGraphSolidRect(outPort2, new Color(0.2f, 0.95f, 0.85f));
+
+            if (GraphPrimaryDown(mouseWorld, outPort2))
+            {
+                _wireDraft = new WireConnectionDraft
+                {
+                    IsActive = true,
+                    IsInteractable = true,
+                    SourceInteractable = it,
+                    StartPos = outPort2.center
+                };
+                evt.Use();
+            }
+        }
+
+        // Nombre de références à un acteur dans la scène (locuteur, cible, déclencheur).
+        // Match sur ActorId OU DisplayName, insensible à la casse (comme BuildActorCandidates).
+        private void CountActorReferences(SceneActorSpawnData a, out int lines, out int events, out int triggers)
+        {
+            lines = 0; events = 0; triggers = 0;
+            if (a == null || _data == null) return;
+            bool Match(string v)
+            {
+                if (string.IsNullOrWhiteSpace(v)) return false;
+                return string.Equals(v.Trim(), a.ActorId?.Trim(), System.StringComparison.OrdinalIgnoreCase)
+                    || (!string.IsNullOrWhiteSpace(a.DisplayName) && string.Equals(v.Trim(), a.DisplayName.Trim(), System.StringComparison.OrdinalIgnoreCase));
+            }
+            if (_data.Nodes != null)
+            {
+                for (int n = 0; n < _data.Nodes.Count; n++)
+                {
+                    var node = _data.Nodes[n];
+                    if (node == null) continue;
+                    if (node.Dialogues != null)
+                    {
+                        for (int d = 0; d < node.Dialogues.Count; d++)
+                        {
+                            var line = node.Dialogues[d];
+                            if (line == null) continue;
+                            if (Match(line.SpeakerId)) lines++;
+                        }
+                    }
+                    if (node.Consequences != null)
+                    {
+                        for (int k = 0; k < node.Consequences.Count; k++)
+                        {
+                            var cons = node.Consequences[k];
+                            if (cons == null) continue;
+                            if (cons.HasDialogue && Match(cons.SpeakerId)) lines++;
+                        }
+                    }
+                    if (node.Events != null)
+                    {
+                        for (int e = 0; e < node.Events.Count; e++)
+                        {
+                            var ev = node.Events[e];
+                            if (ev == null) continue;
+                            if (Match(ev.TargetActorId)) events++;
+                        }
+                    }
+                }
+            }
+            if (_data.Triggers != null)
+            {
+                for (int t = 0; t < _data.Triggers.Count; t++)
+                {
+                    var trg = _data.Triggers[t];
+                    if (trg == null) continue;
+                    if (trg.Kind == SceneTriggerKind.ActorCondition && Match(trg.ActorId)) triggers++;
+                }
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // Carte Acteur : pion déployé niveau scène (comme un Interactable global,
+        // PAS un Nœud narratif). Cible seule : aucun port de sortie, un port
+        // d'entrée visuel à gauche (wire Nœud → Acteur quand SpawnOnNodeId est
+        // renseigné). Couleur faction : bleu PJ, rouge PNJ.
+        // La carte édite identité + placement + spawn ; les stats fines
+        // (FOR/AGI/… de l'EmbeddedSheet) se règlent hors éditeur.
+        // ------------------------------------------------------------------
+        private void DrawActorCard(SceneActorSpawnData a, int index, Vector2 mouseWorld)
+        {
+            if (a == null) return;
+            if (string.IsNullOrEmpty(a.ActorId)) a.ActorId = $"actor_{index + 1}";
+            string spawnDisplay = a.SpawnInitially
+                ? "● INIT"
+                : (string.IsNullOrEmpty(a.SpawnOnNodeId) ? "○ (jamais spawné)" : $"○ si {a.SpawnOnNodeId}");
+
+            Vector2 size = GetActorCardSize(a);
+            float cardW = size.x;
+            float cardH = size.y;
+
+            Rect cardRect = new Rect(a.GraphPosX, a.GraphPosY, cardW, cardH);
+            Rect headerRect = new Rect(cardRect.x, cardRect.y, cardW, 26f);
+            Rect closeRect = new Rect(headerRect.xMax - 22f, headerRect.y + 3f, 18f, 18f);
+            Rect dragHeaderRect = new Rect(headerRect.x, headerRect.y, headerRect.width - 26f, headerRect.height);
+            Rect resizeGripRect = new Rect(cardRect.xMax - 14f, cardRect.yMax - 14f, 14f, 14f);
+
+            Event evt = Event.current;
+            string dragKey = $"actor_{index}_{a.ActorId}";
+            string resizeKey = $"resize_{dragKey}";
+            int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
+            int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
+
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            {
+                GUIUtility.hotControl = resizeControlId;
+                _resizingCardKey = resizeKey;
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
+            {
+                a.CardWidth = Mathf.Clamp(mouseWorld.x - cardRect.x, 300f, 750f);
+                a.CardHeight = Mathf.Clamp(mouseWorld.y - cardRect.y, 180f, 500f);
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == resizeControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _resizingCardKey = null;
+                evt.Use();
+            }
+
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            {
+                GUIUtility.hotControl = dragControlId;
+                _draggingCardKey = dragKey;
+                _dragOffset = mouseWorld - new Vector2(a.GraphPosX, a.GraphPosY);
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
+            {
+                a.GraphPosX = mouseWorld.x - _dragOffset.x;
+                a.GraphPosY = mouseWorld.y - _dragOffset.y;
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == dragControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _draggingCardKey = null;
+                evt.Use();
+            }
+
+            Color factionCol = a.IsPlayer ? new Color(0.0f, 0.85f, 1.0f) : new Color(1.0f, 0.4f, 0.4f);
+            Color headerCol = a.IsPlayer ? new Color(0.10f, 0.32f, 0.55f) : new Color(0.45f, 0.15f, 0.15f);
+            DrawGraphSolidRect(cardRect, new Color(0.06f, 0.08f, 0.12f, 0.95f));
+            DrawGraphSolidRect(headerRect, headerCol);
+
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), new Color(factionCol.r, factionCol.g, factionCol.b, 0.8f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.yMax - 1f, cardRect.width, 1f), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.xMax - 1f, cardRect.y, 1f, cardRect.height), new Color(1f, 1f, 1f, 0.08f));
+
+            // Port d'entrée visuel (spawn) : pas de drag, la cible se règle via "Si nœud".
+            DrawGraphSolidRect(new Rect(cardRect.x - 7f, cardRect.y + 19f, 14f, 14f), factionCol);
+
+            string headerName = string.IsNullOrEmpty(a.DisplayName) ? "(sans nom)" : a.DisplayName;
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>👥 {headerName}</b> [{a.ActorId}]");
+
+            GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
+            GUI.color = Color.white;
+            if (GraphButton(closeRect, "✕"))
+            {
+                if (_data.Actors != null) _data.Actors.RemoveAt(index);
+                if (_draggingCardKey == dragKey)
+                {
+                    _draggingCardKey = null;
+                    GUIUtility.hotControl = 0;
+                }
+                GUI.backgroundColor = Color.white;
+                evt.Use();
+                return;
+            }
+            GUI.backgroundColor = Color.white;
+
+            GUI.color = new Color(1f, 1f, 1f, 0.4f);
+            GraphLabel(resizeGripRect, "◢");
+            GUI.color = Color.white;
+
+            CountActorReferences(a, out int refLines, out int refEvents, out int refTriggers);
+            if (_zoom < 0.85f && !_isPanning && _draggingCardKey == null && _resizingCardKey == null && !_wireDraft.IsActive
+                && headerRect.Contains(mouseWorld))
+            {
+                _hasHoverCard = true;
+                _hoverTitle = $"👥 {headerName}  ({a.ActorId})";
+                _hoverBody = $"{a.GetSummary()}\nFiche : {(string.IsNullOrEmpty(a.CharacterSheetFileName) ? "(Défaut)" : a.CharacterSheetFileName)}\nRépliques : {refLines} · Cibles : {refEvents} · Triggers : {refTriggers}";
+                _hoverScreenPos = _graphMouseScreenPos;
+            }
+
+            float innerX = cardRect.x + 8f;
+            float innerW = cardW - 16f;
+            float y = cardRect.y + 30f;
+
+            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+            a.ActorId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), a.ActorId ?? "");
+            GUI.color = a.SpawnInitially ? new Color(0.4f, 1f, 0.55f) : new Color(1f, 1f, 1f, 0.75f);
+            GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), spawnDisplay);
+            GUI.color = Color.white;
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 36f, 18f), "Nom:");
+            a.DisplayName = GraphTextField(new Rect(innerX + 38f, y, Mathf.Max(40f, innerW - 38f), 18f), a.DisplayName ?? "");
+            y += 20f;
+
+            // Faction + position hex + orientation sur une ligne compacte.
+            a.IsPlayer = GraphToggle(new Rect(innerX, y, 52f, 18f), a.IsPlayer, "PJ");
+            GraphLabel(new Rect(innerX + 54f, y, 16f, 18f), "Q:");
+            int.TryParse(GraphTextField(new Rect(innerX + 70f, y, 36f, 18f), a.Q.ToString()), out a.Q);
+            GraphLabel(new Rect(innerX + 110f, y, 14f, 18f), "R:");
+            int.TryParse(GraphTextField(new Rect(innerX + 124f, y, 36f, 18f), a.R.ToString()), out a.R);
+            GraphLabel(new Rect(innerX + 164f, y, 30f, 18f), "Ori:");
+            float.TryParse(GraphTextField(new Rect(innerX + 196f, y, 40f, 18f), a.FacingAngle.ToString("0")), out a.FacingAngle);
+            y += 20f;
+
+            // Spawn : initiale ou différé sur nœud (avec cycleur de nœuds).
+            a.SpawnInitially = GraphToggle(new Rect(innerX, y, 78f, 18f), a.SpawnInitially, "Initiale");
+            GraphLabel(new Rect(innerX + 80f, y, 58f, 18f), "Si nœud:");
+            {
+                bool hasNodes = _data.Nodes != null && _data.Nodes.Count > 0;
+                float arrowsW = hasNodes ? 44f : 0f;
+                float fldW = Mathf.Max(40f, innerW - 80f - 58f - arrowsW);
+                a.SpawnOnNodeId = GraphTextField(new Rect(innerX + 140f, y, fldW, 18f), a.SpawnOnNodeId ?? "");
+                if (hasNodes)
+                {
+                    int curIdx = _data.Nodes.FindIndex(n => n != null && string.Equals(n.NodeId, a.SpawnOnNodeId, System.StringComparison.OrdinalIgnoreCase));
+                    if (GraphButton(new Rect(innerX + innerW - 42f, y, 20f, 18f), "◀"))
+                    {
+                        curIdx = (curIdx < 0 ? _data.Nodes.Count - 1 : (curIdx - 1 + _data.Nodes.Count) % _data.Nodes.Count);
+                        a.SpawnOnNodeId = _data.Nodes[curIdx] != null ? _data.Nodes[curIdx].NodeId : "";
+                    }
+                    if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                    {
+                        curIdx = (curIdx < 0 ? 0 : (curIdx + 1) % _data.Nodes.Count);
+                        a.SpawnOnNodeId = _data.Nodes[curIdx] != null ? _data.Nodes[curIdx].NodeId : "";
+                    }
+                }
+            }
+            y += 20f;
+
+            // Fiche personnage (cycleur catalogue des fiches disque).
+            GraphLabel(new Rect(innerX, y, 42f, 18f), "Fiche:");
+            {
+                int charIdx = Mathf.Max(0, _availableCharacterFiles.IndexOf(a.CharacterSheetFileName));
+                if (GraphButton(new Rect(innerX + 44f, y, 20f, 18f), "◀"))
+                {
+                    charIdx = (charIdx - 1 + _availableCharacterFiles.Count) % _availableCharacterFiles.Count;
+                    a.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
+                }
+                string charDisplay = string.IsNullOrEmpty(a.CharacterSheetFileName) ? "(Défaut)" : a.CharacterSheetFileName;
+                GraphLabel(new Rect(innerX + 66f, y, Mathf.Max(40f, innerW - 66f - 22f), 18f), $"<b>{charDisplay}</b>");
+                if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                {
+                    charIdx = (charIdx + 1) % _availableCharacterFiles.Count;
+                    a.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
+                }
+            }
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 38f, 18f), "Mod:");
+            a.ModelPrefabName = GraphTextField(new Rect(innerX + 40f, y, 110f, 18f), a.ModelPrefabName ?? "");
+            GraphLabel(new Rect(innerX + 154f, y, 42f, 18f), "Arme:");
+            a.EquippedWeaponName = GraphTextField(new Rect(innerX + 198f, y, Mathf.Max(40f, innerW - 198f), 18f), a.EquippedWeaponName ?? "");
+            y += 20f;
+
+            if (y + 4f <= cardRect.yMax)
+            {
+                GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                GraphLabel(new Rect(innerX, y, innerW, 18f), $"{a.GetSummary()} · ◀{refLines} ▶{refEvents} ▼{refTriggers}");
+                GUI.color = Color.white;
             }
         }
 
@@ -4780,823 +6213,6 @@ namespace Killtime.Story
             GUI.color = c;
             GUI.DrawTexture(r, PureWhiteTex);
             GUI.color = prev;
-        }
-
-        private void DrawNodeEditor(SceneNodeData node)
-        {
-            if (node == null) return;
-            StorySceneData.EnsureNodeLists(node);
-            GUILayout.Space(4);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("ID Nœud :", GUILayout.Width(75));
-            node.NodeId = GUILayout.TextField(node.NodeId, GUILayout.Width(140));
-            GUILayout.Label("Titre :", GUILayout.Width(50));
-            node.Title = GUILayout.TextField(node.Title);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Lieu :", GUILayout.Width(75));
-            node.Location = GUILayout.TextField(node.Location, GUILayout.Width(160));
-            GUILayout.Label("Type :", GUILayout.Width(45));
-            int kindCount = Enum.GetValues(typeof(ScenarioNodeKind)).Length;
-            int kindIdx = (int)node.Kind;
-            if (GUILayout.Button("◀", GUILayout.Width(24)))
-            {
-                kindIdx = (kindIdx - 1 + kindCount) % kindCount;
-                node.Kind = (ScenarioNodeKind)kindIdx;
-            }
-            GUILayout.Label($"<b>{node.Kind}</b>", GUILayout.Width(90));
-            if (GUILayout.Button("▶", GUILayout.Width(24)))
-            {
-                kindIdx = (kindIdx + 1) % kindCount;
-                node.Kind = (ScenarioNodeKind)kindIdx;
-            }
-            GUILayout.EndHorizontal();
-
-            node.TriggerCombatOnEnter = GUILayout.Toggle(node.TriggerCombatOnEnter, "Déclencher l'état de Combat Tactique à l'entrée de ce nœud");
-
-            GUILayout.Label("<b>Texte Descriptif / Narration :</b>");
-            node.Body = GUILayout.TextArea(node.Body, GUILayout.Height(50));
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Bouton Continuer :", GUILayout.Width(120));
-            node.ContinueLabel = GUILayout.TextField(node.ContinueLabel, GUILayout.Width(140));
-            GUILayout.Label("Nœud Suivant :", GUILayout.Width(90));
-            node.NextNodeId = GUILayout.TextField(node.NextNodeId);
-            GUILayout.EndHorizontal();
-
-            GUILayout.Space(6);
-            DrawNodeChoicesEditor(node);
-            GUILayout.Space(6);
-            DrawNodeObjectivesEditor(node);
-            GUILayout.Space(6);
-            DrawEffectListMini("Effets d'Entrée du Nœud", node.EnterEffects);
-
-            GUILayout.Space(6);
-            GUILayout.Label($"<b>Répliques de Dialogue Séquencées ({node.Dialogues.Count})</b>");
-
-            for (int d = 0; d < node.Dialogues.Count; d++)
-            {
-                var line = node.Dialogues[d];
-                GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label($"#{d + 1}", GUILayout.Width(25));
-                GUILayout.Label("Locuteur :", GUILayout.Width(65));
-                line.SpeakerId = GUILayout.TextField(line.SpeakerId, GUILayout.Width(110));
-                GUILayout.Label("Didascalie :", GUILayout.Width(75));
-                line.StageDirection = GUILayout.TextField(line.StageDirection);
-
-                GUI.backgroundColor = new Color(1f, 0.4f, 0.4f);
-                if (GUILayout.Button("✕", GUILayout.Width(24)))
-                {
-                    node.Dialogues.RemoveAt(d);
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-
-                line.Speech = GUILayout.TextField(line.Speech);
-
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("ID Réplique :", GUILayout.Width(80));
-                line.LineId = GUILayout.TextField(line.LineId, GUILayout.Width(110));
-                GUILayout.Label("Saut Suivant (ID) :", GUILayout.Width(120));
-                line.NextLineId = GUILayout.TextField(line.NextLineId, GUILayout.Width(110));
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Focus Caméra (Acteur ID) :", GUILayout.Width(160));
-                line.CameraFocusActorId = GUILayout.TextField(line.CameraFocusActorId, GUILayout.Width(100));
-                GUILayout.Label("Pitch :", GUILayout.Width(40));
-                float.TryParse(GUILayout.TextField(line.CameraPitch.ToString("0.0"), GUILayout.Width(35)), out line.CameraPitch);
-                GUILayout.Label("Dist :", GUILayout.Width(35));
-                float.TryParse(GUILayout.TextField(line.CameraDistance.ToString("0.0"), GUILayout.Width(35)), out line.CameraDistance);
-                GUILayout.EndHorizontal();
-
-                DrawPrerequisiteEditor(line.Prerequisite, "🔒 Prérequis pour Déclencher cette Réplique");
-                DrawAmbienceEditor(line.Ambience);
-                DrawAutoSkillCheckEditor(line.AutoSkillCheck);
-
-                GUILayout.Space(2);
-                GUILayout.BeginHorizontal();
-                string choiceCountLabel = line.Choices.Count > 0 ? $"<color=#00E5FF>✦ Choix Multiples Déclenchés ({line.Choices.Count})</color>" : "✦ Choix Multiples (aucun)";
-                GUILayout.Label(choiceCountLabel);
-                GUILayout.FlexibleSpace();
-                if (GUILayout.Button("+ Ajouter Choix", GUILayout.Width(120), GUILayout.Height(20)))
-                {
-                    line.Choices.Add(new SceneDialogueChoiceData
-                    {
-                        ChoiceId = $"choice_{d + 1}_{line.Choices.Count + 1}",
-                        Label = "Option de réponse du joueur..."
-                    });
-                }
-                GUILayout.EndHorizontal();
-
-                for (int c = 0; c < line.Choices.Count; c++)
-                {
-                    var choice = line.Choices[c];
-                    GUILayout.BeginVertical(GUI.skin.textArea);
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label($"<b>Choix #{c + 1} ID :</b>", GUILayout.Width(85));
-                    choice.ChoiceId = GUILayout.TextField(choice.ChoiceId, GUILayout.Width(95));
-                    GUILayout.Label("Texte Joueur :", GUILayout.Width(85));
-                    choice.Label = GUILayout.TextField(choice.Label);
-
-                    GUI.backgroundColor = new Color(1f, 0.4f, 0.4f);
-                    if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
-                    {
-                        line.Choices.RemoveAt(c);
-                        break;
-                    }
-                    GUI.backgroundColor = Color.white;
-                    GUILayout.EndHorizontal();
-
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
-                    choice.NextLineId = GUILayout.TextField(choice.NextLineId, GUILayout.Width(110));
-                    GUILayout.Label("<color=grey>(Vide = ligne suivante)</color>");
-                    GUILayout.EndHorizontal();
-
-                    DrawPrerequisiteEditor(choice.Prerequisite, "🔒 Condition d'Affichage du Choix");
-                    DrawChoiceEffectsEditor(choice);
-                    DrawChallengeEditor(choice);
-
-                    GUILayout.EndVertical();
-                    GUILayout.Space(2);
-                }
-
-                GUILayout.EndVertical();
-            }
-
-            if (GUILayout.Button("+ Ajouter une Réplique", GUILayout.Height(24)))
-            {
-                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
-                node.Dialogues.Add(new SceneDialogueLineData { SpeakerId = "", Speech = "...", GraphPosX = freeX, GraphPosY = freeY });
-            }
-
-            GUILayout.Space(10);
-            DrawNodeEventsEditor(node);
-            GUILayout.Space(10);
-            DrawNodeConsequencesEditor(node);
-        }
-
-        private void DrawNodeConsequencesEditor(SceneNodeData node)
-        {
-            if (node.Consequences == null) node.Consequences = new System.Collections.Generic.List<SceneConsequenceData>();
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<b>🎁 Conséquences Récompense / Punition ({node.Consequences.Count})</b>");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("+ Ajouter Conséquence", GUILayout.Width(170), GUILayout.Height(20)))
-            {
-                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
-                node.Consequences.Add(new SceneConsequenceData
-                {
-                    ConsequenceId = $"cons_{node.Consequences.Count + 1}",
-                    Title = "Récompense",
-                    GraphPosX = freeX,
-                    GraphPosY = freeY
-                });
-            }
-            GUILayout.EndHorizontal();
-
-            for (int k = 0; k < node.Consequences.Count; k++)
-            {
-                var cons = node.Consequences[k];
-                if (cons == null) continue;
-                cons.Rewards ??= new SceneDialogueRewardData();
-                StorySceneData.EnsureRewardDefaults(cons.Rewards);
-                cons.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
-                var rew = cons.Rewards;
-
-                GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label($"<b>#{k + 1}</b>", GUILayout.Width(25));
-                GUILayout.Label("ID :", GUILayout.Width(30));
-                cons.ConsequenceId = GUILayout.TextField(cons.ConsequenceId, GUILayout.Width(90));
-                GUILayout.Label("Titre :", GUILayout.Width(45));
-                cons.Title = GUILayout.TextField(cons.Title, GUILayout.Width(140));
-                cons.TriggersCombat = GUILayout.Toggle(cons.TriggersCombat, "⚔ Combat");
-                GUILayout.FlexibleSpace();
-                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
-                if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
-                {
-                    node.Consequences.RemoveAt(k);
-                    GUI.backgroundColor = Color.white;
-                    GUILayout.EndHorizontal();
-                    GUILayout.EndVertical();
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-
-                cons.HasDialogue = GUILayout.Toggle(cons.HasDialogue, "<b>💬 Dialogue affiché à l'exécution (comme une réplique)</b>");
-                if (cons.HasDialogue)
-                {
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Locuteur :", GUILayout.Width(70));
-                    cons.SpeakerId = GUILayout.TextField(cons.SpeakerId, GUILayout.Width(110));
-                    GUILayout.Label("Didascalie :", GUILayout.Width(75));
-                    cons.StageDirection = GUILayout.TextField(cons.StageDirection);
-                    GUILayout.EndHorizontal();
-                    GUILayout.Label("Réplique :");
-                    cons.Speech = GUILayout.TextField(cons.Speech);
-                }
-
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
-                cons.NextLineId = GUILayout.TextField(cons.NextLineId, GUILayout.Width(110));
-                GUILayout.Label("Vers Conséq. (ID) :", GUILayout.Width(125));
-                cons.NextConsequenceId = GUILayout.TextField(cons.NextConsequenceId, GUILayout.Width(110));
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("+ Crédits CE :", GUILayout.Width(85));
-                int.TryParse(GUILayout.TextField(rew.EarnCredits.ToString(), GUILayout.Width(50)), out rew.EarnCredits);
-                GUILayout.Label("+ XP :", GUILayout.Width(40));
-                int.TryParse(GUILayout.TextField(rew.EarnXP.ToString(), GUILayout.Width(40)), out rew.EarnXP);
-                GUILayout.Label("Obj. Validé (ID) :", GUILayout.Width(105));
-                rew.CompletionObjectiveId = GUILayout.TextField(rew.CompletionObjectiveId);
-                GUILayout.EndHorizontal();
-
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Item :", GUILayout.Width(90));
-                rew.ItemRewardName = GUILayout.TextField(rew.ItemRewardName, GUILayout.Width(140));
-                if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(cons, -1);
-                GUILayout.Label("Qté :", GUILayout.Width(35));
-                int.TryParse(GUILayout.TextField(rew.ItemRewardQuantity.ToString(), GUILayout.Width(35)), out rew.ItemRewardQuantity);
-                if (rew.ItemRewardQuantity < 1) rew.ItemRewardQuantity = 1;
-                GUILayout.Label($"Items suppl. ({rew.AdditionalItems.Count})", GUILayout.Width(110));
-                if (GUILayout.Button("+ Item", GUILayout.Width(65), GUILayout.Height(18)))
-                    rew.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
-                GUILayout.EndHorizontal();
-
-                for (int ri = 0; ri < rew.AdditionalItems.Count; ri++)
-                {
-                    var entry = rew.AdditionalItems[ri];
-                    if (entry == null) { rew.AdditionalItems.RemoveAt(ri); break; }
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label($"#{ri + 2}", GUILayout.Width(30));
-                    entry.ItemName = GUILayout.TextField(entry.ItemName);
-                    if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(cons, ri);
-                    GUILayout.Label("x", GUILayout.Width(15));
-                    int.TryParse(GUILayout.TextField(entry.Quantity.ToString(), GUILayout.Width(35)), out entry.Quantity);
-                    if (entry.Quantity < 1) entry.Quantity = 1;
-                    GUI.backgroundColor = new Color(1f, 0.3f, 0.3f);
-                    if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
-                    {
-                        rew.AdditionalItems.RemoveAt(ri);
-                        GUI.backgroundColor = Color.white;
-                        GUILayout.EndHorizontal();
-                        break;
-                    }
-                    GUI.backgroundColor = Color.white;
-                    GUILayout.EndHorizontal();
-                }
-
-                DrawEffectListMini("Effets Conséquence", cons.Effects);
-
-                GUILayout.EndVertical();
-                GUILayout.Space(2);
-            }
-        }
-
-        private void DrawNodeChoicesEditor(SceneNodeData node)
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<b>Choix Majeurs du Nœud ({node.Choices.Count})</b>");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("+ Ajouter Choix", GUILayout.Width(130), GUILayout.Height(20)))
-            {
-                node.Choices.Add(new ScenarioChoice { Id = $"choice_{node.Choices.Count + 1}", Label = "Nouveau choix", NextNodeId = "" });
-            }
-            GUILayout.EndHorizontal();
-
-            for (int c = 0; c < node.Choices.Count; c++)
-            {
-                var ch = node.Choices[c];
-                if (ch == null) continue;
-                GUILayout.BeginVertical(GUI.skin.textArea);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("ID :", GUILayout.Width(30));
-                ch.Id = GUILayout.TextField(ch.Id, GUILayout.Width(130));
-                GUILayout.Label("Cible ➔ :", GUILayout.Width(60));
-                ch.NextNodeId = GUILayout.TextField(ch.NextNodeId, GUILayout.Width(130));
-                GUI.backgroundColor = new Color(1f, 0.4f, 0.4f);
-                if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
-                {
-                    node.Choices.RemoveAt(c);
-                    GUI.backgroundColor = Color.white;
-                    GUILayout.EndHorizontal();
-                    GUILayout.EndVertical();
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-                GUILayout.Label("Libellé :");
-                ch.Label = GUILayout.TextField(ch.Label);
-                GUILayout.Label("Conséquence :");
-                ch.Consequence = GUILayout.TextField(ch.Consequence);
-                if (ch.Effects == null) ch.Effects = new System.Collections.Generic.List<ScenarioEffect>();
-                DrawEffectListMini("Effets Choix", ch.Effects);
-                GUILayout.EndVertical();
-                GUILayout.Space(2);
-            }
-        }
-
-        private void DrawNodeObjectivesEditor(SceneNodeData node)
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<b>Objectifs du Nœud ({node.Objectives.Count})</b>");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("+ Ajouter Objectif", GUILayout.Width(140), GUILayout.Height(20)))
-            {
-                node.Objectives.Add(new ScenarioObjective { Id = $"obj_{node.Objectives.Count + 1}", Label = "Nouvel objectif" });
-            }
-            GUILayout.EndHorizontal();
-
-            for (int i = 0; i < node.Objectives.Count; i++)
-            {
-                var obj = node.Objectives[i];
-                if (obj == null) continue;
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("ID :", GUILayout.Width(30));
-                obj.Id = GUILayout.TextField(obj.Id, GUILayout.Width(130));
-                GUILayout.Label("Libellé :", GUILayout.Width(55));
-                obj.Label = GUILayout.TextField(obj.Label, GUILayout.Width(150));
-                obj.Optional = GUILayout.Toggle(obj.Optional, "Optionnel", GUILayout.Width(90));
-                GUI.backgroundColor = new Color(1f, 0.4f, 0.4f);
-                if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
-                {
-                    node.Objectives.RemoveAt(i);
-                    GUI.backgroundColor = Color.white;
-                    GUILayout.EndHorizontal();
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-                GUILayout.Label("Détail :");
-                obj.Detail = GUILayout.TextField(obj.Detail);
-            }
-        }
-
-        private void DrawPrerequisiteEditor(ScenePrerequisiteData prereq, string label)
-        {
-            if (prereq == null) return;
-            prereq.HasPrerequisite = GUILayout.Toggle(prereq.HasPrerequisite, $"<b>{label}</b>");
-            if (!prereq.HasPrerequisite) return;
-
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Type :", GUILayout.Width(45));
-            prereq.Kind = (PrerequisiteKind)GUILayout.Toolbar((int)prereq.Kind, new[] { "None", "Compétence", "Spécialité", "Carac", "Flag", "Item", "Route" }, GUILayout.Height(20));
-            GUILayout.EndHorizontal();
-
-            switch (prereq.Kind)
-            {
-                case PrerequisiteKind.SkillTraining:
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Compétence :", GUILayout.Width(90));
-                    int skillCount = Enum.GetValues(typeof(SkillType)).Length;
-                    int skillIdx = (int)prereq.RequiredSkill;
-                    if (GUILayout.Button("◀", GUILayout.Width(20))) { skillIdx = (skillIdx - 1 + skillCount) % skillCount; prereq.RequiredSkill = (SkillType)skillIdx; }
-                    GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(prereq.RequiredSkill)}</b>", GUILayout.Width(140));
-                    if (GUILayout.Button("▶", GUILayout.Width(20))) { skillIdx = (skillIdx + 1) % skillCount; prereq.RequiredSkill = (SkillType)skillIdx; }
-                    GUILayout.Label("Palier Min :", GUILayout.Width(75));
-                    int.TryParse(GUILayout.TextField(prereq.MinTrainingLevel.ToString(), GUILayout.Width(35)), out prereq.MinTrainingLevel);
-                    GUILayout.EndHorizontal();
-                    break;
-
-                case PrerequisiteKind.Specialization:
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Nom Spécialisation :", GUILayout.Width(140));
-                    prereq.SpecializationName = GUILayout.TextField(prereq.SpecializationName);
-                    GUILayout.EndHorizontal();
-                    break;
-
-                case PrerequisiteKind.AttributeThreshold:
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Attribut :", GUILayout.Width(60));
-                    prereq.AttributeName = GUILayout.TextField(prereq.AttributeName, GUILayout.Width(110));
-                    GUILayout.Label("Valeur Min :", GUILayout.Width(75));
-                    int.TryParse(GUILayout.TextField(prereq.MinAttributeValue.ToString(), GUILayout.Width(35)), out prereq.MinAttributeValue);
-                    GUILayout.EndHorizontal();
-                    break;
-
-                case PrerequisiteKind.CampaignFlag:
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Clé Flag :", GUILayout.Width(65));
-                    prereq.FlagKey = GUILayout.TextField(prereq.FlagKey, GUILayout.Width(140));
-                    prereq.FlagMustBeSet = GUILayout.Toggle(prereq.FlagMustBeSet, "Doit être Posé (Vrai)");
-                    GUILayout.EndHorizontal();
-                    break;
-
-                case PrerequisiteKind.ItemInInventory:
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Objet Requis :", GUILayout.Width(90));
-                    prereq.ItemName = GUILayout.TextField(prereq.ItemName);
-                    GUILayout.EndHorizontal();
-                    break;
-
-                case PrerequisiteKind.StoryRouteRequired:
-                    GUILayout.BeginHorizontal();
-                    GUILayout.Label("Route :", GUILayout.Width(50));
-                    prereq.RequiredRoute = (StoryRoute)GUILayout.Toolbar((int)prereq.RequiredRoute, new[] { "None", "Vardis", "Indep", "Imper" }, GUILayout.Height(18));
-                    GUILayout.EndHorizontal();
-                    break;
-            }
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Acteur Spécifique (optionnel) :", GUILayout.Width(180));
-            prereq.SpecificActorId = GUILayout.TextField(prereq.SpecificActorId, GUILayout.Width(100));
-            GUILayout.Label("<color=grey>(Vide = n'importe quel membre de l'escouade)</color>");
-            GUILayout.EndHorizontal();
-
-            GUILayout.EndVertical();
-        }
-
-        private void DrawAmbienceEditor(SceneAmbienceData ambience)
-        {
-            if (ambience == null) return;
-            ambience.HasAmbience = GUILayout.Toggle(ambience.HasAmbience, "<b>🔊 Déclencheur Audio & Ambiance Atmosphérique</b>");
-            if (!ambience.HasAmbience) return;
-
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Sound Cue ID :", GUILayout.Width(95));
-            ambience.SoundCueId = GUILayout.TextField(ambience.SoundCueId, GUILayout.Width(110));
-            GUILayout.Label("Secousse Caméra :", GUILayout.Width(115));
-            float.TryParse(GUILayout.TextField(ambience.CameraShakeIntensity.ToString("0.0"), GUILayout.Width(40)), out ambience.CameraShakeIntensity);
-            ambience.TriggerAlarm = GUILayout.Toggle(ambience.TriggerAlarm, "Gyrophare Alarme Rouge");
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            ambience.ChangeMusic = GUILayout.Toggle(ambience.ChangeMusic, "Changer Musique", GUILayout.Width(130));
-            if (ambience.ChangeMusic)
-            {
-                GUILayout.Label("Mood :", GUILayout.Width(45));
-                ambience.MusicMood = (Killtime.Audio.MusicMood)GUILayout.Toolbar((int)ambience.MusicMood, new[] { "Explore", "Combat", "Stealth", "Mystery" }, GUILayout.Height(18));
-                GUILayout.Label("Intensité :", GUILayout.Width(65));
-                ambience.MusicIntensity = (Killtime.Audio.MusicIntensity)GUILayout.Toolbar((int)ambience.MusicIntensity, new[] { "Calm", "Low", "Mid", "High" }, GUILayout.Height(18));
-            }
-            GUILayout.EndHorizontal();
-            GUILayout.EndVertical();
-        }
-
-        private void DrawAutoSkillCheckEditor(SceneAutoSkillCheckData autoCheck)
-        {
-            if (autoCheck == null) return;
-            autoCheck.HasAutoCheck = GUILayout.Toggle(autoCheck.HasAutoCheck, "<b>🎲 Jet de Compétence Automatique / Passif (Sans Choix)</b>");
-            if (!autoCheck.HasAutoCheck) return;
-
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Compétence :", GUILayout.Width(90));
-            int skillCount = Enum.GetValues(typeof(SkillType)).Length;
-            int skillIdx = (int)autoCheck.RequiredSkill;
-            if (GUILayout.Button("◀", GUILayout.Width(20))) { skillIdx = (skillIdx - 1 + skillCount) % skillCount; autoCheck.RequiredSkill = (SkillType)skillIdx; }
-            GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(autoCheck.RequiredSkill)}</b>", GUILayout.Width(140));
-            if (GUILayout.Button("▶", GUILayout.Width(20))) { skillIdx = (skillIdx + 1) % skillCount; autoCheck.RequiredSkill = (SkillType)skillIdx; }
-            GUILayout.Label("Seuil SD :", GUILayout.Width(60));
-            int.TryParse(GUILayout.TextField(autoCheck.TargetDC.ToString(), GUILayout.Width(35)), out autoCheck.TargetDC);
-            GUILayout.Label("Acteur (ID) :", GUILayout.Width(80));
-            autoCheck.SpecificActorId = GUILayout.TextField(autoCheck.SpecificActorId, GUILayout.Width(90));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Discours si Succès :", GUILayout.Width(125));
-            autoCheck.SuccessSpeech = GUILayout.TextField(autoCheck.SuccessSpeech);
-            GUILayout.Label("Vers Réplique :", GUILayout.Width(90));
-            autoCheck.SuccessNextLineId = GUILayout.TextField(autoCheck.SuccessNextLineId, GUILayout.Width(90));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Discours si Échec :", GUILayout.Width(125));
-            autoCheck.FailureSpeech = GUILayout.TextField(autoCheck.FailureSpeech);
-            GUILayout.Label("Vers Réplique :", GUILayout.Width(90));
-            autoCheck.FailureNextLineId = GUILayout.TextField(autoCheck.FailureNextLineId, GUILayout.Width(90));
-            GUILayout.EndHorizontal();
-
-            DrawEffectListMini("Effets Succès", autoCheck.SuccessEffects);
-            DrawEffectListMini("Effets Échec", autoCheck.FailureEffects);
-
-            GUILayout.EndVertical();
-        }
-
-        private void DrawNodeEventsEditor(SceneNodeData node)
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<b>⚡ Événements Scéniques du Nœud ({node.Events.Count})</b>");
-            GUILayout.FlexibleSpace();
-            if (GUILayout.Button("+ Ajouter un Événement", GUILayout.Width(180), GUILayout.Height(22)))
-            {
-                ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
-                node.Events.Add(new SceneEventData
-                {
-                    EventId = $"event_{node.Events.Count + 1}",
-                    Title = "Nouvel Événement",
-                    GraphPosX = freeX,
-                    GraphPosY = freeY
-                });
-            }
-            GUILayout.EndHorizontal();
-
-            for (int i = 0; i < node.Events.Count; i++)
-            {
-                var evt = node.Events[i];
-                GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.BeginHorizontal();
-                GUILayout.Label($"<b>#{i + 1}</b>", GUILayout.Width(25));
-                GUILayout.Label("ID :", GUILayout.Width(30));
-                evt.EventId = GUILayout.TextField(evt.EventId, GUILayout.Width(90));
-                GUILayout.Label("Titre :", GUILayout.Width(45));
-                evt.Title = GUILayout.TextField(evt.Title, GUILayout.Width(160));
-                GUILayout.Label("Type :", GUILayout.Width(40));
-                evt.Kind = (SceneEventKind)GUILayout.Toolbar((int)evt.Kind, new[] { "Normal", "Combat", "Spawn", "Camera", "Shake", "Obj", "Loot" }, GUILayout.Height(18));
-
-                GUI.backgroundColor = new Color(1f, 0.35f, 0.35f);
-                if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
-                {
-                    node.Events.RemoveAt(i);
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-
-                DrawPrerequisiteEditor(evt.Prerequisite, "🔒 Condition pour Déclencher cet Événement");
-                DrawAmbienceEditor(evt.Ambience);
-                DrawAutoSkillCheckEditor(evt.AutoSkillCheck);
-                DrawEffectListMini("Effets Événement", evt.Effects);
-
-                GUILayout.BeginHorizontal();
-                GUILayout.FlexibleSpace();
-                GUI.backgroundColor = new Color(1.0f, 0.7f, 0.2f);
-                if (GUILayout.Button("⚡ Tester / Déclencher en Direct", GUILayout.Width(220), GUILayout.Height(22)))
-                {
-                    var controller = FindAnyObjectByType<Scenes.JsonStorySceneController>();
-                    controller?.ExecuteScenicEvent(evt);
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-
-                GUILayout.EndVertical();
-                GUILayout.Space(2);
-            }
-        }
-
-        private void DrawChoiceEffectsEditor(SceneDialogueChoiceData choice)
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<color=grey>Effets de Campagne ({choice.Effects.Count})</color>", GUILayout.Width(150));
-            if (GUILayout.Button("+ Effet", GUILayout.Width(65), GUILayout.Height(18)))
-            {
-                choice.Effects.Add(new ScenarioEffect { Type = ScenarioEffectType.AddFlag, Key = "nouveau_flag" });
-            }
-            GUILayout.EndHorizontal();
-
-            for (int e = 0; e < choice.Effects.Count; e++)
-            {
-                var eff = choice.Effects[e];
-                GUILayout.BeginHorizontal();
-                eff.Type = (ScenarioEffectType)GUILayout.Toolbar((int)eff.Type, new[] { "Route", "Flag", "Int", "Journal" }, GUILayout.Height(18), GUILayout.Width(180));
-                switch (eff.Type)
-                {
-                    case ScenarioEffectType.SetRoute:
-                        eff.Route = (StoryRoute)GUILayout.Toolbar((int)eff.Route, new[] { "None", "Vardis", "Indep", "Imper" }, GUILayout.Height(18));
-                        break;
-                    case ScenarioEffectType.AddFlag:
-                        GUILayout.Label("Clé :", GUILayout.Width(35));
-                        eff.Key = GUILayout.TextField(eff.Key);
-                        break;
-                    case ScenarioEffectType.AddInteger:
-                        GUILayout.Label("Clé :", GUILayout.Width(35));
-                        eff.Key = GUILayout.TextField(eff.Key, GUILayout.Width(80));
-                        GUILayout.Label("Qté :", GUILayout.Width(35));
-                        int.TryParse(GUILayout.TextField(eff.Amount.ToString(), GUILayout.Width(35)), out eff.Amount);
-                        break;
-                    case ScenarioEffectType.AddJournal:
-                        GUILayout.Label("Texte :", GUILayout.Width(45));
-                        eff.Text = GUILayout.TextField(eff.Text);
-                        break;
-                }
-                GUI.backgroundColor = new Color(1f, 0.3f, 0.3f);
-                if (GUILayout.Button("✕", GUILayout.Width(20), GUILayout.Height(18)))
-                {
-                    choice.Effects.RemoveAt(e);
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-            }
-        }
-
-        private void DrawChallengeEditor(SceneDialogueChoiceData choice)
-        {
-            if (choice == null) return;
-            choice.Challenge ??= new SceneDialogueChallengeData();
-            var ch = choice.Challenge;
-            ch.HasChallenge = GUILayout.Toggle(ch.HasChallenge, "<b>🎲 Défi de Compétence (Jet de Dé & Événements)</b>");
-            if (!ch.HasChallenge) return;
-            ch.SuccessRewards ??= new SceneDialogueRewardData();
-            StorySceneData.EnsureRewardDefaults(ch.SuccessRewards);
-
-            GUILayout.BeginVertical(GUI.skin.box);
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Mode :", GUILayout.Width(45));
-            int modeIdx = ch.IsOpposed ? 1 : 0;
-            int newMode = GUILayout.Toolbar(modeIdx, new[] { "🎲 Test SD", "⚔️ Défi Opposé" }, GUILayout.Height(20), GUILayout.Width(260));
-            if (newMode != modeIdx) ch.IsOpposed = newMode == 1;
-            GUILayout.Label(ch.IsOpposed
-                ? "<color=grey>(jet joueur vs jet opposant)</color>"
-                : "<color=grey>(jet joueur vs SD fixe)</color>");
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Compétence :", GUILayout.Width(90));
-            int skillCount = Enum.GetValues(typeof(SkillType)).Length;
-            int skillIdx = (int)ch.RequiredSkill;
-            if (GUILayout.Button("◀", GUILayout.Width(22)))
-            {
-                skillIdx = (skillIdx - 1 + skillCount) % skillCount;
-                ch.RequiredSkill = (SkillType)skillIdx;
-            }
-            GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(ch.RequiredSkill)}</b>", GUILayout.Width(150));
-            if (GUILayout.Button("▶", GUILayout.Width(22)))
-            {
-                skillIdx = (skillIdx + 1) % skillCount;
-                ch.RequiredSkill = (SkillType)skillIdx;
-            }
-
-            GUILayout.Label("Seuil SD :", GUILayout.Width(60));
-            int.TryParse(GUILayout.TextField(ch.TargetDC.ToString(), GUILayout.Width(35)), out ch.TargetDC);
-
-            GUILayout.Label("Acteur Testé (ID) :", GUILayout.Width(110));
-            ch.SpecificActorId = GUILayout.TextField(ch.SpecificActorId, GUILayout.Width(90));
-            GUILayout.EndHorizontal();
-
-            if (ch.IsOpposed)
-            {
-                GUILayout.BeginHorizontal();
-                GUILayout.Label("Comp. Adverse :", GUILayout.Width(90));
-                int oppCount = Enum.GetValues(typeof(SkillType)).Length;
-                int oppIdx = (int)ch.OpposedSkill;
-                if (GUILayout.Button("◀", GUILayout.Width(22)))
-                {
-                    oppIdx = (oppIdx - 1 + oppCount) % oppCount;
-                    ch.OpposedSkill = (SkillType)oppIdx;
-                }
-                GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(ch.OpposedSkill)}</b>", GUILayout.Width(150));
-                if (GUILayout.Button("▶", GUILayout.Width(22)))
-                {
-                    oppIdx = (oppIdx + 1) % oppCount;
-                    ch.OpposedSkill = (SkillType)oppIdx;
-                }
-                GUILayout.Label("Opposant (ID) :", GUILayout.Width(90));
-                ch.OpposedActorId = GUILayout.TextField(ch.OpposedActorId, GUILayout.Width(90));
-                GUILayout.Label("+ Bonus :", GUILayout.Width(60));
-                int.TryParse(GUILayout.TextField(ch.OpposedBonus.ToString(), GUILayout.Width(35)), out ch.OpposedBonus);
-                GUILayout.EndHorizontal();
-                GUILayout.Label("<color=grey>(Vide = locuteur de la réplique ; si introuvable, total adverse fixe = SD + Bonus)</color>");
-            }
-            else
-            {
-                GUILayout.Label("<color=grey>(SD fixe : le joueur lance Compétence contre Seuil SD)</color>");
-            }
-
-            // Branche de Succès
-            GUILayout.Space(2);
-            GUI.backgroundColor = new Color(0.15f, 0.4f, 0.25f);
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUI.backgroundColor = Color.white;
-            GUILayout.Label("<color=#55FF88><b>✔ BRANCHE EN CAS DE SUCCÈS</b></color>");
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
-            ch.SuccessNextLineId = GUILayout.TextField(ch.SuccessNextLineId, GUILayout.Width(110));
-            GUILayout.Label("Vers Conséq. (ID) :", GUILayout.Width(125));
-            ch.SuccessConsequenceId = GUILayout.TextField(ch.SuccessConsequenceId, GUILayout.Width(110));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("+ Crédits CE :", GUILayout.Width(80));
-            int.TryParse(GUILayout.TextField(ch.SuccessRewards.EarnCredits.ToString(), GUILayout.Width(50)), out ch.SuccessRewards.EarnCredits);
-            GUILayout.Label("+ XP :", GUILayout.Width(40));
-            int.TryParse(GUILayout.TextField(ch.SuccessRewards.EarnXP.ToString(), GUILayout.Width(40)), out ch.SuccessRewards.EarnXP);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Item Obtenu :", GUILayout.Width(90));
-            ch.SuccessRewards.ItemRewardName = GUILayout.TextField(ch.SuccessRewards.ItemRewardName, GUILayout.Width(140));
-            if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(choice);
-            GUILayout.Label("Obj. Validé (ID) :", GUILayout.Width(105));
-            ch.SuccessRewards.CompletionObjectiveId = GUILayout.TextField(ch.SuccessRewards.CompletionObjectiveId);
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Qté item :", GUILayout.Width(90));
-            int.TryParse(GUILayout.TextField(ch.SuccessRewards.ItemRewardQuantity.ToString(), GUILayout.Width(40)), out ch.SuccessRewards.ItemRewardQuantity);
-            if (ch.SuccessRewards.ItemRewardQuantity < 1) ch.SuccessRewards.ItemRewardQuantity = 1;
-            GUILayout.Label($"Items suppl. ({ch.SuccessRewards.AdditionalItems.Count})", GUILayout.Width(130));
-            if (GUILayout.Button("+ Item", GUILayout.Width(70), GUILayout.Height(18)))
-                ch.SuccessRewards.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
-            GUILayout.EndHorizontal();
-
-            for (int ri = 0; ri < ch.SuccessRewards.AdditionalItems.Count; ri++)
-            {
-                var entry = ch.SuccessRewards.AdditionalItems[ri];
-                if (entry == null) { ch.SuccessRewards.AdditionalItems.RemoveAt(ri); break; }
-                GUILayout.BeginHorizontal();
-                GUILayout.Label($"#{ri + 2}", GUILayout.Width(30));
-                entry.ItemName = GUILayout.TextField(entry.ItemName);
-                if (GUILayout.Button("🔍", GUILayout.Width(30), GUILayout.Height(18))) OpenItemPicker(choice, ri);
-                GUILayout.Label("x", GUILayout.Width(15));
-                int.TryParse(GUILayout.TextField(entry.Quantity.ToString(), GUILayout.Width(35)), out entry.Quantity);
-                if (entry.Quantity < 1) entry.Quantity = 1;
-                GUI.backgroundColor = new Color(1f, 0.3f, 0.3f);
-                if (GUILayout.Button("✕", GUILayout.Width(22), GUILayout.Height(18)))
-                {
-                    ch.SuccessRewards.AdditionalItems.RemoveAt(ri);
-                    GUI.backgroundColor = Color.white;
-                    GUILayout.EndHorizontal();
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-            }
-
-            DrawEffectListMini("Effets Succès", ch.SuccessEffects);
-
-            GUILayout.EndVertical();
-
-            // Branche d'Échec
-            GUILayout.Space(2);
-            GUI.backgroundColor = new Color(0.45f, 0.15f, 0.15f);
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUI.backgroundColor = Color.white;
-            GUILayout.Label("<color=#FF6655><b>✕ BRANCHE EN CAS D'ÉCHEC</b></color>");
-
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Vers Réplique (ID) :", GUILayout.Width(125));
-            ch.FailureNextLineId = GUILayout.TextField(ch.FailureNextLineId, GUILayout.Width(110));
-            GUILayout.Label("Vers Conséq. (ID) :", GUILayout.Width(125));
-            ch.FailureConsequenceId = GUILayout.TextField(ch.FailureConsequenceId, GUILayout.Width(110));
-            GUILayout.EndHorizontal();
-
-            GUILayout.BeginHorizontal();
-            ch.FailureTriggersCombat = GUILayout.Toggle(ch.FailureTriggersCombat, "<b>Déclencher Combat Immédiat</b>");
-            GUILayout.EndHorizontal();
-
-            DrawEffectListMini("Effets Échec", ch.FailureEffects);
-
-            GUILayout.EndVertical();
-
-            GUILayout.EndVertical();
-        }
-
-        private static void DrawEffectListMini(string label, List<ScenarioEffect> list)
-        {
-            GUILayout.BeginHorizontal();
-            GUILayout.Label($"<color=grey>{label} ({list.Count})</color>", GUILayout.Width(120));
-            if (GUILayout.Button("+ Effet", GUILayout.Width(60), GUILayout.Height(18)))
-            {
-                list.Add(new ScenarioEffect { Type = ScenarioEffectType.AddFlag, Key = "flag_result" });
-            }
-            GUILayout.EndHorizontal();
-
-            for (int i = 0; i < list.Count; i++)
-            {
-                var eff = list[i];
-                GUILayout.BeginHorizontal();
-                eff.Type = (ScenarioEffectType)GUILayout.Toolbar((int)eff.Type, new[] { "Route", "Flag", "Int", "Journal" }, GUILayout.Height(18), GUILayout.Width(170));
-                switch (eff.Type)
-                {
-                    case ScenarioEffectType.SetRoute:
-                        eff.Route = (StoryRoute)GUILayout.Toolbar((int)eff.Route, new[] { "None", "Vardis", "Indep", "Imper" }, GUILayout.Height(18));
-                        break;
-                    case ScenarioEffectType.AddFlag:
-                        GUILayout.Label("Clé :", GUILayout.Width(35));
-                        eff.Key = GUILayout.TextField(eff.Key);
-                        break;
-                    case ScenarioEffectType.AddInteger:
-                        GUILayout.Label("Clé :", GUILayout.Width(35));
-                        eff.Key = GUILayout.TextField(eff.Key, GUILayout.Width(80));
-                        GUILayout.Label("Qté :", GUILayout.Width(35));
-                        int.TryParse(GUILayout.TextField(eff.Amount.ToString(), GUILayout.Width(35)), out eff.Amount);
-                        break;
-                    case ScenarioEffectType.AddJournal:
-                        GUILayout.Label("Txt :", GUILayout.Width(35));
-                        eff.Text = GUILayout.TextField(eff.Text);
-                        break;
-                }
-                GUI.backgroundColor = new Color(1f, 0.3f, 0.3f);
-                if (GUILayout.Button("✕", GUILayout.Width(20), GUILayout.Height(18)))
-                {
-                    list.RemoveAt(i);
-                    break;
-                }
-                GUI.backgroundColor = Color.white;
-                GUILayout.EndHorizontal();
-            }
         }
 
         private void SaveCurrentSceneJson()

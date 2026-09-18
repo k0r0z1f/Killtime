@@ -25,6 +25,20 @@ namespace Killtime.Story.Data
         public bool SpawnInitially = true;
         public string SpawnOnNodeId = "";
         public CharacterSheet EmbeddedSheet = new();
+        // Position/taille dans le graphe nodal (éditeur uniquement, comme les Triggers).
+        // 0/0 = jamais placé → l'éditeur auto-dispose sur la rangée acteurs au chargement.
+        public float GraphPosX = 0f;
+        public float GraphPosY = 0f;
+        public float CardWidth = 340f;
+        public float CardHeight = 208f;
+
+        public string GetSummary()
+        {
+            string faction = IsPlayer ? "[PJ]" : "[PNJ]";
+            string where = $"hex ({Q}, {R}) ∠{FacingAngle:0}°";
+            string spawn = SpawnInitially ? "init" : (string.IsNullOrEmpty(SpawnOnNodeId) ? "(jamais spawné)" : $"si {SpawnOnNodeId}");
+            return $"{faction} {where} · {spawn}";
+        }
     }
 
     [Serializable]
@@ -42,6 +56,20 @@ namespace Killtime.Story.Data
         public string SuccessLog = "";
         public bool IsOneShot = true;
         public string TriggerNodeId = "";
+        // Position/taille dans le graphe nodal (éditeur uniquement, comme les Triggers).
+        // 0/0 = jamais placé → l'éditeur auto-dispose sous les déclencheurs au chargement.
+        public float GraphPosX = 0f;
+        public float GraphPosY = 0f;
+        public float CardWidth = 340f;
+        public float CardHeight = 252f;
+
+        public string GetSummary()
+        {
+            string where = $"hex ({Q}, {R}) r{Radius}";
+            string test = $"SD {SkillThreshold} · {SkillDefinitions.GetDisplayName(RequiredSkill)}";
+            string target = string.IsNullOrEmpty(TriggerNodeId) ? "(aucun saut)" : $"➔ {TriggerNodeId}";
+            return $"{where} · {test} {target}";
+        }
     }
 
     public enum PrerequisiteKind
