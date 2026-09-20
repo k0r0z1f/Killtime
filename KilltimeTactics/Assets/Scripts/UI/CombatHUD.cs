@@ -8,6 +8,7 @@ using Killtime.Core.Character;
 using Killtime.Core.Dice;
 using Killtime.Audio;
 using Killtime.Tactics;
+using Killtime.Tactics.Grid;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
 
@@ -363,6 +364,9 @@ namespace Killtime.UI
         private float _anatomyOpenAnim;
         private float _lastLogCount;
         private float _logFlash;
+        private float _roundBannerTimer;
+        private const float RoundBannerDuration = 2.6f;
+        private int _displayedRoundNumber = 1;
 
         // Textures procédurales
         private static Texture2D _pixelTex;
@@ -377,6 +381,9 @@ namespace Killtime.UI
         private static GUIStyle _terminalHeaderStyle;
         private static GUIStyle _terminalBodyStyle;
         private static GUIStyle _terminalDiceStyle;
+        private static GUIStyle _bannerTitleStyle;
+        private static GUIStyle _bannerSubStyle;
+        private static GUIStyle _bannerTagStyle;
 
         public event Action<BodyPart, bool> OnAttackRequested;
         public event Action OnEndTurnRequested;
@@ -507,6 +514,12 @@ namespace Killtime.UI
                 Telemetry.Reset();
                 _hideOutcomeCardForReview = false;
             }
+            _displayedRoundNumber = roundNumber;
+            _roundBannerTimer = RoundBannerDuration;
+            if (KilltimeAudioManager.Instance != null)
+            {
+                KilltimeAudioManager.Instance.Play(SoundId.Round_Start, 0.85f);
+            }
             AddAdvancedLog($"⏳ <b>CYCLE DE PHASE : ROUND {roundNumber:00}</b>", LogCategory.MovementAndTurns, "[PHASE]", ColorCyanAccent);
         }
 
@@ -591,6 +604,10 @@ namespace Killtime.UI
             _anatomyOpenAnim = Mathf.MoveTowards(_anatomyOpenAnim, _showAnatomyDrawer ? 1f : 0f, dt * 10f);
             _grenadeOpenAnim = Mathf.MoveTowards(_grenadeOpenAnim, _showGrenadeDrawer ? 1f : 0f, dt * 10f);
             _logFlash = Mathf.MoveTowards(_logFlash, 0f, dt * 2.5f);
+            if (_roundBannerTimer > 0f)
+            {
+                _roundBannerTimer -= dt;
+            }
             if (_lastLogCount != _logEntries.Count)
             {
                 _lastLogCount = _logEntries.Count;
@@ -799,6 +816,9 @@ namespace Killtime.UI
             {
                 DrawGrenadeTargetingPanel(activeUnit);
             }
+
+            // 5. Cue central d'avertissement de début de round
+            DrawRoundStartBanner();
         }
 
         private void EnsureStyles()
@@ -873,6 +893,82 @@ namespace Killtime.UI
                 fontStyle = FontStyle.Bold
             };
             _terminalDiceStyle.normal.textColor = ColorCyanAccent;
+
+            _bannerTitleStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 17,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                richText = true
+            };
+            _bannerTitleStyle.normal.textColor = ColorTextBright;
+
+            _bannerSubStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 9,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter,
+                richText = true
+            };
+            _bannerSubStyle.normal.textColor = ColorCyanAccent;
+
+            _bannerTagStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 8,
+                fontStyle = FontStyle.Normal,
+                alignment = TextAnchor.MiddleCenter,
+                richText = true
+            };
+            _bannerTagStyle.normal.textColor = ColorTextMuted;
+        }
+
+        private void DrawRoundStartBanner()
+        {
+            if (_roundBannerTimer <= 0f) return;
+
+            float elapsed = RoundBannerDuration - _roundBannerTimer;
+            float alpha;
+            if (elapsed < 0.25f)
+                alpha = Mathf.Clamp01(elapsed / 0.25f);
+            else if (_roundBannerTimer < 0.45f)
+                alpha = Mathf.Clamp01(_roundBannerTimer / 0.45f);
+            else
+                alpha = 1f;
+
+            float width = Mathf.Clamp(Screen.width * 0.44f, 440f, 620f);
+            float height = 64f;
+            float x = (Screen.width - width) * 0.5f;
+            float y = Screen.height * 0.16f;
+
+            Rect bannerRect = new Rect(x, y, width, height);
+
+            DrawSoftPanel(bannerRect, new Color(0.012f, 0.022f, 0.038f, 0.94f * alpha), true);
+
+            Color cyanLine = ColorCyanAccent;
+            cyanLine.a *= alpha;
+            DrawAccentLine(new Rect(bannerRect.x + 20f, bannerRect.y, bannerRect.width - 40f, 2f), cyanLine, 0.95f);
+            DrawAccentLine(new Rect(bannerRect.x + 40f, bannerRect.yMax - 1f, bannerRect.width - 80f, 1f), cyanLine, 0.5f);
+
+            DrawSolidRect(new Rect(bannerRect.x, bannerRect.y + 4f, 3f, bannerRect.height - 8f), cyanLine);
+            DrawSolidRect(new Rect(bannerRect.xMax - 3f, bannerRect.y + 4f, 3f, bannerRect.height - 8f), cyanLine);
+
+            Color tagCol = ColorTextMuted;
+            tagCol.a *= alpha;
+            _bannerTagStyle.normal.textColor = tagCol;
+            GUI.Label(new Rect(bannerRect.x, bannerRect.y + 6f, bannerRect.width, 14f),
+                "// SIMULATION TEMPORELLE CAUSALE (LIVRE VI) — CYCLE DE 10 SECONDES", _bannerTagStyle);
+
+            Color titleCol = ColorTextBright;
+            titleCol.a *= alpha;
+            _bannerTitleStyle.normal.textColor = titleCol;
+            GUI.Label(new Rect(bannerRect.x, bannerRect.y + 20f, bannerRect.width, 24f),
+                $"CYCLE TACTIQUE · ROUND {_displayedRoundNumber:00}", _bannerTitleStyle);
+
+            Color subCol = ColorCyanAccent;
+            subCol.a *= alpha;
+            _bannerSubStyle.normal.textColor = subCol;
+            GUI.Label(new Rect(bannerRect.x, bannerRect.y + 44f, bannerRect.width, 14f),
+                "ORDRE D'INITIATIVE ENGAGÉ  ·  RÉGÉNÉRATION DES PA AU DÉBUT DE CHAQUE TOUR", _bannerSubStyle);
         }
 
         // =========================================================================
@@ -1037,6 +1133,10 @@ namespace Killtime.UI
         {
             float width = Mathf.Clamp(Screen.width * 0.34f, 330f, 460f);
             float height = 216f;
+            // Livre VI §25.3 : réserve une ligne d'affichage du couvert si la cible
+            // est à couvert (le bouton TIR est repoussé vers le bas d'autant).
+            CoverType preCover = _arena != null ? _arena.GetCoverToTarget(unit, _arena.CurrentTarget) : CoverType.None;
+            if (preCover != CoverType.None) height += 18f;
             float targetY = Screen.height - height - 24f;
             float y = Mathf.Lerp(Screen.height + 10f, targetY, _anatomyOpenAnim);
             Rect rect = new Rect((Screen.width - width) * 0.5f, y, width, height);
@@ -1119,11 +1219,30 @@ namespace Killtime.UI
                 : SkillType.Ballistique;
 
             int apCost = _cancelPenaltyWithAP ? 3 : 2;
-            bool canAttack = unit.Stats.CurrentActionPoints >= apCost && unit.Stats.CanAttack(unit.Stats.GetSkillDie(hudAttackSkill, true));
+            // Livre VI §25.3 : le couvert de la cible est affiché avant le tir
+            // (moitié -1, 3/4 -2, total = tir impossible).
+            CoverType hudCover = preCover;
+            bool coverBlocks = hudCover == CoverType.Full;
+            bool canAttack = !unit.IsMoving && !coverBlocks && unit.Stats.CurrentActionPoints >= apCost && unit.Stats.CanAttack(unit.Stats.GetSkillDie(hudAttackSkill, true));
+
+            if (hudCover == CoverType.Half || hudCover == CoverType.ThreeQuarters)
+            {
+                GUI.color = new Color(1f, 0.75f, 0.3f);
+                GUI.Label(new Rect(rect.x + 14f, rowY + 19f, width - 28f, 16f),
+                    hudCover == CoverType.Half ? "Couvert : moitié visible (-1 attaque)" : "Couvert : 3/4 couvert (-2 attaque)", _hudSubStyle);
+                GUI.color = Color.white;
+            }
+            else if (coverBlocks)
+            {
+                GUI.color = new Color(1f, 0.35f, 0.4f);
+                GUI.Label(new Rect(rect.x + 14f, rowY + 19f, width - 28f, 16f),
+                    "Cible NON VISIBLE — déplacez-vous !", _hudSubStyle);
+                GUI.color = Color.white;
+            }
 
             Rect fire = new Rect(rect.x + 12f, rect.y + height - 38f, width - 24f, 28f);
             if (DrawTacticalButton(fire,
-                canAttack ? $"TIR  ·  {apCost} PA" : "TIR INDISPONIBLE",
+                coverBlocks ? "CIBLE À COUVERT" : (canAttack ? $"TIR  ·  {apCost} PA" : "TIR INDISPONIBLE"),
                 null, false, canAttack ? ColorCrimson : ColorTextMuted, canAttack))
             {
                 _showAnatomyDrawer = false;
@@ -1236,7 +1355,7 @@ namespace Killtime.UI
             GUI.color = Color.white;
 
             rowY += 20f;
-            // Injection PA post-tirage (+1 / PA).
+            // Mise PA déclarée avant le lancer (+1 / PA, duel aveugle).
             GUI.color = ColorTextMuted;
             GUI.Label(new Rect(rect.x + 14f, rowY, 120f, 18f), $"Injection : +{_grenadeBonusPA} PA", _hudSubStyle);
             GUI.color = Color.white;

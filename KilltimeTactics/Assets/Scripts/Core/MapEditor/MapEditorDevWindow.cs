@@ -26,7 +26,8 @@ namespace Killtime.UI
         ElevateGround,
         LowerGround,
         SetElevation,
-        SmoothElevation
+        SmoothElevation,
+        ThreeQuartersCover
     }
 
     public enum PropPlacementType
@@ -127,9 +128,9 @@ namespace Killtime.UI
         [SerializeField] private TurnManager _turnManager;
 
         private MapBrushType _activeBrush = MapBrushType.HalfCover;
-        private string _mapNameInput = "Killzone_Alpha";
+        private string _mapNameInput = "Killzone_Alpha3";
         private string _statusMessage = "Prêt.";
-        private string _gridRadiusInput = "8";
+        private string _gridRadiusInput = "6";
         private float _ceilingHeightInput = 3.5f;
 
         private Vector2 _scrollPos;
@@ -251,8 +252,8 @@ namespace Killtime.UI
             var p = DevUIPreferences.Current;
             if (p == null) return;
             p.MapBrush = (int)_activeBrush;
-            p.MapName = _mapNameInput ?? "Killzone_Alpha";
-            p.GridRadiusInput = _gridRadiusInput ?? "8";
+            p.MapName = _mapNameInput ?? "Killzone_Alpha3";
+            p.GridRadiusInput = _gridRadiusInput ?? "6";
             p.CeilingHeight = _ceilingHeightInput;
             p.MapEditorTab = _selectedTab;
             p.SculptStep = _sculptStep;
@@ -552,6 +553,7 @@ namespace Killtime.UI
                         _activeBrush == MapBrushType.ClearGroundTexture ||
                         _activeBrush == MapBrushType.ClearGround ||
                         _activeBrush == MapBrushType.HalfCover ||
+                        _activeBrush == MapBrushType.ThreeQuartersCover ||
                         _activeBrush == MapBrushType.FullCover ||
                         _activeBrush == MapBrushType.ImpassableHole ||
                         _activeBrush == MapBrushType.AddCeiling ||
@@ -632,6 +634,15 @@ namespace Killtime.UI
                     {
                         node.Cover = CoverType.Full;
                         node.IsWalkable = false;
+                        modified = true;
+                    }
+                    break;
+
+                case MapBrushType.ThreeQuartersCover:
+                    if (node.Cover != CoverType.ThreeQuarters || !node.IsWalkable)
+                    {
+                        node.Cover = CoverType.ThreeQuarters;
+                        node.IsWalkable = true;
                         modified = true;
                     }
                     break;
@@ -882,6 +893,7 @@ namespace Killtime.UI
             node.HasCustomVisual = true;
 
             _gridVisualizer?.RefreshObstacles();
+            try { PropObstacleRegistry.Rebuild(_grid != null ? _grid.HexRadius : 1f); } catch { /* ignore */ }
             _statusMessage = $"Modèle '{prefabName}' posé [{_propPlacementType}] en ({node.Coordinates.Q}, {node.Coordinates.R}).";
         }
 
@@ -934,6 +946,7 @@ namespace Killtime.UI
                     }
                 }
                 _gridVisualizer?.RefreshObstacles();
+                try { PropObstacleRegistry.Rebuild(_grid != null ? _grid.HexRadius : 1f); } catch { /* ignore */ }
             }
         }
 
@@ -1012,8 +1025,9 @@ namespace Killtime.UI
 
             DrawBrushOption(MapBrushType.Inspect, "🔍 Inspecter", "Affiche l'état complet (sol, couverture, plafond, objets).");
             DrawBrushOption(MapBrushType.ClearGround, "⬛ Sol Dégagé", "Restaure un sol plat et praticable.");
-            DrawBrushOption(MapBrushType.HalfCover, "📦 Demi-Couverture", "Pose un bloc de demi-couverture standard (+1 défense).");
-            DrawBrushOption(MapBrushType.FullCover, "🏛️ Couverture Totale", "Pose un pilier bloquant vue et déplacement.");
+            DrawBrushOption(MapBrushType.HalfCover, "📦 Demi-Couverture", "Muret bas : cible à moitié visible, -1 à l'attaque (Livre VI §25.3).");
+            DrawBrushOption(MapBrushType.ThreeQuartersCover, "🧱 Barricade Haute", "Couvert aux 3/4 : seul 1/4 visible, -2 à l'attaque (Livre VI §25.3).");
+            DrawBrushOption(MapBrushType.FullCover, "🏛️ Couverture Totale", "Mur / pilier : cible non visible, attaque directe impossible.");
             DrawBrushOption(MapBrushType.ImpassableHole, "🕳️ Gouffre / Vide", "Supprime le passage au sol.");
 
             GUILayout.EndVertical();
@@ -1665,6 +1679,8 @@ namespace Killtime.UI
             }
 
             _gridVisualizer?.RefreshObstacles();
+            // Registre ligne de mire APRÈS les visuels : bornes des meshes affichés.
+            try { PropObstacleRegistry.Rebuild(_grid != null ? _grid.HexRadius : 1f); } catch { /* ignore */ }
             _statusMessage = $"Carte '{data.MapName}' chargée ({loadedCount} objet(s) 3D, {unitLoadedCount} avatar(s), {loadedPixiesCount} pixie(s), Plafond: {_grid.CeilingHeight:0.##}m).";
 
             if (_arena != null)

@@ -489,14 +489,6 @@ namespace Killtime.Tactics.TurnSystem
                 }
             }
 
-            foreach (var unit in _allUnits)
-            {
-                if (unit != null && unit.Stats != null && unit.Stats.IsAlive)
-                {
-                    unit.Stats.ResetTurn();
-                }
-            }
-
             _activeUnitIndex = 0;
 
             // Sauter immédiatement les unités mortes au début du round
@@ -589,6 +581,8 @@ namespace Killtime.Tactics.TurnSystem
                 return;
             }
 
+            RefreshAndNotifyActiveUnitTurnStart(ActiveUnit);
+
             OnTurnStarted?.Invoke(ActiveUnit);
 
             if (IsMultiplayerGM() && ActiveUnit != null)
@@ -606,6 +600,34 @@ namespace Killtime.Tactics.TurnSystem
                     targetR = curTarget != null ? curTarget.CurrentCoords.R : 0
                 };
                 Killtime.Multi.VTTTableSync.Instance?.BroadcastTurnControl(payload);
+            }
+        }
+
+        private void RefreshAndNotifyActiveUnitTurnStart(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null || !unit.Stats.IsAlive) return;
+
+            int prevAP = unit.Stats.CurrentActionPoints;
+            unit.Stats.ResetTurn();
+            int newAP = unit.Stats.CurrentActionPoints;
+            int deltaAP = newAP - prevAP;
+
+            var visual = unit.GetComponent<TacticalUnitVisual>();
+            if (visual != null)
+            {
+                if (deltaAP > 0)
+                {
+                    visual.SpawnFloatingText($"⚡ +{deltaAP} PA ({newAP}/{unit.Stats.MaxActionPoints})", new Color(0.2f, 0.95f, 1.0f));
+                }
+                else
+                {
+                    visual.SpawnFloatingText($"⚡ PA COMPLETS ({newAP})", new Color(0.2f, 0.85f, 1.0f, 0.75f));
+                }
+
+                if (unit.Stats.Essoufflement > 0)
+                {
+                    visual.SpawnFloatingText($"🫁 SOUFFLE : {unit.Stats.Essoufflement} PE", new Color(1.0f, 0.72f, 0.15f));
+                }
             }
         }
 
@@ -682,14 +704,6 @@ namespace Killtime.Tactics.TurnSystem
                 });
             }
 
-            foreach (var unit in _allUnits)
-            {
-                if (unit != null && unit.Stats != null && unit.Stats.IsAlive)
-                {
-                    unit.Stats.ResetTurn();
-                }
-            }
-
             OnRoundStarted?.Invoke(CurrentRound);
         }
 
@@ -703,6 +717,7 @@ namespace Killtime.Tactics.TurnSystem
                 {
                     _activeUnitIndex = i;
                     ActiveUnit = u;
+                    RefreshAndNotifyActiveUnitTurnStart(ActiveUnit);
                     OnTurnStarted?.Invoke(ActiveUnit);
                     return;
                 }

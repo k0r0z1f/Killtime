@@ -3,11 +3,20 @@ using UnityEngine;
 
 namespace Killtime.Tactics.Grid
 {
+    /// <summary>
+    /// Niveau d'exposition d'une cible vue par son attaquant (Livre VI §25.3).
+    /// None = entièrement visible (0). Half = à moitié visible (-1 à l'attaque).
+    /// ThreeQuarters = aux trois-quarts couvert, seul 1/4 visible (-2 à l'attaque).
+    /// Full = totalement à couvert / non visible : attaque directe impossible.
+    /// NOTE : Full garde volontairement la valeur 2 (compatibilité des cartes
+    /// sauvegardées) ; ne jamais comparer par ordre numérique, utiliser CoverSystem.
+    /// </summary>
     public enum CoverType
     {
         None = 0,
-        Half = 1, // Déviation partielle / bonus de défense
-        Full = 2  // Bloque la ligne de mire / tir impossible
+        Half = 1, // À moitié visible : -1 à l'attaque (muret, caisse basse)
+        Full = 2,  // Non visible : attaque directe impossible (mur, pilier)
+        ThreeQuarters = 3 // Aux 3/4 couvert : -2 à l'attaque (palissade haute, barricade)
     }
 
     [Serializable]

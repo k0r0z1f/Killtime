@@ -301,6 +301,8 @@
                                         PA</span><span class="nav-item-badge badge-live">Actif</span></a></li>
                             <li><a href="#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span><span
                                         class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-25-3" class="nav-item-link"><span>25.3 Couvert & Visibilité</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
                             <li><a href="#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span><span
                                         class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
@@ -514,23 +516,23 @@
                     </p>
 
                     <div class="formula-box">
-                        <div class="formula-label">Procédure Séquentielle d'Injection des PA en Duel</div>
+                        <div class="formula-label">Duel Aveugle : Déclarations Masquées puis Révélation Simultanée</div>
                         <div class="formula-math">
-                            <span class="hl-cyan">Jet Attaquant</span> (+PA Bonus Attaque) &nbsp;vs&nbsp; <span
-                                class="hl-ruby">Jet Défenseur</span> (+PA Bonus Réaction)
+                            <span class="hl-cyan">Mise Attaquant</span> (PA + PE, cachée) &nbsp;vs&nbsp; <span
+                                class="hl-ruby">Mise Défenseur</span> (PA + PE, cachée) &nbsp;➔&nbsp; Révélation simultanée
                         </div>
                         <div class="formula-desc">
                             <strong>Axiome de Confrontation :</strong> L'attaque oppose une compétence offensive (<em>Maniement d'Arme</em>, <em>Ballistique</em>, <em>Mains Nues</em>) à une compétence défensive (<em>Esquive</em>, <em>Défense Corporelle</em>) ou à une cible sans défense.<br>
-                            Chaque PA bonus engagé confère <strong>+1 point direct</strong> au résultat du jet respectif, et il est <strong>injecté après avoir vu son propre tirage</strong> — jamais en enchère aveugle préalable. La séquence se déroule impérativement en 3 temps :<br>
-                            <strong>1. Attaque de l'Attaquant :</strong> L'attaquant désigne sa cible, paie le coût de base de son coup (2
-                            PA standard, ou 3 PA pour annuler le malus de visée), puis <strong>lance le dé correspondant au niveau de sa compétence</strong> (entraînements + paliers de caractéristique depuis le d2) et applique les malus situationnels = <strong>Total brut d'attaque</strong>. <em>Exemple : Mains Nues +2 entraînements, FOR 5 = +2 niveaux → 4 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ d8 ➔ <strong>d10</strong>).</em> <strong>Après avoir vu son résultat</strong>, l'attaquant peut ajouter des PA bonus (+1 / PA, débités aussitôt) pour améliorer son total. Le <strong>Total final d'attaque</strong> est alors fixé.<br>
-                            <strong>2. Défense de la Cible :</strong> La cible décide si elle engage une défense active ou si elle reste passive :
+                            Chaque PA engagé confère <strong>+1 point direct</strong> au résultat du jet respectif, chaque PE (Essoufflement, plafond Constitution) <strong>+1 point direct</strong> — et les deux mises sont <strong>déclarées à l'aveugle avant tout jet</strong>. Aucun résultat n'est révélé avant que les deux camps aient engagé leur mise. La séquence se déroule impérativement en 3 temps :<br>
+                            <strong>1. Déclaration de l'Attaquant :</strong> L'attaquant désigne sa cible, annonce son action (compétence + zone visée) et engage sa mise : coût de base du coup (2
+                            PA standard, ou 3 PA pour annuler le malus de visée) + PA bonus et/ou PE déclarés (débités aussitôt, +1 / PA, +1 / PE). <em>Exemple : Mains Nues +2 entraînements, FOR 5 = +2 niveaux → 4 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ d8 ➔ <strong>d10</strong>), mise cachée +2 PA.</em> Le résultat reste <strong>caché</strong>.<br>
+                            <strong>2. Déclaration Aveugle de la Cible :</strong> La cible déclare <strong>sans avoir vu ni le jet ni la mise de l'attaquant</strong> si elle engage une défense active ou si elle reste passive :
                             <ul>
-                                <li><strong>Défense Active (Habituelle) :</strong> Le défenseur paie son coût de base de réaction (1 PA), <strong>lance le dé de sa compétence défensive</strong> (<em>Esquive</em> ou <em>Parade / Défense Corporelle</em>, avec malus d'1 niveau de dé si paré à l'arme sans spé Épée) et applique les malus situationnels = <strong>Total brut de défense</strong>. <em>Exemple : Esquive 1 entraînement, AGI 5 = +2 niveaux → 3 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ <strong>d8</strong>).</em> <strong>Après avoir vu son résultat</strong> (et le total final de l'attaquant), le défenseur peut ajouter des PA bonus (+1 / PA, débités aussitôt). Le <strong>Total final de défense</strong> est alors fixé.</li>
-                                <li><strong>Défense Passive (Choix Tactique) :</strong> Le défenseur <strong>décide de ne pas se défendre</strong> (pour préserver ses PA ou s'il est surpris). Il ne consomme aucun PA, ne lance aucun dé, son score de défense est égal à <strong>0</strong>, et l'attaque touche automatiquement avec la marge totale du jet attaquant !</li>
+                                <li><strong>Défense Active (Habituelle) :</strong> Le défenseur annonce sa compétence défensive (<em>Esquive</em> ou <em>Parade / Défense Corporelle</em>, avec malus d'1 niveau de dé si paré à l'arme sans spé Épée) et engage sa mise : coût de base de réaction (1 PA) + PA bonus et/ou PE déclarés (débités aussitôt). <em>Exemple : Esquive 1 entraînement, AGI 5 = +2 niveaux → 3 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ <strong>d8</strong>), mise cachée +1 PA.</em></li>
+                                <li><strong>Défense Passive (Choix Tactique) :</strong> Le défenseur <strong>décide de ne pas se défendre</strong> (pour préserver ses PA ou s'il est surpris). Il ne consomme aucun PA ni PE, ne lance aucun dé, son score de défense est égal à <strong>0</strong>, et l'attaque touche automatiquement avec la marge totale du jet attaquant !</li>
                             </ul> S'il veut réagir mais n'a aucun PA pour payer la réaction de base
                             (0 PA), il ne peut réagir activement : il subit une pénalité réflexe de -2.<br>
-                            <strong>3. Résolution Normale :</strong> Le différentiel net
+                            <strong>3. Révélation Simultanée & Résolution Normale :</strong> Les deux dés sont lancés <strong>ensemble</strong> avec les mises déclarées, puis révélés en même temps. Le différentiel net
                             (Attaque finale − Défense finale) détermine la touche chirurgicale et les dégâts réels, exactement comme prévu (blocage si négatif, déviation si 0, touche + différentiel en dégâts si positif, puis armure, encaissement et états).
                         </div>
                     </div>
@@ -567,11 +569,11 @@
                                 Chaque combattant a droit à <strong>une réaction par tour</strong> en réponse à une
                                 offensive ennemie. Une réaction est soit une parade, soit une esquive, soit une manœuvre
                                 non-offensive d'urgence.<br><br>
-                                <strong>Injection Après Tirage (Règle Normale) :</strong> Chaque camp injecte ses PA bonus <strong>après avoir vu son tirage</strong> : l'attaquant ajuste son total juste après son jet, puis le défenseur ajuste le sien après le sien (en connaissant le total final de l'attaquant). Il ne s'agit pas d'une exception, mais du déroulement standard du duel !
+                                <strong>Déclaration Aveugle (Règle Normale) :</strong> Chaque camp déclare sa mise (PA bonus + PE) <strong>avant tout jet, sans voir ni le tirage ni la mise adverse</strong> : l'attaquant annonce le premier, puis le défenseur déclare à l'aveugle. Les deux dés sont ensuite lancés et révélés simultanément. Il ne s'agit pas d'une exception, mais du déroulement standard du duel !
                             </p>
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Esquive / Parade</span>
-                                <span class="tag-pill green">Ajustement Réactif</span>
+                                <span class="tag-pill green">Mise Aveugle</span>
                             </div>
                         </div>
                     </div>
@@ -598,7 +600,8 @@
                                     <td>Quand les PA sont épuisés, le joueur peut prendre 1 à N points d'essoufflement.
                                     </td>
                                     <td>Chaque point d'essoufflement agit comme +1 PA temporaire sur l'action ou la
-                                        réaction en cours.</td>
+                                        réaction en cours, <strong>déclaré à l'aveugle</strong> au même titre que les PA
+                                        (mise cachée jusqu'à la révélation simultanée).</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Plafond Maximal</strong></td>
@@ -757,6 +760,124 @@
                                 </tr>
                             </tbody>
                         </table>
+                    </div>
+
+                    <h3 id="chap-25-3">25.3 Couvert, Visibilité & Ligne de Mire</h3>
+                    <p>
+                        Un combattant n'est pas toujours offert aux coups : un muret, une barricade ou un pilier
+                        masque tout ou partie de sa silhouette <strong>vue par son attaquant</strong>. Le couvert est
+                        donc toujours <strong>relatif</strong> : la même cible peut être à découvert pour un tireur et
+                        totalement invisible pour un autre placé sous un angle différent.
+                    </p>
+
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Niveau de Couvert</th>
+                                    <th>Silhouette vue par l'attaquant</th>
+                                    <th>Effet sur l'attaque directe</th>
+                                    <th>Exemples</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>À découvert</strong></td>
+                                    <td>Cible entièrement visible</td>
+                                    <td><strong>0</strong> — aucun malus</td>
+                                    <td>Plaine, rue dégagée, arène ouverte.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>À moitié couvert</strong></td>
+                                    <td>Cible à moitié visible</td>
+                                    <td><strong>-1</strong> au total d'attaque</td>
+                                    <td>Muret bas, caisse, capot de véhicule, coin de mur.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Aux trois-quarts couvert</strong></td>
+                                    <td>Seul un quart de la cible dépasse</td>
+                                    <td><strong>-2</strong> au total d'attaque</td>
+                                    <td>Barricade haute, palissade, deux murets ou plus sur la trajectoire.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Couvert total</strong></td>
+                                    <td>Cible non visible pour l'attaquant</td>
+                                    <td><strong>Attaque directe impossible</strong> (aucun PA dépensé)</td>
+                                    <td>Mur plein, pilier massif, paroi blindée barrant la ligne de mire.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Lecture Rigoureuse de la Ligne de Mire : Coin Optimal + Cône (attaquant ➔ cible)</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Meilleur coin</span> &nbsp;➔&nbsp; <span class="hl-gold">Cône 28 rayons sur 1,8 m</span> &nbsp;➔&nbsp; <span class="hl-emerald">Surface visible</span> &nbsp;➔&nbsp; <span class="hl-ruby">Couvert</span>
+                        </div>
+                        <div class="formula-desc">
+                            Le personnage occupe <strong>toute sa case</strong> : il ne tire jamais « du centre ».<br>
+                            <strong>1. Coin optimal de l'attaquant :</strong> on teste les <strong>6 coins</strong> de la
+                            case de l'attaquant (hauteur des yeux, 1,5 m) et on retient le <strong>plus avantageux</strong>,
+                            c'est-à-dire celui qui laisse le <strong>moins de couvert</strong> à la cible. Le cône part
+                            de ce coin.<br>
+                            <strong>2. Cône sur la hauteur de la cible :</strong> depuis ce coin, <strong>28 rayons</strong>
+                            balaient la silhouette (7 positions de la case — 6 coins + centre — × 4 hauteurs : 0,2 / 0,6 /
+                            1,1 / 1,5 m sur un corps de 1,8 m). Chaque rayon est testé en 3D exacte contre les prismes
+                            des obstacles (<strong>muret 0,7 m, barricade 1,2 m, mur 2,2 m</strong>), contre les
+                            <strong>accessoires 3D</strong> (<strong>piliers, caisses, mobilier</strong> : leurs dimensions
+                            réelles comptent, même si la case est marquée à découvert) et contre le
+                            <strong>relief</strong> lui-même : une crête masque aussi bien qu'un mur.<br>
+                            <strong>3. Surface visible ➔ couvert :</strong> soit <em>f</em> la fraction de rayons non bloqués :
+                            <strong>f ≥ 90 %</strong> ➔ à découvert (<strong>0</strong>) ;
+                            <strong>45 % ≤ f &lt; 90 %</strong> ➔ moitié visible (<strong>-1</strong>) ;
+                            <strong>0 % &lt; f &lt; 45 %</strong> ➔ trois-quarts couvert (<strong>-2</strong>) ;
+                            <strong>f = 0 %</strong> ➔ couvert total, <strong>attaque directe impossible</strong>.<br>
+                            <strong>Au contact (distance ≤ 1 case)</strong>, les combattants se voient : le couvert est
+                            <strong>ignoré</strong>.
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>Malus d'attaque, pas bonus de défense :</strong> le -1 / -2 s'applique au
+                            <strong>total d'attaque</strong> (comme le malus de visée anatomique), annoncé en Phase 1
+                            du duel aveugle (§24.1) et tracé dans le journal de combat. Le jet de défense du défenseur
+                            n'est pas modifié.</li>
+                        <li><strong>Cumul tactique :</strong> couvert, punition de visée (-1 ou +1 PA), Canon Entravé
+                            (-2) et mises aveugles (PA / PE) se cumulent. <em>Exemple : un tir à 6 cases sur une cible
+                            aux trois-quarts couverte en visant la tête part à <strong>-3 avant mises</strong>
+                            (-2 couvert, -1 visée).</em></li>
+                        <li><strong>Couvert total :</strong> l'attaque est <strong>refusée avant tout jet et sans
+                            coût</strong> (ni PA de base, ni mise engagée). Seules issues : <strong>se déplacer</strong>
+                            pour retrouver une ligne de mire, contourner l'obstacle, ou passer par un effet de zone.</li>
+                        <li><strong>Effets de zone (grenades, souffles) :</strong> le souffle contourne les obstacles :
+                            le couvert <strong>réduit les dégâts</strong> au lieu d'interdire (muret -2, barricade haute
+                            -3, mur -4 et bloque les éclats). Un tir lobé (mortier) ignore les couverts partiels. Voir
+                            Livre VIII §31.3.</li>
+                        <li><strong>Lecture en arène (Killtime Tactics) :</strong> le cône effectivement testé
+                            s'affiche en jeu entre l'unité active et sa cible : <strong>rayons verts</strong> (passent),
+                            <strong>rayons rouges jusqu'au point d'impact</strong> (bloqués, puis ombre atténuée derrière
+                            l'obstacle), plus une <strong>ligne de synthèse</strong> —
+                            <strong>verte</strong> à découvert (0), <strong>jaune</strong> moitié (-1),
+                            <strong>orange</strong> 3/4 (-2), <strong>rouge</strong> couvert total (attaque impossible).
+                            Interrupteur <em>🎯 Ligne de Mire Couvert</em> dans la barre d'outils dev.</li>
+                    </ul>
+
+                    <div class="callout temporal">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
+                            Exemple de Table : Tir sous Couvert
+                        </div>
+                        <div class="callout-body">
+                            Mina (Ballistique) vise un garde à 5 cases, accroupi derrière un muret (moitié visible) :
+                            son total d'attaque subit <strong>-1 de couvert</strong>, déclaré en Phase 1 puis révélé
+                            avec les mises. Si le garde recule derrière un pilier (couvert total), le tir devient
+                            <strong>impossible</strong> : Mina doit se déplacer, changer de cible, ou demander un tir
+                            de mortier à son allié.
+                        </div>
                     </div>
 
                     <!-- ================= CHAPITRE 26 ================= -->
@@ -1045,6 +1166,7 @@
                     <ul class="toc-on-page">
                         <li><a href="#chap-24">24. Tour de 10s & Économie des PA</a></li>
                         <li><a href="#chap-25">25. Déplacements & Poursuites</a></li>
+                        <li><a href="#chap-25-3">25.3 Couvert & Visibilité</a></li>
                         <li><a href="#chap-26">26. Localisation & Véhicules</a></li>
                     </ul>
                 </div>
@@ -1079,6 +1201,10 @@
                         <div class="telemetry-row">
                             <span class="telemetry-label">Cible Visée :</span>
                             <span class="telemetry-val">-1 ou 1 PA</span>
+                        </div>
+                        <div class="telemetry-row">
+                            <span class="telemetry-label">Couvert (§25.3) :</span>
+                            <span class="telemetry-val">Moitié -1 / 3/4 -2 / Total impossible</span>
                         </div>
                         <div class="telemetry-row">
                             <span class="telemetry-label">Seuil Choc :</span>

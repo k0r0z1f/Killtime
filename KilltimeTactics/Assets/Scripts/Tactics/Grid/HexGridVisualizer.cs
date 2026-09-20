@@ -140,6 +140,9 @@ namespace Killtime.Tactics.Grid
         private Transform _ceilingsParent;
         private Transform _obstaclesParent;
         private LineRenderer _pathLineRenderer;
+        private LineRenderer _losLineRenderer;
+        private readonly System.Collections.Generic.List<LineRenderer> _losRayRenderers = new();
+        private readonly System.Collections.Generic.HashSet<HexCoordinates> _losBlockingCells = new();
 
         private Material _baseMaterial;
         private Material _obstacleMaterial;
@@ -167,6 +170,7 @@ namespace Killtime.Tactics.Grid
             try { LoadVisualPrefs(); } catch { /* prefs optionnelles */ }
 
             SetupPathLineRenderer();
+            SetupLineOfSightRenderer();
         }
 
         private void Start()
@@ -379,6 +383,207 @@ namespace Killtime.Tactics.Grid
             _pathLineRenderer.useWorldSpace = true;
         }
 
+        private void SetupLineOfSightRenderer()
+        {
+            var lineObj = new GameObject("LineOfSightDebug");
+            lineObj.transform.SetParent(transform);
+            _losLineRenderer = lineObj.AddComponent<LineRenderer>();
+            _losLineRenderer.material = LosUnlitMaterial() ?? _baseMaterial;
+            _losLineRenderer.startColor = new Color(0.2f, 1f, 0.6f, 0.9f);
+            _losLineRenderer.endColor = new Color(0.2f, 1f, 0.6f, 0.9f);
+            _losLineRenderer.startWidth = 0.09f;
+            _losLineRenderer.endWidth = 0.09f;
+            _losLineRenderer.positionCount = 0;
+            _losLineRenderer.useWorldSpace = true;
+        }
+
+        // Matériau non éclairé partagé : les couleurs vert/rouge des rayons restent
+        // lisibles quelles que soient la lumière et la teinte des tuiles.
+        private static Material _losUnlitMaterial;
+
+        private static Material LosUnlitMaterial()
+        {
+            if (_losUnlitMaterial == null)
+            {
+                try
+                {
+                    var shader = Shader.Find("Sprites/Default");
+                    if (shader != null) _losUnlitMaterial = new Material(shader);
+                }
+                catch { _losUnlitMaterial = null; }
+            }
+            return _losUnlitMaterial;
+        }
+
+        /// <summary>
+        /// Affiche les « raycasts » de détection du couvert (Livre VI §25.3) : le cône
+        /// tiré depuis le meilleur coin de l'attaquant vers les 28 échantillons de la
+        /// cible — rayon vert = passe, rouge = bloqué. Couleur de synthèse : vert à
+        /// découvert, jaune moitié (-1), orange 3/4 (-2), rouge couvert total.
+        /// Au contact (couvert ignoré) : simple segment vert.
+        /// </summary>
+        public void ShowLineOfSight(HexCoordinates from, HexCoordinates to)
+        {
+            if (_losLineRenderer == null || _grid == null)
+            {
+                ClearLineOfSight();
+                return;
+            }
+
+            if (from.DistanceTo(to) <= 1)
+            {
+                DrawLosFan(new System.Collections.Generic.List<CoverRayHit>
+                {
+                    new CoverRayHit { Origin = EyePosition(from), Target = EyePosition(to), Blocked = false }
+                }, CoverType.None);
+                return;
+            }
+
+            CoverScanResult scan = CoverSystem.ScanCover(from, to, _grid);
+            DrawLosFan(scan.Rays, scan.Cover);
+        }
+
+        private void DrawLosFan(System.Collections.Generic.List<CoverRayHit> rays, CoverType cover)
+        {
+            HideLosFan();
+            _losBlockingCells.Clear();
+            if (_losLineRenderer == null) return;
+
+            // Éventail des rayons : vert = passe ; rouge = bloqué, tracé en rouge
+            // jusqu'au point d'impact puis en ombre atténuée derrière l'obstacle.
+            EnsureLosRayPool(rays.Count * 2);
+            int li = 0;
+            for (int i = 0; i < rays.Count && li < _losRayRenderers.Count; i++)
+            {
+                var ray = rays[i];
+                if (ray.Blocked && ray.HasBlockingCell)
+                    _losBlockingCells.Add(ray.BlockingCell);
+                if (ray.Blocked && ray.HasHitPoint)
+                {
+                    var lr = _losRayRenderers[li++];
+                    lr.gameObject.SetActive(true);
+                    lr.startWidth = 0.035f;
+                    lr.endWidth = 0.035f;
+                    lr.positionCount = 2;
+                    lr.SetPosition(0, ray.Origin);
+                    lr.SetPosition(1, ray.HitPoint);
+                    Color red = new Color(1f, 0.3f, 0.35f, 0.9f);
+                    lr.startColor = red;
+                    lr.endColor = red;
+
+                    if (li < _losRayRenderers.Count)
+                    {
+                        var shadow = _losRayRenderers[li++];
+                        shadow.gameObject.SetActive(true);
+                        shadow.startWidth = 0.02f;
+                        shadow.endWidth = 0.02f;
+                        shadow.positionCount = 2;
+                        shadow.SetPosition(0, ray.HitPoint);
+                        shadow.SetPosition(1, ray.Target);
+                        Color shade = new Color(0.5f, 0.12f, 0.14f, 0.3f);
+                        shadow.startColor = shade;
+                        shadow.endColor = shade;
+                    }
+                }
+                else
+                {
+                    var lr = _losRayRenderers[li++];
+                    lr.gameObject.SetActive(true);
+                    lr.startWidth = 0.035f;
+                    lr.endWidth = 0.035f;
+                    lr.positionCount = 2;
+                    lr.SetPosition(0, ray.Origin);
+                    lr.SetPosition(1, ray.Target);
+                    Color rc = ray.Blocked
+                        ? new Color(1f, 0.3f, 0.35f, 0.85f)
+                        : new Color(0.35f, 1f, 0.6f, 0.7f);
+                    lr.startColor = rc;
+                    lr.endColor = rc;
+                }
+            }
+
+            // 2) Ligne de synthèse (origine ➔ centre cible), couleur du couvert.
+            if (rays.Count > 0)
+            {
+                _losLineRenderer.positionCount = 2;
+                _losLineRenderer.SetPosition(0, rays[0].Origin);
+                Vector3 mid = Vector3.zero;
+                for (int i = 0; i < rays.Count; i++) mid += rays[i].Target;
+                _losLineRenderer.SetPosition(1, mid / rays.Count);
+                Color c = CoverLineColor(cover);
+                _losLineRenderer.startColor = c;
+                _losLineRenderer.endColor = c;
+            }
+            else
+            {
+                _losLineRenderer.positionCount = 0;
+            }
+
+            // 3) Teinte les cases bloquantes (magenta) : en vue de dessus, on voit
+            // exactement quels hexagones le cône traverse — arbitre perspective.
+            RefreshAllTileColors();
+        }
+
+        private void EnsureLosRayPool(int count)
+        {
+            while (_losRayRenderers.Count < count)
+            {
+                var rayObj = new GameObject($"LineOfSightRay_{_losRayRenderers.Count}");
+                rayObj.transform.SetParent(transform);
+                var lr = rayObj.AddComponent<LineRenderer>();
+                lr.material = LosUnlitMaterial() ?? _baseMaterial;
+                lr.startWidth = 0.035f;
+                lr.endWidth = 0.035f;
+                lr.positionCount = 0;
+                lr.useWorldSpace = true;
+                _losRayRenderers.Add(lr);
+            }
+        }
+
+        private void HideLosFan()
+        {
+            for (int i = 0; i < _losRayRenderers.Count; i++)
+            {
+                if (_losRayRenderers[i] != null)
+                {
+                    _losRayRenderers[i].positionCount = 0;
+                    _losRayRenderers[i].gameObject.SetActive(false);
+                }
+            }
+        }
+
+        public void ClearLineOfSight()
+        {
+            if (_losLineRenderer != null)
+                _losLineRenderer.positionCount = 0;
+            HideLosFan();
+            if (_losBlockingCells.Count > 0)
+            {
+                _losBlockingCells.Clear();
+                RefreshAllTileColors();
+            }
+        }
+
+        private Vector3 EyePosition(HexCoordinates coords)
+        {
+            var node = _grid != null ? _grid.GetNode(coords) : null;
+            Vector3 basePos = node != null
+                ? node.WorldPosition
+                : coords.ToWorldPosition(_grid != null ? _grid.HexRadius : 1f, 0.05f);
+            return basePos + Vector3.up * 1.35f;
+        }
+
+        private static Color CoverLineColor(CoverType cover)
+        {
+            return cover switch
+            {
+                CoverType.Half => new Color(1f, 0.85f, 0.2f, 0.95f),
+                CoverType.ThreeQuarters => new Color(1f, 0.55f, 0.15f, 0.95f),
+                CoverType.Full => new Color(1f, 0.25f, 0.3f, 0.95f),
+                _ => new Color(0.2f, 1f, 0.6f, 0.9f),
+            };
+        }
+
         [ContextMenu("Reconstruire la Grille")]
         public void BuildVisualGrid()
         {
@@ -460,6 +665,11 @@ namespace Killtime.Tactics.Grid
 
             RefreshAllTileColors();
             RefreshCeilingRenderers();
+
+            // Registre ligne de mire synchronisé à la source : les bornes testées
+            // sont toujours celles des meshes affichés (sculpture, pose, layout).
+            try { PropObstacleRegistry.Rebuild(_grid.HexRadius); }
+            catch { /* ignore */ }
         }
 
         private static readonly Dictionary<string, Texture2D> _allKnownGroundTextures = new(StringComparer.OrdinalIgnoreCase);
@@ -1003,6 +1213,25 @@ namespace Killtime.Tactics.Grid
 
                 _obstacleObjects[coords] = halfCover;
             }
+            else if (node.Cover == CoverType.ThreeQuarters)
+            {
+                // Livre VI §25.3 : barricade haute (3/4 couvert, -2) — plus haute
+                // que le muret Half, moins massive que le mur Full.
+                var tqCover = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                tqCover.name = $"CoverThreeQuarters_{coords.Q}_{coords.R}";
+                tqCover.transform.SetParent(_obstaclesParent, false);
+                tqCover.transform.position = node.WorldPosition + Vector3.up * 0.6f;
+                tqCover.transform.localScale = new Vector3(_grid.HexRadius * 0.8f, 1.2f, _grid.HexRadius * 0.4f);
+
+                var rend = tqCover.GetComponent<MeshRenderer>();
+                rend.sharedMaterial = _obstacleMaterial;
+
+                _propBlock.SetColor("_BaseColor", new Color(0.85f, 0.45f, 0.12f));
+                _propBlock.SetColor("_Color", new Color(0.85f, 0.45f, 0.12f));
+                rend.SetPropertyBlock(_propBlock);
+
+                _obstacleObjects[coords] = tqCover;
+            }
             else if (node.Cover == CoverType.Full)
             {
                 var fullCover = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
@@ -1022,8 +1251,28 @@ namespace Killtime.Tactics.Grid
             }
         }
 
-        public void SetReachableCoords(IEnumerable<HexCoordinates> reachable)
+        /// <summary>
+        /// Bornes monde réelles des meshes d'obstacles affichés (murets, barricades,
+        /// murs) : la vérité visible. Sert au cône de visée pour garantir que tout
+        /// rayon traversant un mesh affiché est bloqué (Livre VI §25.3).
+        /// </summary>
+        public System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<HexCoordinates, Bounds>> GetObstacleMeshBounds()
         {
+            var list = new System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<HexCoordinates, Bounds>>();
+            if (_obstacleObjects == null) return list;
+            foreach (var kvp in _obstacleObjects)
+            {
+                if (kvp.Value == null) continue;
+                var rend = kvp.Value.GetComponent<MeshRenderer>();
+                if (rend == null) continue;
+                Bounds b = rend.bounds;
+                if (b.size.y < 0.01f) continue;
+                list.Add(new System.Collections.Generic.KeyValuePair<HexCoordinates, Bounds>(kvp.Key, b));
+            }
+            return list;
+        }
+
+        public void SetReachableCoords(IEnumerable<HexCoordinates> reachable)        {
             _currentReachable.Clear();
             if (reachable != null)
             {
@@ -1112,6 +1361,13 @@ namespace Killtime.Tactics.Grid
                 else if (_currentReachable.Contains(coords))
                 {
                     c = isTextured ? Color.Lerp(Color.white, _reachableTileColor, 0.50f) : _reachableTileColor;
+                }
+
+                // Cases bloquantes du cône de visée : teinte magenta prioritaire pour
+                // trancher d'un coup d'œil (vue de dessus) ce qui bloque vraiment.
+                if (_losBlockingCells.Contains(coords))
+                {
+                    c = Color.Lerp(c, new Color(1f, 0.1f, 0.6f, 1f), 0.75f);
                 }
 
                 _propBlock.Clear();

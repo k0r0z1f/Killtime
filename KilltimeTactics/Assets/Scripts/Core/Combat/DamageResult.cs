@@ -1,5 +1,6 @@
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
+using Killtime.Tactics.Grid;
 
 namespace Killtime.Core.Combat
 {
@@ -38,6 +39,11 @@ namespace Killtime.Core.Combat
         public bool CausedKnockback;
         public bool IsCanonEntrave;
         public string CombatLog;
+
+        // --- Livre VI §25.3 : Couvert & Visibilité ---
+        public CoverType Cover;
+        public int CoverAttackPenalty;
+        public bool BlockedByCover;
 
         public override string ToString() => CombatLog;
     }

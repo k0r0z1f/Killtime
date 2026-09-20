@@ -567,6 +567,8 @@ MonoBehaviour:
   _hoverTileColor: {r: 0, g: 0.85, b: 1, a: 0.95}
   _targetTileColor: {r: 0.9, g: 0.2, b: 0.25, a: 0.95}
   _pathTileColor: {r: 0.2, g: 0.9, b: 0.5, a: 0.9}
+  _smoothSlopeTerrain: 0
+  _groundTiling: 1
 --- !u!114 &2000000005
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -600,6 +602,13 @@ MonoBehaviour:
   _cinematicDirector: {fileID: 1900725051}
   _initialLayout: 1
   _enableCinematicKillcam: 1
+  _showCoverLineOfSight: 1
+  _enterCombatOnMapLoad: 1
+  _autoEndTurnOnEmptyPA: 1
+  _autoEndTurnGraceDelay: 1.5
+  _defaultMapResourcePath: Maps/Killzone_Alpha3
+  _defaultMapFileName: Killzone_Alpha3.json
+  _loadDefaultMapOnStart: 1
 --- !u!114 &2000000007
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -612,11 +621,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d4e5f60718293a4b5c6d7e8f90a1b2c3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _isOpen: 1
   _arena: {fileID: 2000000006}
   _turnManager: {fileID: 2000000005}
   _cinematicDirector: {fileID: 1900725051}
-  _isOpen: 1
-  _toggleKey: 96
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

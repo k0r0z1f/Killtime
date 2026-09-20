@@ -46,6 +46,19 @@ namespace Killtime.Story.Scenes
         private SceneDialogueLineData _activeReactionPromptLine = null;
         private string _activeChallengeSummary = "";
         private string _activeChallengeRewards = "";
+        // File d'attente des textes interactables vers le chat milieu :
+        // si holotable + datapad se valident coup sur coup, le 2e ne doit pas
+        // être perdu quand une réaction est déjà affichée.
+        private readonly Queue<PendingMiddleChatMessage> _pendingMiddleChat = new();
+        private struct PendingMiddleChatMessage
+        {
+            public string Speaker;
+            public string StageDirection;
+            public string Speech;
+            public string ActionLabel;
+            public string DisplayName;
+            public string Rewards;
+        }
 
         // Rects IMGUI du chat de scène : servent de bloqueurs clics 3D via FloatingWindowChrome.
         private Rect _dialogueRect = Rect.zero;
@@ -162,6 +175,11 @@ namespace Killtime.Story.Scenes
             _activatedInteractableIds.Clear();
             _activationNodeIds.Clear();
             _nodeEnterCoords.Clear();
+            _pendingMiddleChat.Clear();
+            _activeReactionChoice = null;
+            _activeReactionPromptLine = null;
+            _activeChallengeSummary = "";
+            _activeChallengeRewards = "";
 
             if (_arena != null)
             {
@@ -419,6 +437,7 @@ namespace Killtime.Story.Scenes
                     if (!string.IsNullOrEmpty(successMsg))
                     {
                         CombatHUD.Instance?.AddAdvancedLog($"✔ {unit.Stats.Name} : {successMsg}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                        ShowInteractableSuccessInMiddleChat(unit, data);
                     }
                     if (!string.IsNullOrEmpty(triggerNode))
                     {
@@ -520,6 +539,28 @@ namespace Killtime.Story.Scenes
             var node = _director.CurrentNode;
             if (node == null || node.Kind != ScenarioNodeKind.Objective) return;
 
+            // Garde anti-skip d'entrée : Update() appelle CheckProximity AVANT
+            // UpdateNodeState. Sur la frame d'arrivée sur un nouveau nœud,
+            // _nodeEnterCoords contient encore les positions d'entrée du nœud
+            // PRÉCÉDENT. Si le joueur a bougé pendant le nœud précédent
+            // (ex : 12 dialogues = le temps de se pré-positionner sur
+            // l'holotable, qui est déjà à portée du spawn), moved=true et la
+            // validation passe instantanément, puis le trigger saute la
+            // narration. Avec un nœud intermédiaire vide (pas le temps de
+            // bouger), moved=false + wasInRange=true => skip, par chance.
+            // On refresh donc le snapshot et on saute la validation sur la
+            // frame de transition, quelle que soit la longueur du chaînage.
+            if (!string.Equals(_lastNodeId, node.Id, StringComparison.OrdinalIgnoreCase))
+            {
+                _nodeEnterCoords.Clear();
+                for (int p = 0; p < _playerParty.Count; p++)
+                {
+                    var u = _playerParty[p];
+                    if (u != null) _nodeEnterCoords[u] = u.CurrentCoords;
+                }
+                return;
+            }
+
             for (int p = 0; p < _playerParty.Count; p++)
             {
                 var member = _playerParty[p];
@@ -545,6 +586,12 @@ namespace Killtime.Story.Scenes
                             {
                                 MarkInteractableActivated(it.InteractableId);
                             }
+                            string memberName = member.Stats != null ? member.Stats.Name : "Escouade";
+                            if (!string.IsNullOrWhiteSpace(it.SuccessLog))
+                            {
+                                CombatHUD.Instance?.AddAdvancedLog($"✔ {memberName} : {it.SuccessLog}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                                ShowInteractableSuccessInMiddleChat(member, it);
+                            }
                             member.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"✔ Objectif Validé", Color.green);
                         }
                     }
@@ -558,6 +605,58 @@ namespace Killtime.Story.Scenes
             _activatedInteractableIds.Add(interactableId);
             try { _activationNodeIds[interactableId] = _director != null && _director.CurrentNode != null ? _director.CurrentNode.Id : ""; }
             catch { _activationNodeIds[interactableId] = ""; }
+        }
+
+        /// <summary>
+        /// Envoie le texte de résolution d'un interactable (SuccessLog) vers le
+        /// chat central (boîte dialogue du milieu), en plus du flux latéral.
+        /// Utilise l'affichage Réaction existant : bloque les triggers d'entrée
+        /// (UpdateNodeState exige _activeReactionChoice==null) jusqu'au
+        /// "Continuer", pour laisser le temps de lire avant le saut de nœud.
+        /// Si une réaction est déjà affichée, mise en file d'attente.
+        /// </summary>
+        private void ShowInteractableSuccessInMiddleChat(TacticalUnit unit, SceneInteractableSpawnData data)
+        {
+            if (unit == null || data == null) return;
+            if (string.IsNullOrWhiteSpace(data.SuccessLog)) return;
+
+            string speaker = !string.IsNullOrEmpty(unit.Stats?.Name)
+                ? unit.Stats.Name
+                : (!string.IsNullOrEmpty(data.DisplayName) ? data.DisplayName : "Escouade");
+            var msg = new PendingMiddleChatMessage
+            {
+                Speaker = speaker,
+                StageDirection = data.ActionLabel ?? "",
+                Speech = data.SuccessLog,
+                ActionLabel = data.ActionLabel ?? "",
+                DisplayName = data.DisplayName ?? "",
+                Rewards = !string.IsNullOrEmpty(data.CompletionObjectiveId) ? "✔ Objectif validé" : ""
+            };
+            if (_activeReactionChoice != null)
+            {
+                _pendingMiddleChat.Enqueue(msg);
+                return;
+            }
+            ShowMiddleChatMessage(msg);
+        }
+
+        // Sentinelle : info interactable non-destructive. Le Continuer déjà
+        // présent (Suivant dialogue, bouton objectif...) doit rester visible
+        // et suivre le prochain chat : on dismiss sans avancer dialogue/nœud,
+        // on retrouve l'état sous-jacent (_currentDialogueIndex inchangé).
+        private const string InteractableInfoReturnSentinel = "__INTERACTABLE_INFO__";
+
+        private void ShowMiddleChatMessage(PendingMiddleChatMessage msg)
+        {
+            var prompt = new SceneDialogueLineData
+            {
+                SpeakerId = msg.Speaker,
+                StageDirection = msg.StageDirection,
+                CameraFocusActorId = "",
+                CameraPitch = 42f,
+                CameraDistance = 9.5f
+            };
+            SetupReactionDisplay(prompt, msg.Speech, msg.ActionLabel, InteractableInfoReturnSentinel, $"🔧 {msg.DisplayName}", msg.Rewards);
         }
 
         private bool CurrentLineHasPendingChoice()
@@ -674,6 +773,16 @@ namespace Killtime.Story.Scenes
                     {
                         SpawnActorsForNode(node.Id);
                         _turnManager.EnterCombatMode();
+                    }
+
+                    // Les spawns d'entrée (SpawnOnNodeId) arrivent après le
+                    // snapshot initial : sans ça, hasEntry=false => moved=true
+                    // => validation proximitée gratuite dès la frame suivante.
+                    for (int p = 0; p < _playerParty.Count; p++)
+                    {
+                        var u = _playerParty[p];
+                        if (u != null && !_nodeEnterCoords.ContainsKey(u))
+                            _nodeEnterCoords[u] = u.CurrentCoords;
                     }
                 }
 
@@ -1256,7 +1365,8 @@ namespace Killtime.Story.Scenes
 
             if (challenge.IsOpposed)
             {
-                // Résolution opposée : joueur vs opposant (jet contre jet).
+                // Défi opposé aveugle (Livre II §7) : mises masquées des deux camps,
+                // les deux dés sont lancés ensemble et révélés simultanément.
                 TacticalUnit oppUnit = null;
                 if (!string.IsNullOrEmpty(challenge.OpposedActorId))
                     _spawnedActors.TryGetValue(challenge.OpposedActorId, out oppUnit);
@@ -1295,9 +1405,9 @@ namespace Killtime.Story.Scenes
             string outcomeTag = result.IsSuccess ? (result.IsCriticalSuccess ? "RÉUSSITE CRITIQUE" : "SUCCÈS") : (result.IsCriticalFailure ? "ÉCHEC CRITIQUE" : "ÉCHEC");
             Color outcomeCol = result.IsSuccess ? (result.IsCriticalSuccess ? new Color(1f, 0.85f, 0.2f) : Color.green) : (result.IsCriticalFailure ? Color.red : new Color(1f, 0.5f, 0.2f));
 
-            string defiTag = challenge.IsOpposed ? "DÉFI OPPOSÉ" : "DÉFI";
+            string defiTag = challenge.IsOpposed ? "DÉFI OPPOSÉ AVEUGLE" : "DÉFI";
             string detailRes = challenge.IsOpposed
-                ? $"Résultat: <b>{result.Total} vs {oppTotal}</b> (Diff: {result.Differential:+0;-0;0})"
+                ? $"Révélation simultanée (mises cachées): <b>{result.Total} vs {oppTotal}</b> (Diff: {result.Differential:+0;-0;0})"
                 : $"Résultat: <b>{result.Total}</b> (Brut {result.RawRoll}, Diff: {result.Differential:+0;-0;0})";
 
             CombatHUD.Instance?.AddAdvancedLog(
@@ -1452,6 +1562,14 @@ namespace Killtime.Story.Scenes
             _activeReactionPromptLine = null;
             _activeChallengeSummary = "";
             _activeChallengeRewards = "";
+
+            // File d'attente du chat milieu (ex : holotable puis datapad) :
+            // afficher le message suivant avant de reprendre le flux normal.
+            if (_pendingMiddleChat.Count > 0)
+            {
+                ShowMiddleChatMessage(_pendingMiddleChat.Dequeue());
+                return;
+            }
 
             if (!string.IsNullOrEmpty(choice.NextLineId))
             {

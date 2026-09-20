@@ -49,6 +49,10 @@ namespace Killtime.UI
         public bool InfiniteAP = false;
         public int ArenaLayout = 1; // TacticalBarricades
         public bool EnableCinematicKillcam = true;
+        public bool ShowCoverLineOfSight = true;
+
+        // --- Système & Multitâche ---
+        public bool RunInBackground = true;
 
         // --- IA tactique ---
         public int AiMode = 0; // Normal
@@ -64,8 +68,8 @@ namespace Killtime.UI
 
         // --- Éditeur de carte (F2) ---
         public int MapBrush = 2; // HalfCover
-        public string MapName = "Killzone_Alpha";
-        public string GridRadiusInput = "8";
+        public string MapName = "Killzone_Alpha3";
+        public string GridRadiusInput = "6";
         public float CeilingHeight = 3.5f;
         public int MapEditorTab = 0;
         public float SculptStep = 0.25f;
@@ -334,6 +338,7 @@ namespace Killtime.UI
             Current = data ?? new DevUIPreferencesData();
             if (Current.Windows == null) Current.Windows = new List<WindowLayoutEntry>();
             Sanitize(Current);
+            Application.runInBackground = Current.RunInBackground;
             _dirty = false;
         }
 
@@ -375,8 +380,8 @@ namespace Killtime.UI
             d.VoiceChangerDrive = Mathf.Clamp01(d.VoiceChangerDrive);
             d.VoiceChangerRobotic = Mathf.Clamp01(d.VoiceChangerRobotic);
             d.VoiceChangerMix = Mathf.Clamp01(d.VoiceChangerMix);
-            if (d.MapName == null) d.MapName = "Killzone_Alpha";
-            if (d.GridRadiusInput == null) d.GridRadiusInput = "8";
+            if (d.MapName == null) d.MapName = "Killzone_Alpha3";
+            if (d.GridRadiusInput == null) d.GridRadiusInput = "6";
             if (d.SpawnQ == null) d.SpawnQ = "0";
             if (d.SpawnR == null) d.SpawnR = "1";
             if (d.InventorySearch == null) d.InventorySearch = "";

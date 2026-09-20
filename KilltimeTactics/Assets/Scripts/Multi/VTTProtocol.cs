@@ -549,6 +549,7 @@ namespace Killtime.Multi
         public int attackSkill;
         public int defenseSkill;
         public int attackerBonusAP;
+        public int attackerPE;
 
         public int targetQ;
         public int targetR;
@@ -591,6 +592,8 @@ namespace Killtime.Multi
         public bool isMeleeStrike;
         public int attackerCostAP;
         public int defenderCostAP;
+        public int attackerPE;
+        public int defenderPE;
         public int attackerNewAP;
         public int defenderNewAP;
         public int defenderNewHealth;

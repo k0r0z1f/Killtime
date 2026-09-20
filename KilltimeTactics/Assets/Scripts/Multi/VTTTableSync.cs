@@ -281,7 +281,7 @@ namespace Killtime.Multi
             _room.SendTableOp(VTTProtocol.OpTurnControl, JsonUtility.ToJson(payload));
         }
 
-        public void RequestAttack(TacticalUnit attacker, TacticalUnit target, BodyPart part, bool cancelPenalty, SkillType atkSkill, SkillType defSkill, int bonusAP)
+        public void RequestAttack(TacticalUnit attacker, TacticalUnit target, BodyPart part, bool cancelPenalty, SkillType atkSkill, SkillType defSkill, int bonusAP, int attackerPE = 0)
         {
             if (_room == null || !_room.InRoom || attacker == null || target == null) return;
             var req = new VTTActionRequestPayload
@@ -293,7 +293,8 @@ namespace Killtime.Multi
                 cancelPenaltyWithAP = cancelPenalty,
                 attackSkill = (int)atkSkill,
                 defenseSkill = (int)defSkill,
-                attackerBonusAP = bonusAP
+                attackerBonusAP = bonusAP,
+                attackerPE = attackerPE
             };
             _room.SendTableOp(VTTProtocol.OpActionRequest, JsonUtility.ToJson(req));
         }
@@ -389,7 +390,8 @@ namespace Killtime.Multi
                             (SkillType)req.defenseSkill,
                             defenderWantsToDefend: true,
                             weaponBaseDamage: 5,
-                            attackerBonusAP: req.attackerBonusAP
+                            attackerBonusAP: req.attackerBonusAP,
+                            attackerPE: req.attackerPE
                         );
                     }
                     break;

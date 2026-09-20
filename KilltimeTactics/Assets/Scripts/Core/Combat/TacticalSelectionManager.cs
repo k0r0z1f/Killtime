@@ -117,7 +117,18 @@ namespace Killtime.Tactics.CombatUI
                         var clickedUnit = GetUnitAtCoordinates(node.Coordinates);
                         if (clickedUnit != null)
                         {
-                            if (!_selectedUnits.Contains(clickedUnit))
+                            // Clic droit sur un ennemi : NE PAS écraser la sélection de
+                            // l'attaquant joueur. Sinon PrimarySelected devient l'ennemi
+                            // et le menu calcule les PA/portée depuis la mauvaise unité
+                            // (cible de derrière => "PA insuffisants" à tort).
+                            if (clickedUnit.IsPlayerControlled)
+                            {
+                                if (!_selectedUnits.Contains(clickedUnit))
+                                {
+                                    SelectSingleUnit(clickedUnit);
+                                }
+                            }
+                            else if (PrimarySelected == null || !PrimarySelected.IsPlayerControlled || !PrimarySelected.Stats.IsAlive)
                             {
                                 SelectSingleUnit(clickedUnit);
                             }

@@ -12,21 +12,97 @@ namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
     /// Registre officiel des actions contextuelles de combat classées par livre du Codex.
+    /// Valide rigoureusement la portée géométrique (mêlée vs tir) et l'armement équipé.
     /// </summary>
     public static class CombatActionRegistry
     {
-        /// <summary>
-        /// Compétence d'attaque par défaut : meilleure mêlée au contact (≤ 1 case),
-        /// Ballistique à distance. Évite d'imposer Maniement d'Arme à un mains-nues entraîné.
-        /// </summary>
+        public static bool HasRangedWeaponEquipped(TacticalUnit actor)
+        {
+            if (actor == null) return false;
+            var weapon = actor.Sheet?.GetEquippedWeapon();
+            if (weapon != null && weapon.RangeInTiles > 1) return true;
+            if (actor.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true) return true;
+            return false;
+        }
+
+        public static int GetAttackMaxRange(TacticalUnit actor)
+        {
+            if (actor == null) return 1;
+            var weapon = actor.Sheet?.GetEquippedWeapon();
+            if (weapon != null && weapon.RangeInTiles > 0) return weapon.RangeInTiles;
+            if (actor.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true) return 8;
+            return 1; // Mains nues par défaut = portée de contact 1 case (Codex Livre VI)
+        }
+
+        public static bool IsTargetInRange(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor == null || target == null) return false;
+            int distance = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            int maxRange = GetAttackMaxRange(actor);
+
+            // Arme de contact ou mains nues (portée 1)
+            if (maxRange <= 1 || !HasRangedWeaponEquipped(actor))
+            {
+                return distance <= 1;
+            }
+
+            // Arme à distance équipée
+            return distance <= maxRange;
+        }
+
+        public static bool HasEnoughAP(TacticalUnit actor, int apCost)
+        {
+            return actor != null && actor.Stats != null && actor.Stats.CurrentActionPoints >= apCost;
+        }
+
+        private static bool CanAttackTarget(TacticalUnit actor, TacticalUnit target, int apCost)
+        {
+            if (actor == null || target == null) return false;
+            if (target.Stats == null || !target.Stats.IsAlive) return false;
+            if (actor.Stats == null || actor.Stats.CurrentActionPoints < apCost) return false;
+
+            int distance = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            int maxRange = GetAttackMaxRange(actor);
+
+            // Combat à mains nues ou arme de contact : contact immédiat requis (<= 1 case)
+            if (maxRange <= 1 || !HasRangedWeaponEquipped(actor))
+            {
+                return distance <= 1;
+            }
+
+            return distance <= maxRange;
+        }
+
         private static SkillType ResolveContactSkill(TacticalUnit actor, TacticalUnit target)
         {
-            if (actor != null && target != null
-                && actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1)
+            if (actor == null) return SkillType.MainsNues;
+
+            // Hors de portée de contact avec une arme à distance disponible => tir.
+            // Évite le cas "mêlée jouée à distance" quand le menu a été ouvert au contact
+            // puis l'unité s'est déplacée avant de valider.
+            if (actor != null && target != null)
             {
-                return actor.Stats.GetBestMeleeAttackSkill();
+                int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+                if (dist > 1 && HasRangedWeaponEquipped(actor))
+                {
+                    return SkillType.Ballistique;
+                }
             }
-            return SkillType.Ballistique;
+
+            var weapon = actor.Sheet?.GetEquippedWeapon();
+
+            if (weapon != null)
+            {
+                return weapon.AssociatedSkill;
+            }
+
+            if (actor.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true)
+            {
+                return SkillType.Ballistique;
+            }
+
+            // Absence d'inventaire ou d'arme équipée : combat au corps-à-corps à mains nues
+            return SkillType.MainsNues;
         }
 
         public static List<CombatAction> GetAvailableActions(TacticalUnit actor, TacticalUnit target, CombatDevArena arena)
@@ -49,9 +125,9 @@ namespace Killtime.Tactics.CombatUI
                     "Frappe générale sur le centre de masse (Torse).",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 2,
+                    (act, tgt) => CanAttackTarget(act, tgt, 2),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false,
-                        attackSkill: ResolveContactSkill(act, tgt))
+                        attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
                 // Visée Chirurgicale Tête
@@ -60,9 +136,9 @@ namespace Killtime.Tactics.CombatUI
                     "Tir chirurgical avec dépense préalable de +1 PA pour annuler le malus de -2.",
                     ActionCategory.AttaqueEtPassesDarmes,
                     3,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 3,
+                    (act, tgt) => CanAttackTarget(act, tgt, 3),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Tete, cancelPenaltyWithAP: true,
-                        attackSkill: ResolveContactSkill(act, tgt))
+                        attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
                 // Désarmement (Bras Droit)
@@ -71,9 +147,9 @@ namespace Killtime.Tactics.CombatUI
                     "Frappe ciblée pour tenter un désarmement ou un malus d'attaque.",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 2,
+                    (act, tgt) => CanAttackTarget(act, tgt, 2),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.BrasDroit, cancelPenaltyWithAP: false,
-                        attackSkill: ResolveContactSkill(act, tgt))
+                        attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
                 // Faucher (Jambes)
@@ -82,12 +158,12 @@ namespace Killtime.Tactics.CombatUI
                     "Impact sur les membres inférieurs pour infliger l'état À Terre et Ralenti.",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 2,
+                    (act, tgt) => CanAttackTarget(act, tgt, 2),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Jambes, cancelPenaltyWithAP: false,
-                        attackSkill: ResolveContactSkill(act, tgt))
+                        attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
-                // --- Grenades : lancer à la main sur la case de la cible ---
+                // --- Grenades : lancer sur la case de la cible si à portée ---
                 InventoryItem firstGrenade = null;
                 InventoryItem anyLauncher = null;
                 if (actor.Sheet != null && actor.Sheet.Inventory != null)
@@ -103,24 +179,26 @@ namespace Killtime.Tactics.CombatUI
                 if (firstGrenade != null)
                 {
                     var gCap = firstGrenade;
+                    int handMaxRange = GrenadeRules.ComputeMaxRange(gCap, null);
                     actions.Add(new CombatAction(
                         $"💣 Grenade : {gCap.Name} (2 PA, main)",
                         $"Souffle R{gCap.BlastRadius} : {gCap.BaseDamage}+{gCap.DamageDiceCount}d10 + shrap {gCap.ShrapnelDamage}. Vise la case de la cible.",
                         ActionCategory.AttaqueEtPassesDarmes,
                         2,
-                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= handMaxRange,
                         (act, tgt) => arena.ExecuteGrenadeThrow(tgt.CurrentCoords, gCap.ItemId, false, false, 0)
                     ));
                     if (anyLauncher != null)
                     {
                         var lCap = anyLauncher;
                         var gCap2 = firstGrenade;
+                        int launcherMaxRange = GrenadeRules.ComputeMaxRange(gCap2, lCap);
                         actions.Add(new CombatAction(
                             $"💣 Lance-grenades : {gCap2.Name} via {lCap.Name} (3 PA)",
-                            $"Portée {GrenadeRules.ComputeMaxRange(gCap2, lCap)} cases, dispersion réduite. Vise la case de la cible.",
+                            $"Portée {launcherMaxRange} cases, dispersion réduite. Vise la case de la cible.",
                             ActionCategory.AttaqueEtPassesDarmes,
                             3,
-                            (act, tgt) => act.Stats.CurrentActionPoints >= 3 && targetIsAlive,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 3 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= launcherMaxRange,
                             (act, tgt) => arena.ExecuteGrenadeThrow(tgt.CurrentCoords, gCap2.ItemId, true, false, 0)
                         ));
                     }
@@ -161,10 +239,10 @@ namespace Killtime.Tactics.CombatUI
             {
                 actions.Add(new CombatAction(
                     "🩹 Premiers Soins d'Urgence (3 PA)",
-                    "Stabilisation et suture d'urgence (Régénère Constitution × 2 PV).",
+                    "Stabilisation et suture d'urgence au contact (Régénère Constitution × 2 PV).",
                     ActionCategory.TraumatologieEtSoins,
                     3,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 3,
+                    (act, tgt) => act.Stats.CurrentActionPoints >= 3 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
                     (act, tgt) =>
                     {
                         if (act.Stats.ConsumeActionPoints(3))
@@ -184,10 +262,10 @@ namespace Killtime.Tactics.CombatUI
                 // Réanimation d'urgence
                 actions.Add(new CombatAction(
                     "⚡ Défibrillation Arcanique (4 PA)",
-                    "Tente de ramener un combattant à 1 PV avant le coma définitif.",
+                    "Tente de ramener un combattant au contact à 1 PV avant le coma définitif.",
                     ActionCategory.TraumatologieEtSoins,
                     4,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 4,
+                    (act, tgt) => act.Stats.CurrentActionPoints >= 4 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
                     (act, tgt) =>
                     {
                         if (act.Stats.ConsumeActionPoints(4))
@@ -225,14 +303,26 @@ namespace Killtime.Tactics.CombatUI
                     "Délègue un point d'action réflexe à l'allié désigné.",
                     ActionCategory.TactiqueEtOrdres,
                     2,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 2,
+                    (act, tgt) => act != null && act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 6,
                     (act, tgt) =>
                     {
+                        if (act == null || tgt == null) return;
                         if (act.Stats.ConsumeActionPoints(2))
                         {
+                            var actVis = act.GetComponent<TacticalUnitVisual>();
+                            actVis?.SpawnFloatingText("Ordre Tactique (-2 PA)", new Color(0.2f, 0.85f, 1.0f));
+
                             tgt.Stats.CurrentActionPoints = Mathf.Min(tgt.Stats.MaxActionPoints, tgt.Stats.CurrentActionPoints + 1);
-                            var vis = tgt.GetComponent<TacticalUnitVisual>();
-                            vis?.SpawnFloatingText("+1 PA Donné", Color.cyan);
+                            var tgtVis = tgt.GetComponent<TacticalUnitVisual>();
+                            tgtVis?.SpawnFloatingText("+1 PA Reçu", Color.cyan);
+
+                            if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                            {
+                                Killtime.Audio.KilltimeAudioManager.Instance.PlayAt(Killtime.Audio.SoundId.PA_Refill, tgt.transform.position, 0.7f);
+                            }
+
+                            arena?.Log($"📢 <b>{act.Stats.Name}</b> donne un ordre de couverture à <b>{tgt.Stats.Name}</b> (-2 PA / +1 PA réflexe) !");
+                            arena?.RecordChronoSnapshot($"Ordre Tactique : {act.Stats.Name} -> {tgt.Stats.Name}");
                         }
                     }
                 ));
@@ -242,17 +332,55 @@ namespace Killtime.Tactics.CombatUI
             {
                 actions.Add(new CombatAction(
                     "🗣️ Intimidation / Provocation (2 PA)",
-                    "Épreuve opposée Charisme vs Instinct pour déstabiliser la cible (-2 aux épreuves).",
+                    "Défi opposé aveugle Intimidation vs Intuition : mises masquées (PA/PE), révélation simultanée. Victoire = cible Déstabilisée (-2) et -1 PA de réaction.",
                     ActionCategory.TactiqueEtOrdres,
                     2,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 2,
+                    (act, tgt) => act != null && act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 6,
                     (act, tgt) =>
                     {
+                        if (act == null || tgt == null) return;
                         if (act.Stats.ConsumeActionPoints(2))
                         {
-                            tgt.Stats.ActiveStatus |= StatusEffect.Destabilise;
-                            var vis = tgt.GetComponent<TacticalUnitVisual>();
-                            vis?.SpawnFloatingText("DÉSTABILISÉ!", Color.yellow);
+                            var calc = new CombatCalculator();
+                            // Défi opposé aveugle (Livres II §7 + III) : mises déclarées
+                            // avant les jets, résultat caché jusqu'à révélation simultanée.
+                            // La cible résiste en aveugle (mise auto estimée, jamais de PE auto).
+                            var duel = calc.ResolveOpposedCheck(
+                                act.Stats, SkillType.Intimidation,
+                                tgt.Stats, SkillType.Intuition,
+                                attackerBonusAP: 0, attackerPE: 0,
+                                defenderAutoStakes: true);
+
+                            var actVis = act.GetComponent<TacticalUnitVisual>();
+                            var tgtVis = tgt.GetComponent<TacticalUnitVisual>();
+                            arena?.Log($"🗣️ <b>{act.Stats.Name}</b> intimide <b>{tgt.Stats.Name}</b> (-2 PA base, duel aveugle) :\n   {duel.CombatLog}");
+
+                            if (duel.AttackerWins)
+                            {
+                                actVis?.SpawnFloatingText("Intimidation (-2 PA)", new Color(0.2f, 0.85f, 1.0f));
+                                tgt.Stats.ActiveStatus |= StatusEffect.Destabilise;
+                                tgtVis?.TriggerHitFlash();
+                                tgtVis?.SpawnFloatingText("DÉSTABILISÉ! (-2)", Color.yellow);
+
+                                // Amputation de 1 PA de réaction/réserve sur la cible si disponible (Livre III)
+                                if (tgt.Stats.CurrentActionPoints > 0)
+                                {
+                                    tgt.Stats.ConsumeActionPoints(1);
+                                    tgtVis?.SpawnFloatingText("-1 PA Réaction", new Color(1f, 0.6f, 0.2f));
+                                }
+                            }
+                            else
+                            {
+                                actVis?.SpawnFloatingText("Intimidation contenue", new Color(0.6f, 0.6f, 0.6f));
+                                tgtVis?.SpawnFloatingText("IMPASSIBLE", Color.cyan);
+                            }
+
+                            if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                            {
+                                Killtime.Audio.KilltimeAudioManager.Instance.PlayAt(Killtime.Audio.SoundId.Trauma_Shock, tgt.transform.position, 0.8f);
+                            }
+
+                            arena?.RecordChronoSnapshot($"Intimidation : {act.Stats.Name} -> {tgt.Stats.Name}");
                         }
                     }
                 ));

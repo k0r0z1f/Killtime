@@ -451,6 +451,28 @@ namespace Killtime.Core.Character
             }
         }
 
+        /// <summary>
+        /// Duel aveugle (Livres II §7 + VI §24) : PE encore engageables dans une
+        /// déclaration (plafond = Constitution, cf. Livre VI §24.2).
+        /// </summary>
+        public int GetSpendablePE()
+        {
+            return Math.Max(0, Attributes.Constitution - Essoufflement);
+        }
+
+        /// <summary>
+        /// Engage des points d'Essoufflement dans une déclaration de duel aveugle.
+        /// Chaque PE ajoute +DuelPEBonusPerPoint au total et +1 Essoufflement immédiat.
+        /// Retourne le nombre de PE réellement engagés (plafonné par la Constitution).
+        /// </summary>
+        public int SpendDuelPE(int requested)
+        {
+            if (requested <= 0 || !IsAlive) return 0;
+            int applied = Math.Min(requested, GetSpendablePE());
+            Essoufflement += applied;
+            return applied;
+        }
+
         public FatalBlowResolution EvaluateFatalBlow(BodyPart hitPart, int finalDamageDealt)
         {
             bool exceedsEncaissement = finalDamageDealt > EncaissementThreshold;

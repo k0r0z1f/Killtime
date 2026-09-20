@@ -1,0 +1,1992 @@
+{
+    "MapName": "Killzone_Alpha3",
+    "GridRadius": 6,
+    "CeilingHeight": 3.5,
+    "SaveTimestamp": "14/09 17:59",
+    "ModifiedTiles": [
+        {
+            "Q": -6,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -6,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": -6,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -6,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -6,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -6,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -6,
+            "R": 6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -5,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": -5,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -5,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -5,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": -5,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -5,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": -5,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -5,
+            "R": 6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -4,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -4,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": -4,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -4,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": -4,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -4,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": -4,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -4,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": -4,
+            "R": 6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -3,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": -3,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -3,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": -3,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -3,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": -3,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": -3,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -3,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": -3,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -3,
+            "R": 6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": -3,
+            "Cover": 1,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": -2,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": -2,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": 0,
+            "Cover": 2,
+            "IsWalkable": false,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": -2,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 1.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -2,
+            "R": 6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": -1,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": -1,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": -1,
+            "Cover": 1,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": -1,
+            "R": 2,
+            "Cover": 1,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": -1,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": -1,
+            "R": 6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": -6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 0,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 0,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": 0,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": 0,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": 0,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 0,
+            "R": 6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 1,
+            "R": -6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": -2,
+            "Cover": 2,
+            "IsWalkable": false,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": 0,
+            "Cover": 1,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.5,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 1,
+            "R": 5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": -6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": 2,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 2,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": 1,
+            "Cover": 1,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 2,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 2,
+            "R": 4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 3,
+            "R": -6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": 3,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 3,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 3,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_3"
+        },
+        {
+            "Q": 3,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 3,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 3,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 3,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 3,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 3,
+            "R": 3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 4,
+            "R": -6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 4,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": 4,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 4,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.25,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": 4,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 4,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": 4,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 4,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 4,
+            "R": 2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 5,
+            "R": -6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 5,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 5,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 5,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": 5,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 5,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 5,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 5,
+            "R": 1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_4"
+        },
+        {
+            "Q": 6,
+            "R": -6,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 6,
+            "R": -5,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 6,
+            "R": -4,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 6,
+            "R": -3,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 6,
+            "R": -2,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_2"
+        },
+        {
+            "Q": 6,
+            "R": -1,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        },
+        {
+            "Q": 6,
+            "R": 0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "HasCeiling": true,
+            "Elevation": 0.0,
+            "GroundTexture": "asphalt_1"
+        }
+    ],
+    "PlacedProps": [
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": -2,
+            "R": -3,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": 1,
+            "R": -5,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": -2,
+            "R": -1,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": 5,
+            "R": -4,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": -1,
+            "R": 2,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": 4,
+            "R": -2,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": 1,
+            "R": -3,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": -3,
+            "R": 1,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": -4,
+            "R": 4,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": -6,
+            "R": 0,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": 0,
+            "R": 3,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": 2,
+            "R": 4,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        },
+        {
+            "PrefabName": "LED_Light_1",
+            "Q": 4,
+            "R": 1,
+            "RotationY": 0.0,
+            "Scale": 1.0,
+            "Cover": 0,
+            "IsWalkable": true,
+            "PlacementType": 1,
+            "HeightOffset": 0.0
+        }
+    ],
+    "PlacedUnits": [
+        {
+            "Sheet": {
+                "SheetId": "a7679993424d48908f3c4cb84e03eff7",
+                "Name": "Mina",
+                "Age": 25,
+                "Gender": "Indéterminé",
+                "Species": 0,
+                "Profile": 0,
+                "ModelPrefabName": "Mina",
+                "LoreNotes": "",
+                "BaseAttributes": {
+                    "Force": 3,
+                    "Agilite": 5,
+                    "Constitution": 3,
+                    "Rapidite": 4,
+                    "Intelligence": 3,
+                    "Erudition": 2,
+                    "Charisme": 3,
+                    "Instinct": 3,
+                    "Magie": 5,
+                    "Vision": 3,
+                    "Ouie": 3,
+                    "PointsMiracle": 1
+                },
+                "BaseArmor": 1,
+                "AvailableXP": 0,
+                "TotalEarnedXP": 30,
+                "Skills": [
+                    {
+                        "Skill": 0,
+                        "TrainingLevel": 3
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 2,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 3,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 4,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 5,
+                        "TrainingLevel": 1
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 7,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 8,
+                        "TrainingLevel": 1
+                    },
+                    {
+                        "Skill": 9,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 10,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 11,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 12,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 13,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 14,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 15,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 16,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 17,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 18,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 19,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 20,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 21,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 22,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 23,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 24,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 25,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 26,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 27,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 28,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 29,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 30,
+                        "TrainingLevel": 0
+                    }
+                ],
+                "UnlockedSpecializations": [
+                    "Arts Martiaux"
+                ],
+                "LearnedSpells": [],
+                "Inventory": [
+                    {
+                        "ItemId": "5654e21bb13149248ad0fbded0ad7094",
+                        "Name": "SciFiGunLight_Rad",
+                        "PrefabPath": "SciFiGunLight_Rad",
+                        "Type": 0,
+                        "EquipSlot": 1,
+                        "IsEquipped": true,
+                        "BaseDamage": 7,
+                        "RangeInTiles": 10,
+                        "ApCostModifier": 0,
+                        "AssociatedSkill": 6,
+                        "WeightKg": 2.4000000953674316,
+                        "Description": "Arme balistique importée depuis Resources/Guns/SciFiGunLight_Rad."
+                    }
+                ]
+            },
+            "Q": 0,
+            "R": 1,
+            "IsPlayer": true
+        },
+        {
+            "Sheet": {
+                "SheetId": "7a3b976b6eb44446828cf059ec379b30",
+                "Name": "Roger (Opératif)",
+                "Age": 25,
+                "Gender": "Indéterminé",
+                "Species": 0,
+                "Profile": 0,
+                "ModelPrefabName": "",
+                "LoreNotes": "",
+                "BaseAttributes": {
+                    "Force": 3,
+                    "Agilite": 4,
+                    "Constitution": 4,
+                    "Rapidite": 4,
+                    "Intelligence": 3,
+                    "Erudition": 3,
+                    "Charisme": 2,
+                    "Instinct": 4,
+                    "Magie": 0,
+                    "Vision": 3,
+                    "Ouie": 3,
+                    "PointsMiracle": 1
+                },
+                "BaseArmor": 1,
+                "AvailableXP": 0,
+                "TotalEarnedXP": 0,
+                "Skills": [
+                    {
+                        "Skill": 0,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 2,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 3,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 4,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 5,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 7,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 8,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 9,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 10,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 11,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 12,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 13,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 14,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 15,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 16,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 17,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 18,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 19,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 20,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 21,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 22,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 23,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 24,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 25,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 26,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 27,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 28,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 29,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 30,
+                        "TrainingLevel": 0
+                    }
+                ],
+                "UnlockedSpecializations": [],
+                "LearnedSpells": [],
+                "Inventory": []
+            },
+            "Q": 2,
+            "R": -1,
+            "IsPlayer": true
+        },
+        {
+            "Sheet": {
+                "SheetId": "9d031f2e84b24297bf165a24fd8c14d5",
+                "Name": "Sac de Frappe (Tank)",
+                "Age": 25,
+                "Gender": "Indéterminé",
+                "Species": 0,
+                "Profile": 1,
+                "ModelPrefabName": "",
+                "LoreNotes": "",
+                "BaseAttributes": {
+                    "Force": 4,
+                    "Agilite": 1,
+                    "Constitution": 6,
+                    "Rapidite": 1,
+                    "Intelligence": 1,
+                    "Erudition": 1,
+                    "Charisme": 1,
+                    "Instinct": 1,
+                    "Magie": 0,
+                    "Vision": 3,
+                    "Ouie": 3,
+                    "PointsMiracle": 1
+                },
+                "BaseArmor": 2,
+                "AvailableXP": 0,
+                "TotalEarnedXP": 0,
+                "Skills": [
+                    {
+                        "Skill": 0,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 2,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 3,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 4,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 5,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 7,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 8,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 9,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 10,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 11,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 12,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 13,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 14,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 15,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 16,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 17,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 18,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 19,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 20,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 21,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 22,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 23,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 24,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 25,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 26,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 27,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 28,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 29,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 30,
+                        "TrainingLevel": 0
+                    }
+                ],
+                "UnlockedSpecializations": [],
+                "LearnedSpells": [],
+                "Inventory": []
+            },
+            "Q": 4,
+            "R": -1,
+            "IsPlayer": false
+        },
+        {
+            "Sheet": {
+                "SheetId": "148b1bac7212440596e28b5095604200",
+                "Name": "Duelliste Agile (Esquive)",
+                "Age": 25,
+                "Gender": "Indéterminé",
+                "Species": 0,
+                "Profile": 1,
+                "ModelPrefabName": "",
+                "LoreNotes": "",
+                "BaseAttributes": {
+                    "Force": 2,
+                    "Agilite": 6,
+                    "Constitution": 3,
+                    "Rapidite": 5,
+                    "Intelligence": 3,
+                    "Erudition": 3,
+                    "Charisme": 2,
+                    "Instinct": 6,
+                    "Magie": 0,
+                    "Vision": 3,
+                    "Ouie": 3,
+                    "PointsMiracle": 1
+                },
+                "BaseArmor": 0,
+                "AvailableXP": 0,
+                "TotalEarnedXP": 0,
+                "Skills": [
+                    {
+                        "Skill": 0,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 1,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 2,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 3,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 4,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 5,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 6,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 7,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 8,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 9,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 10,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 11,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 12,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 13,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 14,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 15,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 16,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 17,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 18,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 19,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 20,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 21,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 22,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 23,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 24,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 25,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 26,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 27,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 28,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 29,
+                        "TrainingLevel": 0
+                    },
+                    {
+                        "Skill": 30,
+                        "TrainingLevel": 0
+                    }
+                ],
+                "UnlockedSpecializations": [],
+                "LearnedSpells": [],
+                "Inventory": []
+            },
+            "Q": 3,
+            "R": 2,
+            "IsPlayer": false
+        }
+    ],
+    "PlacedPixies": []
+}

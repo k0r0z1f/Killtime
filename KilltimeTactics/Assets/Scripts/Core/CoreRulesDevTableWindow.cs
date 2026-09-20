@@ -149,10 +149,38 @@ namespace Killtime.UI
             cfg.BaseAttackAPCost = DrawIntSlider("Coût en PA Attaque Standard", cfg.BaseAttackAPCost, 1, 6);
             cfg.CancelAimPenaltyAPCost = DrawIntSlider("Coût en PA Compensation Visée Chirurgicale", cfg.CancelAimPenaltyAPCost, 1, 4);
             cfg.BaseReactionAPCost = DrawIntSlider("Coût en PA Réaction / Parade de Base", cfg.BaseReactionAPCost, 0, 4);
+            cfg.DuelPEBonusPerPoint = DrawIntSlider("Bonus au total par PE en duel aveugle", cfg.DuelPEBonusPerPoint, 1, 3);
             cfg.UnreactiveDefensePenalty = DrawIntSlider("Malus Défenseur sans PA de Réaction", cfg.UnreactiveDefensePenalty, -6, 0);
             cfg.StandardTargetDC = DrawIntSlider("Seuil de Difficulté par Défaut (SD)", cfg.StandardTargetDC, 5, 25);
             cfg.SingleAttackActionLimit = DrawIntSlider("Attaques max autorisées (Dés simples)", cfg.SingleAttackActionLimit, 1, 3);
             cfg.MultiDiceAttackActionLimit = DrawIntSlider("Attaques max autorisées (Dés doubles 2d6+)", cfg.MultiDiceAttackActionLimit, 1, 4);
+            GUILayout.EndVertical();
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>1b. Couvert & Visibilité (Livre VI §25.3) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+            cfg.HalfCoverAttackPenalty = DrawIntSlider("Malus attaque : moitié visible", cfg.HalfCoverAttackPenalty, -6, 0);
+            cfg.ThreeQuartersCoverAttackPenalty = DrawIntSlider("Malus attaque : 3/4 couvert", cfg.ThreeQuartersCoverAttackPenalty, -6, 0);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>Couvert total bloque l'attaque</b>");
+            cfg.FullCoverBlocksAttack = GUILayout.Toggle(cfg.FullCoverBlocksAttack, cfg.FullCoverBlocksAttack ? "BLOQUE (Codex)" : "Autorisé");
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>Couvert ignoré au contact (≤ 1 case)</b>");
+            cfg.CoverIgnoredAtContactDistance = GUILayout.Toggle(cfg.CoverIgnoredAtContactDistance, cfg.CoverIgnoredAtContactDistance ? "IGNORÉ (Codex)" : "Appliqué");
+            GUILayout.EndHorizontal();
+            GUILayout.EndVertical();
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>1c. Cône de Visée (hauteurs en mètres, seuils de surface visible) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+            cfg.CoverEyeHeight = DrawFloatSlider("Hauteur des yeux (origine du cône)", cfg.CoverEyeHeight, 1f, 2f);
+            cfg.CoverBodyHeight = DrawFloatSlider("Hauteur du corps cible (cône)", cfg.CoverBodyHeight, 1f, 2.5f);
+            cfg.CoverHalfHeight = DrawFloatSlider("Hauteur muret (moitié)", cfg.CoverHalfHeight, 0.2f, 1.5f);
+            cfg.CoverThreeQuartersHeight = DrawFloatSlider("Hauteur barricade (3/4)", cfg.CoverThreeQuartersHeight, 0.5f, 2f);
+            cfg.CoverFullHeight = DrawFloatSlider("Hauteur mur (total)", cfg.CoverFullHeight, 1.5f, 4f);
+            cfg.CoverFullVisibleFraction = DrawFloatSlider("Seuil à découvert (fraction visible)", cfg.CoverFullVisibleFraction, 0.7f, 1f);
+            cfg.CoverHalfVisibleFraction = DrawFloatSlider("Seuil moitié visible (fraction visible)", cfg.CoverHalfVisibleFraction, 0.2f, 0.7f);
             GUILayout.EndVertical();
 
             GUILayout.Space(8);
@@ -261,6 +289,15 @@ namespace Killtime.UI
             GUILayout.BeginHorizontal();
             GUILayout.Label($"{label} : <b>{value}</b>", GUILayout.Width(280));
             value = (int)GUILayout.HorizontalSlider(value, min, max);
+            GUILayout.EndHorizontal();
+            return value;
+        }
+
+        private float DrawFloatSlider(string label, float value, float min, float max)
+        {
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"{label} : <b>{value:0.##}</b>", GUILayout.Width(280));
+            value = GUILayout.HorizontalSlider(value, min, max);
             GUILayout.EndHorizontal();
             return value;
         }

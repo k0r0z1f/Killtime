@@ -54,6 +54,8 @@ namespace Killtime.UI
         private bool _cancelPenaltyWithAP = false;
         private int _attackerBonusAP = 0;
         private int _defenderBonusAP = 0;
+        private int _attackerPE = 0;
+        private int _defenderPE = 0;
         private SkillType _attackSkill = SkillType.Ballistique;
         private SkillType _defenseSkill = SkillType.Esquive;
         private bool _defenderWantsToDefend = true;
@@ -108,6 +110,7 @@ namespace Killtime.UI
             _weaponDamage = Mathf.Clamp(p.VatsWeaponDamage, 1, 30);
             _selectedTab = Mathf.Clamp(p.CombatToolbarTab, 0, _tabNames.Length - 1);
             _scrollLock = p.CombatLogScrollLock;
+            Application.runInBackground = p.RunInBackground;
         }
 
         private static SkillType SafeSkill(int raw, SkillType fallback)
@@ -134,11 +137,13 @@ namespace Killtime.UI
             p.VatsWeaponDamage = _weaponDamage;
             p.CombatToolbarTab = _selectedTab;
             p.CombatLogScrollLock = _scrollLock;
+            p.RunInBackground = Application.runInBackground;
             if (_arena != null)
             {
                 p.InfiniteAP = _arena.InfiniteAP;
                 p.ArenaLayout = (int)_arena.CurrentLayout;
                 try { p.EnableCinematicKillcam = _arena.EnableCinematicKillcam; } catch { /* ignore */ }
+                try { p.ShowCoverLineOfSight = _arena.ShowCoverLineOfSight; } catch { /* ignore */ }
             }
             try
             {
@@ -412,8 +417,8 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>4. Injection des PA après tirage (+1 / PA, séquentiel Livre VI §24.1) :</b>");
-            GUILayout.Label("<i>Attaquant d'abord (après son jet), défenseur ensuite (après le sien, en voyant l'attaque finale). Pas d'enchère aveugle.</i>");
+            GUILayout.Label("<b>4. Mises du duel aveugle (PA + PE, Livres II §7 + VI §24.1) :</b>");
+            GUILayout.Label("<i>Déclarations masquées avant les jets : attaquant puis défenseur (aveugle), révélation simultanée. 1 PA = +1, 1 PE = +1 (plafond Constitution).</i>");
 
             int baseCost = _cancelPenaltyWithAP ? 3 : 2;
             int currentAttackerAP = activeUnit != null ? activeUnit.Stats.CurrentActionPoints : 0;
@@ -421,8 +426,15 @@ namespace Killtime.UI
             _attackerBonusAP = Mathf.Clamp(_attackerBonusAP, 0, maxAttackerBonus);
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"⚡ PA Bonus Attaquant (après tirage) : <b>+{_attackerBonusAP}</b>", GUILayout.Width(260));
+            GUILayout.Label($"⚡ Mise Attaquant (aveugle) : <b>+{_attackerBonusAP} PA</b>", GUILayout.Width(260));
             _attackerBonusAP = (int)GUILayout.HorizontalSlider(_attackerBonusAP, 0, maxAttackerBonus);
+            GUILayout.EndHorizontal();
+
+            int maxAttackerPE = activeUnit != null ? activeUnit.Stats.GetSpendablePE() : 0;
+            _attackerPE = Mathf.Clamp(_attackerPE, 0, maxAttackerPE);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"🫁 PE Attaquant (aveugle) : <b>+{_attackerPE} PE</b> (ESS {activeUnit?.Stats.Essoufflement ?? 0}/{activeUnit?.Stats.Attributes.Constitution ?? 0})", GUILayout.Width(260));
+            _attackerPE = (int)GUILayout.HorizontalSlider(_attackerPE, 0, maxAttackerPE);
             GUILayout.EndHorizontal();
 
             int currentDefenderAP = target != null ? target.Stats.CurrentActionPoints : 0;
@@ -432,8 +444,15 @@ namespace Killtime.UI
             if (_defenderWantsToDefend)
             {
                 GUILayout.BeginHorizontal();
-                GUILayout.Label($"🛡️ PA Bonus Défenseur (après tirage) : <b>+{_defenderBonusAP}</b>", GUILayout.Width(260));
+                GUILayout.Label($"🛡️ Mise Défenseur (aveugle) : <b>+{_defenderBonusAP} PA</b>", GUILayout.Width(260));
                 _defenderBonusAP = (int)GUILayout.HorizontalSlider(_defenderBonusAP, 0, maxDefenderBonus);
+                GUILayout.EndHorizontal();
+
+                int maxDefenderPE = target != null ? target.Stats.GetSpendablePE() : 0;
+                _defenderPE = Mathf.Clamp(_defenderPE, 0, maxDefenderPE);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"🫁 PE Défenseur (aveugle) : <b>+{_defenderPE} PE</b> (ESS {target?.Stats.Essoufflement ?? 0}/{target?.Stats.Attributes.Constitution ?? 0})", GUILayout.Width(260));
+                _defenderPE = (int)GUILayout.HorizontalSlider(_defenderPE, 0, maxDefenderPE);
                 GUILayout.EndHorizontal();
             }
 
@@ -460,7 +479,9 @@ namespace Killtime.UI
                         defenderWantsToDefend: _defenderWantsToDefend,
                         weaponBaseDamage: _weaponDamage, 
                         attackerBonusAP: _attackerBonusAP, 
-                        defenderBonusAP: _defenderBonusAP
+                        defenderBonusAP: _defenderBonusAP,
+                        attackerPE: _attackerPE,
+                        defenderPE: _defenderWantsToDefend ? _defenderPE : 0
                     );
                 }
             }
@@ -572,6 +593,18 @@ namespace Killtime.UI
             if (_arena != null)
             {
                 _arena.InfiniteAP = GUILayout.Toggle(_arena.InfiniteAP, "♾️ PA Infinis (Cheat Développeur)");
+                GUILayout.Label("🎯 Ligne de Mire Couvert (vert 0 / jaune -1 / orange -2 / rouge impossible) :", GUILayout.Height(20));
+                string coverBtnLabel = _arena.ShowCoverLineOfSight
+                    ? "👁️ Raycasts Cover : VISIBLES — Cliquer pour masquer"
+                    : "👁️‍🗨️ Raycasts Cover : MASQUÉS — Cliquer pour afficher";
+                GUI.backgroundColor = _arena.ShowCoverLineOfSight ? new Color(0.35f, 0.9f, 0.45f) : new Color(0.6f, 0.6f, 0.6f);
+                if (GUILayout.Button(coverBtnLabel, GUILayout.Height(30)))
+                {
+                    _arena.ShowCoverLineOfSight = !_arena.ShowCoverLineOfSight;
+                }
+                GUI.backgroundColor = Color.white;
+                _arena.EnterCombatOnMapLoad = GUILayout.Toggle(_arena.EnterCombatOnMapLoad, "⚔️ Combat auto au chargement de carte");
+                _arena.AutoEndTurnOnEmptyPA = GUILayout.Toggle(_arena.AutoEndTurnOnEmptyPA, "⏭️ Tour suivant auto à 0 PA (allié)");
             }
 
             GUILayout.Space(8);
@@ -580,6 +613,24 @@ namespace Killtime.UI
             if (GUILayout.Button("💀 KO Instantané de la Cible Active"))
             {
                 _arena?.KillCurrentTarget();
+            }
+            GUI.backgroundColor = Color.white;
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>🖥️ Système & Multitâche (Alt-Tab / Bureau) :</b>");
+            bool runBg = Application.runInBackground;
+            string bgBtnLabel = runBg
+                ? "🖥️ Multitâche : SANS PAUSE (Le jeu tourne en arrière-plan)"
+                : "⏸️ Multitâche : PAUSE AUTO (Le jeu se fige hors focus)";
+            GUI.backgroundColor = runBg ? new Color(0.35f, 0.9f, 0.45f) : new Color(0.9f, 0.4f, 0.35f);
+            if (GUILayout.Button(bgBtnLabel, GUILayout.Height(30)))
+            {
+                Application.runInBackground = !runBg;
+                if (DevUIPreferences.Current != null)
+                {
+                    DevUIPreferences.Current.RunInBackground = Application.runInBackground;
+                    DevUIPreferences.MarkDirty();
+                }
             }
             GUI.backgroundColor = Color.white;
 

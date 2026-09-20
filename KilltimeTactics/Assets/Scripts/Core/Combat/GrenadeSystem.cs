@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
 using Killtime.Core.Inventory;
+using Killtime.Tactics.Grid;
 
 namespace Killtime.Core.Combat
 {
@@ -55,7 +56,8 @@ namespace Killtime.Core.Combat
     /// - Visée compensée : +1 PA, annule le malus de distance (-1 / 3 cases au-delà de 4).
     /// - Échec du jet Ballistique (SD 10) => dispersion 1-3 cases (réduite par lanceur/précision).
     /// - Zone : 100% à l'épicentre, -25% par case (min 25%). Shrapnels : flat bonus à distance &gt; 0.
-    /// - Couverture : Half -2, Full -4 (+ bloque les shrapnels si Full).
+    /// - Couverture (souffle, Livre VI §25.3) : Half -2, ThreeQuarters -3, Full -4
+    ///   (+ bloque les shrapnels si Full). Le mortier lobé ignore Half et ThreeQuarters.
     /// </summary>
     public static class GrenadeRules
     {
@@ -68,7 +70,35 @@ namespace Killtime.Core.Combat
         public const float FalloffPerTile = 0.25f;
         public const float MinFalloffFactor = 0.25f;
         public const int HalfCoverReduction = 2;
+        public const int ThreeQuartersCoverReduction = 3;
         public const int FullCoverReduction = 4;
+
+        /// <summary>
+        /// Réduction de souffle selon le couvert de la case occupée (Livre VI §25.3).
+        /// Le mortier lobé ignore les couverts partiels (Half, ThreeQuarters), jamais Full.
+        /// </summary>
+        public static int CoverReductionFor(CoverType cover, bool isMortar)
+        {
+            return cover switch
+            {
+                CoverType.Half => isMortar ? 0 : HalfCoverReduction,
+                CoverType.ThreeQuarters => isMortar ? 0 : ThreeQuartersCoverReduction,
+                CoverType.Full => FullCoverReduction,
+                _ => 0,
+            };
+        }
+
+        /// <summary>Niveau int historique (0=None, 1=Half, 2=Full, 3=ThreeQuarters).</summary>
+        public static int ToCoverLevel(CoverType cover)
+        {
+            return cover switch
+            {
+                CoverType.Half => 1,
+                CoverType.Full => 2,
+                CoverType.ThreeQuarters => 3,
+                _ => 0,
+            };
+        }
 
         public static int ComputeMaxRange(InventoryItem grenade, InventoryItem launcher)
         {
@@ -297,7 +327,7 @@ namespace Killtime.Core.Combat
 
         /// <summary>
         /// Applique armure + couverture + seuils Livre VII à UNE cible. Modifie ses PV/statuts.
-        /// coverLevel : 0=None, 1=Half, 2=Full.
+        /// coverLevel : 0=None, 1=Half, 2=Full, 3=ThreeQuarters (Livre VI §25.3).
         /// </summary>
         public GrenadeHitResult ResolveHitOnTarget(
             CharacterStats target,
@@ -308,9 +338,13 @@ namespace Killtime.Core.Combat
             bool isPrimary)
         {
             int raw = ComputeRawDamage(grenade, diceTotal, distanceFromBlast);
-            int coverRed = coverLevel >= 2 ? GrenadeRules.FullCoverReduction : (coverLevel == 1 ? GrenadeRules.HalfCoverReduction : 0);
+            // Niveaux : 0=None, 1=Half (-2), 2=Full (-4 + bloque shrapnels), 3=ThreeQuarters (-3).
+            int coverRed = coverLevel == 2 ? GrenadeRules.FullCoverReduction
+                : coverLevel == 3 ? GrenadeRules.ThreeQuartersCoverReduction
+                : (coverLevel == 1 ? GrenadeRules.HalfCoverReduction : 0);
             // Full cover bloque les shrapnels : on les retire avant armure.
-            if (coverLevel >= 2 && grenade != null && grenade.ShrapnelDamage > 0 && distanceFromBlast > 0)
+            bool isFullCover = coverLevel == 2;
+            if (isFullCover && grenade != null && grenade.ShrapnelDamage > 0 && distanceFromBlast > 0)
                 raw = Math.Max(0, raw - grenade.ShrapnelDamage);
             int afterCover = Math.Max(0, raw - coverRed);
 

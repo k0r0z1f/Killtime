@@ -135,6 +135,26 @@ namespace Killtime.Tests
         }
 
         [Test]
+        public void Cover_ThreeQuartersReducesBetweenHalfAndFull()
+        {
+            // Livre VI §25.3 : souffle réduit de 2 (Half), 3 (ThreeQuarters), 4 (Full).
+            var calc = new GrenadeCalculator(new DiceRoller(11));
+            var g = MakeGrenade(flat: 10, nd10: 0, blast: 2, shrap: 0);
+            var target = MakeStats();
+            int hp0 = target.CurrentHealth;
+            var half = calc.ResolveHitOnTarget(target, g, 0, 1, 1, false);
+            target.CurrentHealth = hp0; target.ActiveStatus = StatusEffect.None;
+            var tq = calc.ResolveHitOnTarget(target, g, 0, 1, 3, false);
+            target.CurrentHealth = hp0; target.ActiveStatus = StatusEffect.None;
+            var full = calc.ResolveHitOnTarget(target, g, 0, 1, 2, false);
+            Assert.AreEqual(GrenadeRules.HalfCoverReduction, half.CoverReduction);
+            Assert.AreEqual(GrenadeRules.ThreeQuartersCoverReduction, tq.CoverReduction);
+            Assert.AreEqual(GrenadeRules.FullCoverReduction, full.CoverReduction);
+            Assert.Greater(half.FinalDamage, tq.FinalDamage);
+            Assert.Greater(tq.FinalDamage, full.FinalDamage);
+        }
+
+        [Test]
         public void Throw_CriticalAlwaysOnTarget_AndScatterBounded()
         {
             // 50 lancers seedés : la dispersion reste dans [0..3], jamais négative.

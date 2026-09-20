@@ -170,8 +170,8 @@ namespace Killtime.Tactics
                 target.transform,
                 onStrikePoint: () =>
                 {
-                    // Résolution mathématique du coup au moment de l'impact (séquence Livre VI §24.1 :
-                    // jet attaquant puis PA post-tirage, jet défenseur puis PA post-tirage, résolution normale).
+                    // Résolution mathématique du coup au moment de l'impact (duel aveugle Livre VI §24.1 :
+                    // déclarations masquées PA/PE des deux camps, puis révélation simultanée).
                     // Au contact : meilleure compétence de mêlée de l'attaquant
                     // (jamais de Maniement d'Arme imposé à un mains-nues entraîné).
                     // Règle Livre VI §26.2 : si l'attaquant fait un tir de portée alors que
@@ -180,6 +180,15 @@ namespace Killtime.Tactics
                     // tous les ennemis à distance 1, indépendamment de la cible visée.
                     SkillType encounterAttackSkill = attacker.Stats.GetBestMeleeAttackSkill();
                     _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
+                    // Livre VI §25.3 : couvert total (non visible) => attaque impossible.
+                    CoverType encounterCover = CoverType.None;
+                    if (_grid != null && attacker.CurrentCoords.DistanceTo(target.CurrentCoords) > 1)
+                        encounterCover = CoverSystem.EvaluateCover(attacker.CurrentCoords, target.CurrentCoords, _grid);
+                    if (encounterCover == CoverType.Full)
+                    {
+                        _hud?.AddCombatLog($"🛡️ <b>Couvert total</b> : {target.Stats.Name} est non visible pour {attacker.Stats.Name} — attaque impossible ! Déplacez-vous pour retrouver une ligne de mire.");
+                        return;
+                    }
                     var result = _combatCalculator.ResolveTargetedAttack(
                         attacker: attacker.Stats,
                         defender: target.Stats,
@@ -191,7 +200,8 @@ namespace Killtime.Tactics
                         attackSkill: encounterAttackSkill,
                         weaponBaseDamage: 4,
                         cancelPenaltyWithAP: cancelPenaltyWithAP,
-                        defenderArmor: target.Stats.BaseArmorAbsorption
+                        defenderArmor: target.Stats.BaseArmorAbsorption,
+                        cover: encounterCover
                     );
 
                     _hud?.AddCombatLog(result.CombatLog);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.Units;
@@ -11,6 +12,7 @@ using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Chrono;
 using Killtime.Core.Inventory;
+using Killtime.Core.Rules;
 using Killtime.CameraSystem;
 using Killtime.WebGL;
 using Killtime.UI;
@@ -41,6 +43,18 @@ namespace Killtime.Tactics
         [Header("Configuration")]
         [SerializeField] private ArenaLayoutType _initialLayout = ArenaLayoutType.TacticalBarricades;
         [SerializeField] private bool _enableCinematicKillcam = true;
+        [SerializeField] private bool _showCoverLineOfSight = true;
+        [SerializeField] private bool _enterCombatOnMapLoad = true;
+        [SerializeField] private bool _autoEndTurnOnEmptyPA = true;
+        [SerializeField] private float _autoEndTurnGraceDelay = 1.5f;
+
+        [Header("Carte par défaut (Killzone_Alpha3)")]
+        [Tooltip("Chemin Resources (sans extension) de la carte chargée à l'ouverture du jeu.")]
+        [SerializeField] private string _defaultMapResourcePath = "Maps/Killzone_Alpha3";
+        [Tooltip("Nom du fichier disque prioritaire dans Application.persistentDataPath/Maps.")]
+        [SerializeField] private string _defaultMapFileName = "Killzone_Alpha3.json";
+        [Tooltip("Si vrai, la carte ci-dessus remplace l'arène procédurale à l'ouverture.")]
+        [SerializeField] private bool _loadDefaultMapOnStart = true;
 
         public TacticalUnit PlayerUnit { get; private set; }
         public List<TacticalUnit> SparringDummies { get; private set; } = new();
@@ -53,6 +67,54 @@ namespace Killtime.Tactics
         public IReadOnlyList<CustomSpawnRecord> CustomSpawns => _customSpawns;
 
         public bool InfiniteAP { get; set; } = false;
+
+        /// <summary>
+        /// Enclenche le mode combat (initiative + tours) au chargement d'une carte.
+        /// Sans cela, StartNewRound() ne fait rien en mode exploration et l'arène
+        /// reste figée hors combat (pas de tour actif, pas de fin de tour).
+        /// </summary>
+        public bool EnterCombatOnMapLoad
+        {
+            get => _enterCombatOnMapLoad;
+            set => _enterCombatOnMapLoad = value;
+        }
+
+        /// <summary>
+        /// Passe automatiquement au tour suivant quand l'allié actif n'a plus de PA
+        /// (après un court délai de grâce). Ne coupe jamais une résolution, un
+        /// déplacement ou une décision en cours, et n'interfère pas avec l'IA FullAuto.
+        /// </summary>
+        public bool AutoEndTurnOnEmptyPA
+        {
+            get => _autoEndTurnOnEmptyPA;
+            set => _autoEndTurnOnEmptyPA = value;
+        }
+
+        private float _emptyPATimer;
+
+        /// <summary>
+        /// Affiche le « raycast » de détection du couvert (Livre VI §25.3) entre
+        /// l'unité active et la cible courante : vert à découvert, jaune moitié (-1),
+        /// orange 3/4 (-2), rouge couvert total (attaque impossible).
+        /// </summary>
+        public bool ShowCoverLineOfSight
+        {
+            get => _showCoverLineOfSight;
+            set
+            {
+                _showCoverLineOfSight = value;
+                if (!value) _gridVisualizer?.ClearLineOfSight();
+                try
+                {
+                    if (Killtime.UI.DevUIPreferences.Current != null)
+                    {
+                        Killtime.UI.DevUIPreferences.Current.ShowCoverLineOfSight = value;
+                        Killtime.UI.DevUIPreferences.MarkDirty();
+                    }
+                }
+                catch { /* prefs optionnelles */ }
+            }
+        }
 
         public bool EnableCinematicKillcam
         {
@@ -132,6 +194,8 @@ namespace Killtime.Tactics
             }
             InfiniteAP = p.InfiniteAP;
             _enableCinematicKillcam = p.EnableCinematicKillcam;
+            _showCoverLineOfSight = p.ShowCoverLineOfSight;
+            if (!_showCoverLineOfSight) _gridVisualizer?.ClearLineOfSight();
             _aiController?.LoadDevUIPrefs();
         }
 
@@ -144,6 +208,7 @@ namespace Killtime.Tactics
                 p.ArenaLayout = (int)_currentLayout;
                 p.InfiniteAP = InfiniteAP;
                 p.EnableCinematicKillcam = _enableCinematicKillcam;
+                p.ShowCoverLineOfSight = _showCoverLineOfSight;
                 Killtime.UI.DevUIPreferences.MarkDirty();
             }
             catch { /* ignore */ }
@@ -164,26 +229,45 @@ namespace Killtime.Tactics
             TacticalUnit.OnAnyUnitMoved += HandleTargetMovedFollow;
             TacticalUnit.OnAnyUnitTeleported += HandleTargetTeleportedFollow;
 
-            // 1. Initialiser le layout d'obstacles
-            ApplyArenaLayout(_initialLayout);
+            // 1-2. Carte par défaut (Killzone_Alpha3) prioritaire sur l'arène procédurale.
+            // L'ancienne arène (TacticalBarricades + mannequins) ne sert plus que de repli
+            // si le JSON embarqué / disque est introuvable ou illisible.
+            bool defaultMapLoaded = false;
+            if (_loadDefaultMapOnStart)
+            {
+                defaultMapLoaded = TryLoadDefaultStartupMap();
+            }
 
-            // 2. Générer les unités
-            SetupArenaUnits();
+            if (!defaultMapLoaded)
+            {
+                // Repli : ancien comportement procédural.
+                ApplyArenaLayout(_initialLayout);
+                SetupArenaUnits();
+            }
 
             // 3. Liaison avec le TurnManager
-            _turnManager.OnTurnStarted += HandleTurnStarted;
-            _turnManager.OnCombatEnded += HandleCombatEnded;
-            _turnManager.OnUnitStatusExpired += HandleUnitStatusExpired;
-            _turnManager.OnInitiativeRolled += HandleInitiativeRolled;
+            if (_turnManager != null)
+            {
+                _turnManager.OnTurnStarted -= HandleTurnStarted;
+                _turnManager.OnCombatEnded -= HandleCombatEnded;
+                _turnManager.OnUnitStatusExpired -= HandleUnitStatusExpired;
+                _turnManager.OnInitiativeRolled -= HandleInitiativeRolled;
+                _turnManager.OnTurnStarted += HandleTurnStarted;
+                _turnManager.OnCombatEnded += HandleCombatEnded;
+                _turnManager.OnUnitStatusExpired += HandleUnitStatusExpired;
+                _turnManager.OnInitiativeRolled += HandleInitiativeRolled;
+            }
 
             // 4. Sélectionner le premier mannequin par défaut
-            if (SparringDummies.Count > 0)
+            if (CurrentTarget == null && SparringDummies.Count > 0)
             {
                 SelectTarget(SparringDummies[0]);
             }
 
             // 5. Enregistrer le snapshot initial du Fleuve du Temps
-            RecordChronoSnapshot("Début de l'affrontement (Temps t0)");
+            RecordChronoSnapshot(defaultMapLoaded
+                ? $"Ouverture sur la carte '{_currentLoadedMap?.MapName}' (Temps t0)"
+                : "Début de l'affrontement (Temps t0)");
 
             if (KilltimeAudioManager.Instance != null)
             {
@@ -192,8 +276,166 @@ namespace Killtime.Tactics
                 KilltimeAudioManager.Instance.Play(SoundId.Round_Start, 0.8f);
                 UpdateAdaptiveMusic();
             }
-            Log("⚔️ <b>Arène de Combat Killtime Initialisée !</b> Prête pour les tests.");
+            Log(defaultMapLoaded
+                ? $"🗺️ <b>Carte '{_currentLoadedMap?.MapName}'</b> chargée à l'ouverture. Prête pour les tests."
+                : "⚔️ <b>Arène de Combat Killtime Initialisée !</b> Prête pour les tests.");
             _aiController?.TriggerAITurnIfApplicable();
+        }
+
+        /// <summary>
+        /// Charge la carte par défaut à l'ouverture du jeu.
+        /// Priorité : 1) disque persistant Maps/Killzone_Alpha3.json (version éditée),
+        /// 2) JSON embarqué Resources/Maps/Killzone_Alpha3.json (build + projet),
+        /// 3) StreamingAssets/Maps/Killzone_Alpha3.json (optionnel).
+        /// Retourne vrai si une carte a été appliquée (tuiles + props + unités).
+        /// </summary>
+        private bool TryLoadDefaultStartupMap()
+        {
+            try
+            {
+                if (_grid == null) EnsureDependencies();
+                if (_grid == null) return false;
+
+                TacticalMapSaveData mapData = null;
+                string mapPath = null;
+
+                // 1) Disque persistant : l'édition F2 du joueur reste prioritaire.
+                if (!string.IsNullOrEmpty(_defaultMapFileName))
+                {
+                    try
+                    {
+                        string persistentPath = Path.Combine(Application.persistentDataPath, "Maps", _defaultMapFileName);
+                        if (File.Exists(persistentPath))
+                        {
+                            string diskJson = File.ReadAllText(persistentPath);
+                            var diskData = JsonUtility.FromJson<TacticalMapSaveData>(diskJson);
+                            if (diskData != null)
+                            {
+                                mapData = diskData;
+                                mapPath = persistentPath;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning($"[CombatDevArena] Lecture carte disque impossible : {e.Message}");
+                    }
+                }
+
+                // 2) JSON embarqué dans le projet (Resources/Maps/Killzone_Alpha3.json).
+                if (mapData == null && !string.IsNullOrEmpty(_defaultMapResourcePath))
+                {
+                    try
+                    {
+                        var textAsset = Resources.Load<TextAsset>(_defaultMapResourcePath);
+                        if (textAsset != null && !string.IsNullOrEmpty(textAsset.text))
+                        {
+                            var resData = JsonUtility.FromJson<TacticalMapSaveData>(textAsset.text);
+                            if (resData != null)
+                            {
+                                mapData = resData;
+                                mapPath = null;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning($"[CombatDevArena] Lecture carte Resources impossible : {e.Message}");
+                    }
+                }
+
+                // 3) StreamingAssets en dernier recours (builds standalone).
+                if (mapData == null && !string.IsNullOrEmpty(_defaultMapFileName))
+                {
+                    try
+                    {
+                        string saPath = Path.Combine(Application.streamingAssetsPath, "Maps", _defaultMapFileName);
+                        if (File.Exists(saPath))
+                        {
+                            string saJson = File.ReadAllText(saPath);
+                            var saData = JsonUtility.FromJson<TacticalMapSaveData>(saJson);
+                            if (saData != null)
+                            {
+                                mapData = saData;
+                                mapPath = saPath;
+                            }
+                        }
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning($"[CombatDevArena] Lecture carte StreamingAssets impossible : {e.Message}");
+                    }
+                }
+
+                if (mapData == null)
+                {
+                    Debug.LogWarning("[CombatDevArena] Carte par défaut introuvable : repli arène procédurale.");
+                    return false;
+                }
+
+                // Le rayon embarqué (6) tient dans la grille de scène (8). Si un jour
+                // la carte exige plus large, on régénère au lieu de tronquer.
+                if (mapData.GridRadius > _grid.GridRadius)
+                {
+                    try
+                    {
+                        var radiusField = typeof(TacticalHexGrid).GetField("_gridRadius",
+                            System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+                        if (radiusField != null) radiusField.SetValue(_grid, mapData.GridRadius);
+                        _grid.GenerateGrid();
+                        _gridVisualizer?.BuildVisualGrid();
+                    }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning($"[CombatDevArena] Régénération grille impossible : {e.Message}");
+                    }
+                }
+
+                // Application via l'éditeur (props 3D + unités + plafond) si présent,
+                // sinon application minimale directe sur la grille + unités.
+                var mapEditor = MapEditorDevWindow.Instance ?? FindAnyObjectByType<MapEditorDevWindow>();
+                if (mapEditor == null)
+                {
+                    try { mapEditor = new GameObject("[UI] MapEditorDevWindow").AddComponent<MapEditorDevWindow>(); }
+                    catch (Exception e)
+                    {
+                        Debug.LogWarning($"[CombatDevArena] Création MapEditor impossible : {e.Message}");
+                    }
+                }
+
+                if (mapEditor != null)
+                {
+                    mapEditor.ApplyLoadedMap(mapData, mapPath);
+                }
+                else
+                {
+                    _grid.ResetGridState();
+                    if (mapData.CeilingHeight > 0) _grid.CeilingHeight = mapData.CeilingHeight;
+                    if (mapData.ModifiedTiles != null)
+                    {
+                        for (int i = 0; i < mapData.ModifiedTiles.Count; i++)
+                        {
+                            var tile = mapData.ModifiedTiles[i];
+                            if (tile == null) continue;
+                            var coords = new HexCoordinates(tile.Q, tile.R);
+                            _grid.SetNodeCover(coords, tile.Cover, tile.IsWalkable);
+                            _grid.SetNodeCeiling(coords, tile.HasCeiling);
+                            _grid.SetNodeElevation(coords, tile.Elevation);
+                            _grid.SetNodeGroundTexture(coords, tile.GroundTexture);
+                        }
+                    }
+                    LoadUnitsFromMap(mapData.PlacedUnits);
+                    _gridVisualizer?.RefreshObstacles();
+                    RegisterLoadedMap(mapData, mapPath);
+                }
+
+                return true;
+            }
+            catch (Exception e)
+            {
+                Debug.LogWarning($"[CombatDevArena] Chargement carte par défaut échoué : {e.Message}. Repli procédural.");
+                return false;
+            }
         }
 
         private void EnsureDependencies()
@@ -216,11 +458,125 @@ namespace Killtime.Tactics
         {
             HandleMouseInteraction();
             UpdateReachableHighlights();
+            UpdateCoverLineOfSight();
+            UpdateAutoEndTurn();
 
             if (InfiniteAP && _turnManager.ActiveUnit != null)
             {
                 _turnManager.ActiveUnit.Stats.CurrentActionPoints = _turnManager.ActiveUnit.Stats.MaxActionPoints;
             }
+        }
+
+        /// <summary>
+        /// Passe au tour suivant quand l'allié actif manuel n'a plus de PA : après un
+        /// court délai de grâce à 0 PA (laisse le temps de prendre un souffle ou de
+        /// finir un geste), fin de tour automatique avec log. Garde-fous : combat en
+        /// cours uniquement, unité alliée vivante pilotée manuellement (jamais en
+        /// FullAuto), jamais pendant une résolution, un déplacement, une défense à
+        /// déclarer, une pause, ni côté client multijoueur.
+        /// </summary>
+        private void UpdateAutoEndTurn()
+        {
+            if (!_autoEndTurnOnEmptyPA || _turnManager == null || Killtime.UI.CombatHUD.IsPaused)
+                return;
+
+            var active = _turnManager.ActiveUnit;
+            bool idleEmpty =
+                !_turnManager.IsInExploration
+                && !_turnManager.IsCombatOver
+                && active != null && active.Stats != null && active.Stats.IsAlive
+                && active.IsPlayerControlled
+                && (_aiController == null || _aiController.Mode != AI.CombatAIMode.FullAuto)
+                && !TurnManager.IsMultiplayerPlayerClient()
+                && !IsResolving
+                && !active.IsMoving
+                && !CombatUI.CombatContextMenuUI.IsDefenseOpen
+                && active.Stats.CurrentActionPoints <= 0;
+
+            if (!idleEmpty)
+            {
+                _emptyPATimer = 0f;
+                return;
+            }
+
+            _emptyPATimer += Time.deltaTime;
+            if (_emptyPATimer >= _autoEndTurnGraceDelay)
+            {
+                _emptyPATimer = 0f;
+                Log($"⏭️ <b>{active.Stats.Name}</b> n'a plus de PA : tour suivant !");
+                _turnManager.EndCurrentTurn();
+            }
+        }
+        private TacticalUnit _losLoggedAttacker;
+        private TacticalUnit _losLoggedTarget;
+
+        /// <summary>
+        /// Rafraîchit chaque frame la ligne de visée de détection du couvert entre
+        /// l'unité active et la cible courante (bon marché : balayage de quelques cases).
+        /// Au changement de cible : log diagnostic (fraction visible, cases et
+        /// accessoires bloqueurs, taille du registre 3D).
+        /// </summary>
+        private void UpdateCoverLineOfSight()
+        {
+            if (!_showCoverLineOfSight || _gridVisualizer == null)
+            {
+                _gridVisualizer?.ClearLineOfSight();
+                _losLoggedAttacker = null;
+                _losLoggedTarget = null;
+                return;
+            }
+
+            var active = _turnManager != null ? _turnManager.ActiveUnit : null;
+            if (active != null && CurrentTarget != null && CurrentTarget.Stats != null && CurrentTarget.Stats.IsAlive)
+            {
+                _gridVisualizer.ShowLineOfSight(active.CurrentCoords, CurrentTarget.CurrentCoords);
+                if (active != _losLoggedAttacker || CurrentTarget != _losLoggedTarget)
+                {
+                    _losLoggedAttacker = active;
+                    _losLoggedTarget = CurrentTarget;
+                    LogCoverDiagnostics(active, CurrentTarget);
+                }
+            }
+            else
+            {
+                _gridVisualizer.ClearLineOfSight();
+                _losLoggedAttacker = null;
+                _losLoggedTarget = null;
+            }
+        }
+
+        private void LogCoverDiagnostics(TacticalUnit attacker, TacticalUnit defender)
+        {
+            if (_grid == null) return;
+            CoverScanResult scan;
+            try { scan = CoverSystem.ScanCover(attacker.CurrentCoords, defender.CurrentCoords, _grid); }
+            catch (Exception e)
+            {
+                Log($"🎯 Ligne de mire : échec du scan ({e.Message}).");
+                return;
+            }
+
+            var blockers = new System.Collections.Generic.List<string>();
+            if (scan.Rays != null)
+            {
+                var seen = new System.Collections.Generic.HashSet<HexCoordinates>();
+                for (int i = 0; i < scan.Rays.Count && blockers.Count < 4; i++)
+                {
+                    var ray = scan.Rays[i];
+                    if (!ray.Blocked || !ray.HasBlockingCell || !seen.Add(ray.BlockingCell)) continue;
+                    string tag = $"({ray.BlockingCell.Q},{ray.BlockingCell.R})";
+                    var node = _grid.GetNode(ray.BlockingCell);
+                    if (node != null && node.Cover != CoverType.None) tag += $"[{node.Cover}]";
+                    if (PropObstacleRegistry.TryGet(ray.BlockingCell, out PropObstacle prop))
+                        tag += $"[Prop '{prop.PropName}' h={prop.MaxY - prop.MinY:0.##}m r={prop.Radius:0.##}]";
+                    blockers.Add(tag);
+                }
+            }
+
+            Log($"🎯 <b>Ligne de mire {attacker.Stats.Name} ➔ {defender.Stats.Name}</b> :"
+                + $" {CoverSystem.Label(scan.Cover)} — {scan.VisibleRays}/{scan.TestedRays} rayons"
+                + (blockers.Count > 0 ? $" — bloqueurs : {string.Join(", ", blockers)}" : " — aucun bloqueur")
+                + $" — registre 3D : {PropObstacleRegistry.Count} obstacle(s).");
         }
 
         private void SetupArenaUnits()
@@ -343,7 +699,8 @@ namespace Killtime.Tactics
             _isAttackInProgress = false;
             _aiController?.StopAITurn();
             _cinematicDirector?.ResetCinematicState();
-            _turnManager.StartNewRound();
+            if (_enterCombatOnMapLoad) _turnManager?.EnterCombatMode(PlayerUnit);
+            _turnManager?.StartNewRound();
             _aiController?.TriggerAITurnIfApplicable();
         }
 
@@ -623,13 +980,27 @@ namespace Killtime.Tactics
 
             if (!isRemoteClient)
             {
+                // La carte par défaut (et tout chargement de carte) démarre en combat :
+                // StartNewRound() seul ne suffit pas, il est inopérant en exploration.
+                if (_enterCombatOnMapLoad) _turnManager?.EnterCombatMode(PlayerUnit);
                 _turnManager?.StartNewRound();
                 _aiController?.TriggerAITurnIfApplicable();
+                if (_enterCombatOnMapLoad && _turnManager != null && !_turnManager.IsInExploration)
+                    Log("⚔️ <b>Mode combat enclenché</b> : initiative tirée, tours actifs.");
             }
 
             RecordChronoSnapshot($"Chargement des unités de la carte ({reserved.Count} avatars)");
             string relocateInfo = relocated > 0 ? $" ({relocated} relocalisé(s) anti-empilement)" : "";
             Log($"👥 <b>{reserved.Count} avatar(s)</b> chargé(s) depuis la configuration de carte{relocateInfo}.");
+
+            // Les accessoires 3D (piliers, caisses) font obstacle à la ligne de mire :
+            // (re)construit le registre depuis les instances en scène.
+            try
+            {
+                PropObstacleRegistry.Rebuild(_grid != null ? _grid.HexRadius : 1f);
+                Log($"🧱 <b>{PropObstacleRegistry.Count} obstacle(s) 3D</b> enregistré(s) pour la ligne de mire.");
+            }
+            catch (Exception e) { Debug.LogWarning($"[CombatDevArena] Registre obstacles 3D : {e.Message}"); }
         }
 
         private TacticalUnit CreateUnit(string unitName, HexCoordinates coords, Attributes attributes, int baseArmor, bool isPlayer)
@@ -674,12 +1045,15 @@ namespace Killtime.Tactics
 
                 case ArenaLayoutType.TacticalBarricades:
                     // Couvertures tactiques réparties pour tester les angles de tir
+                    // (Half -1, ThreeQuarters -2, Full = non visible, Livre VI §25.3)
                     _grid.SetNodeCover(new HexCoordinates(1, 0), CoverType.Half, true);
                     _grid.SetNodeCover(new HexCoordinates(1, -2), CoverType.Full, false);
                     _grid.SetNodeCover(new HexCoordinates(-1, 2), CoverType.Half, true);
                     _grid.SetNodeCover(new HexCoordinates(-2, 0), CoverType.Full, false);
                     _grid.SetNodeCover(new HexCoordinates(2, 1), CoverType.Half, true);
                     _grid.SetNodeCover(new HexCoordinates(-1, -2), CoverType.Half, true);
+                    _grid.SetNodeCover(new HexCoordinates(2, -1), CoverType.ThreeQuarters, true);
+                    _grid.SetNodeCover(new HexCoordinates(-2, 1), CoverType.ThreeQuarters, true);
                     break;
 
                 case ArenaLayoutType.KillzoneChokepoint:
@@ -697,6 +1071,11 @@ namespace Killtime.Tactics
             {
                 _gridVisualizer.RefreshObstacles();
             }
+
+            // Pas d'accessoires 3D sur les layouts procéduraux : purge le registre
+            // (sinon des piliers d'une carte précédente bloqueraient encore).
+            try { PropObstacleRegistry.Rebuild(_grid != null ? _grid.HexRadius : 1f); }
+            catch (Exception e) { Debug.LogWarning($"[CombatDevArena] Registre obstacles 3D : {e.Message}"); }
 
             SaveArenaLayoutPref();
             Log($"📐 Layout d'arène configuré : <b>{layout}</b>");
@@ -843,10 +1222,17 @@ namespace Killtime.Tactics
 
                         if (Input.GetMouseButtonDown(1))
                         {
-                            if (hitUnit != null && hitUnit == activeUnit)
+                            if (hitUnit != null)
                             {
-                                CombatHUD.Instance?.ToggleActiveUnitContextMenu();
-                                return;
+                                if (hitUnit == activeUnit)
+                                {
+                                    CombatHUD.Instance?.ToggleActiveUnitContextMenu();
+                                    return;
+                                }
+                                else if (!hitUnit.IsPlayerControlled)
+                                {
+                                    SelectTarget(hitUnit);
+                                }
                             }
                         }
 
@@ -876,28 +1262,19 @@ namespace Killtime.Tactics
                             bool isTargetOccupied = clickedUnit != null || hoveredNode.IsOccupied;
                             if (!start.Equals(target) && hoveredNode.IsWalkable && !isTargetOccupied)
                             {
-                                bool inExploration = _turnManager != null && _turnManager.IsInExploration;
-                                int availableAP = inExploration ? 99 : activeUnit.Stats.CurrentActionPoints;
+                                int availableAP = activeUnit.Stats.CurrentActionPoints;
                                 var path = _pathfinder.FindPath(start, target, availableAP, out int apCost);
 
                                 if (path.Count > 0)
                                 {
-                                    int finalCost = inExploration ? 0 : apCost;
-                                    if (!inExploration)
-                                    {
-                                        int remainingAP = activeUnit.Stats.CurrentActionPoints - apCost;
-                                        Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{apCost} PA | Restant: {remainingAP} PA]");
-                                        activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"Déplacement (-{apCost} PA)", new Color(0.2f, 0.85f, 1.0f));
-                                    }
-                                    else
-                                    {
-                                        activeUnit.Stats.CurrentActionPoints = activeUnit.Stats.MaxActionPoints;
-                                    }
+                                    int remainingAP = activeUnit.Stats.CurrentActionPoints - apCost;
+                                    Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{apCost} PA | Restant: {remainingAP} PA]");
+                                    activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"Déplacement (-{apCost} PA)", new Color(0.2f, 0.85f, 1.0f));
 
                                     _gridVisualizer.ClearPathPreview();
                                     if (KilltimeAudioManager.Instance != null)
                                         KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Dash, activeUnit.transform.position, 0.5f);
-                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, finalCost));
+                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, apCost));
                                 }
                             }
                         }
@@ -1107,11 +1484,22 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// Déclenche une passe d'armes ou tir ciblé selon la séquence officielle du Livre VI §24.1 :
-        /// attaque (jet puis PA bonus après tirage) -> défense (jet puis PA bonus après tirage)
-        /// -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
+        /// Déclenche une passe d'armes ou tir ciblé selon le duel aveugle officiel (Livres II §7 + VI §24.1) :
+        /// déclaration attaquant (mise PA/PE cachée) -> déclaration défenseur à l'aveugle
+        /// -> révélation simultanée -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
         /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
         /// </summary>
+        /// <summary>
+        /// Livre VI §25.3 : couvert de la cible vue par l'attaquant (None au contact,
+        /// Full si non visible). Utilisé par le HUD (affichage) et ExecuteAttack (blocage).
+        /// </summary>
+        public CoverType GetCoverToTarget(TacticalUnit attacker, TacticalUnit defender)
+        {
+            if (attacker == null || defender == null || _grid == null) return CoverType.None;
+            if (attacker.CurrentCoords.DistanceTo(defender.CurrentCoords) <= 1) return CoverType.None;
+            return CoverSystem.EvaluateCover(attacker.CurrentCoords, defender.CurrentCoords, _grid);
+        }
+
         public void ExecuteAttack(
             BodyPart targetedPart, 
             bool cancelPenaltyWithAP, 
@@ -1124,7 +1512,11 @@ namespace Killtime.Tactics
             int attackerBonusAP = 0,
             int defenderBonusAP = -1,
             DiceType? attackDie = null,
-            DiceType? defenseDie = null)
+            DiceType? defenseDie = null,
+            TacticalUnit explicitTarget = null,
+            int attackerPE = 0,
+            int defenderPE = 0,
+            TacticalUnit explicitAttacker = null)
         {
             if (_isAttackInProgress)
             {
@@ -1132,8 +1524,28 @@ namespace Killtime.Tactics
                 return;
             }
 
-            var attacker = _turnManager.ActiveUnit;
-            var defender = CurrentTarget;
+            // Déclaration de l'attaquant : mise PA (+ PE) engagée avant tout jet, cachée.
+            if (attackerBonusAP <= 0 && CombatUI.CombatContextMenuUI.CurrentInjectedAP > 0)
+            {
+                attackerBonusAP = CombatUI.CombatContextMenuUI.CurrentInjectedAP;
+            }
+            if (attackerPE <= 0 && CombatUI.CombatContextMenuUI.CurrentInjectedPE > 0)
+            {
+                attackerPE = CombatUI.CombatContextMenuUI.CurrentInjectedPE;
+            }
+
+            // Cohérence affichage/exécution : le menu contextuel calcule les coûts depuis
+            // GetActiveActor() (unité active en combat). Si l'appelant fournit l'attaquant
+            // explicite (menu radial), il fait foi ; sinon repli sur l'unité active.
+            // Avant, l'exécution ignorait toujours l'acteur du menu, d'où un attaquant à
+            // 0 PA pour la cible de derrière alors que le menu affichait une unité pleine.
+            var attacker = explicitAttacker != null ? explicitAttacker : _turnManager.ActiveUnit;
+            var defender = explicitTarget != null ? explicitTarget : CurrentTarget;
+
+            if (defender != null && CurrentTarget != defender)
+            {
+                SelectTarget(defender);
+            }
 
             if (_turnManager != null && _turnManager.IsInExploration)
             {
@@ -1152,7 +1564,8 @@ namespace Killtime.Tactics
                         cancelPenaltyWithAP,
                         attackSkill,
                         defenseSkill,
-                        attackerBonusAP
+                        attackerBonusAP,
+                        attackerPE
                     );
                 }
                 return;
@@ -1170,6 +1583,84 @@ namespace Killtime.Tactics
                 return;
             }
 
+            // Garde anti-état transitoire : les CurrentCoords ne sont fiables qu'une fois
+            // le déplacement terminé (MoveAlongPath met à jour case par case). Attaquer
+            // en plein mouvement figeait une distance/skill obsolète (ex : mêlée jouée
+            // alors que l'unité venait de sortir de portée).
+            if (attacker.IsMoving)
+            {
+                Log($"⚠️ <b>{attacker.Stats.Name}</b> est en déplacement : attendez l'arrivée avant d'attaquer !");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
+            int distanceToTarget = attacker.CurrentCoords.DistanceTo(defender.CurrentCoords);
+            var activeWeapon = attacker.Sheet?.GetEquippedWeapon();
+            bool hasRifleVisual = attacker.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true;
+            bool hasRangedArmamentForCorrection = (activeWeapon != null && activeWeapon.RangeInTiles > 1) || hasRifleVisual;
+
+            // Auto-correction autoritaire : une compétence de mêlée figée (menu dév,
+            // menu contextuel, HUD dessiné avant fin de déplacement) ne doit jamais
+            // produire une animation de coup de poing à distance. Hors de portée de
+            // contact avec une arme à distance disponible => bascule en Ballistique.
+            if (distanceToTarget > 1 && hasRangedArmamentForCorrection
+                && (attackSkill == SkillType.MainsNues
+                    || attackSkill == SkillType.ManiementArmes
+                    || attackSkill == SkillType.ArmesContondantes
+                    || attackSkill == SkillType.ArmesPercantes))
+            {
+                Log($"🔫 <b>{attacker.Stats.Name}</b> hors de contact ({distanceToTarget} cases) : bascule automatique en Tir (Ballistique).");
+                attackSkill = SkillType.Ballistique;
+            }
+
+            bool isMeleeAttack = (attackSkill == SkillType.MainsNues
+                               || attackSkill == SkillType.ManiementArmes
+                               || attackSkill == SkillType.ArmesContondantes
+                               || attackSkill == SkillType.ArmesPercantes
+                               || (activeWeapon != null && activeWeapon.RangeInTiles <= 1));
+
+            int maxReach = activeWeapon != null ? Mathf.Max(1, activeWeapon.RangeInTiles) : 1;
+            if (hasRifleVisual && maxReach < 6) maxReach = 8;
+
+            if (isMeleeAttack && distanceToTarget > maxReach)
+            {
+                Log($"⚠️ <b>Attaque de contact impossible</b> : {defender.Stats.Name} est hors de portée ({distanceToTarget} cases > portée max {maxReach}) !");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
+            bool isRangedAttackSkill = (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir);
+            bool hasRangedArmament = (activeWeapon != null && activeWeapon.RangeInTiles > 1) || hasRifleVisual;
+
+            if (isRangedAttackSkill && !hasRangedArmament && distanceToTarget > 1)
+            {
+                Log($"⚠️ <b>Tir impossible</b> : {attacker.Stats.Name} ne possède aucune arme à distance ({distanceToTarget} cases) !");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
+            if (!isMeleeAttack && distanceToTarget > maxReach)
+            {
+                Log($"⚠️ <b>Tir impossible</b> : {defender.Stats.Name} est hors de portée ({distanceToTarget} cases > portée max {maxReach}) !");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
+            // Livre VI §25.3 — Couvert & Visibilité : la cible totalement à couvert
+            // (non visible pour l'attaquant) ne peut pas être attaquée directement.
+            CoverType attackCover = GetCoverToTarget(attacker, defender);
+            if (attackCover == CoverType.Full)
+            {
+                Log($"🛡️ <b>Couvert total</b> : {defender.Stats.Name} est non visible pour {attacker.Stats.Name} — attaque impossible ! Déplacez-vous pour retrouver une ligne de mire.");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
             DiceType resolvedAttackDie = attackDie ?? attacker.Stats.GetSkillDie(attackSkill, true);
             DiceType resolvedDefenseDie = defenseDie ?? defender.Stats.GetSkillDie(defenseSkill);
 
@@ -1180,10 +1671,10 @@ namespace Killtime.Tactics
                 return;
             }
 
-            // Séquence officielle Livre VI §24.1 : les PA bonus s'injectent APRÈS les tirages.
-            // Bonus explicite (>= 0) : appliqué post-tirage dans le calculateur.
-            // Bonus auto (< 0) : défense réactive — calculée APRÈS révélation du total final
-            // attaquant et du brut défensif (besoin = attaque finale - défense brute + 1).
+            // Duel aveugle Livres II §7 + VI §24.1 : les mises (PA bonus + PE) se déclarent
+            // AVANT les jets et restent cachées jusqu'à la révélation simultanée.
+            // Bonus explicite (>= 0) : mise déclarée du défenseur (fenêtre paramétrage).
+            // Bonus auto (< 0) : déclaration aveugle auto (estimation sans voir le jet adverse).
             bool autoReactiveDefense = defenderBonusAP < 0;
             int resolvedDefenderBonus = autoReactiveDefense ? 0 : Mathf.Max(0, defenderBonusAP);
 
@@ -1202,9 +1693,20 @@ namespace Killtime.Tactics
             var defVisual = defender.GetComponent<TacticalUnitVisual>();
             bool isMeleeStrike = (attackSkill == SkillType.MainsNues || attackSkill == SkillType.ManiementArmes || attackSkill == SkillType.ArmesContondantes || attackSkill == SkillType.ArmesPercantes);
 
+            // Recalcul au moment du déclenchement : la distance a pu changer entre le clic
+            // et l'impact (fin de déplacement, cinématique). Le visuel doit refléter la
+            // position réelle, pas celle figée au clic.
+            System.Func<bool> isMeleeAtTrigger = () =>
+            {
+                if (attacker == null || defender == null) return isMeleeStrike;
+                int freshDist = attacker.CurrentCoords.DistanceTo(defender.CurrentCoords);
+                bool skillIsMelee = (attackSkill == SkillType.MainsNues || attackSkill == SkillType.ManiementArmes || attackSkill == SkillType.ArmesContondantes || attackSkill == SkillType.ArmesPercantes);
+                return skillIsMelee && freshDist <= 1;
+            };
+
             Action triggerKickAction = () =>
             {
-                if (isMeleeStrike)
+                if (isMeleeAtTrigger())
                 {
                     attVisual?.TriggerRoundkick(forceKick: true);
                 }
@@ -1227,6 +1729,24 @@ namespace Killtime.Tactics
                 }
             };
 
+            bool isInteractivePlayerDefense = defender.IsPlayerControlled 
+                && (_aiController == null || _aiController.Mode != AI.CombatAIMode.FullAuto)
+                && defenderBonusAP < 0
+                && !TurnManager.IsMultiplayerPlayerClient();
+
+            if (isInteractivePlayerDefense)
+            {
+                _isAttackInProgress = true;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.VATS_Fire, 0.85f);
+
+                StartCoroutine(ExecuteAttackWithPlayerDefenseRoutine(
+                    attacker, defender, targetedPart, cancelPenaltyWithAP,
+                    attackSkill, defenseSkill, weaponBaseDamage, attackerBonusAP, attackerPE,
+                    attackerSpecialization, defenderSpecialization, triggerKickAction, triggerDefenseAction));
+                return;
+            }
+
             Action resolveAction = () =>
             {
                 attacker.Stats.RegisterAttack();
@@ -1238,28 +1758,25 @@ namespace Killtime.Tactics
                     effectiveWeaponDamage = equippedWeapon.BaseDamage;
                 }
 
-                // Règle Livre VI §26.2 : le malus Canon Entravé dépend de la présence d'UN
-                // ennemi au contact de l'attaquant (IsCanonEntrave), pas de la distance
-                // à la cible visée. Un tir de portée sur cible lointaine reste à -2
-                // tant qu'un adversaire conscient colle l'attaquant.
                 _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
 
+                // Recalcul frais au moment de l'impact (positions réelles) : si la
+                // cible est passée derrière un couvert total entre le clic et la
+                // frappe, BeginDuel refusera et le log l'expliquera (aucun jet).
+                CoverType freshCover = GetCoverToTarget(attacker, defender);
+
                 DamageResult result;
+                AttackDuel duel = null;
                 if (autoReactiveDefense)
                 {
-                    // Duel séquentiel réactif : attaque -> PA attaquant post-tirage ->
-                    // défense -> PA défenseur post-tirage (besoin réel) -> résolution normale.
-                    AttackDuel duel = null;
                     string duelError = null;
                     if (attackDie.HasValue || defenseDie.HasValue)
                     {
-                        // Applique la règle non-exclusive sur le dé défensif explicite si besoin.
                         DiceType reactiveDefDie = resolvedDefenseDie;
                         if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
                         {
                             bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && defender.Stats.HasSpecialization(defenderSpecialization))
                                             || SkillDefinitions.HasDefensiveSpecialization(defender.Stats.Sheet, defenseSkill);
-                            // Ne rétrograde que si le dé a été dérivé de la compétence (pas de dé forcé custom).
                             if (!defenseDie.HasValue && !hasDefSpec)
                                 reactiveDefDie = SkillDefinitions.StepDownDie(reactiveDefDie);
                         }
@@ -1268,7 +1785,7 @@ namespace Killtime.Tactics
                             resolvedAttackDie, attacker.Stats.GetSkillModifier(attackSkill, isOffensive: true),
                             reactiveDefDie, defender.Stats.GetSkillModifier(defenseSkill, isOffensive: false),
                             effectiveWeaponDamage, cancelPenaltyWithAP, defenderWantsToDefend,
-                            defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError);
+                            defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError, freshCover);
                     }
                     else
                     {
@@ -1276,22 +1793,28 @@ namespace Killtime.Tactics
                             attacker.Stats, defender.Stats, targetedPart,
                             attackSkill, defenseSkill, weaponBaseDamage, cancelPenaltyWithAP,
                             defenderWantsToDefend, attackerSpecialization, defenderSpecialization,
-                            defender.Stats.BaseArmorAbsorption, out duelError);
+                            defender.Stats.BaseArmorAbsorption, out duelError, freshCover);
                     }
                     if (duel == null)
                     {
-                        // Échec du coût de base (PA insuffisants) : BeginDuel n'a rien débité.
                         Log(duelError ?? "⚠️ Attaque impossible : PA insuffisants pour le coût de base.");
                         return;
                     }
                     else
                     {
-                        _combatCalculator.RollAttackerRaw(duel);
-                        _combatCalculator.AddAttackerBonusPA(duel, attackerBonusAP);
-                        _combatCalculator.RollDefenderRaw(duel);
-                        int reactiveBonus = _combatCalculator.ComputeReactiveDefenseBonus(duel);
-                        _combatCalculator.AddDefenderBonusPA(duel, reactiveBonus);
-                        result = _combatCalculator.FinishDuel(duel);
+                        // Duel aveugle auto : déclaration attaquant (mise cachée), puis
+                        // déclaration aveugle auto du défenseur (estimation sans voir le jet),
+                        // puis révélation simultanée. Aucun résultat révélé entre les deux.
+                        _combatCalculator.DeclareAttackerStakes(duel, attackerBonusAP, attackerPE);
+                        if (duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated && duel.CanDefenderReact)
+                        {
+                            _combatCalculator.AutoDeclareDefenderStakes(duel, defenderSpecialization);
+                        }
+                        else
+                        {
+                            _combatCalculator.DeclareDefenderStakes(duel, defenseSkill, false, 0, 0, defenderSpecialization);
+                        }
+                        result = _combatCalculator.ResolveBlindDuel(duel);
                     }
                 }
                 else if (attackDie.HasValue || defenseDie.HasValue)
@@ -1311,7 +1834,10 @@ namespace Killtime.Tactics
                         defenderBonusAP: resolvedDefenderBonus,
                         defenderWantsToDefend: defenderWantsToDefend,
                         attackSkill: attackSkill,
-                        defenseSkill: defenseSkill
+                        defenseSkill: defenseSkill,
+                        attackerPE: attackerPE,
+                        defenderPE: defenderPE,
+                        cover: freshCover
                     );
                 }
                 else
@@ -1329,7 +1855,10 @@ namespace Killtime.Tactics
                         defenderSpecialization: defenderSpecialization,
                         defenderArmor: defender.Stats.BaseArmorAbsorption,
                         attackerBonusAP: attackerBonusAP,
-                        defenderBonusAP: resolvedDefenderBonus
+                        defenderBonusAP: resolvedDefenderBonus,
+                        attackerPE: attackerPE,
+                        defenderPE: defenderPE,
+                        cover: freshCover
                     );
                 }
 
@@ -1339,7 +1868,11 @@ namespace Killtime.Tactics
                 // Un roundkick / une frappe au corps-à-corps (Mains Nues, Maniement, Contondantes,
                 // Perçantes) ne doit jamais déclencher le rayon laser + sons de tir, même si un
                 // laser est équipé visuellement. Seul un vrai tir (Ballistique) tire au laser.
-                if (attackSkill == SkillType.Ballistique && !isMeleeStrike && laserWeapon != null && defender != null)
+                // Vérification sur positions fraîches : si l'attaquant s'est éloigné entre le
+                // clic et l'impact, on tire au laser ; s'il est revenu au contact avec une
+                // compétence de mêlée, on reste en coup de poing.
+                bool freshMeleeAtImpact = isMeleeAtTrigger();
+                if (attackSkill == SkillType.Ballistique && !freshMeleeAtImpact && laserWeapon != null && defender != null)
                 {
                     Vector3 targetCenter = defender.transform.position + Vector3.up * 1.15f;
                     laserWeapon.FireLaser(targetCenter, result.IsHit);
@@ -1486,9 +2019,11 @@ namespace Killtime.Tactics
                         armorAbsorbed = result.ArmorAbsorbed,
                         differential = result.Differential,
                         inflictedStatus = result.InflictedStatus.ToString(),
-                        isMeleeStrike = isMeleeStrike,
+                        isMeleeStrike = freshMeleeAtImpact,
                         attackerCostAP = (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP,
-                        defenderCostAP = resolvedDefenderBonus,
+                        defenderCostAP = (duel != null && duel.DefenderBasePaid ? duel.BaseDefenseCost : 0) + (duel != null ? duel.DefenderBonusPAApplied : resolvedDefenderBonus),
+                        attackerPE = duel != null ? duel.AttackerPEApplied : 0,
+                        defenderPE = duel != null ? duel.DefenderPEApplied : 0,
                         attackerNewAP = attacker.Stats.CurrentActionPoints,
                         defenderNewAP = defender.Stats.CurrentActionPoints,
                         defenderNewHealth = defender.Stats.CurrentHealth,
@@ -1545,6 +2080,238 @@ namespace Killtime.Tactics
             yield return new WaitForSeconds(0.16f);
             resolveImpact?.Invoke();
             yield return new WaitForSeconds(0.65f);
+            _isAttackInProgress = false;
+        }
+
+        private IEnumerator ExecuteAttackWithPlayerDefenseRoutine(
+            TacticalUnit attacker,
+            TacticalUnit defender,
+            BodyPart targetedPart,
+            bool cancelPenaltyWithAP,
+            SkillType attackSkill,
+            SkillType defenseSkill,
+            int weaponBaseDamage,
+            int attackerBonusAP,
+            int attackerPE,
+            string attackerSpecialization,
+            string defenderSpecialization,
+            Action triggerKick,
+            Action triggerDefense)
+        {
+            _isAttackInProgress = true;
+
+            int effectiveWeaponDamage = weaponBaseDamage;
+            var equippedWeapon = attacker.Sheet?.GetEquippedWeapon();
+            if (equippedWeapon != null && equippedWeapon.BaseDamage > 0)
+            {
+                effectiveWeaponDamage = equippedWeapon.BaseDamage;
+            }
+
+            _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
+
+            // Duel aveugle : Begin (base attaque) puis DÉCLARATION attaquant immédiate
+            // (mise cachée, aucun jet lancé). La fenêtre défenseur s'ouvre ensuite en
+            // aveugle : le défenseur ne voit ni jet ni mise adverse.
+            // Livre VI §25.3 : couvert évalué sur positions réelles (Full => refus).
+            CoverType defenseCover = GetCoverToTarget(attacker, defender);
+            var duel = _combatCalculator.BeginSkillDuel(
+                attacker.Stats, defender.Stats, targetedPart,
+                attackSkill, defenseSkill, effectiveWeaponDamage, cancelPenaltyWithAP,
+                false, attackerSpecialization, defenderSpecialization,
+                defender.Stats.BaseArmorAbsorption, out string duelError, defenseCover);
+
+            if (duel == null)
+            {
+                Log(duelError ?? "⚠️ Attaque impossible : PA insuffisants pour le coût de base.");
+                _isAttackInProgress = false;
+                yield break;
+            }
+
+            _combatCalculator.DeclareAttackerStakes(duel, attackerBonusAP, attackerPE);
+
+            bool playerDecided = false;
+            SkillType finalDefSkill = defenseSkill;
+            bool finalWantsDefend = true;
+            int finalBonusAP = 0;
+            int finalPE = 0;
+
+            // La défense se paramètre dans le menu contextuel radial, centré sur le
+            // défenseur comme après un clic droit sur lui (aucun modal séparé).
+            CombatUI.CombatContextMenuUI.EnsureInstance().OpenDefenseMenu(duel, attacker, defender, (chosenSkill, wantsDef, bonusAP, pe) =>
+            {
+                finalDefSkill = chosenSkill;
+                finalWantsDefend = wantsDef;
+                finalBonusAP = bonusAP;
+                finalPE = pe;
+                playerDecided = true;
+            });
+
+            while (!playerDecided)
+            {
+                // Garde-fou : si le menu de défense a disparu sans décision (changement
+                // de scène, unité détruite...), on résout en encaissement passif plutôt
+                // que de bloquer toutes les attaques suivantes pour toujours.
+                if (!CombatUI.CombatContextMenuUI.IsDefenseOpen)
+                {
+                    finalDefSkill = defenseSkill;
+                    finalWantsDefend = false;
+                    finalBonusAP = 0;
+                    finalPE = 0;
+                    playerDecided = true;
+                    Log($"🛡️ <b>{defender.Stats.Name}</b> ne répond pas : encaissement passif (0 PA).");
+                    break;
+                }
+                yield return null;
+            }
+
+            // Déclaration aveugle du défenseur (mise débitée, rien révélé).
+            _combatCalculator.DeclareDefenderStakes(duel, finalDefSkill, finalWantsDefend, finalBonusAP, finalPE, defenderSpecialization);
+
+            // RÉVÉLATION SIMULTANÉE : les deux dés sont lancés ensemble.
+            DamageResult result = _combatCalculator.ResolveBlindDuel(duel);
+
+            triggerKick?.Invoke();
+            yield return new WaitForSeconds(0.06f);
+            if (finalWantsDefend) triggerDefense?.Invoke();
+            yield return new WaitForSeconds(0.16f);
+
+            attacker.Stats.RegisterAttack();
+            Log(result.CombatLog);
+
+            var laserWeapon = attacker.GetComponentInChildren<LaserRifleWeapon>();
+            bool skillIsMelee = (attackSkill == SkillType.MainsNues || attackSkill == SkillType.ManiementArmes || attackSkill == SkillType.ArmesContondantes || attackSkill == SkillType.ArmesPercantes);
+            int freshDistAtImpact = (attacker != null && defender != null) ? attacker.CurrentCoords.DistanceTo(defender.CurrentCoords) : 1;
+            bool isMeleeStrike = skillIsMelee && freshDistAtImpact <= 1;
+            if (attackSkill == SkillType.Ballistique && !isMeleeStrike && laserWeapon != null && defender != null)
+            {
+                Vector3 targetCenter = defender.transform.position + Vector3.up * 1.15f;
+                laserWeapon.FireLaser(targetCenter, result.IsHit);
+            }
+
+            bool isTargetDeadOrDown = !defender.Stats.IsAlive || result.FatalResolution != FatalBlowResolution.None;
+            CombatHUD.RecordCombatAction(
+                attacker.Stats.Name,
+                defender.Stats.Name,
+                attacker.IsPlayerControlled,
+                defender.IsPlayerControlled,
+                result.IsHit,
+                result.IsCritical,
+                result.IsBlocked,
+                result.RawDamage,
+                result.ArmorAbsorbed,
+                result.FinalDamageApplied,
+                result.ExceededEncaissement,
+                isTargetDeadOrDown,
+                (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP
+            );
+
+            if (KilltimeAudioManager.Instance != null && defender != null)
+            {
+                KilltimeAudioManager.Instance.PlayCombatResult(
+                    result.IsHit, result.IsBlocked, result.IsCritical,
+                    result.ArmorAbsorbed > 0, result.ExceededEncaissement,
+                    result.FatalResolution.ToString(), defender.transform.position);
+                KilltimeAudioManager.Instance.Play(SoundId.Dice_Roll, 0.35f);
+            }
+
+            var attVisual = attacker.GetComponent<TacticalUnitVisual>();
+            var defVisual = defender.GetComponent<TacticalUnitVisual>();
+
+            if (attVisual != null)
+            {
+                int totalCost = (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP;
+                attVisual.SpawnFloatingText($"Attaque {targetedPart} (-{totalCost} PA)", new Color(0.3f, 0.8f, 1.0f));
+            }
+
+            if (defVisual != null)
+            {
+                if (result.IsHit)
+                {
+                    defVisual.TriggerHitFlash();
+
+                    if (result.IsCritical)
+                    {
+                        defVisual.SpawnFloatingText("[CRITIQUE] COUP DÉCISIF !", new Color(1.0f, 0.85f, 0.1f));
+                    }
+
+                    if (result.WasDeflected)
+                    {
+                        defVisual.SpawnFloatingText($"[DÉVIATION] -> {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff 0)", Color.yellow);
+                    }
+                    else
+                    {
+                        string diffSign = result.Differential > 0 ? $"+{result.Differential}" : $"{result.Differential}";
+                        defVisual.SpawnFloatingText($"[TOUCHÉ] {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff {diffSign})", new Color(0.9f, 0.9f, 1.0f));
+                    }
+
+                    string dmgText = result.ArmorAbsorbed > 0 
+                        ? $"-{result.FinalDamageApplied} PV (Bruts {result.RawDamage} | Armure -{result.ArmorAbsorbed})" 
+                        : $"-{result.FinalDamageApplied} PV";
+                    defVisual.SpawnFloatingText(dmgText, new Color(1.0f, 0.25f, 0.25f));
+
+                    if (result.ExceededEncaissement)
+                    {
+                        defVisual.SpawnFloatingText($"[CHOC] TRAUMATIQUE ! [{result.InflictedStatus}]", new Color(1.0f, 0.4f, 0.95f));
+                    }
+
+                    if (result.CausedKnockback)
+                    {
+                        TryApplyKnockback(attacker, defender);
+                    }
+
+                    if (result.FatalResolution == FatalBlowResolution.InstantDeath)
+                    {
+                        defVisual.SpawnFloatingText("[MORTEL] INSTANTANÉ !", Color.black);
+                        defVisual.TriggerFallingBackDeath();
+                    }
+                    else if (result.FatalResolution == FatalBlowResolution.MiracleSaved)
+                    {
+                        defVisual.SpawnFloatingText("[MIRACLE] DESTIN SAUVÉ ! (1 PV)", new Color(1.0f, 0.85f, 0.1f));
+                        defVisual.TriggerFallingBackDeath();
+                    }
+                    else if (result.FatalResolution == FatalBlowResolution.ForcedUnconscious)
+                    {
+                        defVisual.SpawnFloatingText("[K.O.] SYNCOPE TRAUMATIQUE !", Color.magenta);
+                        defVisual.TriggerFallingBackDeath();
+                    }
+                    else if (result.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
+                    {
+                        if (!defender.IsPlayerControlled)
+                        {
+                            defender.Stats.ChooseSombrer();
+                            defVisual.SpawnFloatingText("[SYNCOPE] CHUTE HORS COMBAT (0 PV)", Color.cyan);
+                            defVisual.TriggerFallingBackDeath();
+                        }
+                        else
+                        {
+                            defender.Stats.ChooseLastBreath();
+                            defVisual.SpawnFloatingText("[SURVIE] DERNIER SOUFFLE (0 PV)", new Color(1.0f, 0.5f, 0.1f));
+                        }
+                    }
+                }
+                else if (result.IsBlocked)
+                {
+                    defVisual.SpawnFloatingText($"[PARADE] Neutralisation (Diff {result.Differential})", new Color(0.2f, 0.9f, 1.0f));
+                }
+            }
+
+            WebBridgeManager.Instance?.SendCombatEvent(
+                result.IsHit ? "HIT" : "MISS",
+                result.CombatLog,
+                result.FinalDamageApplied
+            );
+
+            RecordChronoSnapshot($"Attaque sur {defender.Stats.Name} ({targetedPart})");
+
+            if (!defender.Stats.IsAlive)
+            {
+                AutoTargetNextAlive();
+            }
+
+            UpdateAdaptiveMusic();
+            _turnManager?.CheckCombatOver();
+
+            yield return new WaitForSeconds(0.55f);
             _isAttackInProgress = false;
         }
 
@@ -1815,8 +2582,10 @@ namespace Killtime.Tactics
                 var node = _grid != null ? _grid.GetNode(u.CurrentCoords) : null;
                 if (node != null)
                 {
-                    if (node.Cover == CoverType.Full) cover = 2;
-                    else if (node.Cover == CoverType.Half) cover = isMortar ? 0 : 1;
+                    cover = GrenadeRules.ToCoverLevel(node.Cover);
+                    // Le mortier lobé passe par-dessus les couverts partiels (Half, 3/4), jamais Full.
+                    if (isMortar && (node.Cover == CoverType.Half || node.Cover == CoverType.ThreeQuarters))
+                        cover = 0;
                 }
                 var hit = calc.ResolveHitOnTarget(u.Stats, grenadeDef, diceTotal, d, cover, d == 0);
                 hits.Add(hit);

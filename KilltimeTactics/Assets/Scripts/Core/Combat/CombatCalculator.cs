@@ -1,19 +1,23 @@
 using System;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
+using Killtime.Tactics.Grid;
 
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Duel séquentiel officiel (Livres II §7.3 + VI §24.1) :
-    /// 1. L'attaquant désigne sa cible, paie le coût de base, lance le dé de sa compétence,
-    ///    puis PEUT AJOUTER des PA bonus APRÈS avoir vu son résultat (+1 / PA).
-    /// 2. La cible paie sa réaction, lance le dé de sa compétence défensive,
-    ///    puis PEUT AJOUTER des PA bonus APRÈS avoir vu son résultat (+1 / PA).
-    /// 3. L'attaque se conclut normalement (différentiel, dégâts, armure, états).
+    /// Duel aveugle officiel (Livres II §7 + VI §24.1) :
+    /// 1. L'attaquant DÉCLARE sa cible, son action (compétence + zone visée) et sa mise
+    ///    (coût de base + PA bonus + PE), débités aussitôt. Résultat CACHÉ.
+    /// 2. La cible DÉCLARE à l'aveugle son action opposée (compétence défensive ou
+    ///    encaissement passif) et sa mise (base réaction + PA bonus + PE), sans avoir vu
+    ///    ni le jet ni la mise de l'attaquant.
+    /// 3. RÉSOLUTION : les deux dés sont lancés simultanément et révélés ensemble
+    ///    (différentiel, dégâts, armure, états).
     /// Les dés découlent uniquement du niveau de compétence (paliers carac + entraînements
     /// depuis d2). Ex : Mains Nues +2 entr., FOR 5 (+2) = 4 niveaux -> d10 ;
     /// Esquive 1 entr., réf. 5 (+2) = 3 niveaux -> d8.
+    /// 1 PA engagé = +1 au total, 1 PE (Essoufflement, plafond Constitution) = +1 au total.
     /// </summary>
     public sealed class AttackDuel
     {
@@ -31,37 +35,68 @@ namespace Killtime.Core.Combat
         public bool CancelPenaltyWithAP;
         public bool DefenderWantsToDefend;
 
-        // Coûts de base déjà débités
+        // Coûts de base (attaquant débité au Begin, défenseur à sa déclaration)
         public int BaseAttackCost;
         public int BaseDefenseCost;
         public bool CanDefenderReact;
         public bool IsDefenderIncapacitated;
+        public bool DefenderBasePaid;
 
-        // Modificateurs situationnels (hors PA bonus)
+        // Mises déclarées à l'aveugle (débitées à la déclaration, avant tout jet)
+        public bool AttackerStakesDeclared;
+        public int AttackerBonusPAApplied;
+        public int AttackerPEApplied;
+        public bool DefenderStakesDeclared;
+        public int DefenderBonusPAApplied;
+        public int DefenderPEApplied;
+
+        // Modificateurs situationnels (hors mises déclarées)
         public int AttackBaseMod;
         public int DefenseBaseMod;
         public bool IsRangedAttack;
         public bool IsMartialArtsStrike;
         public bool AppliedCanonEntrave;
 
-        // Jets bruts (sans PA bonus) puis finaux (avec PA bonus post-tirage)
-        public DiceRollResult AttackRawRoll;
-        public DiceRollResult DefenseRawRoll;
+        // Couvert & visibilité (Livre VI §25.3) : Half -1, ThreeQuarters -2,
+        // Full = cible non visible => attaque impossible (BeginDuel refuse).
+        public CoverType Cover;
+        public int CoverAttackPenalty;
+        public bool BlockedByCover;
+
+        // Jets uniques, lancés simultanément à la résolution avec les mises déclarées
         public DiceRollResult AttackFinalRoll;
         public DiceRollResult DefenseFinalRoll;
-        public bool HasAttackRaw;
-        public bool HasDefenseRaw;
-        public int AttackerBonusPAApplied;
-        public int DefenderBonusPAApplied;
+        public bool HasResolved;
         public int DefenderUnreactivePenalty;
+    }
+
+    /// <summary>
+    /// Résultat générique d'un défi opposé aveugle (hors combat : Intimidation, story).
+    /// </summary>
+    public sealed class OpposedCheckResult
+    {
+        public CharacterStats Attacker;
+        public CharacterStats Defender;
+        public SkillType AttackSkill;
+        public SkillType DefenseSkill;
+        public DiceRollResult AttackRoll;
+        public DiceRollResult DefenseRoll;
+        public int AttackerBonusPAApplied;
+        public int AttackerPEApplied;
+        public int DefenderBonusPAApplied;
+        public int DefenderPEApplied;
+        public int Differential;
+        public bool AttackerWins;
+        public string CombatLog;
     }
 
     /// <summary>
     /// Résolution mathématique intégrale des passes d'armes et tirs ciblés (Livre VI).
     /// Conforme à l'Axiome Fondateur : Tout jet découle d'une compétence.
     /// L'attaque est opposée par une compétence défensive, sauf décision de non-défense.
-    /// Séquence impérative : attaque (jet puis PA après tirage) -> défense (jet puis PA
-    /// après tirage) -> résolution normale. Aucune enchère aveugle préalable.
+    /// Séquence impérative : déclaration attaquant (mise cachée) -> déclaration défenseur
+    /// à l'aveugle -> révélation simultanée -> résolution normale. Aucun résultat n'est
+    /// révélé avant que les deux mises soient engagées.
     /// </summary>
     public class CombatCalculator
     {
@@ -81,9 +116,9 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// Résolution officielle du Livre VI axée sur les compétences d'attaque et de défense.
-        /// Les PA bonus sont injectés APRÈS les tirages (attaquant d'abord, défenseur ensuite),
-        /// dans la limite des PA restants après paiement des coûts de base.
+        /// Résolution officielle du Livre VI en duel aveugle.
+        /// Les mises (PA bonus + PE) sont déclarées AVANT les jets et restent cachées
+        /// jusqu'à la révélation simultanée.
         /// </summary>
         public DamageResult ResolveTargetedAttack(
             CharacterStats attacker,
@@ -98,7 +133,10 @@ namespace Killtime.Core.Combat
             string defenderSpecialization = null,
             int defenderArmor = 0,
             int attackerBonusAP = 0,
-            int defenderBonusAP = 0)
+            int defenderBonusAP = 0,
+            int attackerPE = 0,
+            int defenderPE = 0,
+            CoverType cover = CoverType.None)
         {
             // RÈGLE CODEX : aucun mod de caractéristique ajouté. Malus d'états uniquement.
             // Le dé offensif applique le Corps Augmenté (Mains Nues : MAG substituable à FOR).
@@ -136,14 +174,18 @@ namespace Killtime.Core.Combat
                 defenderArmor: defenderArmor,
                 attackerBonusAP: attackerBonusAP,
                 defenderBonusAP: defenderBonusAP,
+                attackerPE: attackerPE,
+                defenderPE: defenderPE,
                 attackSkill: attackSkill,
-                defenseSkill: defenseSkill
+                defenseSkill: defenseSkill,
+                defenderSpecialization: defenderSpecialization,
+                cover: cover
             );
         }
 
         /// <summary>
         /// Surcharge de compatibilité descendante avec injection directe de dés.
-        /// Les bonus PA restent interprétés comme des injections post-tirage.
+        /// Les mises PA/PE restent interprétées comme des déclarations aveugles préalables.
         /// </summary>
         public DamageResult ResolveTargetedAttack(
             CharacterStats attacker,
@@ -160,7 +202,10 @@ namespace Killtime.Core.Combat
             int defenderBonusAP = 0,
             bool defenderWantsToDefend = true,
             SkillType attackSkill = SkillType.ManiementArmes,
-            SkillType defenseSkill = SkillType.Esquive)
+            SkillType defenseSkill = SkillType.Esquive,
+            int attackerPE = 0,
+            int defenderPE = 0,
+            CoverType cover = CoverType.None)
         {
             return ResolveTargetedAttackInternal(
                 attacker: attacker,
@@ -176,19 +221,25 @@ namespace Killtime.Core.Combat
                 defenderArmor: defenderArmor,
                 attackerBonusAP: attackerBonusAP,
                 defenderBonusAP: defenderBonusAP,
+                attackerPE: attackerPE,
+                defenderPE: defenderPE,
                 attackSkill: attackSkill,
-                defenseSkill: defenseSkill
+                defenseSkill: defenseSkill,
+                defenderSpecialization: null,
+                cover: cover
             );
         }
 
         // =====================================================================
-        // API SÉQUENTIELLE PAS-À-PAS (pour UI interactive / IA réactive / tests)
+        // API DUEL AVEUGLE PAS-À-PAS (pour UI interactive / IA / tests)
+        // Déclaration attaquant -> déclaration défenseur -> résolution simultanée.
         // =====================================================================
 
         /// <summary>
-        /// Étape 0 : prépare le duel, paie les coûts de base (attaque 2/3 PA, réaction 1 PA).
-        /// Ne lance aucun dé, ne dépense aucun PA bonus. Les bonus seront ajoutés après tirages.
-        /// Retourne null + message d'erreur si l'attaque est impossible (PA insuffisants).
+        /// Étape 0 : prépare le duel aveugle. Paie le coût de base d'attaque uniquement.
+        /// Aucun jet n'est lancé, aucune mise n'est engagée, rien n'est révélé.
+        /// Retourne null + message d'erreur si l'attaque est impossible (PA insuffisants,
+        /// ou cible totalement à couvert / non visible, Livre VI §25.3).
         /// </summary>
         public AttackDuel BeginDuel(
             CharacterStats attacker,
@@ -204,11 +255,23 @@ namespace Killtime.Core.Combat
             int defenderArmor,
             SkillType attackSkill,
             SkillType defenseSkill,
-            out string error)
+            out string error,
+            CoverType cover = CoverType.None)
         {
             error = null;
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
             var cfg = Rules.CoreRulesConfig.Instance;
+
+            // Livre VI §25.3 : cible totalement à couvert / non visible => attaque impossible.
+            // Au contact, les combattants se voient : le couvert est ignoré.
+            CoverType effectiveCover = cover;
+            if (_currentCombatIsAtContactDistance && cfg.CoverIgnoredAtContactDistance)
+                effectiveCover = CoverType.None;
+            if (effectiveCover == CoverType.Full && cfg.FullCoverBlocksAttack)
+            {
+                error = $"{attacker.Name} ne voit pas {defender.Name} (couvert total) — attaque impossible ! Déplacez-vous pour retrouver une ligne de mire.";
+                return null;
+            }
 
             var duel = new AttackDuel
             {
@@ -227,11 +290,15 @@ namespace Killtime.Core.Combat
                 DefenderWantsToDefend = defenderWantsToDefend,
                 IsRangedAttack = (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir),
                 IsMartialArtsStrike = (attackSkill == SkillType.MainsNues) && attacker.HasSpecialization("Arts Martiaux"),
-                DefenderUnreactivePenalty = cfg.UnreactiveDefensePenalty
+                DefenderUnreactivePenalty = cfg.UnreactiveDefensePenalty,
+                Cover = effectiveCover,
+                CoverAttackPenalty = effectiveCover == CoverType.Half ? cfg.HalfCoverAttackPenalty
+                    : effectiveCover == CoverType.ThreeQuarters ? cfg.ThreeQuartersCoverAttackPenalty : 0,
+                BlockedByCover = false
             };
 
-            // Modificateur de base d'attaque (hors PA bonus post-tirage) : états + visée + canon entravé.
-            int baseAtt = attackModifier;
+            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert.
+            int baseAtt = attackModifier + duel.CoverAttackPenalty;
             if (duel.IsRangedAttack && !cancelPenaltyWithAP)
             {
                 baseAtt += targetInfo.DifficultyModifier;
@@ -246,7 +313,7 @@ namespace Killtime.Core.Combat
             }
             duel.AttackBaseMod = baseAtt;
 
-            // 1. Dépense PA de base de l'Attaquant (sans bonus : le bonus vient après le tirage).
+            // Déclaration implicite du coût de base d'attaque (sans mise bonus).
             duel.BaseAttackCost = cfg.BaseAttackAPCost + (cancelPenaltyWithAP ? cfg.CancelAimPenaltyAPCost : 0);
             if (!attacker.ConsumeActionPoints(duel.BaseAttackCost))
             {
@@ -254,15 +321,20 @@ namespace Killtime.Core.Combat
                 return null;
             }
 
-            // 2. Décision & Dépense PA de base du Défenseur (sans bonus).
+            // Éligibilité du Défenseur SANS prélèvement ni révélation.
+            // Sa mise sera engagée à sa déclaration aveugle (DeclareDefenderStakes).
             duel.BaseDefenseCost = cfg.BaseReactionAPCost;
             duel.IsDefenderIncapacitated = !defender.CanDefendActively();
             bool effectiveWants = defenderWantsToDefend && !duel.IsDefenderIncapacitated;
             duel.CanDefenderReact = false;
+            duel.DefenderBasePaid = false;
             if (effectiveWants)
             {
-                // Tente de payer la réaction de base ; échec -> réflexe à -2, 0 PA dépensé.
-                if (defender.ConsumeActionPoints(duel.BaseDefenseCost))
+                // Éligible si assez de PA pour la réaction de base (Ralenti x2 inclus).
+                int required = duel.BaseDefenseCost;
+                if (defender.ActiveStatus.HasFlag(StatusEffect.Ralenti))
+                    required *= cfg.RalentiAPMultiplier;
+                if (defender.CurrentActionPoints >= required)
                 {
                     duel.CanDefenderReact = true;
                 }
@@ -280,7 +352,7 @@ namespace Killtime.Core.Combat
 
         /// <summary>
         /// Étape 0 (variante compétences) : calcule les dés via GetSkillDie + règle non-exclusive,
-        /// puis paie les coûts de base. Les PA bonus restent à injecter après tirages.
+        /// puis paie le coût de base d'attaque uniquement. Aucun jet, aucune mise, rien de révélé.
         /// </summary>
         public AttackDuel BeginSkillDuel(
             CharacterStats attacker,
@@ -294,7 +366,8 @@ namespace Killtime.Core.Combat
             string attackerSpecialization,
             string defenderSpecialization,
             int defenderArmor,
-            out string error)
+            out string error,
+            CoverType cover = CoverType.None)
         {
             DiceType attackDie = attacker.GetSkillDie(attackSkill, true);
             int attackModifier = attacker.GetStatusModifier(attackSkill, isOffensive: true);
@@ -308,40 +381,150 @@ namespace Killtime.Core.Combat
             }
             return BeginDuel(attacker, defender, targetedPart, attackDie, attackModifier,
                 defenseDie, defenseModifier, weaponBaseDamage, cancelPenaltyWithAP,
-                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error);
-        }
-
-        /// <summary>Étape 1 : l'attaquant lance son dé (sans PA bonus). Total brut fixé.</summary>
-        public DiceRollResult RollAttackerRaw(AttackDuel duel)
-        {
-            var cfg = Rules.CoreRulesConfig.Instance;
-            duel.AttackRawRoll = _diceRoller.Roll(duel.AttackDie, duel.AttackBaseMod, cfg.StandardTargetDC);
-            duel.AttackFinalRoll = duel.AttackRawRoll;
-            duel.HasAttackRaw = true;
-            duel.AttackerBonusPAApplied = 0;
-            return duel.AttackRawRoll;
+                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover);
         }
 
         /// <summary>
-        /// Étape 1bis : après avoir vu son résultat, l'attaquant peut ajouter des PA (+1 / PA).
-        /// Débités aussitôt, dans la limite des PA restants. Retourne le bonus réellement appliqué.
+        /// Étape 1 : DÉCLARATION de l'attaquant. Engage la mise bonus (PA + PE) AVANT tout jet.
+        /// 1 PA = +1, 1 PE = +DuelPEBonusPerPoint (plafond Constitution). Mise cachée.
+        /// Retourne le bonus total engagé (PA appliqués + PE appliqués x valeur).
         /// </summary>
-        public int AddAttackerBonusPA(AttackDuel duel, int requestedBonus)
+        public int DeclareAttackerStakes(AttackDuel duel, int bonusPA, int pePoints)
         {
-            if (!duel.HasAttackRaw) throw new InvalidOperationException("RollAttackerRaw doit précéder l'injection des PA attaquant.");
-            int applied = SpendBonusPA(duel.Attacker, Math.Max(0, requestedBonus));
-            duel.AttackerBonusPAApplied += applied;
-            duel.AttackFinalRoll = WithAddedBonus(duel.AttackRawRoll, duel.AttackBaseMod, applied);
-            return applied;
+            if (duel == null) throw new ArgumentNullException(nameof(duel));
+            if (duel.AttackerStakesDeclared) return CommittedAttackBonus(duel);
+            var cfg = Rules.CoreRulesConfig.Instance;
+            duel.AttackerBonusPAApplied = SpendBonusPA(duel.Attacker, Math.Max(0, bonusPA));
+            duel.AttackerPEApplied = duel.Attacker.SpendDuelPE(Math.Max(0, pePoints));
+            duel.AttackerStakesDeclared = true;
+            return duel.AttackerBonusPAApplied + duel.AttackerPEApplied * cfg.DuelPEBonusPerPoint;
         }
 
-        /// <summary>Étape 2 : la cible lance son dé défensif (sans PA bonus). Total brut fixé.</summary>
-        public DiceRollResult RollDefenderRaw(AttackDuel duel)
+        /// <summary>
+        /// Étape 2 : DÉCLARATION AVEUGLE du défenseur. Choisit sa compétence (ou le passif)
+        /// et engage sa mise (base réaction + PA bonus + PE) SANS avoir vu ni le jet ni la
+        /// mise de l'attaquant. Encaissement passif = 0 PA, 0 PE, aucun jet.
+        /// Échec de paiement de la base -> réflexe à -2, 0 PA dépensé.
+        /// Retourne le bonus total engagé.
+        /// </summary>
+        public int DeclareDefenderStakes(
+            AttackDuel duel,
+            SkillType defenseSkill,
+            bool wantsToDefend,
+            int bonusPA,
+            int pePoints,
+            string defenderSpecialization = null)
         {
+            if (duel == null) throw new ArgumentNullException(nameof(duel));
+            if (duel.DefenderStakesDeclared) return CommittedDefenseBonus(duel);
             var cfg = Rules.CoreRulesConfig.Instance;
-            if (!duel.DefenderWantsToDefend || duel.IsDefenderIncapacitated)
+
+            duel.DefenseSkill = defenseSkill;
+            duel.DefenderWantsToDefend = wantsToDefend && !duel.IsDefenderIncapacitated;
+            duel.DefenderStakesDeclared = true;
+            duel.DefenderBonusPAApplied = 0;
+            duel.DefenderPEApplied = 0;
+            duel.DefenderBasePaid = false;
+
+            if (!duel.DefenderWantsToDefend)
             {
-                duel.DefenseRawRoll = new DiceRollResult
+                // Encaissement passif : 0 PA, 0 PE, aucun jet à la résolution.
+                duel.CanDefenderReact = false;
+                return 0;
+            }
+
+            // Recalcule le dé de la compétence déclarée (règle non-exclusive).
+            duel.DefenseDie = duel.Defender.GetSkillDie(defenseSkill);
+            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
+            {
+                bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && duel.Defender.HasSpecialization(defenderSpecialization))
+                                || SkillDefinitions.HasDefensiveSpecialization(duel.Defender.Sheet, defenseSkill);
+                if (!hasDefSpec) duel.DefenseDie = SkillDefinitions.StepDownDie(duel.DefenseDie);
+            }
+            int statusMod = duel.Defender.GetStatusModifier(defenseSkill, isOffensive: false);
+            duel.DefenseStatusMod = statusMod;
+            duel.DefenseBaseMod = statusMod;
+            duel.CanDefenderReact = true;
+
+            // Base réaction : débitée à la déclaration ; échec -> réflexe à -2.
+            if (duel.Defender.ConsumeActionPoints(duel.BaseDefenseCost))
+            {
+                duel.DefenderBasePaid = true;
+            }
+            else
+            {
+                duel.DefenseBaseMod += cfg.UnreactiveDefensePenalty;
+                duel.CanDefenderReact = false;
+                return 0;
+            }
+
+            duel.DefenderBonusPAApplied = SpendBonusPA(duel.Defender, Math.Max(0, bonusPA));
+            duel.DefenderPEApplied = duel.Defender.SpendDuelPE(Math.Max(0, pePoints));
+            return CommittedDefenseBonus(duel);
+        }
+
+        /// <summary>
+        /// Déclaration aveugle automatique (IA / défense réactive sans fenêtre).
+        /// Estime le besoin SANS voir le jet adverse : compare les espérances des dés
+        /// (moyenne + modificateurs + mises attaquant inconnues = 0) et engage le
+        /// complément dans la limite des PA restants après la base. Jamais de PE auto.
+        /// </summary>
+        public int AutoDeclareDefenderStakes(AttackDuel duel, string defenderSpecialization = null)
+        {
+            if (duel == null) throw new ArgumentNullException(nameof(duel));
+            if (!duel.DefenderWantsToDefend || duel.IsDefenderIncapacitated || !duel.CanDefenderReact)
+            {
+                return DeclareDefenderStakes(duel, duel.DefenseSkill, false, 0, 0, defenderSpecialization);
+            }
+            int expectedAttack = (int)Math.Round(DieAverage(duel.AttackDie)) + duel.AttackBaseMod;
+            // La mise adverse est cachée : l'estimation l'ignore (0).
+            int expectedDefense = (int)Math.Round(DieAverage(duel.DefenseDie)) + duel.DefenseBaseMod;
+            int need = expectedAttack - expectedDefense + 1;
+            if (need < 0) need = 0;
+            int affordable = Math.Max(0, duel.Defender.CurrentActionPoints - duel.BaseDefenseCost);
+            int committed = Math.Min(need, affordable);
+            return DeclareDefenderStakes(duel, duel.DefenseSkill, true, committed, 0, defenderSpecialization);
+        }
+
+        /// <summary>
+        /// Étape 3 : RÉSOLUTION. Les deux dés sont lancés SIMULTANÉMENT avec les mises
+        /// déclarées, puis révélés ensemble (différentiel, dégâts, états).
+        /// La déclaration du défenseur defaults au passif si elle n'a pas eu lieu.
+        /// </summary>
+        public DamageResult ResolveBlindDuel(AttackDuel duel)
+        {
+            if (duel == null) throw new ArgumentNullException(nameof(duel));
+            if (duel.BlockedByCover || duel.Cover == CoverType.Full)
+            {
+                return new DamageResult
+                {
+                    IsHit = false,
+                    IsBlocked = true,
+                    BlockedByCover = true,
+                    Cover = duel.Cover,
+                    CoverAttackPenalty = duel.CoverAttackPenalty,
+                    CombatLog = $"🛡️ <b>COUVERT TOTAL</b> : {duel.Attacker.Name} ne voit pas {duel.Defender.Name} — attaque impossible ! Déplacez-vous pour retrouver une ligne de mire."
+                };
+            }
+            if (!duel.AttackerStakesDeclared)
+                throw new InvalidOperationException("DeclareAttackerStakes doit précéder ResolveBlindDuel.");
+            if (!duel.DefenderStakesDeclared)
+            {
+                DeclareDefenderStakes(duel, duel.DefenseSkill, false, 0, 0);
+            }
+
+            var cfg = Rules.CoreRulesConfig.Instance;
+            int attCommitted = CommittedAttackBonus(duel);
+            int defCommitted = (duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated && duel.CanDefenderReact && duel.DefenderBasePaid)
+                ? CommittedDefenseBonus(duel)
+                : 0;
+
+            duel.AttackFinalRoll = _diceRoller.Roll(duel.AttackDie, duel.AttackBaseMod + attCommitted, cfg.StandardTargetDC);
+
+            bool effectiveDefend = duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated;
+            if (!effectiveDefend)
+            {
+                duel.DefenseFinalRoll = new DiceRollResult
                 {
                     DieType = duel.DefenseDie,
                     RawRoll = 0,
@@ -353,72 +536,137 @@ namespace Killtime.Core.Combat
                     IsCriticalSuccess = false,
                     IsCriticalFailure = false
                 };
-                duel.DefenseFinalRoll = duel.DefenseRawRoll;
-                duel.HasDefenseRaw = true;
-                duel.DefenderBonusPAApplied = 0;
-                return duel.DefenseRawRoll;
             }
-            duel.DefenseRawRoll = _diceRoller.Roll(duel.DefenseDie, duel.DefenseBaseMod, cfg.StandardTargetDC);
-            duel.DefenseFinalRoll = duel.DefenseRawRoll;
-            duel.HasDefenseRaw = true;
-            duel.DefenderBonusPAApplied = 0;
-            return duel.DefenseRawRoll;
-        }
+            else
+            {
+                duel.DefenseFinalRoll = _diceRoller.Roll(duel.DefenseDie, duel.DefenseBaseMod + defCommitted, cfg.StandardTargetDC);
+            }
 
-        /// <summary>
-        /// Étape 2bis : après avoir vu son résultat (et le total final attaquant), la cible peut
-        /// ajouter des PA (+1 / PA). Sans réaction active ou sans défense voulue : ignoré (0).
-        /// </summary>
-        public int AddDefenderBonusPA(AttackDuel duel, int requestedBonus)
-        {
-            if (!duel.HasDefenseRaw) throw new InvalidOperationException("RollDefenderRaw doit précéder l'injection des PA défenseur.");
-            if (!duel.DefenderWantsToDefend || duel.IsDefenderIncapacitated || !duel.CanDefenderReact)
-                return 0;
-            int applied = SpendBonusPA(duel.Defender, Math.Max(0, requestedBonus));
-            duel.DefenderBonusPAApplied += applied;
-            duel.DefenseFinalRoll = WithAddedBonus(duel.DefenseRawRoll, duel.DefenseBaseMod, applied);
-            return applied;
-        }
-
-        /// <summary>Étape 3 : l'attaque se conclut normalement (différentiel, dégâts, états).</summary>
-        public DamageResult FinishDuel(AttackDuel duel)
-        {
+            duel.HasResolved = true;
             return ResolveDuelDamage(duel);
         }
 
         /// <summary>
-        /// Calcule le bonus défensif réactif minimal pour tenter de neutraliser l'attaque,
-        /// après révélation du total final attaquant (IA / auto-défense).
-        /// Besoin = attaque finale - défense brute + 1 (pour passer en différentiel négatif).
-        /// Plafonné aux PA restants après la réaction de base. 0 si défense passive/incapable.
+        /// Défi opposé aveugle générique (Intimidation, story, etc.) : chaque camp déclare
+        /// sa mise (PA + PE) avant les jets, les deux dés sont lancés simultanément.
+        /// Sans coûts de base. Retourne les totaux, le différentiel et un log de révélation.
         /// </summary>
-        public int ComputeReactiveDefenseBonus(AttackDuel duel)
+        public OpposedCheckResult ResolveOpposedCheck(
+            CharacterStats attacker,
+            SkillType attackSkill,
+            CharacterStats defender,
+            SkillType defenseSkill,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderAutoStakes = false)
         {
-            if (!duel.HasAttackRaw || !duel.HasDefenseRaw) return 0;
-            if (!duel.DefenderWantsToDefend || duel.IsDefenderIncapacitated || !duel.CanDefenderReact) return 0;
-            int need = duel.AttackFinalRoll.Total - duel.DefenseRawRoll.Total + 1;
-            if (need <= 0) return 0;
-            return Math.Min(need, Math.Max(0, duel.Defender.CurrentActionPoints));
+            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
+            if (defender == null) throw new ArgumentNullException(nameof(defender));
+            var cfg = Rules.CoreRulesConfig.Instance;
+
+            DiceType attDie = attacker.GetSkillDie(attackSkill, true);
+            DiceType defDie = defender.GetSkillDie(defenseSkill, false);
+            int attStatus = attacker.GetStatusModifier(attackSkill, isOffensive: true);
+            int defStatus = defender.GetStatusModifier(defenseSkill, isOffensive: false);
+            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill)
+                && !SkillDefinitions.HasDefensiveSpecialization(defender.Sheet, defenseSkill))
+            {
+                defDie = SkillDefinitions.StepDownDie(defDie);
+            }
+
+            // Déclarations aveugles : débits immédiats, montants cachés jusqu'au jet.
+            int attPA = SpendBonusPA(attacker, Math.Max(0, attackerBonusAP));
+            int attPE = attacker.SpendDuelPE(Math.Max(0, attackerPE));
+            int defPA = 0;
+            int defPE = 0;
+            bool defenderPlays = defender.IsAlive && defender.CanDefendActively();
+            if (defenderPlays)
+            {
+                if (defenderAutoStakes)
+                {
+                    // Estimation aveugle (mise adverse inconnue = 0) : complément au besoin
+                    // estimé, dans la limite des PA disponibles. Jamais de PE auto.
+                    int expectedAtt = (int)Math.Round(DieAverage(attDie)) + attStatus;
+                    int expectedDef = (int)Math.Round(DieAverage(defDie)) + defStatus;
+                    int need = Math.Max(0, expectedAtt - expectedDef + 1);
+                    defPA = SpendBonusPA(defender, Math.Min(need, Math.Max(0, defender.CurrentActionPoints)));
+                }
+                else
+                {
+                    defPA = SpendBonusPA(defender, Math.Max(0, defenderBonusAP));
+                    defPE = defender.SpendDuelPE(Math.Max(0, defenderPE));
+                }
+            }
+
+            int attTotal = attStatus + attPA + attPE * cfg.DuelPEBonusPerPoint;
+            int defTotal = defStatus + defPA + defPE * cfg.DuelPEBonusPerPoint;
+
+            var attRoll = _diceRoller.Roll(attDie, attTotal, cfg.StandardTargetDC);
+            DiceRollResult defRoll = defenderPlays
+                ? _diceRoller.Roll(defDie, defTotal, cfg.StandardTargetDC)
+                : new DiceRollResult
+                {
+                    DieType = defDie, RawRoll = 0, Modifier = 0, Total = 0,
+                    TargetDC = cfg.StandardTargetDC, Differential = -cfg.StandardTargetDC,
+                    IsSuccess = false, IsCriticalSuccess = false, IsCriticalFailure = false
+                };
+
+            int differential = attRoll.Total - defRoll.Total;
+            string log = $"⚔️ <b>DÉFI OPPOSÉ AVEUGLE</b> : {attacker.Name} [{SkillDefinitions.GetDisplayName(attackSkill)}, mise cachée {attPA} PA + {attPE} PE] vs {defender.Name} [{SkillDefinitions.GetDisplayName(defenseSkill)}, mise cachée {(defenderPlays ? $"{defPA} PA + {defPE} PE" : "passif")}]\n"
+                + $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> {attRoll.Total} vs {defRoll.Total} ➔ <b>Différentiel {(differential >= 0 ? "+" : "")}{differential}</b> — <b>{(differential >= 0 ? "L'INITIATIVE L'EMPORTE" : "L'OPPOSITION L'EMPORTE")}</b>";
+
+            return new OpposedCheckResult
+            {
+                Attacker = attacker,
+                Defender = defender,
+                AttackSkill = attackSkill,
+                DefenseSkill = defenseSkill,
+                AttackRoll = attRoll,
+                DefenseRoll = defRoll,
+                AttackerBonusPAApplied = attPA,
+                AttackerPEApplied = attPE,
+                DefenderBonusPAApplied = defPA,
+                DefenderPEApplied = defPE,
+                Differential = differential,
+                AttackerWins = differential >= 0,
+                CombatLog = log
+            };
         }
 
-        private static DiceRollResult WithAddedBonus(DiceRollResult raw, int baseMod, int bonusPA)
+        /// <summary>Espérance d'un dé (pour l'estimation aveugle de l'IA, mise adverse inconnue).</summary>
+        public static double DieAverage(DiceType die)
         {
-            int total = raw.RawRoll + baseMod + bonusPA;
-            int diffVsDc = total - raw.TargetDC;
-            bool success = (diffVsDc >= 0) || raw.IsCriticalSuccess;
-            if (raw.IsCriticalFailure) success = false;
-            return new DiceRollResult
+            return die switch
             {
-                DieType = raw.DieType,
-                RawRoll = raw.RawRoll,
-                Modifier = baseMod + bonusPA,
-                Total = total,
-                TargetDC = raw.TargetDC,
-                Differential = diffVsDc,
-                IsSuccess = success,
-                IsCriticalSuccess = raw.IsCriticalSuccess,
-                IsCriticalFailure = raw.IsCriticalFailure
+                DiceType.D2 => 1.5,
+                DiceType.D3 => 2.0,
+                DiceType.D4 => 2.5,
+                DiceType.D6 => 3.5,
+                DiceType.D8 => 4.5,
+                DiceType.D10 => 5.5,
+                DiceType.D12 => 6.5,
+                DiceType.D20 => 10.5,
+                DiceType.TwoD6 => 7.0,
+                DiceType.TwoD8 => 9.0,
+                DiceType.TwoD10 => 11.0,
+                DiceType.TwoD12 => 13.0,
+                DiceType.TwoD12Plus10 => 23.0,
+                _ => 3.5,
             };
+        }
+
+        private int CommittedAttackBonus(AttackDuel duel)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return duel.AttackerBonusPAApplied + duel.AttackerPEApplied * cfg.DuelPEBonusPerPoint;
+        }
+
+        private int CommittedDefenseBonus(AttackDuel duel)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return duel.DefenderBonusPAApplied + duel.DefenderPEApplied * cfg.DuelPEBonusPerPoint;
         }
 
         private static int SpendBonusPA(CharacterStats stats, int requested)
@@ -447,41 +695,46 @@ namespace Killtime.Core.Combat
             int defenderArmor,
             int attackerBonusAP,
             int defenderBonusAP,
+            int attackerPE,
+            int defenderPE,
             SkillType attackSkill,
-            SkillType defenseSkill)
+            SkillType defenseSkill,
+            string defenderSpecialization = null,
+            CoverType cover = CoverType.None)
         {
-            // --- Séquence officielle : base -> jet attaquant -> PA attaquant post-tirage ->
-            // --- jet défenseur -> PA défenseur post-tirage -> résolution normale.
+            // --- Duel aveugle : base attaque -> mise attaquant (cachée) ->
+            // --- mise défenseur à l'aveugle -> révélation simultanée -> résolution normale.
             var duel = BeginDuel(
                 attacker, defender, targetedPart,
                 attackDie, attackModifier, defenseDie, defenseModifier,
                 weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend,
-                defenderArmor, attackSkill, defenseSkill, out string error);
+                defenderArmor, attackSkill, defenseSkill, out string error, cover);
             if (duel == null)
             {
+                var cfg0 = Rules.CoreRulesConfig.Instance;
+                bool coverBlocked = cover == CoverType.Full && cfg0.FullCoverBlocksAttack;
                 return new DamageResult
                 {
                     IsHit = false,
-                    IsBlocked = false,
+                    IsBlocked = coverBlocked,
+                    Cover = cover,
+                    CoverAttackPenalty = 0,
+                    BlockedByCover = coverBlocked,
                     CombatLog = error
                 };
             }
 
-            RollAttackerRaw(duel);
-            int appliedAtt = AddAttackerBonusPA(duel, attackerBonusAP);
-
-            RollDefenderRaw(duel);
-            int appliedDef = 0;
+            DeclareAttackerStakes(duel, attackerBonusAP, attackerPE);
             if (duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated && duel.CanDefenderReact)
             {
-                appliedDef = AddDefenderBonusPA(duel, defenderBonusAP);
+                DeclareDefenderStakes(duel, defenseSkill, true, defenderBonusAP, defenderPE, defenderSpecialization);
+            }
+            else
+            {
+                DeclareDefenderStakes(duel, defenseSkill, false, 0, 0, defenderSpecialization);
             }
 
-            // Pour la traçabilité des logs, on conserve les bonus réellement débités.
-            duel.AttackerBonusPAApplied = appliedAtt;
-            duel.DefenderBonusPAApplied = appliedDef;
-
-            return ResolveDuelDamage(duel);
+            return ResolveBlindDuel(duel);
         }
 
         private DamageResult ResolveDuelDamage(AttackDuel duel)
@@ -495,9 +748,10 @@ namespace Killtime.Core.Combat
             var cfg = Rules.CoreRulesConfig.Instance;
 
             var attackRoll = duel.AttackFinalRoll;
-            var attackRaw = duel.AttackRawRoll;
-            int safeAttackerBonus = duel.AttackerBonusPAApplied;
-            int actualDefenderBonus = duel.DefenderBonusPAApplied;
+            int attCommittedPA = duel.AttackerBonusPAApplied;
+            int attCommittedPE = duel.AttackerPEApplied;
+            int defCommittedPA = duel.DefenderBonusPAApplied;
+            int defCommittedPE = duel.DefenderPEApplied;
 
             DiceRollResult defenseRoll;
             int differential;
@@ -511,7 +765,7 @@ namespace Killtime.Core.Combat
                 differential = attackRoll.Total;
                 string inCapReason = duel.IsDefenderIncapacitated
                     ? $"<b>CIBLE HORS D'ÉTAT ({defender.ActiveStatus}) ➔ Parade impossible (0 PA)</b>"
-                    : "<b>DÉFENSE PASSIVE (0 PA engagé, aucune parade)</b>";
+                    : "<b>ENCAISSEMENT PASSIF AVEUGLE (0 PA engagé, aucune parade, jet adverse jamais vu)</b>";
                 defRollStr = inCapReason;
             }
             else
@@ -522,9 +776,9 @@ namespace Killtime.Core.Combat
                 string statusDefInfo = defender.GetStatusBreakdownString(defenseSkill, isOffensive: false);
 
                 string defPaText;
-                if (duel.CanDefenderReact)
+                if (duel.CanDefenderReact && duel.DefenderBasePaid)
                 {
-                    defPaText = actualDefenderBonus > 0 ? $" + PA {actualDefenderBonus} (après tirage)" : " + PA 0 (après tirage)";
+                    defPaText = $" + Mise {defCommittedPA} PA + {defCommittedPE} PE (aveugle)";
                 }
                 else
                 {
@@ -532,33 +786,38 @@ namespace Killtime.Core.Combat
                 }
                 string critDefText = defenseRoll.IsCriticalSuccess ? " <color=#00E5FF>[CRITIQUE !]</color>" : "";
                 string defStatusDetail = !string.IsNullOrEmpty(statusDefInfo) ? $" {statusDefInfo}" : " 0";
-                // Affiche brut puis final pour prouver l'injection post-tirage.
-                defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {duel.DefenseDie} [Tirage {duel.DefenseRawRoll.RawRoll} + États {duel.DefenseStatusMod} ({defStatusDetail}){defPaText} = Total {defenseRoll.Total}]{critDefText}";
+                // Les deux jets sont révélés ensemble : aucune injection après tirage.
+                defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {duel.DefenseDie} [Tirage {defenseRoll.RawRoll} + États {duel.DefenseStatusMod} ({defStatusDetail}){defPaText} = Total {defenseRoll.Total}]{critDefText}";
             }
 
             string statusAttInfo = attacker.GetStatusBreakdownString(attackSkill, isOffensive: true);
             string statusAttDetail = !string.IsNullOrEmpty(statusAttInfo) ? statusAttInfo : "0";
             string aimText = duel.CancelPenaltyWithAP ? "Visée compensée (+1 PA base)" : $"Malus Visée {targetInfo.DifficultyModifier}";
-            string paAttText = safeAttackerBonus > 0 ? $" + PA {safeAttackerBonus} (après tirage)" : " + PA 0 (après tirage)";
+            string paAttText = (attCommittedPA > 0 || attCommittedPE > 0) ? $" + Mise {attCommittedPA} PA + {attCommittedPE} PE (aveugle)" : " + Mise 0 (aveugle)";
             string critAttText = attackRoll.IsCriticalSuccess ? " <color=#FFE600>[CRITIQUE !]</color>" : "";
             string entraveText = duel.AppliedCanonEntrave
                 ? (duel.CancelPenaltyWithAP ? " [Canon Entravé : Annulé (+1 PA)]" : " [Canon Entravé : -2 Tir]")
                 : (duel.IsMartialArtsStrike ? " [Arts Martiaux : Exemption Totale]" : "");
+            string coverText = duel.Cover == CoverType.Half
+                ? $" [Couvert : moitié visible {duel.CoverAttackPenalty}]"
+                : duel.Cover == CoverType.ThreeQuarters
+                    ? $" [Couvert : 3/4 couvert {duel.CoverAttackPenalty}]"
+                    : "";
 
             int normalRef = (attacker.Attributes.Force + attacker.Attributes.Agilite + 1) / 2;
             string augText = (attacker.IsMagicAugmented(attackSkill, true)
                     && attacker.Attributes.Magie > normalRef)
                 ? $" [Corps Augmenté : MAG {attacker.Attributes.Magie} (+{SkillDefinitions.CharacteristicSteps(attacker.Attributes.Magie)} paliers)]"
                 : "";
-            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRaw.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText} = Total {attackRoll.Total}]{augText}{critAttText}";
+            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
-            // Séquences explicites phase par phase (traçabilité Livre VI §24.1).
-            string phaseAtt = $"Phase 1 — Attaque : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), paie {duel.BaseAttackCost} PA, lance {duel.AttackDie} → brut {attackRaw.Total}, PA post-tirage +{safeAttackerBonus} → final {attackRoll.Total}.";
+            // Traçabilité Livre VI §24.1 (duel aveugle) : déclarations masquées puis révélation.
+            string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.";
             string phaseDef = !effectiveDefenderWantsToDefend
-                ? $"Phase 2 — Défense : {defender.Name} ne se défend pas → défense 0."
-                : (duel.CanDefenderReact
-                    ? $"Phase 2 — Défense : {defender.Name} paie 1 PA, lance {duel.DefenseDie} → brut {duel.DefenseRawRoll.Total}, PA post-tirage +{actualDefenderBonus} → final {defenseRoll.Total}."
-                    : $"Phase 2 — Défense : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe, total {defenseRoll.Total}.");
+                ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} encaisse (0 PA, 0 PE), sans voir le jet adverse."
+                : ((duel.CanDefenderReact && duel.DefenderBasePaid)
+                    ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse."
+                    : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe.");
 
             // 4. Résolution du Différentiel
             if (effectiveDefenderWantsToDefend && differential < 0)
@@ -566,7 +825,7 @@ namespace Killtime.Core.Combat
                 string blockLog = $"🛡️ <b>PARADE / ESQUIVE</b> : {attacker.Name} attaque, mais {defender.Name} neutralise l'assaut !\n";
                 blockLog += $"   {phaseAtt}\n";
                 blockLog += $"   {phaseDef}\n";
-                blockLog += $"   🎲 <b>Compétences :</b> Attaque {attackRollStr} vs Défense {defRollStr}\n";
+                blockLog += $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> Attaque {attackRollStr} vs Défense {defRollStr}\n";
                 blockLog += $"   ⚖️ <b>Différentiel Net :</b> <color=#00E5FF>{differential}</color> ➔ <b>0 dégât infligé</b> (Attaque neutralisée).";
 
                 return new DamageResult
@@ -576,6 +835,9 @@ namespace Killtime.Core.Combat
                     AttackRoll = attackRoll,
                     DefenseRoll = defenseRoll,
                     Differential = differential,
+                    Cover = duel.Cover,
+                    CoverAttackPenalty = duel.CoverAttackPenalty,
+                    BlockedByCover = false,
                     CombatLog = blockLog
                 };
             }
@@ -636,7 +898,7 @@ namespace Killtime.Core.Combat
             string log = $"{headerTag} : {attacker.Name} ➔ {defender.Name} ({hitPartStr})\n";
             log += $"   {phaseAtt}\n";
             log += $"   {phaseDef}\n";
-            log += $"   🎲 <b>Compétences :</b> Attaque {attackRollStr} vs Défense {defRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
+            log += $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> Attaque {attackRollStr} vs Défense {defRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
             log += $"   ⚔️ <b>Dégâts :</b> [{dmgFormula} = {rawDamage} Bruts] &minus; [Armure {totalArmor} (Absorbé: {absorbed})] ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
             log += $"   ❤️ <b>Vitalité {defender.Name} :</b> {prevHp} ➔ <b>{defender.CurrentHealth}/{defender.MaxHealth} PV</b>";
 
@@ -683,6 +945,9 @@ namespace Killtime.Core.Combat
                 FatalResolution = fatalRes,
                 CausedKnockback = causedKnockback,
                 IsCanonEntrave = duel.AppliedCanonEntrave,
+                Cover = duel.Cover,
+                CoverAttackPenalty = duel.CoverAttackPenalty,
+                BlockedByCover = false,
                 CombatLog = log
             };
         }

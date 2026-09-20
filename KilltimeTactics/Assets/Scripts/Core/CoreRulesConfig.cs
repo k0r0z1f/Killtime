@@ -45,6 +45,9 @@ namespace Killtime.Core.Rules
         public int EmergencyBreathBonusAP = 2;
         public int EmergencyBreathEssoufflementCost = 1;
         public float LastBreathAPRatio = 0.5f;
+        // Duel aveugle (Livres II §7 + VI §24) : bonus au total par point
+        // d'Essoufflement (PE) engagé dans une déclaration (plafond = Constitution).
+        public int DuelPEBonusPerPoint = 1;
 
         // --- Livre VI : Combat & Passes d'Armes ---
         [Header("Passes d'Armes & Résolution (Livre VI)")]
@@ -55,6 +58,23 @@ namespace Killtime.Core.Rules
         public int StandardTargetDC = 10;
         public int SingleAttackActionLimit = 1;
         public int MultiDiceAttackActionLimit = 2;
+
+        // --- Livre VI §25.3 : Couvert & Visibilité ---
+        [Header("Couvert & Visibilité (Livre VI §25.3)")]
+        public int HalfCoverAttackPenalty = -1;
+        public int ThreeQuartersCoverAttackPenalty = -2;
+        public bool FullCoverBlocksAttack = true;
+        public bool CoverIgnoredAtContactDistance = true;
+
+        // --- Livre VI §25.3 : Cône de visée (lecture rigoureuse) ---
+        [Header("Cône de Visée (Livre VI §25.3)")]
+        public float CoverEyeHeight = 1.5f;
+        public float CoverBodyHeight = 1.8f;
+        public float CoverHalfHeight = 0.7f;
+        public float CoverThreeQuartersHeight = 1.2f;
+        public float CoverFullHeight = 2.2f;
+        public float CoverFullVisibleFraction = 0.9f;
+        public float CoverHalfVisibleFraction = 0.45f;
 
         // --- Livre VI, Chap. 26 : VATS Anatomique ---
         [Header("Anatomie Chirurgicale (Livre VI, Chap. 26)")]
@@ -90,6 +110,7 @@ namespace Killtime.Core.Rules
             EmergencyBreathBonusAP = 2;
             EmergencyBreathEssoufflementCost = 1;
             LastBreathAPRatio = 0.5f;
+            DuelPEBonusPerPoint = 1;
 
             BaseAttackAPCost = 2;
             CancelAimPenaltyAPCost = 1;
@@ -98,6 +119,19 @@ namespace Killtime.Core.Rules
             StandardTargetDC = 10;
             SingleAttackActionLimit = 1;
             MultiDiceAttackActionLimit = 2;
+
+            HalfCoverAttackPenalty = -1;
+            ThreeQuartersCoverAttackPenalty = -2;
+            FullCoverBlocksAttack = true;
+            CoverIgnoredAtContactDistance = true;
+
+            CoverEyeHeight = 1.5f;
+            CoverBodyHeight = 1.8f;
+            CoverHalfHeight = 0.7f;
+            CoverThreeQuartersHeight = 1.2f;
+            CoverFullHeight = 2.2f;
+            CoverFullVisibleFraction = 0.9f;
+            CoverHalfVisibleFraction = 0.45f;
 
             XPCostTraining = 5;
             XPCostSpecialization = 5;
