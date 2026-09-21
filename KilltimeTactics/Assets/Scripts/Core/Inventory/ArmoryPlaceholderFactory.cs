@@ -100,36 +100,38 @@ namespace Killtime.Core.Inventory
         private static void BuildSwordMetal(GameObject root, float bladeLen, bool twoHanded)
         {
             // Garde + poignée + lame acier
+            // NOTE : les primitives Cylinder Unity font 2 m de haut pour scale.y=1 :
+            // on divise donc tous les Y cylindres par 2 pour obtenir la hauteur voulue.
             Part(root, PrimitiveType.Cube, "Grip", new Vector3(0, -0.18f, 0), Quaternion.identity, new Vector3(0.05f, 0.22f, 0.05f), new Color(0.25f, 0.16f, 0.1f));
             Part(root, PrimitiveType.Cube, "Guard", new Vector3(0, -0.06f, 0), Quaternion.identity, new Vector3(0.22f, 0.03f, 0.06f), new Color(0.5f, 0.42f, 0.25f), metallic: 0.8f);
             Part(root, PrimitiveType.Cube, "Blade", new Vector3(0, bladeLen * 0.5f - 0.05f, 0), Quaternion.identity, new Vector3(0.07f, bladeLen, 0.02f), new Color(0.75f, 0.78f, 0.82f), metallic: 0.9f);
-            Part(root, PrimitiveType.Cylinder, "Pommel", new Vector3(0, -0.31f, 0), Quaternion.identity, new Vector3(0.06f, 0.05f, 0.06f), new Color(0.5f, 0.42f, 0.25f), metallic: 0.8f);
+            Part(root, PrimitiveType.Cylinder, "Pommel", new Vector3(0, -0.31f, 0), Quaternion.identity, new Vector3(0.06f, 0.025f, 0.06f), new Color(0.5f, 0.42f, 0.25f), metallic: 0.8f);
             if (twoHanded)
                 Part(root, PrimitiveType.Cube, "GripLong", new Vector3(0, -0.3f, 0), Quaternion.identity, new Vector3(0.045f, 0.18f, 0.045f), new Color(0.2f, 0.13f, 0.08f));
         }
 
         private static void BuildClub(GameObject root)
         {
-            Part(root, PrimitiveType.Cylinder, "Stick", new Vector3(0, 0.15f, 0), Quaternion.Euler(0, 0, 8f), new Vector3(0.09f, 0.7f, 0.09f), new Color(0.4f, 0.27f, 0.15f));
+            Part(root, PrimitiveType.Cylinder, "Stick", new Vector3(0, 0.15f, 0), Quaternion.Euler(0, 0, 8f), new Vector3(0.09f, 0.35f, 0.09f), new Color(0.4f, 0.27f, 0.15f));
             Part(root, PrimitiveType.Sphere, "Head", new Vector3(0.05f, 0.5f, 0), Quaternion.identity, new Vector3(0.16f, 0.2f, 0.16f), new Color(0.32f, 0.21f, 0.11f));
         }
 
         private static void BuildAxe(GameObject root)
         {
-            Part(root, PrimitiveType.Cylinder, "Handle", new Vector3(0, 0.1f, 0), Quaternion.identity, new Vector3(0.06f, 0.9f, 0.06f), new Color(0.4f, 0.27f, 0.15f));
+            Part(root, PrimitiveType.Cylinder, "Handle", new Vector3(0, 0.1f, 0), Quaternion.identity, new Vector3(0.06f, 0.45f, 0.06f), new Color(0.4f, 0.27f, 0.15f));
             Part(root, PrimitiveType.Cube, "Head", new Vector3(0.14f, 0.48f, 0), Quaternion.identity, new Vector3(0.3f, 0.18f, 0.04f), new Color(0.7f, 0.72f, 0.75f), metallic: 0.85f);
         }
 
         private static void BuildHammer(GameObject root)
         {
-            Part(root, PrimitiveType.Cylinder, "Handle", new Vector3(0, 0.05f, 0), Quaternion.identity, new Vector3(0.07f, 1.0f, 0.07f), new Color(0.3f, 0.3f, 0.32f), metallic: 0.6f);
+            Part(root, PrimitiveType.Cylinder, "Handle", new Vector3(0, 0.05f, 0), Quaternion.identity, new Vector3(0.07f, 0.5f, 0.07f), new Color(0.3f, 0.3f, 0.32f), metallic: 0.6f);
             Part(root, PrimitiveType.Cube, "Head", new Vector3(0, 0.55f, 0), Quaternion.identity, new Vector3(0.42f, 0.2f, 0.2f), new Color(0.45f, 0.47f, 0.5f), metallic: 0.85f);
         }
 
         private static void BuildSpear(GameObject root)
         {
-            Part(root, PrimitiveType.Cylinder, "Shaft", new Vector3(0, 0.1f, 0), Quaternion.identity, new Vector3(0.05f, 1.6f, 0.05f), new Color(0.42f, 0.3f, 0.17f));
-            Part(root, PrimitiveType.Cylinder, "Tip", new Vector3(0, 1.0f, 0), Quaternion.identity, new Vector3(0.09f, 0.3f, 0.09f), new Color(0.75f, 0.78f, 0.82f), metallic: 0.9f);
+            Part(root, PrimitiveType.Cylinder, "Shaft", new Vector3(0, 0.1f, 0), Quaternion.identity, new Vector3(0.05f, 0.8f, 0.05f), new Color(0.42f, 0.3f, 0.17f));
+            Part(root, PrimitiveType.Cylinder, "Tip", new Vector3(0, 1.0f, 0), Quaternion.identity, new Vector3(0.09f, 0.15f, 0.09f), new Color(0.75f, 0.78f, 0.82f), metallic: 0.9f);
         }
 
         private static void BuildBow(GameObject root)
@@ -144,19 +146,19 @@ namespace Killtime.Core.Inventory
 
         private static void BuildLaserSword(GameObject root, float bladeLen, Color bladeColor, bool twoHanded)
         {
-            Part(root, PrimitiveType.Cylinder, "Hilt", new Vector3(0, -0.2f, 0), Quaternion.identity, new Vector3(0.09f, 0.3f, 0.09f), new Color(0.15f, 0.16f, 0.18f), metallic: 0.7f);
-            Part(root, PrimitiveType.Cylinder, "Emitter", new Vector3(0, -0.03f, 0), Quaternion.identity, new Vector3(0.12f, 0.06f, 0.12f), new Color(0.0f, 0.85f, 1.0f), emissive: new Color(0.0f, 0.7f, 0.9f));
+            Part(root, PrimitiveType.Cylinder, "Hilt", new Vector3(0, -0.2f, 0), Quaternion.identity, new Vector3(0.09f, 0.15f, 0.09f), new Color(0.15f, 0.16f, 0.18f), metallic: 0.7f);
+            Part(root, PrimitiveType.Cylinder, "Emitter", new Vector3(0, -0.03f, 0), Quaternion.identity, new Vector3(0.12f, 0.03f, 0.12f), new Color(0.0f, 0.85f, 1.0f), emissive: new Color(0.0f, 0.7f, 0.9f));
             Part(root, PrimitiveType.Cube, "Blade", new Vector3(0, bladeLen * 0.5f, 0), Quaternion.identity, new Vector3(0.055f, bladeLen, 0.055f), bladeColor, emissive: bladeColor * 1.6f);
             Part(root, PrimitiveType.Sphere, "TipGlow", new Vector3(0, bladeLen, 0), Quaternion.identity, new Vector3(0.07f, 0.07f, 0.07f), Color.white, emissive: bladeColor * 2f);
             if (twoHanded)
-                Part(root, PrimitiveType.Cylinder, "HiltExt", new Vector3(0, -0.42f, 0), Quaternion.identity, new Vector3(0.08f, 0.22f, 0.08f), new Color(0.12f, 0.12f, 0.14f), metallic: 0.7f);
+                Part(root, PrimitiveType.Cylinder, "HiltExt", new Vector3(0, -0.42f, 0), Quaternion.identity, new Vector3(0.08f, 0.11f, 0.08f), new Color(0.12f, 0.12f, 0.14f), metallic: 0.7f);
         }
 
         private static void BuildPistolLaser(GameObject root, Color body)
         {
             Part(root, PrimitiveType.Cube, "Body", new Vector3(0, 0.05f, 0.1f), Quaternion.identity, new Vector3(0.09f, 0.12f, 0.4f), body, metallic: 0.5f);
             Part(root, PrimitiveType.Cube, "Grip", new Vector3(0, -0.12f, -0.02f), Quaternion.Euler(-18f, 0, 0), new Vector3(0.07f, 0.24f, 0.09f), new Color(0.12f, 0.12f, 0.14f));
-            Part(root, PrimitiveType.Cylinder, "Cell", new Vector3(0, 0.1f, 0.02f), Quaternion.Euler(90f, 0, 0), new Vector3(0.06f, 0.1f, 0.06f), new Color(0.0f, 0.9f, 1.0f), emissive: new Color(0.0f, 0.8f, 1.0f));
+            Part(root, PrimitiveType.Cylinder, "Cell", new Vector3(0, 0.1f, 0.02f), Quaternion.Euler(90f, 0, 0), new Vector3(0.06f, 0.05f, 0.06f), new Color(0.0f, 0.9f, 1.0f), emissive: new Color(0.0f, 0.8f, 1.0f));
             Part(root, PrimitiveType.Cube, "Sight", new Vector3(0, 0.13f, 0.05f), Quaternion.identity, new Vector3(0.03f, 0.05f, 0.1f), new Color(0.08f, 0.08f, 0.1f));
         }
 
@@ -166,11 +168,11 @@ namespace Killtime.Core.Inventory
             Part(root, PrimitiveType.Cube, "Barrel", new Vector3(0, 0.06f, 0.55f * length + 0.15f), Quaternion.identity, new Vector3(0.05f, 0.05f, 0.35f), new Color(0.1f, 0.1f, 0.12f), metallic: 0.7f);
             Part(root, PrimitiveType.Cube, "Stock", new Vector3(0, 0.0f, -0.28f), Quaternion.identity, new Vector3(0.09f, 0.18f, 0.25f), new Color(0.12f, 0.12f, 0.14f));
             Part(root, PrimitiveType.Cube, "Grip", new Vector3(0, -0.13f, 0.05f), Quaternion.Euler(-18f, 0, 0), new Vector3(0.07f, 0.22f, 0.09f), new Color(0.12f, 0.12f, 0.14f));
-            Part(root, PrimitiveType.Cylinder, "Cell", new Vector3(0, 0.12f, 0.1f), Quaternion.Euler(90f, 0, 0), new Vector3(0.07f, 0.12f, 0.07f), new Color(0.0f, 0.9f, 1.0f), emissive: new Color(0.0f, 0.8f, 1.0f));
+            Part(root, PrimitiveType.Cylinder, "Cell", new Vector3(0, 0.12f, 0.1f), Quaternion.Euler(90f, 0, 0), new Vector3(0.07f, 0.06f, 0.07f), new Color(0.0f, 0.9f, 1.0f), emissive: new Color(0.0f, 0.8f, 1.0f));
             if (scoped)
             {
-                Part(root, PrimitiveType.Cylinder, "Scope", new Vector3(0, 0.16f, 0.12f), Quaternion.Euler(90f, 0, 0), new Vector3(0.06f, 0.25f, 0.06f), new Color(0.08f, 0.08f, 0.1f), metallic: 0.6f);
-                Part(root, PrimitiveType.Cylinder, "Lens", new Vector3(0, 0.16f, 0.25f), Quaternion.Euler(90f, 0, 0), new Vector3(0.05f, 0.02f, 0.05f), new Color(0.2f, 0.8f, 1.0f), emissive: new Color(0.2f, 0.7f, 1.0f));
+                Part(root, PrimitiveType.Cylinder, "Scope", new Vector3(0, 0.16f, 0.12f), Quaternion.Euler(90f, 0, 0), new Vector3(0.06f, 0.125f, 0.06f), new Color(0.08f, 0.08f, 0.1f), metallic: 0.6f);
+                Part(root, PrimitiveType.Cylinder, "Lens", new Vector3(0, 0.16f, 0.25f), Quaternion.Euler(90f, 0, 0), new Vector3(0.05f, 0.01f, 0.05f), new Color(0.2f, 0.8f, 1.0f), emissive: new Color(0.2f, 0.7f, 1.0f));
             }
         }
 
@@ -185,8 +187,8 @@ namespace Killtime.Core.Inventory
         private static void BuildGrenade(GameObject root)
         {
             Part(root, PrimitiveType.Sphere, "Body", new Vector3(0, 0, 0), Quaternion.identity, new Vector3(0.22f, 0.26f, 0.22f), new Color(0.25f, 0.35f, 0.25f), metallic: 0.6f);
-            Part(root, PrimitiveType.Cylinder, "Fuse", new Vector3(0, 0.17f, 0), Quaternion.identity, new Vector3(0.08f, 0.08f, 0.08f), new Color(0.6f, 0.6f, 0.62f), metallic: 0.8f);
-            Part(root, PrimitiveType.Cylinder, "Ring", new Vector3(0.08f, 0.22f, 0), Quaternion.Euler(0, 0, 90f), new Vector3(0.09f, 0.02f, 0.09f), new Color(0.75f, 0.75f, 0.75f), metallic: 0.9f);
+            Part(root, PrimitiveType.Cylinder, "Fuse", new Vector3(0, 0.17f, 0), Quaternion.identity, new Vector3(0.08f, 0.04f, 0.08f), new Color(0.6f, 0.6f, 0.62f), metallic: 0.8f);
+            Part(root, PrimitiveType.Cylinder, "Ring", new Vector3(0.08f, 0.22f, 0), Quaternion.Euler(0, 0, 90f), new Vector3(0.09f, 0.01f, 0.09f), new Color(0.75f, 0.75f, 0.75f), metallic: 0.9f);
             Part(root, PrimitiveType.Cube, "Stripe", new Vector3(0, 0.02f, 0), Quaternion.identity, new Vector3(0.23f, 0.05f, 0.23f), new Color(0.9f, 0.2f, 0.15f), emissive: new Color(0.7f, 0.1f, 0.1f));
         }
 
@@ -232,16 +234,16 @@ namespace Killtime.Core.Inventory
             if (stick)
             {
                 // Grenade à manche : tête cylindrique + long manche bois.
-                Part(root, PrimitiveType.Cylinder, "Head", new Vector3(0, 0.32f, 0), Quaternion.identity, new Vector3(0.20f, 0.30f, 0.20f), body, metallic: 0.55f);
+                Part(root, PrimitiveType.Cylinder, "Head", new Vector3(0, 0.32f, 0), Quaternion.identity, new Vector3(0.20f, 0.15f, 0.20f), body, metallic: 0.55f);
                 Part(root, PrimitiveType.Cube, "Stripe", new Vector3(0, 0.32f, 0), Quaternion.identity, new Vector3(0.21f, 0.06f, 0.21f), stripe, emissive: glow);
-                Part(root, PrimitiveType.Cylinder, "Stick", new Vector3(0, -0.05f, 0), Quaternion.identity, new Vector3(0.09f, 0.55f, 0.09f), new Color(0.45f, 0.30f, 0.15f));
-                Part(root, PrimitiveType.Cylinder, "Cap", new Vector3(0, -0.34f, 0), Quaternion.identity, new Vector3(0.10f, 0.06f, 0.10f), new Color(0.6f, 0.6f, 0.62f), metallic: 0.8f);
+                Part(root, PrimitiveType.Cylinder, "Stick", new Vector3(0, -0.05f, 0), Quaternion.identity, new Vector3(0.09f, 0.275f, 0.09f), new Color(0.45f, 0.30f, 0.15f));
+                Part(root, PrimitiveType.Cylinder, "Cap", new Vector3(0, -0.34f, 0), Quaternion.identity, new Vector3(0.10f, 0.03f, 0.10f), new Color(0.6f, 0.6f, 0.62f), metallic: 0.8f);
             }
             else
             {
                 Part(root, PrimitiveType.Sphere, "Body", new Vector3(0, 0, 0), Quaternion.identity, new Vector3(0.22f, 0.26f, 0.22f), body, metallic: 0.6f);
-                Part(root, PrimitiveType.Cylinder, "Fuse", new Vector3(0, 0.17f, 0), Quaternion.identity, new Vector3(0.08f, 0.08f, 0.08f), new Color(0.6f, 0.6f, 0.62f), metallic: 0.8f);
-                Part(root, PrimitiveType.Cylinder, "Ring", new Vector3(0.08f, 0.22f, 0), Quaternion.Euler(0, 0, 90f), new Vector3(0.09f, 0.02f, 0.09f), new Color(0.75f, 0.75f, 0.75f), metallic: 0.9f);
+                Part(root, PrimitiveType.Cylinder, "Fuse", new Vector3(0, 0.17f, 0), Quaternion.identity, new Vector3(0.08f, 0.04f, 0.08f), new Color(0.6f, 0.6f, 0.62f), metallic: 0.8f);
+                Part(root, PrimitiveType.Cylinder, "Ring", new Vector3(0.08f, 0.22f, 0), Quaternion.Euler(0, 0, 90f), new Vector3(0.09f, 0.01f, 0.09f), new Color(0.75f, 0.75f, 0.75f), metallic: 0.9f);
                 Part(root, PrimitiveType.Cube, "Stripe", new Vector3(0, 0.02f, 0), Quaternion.identity, new Vector3(0.23f, 0.05f, 0.23f), stripe, emissive: glow);
             }
 
@@ -264,11 +266,11 @@ namespace Killtime.Core.Inventory
         private static void BuildGrenadeLauncher(GameObject root)
         {
             // Lance-grenades 40mm : gros tube + crosse + poignée + anneau ambre.
-            Part(root, PrimitiveType.Cylinder, "Tube", new Vector3(0, 0.05f, 0.15f), Quaternion.Euler(90f, 0, 0), new Vector3(0.16f, 0.65f, 0.16f), new Color(0.16f, 0.17f, 0.19f), metallic: 0.7f);
-            Part(root, PrimitiveType.Cylinder, "Muzzle", new Vector3(0, 0.05f, 0.5f), Quaternion.Euler(90f, 0, 0), new Vector3(0.19f, 0.08f, 0.19f), new Color(0.10f, 0.10f, 0.12f), metallic: 0.8f);
+            Part(root, PrimitiveType.Cylinder, "Tube", new Vector3(0, 0.05f, 0.15f), Quaternion.Euler(90f, 0, 0), new Vector3(0.16f, 0.325f, 0.16f), new Color(0.16f, 0.17f, 0.19f), metallic: 0.7f);
+            Part(root, PrimitiveType.Cylinder, "Muzzle", new Vector3(0, 0.05f, 0.5f), Quaternion.Euler(90f, 0, 0), new Vector3(0.19f, 0.04f, 0.19f), new Color(0.10f, 0.10f, 0.12f), metallic: 0.8f);
             Part(root, PrimitiveType.Cube, "Stock", new Vector3(0, 0.0f, -0.28f), Quaternion.identity, new Vector3(0.10f, 0.20f, 0.28f), new Color(0.30f, 0.20f, 0.12f));
             Part(root, PrimitiveType.Cube, "Grip", new Vector3(0, -0.14f, 0.02f), Quaternion.Euler(-18f, 0, 0), new Vector3(0.08f, 0.24f, 0.10f), new Color(0.12f, 0.12f, 0.14f));
-            Part(root, PrimitiveType.Cylinder, "Ring", new Vector3(0, 0.05f, 0.32f), Quaternion.Euler(90f, 0, 0), new Vector3(0.18f, 0.05f, 0.18f), new Color(1.0f, 0.65f, 0.15f), emissive: new Color(0.9f, 0.5f, 0.1f));
+            Part(root, PrimitiveType.Cylinder, "Ring", new Vector3(0, 0.05f, 0.32f), Quaternion.Euler(90f, 0, 0), new Vector3(0.18f, 0.025f, 0.18f), new Color(1.0f, 0.65f, 0.15f), emissive: new Color(0.9f, 0.5f, 0.1f));
             Part(root, PrimitiveType.Cube, "Sight", new Vector3(0, 0.18f, 0.05f), Quaternion.identity, new Vector3(0.04f, 0.12f, 0.06f), new Color(0.08f, 0.08f, 0.10f));
         }
 
@@ -282,22 +284,22 @@ namespace Killtime.Core.Inventory
             if (heavy)
             {
                 Part(root, PrimitiveType.Cube, "Plackart", new Vector3(0, -0.25f, 0.05f), Quaternion.identity, new Vector3(0.44f, 0.2f, 0.26f), new Color(0.25f, 0.27f, 0.32f), metallic: 0.8f);
-                Part(root, PrimitiveType.Cylinder, "Light", new Vector3(0.15f, 0.3f, 0.16f), Quaternion.Euler(90f, 0, 0), new Vector3(0.05f, 0.03f, 0.05f), new Color(1.0f, 0.6f, 0.1f), emissive: new Color(1.0f, 0.5f, 0.1f));
+                Part(root, PrimitiveType.Cylinder, "Light", new Vector3(0.15f, 0.3f, 0.16f), Quaternion.Euler(90f, 0, 0), new Vector3(0.05f, 0.015f, 0.05f), new Color(1.0f, 0.6f, 0.1f), emissive: new Color(1.0f, 0.5f, 0.1f));
             }
         }
 
         private static void BuildShieldGen(GameObject root)
         {
-            Part(root, PrimitiveType.Cylinder, "Base", new Vector3(0, -0.15f, 0), Quaternion.identity, new Vector3(0.25f, 0.1f, 0.25f), new Color(0.12f, 0.13f, 0.16f), metallic: 0.7f);
+            Part(root, PrimitiveType.Cylinder, "Base", new Vector3(0, -0.15f, 0), Quaternion.identity, new Vector3(0.25f, 0.05f, 0.25f), new Color(0.12f, 0.13f, 0.16f), metallic: 0.7f);
             Part(root, PrimitiveType.Sphere, "Core", new Vector3(0, 0.1f, 0), Quaternion.identity, new Vector3(0.2f, 0.28f, 0.2f), new Color(0.0f, 0.85f, 1.0f), emissive: new Color(0.0f, 0.75f, 1.0f) * 1.7f);
             Part(root, PrimitiveType.Sphere, "Bubble", new Vector3(0, 0.1f, 0), Quaternion.identity, new Vector3(0.55f, 0.65f, 0.55f), new Color(0.0f, 0.7f, 1.0f, 0.18f), transparent: true);
         }
 
         private static void BuildSyringe(GameObject root)
         {
-            Part(root, PrimitiveType.Cylinder, "Tube", new Vector3(0, 0.05f, 0), Quaternion.identity, new Vector3(0.12f, 0.4f, 0.12f), new Color(0.9f, 0.92f, 0.95f, 0.7f), transparent: true);
-            Part(root, PrimitiveType.Cylinder, "Liquid", new Vector3(0, -0.02f, 0), Quaternion.identity, new Vector3(0.09f, 0.22f, 0.09f), new Color(0.1f, 0.9f, 0.5f), emissive: new Color(0.1f, 0.7f, 0.4f));
-            Part(root, PrimitiveType.Cylinder, "Needle", new Vector3(0, -0.28f, 0), Quaternion.identity, new Vector3(0.02f, 0.2f, 0.02f), new Color(0.75f, 0.75f, 0.78f), metallic: 0.9f);
+            Part(root, PrimitiveType.Cylinder, "Tube", new Vector3(0, 0.05f, 0), Quaternion.identity, new Vector3(0.12f, 0.2f, 0.12f), new Color(0.9f, 0.92f, 0.95f, 0.7f), transparent: true);
+            Part(root, PrimitiveType.Cylinder, "Liquid", new Vector3(0, -0.02f, 0), Quaternion.identity, new Vector3(0.09f, 0.11f, 0.09f), new Color(0.1f, 0.9f, 0.5f), emissive: new Color(0.1f, 0.7f, 0.4f));
+            Part(root, PrimitiveType.Cylinder, "Needle", new Vector3(0, -0.28f, 0), Quaternion.identity, new Vector3(0.02f, 0.1f, 0.02f), new Color(0.75f, 0.75f, 0.78f), metallic: 0.9f);
             Part(root, PrimitiveType.Cube, "Plunger", new Vector3(0, 0.28f, 0), Quaternion.identity, new Vector3(0.14f, 0.04f, 0.14f), new Color(0.15f, 0.15f, 0.18f));
         }
 
@@ -318,9 +320,9 @@ namespace Killtime.Core.Inventory
 
         private static void BuildCell(GameObject root)
         {
-            Part(root, PrimitiveType.Cylinder, "Canister", new Vector3(0, 0, 0), Quaternion.identity, new Vector3(0.2f, 0.4f, 0.2f), new Color(0.18f, 0.19f, 0.22f), metallic: 0.7f);
+            Part(root, PrimitiveType.Cylinder, "Canister", new Vector3(0, 0, 0), Quaternion.identity, new Vector3(0.2f, 0.2f, 0.2f), new Color(0.18f, 0.19f, 0.22f), metallic: 0.7f);
             Part(root, PrimitiveType.Cube, "Crystal", new Vector3(0, 0.05f, 0), Quaternion.Euler(0, 30f, 0), new Vector3(0.12f, 0.25f, 0.12f), new Color(0.6f, 0.25f, 1.0f), emissive: new Color(0.55f, 0.2f, 1.0f) * 1.8f);
-            Part(root, PrimitiveType.Cylinder, "Cap", new Vector3(0, 0.24f, 0), Quaternion.identity, new Vector3(0.22f, 0.05f, 0.22f), new Color(0.85f, 0.65f, 0.2f), metallic: 0.9f);
+            Part(root, PrimitiveType.Cylinder, "Cap", new Vector3(0, 0.24f, 0), Quaternion.identity, new Vector3(0.22f, 0.025f, 0.22f), new Color(0.85f, 0.65f, 0.2f), metallic: 0.9f);
         }
 
         private static void BuildGenericCrate(GameObject root)

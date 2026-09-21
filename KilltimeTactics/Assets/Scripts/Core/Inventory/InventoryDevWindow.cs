@@ -37,6 +37,12 @@ namespace Killtime.UI
         private readonly List<TacticalUnit> _sceneUnits = new();
         private int _selectedUnitIndex = 0;
 
+        // --- Liaison au Créateur de Personnages (F1) ---
+        // Quand l'armurerie est ouverte depuis le créateur, elle édite directement
+        // la fiche en cours de création (_draftSheet) au lieu d'une unité en scène.
+        // Référence live : tout ajout/achat/vente touche le perso que l'on crée.
+        private CharacterSheet _draftSheet;
+
         private readonly List<string> _availableGunPrefabs = new();
         private int _selectedCatalogIndex = 0;
         private int _selectedMarketIndex = 0;
@@ -137,6 +143,9 @@ namespace Killtime.UI
         {
             if (unit == null) return;
             EnsureReferences();
+            _draftSheet = null;
+            _inspectedItem = null;
+            _previewCatalogDef = null;
             RefreshSceneUnits();
             int idx = _sceneUnits.IndexOf(unit);
             if (idx >= 0)
@@ -145,6 +154,65 @@ namespace Killtime.UI
                 _selectedUnit = unit;
             }
             OpenInstance();
+        }
+
+        /// <summary>
+        /// Lie l'armurerie / le marché à la fiche en cours de création dans le
+        /// Créateur de Personnages (F1). Tant que ce lien est actif, tout ajout
+        /// (+ Sac, Acheter, dotation) va sur <paramref name="sheet" />.
+        /// </summary>
+        public void InspectSheet(CharacterSheet sheet)
+        {
+            if (sheet == null) return;
+            EnsureReferences();
+            RefreshSceneUnits();
+            _draftSheet = sheet;
+            _inspectedItem = null;
+            _previewCatalogDef = null;
+            _statusMessage = $"Lié au personnage en création : '{sheet.Name}'. Les ajouts vont sur cette fiche.";
+            OpenInstance();
+        }
+
+        /// <summary>Retour au mode standard (unités en scène). Appelé via le header.</summary>
+        public void ClearDraftBinding()
+        {
+            _draftSheet = null;
+            _inspectedItem = null;
+            _previewCatalogDef = null;
+            RefreshSceneUnits();
+            _statusMessage = "Prêt. Catalogue Livre VIII chargé.";
+        }
+
+        /// <summary>Vrai quand l'armurerie édite la fiche du créateur plutôt qu'une unité.</summary>
+        public bool IsBoundToDraft => _draftSheet != null;
+
+        /// <summary>
+        /// Fiche active : le brouillon du créateur si lié, sinon la fiche de l'unité
+        /// sélectionnée. Si le créateur a rechargé une autre fiche entre-temps, on
+        /// suit sa fiche courante pour ne jamais écrire sur un brouillon périmé.
+        /// </summary>
+        public CharacterSheet GetActiveSheet()
+        {
+            if (_draftSheet != null)
+            {
+                var creator = CharacterDevWindow.Instance;
+                if (creator != null && creator.CurrentSheet != null)
+                {
+                    // Le créateur a pu charger une autre fiche : on suit toujours
+                    // la fiche qu'il édite actuellement.
+                    if (!object.ReferenceEquals(_draftSheet, creator.CurrentSheet))
+                    {
+                        // Si l'ancien brouillon correspondait à une unité déjà spawnée,
+                        // on garde quand même la nouvelle fiche du créateur : c'est elle
+                        // que l'utilisateur est en train de créer.
+                        _draftSheet = creator.CurrentSheet;
+                        _inspectedItem = null;
+                        _previewCatalogDef = null;
+                    }
+                }
+                return _draftSheet;
+            }
+            return _selectedUnit != null ? _selectedUnit.GetOrBuildSheet() : null;
         }
 
         /// <summary>Conservé pour compatibilité (CharacterDevWindow / Toolbar).</summary>
@@ -201,12 +269,12 @@ namespace Killtime.UI
             if ((_selectedTab == 1 || _selectedTab == 2) && _previewCatalogDef != null)
                 return _previewCatalogDef;
             if (_inspectedItem != null) return _inspectedItem;
-            if (_selectedUnit != null)
+            var activeSheet = GetActiveSheet();
+            if (activeSheet != null)
             {
-                var eq = _selectedUnit.GetOrBuildSheet().GetEquippedWeapon();
+                var eq = activeSheet.GetEquippedWeapon();
                 if (eq != null) return eq;
-                var sheet = _selectedUnit.GetOrBuildSheet();
-                if (sheet.Inventory != null && sheet.Inventory.Count > 0) return sheet.Inventory[0];
+                if (activeSheet.Inventory != null && activeSheet.Inventory.Count > 0) return activeSheet.Inventory[0];
             }
             return null;
         }
@@ -279,6 +347,43 @@ namespace Killtime.UI
         private void DrawUnitSelectorHeader()
         {
             GUILayout.BeginVertical(GUI.skin.box);
+            // Mode lié au créateur : la fiche en création est la cible unique.
+            if (_draftSheet != null)
+            {
+                var draft = GetActiveSheet();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Combattant :", GUILayout.Width(85));
+                GUI.color = Color.cyan;
+                GUILayout.Label($"<b>{(draft != null ? draft.Name : "?")} (Création)</b>", GUILayout.Width(200));
+                GUI.color = Color.white;
+                if (draft != null)
+                {
+                    GUI.color = Color.yellow;
+                    GUILayout.Label($"💰 {draft.CreditsCE} CE", GUILayout.Width(110));
+                    GUI.color = Color.white;
+                    if (GUILayout.Button("+1k", GUILayout.Width(44)))
+                    {
+                        draft.EarnCredits(1000);
+                        SaveAndSync(draft);
+                        _statusMessage = $"+1000 CE (dev). Solde : {draft.CreditsCE} CE.";
+                    }
+                }
+                GUILayout.FlexibleSpace();
+                GUI.backgroundColor = new Color(0.5f, 0.5f, 0.55f);
+                if (GUILayout.Button("Délier (unités)", GUILayout.Width(110)))
+                {
+                    ClearDraftBinding();
+                }
+                GUI.backgroundColor = Color.white;
+                if (GUILayout.Button("🔄", GUILayout.Width(36)))
+                {
+                    RefreshGunCatalog();
+                }
+                GUILayout.EndHorizontal();
+                GUILayout.Label("<color=gray><i>Lié au Créateur (F1) : chaque ajout va sur le perso en cours de création.</i></color>");
+            }
+            else
+            {
             GUILayout.BeginHorizontal();
             GUILayout.Label("Combattant :", GUILayout.Width(85));
 
@@ -331,6 +436,7 @@ namespace Killtime.UI
                 RefreshGunCatalog();
             }
             GUILayout.EndHorizontal();
+            } // fin else (mode unités en scène)
             GUILayout.EndVertical();
         }
 
@@ -338,7 +444,21 @@ namespace Killtime.UI
         {
             if (sheet == null) return;
             CharacterStorageService.SaveCharacter(sheet);
+            // Notifie l'unité sélectionnée + toute unité incarnant cette fiche
+            // (cas du brouillon déjà spawné sur la grille : le visuel d'arme suit).
             if (_selectedUnit != null) _selectedUnit.NotifyInventoryChanged(saveToDisk: false);
+            try
+            {
+                var allUnits = FindObjectsByType<TacticalUnit>();
+                for (int i = 0; i < allUnits.Length; i++)
+                {
+                    var u = allUnits[i];
+                    if (u == null || u == _selectedUnit || u.Sheet == null) continue;
+                    if (u.Sheet.SheetId == sheet.SheetId)
+                        u.NotifyInventoryChanged(saveToDisk: false);
+                }
+            }
+            catch { /* sync visuel best-effort */ }
         }
 
         private void RefreshSceneUnits()
@@ -348,19 +468,30 @@ namespace Killtime.UI
             for (int i = 0; i < all.Length; i++)
                 if (all[i] != null && all[i].Stats != null) _sceneUnits.Add(all[i]);
             if (_selectedUnitIndex >= _sceneUnits.Count) _selectedUnitIndex = 0;
-            _selectedUnit = _sceneUnits.Count > 0 ? _sceneUnits[_selectedUnitIndex] : null;
+            // En mode brouillon on ne touche pas à _selectedUnit : la fiche active
+            // reste le draft du créateur. Sinon on suit la sélection scène.
+            if (_draftSheet == null)
+                _selectedUnit = _sceneUnits.Count > 0 ? _sceneUnits[_selectedUnitIndex] : null;
+            else if (_selectedUnit != null && !_sceneUnits.Contains(_selectedUnit))
+            {
+                // L'unité précédemment sélectionnée a disparu : on la garde à null
+                // sans casser le lien draft.
+                if (_sceneUnits.Count > 0 && _selectedUnitIndex < _sceneUnits.Count)
+                    _selectedUnit = _sceneUnits[_selectedUnitIndex];
+                else
+                    _selectedUnit = null;
+            }
         }
 
         // ================= ONGLET 0 : SAC =================
         private void DrawInventoryListTab()
         {
-            if (_selectedUnit == null)
+            var sheet = GetActiveSheet();
+            if (sheet == null)
             {
                 GUILayout.Label("<i>Sélectionnez une unité pour inspecter son sac.</i>");
                 return;
             }
-
-            var sheet = _selectedUnit.GetOrBuildSheet();
             var inv = sheet.Inventory;
 
             GUILayout.Label($"<b>Objets en poche ({inv.Count}) — {sheet.GetTotalWeightKg():0.#} kg :</b>");
@@ -503,12 +634,12 @@ namespace Killtime.UI
         // ================= ONGLET 2 : MARCHÉ (achat / revente CE) =================
         private void DrawMarketTab()
         {
-            if (_selectedUnit == null)
+            var sheet = GetActiveSheet();
+            if (sheet == null)
             {
                 GUILayout.Label("<i>Sélectionnez une unité (son portefeuille CE sera débité/crédité).</i>");
                 return;
             }
-            var sheet = _selectedUnit.GetOrBuildSheet();
             GUI.color = Color.yellow;
             GUILayout.Label($"<b>💰 Solde : {sheet.CreditsCE} CE</b>  <color=gray>(revente = 50% catalogue)</color>", RichLabel());
             GUI.color = Color.white;
@@ -614,7 +745,7 @@ namespace Killtime.UI
         private List<InventoryItem> GetFilteredCatalog()
         {
             var result = new List<InventoryItem>();
-            var sheet = _selectedUnit != null ? _selectedUnit.GetOrBuildSheet() : null;
+            var sheet = GetActiveSheet();
             for (int i = 0; i < ArmoryCatalog.All.Count; i++)
             {
                 var def = ArmoryCatalog.All[i];
@@ -635,8 +766,8 @@ namespace Killtime.UI
 
         private void GiveCatalogItemToUnit(InventoryItem def)
         {
-            if (_selectedUnit == null) { _statusMessage = "Sélectionnez d'abord une unité."; return; }
-            var sheet = _selectedUnit.GetOrBuildSheet();
+            var sheet = GetActiveSheet();
+            if (sheet == null) { _statusMessage = "Sélectionnez d'abord une unité."; return; }
             var copy = def.Clone();
             if (copy.Type == ItemType.Weapon) copy.IsEquipped = (sheet.GetEquippedWeapon() == null);
             sheet.AddItem(copy);
@@ -648,8 +779,8 @@ namespace Killtime.UI
 
         private void AddRawGunToUnit(string gunPrefabPath)
         {
-            if (_selectedUnit == null) { _statusMessage = "Sélectionnez d'abord une unité."; return; }
-            var sheet = _selectedUnit.GetOrBuildSheet();
+            var sheet = GetActiveSheet();
+            if (sheet == null) { _statusMessage = "Sélectionnez d'abord une unité."; return; }
             string cleanName = Path.GetFileName(gunPrefabPath);
             var newItem = new InventoryItem
             {
@@ -735,7 +866,7 @@ namespace Killtime.UI
             GUI.backgroundColor = new Color(0.2f, 0.75f, 0.4f);
             if (GUILayout.Button("💾 Sauvegarder sur Disque", GUILayout.Height(28)))
             {
-                var sheet = _selectedUnit != null ? _selectedUnit.GetOrBuildSheet() : null;
+                var sheet = GetActiveSheet();
                 SaveAndSync(sheet);
                 _statusMessage = $"Propriétés de '{_inspectedItem.Name}' enregistrées.";
             }
@@ -845,13 +976,13 @@ namespace Killtime.UI
                 GUILayout.Label($"<i>{item.Description}</i>", RichLabel());
 
                 // Actions rapides contextuelles
-                if (_selectedTab != 0 && _selectedUnit != null)
+                if (_selectedTab != 0 && GetActiveSheet() != null)
                 {
                     GUILayout.BeginHorizontal();
                     GUI.backgroundColor = new Color(0.2f, 0.8f, 0.4f);
                     if (GUILayout.Button("+ Sac (dotation)", GUILayout.Height(26))) GiveCatalogItemToUnit(item);
                     GUI.backgroundColor = new Color(0.95f, 0.75f, 0.15f);
-                    var sheet = _selectedUnit.GetOrBuildSheet();
+                    var sheet = GetActiveSheet();
                     GUI.enabled = sheet.CanAfford(item.PriceCE);
                     if (GUILayout.Button($"Acheter {item.PriceCE} CE", GUILayout.Height(26)))
                     {

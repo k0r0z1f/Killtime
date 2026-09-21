@@ -686,9 +686,14 @@
                                     <span class="pill-badge cyan" id="trainedSkillsChecked">0 / 3</span>
                                 </div>
                                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
-                                    Selon la règle officielle (Livre I, Chapitre 3), vous choisissez un nombre de
-                                    compétences de base égal à votre score d'<strong>Érudition</strong> (<span
-                                        id="vitalTrainedCount">3</span>).
+                                    Selon la règle officielle (Livre I, Étape 5), vous bénéficiez d'<strong>entraînements
+                                        gratuits = votre Érudition</strong> (<span
+                                        id="vitalTrainedCount">3</span>) : 1 gratuit = +1 palier, plafond +3 par
+                                    compétence. <strong>+1 ÉRU = +1 gratuit</strong>.
+                                    <br><strong>Progression organique (Livre I §5) :</strong> en jeu, chaque
+                                    <strong>réussite</strong> coche 1 case dans la compétence utilisée (piste = base :
+                                    3 → 3 cases, 5 → 5 cases). Piste pleine = <strong>+1 XP lié</strong>. Entraînement
+                                    5 XP liés/libre (10 si croisé). <strong>XP total = dépensés (gratuits exclus).</strong>
                                 </p>
                                 <div class="tool-grid-4" style="font-size: 0.82rem;">
                                     <label><input type="checkbox" class="skill-check" id="skMelee"
@@ -1120,6 +1125,9 @@
                             Gérez les infiltrations, courses-poursuites et réparations d'urgence. Le module applique la
                             formule officielle de récompense :
                             <code>Récompense = (Étapes Réussies × 2) − Total Retries (min 2)</code>.
+                            La récompense = <strong>cases de progression</strong> à répartir entre les compétences
+                            utilisées (Livre I §5 : piste pleine = +1 XP lié, dépense associée au coût normal,
+                            croisée ×2).
                         </p>
 
                         <div class="tool-section">
@@ -1134,7 +1142,7 @@
                                 </div>
                                 <div class="tool-badge-row">
                                     <span class="pill-badge amber" id="challengeRewardDisplay">0 case(s) de progression
-                                        / XP</span>
+                                        (Livre I §5)</span>
                                 </div>
                             </div>
 

@@ -280,7 +280,9 @@ namespace Killtime.Tactics.CombatUI
                 ));
             }
 
-            // Souffle d'urgence si on clique sur soi-même
+            // Souffle : actions personnelles (Livres I §4.2 + VI §24.2).
+            // Refresh PA = début de son propre tour uniquement (TurnManager).
+            // Ici : les deux conversions Souffle <-> PA, jouables sur soi-même.
             if (isSelf)
             {
                 actions.Add(new CombatAction(
@@ -290,6 +292,22 @@ namespace Killtime.Tactics.CombatUI
                     0,
                     (act, tgt) => act.Stats.Essoufflement < act.Stats.Attributes.Constitution,
                     (act, tgt) => act.Stats.TakeEmergencyBreath(2)
+                ));
+                actions.Add(new CombatAction(
+                    "🌬️ Reprendre son Souffle (1 PA → -1 ESS)",
+                    "Début de son propre tour : dépense 1 PA pour effacer 1 point d'essoufflement (répétable, max Constitution).",
+                    ActionCategory.TraumatologieEtSoins,
+                    1,
+                    (act, tgt) => act.Stats.Essoufflement > 0 && act.Stats.CurrentActionPoints >= 1,
+                    (act, tgt) =>
+                    {
+                        if (act.Stats.ConsumeActionPoints(1))
+                        {
+                            act.Stats.RecoverBreath();
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("Souffle repris (-1 ESS)", UnityEngine.Color.green);
+                        }
+                    }
                 ));
             }
 

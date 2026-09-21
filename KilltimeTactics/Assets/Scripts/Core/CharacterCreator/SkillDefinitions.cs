@@ -60,10 +60,26 @@ namespace Killtime.Core.Character
         public SkillType Skill;
         public int TrainingLevel;
 
+        /// <summary>
+        /// Cases de progression cochées par réussites (Livre I §5).
+        /// +1 case par épreuve de cette compétence RÉUSSIE. Échec = 0.
+        /// Remise à 0 lors de la conversion en XP lié.
+        /// </summary>
+        public int ProgressTicks;
+
+        /// <summary>
+        /// Banque d'XP LIÉE à cette compétence (Livre I §5).
+        /// +1 à chaque fois que la piste (cases = rang de base) est pleine.
+        /// Dépensable au coût normal pour cette compétence, au coût doublé ailleurs.
+        /// </summary>
+        public int ReserveXP;
+
         public SkillProgressionEntry(SkillType skill, int trainingLevel = 0)
         {
             Skill = skill;
             TrainingLevel = trainingLevel;
+            ProgressTicks = 0;
+            ReserveXP = 0;
         }
 
         public DiceType CalculateSkillDie(int baseStatRank)

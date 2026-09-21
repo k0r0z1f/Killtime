@@ -22,6 +22,7 @@
    - **Vitalité & Encaissement** : Encaissement à `CON × 2`, Seuil Létal à `CON × 5`, et gestion de l'**Essoufflement d'urgence**.
    - **Ciblage Anatomique Chirurgical (Livre VI, Chap. 26)** : Tête, Yeux, Cou/Trachée, Cœur/Poumons, Torse, Bras (Arme/Garde) et Jambes. Gestion des malus de visée, annulation par dépense de PA, et déviation en cas d'égalité.
    - **16 États & Altérations (Livre VII)** : Déstabilisé, Étourdi, Paralysé, Sonné, À terre, Ralenti, Agonisant, Inconscient, Asphyxie, Saignement, etc.
+   - **Progression organique XP (Livre I §5)** : chaque **réussite** coche 1 case dans la compétence utilisée ; piste = rang de base (3 → 3 cases, 5 → 5 cases) ; piste pleine = **+1 XP lié** puis reset. Dépense **associée/libre au coût normal, croisée ×2** (`CharacterProgressionManager`, `CombatCalculator.ResolveSkillCheck`, hooks automatiques en duel aveugle). **XP total = dépensés** (`TotalSpentXP`), jamais la banque ni les gratuits. **Entraînements gratuits = Érudition** (`TrainSkillFree`, budget = ÉRU effective, +1 ÉRU = +1 gratuit, 0 XP). Bouton **« ♻️ Reset arbre »** en création / progression : entraînements à 0, seuls les payés remboursés, gratuits rendus au budget (`ResetProgressionTree`).
    - **Cinquième Force & Nytharite (Livre IV)** : Formule stricte d'équivalence `Coût en XP = Coût en PA`.
    - **Chrono-Causalité & Fleuve du Temps (Livre V)** : Snapshots tactiques à chaque seconde et capacité de rembobinage sans paradoxe.
 

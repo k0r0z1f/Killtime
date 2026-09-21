@@ -697,7 +697,27 @@ namespace Killtime.UI
                     }
                     else
                     {
-                        bool canAfford = _sheet.AvailableXP >= node.XpCost;
+                        // Gratuits Érudition d'abord (0 XP, hors XP total), puis entraînement payé.
+                        bool hasFree = _sheet.GetFreeTrainingsRemaining() > 0;
+                        float freeBtnW = 110f;
+                        GUI.enabled = hasFree;
+                        GUI.backgroundColor = hasFree ? new Color(0.35f, 0.85f, 0.45f) : Color.gray;
+                        if (GUI.Button(new Rect(actionBtnX - freeBtnW - 6f, 5, freeBtnW, 26), "🎓 Gratuit"))
+                        {
+                            if (CharacterProgressionManager.TrainSkillFree(_sheet, node.Skill, out string freeMsg))
+                            {
+                                SaveSheet();
+                                _statusFeedback = freeMsg;
+                            }
+                            else
+                            {
+                                _statusFeedback = freeMsg;
+                            }
+                        }
+                        GUI.enabled = true;
+                        GUI.backgroundColor = Color.white;
+
+                        bool canAfford = CharacterProgressionManager.GetSpendableFor(_sheet, node.Skill) >= node.XpCost;
                         GUI.enabled = canAfford;
                         GUI.backgroundColor = canAfford ? new Color(0.2f, 0.8f, 0.4f) : Color.gray;
                         if (GUI.Button(new Rect(actionBtnX, 5, actionBtnW, 26), $"⚡ Entraîner (+1 Palier : {node.XpCost} XP)"))
@@ -705,6 +725,10 @@ namespace Killtime.UI
                             if (CharacterProgressionManager.TrainSkill(_sheet, node.Skill, out string msg))
                             {
                                 SaveSheet();
+                                _statusFeedback = msg;
+                            }
+                            else
+                            {
                                 _statusFeedback = msg;
                             }
                         }

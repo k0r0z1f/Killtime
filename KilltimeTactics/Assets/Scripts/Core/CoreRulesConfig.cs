@@ -86,6 +86,13 @@ namespace Killtime.Core.Rules
         public int XPCostSpecialization = 5;
         public int ArcanotechResonancePerStageMultiplier = 2;
 
+        // --- Livre I §5 : Progression organique par réussites ---
+        [Header("Progression organique (Livre I §5)")]
+        [Tooltip("Multiplicateur appliqué quand de l'XP lié est dépensé hors de sa compétence d'origine (x2).")]
+        public int XPOffSkillCostMultiplier = 2;
+        [Tooltip("Si vrai, chaque réussite coche 1 case de progression dans la compétence utilisée.")]
+        public bool EnableSkillProgressTicks = true;
+
         // --- Déplacement & Statuts (Livre VII) ---
         [Header("Déplacement & Statuts")]
         public int BaseMovementAPCost = 1;
@@ -136,6 +143,8 @@ namespace Killtime.Core.Rules
             XPCostTraining = 5;
             XPCostSpecialization = 5;
             ArcanotechResonancePerStageMultiplier = 2;
+            XPOffSkillCostMultiplier = 2;
+            EnableSkillProgressTicks = true;
 
             BaseMovementAPCost = 1;
             RalentiAPMultiplier = 2;

@@ -43,6 +43,11 @@ namespace Killtime.EditorTools
 
                 string stateName = state.name;
                 AnimationClip clip = FindSubAnimationClip(stateName);
+                // L'état "Melee Attack" utilise le clip Mixamo "Standing Melee Attack".
+                if (clip == null && stateName == "Melee Attack")
+                {
+                    clip = FindSubAnimationClip("Standing Melee Attack");
+                }
 
                 if (clip != null)
                 {
@@ -70,6 +75,7 @@ namespace Killtime.EditorTools
             EnsureParameter(controller, "IsMoving", AnimatorControllerParameterType.Bool, false);
             EnsureParameter(controller, "TriggerAction", AnimatorControllerParameterType.Trigger);
             EnsureParameter(controller, "TriggerRoundkick", AnimatorControllerParameterType.Trigger);
+            EnsureParameter(controller, "TriggerMeleeAttack", AnimatorControllerParameterType.Trigger);
             EnsureParameter(controller, "TriggerFiringRifle", AnimatorControllerParameterType.Trigger);
             EnsureParameter(controller, "TriggerBodyBlock", AnimatorControllerParameterType.Trigger);
             EnsureParameter(controller, "TriggerFallingBackDeath", AnimatorControllerParameterType.Trigger);
@@ -242,6 +248,61 @@ namespace Killtime.EditorTools
                 t.canTransitionToSelf = false;
             }
 
+            // Attaque à l'arme de mêlée : état "Melee Attack" (clip "Standing Melee Attack",
+            // one-shot non loopé). Entrées depuis les gardes (Fight/Standing Idle) sur
+            // TriggerMeleeAttack, retour auto vers Fight Idle, comme le Roundkick.
+            var meleeStateChild = sm.states.FirstOrDefault(s => s.state.name == "Melee Attack");
+            AnimatorState meleeState = meleeStateChild.state;
+            if (meleeState == null)
+            {
+                meleeState = sm.AddState("Melee Attack", new Vector3(520, 470, 0));
+            }
+
+            if (fightIdle != null)
+            {
+                var staleMelee = fightIdle.transitions.Where(t => t.destinationState == meleeState).ToArray();
+                for (int i = 0; i < staleMelee.Length; i++)
+                {
+                    fightIdle.RemoveTransition(staleMelee[i]);
+                }
+
+                var t = fightIdle.AddTransition(meleeState);
+                t.AddCondition(AnimatorConditionMode.If, 0, "TriggerMeleeAttack");
+                t.hasExitTime = false;
+                t.duration = 0.08f;
+                t.canTransitionToSelf = false;
+            }
+
+            if (standingIdle != null)
+            {
+                var staleMelee = standingIdle.transitions.Where(t => t.destinationState == meleeState).ToArray();
+                for (int i = 0; i < staleMelee.Length; i++)
+                {
+                    standingIdle.RemoveTransition(staleMelee[i]);
+                }
+
+                var t = standingIdle.AddTransition(meleeState);
+                t.AddCondition(AnimatorConditionMode.If, 0, "TriggerMeleeAttack");
+                t.hasExitTime = false;
+                t.duration = 0.08f;
+                t.canTransitionToSelf = false;
+            }
+
+            var staleFromMelee = meleeState.transitions.Where(t => t.destinationState == fightIdle).ToArray();
+            for (int i = 0; i < staleFromMelee.Length; i++)
+            {
+                meleeState.RemoveTransition(staleFromMelee[i]);
+            }
+
+            if (fightIdle != null)
+            {
+                var t = meleeState.AddTransition(fightIdle);
+                t.hasExitTime = true;
+                t.exitTime = 0.88f;
+                t.duration = 0.15f;
+                t.canTransitionToSelf = false;
+            }
+
             var bodyBlockChild = sm.states.FirstOrDefault(s => s.state.name == "Body Block");
             AnimatorState bodyBlockState = bodyBlockChild.state;
             if (bodyBlockState == null)
@@ -293,7 +354,7 @@ namespace Killtime.EditorTools
                 tBack.canTransitionToSelf = false;
             }
 
-            AnimatorState[] sourceStatesForDeath = { fightIdle, standingIdle, walkingState, roundkickState, bodyBlockState };
+            AnimatorState[] sourceStatesForDeath = { fightIdle, standingIdle, walkingState, roundkickState, meleeState, bodyBlockState };
             for (int i = 0; i < sourceStatesForDeath.Length; i++)
             {
                 var src = sourceStatesForDeath[i];
@@ -548,6 +609,7 @@ namespace Killtime.EditorTools
             RemoveSelfTransitions(standingIdle);
             RemoveSelfTransitions(walkingState);
             RemoveSelfTransitions(roundkickState);
+            RemoveSelfTransitions(meleeState);
             RemoveSelfTransitions(bodyBlockState);
             RemoveSelfTransitions(deathState);
             RemoveSelfTransitions(rifleIdleState);
@@ -559,7 +621,7 @@ namespace Killtime.EditorTools
             {
                 foreach (var t in fightIdle.transitions)
                 {
-                    if (t.destinationState == walkingState || t.destinationState == roundkickState || t.destinationState == bodyBlockState || t.destinationState == deathState || t.destinationState == rifleIdleState)
+                    if (t.destinationState == walkingState || t.destinationState == roundkickState || t.destinationState == meleeState || t.destinationState == bodyBlockState || t.destinationState == deathState || t.destinationState == rifleIdleState)
                     {
                         t.hasExitTime = false;
                     }

@@ -665,20 +665,21 @@ function initChallengeResolver() {
         });
 
         // Official Formula: Reward = (Successes * 2) - Retries, min 2 if at least 1 success
+        // Livre I §5 : récompense = cases de progression à répartir (piste pleine = +1 XP lié).
         let reward = (successes * 2) - totalRetries;
         if (successes > 0 && reward < 2) reward = 2;
         if (successes === 0) reward = 0;
 
-        rewardBadge.textContent = `${reward} case(s) de progression / XP`;
+        rewardBadge.textContent = `${reward} case(s) de progression (Livre I §5)`;
 
         if (pending > 0) {
             statusDisplay.textContent = `Défi en cours (${successes}/${challengeData.length} validées, ${pending} restantes)`;
             statusDisplay.style.color = 'var(--text-secondary)';
         } else if (failures === 0) {
-            statusDisplay.textContent = `CHALLENGE ACCOMPLI AVEC BRIO ! Récompense maximale accordée.`;
+            statusDisplay.textContent = `CHALLENGE ACCOMPLI AVEC BRIO ! Répartissez ${reward} cases dans les compétences utilisées (piste pleine = +1 XP lié).`;
             statusDisplay.style.color = '#34d399';
         } else if (successes >= Math.ceil(challengeData.length / 2)) {
-            statusDisplay.textContent = `CHALLENGE VALIDÉ SUR LE FIL (${failures} échec(s) encaissé(s)).`;
+            statusDisplay.textContent = `CHALLENGE VALIDÉ SUR LE FIL (${failures} échec(s)). Répartissez ${reward} cases (Livre I §5).`;
             statusDisplay.style.color = 'var(--temporal-amber)';
         } else {
             statusDisplay.textContent = `ÉCHEC DU DÉFI — Trop d'entraves subies. Conséquences narratives requises.`;

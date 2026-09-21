@@ -127,6 +127,7 @@
                 const apiBase = getApiBase();
                 fetch(`${apiBase}/api/auth/logout`, {
                     method: 'POST',
+                    headers: { 'ngrok-skip-browser-warning': 'true' },
                     credentials: 'include'
                 }).catch(() => { /* Silencieux si serveur injoignable */ });
             }
@@ -171,7 +172,7 @@
             try {
                 const res = await fetch(`${getApiBase()}/api/auth/social`, {
                     method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
                     credentials: 'include',
                     body: JSON.stringify(payload)
                 });
@@ -527,7 +528,7 @@
                 try {
                     const res = await fetch(`${getApiBase()}/api/auth/login`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
                         body: JSON.stringify({ identifier: id, password: pass })
                     });
 
@@ -577,7 +578,7 @@
                 try {
                     const res = await fetch(`${getApiBase()}/api/auth/register`, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
+                        headers: { 'Content-Type': 'application/json', 'ngrok-skip-browser-warning': 'true' },
                         body: JSON.stringify({
                             username: user,
                             email: email,

@@ -20,7 +20,8 @@ namespace Killtime.Tactics.Units
         Walking,
         Roundkick,
         BodyBlock,
-        FallingBackDeath
+        FallingBackDeath,
+        MeleeAttack
     }
 
     /// <summary>
@@ -38,6 +39,16 @@ namespace Killtime.Tactics.Units
         [Header("Ancrage de l'Arme en Main")]
         [SerializeField] private Vector3 _weaponPositionOffset = Vector3.zero;
         [SerializeField] private Vector3 _weaponRotationOffset = new Vector3(-75f, 180f, 0f);
+
+        [Header("Ancrage Fusil (2 mains) — poigne centrée, canon vers l'avant")]
+        [Tooltip("Décalage MONDE (m) depuis la poitrine : X droite, Y haut, Z avant personnage. Converti en local en compensant l'échelle du porteur.")]
+        [SerializeField] private Vector3 _riflePositionOffset = new Vector3(0.14f, 0.02f, 0.30f);
+        [Tooltip("Correctif d'assiette pour les fusils Z-long (placeholders). Les prefabs réels X-long reçoivent un alignement auto +X -> +Z.")]
+        [SerializeField] private Vector3 _rifleRotationOffset = new Vector3(-6f, 0f, 0f);
+
+        [Header("Ancrage Pistolet (1 main) — canon vers l'avant")]
+        [SerializeField] private Vector3 _pistolPositionOffset = Vector3.zero;
+        [SerializeField] private Vector3 _pistolRotationOffset = new Vector3(-12f, 0f, 0f);
 
         [Header("HUD — Transparence Vision")]
         [Tooltip("Alpha appliqué aux icônes/HUD quand cet avatar est plus loin qu'un autre dans la vision (masqué).")]
@@ -68,11 +79,17 @@ namespace Killtime.Tactics.Units
         private string _lastEquippedItemId;
         private bool _currentWeaponIsRifle;
         private Coroutine _putAwayRoutine;
+        // Dernière pose locale appliquée à l'arme (pour ne pas écraser la poigne fusil/pistolet
+        // avec l'offset d'épée dans le bloc #if UNITY_EDITOR de Update).
+        private Vector3 _appliedWeaponLocalPos = Vector3.zero;
+        private Quaternion _appliedWeaponLocalRot = Quaternion.identity;
+        private bool _hasAppliedWeaponPose;
 
         private static readonly int AnimIsInCombat = Animator.StringToHash("IsInCombat");
         private static readonly int AnimTriggerAction = Animator.StringToHash("TriggerAction");
         private static readonly int AnimIsMoving = Animator.StringToHash("IsMoving");
         private static readonly int AnimTriggerRoundkick = Animator.StringToHash("TriggerRoundkick");
+        private static readonly int AnimTriggerMeleeAttack = Animator.StringToHash("TriggerMeleeAttack");
         private static readonly int AnimTriggerFiringRifle = Animator.StringToHash("TriggerFiringRifle");
         private static readonly int AnimTriggerBodyBlock = Animator.StringToHash("TriggerBodyBlock");
         private static readonly int AnimTriggerFallingBackDeath = Animator.StringToHash("TriggerFallingBackDeath");
@@ -141,14 +158,44 @@ namespace Killtime.Tactics.Units
         public static bool IsRifleWeapon(Core.Inventory.InventoryItem item)
         {
             if (item == null || item.Type != Core.Inventory.ItemType.Weapon) return false;
+            // Grenades à main : jamais des fusils (petite sphère en paume, pas épaulé).
+            // Les lance-grenades restent des armes d'épaule 2M (posture fusil).
+            if (item.IsGrenade || item.IsThrowableGrenade()) return false;
+            // Les armes de mêlée (même à deux mains : espadons, marteaux, piques)
+            // ne sont jamais des fusils : posture Fight Idle + anim "Melee Attack".
+            if (item.AssociatedSkill == SkillType.ManiementArmes
+                || item.AssociatedSkill == SkillType.ArmesContondantes
+                || item.AssociatedSkill == SkillType.ArmesPercantes) return false;
             if (item.EquipSlot == Core.Inventory.ItemEquipSlot.TwoHands) return true;
             if (item.AssociatedSkill == SkillType.Ballistique) return true;
             string n = ((item.Name ?? "") + " " + (item.PrefabPath ?? "")).ToLowerInvariant();
             return n.Contains("rifle") || n.Contains("gun") || n.Contains("fusil") || n.Contains("shotgun");
         }
 
+        /// <summary>
+        /// Arme de mêlée équipée (épée métal/laser, hache, marteau, pique...) : skills
+        /// ManiementArmes / ArmesContondantes / ArmesPercantes, hors fusils, grenades et lanceurs.
+        /// Mains nues (aucune arme) => false : le coup de pied "Roundkick" reste l'anim à mains nues.
+        /// </summary>
+        public static bool IsMeleeWeapon(Core.Inventory.InventoryItem item)
+        {
+            if (item == null || item.Type != Core.Inventory.ItemType.Weapon) return false;
+            if (item.IsGrenade || item.IsThrowableGrenade() || item.IsLauncher) return false;
+            if (IsRifleWeapon(item)) return false;
+            return item.AssociatedSkill == SkillType.ManiementArmes
+                || item.AssociatedSkill == SkillType.ArmesContondantes
+                || item.AssociatedSkill == SkillType.ArmesPercantes;
+        }
+
+        public bool HasMeleeWeaponEquipped()
+        {
+            var weapon = _unit != null && _unit.Sheet != null ? _unit.Sheet.GetEquippedWeapon() : null;
+            return IsMeleeWeapon(weapon);
+        }
+
         public void RefreshEquippedWeaponVisual()
         {
+            _lastEquippedItemId = null;
             UpdateEquippedWeaponVisual();
         }
 
@@ -189,29 +236,73 @@ namespace Killtime.Tactics.Units
                 _putAwayRoutine = null;
             }
             ClearEquippedWeaponInstance();
+            _hasAppliedWeaponPose = false;
 
             if (item == null) return;
 
             // Les consommables / munitions / misc ne s'attachent pas en main.
             if (item.Type != Core.Inventory.ItemType.Weapon) return;
 
+            bool isRifle = IsRifleWeapon(item);
+            bool isPistol = !isRifle && !IsMeleeWeapon(item)
+                && item.AssociatedSkill == SkillType.Ballistique
+                && item.EquipSlot != Core.Inventory.ItemEquipSlot.TwoHands;
+
+            // Main droite = main de détente pour mêlée + pistolet.
+            // Fusil 2M : ancrage poitrine (poigne à deux mains centrée, stable entre
+            // les rigs Mixamo/Blender). La pose "Rifle Idle" amène les deux mains
+            // autour de l'arme au lieu d'un seul poing en diagonale.
+            Transform socket = isRifle ? GetRifleSocket() : GetRightHandSocket();
+
             GameObject instance = null;
+            Vector3 prefabAuthoredScale = Vector3.one;
             if (!string.IsNullOrEmpty(item.PrefabPath))
             {
                 var prefab = LoadWeaponPrefab(item.PrefabPath);
-                if (prefab != null) instance = Instantiate(prefab, GetRightHandSocket());
+                if (prefab != null)
+                {
+                    prefabAuthoredScale = prefab.transform.localScale;
+                    // worldPositionStays=false : le localScale capturé reste celui de l'auteur.
+                    // L'ancien Instantiate(prefab, socket) gardait l'échelle monde (true par défaut)
+                    // puis la compensation la re-divisait -> arme x5 sur Soldier (socket x0.18).
+                    instance = Instantiate(prefab, socket, false);
+                    instance.transform.localPosition = Vector3.zero;
+                    instance.transform.localRotation = Quaternion.identity;
+                    instance.transform.localScale = prefabAuthoredScale;
+                }
             }
             // Repli : placeholder procédural (armurerie complète sans prefabs).
             if (instance == null)
             {
-                Transform socket = GetRightHandSocket();
                 instance = Core.Inventory.ArmoryPlaceholderFactory.ResolveOrBuild(item, socket);
                 if (instance.transform.parent != socket) instance.transform.SetParent(socket, false);
+                prefabAuthoredScale = Vector3.one;
             }
             _equippedWeaponInstance = instance;
             _equippedWeaponInstance.name = "Equipped_" + item.Name;
-            _equippedWeaponInstance.transform.localPosition = _weaponPositionOffset;
-            _equippedWeaponInstance.transform.localRotation = Quaternion.Euler(_weaponRotationOffset);
+
+            // ---- Poigne : orientation ----
+            // Mêlée : garde existante (lame vers le haut/avant dans le poing droit).
+            // Pistolet : canon à l'horizontale vers l'avant, poignée dans la paume droite.
+            // Fusil : canon à l'horizontale vers l'avant depuis la poitrine, crosse vers
+            // l'épaule droite, poignée sous la main droite — poigne à deux mains.
+            // On aligne le monde (avant personnage) plutôt qu'un Euler fixe, car l'orientation
+            // de l'os main varie selon le modèle (Soldier Mixamo vs Mina Blender) : un Euler
+            // unique donnait la diagonale "flottante" du screenshot sur Soldier.
+            var gripProfile = Killtime.Core.Inventory.WeaponGripService.ResolveProfile(item);
+            socket = GetSocketTransform(gripProfile.Socket);
+            if (_equippedWeaponInstance.transform.parent != socket)
+            {
+                _equippedWeaponInstance.transform.SetParent(socket, false);
+            }
+
+            _equippedWeaponInstance.transform.localPosition = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalPosition(socket, transform, gripProfile, _unitScale);
+            _equippedWeaponInstance.transform.localRotation = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalRotation(instance, socket, transform, gripProfile, item);
+            _equippedWeaponInstance.transform.localScale = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalScale(instance, socket, gripProfile, item, _unitScale);
+
+            _appliedWeaponLocalPos = _equippedWeaponInstance.transform.localPosition;
+            _appliedWeaponLocalRot = _equippedWeaponInstance.transform.localRotation;
+            _hasAppliedWeaponPose = true;
 
             var colliders = _equippedWeaponInstance.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)
@@ -227,7 +318,7 @@ namespace Killtime.Tactics.Units
 
             _equippedWeaponInstance.layer = 2;
 
-            _currentWeaponIsRifle = IsRifleWeapon(item);
+            _currentWeaponIsRifle = isRifle;
             if (_animator != null)
             {
                 _animator.SetInteger(AnimWeaponType, _currentWeaponIsRifle ? 1 : 0);
@@ -235,6 +326,310 @@ namespace Killtime.Tactics.Units
                 {
                     _animator.CrossFadeInFixedTime("Rifle Idle", 0.1f);
                 }
+            }
+        }
+
+        public static bool IsPistolWeapon(Core.Inventory.InventoryItem item)
+        {
+            if (item == null || item.Type != Core.Inventory.ItemType.Weapon) return false;
+            if (IsRifleWeapon(item) || IsMeleeWeapon(item)) return false;
+            if (item.IsGrenade || item.IsThrowableGrenade() || item.IsLauncher) return false;
+            return item.AssociatedSkill == SkillType.Ballistique;
+        }
+
+        /// <summary>
+        /// Longueur monde cible (m) par famille d'arme, à _unitScale 1.
+        /// </summary>
+        private float GetTargetWeaponWorldLength(Core.Inventory.InventoryItem item)
+        {
+            if (item != null && (item.IsGrenade || item.IsThrowableGrenade())) return 0.22f;
+            string kind = item != null ? (item.PlaceholderKind ?? "") : "";
+            if (IsRifleWeapon(item))
+            {
+                if (kind == "SniperLaser") return 1.10f;
+                if (kind == "Deglazer") return 1.00f;
+                if (kind == "GrenadeLauncher") return 0.90f;
+                if (kind == "Bow") return 1.25f;
+                return 0.85f;
+            }
+            if (IsPistolWeapon(item)) return 0.32f;
+            if (IsMeleeWeapon(item))
+            {
+                switch (kind)
+                {
+                    case "SwordMetalLong":
+                    case "LaserSwordLong": return 1.35f;
+                    case "Spear": return 1.80f;
+                    case "Bow": return 1.25f;
+                    case "Hammer": return 1.10f;
+                    case "Axe": return 0.95f;
+                    case "Club": return 0.75f;
+                    case "SwordMetal":
+                    case "LaserSword": return 1.00f;
+                    default: return 1.00f;
+                }
+            }
+            return 0.85f;
+        }
+
+        /// <summary>
+        /// Mesure la plus grande dimension LOCALE (espace racine d'arme, sans le porteur)
+        /// + son axe dominant (0=X, 1=Y, 2=Z). Les prefabs réels SciFi sont X-long,
+        /// les placeholders fusils sont Z-long, les lames Y-long.
+        /// </summary>
+        private static float MeasureWeaponLocalLength(GameObject weaponRoot, out int longAxis)
+        {
+            longAxis = 2;
+            if (weaponRoot == null) return 0f;
+            bool has = false;
+            Bounds b = default;
+            var filters = weaponRoot.GetComponentsInChildren<MeshFilter>();
+            for (int i = 0; i < filters.Length; i++)
+            {
+                var mf = filters[i];
+                if (mf == null || mf.sharedMesh == null) continue;
+                // Matrice locale de ce mesh relative à la racine d'arme (sans le porteur).
+                Matrix4x4 m = Matrix4x4.TRS(mf.transform.localPosition, mf.transform.localRotation, mf.transform.localScale);
+                Transform p = mf.transform.parent;
+                while (p != null && p != weaponRoot.transform)
+                {
+                    m = Matrix4x4.TRS(p.localPosition, p.localRotation, p.localScale) * m;
+                    p = p.parent;
+                }
+                Bounds wb = TransformLocalBounds(mf.sharedMesh.bounds, m);
+                if (!IsValidWeaponBounds(wb)) continue;
+                if (!has) { b = wb; has = true; }
+                else b.Encapsulate(wb);
+            }
+            var skinned = weaponRoot.GetComponentsInChildren<SkinnedMeshRenderer>();
+            for (int i = 0; i < skinned.Length; i++)
+            {
+                var smr = skinned[i];
+                if (smr == null || smr.sharedMesh == null) continue;
+                Matrix4x4 m = Matrix4x4.TRS(smr.transform.localPosition, smr.transform.localRotation, smr.transform.localScale);
+                Transform p = smr.transform.parent;
+                while (p != null && p != weaponRoot.transform)
+                {
+                    m = Matrix4x4.TRS(p.localPosition, p.localRotation, p.localScale) * m;
+                    p = p.parent;
+                }
+                Bounds wb = TransformLocalBounds(smr.sharedMesh.bounds, m);
+                if (!IsValidWeaponBounds(wb)) continue;
+                if (!has) { b = wb; has = true; }
+                else b.Encapsulate(wb);
+            }
+            if (!has) return 0f;
+            Vector3 s = b.size;
+            // Inclut l'échelle racine auteur (souvent 1) : on la retire pour avoir le "local brut".
+            // En pratique racine = 1 ici, on garde simple et on mesure avec l'échelle courante.
+            Vector3 rootScale = weaponRoot.transform.localScale;
+            float rx = Mathf.Abs(rootScale.x) > 1e-6f ? s.x / Mathf.Abs(rootScale.x) : s.x;
+            float ry = Mathf.Abs(rootScale.y) > 1e-6f ? s.y / Mathf.Abs(rootScale.y) : s.y;
+            float rz = Mathf.Abs(rootScale.z) > 1e-6f ? s.z / Mathf.Abs(rootScale.z) : s.z;
+            // Axe dominant sur les dimensions brutes.
+            if (rx >= ry && rx >= rz) longAxis = 0;
+            else if (ry >= rx && ry >= rz) longAxis = 1;
+            else longAxis = 2;
+            // Longueur locale brutes (sans échelle racine) : base du calcul monde.
+            float rawMax = Mathf.Max(rx, Mathf.Max(ry, rz));
+            if (float.IsNaN(rawMax) || float.IsInfinity(rawMax) || rawMax <= 1e-5f) return 0f;
+            // Retourne la longueur AVEC l'échelle racine courante pour le facteur correctif.
+            float withRoot = Mathf.Max(s.x, Mathf.Max(s.y, s.z));
+            return withRoot <= 1e-6f ? 0f : withRoot;
+        }
+
+        private static Bounds TransformLocalBounds(Bounds local, Matrix4x4 m)
+        {
+            Vector3 center = m.MultiplyPoint3x4(local.center);
+            Vector3 ext = local.extents;
+            Vector3 axisX = m.MultiplyVector(new Vector3(ext.x, 0f, 0f));
+            Vector3 axisY = m.MultiplyVector(new Vector3(0f, ext.y, 0f));
+            Vector3 axisZ = m.MultiplyVector(new Vector3(0f, 0f, ext.z));
+            Vector3 worldExt = new Vector3(
+                Mathf.Abs(axisX.x) + Mathf.Abs(axisY.x) + Mathf.Abs(axisZ.x),
+                Mathf.Abs(axisX.y) + Mathf.Abs(axisY.y) + Mathf.Abs(axisZ.y),
+                Mathf.Abs(axisX.z) + Mathf.Abs(axisY.z) + Mathf.Abs(axisZ.z));
+            return new Bounds(center, worldExt * 2f);
+        }
+
+        private static bool IsValidWeaponBounds(Bounds b)
+        {
+            Vector3 s = b.size;
+            return !(float.IsNaN(s.x) || float.IsNaN(s.y) || float.IsNaN(s.z)
+                || float.IsInfinity(s.x) || float.IsInfinity(s.y) || float.IsInfinity(s.z))
+                && s.x >= 0f && s.y >= 0f && s.z >= 0f
+                && (s.x + s.y + s.z) > 1e-7f;
+        }
+
+        private static float GetParentUniformScale(Transform parent)
+        {
+            if (parent == null) return 1f;
+            Vector3 ws = CharacterModelScaleNormalizer.ExtractWorldScale(parent);
+            float avg = (Mathf.Abs(ws.x) + Mathf.Abs(ws.y) + Mathf.Abs(ws.z)) / 3f;
+            if (float.IsNaN(avg) || float.IsInfinity(avg) || avg < 1e-4f) return 1f;
+            return avg;
+        }
+
+        /// <summary>
+        /// Ramène l'arme à sa longueur monde cible (x _unitScale), en compensant
+        /// l'échelle du porteur (Soldier normalisé ~0.18, Mina ~1...). Facteur clampé :
+        /// on ne rapetisse/grandit jamais de façon extrême sur une mesure douteuse.
+        /// </summary>
+        private void NormalizeWeaponWorldSize(GameObject weaponInstance, Core.Inventory.InventoryItem item, Killtime.Core.Inventory.WeaponGripProfile profile = null)
+        {
+            if (weaponInstance == null || item == null) return;
+            float localLen = MeasureWeaponLocalLength(weaponInstance, out _);
+            if (localLen <= 1e-5f) return;
+            Transform parent = weaponInstance.transform.parent;
+            float parentScale = GetParentUniformScale(parent);
+            float measuredWorld = localLen * parentScale;
+
+            float target = (profile != null && profile.TargetWorldLength > 0.05f)
+                ? profile.TargetWorldLength
+                : GetTargetWeaponWorldLength(item);
+            target *= Mathf.Max(_unitScale, 1e-3f);
+
+            float scaleMult = (profile != null && profile.ScaleMultiplier > 0.01f) ? profile.ScaleMultiplier : 1.0f;
+            target *= scaleMult;
+
+            if (target <= 1e-4f) return;
+            float factor = target / Mathf.Max(measuredWorld, 1e-6f);
+            if (float.IsNaN(factor) || float.IsInfinity(factor) || factor <= 0f) return;
+
+            if (factor < 0.10f || factor > 8f)
+            {
+                Vector3 authored = weaponInstance.transform.localScale;
+                CharacterModelScaleNormalizer.SetWorldScale(weaponInstance.transform, authored * _unitScale * scaleMult);
+                return;
+            }
+            weaponInstance.transform.localScale = weaponInstance.transform.localScale * factor;
+        }
+
+        public Transform GetSocketTransform(Killtime.Core.Inventory.WeaponGripSocket socketType)
+        {
+            return socketType switch
+            {
+                Killtime.Core.Inventory.WeaponGripSocket.LeftHand => GetLeftHandSocket(),
+                Killtime.Core.Inventory.WeaponGripSocket.ChestTwoHands => GetRifleSocket(),
+                Killtime.Core.Inventory.WeaponGripSocket.Back => GetBackSocket(),
+                Killtime.Core.Inventory.WeaponGripSocket.Holster => GetHolsterSocket(),
+                _ => GetRightHandSocket()
+            };
+        }
+
+        private Transform GetLeftHandSocket()
+        {
+            if (_animator != null && _animator.isHuman)
+            {
+                var bone = _animator.GetBoneTransform(HumanBodyBones.LeftHand);
+                if (bone != null) return bone;
+            }
+
+            Transform found = FindBoneRecursive(transform, "LeftHand", "Left_Hand", "Hand.L", "hand.l", "mixamorig:LeftHand", "weapon_l", "Bip001 L Hand");
+            if (found != null) return found;
+
+            if (_modelRoot != null) return _modelRoot;
+            return transform;
+        }
+
+        private Transform GetBackSocket()
+        {
+            if (_animator != null && _animator.isHuman)
+            {
+                var upperChest = _animator.GetBoneTransform(HumanBodyBones.UpperChest);
+                if (upperChest != null) return upperChest;
+                var chest = _animator.GetBoneTransform(HumanBodyBones.Chest);
+                if (chest != null) return chest;
+            }
+            Transform found = FindBoneRecursive(transform, "Spine2", "Spine1", "mixamorig:Spine2", "mixamorig:Spine1", "Chest", "UpperChest");
+            if (found != null) return found;
+            if (_modelRoot != null) return _modelRoot;
+            return transform;
+        }
+
+        private Transform GetHolsterSocket()
+        {
+            if (_animator != null && _animator.isHuman)
+            {
+                var hips = _animator.GetBoneTransform(HumanBodyBones.Hips);
+                if (hips != null) return hips;
+            }
+            Transform found = FindBoneRecursive(transform, "Hips", "mixamorig:Hips", "Pelvis", "Bip001 Pelvis");
+            if (found != null) return found;
+            if (_modelRoot != null) return _modelRoot;
+            return transform;
+        }
+
+        /// <summary>
+        /// Rotation locale de poigne pour fusil/pistolet : canon à l'horizontale vers
+        /// l'avant de l'unité, poignée dans la paume droite. On calcule le monde désiré
+        /// (avant personnage) puis on repasse en local main, au lieu d'un Euler fixe
+        /// qui dépend de l'orientation de l'os (cause de la diagonale sur Soldier).
+        /// Prefabs réels X-long : alignement +X -> +Z. Placeholders Z-long : identité.
+        /// </summary>
+        private Quaternion ComputeFirearmGripRotation(GameObject weaponInstance, Transform socket, bool isRifle, Core.Inventory.InventoryItem item)
+        {
+            Vector3 fallbackEuler = isRifle ? _rifleRotationOffset : _pistolRotationOffset;
+            try
+            {
+                int axis = 2;
+                // Mesure sans l'échelle racine pour l'axe dominant.
+                MeasureWeaponLocalLength(weaponInstance, out axis);
+                Quaternion align = Quaternion.identity;
+                if (axis == 0) align = Quaternion.Euler(0f, -90f, 0f); // canon +X -> avant +Z
+                else if (axis == 1) align = Quaternion.Euler(90f, 0f, 0f); // canon +Y -> avant +Z
+
+                Quaternion charWorld = transform != null ? transform.rotation : Quaternion.identity;
+                // Légère assiette vers le haut pour une visée naturelle (12° paramétrable).
+                Quaternion tilt = Quaternion.Euler(fallbackEuler);
+                Quaternion desiredWorld = charWorld * tilt * align;
+
+                Quaternion handWorld = socket != null ? socket.rotation : charWorld;
+                // Sécurité : quaternion invalide -> repli Euler.
+                if (handWorld.x * handWorld.x + handWorld.y * handWorld.y + handWorld.z * handWorld.z + handWorld.w * handWorld.w < 1e-6f)
+                    return Quaternion.Euler(fallbackEuler) * align;
+                Quaternion local = Quaternion.Inverse(handWorld) * desiredWorld;
+                if (float.IsNaN(local.x + local.y + local.z + local.w) || float.IsInfinity(local.x + local.y + local.z + local.w))
+                    return Quaternion.Euler(fallbackEuler) * align;
+                return local;
+            }
+            catch
+            {
+                return Quaternion.Euler(fallbackEuler);
+            }
+        }
+
+        /// <summary>
+        /// Poigne fusil sur la poitrine : le torse ne tourne presque pas entre T-pose et
+        /// "Rifle Idle" (contrairement à la main), donc un alignement fixe +X->+Z / +Y->+Z
+        /// + assiette donne un canon vers l'avant stable sur tous les rigs.
+        /// On repasse quand même par le monde pour absorber une éventuelle rotation de torse.
+        /// </summary>
+        private Quaternion ComputeRifleChestGripRotation(GameObject weaponInstance, Transform socket, Core.Inventory.InventoryItem item)
+        {
+            try
+            {
+                int axis = 2;
+                MeasureWeaponLocalLength(weaponInstance, out axis);
+                Quaternion align = Quaternion.identity;
+                if (axis == 0) align = Quaternion.Euler(0f, -90f, 0f); // SciFi réel : canon +X -> avant +Z
+                else if (axis == 1) align = Quaternion.Euler(90f, 0f, 0f); // lame Y -> avant +Z (jamais pour un fusil)
+
+                Quaternion charWorld = transform != null ? transform.rotation : Quaternion.identity;
+                Quaternion tilt = Quaternion.Euler(_rifleRotationOffset);
+                Quaternion desiredWorld = charWorld * tilt * align;
+
+                Quaternion chestWorld = socket != null ? socket.rotation : charWorld;
+                if (chestWorld.x * chestWorld.x + chestWorld.y * chestWorld.y + chestWorld.z * chestWorld.z + chestWorld.w * chestWorld.w < 1e-6f)
+                    return tilt * align;
+                Quaternion local = Quaternion.Inverse(chestWorld) * desiredWorld;
+                if (float.IsNaN(local.x + local.y + local.z + local.w) || float.IsInfinity(local.x + local.y + local.z + local.w))
+                    return tilt * align;
+                return local;
+            }
+            catch
+            {
+                return Quaternion.Euler(_rifleRotationOffset);
             }
         }
 
@@ -268,6 +663,7 @@ namespace Killtime.Tactics.Units
                 Destroy(_equippedWeaponInstance);
                 _equippedWeaponInstance = null;
             }
+            _hasAppliedWeaponPose = false;
         }
 
         private static void DisableWeaponPhysics(GameObject root)
@@ -290,6 +686,30 @@ namespace Killtime.Tactics.Units
             Transform found = FindBoneRecursive(transform, "RightHand", "Right_Hand", "Hand.R", "hand.r", "mixamorig:RightHand", "weapon_r", "Bip001 R Hand");
             if (found != null) return found;
 
+            if (_modelRoot != null) return _modelRoot;
+            return transform;
+        }
+
+        /// <summary>
+        /// Ancrage fusil 2M : poitrine/épine pour une poigne à deux mains centrée.
+        /// Stable entre les rigs (Mixamo Soldier vs Blender Mina) contrairement à la main,
+        /// dont l'orientation varie et donnait la diagonale flottante sur Soldier.
+        /// </summary>
+        private Transform GetRifleSocket()
+        {
+            if (_animator != null && _animator.isHuman)
+            {
+                var chest = _animator.GetBoneTransform(HumanBodyBones.Chest);
+                if (chest != null) return chest;
+                var spine = _animator.GetBoneTransform(HumanBodyBones.Spine);
+                if (spine != null) return spine;
+                var neck = _animator.GetBoneTransform(HumanBodyBones.Neck);
+                if (neck != null) return neck;
+            }
+            Transform found = FindBoneRecursive(transform,
+                "Chest", "Spine2", "Spine1", "Spine", "mixamorig:Spine2", "mixamorig:Spine1",
+                "mixamorig:Spine", "Neck", "mixamorig:Neck", "Thorax", "UpperChest");
+            if (found != null) return found;
             if (_modelRoot != null) return _modelRoot;
             return transform;
         }
@@ -340,6 +760,9 @@ namespace Killtime.Tactics.Units
 
         private void Start()
         {
+            Killtime.Core.Inventory.WeaponGripService.OnProfilesChanged -= HandleWeaponGripProfilesChanged;
+            Killtime.Core.Inventory.WeaponGripService.OnProfilesChanged += HandleWeaponGripProfilesChanged;
+
             if (_animator != null && _isInCombat)
             {
                 bool hasRifle = HasRifleEquipped();
@@ -347,6 +770,12 @@ namespace Killtime.Tactics.Units
                 _animator.SetInteger(AnimWeaponType, hasRifle ? 1 : 0);
                 _animator.Play(hasRifle ? "Rifle Idle" : "Fight Idle", 0, 0f);
             }
+        }
+
+        private void HandleWeaponGripProfilesChanged()
+        {
+            _lastEquippedItemId = null;
+            UpdateEquippedWeaponVisual();
         }
 
         private void Update()
@@ -360,16 +789,20 @@ namespace Killtime.Tactics.Units
             UpdateKOAnimation();
 
 #if UNITY_EDITOR
-            if (_equippedWeaponInstance != null)
+            if (_equippedWeaponInstance != null && _hasAppliedWeaponPose)
             {
-                _equippedWeaponInstance.transform.localPosition = _weaponPositionOffset;
-                _equippedWeaponInstance.transform.localRotation = Quaternion.Euler(_weaponRotationOffset);
+                // Rejoue la pose calculée (poigne fusil/pistolet vs épée) pour le live-tuning,
+                // sans écraser la poigne fusil avec l'offset d'épée.
+                _equippedWeaponInstance.transform.localPosition = _appliedWeaponLocalPos;
+                _equippedWeaponInstance.transform.localRotation = _appliedWeaponLocalRot;
             }
 #endif
         }
 
         private void OnDestroy()
         {
+            Killtime.Core.Inventory.WeaponGripService.OnProfilesChanged -= HandleWeaponGripProfilesChanged;
+
             if (_putAwayRoutine != null)
             {
                 StopCoroutine(_putAwayRoutine);
@@ -439,6 +872,10 @@ namespace Killtime.Tactics.Units
             {
                 TriggerFiringRifle();
             }
+            else if (HasMeleeWeaponEquipped())
+            {
+                TriggerMeleeAttack();
+            }
             else
             {
                 TriggerRoundkick();
@@ -453,6 +890,15 @@ namespace Killtime.Tactics.Units
                 return;
             }
 
+            // Arme de mêlée en main => coup d'arme ("Melee Attack"), pas coup de pied.
+            // forceKick=true (attaque de contact forcée, ex. crosse de fusil) ne s'applique
+            // qu'aux unités sans arme de mêlée : à mains nues ou au fusil on garde le Roundkick.
+            if (HasMeleeWeaponEquipped())
+            {
+                TriggerMeleeAttack();
+                return;
+            }
+
             if (_isActionPlaying) return;
 
             _isInCombat = true;
@@ -462,6 +908,7 @@ namespace Killtime.Tactics.Units
                 _animator.SetInteger(AnimWeaponType, 0);
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerRoundkick);
+                _animator.ResetTrigger(AnimTriggerMeleeAttack);
                 _animator.CrossFadeInFixedTime("Roundkick", 0.08f);
 
                 if (_actionRoutine != null)
@@ -483,7 +930,37 @@ namespace Killtime.Tactics.Units
                 _animator.SetInteger(AnimWeaponType, 1);
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerFiringRifle);
+                _animator.ResetTrigger(AnimTriggerMeleeAttack);
                 _animator.CrossFadeInFixedTime("Firing Rifle", 0.05f);
+
+                if (_actionRoutine != null)
+                {
+                    StopCoroutine(_actionRoutine);
+                }
+                _actionRoutine = StartCoroutine(ActionLockRoutine());
+            }
+        }
+
+        /// <summary>
+        /// Coup d'arme de mêlée (épée, hache, marteau, pique...) : état "Melee Attack"
+        /// du PlayerAnimator (clip "Standing Melee Attack", one-shot non loopé).
+        /// Les armes de mêlée gardent WeaponType 0 (posture Fight Idle).
+        /// </summary>
+        public void TriggerMeleeAttack()
+        {
+            if (_isActionPlaying) return;
+
+            _isInCombat = true;
+            if (_animator != null)
+            {
+                _animator.SetBool(AnimIsInCombat, true);
+                _animator.SetInteger(AnimWeaponType, 0);
+                _animator.ResetTrigger(AnimTriggerAction);
+                _animator.ResetTrigger(AnimTriggerRoundkick);
+                _animator.ResetTrigger(AnimTriggerFiringRifle);
+                _animator.ResetTrigger(AnimTriggerMeleeAttack);
+                _animator.SetTrigger(AnimTriggerMeleeAttack);
+                _animator.CrossFadeInFixedTime("Melee Attack", 0.08f);
 
                 if (_actionRoutine != null)
                 {
@@ -529,6 +1006,7 @@ namespace Killtime.Tactics.Units
                 _animator.SetInteger(AnimWeaponType, 0);
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerRoundkick);
+                _animator.ResetTrigger(AnimTriggerMeleeAttack);
                 _animator.CrossFadeInFixedTime("Roundkick", 0.08f);
                 if (_actionRoutine != null) StopCoroutine(_actionRoutine);
                 _actionRoutine = StartCoroutine(ActionLockRoutine());
@@ -549,6 +1027,7 @@ namespace Killtime.Tactics.Units
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerRoundkick);
                 _animator.ResetTrigger(AnimTriggerFiringRifle);
+                _animator.ResetTrigger(AnimTriggerMeleeAttack);
             }
             _isActionPlaying = false;
             _actionRoutine = null;
@@ -596,6 +1075,7 @@ namespace Killtime.Tactics.Units
                 UnitAnimState.Roundkick => "Roundkick",
                 UnitAnimState.BodyBlock => "Body Block",
                 UnitAnimState.FallingBackDeath => "Falling Back Death",
+                UnitAnimState.MeleeAttack => "Melee Attack",
                 _ => "Standing Idle"
             };
 
@@ -651,6 +1131,10 @@ namespace Killtime.Tactics.Units
             BindClipToOverride("Fight Idle To Standing Idle");
             BindClipToOverride("Walking");
             BindClipToOverride("Roundkick");
+            // Attaque à l'arme de mêlée : l'état Animator s'appelle "Melee Attack"
+            // mais le clip importé (Mixamo) s'appelle "Standing Melee Attack".
+            BindClipToOverride("Melee Attack");
+            BindClipToOverride("Standing Melee Attack");
             BindClipToOverride("Body Block");
             BindClipToOverride("Falling Back Death");
             BindClipToOverride("Rifle Idle");
@@ -832,7 +1316,11 @@ namespace Killtime.Tactics.Units
             instance.name = cleanName;
             instance.transform.localPosition = Vector3.zero;
             instance.transform.localRotation = Quaternion.identity;
-            instance.transform.localScale = Vector3.one * _unitScale;
+            instance.transform.localScale = Vector3.Scale(prefab.transform.localScale, Vector3.one * _unitScale);
+
+            // Normalisation générique : ramène n'importe quel prefab (trop petit ou trop
+            // grand) à la taille d'unité standard, sans valeur hardcodée par personnage.
+            CharacterModelScaleNormalizer.NormalizeToUnitHeight(instance, _unitScale);
 
             var colliders = instance.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)

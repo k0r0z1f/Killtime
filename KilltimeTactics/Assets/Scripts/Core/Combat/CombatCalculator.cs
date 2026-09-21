@@ -617,6 +617,9 @@ namespace Killtime.Core.Combat
             string log = $"⚔️ <b>DÉFI OPPOSÉ AVEUGLE</b> : {attacker.Name} [{SkillDefinitions.GetDisplayName(attackSkill)}, mise cachée {attPA} PA + {attPE} PE] vs {defender.Name} [{SkillDefinitions.GetDisplayName(defenseSkill)}, mise cachée {(defenderPlays ? $"{defPA} PA + {defPE} PE" : "passif")}]\n"
                 + $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> {attRoll.Total} vs {defRoll.Total} ➔ <b>Différentiel {(differential >= 0 ? "+" : "")}{differential}</b> — <b>{(differential >= 0 ? "L'INITIATIVE L'EMPORTE" : "L'OPPOSITION L'EMPORTE")}</b>";
 
+            // Livre I §5 : le gagnant du différentiel coche 1 case de progression.
+            log += ApplyOpposedProgression(attacker, attackSkill, true, defender, defenseSkill, defenderPlays, differential);
+
             return new OpposedCheckResult
             {
                 Attacker = attacker,
@@ -827,6 +830,8 @@ namespace Killtime.Core.Combat
                 blockLog += $"   {phaseDef}\n";
                 blockLog += $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> Attaque {attackRollStr} vs Défense {defRollStr}\n";
                 blockLog += $"   ⚖️ <b>Différentiel Net :</b> <color=#00E5FF>{differential}</color> ➔ <b>0 dégât infligé</b> (Attaque neutralisée).";
+                // Livre I §5 : le défenseur a RÉUSSI sa compétence → +1 case de progression.
+                blockLog += ApplySkillProgression(defender, defenseSkill, false);
 
                 return new DamageResult
                 {
@@ -926,6 +931,9 @@ namespace Killtime.Core.Combat
 
             bool causedKnockback = duel.IsMartialArtsStrike && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4);
 
+            // Livre I §5 : l'attaquant a RÉUSSI (touché, même dévié diff 0) → +1 case de progression.
+            log += ApplySkillProgression(attacker, attackSkill, true);
+
             return new DamageResult
             {
                 IsHit = true,
@@ -950,6 +958,45 @@ namespace Killtime.Core.Combat
                 BlockedByCover = false,
                 CombatLog = log
             };
+        }
+
+        /// <summary>
+        /// Progression organique (Livre I §5) : sur réussite, coche +1 case dans la
+        /// compétence utilisée. Retourne le suffixe de log (vide si rien / échec / sans fiche).
+        /// </summary>
+        private static string ApplySkillProgression(CharacterStats user, SkillType skill, bool isOffensive)
+        {
+            if (user == null || user.Sheet == null) return string.Empty;
+            if (!CharacterProgressionManager.RegisterSuccessfulSkillUse(user.Sheet, skill, out string prog, out _, isOffensive))
+                return string.Empty;
+            if (string.IsNullOrEmpty(prog)) return string.Empty;
+            return $"\n   {prog}";
+        }
+
+        private static string ApplyOpposedProgression(CharacterStats attacker, SkillType attackSkill, bool attOffensive, CharacterStats defender, SkillType defenseSkill, bool defenderPlays, int differential)
+        {
+            if (differential >= 0)
+                return ApplySkillProgression(attacker, attackSkill, attOffensive);
+            if (defenderPlays)
+                return ApplySkillProgression(defender, defenseSkill, false);
+            return string.Empty;
+        }
+
+        /// <summary>
+        /// Épreuve simple hors duel (Livre II §7) : jet de compétence vs DC, avec
+        /// progression organique automatique sur réussite (Livre I §5).
+        /// 1 réussite = 1 case dans CETTE compétence ; piste pleine (cases = base) = +1 XP lié.
+        /// </summary>
+        public DiceRollResult ResolveSkillCheck(CharacterStats user, SkillType skill, int targetDC, bool isOffensive = false, int extraModifier = 0)
+        {
+            if (user == null) throw new ArgumentNullException(nameof(user));
+            var cfg = Rules.CoreRulesConfig.Instance;
+            DiceType die = user.GetSkillDie(skill, isOffensive);
+            int mod = user.GetStatusModifier(skill, isOffensive) + extraModifier;
+            var roll = _diceRoller.Roll(die, mod, targetDC);
+            if (roll.IsSuccess && !roll.IsCriticalFailure && user.Sheet != null)
+                CharacterProgressionManager.RegisterSuccessfulSkillUse(user.Sheet, skill, out _, out _, isOffensive);
+            return roll;
         }
 
         private BodyPart GetAdjacentBodyPart(BodyPart targeted)

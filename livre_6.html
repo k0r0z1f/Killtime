@@ -477,9 +477,11 @@
                     </h2>
 
                     <p>
-                        Le temps de combat est découpé en <strong>tours de 10 secondes réelles</strong>. Durant ces 10
-                        secondes, chaque participant dépense ses Points d'Action (PA) pour se mouvoir, attaquer,
-                        bloquer, ajuster son tir ou déclencher des sortilèges.
+                        Le temps de combat est découpé en <strong>rounds de 10 secondes réelles</strong>, eux-mêmes
+                        découpés en <strong>tours personnels</strong> suivant l'ordre d'initiative. Durant son propre tour,
+                        chaque participant dépense ses Points d'Action (PA) pour se mouvoir, attaquer,
+                        bloquer, ajuster son tir ou déclencher des sortilèges. <strong>Les PA sont récupérés au début de son
+                        propre tour uniquement</strong> (remise au maximum, sans cumul ni récupération globale au début du round).
                     </p>
 
                     <div class="callout temporal">
@@ -493,18 +495,17 @@
                         </div>
                         <div class="callout-body">
                             <ol style="margin-bottom: 0;">
-                                <li><strong>Élément Déclencheur & Initiative :</strong> Jet d'initiative basé sur la
-                                    compétence <em>Rapidité d'exécution</em>.</li>
-                                <li><strong>Action Principale :</strong> Résolution des actions offensives ou sorts
-                                    majeurs par ordre décroissant d'initiative.</li>
-                                <li><strong>Résolution des Réactions :</strong> Déclaration et résolution des parades,
-                                    esquives ou interruptions réactives.</li>
-                                <li><strong>Fin du Tour & Ravitaillement :</strong> Récupération de la réserve de PA.
-                                    <em>Les PA non dépensés lors du tour précédent sont conservés et s'additionnent à la
-                                        nouvelle réserve !</em>
-                                </li>
-                                <li><strong>Itération :</strong> Répéter les étapes 2 à 4 jusqu'à reddition, fuite ou
-                                    neutralisation de l'un des camps.</li>
+                                <li><strong>Initiative (une seule fois) :</strong> Jet d'initiative basé sur la
+                                    compétence <em>Rapidité d'exécution</em>. L'ordre reste fixe pour tout le combat.</li>
+                                <li><strong>Début du tour personnel :</strong> Quand son initiative arrive, le combattant
+                                    <strong>récupère l'intégralité de sa réserve de PA (remise au maximum, sans cumul)</strong>.
+                                    Il peut alors en premier lieu <strong>reprendre son souffle</strong> (1 PA dépensé = 1 point d'essoufflement effacé).</li>
+                                <li><strong>Actions & Réactions :</strong> Le combattant agit (action principale, déplacements),
+                                    puis les autres peuvent dépenser leurs propres PA / PE en réactions (parades,
+                                    esquives, interruptions) même hors de leur tour.</li>
+                                <li><strong>Itération :</strong> Passer au combattant suivant dans l'ordre d'initiative.
+                                    Chaque combattant ne récupère ses PA qu'au <strong>début de son propre tour</strong>,
+                                    jamais au début du round global.</li>
                             </ol>
                         </div>
                     </div>
@@ -612,7 +613,7 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Reprendre son Souffle</strong></td>
-                                    <td>Action de début de tour. Le joueur dépense des PA pour effacer de
+                                    <td>Action de début de son propre tour (quand son initiative arrive). Le joueur dépense des PA pour effacer de
                                         l'essoufflement (maximum Constitution).</td>
                                     <td>1 PA dépensé à reprendre son souffle = 1 point d'essoufflement effacé
                                         immédiatement.</td>
@@ -1192,7 +1193,7 @@
                         </div>
                         <div class="telemetry-row">
                             <span class="telemetry-label">Report PA :</span>
-                            <span class="telemetry-val">PA non dépensés cumulés</span>
+                            <span class="telemetry-val">Remise au max à son tour, sans cumul</span>
                         </div>
                         <div class="telemetry-row">
                             <span class="telemetry-label">Essoufflement :</span>

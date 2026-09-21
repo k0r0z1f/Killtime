@@ -26,6 +26,24 @@ namespace Killtime.Core.Character
         public int BaseArmor = 1;
         public int AvailableXP = 0;
         public int TotalEarnedXP = 0;
+
+        /// <summary>
+        /// XP TOTAL du personnage (Livre I §5.5) : somme de tous les XP DÉPENSÉS
+        /// en améliorations (entraînements, spécialisations, sorts, attributs),
+        /// montants réellement prélevés (surcoût x2 inclus). N'inclut JAMAIS
+        /// les banques (réserves liées + XP libre) non encore dépensées,
+        /// ni les entraînements gratuits d'Érudition (0 XP dépensé).
+        /// C'est la mesure officielle de puissance / rang du personnage.
+        /// </summary>
+        public int TotalSpentXP = 0;
+
+        /// <summary>
+        /// Entraînements gratuits d'Érudition déjà consommés (Livre I, Étape 5).
+        /// Budget = Érudition effective (espèce incluse) ; restants = budget − consommés.
+        /// Chaque +1 Érudition ouvre +1 entraînement gratuit. Les gratuits ne coûtent
+        /// aucun XP et ne comptent jamais dans l'XP total (<see cref="TotalSpentXP"/>).
+        /// </summary>
+        public int FreeTrainingsUsed = 0;
         public int CreditsCE = 8000;
 
         public List<SkillProgressionEntry> Skills = new();
@@ -56,6 +74,60 @@ namespace Killtime.Core.Character
                 Skills.Add(entry);
             }
             return entry;
+        }
+
+        /// <summary>
+        /// Total des XP en banque (non dépensés) : XP libre + toutes réserves liées.
+        /// Distinct de <see cref="TotalSpentXP"/> (XP total = dépensé, Livre I §5.5).
+        /// </summary>
+        public int GetBankedXP()
+        {
+            int total = AvailableXP;
+            if (Skills != null)
+                for (int i = 0; i < Skills.Count; i++)
+                    if (Skills[i] != null) total += Mathf.Max(0, Skills[i].ReserveXP);
+            return Mathf.Max(0, total);
+        }
+
+        /// <summary>
+        /// Total des réserves liées (hors XP libre).
+        /// </summary>
+        public int GetLinkedReserveTotal()
+        {
+            int total = 0;
+            if (Skills != null)
+                for (int i = 0; i < Skills.Count; i++)
+                    if (Skills[i] != null) total += Mathf.Max(0, Skills[i].ReserveXP);
+            return total;
+        }
+
+        /// <summary>
+        /// Budget d'entraînements gratuits (Livre I, Étape 5) = Érudition effective
+        /// (modificateurs d'espèce inclus, plancher 0).
+        /// </summary>
+        public int GetFreeTrainingBudget()
+        {
+            return Mathf.Max(0, GetEffectiveAttributes().Erudition);
+        }
+
+        /// <summary>
+        /// Entraînements gratuits restants = budget − déjà consommés (plancher 0).
+        /// </summary>
+        public int GetFreeTrainingsRemaining()
+        {
+            return Mathf.Max(0, GetFreeTrainingBudget() - Mathf.Max(0, FreeTrainingsUsed));
+        }
+
+        /// <summary>
+        /// Total des niveaux d'entraînement toutes compétences confondues.
+        /// </summary>
+        public int GetTotalTrainingLevels()
+        {
+            int total = 0;
+            if (Skills != null)
+                for (int i = 0; i < Skills.Count; i++)
+                    if (Skills[i] != null) total += Mathf.Max(0, Skills[i].TrainingLevel);
+            return total;
         }
 
         public InventoryItem GetEquippedWeapon()

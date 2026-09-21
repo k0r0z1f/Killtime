@@ -519,8 +519,8 @@
                                     <td><strong>Points d'Action</strong></td>
                                     <td><span class="pill-badge cyan">PA</span></td>
                                     <td>La monnaie temporelle de votre personnage. Chaque déplacement, coup, parade,
-                                        visée ou sortilège consomme un montant fixe de PA. Se régénèrent à chaque
-                                        nouveau tour.</td>
+                                        visée ou sortilège consomme un montant fixe de PA. Se régénèrent intégralement
+                                        <strong>au début de son propre tour</strong> (quand son initiative arrive, remis au maximum sans cumul), jamais au début du round global.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Épreuve de Caractéristique</strong></td>
@@ -846,13 +846,23 @@
                                 Miracle</strong>.</li>
                     </ul>
 
-                    <h3>Étape 5 : Compétences de Base Entraînées</h3>
+                    <h3>Étape 5 : Compétences de Base Entraînées (gratuites = Érudition)</h3>
                     <p>
-                        Consultez votre score final en <strong>Érudition</strong> : vous choisissez un nombre de
-                        <strong>compétences de base égal à votre rang d'Érudition</strong>. Ces compétences sont
+                        Consultez votre score final en <strong>Érudition</strong> (ÉRU effective, espèces incluses) :
+                        vous bénéficiez d'un nombre d'<strong>entraînements gratuits égal à votre rang
+                            d'Érudition</strong> (ÉRU 3 → 3 entraînements gratuits). Ces compétences sont
                         considérées comme <em>Entraînées</em> dès le début de l'aventure, conférant un bonus permanent
                         de <strong>+1 niveau de dé</strong> lors de leur résolution.
                     </p>
+                    <ul>
+                        <li><strong>1 gratuit = +1 palier</strong> sur la compétence de votre choix (plafond +3 par
+                            compétence, Livre II §6).</li>
+                        <li><strong>Chaque fois que l'Érudition augmente de +1</strong>, le personnage acquiert
+                            <strong>+1 entraînement gratuit</strong> supplémentaire.</li>
+                        <li><strong>Ces entraînements gratuits ne comptent pas dans l'XP total</strong> (0 XP dépensé,
+                            §5.4). Seuls les entraînements payés en XP (5 liés/libre, 10 croisé) alimentent le total.
+                        </li>
+                    </ul>
 
                     <!-- ================= CHAPITRE 4 ================= -->
                     <h2 id="chap-4">
@@ -890,8 +900,8 @@
                         </div>
                         <div class="callout-body">
                             Roger possède : Agi 3, Int 2, Rap 3, et son attribut le plus faible est le Charisme à 1.<br>
-                            <strong>Calcul :</strong> Max(3, 2) + 3 + 1 = <strong>7 Points d'Action</strong> disponibles
-                            à chaque début de tour.
+                            <strong>Calcul :</strong> Max(3, 2) + 3 + 1 = <strong>7 Points d'Action</strong> récupérés
+                            à chaque début de son propre tour (remise au maximum, sans cumul).
                         </div>
                     </div>
 
@@ -950,8 +960,8 @@
                         L'Essoufflement est calibré sur votre Constitution et votre entraînement en Cardio. En combat,
                         lorsqu'un personnage n'a plus de PA mais doit absolument agir pour éviter un coup fatal ou
                         porter une frappe désespérée, il peut <strong>gagner 1 point d'Essoufflement pour s'octroyer des
-                            PA d'urgence</strong>. L'Essoufflement ne se réinitialise pas à la fin du tour : il exige
-                        une action dédiée de récupération (reprendre son souffle) sans attaquer.
+                            PA d'urgence</strong>. L'Essoufflement ne se réinitialise pas automatiquement au début de son tour : il exige
+                        une action dédiée de récupération (reprendre son souffle, jouable au début de son propre tour) sans attaquer.
                     </p>
 
                     <h3>4.3 Calcul de l'Initiative</h3>
@@ -969,8 +979,42 @@
                     </h2>
 
                     <p>
-                        Le système utilise un mode d'évolution organique : l'expérience est acquise par <strong>champ
-                            d'attribut</strong> selon les actions accomplies et les défis relevés en session.
+                        Le système utilise un mode d'évolution organique : <strong>chaque fois qu'un personnage
+                            réussit une épreuve de compétence, cette compétence progresse</strong>. On ne progresse
+                        jamais sur un échec. Une seule case par jet réussi, même en cas de réussite critique.
+                    </p>
+
+                    <h3>5.1 Piste de progression : cases = rang de base</h3>
+                    <p>
+                        Chaque compétence possède une <strong>piste de progression</strong> dont le nombre de cases
+                        est égal à sa <strong>valeur de caractéristique de base</strong> (rang de base,
+                        Livre III §10.1). Exemple : une compétence dont la base vaut <strong>3 → 3 cases</strong>,
+                        une base à <strong>5 → 5 cases</strong> (min 1, max 10). Les faibles progressent donc
+                        vite, les experts lentement : c'est voulu.
+                    </p>
+                    <ul>
+                        <li><strong>Réussite :</strong> +1 case cochée dans <em>cette</em> compétence (attaque réussie
+                            → attaque, parade/esquive réussie → défense, crochetage réussi → Subterfuge, etc.).</li>
+                        <li><strong>Échec :</strong> rien. Pas de case.</li>
+                        <li><strong>Duel opposé :</strong> seul le gagnant du différentiel coche (attaquant si ≥ 0,
+                            défenseur si &lt; 0 avec défense active).</li>
+                    </ul>
+
+                    <h3>5.2 Conversion : piste pleine = +1 XP lié</h3>
+                    <p>
+                        Une fois que la table de progression est <strong>au maximum</strong> dans une compétence,
+                        le personnage gagne immédiatement <strong>1 XP dans cette compétence</strong> (XP
+                        <strong>lié</strong>, mis en banque dans la compétence) et la piste <strong>se vide</strong>
+                        (remise à 0). Exemple : base 3 → 3 réussites = 3 cases = +1 XP lié, puis on recommence.
+                    </p>
+
+                    <h3>5.3 Dépense : associé au coût normal, croisé au double</h3>
+                    <p>
+                        Un joueur peut dépenser les points d'XP pour le personnage <strong>dans la compétence
+                            associée</strong> (les effets et améliorations liés à cette compétence) au
+                        <strong>coût normal</strong>. S'il décide de les dépenser <strong>dans une autre
+                            compétence</strong>, le <strong>coût en XP est doublé (×2)</strong>. L'XP libre
+                        (don du MJ) se dépense partout au coût normal, sans surcoût.
                     </p>
 
                     <div class="table-container">
@@ -978,7 +1022,8 @@
                             <thead>
                                 <tr>
                                     <th>Investissement</th>
-                                    <th>Coût en XP</th>
+                                    <th>Coût en XP associé / libre</th>
+                                    <th>Coût croisé (autre banque)</th>
                                     <th>Effet Mécanique Concret</th>
                                 </tr>
                             </thead>
@@ -986,33 +1031,52 @@
                                 <tr>
                                     <td><strong>+1 Entraînement de Compétence</strong></td>
                                     <td><span class="pill-badge cyan">5 XP</span></td>
+                                    <td><span class="pill-badge ruby">10 XP</span></td>
                                     <td>Augmente définitivement la compétence liée à l'attribut d'un palier de dé (+1
-                                        niveau de dé).</td>
+                                        niveau de dé, max +3). Priorité de paiement : banque associée → XP libre →
+                                        autres banques (×2). <strong>Gratuit d'Érudition : 0 XP</strong> (budget = ÉRU,
+                                        +1 ÉRU = +1 gratuit, Étape 5).</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Acquisition d'une Spécialisation</strong></td>
                                     <td><span class="pill-badge amber">5 XP</span></td>
+                                    <td><span class="pill-badge ruby">10 XP</span></td>
                                     <td>Débloque une spécialisation précise (ex: <em>Maniement de l'épée</em>,
                                         <em>Chirurgie</em>, <em>Télékinésie</em>) permettant d'annuler les malus de
-                                        visée ou d'appliquer des effets spéciaux.
+                                        visée ou d'appliquer des effets spéciaux. Source = compétence d'origine
+                                        (Livre III §13).
                                     </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Création d'un Pouvoir Arcanique</strong></td>
                                     <td><span class="pill-badge ruby">X XP = X PA</span></td>
+                                    <td><span class="pill-badge ruby">2X XP</span></td>
                                     <td>Le joueur achète des effets modulaires (dégâts résiduels, étourdissement,
                                         portée). Le montant total d'XP dépensé fixe exactement le coût en PA pour
-                                        l'activer en combat.</td>
+                                        l'activer en combat. Affinité = voie de Magie ; autre voie = doublé.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Augmentation d'un Attribut Principal</strong></td>
                                     <td><span class="pill-badge emerald">Variable</span></td>
+                                    <td><span class="pill-badge emerald">Variable ×2 si croisé</span></td>
                                     <td>Augmente la caractéristique de base après un entraînement intensif prolongé ou
-                                        une avancée majeure dans la campagne.</td>
+                                        une avancée majeure dans la campagne. Élargit aussi les futures pistes
+                                        (cases = nouvelle base).</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
+
+                    <h3>5.4 XP total = XP dépensés (gratuits exclus)</h3>
+                    <p>
+                        L'<strong>XP total</strong> d'un personnage, c'est <strong>tous les XP qu'il a dépensés
+                            jusqu'à actuellement</strong> pour obtenir une amélioration (montants réellement
+                        prélevés, surcoût ×2 inclus). <strong>Ce ne sont pas</strong> les XP en banque dans les
+                        compétences (réserves liées) ni l'XP libre non dépensé : la banque, c'est l'argent en poche,
+                        le total, c'est la puissance accumulée. <strong>Les entraînements gratuits d'Érudition ne
+                            comptent pas dans l'XP total</strong> (0 XP dépensé) : un personnage à ÉRU 3 avec 3
+                        gratuits et 0 achat a un XP total de 0.
+                    </p>
 
                     <!-- ================= PROTOTYPE FICHE ================= -->
                     <h2 id="chap-fiche">

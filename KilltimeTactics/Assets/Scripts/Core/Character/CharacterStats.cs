@@ -360,6 +360,13 @@ namespace Killtime.Core.Character
             CurrentHealth = MaxHealth;
         }
 
+        /// <summary>
+        /// Refresh individuel (Livres I §4 + VI §24) : appelé AU DÉBUT DU TOUR
+        /// PERSONNEL de l'unité (quand son initiative arrive), jamais au début
+        /// du round global. Remise au maximum SANS cumul : les PA restants sont
+        /// écrasés. L'Essoufflement persiste : il se soigne via Reprendre son
+        /// Souffle (1 PA = 1 PE) en début de son propre tour.
+        /// </summary>
         public void ResetTurn()
         {
             if (IsInLastBreath)

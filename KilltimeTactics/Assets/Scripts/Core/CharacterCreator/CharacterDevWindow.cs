@@ -103,6 +103,9 @@ namespace Killtime.UI
             try { CaptureDevPrefs(); DevUIPreferences.SaveNow(); } catch { /* ignore */ }
         }
 
+        /// <summary>Fiche en cours de création/édition (cible du lien armurerie).</summary>
+        public CharacterSheet CurrentSheet => _currentSheet;
+
         public static void OpenForUnit(TacticalUnit unit)
         {
             Open();
@@ -399,19 +402,14 @@ namespace Killtime.UI
             GUI.backgroundColor = new Color(0.95f, 0.75f, 0.15f);
             if (GUILayout.Button("🏪 Ouvrir Armurerie / Marché (I)", GUILayout.Width(220)))
             {
+                // L'armurerie s'ouvre LIÉE au perso en cours de création : chaque
+                // ajout (+ Sac / Acheter / dotation) va sur _currentSheet, même si
+                // aucune unité n'incarne encore cette fiche sur la grille.
                 InventoryDevWindow.Open();
                 if (InventoryDevWindow.Instance != null)
                 {
-                    // Si une unité incarne déjà cette fiche, on l'inspecte ; sinon le marché
-                    // reste utilisable via le sélecteur d'unité (le sac F1 reste la fiche courante).
-                    var allUnits = FindObjectsByType<Tactics.Units.TacticalUnit>();
-                    Tactics.Units.TacticalUnit match = null;
-                    for (int u = 0; u < allUnits.Length; u++)
-                    {
-                        var sh = allUnits[u] != null ? allUnits[u].GetOrBuildSheet() : null;
-                        if (sh != null && sh.SheetId == _currentSheet.SheetId) { match = allUnits[u]; break; }
-                    }
-                    if (match != null) InventoryDevWindow.Instance.InspectUnit(match);
+                    InventoryDevWindow.Instance.InspectSheet(_currentSheet);
+                    _statusMessage = $"Armurerie liée à '{_currentSheet.Name}' : les ajouts vont sur cette fiche.";
                 }
             }
             GUI.backgroundColor = Color.white;
@@ -637,6 +635,31 @@ namespace Killtime.UI
             GUI.color = Color.white;
             GUILayout.EndHorizontal();
 
+            GUILayout.Space(6);
+            GUILayout.Label("<b>4. Arbre de Progression (Livre I §5) :</b>");
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            GUILayout.Label($"Entraînements : <b>{CountTrainedLevels(_currentSheet)}</b> (gratuits <b>{Mathf.Max(0, _currentSheet.FreeTrainingsUsed)}/{_currentSheet.GetFreeTrainingBudget()}</b>, restants <b>{_currentSheet.GetFreeTrainingsRemaining()}</b>) | Spés : <b>{_currentSheet.UnlockedSpecializations.Count}</b> | Banques liées : <b>{_currentSheet.GetLinkedReserveTotal()} XP</b> | XP libre : <b>{_currentSheet.AvailableXP}</b>", GUILayout.ExpandWidth(true));
+            GUI.enabled = _currentSheet.AvailableXP > 0;
+            if (GUILayout.Button("↺ XP libre à 0", GUILayout.Width(110), GUILayout.Height(28)))
+            {
+                if (CharacterProgressionManager.ResetFreeXP(_currentSheet, out string freeMsg, out _))
+                    _statusMessage = freeMsg;
+                else
+                    _statusMessage = freeMsg;
+            }
+            GUI.enabled = true;
+            GUI.backgroundColor = new Color(0.95f, 0.45f, 0.2f);
+            if (GUILayout.Button("♻️ Reset arbre (XP restaurés, entraînements à 0)", GUILayout.Width(320), GUILayout.Height(28)))
+            {
+                if (CharacterProgressionManager.ResetProgressionTree(_currentSheet, out string resetMsg))
+                    _statusMessage = resetMsg;
+                else
+                    _statusMessage = resetMsg;
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+            GUILayout.Label("<i>Érudition = entraînements gratuits (budget = ÉRU effective, +1 ÉRU = +1 gratuit). Gratuits : 0 XP, hors XP total. Appliquez-les dans l'onglet Progression (bouton Gratuit).</i>");
+
             GUILayout.Space(8);
             GUI.backgroundColor = new Color(0.2f, 0.7f, 0.3f);
             if (GUILayout.Button("💾 Sauvegarder cette fiche sur le Disque", GUILayout.Height(34)))
@@ -816,6 +839,9 @@ namespace Killtime.UI
 
             _currentPreviewInstance.transform.localPosition = Vector3.zero;
             _currentPreviewInstance.transform.localRotation = Quaternion.Euler(0f, _previewModelYaw, 0f);
+
+            // Même normalisation qu'en jeu : l'aperçu affiche la taille réelle de l'unité.
+            CharacterModelScaleNormalizer.NormalizeToUnitHeight(_currentPreviewInstance, 1f);
 
             SetupPreviewAnimator(_currentPreviewInstance, prefab);
             PlayPreviewAnimation(_selectedPreviewAnimIndex);
@@ -1350,6 +1376,15 @@ namespace Killtime.UI
             }
         }
 
+        private static int CountTrainedLevels(CharacterSheet sheet)
+        {
+            if (sheet == null || sheet.Skills == null) return 0;
+            int total = 0;
+            for (int i = 0; i < sheet.Skills.Count; i++)
+                if (sheet.Skills[i] != null) total += System.Math.Max(0, sheet.Skills[i].TrainingLevel);
+            return total;
+        }
+
         private bool ValidateAttributeAllocation(CharacterSheet sheet, out string statusMessage)
         {
             var b = sheet.BaseAttributes;
@@ -1473,10 +1508,33 @@ namespace Killtime.UI
         private void DrawProgressionTab()
         {
             GUILayout.BeginHorizontal(GUI.skin.box);
-            GUILayout.Label($"Personnage : <b>{_currentSheet.Name}</b> | XP Disponible : <color=yellow><b>{_currentSheet.AvailableXP} XP</b></color>");
+            GUILayout.Label($"Personnage : <b>{_currentSheet.Name}</b> | XP Libre : <color=yellow><b>{_currentSheet.AvailableXP} XP</b></color> | Banque liée : <b>{_currentSheet.GetLinkedReserveTotal()} XP</b> | <color=#FFD166>XP TOTAL (dépensé) : <b>{_currentSheet.TotalSpentXP}</b></color>");
             if (GUILayout.Button("+10 XP", GUILayout.Width(70))) CharacterProgressionManager.GrantXP(_currentSheet, 10);
             if (GUILayout.Button("+50 XP", GUILayout.Width(70))) CharacterProgressionManager.GrantXP(_currentSheet, 50);
+            GUI.enabled = _currentSheet.AvailableXP > 0;
+            if (GUILayout.Button("↺ XP libre à 0", GUILayout.Width(110)))
+            {
+                if (CharacterProgressionManager.ResetFreeXP(_currentSheet, out string freeMsg, out _))
+                    _statusMessage = freeMsg;
+                else
+                    _statusMessage = freeMsg;
+            }
+            GUI.enabled = true;
             GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            GUILayout.Label("<i>Reset : restaure l'XP payé en libre, gratuits rendus au budget, entraînements à 0, cases effacées.</i>", GUILayout.ExpandWidth(true));
+            GUI.backgroundColor = new Color(0.95f, 0.45f, 0.2f);
+            if (GUILayout.Button("♻️ Reset arbre", GUILayout.Width(130)))
+            {
+                if (CharacterProgressionManager.ResetProgressionTree(_currentSheet, out string resetMsg))
+                    _statusMessage = resetMsg;
+                else
+                    _statusMessage = resetMsg;
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+            GUILayout.Label($"<i>Gratuits Érudition : <b>{_currentSheet.GetFreeTrainingsRemaining()}</b> restant(s) (budget <b>{_currentSheet.GetFreeTrainingBudget()}</b> = ÉRU effective, {Mathf.Max(0, _currentSheet.FreeTrainingsUsed)} consommé(s)). +1 ÉRU = +1 gratuit. Gratuits : 0 XP, hors XP total.</i>");
+            GUILayout.Label("<i>Livre I §5 : 1 réussite = 1 case dans la compétence. Piste pleine (cases = base) = +1 XP lié. Dépense associée/libre au coût normal, croisée x2. XP total = dépensé (payé), jamais la banque ni les gratuits.</i>");
 
             GUILayout.Space(4);
             GUI.backgroundColor = new Color(0.1f, 0.75f, 1.0f);
@@ -1487,27 +1545,43 @@ namespace Killtime.UI
             GUI.backgroundColor = Color.white;
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>Arbres de Compétences (5 XP = +1 Palier de Dé) :</b>");
+            GUILayout.Label("<b>Arbres de Compétences (5 XP liés/libre = +1 Palier, 10 si croisé, ou Gratuit ÉRU) :</b>");
 
             foreach (var entry in _currentSheet.Skills)
             {
                 GUILayout.BeginHorizontal(GUI.skin.box);
                 string skillName = SkillDefinitions.GetDisplayName(entry.Skill);
                 bool isMax = entry.TrainingLevel >= CharacterProgressionManager.MAX_SKILL_TRAINING;
+                int baseRank = CharacterProgressionManager.GetBaseRankForSheet(_currentSheet, entry.Skill, false);
+                int maxTicks = CharacterProgressionManager.GetProgressMax(baseRank);
+                int spendable = CharacterProgressionManager.GetSpendableFor(_currentSheet, entry.Skill);
 
-                GUILayout.Label($"<b>{skillName}</b> (+{entry.TrainingLevel}/{CharacterProgressionManager.MAX_SKILL_TRAINING})", GUILayout.Width(220));
+                GUILayout.Label($"<b>{skillName}</b> (+{entry.TrainingLevel}/{CharacterProgressionManager.MAX_SKILL_TRAINING}) | Base {baseRank} | <color=#00E5FF>{entry.ProgressTicks}/{maxTicks}</color> | Banque <color=yellow>{entry.ReserveXP}</color>", GUILayout.Width(340));
 
                 if (isMax)
                 {
                     GUI.color = Color.green;
-                    GUILayout.Label("✅ Plafond Max (+3)", GUILayout.Width(180));
+                    GUILayout.Label("✅ Plafond Max (+3)", GUILayout.Width(280));
                     GUI.color = Color.white;
                 }
                 else
                 {
-                    bool canAfford = _currentSheet.AvailableXP >= CharacterProgressionManager.XP_COST_TRAINING;
+                    bool hasFree = _currentSheet.GetFreeTrainingsRemaining() > 0;
+                    GUI.enabled = hasFree;
+                    GUI.backgroundColor = hasFree ? new Color(0.35f, 0.85f, 0.45f) : Color.white;
+                    if (GUILayout.Button("Gratuit (ÉRU)", GUILayout.Width(110)))
+                    {
+                        if (CharacterProgressionManager.TrainSkillFree(_currentSheet, entry.Skill, out string freeMsg))
+                            _statusMessage = freeMsg;
+                        else
+                            _statusMessage = freeMsg;
+                    }
+                    GUI.backgroundColor = Color.white;
+                    GUI.enabled = true;
+
+                    bool canAfford = spendable >= CharacterProgressionManager.XP_COST_TRAINING;
                     GUI.enabled = canAfford;
-                    if (GUILayout.Button($"Entraîner ({CharacterProgressionManager.XP_COST_TRAINING} XP)", GUILayout.Width(180)))
+                    if (GUILayout.Button($"Entraîner ({CharacterProgressionManager.XP_COST_TRAINING} XP)", GUILayout.Width(160)))
                     {
                         if (CharacterProgressionManager.TrainSkill(_currentSheet, entry.Skill, out string msg))
                             _statusMessage = msg;
@@ -1521,14 +1595,15 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>Spécialisations (5 XP) :</b>");
+            GUILayout.Label("<b>Spécialisations (5 XP liés source / libre, 10 si croisé) :</b>");
             string[] availableSpecs = { "Maniement de l'Épée", "Marteau de Guerre", "Pistolet & Tir Rapide", "Escrime", "Arts Martiaux", "Chirurgie", "Tromper", "Négocier", "Intimider", "Leadership" };
 
             foreach (var spec in availableSpecs)
             {
                 bool owned = _currentSheet.UnlockedSpecializations.Contains(spec);
                 GUILayout.BeginHorizontal(GUI.skin.box);
-                GUILayout.Label(spec, GUILayout.Width(230));
+                string src = CharacterProgressionManager.TryGetSpecializationSource(spec, out SkillType s) ? SkillDefinitions.GetDisplayName(s) : "?";
+                GUILayout.Label($"{spec} <color=gray>(source {src})</color>", GUILayout.Width(230));
                 if (owned)
                 {
                     GUI.color = Color.green;
@@ -1540,6 +1615,8 @@ namespace Killtime.UI
                     if (GUILayout.Button("Débloquer (5 XP)", GUILayout.Width(130)))
                     {
                         if (CharacterProgressionManager.UnlockSpecialization(_currentSheet, spec, out string msg))
+                            _statusMessage = msg;
+                        else
                             _statusMessage = msg;
                     }
                 }

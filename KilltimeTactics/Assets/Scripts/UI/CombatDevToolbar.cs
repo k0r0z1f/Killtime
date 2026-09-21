@@ -188,6 +188,7 @@ namespace Killtime.UI
             else if (Input.GetKeyDown(KeyCode.F6)) EnsureDevWindow(Killtime.Multi.Video.VTTVideoRoomWindow.Instance, Killtime.Multi.Video.VTTVideoRoomWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F7)) EnsureDevWindow(ScenarioDevWindow.Instance, ScenarioDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F8)) EnsureDevWindow(ScenarioEditorDevWindow.Instance, ScenarioEditorDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F10)) EnsureDevWindow(WeaponGripEditorDevWindow.Instance, WeaponGripEditorDevWindow.Open);
         }
 
         /// <summary>
@@ -677,10 +678,16 @@ namespace Killtime.UI
 
             GUILayout.Space(8);
             GUILayout.Label("<b>👥 Personnages & Fiches :</b>");
-            if (GUILayout.Button("🧙 Ouvrir le Créateur de Personnage (F1)", GUILayout.Height(32)))
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🧙 Créateur Personnages (F1)", GUILayout.Height(32)))
             {
                 CharacterDevWindow.Open();
             }
+            if (GUILayout.Button("🗡️ Ancrage Armes / Grip (F10)", GUILayout.Height(32)))
+            {
+                WeaponGripEditorDevWindow.Open();
+            }
+            GUILayout.EndHorizontal();
 
             GUILayout.Space(4);
             GUILayout.Label("<b>🗺️ Conception de Champ de Bataille :</b>");
