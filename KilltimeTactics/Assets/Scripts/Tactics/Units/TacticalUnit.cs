@@ -42,7 +42,54 @@ namespace Killtime.Tactics.Units
         public HexCoordinates CurrentCoords { get; private set; }
         public bool IsPlayerControlled => _isPlayerControlled;
         public bool IsMoving { get; private set; }
-        public float MoveSpeed => _moveSpeed;
+        public float MoveSpeed
+        {
+            get
+            {
+                if (Stats != null)
+                {
+                    if (Stats.HasSpecialization("Élan Sans Drag : Évasion Inertielle"))
+                        return 8.5f;
+                    if (Stats.HasSpecialization("Élan Sans Drag : Friction Zéro"))
+                        return 7.0f;
+                    if (Stats.HasSpecialization("Élan Sans Drag : Glissade Balistique"))
+                        return 6.2f;
+                    if (Stats.HasSpecialization("Élan Sans Drag"))
+                        return 5.5f;
+                }
+                return _moveSpeed;
+            }
+        }
+
+        public int ComputeMovementAPCost(int rawCost)
+        {
+            if (rawCost <= 0) return 0;
+            if (Stats != null && Stats.MovesThisTurn == 0)
+            {
+                if (Stats.HasSpecialization("Protocole des Pas Invisibles : Célérité Quantique"))
+                {
+                    return Mathf.Max(0, rawCost - 4);
+                }
+                if (Stats.HasSpecialization("Protocole des Pas Invisibles : Pas Fantôme"))
+                {
+                    return Mathf.Max(0, rawCost - 3);
+                }
+                if (Stats.HasSpecialization("Protocole des Pas Invisibles : Dissipation d'Échappement"))
+                {
+                    return Mathf.Max(0, rawCost - 2);
+                }
+                if (Stats.HasSpecialization("Protocole des Pas Invisibles"))
+                {
+                    return Mathf.Max(0, rawCost - 1);
+                }
+                // Course d'Endurance (Athlétisme) : après le Protocole (pas de cumul).
+                if (Stats.HasSpecialization("Course d'Endurance"))
+                {
+                    return Mathf.Max(0, rawCost - 1);
+                }
+            }
+            return rawCost;
+        }
 
         public static event Action<TacticalUnit, List<HexCoordinates>, int> OnAnyUnitMoved;
         public static event Action<TacticalUnit, HexCoordinates> OnAnyUnitTeleported;
@@ -426,6 +473,7 @@ namespace Killtime.Tactics.Units
 
             IsMoving = true;
             Stats.ConsumeActionPoints(apCost);
+            Stats.RegisterMove();
             OnAnyUnitMoved?.Invoke(this, path, apCost);
 
             HexCoordinates previous = path[0];

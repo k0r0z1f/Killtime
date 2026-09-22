@@ -59,20 +59,77 @@ namespace Killtime.Core.Character
         public void InitializeDefaultSkills()
         {
             Skills.Clear();
+            var seen = new HashSet<int>();
             foreach (SkillType skill in Enum.GetValues(typeof(SkillType)))
             {
+                // Les alias (même valeur int) ne créent qu'une seule entrée,
+                // et la valeur legacy ArmesContondantes n'est plus une compétence de base.
+                if (!SkillDefinitions.IsBaseSkill(skill)) continue;
+                if (!seen.Add((int)skill)) continue;
                 Skills.Add(new SkillProgressionEntry(skill, 0));
             }
         }
 
+        /// <summary>
+        /// Migration legacy : les entraînements / réserves / cases autrefois investis
+        /// dans « Armes Contondantes » (compétence de base) sont reversés dans
+        /// « Maniement d'Arme ». Entraînement : max (plafond), réserves et cases : somme.
+        /// L'entrée legacy est ensuite supprimée. Retourne true si migration effectuée.
+        /// </summary>
+        public bool MigrateLegacyBluntSkill()
+        {
+            bool migrated = false;
+            // Les détenteurs du Marteau de Guerre obtiennent la spécialisation parente.
+            if (UnlockedSpecializations != null)
+            {
+                bool hasHammer = false;
+                for (int i = 0; i < UnlockedSpecializations.Count; i++)
+                {
+                    string s = UnlockedSpecializations[i];
+                    if (string.IsNullOrEmpty(s)) continue;
+                    if (s.Equals("Marteau de Guerre", StringComparison.OrdinalIgnoreCase)
+                        || s.StartsWith("Marteau de Guerre :", StringComparison.OrdinalIgnoreCase))
+                    {
+                        hasHammer = true;
+                        break;
+                    }
+                }
+                if (hasHammer && !UnlockedSpecializations.Contains("Armes Contondantes"))
+                {
+                    UnlockedSpecializations.Add("Armes Contondantes");
+                    migrated = true;
+                }
+            }
+#pragma warning disable CS0618
+            var legacy = Skills?.Find(s => s != null && s.Skill == SkillType.ArmesContondantes);
+#pragma warning restore CS0618
+            if (legacy == null) return migrated;
+            var target = GetSkill(SkillType.ManiementArmes);
+            if (!ReferenceEquals(legacy, target))
+            {
+                target.TrainingLevel = Math.Max(target.TrainingLevel, legacy.TrainingLevel);
+                target.ReserveXP = Math.Max(0, target.ReserveXP) + Math.Max(0, legacy.ReserveXP);
+                target.ProgressTicks = Math.Max(0, target.ProgressTicks) + Math.Max(0, legacy.ProgressTicks);
+                Skills.Remove(legacy);
+            }
+            return true;
+        }
+
         public SkillProgressionEntry GetSkill(SkillType type)
         {
-            var entry = Skills.Find(s => s.Skill == type);
-            if (entry == null)
+            type = SkillDefinitions.ResolveBaseSkill(type);
+            var entry = Skills.Find(s => s != null && s.Skill == type);
+            if (entry != null) return entry;
+            // Entrée legacy (ex: ArmesContondantes non migrée) : la recycler sous le nouveau nom.
+            var legacyEntry = Skills.Find(s => s != null && SkillDefinitions.ResolveBaseSkill(s.Skill) == type);
+            if (legacyEntry != null)
             {
-                entry = new SkillProgressionEntry(type, 0);
-                Skills.Add(entry);
+                legacyEntry.Skill = type;
+                MigrateLegacyBluntSkill();
+                return legacyEntry;
             }
+            entry = new SkillProgressionEntry(type, 0);
+            Skills.Add(entry);
             return entry;
         }
 

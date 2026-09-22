@@ -400,9 +400,8 @@ namespace Killtime.Core.Inventory
         {
             if (item == null || item.Type != ItemType.Weapon) return false;
             if (item.IsGrenade || item.IsThrowableGrenade()) return false;
-            if (item.AssociatedSkill == SkillType.ManiementArmes
-                || item.AssociatedSkill == SkillType.ArmesContondantes
-                || item.AssociatedSkill == SkillType.ArmesPercantes) return false;
+            // Armes blanches (dont contondantes legacy) : jamais des fusils.
+            if (SkillDefinitions.IsMeleeWeaponSkill(item.AssociatedSkill)) return false;
             if (item.EquipSlot == ItemEquipSlot.TwoHands) return true;
             if (item.AssociatedSkill == SkillType.Ballistique) return true;
             string n = ((item.Name ?? "") + " " + (item.PrefabPath ?? "")).ToLowerInvariant();

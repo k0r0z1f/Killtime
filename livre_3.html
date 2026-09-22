@@ -614,22 +614,16 @@
                                     <td>Arts Martiaux, Agripper, Frapper, Étrangler</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>Armes Contondantes</strong></td>
-                                    <td>Force</td>
-                                    <td>Offensif, Défensif</td>
-                                    <td><strong>Marteau</strong>, Masse, Gourdin, Fléau</td>
-                                </tr>
-                                <tr>
                                     <td><strong>Maniement d'Arme</strong> (Tranchantes / Contondantes)</td>
                                     <td>Force, Agilité</td>
                                     <td>Offensif, Défensif</td>
-                                    <td><strong>Spécialisation Épée</strong>, Marteau, Hache de guerre, Zweihander</td>
+                                    <td><strong>Spécialisation Épée</strong>, <strong>Armes Contondantes</strong> (Marteau, Masse, Gourdin, Fléau), Hache de guerre, Zweihander</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Athlétisme</strong></td>
                                     <td>Constitution, Force, Agilité</td>
                                     <td>Utilitaire</td>
-                                    <td>Grimper, Nager, Courir, Soulever, Transporter</td>
+                                    <td><strong>Course d'Endurance</strong> (Second Souffle, Cœur de Marathon), <strong>Franchissement</strong> (Escalade Assurée, Nage de Combat)</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Défense Corporelle</strong></td>
@@ -740,7 +734,7 @@
                                     <td><strong>Endurance Physique</strong></td>
                                     <td>Constitution, Force</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td>Résistance aux Blessures, Résistance aux Coups, Marche forcée</td>
+                                    <td><strong>Condition de Fer</strong> (Dur à Cuire, Mur de Chair), <strong>Trempe de Fer</strong> (Ignorer la Douleur, Esprit de Granit)</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Cardio</strong></td>
@@ -894,7 +888,7 @@
                                     <td><strong>Intuition</strong></td>
                                     <td>Intelligence, Instinct</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td>Sixième sens du danger, Pressentiment, Détection du mensonge</td>
+                                    <td><strong>Sens du Danger</strong> (Premiers Réflexes, Clairvoyance du Vétéran), <strong>Instinct du Chasseur</strong> (Pistage, Piégeur)</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Nature & Survie</strong></td>
@@ -944,11 +938,82 @@
                                 </tr>
                                 <tr>
                                     <td><strong>Marteau de Guerre</strong></td>
-                                    <td>Armes Contondantes (FOR)</td>
+                                    <td>Maniement d'Arme — <em>spécialisation Armes Contondantes</em> (FOR, AGI)</td>
                                     <td>Offensif</td>
                                     <td>Sur réussite nette : <strong>La cible tombe à terre</strong>, reçoit <strong>+2
                                             Dégâts</strong> et inflige des <strong>Dégâts Absolus</strong> (ignore
                                         l'armure non énergétique).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Hache de Guerre</strong></td>
+                                    <td>Maniement d'Arme (FOR, AGI)</td>
+                                    <td>Offensif, Défensif</td>
+                                    <td>Sur réussite nette : <strong>+2 Dégâts</strong> (+3 contre armure lourde,
+                                        +4 avec Brise-Garde, +5 avec Exécution du Bourreau). Croc de Désarmement
+                                        désarme sur Delta &ge; 3.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Arme de Hast</strong></td>
+                                    <td>Armes Perçantes (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Piques et hallebardes à 2 cases sans malus d'allonge. Arrêt de Charge
+                                        <strong>ignore 2 points d'armure</strong> (3 avec Mur de Piques, 4 avec
+                                        Phalange d'Acier). Fauchage fait chuter À Terre sur Delta &ge; 2.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Tir à l'Arc</strong></td>
+                                    <td>Projectiles (AGI)</td>
+                                    <td>Offensif</td>
+                                    <td>Arcs et arbalètes <strong>silencieux</strong> (+2 cases de portée). Flèche
+                                        Perforante ignore 2 points d'armure, Tir en Cloche ignore le couvert
+                                        partiel, Pluie d'Acier blesse une seconde cible adjacente.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Course d'Endurance</strong></td>
+                                    <td>Athlétisme (CON, FOR, AGI)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Le premier déplacement du tour coûte <strong>1 PA de moins</strong>.
+                                        Second Souffle : Reprendre son Souffle efface <strong>2 ESS</strong>.
+                                        Cœur de Marathon : Souffle d'Urgence à <strong>+3 PA</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Franchissement</strong></td>
+                                    <td>Athlétisme (CON, FOR, AGI)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Ignore le <strong>terrain difficile</strong>. Escalade Assurée franchit
+                                        murets et tranchées sans surcoût. Nage de Combat : aucune épreuve en
+                                        eau agitée, apnée de 2 &times; Constitution en tours.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Condition de Fer</strong></td>
+                                    <td>Endurance Physique (CON, FOR)</td>
+                                    <td>Utilitaire, Défensif</td>
+                                    <td><strong>+1 PV</strong> au début de chaque tour si blessé. Dur à Cuire :
+                                        <strong>+2 Encaissement</strong>. Mur de Chair : +2 Encaissement et
+                                        <strong>+1 Armure</strong> naturelle.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Trempe de Fer</strong></td>
+                                    <td>Endurance Physique (CON, FOR)</td>
+                                    <td>Défensif</td>
+                                    <td>Déstabilisé réduit à <strong>-1</strong>. Ignorer la Douleur annule le
+                                        malus d'À Terre en attaque. Esprit de Granit ignore
+                                        <strong>Étourdi</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Sens du Danger</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire</td>
+                                    <td>L'Instinct compte dans la <strong>base d'Initiative</strong>. Premiers
+                                        Réflexes : <strong>+1 palier</strong> au dé d'Initiative. Clairvoyance du
+                                        Vétéran : immunité aux <strong>embuscades</strong>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Instinct du Chasseur</strong></td>
+                                    <td>Intuition (INT, INS)</td>
+                                    <td>Utilitaire</td>
+                                    <td>Piste fraîche sans épreuve. Pistage : <strong>+2 en NatureSurvie</strong>.
+                                        Piégeur : pièges de campagne qui <strong>Immobilisent</strong>.</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Pistolet & Tir Rapide</strong></td>

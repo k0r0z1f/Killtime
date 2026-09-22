@@ -62,6 +62,7 @@ namespace Killtime.UI
 
         private int _selectedPreviewAnimIndex = 0;
         private bool _showAnimDropdown = false;
+        private bool _showHiddenModelCheats = false;
         private readonly string[] _previewAnimationStates = {
             "Standing Idle",
             "Standing Idle To Fight Idle",
@@ -254,6 +255,20 @@ namespace Killtime.UI
         protected override void DrawContent()
         {
             GUILayout.Space(6);
+
+            // --- Barre d'actions globales : fiche active + Nouveau Personnage ---
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            string sheetLabel = _currentSheet != null ? _currentSheet.Name : "(aucune fiche)";
+            GUILayout.Label($"Fiche active : <b>{sheetLabel}</b>", GUILayout.ExpandWidth(true));
+            GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
+            if (GUILayout.Button("➕ Nouveau Personnage", GUILayout.Width(180), GUILayout.Height(26)))
+            {
+                CreateNewCharacter();
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+            GUILayout.Space(4);
+
             _selectedTab = GUILayout.Toolbar(_selectedTab, _tabTitles);
             GUILayout.Space(6);
 
@@ -301,6 +316,35 @@ namespace Killtime.UI
                     }
                 }
             }
+        }
+
+        private void CreateNewCharacter()
+        {
+            _currentSheet = new CharacterSheet();
+            ApplyDefaultProfileAttributes(_currentSheet);
+            _currentSheet.Name = "Nouveau Personnage";
+
+            // Réinitialise l'état d'édition lié à l'ancienne fiche.
+            _selectedInventoryItem = null;
+            _selectedTab = 0;
+            _scrollPos = Vector2.zero;
+            _invScroll = Vector2.zero;
+            _gunCatalogScroll = Vector2.zero;
+            _showModelDropdown = false;
+            _showAnimDropdown = false;
+            _selectedPreviewAnimIndex = 0;
+            _lastLoadedModelName = "__UNINITIALIZED__";
+
+            // L'armurerie suit automatiquement CurrentSheet, mais si elle était
+            // liée à l'ancien brouillon on la re-lie explicitement à la nouvelle fiche.
+            try
+            {
+                if (InventoryDevWindow.Instance != null && InventoryDevWindow.Instance.IsBoundToDraft)
+                    InventoryDevWindow.Instance.InspectSheet(_currentSheet);
+            }
+            catch { /* ignore */ }
+
+            _statusMessage = "➕ Nouveau personnage créé — fiche vierge prête à configurer. Pensez à la sauvegarder.";
         }
 
         private void DrawInventoryTab()
@@ -661,6 +705,12 @@ namespace Killtime.UI
             GUILayout.Label("<i>Érudition = entraînements gratuits (budget = ÉRU effective, +1 ÉRU = +1 gratuit). Gratuits : 0 XP, hors XP total. Appliquez-les dans l'onglet Progression (bouton Gratuit).</i>");
 
             GUILayout.Space(8);
+            GUILayout.BeginHorizontal();
+            GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
+            if (GUILayout.Button("➕ Nouveau Personnage", GUILayout.Height(34)))
+            {
+                CreateNewCharacter();
+            }
             GUI.backgroundColor = new Color(0.2f, 0.7f, 0.3f);
             if (GUILayout.Button("💾 Sauvegarder cette fiche sur le Disque", GUILayout.Height(34)))
             {
@@ -668,6 +718,7 @@ namespace Killtime.UI
                 _statusMessage = $"Fiche '{_currentSheet.Name}' sauvegardée !";
             }
             GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
         }
 
         private void DrawModelSelector()
@@ -1549,6 +1600,22 @@ namespace Killtime.UI
 
             foreach (var entry in _currentSheet.Skills)
             {
+                bool isAccessible = CharacterProgressionManager.IsSkillAccessible(_currentSheet, entry.Skill);
+                if (!isAccessible)
+                {
+                    GUILayout.BeginHorizontal(GUI.skin.box);
+                    GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(entry.Skill)}</b>", GUILayout.Width(200));
+                    GUI.color = new Color(0.95f, 0.4f, 0.4f);
+                    // Libellé héroïque délégué (voir MinaCharacter / LucasCharacter).
+                    string lockLabel = MinaCharacter.IsMina(_currentSheet)
+                        ? MinaCharacter.RestrictionLabel
+                        : (LucasCharacter.IsLucas(_currentSheet) ? LucasCharacter.RestrictionLabel : "🔒 Inaccessible (Affinité héroïque)");
+                    GUILayout.Label(lockLabel, GUILayout.ExpandWidth(true));
+                    GUI.color = Color.white;
+                    GUILayout.EndHorizontal();
+                    continue;
+                }
+
                 GUILayout.BeginHorizontal(GUI.skin.box);
                 string skillName = SkillDefinitions.GetDisplayName(entry.Skill);
                 bool isMax = entry.TrainingLevel >= CharacterProgressionManager.MAX_SKILL_TRAINING;
@@ -1595,32 +1662,167 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>Spécialisations (5 XP liés source / libre, 10 si croisé) :</b>");
-            string[] availableSpecs = { "Maniement de l'Épée", "Marteau de Guerre", "Pistolet & Tir Rapide", "Escrime", "Arts Martiaux", "Chirurgie", "Tromper", "Négocier", "Intimider", "Leadership" };
 
-            foreach (var spec in availableSpecs)
+            // 1. Barre de contrôle Dev & Cheat
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            GUILayout.Label("<b>Maîtrises & Spécialisations du Codex :</b>", GUILayout.Width(260));
+
+            Color prevCheatBg = GUI.backgroundColor;
+            GUI.backgroundColor = _showHiddenModelCheats ? new Color(1f, 0.25f, 0.85f) : new Color(0.18f, 0.25f, 0.35f);
+            if (GUILayout.Button(_showHiddenModelCheats ? "👁️ [DEV CHEAT] Secrets : VISIBLES" : "👁️ [DEV CHEAT] Secrets : CACHÉS", GUILayout.Width(240), GUILayout.Height(24)))
             {
-                bool owned = _currentSheet.UnlockedSpecializations.Contains(spec);
-                GUILayout.BeginHorizontal(GUI.skin.box);
-                string src = CharacterProgressionManager.TryGetSpecializationSource(spec, out SkillType s) ? SkillDefinitions.GetDisplayName(s) : "?";
-                GUILayout.Label($"{spec} <color=gray>(source {src})</color>", GUILayout.Width(230));
+                _showHiddenModelCheats = !_showHiddenModelCheats;
+                _statusMessage = _showHiddenModelCheats
+                    ? "Mode Dev Cheat activé : Toutes les arborescences et maîtrises secrètes sont affichées."
+                    : "Mode standard restauré : Les maîtrises secrètes respectent leurs prérequis.";
+            }
+            GUI.backgroundColor = prevCheatBg;
+
+            if (_showHiddenModelCheats)
+            {
+                GUI.backgroundColor = new Color(1f, 0.2f, 0.8f);
+                if (GUILayout.Button("⚡ Tout Débloquer", GUILayout.Width(140), GUILayout.Height(24)))
+                {
+                    int unlockedCount = 0;
+                    foreach (var specDetail in CharacterProgressionManager.GetAllSpecializations())
+                    {
+                        if (!_currentSheet.UnlockedSpecializations.Contains(specDetail.Name))
+                        {
+                            CharacterProgressionManager.UnlockSpecialization(_currentSheet, specDetail.Name, out _, forceFree: true);
+                            unlockedCount++;
+                        }
+                    }
+                    SaveCharacterAndSyncUnits(_currentSheet);
+                    _statusMessage = $"[CHEAT] {unlockedCount} spécialisation(s) et maîtrise(s) débloquées instantanément !";
+                }
+                GUI.backgroundColor = Color.white;
+            }
+
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            // 2. Rendu complet de toutes les arborescences avec sous-branches et hiérarchie (filtré par fiche héroïque ou profil par défaut)
+            var allSpecs = new List<CharacterProgressionManager.SpecializationDetail>(CharacterProgressionManager.GetAllSpecializations(_currentSheet));
+            allSpecs.Sort((a, b) =>
+            {
+                int skillCmp = a.SourceSkill.CompareTo(b.SourceSkill);
+                if (skillCmp != 0) return skillCmp;
+                if (!a.IsImprovement && b.IsImprovement) return -1;
+                if (a.IsImprovement && !b.IsImprovement) return 1;
+                return string.Compare(a.Name, b.Name, StringComparison.OrdinalIgnoreCase);
+            });
+
+            SkillType lastSkill = (SkillType)(-1);
+            for (int sIdx = 0; sIdx < allSpecs.Count; sIdx++)
+            {
+                var detail = allSpecs[sIdx];
+                if (detail == null) continue;
+
+                if (detail.IsHidden && !_showHiddenModelCheats && !_currentSheet.UnlockedSpecializations.Contains(detail.Name))
+                {
+                    bool parentOwned = !string.IsNullOrEmpty(detail.ParentSpecialization) && _currentSheet.UnlockedSpecializations.Contains(detail.ParentSpecialization);
+                    if (!parentOwned) continue;
+                }
+
+                bool isVol2Spec = detail.IsVolume2 || CharacterProgressionManager.IsVolume2Specialization(detail.Name);
+                bool isVol2Locked = isVol2Spec && !CharacterProgressionManager.IsVolume2Unlocked();
+                if (isVol2Locked && !_showHiddenModelCheats && !_currentSheet.UnlockedSpecializations.Contains(detail.Name))
+                {
+                    continue;
+                }
+
+                if (detail.SourceSkill != lastSkill)
+                {
+                    lastSkill = detail.SourceSkill;
+                    GUILayout.Space(4);
+                    string skillHeader = SkillDefinitions.GetDisplayName(lastSkill).ToUpperInvariant();
+                    GUILayout.Label($"<color=#00E5FF><b>━━━ {skillHeader} ━━━</b></color>");
+                }
+
+                bool owned = _currentSheet.UnlockedSpecializations.Contains(detail.Name);
+                bool isSecret = detail.IsHidden;
+                bool parentMet = string.IsNullOrEmpty(detail.ParentSpecialization) || _currentSheet.UnlockedSpecializations.Contains(detail.ParentSpecialization);
+
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginHorizontal();
+
+                string indent = detail.IsImprovement ? "   ↳ " : "★ ";
+                if (isSecret) indent = detail.IsImprovement ? "   ↳ 🔮 " : "🔮 ";
+
+                string nameColor = owned ? "#00FF88" : (isSecret ? "#F43F5E" : (detail.IsImprovement ? "#E2E8F0" : "#FFE600"));
+                string secretTag = isSecret ? " <color=#F43F5E>[SECRET]</color>" : "";
+                GUILayout.Label($"{indent}<b><color={nameColor}>{detail.Name}</color></b>{secretTag}", GUILayout.ExpandWidth(true));
+
                 if (owned)
                 {
                     GUI.color = Color.green;
-                    GUILayout.Label("✅ Acquis");
+                    GUILayout.Label("✅ Acquis", GUILayout.Width(75));
+                    GUI.color = Color.white;
+                }
+                else if (isVol2Locked && !_showHiddenModelCheats)
+                {
+                    GUI.color = new Color(1f, 0.45f, 0.2f);
+                    GUILayout.Label("🔒 Phase 2 / Vol. II Requis", GUILayout.Width(190));
+                    GUI.color = Color.white;
+                }
+                else if (!parentMet && !_showHiddenModelCheats)
+                {
+                    GUI.color = new Color(0.6f, 0.6f, 0.6f);
+                    GUILayout.Label($"🔒 Req: {detail.ParentSpecialization}", GUILayout.Width(190));
                     GUI.color = Color.white;
                 }
                 else
                 {
-                    if (GUILayout.Button("Débloquer (5 XP)", GUILayout.Width(130)))
+                    if (!isVol2Locked)
                     {
-                        if (CharacterProgressionManager.UnlockSpecialization(_currentSheet, spec, out string msg))
-                            _statusMessage = msg;
-                        else
-                            _statusMessage = msg;
+                        bool canAfford = CharacterProgressionManager.GetSpendableFor(_currentSheet, detail.SourceSkill) >= CharacterProgressionManager.XP_COST_SPECIALIZATION;
+                        GUI.enabled = canAfford;
+                        GUI.backgroundColor = canAfford ? new Color(0.2f, 0.8f, 0.4f) : Color.gray;
+
+                        if (GUILayout.Button("Débloquer (5 XP)", GUILayout.Width(130)))
+                        {
+                            if (CharacterProgressionManager.UnlockSpecialization(_currentSheet, detail.Name, out string msg, forceFree: false))
+                            {
+                                SaveCharacterAndSyncUnits(_currentSheet);
+                                _statusMessage = msg;
+                            }
+                            else
+                            {
+                                _statusMessage = msg;
+                            }
+                        }
+                        GUI.backgroundColor = Color.white;
+                        GUI.enabled = true;
+                    }
+                    else
+                    {
+                        GUI.color = new Color(1f, 0.45f, 0.2f);
+                        GUILayout.Label("🔒 Verrou Causal (Vol. II)", GUILayout.Width(170));
+                        GUI.color = Color.white;
+                    }
+
+                    if (_showHiddenModelCheats)
+                    {
+                        GUI.backgroundColor = new Color(1f, 0.2f, 0.8f);
+                        if (GUILayout.Button("⚡ Cheat", GUILayout.Width(65)))
+                        {
+                            CharacterProgressionManager.UnlockSpecialization(_currentSheet, detail.Name, out string cheatMsg, forceFree: true);
+                            SaveCharacterAndSyncUnits(_currentSheet);
+                            _statusMessage = cheatMsg;
+                        }
+                        GUI.backgroundColor = Color.white;
                     }
                 }
+
                 GUILayout.EndHorizontal();
+
+                if (!string.IsNullOrEmpty(detail.Description) || !string.IsNullOrEmpty(detail.MechanicalEffect))
+                {
+                    string effectText = !string.IsNullOrEmpty(detail.MechanicalEffect) ? $" — <i>Effet : {detail.MechanicalEffect}</i>" : "";
+                    GUILayout.Label($"<color=#94A3B8>{detail.Description}{effectText}</color>");
+                }
+
+                GUILayout.EndVertical();
             }
         }
 
@@ -1667,6 +1869,14 @@ namespace Killtime.UI
         // ================= TAB 3 : FICHIERS =================
         private void DrawStorageTab()
         {
+            GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
+            if (GUILayout.Button("➕ Nouveau Personnage (fiche vierge)", GUILayout.Height(30)))
+            {
+                CreateNewCharacter();
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.Space(6);
+
             GUILayout.Label("<b>Fichiers Sauvegardés sur le Disque :</b>");
             var files = CharacterStorageService.GetSavedCharacterFiles();
 
@@ -1683,8 +1893,16 @@ namespace Killtime.UI
 
                 if (GUILayout.Button("Charger", GUILayout.Width(80)))
                 {
-                    _currentSheet = CharacterStorageService.LoadCharacter(f);
-                    _statusMessage = $"'{_currentSheet.Name}' chargé !";
+                    var loaded = CharacterStorageService.LoadCharacter(f);
+                    if (loaded != null)
+                    {
+                        _currentSheet = loaded;
+                        _selectedInventoryItem = null;
+                        _showModelDropdown = false;
+                        _showAnimDropdown = false;
+                        _lastLoadedModelName = "__UNINITIALIZED__";
+                        _statusMessage = $"'{_currentSheet.Name}' chargé !";
+                    }
                 }
 
                 GUI.backgroundColor = Color.red;

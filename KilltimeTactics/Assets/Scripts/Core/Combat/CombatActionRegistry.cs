@@ -93,7 +93,8 @@ namespace Killtime.Tactics.CombatUI
 
             if (weapon != null)
             {
-                return weapon.AssociatedSkill;
+                // Valeur legacy ArmesContondantes rabattue sur Maniement d'Arme.
+                return SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
             }
 
             if (actor.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true)
@@ -285,17 +286,21 @@ namespace Killtime.Tactics.CombatUI
             // Ici : les deux conversions Souffle <-> PA, jouables sur soi-même.
             if (isSelf)
             {
+                bool hasMarathonHeart = actor.Stats.HasSpecialization("Course d'Endurance : Cœur de Marathon");
+                int breathPA = hasMarathonHeart ? 3 : 2;
                 actions.Add(new CombatAction(
-                    "🫁 Souffle d'Urgence (+2 PA, +1 ESS)",
-                    "Prend 1 point d'essoufflement pour gagner 2 PA immédiats.",
+                    $"🫁 Souffle d'Urgence (+{breathPA} PA, +1 ESS)",
+                    $"Prend 1 point d'essoufflement pour gagner {breathPA} PA immédiats.",
                     ActionCategory.TraumatologieEtSoins,
                     0,
                     (act, tgt) => act.Stats.Essoufflement < act.Stats.Attributes.Constitution,
-                    (act, tgt) => act.Stats.TakeEmergencyBreath(2)
+                    (act, tgt) => act.Stats.TakeEmergencyBreath(act.Stats.HasSpecialization("Course d'Endurance : Cœur de Marathon") ? 3 : 2)
                 ));
+                bool hasSecondWind = actor.Stats.HasSpecialization("Course d'Endurance : Second Souffle");
+                int recoverESS = hasSecondWind ? 2 : 1;
                 actions.Add(new CombatAction(
-                    "🌬️ Reprendre son Souffle (1 PA → -1 ESS)",
-                    "Début de son propre tour : dépense 1 PA pour effacer 1 point d'essoufflement (répétable, max Constitution).",
+                    $"🌬️ Reprendre son Souffle (1 PA → -{recoverESS} ESS)",
+                    $"Début de son propre tour : dépense 1 PA pour effacer {recoverESS} point(s) d'essoufflement (répétable, max Constitution).",
                     ActionCategory.TraumatologieEtSoins,
                     1,
                     (act, tgt) => act.Stats.Essoufflement > 0 && act.Stats.CurrentActionPoints >= 1,
@@ -303,9 +308,47 @@ namespace Killtime.Tactics.CombatUI
                     {
                         if (act.Stats.ConsumeActionPoints(1))
                         {
-                            act.Stats.RecoverBreath();
+                            // Second Souffle (Athlétisme) : récupération doublée.
+                            int recovered = act.Stats.HasSpecialization("Course d'Endurance : Second Souffle") ? 2 : 1;
+                            act.Stats.RecoverBreath(recovered);
                             var vis = act.GetComponent<TacticalUnitVisual>();
-                            vis?.SpawnFloatingText("Souffle repris (-1 ESS)", UnityEngine.Color.green);
+                            vis?.SpawnFloatingText($"Souffle repris (-{recovered} ESS)", UnityEngine.Color.green);
+                        }
+                    }
+                ));
+
+                if (actor.Stats.HasSpecialization("Seconde Respiration"))
+                {
+                    actions.Add(new CombatAction(
+                        "🌬️ Seconde Respiration (0 PA → -2 ESS, 1x/combat)",
+                        "Ventilation cellulaire d'urgence : efface immédiatement 2 points d'essoufflement sans dépense de PA (1 fois par combat).",
+                        ActionCategory.TraumatologieEtSoins,
+                        0,
+                        (act, tgt) => act.Stats.Essoufflement > 0 && !act.Stats.HasUsedSecondeRespiration,
+                        (act, tgt) =>
+                        {
+                            act.Stats.HasUsedSecondeRespiration = true;
+                            act.Stats.RecoverBreath(2);
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("Seconde Respiration (-2 ESS)", UnityEngine.Color.cyan);
+                            arena?.Log($"🌬️ <b>{act.Stats.Name}</b> déclenche sa <b>Seconde Respiration</b> (-2 ESS, 0 PA) !");
+                        }
+                    ));
+                }
+
+                actions.Add(new CombatAction(
+                    "⚡ Poussée Cardiovasculaire (Redline : +1 PA, +1 ESS)",
+                    "Dépasse les limites physiologiques pour forcer 1 PA au prix d'un sur-échauffement immédiat.",
+                    ActionCategory.TraumatologieEtSoins,
+                    0,
+                    (act, tgt) => act.Stats.Essoufflement < act.Stats.Attributes.Constitution,
+                    (act, tgt) =>
+                    {
+                        if (act.Stats.TriggerRedlineAP(1))
+                        {
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("⚡ REDLINE (+1 PA, +1 ESS)", UnityEngine.Color.red);
+                            arena?.Log($"⚡ <b>{act.Stats.Name}</b> entre en <b>Poussée Cardiovasculaire (Redline)</b> (+1 PA, +1 ESS) !");
                         }
                     }
                 ));

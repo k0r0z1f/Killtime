@@ -18,7 +18,12 @@ namespace Killtime.Tests
             var attr = new Attributes(4, 5, 3, 3, 3, 2, 2, 2);
             Assert.AreEqual("AGI 5", SkillDefinitions.DescribeBaseRank(SkillType.ArmesPercantes, attr, true));
             Assert.AreEqual("AGI 5", SkillDefinitions.DescribeBaseRank(SkillType.Ballistique, attr, true));
-            Assert.AreEqual("FOR 4", SkillDefinitions.DescribeBaseRank(SkillType.ArmesContondantes, attr, true));
+#pragma warning disable CS0618
+            // Legacy : Armes Contondantes est rabattue sur Maniement d'Arme ((FOR+AGI)/2).
+            Assert.AreEqual("(FOR 4+AGI 5)/2=5",
+                SkillDefinitions.DescribeBaseRank(SkillType.ArmesContondantes, attr, true));
+            Assert.AreEqual(SkillType.ManiementArmes, SkillDefinitions.ResolveBaseSkill(SkillType.ArmesContondantes));
+#pragma warning restore CS0618
         }
 
         [Test]
@@ -72,6 +77,9 @@ namespace Killtime.Tests
             Assert.AreEqual(SkillType.Esquive, s3);
             Assert.IsTrue(SkillDefinitions.TryParseDisplayName("Défense Corporelle", out var s4));
             Assert.AreEqual(SkillType.DefenseCorporelle, s4);
+            // Nom legacy des anciens logs : rabattu sur Maniement d'Arme.
+            Assert.IsTrue(SkillDefinitions.TryParseDisplayName("Armes Contondantes", out var s5));
+            Assert.AreEqual(SkillType.ManiementArmes, s5);
             Assert.IsFalse(SkillDefinitions.TryParseDisplayName("Différentiel Net", out _));
         }
 

@@ -39,6 +39,8 @@ namespace Killtime.Core.Character
 
         public int BaseArmorAbsorption { get; set; }
         public int AttacksThisTurn { get; private set; }
+        public int MovesThisTurn { get; private set; }
+        public bool HasUsedSecondeRespiration { get; set; }
 
         // Jet d'initiative (Livre I §4.3) : valeurs roulées par le TurnManager au début du
         // combat, stockées sur l'unité elle-même (meurt avec elle, pas de dictionnaire d'objets).
@@ -50,6 +52,11 @@ namespace Killtime.Core.Character
         public FatalBlowResolution LastFatalBlowResolution { get; set; } = FatalBlowResolution.None;
 
         public CharacterSheet Sheet { get; set; }
+
+        public void RegisterMove()
+        {
+            MovesThisTurn++;
+        }
 
         public CharacterStats(string name, Attributes attributes, int baseArmor = 0, CharacterSheet sheet = null)
         {
@@ -75,8 +82,15 @@ namespace Killtime.Core.Character
         {
             int baseRank = SkillDefinitions.GetBaseRank(skill, Attributes, isOffensive);
             int training = Sheet != null ? Sheet.GetSkill(skill).TrainingLevel : 0;
-            return SkillDefinitions.DieFromTotalSteps(
+            var die = SkillDefinitions.DieFromTotalSteps(
                 SkillDefinitions.CharacteristicSteps(baseRank) + training);
+
+            if (skill == SkillType.Esquive && HasSpecialization("Réflexes Myotatiques"))
+            {
+                die = SkillDefinitions.StepUpDie(die);
+            }
+
+            return die;
         }
 
         /// <summary>
@@ -94,16 +108,20 @@ namespace Killtime.Core.Character
 
             int mod = 0;
 
-            // Livre VII : Déstabilisé (-2 à toutes les épreuves)
-            if (ActiveStatus.HasFlag(StatusEffect.Destabilise)) mod -= 2;
+            // Livre VII : Déstabilisé (-2 à toutes les épreuves, -1 avec Trempe de Fer)
+            if (ActiveStatus.HasFlag(StatusEffect.Destabilise))
+                mod -= HasSpecialization("Trempe de Fer") ? 1 : 2;
 
-            // Livre VII : Étourdi (-1 sur tous les jets)
-            if (ActiveStatus.HasFlag(StatusEffect.Etourdi)) mod -= 1;
+            // Livre VII : Étourdi (-1 sur tous les jets, ignoré avec Esprit de Granit)
+            if (ActiveStatus.HasFlag(StatusEffect.Etourdi) && !HasSpecialization("Trempe de Fer : Esprit de Granit")) mod -= 1;
 
-            // Livre VII : À Terre (-1 attaque, -2 défense/esquive)
+            // Livre VII : À Terre (-1 attaque — ignoré avec Ignorer la Douleur, -2 défense/esquive)
             if (ActiveStatus.HasFlag(StatusEffect.ATerre))
             {
-                mod += isOffensive ? -1 : -2;
+                if (isOffensive)
+                    mod += HasSpecialization("Trempe de Fer : Ignorer la Douleur") ? 0 : -1;
+                else
+                    mod -= 2;
             }
 
             // Livre VII : Aveugle (-4 tirs distance, -2 mêlée et défense)
@@ -130,9 +148,16 @@ namespace Killtime.Core.Character
             if (ActiveStatus == StatusEffect.None) return string.Empty;
 
             var parts = new System.Collections.Generic.List<string>();
-            if (ActiveStatus.HasFlag(StatusEffect.Destabilise)) parts.Add("Déstabilisé -2");
-            if (ActiveStatus.HasFlag(StatusEffect.Etourdi)) parts.Add("Étourdi -1");
-            if (ActiveStatus.HasFlag(StatusEffect.ATerre)) parts.Add(isOffensive ? "À Terre -1" : "À Terre -2");
+            if (ActiveStatus.HasFlag(StatusEffect.Destabilise))
+                parts.Add(HasSpecialization("Trempe de Fer") ? "Déstabilisé -1 (Trempe)" : "Déstabilisé -2");
+            if (ActiveStatus.HasFlag(StatusEffect.Etourdi))
+            {
+                if (!HasSpecialization("Trempe de Fer : Esprit de Granit")) parts.Add("Étourdi -1");
+            }
+            if (ActiveStatus.HasFlag(StatusEffect.ATerre))
+                parts.Add(isOffensive
+                    ? (HasSpecialization("Trempe de Fer : Ignorer la Douleur") ? "À Terre 0 (Douleur ignorée)" : "À Terre -1")
+                    : "À Terre -2");
             if (ActiveStatus.HasFlag(StatusEffect.Aveugle))
             {
                 bool isRanged = (skill == SkillType.Ballistique || skill == SkillType.ProjectilesTir);
@@ -165,7 +190,8 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// INITIATIVE (Livre I §4.3) : base = max(Rapidité, Agilité, Intelligence).
+        /// INITIATIVE (Livre I §4.3) : base = max(Rapidité, Agilité, Intelligence),
+        /// étendue à l'Instinct avec la spécialisation Sens du Danger (Intuition).
         /// Convertie en dé via l'échelle en paliers (Livre II §6) : 1-2 → d2, 3-4 → d4,
         /// 5-6 → d6, 7-8 → d8, 9-10 → d10. Jet effectué au début du combat (TurnManager).
         /// </summary>
@@ -174,20 +200,25 @@ namespace Killtime.Core.Character
             int m = Attributes.Rapidite;
             if (Attributes.Agilite > m) m = Attributes.Agilite;
             if (Attributes.Intelligence > m) m = Attributes.Intelligence;
+            if (HasSpecialization("Sens du Danger") && Attributes.Instinct > m) m = Attributes.Instinct;
             return m;
         }
 
         public DiceType GetInitiativeDie()
         {
-            return SkillDefinitions.DieFromTotalSteps(
+            var die = SkillDefinitions.DieFromTotalSteps(
                 SkillDefinitions.CharacteristicSteps(GetInitiativeBaseValue()));
+            // Premiers Réflexes : +1 palier sur le jet d'Initiative.
+            if (HasSpecialization("Sens du Danger : Premiers Réflexes"))
+                die = SkillDefinitions.StepUpDie(die);
+            return die;
         }
 
         /// <summary>
         /// Désigne la meilleure compétence de contact pour une attaque en mêlée
-        /// (distance ≤ 1) : compare les dés effectifs offensifs (paliers carac, Corps Augmenté
-        /// inclus, + entraînements). Ex : Mina frappe en Mains Nues (MAG 5 + 3 entraînements
-        /// = 5 niveaux → D12) plutôt qu'au Maniement d'Arme non entraîné.
+        /// (distance ≤ 1) : compare les dés effectifs offensifs (paliers carac, augmentation
+        /// magique incluse, + entraînements). Ex : un corps augmenté frappe en Mains Nues
+        /// (MAG 5 + 3 entraînements = 5 niveaux → D12) plutôt qu'au Maniement d'Arme non entraîné.
         /// Égalité → plus entraînée, puis Mains Nues.
         /// </summary>
         public SkillType GetBestMeleeAttackSkill()
@@ -196,7 +227,6 @@ namespace Killtime.Core.Character
             {
                 SkillType.MainsNues,
                 SkillType.ManiementArmes,
-                SkillType.ArmesContondantes,
                 SkillType.ArmesPercantes
             };
 
@@ -356,6 +386,52 @@ namespace Killtime.Core.Character
         {
             MaxActionPoints = Attributes.CalculateBaseActionPoints();
             EncaissementThreshold = Attributes.CalculateEncaissement();
+
+            if (HasSpecialization("Éveil Chlorophyllien : Peau de Chlorophylle"))
+            {
+                BaseArmorAbsorption += 2;
+            }
+
+            if (HasSpecialization("Encaissement Élastique : Tissu Myo-Amortisseur"))
+            {
+                EncaissementThreshold += 4;
+                BaseArmorAbsorption += 2;
+            }
+            else if (HasSpecialization("Encaissement Élastique"))
+            {
+                EncaissementThreshold += 2;
+                BaseArmorAbsorption += 1;
+            }
+
+            if (HasSpecialization("Fibres Résilientes : Chair d'Inflexible"))
+            {
+                EncaissementThreshold += 8;
+                BaseArmorAbsorption += 1;
+            }
+            else if (HasSpecialization("Fibres Résilientes : Carapace Sous-Cutanée"))
+            {
+                EncaissementThreshold += 6;
+            }
+            else if (HasSpecialization("Fibres Résilientes : Tissu Densifié"))
+            {
+                EncaissementThreshold += 4;
+            }
+            else if (HasSpecialization("Fibres Résilientes"))
+            {
+                EncaissementThreshold += 2;
+            }
+
+            // Condition de Fer (Endurance Physique) : cuirasse du marcheur infatigable.
+            if (HasSpecialization("Condition de Fer : Mur de Chair"))
+            {
+                EncaissementThreshold += 2;
+                BaseArmorAbsorption += 1;
+            }
+            else if (HasSpecialization("Condition de Fer : Dur à Cuire"))
+            {
+                EncaissementThreshold += 2;
+            }
+
             MaxHealth = Attributes.CalculateLethalMaximum();
             CurrentHealth = MaxHealth;
         }
@@ -379,11 +455,45 @@ namespace Killtime.Core.Character
             }
 
             AttacksThisTurn = 0;
+            MovesThisTurn = 0;
+
+            if (IsAlive && CurrentHealth < MaxHealth)
+            {
+                if (HasSpecialization("Homéostasie Accélérée : Pulsion Phénix"))
+                {
+                    CurrentHealth = Math.Min(MaxHealth, CurrentHealth + 4);
+                    ClearAllStatus();
+                }
+                else if (HasSpecialization("Homéostasie Accélérée : Coagulation Flash"))
+                {
+                    CurrentHealth = Math.Min(MaxHealth, CurrentHealth + 3);
+                    RemoveStatus(StatusEffect.Saignement);
+                    RemoveStatus(StatusEffect.Empoisonne);
+                    RemoveStatus(StatusEffect.EnFeu);
+                }
+                else if (HasSpecialization("Homéostasie Accélérée : Régénération Cellulaire Avancée"))
+                {
+                    CurrentHealth = Math.Min(MaxHealth, CurrentHealth + 2);
+                    RemoveStatus(StatusEffect.Saignement);
+                    RemoveStatus(StatusEffect.Empoisonne);
+                }
+                else if (HasSpecialization("Homéostasie Accélérée") || HasSpecialization("Régénération Métabolique"))
+                {
+                    CurrentHealth = Math.Min(MaxHealth, CurrentHealth + 1);
+                    RemoveStatus(StatusEffect.Saignement);
+                }
+                else if (HasSpecialization("Condition de Fer"))
+                {
+                    // Endurance Physique : récupération du marcheur (sans cautérisation).
+                    CurrentHealth = Math.Min(MaxHealth, CurrentHealth + 1);
+                }
+            }
         }
 
         public bool ConsumeActionPoints(int cost)
         {
-            int effectiveCost = ActiveStatus.HasFlag(StatusEffect.Ralenti) 
+            bool isRalenti = ActiveStatus.HasFlag(StatusEffect.Ralenti) && !HasSpecialization("Élan Sans Drag");
+            int effectiveCost = isRalenti 
                 ? cost * Rules.CoreRulesConfig.Instance.RalentiAPMultiplier 
                 : cost;
 
@@ -450,12 +560,24 @@ namespace Killtime.Core.Character
             return true;
         }
 
-        public void RecoverBreath()
+        public void RecoverBreath(int amount = 1)
         {
             if (Essoufflement > 0)
             {
-                Essoufflement--;
+                Essoufflement = Math.Max(0, Essoufflement - Math.Max(1, amount));
             }
+        }
+
+        public bool TriggerRedlineAP(int extraAP = 1)
+        {
+            if (!IsAlive || Essoufflement >= Attributes.Constitution) return false;
+            CurrentActionPoints += extraAP;
+            Essoufflement += extraAP;
+            if (Essoufflement >= Attributes.Constitution)
+            {
+                ApplyStatus(StatusEffect.Ralenti, 1);
+            }
+            return true;
         }
 
         /// <summary>
@@ -506,6 +628,13 @@ namespace Killtime.Core.Character
                     return FatalBlowResolution.InstantDeath;
                 }
 
+                // Fiche héroïque : Cœur d'Éclosion (voir MinaCharacter.TryTriggerHeartOfBloom).
+                if (MinaCharacter.TryTriggerHeartOfBloom(this))
+                {
+                    LastFatalBlowResolution = FatalBlowResolution.MiracleSaved;
+                    return FatalBlowResolution.MiracleSaved;
+                }
+
                 CurrentHealth = 0;
                 ActiveStatus |= StatusEffect.Inconscient | StatusEffect.ATerre;
                 if (hitPart == BodyPart.CoeurPoumons || hitPart == BodyPart.CouTrachee)
@@ -516,10 +645,19 @@ namespace Killtime.Core.Character
                 return FatalBlowResolution.ForcedUnconscious;
             }
 
+            // Fiche héroïque : Cœur d'Éclosion (voir MinaCharacter.TryTriggerHeartOfBloom).
+            if (MinaCharacter.TryTriggerHeartOfBloom(this))
+            {
+                LastFatalBlowResolution = FatalBlowResolution.MiracleSaved;
+                return FatalBlowResolution.MiracleSaved;
+            }
+
             CurrentHealth = 0;
             LastFatalBlowResolution = FatalBlowResolution.EligibleForLastBreath;
             return FatalBlowResolution.EligibleForLastBreath;
         }
+
+        public bool HasUsedHeartOfBloom { get; set; } = false;
 
         public void ChooseSombrer()
         {

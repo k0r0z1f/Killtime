@@ -10,6 +10,15 @@ namespace Killtime.Core.Character
         MainsNues,
         ManiementArmes,
         ArmesTranchantes = ManiementArmes,
+        /// <summary>
+        /// LEGACY : les armes de choc (marteau, masse, gourdin) ne sont plus une
+        /// compétence de base. Elles relèvent de la spécialisation
+        /// « Armes Contondantes » de <see cref="ManiementArmes"/>.
+        /// Valeur conservée pour la compatibilité des sauvegardes : toute logique
+        /// (rang de base, entraînement, réserve XP) est redirigée vers ManiementArmes.
+        /// Ne plus créer de nœud de compétence pour cette valeur.
+        /// </summary>
+        [Obsolete("Devenue la spécialisation 'Armes Contondantes' de Maniement d'Arme.")]
         ArmesContondantes,
         ArmesPercantes,
         DefenseCorporelle,
@@ -174,6 +183,33 @@ namespace Killtime.Core.Character
             return isOffensive && skill == SkillType.MainsNues && attr.Magie > 0;
         }
 
+        /// <summary>
+        /// Compétence de base effective : la valeur legacy ArmesContondantes est
+        /// rabattue sur ManiementArmes (spécialisation « Armes Contondantes »).
+        /// Les alias (Tranchantes, Projectiles) se résolvent aussi ici.
+        /// </summary>
+        public static SkillType ResolveBaseSkill(SkillType skill)
+        {
+#pragma warning disable CS0618
+            if (skill == SkillType.ArmesContondantes) return SkillType.ManiementArmes;
+#pragma warning restore CS0618
+            return skill;
+        }
+
+        /// <summary>
+        /// Vrai si la valeur est une compétence de base entraînable.
+        /// ArmesContondantes (legacy) et les alias ne sont pas des compétences de base.
+        /// </summary>
+        public static bool IsBaseSkill(SkillType skill)
+        {
+#pragma warning disable CS0618
+            if (skill == SkillType.ArmesContondantes) return false;
+#pragma warning restore CS0618
+            if (skill == SkillType.ArmesTranchantes) return false;
+            if (skill == SkillType.ProjectilesTir) return false;
+            return true;
+        }
+
         public static int GetBaseRank(SkillType skill, Attributes attr)
         {
             return GetBaseRank(skill, attr, false);
@@ -181,6 +217,7 @@ namespace Killtime.Core.Character
 
         public static int GetBaseRank(SkillType skill, Attributes attr, bool isOffensive)
         {
+            skill = ResolveBaseSkill(skill);
             if (UsesMagicAugmentation(skill, attr, isOffensive))
             {
                 int normalRank = (attr.Force + attr.Agilite + 1) / 2;
@@ -191,7 +228,6 @@ namespace Killtime.Core.Character
             {
                 SkillType.MainsNues => (attr.Force + attr.Agilite + 1) / 2,
                 SkillType.ManiementArmes => (attr.Force + attr.Agilite + 1) / 2,
-                SkillType.ArmesContondantes => attr.Force,
                 SkillType.ArmesPercantes => attr.Agilite,
                 SkillType.DefenseCorporelle => (attr.Force + attr.Constitution + 1) / 2,
                 SkillType.Athletisme => (attr.Force + attr.Constitution + attr.Agilite + 1) / 3,
@@ -246,12 +282,37 @@ namespace Killtime.Core.Character
             return skill == SkillType.Esquive || skill == SkillType.DefenseCorporelle;
         }
 
+        /// <summary>
+        /// Compétence d'arme blanche (épée, marteau, masse, pique...) : Maniement
+        /// d'Arme ou Armes Perçantes. La valeur legacy ArmesContondantes est
+        /// rabattue sur ManiementArmes (spécialisation « Armes Contondantes »).
+        /// </summary>
+        public static bool IsMeleeWeaponSkill(SkillType skill)
+        {
+            skill = ResolveBaseSkill(skill);
+            return skill == SkillType.ManiementArmes || skill == SkillType.ArmesPercantes;
+        }
+
+        /// <summary>
+        /// Compétence d'attaque au contact : Mains Nues ou arme blanche.
+        /// </summary>
+        public static bool IsMeleeAttackSkill(SkillType skill)
+        {
+            skill = ResolveBaseSkill(skill);
+            return skill == SkillType.MainsNues
+                || skill == SkillType.ManiementArmes
+                || skill == SkillType.ArmesPercantes;
+        }
+
         public static bool HasDefensiveSpecialization(CharacterSheet sheet, SkillType skill)
         {
             if (sheet == null || sheet.UnlockedSpecializations == null) return false;
+            skill = ResolveBaseSkill(skill);
             if (skill == SkillType.ManiementArmes || skill == SkillType.ArmesTranchantes)
             {
                 return sheet.UnlockedSpecializations.Contains("Maniement de l'Épée")
+                    || sheet.UnlockedSpecializations.Contains("Armes Contondantes")
+                    || sheet.UnlockedSpecializations.Contains("Hache de Guerre")
                     || sheet.UnlockedSpecializations.Contains("Escrime")
                     || sheet.UnlockedSpecializations.Contains("Bloquer");
             }
@@ -265,11 +326,11 @@ namespace Killtime.Core.Character
 
         public static string GetDisplayName(SkillType skill)
         {
+            skill = ResolveBaseSkill(skill);
             return skill switch
             {
                 SkillType.MainsNues => "Mains Nues",
                 SkillType.ManiementArmes => "Maniement d'Arme",
-                SkillType.ArmesContondantes => "Armes Contondantes",
                 SkillType.ArmesPercantes => "Armes Perçantes",
                 SkillType.Ballistique => "Ballistique / Tir",
                 SkillType.Esquive => "Esquive",
@@ -287,6 +348,7 @@ namespace Killtime.Core.Character
         /// <summary>
         /// Retrouve une compétence depuis son nom tel qu'affiché dans les logs
         /// ("Armes Perçantes", "Ballistique / Tir", "Esquive"… ou nom brut).
+        /// Le nom legacy "Armes Contondantes" est rabattu sur ManiementArmes.
         /// </summary>
         public static bool TryParseDisplayName(string name, out SkillType skill)
         {
@@ -302,13 +364,85 @@ namespace Killtime.Core.Character
                     string raw = s.ToString();
                     if (!_displayNameLookup.ContainsKey(raw)) _displayNameLookup[raw] = s;
                 }
+                // Compatibilité des anciens logs : « Armes Contondantes » → Maniement d'Arme.
+                _displayNameLookup["Armes Contondantes"] = SkillType.ManiementArmes;
             }
-            return _displayNameLookup.TryGetValue(name.Trim(), out skill);
+            if (_displayNameLookup.TryGetValue(name.Trim(), out skill))
+            {
+                skill = ResolveBaseSkill(skill);
+                return true;
+            }
+            return false;
         }
 
         private static string AvgRank(string a, int va, string b, int vb)
         {
             return $"({a} {va}+{b} {vb})/2={(va + vb + 1) / 2}";
+        }
+
+        /// <summary>
+        /// Abréviations des caractéristiques associées à une compétence
+        /// (« FOR+AGI », « AGI », « MAG+INT »…), sans valeurs.
+        /// Miroir de GetBaseRank : toute formule modifiée là-bas doit l'être ici aussi.
+        /// Affiché dans la Voûte Céleste (étiquettes et inspection).
+        /// </summary>
+        public static string GetAssociatedAttributeNames(SkillType skill)
+        {
+            skill = ResolveBaseSkill(skill);
+            switch (skill)
+            {
+                case SkillType.MainsNues:
+                case SkillType.ManiementArmes:
+                    return "FOR+AGI";
+                case SkillType.ArmesPercantes:
+                case SkillType.Ballistique:
+                    return "AGI";
+                case SkillType.DefenseCorporelle:
+                    return "FOR+CON";
+                case SkillType.Athletisme:
+                    return "FOR+CON+AGI";
+                case SkillType.Esquive:
+                case SkillType.Acrobatie:
+                case SkillType.ConduitePilotage:
+                    return "AGI+RAP";
+                case SkillType.Discretion:
+                case SkillType.Subterfuge:
+                    return "AGI+INT";
+                case SkillType.EndurancePhysique:
+                    return "CON+FOR";
+                case SkillType.Cardio:
+                case SkillType.SystemeImmunitaire:
+                    return "CON";
+                case SkillType.Academie:
+                case SkillType.MedecineAvancee:
+                    return "ÉRU+INT";
+                case SkillType.PremiersSoins:
+                    return "ÉRU";
+                case SkillType.IngenierieArcanotech:
+                    return "INT+ÉRU";
+                case SkillType.TactiqueStrategie:
+                    return "INT";
+                case SkillType.Communication:
+                case SkillType.Leadership:
+                    return "CHA+INT";
+                case SkillType.Intimidation:
+                    return "CHA+FOR";
+                case SkillType.Observation:
+                    return "VUE+INS";
+                case SkillType.Ecoute:
+                    return "OUIE+INS";
+                case SkillType.Intuition:
+                case SkillType.Artisanat:
+                    return "INS+INT";
+                case SkillType.NatureSurvie:
+                    return "INS+ÉRU";
+                case SkillType.MagieElementale:
+                case SkillType.MagiePrimale:
+                case SkillType.MagieEsprit:
+                    return "MAG+INT";
+                default:
+                    return "—";
+            }
         }
 
         /// <summary>
@@ -318,6 +452,7 @@ namespace Killtime.Core.Character
         /// </summary>
         public static string DescribeBaseRank(SkillType skill, Attributes attr, bool isOffensive)
         {
+            skill = ResolveBaseSkill(skill);
             if (UsesMagicAugmentation(skill, attr, isOffensive))
             {
                 int normalRank = (attr.Force + attr.Agilite + 1) / 2;
@@ -330,8 +465,6 @@ namespace Killtime.Core.Character
                 case SkillType.MainsNues:
                 case SkillType.ManiementArmes:
                     return AvgRank("FOR", attr.Force, "AGI", attr.Agilite);
-                case SkillType.ArmesContondantes:
-                    return $"FOR {attr.Force}";
                 case SkillType.ArmesPercantes:
                     return $"AGI {attr.Agilite}";
                 case SkillType.DefenseCorporelle:

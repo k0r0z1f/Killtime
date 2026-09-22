@@ -81,9 +81,11 @@ namespace Killtime.Tactics.Units
         private Coroutine _putAwayRoutine;
         // Dernière pose locale appliquée à l'arme (pour ne pas écraser la poigne fusil/pistolet
         // avec l'offset d'épée dans le bloc #if UNITY_EDITOR de Update).
+#if UNITY_EDITOR
         private Vector3 _appliedWeaponLocalPos = Vector3.zero;
         private Quaternion _appliedWeaponLocalRot = Quaternion.identity;
         private bool _hasAppliedWeaponPose;
+#endif
 
         private static readonly int AnimIsInCombat = Animator.StringToHash("IsInCombat");
         private static readonly int AnimTriggerAction = Animator.StringToHash("TriggerAction");
@@ -163,9 +165,8 @@ namespace Killtime.Tactics.Units
             if (item.IsGrenade || item.IsThrowableGrenade()) return false;
             // Les armes de mêlée (même à deux mains : espadons, marteaux, piques)
             // ne sont jamais des fusils : posture Fight Idle + anim "Melee Attack".
-            if (item.AssociatedSkill == SkillType.ManiementArmes
-                || item.AssociatedSkill == SkillType.ArmesContondantes
-                || item.AssociatedSkill == SkillType.ArmesPercantes) return false;
+            // (Armes Contondantes legacy rabattues sur Maniement d'Arme.)
+            if (SkillDefinitions.IsMeleeWeaponSkill(item.AssociatedSkill)) return false;
             if (item.EquipSlot == Core.Inventory.ItemEquipSlot.TwoHands) return true;
             if (item.AssociatedSkill == SkillType.Ballistique) return true;
             string n = ((item.Name ?? "") + " " + (item.PrefabPath ?? "")).ToLowerInvariant();
@@ -174,7 +175,8 @@ namespace Killtime.Tactics.Units
 
         /// <summary>
         /// Arme de mêlée équipée (épée métal/laser, hache, marteau, pique...) : skills
-        /// ManiementArmes / ArmesContondantes / ArmesPercantes, hors fusils, grenades et lanceurs.
+        /// ManiementArmes / ArmesPercantes (Armes Contondantes = spé de Maniement),
+        /// hors fusils, grenades et lanceurs.
         /// Mains nues (aucune arme) => false : le coup de pied "Roundkick" reste l'anim à mains nues.
         /// </summary>
         public static bool IsMeleeWeapon(Core.Inventory.InventoryItem item)
@@ -182,9 +184,7 @@ namespace Killtime.Tactics.Units
             if (item == null || item.Type != Core.Inventory.ItemType.Weapon) return false;
             if (item.IsGrenade || item.IsThrowableGrenade() || item.IsLauncher) return false;
             if (IsRifleWeapon(item)) return false;
-            return item.AssociatedSkill == SkillType.ManiementArmes
-                || item.AssociatedSkill == SkillType.ArmesContondantes
-                || item.AssociatedSkill == SkillType.ArmesPercantes;
+            return SkillDefinitions.IsMeleeWeaponSkill(item.AssociatedSkill);
         }
 
         public bool HasMeleeWeaponEquipped()
@@ -236,7 +236,9 @@ namespace Killtime.Tactics.Units
                 _putAwayRoutine = null;
             }
             ClearEquippedWeaponInstance();
+#if UNITY_EDITOR
             _hasAppliedWeaponPose = false;
+#endif
 
             if (item == null) return;
 
@@ -300,9 +302,11 @@ namespace Killtime.Tactics.Units
             _equippedWeaponInstance.transform.localRotation = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalRotation(instance, socket, transform, gripProfile, item);
             _equippedWeaponInstance.transform.localScale = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalScale(instance, socket, gripProfile, item, _unitScale);
 
+#if UNITY_EDITOR
             _appliedWeaponLocalPos = _equippedWeaponInstance.transform.localPosition;
             _appliedWeaponLocalRot = _equippedWeaponInstance.transform.localRotation;
             _hasAppliedWeaponPose = true;
+#endif
 
             var colliders = _equippedWeaponInstance.GetComponentsInChildren<Collider>();
             for (int i = 0; i < colliders.Length; i++)
@@ -663,7 +667,9 @@ namespace Killtime.Tactics.Units
                 Destroy(_equippedWeaponInstance);
                 _equippedWeaponInstance = null;
             }
+#if UNITY_EDITOR
             _hasAppliedWeaponPose = false;
+#endif
         }
 
         private static void DisableWeaponPhysics(GameObject root)

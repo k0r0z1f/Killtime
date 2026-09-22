@@ -867,6 +867,99 @@ namespace Killtime.Core.Combat
             }
 
             int totalArmor = duel.DefenderArmor + defender.BaseArmorAbsorption;
+            if (attacker.HasSpecialization("Leviers Densifiés : Pointe Cristalline") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                totalArmor = Math.Max(0, totalArmor - 3);
+            }
+            else if (attacker.HasSpecialization("Leviers Densifiés : Perforation Osseuse") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                totalArmor = Math.Max(0, totalArmor - 2);
+            }
+            else if (attacker.HasSpecialization("Leviers Densifiés") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                totalArmor = Math.Max(0, totalArmor - 1);
+            }
+
+            if (attacker.HasSpecialization("Perforation de Silicate : Cœur d'Adamas") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                totalArmor = Math.Max(0, totalArmor - 4);
+            }
+            else if (attacker.HasSpecialization("Perforation de Silicate : Fracture Sismique") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                totalArmor = Math.Max(0, totalArmor - 3);
+            }
+            else if (attacker.HasSpecialization("Perforation de Silicate") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                totalArmor = Math.Max(0, totalArmor - 2);
+            }
+
+            if (attacker.HasSpecialization("Fente de Rupture : Transpercement Traversant") && duel.AttackSkill == SkillType.ManiementArmes)
+            {
+                totalArmor = Math.Max(0, totalArmor - 4);
+            }
+            else if (attacker.HasSpecialization("Fente de Rupture : Pointe Chirurgicale") && duel.AttackSkill == SkillType.ManiementArmes)
+            {
+                totalArmor = Math.Max(0, totalArmor - 3);
+            }
+            else if (attacker.HasSpecialization("Fente de Rupture") && duel.AttackSkill == SkillType.ManiementArmes)
+            {
+                totalArmor = Math.Max(0, totalArmor - 2);
+            }
+
+            // Arme de Hast : perforation à l'estoc (Armes Perçantes).
+            if (attacker.HasSpecialization("Arme de Hast : Phalange d'Acier") && duel.AttackSkill == SkillType.ArmesPercantes)
+            {
+                totalArmor = Math.Max(0, totalArmor - 4);
+            }
+            else if (attacker.HasSpecialization("Arme de Hast : Mur de Piques") && duel.AttackSkill == SkillType.ArmesPercantes)
+            {
+                totalArmor = Math.Max(0, totalArmor - 3);
+            }
+            else if (attacker.HasSpecialization("Arme de Hast : Arrêt de Charge") && duel.AttackSkill == SkillType.ArmesPercantes)
+            {
+                totalArmor = Math.Max(0, totalArmor - 2);
+            }
+
+            // Fiche héroïque : Avatar (voir MinaCharacter.GetAvatarDamageBonus).
+            rawDamage += MinaCharacter.GetAvatarDamageBonus(attacker, duel.AttackSkill);
+
+            // Marteau de Guerre et Hache de Guerre : branches du Maniement d'Arme.
+            // La valeur legacy ArmesContondantes est rabattue sur ManiementArmes.
+            SkillType meleeSkill = SkillDefinitions.ResolveBaseSkill(duel.AttackSkill);
+            if (attacker.HasSpecialization("Marteau de Guerre : Cataclysme de Fer") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 5;
+            }
+            else if (attacker.HasSpecialization("Marteau de Guerre : Brise-Crâne") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 4;
+            }
+            else if (attacker.HasSpecialization("Marteau de Guerre : Écrasement Osseux") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 3;
+            }
+            else if (attacker.HasSpecialization("Marteau de Guerre") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 2;
+            }
+
+            if (attacker.HasSpecialization("Hache de Guerre : Exécution du Bourreau") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 5;
+            }
+            else if (attacker.HasSpecialization("Hache de Guerre : Brise-Garde") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 4;
+            }
+            else if (attacker.HasSpecialization("Hache de Guerre : Fente du Bûcheron") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 3;
+            }
+            else if (attacker.HasSpecialization("Hache de Guerre") && meleeSkill == SkillType.ManiementArmes)
+            {
+                rawDamage += 2;
+            }
+
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = Math.Max(0, rawDamage - absorbed);
             int prevHp = defender.CurrentHealth;
@@ -929,7 +1022,8 @@ namespace Killtime.Core.Combat
                 log += " | ⚡ <b>0 PV (Choix Sombrer ou Dernier Souffle)</b>";
             }
 
-            bool causedKnockback = duel.IsMartialArtsStrike && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4);
+            bool causedKnockback = (duel.IsMartialArtsStrike && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4))
+                || (attacker.HasSpecialization("Teep de Rupture") && duel.AttackSkill == SkillType.MainsNues && differential >= 0);
 
             // Livre I §5 : l'attaquant a RÉUSSI (touché, même dévié diff 0) → +1 case de progression.
             log += ApplySkillProgression(attacker, attackSkill, true);

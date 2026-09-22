@@ -277,11 +277,15 @@ namespace Killtime.Core.Inventory
             Add("Grand Espadon Maître", "7D - 6L - 2P - 2H", 7, 6f, 2, "2H", 3000, ItemType.Weapon, SkillType.ManiementArmes, "Épées Métal", "SwordMetalLong", "Allonge 2 cases, frappe dévastatrice.", ItemRarity.Militaire);
 
             // ===== 30.2 Concasseuses, Haches, Hast, Arc =====
-            Add("Gourdin / Matraque", "2D - 3L - 1P - 1H", 2, 3f, 1, "1H", 50, ItemType.Weapon, SkillType.ArmesContondantes, "Brut / Hast / Arc", "Club", "Arme improvisée contondante. Quasi gratuite.");
-            Add("Hache de Bataille", "3-4D - 4L - 1P - 1H", 4, 4f, 1, "1H", 600, ItemType.Weapon, SkillType.ManiementArmes, "Brut / Hast / Arc", "Axe", "Pénétration osseuse supérieure.");
-            Add("Marteau Métal Lourd", "6D - 5L - 1P - 2H", 6, 5f, 1, "2H", 5000, ItemType.Weapon, SkillType.ArmesContondantes, "Brut / Hast / Arc", "Hammer", "Broyeur de blindages métalliques.", ItemRarity.Militaire);
-            Add("Pique & Hallebarde", "4D - 6L - 2P - 2H", 4, 6f, 2, "2H", 800, ItemType.Weapon, SkillType.ArmesPercantes, "Brut / Hast / Arc", "Spear", "Allonge tactique 2m, arrêt de charge.");
-            Add("Arc Composite Renforcé", "5D - 2L - 500P - 2H", 5, 2f, 500, "2H", 1000, ItemType.Weapon, SkillType.Ballistique, "Brut / Hast / Arc", "Bow", "Portée 500m (plafonnée à 20 cases en tactique), perforation longue distance.");
+            Add("Gourdin / Matraque", "2D - 3L - 1P - 1H", 2, 3f, 1, "1H", 50, ItemType.Weapon, SkillType.ManiementArmes, "Brut / Hast / Arc", "Club", "Arme improvisée contondante (spécialisation Armes Contondantes). Quasi gratuite.");
+            Add("Hache de Bataille", "3-4D - 4L - 1P - 1H", 4, 4f, 1, "1H", 600, ItemType.Weapon, SkillType.ManiementArmes, "Brut / Hast / Arc", "Axe", "Pénétration osseuse supérieure (spécialisation Hache de Guerre).");
+            Add("Hachette de Jet", "3D - 2L - 1P - 1H", 3, 2f, 1, "1H", 350, ItemType.Weapon, SkillType.ManiementArmes, "Brut / Hast / Arc", "Axe", "Équilibrée pour le lancer à courte portée (spécialisation Hache de Guerre).");
+            Add("Hache de Guerre Lourde (2H)", "6D - 5L - 1P - 2H", 6, 5f, 1, "2H", 3500, ItemType.Weapon, SkillType.ManiementArmes, "Brut / Hast / Arc", "Axe", "Bardiche d'assaut, tranche les plates (spécialisation Hache de Guerre).", ItemRarity.Militaire);
+            Add("Marteau Métal Lourd", "6D - 5L - 1P - 2H", 6, 5f, 1, "2H", 5000, ItemType.Weapon, SkillType.ManiementArmes, "Brut / Hast / Arc", "Hammer", "Broyeur de blindages métalliques (spécialisation Armes Contondantes).", ItemRarity.Militaire);
+            Add("Pique & Hallebarde", "4D - 6L - 2P - 2H", 4, 6f, 2, "2H", 800, ItemType.Weapon, SkillType.ArmesPercantes, "Brut / Hast / Arc", "Spear", "Allonge tactique 2m, arrêt de charge (spécialisation Arme de Hast).");
+            Add("Hallebarde Lourde", "5D - 6L - 2P - 2H", 5, 6f, 2, "2H", 1500, ItemType.Weapon, SkillType.ArmesPercantes, "Brut / Hast / Arc", "Spear", "Bec de faucon + pointe d'estoc, fauche et crochète (spécialisation Arme de Hast).", ItemRarity.Militaire);
+            Add("Arc Composite Renforcé", "5D - 2L - 500P - 2H", 5, 2f, 500, "2H", 1000, ItemType.Weapon, SkillType.Ballistique, "Brut / Hast / Arc", "Bow", "Portée 500m (plafonnée à 20 cases en tactique), perforation longue distance (spécialisation Tir à l'Arc).");
+            Add("Arbalète Lourde", "6D - 3L - 400P - 2H", 6, 3f, 400, "2H", 2500, ItemType.Weapon, SkillType.Ballistique, "Brut / Hast / Arc", "Bow", "Rechargement lent, trait dévastateur silencieux (spécialisation Tir à l'Arc).", ItemRarity.Militaire);
 
             // ===== 31.1 Épées Laser (confinement plasma, jamais d'usure) =====
             Add("Épée Laser Standard 3D", "3D - 1L - 1P - 1H", 3, 1f, 1, "1H", 6000, ItemType.Weapon, SkillType.ManiementArmes, "Épées Laser", "LaserSword", "Ultra-légère, dégainement quasi instantané.", ItemRarity.Militaire);

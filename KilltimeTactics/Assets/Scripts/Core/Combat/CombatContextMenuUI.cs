@@ -293,8 +293,9 @@ namespace Killtime.Tactics.CombatUI
             var weapon = defender.Sheet?.GetEquippedWeapon();
             if (weapon != null && weapon.RangeInTiles <= 1 && weapon.AssociatedSkill != SkillType.Ballistique)
             {
-                _defenseSkill = weapon.AssociatedSkill;
-                _defenseParrySkill = weapon.AssociatedSkill;
+                // Valeur legacy ArmesContondantes rabattue sur Maniement d'Arme.
+                _defenseSkill = SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
+                _defenseParrySkill = SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
                 _defenseParryLabel = $"Parade ({weapon.Name})";
             }
 

@@ -1263,18 +1263,23 @@ namespace Killtime.Tactics
                             if (!start.Equals(target) && hoveredNode.IsWalkable && !isTargetOccupied)
                             {
                                 int availableAP = activeUnit.Stats.CurrentActionPoints;
+                                bool hasInvisibleSteps = activeUnit.Stats.HasSpecialization("Protocole des Pas Invisibles") && activeUnit.Stats.MovesThisTurn == 0;
+                                if (hasInvisibleSteps) availableAP += 1;
+
                                 var path = _pathfinder.FindPath(start, target, availableAP, out int apCost);
 
                                 if (path.Count > 0)
                                 {
-                                    int remainingAP = activeUnit.Stats.CurrentActionPoints - apCost;
-                                    Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{apCost} PA | Restant: {remainingAP} PA]");
-                                    activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"Déplacement (-{apCost} PA)", new Color(0.2f, 0.85f, 1.0f));
+                                    int effectiveCost = activeUnit.ComputeMovementAPCost(apCost);
+                                    int remainingAP = activeUnit.Stats.CurrentActionPoints - effectiveCost;
+                                    string moveTag = hasInvisibleSteps ? $"Déplacement (-{effectiveCost} PA / Pas Invisibles)" : $"Déplacement (-{effectiveCost} PA)";
+                                    Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{effectiveCost} PA | Restant: {remainingAP} PA]");
+                                    activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(moveTag, new Color(0.2f, 0.85f, 1.0f));
 
                                     _gridVisualizer.ClearPathPreview();
                                     if (KilltimeAudioManager.Instance != null)
                                         KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Dash, activeUnit.transform.position, 0.5f);
-                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, apCost));
+                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, effectiveCost));
                                 }
                             }
                         }
@@ -1283,7 +1288,11 @@ namespace Killtime.Tactics
                             // Aperçu du chemin au survol
                             if (!start.Equals(target) && hoveredNode.IsWalkable && !hoveredNode.IsOccupied)
                             {
-                                var path = _pathfinder.FindPath(start, target, activeUnit.Stats.CurrentActionPoints, out _);
+                                int previewAP = activeUnit.Stats.CurrentActionPoints;
+                                if (activeUnit.Stats.HasSpecialization("Protocole des Pas Invisibles") && activeUnit.Stats.MovesThisTurn == 0)
+                                    previewAP += 1;
+
+                                var path = _pathfinder.FindPath(start, target, previewAP, out _);
                                 _gridVisualizer.SetPathPreview(path);
                             }
                             else
@@ -1312,7 +1321,11 @@ namespace Killtime.Tactics
             var active = _turnManager.ActiveUnit;
             if (IsPlayerManualControl(active) && _gridVisualizer != null)
             {
-                var reachable = _pathfinder.GetReachableCoordinates(active.CurrentCoords, active.Stats.CurrentActionPoints);
+                int reachAP = active.Stats.CurrentActionPoints;
+                if (active.Stats.HasSpecialization("Protocole des Pas Invisibles") && active.Stats.MovesThisTurn == 0)
+                    reachAP += 1;
+
+                var reachable = _pathfinder.GetReachableCoordinates(active.CurrentCoords, reachAP);
                 _gridVisualizer.SetReachableCoords(reachable);
             }
             else if (_gridVisualizer != null)
@@ -1605,19 +1618,13 @@ namespace Killtime.Tactics
             // produire une animation de coup de poing à distance. Hors de portée de
             // contact avec une arme à distance disponible => bascule en Ballistique.
             if (distanceToTarget > 1 && hasRangedArmamentForCorrection
-                && (attackSkill == SkillType.MainsNues
-                    || attackSkill == SkillType.ManiementArmes
-                    || attackSkill == SkillType.ArmesContondantes
-                    || attackSkill == SkillType.ArmesPercantes))
+                && SkillDefinitions.IsMeleeAttackSkill(attackSkill))
             {
                 Log($"🔫 <b>{attacker.Stats.Name}</b> hors de contact ({distanceToTarget} cases) : bascule automatique en Tir (Ballistique).");
                 attackSkill = SkillType.Ballistique;
             }
 
-            bool isMeleeAttack = (attackSkill == SkillType.MainsNues
-                               || attackSkill == SkillType.ManiementArmes
-                               || attackSkill == SkillType.ArmesContondantes
-                               || attackSkill == SkillType.ArmesPercantes
+            bool isMeleeAttack = (SkillDefinitions.IsMeleeAttackSkill(attackSkill)
                                || (activeWeapon != null && activeWeapon.RangeInTiles <= 1));
 
             int maxReach = activeWeapon != null ? Mathf.Max(1, activeWeapon.RangeInTiles) : 1;
@@ -1691,7 +1698,7 @@ namespace Killtime.Tactics
 
             var attVisual = attacker.GetComponent<TacticalUnitVisual>();
             var defVisual = defender.GetComponent<TacticalUnitVisual>();
-            bool isMeleeStrike = (attackSkill == SkillType.MainsNues || attackSkill == SkillType.ManiementArmes || attackSkill == SkillType.ArmesContondantes || attackSkill == SkillType.ArmesPercantes);
+            bool isMeleeStrike = SkillDefinitions.IsMeleeAttackSkill(attackSkill);
 
             // Recalcul au moment du déclenchement : la distance a pu changer entre le clic
             // et l'impact (fin de déplacement, cinématique). Le visuel doit refléter la
@@ -1700,7 +1707,7 @@ namespace Killtime.Tactics
             {
                 if (attacker == null || defender == null) return isMeleeStrike;
                 int freshDist = attacker.CurrentCoords.DistanceTo(defender.CurrentCoords);
-                bool skillIsMelee = (attackSkill == SkillType.MainsNues || attackSkill == SkillType.ManiementArmes || attackSkill == SkillType.ArmesContondantes || attackSkill == SkillType.ArmesPercantes);
+                bool skillIsMelee = SkillDefinitions.IsMeleeAttackSkill(attackSkill);
                 return skillIsMelee && freshDist <= 1;
             };
 
@@ -1865,7 +1872,7 @@ namespace Killtime.Tactics
                 Log(result.CombatLog);
 
                 var laserWeapon = attacker.GetComponentInChildren<LaserRifleWeapon>();
-                // Un roundkick / une frappe au corps-à-corps (Mains Nues, Maniement, Contondantes,
+                // Un roundkick / une frappe au corps-à-corps (Mains Nues, Maniement,
                 // Perçantes) ne doit jamais déclencher le rayon laser + sons de tir, même si un
                 // laser est équipé visuellement. Seul un vrai tir (Ballistique) tire au laser.
                 // Vérification sur positions fraîches : si l'attaquant s'est éloigné entre le
@@ -2179,7 +2186,7 @@ namespace Killtime.Tactics
             Log(result.CombatLog);
 
             var laserWeapon = attacker.GetComponentInChildren<LaserRifleWeapon>();
-            bool skillIsMelee = (attackSkill == SkillType.MainsNues || attackSkill == SkillType.ManiementArmes || attackSkill == SkillType.ArmesContondantes || attackSkill == SkillType.ArmesPercantes);
+            bool skillIsMelee = SkillDefinitions.IsMeleeAttackSkill(attackSkill);
             int freshDistAtImpact = (attacker != null && defender != null) ? attacker.CurrentCoords.DistanceTo(defender.CurrentCoords) : 1;
             bool isMeleeStrike = skillIsMelee && freshDistAtImpact <= 1;
             if (attackSkill == SkillType.Ballistique && !isMeleeStrike && laserWeapon != null && defender != null)
@@ -3079,25 +3086,68 @@ namespace Killtime.Tactics
             int dq = defender.CurrentCoords.Q - attacker.CurrentCoords.Q;
             int dr = defender.CurrentCoords.R - attacker.CurrentCoords.R;
 
-            var targetCoords = new HexCoordinates(defender.CurrentCoords.Q + dq, defender.CurrentCoords.R + dr);
-            var node = _grid.GetNode(targetCoords);
-
-            if (node != null && node.IsWalkable && !node.IsOccupied)
+            bool isTeepDeRupture = attacker.Stats != null && attacker.Stats.HasSpecialization("Teep de Rupture");
+            int pushDistance = 1;
+            if (isTeepDeRupture)
             {
-                defender.TeleportTo(targetCoords, _grid);
+                if (attacker.Stats.HasSpecialization("Teep de Rupture : Brise-Châssis Titan")) pushDistance = 4;
+                else if (attacker.Stats.HasSpecialization("Teep de Rupture : Onde de Choc Linéaire")) pushDistance = 3;
+                else pushDistance = 2;
+            }
+
+            HexCoordinates currentDest = defender.CurrentCoords;
+            int tilesMoved = 0;
+
+            for (int step = 1; step <= pushDistance; step++)
+            {
+                var nextCoords = new HexCoordinates(defender.CurrentCoords.Q + dq * step, defender.CurrentCoords.R + dr * step);
+                var nextNode = _grid.GetNode(nextCoords);
+
+                if (nextNode != null && nextNode.IsWalkable && !nextNode.IsOccupied)
+                {
+                    currentDest = nextCoords;
+                    tilesMoved++;
+                }
+                else
+                {
+                    if (tilesMoved > 0)
+                    {
+                        defender.TeleportTo(currentDest, _grid);
+                    }
+                    var defVis = defender.GetComponent<TacticalUnitVisual>();
+                    if (isTeepDeRupture)
+                    {
+                        bool isDevastating = attacker.Stats.HasSpecialization("Teep de Rupture : Impact Dévastateur");
+                        int shockDamage = isDevastating ? 6 : 3;
+                        defender.Stats.ApplyStatus(StatusEffect.Sonne, 1);
+                        if (isDevastating) defender.Stats.ApplyStatus(StatusEffect.Destabilise, 2);
+                        defender.Stats.CurrentHealth = Math.Max(0, defender.Stats.CurrentHealth - shockDamage);
+                        defVis?.TriggerHitFlash();
+                        string shockLabel = isDevastating ? $"[TEEP DÉVASTATEUR] SONNÉ (-{shockDamage} PV) !" : $"[TEEP PAROI] SONNÉ (-{shockDamage} PV) !";
+                        defVis?.SpawnFloatingText(shockLabel, Color.red);
+                        Log($"💥 <b>TEEP DE RUPTURE (Collision)</b> : {defender.Stats.Name} est projeté(e) contre un obstacle, subit {shockDamage} dégâts de choc et [Sonné] !");
+                    }
+                    else
+                    {
+                        defender.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+                        defVis?.SpawnFloatingText("[IMPACT PAROI] Déstabilisé !", Color.red);
+                        Log($"💥 <b>IMPACT CONTRE OBSTACLE</b> : {defender.Stats.Name} heurte la paroi et subit [Déstabilisé] !");
+                    }
+                    return tilesMoved > 0;
+                }
+            }
+
+            if (tilesMoved > 0)
+            {
+                defender.TeleportTo(currentDest, _grid);
                 var defVis = defender.GetComponent<TacticalUnitVisual>();
-                defVis?.SpawnFloatingText("[REFOULEMENT] Repoussé !", Color.yellow);
-                Log($"💨 <b>REFOULEMENT (Push-Kick)</b> : {defender.Stats.Name} est repoussé(e) en ({targetCoords.Q}, {targetCoords.R}) !");
+                string teepTag = isTeepDeRupture ? "[TEEP DE RUPTURE]" : "[REFOULEMENT]";
+                defVis?.SpawnFloatingText($"{teepTag} Repoussé ({tilesMoved} cases) !", Color.yellow);
+                Log($"💨 <b>{teepTag}</b> : {defender.Stats.Name} est repoussé(e) de {tilesMoved} case(s) en ({currentDest.Q}, {currentDest.R}) !");
                 return true;
             }
-            else
-            {
-                defender.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
-                var defVis = defender.GetComponent<TacticalUnitVisual>();
-                defVis?.SpawnFloatingText("[IMPACT PAROI] Déstabilisé !", Color.red);
-                Log($"💥 <b>IMPACT CONTRE OBSTACLE</b> : {defender.Stats.Name} heurte la paroi et subit [Déstabilisé] !");
-                return false;
-            }
+
+            return false;
         }
 
         public void Log(string message)
