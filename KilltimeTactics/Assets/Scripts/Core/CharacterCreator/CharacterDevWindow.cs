@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Playables;
 using UnityEngine.Animations;
 using Killtime.Core.Character;
+using Killtime.Core.Character.Classes;
 using Killtime.Core.Arcanotech;
 using Killtime.Core.Inventory;
 using Killtime.Tactics;
@@ -704,6 +705,9 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
             GUILayout.Label("<i>Érudition = entraînements gratuits (budget = ÉRU effective, +1 ÉRU = +1 gratuit). Gratuits : 0 XP, hors XP total. Appliquez-les dans l'onglet Progression (bouton Gratuit).</i>");
 
+            GUILayout.Space(6);
+            DrawClassPresetSection();
+
             GUILayout.Space(8);
             GUILayout.BeginHorizontal();
             GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
@@ -719,6 +723,84 @@ namespace Killtime.UI
             }
             GUI.backgroundColor = Color.white;
             GUILayout.EndHorizontal();
+        }
+
+        // ================= CLASSES DE BASE (chargement rapide + guide) =================
+
+        /// <summary>
+        /// Section 5 — Archétypes de classe : chargement en 1 clic + guide de build.
+        /// Le chargement applique attributs + package de départ ; l'arbre reste
+        /// 100% libre ensuite, les étapes futures sont highlightées en or.
+        /// </summary>
+        private void DrawClassPresetSection()
+        {
+            GUILayout.Label("<b>5. Archétypes de Classe — Chargement Rapide (arbre libre + guide surligné) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.Label("<i>Chargez un preset au lieu de tout choisir à la main. L'arbre reste accessible partout comme un PJ normal ; les prochaines étapes du build sont highlightées en <color=#FFD166><b>or</b></color> dans la Voûte et ci-dessous.</i>");
+
+            var all = CharacterClassCatalog.GetAll();
+            var active = CharacterClassCatalog.GetActiveGuide(_currentSheet);
+
+            if (active != null)
+            {
+                int done = active.GetAcquiredCount(_currentSheet);
+                int total = active.BuildPath != null ? active.BuildPath.Count : 0;
+                var next = active.GetNextSteps(_currentSheet);
+                string nextLabel = next.Count > 0 ? string.Join(" • ", next.GetRange(0, Math.Min(3, next.Count))) : "Build terminé ★";
+                GUILayout.BeginHorizontal(GUI.skin.box);
+                GUILayout.Label($"<b>{active.IconGlyph} Guide actif : {active.DisplayName}</b> ({done}/{total}) — <color=#FFD166>Suivant : {nextLabel}</color>", GUILayout.ExpandWidth(true));
+                GUI.backgroundColor = new Color(0.1f, 0.75f, 1.0f);
+                if (GUILayout.Button("🌌 Voir Voûte", GUILayout.Width(110), GUILayout.Height(26)))
+                    SkillTreeCosmosWindow.OpenForCharacter(_currentSheet);
+                GUI.backgroundColor = Color.white;
+                if (GUILayout.Button("❌ Quitter guide", GUILayout.Width(110), GUILayout.Height(26)))
+                {
+                    CharacterClassCatalog.ClearGuide(_currentSheet);
+                    SaveCharacterAndSyncUnits(_currentSheet);
+                    _statusMessage = "Guide de build désactivé — arbre totalement libre, preset conservé sur la fiche.";
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            // Grille 2 colonnes de presets.
+            for (int i = 0; i < all.Count; i += 2)
+            {
+                GUILayout.BeginHorizontal();
+                for (int k = 0; k < 2; k++)
+                {
+                    int idx = i + k;
+                    if (idx >= all.Count)
+                    {
+                        GUILayout.FlexibleSpace();
+                        break;
+                    }
+                    var def = all[idx];
+                    bool isActive = active != null && active.ClassId == def.ClassId;
+                    Color prevBg = GUI.backgroundColor;
+                    GUI.backgroundColor = isActive ? new Color(0.98f, 0.75f, 0.2f) : new Color(0.16f, 0.22f, 0.32f);
+                    GUILayout.BeginVertical(GUI.skin.box, GUILayout.ExpandWidth(true));
+                    GUILayout.Label($"{def.IconGlyph} <b>{def.DisplayName}</b>{(isActive ? " <color=#FFD166>[GUIDE ACTIF]</color>" : "")}");
+                    GUILayout.Label($"<color=#94A3B8><i>{def.Tagline}</i></color>");
+                    GUILayout.Label($"<color=#94A3B8>{def.Description}</color>");
+                    if (GUILayout.Button(isActive ? "↻ Recharger ce preset" : "📥 Charger ce preset", GUILayout.Height(26)))
+                    {
+                        string keepName = _currentSheet.Name;
+                        if (def.ApplyToSheet(_currentSheet, out string msg))
+                        {
+                            // Le chargement ne doit pas écraser le nom choisi par le joueur.
+                            if (!string.IsNullOrWhiteSpace(keepName) && keepName != "Nouveau Personnage")
+                                _currentSheet.Name = keepName;
+                            SaveCharacterAndSyncUnits(_currentSheet);
+                            _statusMessage = msg;
+                        }
+                        else _statusMessage = msg;
+                    }
+                    GUILayout.EndVertical();
+                    GUI.backgroundColor = prevBg;
+                }
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
         }
 
         private void DrawModelSelector()
@@ -1598,6 +1680,24 @@ namespace Killtime.UI
             GUILayout.Space(6);
             GUILayout.Label("<b>Arbres de Compétences (5 XP liés/libre = +1 Palier, 10 si croisé, ou Gratuit ÉRU) :</b>");
 
+            var activeGuide = CharacterClassCatalog.GetActiveGuide(_currentSheet);
+            if (activeGuide != null)
+            {
+                int doneG = activeGuide.GetAcquiredCount(_currentSheet);
+                int totalG = activeGuide.BuildPath != null ? activeGuide.BuildPath.Count : 0;
+                var nextG = activeGuide.GetNextSteps(_currentSheet);
+                string nextGLabel = nextG.Count > 0 ? string.Join(" • ", nextG.GetRange(0, Math.Min(3, nextG.Count))) : "Build terminé ★";
+                GUILayout.BeginHorizontal(GUI.skin.box);
+                GUILayout.Label($"{activeGuide.IconGlyph} <b>Guide : {activeGuide.DisplayName}</b> ({doneG}/{totalG}) — <color=#FFD166>Suivant : {nextGLabel}</color>", GUILayout.ExpandWidth(true));
+                if (GUILayout.Button("❌ Quitter guide", GUILayout.Width(120)))
+                {
+                    CharacterClassCatalog.ClearGuide(_currentSheet);
+                    SaveCharacterAndSyncUnits(_currentSheet);
+                    _statusMessage = "Guide de build désactivé — arbre totalement libre.";
+                }
+                GUILayout.EndHorizontal();
+            }
+
             foreach (var entry in _currentSheet.Skills)
             {
                 bool isAccessible = CharacterProgressionManager.IsSkillAccessible(_currentSheet, entry.Skill);
@@ -1622,8 +1722,10 @@ namespace Killtime.UI
                 int baseRank = CharacterProgressionManager.GetBaseRankForSheet(_currentSheet, entry.Skill, false);
                 int maxTicks = CharacterProgressionManager.GetProgressMax(baseRank);
                 int spendable = CharacterProgressionManager.GetSpendableFor(_currentSheet, entry.Skill);
+                bool isSkillNext = activeGuide != null && activeGuide.IsSkillNext(_currentSheet, entry.Skill);
+                string skillGuideTag = isSkillNext ? $" <color=#FFD166><b>◆ BUILD +{activeGuide.GetTargetTraining(entry.Skill)}</b></color>" : "";
 
-                GUILayout.Label($"<b>{skillName}</b> (+{entry.TrainingLevel}/{CharacterProgressionManager.MAX_SKILL_TRAINING}) | Base {baseRank} | <color=#00E5FF>{entry.ProgressTicks}/{maxTicks}</color> | Banque <color=yellow>{entry.ReserveXP}</color>", GUILayout.Width(340));
+                GUILayout.Label($"<b>{skillName}</b> (+{entry.TrainingLevel}/{CharacterProgressionManager.MAX_SKILL_TRAINING}) | Base {baseRank} | <color=#00E5FF>{entry.ProgressTicks}/{maxTicks}</color> | Banque <color=yellow>{entry.ReserveXP}</color>{skillGuideTag}", GUILayout.Width(340));
 
                 if (isMax)
                 {
@@ -1751,7 +1853,21 @@ namespace Killtime.UI
 
                 string nameColor = owned ? "#00FF88" : (isSecret ? "#F43F5E" : (detail.IsImprovement ? "#E2E8F0" : "#FFE600"));
                 string secretTag = isSecret ? " <color=#F43F5E>[SECRET]</color>" : "";
-                GUILayout.Label($"{indent}<b><color={nameColor}>{detail.Name}</color></b>{secretTag}", GUILayout.ExpandWidth(true));
+                // Highlight guide de build : NEXT = or fort, FUTURE = or discret.
+                string guideTag = "";
+                if (activeGuide != null && !owned)
+                {
+                    var st = activeGuide.GetSpecState(_currentSheet, detail.Name);
+                    if (st == CharacterClassDefinition.GuideStepState.Next)
+                        guideTag = " <color=#FFD166><b>◆ SUIVANT BUILD</b></color>";
+                    else if (st == CharacterClassDefinition.GuideStepState.Future)
+                        guideTag = " <color=#8A6D2B>◇ build</color>";
+                }
+                else if (activeGuide != null && owned && activeGuide.BuildPath != null && activeGuide.BuildPath.Contains(detail.Name))
+                {
+                    guideTag = " <color=#00FF88>★ build</color>";
+                }
+                GUILayout.Label($"{indent}<b><color={nameColor}>{detail.Name}</color></b>{secretTag}{guideTag}", GUILayout.ExpandWidth(true));
 
                 if (owned)
                 {
@@ -1916,11 +2032,54 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(12);
+            GUILayout.Label("<b>Fiches Héroïques Intégrées (tableau à part — voir MinaCharacter / LucasCharacter) :</b>");
+
+            DrawHeroicSheetRow("Mina", MinaCharacter.DisplayTag, () => MinaCharacter.BuildHeroicSheet());
+            DrawHeroicSheetRow("Lucas", LucasCharacter.DisplayTag, () => LucasCharacter.BuildHeroicSheet());
+
+            GUILayout.Space(12);
             if (GUILayout.Button("📋 Copier le JSON de cette fiche dans le Presse-Papier"))
             {
                 GUIUtility.systemCopyBuffer = CharacterStorageService.ExportToJson(_currentSheet);
                 _statusMessage = "JSON copié !";
             }
+        }
+
+        /// <summary>
+        /// Ligne du tableau séparé des fiches héroïques intégrées (même fenêtre que
+        /// les fichiers disque, tableau à part). Charge une fiche construite en code.
+        /// </summary>
+        private void DrawHeroicSheetRow(string heroName, string heroTag, Func<CharacterSheet> builder)
+        {
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            GUILayout.Label($"<b>{heroName}</b> <color=#94A3B8>{heroTag}</color> <color=#10B981>[Intégré]</color>", GUILayout.Width(280));
+
+            if (GUILayout.Button("Charger", GUILayout.Width(80)))
+            {
+                var heroic = builder != null ? builder() : null;
+                if (heroic != null)
+                {
+                    _currentSheet = heroic;
+                    _selectedInventoryItem = null;
+                    _showModelDropdown = false;
+                    _showAnimDropdown = false;
+                    _lastLoadedModelName = "__UNINITIALIZED__";
+                    _statusMessage = $"'{_currentSheet.Name}' (fiche héroïque intégrée) chargé !";
+                }
+            }
+
+            GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
+            if (GUILayout.Button("Sauver → Disque", GUILayout.Width(120)))
+            {
+                var heroic = builder != null ? builder() : null;
+                if (heroic != null)
+                {
+                    string path = CharacterStorageService.SaveCharacter(heroic);
+                    _statusMessage = $"Fiche héroïque '{heroic.Name}' sauvegardée sur le disque !";
+                }
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
         }
 
         // ================= TAB 4 : SPAWN SUR LA GRILLE =================

@@ -1,4 +1,5 @@
 using System;
+using Killtime.Core.Inventory;
 
 namespace Killtime.Core.Character
 {
@@ -149,6 +150,73 @@ namespace Killtime.Core.Character
         {
             if (!IsLucas(sheet)) return false;
             return string.Equals(specializationName, InnateSpecialization, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // ------------------------------------------------------------------
+        // FICHE HÉROÏQUE INTÉGRÉE (transférée du disque : Lucas_c4a5ca1a.json)
+        // ------------------------------------------------------------------
+
+        /// <summary>
+        /// Construit la fiche héroïque de Lucas à partir des données disque les plus
+        /// récentes (Lucas_c4a5ca1a.json). Fiche intégrée : chargeable depuis la
+        /// fenêtre des fichiers, tableau séparé des fichiers disque.
+        /// </summary>
+        public static CharacterSheet BuildHeroicSheet()
+        {
+            var sheet = new CharacterSheet
+            {
+                SheetId = "c4a5ca1a7b2e4d9f8a6c3e1f5d2b9087",
+                Name = "Lucas",
+                Age = 17,
+                Gender = "Masculin",
+                Species = SpeciesType.Humain,
+                Profile = CharacterProfileType.HerosPJ,
+                ModelPrefabName = "Lucas",
+                LoreNotes = "Lucas-A, 17 ans. Génie quantique, rat de laboratoire de l'Institut (1761-1770 HSC). Sorti de Kingston avec Mina et Thomas (Aris 1772), siège de Brum'korath (Borin 1772, CP4). Magie du Vide calculant : il ne crée pas de feu, il SOUSTRAIT (pression, chaleur → zéro absolu). Conscient fragile (contrôle 3/10), subconscient létal (carnage somnambulique 5/10). Thermostat : la chaleur de Mina régule son froid ; sans elle, tout échec thermique lui revient en backlash.",
+                BaseAttributes = new Attributes(
+                    @for: 2, agi: 3, con: 3, rap: 4,
+                    @int: 5, eru: 3, cha: 3, ins: 3,
+                    mag: 5, vision: 3, ouie: 3, miracle: 1),
+                BaseArmor = 1,
+                AvailableXP = 0,
+                TotalEarnedXP = 40,
+                TotalSpentXP = 40,
+                FreeTrainingsUsed = 3,
+                CreditsCE = 8000
+            };
+
+            // Entraînements (fiche disque la plus récente).
+            sheet.GetSkill(SkillType.MainsNues).TrainingLevel = 1;
+            sheet.GetSkill(SkillType.ManiementArmes).TrainingLevel = 1;
+            sheet.GetSkill(SkillType.Academie).TrainingLevel = 2;
+            sheet.GetSkill(SkillType.IngenierieArcanotech).TrainingLevel = 1;
+            sheet.GetSkill(SkillType.TactiqueStrategie).TrainingLevel = 1;
+            sheet.GetSkill(SkillType.MagieElementale).TrainingLevel = 1;
+            sheet.GetSkill(SkillType.MagieEsprit).TrainingLevel = 1;
+            sheet.GetSkill(SkillType.Esquive).ProgressTicks = 2;
+
+            // Maîtrises débloquées (fiches disque).
+            sheet.UnlockedSpecializations.Add("Vide Calculant");
+            sheet.UnlockedSpecializations.Add("Vide Calculant : Chute de Pression");
+            sheet.UnlockedSpecializations.Add("Pare-feu Psychologique");
+            sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
+
+            // Arme équipée (fiche disque, champs essentiels).
+            sheet.Inventory.Add(new InventoryItem
+            {
+                Name = "Épée d'Acier de Kingston",
+                Type = ItemType.Weapon,
+                EquipSlot = ItemEquipSlot.MainHand,
+                IsEquipped = true,
+                BaseDamage = 6,
+                RangeInTiles = 1,
+                AssociatedSkill = SkillType.ManiementArmes,
+                WeightKg = 1.8f,
+                Description = "Lame d'entraînement de Lucas, héritage de la garde de Lucas-0. Placeholder procédural en attendant le prefab.",
+                PriceCE = 350
+            });
+
+            return sheet;
         }
     }
 }

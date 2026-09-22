@@ -189,6 +189,7 @@ namespace Killtime.UI
             else if (Input.GetKeyDown(KeyCode.F7)) EnsureDevWindow(ScenarioDevWindow.Instance, ScenarioDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F8)) EnsureDevWindow(ScenarioEditorDevWindow.Instance, ScenarioEditorDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F10)) EnsureDevWindow(WeaponGripEditorDevWindow.Instance, WeaponGripEditorDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F11)) EnsureDevWindow(RiverOfTimeDevWindow.Instance, RiverOfTimeDevWindow.Open);
         }
 
         /// <summary>
@@ -704,15 +705,19 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(4);
-            GUILayout.Label("<b>🎬 Campagne narrative :</b>");
+            GUILayout.Label("<b>🎬 Campagne narrative & Chronomancie :</b>");
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("🎬 Scènes & Choix (Lecteur F7)", GUILayout.Height(32)))
+            if (GUILayout.Button("🎬 Scènes & Choix (F7)", GUILayout.Height(32)))
             {
                 ScenarioDevWindow.Open();
             }
-            if (GUILayout.Button("🛠️ Éditeur de Scènes JSON (F8)", GUILayout.Height(32)))
+            if (GUILayout.Button("🛠️ Éditeur Scènes (F8)", GUILayout.Height(32)))
             {
                 ScenarioEditorDevWindow.Open();
+            }
+            if (GUILayout.Button("🌊 Fleuve 3D (F11)", GUILayout.Height(32)))
+            {
+                RiverOfTimeDevWindow.Open();
             }
             GUILayout.EndHorizontal();
 
@@ -742,6 +747,14 @@ namespace Killtime.UI
         {
             GUILayout.Label("<b>⏳ Le Fleuve du Temps (Livre V) — Sauvegardes & Rembobinage :</b>");
             GUILayout.Space(4);
+
+            GUI.backgroundColor = new Color(0.2f, 0.85f, 1.0f);
+            if (GUILayout.Button("🌊 Ouvrir le Fleuve du Temps 3D (F11)", GUILayout.Height(36)))
+            {
+                RiverOfTimeDevWindow.Open();
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.Space(6);
 
             int snapshotCount = _arena != null && _arena.Timeline != null ? _arena.Timeline.GetFullChronology().Count : 0;
             GUILayout.Label($"Nombre de Snapshots temporels enregistrés : <b>{snapshotCount}</b>");

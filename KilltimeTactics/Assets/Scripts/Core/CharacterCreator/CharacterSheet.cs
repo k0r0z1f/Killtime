@@ -51,6 +51,16 @@ namespace Killtime.Core.Character
         public List<NythariteSpell> LearnedSpells = new();
         public List<InventoryItem> Inventory = new();
 
+        /// <summary>
+        /// Guide de build actif (archétype de classe de base, voir Classes/).
+        /// Chargé depuis le créateur : l'arbre reste 100% libre (PJ normal),
+        /// mais les étapes futures du build sont highlightées en or dans la
+        /// Voûte Céleste et l'onglet Progression. Vide = aucun guide.
+        /// </summary>
+        public string ActiveClassId = "";
+        /// <summary>Si faux, le highlight du guide est masqué (guide en pause).</summary>
+        public bool BuildGuideEnabled = false;
+
         public CharacterSheet()
         {
             InitializeDefaultSkills();

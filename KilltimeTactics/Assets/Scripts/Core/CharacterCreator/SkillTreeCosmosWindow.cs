@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Core.Character;
+using Killtime.Core.Character.Classes;
 using Killtime.Core.Dice;
 using Killtime.Tactics.Units;
 
@@ -674,40 +675,44 @@ namespace Killtime.UI
                 AddImprovementNode(gfA1, "Greffe Cinétique : Frappe Symbiotique", sMag.Position + new Vector2(120f, -310f), sMag.SectorColor);
                 } // fin hémisphère primal (masqué pour la fiche héroïque sans affinité — voir LucasCharacter)
 
-                var spInc = AddSpecNode(nMAG_E, "Incinération Pyrocinétique", sMag.Position + new Vector2(270f, -90f), sMag.SectorColor);
-                var inA1 = AddImprovementNode(spInc, "Incinération : Flamme Bleue", sMag.Position + new Vector2(370f, -120f), sMag.SectorColor);
-                var inA2 = AddImprovementNode(inA1, "Incinération : Fournaise Déferlante", sMag.Position + new Vector2(460f, -150f), sMag.SectorColor);
-                AddImprovementNode(inA2, "Incinération : Nova Thermique", sMag.Position + new Vector2(550f, -180f), sMag.SectorColor);
+                // Éventail Élémentale NORD (voies Feu/Air/Eau/Terre) : nappes parallèles
+                // vers le nord-est, sans croisement avec l'éventail Esprit (sud-est).
+                var spTer = AddSpecNode(nMAG_E, "Géomancie", sMag.Position + new Vector2(250f, -410f), sMag.SectorColor);
+                var teA1 = AddImprovementNode(spTer, "Géomancie : Poing Tellurique", sMag.Position + new Vector2(350f, -420f), sMag.SectorColor);
+                AddImprovementNode(teA1, "Géomancie : Séisme Localisé", sMag.Position + new Vector2(450f, -430f), sMag.SectorColor);
+                AddImprovementNode(spTer, "Géomancie : Peau de Pierre", sMag.Position + new Vector2(370f, -370f), sMag.SectorColor);
 
-                var spAir = AddSpecNode(nMAG_E, "Aéromancie", sMag.Position + new Vector2(260f, -210f), sMag.SectorColor);
-                var aiA1 = AddImprovementNode(spAir, "Aéromancie : Lame de Vent", sMag.Position + new Vector2(360f, -220f), sMag.SectorColor);
-                AddImprovementNode(aiA1, "Aéromancie : Tempête de Lames", sMag.Position + new Vector2(460f, -230f), sMag.SectorColor);
-                AddImprovementNode(spAir, "Aéromancie : Courant Porteur", sMag.Position + new Vector2(380f, -175f), sMag.SectorColor);
+                var spAir = AddSpecNode(nMAG_E, "Aéromancie", sMag.Position + new Vector2(260f, -300f), sMag.SectorColor);
+                var aiA1 = AddImprovementNode(spAir, "Aéromancie : Lame de Vent", sMag.Position + new Vector2(360f, -310f), sMag.SectorColor);
+                AddImprovementNode(aiA1, "Aéromancie : Tempête de Lames", sMag.Position + new Vector2(460f, -320f), sMag.SectorColor);
+                AddImprovementNode(spAir, "Aéromancie : Courant Porteur", sMag.Position + new Vector2(380f, -260f), sMag.SectorColor);
 
-                var spEau = AddSpecNode(nMAG_E, "Hydromancie", sMag.Position + new Vector2(260f, 450f), sMag.SectorColor);
-                var hyA1 = AddImprovementNode(spEau, "Hydromancie : Étreinte Abyssale", sMag.Position + new Vector2(360f, 460f), sMag.SectorColor);
-                AddImprovementNode(hyA1, "Hydromancie : Raz-de-Marée", sMag.Position + new Vector2(460f, 470f), sMag.SectorColor);
-                AddImprovementNode(spEau, "Hydromancie : Brume Aveuglante", sMag.Position + new Vector2(390f, 505f), sMag.SectorColor);
+                var spInc = AddSpecNode(nMAG_E, "Incinération Pyrocinétique", sMag.Position + new Vector2(270f, -170f), sMag.SectorColor);
+                var inA1 = AddImprovementNode(spInc, "Incinération : Flamme Bleue", sMag.Position + new Vector2(370f, -180f), sMag.SectorColor);
+                var inA2 = AddImprovementNode(inA1, "Incinération : Fournaise Déferlante", sMag.Position + new Vector2(460f, -190f), sMag.SectorColor);
+                AddImprovementNode(inA2, "Incinération : Nova Thermique", sMag.Position + new Vector2(550f, -200f), sMag.SectorColor);
 
-                var spTer = AddSpecNode(nMAG_E, "Géomancie", sMag.Position + new Vector2(260f, 550f), sMag.SectorColor);
-                var teA1 = AddImprovementNode(spTer, "Géomancie : Poing Tellurique", sMag.Position + new Vector2(360f, 560f), sMag.SectorColor);
-                AddImprovementNode(teA1, "Géomancie : Séisme Localisé", sMag.Position + new Vector2(460f, 570f), sMag.SectorColor);
-                AddImprovementNode(spTer, "Géomancie : Peau de Pierre", sMag.Position + new Vector2(390f, 605f), sMag.SectorColor);
+                var spEau = AddSpecNode(nMAG_E, "Hydromancie", sMag.Position + new Vector2(260f, -60f), sMag.SectorColor);
+                var hyA1 = AddImprovementNode(spEau, "Hydromancie : Étreinte Abyssale", sMag.Position + new Vector2(360f, -50f), sMag.SectorColor);
+                AddImprovementNode(hyA1, "Hydromancie : Raz-de-Marée", sMag.Position + new Vector2(460f, -40f), sMag.SectorColor);
+                AddImprovementNode(spEau, "Hydromancie : Brume Aveuglante", sMag.Position + new Vector2(390f, -10f), sMag.SectorColor);
 
-                var spTelek = AddSpecNode(nMAG_S, "Télékinésie", sMag.Position + new Vector2(270f, 90f), sMag.SectorColor);
-                var tkA1 = AddImprovementNode(spTelek, "Télékinésie : Projection d'Objets", sMag.Position + new Vector2(370f, 120f), sMag.SectorColor);
-                var tkA2 = AddImprovementNode(tkA1, "Télékinésie : Barrière Cinétique", sMag.Position + new Vector2(460f, 150f), sMag.SectorColor);
-                AddImprovementNode(tkA2, "Télékinésie : Fissure Gravifique", sMag.Position + new Vector2(550f, 180f), sMag.SectorColor);
+                // Éventail Esprit SUD (voies Télépathie/Télékinésie/Clairvoyance) : nappes
+                // parallèles vers le sud-est, séparées de l'éventail Élémentale (jour de 130px).
+                var spTele = AddSpecNode(nMAG_S, "Télépathie", sMag.Position + new Vector2(270f, 120f), sMag.SectorColor);
+                var tpA1 = AddImprovementNode(spTele, "Télépathie : Lien Empathique", sMag.Position + new Vector2(370f, 130f), sMag.SectorColor);
+                var tpA2 = AddImprovementNode(tpA1, "Télépathie : Sondage de Surface", sMag.Position + new Vector2(460f, 140f), sMag.SectorColor);
+                AddImprovementNode(tpA2, "Télépathie : Injonction Impérieuse", sMag.Position + new Vector2(550f, 150f), sMag.SectorColor);
 
-                var spTele = AddSpecNode(nMAG_S, "Télépathie", sMag.Position + new Vector2(270f, 10f), sMag.SectorColor);
-                var tpA1 = AddImprovementNode(spTele, "Télépathie : Lien Empathique", sMag.Position + new Vector2(370f, 20f), sMag.SectorColor);
-                var tpA2 = AddImprovementNode(tpA1, "Télépathie : Sondage de Surface", sMag.Position + new Vector2(460f, 30f), sMag.SectorColor);
-                AddImprovementNode(tpA2, "Télépathie : Injonction Impérieuse", sMag.Position + new Vector2(550f, 40f), sMag.SectorColor);
+                var spTelek = AddSpecNode(nMAG_S, "Télékinésie", sMag.Position + new Vector2(270f, 230f), sMag.SectorColor);
+                var tkA1 = AddImprovementNode(spTelek, "Télékinésie : Projection d'Objets", sMag.Position + new Vector2(370f, 240f), sMag.SectorColor);
+                var tkA2 = AddImprovementNode(tkA1, "Télékinésie : Barrière Cinétique", sMag.Position + new Vector2(460f, 250f), sMag.SectorColor);
+                AddImprovementNode(tkA2, "Télékinésie : Fissure Gravifique", sMag.Position + new Vector2(550f, 260f), sMag.SectorColor);
 
-                var spClair = AddSpecNode(nMAG_S, "Clairvoyance", sMag.Position + new Vector2(270f, 210f), sMag.SectorColor);
-                var clA1 = AddImprovementNode(spClair, "Clairvoyance : Œil Distant", sMag.Position + new Vector2(370f, 220f), sMag.SectorColor);
-                var clA2 = AddImprovementNode(clA1, "Clairvoyance : Prescience du Danger", sMag.Position + new Vector2(460f, 230f), sMag.SectorColor);
-                AddImprovementNode(clA2, "Clairvoyance : Champ de Prescience", sMag.Position + new Vector2(550f, 240f), sMag.SectorColor);
+                var spClair = AddSpecNode(nMAG_S, "Clairvoyance", sMag.Position + new Vector2(270f, 340f), sMag.SectorColor);
+                var clA1 = AddImprovementNode(spClair, "Clairvoyance : Œil Distant", sMag.Position + new Vector2(370f, 350f), sMag.SectorColor);
+                var clA2 = AddImprovementNode(clA1, "Clairvoyance : Prescience du Danger", sMag.Position + new Vector2(460f, 360f), sMag.SectorColor);
+                AddImprovementNode(clA2, "Clairvoyance : Champ de Prescience", sMag.Position + new Vector2(550f, 370f), sMag.SectorColor);
             }
         }
 
@@ -740,6 +745,8 @@ namespace Killtime.UI
         {
             EnsureStyles();
 
+            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            float guideH = guide != null ? 30f : 0f;
             float topBarH = 34f;
             float footerH = 105f;
             float pad = 8f;
@@ -748,11 +755,19 @@ namespace Killtime.UI
             Rect topBarRect = new Rect(pad, pad, _windowRect.width - pad * 2f, topBarH);
             DrawTopCommandBar(topBarRect);
 
+            // 1b. Bandeau guide de build (arbre libre + prochaines étapes en or)
+            Rect guideRect = new Rect(pad, topBarRect.yMax + 4f, _windowRect.width - pad * 2f, guideH);
+            float viewY = topBarRect.yMax + 4f;
+            if (guide != null)
+            {
+                DrawBuildGuideStrip(guideRect, guide);
+                viewY = guideRect.yMax + 4f;
+            }
+
             // 2. Fiche d'inspection inférieure fixe
             Rect footerRect = new Rect(pad, _windowRect.height - footerH - pad, _windowRect.width - pad * 2f, footerH);
 
             // 3. Viewport central
-            float viewY = topBarRect.yMax + 4f;
             float viewH = Mathf.Max(180f, footerRect.yMin - viewY - 4f);
             Rect viewportRect = new Rect(pad, viewY, _windowRect.width - pad * 2f, viewH);
 
@@ -760,6 +775,68 @@ namespace Killtime.UI
             DrawCosmosViewport(viewportRect);
 
             DrawNodeInspectionFooter(footerRect);
+        }
+
+        /// <summary>
+        /// Bandeau guide de build : rappel que l'arbre reste libre, progression + prochaines étapes.
+        /// </summary>
+        private void DrawBuildGuideStrip(Rect r, CharacterClassDefinition guide)
+        {
+            GUI.BeginGroup(r, GUI.skin.box);
+            int done = guide.GetAcquiredCount(_sheet);
+            int total = guide.BuildPath != null ? guide.BuildPath.Count : 0;
+            var next = guide.GetNextSteps(_sheet);
+            string nextLabel = next.Count > 0
+                ? string.Join(" • ", next.GetRange(0, Math.Min(2, next.Count)))
+                : "Build terminé ★";
+            GUI.Label(new Rect(8, 6, r.width - 260, 20),
+                $"{guide.IconGlyph} <b>Guide : {guide.DisplayName}</b> ({done}/{total}) — <color=#FFD166>◆ Suivant : {nextLabel}</color> <color=#94A3B8>(arbre libre)</color>");
+            if (GUI.Button(new Rect(r.width - 240, 4, 115, 22), "◎ Étape suiv."))
+                FocusNextGuideStep();
+            if (GUI.Button(new Rect(r.width - 120, 4, 112, 22), "❌ Quitter guide"))
+            {
+                CharacterClassCatalog.ClearGuide(_sheet);
+                SaveSheet();
+                _statusFeedback = "Guide de build désactivé — arbre totalement libre, preset conservé.";
+            }
+            GUI.EndGroup();
+        }
+
+        /// <summary>Recentre la caméra sur la première étape NEXT du guide.</summary>
+        private void FocusNextGuideStep()
+        {
+            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            if (guide == null || _sheet == null) return;
+            var next = guide.GetNextSteps(_sheet);
+            if (next.Count == 0) return;
+            string target = next[0];
+            for (int i = 0; i < _allNodes.Count; i++)
+            {
+                var n = _allNodes[i];
+                if (n == null) continue;
+                if ((n.IsSpecialization || n.IsImprovement) && n.SpecializationName == target)
+                {
+                    _selectedNode = n;
+                    _canvasPan = new Vector2(-n.Position.x, -n.Position.y);
+                    _canvasZoom = 1.05f;
+                    _statusFeedback = $"◆ Prochaine étape du build : {target}";
+                    return;
+                }
+            }
+            // Étape d'entraînement (compétence) : recentre sur le nœud de compétence.
+            for (int i = 0; i < _allNodes.Count; i++)
+            {
+                var n = _allNodes[i];
+                if (n == null || n.IsSpecialization || n.IsImprovement) continue;
+                if (guide.IsSkillNext(_sheet, n.Skill))
+                {
+                    _selectedNode = n;
+                    _canvasPan = new Vector2(-n.Position.x, -n.Position.y);
+                    _canvasZoom = 1.05f;
+                    _statusFeedback = $"◆ Entraînement suivant : {n.DisplayName} (cible +{guide.GetTargetTraining(n.Skill)})";
+                    return;
+                }
+            }
         }
 
         private bool _showHiddenCheats = false;
@@ -929,6 +1006,7 @@ namespace Killtime.UI
             DrawBackdropStarfield(viewCenter, viewport.size);
 
             // 1. Conduits
+            var activeGuideForLines = CharacterClassCatalog.GetActiveGuide(_sheet);
             for (int i = 0; i < _conduits.Count; i++)
             {
                 var c = _conduits[i];
@@ -942,6 +1020,17 @@ namespace Killtime.UI
                 float thickness = isUnlocked ? 2.5f * _canvasZoom : 1.2f * _canvasZoom;
 
                 DrawCosmicLine(p1, p2, lineCol, thickness);
+
+                // Surbrillance or du chemin de build (jamais de verrou, pure indication).
+                if (!isUnlocked && activeGuideForLines != null && c.To != null
+                    && (c.To.IsSpecialization || c.To.IsImprovement))
+                {
+                    var gs = activeGuideForLines.GetSpecState(_sheet, c.To.SpecializationName);
+                    if (gs == CharacterClassDefinition.GuideStepState.Next)
+                        DrawCosmicLine(p1, p2, new Color(1f, 0.82f, 0.3f, 0.85f), 3.2f * _canvasZoom);
+                    else if (gs == CharacterClassDefinition.GuideStepState.Future)
+                        DrawCosmicLine(p1, p2, new Color(1f, 0.82f, 0.3f, 0.22f), 1.6f * _canvasZoom);
+                }
             }
 
             // 2. Titres des Constellations
@@ -1013,6 +1102,12 @@ namespace Killtime.UI
             bool isVol2 = CharacterProgressionManager.IsVolume2Specialization(node.SpecializationName);
             bool isVol2Locked = isVol2 && !CharacterProgressionManager.IsVolume2Unlocked();
 
+            // Highlight guide de build (arbre libre : simple surlignage or, jamais de verrou).
+            var guideState = GetGuideSpecState(node);
+            bool isGuideNextSkill = IsGuideNextSkill(node);
+            bool isNext = guideState == CharacterClassDefinition.GuideStepState.Next || isGuideNextSkill;
+            bool isFuture = guideState == CharacterClassDefinition.GuideStepState.Future;
+
             int training = GetSkillTrainingLevel(node);
 
             float pulse = 0.85f + 0.15f * Mathf.Sin(Time.realtimeSinceStartup * 4f + node.Position.x);
@@ -1038,6 +1133,18 @@ namespace Killtime.UI
             GUI.color = haloCol;
             GUI.DrawTexture(new Rect(center.x - haloR, center.y - haloR, haloR * 2f, haloR * 2f), _starGlowTex);
 
+            // Halo or du guide : NEXT = pulsant fort, FUTURE = discret.
+            if (!unlocked && (isNext || isFuture))
+            {
+                float goldPulse = isNext
+                    ? 0.65f + 0.35f * Mathf.Sin(Time.realtimeSinceStartup * 5f)
+                    : 0.25f;
+                Color gold = new Color(1f, 0.82f, 0.35f, isNext ? (0.55f + goldPulse * 0.4f) : 0.28f);
+                GUI.color = gold;
+                float goldR = radius * (isNext ? 2.6f : 2.1f);
+                GUI.DrawTexture(new Rect(center.x - goldR, center.y - goldR, goldR * 2f, goldR * 2f), _starGlowTex);
+            }
+
             GUI.color = starCol;
             Texture2D shapeTex = (node.IsSpecialization || node.IsImprovement) ? _starDiamondTex : _starCircleTex;
             GUI.DrawTexture(new Rect(center.x - radius, center.y - radius, radius * 2f, radius * 2f), shapeTex);
@@ -1051,9 +1158,20 @@ namespace Killtime.UI
                 GUI.color = prevCol;
             }
 
+            // Réticule or pour la prochaine étape du build (visible même sans sélection).
+            if (!isSelected && isNext && !unlocked)
+            {
+                GUI.color = new Color(1f, 0.82f, 0.3f, 0.65f + 0.3f * Mathf.Sin(Time.realtimeSinceStartup * 5f));
+                float reticleR = radius * 1.7f;
+                DrawWireSquare(new Rect(center.x - reticleR, center.y - reticleR, reticleR * 2f, reticleR * 2f));
+                GUI.color = prevCol;
+            }
+
             if (_canvasZoom >= 0.28f)
             {
                 string tag;
+                string guideTag = isNext ? "\n<color=#FFD166><b>◆ SUIVANT BUILD</b></color>"
+                    : (isFuture ? "\n<color=#8A6D2B>◇ build</color>" : "");
                 if (isSecret && !unlocked && !_showHiddenCheats)
                 {
                     tag = "<color=#F43F5E>🔒 ??? [Secret]</color>";
@@ -1061,18 +1179,22 @@ namespace Killtime.UI
                 else if (isSecret)
                 {
                     tag = unlocked ? $"<color=#F43F5E>★ {node.DisplayName}</color>" : $"<color=#FB7185>☆ {node.DisplayName} [SECRET]</color>";
+                    tag += guideTag;
                 }
                 else if (isVol2Locked && _showHiddenCheats)
                 {
                     tag = unlocked ? $"<color=#10B981>★ {node.DisplayName}</color>" : $"<color=#C084FC>☆ {node.DisplayName} [VOL II]</color>";
+                    tag += guideTag;
                 }
                 else if (node.IsImprovement)
                 {
                     tag = unlocked ? $"◆ {node.DisplayName}" : $"◇ {node.DisplayName}";
+                    tag += guideTag;
                 }
                 else if (node.IsSpecialization)
                 {
                     tag = unlocked ? $"★ {node.DisplayName}" : $"☆ {node.DisplayName}";
+                    tag += guideTag;
                 }
                 else
                 {
@@ -1080,11 +1202,37 @@ namespace Killtime.UI
                     string pips = TrainingPips(training);
                     string caracs = SkillDefinitions.GetAssociatedAttributeNames(node.Skill);
                     tag = $"<b>{node.DisplayName}</b>\n<color=#00E5FF>[{dieTag}]</color> {pips}\n<color=#FFD27F>{caracs}</color>";
+                    if (isGuideNextSkill)
+                    {
+                        var g = CharacterClassCatalog.GetActiveGuide(_sheet);
+                        int tgt = g != null ? g.GetTargetTraining(node.Skill) : 0;
+                        tag += $"\n<color=#FFD166><b>◆ BUILD +{tgt}</b></color>";
+                    }
                 }
 
-                _nodeLabelStyle.normal.textColor = unlocked ? Color.white : new Color(0.65f, 0.72f, 0.82f, 0.65f);
-                GUI.Label(new Rect(center.x - 90f, center.y + radius + 3f, 180f, 46f), tag, _nodeLabelStyle);
+                _nodeLabelStyle.normal.textColor = isNext && !unlocked
+                    ? new Color(1f, 0.85f, 0.45f)
+                    : (unlocked ? Color.white : new Color(0.65f, 0.72f, 0.82f, 0.65f));
+                GUI.Label(new Rect(center.x - 90f, center.y + radius + 3f, 180f, 60f), tag, _nodeLabelStyle);
             }
+        }
+
+        /// <summary>État guide d'un nœud spé/amélioration (NotInBuild si aucun guide).</summary>
+        private CharacterClassDefinition.GuideStepState GetGuideSpecState(CosmosNode node)
+        {
+            if (node == null || (!node.IsSpecialization && !node.IsImprovement)) return CharacterClassDefinition.GuideStepState.NotInBuild;
+            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            if (guide == null) return CharacterClassDefinition.GuideStepState.NotInBuild;
+            return guide.GetSpecState(_sheet, node.SpecializationName);
+        }
+
+        /// <summary>Vrai si le nœud compétence a encore des entraînements cibles dans le guide.</summary>
+        private bool IsGuideNextSkill(CosmosNode node)
+        {
+            if (node == null || node.IsSpecialization || node.IsImprovement) return false;
+            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            if (guide == null) return false;
+            return guide.IsSkillNext(_sheet, node.Skill);
         }
 
         private void DrawWireSquare(Rect r)
@@ -1272,9 +1420,38 @@ namespace Killtime.UI
             }
 
             GUI.Label(new Rect(12, 30, r.width - 24, 18), $"<color=#94A3B8>{GetInspectionDescription(node)}</color>", _tooltipDescStyle);
-            GUI.Label(new Rect(12, 52, r.width - 24, 44), $"<b>Effet Codex :</b> <color=#F8FAFC>{node.MechanicalEffect}</color>", _tooltipRuleStyle);
+            GUI.Label(new Rect(12, 52, r.width - 24, 44), $"<b>Effet Codex :</b> <color=#F8FAFC>{node.MechanicalEffect}</color>{GetGuideFooterSuffix(node)}", _tooltipRuleStyle);
 
             GUI.EndGroup();
+        }
+
+        /// <summary>Suffixe guide dans le footer : rappelle si le nœud est la prochaine étape du build.</summary>
+        private string GetGuideFooterSuffix(CosmosNode node)
+        {
+            if (node == null || _sheet == null) return "";
+            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            if (guide == null) return "";
+            if (node.IsSpecialization || node.IsImprovement)
+            {
+                var st = guide.GetSpecState(_sheet, node.SpecializationName);
+                if (st == CharacterClassDefinition.GuideStepState.Next)
+                    return $" <color=#FFD166><b>◆ Prochaine étape de votre build « {guide.DisplayName} » — arbre libre, mais c'est la suite recommandée.</b></color>";
+                if (st == CharacterClassDefinition.GuideStepState.Future)
+                    return $" <color=#8A6D2B>◇ Étape future du build « {guide.DisplayName} » (débloquez d'abord le parent).</color>";
+                if (st == CharacterClassDefinition.GuideStepState.Acquired)
+                    return $" <color=#00FF88>★ Étape de votre build « {guide.DisplayName} » déjà acquise.</color>";
+                return "";
+            }
+            else
+            {
+                if (guide.IsSkillNext(_sheet, node.Skill))
+                {
+                    int tgt = guide.GetTargetTraining(node.Skill);
+                    int cur = _sheet.GetSkill(node.Skill).TrainingLevel;
+                    return $" <color=#FFD166><b>◆ Entraînement recommandé : {cur}/+{tgt} pour le build « {guide.DisplayName} ».</b></color>";
+                }
+                return "";
+            }
         }
 
         /// <summary>

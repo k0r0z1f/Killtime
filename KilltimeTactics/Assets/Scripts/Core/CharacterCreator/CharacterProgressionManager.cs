@@ -1608,6 +1608,30 @@ namespace Killtime.Core.Character
             int refundedTrainings = paidLevels * XP_COST_TRAINING;
             int refundedSpecs = 0;
             int refundedReserves = 0;
+            int presetFreeSpecs = 0;
+
+            // Package de création (archétype de classe) : les entraînements du preset
+            // sont déjà comptés comme gratuits (FreeTrainingsUsed = total preset, voir
+            // CharacterClassDefinition.ApplyToSheet) donc jamais remboursés ci-dessus.
+            // Les spécialisations du preset sont gratuites aussi : on ne rembourse que
+            // celles hors preset pour éviter tout farm XP (charger → reset → encaisser).
+            if (!string.IsNullOrWhiteSpace(sheet.ActiveClassId))
+            {
+                try
+                {
+                    var preset = Classes.CharacterClassCatalog.GetById(sheet.ActiveClassId);
+                    if (preset?.StartingSpecializations != null && sheet.UnlockedSpecializations != null)
+                    {
+                        for (int i = 0; i < preset.StartingSpecializations.Count; i++)
+                        {
+                            string s = preset.StartingSpecializations[i];
+                            if (!string.IsNullOrWhiteSpace(s) && sheet.UnlockedSpecializations.Contains(s))
+                                presetFreeSpecs++;
+                        }
+                    }
+                }
+                catch { presetFreeSpecs = 0; }
+            }
 
             if (sheet.Skills != null)
             {
@@ -1630,7 +1654,8 @@ namespace Killtime.Core.Character
 
             if (sheet.UnlockedSpecializations != null && sheet.UnlockedSpecializations.Count > 0)
             {
-                refundedSpecs = sheet.UnlockedSpecializations.Count * XP_COST_SPECIALIZATION;
+                int paidSpecs = Math.Max(0, sheet.UnlockedSpecializations.Count - Math.Max(0, presetFreeSpecs));
+                refundedSpecs = paidSpecs * XP_COST_SPECIALIZATION;
                 sheet.UnlockedSpecializations.Clear();
             }
 

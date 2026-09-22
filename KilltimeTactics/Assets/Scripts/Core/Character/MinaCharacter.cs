@@ -1,4 +1,5 @@
 using System;
+using Killtime.Core.Inventory;
 
 namespace Killtime.Core.Character
 {
@@ -206,6 +207,70 @@ namespace Killtime.Core.Character
         {
             if (!IsMina(sheet)) return false;
             return string.Equals(specializationName, InnateSpecialization, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // ------------------------------------------------------------------
+        // FICHE HÉROÏQUE INTÉGRÉE (transférée du disque : Mina_a7679993.json)
+        // ------------------------------------------------------------------
+
+        /// <summary>
+        /// Construit la fiche héroïque de Mina à partir des données disque les plus
+        /// récentes (Mina_a7679993.json). Fiche intégrée : chargeable depuis la
+        /// fenêtre des fichiers, tableau séparé des fichiers disque.
+        /// </summary>
+        public static CharacterSheet BuildHeroicSheet()
+        {
+            var sheet = new CharacterSheet
+            {
+                SheetId = "a7679993424d48908f3c4cb84e03eff7",
+                Name = "Mina",
+                Age = 25,
+                Gender = "Indéterminé",
+                Species = SpeciesType.Humain,
+                Profile = CharacterProfileType.HerosPJ,
+                ModelPrefabName = "Mina",
+                LoreNotes = "",
+                BaseAttributes = new Attributes(
+                    @for: 3, agi: 5, con: 3, rap: 4,
+                    @int: 3, eru: 2, cha: 3, ins: 3,
+                    mag: 5, vision: 3, ouie: 3, miracle: 1),
+                BaseArmor = 1,
+                AvailableXP = 0,
+                TotalEarnedXP = 30,
+                TotalSpentXP = 0,
+                FreeTrainingsUsed = 0,
+                CreditsCE = 8000
+            };
+
+            // Entraînements (fiche disque la plus récente).
+            sheet.GetSkill(SkillType.MainsNues).TrainingLevel = 3;
+            sheet.GetSkill(SkillType.Athletisme).TrainingLevel = 1;
+            sheet.GetSkill(SkillType.Acrobatie).TrainingLevel = 1;
+
+            // Maîtrises débloquées (fiches disque).
+            sheet.UnlockedSpecializations.Add("Arts Martiaux");
+            sheet.UnlockedSpecializations.Add("Protocole des Pas Invisibles");
+            sheet.UnlockedSpecializations.Add("Réflexes Myotatiques");
+            sheet.UnlockedSpecializations.Add("Fibres Résilientes");
+            sheet.UnlockedSpecializations.Add("Régénération Métabolique");
+
+            // Arme équipée (fiche disque, champs essentiels).
+            sheet.Inventory.Add(new InventoryItem
+            {
+                Name = "SciFiGunLight_Rad",
+                PrefabPath = "SciFiGunLight_Rad",
+                Type = ItemType.Weapon,
+                EquipSlot = ItemEquipSlot.MainHand,
+                IsEquipped = true,
+                BaseDamage = 7,
+                RangeInTiles = 10,
+                AssociatedSkill = SkillType.Ballistique,
+                WeightKg = 2.4f,
+                Description = "Arme balistique importée depuis Resources/Guns/SciFiGunLight_Rad.",
+                PriceCE = 500
+            });
+
+            return sheet;
         }
     }
 }
