@@ -267,8 +267,24 @@ namespace Killtime.UI
             }
 
             Rect contentRect = new Rect(0f, TitleHeight, windowRectLocal.width, Mathf.Max(0f, windowRectLocal.height - TitleHeight));
-            if (contentRect.width <= 0f || contentRect.height <= 0f) return false;
-            if (contentRect.Contains(e.mousePosition))
+            bool inContent = contentRect.width > 0f && contentRect.height > 0f
+                && contentRect.Contains(e.mousePosition);
+            // Aperçu docké réduit via GUI.matrix : le callback GUI.Window travaille
+            // dans le repère source (pleine taille) alors que l'appelant peut passer
+            // un rect à la taille du dock. Teste aussi le rect source pour que le
+            // blocage reste infranchissable (cas Dev Arena : sliders/boutons larges).
+            if (!inContent && _docked.TryGetValue(windowId, out DockState dockState)
+                && dockState.fullRect.width > 0f && dockState.fullRect.height > 0f)
+            {
+                Rect sourceContent = new Rect(0f, TitleHeight, dockState.fullRect.width,
+                    Mathf.Max(0f, dockState.fullRect.height - TitleHeight));
+                if (sourceContent.width > 0f && sourceContent.height > 0f
+                    && sourceContent.Contains(e.mousePosition))
+                {
+                    inContent = true;
+                }
+            }
+            if (inContent)
             {
                 // Filet de sécurité : si le pré-Window (HandleResizeEvents) a raté le
                 // MouseDown (cas limite de repère), restaure cette fenêtre plutôt que

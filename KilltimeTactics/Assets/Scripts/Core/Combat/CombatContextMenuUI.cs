@@ -449,6 +449,7 @@ namespace Killtime.Tactics.CombatUI
                 ActionCategory.CinquiemeForceEtSorts,
                 ActionCategory.TraumatologieEtSoins,
                 ActionCategory.TactiqueEtOrdres,
+                ActionCategory.TechniquesDeSpecialisation,
                 ActionCategory.CommandesDev
             };
 
@@ -698,6 +699,26 @@ namespace Killtime.Tactics.CombatUI
                 {
                     GUI.color = ColorArcaneViolet;
                     GUILayout.Label($"[{_contextTarget.Stats.ActiveStatus}]", bodyStyle);
+                }
+
+                // Marques de techniques de spécialisation (Livre III) : faille
+                // exposée, provocation et bonus de ligne — visibles d'un coup d'œil.
+                if (SkillTechniqueState.IsFlawExposed(_contextTarget.Stats))
+                {
+                    GUI.color = ColorArcaneAmber;
+                    GUILayout.Label("📡 FAILLE EXPOSÉE (encaissement ignoré)", bodyStyle);
+                }
+
+                if (SkillTechniqueState.TryGetTaunter(_contextTarget.Stats, out var taunter) && taunter != null)
+                {
+                    GUI.color = ColorArcaneAmber;
+                    GUILayout.Label($"👁️ PROVOQUÉ par {taunter.Name} (doit l'attaquer)", bodyStyle);
+                }
+
+                if (SkillTechniqueState.HasLineBonus(_contextTarget.Stats))
+                {
+                    GUI.color = ColorArcaneEmerald;
+                    GUILayout.Label("🛡️ LIGNE TENUE (+armure)", bodyStyle);
                 }
             }
 
@@ -1450,6 +1471,7 @@ namespace Killtime.Tactics.CombatUI
                 ActionCategory.CinquiemeForceEtSorts => "5e Force & Sorts",
                 ActionCategory.TraumatologieEtSoins => "Traumatologie & Soins",
                 ActionCategory.TactiqueEtOrdres => "Tactique & Ordres",
+                ActionCategory.TechniquesDeSpecialisation => "Techniques & Spécialisations",
                 ActionCategory.CommandesDev => "Commandes Développeur",
                 _ => "Actions"
             };
@@ -1463,6 +1485,7 @@ namespace Killtime.Tactics.CombatUI
                 ActionCategory.CinquiemeForceEtSorts => ColorArcaneViolet,
                 ActionCategory.TraumatologieEtSoins => ColorArcaneEmerald,
                 ActionCategory.TactiqueEtOrdres => ColorArcaneAmber,
+                ActionCategory.TechniquesDeSpecialisation => ColorArcaneCyan,
                 ActionCategory.CommandesDev => ColorArcaneSlate,
                 _ => ColorArcaneCyan
             };
@@ -1569,6 +1592,13 @@ namespace Killtime.Tactics.CombatUI
                     DrawChevron(tex, 16, 10, 12, Color.white);
                     DrawChevron(tex, 16, 18, 12, Color.white);
                     break;
+                case ActionCategory.TechniquesDeSpecialisation:
+                    DrawLine(tex, 16, 4, 16, 28, Color.white);
+                    DrawLine(tex, 4, 16, 28, 16, Color.white);
+                    DrawLine(tex, 8, 8, 24, 24, Color.white);
+                    DrawLine(tex, 24, 8, 8, 24, Color.white);
+                    DrawDot(tex, 16, 16, 2, Color.white);
+                    break;
                 case ActionCategory.CommandesDev:
                     DrawHollowSquare(tex, 8, 8, 16, Color.white);
                     DrawLine(tex, 8, 8, 24, 24, Color.white);
@@ -1635,6 +1665,42 @@ namespace Killtime.Tactics.CombatUI
             {
                 DrawDiamond(tex, 16, 16, 10, Color.white);
                 DrawLine(tex, 10, 16, 22, 16, Color.white);
+            }
+            else if (lower.Contains("clé"))
+            {
+                DrawLine(tex, 8, 24, 24, 8, Color.white);
+                DrawLine(tex, 8, 18, 24, 18, Color.white);
+                DrawLine(tex, 12, 18, 12, 24, Color.white);
+                DrawLine(tex, 20, 18, 20, 24, Color.white);
+            }
+            else if (lower.Contains("faille") || lower.Contains("analyse"))
+            {
+                DrawCircle(tex, 13, 13, 8, Color.white);
+                DrawLine(tex, 19, 19, 27, 27, Color.white);
+            }
+            else if (lower.Contains("rugissement") || lower.Contains("terreur"))
+            {
+                DrawLine(tex, 8, 8, 8, 24, Color.white);
+                DrawLine(tex, 16, 6, 16, 26, Color.white);
+                DrawLine(tex, 24, 8, 24, 24, Color.white);
+            }
+            else if (lower.Contains("regard") || lower.Contains("prédateur"))
+            {
+                DrawCircle(tex, 16, 16, 10, Color.white);
+                DrawDot(tex, 16, 16, 3, Color.white);
+            }
+            else if (lower.Contains("mener") || lower.Contains("commandement"))
+            {
+                DrawChevron(tex, 16, 10, 10, Color.white);
+                DrawChevron(tex, 16, 17, 10, Color.white);
+                DrawChevron(tex, 16, 24, 10, Color.white);
+            }
+            else if (lower.Contains("tenir") || lower.Contains("ligne"))
+            {
+                DrawHollowSquare(tex, 6, 12, 20, Color.white);
+                DrawLine(tex, 6, 26, 26, 26, Color.white);
+                DrawLine(tex, 11, 12, 11, 6, Color.white);
+                DrawLine(tex, 21, 12, 21, 6, Color.white);
             }
             else if (lower.Contains("fiche"))
             {

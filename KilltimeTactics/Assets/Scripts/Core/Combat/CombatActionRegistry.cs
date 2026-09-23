@@ -20,9 +20,7 @@ namespace Killtime.Tactics.CombatUI
         {
             if (actor == null) return false;
             var weapon = actor.Sheet?.GetEquippedWeapon();
-            if (weapon != null && weapon.RangeInTiles > 1) return true;
-            if (actor.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true) return true;
-            return false;
+            return weapon != null && weapon.RangeInTiles > 1;
         }
 
         public static int GetAttackMaxRange(TacticalUnit actor)
@@ -30,7 +28,6 @@ namespace Killtime.Tactics.CombatUI
             if (actor == null) return 1;
             var weapon = actor.Sheet?.GetEquippedWeapon();
             if (weapon != null && weapon.RangeInTiles > 0) return weapon.RangeInTiles;
-            if (actor.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true) return 8;
             return 1; // Mains nues par défaut = portée de contact 1 case (Codex Livre VI)
         }
 
@@ -95,11 +92,6 @@ namespace Killtime.Tactics.CombatUI
             {
                 // Valeur legacy ArmesContondantes rabattue sur Maniement d'Arme.
                 return SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
-            }
-
-            if (actor.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true)
-            {
-                return SkillType.Ballistique;
             }
 
             // Absence d'inventaire ou d'arme équipée : combat au corps-à-corps à mains nues
@@ -238,15 +230,21 @@ namespace Killtime.Tactics.CombatUI
             // =========================================================================
             if (targetIsAlive)
             {
+                // Chirurgie : Suture Réflexe (Livre III) — gestes médicaux d'urgence
+                // sur le front : les premiers soins passent de 3 PA à 2 PA.
+                int healCost = (actor.Stats != null && actor.Stats.HasSpecialization("Chirurgie : Suture Réflexe")) ? 2 : 3;
+                string healDesc = healCost == 2
+                    ? "Suture Réflexe au contact (Régénère Constitution × 2 PV). Coût réduit à 2 PA par la spécialisation."
+                    : "Stabilisation et suture d'urgence au contact (Régénère Constitution × 2 PV).";
                 actions.Add(new CombatAction(
-                    "🩹 Premiers Soins d'Urgence (3 PA)",
-                    "Stabilisation et suture d'urgence au contact (Régénère Constitution × 2 PV).",
+                    $"🩹 Premiers Soins d'Urgence ({healCost} PA)",
+                    healDesc,
                     ActionCategory.TraumatologieEtSoins,
-                    3,
-                    (act, tgt) => act.Stats.CurrentActionPoints >= 3 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
+                    healCost,
+                    (act, tgt) => act.Stats.CurrentActionPoints >= healCost && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
                     (act, tgt) =>
                     {
-                        if (act.Stats.ConsumeActionPoints(3))
+                        if (act.Stats.ConsumeActionPoints(healCost))
                         {
                             int healAmount = tgt.Stats.Attributes.Constitution * 2;
                             tgt.Stats.CurrentHealth = Mathf.Min(tgt.Stats.MaxHealth, tgt.Stats.CurrentHealth + healAmount);
@@ -448,7 +446,18 @@ namespace Killtime.Tactics.CombatUI
             }
 
             // =========================================================================
-            // 5. COMMANDES DÉVELOPPEUR
+            // 5. TECHNIQUES DE SPÉCIALISATION (LIVRE III)
+            // Clé d'Articulation, Analyse de Faille, Rugissement, Regard de
+            // Prédateur, Commandement de zone, Tenir la Ligne ! — 2 PA chacune.
+            // Construites par le registre partagé joueur + IA.
+            // =========================================================================
+            if (CombatTechniqueRegistry.HasAnyCombatTechnique(actor))
+            {
+                actions.AddRange(CombatTechniqueRegistry.GetTechniqueActions(actor, target, arena));
+            }
+
+            // =========================================================================
+            // 6. COMMANDES DÉVELOPPEUR
             // =========================================================================
             actions.Add(new CombatAction(
                 "📜 [DEV] Fiche de Personnage Complète",

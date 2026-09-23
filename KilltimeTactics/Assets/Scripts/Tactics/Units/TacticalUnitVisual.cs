@@ -14,6 +14,7 @@ namespace Killtime.Tactics.Units
         StandingIdle,
         StandingIdleToFightIdle,
         FightIdle,
+        WeaponFightIdle,
         FightIdleToStandingIdle,
         ActionIdleToFightIdle,
         ActionIdleToStandingIdle,
@@ -78,7 +79,13 @@ namespace Killtime.Tactics.Units
         private GameObject _equippedWeaponInstance;
         private string _lastEquippedItemId;
         private bool _currentWeaponIsRifle;
+        private bool _currentWeaponIsHeavyMelee;
         private Coroutine _putAwayRoutine;
+        /// <summary>
+        /// Garde anti-doublon : vrai une fois les objets tenus lâchés au sol
+        /// lors du passage à l'inconscience (réarmé à la reprise de conscience).
+        /// </summary>
+        private bool _heldItemsDroppedOnKO;
         // Dernière pose locale appliquée à l'arme (pour ne pas écraser la poigne fusil/pistolet
         // avec l'offset d'épée dans le bloc #if UNITY_EDITOR de Update).
 #if UNITY_EDITOR
@@ -160,17 +167,18 @@ namespace Killtime.Tactics.Units
         public static bool IsRifleWeapon(Core.Inventory.InventoryItem item)
         {
             if (item == null || item.Type != Core.Inventory.ItemType.Weapon) return false;
-            // Grenades à main : jamais des fusils (petite sphère en paume, pas épaulé).
-            // Les lance-grenades restent des armes d'épaule 2M (posture fusil).
             if (item.IsGrenade || item.IsThrowableGrenade()) return false;
-            // Les armes de mêlée (même à deux mains : espadons, marteaux, piques)
-            // ne sont jamais des fusils : posture Fight Idle + anim "Melee Attack".
-            // (Armes Contondantes legacy rabattues sur Maniement d'Arme.)
             if (SkillDefinitions.IsMeleeWeaponSkill(item.AssociatedSkill)) return false;
-            if (item.EquipSlot == Core.Inventory.ItemEquipSlot.TwoHands) return true;
+
+            var profile = Killtime.Core.Inventory.WeaponGripService.ResolveProfile(item);
+            if (profile != null && profile.Socket == Killtime.Core.Inventory.WeaponGripSocket.ChestTwoHands)
+                return true;
+
             if (item.AssociatedSkill == SkillType.Ballistique) return true;
+            if (item.EquipSlot == Core.Inventory.ItemEquipSlot.TwoHands) return true;
+
             string n = ((item.Name ?? "") + " " + (item.PrefabPath ?? "")).ToLowerInvariant();
-            return n.Contains("rifle") || n.Contains("gun") || n.Contains("fusil") || n.Contains("shotgun");
+            return n.Contains("rifle") || n.Contains("gun") || n.Contains("fusil") || n.Contains("shotgun") || n.Contains("sniper") || n.Contains("pistolet") || n.Contains("pistol");
         }
 
         /// <summary>
@@ -193,9 +201,90 @@ namespace Killtime.Tactics.Units
             return IsMeleeWeapon(weapon);
         }
 
+        /// <summary>
+        /// Valeurs du paramètre Animator "WeaponType" (Int).
+        /// 0 = poings / lame légère (Fight Idle), 1 = fusil (Rifle Idle),
+        /// 2 = arme contondante lourde matraque / hache / marteau (Weapon Fight Idle).
+        /// </summary>
+        public const int WeaponTypeUnarmedLight = 0;
+        public const int WeaponTypeRifle = 1;
+        public const int WeaponTypeHeavyMelee = 2;
+        public const string WeaponFightIdleStateName = "Weapon Fight Idle";
+        public const string FightIdleStateName = "Fight Idle";
+        public const string RifleIdleStateName = "Rifle Idle";
+
+        /// <summary>
+        /// Arme lourde à garde dédiée (matraque / gourdin, hache, marteau / masse) :
+        /// sous-ensemble de <see cref="IsMeleeWeapon"/> avec PlaceholderKind Club / Axe / Hammer
+        /// (fallback nom : gourdin, matraque, hache, marteau, masse...).
+        /// Les épées / piques / lames restent sur WeaponType 0 (Fight Idle).
+        /// </summary>
+        public static bool IsHeavyMeleeWeapon(Core.Inventory.InventoryItem item)
+        {
+            if (item == null || item.Type != Core.Inventory.ItemType.Weapon) return false;
+            if (item.IsGrenade || item.IsThrowableGrenade() || item.IsLauncher) return false;
+            if (IsRifleWeapon(item)) return false;
+            if (!IsMeleeWeapon(item)) return false;
+
+            string kind = (item.PlaceholderKind ?? "").Trim();
+            if (string.Equals(kind, "Club", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(kind, "Axe", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(kind, "Hammer", StringComparison.OrdinalIgnoreCase))
+                return true;
+
+            string n = ((item.Name ?? "") + " " + (item.PrefabPath ?? "") + " " + kind).ToLowerInvariant();
+            if (n.Contains("gourdin") || n.Contains("matraque") || n.Contains("club")) return true;
+            if (n.Contains("hache") || n.Contains("bardiche") || n.Contains("cogn")) return true;
+            // "axe" seul est trop large en anglais (pickaxe...) : on exige un contexte d'arme.
+            if (n.Contains("battle axe") || n.Contains("war axe") || n.Contains("war-axe") || n.Contains(" hache")) return true;
+            if (n.Contains("marteau") || n.Contains("hammer") || n.Contains("masse") || n.Contains("massue") || n.Contains("mace") || n.Contains("fléau")) return true;
+            return false;
+        }
+
+        public bool HasHeavyMeleeEquipped()
+        {
+            var weapon = _unit != null && _unit.Sheet != null ? _unit.Sheet.GetEquippedWeapon() : null;
+            return IsHeavyMeleeWeapon(weapon);
+        }
+
+        /// <summary>
+        /// Type d'arme pour l'Animator : 1 = fusil (prioritaire), 2 = matraque/hache/marteau, 0 = reste.
+        /// </summary>
+        public static int GetWeaponType(Core.Inventory.InventoryItem item)
+        {
+            if (IsRifleWeapon(item)) return WeaponTypeRifle;
+            if (IsHeavyMeleeWeapon(item)) return WeaponTypeHeavyMelee;
+            return WeaponTypeUnarmedLight;
+        }
+
+        public int GetCurrentWeaponType()
+        {
+            var weapon = _unit != null && _unit.Sheet != null ? _unit.Sheet.GetEquippedWeapon() : null;
+            return GetWeaponType(weapon);
+        }
+
+        /// <summary>
+        /// État idle de combat correspondant à l'arme : Rifle Idle / Weapon Fight Idle / Fight Idle.
+        /// </summary>
+        public static string GetCombatIdleStateName(Core.Inventory.InventoryItem item)
+        {
+            int t = GetWeaponType(item);
+            if (t == WeaponTypeRifle) return RifleIdleStateName;
+            if (t == WeaponTypeHeavyMelee) return WeaponFightIdleStateName;
+            return FightIdleStateName;
+        }
+
+        public string GetCurrentCombatIdleStateName()
+        {
+            var weapon = _unit != null && _unit.Sheet != null ? _unit.Sheet.GetEquippedWeapon() : null;
+            return GetCombatIdleStateName(weapon);
+        }
+
+        private const string ForcedRefreshSentinel = "__FORCE_REFRESH__";
+
         public void RefreshEquippedWeaponVisual()
         {
-            _lastEquippedItemId = null;
+            _lastEquippedItemId = ForcedRefreshSentinel;
             UpdateEquippedWeaponVisual();
         }
 
@@ -212,15 +301,18 @@ namespace Killtime.Tactics.Units
 
             if (equipped == null)
             {
-                if (_currentWeaponIsRifle)
+                if (_putAwayRoutine != null)
                 {
-                    StartPutAwayWeapon();
+                    StopCoroutine(_putAwayRoutine);
+                    _putAwayRoutine = null;
                 }
-                else
-                {
-                    ClearEquippedWeaponInstance();
-                }
+                ClearEquippedWeaponInstance();
                 _currentWeaponIsRifle = false;
+                _currentWeaponIsHeavyMelee = false;
+                if (_animator != null)
+                {
+                    _animator.SetInteger(AnimWeaponType, WeaponTypeUnarmedLight);
+                }
             }
             else
             {
@@ -300,7 +392,7 @@ namespace Killtime.Tactics.Units
 
             _equippedWeaponInstance.transform.localPosition = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalPosition(socket, transform, gripProfile, _unitScale);
             _equippedWeaponInstance.transform.localRotation = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalRotation(instance, socket, transform, gripProfile, item);
-            _equippedWeaponInstance.transform.localScale = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalScale(instance, socket, gripProfile, item, _unitScale);
+            _equippedWeaponInstance.transform.localScale = Killtime.Core.Inventory.WeaponGripService.ComputeWeaponLocalScale(instance, socket, gripProfile, item, _unitScale, transform);
 
 #if UNITY_EDITOR
             _appliedWeaponLocalPos = _equippedWeaponInstance.transform.localPosition;
@@ -322,13 +414,18 @@ namespace Killtime.Tactics.Units
 
             _equippedWeaponInstance.layer = 2;
 
-            _currentWeaponIsRifle = isRifle;
+            _currentWeaponIsRifle = (gripProfile.Socket == Killtime.Core.Inventory.WeaponGripSocket.ChestTwoHands) || isRifle;
+            _currentWeaponIsHeavyMelee = !_currentWeaponIsRifle && IsHeavyMeleeWeapon(item);
             if (_animator != null)
             {
-                _animator.SetInteger(AnimWeaponType, _currentWeaponIsRifle ? 1 : 0);
+                _animator.SetInteger(AnimWeaponType, GetWeaponType(item));
                 if (_currentWeaponIsRifle && _isInCombat)
                 {
-                    _animator.CrossFadeInFixedTime("Rifle Idle", 0.1f);
+                    _animator.CrossFadeInFixedTime(RifleIdleStateName, 0.1f);
+                }
+                else if (_currentWeaponIsHeavyMelee && _isInCombat)
+                {
+                    _animator.CrossFadeInFixedTime(WeaponFightIdleStateName, 0.1f);
                 }
             }
         }
@@ -681,6 +778,152 @@ namespace Killtime.Tactics.Units
             for (int i = 0; i < anims.Length; i++) anims[i].enabled = false;
         }
 
+        /// <summary>
+        /// Règle Livre VII : à l'inconscience / mort, la main s'ouvre et l'arme
+        /// (ou tout objet tenu) se décroche et tombe au sol en <b>physique réelle</b>
+        /// (Rigidbody : gravité, rebond, friction — voir <see cref="DroppedWeaponPickup"/>).
+        /// L'item est retiré de l'inventaire du porteur : l'objet au sol devient
+        /// l'exemplaire unique, ramassable par une unité consciente à portée.
+        /// Idempotent par K.O. (garde <see cref="_heldItemsDroppedOnKO"/>).
+        /// Retourne true si au moins une arme a été lâchée.
+        /// </summary>
+        public bool DropHeldItemsWithPhysics()
+        {
+            if (_heldItemsDroppedOnKO) return false;
+            if (_unit == null) return false;
+            var sheet = _unit.GetOrBuildSheet();
+            if (sheet == null) return false;
+
+            // Retire les armes équipées de l'inventaire (exemplaire unique -> sol).
+            var droppedItems = sheet.ExtractEquippedItemsForGroundDrop();
+            GameObject visualInstance = _equippedWeaponInstance;
+
+            if ((droppedItems == null || droppedItems.Count == 0) && visualInstance == null)
+                return false;
+
+            // Cas désync (visuel sans fiche) : on lâche quand même le visuel
+            // avec un item reconstitué minimal pour ne pas le faire disparaître.
+            if ((droppedItems == null || droppedItems.Count == 0) && visualInstance != null)
+            {
+                // Rien en fiche : on détruit proprement le visuel orphelin sans spawn.
+                // (Évite de dupliquer une arme déjà lootée / vendue.)
+                _equippedWeaponInstance = null;
+                _lastEquippedItemId = null;
+                _currentWeaponIsRifle = false;
+                _currentWeaponIsHeavyMelee = false;
+                if (_animator != null) _animator.SetInteger(AnimWeaponType, 0);
+                Destroy(visualInstance);
+                _heldItemsDroppedOnKO = true;
+                return false;
+            }
+
+            // Détache le visuel AVANT tout refresh pour ne pas le détruire.
+            _equippedWeaponInstance = null;
+            _lastEquippedItemId = null;
+            _currentWeaponIsRifle = false;
+            _currentWeaponIsHeavyMelee = false;
+            if (_putAwayRoutine != null)
+            {
+                try { StopCoroutine(_putAwayRoutine); } catch { }
+                _putAwayRoutine = null;
+            }
+            if (_animator != null) _animator.SetInteger(AnimWeaponType, 0);
+#if UNITY_EDITOR
+            _hasAppliedWeaponPose = false;
+#endif
+
+            bool anyDropped = false;
+            for (int i = 0; i < droppedItems.Count; i++)
+            {
+                var item = droppedItems[i];
+                if (item == null) continue;
+
+                GameObject groundGO = null;
+                if (i == 0 && visualInstance != null)
+                {
+                    groundGO = visualInstance; // réutilise le prefab / placeholder en main.
+                }
+                else
+                {
+                    // Arme secondaire / sans visuel : construit un placeholder au sol.
+                    try
+                    {
+                        groundGO = Killtime.Core.Inventory.ArmoryPlaceholderFactory.ResolveOrBuild(item, null);
+                    }
+                    catch { groundGO = null; }
+                    if (groundGO == null)
+                    {
+                        groundGO = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                        groundGO.transform.localScale = new Vector3(0.08f, 0.08f, 0.7f);
+                    }
+                    // Pose initiale : à la main droite, hauteur poitrine.
+                    Vector3 handPos = transform.position + Vector3.up * 1.25f * _unitScale + transform.forward * 0.25f;
+                    groundGO.transform.position = handPos;
+                    groundGO.transform.rotation = transform.rotation;
+                }
+
+                if (groundGO == null) continue;
+
+                // Détachement monde-réel : conserve pose/monde, quitte la main.
+                try { groundGO.transform.SetParent(null, true); }
+                catch { groundGO.transform.parent = null; }
+                groundGO.name = "Dropped_" + item.Name;
+
+                // Impulsion d'ouverture de main : la main K.O. ne lance pas,
+                // elle relâche — petit poussé avant + latéral aléatoire + rotation.
+                Vector3 fwd = transform.forward;
+                if (fwd.sqrMagnitude < 1e-6f) fwd = Vector3.forward;
+                fwd.Normalize();
+                Vector3 side = Vector3.Cross(Vector3.up, fwd).normalized;
+                if (side.sqrMagnitude < 1e-6f) side = Vector3.right;
+                float massRef = Mathf.Clamp(item.WeightKg > 0.01f ? item.WeightKg : 1.2f, 0.3f, 10f);
+                Vector3 vel = fwd * UnityEngine.Random.Range(0.4f, 0.9f)
+                    + Vector3.up * UnityEngine.Random.Range(0.1f, 0.45f)
+                    + side * UnityEngine.Random.Range(-0.5f, 0.5f);
+                // Les armes lourdes partent moins vite (inertie) : vitesse ~ impulsion / masse.
+                vel *= Mathf.Clamp(1.4f / massRef, 0.5f, 1.2f);
+                Vector3 angVel = new Vector3(
+                    UnityEngine.Random.Range(-5f, 5f),
+                    UnityEngine.Random.Range(-4f, 4f),
+                    UnityEngine.Random.Range(-6f, 6f));
+
+                var pickup = groundGO.GetComponent<DroppedWeaponPickup>();
+                if (pickup == null) pickup = groundGO.AddComponent<DroppedWeaponPickup>();
+                string ownerName = (_unit.Stats != null && !string.IsNullOrEmpty(_unit.Stats.Name))
+                    ? _unit.Stats.Name
+                    : _unit.name;
+                pickup.PickupRadius = 1.2f;
+                pickup.Initialize(item, ownerName, vel, angVel);
+                anyDropped = true;
+            }
+
+            if (anyDropped)
+            {
+                _heldItemsDroppedOnKO = true;
+                try
+                {
+                    var audio = Killtime.Audio.KilltimeAudioManager.Instance;
+                    if (audio != null)
+                        audio.PlayAt(Killtime.Audio.SoundId.Grenade_Bounce, transform.position + Vector3.up * 0.8f, 0.7f);
+                }
+                catch { }
+                try { SpawnFloatingText("⚔ Arme lâchée", new Color(1f, 0.75f, 0.3f)); } catch { }
+                // Sauvegarde l'inventaire sans arme (le visuel est déjà détaché, pas de re-attach).
+                try
+                {
+                    if (sheet != null)
+                        Killtime.Core.Character.CharacterStorageService.SaveCharacter(sheet);
+                }
+                catch { }
+            }
+            else
+            {
+                _heldItemsDroppedOnKO = true;
+            }
+
+            return anyDropped;
+        }
+
         private Transform GetRightHandSocket()
         {
             if (_animator != null && _animator.isHuman)
@@ -771,10 +1014,9 @@ namespace Killtime.Tactics.Units
 
             if (_animator != null && _isInCombat)
             {
-                bool hasRifle = HasRifleEquipped();
                 _animator.SetBool(AnimIsInCombat, true);
-                _animator.SetInteger(AnimWeaponType, hasRifle ? 1 : 0);
-                _animator.Play(hasRifle ? "Rifle Idle" : "Fight Idle", 0, 0f);
+                _animator.SetInteger(AnimWeaponType, GetCurrentWeaponType());
+                _animator.Play(GetCurrentCombatIdleStateName(), 0, 0f);
             }
         }
 
@@ -828,7 +1070,8 @@ namespace Killtime.Tactics.Units
             _animator.SetBool(AnimIsInCombat, _isInCombat && alive);
 
             bool hasRifle = HasRifleEquipped();
-            _animator.SetInteger(AnimWeaponType, hasRifle ? 1 : 0);
+            bool hasHeavy = !hasRifle && HasHeavyMeleeEquipped();
+            _animator.SetInteger(AnimWeaponType, GetCurrentWeaponType());
 
             if (_hasWalkingClip && _hasWalkMultiplierParam && _unit != null)
             {
@@ -846,7 +1089,11 @@ namespace Killtime.Tactics.Units
                 }
                 else
                 {
-                    string idleState = hasRifle ? "Rifle Idle" : ((_isInCombat && alive) ? "Fight Idle" : "Standing Idle");
+                    string idleState;
+                    if (hasRifle) idleState = RifleIdleStateName;
+                    else if (hasHeavy && _isInCombat && alive) idleState = WeaponFightIdleStateName;
+                    else if (_isInCombat && alive) idleState = FightIdleStateName;
+                    else idleState = "Standing Idle";
                     _animator.CrossFadeInFixedTime(idleState, 0.15f);
                 }
             }
@@ -858,12 +1105,11 @@ namespace Killtime.Tactics.Units
             if (_animator != null)
             {
                 _animator.SetBool(AnimIsInCombat, inCombat);
-                bool hasRifle = HasRifleEquipped();
-                _animator.SetInteger(AnimWeaponType, hasRifle ? 1 : 0);
+                _animator.SetInteger(AnimWeaponType, GetCurrentWeaponType());
 
                 if (inCombat)
                 {
-                    _animator.CrossFadeInFixedTime(hasRifle ? "Rifle Idle" : "Fight Idle", 0.1f);
+                    _animator.CrossFadeInFixedTime(GetCurrentCombatIdleStateName(), 0.1f);
                 }
                 else
                 {
@@ -933,7 +1179,7 @@ namespace Killtime.Tactics.Units
             if (_animator != null)
             {
                 _animator.SetBool(AnimIsInCombat, true);
-                _animator.SetInteger(AnimWeaponType, 1);
+                _animator.SetInteger(AnimWeaponType, WeaponTypeRifle);
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerFiringRifle);
                 _animator.ResetTrigger(AnimTriggerMeleeAttack);
@@ -950,7 +1196,7 @@ namespace Killtime.Tactics.Units
         /// <summary>
         /// Coup d'arme de mêlée (épée, hache, marteau, pique...) : état "Melee Attack"
         /// du PlayerAnimator (clip "Standing Melee Attack", one-shot non loopé).
-        /// Les armes de mêlée gardent WeaponType 0 (posture Fight Idle).
+        /// Lames légères => WeaponType 0 (Fight Idle), matraque/hache/marteau => 2 (Weapon Fight Idle).
         /// </summary>
         public void TriggerMeleeAttack()
         {
@@ -960,7 +1206,7 @@ namespace Killtime.Tactics.Units
             if (_animator != null)
             {
                 _animator.SetBool(AnimIsInCombat, true);
-                _animator.SetInteger(AnimWeaponType, 0);
+                _animator.SetInteger(AnimWeaponType, GetCurrentWeaponType());
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerRoundkick);
                 _animator.ResetTrigger(AnimTriggerFiringRifle);
@@ -1009,7 +1255,7 @@ namespace Killtime.Tactics.Units
             if (_animator != null)
             {
                 _animator.SetBool(AnimIsInCombat, true);
-                _animator.SetInteger(AnimWeaponType, 0);
+                _animator.SetInteger(AnimWeaponType, GetCurrentWeaponType());
                 _animator.ResetTrigger(AnimTriggerAction);
                 _animator.ResetTrigger(AnimTriggerRoundkick);
                 _animator.ResetTrigger(AnimTriggerMeleeAttack);
@@ -1056,6 +1302,8 @@ namespace Killtime.Tactics.Units
         public void TriggerFallingBackDeath()
         {
             _isUnconscious = true;
+            // La main s'ouvre immédiatement : l'arme tombe en physique réelle.
+            try { DropHeldItemsWithPhysics(); } catch { }
             if (_animator != null)
             {
                 _animator.SetBool(AnimIsKO, true);
@@ -1074,6 +1322,7 @@ namespace Killtime.Tactics.Units
                 UnitAnimState.StandingIdle => "Standing Idle",
                 UnitAnimState.StandingIdleToFightIdle => "Standing Idle To Fight Idle",
                 UnitAnimState.FightIdle => "Fight Idle",
+                UnitAnimState.WeaponFightIdle => "Weapon Fight Idle",
                 UnitAnimState.FightIdleToStandingIdle => "Fight Idle To Standing Idle",
                 UnitAnimState.ActionIdleToFightIdle => "Action Idle To Fight Idle",
                 UnitAnimState.ActionIdleToStandingIdle => "Action Idle To Standing Idle",
@@ -1130,26 +1379,75 @@ namespace Killtime.Tactics.Units
         private void ConfigureAnimatorClips(RuntimeAnimatorController baseController)
         {
             _animatorOverride = new AnimatorOverrideController(baseController);
+            string genderKey = ResolveAnimationGenderKey();
 
-            BindClipToOverride("Standing Idle");
-            BindClipToOverride("Standing Idle To Fight Idle");
-            BindClipToOverride("Fight Idle");
-            BindClipToOverride("Fight Idle To Standing Idle");
-            BindClipToOverride("Walking");
-            BindClipToOverride("Roundkick");
+            BindClipToOverride("Standing Idle", genderKey);
+            BindClipToOverride("Standing Idle To Fight Idle", genderKey);
+            BindClipToOverride("Fight Idle", genderKey);
+            BindClipToOverride(WeaponFightIdleStateName, genderKey);
+            BindClipToOverride("Fight Idle To Standing Idle", genderKey);
+            BindClipToOverride("Walking", genderKey);
+            BindClipToOverride("Roundkick", genderKey);
             // Attaque à l'arme de mêlée : l'état Animator s'appelle "Melee Attack"
             // mais le clip importé (Mixamo) s'appelle "Standing Melee Attack".
-            BindClipToOverride("Melee Attack");
-            BindClipToOverride("Standing Melee Attack");
-            BindClipToOverride("Body Block");
-            BindClipToOverride("Falling Back Death");
-            BindClipToOverride("Rifle Idle");
-            BindClipToOverride("Rifle Walk To Stop");
-            BindClipToOverride("Firing Rifle");
-            BindClipToOverride("Rifle Put Away");
+            BindClipToOverride("Melee Attack", genderKey);
+            BindClipToOverride("Standing Melee Attack", genderKey);
+            BindClipToOverride("Body Block", genderKey);
+            BindClipToOverride("Falling Back Death", genderKey);
+            BindClipToOverride("Rifle Idle", genderKey);
+            BindClipToOverride("Rifle Walk To Stop", genderKey);
+            // Alias legacy : l'état s'appelait "Walk With Rifle" dans le .controller,
+            // le FBX normalisé s'appelle "Rifle Walk To Stop".
+            BindClipToOverride("Walk With Rifle", genderKey);
+            BindClipToOverride("Firing Rifle", genderKey);
+            BindClipToOverride("Rifle Put Away", genderKey);
 
             _animator.runtimeAnimatorController = _animatorOverride;
             CheckWalkingAnimationCapabilities();
+        }
+
+        /// <summary>
+        /// Re-applique la variante d'animations (Male/Female) sans toucher à l'arbre.
+        /// Même PlayerAnimator.controller pour les deux sexes, seuls les clips changent
+        /// via l'AnimatorOverrideController runtime. Base historique = Female.
+        /// </summary>
+        public void ReapplyAnimationVariant()
+        {
+            if (_animator == null || _animatorOverride == null) return;
+            var baseController = _animatorOverride.runtimeAnimatorController;
+            if (baseController == null) return;
+            ConfigureAnimatorClips(baseController);
+        }
+
+        /// <summary>
+        /// Détermine la variante à charger : "Male" ou "Female".
+        /// Priorité : Sheet.Gender, puis nom du prefab (Mina/wife = Female, Soldier/hitman/boss = Male).
+        /// Défaut = Female pour préserver le comportement actuel (clips existants).
+        /// </summary>
+        private string ResolveAnimationGenderKey()
+        {
+            string gender = _unit != null && _unit.Sheet != null ? _unit.Sheet.Gender : null;
+            if (!string.IsNullOrEmpty(gender))
+            {
+                string g = gender.Trim().ToLowerInvariant();
+                if (g.StartsWith("m") || g.Contains("masc") || g.Contains("male") || g.Contains("homme") || g.Contains("homem"))
+                    return "Male";
+                if (g.StartsWith("f") || g.Contains("fem") || g.Contains("fém") || g.Contains("woman") || g.Contains("girl"))
+                    return "Female";
+                // "Indéterminé" et autres -> fallback sur le modèle ci-dessous.
+            }
+
+            string modelName = _unit != null && _unit.Sheet != null ? _unit.Sheet.ModelPrefabName : null;
+            if (!string.IsNullOrEmpty(modelName))
+            {
+                string m = modelName.ToLowerInvariant();
+                if (m.Contains("mina") || m.Contains("wife") || m.Contains("female") || m.Contains("femelle") || m.Contains("woman") || m.Contains("girl"))
+                    return "Female";
+                if (m.Contains("soldier") || m.Contains("hitman") || m.Contains("boss") || m.Contains("male") || m.Contains("homme"))
+                    return "Male";
+            }
+
+            return "Female";
         }
 
         private void CheckWalkingAnimationCapabilities()
@@ -1177,7 +1475,7 @@ namespace Killtime.Tactics.Units
 
             if (walkingClip == null)
             {
-                walkingClip = LoadAnimationClip("Walking");
+                walkingClip = LoadAnimationClip("Walking", ResolveAnimationGenderKey());
             }
 
             if (walkingClip != null)
@@ -1191,9 +1489,9 @@ namespace Killtime.Tactics.Units
             }
         }
 
-        private void BindClipToOverride(string clipName)
+        private void BindClipToOverride(string clipName, string genderKey = "Female")
         {
-            AnimationClip clip = LoadAnimationClip(clipName);
+            AnimationClip clip = LoadAnimationClip(clipName, genderKey);
             if (clip != null && _animatorOverride != null)
             {
                 _animatorOverride[clipName] = clip;
@@ -1202,29 +1500,39 @@ namespace Killtime.Tactics.Units
 
         private static AnimationClip LoadAnimationClip(string clipName)
         {
-            if (_clipCache.TryGetValue(clipName, out var cached) && cached != null)
+            return LoadAnimationClip(clipName, "Female");
+        }
+
+        private static AnimationClip LoadAnimationClip(string clipName, string genderKey)
+        {
+            string cacheKey = string.IsNullOrEmpty(genderKey) ? clipName : $"{genderKey}/{clipName}";
+            if (_clipCache.TryGetValue(cacheKey, out var cached) && cached != null)
             {
                 return cached;
             }
+            // Variante genrée en priorité, fallback sur l'existant (Female historique).
+            // Ordre : Animations/{Gender}/{clip} -> Animations/Female/{clip} -> Animations/{clip} -> racine.
+            var candidatePaths = new List<string>();
+            if (!string.IsNullOrEmpty(genderKey))
+                candidatePaths.Add($"Animations/{genderKey}/{clipName}");
+            if (!string.Equals(genderKey, "Female", StringComparison.OrdinalIgnoreCase))
+                candidatePaths.Add($"Animations/Female/{clipName}");
+            candidatePaths.Add($"Animations/{clipName}");
+            candidatePaths.Add(clipName);
+
+            // Cas spécial : "Melee Attack" (état) <-> "Standing Melee Attack" (clip Mixamo).
+            var candidateNames = new List<string> { clipName };
+            if (clipName == "Melee Attack")
+                candidateNames.Add("Standing Melee Attack");
+            if (clipName == "Walk With Rifle")
+                candidateNames.Add("Rifle Walk To Stop");
+            if (clipName == "Rifle Walk To Stop")
+                candidateNames.Add("Walk With Rifle");
 
             AnimationClip clip = null;
-
-            var subClips = Resources.LoadAll<AnimationClip>($"Animations/{clipName}");
-            if (subClips != null && subClips.Length > 0)
+            foreach (var path in candidatePaths)
             {
-                for (int i = 0; i < subClips.Length; i++)
-                {
-                    if (subClips[i] != null && !subClips[i].name.StartsWith("__preview__"))
-                    {
-                        clip = subClips[i];
-                        break;
-                    }
-                }
-            }
-
-            if (clip == null)
-            {
-                subClips = Resources.LoadAll<AnimationClip>(clipName);
+                var subClips = Resources.LoadAll<AnimationClip>(path);
                 if (subClips != null && subClips.Length > 0)
                 {
                     for (int i = 0; i < subClips.Length; i++)
@@ -1236,17 +1544,37 @@ namespace Killtime.Tactics.Units
                         }
                     }
                 }
-            }
+                if (clip != null) break;
 
-            if (clip == null)
-            {
-                clip = Resources.Load<AnimationClip>($"Animations/{clipName}")
-                    ?? Resources.Load<AnimationClip>(clipName);
+                string dir = path.Contains("/") ? path.Substring(0, path.LastIndexOf('/')) : "";
+                foreach (var altName in candidateNames)
+                {
+                    if (string.Equals(altName, clipName, StringComparison.OrdinalIgnoreCase)) continue;
+                    string altPath = string.IsNullOrEmpty(dir) ? altName : $"{dir}/{altName}";
+                    var altClips = Resources.LoadAll<AnimationClip>(altPath);
+                    if (altClips != null)
+                    {
+                        for (int i = 0; i < altClips.Length; i++)
+                        {
+                            if (altClips[i] != null && !altClips[i].name.StartsWith("__preview__")
+                                && string.Equals(altClips[i].name, altName, StringComparison.OrdinalIgnoreCase))
+                            {
+                                clip = altClips[i];
+                                break;
+                            }
+                        }
+                    }
+                    if (clip != null) break;
+                }
+                if (clip != null) break;
+
+                clip = Resources.Load<AnimationClip>(path);
+                if (clip != null) break;
             }
 
             if (clip != null)
             {
-                _clipCache[clipName] = clip;
+                _clipCache[cacheKey] = clip;
             }
 
             return clip;
@@ -1492,10 +1820,18 @@ namespace Killtime.Tactics.Units
 
         private void UpdateKOAnimation()
         {
-            bool isDown = _unit.Stats != null && (!_unit.Stats.IsAlive || _unit.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient));
+            if (_unit == null || _unit.Stats == null) return;
+            bool isDown = !_unit.Stats.IsAlive || _unit.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient);
 
             if (isDown)
             {
+                // Filet de sécurité : tout passage à l'inconscience / mort lâche
+                // l'arme tenue (même si TriggerFallingBackDeath n'a pas été appelé,
+                // ex. flag posé direct via Stats / CombatDevArena / VTT).
+                if (!_heldItemsDroppedOnKO)
+                {
+                    try { DropHeldItemsWithPhysics(); } catch { }
+                }
                 if (!_isUnconscious)
                 {
                     _isUnconscious = true;
@@ -1522,10 +1858,13 @@ namespace Killtime.Tactics.Units
                 if (_isUnconscious)
                 {
                     _isUnconscious = false;
+                    // Réarmé : un prochain K.O. lâchera la (nouvelle) arme tenue.
+                    _heldItemsDroppedOnKO = false;
                     if (_animator != null)
                     {
                         _animator.SetBool(AnimIsKO, false);
-                        _animator.CrossFadeInFixedTime(_isInCombat ? "Fight Idle" : "Standing Idle", 0.25f);
+                        _animator.SetInteger(AnimWeaponType, GetCurrentWeaponType());
+                        _animator.CrossFadeInFixedTime(_isInCombat ? GetCurrentCombatIdleStateName() : "Standing Idle", 0.25f);
                     }
                 }
 

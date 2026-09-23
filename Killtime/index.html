@@ -1222,6 +1222,43 @@
                     </div>
                 </div>
 
+                <!-- Cleya Category -->
+                <div class="images-category" id="images-cleya-category">
+                    <h3 class="images-category-name" onclick="toggleCategory('cleya')">Cleya</h3>
+                    <a href="./Killtime/img/Cleya%20Concept%20Art.png" target="_blank">
+                        <img class="images-category-img" src="./Killtime/img/thumbs/Cleya%20Concept%20Art.png"
+                            onerror="this.onerror=null;this.src='./Killtime/img/Cleya%20Concept%20Art.png';"
+                            loading="lazy" alt="Cleya Concept Art">
+                    </a>
+                    <div class="images-category-content" id="images-cleya" style="display:none;">
+                        <a href="./Killtime/img/Cleya2.png" target="_blank">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Cleya2.png"
+                                onerror="this.onerror=null;this.src='./Killtime/img/Cleya2.png';" loading="lazy"
+                                alt="Cleya 2">
+                        </a>
+                        <a href="./Killtime/img/Cleya3.png" target="_blank">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Cleya3.png"
+                                onerror="this.onerror=null;this.src='./Killtime/img/Cleya3.png';" loading="lazy"
+                                alt="Cleya 3">
+                        </a>
+                        <a href="./Killtime/img/Cleya4.png" target="_blank">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Cleya4.png"
+                                onerror="this.onerror=null;this.src='./Killtime/img/Cleya4.png';" loading="lazy"
+                                alt="Cleya 4">
+                        </a>
+                        <a href="./Killtime/img/Cleya5.png" target="_blank">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Cleya5.png"
+                                onerror="this.onerror=null;this.src='./Killtime/img/Cleya5.png';" loading="lazy"
+                                alt="Cleya 5">
+                        </a>
+                        <a href="./Killtime/img/Cleya6.png" target="_blank">
+                            <img class="images-category-img" src="./Killtime/img/thumbs/Cleya6.png"
+                                onerror="this.onerror=null;this.src='./Killtime/img/Cleya6.png';" loading="lazy"
+                                alt="Cleya 6">
+                        </a>
+                    </div>
+                </div>
+
             </section>
         </details>
 
@@ -2590,12 +2627,13 @@
                 "images-johnship-category": lang.categories.johnShip,
                 "images-thomas-category": lang.categories.thomas,
                 "images-haliriel-category": lang.categories.haliriel,
-                "images-hybris-category": lang.categories.hybris
+                "images-hybris-category": lang.categories.hybris,
+                "images-cleya-category": (lang.categories && lang.categories.cleya) ? lang.categories.cleya : "Cleya"
             };
 
             for (const [id, textVal] of Object.entries(catMap)) {
                 const el = document.getElementById(id);
-                if (el) {
+                if (el && textVal) {
                     const h3 = el.querySelector(".images-category-name");
                     if (h3) h3.textContent = textVal;
                 }

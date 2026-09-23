@@ -581,6 +581,9 @@ namespace Killtime.Tactics
 
         private void SetupArenaUnits()
         {
+            // 0. Combat (ré)initialisé : aucun gourdin / objet du combat précédent ne survit.
+            DroppedWeaponPickup.ClearAllDropped();
+            CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
             // 1. Purger et neutraliser immédiatement les instances actives (anti-fantômes même frame)
             if (PlayerUnit != null)
             {
@@ -803,6 +806,9 @@ namespace Killtime.Tactics
         {
             if (_currentLoadedMap == null) return;
 
+            // Carte ré-initialisée : purge les objets au sol avant re-spawn.
+            DroppedWeaponPickup.ClearAllDropped();
+            CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
             var mapEditor = MapEditorDevWindow.Instance ?? FindAnyObjectByType<MapEditorDevWindow>();
             if (mapEditor != null)
             {
@@ -832,6 +838,8 @@ namespace Killtime.Tactics
             _cinematicDirector?.ResetCinematicState();
 
             CombatUI.CombatContextMenuUI.Instance?.CloseMenu();
+            CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
+            DroppedWeaponPickup.ClearAllDropped();
             CombatUI.TacticalSelectionManager.Instance?.ClearSelection();
 
             var allUnits = FindObjectsByType<TacticalUnit>();
@@ -885,6 +893,28 @@ namespace Killtime.Tactics
             {
                 var unitData = mapUnits[i];
                 if (unitData == null || unitData.Sheet == null) continue;
+
+                CharacterSheet effectiveSheet = unitData.Sheet;
+                string sheetId = unitData.Sheet.SheetId;
+                if (!string.IsNullOrEmpty(sheetId))
+                {
+                    string idPrefix = sheetId.Length >= 8 ? sheetId[..8] : sheetId;
+                    var diskFiles = CharacterStorageService.GetSavedCharacterFiles();
+                    for (int f = 0; f < diskFiles.Count; f++)
+                    {
+                        if (diskFiles[f].IndexOf(idPrefix, StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            var diskSheet = CharacterStorageService.LoadCharacter(diskFiles[f]);
+                            if (diskSheet != null)
+                            {
+                                effectiveSheet = diskSheet;
+                            }
+                            break;
+                        }
+                    }
+                }
+
+                unitData.Sheet = effectiveSheet;
 
                 var requested = new HexCoordinates(unitData.Q, unitData.R);
                 var requestedNode = _grid != null ? _grid.GetNode(requested) : null;
@@ -2979,6 +3009,10 @@ namespace Killtime.Tactics
         public void ResetArena()
         {
             CombatHUD.ResetTelemetry();
+
+            // 0. Nettoyer les armes/objets au sol (gourdins, lames...) du combat précédent.
+            DroppedWeaponPickup.ClearAllDropped();
+            CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
 
             // 1. Interrompre toutes les coroutines actives et rétablir le temps réel
             StopAllCoroutines();

@@ -220,6 +220,22 @@ namespace Killtime.Core.Character
         /// </summary>
         public static CharacterSheet BuildHeroicSheet()
         {
+            var savedFiles = CharacterStorageService.GetSavedCharacterFiles();
+            for (int i = 0; i < savedFiles.Count; i++)
+            {
+                string filePath = savedFiles[i];
+                string fileName = System.IO.Path.GetFileNameWithoutExtension(filePath);
+                if (fileName.IndexOf(SheetIdPrefix, StringComparison.OrdinalIgnoreCase) >= 0
+                    || fileName.StartsWith("Mina_", StringComparison.OrdinalIgnoreCase))
+                {
+                    var loaded = CharacterStorageService.LoadCharacter(filePath);
+                    if (loaded != null)
+                    {
+                        return loaded;
+                    }
+                }
+            }
+
             var sheet = new CharacterSheet
             {
                 SheetId = "a7679993424d48908f3c4cb84e03eff7",
@@ -242,19 +258,16 @@ namespace Killtime.Core.Character
                 CreditsCE = 8000
             };
 
-            // Entraînements (fiche disque la plus récente).
             sheet.GetSkill(SkillType.MainsNues).TrainingLevel = 3;
             sheet.GetSkill(SkillType.Athletisme).TrainingLevel = 1;
             sheet.GetSkill(SkillType.Acrobatie).TrainingLevel = 1;
 
-            // Maîtrises débloquées (fiches disque).
             sheet.UnlockedSpecializations.Add("Arts Martiaux");
             sheet.UnlockedSpecializations.Add("Protocole des Pas Invisibles");
             sheet.UnlockedSpecializations.Add("Réflexes Myotatiques");
             sheet.UnlockedSpecializations.Add("Fibres Résilientes");
             sheet.UnlockedSpecializations.Add("Régénération Métabolique");
 
-            // Arme équipée (fiche disque, champs essentiels).
             sheet.Inventory.Add(new InventoryItem
             {
                 Name = "SciFiGunLight_Rad",

@@ -532,8 +532,16 @@
                             <!-- ATTRIBUTS PHYSIQUES & MENTAUX -->
                             <h4
                                 style="margin: 20px 0 10px; font-family: var(--font-mono); font-size: 0.85rem; color: var(--arcane-cyan); text-transform: uppercase;">
-                                1. Les 8 Attributs Majeurs (Base brute avant modificateurs raciaux)
+                                1. Les 8 Attributs Majeurs (Création Initiale &amp; Évolution N ➔ N+1 = N+1 XP)
                             </h4>
+                            <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 10px;">
+                                <strong>Création Initiale :</strong> Répartition de départ régie par le profil
+                                sélectionné (Héros PJ, Soldat, Sbire).<br>
+                                <strong>Évolution en Jeu (Achat XP) :</strong> Chaque palier d'attribut s'achète
+                                individuellement au tarif de <code>(N+1) XP</code> (passer de 4 à 5 = 5 XP, 5 à 6 = 6
+                                XP, 9 à 10 = 10 XP, plafond 10). L'achat met à jour en temps réel les PA, l'encaissement
+                                et le budget d'entraînements gratuits d'Érudition (+1 ÉRU = +1 gratuit).
+                            </p>
 
                             <div class="tool-grid-4">
                                 <!-- FOR -->
@@ -686,14 +694,16 @@
                                     <span class="pill-badge cyan" id="trainedSkillsChecked">0 / 3</span>
                                 </div>
                                 <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 12px;">
-                                    Selon la règle officielle (Livre I, Étape 5), vous bénéficiez d'<strong>entraînements
-                                        gratuits = votre Érudition</strong> (<span
-                                        id="vitalTrainedCount">3</span>) : 1 gratuit = +1 palier, plafond +3 par
+                                    Selon la règle officielle (Livre I, Étape 5), vous bénéficiez
+                                    d'<strong>entraînements
+                                        gratuits = votre Érudition</strong> (<span id="vitalTrainedCount">3</span>) : 1
+                                    gratuit = +1 palier, plafond +3 par
                                     compétence. <strong>+1 ÉRU = +1 gratuit</strong>.
                                     <br><strong>Progression organique (Livre I §5) :</strong> en jeu, chaque
                                     <strong>réussite</strong> coche 1 case dans la compétence utilisée (piste = base :
                                     3 → 3 cases, 5 → 5 cases). Piste pleine = <strong>+1 XP lié</strong>. Entraînement
-                                    5 XP liés/libre (10 si croisé). <strong>XP total = dépensés (gratuits exclus).</strong>
+                                    5 XP liés/libre (10 si croisé). <strong>XP total = dépensés (gratuits
+                                        exclus).</strong>
                                 </p>
                                 <div class="tool-grid-4" style="font-size: 0.82rem;">
                                     <label><input type="checkbox" class="skill-check" id="skMelee"
@@ -982,8 +992,15 @@
                             l'injection de <strong>PA de précision</strong> (+1 par PA), calcule le <strong>différentiel
                                 net (&Delta;)</strong> et consulte automatiquement la <strong>table des critiques (d2 à
                                 d24)</strong> en cas de face maximale !<br>
-                            <strong>Règle officielle :</strong> <strong>aucun modificateur de caractéristique n'est ajouté</strong> — le champ « situationnel » ci-dessous sert uniquement aux malus de visée / états, jamais à un mod carac.<br>
-                            <strong>En combat (duel) :</strong> l'injection des PA suit la séquence officielle du <strong>Livre VI §24.1</strong> — l'attaquant lance son dé puis <strong>peut ajouter des PA après avoir vu son résultat</strong>, la cible lance ensuite son dé puis <strong>peut ajouter des PA après avoir vu son résultat</strong>, et l'attaque se conclut normalement. Ce simulateur mono-jet illustre un seul côté du duel : enchaînez deux lancers (attaque puis défense) pour rejouer le duel complet.
+                            <strong>Règle officielle :</strong> <strong>aucun modificateur de caractéristique n'est
+                                ajouté</strong> — le champ « situationnel » ci-dessous sert uniquement aux malus de
+                            visée / états, jamais à un mod carac.<br>
+                            <strong>En combat (duel) :</strong> l'injection des PA suit la séquence officielle du
+                            <strong>Livre VI §24.1</strong> — l'attaquant lance son dé puis <strong>peut ajouter des PA
+                                après avoir vu son résultat</strong>, la cible lance ensuite son dé puis <strong>peut
+                                ajouter des PA après avoir vu son résultat</strong>, et l'attaque se conclut
+                            normalement. Ce simulateur mono-jet illustre un seul côté du duel : enchaînez deux lancers
+                            (attaque puis défense) pour rejouer le duel complet.
                         </p>
 
                         <div class="tool-section">
@@ -1039,7 +1056,8 @@
                                 </div>
 
                                 <div class="tool-form-group">
-                                    <label class="tool-label" for="diceOtherMod">Malus / bonus situationnels (visée, états — jamais mod carac) (+/-)</label>
+                                    <label class="tool-label" for="diceOtherMod">Malus / bonus situationnels (visée,
+                                        états — jamais mod carac) (+/-)</label>
                                     <input type="number" id="diceOtherMod" class="tool-input" value="0" min="-10"
                                         max="15">
                                 </div>

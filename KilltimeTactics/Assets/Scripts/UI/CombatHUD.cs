@@ -310,6 +310,10 @@ namespace Killtime.UI
         // le verrou (_scrollLock) n'est jamais contourné : quand il est actif,
         // seul un clamp de sécurité s'applique, jamais un retour en bas.
         private bool _scrollToBottomPending = false;
+        // Mémorise si la vue était en bas à la fin du dernier Draw : sert à ne
+        // demander un suivi en bas que si l'utilisateur y était déjà (sinon on
+        // le laisse lire sans le ramener de force = "reste en place").
+        private bool _logWasAtBottom = true;
 
         // --- Tooltip des dés du feed : 1 s de survol sur une mention (D6, D12…)
         // --- => formule de calcul concise du niveau de dé.
@@ -701,11 +705,19 @@ namespace Killtime.UI
 
             // Verrou actif => on ne touche jamais au scroll : l'utilisateur reste
             // exactement où il lit, même si des logs arrivent en rafale.
-            // Verrou inactif => on demande un recalage en bas, appliqué dans le Draw
-            // avec la hauteur réelle du contenu (pas de float.MaxValue).
+            // Verrou inactif => on ne suit en bas que si l'utilisateur y était
+            // déjà (sinon il est en train de lire plus haut : on bascule en
+            // verrou pour "rester en place" au lieu de le ramener de force).
             if (!_scrollLock)
             {
-                _scrollToBottomPending = true;
+                if (_logWasAtBottom)
+                    _scrollToBottomPending = true;
+                else
+                {
+                    // L'utilisateur a quitté le bas pour lire : on fige la vue.
+                    _scrollLock = true;
+                    _scrollToBottomPending = false;
+                }
             }
         }
 
@@ -1865,7 +1877,12 @@ namespace Killtime.UI
 
                 GUI.color = hover ? ColorTextBright : ColorTextMuted;
                 if (GUI.Button(toggle, _logEntries.Count > 0 ? $"FEED  {_logEntries.Count}" : "FEED", _btnFlatNormal))
+                {
                     _isLogDrawerExpanded = true;
+                    // Réouverture : en suivi on repart en bas, en verrou on garde
+                    // la position mémorisée.
+                    if (!_scrollLock) _scrollToBottomPending = true;
+                }
                 GUI.color = Color.white;
                 return;
             }
@@ -1913,6 +1930,7 @@ namespace Killtime.UI
                 _logEntries.Clear();
                 _logScroll.y = 0f;
                 _scrollToBottomPending = false;
+                _logWasAtBottom = true;
             }
 
             if (GUI.Button(new Rect(terminal.x + terminal.width - 66, terminal.y + 8, 56, 20),
@@ -1943,7 +1961,12 @@ namespace Killtime.UI
             }
 
             Rect scrollRect = new Rect(terminal.x + 12, terminal.y + 58, terminal.width - 24, terminal.height - 70);
-            float maxScrollY = Mathf.Max(0f, totalContentHeight + 10f - scrollRect.height);
+            // Marge basse élargie (+20) pour que la dernière ligne ne soit jamais
+            // coupée ("descend mais pas complètement"), et largeur de vue = largeur
+            // du scroll (le message à x=116 + textW tient avec 5px de marge, sans clip).
+            float viewH = Mathf.Max(scrollRect.height, totalContentHeight + 20f);
+            float maxScrollY = Mathf.Max(0f, viewH - scrollRect.height);
+            _logScroll.x = 0f;
             if (_scrollLock)
             {
                 // Verrou : on reste exactement où l'utilisateur a scrollé.
@@ -1952,13 +1975,25 @@ namespace Killtime.UI
                 _scrollToBottomPending = false;
                 _logScroll.y = Mathf.Clamp(_logScroll.y, 0f, maxScrollY);
             }
-            else if (_scrollToBottomPending)
+            else
             {
-                _logScroll.y = maxScrollY;
-                _scrollToBottomPending = false;
+                // Mode suivi : si l'utilisateur a remonté manuellement depuis la
+                // dernière frame, on bascule en verrou au lieu de le ramener de
+                // force (sinon "ne reste pas en place"). Sinon on colle en bas
+                // en continu pour descendre complètement et y rester.
+                if (!_scrollToBottomPending && _logWasAtBottom && _logScroll.y < maxScrollY - 20f && maxScrollY > 0f)
+                {
+                    _scrollLock = true;
+                    _logScroll.y = Mathf.Clamp(_logScroll.y, 0f, maxScrollY);
+                }
+                else
+                {
+                    _logScroll.y = maxScrollY;
+                    _scrollToBottomPending = false;
+                }
             }
             _logScroll = GUI.BeginScrollView(scrollRect, _logScroll,
-                new Rect(0, 0, terminal.width - 42, Mathf.Max(scrollRect.height, totalContentHeight + 10f)));
+                new Rect(0, 0, scrollRect.width, viewH));
 
             float y = 2f;
             _diceHitRects.Clear();
@@ -1985,6 +2020,17 @@ namespace Killtime.UI
                 y += msgH + 6f;
             }
             GUI.EndScrollView();
+            // Mémorise la position pour AddAdvancedLog : seuls les nouveaux logs
+            // arrivant alors qu'on était en bas déclenchent un suivi. Si
+            // l'utilisateur vient de remonter à la molette/barre en mode suivi,
+            // on verrouille aussitôt pour "rester en place".
+            bool atBottom = _logScroll.y >= maxScrollY - 12f;
+            if (!_scrollLock && !atBottom && maxScrollY > 0f)
+            {
+                _scrollLock = true;
+                _scrollToBottomPending = false;
+            }
+            _logWasAtBottom = atBottom;
             DrawDiceHoverTooltip(scrollRect);
         }
 

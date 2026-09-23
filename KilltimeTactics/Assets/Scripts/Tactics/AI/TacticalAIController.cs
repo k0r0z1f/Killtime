@@ -449,6 +449,15 @@ namespace Killtime.Tactics.AI
                     break;
                 }
 
+                // 2b. TECHNIQUES DE SPÉCIALISATION (Livre III) — même registre
+                // que le menu contextuel joueur : Clé, Analyse, Rugissement,
+                // Regard, Commandement, Tenir la Ligne ! (priorités par doctrine).
+                if (TryExecuteCombatTechnique(unit, target, posture, dist))
+                {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
                 // 3. CONTACT DIRECT (Distance == 1) : RUPTURE MARTIALE OU DÉGAGEMENT
                 if (isRanged && dist == 1)
                 {
@@ -694,7 +703,9 @@ namespace Killtime.Tactics.AI
         // =========================================================================
         private bool TryExecuteMedicalSupport(TacticalUnit actor, TacticalUnitVisual visual)
         {
-            if (actor.Stats.CurrentActionPoints < 3) return false;
+            // Chirurgie : Suture Réflexe (Livre III) — soins d'urgence à 2 PA au lieu de 3.
+            int healCost = actor.Stats.HasSpecialization("Chirurgie : Suture Réflexe") ? 2 : 3;
+            if (actor.Stats.CurrentActionPoints < healCost) return false;
             if (_defaultPersonality == AIPersonality.Aggressive) return false;
 
             for (int i = 0; i < _cachedUnits.Count; i++)
@@ -725,14 +736,14 @@ namespace Killtime.Tactics.AI
                 float allyHpRatio = (float)ally.Stats.CurrentHealth / Mathf.Max(1, ally.Stats.MaxHealth);
                 bool hasBleed = (ally.Stats.ActiveStatus & StatusEffect.Saignement) != 0;
 
-                if (ally.Stats.IsAlive && (allyHpRatio <= 0.35f || hasBleed) && actor.Stats.CurrentActionPoints >= 3)
+                if (ally.Stats.IsAlive && (allyHpRatio <= 0.35f || hasBleed) && actor.Stats.CurrentActionPoints >= healCost)
                 {
-                    if (actor.Stats.ConsumeActionPoints(3))
+                    if (actor.Stats.ConsumeActionPoints(healCost))
                     {
                         int healAmount = ally.Stats.Attributes.Constitution * 2;
                         ally.Stats.CurrentHealth = Mathf.Min(ally.Stats.MaxHealth, ally.Stats.CurrentHealth + healAmount);
                         ally.Stats.ActiveStatus &= ~StatusEffect.Saignement;
-                        visual?.SpawnFloatingText("🩹 [SOINS] Suture Tactique (-3 PA)", Color.green);
+                        visual?.SpawnFloatingText($"🩹 [SOINS] Suture Tactique (-{healCost} PA)", Color.green);
                         ally.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"+{healAmount} PV", Color.green);
                         _arena?.Log($"🩹 <b>{actor.Stats.Name}</b> soigne <b>{ally.Stats.Name}</b> (+{healAmount} PV) !");
                         return true;
@@ -786,6 +797,17 @@ namespace Killtime.Tactics.AI
 
         private bool TryDelegateTacticalOrder(TacticalUnit actor, TacticalUnitVisual visual)
         {
+            // Mener (Commandement) (Livre III) : version de zone — galvanise toute
+            // l'escouade à ≤3 cases d'un coup, strictement meilleure que l'ordre
+            // mono-cible quand au moins un allié peut en profiter.
+            if (actor.Stats.HasSpecialization(Killtime.Tactics.CombatUI.CombatTechniqueRegistry.SpecMener))
+            {
+                if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteMenerZone(actor, _arena))
+                {
+                    return true;
+                }
+            }
+
             for (int i = 0; i < _cachedUnits.Count; i++)
             {
                 var ally = _cachedUnits[i];
@@ -803,6 +825,112 @@ namespace Killtime.Tactics.AI
                         return true;
                     }
                 }
+            }
+
+            return false;
+        }
+
+        // =========================================================================
+        // TECHNIQUES DE SPÉCIALISATION (LIVRE III) — même registre que le menu
+        // joueur (CombatTechniqueRegistry) : Clé d'Articulation, Analyse de Faille,
+        // Rugissement de Terreur, Regard de Prédateur, Commandement, Tenir la Ligne !
+        // Priorités modulées par la personnalité et la posture tactique.
+        // =========================================================================
+        private bool HasWoundedAllyInRange(TacticalUnit actor, int range)
+        {
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var ally = _cachedUnits[i];
+                if (ally == null || ally == actor || ally.Stats == null || !ally.Stats.IsAlive) continue;
+                if (ally.IsPlayerControlled != actor.IsPlayerControlled) continue;
+                if (actor.CurrentCoords.DistanceTo(ally.CurrentCoords) > range) continue;
+
+                float ratio = (float)ally.Stats.CurrentHealth / Mathf.Max(1, ally.Stats.MaxHealth);
+                if (ratio <= 0.6f) return true;
+                if ((ally.Stats.ActiveStatus & (StatusEffect.Destabilise | StatusEffect.Etourdi | StatusEffect.Saignement)) != 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private bool HasThreatenedAllyNear(TacticalUnit actor, TacticalUnit threat, int range)
+        {
+            if (actor == null) return false;
+            bool allyNearby = false;
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var ally = _cachedUnits[i];
+                if (ally == null || ally == actor || ally.Stats == null || !ally.Stats.IsAlive) continue;
+                if (ally.IsPlayerControlled != actor.IsPlayerControlled) continue;
+                if (actor.CurrentCoords.DistanceTo(ally.CurrentCoords) > range) continue;
+
+                allyNearby = true;
+                float ratio = (float)ally.Stats.CurrentHealth / Mathf.Max(1, ally.Stats.MaxHealth);
+                if (ratio <= 0.4f) return true;
+            }
+            // Provocation préventive : un allié proche + une menace encore dangereuse.
+            return allyNearby && threat != null && threat.Stats != null && threat.Stats.CurrentActionPoints >= 3;
+        }
+
+        private bool TryExecuteCombatTechnique(TacticalUnit actor, TacticalUnit target, TacticalPosture posture, int dist)
+        {
+            if (actor?.Stats == null || target?.Stats == null) return false;
+            if (_arena == null || _arena.IsResolving) return false;
+
+            bool isAggressive = (_defaultPersonality == AIPersonality.Aggressive);
+            bool isTacticien = (_defaultPersonality == AIPersonality.Tactician);
+            int pa = actor.Stats.CurrentActionPoints;
+
+            // 1. TENIR LA LIGNE ! — blindage d'escouade si un allié proche souffre.
+            if (!isAggressive && pa >= 2 && HasWoundedAllyInRange(actor, Killtime.Tactics.CombatUI.CombatTechniqueRegistry.AuraRange))
+            {
+                if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteTenir(actor, _arena)) return true;
+            }
+
+            // 2. RUGISSEMENT DE TERREUR — zone dès 2 ennemis secouables
+            // (dès 1 si Tacticien avec réserve d'attaque derrière).
+            if (pa >= 2)
+            {
+                int shakable = Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CountEnemiesInRange(actor, 3, onlyNotDestabilised: true);
+                if (shakable >= 2 || (isTacticien && shakable >= 1 && pa >= 4))
+                {
+                    if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteRugissement(actor, _arena)) return true;
+                }
+            }
+
+            // 3. REGARD DE PRÉDATEUR — détourne la menace d'un allié en danger.
+            if ((isTacticien || _defaultPersonality == AIPersonality.Survivor)
+                && pa >= 4 && dist <= 6
+                && actor.Stats.Attributes.Charisme >= target.Stats.Attributes.Instinct
+                && HasThreatenedAllyNear(actor, target, 3))
+            {
+                if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteRegard(actor, target, _arena)) return true;
+            }
+
+            // 4. ANALYSE DE FAILLE — expose les cibles coriaces avant de frapper.
+            if ((isTacticien || _defaultPersonality == AIPersonality.Balanced)
+                && pa >= 4 && dist >= 2 && dist <= 10
+                && (target.Stats.EncaissementThreshold >= 3 || target.Stats.CurrentHealth >= 8))
+            {
+                if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteAnalyse(actor, target, _arena)) return true;
+            }
+
+            // 5. MENER / COMMANDEMENT — galvanise l'escouade à court de PA.
+            if (!isAggressive && pa >= 2)
+            {
+                int alliesMissing = Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CountAlliesInRange(actor, 3, onlyMissingPA: true);
+                if (alliesMissing >= 2 || (posture == TacticalPosture.SupportAndHeal && alliesMissing >= 1))
+                {
+                    if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteMenerZone(actor, _arena)) return true;
+                }
+            }
+
+            // 6. CLÉ D'ARTICULATION — finition (3 bruts) ou neutralisation d'une menace.
+            if (dist <= 1 && pa >= 2)
+            {
+                bool finisher = target.Stats.CurrentHealth <= Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CleRawDamage;
+                bool neutralise = !isAggressive && pa >= 4 && target.Stats.CurrentActionPoints >= 4;
+                if ((finisher || neutralise) && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteCle(actor, target, _arena)) return true;
             }
 
             return false;
@@ -1483,6 +1611,20 @@ namespace Killtime.Tactics.AI
             float highestScore = float.MinValue;
             bool isRanged = HasRangedWeapon(actor, out int maxRange, out _, out _);
 
+            // Regard de Prédateur (Livre III) : provoqué → l'unité DOIT attaquer
+            // son provocateur tant que la marque est active et qu'il est en vie.
+            if (SkillTechniqueState.TryGetTaunter(actor.Stats, out var taunter) && taunter != null)
+            {
+                for (int i = 0; i < _cachedUnits.Count; i++)
+                {
+                    var provoker = _cachedUnits[i];
+                    if (provoker != null && provoker.Stats == taunter && provoker.Stats.IsAlive)
+                    {
+                        return provoker;
+                    }
+                }
+            }
+
             for (int i = 0; i < _cachedUnits.Count; i++)
                 {
                 var potential = _cachedUnits[i];
@@ -1541,6 +1683,10 @@ namespace Killtime.Tactics.AI
                 // Exploitation des brèches défensives créées par les alliés
                 if ((potential.Stats.ActiveStatus & StatusEffect.Destabilise) != 0) score += 20f;
                 if ((potential.Stats.ActiveStatus & StatusEffect.ATerre) != 0) score += 25f;
+
+                // Analyse de Faille (Livre III) : focus-fire d'escouade sur la
+                // cible dont un allié a exposé la faille (encaissement ignoré).
+                if (SkillTechniqueState.IsFlawExposed(potential.Stats)) score += 30f;
 
                 // Priorité de menace active
                 if (potential.Stats.CurrentActionPoints >= 4) score += 15f;

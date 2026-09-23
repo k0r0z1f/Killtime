@@ -45,6 +45,7 @@ namespace Killtime.Core.Character
         /// </summary>
         public int FreeTrainingsUsed = 0;
         public int CreditsCE = 8000;
+        public int[] AttributeUpgradesPurchased = new int[9];
 
         public List<SkillProgressionEntry> Skills = new();
         public List<string> UnlockedSpecializations = new();
@@ -197,10 +198,70 @@ namespace Killtime.Core.Character
             return total;
         }
 
+        public int GetBaseAttributeValue(int attrIndex)
+        {
+            return attrIndex switch
+            {
+                0 => BaseAttributes.Force,
+                1 => BaseAttributes.Agilite,
+                2 => BaseAttributes.Constitution,
+                3 => BaseAttributes.Rapidite,
+                4 => BaseAttributes.Intelligence,
+                5 => BaseAttributes.Erudition,
+                6 => BaseAttributes.Charisme,
+                7 => BaseAttributes.Instinct,
+                8 => BaseAttributes.Magie,
+                _ => 0
+            };
+        }
+
+        public void SetBaseAttributeValue(int attrIndex, int val)
+        {
+            var b = BaseAttributes;
+            switch (attrIndex)
+            {
+                case 0: b.Force = val; break;
+                case 1: b.Agilite = val; break;
+                case 2: b.Constitution = val; break;
+                case 3: b.Rapidite = val; break;
+                case 4: b.Intelligence = val; break;
+                case 5: b.Erudition = val; break;
+                case 6: b.Charisme = val; break;
+                case 7: b.Instinct = val; break;
+                case 8: b.Magie = val; break;
+            }
+            BaseAttributes = b;
+        }
+
         public InventoryItem GetEquippedWeapon()
         {
             if (Inventory == null) return null;
             return Inventory.Find(i => i != null && i.IsEquipped && i.Type == ItemType.Weapon);
+        }
+
+        /// <summary>
+        /// Règle Livre VII : une unité qui tombe <b>Inconsciente</b> (K.O., coma, mort)
+        /// lâche ce qu'elle tient. Extrait TOUTES les armes équipées de l'inventaire
+        /// (déséquipées + retirées) et les retourne pour spawn physique au sol.
+        /// L'objet au sol devient l'exemplaire unique (loot / ramassage possible).
+        /// Pur C# (testable sans Unity) : la chute physique est gérée par
+        /// <c>TacticalUnitVisual.DropHeldItemsWithPhysics</c> / <c>DroppedWeaponPickup</c>.
+        /// </summary>
+        public System.Collections.Generic.List<InventoryItem> ExtractEquippedItemsForGroundDrop()
+        {
+            var dropped = new System.Collections.Generic.List<InventoryItem>();
+            if (Inventory == null) return dropped;
+            for (int i = Inventory.Count - 1; i >= 0; i--)
+            {
+                var it = Inventory[i];
+                if (it != null && it.IsEquipped && it.Type == ItemType.Weapon)
+                {
+                    it.IsEquipped = false;
+                    dropped.Add(it);
+                    Inventory.RemoveAt(i);
+                }
+            }
+            return dropped;
         }
 
         public bool EquipItem(string itemId)

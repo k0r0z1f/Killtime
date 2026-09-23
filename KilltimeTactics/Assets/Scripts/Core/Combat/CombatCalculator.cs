@@ -315,6 +315,16 @@ namespace Killtime.Core.Combat
 
             // Déclaration implicite du coût de base d'attaque (sans mise bonus).
             duel.BaseAttackCost = cfg.BaseAttackAPCost + (cancelPenaltyWithAP ? cfg.CancelAimPenaltyAPCost : 0);
+
+            // Arts Martiaux : Enchaînement Fluide (Livre III) — la seconde attaque
+            // de mêlée à mains nues du tour coûte 1 PA de moins (minimum 1).
+            if (attackSkill == SkillType.MainsNues
+                && attacker.AttacksThisTurn >= 1
+                && attacker.HasSpecialization("Arts Martiaux : Enchaînement Fluide"))
+            {
+                duel.BaseAttackCost = Math.Max(1, duel.BaseAttackCost - 1);
+            }
+
             if (!attacker.ConsumeActionPoints(duel.BaseAttackCost))
             {
                 error = $"{attacker.Name} n'a pas assez de PA ({attacker.CurrentActionPoints}/{duel.BaseAttackCost}) pour attaquer !";
@@ -893,6 +903,13 @@ namespace Killtime.Core.Combat
                 totalArmor = Math.Max(0, totalArmor - 2);
             }
 
+            // Arts Martiaux : Brise-Blindage (Livre III) — impact focalisé
+            // destructeur d'alliages : les attaques à mains nues ignorent 2 armure.
+            if (attacker.HasSpecialization("Arts Martiaux : Brise-Blindage") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                totalArmor = Math.Max(0, totalArmor - 2);
+            }
+
             if (attacker.HasSpecialization("Fente de Rupture : Transpercement Traversant") && duel.AttackSkill == SkillType.ManiementArmes)
             {
                 totalArmor = Math.Max(0, totalArmor - 4);
@@ -966,11 +983,44 @@ namespace Killtime.Core.Combat
 
             bool exceededEncaissement = finalDamage > defender.EncaissementThreshold;
             StatusEffect inflictedStatus = StatusEffect.None;
+            bool failleExploitee = false;
+
+            // Arts Martiaux : Rupture Ligamentaire (Livre III) — la cible doit être
+            // Déstabilisée AVANT ce coup (le statut infligé par ce même coup ne compte pas).
+            bool wasDestabilisedBefore = (defender.ActiveStatus & StatusEffect.Destabilise) != 0;
 
             if (exceededEncaissement || attackRoll.IsCriticalSuccess)
             {
                 inflictedStatus = DetermineInflictedStatus(actualHitPart);
                 defender.ActiveStatus |= inflictedStatus;
+            }
+
+            // Analyse de Faille (Livre III) : la faille exposée est consommée à la
+            // touche — la prochaine attaque ignore le seuil d'encaissement adverse.
+            if (!exceededEncaissement && SkillTechniqueState.ConsumeExposedFlaw(defender))
+            {
+                exceededEncaissement = true;
+                inflictedStatus |= DetermineInflictedStatus(actualHitPart);
+                defender.ActiveStatus |= inflictedStatus;
+                failleExploitee = true;
+            }
+
+            // Arts Martiaux : Balayage Rotatif (Livre III) — sur différentiel net
+            // Delta >= 2 à mains nues, la cible chute À Terre (même sans choc).
+            if (duel.AttackSkill == SkillType.MainsNues && differential >= 2
+                && attacker.HasSpecialization("Arts Martiaux : Balayage Rotatif"))
+            {
+                inflictedStatus |= StatusEffect.ATerre;
+                defender.ActiveStatus |= StatusEffect.ATerre;
+            }
+
+            // Arts Martiaux : Rupture Ligamentaire (Livre III) — cible Déstabilisée
+            // avant le coup → torsion destructrice : Paralysé pendant 1 tour.
+            if (duel.AttackSkill == SkillType.MainsNues && wasDestabilisedBefore
+                && attacker.HasSpecialization("Arts Martiaux : Rupture Ligamentaire"))
+            {
+                inflictedStatus |= StatusEffect.Paralyse;
+                defender.ApplyStatus(StatusEffect.Paralyse, 1);
             }
 
             FatalBlowResolution fatalRes = FatalBlowResolution.None;
@@ -1003,6 +1053,11 @@ namespace Killtime.Core.Combat
             if (exceededEncaissement)
             {
                 log += $" | ⚡ <b>CHOC TRAUMATIQUE</b> (&gt; Encaissement {defender.EncaissementThreshold}) ➔ [{inflictedStatus}]";
+            }
+
+            if (failleExploitee)
+            {
+                log += " | 📡 <b>FAILLE EXPOSÉE EXPLOITÉE</b> (Analyse de Faille : encaissement ignoré)";
             }
 
             if (fatalRes == FatalBlowResolution.InstantDeath)

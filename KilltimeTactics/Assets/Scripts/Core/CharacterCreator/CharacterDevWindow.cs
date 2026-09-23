@@ -57,6 +57,7 @@ namespace Killtime.UI
         private Animator _previewAnimator;
         private PlayableGraph _previewPlayableGraph;
         private string _lastLoadedModelName = "__UNINITIALIZED__";
+        private string _lastLoadedGenderKey = "__UNINITIALIZED__";
         private float _previewModelYaw = 180f;
         private bool _isDraggingPreview = false;
         private Vector2 _lastMousePos;
@@ -313,6 +314,24 @@ namespace Killtime.UI
                 {
                     if (object.ReferenceEquals(u.Sheet, sheet) || u.Sheet.SheetId == sheet.SheetId)
                     {
+                        if (!object.ReferenceEquals(u.Sheet, sheet))
+                        {
+                            u.Sheet.Inventory.Clear();
+                            if (sheet.Inventory != null)
+                            {
+                                for (int j = 0; j < sheet.Inventory.Count; j++)
+                                {
+                                    var it = sheet.Inventory[j];
+                                    if (it != null) u.Sheet.Inventory.Add(it.Clone());
+                                }
+                            }
+                        }
+
+                        if (u.Stats != null)
+                        {
+                            u.Stats.Attributes = sheet.GetEffectiveAttributes();
+                            u.Stats.RecalculateDerivedStats();
+                        }
                         u.NotifyInventoryChanged(saveToDisk: false);
                     }
                 }
@@ -335,6 +354,7 @@ namespace Killtime.UI
             _showAnimDropdown = false;
             _selectedPreviewAnimIndex = 0;
             _lastLoadedModelName = "__UNINITIALIZED__";
+            _lastLoadedGenderKey = "__UNINITIALIZED__";
 
             // L'armurerie suit automatiquement CurrentSheet, mais si elle était
             // liée à l'ancien brouillon on la re-lie explicitement à la nouvelle fiche.
@@ -606,6 +626,8 @@ namespace Killtime.UI
         // ================= TAB 0 : CRÉATION =================
         private void DrawCreationTab()
         {
+            CharacterProgressionManager.SynchronizeProgression(_currentSheet);
+
             GUILayout.Label("<b>1. Identité & Profil (Livre I) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
@@ -618,7 +640,12 @@ namespace Killtime.UI
             GUILayout.Label("Âge / Sexe :", GUILayout.Width(90));
             string ageStr = GUILayout.TextField(_currentSheet.Age.ToString(), GUILayout.Width(50));
             if (int.TryParse(ageStr, out int a)) _currentSheet.Age = a;
-            _currentSheet.Gender = GUILayout.TextField(_currentSheet.Gender);
+            int genderIndex = GenderToIndex(_currentSheet.Gender);
+            int newGenderIndex = GUILayout.Toolbar(genderIndex, new[] { "Masculin", "Féminin", "Autre" });
+            if (newGenderIndex != genderIndex)
+            {
+                _currentSheet.Gender = new[] { "Masculin", "Féminin", "Autre" }[Mathf.Clamp(newGenderIndex, 0, 2)];
+            }
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -651,7 +678,12 @@ namespace Killtime.UI
             GUI.color = Color.white;
             GUILayout.EndHorizontal();
 
-            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+
+            GUILayout.BeginVertical(GUI.skin.box, GUILayout.Width(285));
+            GUILayout.Label("<b>🐣 CRÉATION INITIALE (Budget Départ)</b>");
+            GUILayout.Label("<color=#94A3B8><size=10>Piliers et points secondaires selon le profil.</size></color>");
+            GUILayout.Space(4);
 
             _currentSheet.BaseAttributes.Force = DrawAttrRow("Force (FOR)", _currentSheet.BaseAttributes.Force, 0);
             _currentSheet.BaseAttributes.Agilite = DrawAttrRow("Agilité (AGI)", _currentSheet.BaseAttributes.Agilite, 1);
@@ -664,6 +696,31 @@ namespace Killtime.UI
             _currentSheet.BaseAttributes.Magie = DrawAttrRow("Magie (5e Force)", _currentSheet.BaseAttributes.Magie, 8);
 
             GUILayout.EndVertical();
+
+            GUILayout.Space(6);
+
+            GUILayout.BeginVertical(GUI.skin.box, GUILayout.ExpandWidth(true));
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>⚡ ÉVOLUTION EN JEU (Achat XP)</b>");
+            GUILayout.FlexibleSpace();
+            GUILayout.Label($"<color=yellow><b>{_currentSheet.AvailableXP} XP Libre</b></color>");
+            GUILayout.EndHorizontal();
+            GUILayout.Label("<color=#94A3B8><size=10>Coût : passer de N à N+1 = (N+1) XP (ex. 4➔5 = 5 XP, 9➔10 = 10 XP).</size></color>");
+            GUILayout.Space(4);
+
+            DrawAttrXpUpgradeRow("Force (FOR)", 0);
+            DrawAttrXpUpgradeRow("Agilité (AGI)", 1);
+            DrawAttrXpUpgradeRow("Constitution (CON)", 2);
+            DrawAttrXpUpgradeRow("Rapidité (RAP)", 3);
+            DrawAttrXpUpgradeRow("Intelligence (INT)", 4);
+            DrawAttrXpUpgradeRow("Érudition (ÉRU)", 5);
+            DrawAttrXpUpgradeRow("Charisme (CHA)", 6);
+            DrawAttrXpUpgradeRow("Instinct (INS)", 7);
+            DrawAttrXpUpgradeRow("Magie (5e Force)", 8);
+
+            GUILayout.EndVertical();
+
+            GUILayout.EndHorizontal();
 
             var effective = _currentSheet.GetEffectiveAttributes();
             GUILayout.Space(6);
@@ -683,7 +740,7 @@ namespace Killtime.UI
             GUILayout.Space(6);
             GUILayout.Label("<b>4. Arbre de Progression (Livre I §5) :</b>");
             GUILayout.BeginHorizontal(GUI.skin.box);
-            GUILayout.Label($"Entraînements : <b>{CountTrainedLevels(_currentSheet)}</b> (gratuits <b>{Mathf.Max(0, _currentSheet.FreeTrainingsUsed)}/{_currentSheet.GetFreeTrainingBudget()}</b>, restants <b>{_currentSheet.GetFreeTrainingsRemaining()}</b>) | Spés : <b>{_currentSheet.UnlockedSpecializations.Count}</b> | Banques liées : <b>{_currentSheet.GetLinkedReserveTotal()} XP</b> | XP libre : <b>{_currentSheet.AvailableXP}</b>", GUILayout.ExpandWidth(true));
+            GUILayout.Label($"Entraînements : <b>{CountTrainedLevels(_currentSheet)}</b> (gratuits <b>{Mathf.Max(0, _currentSheet.FreeTrainingsUsed)}/{_currentSheet.GetFreeTrainingBudget()}</b>, restants <b>{_currentSheet.GetFreeTrainingsRemaining()}</b>) | Spés : <b>{_currentSheet.UnlockedSpecializations.Count}</b> | Banques liées : <b>{_currentSheet.GetLinkedReserveTotal()} XP</b> | XP libre : <b>{_currentSheet.AvailableXP}</b> | <color=#FFD166>XP Total : <b>{_currentSheet.TotalSpentXP} XP</b></color>", GUILayout.ExpandWidth(true));
             GUI.enabled = _currentSheet.AvailableXP > 0;
             if (GUILayout.Button("↺ XP libre à 0", GUILayout.Width(110), GUILayout.Height(28)))
             {
@@ -718,8 +775,8 @@ namespace Killtime.UI
             GUI.backgroundColor = new Color(0.2f, 0.7f, 0.3f);
             if (GUILayout.Button("💾 Sauvegarder cette fiche sur le Disque", GUILayout.Height(34)))
             {
-                string path = CharacterStorageService.SaveCharacter(_currentSheet);
-                _statusMessage = $"Fiche '{_currentSheet.Name}' sauvegardée !";
+                SaveCharacterAndSyncUnits(_currentSheet);
+                _statusMessage = $"Fiche '{_currentSheet.Name}' sauvegardée et synchronisée avec la scène !";
             }
             GUI.backgroundColor = Color.white;
             GUILayout.EndHorizontal();
@@ -937,10 +994,21 @@ namespace Killtime.UI
 
         private void UpdatePreviewModel(string modelName)
         {
-            if (modelName == _lastLoadedModelName && _currentPreviewInstance != null) return;
+            string genderKey = ResolvePreviewGenderKey();
+            if (modelName == _lastLoadedModelName && genderKey == _lastLoadedGenderKey && _currentPreviewInstance != null) return;
 
+            bool modelChanged = modelName != _lastLoadedModelName;
             EnsurePreviewStudio();
             _lastLoadedModelName = modelName;
+            _lastLoadedGenderKey = genderKey;
+
+            // Même modèle mais genre différent -> pas besoin de ré-instancier,
+            // on rejoue juste le clip genré.
+            if (!modelChanged && _currentPreviewInstance != null)
+            {
+                PlayPreviewAnimation(_selectedPreviewAnimIndex);
+                return;
+            }
 
             if (_currentPreviewInstance != null)
             {
@@ -1069,7 +1137,7 @@ namespace Killtime.UI
                 _previewPlayableGraph.Destroy();
             }
 
-            AnimationClip clip = LoadAnimationClip(stateName);
+            AnimationClip clip = LoadAnimationClip(stateName, ResolvePreviewGenderKey());
             if (clip != null)
             {
                 AnimationPlayableUtilities.PlayClip(_previewAnimator, clip, out _previewPlayableGraph);
@@ -1082,26 +1150,62 @@ namespace Killtime.UI
             }
         }
 
+        private string ResolvePreviewGenderKey()
+        {
+            string gender = _currentSheet != null ? _currentSheet.Gender : null;
+            if (!string.IsNullOrEmpty(gender))
+            {
+                string g = gender.Trim().ToLowerInvariant();
+                if (g.StartsWith("m") || g.Contains("masc") || g.Contains("male") || g.Contains("homme"))
+                    return "Male";
+                if (g.StartsWith("f") || g.Contains("fem") || g.Contains("fém") || g.Contains("woman") || g.Contains("girl"))
+                    return "Female";
+            }
+
+            string modelName = _currentSheet != null ? _currentSheet.ModelPrefabName : null;
+            if (!string.IsNullOrEmpty(modelName))
+            {
+                string m = modelName.ToLowerInvariant();
+                if (m.Contains("mina") || m.Contains("wife") || m.Contains("female") || m.Contains("femelle") || m.Contains("woman") || m.Contains("girl"))
+                    return "Female";
+                if (m.Contains("soldier") || m.Contains("hitman") || m.Contains("boss") || m.Contains("male") || m.Contains("homme"))
+                    return "Male";
+            }
+
+            return "Female";
+        }
+
+        private static int GenderToIndex(string gender)
+        {
+            if (string.IsNullOrEmpty(gender)) return 2;
+            string g = gender.Trim().ToLowerInvariant();
+            if (g.StartsWith("m") || g.Contains("masc") || g.Contains("male") || g.Contains("homme"))
+                return 0;
+            if (g.StartsWith("f") || g.Contains("fem") || g.Contains("fém") || g.Contains("woman") || g.Contains("girl"))
+                return 1;
+            return 2;
+        }
+
         private static AnimationClip LoadAnimationClip(string clipName)
+        {
+            return LoadAnimationClip(clipName, "Female");
+        }
+
+        private static AnimationClip LoadAnimationClip(string clipName, string genderKey)
         {
             AnimationClip clip = null;
 
-            var subClips = Resources.LoadAll<AnimationClip>($"Animations/{clipName}");
-            if (subClips != null && subClips.Length > 0)
-            {
-                for (int i = 0; i < subClips.Length; i++)
-                {
-                    if (subClips[i] != null && !subClips[i].name.StartsWith("__preview__"))
-                    {
-                        clip = subClips[i];
-                        break;
-                    }
-                }
-            }
+            var candidatePaths = new System.Collections.Generic.List<string>();
+            if (!string.IsNullOrEmpty(genderKey))
+                candidatePaths.Add($"Animations/{genderKey}/{clipName}");
+            if (!string.Equals(genderKey, "Female", System.StringComparison.OrdinalIgnoreCase))
+                candidatePaths.Add($"Animations/Female/{clipName}");
+            candidatePaths.Add($"Animations/{clipName}");
+            candidatePaths.Add(clipName);
 
-            if (clip == null)
+            foreach (var path in candidatePaths)
             {
-                subClips = Resources.LoadAll<AnimationClip>(clipName);
+                var subClips = Resources.LoadAll<AnimationClip>(path);
                 if (subClips != null && subClips.Length > 0)
                 {
                     for (int i = 0; i < subClips.Length; i++)
@@ -1113,12 +1217,10 @@ namespace Killtime.UI
                         }
                     }
                 }
-            }
+                if (clip != null) break;
 
-            if (clip == null)
-            {
-                clip = Resources.Load<AnimationClip>($"Animations/{clipName}")
-                    ?? Resources.Load<AnimationClip>(clipName);
+                clip = Resources.Load<AnimationClip>(path);
+                if (clip != null) break;
             }
 
             return clip;
@@ -1280,6 +1382,7 @@ namespace Killtime.UI
             }
 
             _lastLoadedModelName = "__UNINITIALIZED__";
+            _lastLoadedGenderKey = "__UNINITIALIZED__";
         }
 
         private int DrawAttrRow(string label, int value, int attrIndex)
@@ -1288,19 +1391,19 @@ namespace Killtime.UI
             bool canIncrease = CanIncreaseAttribute(attrIndex);
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label(label, GUILayout.Width(170));
+            GUILayout.Label(label, GUILayout.Width(135));
 
             GUI.enabled = canDecrease;
-            if (GUILayout.Button("-", GUILayout.Width(30)))
+            if (GUILayout.Button("-", GUILayout.Width(26), GUILayout.Height(20)))
             {
                 value--;
             }
             GUI.enabled = true;
 
-            GUILayout.Label($"<b>{value}</b>", GUILayout.Width(35));
+            GUILayout.Label($"<b>{value}</b>", GUILayout.Width(24));
 
             GUI.enabled = canIncrease;
-            if (GUILayout.Button("+", GUILayout.Width(30)))
+            if (GUILayout.Button("+", GUILayout.Width(26), GUILayout.Height(20)))
             {
                 value++;
             }
@@ -1308,6 +1411,49 @@ namespace Killtime.UI
 
             GUILayout.EndHorizontal();
             return value;
+        }
+
+        private void DrawAttrXpUpgradeRow(string label, int attrIndex)
+        {
+            int currentBase = _currentSheet.GetBaseAttributeValue(attrIndex);
+            int cost = CharacterProgressionManager.GetAttributeUpgradeCost(currentBase);
+            int spendable = CharacterProgressionManager.GetSpendableForAttribute(_currentSheet, attrIndex);
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label(label, GUILayout.Width(125));
+
+            if (currentBase >= 10)
+            {
+                GUI.color = Color.green;
+                GUILayout.Label("★ 10 (Plafond)", GUILayout.ExpandWidth(true));
+                GUI.color = Color.white;
+            }
+            else
+            {
+                GUILayout.Label($"<color=#38BDF8>{currentBase} ➔ {currentBase + 1}</color>", GUILayout.Width(52));
+
+                bool canAfford = spendable >= cost;
+                GUI.enabled = canAfford;
+                GUI.backgroundColor = canAfford ? new Color(0.2f, 0.85f, 0.45f) : Color.gray;
+
+                if (GUILayout.Button($"Acheter ({cost} XP)", GUILayout.Height(20), GUILayout.ExpandWidth(true)))
+                {
+                    if (CharacterProgressionManager.UpgradeAttribute(_currentSheet, attrIndex, out string msg))
+                    {
+                        SaveCharacterAndSyncUnits(_currentSheet);
+                        _statusMessage = msg;
+                    }
+                    else
+                    {
+                        _statusMessage = msg;
+                    }
+                }
+
+                GUI.backgroundColor = Color.white;
+                GUI.enabled = true;
+            }
+
+            GUILayout.EndHorizontal();
         }
 
         private bool CanDecreaseAttribute(int attrIndex)
@@ -1537,6 +1683,18 @@ namespace Killtime.UI
                 }
             }
 
+            int totalPurchased = 0;
+            if (sheet.AttributeUpgradesPurchased != null)
+            {
+                for (int p = 0; p < sheet.AttributeUpgradesPurchased.Length; p++)
+                    totalPurchased += Math.Max(0, sheet.AttributeUpgradesPurchased[p]);
+            }
+            if (totalPurchased > 0)
+            {
+                statusMessage = $"⭐ Profil Évolué (+{totalPurchased} pts achetés en XP)";
+                return true;
+            }
+
             if (sheet.Profile == CharacterProfileType.PnjBoss)
             {
                 statusMessage = "👑 Boss : Attribution Libre (Plafond 10 respecté)";
@@ -1640,8 +1798,10 @@ namespace Killtime.UI
         // ================= TAB 1 : PROGRESSION =================
         private void DrawProgressionTab()
         {
+            CharacterProgressionManager.SynchronizeProgression(_currentSheet);
+
             GUILayout.BeginHorizontal(GUI.skin.box);
-            GUILayout.Label($"Personnage : <b>{_currentSheet.Name}</b> | XP Libre : <color=yellow><b>{_currentSheet.AvailableXP} XP</b></color> | Banque liée : <b>{_currentSheet.GetLinkedReserveTotal()} XP</b> | <color=#FFD166>XP TOTAL (dépensé) : <b>{_currentSheet.TotalSpentXP}</b></color>");
+            GUILayout.Label($"Personnage : <b>{_currentSheet.Name}</b> | XP Libre : <color=yellow><b>{_currentSheet.AvailableXP} XP</b></color> | Banque liée : <b>{_currentSheet.GetLinkedReserveTotal()} XP</b> | <color=#FFD166>XP TOTAL (dépensé) : <b>{_currentSheet.TotalSpentXP} XP</b></color>");
             if (GUILayout.Button("+10 XP", GUILayout.Width(70))) CharacterProgressionManager.GrantXP(_currentSheet, 10);
             if (GUILayout.Button("+50 XP", GUILayout.Width(70))) CharacterProgressionManager.GrantXP(_currentSheet, 50);
             GUI.enabled = _currentSheet.AvailableXP > 0;
@@ -1654,6 +1814,8 @@ namespace Killtime.UI
             }
             GUI.enabled = true;
             GUILayout.EndHorizontal();
+
+            GUILayout.Label($"<color=#94A3B8><size=11>📊 <b>Ventilation XP Total :</b> {CharacterProgressionManager.GetSpentXPBreakdownString(_currentSheet)}</size></color>");
             GUILayout.BeginHorizontal(GUI.skin.box);
             GUILayout.Label("<i>Reset : restaure l'XP payé en libre, gratuits rendus au budget, entraînements à 0, cases effacées.</i>", GUILayout.ExpandWidth(true));
             GUI.backgroundColor = new Color(0.95f, 0.45f, 0.2f);
@@ -2012,12 +2174,14 @@ namespace Killtime.UI
                     var loaded = CharacterStorageService.LoadCharacter(f);
                     if (loaded != null)
                     {
+                        CharacterProgressionManager.SynchronizeProgression(loaded);
                         _currentSheet = loaded;
                         _selectedInventoryItem = null;
                         _showModelDropdown = false;
                         _showAnimDropdown = false;
                         _lastLoadedModelName = "__UNINITIALIZED__";
-                        _statusMessage = $"'{_currentSheet.Name}' chargé !";
+            _lastLoadedGenderKey = "__UNINITIALIZED__";
+                        _statusMessage = $"'{_currentSheet.Name}' chargé ! (XP Total : {_currentSheet.TotalSpentXP} XP)";
                     }
                 }
 
@@ -2059,12 +2223,14 @@ namespace Killtime.UI
                 var heroic = builder != null ? builder() : null;
                 if (heroic != null)
                 {
+                    CharacterProgressionManager.SynchronizeProgression(heroic);
                     _currentSheet = heroic;
                     _selectedInventoryItem = null;
                     _showModelDropdown = false;
                     _showAnimDropdown = false;
                     _lastLoadedModelName = "__UNINITIALIZED__";
-                    _statusMessage = $"'{_currentSheet.Name}' (fiche héroïque intégrée) chargé !";
+            _lastLoadedGenderKey = "__UNINITIALIZED__";
+                    _statusMessage = $"'{_currentSheet.Name}' (fiche héroïque intégrée) chargé ! (XP Total : {_currentSheet.TotalSpentXP} XP)";
                 }
             }
 

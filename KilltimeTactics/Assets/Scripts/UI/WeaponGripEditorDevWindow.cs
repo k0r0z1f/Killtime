@@ -65,6 +65,7 @@ namespace Killtime.UI
 
         protected override void OnOpened()
         {
+            WeaponGripService.ClearDimensionCache();
             WeaponGripService.EnsureInitialized();
             RefreshWeaponCatalog();
             RefreshAvailableMannequins();
@@ -131,6 +132,7 @@ namespace Killtime.UI
             _selectedWeaponIndex = Mathf.Clamp(index, 0, _weaponList.Count - 1);
             var item = _weaponList[_selectedWeaponIndex];
             _activeProfile = WeaponGripService.ResolveProfile(item).Clone();
+            _activeProfile.Key = item.Name;
 
             if (_activeProfile.TargetWorldLength <= 0.05f)
             {
@@ -356,19 +358,22 @@ namespace Killtime.UI
             GUILayout.Label("<b>5. Taille & Longueur Réelle :</b>");
 
             float defaultLen = WeaponGripService.GetDefaultWeaponLength(currentItem);
-            float currentDisplayLen = _activeProfile.TargetWorldLength > 0.05f
+            float currentDisplayLen = _activeProfile.TargetWorldLength > 0.02f
                 ? _activeProfile.TargetWorldLength
                 : defaultLen;
 
             GUILayout.BeginHorizontal();
             GUILayout.Label($"Longueur Cible : <b>{currentDisplayLen:0.##} m</b>", GUILayout.Width(170));
-            float newLen = GUILayout.HorizontalSlider(currentDisplayLen, 0.15f, 2.50f);
-            if (!Mathf.Approximately(newLen, currentDisplayLen))
+            bool prevLenChanged = GUI.changed;
+            GUI.changed = false;
+            float newLen = GUILayout.HorizontalSlider(currentDisplayLen, 0.05f, 2.50f);
+            if (GUI.changed)
             {
                 _activeProfile.TargetWorldLength = newLen;
                 _isDirty = true;
                 ApplyActiveGripTransformToStudioWeapon();
             }
+            GUI.changed |= prevLenChanged;
             if (GUILayout.Button("Défaut", GUILayout.Width(55)))
             {
                 _activeProfile.TargetWorldLength = defaultLen;
@@ -379,13 +384,16 @@ namespace Killtime.UI
 
             GUILayout.BeginHorizontal();
             GUILayout.Label($"Échelle Multiplicatrice : <b>{_activeProfile.ScaleMultiplier:0.##}x</b>", GUILayout.Width(170));
-            float newScale = GUILayout.HorizontalSlider(_activeProfile.ScaleMultiplier, 0.2f, 3.0f);
-            if (!Mathf.Approximately(newScale, _activeProfile.ScaleMultiplier))
+            bool prevScaleChanged = GUI.changed;
+            GUI.changed = false;
+            float newScale = GUILayout.HorizontalSlider(_activeProfile.ScaleMultiplier, 0.05f, 3.0f);
+            if (GUI.changed)
             {
                 _activeProfile.ScaleMultiplier = newScale;
                 _isDirty = true;
                 ApplyActiveGripTransformToStudioWeapon();
             }
+            GUI.changed |= prevScaleChanged;
             if (GUILayout.Button("1.0x", GUILayout.Width(55)))
             {
                 _activeProfile.ScaleMultiplier = 1.0f;
@@ -465,13 +473,16 @@ namespace Killtime.UI
 
             GUILayout.EndHorizontal();
 
+            bool prevChanged = GUI.changed;
+            GUI.changed = false;
             float newVal = GUILayout.HorizontalSlider(val, min, max);
-            if (!Mathf.Approximately(newVal, val))
+            if (GUI.changed)
             {
                 val = newVal;
                 _isDirty = true;
                 ApplyActiveGripTransformToStudioWeapon();
             }
+            GUI.changed |= prevChanged;
 
             return val;
         }
@@ -490,13 +501,16 @@ namespace Killtime.UI
 
             GUILayout.EndHorizontal();
 
+            bool prevChanged = GUI.changed;
+            GUI.changed = false;
             float newVal = GUILayout.HorizontalSlider(val, min, max);
-            if (!Mathf.Approximately(newVal, val))
+            if (GUI.changed)
             {
                 val = newVal;
                 _isDirty = true;
                 ApplyActiveGripTransformToStudioWeapon();
             }
+            GUI.changed |= prevChanged;
 
             return val;
         }
@@ -511,6 +525,7 @@ namespace Killtime.UI
         private void SaveCurrentProfile()
         {
             if (_activeProfile == null) return;
+            GUI.FocusControl(null);
             WeaponGripService.SaveProfile(_activeProfile);
             _isDirty = false;
             _statusMessage = $"Profil '{_activeProfile.Key}' sauvegardé sur disque avec succès !";
@@ -770,7 +785,7 @@ namespace Killtime.UI
 
             _currentWeaponInstance.transform.localPosition = WeaponGripService.ComputeWeaponLocalPosition(socket, _currentMannequinInstance.transform, _activeProfile, 1.0f);
             _currentWeaponInstance.transform.localRotation = WeaponGripService.ComputeWeaponLocalRotation(_currentWeaponInstance, socket, _currentMannequinInstance.transform, _activeProfile, currentItem);
-            _currentWeaponInstance.transform.localScale = WeaponGripService.ComputeWeaponLocalScale(_currentWeaponInstance, socket, _activeProfile, currentItem, 1.0f);
+            _currentWeaponInstance.transform.localScale = WeaponGripService.ComputeWeaponLocalScale(_currentWeaponInstance, socket, _activeProfile, currentItem, 1.0f, _currentMannequinInstance.transform);
         }
 
         private Transform ResolveStudioSocket(WeaponGripSocket socketType)

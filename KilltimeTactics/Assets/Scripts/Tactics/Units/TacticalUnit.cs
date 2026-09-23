@@ -101,11 +101,10 @@ namespace Killtime.Tactics.Units
         {
             if (_grid == null) return false;
             var weapon = Sheet != null ? Sheet.GetEquippedWeapon() : null;
-            bool hasLongWeapon = (weapon != null && (weapon.RangeInTiles > 1
-                                                     || weapon.AssociatedSkill == SkillType.Ballistique
-                                                     || weapon.AssociatedSkill == SkillType.ProjectilesTir
-                                                     || weapon.EquipSlot == Killtime.Core.Inventory.ItemEquipSlot.TwoHands))
-                                 || (GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true);
+            bool hasLongWeapon = weapon != null && (weapon.RangeInTiles > 1
+                                                    || weapon.AssociatedSkill == SkillType.Ballistique
+                                                    || weapon.AssociatedSkill == SkillType.ProjectilesTir
+                                                    || weapon.EquipSlot == Killtime.Core.Inventory.ItemEquipSlot.TwoHands);
             if (!hasLongWeapon) return false;
 
             var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
@@ -236,9 +235,21 @@ namespace Killtime.Tactics.Units
 
                 Sheet.AvailableXP = sheet.AvailableXP;
                 Sheet.TotalEarnedXP = sheet.TotalEarnedXP;
+                Sheet.TotalSpentXP = sheet.TotalSpentXP;
+                Sheet.FreeTrainingsUsed = sheet.FreeTrainingsUsed;
                 Sheet.CreditsCE = sheet.CreditsCE;
                 Sheet.BaseArmor = sheet.BaseArmor;
                 Sheet.LoreNotes = sheet.LoreNotes;
+                Sheet.Species = sheet.Species;
+                Sheet.Gender = sheet.Gender;
+                Sheet.Age = sheet.Age;
+                Sheet.Profile = sheet.Profile;
+                Sheet.ActiveClassId = sheet.ActiveClassId;
+                Sheet.BuildGuideEnabled = sheet.BuildGuideEnabled;
+                if (sheet.AttributeUpgradesPurchased != null)
+                {
+                    Sheet.AttributeUpgradesPurchased = (int[])sheet.AttributeUpgradesPurchased.Clone();
+                }
             }
 
             InitializePosition(coords, grid);

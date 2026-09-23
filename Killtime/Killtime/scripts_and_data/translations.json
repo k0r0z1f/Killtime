@@ -58,7 +58,8 @@
       "johnShip": "John's Ship",
       "thomas": "Thomas",
       "haliriel": "Haliriel",
-      "hybris": "Hybris 2035"
+      "hybris": "Hybris 2035",
+      "canyonCity": "Cleya"
     }
   },
   "french": {
@@ -120,7 +121,8 @@
       "johnShip": "Vaisseau de John",
       "thomas": "Thomas",
       "haliriel": "Haliriel",
-      "hybris": "Hybris 2035"
+      "hybris": "Hybris 2035",
+      "canyonCity": "Cleya"
     }
   }
 }

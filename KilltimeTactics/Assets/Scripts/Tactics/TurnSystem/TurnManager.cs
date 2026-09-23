@@ -361,6 +361,8 @@ namespace Killtime.Tactics.TurnSystem
             _allUnits.RemoveAll(u => u == null);
             _needsInitiativeRoll = true;
             SystemMode = TurnSystemMode.Exploration;
+            // Nouveau combat (ré)initialisé : aucun objet au sol (gourdin...) ne survit.
+            try { DroppedWeaponPickup.ClearAllDropped(); } catch { }
         }
 
         /// <summary>
@@ -617,6 +619,12 @@ namespace Killtime.Tactics.TurnSystem
 
             int prevAP = unit.Stats.CurrentActionPoints;
             unit.Stats.ResetTurn();
+
+            // Techniques de spécialisation (Livre III) : vieillissement des marques
+            // (failles exposées, provocations) et expiration des bonus de ligne
+            // « Tenir la Ligne ! » du donneur qui rejoue son tour.
+            Killtime.Core.Combat.SkillTechniqueState.OnUnitTurnStart(unit.Stats);
+
             int newAP = unit.Stats.CurrentActionPoints;
             int deltaAP = newAP - prevAP;
 

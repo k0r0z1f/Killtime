@@ -1877,6 +1877,7 @@ namespace Killtime.Story.Scenes
 
         public void CleanupScene()
         {
+            Killtime.Tactics.Units.DroppedWeaponPickup.ClearAllDropped();
             foreach (var kvp in _spawnedActors)
             {
                 if (kvp.Value != null) Destroy(kvp.Value.gameObject);

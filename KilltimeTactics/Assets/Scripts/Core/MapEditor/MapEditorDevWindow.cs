@@ -1531,6 +1531,7 @@ namespace Killtime.UI
             }
             else
             {
+                Killtime.Tactics.Units.DroppedWeaponPickup.ClearAllDropped();
                 var existingUnits = FindObjectsByType<TacticalUnit>();
                 for (int i = 0; i < existingUnits.Length; i++)
                 {

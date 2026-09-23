@@ -499,7 +499,8 @@
                         </li>
                         <li><em>Exemple 2 :</em> <strong>Premiers Soins (ÉRU)</strong>. Avec Érudition 3, le score de
                             base est <strong>3</strong> → <strong>+1 niveau</strong> (Dé associé :
-                            <strong>1d4</strong>). Piste de progression : <strong>3 cases</strong> (Livre I §5).</li>
+                            <strong>1d4</strong>). Piste de progression : <strong>3 cases</strong> (Livre I §5).
+                        </li>
                         <li><em>Exemple 3 :</em> <strong>Athlétisme (CON, FOR, AGI)</strong>. Avec Con 4, For 5, Agi 3,
                             la moyenne est (4 + 5 + 3) / 3 = <strong>4</strong> → <strong>+1 niveau</strong> (Dé associé
                             : <strong>1d4</strong>).
@@ -512,6 +513,11 @@
                         <strong>lié</strong> puis remise à 0. Dépense <strong>associée au coût normal, croisée
                             ×2</strong>. <strong>Entraînements gratuits :</strong> budget = <strong>Érudition</strong>
                         (ÉRU 3 → 3 gratuits, +1 ÉRU = +1 gratuit) ; 0 XP, <strong>hors XP total</strong>.
+                        <br><strong>Achat d'attributs en jeu :</strong> tout attribut peut être augmenté
+                        individuellement au tarif officiel <code>N ➔ N+1 = (N+1) XP</code> (ex: 4 ➔ 5 = 5 XP, 9 ➔ 10 =
+                        10 XP, plafond absolu 10). L'élévation de l'attribut recalcule immédiatement le rang de base des
+                        compétences affiliées, la taille de leurs futures pistes, et ouvre +1 gratuit permanent si
+                        l'Érudition progresse.
                     </p>
 
                     <h3>10.2 Les 5 Catégories Fonctionnelles d'Action</h3>
@@ -560,8 +566,15 @@
                         </div>
                         <div class="callout-body">
                             On peut utiliser une compétence de type défensif pour parer ou réagir à une attaque.
-                            Cependant, <strong>si la compétence utilisée n'est pas exclusivement défensive</strong> (ex: parer avec <em>Maniement d'Arme</em> ou <em>Mains Nues</em>), un <strong>malus de 1 niveau de dé (Die-Step Down)</strong> est appliqué. Détenir la <strong>spécialisation dédiée</strong> (ex: <em>Spécialisation Épée</em> pour une épée, ou <em>Arts Martiaux</em> pour les mains nues) annule immédiatement ce malus et rétablit le plein dé de la compétence. (ex: spécialisation <em>Bloquer</em> ou <em>Maniement de
-                                l'épée</em>). La spécialisation n'ajoute <strong>aucun +1 flat</strong> au tirage, et <strong>aucun modificateur de caractéristique n'est ajouté</strong> : le total vaut <strong>Tirage du dé + PA + malus situationnels</strong>.
+                            Cependant, <strong>si la compétence utilisée n'est pas exclusivement défensive</strong> (ex:
+                            parer avec <em>Maniement d'Arme</em> ou <em>Mains Nues</em>), un <strong>malus de 1 niveau
+                                de dé (Die-Step Down)</strong> est appliqué. Détenir la <strong>spécialisation
+                                dédiée</strong> (ex: <em>Spécialisation Épée</em> pour une épée, ou <em>Arts
+                                Martiaux</em> pour les mains nues) annule immédiatement ce malus et rétablit le plein dé
+                            de la compétence. (ex: spécialisation <em>Bloquer</em> ou <em>Maniement de
+                                l'épée</em>). La spécialisation n'ajoute <strong>aucun +1 flat</strong> au tirage, et
+                            <strong>aucun modificateur de caractéristique n'est ajouté</strong> : le total vaut
+                            <strong>Tirage du dé + PA + malus situationnels</strong>.
                         </div>
                     </div>
 
@@ -590,8 +603,10 @@
                             <strong>entraînements Mains Nues</strong> ajoutent ensuite +1 niveau chacun.<br>
                             <em>Exemple :</em> MAG 5 (<strong>+2 niveaux</strong>) + 3 entraînements = <strong>5
                                 niveaux</strong> depuis le d2 → <strong>D12</strong> en attaque.<br>
-                            La <strong>défense et les parades</strong> restent calculées en FOR / AGI : le Corps Augmenté
-                            ne s'applique qu'à l'attaque. <strong>Aucun modificateur n'est ajouté au tirage</strong> : la
+                            La <strong>défense et les parades</strong> restent calculées en FOR / AGI : le Corps
+                            Augmenté
+                            ne s'applique qu'à l'attaque. <strong>Aucun modificateur n'est ajouté au tirage</strong> :
+                            la
                             magie fixe le dé, puis le total vaut Tirage + PA + malus situationnels.
                         </div>
                     </div>
@@ -609,7 +624,8 @@
                             <tbody>
                                 <tr>
                                     <td><strong>Mains Nues</strong></td>
-                                    <td>Force ou (Force, Agilité) — <em>Corps Augmenté : MAG devient la référence en offensif si éveillé</em></td>
+                                    <td>Force ou (Force, Agilité) — <em>Corps Augmenté : MAG devient la référence en
+                                            offensif si éveillé</em></td>
                                     <td>Offensif, Défensif, Utilitaire</td>
                                     <td>Arts Martiaux, Agripper, Frapper, Étrangler</td>
                                 </tr>
@@ -617,13 +633,15 @@
                                     <td><strong>Maniement d'Arme</strong> (Tranchantes / Contondantes)</td>
                                     <td>Force, Agilité</td>
                                     <td>Offensif, Défensif</td>
-                                    <td><strong>Spécialisation Épée</strong>, <strong>Armes Contondantes</strong> (Marteau, Masse, Gourdin, Fléau), Hache de guerre, Zweihander</td>
+                                    <td><strong>Spécialisation Épée</strong>, <strong>Armes Contondantes</strong>
+                                        (Marteau, Masse, Gourdin, Fléau), Hache de guerre, Zweihander</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Athlétisme</strong></td>
                                     <td>Constitution, Force, Agilité</td>
                                     <td>Utilitaire</td>
-                                    <td><strong>Course d'Endurance</strong> (Second Souffle, Cœur de Marathon), <strong>Franchissement</strong> (Escalade Assurée, Nage de Combat)</td>
+                                    <td><strong>Course d'Endurance</strong> (Second Souffle, Cœur de Marathon),
+                                        <strong>Franchissement</strong> (Escalade Assurée, Nage de Combat)</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Défense Corporelle</strong></td>
@@ -694,7 +712,8 @@
                                     <td><strong>Ballistique / Tir</strong></td>
                                     <td>Agilité ou (Agilité, Vision)</td>
                                     <td>Offensif</td>
-                                    <td><strong>Spécialisation Fusil 1 main / Pistolet</strong>, Fusil de précision, Fusil d'assaut, Armes Lourdes</td>
+                                    <td><strong>Spécialisation Fusil 1 main / Pistolet</strong>, Fusil de précision,
+                                        Fusil d'assaut, Armes Lourdes</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Conduite & Pilotage</strong></td>
@@ -734,7 +753,8 @@
                                     <td><strong>Endurance Physique</strong></td>
                                     <td>Constitution, Force</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td><strong>Condition de Fer</strong> (Dur à Cuire, Mur de Chair), <strong>Trempe de Fer</strong> (Ignorer la Douleur, Esprit de Granit)</td>
+                                    <td><strong>Condition de Fer</strong> (Dur à Cuire, Mur de Chair), <strong>Trempe de
+                                            Fer</strong> (Ignorer la Douleur, Esprit de Granit)</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Cardio</strong></td>
@@ -888,7 +908,8 @@
                                     <td><strong>Intuition</strong></td>
                                     <td>Intelligence, Instinct</td>
                                     <td>Utilitaire, Défensif</td>
-                                    <td><strong>Sens du Danger</strong> (Premiers Réflexes, Clairvoyance du Vétéran), <strong>Instinct du Chasseur</strong> (Pistage, Piégeur)</td>
+                                    <td><strong>Sens du Danger</strong> (Premiers Réflexes, Clairvoyance du Vétéran),
+                                        <strong>Instinct du Chasseur</strong> (Pistage, Piégeur)</td>
                                 </tr>
                                 <tr>
                                     <td><strong>Nature & Survie</strong></td>
@@ -958,7 +979,8 @@
                                     <td>Offensif</td>
                                     <td>Piques et hallebardes à 2 cases sans malus d'allonge. Arrêt de Charge
                                         <strong>ignore 2 points d'armure</strong> (3 avec Mur de Piques, 4 avec
-                                        Phalange d'Acier). Fauchage fait chuter À Terre sur Delta &ge; 2.</td>
+                                        Phalange d'Acier). Fauchage fait chuter À Terre sur Delta &ge; 2.
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Tir à l'Arc</strong></td>
@@ -990,7 +1012,8 @@
                                     <td>Utilitaire, Défensif</td>
                                     <td><strong>+1 PV</strong> au début de chaque tour si blessé. Dur à Cuire :
                                         <strong>+2 Encaissement</strong>. Mur de Chair : +2 Encaissement et
-                                        <strong>+1 Armure</strong> naturelle.</td>
+                                        <strong>+1 Armure</strong> naturelle.
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Trempe de Fer</strong></td>
@@ -998,7 +1021,8 @@
                                     <td>Défensif</td>
                                     <td>Déstabilisé réduit à <strong>-1</strong>. Ignorer la Douleur annule le
                                         malus d'À Terre en attaque. Esprit de Granit ignore
-                                        <strong>Étourdi</strong>.</td>
+                                        <strong>Étourdi</strong>.
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Sens du Danger</strong></td>
@@ -1041,7 +1065,12 @@
                                     <td>Mains Nues (FOR, AGI, RAP)</td>
                                     <td>Offensif, Défensif</td>
                                     <td>Permet d'utiliser l'Agilité ou la Force pour parer à mains nues sans pénalité.
-                                        <strong>Immunité Canon Entravé :</strong> autorise les frappes au pied (kicks, coups de genou) à plein dé tout en tenant une arme longue en main. Sur choc traumatique, coup critique ou différentiel net &ge; 4, déclenche le <strong>Refoulement (Push-Kick)</strong> qui repousse la cible d'un mètre (Distance = 2), brisant l'enclavement au contact.</td>
+                                        <strong>Immunité Canon Entravé :</strong> autorise les frappes au pied (kicks,
+                                        coups de genou) à plein dé tout en tenant une arme longue en main. Sur choc
+                                        traumatique, coup critique ou différentiel net &ge; 4, déclenche le
+                                        <strong>Refoulement (Push-Kick)</strong> qui repousse la cible d'un mètre
+                                        (Distance = 2), brisant l'enclavement au contact.
+                                    </td>
                                 </tr>
                                 <tr>
                                     <td><strong>Médecine & Chirurgie</strong></td>

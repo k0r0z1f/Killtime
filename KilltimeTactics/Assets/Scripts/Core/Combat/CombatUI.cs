@@ -9,6 +9,7 @@ namespace Killtime.Tactics.CombatUI
         CinquiemeForceEtSorts,   // Livre IV : Arcanotech modulaire (XP = PA)
         TraumatologieEtSoins,    // Livre VII : Premiers soins, garrot, stimulants
         TactiqueEtOrdres,        // Livre III : Intimidation, commandement, garde
+        TechniquesDeSpecialisation, // Livre III : Techniques de spécialisation débloquées (2 PA)
         CommandesDev             // Outils de test développeur
     }
 

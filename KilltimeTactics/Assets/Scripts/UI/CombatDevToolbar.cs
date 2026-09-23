@@ -467,7 +467,10 @@ namespace Killtime.UI
 
             GUILayout.Space(6);
             GUI.backgroundColor = canAttack ? new Color(0.9f, 0.2f, 0.2f) : Color.gray;
-            GUI.enabled = canAttack;
+            // Ne jamais réactiver un contenu docké (base : GUI.enabled=false) :
+            // un `= true` inconditionnel rendrait l'aperçu cliquable.
+            bool prevEnabledAttack = GUI.enabled;
+            GUI.enabled = canAttack && prevEnabledAttack;
             int totalApCost = baseCost + _attackerBonusAP;
             if (GUILayout.Button(canAttack ? $"🎯 EXÉCUTER L'ATTAQUE CIBLÉE ({totalApCost} PA)" : "⚠️ QUOTA D'ATTAQUE ÉPUISÉ POUR CE TOUR", GUILayout.Height(40)))
             {
@@ -487,7 +490,7 @@ namespace Killtime.UI
                     );
                 }
             }
-            GUI.enabled = true;
+            GUI.enabled = prevEnabledAttack;
             GUI.backgroundColor = Color.white;
         }
 
@@ -522,7 +525,9 @@ namespace Killtime.UI
                     GUILayout.EndHorizontal();
                 }
 
-                GUI.enabled = !isPlayer;
+                // Ne jamais réactiver un contenu docké (base : GUI.enabled=false).
+                bool prevEnabledAI = GUI.enabled;
+                GUI.enabled = !isPlayer && prevEnabledAI;
 
                 bool newAiEnabled = GUILayout.Toggle(ai.IsAIEnabled, "Activer le Contrôleur d'IA");
                 if (newAiEnabled != ai.IsAIEnabled)
@@ -580,7 +585,7 @@ namespace Killtime.UI
                 }
                 GUILayout.EndHorizontal();
 
-                GUI.enabled = true;
+                GUI.enabled = prevEnabledAI;
 
                 GUILayout.EndVertical();
                 GUILayout.Space(6);

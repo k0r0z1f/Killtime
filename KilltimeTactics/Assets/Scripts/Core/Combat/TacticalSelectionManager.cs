@@ -28,6 +28,11 @@ namespace Killtime.Tactics.CombatUI
         public event Action<List<TacticalUnit>> OnSelectionChanged;
         public event Action<TacticalUnit, Vector2> OnOpenContextMenuRequested;
         public event Action OnCloseContextMenuRequested;
+        /// <summary>
+        /// Clic droit sur un objet au sol (gourdin, arme lâchée...) : ouvre le menu
+        /// d'interaction objet (ramasser / kicker / détruire) au lieu du radial d'unité.
+        /// </summary>
+        public event Action<DroppedWeaponPickup, Vector2> OnOpenDroppedWeaponMenuRequested;
 
         private void Awake()
         {
@@ -73,6 +78,13 @@ namespace Killtime.Tactics.CombatUI
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
+                    // Clic gauche sur un objet au sol : on ne purge PAS la sélection
+                    // (l'objet n'est pas une unité) ; on ferme juste le radial d'unité.
+                    if (TryGetDroppedPickup(hit, out _))
+                    {
+                        OnCloseContextMenuRequested?.Invoke();
+                        return;
+                    }
                     if (_grid.TryGetNodeAtWorldPosition(hit.point, out var node))
                     {
                         var clickedUnit = GetUnitAtCoordinates(node.Coordinates);
@@ -112,6 +124,13 @@ namespace Killtime.Tactics.CombatUI
                 Ray ray = cam.ScreenPointToRay(Input.mousePosition);
                 if (Physics.Raycast(ray, out RaycastHit hit))
                 {
+                    // Priorité objet au sol : clic droit sur gourdin/arme => menu objet.
+                    if (TryGetDroppedPickup(hit, out var dropped))
+                    {
+                        if (dropped != null && dropped.DroppedItem != null)
+                            OnOpenDroppedWeaponMenuRequested?.Invoke(dropped, mouseScreenPos);
+                        return;
+                    }
                     if (_grid.TryGetNodeAtWorldPosition(hit.point, out var node))
                     {
                         var clickedUnit = GetUnitAtCoordinates(node.Coordinates);
@@ -213,6 +232,43 @@ namespace Killtime.Tactics.CombatUI
                 if (u.CurrentCoords.Equals(coords)) return u;
             }
             return null;
+        }
+
+        /// <summary>
+        /// Résout le <see cref="DroppedWeaponPickup"/> visé par le raycast (clic objet).
+        /// 1) hit direct sur le collider de l'arme ; 2) repli : objet au sol proche
+        /// du point d'impact (≤ 0.6 m, tolérance de visée sur petit gourdin).
+        /// </summary>
+        private bool TryGetDroppedPickup(RaycastHit hit, out DroppedWeaponPickup pickup)
+        {
+            pickup = null;
+            try
+            {
+                if (hit.transform != null)
+                {
+                    pickup = hit.transform.GetComponentInParent<DroppedWeaponPickup>();
+                    if (pickup != null && pickup.DroppedItem != null) return true;
+                }
+            }
+            catch { pickup = null; }
+            // Repli : arme au sol juste à côté du point cliqué (petit objet, visée imprécise).
+            try
+            {
+                var all = DroppedWeaponPickup.AllDropped;
+                float best = 0.6f;
+                DroppedWeaponPickup bestPick = null;
+                for (int i = 0; i < all.Count; i++)
+                {
+                    var d = all[i];
+                    if (d == null || d.DroppedItem == null) continue;
+                    float dist = Vector3.Distance(d.transform.position, hit.point);
+                    if (dist <= best) { best = dist; bestPick = d; }
+                }
+                if (bestPick != null) { pickup = bestPick; return true; }
+            }
+            catch { }
+            pickup = null;
+            return false;
         }
     }
 }

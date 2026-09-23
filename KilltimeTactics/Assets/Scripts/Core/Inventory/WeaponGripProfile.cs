@@ -400,12 +400,12 @@ namespace Killtime.Core.Inventory
         {
             if (item == null || item.Type != ItemType.Weapon) return false;
             if (item.IsGrenade || item.IsThrowableGrenade()) return false;
-            // Armes blanches (dont contondantes legacy) : jamais des fusils.
             if (SkillDefinitions.IsMeleeWeaponSkill(item.AssociatedSkill)) return false;
             if (item.EquipSlot == ItemEquipSlot.TwoHands) return true;
-            if (item.AssociatedSkill == SkillType.Ballistique) return true;
+
             string n = ((item.Name ?? "") + " " + (item.PrefabPath ?? "")).ToLowerInvariant();
-            return n.Contains("rifle") || n.Contains("gun") || n.Contains("fusil") || n.Contains("shotgun");
+            if (n.Contains("pistol") || n.Contains("pistolet") || n.Contains("léger")) return false;
+            return n.Contains("rifle") || n.Contains("fusil d'assaut") || n.Contains("sniper") || n.Contains("shotgun");
         }
 
         public static float GetDefaultWeaponLength(InventoryItem item)
@@ -437,10 +437,27 @@ namespace Killtime.Core.Inventory
             return 0.85f;
         }
 
+        private static readonly Dictionary<string, (float length, int dominantAxis)> _dimensionCache = new(StringComparer.OrdinalIgnoreCase);
+
+        public static void ClearDimensionCache()
+        {
+            _dimensionCache.Clear();
+        }
+
         public static float MeasureBaseMeshLength(GameObject root, out int dominantAxis)
         {
             dominantAxis = 2;
             if (root == null) return 0.5f;
+
+            string cacheKey = root.name;
+            if (cacheKey.StartsWith("StudioWeapon_")) cacheKey = cacheKey.Substring("StudioWeapon_".Length);
+            if (cacheKey.StartsWith("Equipped_")) cacheKey = cacheKey.Substring("Equipped_".Length);
+
+            if (_dimensionCache.TryGetValue(cacheKey, out var cached) && cached.length > 0.02f)
+            {
+                dominantAxis = cached.dominantAxis;
+                return cached.length;
+            }
 
             bool hasBounds = false;
             Bounds totalBounds = default;
@@ -473,7 +490,12 @@ namespace Killtime.Core.Inventory
                 }
             }
 
-            if (!hasBounds) return 0.5f;
+            if (!hasBounds)
+            {
+                dominantAxis = 2;
+                _dimensionCache[cacheKey] = (0.5f, dominantAxis);
+                return 0.5f;
+            }
 
             Vector3 s = totalBounds.size;
             if (s.x >= s.y && s.x >= s.z) dominantAxis = 0;
@@ -481,11 +503,17 @@ namespace Killtime.Core.Inventory
             else dominantAxis = 2;
 
             float maxDim = Mathf.Max(s.x, Mathf.Max(s.y, s.z));
-            return maxDim > 0.01f ? maxDim : 0.5f;
+            float finalLen = maxDim > 0.02f ? maxDim : 0.5f;
+
+            _dimensionCache[cacheKey] = (finalLen, dominantAxis);
+            return finalLen;
         }
 
         private static Matrix4x4 GetRelativeMatrix(Transform child, Transform root)
         {
+            if (child == null || root == null || child == root)
+                return Matrix4x4.identity;
+
             Matrix4x4 m = Matrix4x4.TRS(child.localPosition, child.localRotation, child.localScale);
             Transform p = child.parent;
             while (p != null && p != root)
@@ -518,14 +546,27 @@ namespace Killtime.Core.Inventory
                 && (s.x + s.y + s.z) > 1e-6f;
         }
 
+        public static float GetParentUniformScale(Transform parent)
+        {
+            if (parent == null) return 1f;
+            Matrix4x4 m = parent.localToWorldMatrix;
+            Vector3 c0 = m.GetColumn(0);
+            Vector3 c1 = m.GetColumn(1);
+            Vector3 c2 = m.GetColumn(2);
+            float sx = Mathf.Sqrt(c0.x * c0.x + c0.y * c0.y + c0.z * c0.z);
+            float sy = Mathf.Sqrt(c1.x * c1.x + c1.y * c1.y + c1.z * c1.z);
+            float sz = Mathf.Sqrt(c2.x * c2.x + c2.y * c2.y + c2.z * c2.z);
+            float avg = (sx + sy + sz) / 3f;
+            if (float.IsNaN(avg) || float.IsInfinity(avg) || avg < 1e-4f) return 1f;
+            return avg;
+        }
+
         public static Vector3 ComputeWeaponLocalPosition(Transform socket, Transform characterTransform, WeaponGripProfile profile, float unitScale)
         {
             float parentScale = 1f;
             if (socket != null)
             {
-                Vector3 lossy = socket.lossyScale;
-                float avg = (Mathf.Abs(lossy.x) + Mathf.Abs(lossy.y) + Mathf.Abs(lossy.z)) / 3f;
-                if (avg > 1e-4f) parentScale = avg;
+                parentScale = GetParentUniformScale(socket);
             }
 
             Vector3 offset = profile.PositionOffset + profile.GripPivotOffset;
@@ -544,38 +585,34 @@ namespace Killtime.Core.Inventory
 
         public static Quaternion ComputeWeaponLocalRotation(GameObject weaponInstance, Transform socket, Transform characterTransform, WeaponGripProfile profile, InventoryItem item)
         {
-            bool isRifle = (profile.Socket == WeaponGripSocket.ChestTwoHands);
-            bool isPistol = (profile.Socket == WeaponGripSocket.RightHand || profile.Socket == WeaponGripSocket.LeftHand)
-                && (item != null && item.AssociatedSkill == SkillType.Ballistique && item.RangeInTiles > 1 && !isRifle);
+            int axis = 2;
+            MeasureBaseMeshLength(weaponInstance, out axis);
+            Quaternion align = (axis == 0) ? Quaternion.Euler(0f, -90f, 0f) : (axis == 1 ? Quaternion.Euler(90f, 0f, 0f) : Quaternion.identity);
 
-            if (isRifle || isPistol)
+            if (profile.Socket == WeaponGripSocket.ChestTwoHands || profile.Socket == WeaponGripSocket.Back)
             {
-                int axis = 2;
-                MeasureBaseMeshLength(weaponInstance, out axis);
-                Quaternion align = (axis == 0) ? Quaternion.Euler(0f, -90f, 0f) : (axis == 1 ? Quaternion.Euler(90f, 0f, 0f) : Quaternion.identity);
-
                 Quaternion charWorld = characterTransform != null ? characterTransform.rotation : Quaternion.identity;
                 Quaternion tilt = Quaternion.Euler(profile.RotationOffset);
                 Quaternion desiredWorld = charWorld * tilt * align;
 
-                Quaternion boneWorld = socket != null ? socket.rotation : charWorld;
-                if (boneWorld.x * boneWorld.x + boneWorld.y * boneWorld.y + boneWorld.z * boneWorld.z + boneWorld.w * boneWorld.w < 1e-6f)
+                Quaternion chestWorld = socket != null ? socket.rotation : charWorld;
+                if (chestWorld.x * chestWorld.x + chestWorld.y * chestWorld.y + chestWorld.z * chestWorld.z + chestWorld.w * chestWorld.w < 1e-6f)
                     return tilt * align;
 
-                Quaternion local = Quaternion.Inverse(boneWorld) * desiredWorld;
+                Quaternion local = Quaternion.Inverse(chestWorld) * desiredWorld;
                 if (float.IsNaN(local.x + local.y + local.z + local.w) || float.IsInfinity(local.x + local.y + local.z + local.w))
                     return tilt * align;
 
                 return local;
             }
 
-            return Quaternion.Euler(profile.RotationOffset);
+            return Quaternion.Euler(profile.RotationOffset) * align;
         }
 
-        public static Vector3 ComputeWeaponLocalScale(GameObject weaponInstance, Transform socket, WeaponGripProfile profile, InventoryItem item, float unitScale)
+        public static Vector3 ComputeWeaponLocalScale(GameObject weaponInstance, Transform socket, WeaponGripProfile profile, InventoryItem item, float unitScale, Transform characterTransform = null)
         {
             float baseLen = MeasureBaseMeshLength(weaponInstance, out _);
-            float targetWorldLen = (profile != null && profile.TargetWorldLength > 0.05f)
+            float targetWorldLen = (profile != null && profile.TargetWorldLength > 0.02f)
                 ? profile.TargetWorldLength
                 : GetDefaultWeaponLength(item);
 
@@ -586,12 +623,10 @@ namespace Killtime.Core.Inventory
             float parentScale = 1f;
             if (socket != null)
             {
-                Vector3 lossy = socket.lossyScale;
-                float avg = (Mathf.Abs(lossy.x) + Mathf.Abs(lossy.y) + Mathf.Abs(lossy.z)) / 3f;
-                if (avg > 1e-4f) parentScale = avg;
+                parentScale = GetParentUniformScale(socket);
             }
 
-            float desiredLocalScale = (targetWorldLen / Mathf.Max(baseLen, 1e-4f)) / parentScale;
+            float desiredLocalScale = (targetWorldLen / Mathf.Max(baseLen, 1e-4f)) / Mathf.Max(parentScale, 1e-4f);
             return Vector3.one * desiredLocalScale;
         }
     }
