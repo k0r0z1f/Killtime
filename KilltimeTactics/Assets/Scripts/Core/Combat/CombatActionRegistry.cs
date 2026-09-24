@@ -457,6 +457,12 @@ namespace Killtime.Tactics.CombatUI
             }
 
             // =========================================================================
+            // 5b. DUO-TECH (Lucas + Mina) — action unique, paiement immédiat des
+            // deux, tissage souris T1 + onde + T2, sans expiration.
+            // =========================================================================
+            actions.AddRange(DuoTechRegistry.GetDuoTechActions(actor, target, arena));
+
+            // =========================================================================
             // 6. COMMANDES DÉVELOPPEUR
             // =========================================================================
             actions.Add(new CombatAction(

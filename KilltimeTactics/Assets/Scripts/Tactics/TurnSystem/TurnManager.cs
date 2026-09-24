@@ -175,6 +175,7 @@ namespace Killtime.Tactics.TurnSystem
             CurrentOutcome = CombatOutcome.InProgress;
             _needsInitiativeRoll = true;
             CurrentRound = 1;
+            ResetDuoTechTracking();
 
             var ai = FindAnyObjectByType<Killtime.Tactics.AI.TacticalAIController>();
             if (ai != null)
@@ -361,8 +362,23 @@ namespace Killtime.Tactics.TurnSystem
             _allUnits.RemoveAll(u => u == null);
             _needsInitiativeRoll = true;
             SystemMode = TurnSystemMode.Exploration;
+            ResetDuoTechTracking();
             // Nouveau combat (ré)initialisé : aucun objet au sol (gourdin...) ne survit.
             try { DroppedWeaponPickup.ClearAllDropped(); } catch { }
+        }
+
+        /// <summary>
+        /// Nouveau combat = compteurs Duo-Tech remis à zéro (limite "1 duo par
+        /// personnage par round" repart à chaque affrontement).
+        /// </summary>
+        private void ResetDuoTechTracking()
+        {
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                var u = _allUnits[i];
+                if (u != null && u.Stats != null)
+                    u.Stats.LastDuoTechRound = 0;
+            }
         }
 
         /// <summary>

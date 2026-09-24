@@ -56,6 +56,7 @@ namespace Killtime.Multi
         public const string OpMapRequest = "map_request";     // { } -> le GM renvoie OpMapLoad
         public const string OpActionRequest = "action_request"; // Joueur -> GM : intention d'action (attaque, grenade, souffle, fin de tour)
         public const string OpUnitClaim = "unit_claim";       // Joueur -> hub : avatars possédés { unitIds[] } (brouillard asymétrique)
+        public const string OpWorldMap = "worldmap";          // GM uniquement { action: state|ping_sector|focus_sector }
 
         // --- Sous-actions pour OpTurnControl ---
         public const string TurnActionRoundStart = "round_start";
@@ -81,6 +82,11 @@ namespace Killtime.Multi
         public const string SceneActionFogReveal = "fog_reveal";
         public const string SceneActionFogHide = "fog_hide";
         public const string SceneActionSetLighting = "set_lighting";
+
+        // --- Sous-actions pour OpWorldMap (overworld d'Hybris, GM uniquement) ---
+        public const string WorldMapActionState = "state";         // { mapName, revision, partyNodeId, unlocked[], visited[], jours }
+        public const string WorldMapActionPingSector = "ping_sector";   // { sectorId, colorHex, message }
+        public const string WorldMapActionFocusSector = "focus_sector"; // { sectorId }
 
         public const string RoleGM = "gm";
         public const string RolePlayer = "player";
@@ -286,10 +292,55 @@ namespace Killtime.Multi
             return BuildOp(OpUnitClaim, JsonUtility.ToJson(payload));
         }
 
+        /// <summary>Opération carte monde (overworld d'Hybris, GM uniquement).</summary>
+        public static string BuildWorldMapOp(VTTWorldMapPayload payload)
+        {
+            return BuildOp(OpWorldMap, payload != null ? JsonUtility.ToJson(payload) : "{}");
+        }
+
+        /// <summary>État compact de campagne overworld : carte, révision, position, dévoilé.</summary>
+        public static string BuildWorldMapStateOp(string mapName, int revision, string partyNodeId,
+            List<string> unlocked, List<string> visited, int jours)
+        {
+            var payload = new VTTWorldMapPayload
+            {
+                action = WorldMapActionState,
+                mapName = mapName ?? "",
+                revision = revision,
+                partyNodeId = partyNodeId ?? "",
+                unlocked = unlocked ?? new List<string>(),
+                visited = visited ?? new List<string>(),
+                jours = jours
+            };
+            return BuildWorldMapOp(payload);
+        }
+
+        public static string BuildWorldMapPingSectorOp(string sectorId, string colorHex = "#FFDD00", string message = "")
+        {
+            var payload = new VTTWorldMapPayload
+            {
+                action = WorldMapActionPingSector,
+                sectorId = sectorId ?? "",
+                colorHex = colorHex,
+                message = message ?? ""
+            };
+            return BuildWorldMapOp(payload);
+        }
+
+        public static string BuildWorldMapFocusSectorOp(string sectorId)
+        {
+            var payload = new VTTWorldMapPayload
+            {
+                action = WorldMapActionFocusSector,
+                sectorId = sectorId ?? ""
+            };
+            return BuildWorldMapOp(payload);
+        }
+
         /// <summary>Indique si l'opération requiert le rôle GM sur le hub (users/server.js).</summary>
         public static bool IsGMOp(string op)
         {
-            return op == OpTurnControl || op == OpCombatAction || op == OpSceneControl || op == OpRoomSettings || op == OpMapLoad;
+            return op == OpTurnControl || op == OpCombatAction || op == OpSceneControl || op == OpRoomSettings || op == OpMapLoad || op == OpWorldMap;
         }
 
         /// <summary>Normalise un code de room côté client (même règle que le serveur).</summary>
@@ -700,6 +751,27 @@ namespace Killtime.Multi
     public class VTTUnitClaimPayload
     {
         public List<string> unitIds = new();
+    }
+
+    /// <summary>
+    /// Opération carte monde overworld (GM uniquement) : état compact de campagne,
+    /// ping ou focus d'un secteur. Le contenu complet de la carte (WorldMaps/*.json)
+    /// voyage hors-bande (export/import) ; seuls l'identité (mapName+revision) et
+    /// l'état de campagne transitent ici. Prévu pour la feature joueur VTT.
+    /// </summary>
+    [Serializable]
+    public class VTTWorldMapPayload
+    {
+        public string action = ""; // "state" | "ping_sector" | "focus_sector"
+        public string mapName = "";
+        public int revision;
+        public string partyNodeId = "";
+        public List<string> unlocked = new();
+        public List<string> visited = new();
+        public int jours;
+        public string sectorId = "";
+        public string colorHex = "#FFDD00";
+        public string message = "";
     }
 
     /// <summary>

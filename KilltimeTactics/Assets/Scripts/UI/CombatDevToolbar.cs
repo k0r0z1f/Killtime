@@ -61,6 +61,10 @@ namespace Killtime.UI
         private bool _defenderWantsToDefend = true;
         private int _weaponDamage = 5;
 
+        // Ralenti global dev : 1 = normal, 0.1 = 10x plus lent. F9 = bascule 1x / ralenti.
+        private float _devTimeScale = 1f;
+        private float _lastSlowedScale = 0.25f;
+
         private int _selectedTab = 0;
         private readonly string[] _tabNames = { "🎯 Tir Ciblé (VATS)", "🛠️ Outils & Cheats", "⏳ Chronomancie", "📜 Logs" };
 
@@ -111,6 +115,9 @@ namespace Killtime.UI
             _selectedTab = Mathf.Clamp(p.CombatToolbarTab, 0, _tabNames.Length - 1);
             _scrollLock = p.CombatLogScrollLock;
             Application.runInBackground = p.RunInBackground;
+            _devTimeScale = Mathf.Clamp(p.GlobalTimeScale, 0.1f, 1f);
+            _lastSlowedScale = _devTimeScale < 1f ? _devTimeScale : 0.25f;
+            SetDevTimeScale(_devTimeScale);
         }
 
         private static SkillType SafeSkill(int raw, SkillType fallback)
@@ -138,6 +145,7 @@ namespace Killtime.UI
             p.CombatToolbarTab = _selectedTab;
             p.CombatLogScrollLock = _scrollLock;
             p.RunInBackground = Application.runInBackground;
+            p.GlobalTimeScale = _devTimeScale;
             if (_arena != null)
             {
                 p.InfiniteAP = _arena.InfiniteAP;
@@ -190,6 +198,54 @@ namespace Killtime.UI
             else if (Input.GetKeyDown(KeyCode.F8)) EnsureDevWindow(ScenarioEditorDevWindow.Instance, ScenarioEditorDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F10)) EnsureDevWindow(WeaponGripEditorDevWindow.Instance, WeaponGripEditorDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F11)) EnsureDevWindow(RiverOfTimeDevWindow.Instance, RiverOfTimeDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F12)) EnsureDevWindow(Killtime.Story.HybrisWorldMapDevWindow.Instance, Killtime.Story.HybrisWorldMapDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.F9))
+            {
+                // Bascule ralenti : 1x <-> dernier ralenti (défaut 0.25x).
+                float target = CurrentDevTimeScale >= 1f ? _lastSlowedScale : 1f;
+                _devTimeScale = target;
+                SetDevTimeScale(target);
+            }
+        }
+
+        /// <summary>
+        /// Ralenti global dev (Time.timeScale), de 1x jusqu'à 0.1x. Ralentit tout :
+        /// animations, cinématiques, IA, projectiles. La pause (CombatHUD) reste
+        /// compatible : elle restaure la valeur pré-pause, pas forcément 1x.
+        /// </summary>
+        public static float CurrentDevTimeScale { get; private set; } = 1f;
+
+        public static void SetDevTimeScale(float scale)
+        {
+            scale = Mathf.Clamp(scale, 0.1f, 1f);
+            CurrentDevTimeScale = scale;
+            Time.timeScale = scale;
+            Time.fixedDeltaTime = 0.02f * scale;
+            try
+            {
+                var p = DevUIPreferences.Current;
+                if (p != null)
+                {
+                    p.GlobalTimeScale = scale;
+                    DevUIPreferences.MarkDirty();
+                }
+            }
+            catch { /* prefs optionnelles */ }
+        }
+
+        /// <summary>
+        /// Valeur dev lue sans dépendre de la fenêtre (utilisée par le directeur
+        /// cinématique pour restaurer le bon ralenti après un plan d'action).
+        /// </summary>
+        public static float ReadDevTimeScalePref()
+        {
+            try
+            {
+                var p = DevUIPreferences.Current;
+                if (p != null) return Mathf.Clamp(p.GlobalTimeScale, 0.1f, 1f);
+            }
+            catch { /* ignore */ }
+            return 1f;
         }
 
         /// <summary>
@@ -666,6 +722,30 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(8);
+            GUILayout.Label("<b>⏳ Ralenti Global (Time Scale Dev) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            GUI.color = _devTimeScale < 1f ? new Color(1f, 0.6f, 0.2f) : Color.white;
+            GUILayout.Label($"Vitesse : <b>{_devTimeScale:0.00}×</b>", GUILayout.Width(130));
+            GUI.color = Color.white;
+            float pickedScale = GUILayout.HorizontalSlider(_devTimeScale, 0.1f, 1f);
+            if (Mathf.Abs(pickedScale - _devTimeScale) > 0.001f)
+            {
+                _devTimeScale = pickedScale;
+                if (pickedScale < 1f) _lastSlowedScale = pickedScale;
+                SetDevTimeScale(pickedScale);
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("▶ 1×")) { _devTimeScale = 1f; SetDevTimeScale(1f); }
+            if (GUILayout.Button("0.5×")) { _devTimeScale = 0.5f; _lastSlowedScale = 0.5f; SetDevTimeScale(0.5f); }
+            if (GUILayout.Button("0.25×")) { _devTimeScale = 0.25f; _lastSlowedScale = 0.25f; SetDevTimeScale(0.25f); }
+            if (GUILayout.Button("🐌 0.1×")) { _devTimeScale = 0.1f; _lastSlowedScale = 0.1f; SetDevTimeScale(0.1f); }
+            GUILayout.EndHorizontal();
+            GUILayout.Label("<i>Ralentit tout (anims, cinématiques, IA). F9 = bascule 1× / ralenti. Min 0.1×.</i>");
+            GUILayout.EndVertical();
+
+            GUILayout.Space(8);
             GUILayout.Label("<b>💡 Éclairage & Atmosphère :</b>");
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("✨ Invoquer Pixie de Test", GUILayout.Height(30)))
@@ -707,6 +787,17 @@ namespace Killtime.UI
             if (GUILayout.Button("⚖️ Table des Règles du Codex (F3)", GUILayout.Height(32)))
             {
                 CoreRulesDevTableWindow.Open();
+            }
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>🗺️ Overworld & Campagne (réseau de secteurs) :</b>");
+            if (GUILayout.Button("🗺️ Carte Monde Hybris — Secteurs (F12)", GUILayout.Height(32)))
+            {
+                Killtime.Story.HybrisWorldMapDevWindow.Open();
+            }
+            if (GUILayout.Button("🛠️ Éditeur World Map (secteurs & liaisons)", GUILayout.Height(32)))
+            {
+                Killtime.Story.HybrisWorldMapEditorWindow.Open();
             }
 
             GUILayout.Space(4);

@@ -38,6 +38,19 @@ namespace Killtime.CameraSystem
         /// </summary>
         public bool IsFreeLook => CurrentMode == CameraMode.FreeLook;
 
+        /// <summary>
+        /// Ralenti global dev (1x → 0.1x) : les plans d'action restaurent cette
+        /// valeur au lieu de forcer 1x, sinon le slider dev serait écrasé.
+        /// </summary>
+        private static float DevTimeScale()
+        {
+            try
+            {
+                return Killtime.UI.CombatDevToolbar.ReadDevTimeScalePref();
+            }
+            catch { return 1f; }
+        }
+
         private float _freePitch = 0.0f;
         private float _freeYaw = 0.0f;
         private Coroutine _activeCinematicRoutine;
@@ -50,7 +63,7 @@ namespace Killtime.CameraSystem
                 _activeCinematicRoutine = null;
             }
 
-            Time.timeScale = 1.0f;
+            Time.timeScale = DevTimeScale();
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.ExitCinematicMode();
 
@@ -260,7 +273,7 @@ namespace Killtime.CameraSystem
                 readTimer += Time.unscaledDeltaTime;
                 yield return null;
             }
-            Time.timeScale = 1.0f;
+            Time.timeScale = DevTimeScale();
 
             // 3. Retour fluide à la vue tactique
             elapsed = 0f;

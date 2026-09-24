@@ -1236,6 +1236,16 @@ namespace Killtime.Tactics
                 return;
             }
 
+            // Tissage Duo-Tech en cours (dessin T1/T2 ou exécution) : la souris
+            // appartient au tissage. Ni survol, ni aperçu de chemin, ni clic de
+            // déplacement — sinon le drag de dessin déplacerait l'unité active.
+            if (DuoTech.DuoTechWeaveController.AnyWeaving)
+            {
+                _gridVisualizer.SetHoveredCoord(null);
+                _gridVisualizer.ClearPathPreview();
+                return;
+            }
+
             Ray ray = UnityEngine.Camera.main.ScreenPointToRay(Input.mousePosition);
             if (Physics.Raycast(ray, out RaycastHit hit))
             {

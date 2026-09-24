@@ -54,6 +54,9 @@ namespace Killtime.UI
         // --- Système & Multitâche ---
         public bool RunInBackground = true;
 
+        // --- Ralenti global dev (Time.timeScale, 0.1 = 10x plus lent, 1 = normal) ---
+        public float GlobalTimeScale = 1f;
+
         // --- IA tactique ---
         public int AiMode = 0; // Normal
         public int AiPersonality = 0; // Balanced

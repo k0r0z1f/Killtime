@@ -56,6 +56,10 @@ namespace Killtime.Tactics.CombatUI
         {
             if (CombatHUD.IsPaused) return;
 
+            // Tissage Duo-Tech en cours : clic gauche = dessin, clic droit = annulation.
+            // Ne pas changer la sélection ni ouvrir de menu contextuel entre-temps.
+            if (DuoTech.DuoTechWeaveController.AnyWeaving) return;
+
             var cam = UnityEngine.Camera.main;
             if (cam == null || _grid == null) return;
 

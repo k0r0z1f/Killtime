@@ -47,6 +47,11 @@ namespace Killtime.Core.Character
         public int InitiativeRollTotal { get; set; } = int.MinValue;
         public DiceType InitiativeDie { get; set; } = DiceType.D2;
 
+        // Duo-Tech : round (TurnManager.CurrentRound) du dernier duo tissé, tous
+        // rôles confondus (initiateur ou partenaire). 0 = aucun. Limite : 1 duo
+        // par personnage par round. Remis à 0 à chaque nouveau combat.
+        public int LastDuoTechRound { get; set; } = 0;
+
         public bool IsDead { get; set; }
         public bool IsInLastBreath { get; set; }
         public FatalBlowResolution LastFatalBlowResolution { get; set; } = FatalBlowResolution.None;

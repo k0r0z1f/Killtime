@@ -62,6 +62,7 @@ namespace Killtime.Story
                 ActiveScenarioId = definition.Id,
                 CurrentNodeId = definition.FirstNodeId
             };
+            State.EnsureWorldDefaults();
             ApplyEnterEffects(CurrentNode);
             Commit();
         }
@@ -69,6 +70,7 @@ namespace Killtime.Story
         public void ResetCampaign()
         {
             State = new CampaignState();
+            State.EnsureWorldDefaults();
             Commit();
         }
 
@@ -138,6 +140,116 @@ namespace Killtime.Story
             ScenarioCompleted?.Invoke(completedScenario);
         }
 
+        // ================= OVERWORLD D'HYBRIS =================
+
+        /// <summary>
+        /// Déplace le groupe vers un secteur voisin (lien direct requis).
+        /// Valide le lien, les flags requis et applique les coûts (jours, journal).
+        /// En godMode dev, le lien direct suffit (flags ignorés).
+        /// </summary>
+        public bool TravelToSector(string nodeId, bool godMode = false)
+        {
+            if (State == null) State = new CampaignState();
+            State.EnsureWorldDefaults();
+            var dest = HybrisWorldMapData.Find(nodeId);
+            if (dest == null) return false;
+            if (State.PartyNodeId == nodeId) return true;
+
+            var link = HybrisWorldMapData.FindLink(State.PartyNodeId, nodeId);
+            if (link == null)
+            {
+                Debug.LogWarning($"[ScenarioDirector] Voyage impossible : '{State.PartyNodeId}' et '{nodeId}' ne sont pas reliés.");
+                return false;
+            }
+
+            if (!godMode)
+            {
+                if (!string.IsNullOrWhiteSpace(link.RequiresFlag) && !State.HasFlag(link.RequiresFlag))
+                {
+                    Debug.LogWarning($"[ScenarioDirector] Lien verrouillé (flag requis: {link.RequiresFlag}).");
+                    return false;
+                }
+                if (!string.IsNullOrWhiteSpace(dest.RequiredFlag) && !State.HasFlag(dest.RequiredFlag))
+                {
+                    Debug.LogWarning($"[ScenarioDirector] Secteur verrouillé (flag requis: {dest.RequiredFlag}).");
+                    return false;
+                }
+            }
+
+            string fromName = HybrisWorldMapData.Find(State.PartyNodeId)?.Name ?? State.PartyNodeId;
+            State.PartyNodeId = dest.Id;
+            State.UnlockSector(dest.Id);
+            State.VisitSector(dest.Id);
+            if (!string.IsNullOrWhiteSpace(dest.GrantsFlagOnVisit))
+                State.SetFlag(dest.GrantsFlagOnVisit);
+            State.AddInt("jours_voyage", link.Days);
+            State.AddJournal($"Voyage : {fromName} ➔ {dest.Name} ({link.Miles} miles, {link.Days} j — {link.Label}).");
+            // Déverrouille les voisins pour lecture de carte (brouillard levé au contact).
+            foreach (var neighbor in HybrisWorldMapData.GetLinksFor(dest.Id))
+            {
+                string other = neighbor.OtherEnd(dest.Id);
+                if (!string.IsNullOrWhiteSpace(other)) State.UnlockSector(other);
+            }
+            Commit();
+            return true;
+        }
+
+        /// <summary>Téléportation dev (sans validation de lien).</summary>
+        public void TeleportPartyTo(string nodeId)
+        {
+            if (State == null) State = new CampaignState();
+            State.EnsureWorldDefaults();
+            var dest = HybrisWorldMapData.Find(nodeId);
+            if (dest == null) return;
+            State.PartyNodeId = dest.Id;
+            State.UnlockSector(dest.Id);
+            State.VisitSector(dest.Id);
+            if (!string.IsNullOrWhiteSpace(dest.GrantsFlagOnVisit))
+                State.SetFlag(dest.GrantsFlagOnVisit);
+            State.AddJournal($"Téléportation dev vers {dest.Name}.");
+            Commit();
+        }
+
+        public void UnlockAllSectors()
+        {
+            if (State == null) State = new CampaignState();
+            State.EnsureWorldDefaults();
+            foreach (var node in HybrisWorldMapData.ActiveNodes)
+                if (node != null) State.UnlockSector(node.Id);
+            Commit();
+        }
+
+        public void AllowEasternExpedition()
+        {
+            if (State == null) State = new CampaignState();
+            State.EnsureWorldDefaults();
+            State.SetFlag(HybrisWorldMapData.EasternExpeditionFlag);
+            State.UnlockSector("rivage_est");
+            State.AddJournal("Expédition vers le Continent Est autorisée (brumes chronales).");
+            Commit();
+        }
+
+        public void ResetWorldMap()
+        {
+            if (State == null) State = new CampaignState();
+            State.PartyNodeId = HybrisWorldMapData.StartNodeId;
+            State.UnlockedNodeIds = new System.Collections.Generic.List<string>();
+            State.VisitedNodeIds = new System.Collections.Generic.List<string>();
+            State.EnsureWorldDefaults();
+            State.AddJournal("Carte monde réinitialisée : groupe à Kingston.");
+            Commit();
+        }
+
+        /// <summary>
+        /// Répare les défauts monde après application d'une carte éditée, puis sauvegarde.
+        /// </summary>
+        public void RefreshWorldDefaults()
+        {
+            if (State == null) State = new CampaignState();
+            State.EnsureWorldDefaults();
+            Commit();
+        }
+
         private void MoveTo(string nodeId)
         {
             if (ActiveScenario?.FindNode(nodeId) == null)
@@ -191,6 +303,8 @@ namespace Killtime.Story
                 Debug.LogWarning($"[ScenarioDirector] Sauvegarde de campagne illisible: {exception.Message}");
                 State = new CampaignState();
             }
+            if (State == null) State = new CampaignState();
+            State.EnsureWorldDefaults();
         }
 
         private void Commit()
