@@ -117,6 +117,8 @@
 ---
 
 ## 🗂️ Structure du Projet
+
+```
 KilltimeTactics/
 ├── ProjectSettings/ # Configuration moteur Unity 6 LTS
 ├── Packages/manifest.json # URP, Sentis/InferenceEngine, InputSystem, TextMeshPro
@@ -167,6 +169,8 @@ KilltimeTactics/
 │ └── Voice/ # Moteur VoIP, codecs ADPCM/G.711, DSP et rééchantillonneur
 ├── UI/ # Fenêtres flottantes dev (F1 à F12), HUD et affichage VATS
 └── Tests/ # Bancs de tests unitaires et d'intégration NUnit
+```
+
 ---
 
 ## 🚀 Installation & Lancement
