@@ -1,42 +1,76 @@
+using System.Collections.Generic;
 using UnityEngine;
 using Killtime.UI;
 
 namespace Killtime.Story
 {
-    /// <summary>
-    /// Overworld d'Hybris — réseau de secteurs (carte nodale sur treillis hexagonal).
-    /// Fenêtre DevUI (F12) : déplace le groupe entre scènes tactiques fermées,
-    /// applique coûts/distances/verrous et lance les scènes JSON.
-    /// Fond stylisé d'après "Hybris 2035.png" + Livre X chap. 41-42.
-    /// </summary>
     public class HybrisWorldMapDevWindow : FloatingWindow<HybrisWorldMapDevWindow>
     {
         protected override int WindowId => 992;
-        protected override string Title => "Overworld Hybris — Réseau de Secteurs";
-        protected override Vector2 MinSize => new Vector2(760f, 560f);
+        protected override string Title => "Overworld Hybris — Réseau de Secteurs (Causalité Codex)";
+        protected override Vector2 MinSize => new Vector2(980f, 640f);
         protected override Rect DefaultRect => new Rect(
-            Mathf.Max(10f, Screen.width - 980f),
-            96f,
-            Mathf.Min(960f, Mathf.Max(760f, Screen.width - 40f)),
-            Mathf.Min(680f, Mathf.Max(560f, Screen.height - 110f)));
+            20f, 30f,
+            Mathf.Min(1400f, Mathf.Max(980f, Screen.width - 40f)),
+            Mathf.Min(900f, Mathf.Max(640f, Screen.height - 60f)));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
         private static readonly KeyCode[] _toggleKeys = { KeyCode.F12 };
 
         private string _selectedNodeId;
         private bool _godMode;
-        private bool _showHelp;
+        private bool _revealAllNames = true;
+        private bool _showHexGrid = true;
+        private bool _useParchment = true;
+        private Texture2D _parchmentTex;
+
         private Vector2 _rightScroll;
+
+        private Vector2 _canvasPan = Vector2.zero;
+        private float _canvasZoom = 1.0f;
+        private bool _isPanning = false;
+        private Vector2 _panStartMouse;
+        private Vector2 _panStartOrigin;
+        private const float CanvasBaseWidth = 1100f;
+        private const float CanvasBaseHeight = 720f;
+        private bool _hasAutoFittedView = false;
+        private Rect _lastCanvasViewRect;
+
+        private WorldMapPathResult _currentRoute;
+        private string _hoveredNodeId;
+        private ScenarioDefinition _cachedSelectedScenario;
 
         protected override void OnOpened()
         {
+            HybrisWorldMapData.EnsureInitialized();
             var director = ScenarioDirector.EnsureInstance();
             if (director.State == null) director.ResetCampaign();
             director.State.EnsureWorldDefaults();
-            if (string.IsNullOrWhiteSpace(_selectedNodeId))
-                _selectedNodeId = director.State.PartyNodeId;
-            if (HybrisWorldMapData.Find(_selectedNodeId) == null)
-                _selectedNodeId = director.State.PartyNodeId;
+            _selectedNodeId = director.State.PartyNodeId;
+
+            if (_parchmentTex == null)
+            {
+                _parchmentTex = Resources.Load<Texture2D>("WorldMap/Hybris_Parchment_Map")
+                             ?? Resources.Load<Texture2D>("Hybris_Parchment_Map")
+                             ?? Resources.Load<Texture2D>("hybris_map");
+            }
+
+            _hasAutoFittedView = false;
+            RecalculateRouteAndScenario();
+        }
+
+        public void FitToView(Rect viewRect)
+        {
+            if (viewRect.width <= 50f || viewRect.height <= 50f) return;
+            float scaleX = viewRect.width / CanvasBaseWidth;
+            float scaleY = viewRect.height / CanvasBaseHeight;
+            _canvasZoom = Mathf.Min(scaleX, scaleY) * 0.98f;
+            float fittedW = CanvasBaseWidth * _canvasZoom;
+            float fittedH = CanvasBaseHeight * _canvasZoom;
+            _canvasPan = new Vector2(
+                (viewRect.width - fittedW) * 0.5f,
+                (viewRect.height - fittedH) * 0.5f
+            );
         }
 
         protected override void DrawContent()
@@ -44,22 +78,14 @@ namespace Killtime.Story
             var director = ScenarioDirector.EnsureInstance();
             if (director.State == null) director.ResetCampaign();
             director.State.EnsureWorldDefaults();
-            var state = director.State;
-
-            if (HybrisWorldMapData.Find(_selectedNodeId) == null)
-                _selectedNodeId = state.PartyNodeId;
 
             DrawTopBar(director);
 
-            GUILayout.BeginHorizontal();
-            DrawMapPanel(director);
+            GUILayout.BeginHorizontal(GUILayout.ExpandHeight(true));
+            DrawMapCanvas(director);
             DrawInspectorPanel(director);
             GUILayout.EndHorizontal();
-
-            if (_showHelp) DrawHelpBox();
         }
-
-        // ================= BARRE SUPÉRIEURE =================
 
         private void DrawTopBar(ScenarioDirector director)
         {
@@ -69,268 +95,415 @@ namespace Killtime.Story
             GUILayout.BeginVertical(GUI.skin.box);
             GUILayout.BeginHorizontal();
             GUILayout.Label($"<b>◎ Groupe : {party?.Name ?? state.PartyNodeId}</b>", GUILayout.Width(220));
-            GUILayout.Label($"Route: <b>{state.Route}</b>", GUILayout.Width(150));
-            GUILayout.Label($"Jours de voyage: <b>{state.GetInt("jours_voyage")}</b>", GUILayout.Width(150));
+            GUILayout.Label($"Jours de voyage : <b>{state.GetInt("jours_voyage")}</b>", GUILayout.Width(150));
             GUILayout.Label(HybrisWorldMapData.IsCustomized
                 ? $"<color=cyan>🗺️ {HybrisWorldMapData.ActiveMapName} (rev {HybrisWorldMapData.ActiveRevision})</color>"
-                : "<color=grey>🗺️ canon</color>");
+                : "<color=grey>🗺️ Canon Codex</color>", GUILayout.Width(150));
+            
+            _revealAllNames = GUILayout.Toggle(_revealAllNames, "👁️ Révéler Noms", GUILayout.Width(125));
+            _showHexGrid = GUILayout.Toggle(_showHexGrid, "⬡ Grille Hex", GUILayout.Width(105));
+            _useParchment = GUILayout.Toggle(_useParchment, "🗺️ Fond Carte", GUILayout.Width(110));
+
             GUILayout.FlexibleSpace();
-            bool newGod = GUILayout.Toggle(_godMode, "🛠️ God dev (ignore verrous)", GUILayout.Width(200));
-            if (newGod != _godMode) _godMode = newGod;
-            _showHelp = GUILayout.Toggle(_showHelp, "❓ Aide", GUILayout.Width(70));
+            _godMode = GUILayout.Toggle(_godMode, "🛠️ God Mode", GUILayout.Width(105));
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("🔓 Tout déverrouiller", GUILayout.Height(26)))
-                director.UnlockAllSectors();
-            if (GUILayout.Button("⛵ Autoriser expédition Est", GUILayout.Height(26)))
-                director.AllowEasternExpedition();
-            if (GUILayout.Button("🛠️ Éditeur", GUILayout.Width(100), GUILayout.Height(26)))
+            if (GUILayout.Button("🎯 Ajuster", GUILayout.Width(90), GUILayout.Height(24)))
+            {
+                _hasAutoFittedView = false;
+            }
+            if (GUILayout.Button("4×", GUILayout.Width(40), GUILayout.Height(24))) ApplyZoomPreset(4f);
+            if (GUILayout.Button("15×", GUILayout.Width(44), GUILayout.Height(24))) ApplyZoomPreset(15f);
+            if (GUILayout.Button("43× (40mi)", GUILayout.Width(82), GUILayout.Height(24))) ApplyZoomPreset(43f);
+
+            float curViewW = _lastCanvasViewRect.width > 50f ? _lastCanvasViewRect.width : CanvasBaseWidth;
+            float curVisMiles = (curViewW / Mathf.Max(1f, CanvasBaseWidth * _canvasZoom)) * (300f / 0.175f);
+            GUILayout.Label($"Zoom: <b>{_canvasZoom:0.0}×</b> (~{Mathf.RoundToInt(curVisMiles)} mi)", GUILayout.Width(140));
+
+            if (GUILayout.Button("🔓 Déverrouiller Tout", GUILayout.Height(24))) director.UnlockAllSectors();
+            if (GUILayout.Button("⛵ Autoriser Expédition Est", GUILayout.Height(24))) director.AllowEasternExpedition();
+            if (GUILayout.Button("↻ Recharger Fichier", GUILayout.Width(140), GUILayout.Height(24)))
+            {
+                HybrisWorldMapData.ForceReloadActive();
+                director.State.EnsureWorldDefaults();
+                _selectedNodeId = director.State.PartyNodeId;
+                RecalculateRouteAndScenario();
+            }
+            if (GUILayout.Button("🛠️ Éditeur de Carte", GUILayout.Width(140), GUILayout.Height(24)))
+            {
+                CloseWindow();
                 HybrisWorldMapEditorWindow.Open();
-            if (GUILayout.Button("📜 Scènes (F7)", GUILayout.Width(110), GUILayout.Height(26)))
-                ScenarioDevWindow.Open();
-            if (GUILayout.Button("↺ Reset carte", GUILayout.Width(110), GUILayout.Height(26)))
+            }
+            if (GUILayout.Button("↺ Réinitialiser", GUILayout.Width(100), GUILayout.Height(24)))
             {
                 director.ResetWorldMap();
                 _selectedNodeId = director.State.PartyNodeId;
+                RecalculateRouteAndScenario();
             }
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
         }
 
-        // ================= CARTE =================
-
-        private void DrawMapPanel(ScenarioDirector director)
+        private void DrawMapCanvas(ScenarioDirector director)
         {
-            GUILayout.BeginVertical(GUILayout.ExpandWidth(true));
-            Rect mapRect = GUILayoutUtility.GetRect(GUIContent.none, GUIStyle.none,
-                GUILayout.ExpandWidth(true), GUILayout.Height(430f));
-            if (mapRect.width > 10f && mapRect.height > 10f)
-                DrawMap(mapRect, director);
-            GUILayout.Label("<i>Fond stylisé d'après Hybris 2035.png (2 continents + Vagas + Aurora) • Treillis hexagonal • ◎ = groupe</i>");
+            GUILayout.BeginVertical(GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+
+            Rect viewRect = GUILayoutUtility.GetRect(GUIContent.none, GUIStyle.none,
+                GUILayout.ExpandWidth(true), GUILayout.ExpandHeight(true));
+
+            if (viewRect.width > 100f && viewRect.height > 100f)
+            {
+                _lastCanvasViewRect = viewRect;
+                if (!_hasAutoFittedView)
+                {
+                    FitToView(viewRect);
+                    _hasAutoFittedView = true;
+                }
+
+                HandleCanvasNavigation(viewRect);
+
+                GUI.BeginClip(viewRect);
+                Rect canvasRect = new Rect(_canvasPan.x, _canvasPan.y, CanvasBaseWidth * _canvasZoom, CanvasBaseHeight * _canvasZoom);
+
+                Texture2D texToDraw = _useParchment ? _parchmentTex : null;
+                HybrisWorldMapDraw.DrawBackdrop(canvasRect, viewRect, _canvasZoom, texToDraw, 0.88f, _showHexGrid);
+
+                DrawLinks(canvasRect, director);
+                DrawNodes(canvasRect, director);
+
+                if (!string.IsNullOrEmpty(_hoveredNodeId))
+                {
+                    var hNode = HybrisWorldMapData.Find(_hoveredNodeId);
+                    if (hNode != null)
+                    {
+                        HybrisWorldMapDraw.DrawTooltip(new Rect(0, 0, viewRect.width, viewRect.height),
+                            hNode.Name, $"{HybrisWorldMapData.BiomeLabel(hNode.Biome)} — {HybrisWorldMapData.DangerLabel(hNode.Danger)}");
+                    }
+                }
+
+                GUI.EndClip();
+            }
+
+            GUILayout.Label("<i>Navigation : Molette = Zoom • Clic droit / Alt+Clic = Pan • Clic secteur = Tracer Route</i>");
             GUILayout.EndVertical();
         }
 
-        private void DrawMap(Rect mapRect, ScenarioDirector director)
+        private void HandleCanvasNavigation(Rect viewRect)
         {
-            var state = director.State;
+            Event e = Event.current;
+            if (e == null) return;
+            Vector2 mp = e.mousePosition;
+            bool inside = viewRect.Contains(mp);
 
-            HybrisWorldMapDraw.DrawBackdrop(mapRect);
-
-            // Liens.
-            foreach (var link in HybrisWorldMapData.ActiveLinks)
+            if (e.type == EventType.MouseUp || e.rawType == EventType.MouseUp)
             {
-                var a = HybrisWorldMapData.Find(link.FromId);
-                var b = HybrisWorldMapData.Find(link.ToId);
-                if (a == null || b == null) continue;
-                Vector2 pa = HybrisWorldMapDraw.NodeScreenPos(mapRect, a);
-                Vector2 pb = HybrisWorldMapDraw.NodeScreenPos(mapRect, b);
-
-                bool locked = IsLinkLocked(state, link) || IsNodeLocked(state, a) || IsNodeLocked(state, b);
-                bool active = link.Connects(state.PartyNodeId);
-                Color c = locked ? new Color(0.9f, 0.25f, 0.25f, 0.55f)
-                    : link.IsSeaCrossing ? new Color(0.35f, 0.75f, 1f, active ? 0.95f : 0.6f)
-                    : new Color(0.55f, 0.9f, 0.6f, active ? 0.95f : 0.55f);
-                HybrisWorldMapDraw.DrawLine(pa, pb, c, active ? 3f : 2f);
-
-                Vector2 mid = (pa + pb) * 0.5f;
-                GUI.Label(new Rect(mid.x - 30, mid.y - 20, 60, 16),
-                    $"<color=#cbd5e1><size=10>{link.Miles} mi</size></color>");
+                if (_isPanning)
+                {
+                    _isPanning = false;
+                    e.Use();
+                    return;
+                }
+                _isPanning = false;
             }
 
-            // Nœuds.
-            foreach (var node in HybrisWorldMapData.ActiveNodes)
+            if (inside && e.type == EventType.ScrollWheel)
             {
-                if (node == null) continue;
-                Vector2 p = HybrisWorldMapDraw.NodeScreenPos(mapRect, node);
-                bool isParty = state.PartyNodeId == node.Id;
-                bool isSelected = _selectedNodeId == node.Id;
-                bool locked = IsNodeLocked(state, node);
+                float oldZoom = _canvasZoom;
+                float zoomFactor = Mathf.Pow(1.12f, -e.delta.y);
+                _canvasZoom = Mathf.Clamp(_canvasZoom * zoomFactor, 0.30f, 50.0f);
+                Vector2 mouseCanvasPos = (mp - viewRect.position - _canvasPan) / oldZoom;
+                _canvasPan = (mp - viewRect.position) - mouseCanvasPos * _canvasZoom;
+                e.Use();
+                return;
+            }
 
-                if (isParty)
-                    GUI.Label(new Rect(p.x - 20, p.y - 34, 40, 18), "<color=yellow><b><size=14>◎</size></b></color>");
+            if (_isPanning && e.type == EventType.MouseDrag)
+            {
+                _canvasPan = _panStartOrigin + (mp - _panStartMouse);
+                e.Use();
+                return;
+            }
 
-                string label = (locked ? "🔒 " : "") + node.Name;
-                Color prevBg = GUI.backgroundColor;
-                GUI.backgroundColor = isParty ? new Color(0.9f, 0.75f, 0.2f)
-                    : isSelected ? new Color(0.25f, 0.7f, 1f)
-                    : locked ? new Color(0.35f, 0.2f, 0.2f)
-                    : state.IsSectorVisited(node.Id) ? new Color(0.3f, 0.65f, 0.4f)
-                    : new Color(0.5f, 0.55f, 0.6f);
-                Rect btnRect = new Rect(p.x - 66, p.y - 12, 132, 24);
-                if (GUI.Button(btnRect, label)) _selectedNodeId = node.Id;
-                GUI.backgroundColor = prevBg;
+            Rect canvasRect = new Rect(_canvasPan.x, _canvasPan.y, CanvasBaseWidth * _canvasZoom, CanvasBaseHeight * _canvasZoom);
+            Vector2 localPos = mp - viewRect.position;
+
+            _hoveredNodeId = null;
+            if (inside)
+            {
+                foreach (var n in HybrisWorldMapData.ActiveNodes)
+                {
+                    if (n == null) continue;
+                    Vector2 np = HybrisWorldMapDraw.NodeCanvasPos(canvasRect, n);
+                    if (Vector2.Distance(localPos, np) < 30f * _canvasZoom)
+                    {
+                        _hoveredNodeId = n.Id;
+                        break;
+                    }
+                }
+            }
+
+            if (inside)
+            {
+                if (e.type == EventType.MouseDown && (e.button == 1 || e.button == 2 || (e.button == 0 && e.alt)))
+                {
+                    _isPanning = true;
+                    _panStartMouse = mp;
+                    _panStartOrigin = _canvasPan;
+                    e.Use();
+                    return;
+                }
+
+                if (e.type == EventType.MouseDown && e.button == 0)
+                {
+                    if (!string.IsNullOrEmpty(_hoveredNodeId))
+                    {
+                        _selectedNodeId = _hoveredNodeId;
+                        RecalculateRouteAndScenario();
+                        if (e.clickCount >= 2)
+                        {
+                            var targetNode = HybrisWorldMapData.Find(_selectedNodeId);
+                            if (targetNode != null)
+                            {
+                                ZoomToNode(targetNode, 43.0f, viewRect);
+                            }
+                        }
+                        e.Use();
+                        return;
+                    }
+                    else
+                    {
+                        _isPanning = true;
+                        _panStartMouse = mp;
+                        _panStartOrigin = _canvasPan;
+                        e.Use();
+                        return;
+                    }
+                }
+
+                if (e.type == EventType.MouseDrag)
+                {
+                    e.Use();
+                    return;
+                }
             }
         }
 
-        // ================= INSPECTEUR =================
+        private void ApplyZoomPreset(float targetZoom)
+        {
+            float oldZoom = _canvasZoom;
+            _canvasZoom = Mathf.Clamp(targetZoom, 0.30f, 50.0f);
+            float viewW = _lastCanvasViewRect.width > 50f ? _lastCanvasViewRect.width : CanvasBaseWidth;
+            float viewH = _lastCanvasViewRect.height > 50f ? _lastCanvasViewRect.height : CanvasBaseHeight;
+            Vector2 screenCenter = new Vector2(viewW * 0.5f, viewH * 0.5f);
+            Vector2 canvasCenter = (screenCenter - _canvasPan) / oldZoom;
+            _canvasPan = screenCenter - canvasCenter * _canvasZoom;
+        }
+
+        private void ZoomToNode(HybrisSectorNode node, float targetZoom, Rect viewRect)
+        {
+            if (node == null) return;
+            _canvasZoom = Mathf.Clamp(targetZoom, 0.30f, 50.0f);
+            float viewW = viewRect.width > 50f ? viewRect.width : CanvasBaseWidth;
+            float viewH = viewRect.height > 50f ? viewRect.height : CanvasBaseHeight;
+            _canvasPan = new Vector2(
+                (viewW * 0.5f) - (node.MapPos.x * CanvasBaseWidth * _canvasZoom),
+                (viewH * 0.5f) - (node.MapPos.y * CanvasBaseHeight * _canvasZoom));
+        }
+
+        private void DrawLinks(Rect canvasRect, ScenarioDirector director)
+        {
+            var state = director.State;
+            var pathLinks = _currentRoute?.Links ?? new List<HybrisSectorLink>();
+
+            foreach (var l in HybrisWorldMapData.ActiveLinks)
+            {
+                if (l == null) continue;
+                var a = HybrisWorldMapData.Find(l.FromId);
+                var b = HybrisWorldMapData.Find(l.ToId);
+                if (a == null || b == null) continue;
+
+                Vector2 pa = HybrisWorldMapDraw.NodeCanvasPos(canvasRect, a);
+                Vector2 pb = HybrisWorldMapDraw.NodeCanvasPos(canvasRect, b);
+
+                bool isRoutePart = pathLinks.Contains(l);
+                bool locked = !string.IsNullOrEmpty(l.RequiresFlag) && !state.HasFlag(l.RequiresFlag);
+
+                Color c = isRoutePart ? new Color(1f, 0.85f, 0.1f, 0.95f)
+                    : locked ? new Color(0.85f, 0.25f, 0.25f, 0.55f)
+                    : l.IsSeaCrossing ? new Color(0.35f, 0.75f, 1f, 0.75f)
+                    : new Color(0.60f, 0.85f, 0.65f, 0.65f);
+
+                float width = Mathf.Clamp((isRoutePart ? 4.0f : 2.0f) * Mathf.Sqrt(_canvasZoom), 1.5f, 8f);
+
+                if (l.IsSeaCrossing)
+                    HybrisWorldMapDraw.DrawDashedLine(pa, pb, c, width, 10f * Mathf.Clamp(_canvasZoom, 0.5f, 3f), 6f * Mathf.Clamp(_canvasZoom, 0.5f, 3f));
+                else
+                    HybrisWorldMapDraw.DrawLine(pa, pb, c, width);
+
+                if (_canvasZoom >= 3.0f && !string.IsNullOrEmpty(l.Label))
+                {
+                    Vector2 mid = (pa + pb) * 0.5f;
+                    GUI.Label(new Rect(mid.x - 70f, mid.y - 12f, 140f, 24f),
+                        $"<size=9><color=#e2e8f0><b>{l.Label}</b> ({l.Miles}mi)</color></size>",
+                        new GUIStyle(GUI.skin.label) { alignment = TextAnchor.MiddleCenter });
+                }
+            }
+        }
+
+        private void DrawNodes(Rect canvasRect, ScenarioDirector director)
+        {
+            var state = director.State;
+
+            foreach (var node in HybrisWorldMapData.ActiveNodes)
+            {
+                if (node == null) continue;
+                Vector2 p = HybrisWorldMapDraw.NodeCanvasPos(canvasRect, node);
+                bool isParty = state.PartyNodeId == node.Id;
+                bool isSelected = _selectedNodeId == node.Id;
+                bool isVisited = state.IsSectorVisited(node.Id);
+                bool isUnlocked = state.IsSectorUnlocked(node.Id) || _godMode;
+                bool locked = !string.IsNullOrEmpty(node.RequiredFlag) && !state.HasFlag(node.RequiredFlag);
+
+                Color prev = GUI.backgroundColor;
+
+                if (isParty)
+                {
+                    GUI.backgroundColor = new Color(0.95f, 0.80f, 0.15f);
+                    GUI.Label(new Rect(p.x - 12f, p.y - 32f * _canvasZoom, 30f, 20f), "<color=yellow><b><size=16>◎</size></b></color>");
+                }
+                else if (isSelected)
+                {
+                    GUI.backgroundColor = new Color(0.25f, 0.80f, 1.0f);
+                }
+                else if (locked)
+                {
+                    GUI.backgroundColor = new Color(0.40f, 0.20f, 0.20f);
+                }
+                else if (isVisited)
+                {
+                    GUI.backgroundColor = new Color(0.30f, 0.65f, 0.40f);
+                }
+                else if (isUnlocked)
+                {
+                    GUI.backgroundColor = new Color(0.40f, 0.45f, 0.55f);
+                }
+                else
+                {
+                    GUI.backgroundColor = new Color(0.25f, 0.25f, 0.28f, 0.70f);
+                }
+
+                string displayName = (isUnlocked || _revealAllNames) ? node.Name : "???";
+                string prefix = locked ? "🔒 " : (isParty ? "★ " : "");
+                string fullLabel = prefix + displayName;
+
+                Vector2 textSize = GUI.skin.button.CalcSize(new GUIContent(fullLabel));
+                float bw = Mathf.Max(95f, (textSize.x + 16f) * Mathf.Clamp(_canvasZoom, 0.75f, 1.25f));
+                float bh = Mathf.Max(22f, 24f * Mathf.Clamp(_canvasZoom, 0.75f, 1.25f));
+                Rect r = new Rect(p.x - bw * 0.5f, p.y - bh * 0.5f, bw, bh);
+
+                if (GUI.Button(r, fullLabel))
+                {
+                    _selectedNodeId = node.Id;
+                    RecalculateRouteAndScenario();
+                }
+
+                GUI.backgroundColor = prev;
+            }
+        }
 
         private void DrawInspectorPanel(ScenarioDirector director)
         {
             var state = director.State;
             var node = HybrisWorldMapData.Find(_selectedNodeId);
-            var party = HybrisWorldMapData.Find(state.PartyNodeId);
 
-            GUILayout.BeginVertical(GUILayout.Width(320));
-            _rightScroll = GUILayout.BeginScrollView(_rightScroll, GUILayout.Height(430f));
+            GUILayout.BeginVertical(GUILayout.Width(350), GUILayout.ExpandHeight(true));
+            _rightScroll = GUILayout.BeginScrollView(_rightScroll, GUILayout.ExpandHeight(true));
 
             if (node == null)
             {
-                GUILayout.Label("Sélectionnez un secteur sur la carte.");
+                GUILayout.Label("<color=grey>Sélectionnez un secteur sur la carte.</color>");
                 GUILayout.EndScrollView();
                 GUILayout.EndVertical();
                 return;
             }
 
-            bool locked = IsNodeLocked(state, node);
             bool isParty = state.PartyNodeId == node.Id;
 
             GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.Label($"<b>{(locked ? "🔒 " : "")}{node.Name}</b>");
+            GUILayout.Label($"<b><size=13>{node.Name}</size></b>");
             GUILayout.Label($"<color=orange>{node.Region}</color>");
+            GUILayout.Label($"Coordonnées Axiales : <b>(Q={node.HexQ}, R={node.HexR}, S={node.HexS})</b>");
             GUILayout.Label($"{HybrisWorldMapData.BiomeLabel(node.Biome)} • {HybrisWorldMapData.DangerLabel(node.Danger)}");
             GUILayout.Label(node.Description);
-            GUILayout.Label(isParty ? "<color=yellow>◎ Position actuelle du groupe</color>"
-                : state.IsSectorVisited(node.Id) ? "<color=green>✓ Déjà visité</color>"
-                : locked ? "<color=red>Verrouillé — voir condition</color>"
-                : "<color=grey>Non visité</color>");
-            if (!string.IsNullOrWhiteSpace(node.RequiredFlag))
-                GUILayout.Label($"Condition : flag <b>{node.RequiredFlag}</b> {(state.HasFlag(node.RequiredFlag) ? "<color=green>(rempli)</color>" : "<color=red>(manquant)</color>")}");
-            if (!string.IsNullOrWhiteSpace(node.LinkedScenarioId))
-                GUILayout.Label($"Scène tactique : <b>{node.LinkedScenarioId}</b>");
             GUILayout.EndVertical();
 
-            // Voyage.
-            GUILayout.Space(4);
-            GUILayout.Label("<b>Voyage</b>");
+            GUILayout.Space(6);
+            GUILayout.Label("<b>Planification d'Itinéraire</b>");
             if (isParty)
             {
-                GUILayout.Label("<color=grey>Le groupe est déjà ici.</color>");
+                GUILayout.Label("<color=yellow>◎ Le groupe est actuellement stationné dans ce secteur.</color>");
+            }
+            else if (_currentRoute != null && _currentRoute.IsReachable)
+            {
+                GUILayout.Label($"Distance : <b>{_currentRoute.TotalMiles} miles</b> | Durée : <b>{_currentRoute.TotalDays} jour(s)</b>");
+                GUILayout.Label($"Étapes : {string.Join(" ➔ ", _currentRoute.Path)}");
+
+                GUI.backgroundColor = new Color(0.2f, 0.85f, 0.4f);
+                if (GUILayout.Button($"🚀 Parcourir l'Itinéraire ({_currentRoute.TotalDays} j)", GUILayout.Height(36)))
+                {
+                    director.TravelPath(_currentRoute.Path, _godMode);
+                    RecalculateRouteAndScenario();
+                }
+                GUI.backgroundColor = Color.white;
             }
             else
             {
-                var link = HybrisWorldMapData.FindLink(state.PartyNodeId, node.Id);
-                if (link == null)
+                GUILayout.Label($"<color=red>Route bloquée : {_currentRoute?.BlockedReason}</color>");
+                if (_godMode && GUILayout.Button("🛠️ Téléporter (God Mode)", GUILayout.Height(30)))
                 {
-                    GUILayout.Label($"<color=grey>Pas de lien direct depuis {party?.Name}. Voyagez de proche en proche.</color>");
-                    if (_godMode && GUILayout.Button("🛠️ Téléporter (dev)", GUILayout.Height(30)))
-                        director.TeleportPartyTo(node.Id);
+                    director.TeleportPartyTo(node.Id);
+                    RecalculateRouteAndScenario();
+                }
+            }
+
+            GUILayout.Space(6);
+            if (!string.IsNullOrWhiteSpace(node.LinkedScenarioId))
+            {
+                GUILayout.Label("<b>Scène Tactique Associée</b>");
+                if (_cachedSelectedScenario != null)
+                {
+                    GUILayout.Label($"<color=cyan>{_cachedSelectedScenario.Title}</color>");
+                    if (GUILayout.Button("⚔️ Déployer Scène 3D", GUILayout.Height(32)))
+                    {
+                        StorySceneManager.EnsureInstance().StartScenario(_cachedSelectedScenario.Id);
+                    }
                 }
                 else
                 {
-                    GUILayout.Label($"{link.Label} — <b>{link.Miles} miles, {link.Days} j</b>{(link.IsSeaCrossing ? " ⛵ maritime" : "")}");
-                    string blockReason = TravelBlockReason(state, link, node);
-                    if (blockReason != null && !_godMode)
-                    {
-                        GUILayout.Label($"<color=red>Verrouillé : {blockReason}</color>");
-                        if (GUILayout.Button("🛠️ Forcer quand même (dev)", GUILayout.Height(28)))
-                        {
-                            if (director.TravelToSector(node.Id, true)) _selectedNodeId = node.Id;
-                        }
-                    }
-                    else if (GUILayout.Button(_godMode ? $"🛠️ Voyager (god) ➔ {node.Name}" : $"➔ Voyager vers {node.Name}", GUILayout.Height(32)))
-                    {
-                        if (director.TravelToSector(node.Id, _godMode)) _selectedNodeId = node.Id;
-                    }
+                    GUILayout.Label($"<color=grey>Scénario '{node.LinkedScenarioId}' introuvable.</color>");
                 }
             }
-
-            // Voisins.
-            GUILayout.Space(4);
-            GUILayout.Label("<b>Liaisons</b>");
-            foreach (var link in HybrisWorldMapData.GetLinksFor(node.Id))
-            {
-                string otherId = link.OtherEnd(node.Id);
-                var other = HybrisWorldMapData.Find(otherId);
-                if (other == null) continue;
-                bool here = state.PartyNodeId == otherId;
-                GUILayout.BeginHorizontal();
-                GUILayout.Label($"{(here ? "◎ " : "")}{other.Name} <color=grey>({link.Miles} mi • {link.Days} j)</color>");
-                if (!here && GUILayout.Button("➔", GUILayout.Width(32)))
-                    _selectedNodeId = otherId;
-                GUILayout.EndHorizontal();
-            }
-
-            // Scène tactique.
-            GUILayout.Space(4);
-            GUILayout.Label("<b>Scène tactique fermée</b>");
-            if (string.IsNullOrWhiteSpace(node.LinkedScenarioId))
-            {
-                GUILayout.Label("<color=grey>Aucune scène liée — à créer.</color>");
-                if (GUILayout.Button("🛠️ Éditeur (F8)", GUILayout.Height(28)))
-                    ScenarioEditorDevWindow.Open();
-            }
-            else
-            {
-                var def = ScenarioCatalog.Find(node.LinkedScenarioId);
-                if (def != null)
-                {
-                    GUILayout.Label($"<color=cyan>{def.Title}</color>");
-                    GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
-                    if (GUILayout.Button("🚀 Déployer la scène 3D", GUILayout.Height(32)))
-                        StorySceneManager.EnsureInstance().StartScenario(def.Id);
-                    GUI.backgroundColor = Color.white;
-                }
-                else
-                {
-                    GUILayout.Label($"<color=yellow>Id réservé : {node.LinkedScenarioId} (JSON absent dans Scenarios/).</color>");
-                    GUILayout.BeginHorizontal();
-                    if (GUILayout.Button("🎬 Scènes (F7)", GUILayout.Height(28)))
-                        ScenarioDevWindow.Open();
-                    if (GUILayout.Button("🛠️ Éditeur (F8)", GUILayout.Height(28)))
-                        ScenarioEditorDevWindow.Open();
-                    GUILayout.EndHorizontal();
-                }
-            }
-
-            // Journal.
-            GUILayout.Space(4);
-            GUILayout.Label("<b>Journal (récent)</b>");
-            GUILayout.BeginVertical(GUI.skin.box);
-            if (state.Journal.Count == 0) GUILayout.Label("<color=grey>Aucune entrée.</color>");
-            for (int i = state.Journal.Count - 1; i >= Mathf.Max(0, state.Journal.Count - 4); i--)
-                GUILayout.Label($"• {state.Journal[i]}");
-            GUILayout.EndVertical();
 
             GUILayout.EndScrollView();
             GUILayout.EndVertical();
         }
 
-        private void DrawHelpBox()
+        private void RecalculateRouteAndScenario()
         {
-            GUILayout.BeginVertical(GUI.skin.box);
-            GUILayout.Label("<b>❓ Carte nodale + treillis hexagonal — mode d'emploi dev</b>");
-            GUILayout.Label("• Chaque pastille = un secteur (scène tactique fermée potentielle). Les traits = routes/car traversées maritimes avec coûts en miles et jours (échelle de la vieille carte : 0-300 miles).");
-            GUILayout.Label("• Le voyage exige un lien direct. L'Est (Rivage, Profondeurs) exige le flag « expedition_est » — bouton « Autoriser expédition Est » ou God dev.");
-            GUILayout.Label("• Chaque déplacement écrit dans le journal de campagne et cumule « jours_voyage » ; la première visite pose un flag (visited_*) et dévoile les voisins.");
-            GUILayout.Label("• Sources : Killtime/Killtime/img/Hybris 2035.png (légende villages a.-ah., lacs A-H, royaumes 1-8) + Livre X §41-42 (Kingston, Temple de Brum'korath, Forêts Primordiales, Haliriel, Guetteur).");
-            GUILayout.EndVertical();
+            var director = ScenarioDirector.EnsureInstance();
+            if (director?.State == null || string.IsNullOrEmpty(_selectedNodeId)) return;
+
+            var node = HybrisWorldMapData.Find(_selectedNodeId);
+            _cachedSelectedScenario = (!string.IsNullOrWhiteSpace(node?.LinkedScenarioId))
+                ? ScenarioCatalog.Find(node.LinkedScenarioId)
+                : null;
+
+            _currentRoute = HybrisWorldMapData.FindShortestPath(
+                director.State.PartyNodeId,
+                _selectedNodeId,
+                _godMode,
+                director.State);
         }
-
-        // ================= RÈGLES =================
-
-        private static bool IsNodeLocked(CampaignState state, HybrisSectorNode node)
-        {
-            if (node == null || state == null) return true;
-            return !string.IsNullOrWhiteSpace(node.RequiredFlag) && !state.HasFlag(node.RequiredFlag);
-        }
-
-        private static bool IsLinkLocked(CampaignState state, HybrisSectorLink link)
-        {
-            if (link == null || state == null) return true;
-            return !string.IsNullOrWhiteSpace(link.RequiresFlag) && !state.HasFlag(link.RequiresFlag);
-        }
-
-        private static string TravelBlockReason(CampaignState state, HybrisSectorLink link, HybrisSectorNode dest)
-        {
-            if (!string.IsNullOrWhiteSpace(link.RequiresFlag) && !state.HasFlag(link.RequiresFlag))
-                return $"lien « {link.Label} » (flag {link.RequiresFlag})";
-            if (!string.IsNullOrWhiteSpace(dest.RequiredFlag) && !state.HasFlag(dest.RequiredFlag))
-                return $"secteur {dest.Name} (flag {dest.RequiredFlag})";
-            return null;
-        }
-
-        // ================= DESSIN =================
-        // Primitives dans HybrisWorldMapDraw (partagées avec l'éditeur).
     }
 }

@@ -90,6 +90,14 @@ namespace Killtime.Story
             }
             if (!UnlockedNodeIds.Contains(PartyNodeId))
                 UnlockedNodeIds.Add(PartyNodeId);
+
+            // Déverrouille les secteurs adjacents directs pour lecture cartographique
+            foreach (var link in HybrisWorldMapData.GetLinksFor(PartyNodeId))
+            {
+                string other = link.OtherEnd(PartyNodeId);
+                if (!string.IsNullOrEmpty(other) && !UnlockedNodeIds.Contains(other))
+                    UnlockedNodeIds.Add(other);
+            }
         }
 
         public bool IsSectorUnlocked(string nodeId)

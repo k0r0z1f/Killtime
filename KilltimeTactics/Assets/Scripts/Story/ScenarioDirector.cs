@@ -194,6 +194,29 @@ namespace Killtime.Story
             return true;
         }
 
+        /// <summary>
+        /// Parcourt un itinéraire multi-sauts étape par étape.
+        /// S'interrompt si un verrou inattendu bloque l'un des segments.
+        /// </summary>
+        public int TravelPath(System.Collections.Generic.List<string> pathNodeIds, bool godMode = false)
+        {
+            if (pathNodeIds == null || pathNodeIds.Count <= 1) return 0;
+            int successfulHops = 0;
+            for (int i = 1; i < pathNodeIds.Count; i++)
+            {
+                if (TravelToSector(pathNodeIds[i], godMode))
+                {
+                    successfulHops++;
+                }
+                else
+                {
+                    Debug.LogWarning($"[ScenarioDirector] Itinéraire interrompu à l'étape '{pathNodeIds[i]}'.");
+                    break;
+                }
+            }
+            return successfulHops;
+        }
+
         /// <summary>Téléportation dev (sans validation de lien).</summary>
         public void TeleportPartyTo(string nodeId)
         {
@@ -293,6 +316,8 @@ namespace Killtime.Story
 
         private void Load()
         {
+            HybrisWorldMapData.InitializeWorldMap();
+
             try
             {
                 var json = PlayerPrefs.GetString(SaveKey, string.Empty);

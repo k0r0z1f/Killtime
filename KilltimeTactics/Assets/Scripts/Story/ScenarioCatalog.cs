@@ -1,22 +1,24 @@
+using System;
 using System.Collections.Generic;
 using Killtime.Story.Data;
 
 namespace Killtime.Story
 {
     /// <summary>
-    /// Registre des définitions de scénarios. Tout le contenu narratif vit dans
-    /// les JSON de scènes (StorySceneData) ; ce catalogue ne fait qu'indexer les
-    /// définitions converties depuis ces JSON (éditeur, chargement runtime).
+    /// Registre des définitions de scénarios. Protégé contre les relectures disques
+    /// synchrones intempestives en cas d'identifiant introuvable.
     /// </summary>
     public static class ScenarioCatalog
     {
-        private static readonly Dictionary<string, ScenarioDefinition> Definitions = new();
+        private static readonly Dictionary<string, ScenarioDefinition> Definitions = new(StringComparer.OrdinalIgnoreCase);
+        private static readonly HashSet<string> KnownMissingIds = new(StringComparer.OrdinalIgnoreCase);
+        private static bool _catalogLoaded = false;
 
         public static IEnumerable<ScenarioDefinition> All
         {
             get
             {
-                if (Definitions.Count == 0)
+                if (!_catalogLoaded)
                 {
                     ReloadFromDisk();
                 }
@@ -27,18 +29,35 @@ namespace Killtime.Story
         public static ScenarioDefinition Find(string id)
         {
             if (string.IsNullOrWhiteSpace(id)) return null;
-            if (!Definitions.TryGetValue(id, out var definition))
+
+            if (Definitions.TryGetValue(id, out var definition))
+            {
+                return definition;
+            }
+
+            if (KnownMissingIds.Contains(id))
+            {
+                return null;
+            }
+
+            if (!_catalogLoaded)
             {
                 ReloadFromDisk();
-                Definitions.TryGetValue(id, out definition);
+                if (Definitions.TryGetValue(id, out definition))
+                {
+                    return definition;
+                }
             }
-            return definition;
+
+            KnownMissingIds.Add(id);
+            return null;
         }
 
         public static void Register(ScenarioDefinition definition)
         {
             if (definition == null || string.IsNullOrWhiteSpace(definition.Id)) return;
             Definitions[definition.Id] = definition;
+            KnownMissingIds.Remove(definition.Id);
         }
 
         public static bool Unregister(string id)
@@ -49,8 +68,13 @@ namespace Killtime.Story
 
         public static void ReloadFromDisk()
         {
+            _catalogLoaded = true;
             Definitions.Clear();
+            KnownMissingIds.Clear();
+
             var scenes = StorySceneRepository.LoadAllScenes();
+            if (scenes == null) return;
+
             for (int i = 0; i < scenes.Count; i++)
             {
                 var def = FromSceneData(scenes[i]);
@@ -100,13 +124,6 @@ namespace Killtime.Story
             return definition;
         }
 
-        /// <summary>
-        /// Détermine l'identifiant de la scène suivante.
-        /// Priorité 1 : NextSceneId explicitement renseigné sur la scène.
-        /// Priorité 2 : Ordre personnalisé des scènes de l'éditeur (persistance PlayerPrefs).
-        /// Priorité 3 : Déduction numérique (ex: volume_1_scene_01 -> volume_1_scene_02 ou nouvelle_scene_5).
-        /// Priorité 4 : Élément suivant dans la liste ordonnée des scénarios disponibles.
-        /// </summary>
         public static string GetNextScenarioId(string currentScenarioId)
         {
             if (string.IsNullOrWhiteSpace(currentScenarioId)) return null;
@@ -117,14 +134,11 @@ namespace Killtime.Story
                 return current.NextSceneId.Trim();
             }
 
-            // Priorité 2 : Ordre personnalisé des scènes de l'éditeur (persistance PlayerPrefs).
-            // On résout le SceneId réel de chaque entrée (le nom de fichier peut différer
-            // du SceneId) et on ignore les fichiers supprimés depuis.
             string savedOrder = UnityEngine.PlayerPrefs.GetString("ScenarioEditor_SceneOrder", "");
             if (!string.IsNullOrEmpty(savedOrder))
             {
-                string[] entries = savedOrder.Split(new[] { ';' }, System.StringSplitOptions.RemoveEmptyEntries);
-                var orderedIds = new System.Collections.Generic.List<string>(entries.Length);
+                string[] entries = savedOrder.Split(new[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+                var orderedIds = new List<string>(entries.Length);
                 for (int i = 0; i < entries.Length; i++)
                 {
                     string entry = entries[i];
@@ -137,21 +151,15 @@ namespace Killtime.Story
                     if (!string.IsNullOrWhiteSpace(id)) orderedIds.Add(id);
                 }
 
-                int currentOrderIdx = orderedIds.FindIndex(id => string.Equals(id, currentScenarioId, System.StringComparison.OrdinalIgnoreCase));
-                if (currentOrderIdx >= 0)
+                int currentOrderIdx = orderedIds.FindIndex(id => string.Equals(id, currentScenarioId, StringComparison.OrdinalIgnoreCase));
+                if (currentOrderIdx >= 0 && currentOrderIdx + 1 < orderedIds.Count)
                 {
-                    if (currentOrderIdx + 1 < orderedIds.Count)
-                    {
-                        string nextId = orderedIds[currentOrderIdx + 1];
-                        var nextDef = Find(nextId);
-                        return nextDef != null ? nextDef.Id : nextId;
-                    }
-                    // Fin de la chaîne ordonnée : aucune scène suivante
-                    return null;
+                    string nextId = orderedIds[currentOrderIdx + 1];
+                    var nextDef = Find(nextId);
+                    return nextDef != null ? nextDef.Id : nextId;
                 }
             }
 
-            // Priorité 3 : Déduction numérique
             var match = System.Text.RegularExpressions.Regex.Match(currentScenarioId, @"^(.*[_\-\s])(\d+)$");
             if (match.Success)
             {
@@ -171,40 +179,18 @@ namespace Killtime.Story
                     {
                         return candidateSimple;
                     }
-
-                    // Déduction souple : chercher tout scénario enregistré dont le suffixe numérique est nextNum
-                    foreach (var def in All)
-                    {
-                        var m = System.Text.RegularExpressions.Regex.Match(def.Id, @"[_\-\s](\d+)$");
-                        if (m.Success && int.TryParse(m.Groups[1].Value, out int defNum) && defNum == nextNum)
-                        {
-                            string p = StorySceneRepository.GetSceneFilePath(def.Id);
-                            if (System.IO.File.Exists(p))
-                            {
-                                return def.Id;
-                            }
-                        }
-                    }
                 }
             }
 
-            // Priorité 4 : Fallback par position dans le catalogue trié naturellement
             var allList = new List<ScenarioDefinition>(All);
             allList.Sort((a, b) =>
             {
-                int volComp = string.Compare(a.Volume, b.Volume, System.StringComparison.OrdinalIgnoreCase);
+                int volComp = string.Compare(a.Volume, b.Volume, StringComparison.OrdinalIgnoreCase);
                 if (volComp != 0) return volComp;
-
-                var ma = System.Text.RegularExpressions.Regex.Match(a.Id, @"(\d+)$");
-                var mb = System.Text.RegularExpressions.Regex.Match(b.Id, @"(\d+)$");
-                if (ma.Success && mb.Success && int.TryParse(ma.Value, out int na) && int.TryParse(mb.Value, out int nb) && na != nb)
-                {
-                    return na.CompareTo(nb);
-                }
-                return string.Compare(a.Id, b.Id, System.StringComparison.OrdinalIgnoreCase);
+                return string.Compare(a.Id, b.Id, StringComparison.OrdinalIgnoreCase);
             });
 
-            int currentIndex = allList.FindIndex(s => string.Equals(s.Id, currentScenarioId, System.StringComparison.OrdinalIgnoreCase));
+            int currentIndex = allList.FindIndex(s => string.Equals(s.Id, currentScenarioId, StringComparison.OrdinalIgnoreCase));
             if (currentIndex >= 0 && currentIndex + 1 < allList.Count)
             {
                 return allList[currentIndex + 1].Id;

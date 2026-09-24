@@ -1,0 +1,172 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1920 1200" width="1920" height="1200">
+  <defs>
+    <!-- Gradients Compatibles Unity Vector Graphics -->
+    <linearGradient id="oceanGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#232620"/>
+      <stop offset="50%" stop-color="#1b1d18"/>
+      <stop offset="100%" stop-color="#141512"/>
+    </linearGradient>
+
+    <linearGradient id="desertGrad" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0%" stop-color="#c9a253"/>
+      <stop offset="100%" stop-color="#80632a"/>
+    </linearGradient>
+
+    <linearGradient id="lakeGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1d2f38"/>
+      <stop offset="100%" stop-color="#0f1b21"/>
+    </linearGradient>
+  </defs>
+
+  <!-- 1. OCÉAN GLOBAL (JAUNÂTRE / GRIS PROFOND) -->
+  <rect width="1920" height="1200" fill="url(#oceanGrad)"/>
+
+  <!-- LIGNES DE NAVIGATION ET MÉRIDIEN 2035 N y (Tracé Direct) -->
+  <g stroke="#544f3d" stroke-width="1" stroke-dasharray="8,8" opacity="0.4">
+    <line x1="960" y1="40" x2="960" y2="1160"/>
+    <line x1="80" y1="600" x2="1840" y2="600"/>
+    <line x1="480" y1="40" x2="480" y2="1160"/>
+    <line x1="1440" y1="40" x2="1440" y2="1160"/>
+    <line x1="80" y1="300" x2="1840" y2="300"/>
+    <line x1="80" y1="900" x2="1840" y2="900"/>
+  </g>
+
+  <!-- 2. CONTINENT 1 : SEPTENTRIONAL (NORD) -->
+  <g id="continent-nord">
+    <!-- Plateforme Littorale -->
+    <path d="M 380,0 C 650,170 1270,170 1660,0 Z" fill="#2d3326" stroke="#48533c" stroke-width="4"/>
+    <path d="M 430,0 C 680,140 1230,140 1600,0 Z" fill="#3f4935"/>
+    <!-- Massif Forestier Boréal -->
+    <path d="M 820,0 C 860,95 1060,95 1100,0 Z" fill="#1b2a1c"/>
+    <!-- Montagnes Boréales (Faces claires et sombres) -->
+    <polygon points="680,45 695,75 665,75" fill="#e8ebe4"/>
+    <polygon points="680,45 695,75 680,75" fill="#7d7b6e"/>
+    <polygon points="740,30 760,70 720,70" fill="#e8ebe4"/>
+    <polygon points="740,30 760,70 740,70" fill="#7d7b6e"/>
+    <polygon points="1220,35 1240,75 1200,75" fill="#e8ebe4"/>
+    <polygon points="1220,35 1240,75 1220,75" fill="#7d7b6e"/>
+  </g>
+
+  <!-- 3. CONTINENT 2 : MÉRIDIONAL (SUD) -->
+  <g id="continent-sud">
+    <path d="M 480,1200 C 780,1060 1220,1070 1520,1200 Z" fill="#2c3325" stroke="#454f3b" stroke-width="4"/>
+    <path d="M 540,1200 C 800,1095 1180,1105 1460,1200 Z" fill="#3a4533"/>
+    <!-- Relief Sud -->
+    <polygon points="920,1120 940,1165 900,1165" fill="#d2d6cc"/>
+    <polygon points="920,1120 940,1165 920,1165" fill="#5a5e54"/>
+    <polygon points="1020,1130 1040,1170 1000,1170" fill="#d2d6cc"/>
+    <polygon points="1020,1130 1040,1170 1020,1170" fill="#5a5e54"/>
+  </g>
+
+  <!-- 4. CONTINENT 3 : OCCIDENTAL (HYBRIS OUEST) -->
+  <g id="continent-ouest">
+    <!-- Contour Récifal / Hauts-fonds -->
+    <path d="M 270,390 C 330,300 440,270 530,320 C 600,360 690,270 750,330 C 820,390 870,520 810,590 C 750,640 660,560 600,610 C 540,650 610,760 580,830 C 540,910 430,920 340,870 C 290,840 270,720 310,650 C 340,600 260,550 240,460 C 220,400 240,390 270,390 Z" 
+          fill="#2b3324" stroke="#49573c" stroke-width="6"/>
+    <!-- Terre Ferme Ouest -->
+    <path d="M 280,390 C 340,310 440,280 520,330 C 590,370 680,280 740,340 C 800,400 850,520 790,580 C 740,630 650,560 590,600 C 540,640 600,750 570,820 C 540,890 430,900 350,860 C 300,830 280,720 320,650 C 350,600 270,550 250,470 C 230,410 250,390 280,390 Z" 
+          fill="#444e3b"/>
+
+    <!-- Forêts Denses de l'Ouest -->
+    <path d="M 520,360 Q 640,350 680,440 T 580,560 Q 490,500 520,360 Z" fill="#1d301f"/>
+    <path d="M 310,650 Q 410,610 470,680 T 490,810 Q 380,840 330,780 Z" fill="#1d301f"/>
+
+    <!-- A. Lac Géant & Hydrographie -->
+    <path d="M 360,450 Q 430,420 500,470 T 510,570 Q 430,600 370,550 Z" fill="url(#lakeGrad)" stroke="#39586b" stroke-width="2"/>
+    <path d="M 510,500 Q 600,480 670,430" fill="none" stroke="#39586b" stroke-width="3"/>
+    <path d="M 430,585 Q 470,660 490,740" fill="none" stroke="#39586b" stroke-width="2.5"/>
+
+    <!-- CORDILLÈRE INTÉRIEURE OUEST (Montagnes avec relief ombre/lumière) -->
+    <!-- Sommet 1 -->
+    <polygon points="300,450 315,485 285,485" fill="#f0f2eb"/><polygon points="300,450 315,485 300,485" fill="#696d61"/>
+    <!-- Sommet 2 -->
+    <polygon points="325,480 342,518 308,518" fill="#f0f2eb"/><polygon points="325,480 342,518 325,518" fill="#696d61"/>
+    <!-- Sommet 3 -->
+    <polygon points="310,520 328,560 292,560" fill="#f0f2eb"/><polygon points="310,520 328,560 310,560" fill="#696d61"/>
+    <!-- Sommet 4 -->
+    <polygon points="290,555 310,600 270,600" fill="#f0f2eb"/><polygon points="290,555 310,600 290,600" fill="#696d61"/>
+    <!-- Sommets Sud-Ouest -->
+    <polygon points="275,650 292,690 258,690" fill="#f0f2eb"/><polygon points="275,650 292,690 275,690" fill="#696d61"/>
+    <polygon points="285,685 304,725 266,725" fill="#f0f2eb"/><polygon points="285,685 304,725 285,725" fill="#696d61"/>
+    <!-- Sommets Nord-Est de l'Ouest -->
+    <polygon points="460,325 478,365 442,365" fill="#f0f2eb"/><polygon points="460,325 478,365 460,365" fill="#696d61"/>
+    <polygon points="710,350 730,395 690,395" fill="#f0f2eb"/><polygon points="710,350 730,395 710,395" fill="#696d61"/>
+    <polygon points="735,385 752,425 718,425" fill="#f0f2eb"/><polygon points="735,385 752,425 735,425" fill="#696d61"/>
+
+    <!-- ANTRE DE LA BÊTE D'HYBRIS / HALIRIEL (Volcan Actif) -->
+    <polygon points="465,770 488,812 442,812" fill="#3b1d19" stroke="#992b1b" stroke-width="1.5"/>
+    <polygon points="465,770 488,812 465,812" fill="#210e0c"/>
+    <circle cx="465" cy="777" r="4.5" fill="#ff3700"/>
+    <circle cx="465" cy="777" r="2" fill="#ffe066"/>
+  </g>
+
+  <!-- 5. CONTINENT 4 : PIVOT CENTRAL (ÎLE DE VAGAS) -->
+  <g id="continent-centre">
+    <path d="M 710,725 C 780,685 840,715 850,770 C 860,825 800,880 740,860 C 680,835 670,755 710,725 Z" 
+          fill="#313a29" stroke="#505e43" stroke-width="4"/>
+    <path d="M 720,730 C 780,690 830,720 840,770 C 850,820 790,870 740,850 C 690,830 680,760 720,730 Z" 
+          fill="#445039"/>
+    <path d="M 725,745 Q 780,725 820,765 T 760,845 Z" fill="#1b2e1e"/>
+    <polygon points="765,760 782,798 748,798" fill="#e2e6dc"/>
+    <polygon points="765,760 782,798 765,798" fill="#65695d"/>
+  </g>
+
+  <!-- 6. CONTINENT 5 : ORIENTAL (HYBRIS EST) -->
+  <g id="continent-est">
+    <!-- Hauts-Fonds Est -->
+    <path d="M 1240,350 C 1380,280 1500,320 1570,410 C 1640,480 1730,510 1690,620 C 1650,710 1600,730 1570,840 C 1530,970 1400,1010 1300,990 C 1230,970 1190,890 1220,790 C 1240,730 1160,680 1150,580 C 1140,490 1180,400 1240,350 Z" 
+          fill="#2a3325" stroke="#48573f" stroke-width="6"/>
+    <!-- Masse Terrestre Principale -->
+    <path d="M 1250,360 C 1380,300 1490,340 1550,420 C 1610,490 1710,520 1670,620 C 1630,710 1580,730 1550,840 C 1510,960 1390,990 1310,980 C 1250,960 1210,890 1240,800 C 1260,740 1180,690 1170,590 C 1160,500 1200,410 1250,360 Z" 
+          fill="#404c38"/>
+
+    <!-- BANDE DÉSERTIQUE OCCIDENTALE D'ATIKA -->
+    <path d="M 1175,520 C 1170,610 1200,730 1240,800 L 1280,790 C 1255,710 1225,610 1235,520 Z" 
+          fill="url(#desertGrad)"/>
+
+    <!-- VASTE CANOPÉE TAURIENNE -->
+    <path d="M 1290,430 Q 1460,380 1560,500 T 1610,740 Q 1520,900 1370,880 T 1290,660 Z" fill="#1b2e1e"/>
+
+    <!-- B. MER DE CÉSIL & C. LAC MAJESTUEUX -->
+    <path d="M 1350,535 Q 1430,490 1465,555 T 1390,630 Z" fill="url(#lakeGrad)" stroke="#39586b" stroke-width="2"/>
+    <path d="M 1420,745 Q 1485,715 1505,775 T 1445,830 Z" fill="url(#lakeGrad)" stroke="#39586b" stroke-width="2"/>
+
+    <!-- Fleuve & Pont Arcanotech de Lepla -->
+    <path d="M 1230,510 Q 1310,515 1350,535" fill="none" stroke="#39586b" stroke-width="3"/>
+    <rect x="1275" y="506" width="18" height="9" fill="#524634" stroke="#c9a253" stroke-width="1.2"/>
+
+    <!-- DORSALE MONTAGNEUSE ORIENTALE (Rain Shadow Barrier) -->
+    <polygon points="1270,520 1286,555 1254,555" fill="#f0f2eb"/><polygon points="1270,520 1286,555 1270,555" fill="#696d61"/>
+    <polygon points="1275,555 1292,592 1258,592" fill="#f0f2eb"/><polygon points="1275,555 1292,592 1275,592" fill="#696d61"/>
+    <polygon points="1280,592 1298,632 1262,632" fill="#f0f2eb"/><polygon points="1280,592 1298,632 1280,632" fill="#696d61"/>
+    <polygon points="1285,632 1304,674 1266,674" fill="#f0f2eb"/><polygon points="1285,632 1304,674 1285,674" fill="#696d61"/>
+    <polygon points="1290,674 1308,715 1272,715" fill="#f0f2eb"/><polygon points="1290,674 1308,715 1290,715" fill="#696d61"/>
+    <polygon points="1295,715 1312,755 1278,755" fill="#f0f2eb"/><polygon points="1295,715 1312,755 1295,755" fill="#696d61"/>
+    <polygon points="1302,755 1320,795 1284,795" fill="#f0f2eb"/><polygon points="1302,755 1320,795 1302,795" fill="#696d61"/>
+    <!-- Sommets Nord-Est -->
+    <polygon points="1340,380 1360,425 1320,425" fill="#f0f2eb"/><polygon points="1340,380 1360,425 1340,425" fill="#696d61"/>
+    <polygon points="1435,370 1454,412 1416,412" fill="#f0f2eb"/><polygon points="1435,370 1454,412 1435,412" fill="#696d61"/>
+  </g>
+
+  <!-- 7. ROSE DES VENTS GÉOMÉTRIQUE CENTRALE -->
+  <g id="compass-rose" transform="translate(960, 600)">
+    <circle cx="0" cy="0" r="46" fill="#1b1c18" stroke="#a1884c" stroke-width="2.5"/>
+    <circle cx="0" cy="0" r="38" fill="none" stroke="#525447" stroke-width="1" stroke-dasharray="4,3"/>
+    <!-- Pointes Majeures Cardinales (Nord / Sud / Est / Ouest) -->
+    <polygon points="0,-60 8,-12 0,0" fill="#d6b25e"/>
+    <polygon points="0,-60 -8,-12 0,0" fill="#917430"/>
+    <polygon points="0,60 8,12 0,0" fill="#917430"/>
+    <polygon points="0,60 -8,12 0,0" fill="#5e4a1a"/>
+    <polygon points="60,0 12,8 0,0" fill="#bfa04e"/>
+    <polygon points="60,0 12,-8 0,0" fill="#7a6226"/>
+    <polygon points="-60,0 -12,8 0,0" fill="#7a6226"/>
+    <polygon points="-60,0 -12,-8 0,0" fill="#4d3d14"/>
+    <!-- Pointes Intermédiaires -->
+    <polygon points="32,-32 4,-8 0,0 -8,-4" fill="#475440"/>
+    <polygon points="-32,32 -4,8 0,0 8,4" fill="#475440"/>
+    <polygon points="32,32 8,4 0,0 4,8" fill="#303b2b"/>
+    <polygon points="-32,-32 -8,-4 0,0 -4,-8" fill="#303b2b"/>
+    <!-- Pivot Central -->
+    <circle cx="0" cy="0" r="6" fill="#f2ede4" stroke="#7a6226" stroke-width="1"/>
+  </g>
+</svg>
