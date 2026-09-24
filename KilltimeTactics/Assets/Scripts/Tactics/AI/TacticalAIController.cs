@@ -432,13 +432,13 @@ namespace Killtime.Tactics.AI
                 var target = EvaluateBestTarget(unit);
                 if (target == null) break;
 
-                int dist = unit.CurrentCoords.DistanceTo(target.CurrentCoords);
+                int dist = TitanFootprint.MinDistanceBetweenUnits(unit.CurrentCoords, unit.FootprintType, target.CurrentCoords, target.FootprintType);
                 var posture = EvaluateTacticalPosture(unit, target, dist);
 
                 bool isRanged = HasRangedWeapon(unit, out int maxRange, out int minRange, out SkillType attackSkill);
-                bool hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords);
-                CoverType targetCover = GetCoverLevel(unit.CurrentCoords, target.CurrentCoords);
-                bool inAttackRange = isRanged ? (dist <= maxRange && hasLOS) : (dist == 1);
+                bool hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType);
+                CoverType targetCover = GetCoverLevel(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType);
+                bool inAttackRange = isRanged ? (dist <= maxRange && hasLOS) : (dist <= 1);
 
                 // 2. RETRAITE TACTIQUE SOUS COUVERT (Livre VI §25)
                 if (posture == TacticalPosture.TacticalRetreat)
@@ -1398,6 +1398,27 @@ namespace Killtime.Tactics.AI
                         if (_mode == CombatAIMode.FullAuto && enemy.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
                         if (!hostile) continue;
 
+                        // Brouillard symétrique (§25.4) : pas de grenade sur un ennemi
+                        // invisible à 360° (sauf révélé au bruit / Observation).
+                        if (_grid != null && actor.Stats != null && enemy.Stats != null)
+                        {
+                            var gfog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+                            int grange = gfog != null ? gfog.CurrentSightRange
+                                : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange;
+                            var gvp = Killtime.Tactics.Visibility.FogOfWarSystem.ResolveObserverParams(actor.Stats, grange);
+                            float gyaw = Killtime.Tactics.Visibility.FogOfWarManager.FacingYawDeg(actor);
+                            bool gseen = Killtime.Tactics.Visibility.FogOfWarSystem.IsCellVisible(
+                                actor.CurrentCoords, gyaw, enemy.CurrentCoords,
+                                c => _grid.GetNode(c), gvp, _grid.HexRadius);
+                            if (!gseen)
+                            {
+                                bool grevealed = gfog != null
+                                    && (gfog.IsNoiseActive(enemy.gameObject.name)
+                                        || gfog.IsManuallyRevealed(enemy.gameObject.name));
+                                if (!grevealed) continue;
+                            }
+                        }
+
                         int dThrow = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords);
                         if (dThrow > maxRange) continue;
                         if (actor.CurrentCoords.DistanceTo(enemy.CurrentCoords) <= Mathf.Max(0, g.BlastRadius)) continue;
@@ -1593,16 +1614,16 @@ namespace Killtime.Tactics.AI
             return false;
         }
 
-        private bool HasLineOfSight(HexCoordinates from, HexCoordinates to)
+        private bool HasLineOfSight(HexCoordinates from, HexCoordinates to, TitanFootprintType toFootprint = TitanFootprintType.Single, TitanFootprintType fromFootprint = TitanFootprintType.Single)
         {
             if (_grid == null) return true;
-            return CoverSystem.EvaluateCover(from, to, _grid) != CoverType.Full;
+            return CoverSystem.EvaluateCover(from, to, _grid, toFootprint, fromFootprint) != CoverType.Full;
         }
 
-        private CoverType GetCoverLevel(HexCoordinates from, HexCoordinates to)
+        private CoverType GetCoverLevel(HexCoordinates from, HexCoordinates to, TitanFootprintType toFootprint = TitanFootprintType.Single, TitanFootprintType fromFootprint = TitanFootprintType.Single)
         {
             if (_grid == null) return CoverType.None;
-            return CoverSystem.EvaluateCover(from, to, _grid);
+            return CoverSystem.EvaluateCover(from, to, _grid, toFootprint, fromFootprint);
         }
 
         private TacticalUnit EvaluateBestTarget(TacticalUnit actor)
@@ -1626,7 +1647,7 @@ namespace Killtime.Tactics.AI
             }
 
             for (int i = 0; i < _cachedUnits.Count; i++)
-                {
+            {
                 var potential = _cachedUnits[i];
                 if (potential == null || potential == actor || potential.Stats == null || !potential.Stats.IsAlive) continue;
 
@@ -1634,7 +1655,30 @@ namespace Killtime.Tactics.AI
                 if (_mode == CombatAIMode.FullAuto && potential.IsPlayerControlled != actor.IsPlayerControlled) isHostile = true;
                 if (!isHostile) continue;
 
-                int dist = actor.CurrentCoords.DistanceTo(potential.CurrentCoords);
+                // Brouillard de guerre symétrique (§25.4) : l'IA ne cible que ce que
+                // l'acteur voit réellement à 360° (portée d'ambiance + murs
+                // Full), sauf cible révélée au bruit (tirs) ou par Observation.
+                // Le contact (dist <= 1) reste toujours visible des deux côtés.
+                if (_grid != null && actor.Stats != null && potential.Stats != null)
+                {
+                    var fog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+                    int range = fog != null ? fog.CurrentSightRange
+                        : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange;
+                    var vp = Killtime.Tactics.Visibility.FogOfWarSystem.ResolveObserverParams(actor.Stats, range);
+                    float actorYaw = Killtime.Tactics.Visibility.FogOfWarManager.FacingYawDeg(actor);
+                    bool seen = Killtime.Tactics.Visibility.FogOfWarSystem.IsCellVisible(
+                        actor.CurrentCoords, actorYaw, potential.CurrentCoords,
+                        c => _grid.GetNode(c), vp, _grid.HexRadius);
+                    if (!seen)
+                    {
+                        bool revealed = fog != null
+                            && (fog.IsNoiseActive(potential.gameObject.name)
+                                || fog.IsManuallyRevealed(potential.gameObject.name));
+                        if (!revealed) continue;
+                    }
+                }
+
+                int dist = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, potential.CurrentCoords, potential.FootprintType);
                 float curHp = potential.Stats.CurrentHealth;
 
                 float score = 80f;

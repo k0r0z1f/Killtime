@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Core.Arcanotech;
 using Killtime.Core.Inventory;
+using Killtime.Tactics.Grid;
 
 namespace Killtime.Core.Character
 {
@@ -19,6 +20,7 @@ namespace Killtime.Core.Character
         public string Gender = "Indéterminé";
         public SpeciesType Species = SpeciesType.Humain;
         public CharacterProfileType Profile = CharacterProfileType.HerosPJ;
+        public TitanFootprintType Footprint = TitanFootprintType.Single;
         public string ModelPrefabName = "";
         public string LoreNotes = "";
 

@@ -144,6 +144,43 @@ namespace Killtime.Tactics.Grid
         private readonly System.Collections.Generic.List<LineRenderer> _losRayRenderers = new();
         private readonly System.Collections.Generic.HashSet<HexCoordinates> _losBlockingCells = new();
 
+        [Header("Brouillard de Guerre (Fog of War)")]
+        [Tooltip("Couleur d'obscurité appliquée aux cases hors de vue de l'escouade.")]
+        [SerializeField] private Color _fogHiddenTint = new Color(0.015f, 0.018f, 0.035f, 1f);
+        private readonly System.Collections.Generic.HashSet<HexCoordinates> _fogVisible = new();
+        private bool _fogEnabled = false;
+
+        /// <summary>
+        /// Brouillard de guerre asymétrique (§25.4) : cases hors du champ 360° de
+        /// l'escouade (portée d'ambiance + murs Full) plongées dans l'obscurité.
+        /// Appelé par FogOfWarManager ; le MJ n'active jamais ce masque.
+        /// </summary>
+        public void SetFogOfWar(System.Collections.Generic.HashSet<HexCoordinates> visibleCells, bool enabled)
+        {
+            _fogEnabled = enabled;
+            _fogVisible.Clear();
+            if (enabled && visibleCells != null)
+            {
+                foreach (var c in visibleCells) _fogVisible.Add(c);
+            }
+            RefreshAllTileColors();
+        }
+
+        public void ClearFogOfWar()
+        {
+            if (!_fogEnabled && _fogVisible.Count == 0) return;
+            _fogEnabled = false;
+            _fogVisible.Clear();
+            RefreshAllTileColors();
+        }
+
+        public bool IsFogEnabled => _fogEnabled;
+
+        public bool IsCellLitByFog(HexCoordinates coords)
+        {
+            return !_fogEnabled || _fogVisible.Contains(coords);
+        }
+
         private Material _baseMaterial;
         private Material _obstacleMaterial;
         private Material _ceilingMaterial;
@@ -1368,6 +1405,15 @@ namespace Killtime.Tactics.Grid
                 if (_losBlockingCells.Contains(coords))
                 {
                     c = Color.Lerp(c, new Color(1f, 0.1f, 0.6f, 1f), 0.75f);
+                }
+
+                // Brouillard de guerre (§25.4) : obscurité stricte hors du champ
+                // 360° de l'escouade (portée d'ambiance + murs Full). Prioritaire sur
+                // toute autre teinte (portée, chemin, couvert) : l'invisible
+                // reste illisible, même au survol.
+                if (_fogEnabled && !_fogVisible.Contains(coords))
+                {
+                    c = isTextured ? Color.Lerp(Color.white, _fogHiddenTint, 0.92f) : _fogHiddenTint;
                 }
 
                 _propBlock.Clear();

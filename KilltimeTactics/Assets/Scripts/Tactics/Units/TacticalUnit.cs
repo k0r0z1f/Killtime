@@ -36,12 +36,32 @@ namespace Killtime.Tactics.Units
         [SerializeField] private int _baseArmor = 1;
         [SerializeField] private float _moveSpeed = 4.0f;
         [SerializeField] private string _modelPrefabName = "";
+        [SerializeField] private TitanFootprintType _footprintType = TitanFootprintType.Single;
 
         public CharacterStats Stats { get; private set; }
         public CharacterSheet Sheet { get; private set; }
         public HexCoordinates CurrentCoords { get; private set; }
+        public TitanFootprintType FootprintType => _footprintType;
         public bool IsPlayerControlled => _isPlayerControlled;
         public bool IsMoving { get; private set; }
+
+        public IReadOnlyList<HexCoordinates> OccupiedCoords => TitanFootprint.GetOccupiedCoordinates(CurrentCoords, _footprintType);
+
+        public bool Occupies(HexCoordinates coords)
+        {
+            if (!_hasPosition) return false;
+            var list = OccupiedCoords;
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (list[i].Equals(coords)) return true;
+            }
+            return false;
+        }
+
+        public void SetFootprint(TitanFootprintType footprint)
+        {
+            _footprintType = footprint;
+        }
         public float MoveSpeed
         {
             get
@@ -114,9 +134,7 @@ namespace Killtime.Tactics.Units
                 if (other == null || other == this || other.Stats == null || !other.Stats.CanDefendActively()) continue;
                 if (other.IsPlayerControlled != this.IsPlayerControlled)
                 {
-                    // N'importe quel ennemi conscient au contact de l'ATTAQUANT suffit,
-                    // même si la cible du tir est lointaine (Livre VI §26.2).
-                    if (this.CurrentCoords.DistanceTo(other.CurrentCoords) == 1)
+                    if (TitanFootprint.MinDistanceBetweenUnits(this.CurrentCoords, this._footprintType, other.CurrentCoords, other._footprintType) <= 1)
                     {
                         return true;
                     }
@@ -172,10 +190,15 @@ namespace Killtime.Tactics.Units
         {
             if (_grid != null)
             {
-                var node = _grid.GetNode(CurrentCoords);
-                if (node != null && !IsAnyOtherUnitAt(CurrentCoords))
+                var list = OccupiedCoords;
+                for (int i = 0; i < list.Count; i++)
                 {
-                    node.IsOccupied = false;
+                    var c = list[i];
+                    var node = _grid.GetNode(c);
+                    if (node != null && !IsAnyOtherUnitAt(c))
+                    {
+                        node.IsOccupied = false;
+                    }
                 }
             }
         }
@@ -188,6 +211,7 @@ namespace Killtime.Tactics.Units
         {
             _grid = grid;
             _modelPrefabName = sheet.ModelPrefabName;
+            _footprintType = sheet.Footprint;
 
             var effective = sheet.GetEffectiveAttributes();
             ConfigureStats(sheet.Name, effective, sheet.BaseArmor, isPlayerControlled, sheet.ModelPrefabName);
@@ -246,12 +270,14 @@ namespace Killtime.Tactics.Units
                 Sheet.Profile = sheet.Profile;
                 Sheet.ActiveClassId = sheet.ActiveClassId;
                 Sheet.BuildGuideEnabled = sheet.BuildGuideEnabled;
+                Sheet.Footprint = sheet.Footprint;
                 if (sheet.AttributeUpgradesPurchased != null)
                 {
                     Sheet.AttributeUpgradesPurchased = (int[])sheet.AttributeUpgradesPurchased.Clone();
                 }
             }
 
+            _footprintType = Sheet != null ? Sheet.Footprint : sheet.Footprint;
             InitializePosition(coords, grid);
             // Filet de sécurité : si l'appelant n'a pas résolu une case libre
             // (ex: chargement direct sans arène), on relocalise au lieu d'empiler.
@@ -346,22 +372,23 @@ namespace Killtime.Tactics.Units
 
         public void InitializePosition(HexCoordinates startCoords, TacticalHexGrid grid)
         {
-            // Invariant : 1 case = 1 avatar max. Refuse toute superposition.
-            if (grid != null && IsOccupiedByOther(startCoords, grid))
+            if (grid != null && !grid.IsFootprintFree(startCoords, _footprintType, this))
             {
-                Debug.LogWarning($"[TacticalUnit] Placement refusé pour '{_unitName}' en {startCoords} : case déjà occupée.");
+                Debug.LogWarning($"[TacticalUnit] Placement refusé pour '{_unitName}' en {startCoords} : empreinte encombrée.");
                 return;
             }
 
             _grid = grid;
-            // Libère l'ancienne case si on repositionne une unité déjà placée.
             if (_hasPosition && _grid != null && !CurrentCoords.Equals(startCoords))
             {
-                var previousNode = _grid.GetNode(CurrentCoords);
-                // Ne libère que si aucun autre avatar n'y réside (anti-fantôme).
-                if (previousNode != null && previousNode.IsOccupied && !IsAnyOtherUnitAt(CurrentCoords))
+                var oldList = OccupiedCoords;
+                for (int i = 0; i < oldList.Count; i++)
                 {
-                    previousNode.IsOccupied = false;
+                    var prevNode = _grid.GetNode(oldList[i]);
+                    if (prevNode != null && prevNode.IsOccupied && !IsAnyOtherUnitAt(oldList[i]))
+                    {
+                        prevNode.IsOccupied = false;
+                    }
                 }
             }
 
@@ -369,10 +396,15 @@ namespace Killtime.Tactics.Units
             var node = grid != null ? grid.GetNode(startCoords) : null;
             float yPos = node != null ? node.WorldPosition.y : 0.0f;
             transform.position = startCoords.ToWorldPosition(grid != null ? grid.HexRadius : 1.0f, yPos);
-            
-            if (node != null)
+
+            if (_grid != null)
             {
-                node.IsOccupied = true;
+                var newList = OccupiedCoords;
+                for (int i = 0; i < newList.Count; i++)
+                {
+                    var n = _grid.GetNode(newList[i]);
+                    if (n != null) n.IsOccupied = true;
+                }
             }
             _hasPosition = true;
         }
@@ -387,7 +419,7 @@ namespace Killtime.Tactics.Units
             var node = grid.GetNode(coords);
             if (node == null || !node.IsWalkable) return true;
 
-            if (_hasPosition && CurrentCoords.Equals(coords)) return false;
+            if (_hasPosition && Occupies(coords)) return false;
 
             if (IsAnyOtherUnitAt(coords))
             {
@@ -407,34 +439,40 @@ namespace Killtime.Tactics.Units
                 if (u == null || u == this) continue;
                 if (u.gameObject == null) continue;
                 if (u.Stats != null && !u.Stats.IsAlive) continue;
-                if (u._hasPosition && u.CurrentCoords.Equals(coords)) return true;
+                if (u._hasPosition && u.Occupies(coords)) return true;
             }
             return false;
-        }
+        }   
 
         public bool TeleportTo(HexCoordinates coords, TacticalHexGrid grid)
         {
             grid ??= _grid;
             if (grid == null) return false;
 
-            // Rester sur place : toujours autorisé.
             if (_hasPosition && CurrentCoords.Equals(coords))
             {
                 _grid = grid;
                 return true;
             }
 
-            if (IsOccupiedByOther(coords, grid))
+            if (!grid.IsFootprintFree(coords, _footprintType, this))
             {
-                Debug.LogWarning($"[TacticalUnit] Téléportation refusée pour '{_unitName}' vers {coords} : case déjà occupée.");
+                Debug.LogWarning($"[TacticalUnit] Téléportation refusée pour '{_unitName}' vers {coords} : empreinte occupée.");
                 return false;
             }
 
             _grid = grid;
-            var oldNode = _hasPosition ? grid.GetNode(CurrentCoords) : null;
-            if (oldNode != null && !IsAnyOtherUnitAt(CurrentCoords))
+            if (_hasPosition)
             {
-                oldNode.IsOccupied = false;
+                var oldList = OccupiedCoords;
+                for (int i = 0; i < oldList.Count; i++)
+                {
+                    var oldNode = grid.GetNode(oldList[i]);
+                    if (oldNode != null && !IsAnyOtherUnitAt(oldList[i]))
+                    {
+                        oldNode.IsOccupied = false;
+                    }
+                }
             }
 
             InitializePosition(coords, grid);

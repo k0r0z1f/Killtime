@@ -134,7 +134,9 @@ namespace Killtime.Tactics.Grid
             HexCoordinates from,
             HexCoordinates to,
             Func<HexCoordinates, HexNode> getNode,
-            CoverScanParams p)
+            CoverScanParams p,
+            TitanFootprintType toFootprint = TitanFootprintType.Single,
+            TitanFootprintType fromFootprint = TitanFootprintType.Single)
         {
             var result = new CoverScanResult
             {
@@ -143,10 +145,23 @@ namespace Killtime.Tactics.Grid
             };
             if (getNode == null) return result;
 
-            float attackerBase = CellBaseY(getNode, from);
-            float targetBase = CellBaseY(getNode, to);
-            Vector2 attackerCenter = CellCenterXZ(getNode, from, p.HexRadius);
-            Vector2 targetCenter = CellCenterXZ(getNode, to, p.HexRadius);
+            HexCoordinates effectiveTo = toFootprint != TitanFootprintType.Single
+                ? TitanFootprint.GetClosestCell(from, to, toFootprint)
+                : to;
+
+            HexCoordinates effectiveFrom = fromFootprint != TitanFootprintType.Single
+                ? TitanFootprint.GetClosestCell(effectiveTo, from, fromFootprint)
+                : from;
+
+            if (toFootprint == TitanFootprintType.Rosette7 || toFootprint == TitanFootprintType.Colossus19)
+            {
+                p.BodyHeight = Mathf.Max(p.BodyHeight, 3.5f);
+            }
+
+            float attackerBase = CellBaseY(getNode, effectiveFrom);
+            float targetBase = CellBaseY(getNode, effectiveTo);
+            Vector2 attackerCenter = CellCenterXZ(getNode, effectiveFrom, p.HexRadius);
+            Vector2 targetCenter = CellCenterXZ(getNode, effectiveTo, p.HexRadius);
 
             // 28 échantillons de la silhouette (7 positions × 4 hauteurs).
             var samples = new Vector3[28];
@@ -217,10 +232,15 @@ namespace Killtime.Tactics.Grid
             return result;
         }
 
-        public static CoverScanResult ScanCover(HexCoordinates from, HexCoordinates to, TacticalHexGrid grid)
+        public static CoverScanResult ScanCover(
+            HexCoordinates from, 
+            HexCoordinates to, 
+            TacticalHexGrid grid,
+            TitanFootprintType toFootprint = TitanFootprintType.Single,
+            TitanFootprintType fromFootprint = TitanFootprintType.Single)
         {
             if (grid == null) return new CoverScanResult { Cover = CoverType.None, Rays = new List<CoverRayHit>() };
-            return ScanCover(from, to, c => grid.GetNode(c), ResolveParams(grid.HexRadius));
+            return ScanCover(from, to, c => grid.GetNode(c), ResolveParams(grid.HexRadius), toFootprint, fromFootprint);
         }
 
         /// <summary>Niveau de couvert seul (sans détail des rayons).</summary>
@@ -228,17 +248,24 @@ namespace Killtime.Tactics.Grid
             HexCoordinates from,
             HexCoordinates to,
             Func<HexCoordinates, HexNode> getNode,
-            float hexRadius = 1f)
+            float hexRadius = 1f,
+            TitanFootprintType toFootprint = TitanFootprintType.Single,
+            TitanFootprintType fromFootprint = TitanFootprintType.Single)
         {
             if (getNode == null) return CoverType.None;
-            return ScanCover(from, to, getNode, ResolveParams(hexRadius)).Cover;
+            return ScanCover(from, to, getNode, ResolveParams(hexRadius), toFootprint, fromFootprint).Cover;
         }
 
         /// <summary>Variante pratique branchée directement sur la grille.</summary>
-        public static CoverType EvaluateCover(HexCoordinates from, HexCoordinates to, TacticalHexGrid grid)
+        public static CoverType EvaluateCover(
+            HexCoordinates from, 
+            HexCoordinates to, 
+            TacticalHexGrid grid,
+            TitanFootprintType toFootprint = TitanFootprintType.Single,
+            TitanFootprintType fromFootprint = TitanFootprintType.Single)
         {
             if (grid == null) return CoverType.None;
-            return ScanCover(from, to, grid).Cover;
+            return ScanCover(from, to, grid, toFootprint, fromFootprint).Cover;
         }
 
         /// <summary>Vrai si la cible est attaquable (tout sauf Full / non visible).</summary>

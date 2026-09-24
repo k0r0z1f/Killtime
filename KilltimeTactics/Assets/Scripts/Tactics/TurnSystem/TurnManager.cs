@@ -396,6 +396,11 @@ namespace Killtime.Tactics.TurnSystem
             {
                 if (a == null || a.Stats == null) return 1;
                 if (b == null || b.Stats == null) return -1;
+
+                bool aIsTitan = a.FootprintType != TitanFootprintType.Single;
+                bool bIsTitan = b.FootprintType != TitanFootprintType.Single;
+                if (aIsTitan != bIsTitan) return bIsTitan.CompareTo(aIsTitan);
+
                 int initA = GetInitiativeTotal(a);
                 int initB = GetInitiativeTotal(b);
                 if (initA != initB) return initB.CompareTo(initA);
@@ -619,6 +624,11 @@ namespace Killtime.Tactics.TurnSystem
 
             int prevAP = unit.Stats.CurrentActionPoints;
             unit.Stats.ResetTurn();
+
+            if (unit.FootprintType == TitanFootprintType.Rosette7 || unit.FootprintType == TitanFootprintType.Colossus19)
+            {
+                unit.Stats.CurrentActionPoints = unit.Stats.MaxActionPoints * 2;
+            }
 
             // Techniques de spécialisation (Livre III) : vieillissement des marques
             // (failles exposées, provocations) et expiration des bonus de ligne

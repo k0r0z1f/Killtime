@@ -5,6 +5,7 @@ using UnityEngine;
 using UnityEngine.Rendering;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.CombatUI;
+using Killtime.Tactics.Grid;
 using Killtime.Core.Character;
 
 namespace Killtime.Tactics.Units
@@ -1673,7 +1674,9 @@ namespace Killtime.Tactics.Units
             disk.name = "FactionRing";
             disk.transform.SetParent(_modelRoot, false);
             disk.transform.localPosition = new Vector3(0, 0.02f, 0);
-            disk.transform.localScale = new Vector3(0.95f, 0.02f, 0.95f) * _unitScale;
+
+            float ringFactor = _unit != null && _unit.FootprintType == Killtime.Tactics.Grid.TitanFootprintType.Rosette7 ? 2.85f : 0.95f;
+            disk.transform.localScale = new Vector3(ringFactor, 0.02f, ringFactor) * _unitScale;
 
             var diskCol = disk.GetComponent<Collider>();
             if (diskCol != null) Destroy(diskCol);
@@ -1878,6 +1881,9 @@ namespace Killtime.Tactics.Units
 
         public void SpawnFloatingText(string message, Color color)
         {
+            // Brouillard de guerre : aucun indice visuel ne doit fuir la position
+            // d'un ennemi non détecté (ni dégâts flottants, ni logs 3D).
+            if (_hiddenByFog) return;
             float stackOffset = _floatingTexts.Count * 0.38f;
             Vector3 headPos = GetHeadWorldPosition();
             bool hasStatus = _unit != null && _unit.Stats != null && _unit.Stats.ActiveStatus != StatusEffect.None;
@@ -2496,6 +2502,7 @@ namespace Killtime.Tactics.Units
 
         private void DrawFloatingCombatTexts(UnityEngine.Camera cam, TacticalUnit[] allUnits = null)
         {
+            if (_hiddenByFog) return;
             for (int i = 0; i < _floatingTexts.Count; i++)
             {
                 var ft = _floatingTexts[i];
@@ -2539,6 +2546,36 @@ namespace Killtime.Tactics.Units
                 }
             }
             GUI.color = Color.white;
+        }
+
+        // ------------------------------------------------------------------
+        // Brouillard de guerre asymétrique : invisibilité des non-détectés.
+        // ------------------------------------------------------------------
+
+        private bool _hiddenByFog;
+
+        /// <summary>Vrai quand cet avatar est masqué par le brouillard local.</summary>
+        public bool IsHiddenByFog => _hiddenByFog;
+
+        /// <summary>
+        /// Masque / révèle l'avatar sans toucher à la logique (pathfinding, PV, PA).
+        /// Masqué : modèle 3D + arme équipée désactivés, collider insensible au clic
+        /// (impossible de cibler un ennemi invisible), textes flottants purgés.
+        /// La logique (position, tour, IA, MJ) continue de tourner normalement.
+        /// </summary>
+        public void SetHiddenByFog(bool hidden)
+        {
+            if (_hiddenByFog == hidden) return;
+            _hiddenByFog = hidden;
+            try
+            {
+                if (_modelRoot != null) _modelRoot.gameObject.SetActive(!hidden);
+                if (_equippedWeaponInstance != null) _equippedWeaponInstance.SetActive(!hidden);
+                var col = GetComponent<Collider>();
+                if (col != null) col.enabled = !hidden;
+                if (hidden) _floatingTexts.Clear();
+            }
+            catch { /* ignore */ }
         }
     }
 }

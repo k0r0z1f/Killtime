@@ -130,7 +130,7 @@ namespace Killtime.Tactics.Grid
             for (int i = 0; i < all.Length; i++)
             {
                 var u = all[i];
-                if (u != null && u.Stats != null && u.Stats.IsAlive && u.CurrentCoords.Equals(coords))
+                if (u != null && u.Stats != null && u.Stats.IsAlive && u.Occupies(coords))
                 {
                     node.IsOccupied = true;
                     return false;
@@ -138,6 +138,69 @@ namespace Killtime.Tactics.Grid
             }
 
             return true;
+        }
+
+        public bool IsFootprintFree(HexCoordinates anchor, TitanFootprintType footprint, TacticalUnit ignoreUnit = null)
+        {
+            var coordsList = TitanFootprint.GetOccupiedCoordinates(anchor, footprint);
+            for (int i = 0; i < coordsList.Count; i++)
+            {
+                var c = coordsList[i];
+                if (!_nodes.TryGetValue(c, out var node)) return false;
+                if (!node.IsWalkable) return false;
+
+                var all = FindObjectsByType<TacticalUnit>();
+                for (int u = 0; u < all.Length; u++)
+                {
+                    var unit = all[u];
+                    if (unit == null || unit == ignoreUnit) continue;
+                    if (unit.Stats != null && !unit.Stats.IsAlive) continue;
+                    if (unit.Occupies(c)) return false;
+                }
+
+                if (node.IsOccupied && (ignoreUnit == null || !ignoreUnit.Occupies(c))) return false;
+            }
+            return true;
+        }
+
+        public bool TryFindNearestFreeFootprint(HexCoordinates origin, TitanFootprintType footprint, out HexCoordinates freeAnchor, int maxRadius = 8, TacticalUnit ignoreUnit = null)
+        {
+            freeAnchor = origin;
+            if (IsFootprintFree(origin, footprint, ignoreUnit))
+            {
+                return true;
+            }
+
+            var visited = new HashSet<HexCoordinates> { origin };
+            var frontier = new Queue<HexCoordinates>();
+            frontier.Enqueue(origin);
+
+            int guard = 0;
+            while (frontier.Count > 0 && guard++ < 2000)
+            {
+                var current = frontier.Dequeue();
+                if (current.DistanceTo(origin) > maxRadius) continue;
+
+                for (int dir = 0; dir < 6; dir++)
+                {
+                    var neighbor = current.GetNeighbor(dir);
+                    if (!visited.Add(neighbor)) continue;
+                    if (neighbor.DistanceTo(origin) > maxRadius) continue;
+
+                    if (IsFootprintFree(neighbor, footprint, ignoreUnit))
+                    {
+                        freeAnchor = neighbor;
+                        return true;
+                    }
+
+                    if (_nodes.TryGetValue(neighbor, out var node) && node.IsWalkable)
+                    {
+                        frontier.Enqueue(neighbor);
+                    }
+                }
+            }
+
+            return false;
         }
 
         /// <summary>

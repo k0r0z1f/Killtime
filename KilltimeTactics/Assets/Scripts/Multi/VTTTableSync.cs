@@ -228,10 +228,36 @@ namespace Killtime.Multi
                 destQ = finalQ,
                 destR = finalR,
                 path = vttPath,
-                apCost = apCost
+                apCost = apCost,
+                // Brouillard §25.4 : le hub filtre ce paquet par destinataire
+                // (portée d'ambiance 360° + murs Full depuis au moins un avatar).
+                facingYaw = Killtime.Tactics.Visibility.FogOfWarManager.FacingYawDeg(unit),
+                vision = unit.Stats != null ? Mathf.Clamp(unit.Stats.Attributes.Vision, 1, 6) : 3,
+                pano = (unit.Stats != null && unit.Stats.HasSpecialization(Killtime.Tactics.Visibility.FogOfWarSystem.SpecPanoramic)) ? 1 : 0,
+                thermal = (unit.Stats != null && unit.Stats.HasSpecialization(Killtime.Tactics.Visibility.FogOfWarSystem.SpecThermal)) ? 1 : 0,
             };
 
             _room.SendTableOp(VTTProtocol.OpUnitMove, JsonUtility.ToJson(payload));
+        }
+
+        /// <summary>
+        /// Revendique les avatars possédés par CE client (brouillard asymétrique).
+        /// Le hub ne transmet la position d'un ennemi à ce client que s'il est dans
+        /// le champ d'au moins un avatar revendiqué (anti map-hack mémoire).
+        /// Le FogOfWarManager local applique le même masque à l'affichage.
+        /// </summary>
+        public void PublishUnitClaims(IEnumerable<string> unitIds)
+        {
+            if (_room == null || !_room.InRoom) return;
+            var ids = new List<string>();
+            if (unitIds != null)
+            {
+                foreach (var id in unitIds)
+                    if (!string.IsNullOrEmpty(id)) ids.Add(id);
+            }
+            var fog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+            fog?.ClaimLocalUnits(ids);
+            _room.SendTableOp(VTTProtocol.OpUnitClaim, JsonUtility.ToJson(new VTTUnitClaimPayload { unitIds = ids }));
         }
 
         public void BroadcastCombatAction(VTTCombatActionPayload action)
@@ -284,6 +310,8 @@ namespace Killtime.Multi
         public void RequestAttack(TacticalUnit attacker, TacticalUnit target, BodyPart part, bool cancelPenalty, SkillType atkSkill, SkillType defSkill, int bonusAP, int attackerPE = 0)
         {
             if (_room == null || !_room.InRoom || attacker == null || target == null) return;
+            try { Killtime.Tactics.Visibility.FogOfWarManager.Instance?.LocalClaimedUnitIds.Add(UnitIdOf(attacker)); }
+            catch { /* ignore */ }
             var req = new VTTActionRequestPayload
             {
                 action = "attack",
@@ -485,7 +513,11 @@ namespace Killtime.Multi
                 targetUnitId = curTarget != null ? UnitIdOf(curTarget) : "",
                 targetQ = curTarget != null ? curTarget.CurrentCoords.Q : 0,
                 targetR = curTarget != null ? curTarget.CurrentCoords.R : 0,
-                outcome = _turnManager.CurrentOutcome.ToString()
+                outcome = _turnManager.CurrentOutcome.ToString(),
+                // Brouillard §25.4 : le MJ impose sa portée d'ambiance à la table.
+                sightRange = Killtime.Tactics.Visibility.FogOfWarManager.Instance != null
+                    ? Killtime.Tactics.Visibility.FogOfWarManager.Instance.CurrentSightRange
+                    : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange,
             };
 
             var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
@@ -506,7 +538,15 @@ namespace Killtime.Multi
                     essoufflement = u.Stats.Essoufflement,
                     isAlive = u.Stats.IsAlive,
                     isDead = u.Stats.IsDead,
-                    activeStatus = (int)u.Stats.ActiveStatus
+                    activeStatus = (int)u.Stats.ActiveStatus,
+                    // Brouillard §25.4 : le hub filtre ce snapshot par
+                    // destinataire (portée d'ambiance 360° + murs Full).
+                    vision = Mathf.Clamp(u.Stats.Attributes.Vision, 1, 6),
+                    ouie = Mathf.Clamp(u.Stats.Attributes.Ouie, 1, 6),
+                    facingYaw = u.transform.rotation.eulerAngles.y,
+                    pano = u.Stats.HasSpecialization(Killtime.Tactics.Visibility.FogOfWarSystem.SpecPanoramic) ? 1 : 0,
+                    thermal = u.Stats.HasSpecialization(Killtime.Tactics.Visibility.FogOfWarSystem.SpecThermal) ? 1 : 0,
+                    isPlayer = u.IsPlayerControlled ? 1 : 0,
                 };
                 if (u.Stats.ActiveStatus != StatusEffect.None)
                 {
@@ -596,6 +636,10 @@ namespace Killtime.Multi
                     {
                         HandleActionRequestFromPlayer(op, payloadJson);
                     }
+                    break;
+                case VTTProtocol.OpUnitClaim:
+                    // Hub uniquement : mémorise les avatars possédés par l'émetteur
+                    // pour le filtrage asymétrique. Les clients ignorent l'écho.
                     break;
                 default:
                     Debug.Log($"[VTT] Op '{op.op}' reçue (non gérée).");
@@ -1327,6 +1371,12 @@ namespace Killtime.Multi
 
         private void ApplyRemoteStateSync(VTTTurnControlPayload payload)
         {
+            // Brouillard §25.4 : la portée d'ambiance du MJ fait foi pour toute la table.
+            if (payload.sightRange > 0)
+            {
+                try { Killtime.Tactics.Visibility.FogOfWarManager.Instance?.ApplyGMSightRange(payload.sightRange); }
+                catch { /* ignore */ }
+            }
             if (payload.unitStates == null) return;
             var grid = _grid != null ? _grid : FindAnyObjectByType<TacticalHexGrid>();
 

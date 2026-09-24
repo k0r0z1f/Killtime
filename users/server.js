@@ -839,8 +839,18 @@ const VTT_WS_PATH = '/ws/vtt';
 const VTT_WS_GUID = '258EAFA5-E914-47DA-95CA-C5AB0DC85B11';
 const VTT_MAX_PAYLOAD = 512 * 1024; // 512 Ko max par message
 const vttClients = new Map(); // clientId -> conn
-const vttRooms = new Map();   // CODE -> { code, createdAt, gmId, members: Map(clientId -> {username, role, userId}) }
+const vttRooms = new Map();   // CODE -> { code, createdAt, gmId, members: Map(clientId -> {username, role, userId}), units, clientUnits, covers }
 let vttClientSeq = 0;
+
+// Brouillard de guerre asymétrique : même règle portée 360°/murs que le client
+// Unity (FogOfWarSystem). Le hub ne transmet la position d'un ennemi à un client
+// que si elle est dans le champ d'au moins un de ses avatars (anti map-hack).
+let vttVis = null;
+try {
+    vttVis = require('./vtt_visibility.js');
+} catch (e) {
+    console.warn('[VTT] vtt_visibility.js introuvable : filtrage asymétrique désactivé.');
+}
 
 function vttGenClientId() {
     vttClientSeq += 1;
@@ -942,6 +952,219 @@ function vttBroadcast(room, obj, exceptId = null) {
     }
 }
 
+/* ================================================================
+   BROUILLARD DE GUERRE ASYMÉTRIQUE (filtrage serveur anti map-hack)
+   ----------------------------------------------------------------
+   Le hub mémorise les positions autoritaires (unit_move / combat_action /
+   state_sync / map_load) et les avatars possédés par chaque client
+   (unit_claim + action_request.actorId). À l'envoi, la position d'un ennemi
+   n'est transmise à un destinataire que si elle est dans le champ 360° d'au
+   moins un de ses avatars (portée d'ambiance de la room + murs Full).
+   - unit_move (pure position) :paquet SUPPRIMÉ pour les aveugles (le fantôme
+     local garde la dernière position connue).
+   - combat_action (effets + logs) : transmis à tous, mais EXPURGÉ (positions
+     à zéro, chemin retiré) pour les aveugles — les logs restent publics.
+   - state_sync : entrées ennemies invisibles RETIRÉES par destinataire ;
+     diffuse aussi la portée d'ambiance du MJ (sightRange).
+   - map_load : snapshot initial transmis complet (pose publique de table),
+     mais enregistré pour le filtrage des mouvements suivants.
+   Sans vtt_visibility.js ou sans positions connues : repli ouvert (relais).
+   ================================================================ */
+
+function vttFogUnits(room) {
+    if (!room.units) room.units = new Map(); // unitId -> {q,r,vision,yaw,pano,thermal,ouie,isPlayer}
+    return room.units;
+}
+
+function vttFogClaims(room) {
+    if (!room.clientUnits) room.clientUnits = new Map(); // clientId -> Set(unitId)
+    return room.clientUnits;
+}
+
+function vttFogCovers(room) {
+    if (!room.covers) room.covers = new Map(); // "q,r" -> coverInt
+    return room.covers;
+}
+
+function vttNum(v, fallback) {
+    const n = Number(v);
+    return Number.isFinite(n) ? n : fallback;
+}
+
+function vttTrackUnit(room, unitId, fields) {
+    if (!unitId || typeof unitId !== 'string') return;
+    const units = vttFogUnits(room);
+    const prev = units.get(unitId) || {};
+    const next = { ...prev };
+    if (fields.q !== undefined) next.q = vttNum(fields.q, prev.q ?? 0);
+    if (fields.r !== undefined) next.r = vttNum(fields.r, prev.r ?? 0);
+    if (fields.vision !== undefined) next.vision = vttNum(fields.vision, prev.vision ?? 6);
+    if (fields.yaw !== undefined) next.yaw = vttNum(fields.yaw, prev.yaw ?? 0);
+    if (fields.pano !== undefined) next.pano = fields.pano ? 1 : 0;
+    if (fields.thermal !== undefined) next.thermal = fields.thermal ? 1 : 0;
+    if (fields.ouie !== undefined) next.ouie = vttNum(fields.ouie, prev.ouie ?? 3);
+    if (fields.isPlayer !== undefined) next.isPlayer = !!fields.isPlayer;
+    units.set(unitId, next);
+}
+
+function vttLearnClaims(room, clientId, unitIds) {
+    const claims = vttFogClaims(room);
+    let set = claims.get(clientId);
+    if (!set) {
+        set = new Set();
+        claims.set(clientId, set);
+    }
+    if (!Array.isArray(unitIds)) return set;
+    for (const raw of unitIds.slice(0, 32)) {
+        const id = String(raw || '').slice(0, 64);
+        if (id) set.add(id);
+    }
+    return set;
+}
+
+// Observateurs d'un destinataire : avatars revendiqués (positions connues).
+// Repli coopératif : sans revendication, toutes les unités IsPlayer connues.
+// Portée = portée d'ambiance de la room (GM via state_sync, défaut longue).
+function vttRoomSightRange(room) {
+    if (vttVis && room && Number.isFinite(room.sightRange)) {
+        return vttVis.clampSightRange(room.sightRange, vttVis.LONG_SIGHT_RANGE);
+    }
+    if (vttVis) return vttVis.LONG_SIGHT_RANGE;
+    return 12;
+}
+
+function vttObserversFor(room, viewerId) {
+    const units = vttFogUnits(room);
+    const claims = vttFogClaims(room).get(viewerId);
+    const sight = vttRoomSightRange(room);
+    const out = [];
+    const push = (id, st) => {
+        if (st === undefined) return;
+        if (!Number.isFinite(st.q) || !Number.isFinite(st.r)) return;
+        out.push({
+            q: st.q, r: st.r,
+            vision: sight,
+            thermal: !!st.thermal,
+            ouie: vttNum(st.ouie, 3),
+        });
+    };
+    if (claims && claims.size > 0) {
+        for (const id of claims) {
+            const st = units.get(id);
+            if (st) push(id, st);
+        }
+        if (out.length > 0) return out;
+    }
+    // Repli strict : seules les unites de faction IsPlayer avérée observent.
+    // (map_load et state_sync la renseignent ; l'inconnu n'observe jamais.)
+    for (const [id, st] of units) {
+        if (st.isPlayer === true) push(id, st);
+    }
+    return out;
+}
+
+function vttIsGMViewer(room, viewerId) {
+    if (!room) return false;
+    if (room.gmId === viewerId) return true;
+    const m = room.members.get(viewerId);
+    return !!m && m.role === 'gm';
+}
+
+// Le destinataire voit-il la case (q,r) ? GM = toujours. Sans module de
+// visibilité ou sans observateur connu : repli ouvert (visible).
+function vttCanViewerSee(room, viewerId, q, r) {
+    if (vttIsGMViewer(room, viewerId)) return true;
+    if (!vttVis) return true;
+    const observers = vttObserversFor(room, viewerId);
+    if (observers.length === 0) return true; // positions encore inconnues : ouvert.
+    try {
+        return vttVis.isVisibleToAny(observers, { q, r }, vttFogCovers(room));
+    } catch (e) {
+        return true;
+    }
+}
+
+// Tir bruyant audible ? Un observateur dans son rayon d'Ouïe sans mur Full.
+function vttIsAudibleTo(room, viewerId, q, r) {
+    if (vttIsGMViewer(room, viewerId)) return true;
+    if (!vttVis) return false;
+    const observers = vttObserversFor(room, viewerId);
+    const covers = vttFogCovers(room);
+    for (const o of observers) {
+        const d = vttVis.hexDistance(o.q, o.r, q, r);
+        if (d <= 1) return true;
+        if (d <= (o.ouie || 3)) {
+            try {
+                if (!vttVis.isBlockedByWall(o.q, o.r, q, r, covers)) return true;
+            } catch (e) { return true; }
+        }
+    }
+    return false;
+}
+
+function vttLearnMap(room, map) {
+    if (!map || typeof map !== 'object') return;
+    const covers = vttFogCovers(room);
+    if (Array.isArray(map.ModifiedTiles)) {
+        for (const t of map.ModifiedTiles.slice(0, 4000)) {
+            if (!t || !Number.isFinite(t.Q) || !Number.isFinite(t.R)) continue;
+            covers.set(t.Q + ',' + t.R, vttNum(t.Cover, 0));
+        }
+    }
+    if (Array.isArray(map.PlacedProps)) {
+        for (const p of map.PlacedProps.slice(0, 4000)) {
+            if (!p || !Number.isFinite(p.Q) || !Number.isFinite(p.R)) continue;
+            const c = vttNum(p.Cover, 2);
+            const key = p.Q + ',' + p.R;
+            if (c === 2) covers.set(key, 2);
+            else if (!covers.has(key) && c !== 0) covers.set(key, c);
+        }
+    }
+    if (Array.isArray(map.PlacedUnits)) {
+        for (const u of map.PlacedUnits.slice(0, 64)) {
+            if (!u || !u.UnitId) continue;
+            let vision = 6;
+            let ouie = 3;
+            try {
+                const attrs = u.Sheet && u.Sheet.BaseAttributes;
+                if (attrs) {
+                    if (Number.isFinite(attrs.Vision)) vision = attrs.Vision;
+                    if (Number.isFinite(attrs.Ouie)) ouie = attrs.Ouie;
+                }
+            } catch (e) { /* repli */ }
+            vttTrackUnit(room, String(u.UnitId), {
+                q: u.Q, r: u.R, vision, ouie, isPlayer: u.IsPlayer !== false,
+            });
+        }
+    }
+}
+
+// Envoi filtre par destinataire : selectPayload(viewerId) retourne le payload
+// a transmettre, ou null pour ne rien envoyer (fantome local conserve).
+function vttSendFogFiltered(room, senderConn, op, fallbackPayload, selectPayload) {
+    if (!room) return;
+    const at = Date.now();
+    for (const viewerId of room.members.keys()) {
+        let out;
+        try {
+            out = selectPayload(viewerId);
+        } catch (e) {
+            out = fallbackPayload;
+        }
+        if (out === null || out === undefined) continue; // aveugle : silence radio.
+        const conn = vttClients.get(viewerId);
+        if (conn) vttSendJson(conn, {
+            type: 'op',
+            from: senderConn.id,
+            fromName: senderConn.username,
+            fromRole: senderConn.role,
+            op,
+            payload: out,
+            at
+        });
+    }
+}
+
 function vttBroadcastPresence(room) {
     vttBroadcast(room, {
         type: 'presence',
@@ -963,6 +1186,7 @@ function vttLeaveRoom(conn, reason = 'leave') {
     if (!room) return;
     const wasGM = (room.gmId === conn.id);
     room.members.delete(conn.id);
+    if (room.clientUnits) room.clientUnits.delete(conn.id);
     room.lastActive = Date.now();
     if (room.members.size === 0) {
         vttRooms.delete(code);
@@ -1009,6 +1233,8 @@ function vttJoinRoom(conn, code, username) {
     const isGM = (room.gmId === conn.id);
     conn.role = isGM ? 'gm' : 'player';
     room.members.set(conn.id, { username: name, role: conn.role, userId: conn.userId || null });
+    if (!room.clientUnits) room.clientUnits = new Map();
+    if (!room.clientUnits.has(conn.id)) room.clientUnits.set(conn.id, new Set());
     room.lastActive = Date.now();
     console.log(`[VTT] ${name} (${conn.id}) rejoint ${code} en tant que ${conn.role}.`);
     vttSendJson(conn, {
@@ -1078,7 +1304,11 @@ function vttHandleMessage(conn, msg) {
             code, createdAt: now, lastActive: now, gmId: conn.id,
             tableName, visibility, maxPlayers,
             buildVersion: conn.buildVersion || 'unknown',
-            members: new Map()
+            members: new Map(),
+            // Brouillard asymétrique : état autoritaire (positions, murs, claims).
+            units: new Map(),
+            clientUnits: new Map(),
+            covers: new Map()
         };
         vttRooms.set(code, room);
         conn.roomCode = code;
@@ -1189,6 +1419,161 @@ function vttHandleMessage(conn, msg) {
             return;
         }
         room.lastActive = Date.now();
+        const payload = (msg.payload !== undefined ? msg.payload : {});
+
+        // Revendication d'avatars : memorisee, jamais diffusee (hub seul).
+        if (op === 'unit_claim') {
+            const ids = payload && Array.isArray(payload.unitIds) ? payload.unitIds : [];
+            vttLearnClaims(room, conn.id, ids);
+            vttSendJson(conn, { type: 'op', from: 'hub', fromName: 'hub', fromRole: 'gm', op: 'unit_claim', payload: { ok: true }, at: Date.now() });
+            return;
+        }
+
+        // Apprentissage passif de possession : un joueur declare son acteur.
+        if (op === 'action_request' && payload && typeof payload.actorId === 'string' && payload.actorId) {
+            vttLearnClaims(room, conn.id, [payload.actorId]);
+        }
+
+        // Snapshot initial : enregistre (murs + positions), transmis complet
+        // (pose publique de table ; le filtrage porte sur les mouvements suivants).
+        if (op === 'map_load' && payload && typeof payload === 'object') {
+            try { vttLearnMap(room, payload.map); } catch (e) { /* ignore */ }
+            vttBroadcast(room, {
+                type: 'op',
+                from: conn.id,
+                fromName: conn.username,
+                fromRole: conn.role,
+                op,
+                payload,
+                at: Date.now()
+            });
+            return;
+        }
+
+        // Positions pures : filtrage strict par destinataire.
+        if (op === 'unit_move') {
+            try {
+                const p = payload || {};
+                const actorId = String(p.actorId || p.unitId || '');
+                let q = Number.isFinite(p.destQ) ? p.destQ : p.q;
+                let r = Number.isFinite(p.destR) ? p.destR : p.r;
+                if (Array.isArray(p.path) && p.path.length > 0) {
+                    const last = p.path[p.path.length - 1];
+                    if (last && Number.isFinite(last.q)) { q = last.q; r = last.r; }
+                }
+                if (actorId && Number.isFinite(q) && Number.isFinite(r)) {
+                    vttTrackUnit(room, actorId, {
+                        q, r,
+                        vision: p.vision, ouie: p.ouie,
+                        yaw: (p.facingYaw !== undefined ? p.facingYaw : p.rotationY),
+                        pano: p.pano, thermal: p.thermal,
+                    });
+                }
+                vttSendFogFiltered(room, conn, op, payload, (viewerId) => {
+                    if (viewerId === conn.id) return payload; // l'emetteur revoit son echo.
+                    if (!Number.isFinite(q) || !Number.isFinite(r)) return payload;
+                    return vttCanViewerSee(room, viewerId, q, r) ? payload : null; // aveugle : rien (fantome local).
+                });
+            } catch (e) {
+                vttBroadcast(room, {
+                    type: 'op', from: conn.id, fromName: conn.username, fromRole: conn.role,
+                    op, payload, at: Date.now()
+                });
+            }
+            return;
+        }
+
+        // Actions de combat : effets + logs publics, positions expurgees aux aveugles.
+        if (op === 'combat_action') {
+            try {
+                const p = payload || {};
+                if (p.action === 'move') {
+                    const actorId = String(p.actorId || '');
+                    const q = Number.isFinite(p.destQ) ? p.destQ : undefined;
+                    const r = Number.isFinite(p.destR) ? p.destR : undefined;
+                    if (actorId && Number.isFinite(q) && Number.isFinite(r)) {
+                        vttTrackUnit(room, actorId, {
+                            q, r, vision: p.vision, yaw: p.facingYaw, pano: p.pano, thermal: p.thermal,
+                        });
+                    }
+                    vttSendFogFiltered(room, conn, op, payload, (viewerId) => {
+                        if (viewerId === conn.id) return payload;
+                        if (!Number.isFinite(q) || !Number.isFinite(r)) return payload;
+                        return vttCanViewerSee(room, viewerId, q, r) ? payload : null;
+                    });
+                    return;
+                }
+                // Attaque / grenade / sort / souffle : on piste les repositionnements.
+                if ((p.action === 'attack') && p.targetId && Number.isFinite(p.defenderNewQ) && Number.isFinite(p.defenderNewR)
+                    && (p.defenderNewQ !== 0 || p.defenderNewR !== 0)) {
+                    vttTrackUnit(room, String(p.targetId), { q: p.defenderNewQ, r: p.defenderNewR });
+                }
+                vttSendFogFiltered(room, conn, op, payload, (viewerId) => {
+                    if (viewerId === conn.id) return payload;
+                    if (vttIsGMViewer(room, viewerId)) return payload;
+                    const actorPos = p.actorId ? vttFogUnits(room).get(String(p.actorId)) : null;
+                    const tgtPos = p.targetId ? vttFogUnits(room).get(String(p.targetId)) : null;
+                    const bangQ = (actorPos && Number.isFinite(actorPos.q)) ? actorPos.q : p.destQ;
+                    const bangR = (actorPos && Number.isFinite(actorPos.r)) ? actorPos.r : p.destR;
+                    let sees = false;
+                    if (Number.isFinite(bangQ) && Number.isFinite(bangR)) {
+                        sees = vttCanViewerSee(room, viewerId, bangQ, bangR)
+                            || vttIsAudibleTo(room, viewerId, bangQ, bangR);
+                    }
+                    if (!sees && tgtPos && Number.isFinite(tgtPos.q)) {
+                        sees = vttCanViewerSee(room, viewerId, tgtPos.q, tgtPos.r);
+                    }
+                    if (sees) return payload;
+                    // Expurge : degats + logs conserves, positions a zero (le client
+                    // ignore les Q/R nuls : pas de teleportation fantome).
+                    return { ...p, destQ: 0, destR: 0, path: null, defenderNewQ: 0, defenderNewR: 0, actorRotationY: 0, defenderRotationY: 0 };
+                });
+            } catch (e) {
+                vttBroadcast(room, {
+                    type: 'op', from: conn.id, fromName: conn.username, fromRole: conn.role,
+                    op, payload, at: Date.now()
+                });
+            }
+            return;
+        }
+
+        // Snapshots d'etat : entrees ennemies invisibles retirees par destinataire.
+        // La portee d'ambiance du MJ (sightRange) fait foi pour toute la room.
+        if (op === 'turn_control' && payload && payload.action === 'state_sync' && Array.isArray(payload.unitStates)) {
+            try {
+                const sr = Number(payload.sightRange);
+                if (Number.isFinite(sr)) room.sightRange = Math.max(1, Math.min(32, sr));
+                for (const s of payload.unitStates) {
+                    if (!s || !s.unitId) continue;
+                    vttTrackUnit(room, String(s.unitId), {
+                        q: s.q, r: s.r, vision: s.vision, ouie: s.ouie,
+                        yaw: (s.facingYaw !== undefined ? s.facingYaw : s.rotationY),
+                        pano: s.pano, thermal: s.thermal,
+                        isPlayer: (s.isPlayer === 1 || s.isPlayer === true) ? true : (s.isPlayer === 0 || s.isPlayer === false ? false : undefined),
+                    });
+                }
+                vttSendFogFiltered(room, conn, op, payload, (viewerId) => {
+                    if (viewerId === conn.id) return payload;
+                    if (vttIsGMViewer(room, viewerId)) return payload;
+                    const kept = payload.unitStates.filter((s) => {
+                        if (!s || !s.unitId) return true;
+                        // Les revendiques, les hors de combat et les visibles restent.
+                        const claims = vttFogClaims(room).get(viewerId);
+                        if (claims && claims.has(String(s.unitId))) return true;
+                        if (s.isAlive === false || s.isDead === true) return true;
+                        if (!Number.isFinite(s.q) || !Number.isFinite(s.r)) return true;
+                        return vttCanViewerSee(room, viewerId, s.q, s.r);
+                    });
+                    return { ...payload, unitStates: kept };
+                });
+            } catch (e) {
+                vttBroadcast(room, {
+                    type: 'op', from: conn.id, fromName: conn.username, fromRole: conn.role,
+                    op, payload, at: Date.now()
+                });
+            }
+            return;
+        }
         // Pour les paquets voix, on évite d'émettre l'écho à l'expéditeur afin d'économiser sa bande passante.
         const exceptSender = (op === 'voice') ? conn.id : null;
         vttBroadcast(room, {

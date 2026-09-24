@@ -3,7 +3,8 @@ using System;
 namespace Killtime.Core.Character
 {
     /// <summary>
-    /// Compendium officiel des 16 États & Altérations de statut du Système RP (Livre VII).
+    /// Compendium officiel des 16 États & Altérations de statut du Système RP (Livre VII)
+    /// complété par les états et bénédictions arcaniques modulaires (Livre IV §19).
     /// </summary>
     [Flags]
     public enum StatusEffect
@@ -24,6 +25,15 @@ namespace Killtime.Core.Character
         Empoisonne = 1 << 12,  // Dégâts toxiques par tour
         EnFeu = 1 << 13,       // Dégâts thermiques continus
         Saignement = 1 << 14,  // Hémorragie (perte de PV par tour sans compression)
-        ChronoFracture = 1 << 15 // Déphasage temporel (Livre V)
+        ChronoFracture = 1 << 15, // Déphasage temporel (Livre V)
+
+        // États & Bénédictions Arcaniques Modulaires (Livre IV §19)
+        Debalance = 1 << 16,   // Débalancé pour 1 tour (perte d'équilibre)
+        Rapide = 1 << 17,      // +3 PA dédiés au déplacement (1 tour)
+        Survolte = 1 << 18,    // +1 EC, +3 PA (1 tour)
+        EnTranse = 1 << 19,    // +2 EC, +5 PA (1 tour)
+        EnVol = 1 << 20,       // Déplacement tridimensionnel à demi-coût (1 tour)
+        Accelere = 1 << 21,    // Tout déplacement coûte moitié PA (1 tour)
+        Levitation = 1 << 22   // Lévitation sans effort (1 tour)
     }
 }

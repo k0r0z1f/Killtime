@@ -737,6 +737,7 @@ namespace Killtime.Tactics
 
             var go = new GameObject($"Unit_{sheet.Name.Replace(" ", "_")}");
             var unit = go.AddComponent<TacticalUnit>();
+            unit.SetFootprint(sheet.Footprint);
             unit.InitializeFromSheet(sheet, finalCoords, _grid, isPlayer);
             unit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
 
@@ -1539,8 +1540,8 @@ namespace Killtime.Tactics
         public CoverType GetCoverToTarget(TacticalUnit attacker, TacticalUnit defender)
         {
             if (attacker == null || defender == null || _grid == null) return CoverType.None;
-            if (attacker.CurrentCoords.DistanceTo(defender.CurrentCoords) <= 1) return CoverType.None;
-            return CoverSystem.EvaluateCover(attacker.CurrentCoords, defender.CurrentCoords, _grid);
+            if (TitanFootprint.MinDistanceBetweenUnits(attacker.CurrentCoords, attacker.FootprintType, defender.CurrentCoords, defender.FootprintType) <= 1) return CoverType.None;
+            return CoverSystem.EvaluateCover(attacker.CurrentCoords, defender.CurrentCoords, _grid, defender.FootprintType, attacker.FootprintType);
         }
 
         public void ExecuteAttack(
@@ -1638,7 +1639,7 @@ namespace Killtime.Tactics
                 return;
             }
 
-            int distanceToTarget = attacker.CurrentCoords.DistanceTo(defender.CurrentCoords);
+            int distanceToTarget = TitanFootprint.MinDistanceBetweenUnits(attacker.CurrentCoords, attacker.FootprintType, defender.CurrentCoords, defender.FootprintType);
             var activeWeapon = attacker.Sheet?.GetEquippedWeapon();
             bool hasRifleVisual = attacker.GetComponent<TacticalUnitVisual>()?.HasRifleEquipped() == true;
             bool hasRangedArmamentForCorrection = (activeWeapon != null && activeWeapon.RangeInTiles > 1) || hasRifleVisual;
@@ -1729,6 +1730,15 @@ namespace Killtime.Tactics
             var attVisual = attacker.GetComponent<TacticalUnitVisual>();
             var defVisual = defender.GetComponent<TacticalUnitVisual>();
             bool isMeleeStrike = SkillDefinitions.IsMeleeAttackSkill(attackSkill);
+
+            // Brouillard de guerre asymétrique : un tir bruyant révèle le tireur
+            // dans le rayon d'Ouïe jusqu'à la fin du round suivant (sauf mur Full).
+            // La mêlée reste silencieuse (pas de révélation).
+            if (!isMeleeStrike)
+            {
+                try { Killtime.Tactics.Visibility.FogOfWarManager.Instance?.NotifyLoudShot(attacker); }
+                catch { /* fog optionnel */ }
+            }
 
             // Recalcul au moment du déclenchement : la distance a pu changer entre le clic
             // et l'impact (fin de déplacement, cinématique). Le visuel doit refléter la
@@ -2537,6 +2547,10 @@ namespace Killtime.Tactics
             var attVisual = attacker.GetComponent<TacticalUnitVisual>();
             attVisual?.TriggerGrenadeThrow();
 
+            // Brouillard de guerre : l'explosion révèle le lanceur (tirs bruyants).
+            try { Killtime.Tactics.Visibility.FogOfWarManager.Instance?.NotifyLoudShot(attacker); }
+            catch { /* fog optionnel */ }
+
             // Jet de précision immédiat (pour connaître le point de chute avant l'arc visuel).
             var calc = new GrenadeCalculator(_diceRoller);
             var throwOutcome = calc.ResolveThrow(attacker.Stats, dist, grenadeDef, launcher, bonusWant, aimed);
@@ -3121,12 +3135,17 @@ namespace Killtime.Tactics
             int dr = defender.CurrentCoords.R - attacker.CurrentCoords.R;
 
             bool isTeepDeRupture = attacker.Stats != null && attacker.Stats.HasSpecialization("Teep de Rupture");
+            bool isBedrock = attacker.Stats != null && attacker.Stats.HasSpecialization("Impact de Bedrock");
             int pushDistance = 1;
             if (isTeepDeRupture)
             {
                 if (attacker.Stats.HasSpecialization("Teep de Rupture : Brise-Châssis Titan")) pushDistance = 4;
                 else if (attacker.Stats.HasSpecialization("Teep de Rupture : Onde de Choc Linéaire")) pushDistance = 3;
                 else pushDistance = 2;
+            }
+            else if (isBedrock)
+            {
+                pushDistance = 2;
             }
 
             HexCoordinates currentDest = defender.CurrentCoords;
@@ -3175,13 +3194,27 @@ namespace Killtime.Tactics
             {
                 defender.TeleportTo(currentDest, _grid);
                 var defVis = defender.GetComponent<TacticalUnitVisual>();
-                string teepTag = isTeepDeRupture ? "[TEEP DE RUPTURE]" : "[REFOULEMENT]";
+                string teepTag = isTeepDeRupture ? "[TEEP DE RUPTURE]" : (isBedrock ? "[IMPACT DE BEDROCK]" : "[REFOULEMENT]");
                 defVis?.SpawnFloatingText($"{teepTag} Repoussé ({tilesMoved} cases) !", Color.yellow);
                 Log($"💨 <b>{teepTag}</b> : {defender.Stats.Name} est repoussé(e) de {tilesMoved} case(s) en ({currentDest.Q}, {currentDest.R}) !");
                 return true;
             }
 
             return false;
+        }
+
+        public TacticalUnit SpawnThomas(HexCoordinates coords, bool isPlayer = true)
+        {
+            var sheet = ThomasCharacter.BuildHeroicSheet();
+            return SpawnCustomCharacter(sheet, coords, isPlayer);
+        }
+
+        public void SpawnHeroicTrio(HexCoordinates centerCoords)
+        {
+            SpawnCustomCharacter(ThomasCharacter.BuildHeroicSheet(), centerCoords, true);
+            SpawnCustomCharacter(MinaCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(0), true);
+            SpawnCustomCharacter(LucasCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(3), true);
+            Log("⚡ <b>Trio Tri-Fusion déployé</b> : Thomas-0, Mina-0 et Lucas-0 sur la grille.");
         }
 
         public void Log(string message)

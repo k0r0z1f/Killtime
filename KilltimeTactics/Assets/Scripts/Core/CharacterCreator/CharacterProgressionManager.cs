@@ -522,6 +522,7 @@ namespace Killtime.Core.Character
 
                     if (MinaCharacter.IsInnateUnlocked(spec, sheet)) continue;
                     if (LucasCharacter.IsInnateUnlocked(spec, sheet)) continue;
+                    if (ThomasCharacter.IsInnateUnlocked(spec, sheet)) continue;
                     if (IsPresetStartingSpec(sheet, spec)) continue;
 
                     paidSpecs++;
@@ -580,7 +581,7 @@ namespace Killtime.Core.Character
                 {
                     string spec = sheet.UnlockedSpecializations[i];
                     if (string.IsNullOrWhiteSpace(spec)) continue;
-                    if (MinaCharacter.IsInnateUnlocked(spec, sheet) || LucasCharacter.IsInnateUnlocked(spec, sheet) || IsPresetStartingSpec(sheet, spec))
+                    if (MinaCharacter.IsInnateUnlocked(spec, sheet) || LucasCharacter.IsInnateUnlocked(spec, sheet) || ThomasCharacter.IsInnateUnlocked(spec, sheet) || IsPresetStartingSpec(sheet, spec))
                     {
                         innateSpecs++;
                         continue;
@@ -759,6 +760,7 @@ namespace Killtime.Core.Character
             public bool IsVolume2;
             public bool IsMinaExclusive;
             public bool IsLucasExclusive;
+            public bool IsThomasExclusive;
             public string Description;
             public string MechanicalEffect;
         }
@@ -771,6 +773,7 @@ namespace Killtime.Core.Character
         public static readonly HashSet<string> HiddenSpecializations = new(StringComparer.OrdinalIgnoreCase);
         public static readonly HashSet<string> MinaExclusiveSpecializations = new(StringComparer.OrdinalIgnoreCase);
         public static readonly HashSet<string> LucasExclusiveSpecializations = new(StringComparer.OrdinalIgnoreCase);
+        public static readonly HashSet<string> ThomasExclusiveSpecializations = new(StringComparer.OrdinalIgnoreCase);
 
         public static bool IsMina(CharacterSheet sheet)
         {
@@ -784,9 +787,15 @@ namespace Killtime.Core.Character
             return LucasCharacter.IsLucas(sheet);
         }
 
+        public static bool IsThomas(CharacterSheet sheet)
+        {
+            // Délégation propre : logique héroïque dans ThomasCharacter.
+            return ThomasCharacter.IsThomas(sheet);
+        }
+
         public static bool IsSkillAccessible(CharacterSheet sheet, SkillType skill)
         {
-            // Délégation propre : restrictions d'âme dans MinaCharacter / LucasCharacter.
+            // Délégation propre : restrictions d'âme dans MinaCharacter / LucasCharacter / ThomasCharacter.
             if (sheet != null && MinaCharacter.IsMina(sheet))
             {
                 if (MinaCharacter.IsSkillForbidden(skill))
@@ -795,6 +804,11 @@ namespace Killtime.Core.Character
             if (sheet != null && LucasCharacter.IsLucas(sheet))
             {
                 if (LucasCharacter.IsSkillForbidden(skill))
+                    return false;
+            }
+            if (sheet != null && ThomasCharacter.IsThomas(sheet))
+            {
+                if (ThomasCharacter.IsSkillForbidden(skill))
                     return false;
             }
             return true;
@@ -812,6 +826,13 @@ namespace Killtime.Core.Character
             EnsureRegistryBuilt();
             if (string.IsNullOrWhiteSpace(name)) return false;
             return LucasExclusiveSpecializations.Contains(name.Trim());
+        }
+
+        public static bool IsThomasExclusiveSpecialization(string name)
+        {
+            EnsureRegistryBuilt();
+            if (string.IsNullOrWhiteSpace(name)) return false;
+            return ThomasExclusiveSpecializations.Contains(name.Trim());
         }
 
         static CharacterProgressionManager()
@@ -1421,14 +1442,14 @@ namespace Killtime.Core.Character
                 "Vigilance sensorielle immédiate et détection des menaces.",
                 "Immunise contre l'effet de surprise et conserve la réaction défensive complète lors d'une embuscade.");
             RegisterSpec(SkillType.Observation, "Vigilance Réflexe : Oeil de Lynx", "Vigilance Réflexe", false, false,
-                "Acuité visuelle perçante.",
-                "Portée visuelle augmentée de 4 cases dans la pénombre et l'obscurité.");
+                "Acuité visuelle perçante dans l'obscurité.",
+                "Confère +2 aux duels de détection (Observation) du brouillard de guerre (Livre VI §25.4).");
             RegisterSpec(SkillType.Observation, "Vigilance Réflexe : Détection Thermique", "Vigilance Réflexe : Oeil de Lynx", false, false,
                 "Vision infrarouge naturelle.",
                 "Révèle les unités camouflées et invisibles à travers les parois légères.");
             RegisterSpec(SkillType.Observation, "Vigilance Réflexe : Perception Panoramique 360°", "Vigilance Réflexe : Détection Thermique", true, false,
-                "Omnivision sans angle mort.",
-                "Immunité totale aux attaques de dos et bonus de surprise permanent.");
+                "Vigilance totale, sans angle mort (le combat KT voit déjà à 360°, §25.4).",
+                "Immunité totale aux embuscades et bonus de surprise permanent.");
 
             RegisterSpec(SkillType.Intuition, "Sphère de Résonance", null, false, true,
                 "Champ proprioceptif étendu (Volume II — Résonance).",
@@ -1643,12 +1664,13 @@ namespace Killtime.Core.Character
                 "Dépense 3 PA : tous les alliés à 2 cases gagnent +2 en Esquive pendant 1 tour.");
 
             // --- FICHES HÉROÏQUES EXTRAITES (DÉLÉGATION PROPRE) ---
-            // Tout le contenu Lucas / Mina vit dans LucasCharacter / MinaCharacter.
+            // Tout le contenu vit dans LucasCharacter / MinaCharacter / ThomasCharacter.
             MinaCharacter.RegisterSpecializations();
             LucasCharacter.RegisterSpecializations();
+            ThomasCharacter.RegisterSpecializations();
         }
 
-        public static void RegisterSpec(SkillType skill, string name, string parent, bool isHidden, bool isVol2, string desc, string mechanic, bool isMinaExclusive = false, bool isLucasExclusive = false)
+        public static void RegisterSpec(SkillType skill, string name, string parent, bool isHidden, bool isVol2, string desc, string mechanic, bool isMinaExclusive = false, bool isLucasExclusive = false, bool isThomasExclusive = false)
         {
             var detail = new SpecializationDetail
             {
@@ -1660,6 +1682,7 @@ namespace Killtime.Core.Character
                 IsVolume2 = isVol2,
                 IsMinaExclusive = isMinaExclusive,
                 IsLucasExclusive = isLucasExclusive,
+                IsThomasExclusive = isThomasExclusive,
                 Description = desc,
                 MechanicalEffect = mechanic
             };
@@ -1686,6 +1709,11 @@ namespace Killtime.Core.Character
             {
                 LucasExclusiveSpecializations.Add(name);
             }
+
+            if (isThomasExclusive)
+            {
+                ThomasExclusiveSpecializations.Add(name);
+            }
         }
 
         public static SpecializationDetail GetSpecializationDetail(string name)
@@ -1700,34 +1728,29 @@ namespace Killtime.Core.Character
             EnsureRegistryBuilt();
             bool forMina = sheet != null && IsMina(sheet);
             bool forLucas = sheet != null && IsLucas(sheet);
+            bool forThomas = sheet != null && IsThomas(sheet);
 
             foreach (var detail in _registry.Values)
             {
                 if (forMina)
                 {
-                    // Fiche héroïque Mina : voir MinaCharacter.IsSkillForbidden.
-                    if (MinaCharacter.IsSkillForbidden(detail.SourceSkill))
-                        continue;
-                    // Ni aux voies exclusives de la fiche héroïque Lucas.
-                    if (detail.IsLucasExclusive)
-                        continue;
+                    if (MinaCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
+                    if (detail.IsLucasExclusive || detail.IsThomasExclusive) continue;
                 }
                 else if (forLucas)
                 {
-                    // Fiche héroïque Lucas : voir LucasCharacter.IsSkillForbidden.
-                    if (LucasCharacter.IsSkillForbidden(detail.SourceSkill))
-                        continue;
-                    // Ni aux voies exclusives de la fiche héroïque Mina.
-                    if (detail.IsMinaExclusive)
-                        continue;
+                    if (LucasCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
+                    if (detail.IsMinaExclusive || detail.IsThomasExclusive) continue;
+                }
+                else if (forThomas)
+                {
+                    if (ThomasCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
+                    if (detail.IsMinaExclusive || detail.IsLucasExclusive) continue;
                 }
                 else
                 {
-                    // Les personnages par défaut n'ont accès ni aux spécialisations
-                    // exclusives des fiches héroïques (Mina / Lucas).
-                    if (detail.IsMinaExclusive)
-                        continue;
-                    if (detail.IsLucasExclusive)
+                    // Les personnages réguliers n'ont pas accès aux voies exclusives des héros
+                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive)
                         continue;
                 }
 
@@ -1841,6 +1864,12 @@ namespace Killtime.Core.Character
                 return false;
             }
 
+            if (IsThomas(sheet) && ThomasCharacter.IsSkillForbidden(target))
+            {
+                message = ThomasCharacter.ForbiddenSkillMessage(target);
+                return false;
+            }
+
             if (!IsMina(sheet) && IsMinaExclusiveSpecialization(specializationName))
             {
                 message = MinaCharacter.ExclusiveSpecializationMessage(specializationName);
@@ -1850,6 +1879,12 @@ namespace Killtime.Core.Character
             if (!IsLucas(sheet) && IsLucasExclusiveSpecialization(specializationName))
             {
                 message = LucasCharacter.ExclusiveSpecializationMessage(specializationName);
+                return false;
+            }
+
+            if (!IsThomas(sheet) && IsThomasExclusiveSpecialization(specializationName))
+            {
+                message = ThomasCharacter.ExclusiveSpecializationMessage(specializationName);
                 return false;
             }
 
@@ -1866,6 +1901,13 @@ namespace Killtime.Core.Character
             {
                 sheet.UnlockedSpecializations.Add(specializationName);
                 message = $"★ Maîtrise innée [{LucasCharacter.InnateSpecialization}] synchronisée sans dépense d'XP !";
+                return true;
+            }
+
+            if (forceFree || ThomasCharacter.IsInnateUnlocked(specializationName, sheet))
+            {
+                sheet.UnlockedSpecializations.Add(specializationName);
+                message = $"★ Maîtrise innée [{ThomasCharacter.InnateSpecialization}] synchronisée sans dépense d'XP !";
                 return true;
             }
 
@@ -1924,6 +1966,12 @@ namespace Killtime.Core.Character
             if (IsLucas(sheet) && target == SkillType.MagiePrimale)
             {
                 message = LucasCharacter.ForbiddenSpellMessage();
+                return false;
+            }
+
+            if (IsThomas(sheet))
+            {
+                message = "[RESTRICTION D'ÂME] Thomas ne possède aucune affinité arcanique (MAG 0) et ne peut canaliser ni graver aucun sort modulaire.";
                 return false;
             }
 
@@ -2024,7 +2072,7 @@ namespace Killtime.Core.Character
                 {
                     string s = sheet.UnlockedSpecializations[i];
                     if (string.IsNullOrWhiteSpace(s)) continue;
-                    if (MinaCharacter.IsInnateUnlocked(s, sheet) || LucasCharacter.IsInnateUnlocked(s, sheet))
+                    if (MinaCharacter.IsInnateUnlocked(s, sheet) || LucasCharacter.IsInnateUnlocked(s, sheet) || ThomasCharacter.IsInnateUnlocked(s, sheet))
                         freeSpecs++;
                 }
             }
@@ -2037,6 +2085,7 @@ namespace Killtime.Core.Character
 
                 if (IsMina(sheet)) sheet.UnlockedSpecializations.Add(MinaCharacter.InnateSpecialization);
                 if (IsLucas(sheet)) sheet.UnlockedSpecializations.Add(LucasCharacter.InnateSpecialization);
+                if (IsThomas(sheet)) sheet.UnlockedSpecializations.Add(ThomasCharacter.InnateSpecialization);
             }
 
             int refundedSpells = 0;

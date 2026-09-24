@@ -19,7 +19,7 @@ namespace Killtime.Tactics.Grid
         /// <summary>
         /// Calcule le chemin le plus économe en PA entre deux coordonnées hexagonales.
         /// </summary>
-        public List<HexCoordinates> FindPath(HexCoordinates start, HexCoordinates target, int availableAP, out int totalAPCost)
+        public List<HexCoordinates> FindPath(HexCoordinates start, HexCoordinates target, int availableAP, out int totalAPCost, TitanFootprintType footprint = TitanFootprintType.Single)
         {
             totalAPCost = 0;
             var path = new List<HexCoordinates>();
@@ -37,15 +37,28 @@ namespace Killtime.Tactics.Grid
             for (int i = 0; i < allUnits.Length; i++)
             {
                 var u = allUnits[i];
-                if (u != null && u.Stats != null && u.Stats.IsAlive && !u.CurrentCoords.Equals(start))
+                if (u != null && u.Stats != null && u.Stats.IsAlive && !u.Occupies(start))
                 {
-                    occupiedCoords.Add(u.CurrentCoords);
+                    var uCoords = u.OccupiedCoords;
+                    for (int c = 0; c < uCoords.Count; c++)
+                    {
+                        occupiedCoords.Add(uCoords[c]);
+                    }
                 }
             }
 
-            if (!start.Equals(target) && (targetNode.IsOccupied || occupiedCoords.Contains(target)))
+            if (!start.Equals(target))
             {
-                return path;
+                var targetFootprintCells = TitanFootprint.GetOccupiedCoordinates(target, footprint);
+                for (int i = 0; i < targetFootprintCells.Count; i++)
+                {
+                    var tc = targetFootprintCells[i];
+                    var tNode = _grid.GetNode(tc);
+                    if (tNode == null || !tNode.IsWalkable || tNode.IsOccupied || occupiedCoords.Contains(tc))
+                    {
+                        return path;
+                    }
+                }
             }
 
             var openSet = new List<HexCoordinates> { start };
@@ -90,10 +103,24 @@ namespace Killtime.Tactics.Grid
                     var neighbor = current.GetNeighbor(dir);
                     var neighborNode = _grid.GetNode(neighbor);
 
-                    if (neighborNode == null || !neighborNode.IsWalkable || neighborNode.IsOccupied || occupiedCoords.Contains(neighbor))
+                    if (neighborNode == null || !neighborNode.IsWalkable)
                     {
                         continue;
                     }
+
+                    bool footprintBlocked = false;
+                    var footprintCells = TitanFootprint.GetOccupiedCoordinates(neighbor, footprint);
+                    for (int fc = 0; fc < footprintCells.Count; fc++)
+                    {
+                        var cell = footprintCells[fc];
+                        var n = _grid.GetNode(cell);
+                        if (n == null || !n.IsWalkable || (n.IsOccupied && occupiedCoords.Contains(cell)))
+                        {
+                            footprintBlocked = true;
+                            break;
+                        }
+                    }
+                    if (footprintBlocked) continue;
 
                     int tentativeG = gScore[current] + neighborNode.ActionPointCost;
 

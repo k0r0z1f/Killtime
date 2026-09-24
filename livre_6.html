@@ -303,6 +303,8 @@
                                         class="nav-item-badge badge-live">Actif</span></a></li>
                             <li><a href="#chap-25-3" class="nav-item-link"><span>25.3 Couvert & Visibilité</span><span
                                         class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-25-4" class="nav-item-link"><span>25.4 Brouillard de Guerre</span><span
+                                        class="nav-item-badge badge-live">Actif</span></a></li>
                             <li><a href="#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span><span
                                         class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
@@ -881,6 +883,82 @@
                         </div>
                     </div>
 
+                    <h3 id="chap-25-4">25.4 Brouillard de Guerre Asymétrique</h3>
+                    <p>
+                        En combat, chaque camp ne voit que ce que voient ses combattants : les cases hors de vue
+                        sont plongées dans l'obscurité et les ennemis non détectés sont <strong>invisibles et
+                        impossibles à cibler</strong> — jusqu'à un jet d'Observation réussi ou un tir bruyant.
+                        Le Maître du Jeu, arbitre de la table, voit toujours tout.
+                    </p>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Vision à 360° & Portée d'Ambiance (jamais les stats)</div>
+                        <div class="formula-math">
+                            <span class="hl-emerald">360° sans direction</span> &nbsp;➔&nbsp; <span class="hl-cyan">Portée d'ambiance</span> &nbsp;➔&nbsp; <span class="hl-gold">Murs Full = obscurité</span>
+                        </div>
+                        <div class="formula-desc">
+                            <strong>1. Pas de direction de vision :</strong> en combat, un personnage voit à
+                            <strong>360° autour de lui</strong>. Il n'y a ni cône frontal, ni dos, ni angle mort :
+                            attaquer « par-derrière » ne confère aucun bonus et n'existe pas comme règle.<br>
+                            <strong>2. Portée environnementale :</strong> la distance de vue dépend du
+                            <strong>terrain et de la météo</strong>, jamais des attributs :
+                            <strong>courte portée (6 cases)</strong> en intérieur ou obstacles denses,
+                            <strong>longue portée (12 cases)</strong> en extérieur dégagé par météo claire.
+                            Le MJ annonce la portée en début d'affrontement et peut la changer (nuit, fumée,
+                            tempête).<br>
+                            <strong>3. Vision & Ouïe (1d6) = compétences, pas jumelles :</strong> les attributs
+                            sensoriels ne modifient jamais la portée. Ils servent aux jets :
+                            <strong>Observation</strong> (Vision + Instinct), <strong>Écoute</strong>
+                            (Ouïe + Instinct), Discrétion adverse et révélation au bruit (ci-dessous).<br>
+                            <strong>4. Murs et contact :</strong> un mur plein (<strong>couvert total</strong>, §25.3)
+                            entre l'observateur et la case la plonge dans l'obscurité ; murets et barricades
+                            (moitié, trois-quarts) restent visibles. <strong>Au contact (≤ 1 case), on se voit
+                            toujours.</strong>
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>Ennemi non détecté = invisible :</strong> silhouette masquée, aucun ciblage
+                            possible (tir, grenade ciblée, sort mono-cible). Seuls les effets de zone aveugles
+                            restent envisageables, sans bonus.</li>
+                        <li><strong>Observation active (1 PA) :</strong> duel opposé <strong>Observation</strong>
+                            (observateur) vs <strong>Discrétion</strong> (cible) : <strong>-1 par case</strong>
+                            au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert
+                            (moitié, trois-quarts, total — un couvert total rend l'observation
+                            <strong>impossible</strong>). Réussite ➔ cible <strong>révélée jusqu'à la fin du round
+                            suivant</strong>. Spécialités : <strong>Œil de Lynx +2</strong> au duel,
+                            <strong>Détection Thermique +2</strong> et voit jusqu'à <strong>la moitié de la
+                            portée</strong> même derrière un mur plein.</li>
+                        <li><strong>Tir bruyant = révélé :</strong> tout tir à distance (Ballistique, grenade,
+                            sort offensif — <strong>la mêlée reste silencieuse</strong>) révèle le tireur aux
+                            ennemis situés dans son <strong>rayon d'Ouïe</strong>, jusqu'à la <strong>fin du round
+                            suivant</strong>, sauf mur plein entre les deux.</li>
+                        <li><strong>Table virtuelle (VTT) :</strong> le serveur ne transmet la position d'un ennemi
+                            à un joueur que s'il est dans le champ d'au moins un de ses avatars (filtrage
+                            anti-triche en mémoire). Chaque joueur déclare ses avatars ; le MJ diffuse la portée
+                            d'ambiance avec ses synchronisations d'état.</li>
+                    </ul>
+
+                    <div class="callout temporal">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
+                            Exemple de Table : Repérage sous Brouillard
+                        </div>
+                        <div class="callout-body">
+                            Par météo claire (portée 12), Lucas ne voit pas le tireur embusqué à 9 cases :
+                            un pilier (couvert total) barre sa ligne de mire ➔ obscurité. Il dépense
+                            <strong>1 PA</strong> en Observation active, mais à travers un couvert total
+                            l'observation est <strong>impossible</strong> : PA perdu. Le tireur riposte au fusil :
+                            <strong>tir bruyant</strong>, mais le pilier fait toujours mur plein entre eux ➔
+                            toujours invisible. Lucas contourne alors le pilier : le tireur entre dans sa portée,
+                            à découvert ➔ <strong>automatiquement visible</strong>, sans aucun jet.
+                        </div>
+                    </div>
+
                     <!-- ================= CHAPITRE 26 ================= -->
                     <h2 id="chap-26">
                         <span class="section-symbol">Chapitre 26.</span>
@@ -1168,6 +1246,7 @@
                         <li><a href="#chap-24">24. Tour de 10s & Économie des PA</a></li>
                         <li><a href="#chap-25">25. Déplacements & Poursuites</a></li>
                         <li><a href="#chap-25-3">25.3 Couvert & Visibilité</a></li>
+                        <li><a href="#chap-25-4">25.4 Brouillard de Guerre</a></li>
                         <li><a href="#chap-26">26. Localisation & Véhicules</a></li>
                     </ul>
                 </div>

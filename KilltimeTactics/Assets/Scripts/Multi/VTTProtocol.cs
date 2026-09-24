@@ -55,6 +55,7 @@ namespace Killtime.Multi
         public const string OpMapLoad = "map_load";           // GM uniquement { map: TacticalMapSaveData }
         public const string OpMapRequest = "map_request";     // { } -> le GM renvoie OpMapLoad
         public const string OpActionRequest = "action_request"; // Joueur -> GM : intention d'action (attaque, grenade, souffle, fin de tour)
+        public const string OpUnitClaim = "unit_claim";       // Joueur -> hub : avatars possédés { unitIds[] } (brouillard asymétrique)
 
         // --- Sous-actions pour OpTurnControl ---
         public const string TurnActionRoundStart = "round_start";
@@ -271,6 +272,18 @@ namespace Killtime.Multi
         public static string BuildActionRequestOp(VTTActionRequestPayload payload)
         {
             return BuildOp(OpActionRequest, payload != null ? JsonUtility.ToJson(payload) : "{}");
+        }
+
+        /// <summary>
+        /// Revendication d'avatars (brouillard asymétrique) : déclare au hub les
+        /// unitId possédés par CE client. Le serveur ne transmet la position d'un
+        /// ennemi à ce client que s'il est dans le champ d'au moins un avatar
+        /// revendiqué (anti map-hack mémoire). Le client applique le même masque.
+        /// </summary>
+        public static string BuildUnitClaimOp(List<string> unitIds)
+        {
+            var payload = new VTTUnitClaimPayload { unitIds = unitIds ?? new List<string>() };
+            return BuildOp(OpUnitClaim, JsonUtility.ToJson(payload));
         }
 
         /// <summary>Indique si l'opération requiert le rôle GM sur le hub (users/server.js).</summary>
@@ -516,6 +529,18 @@ namespace Killtime.Multi
         public bool isDead;
         public int activeStatus;
         public List<string> statusEffects = new();
+        // Brouillard asymétrique : portée sensorielle (Vision D6) + cap (cône).
+        // Renseignés par le GM dans state_sync ; défaut serveur vision=6, yaw=0.
+        public int vision;
+        public int ouie;
+        public float facingYaw;
+        // Spécialités de vision (0/1) : le hub applique le même assouplissement
+        // que le client (panoramique 360°, thermique à travers les parois).
+        public int pano;
+        public int thermal;
+        // Faction (0/1) : le hub s'en sert pour le repli coopératif (sans
+        // revendication, un client voit le champ de toute sa faction).
+        public int isPlayer;
     }
 
     /// <summary>
@@ -533,6 +558,8 @@ namespace Killtime.Multi
         public string outcome = ""; // "Victory" | "Defeat" | "InProgress"
         public List<VTTInitiativeEntry> turnOrder = new();
         public List<VTTUnitStateSyncEntry> unitStates = new();
+        // Brouillard §25.4 : portée d'ambiance imposée par le MJ (0 = inchangée).
+        public int sightRange;
     }
 
     /// <summary>
@@ -575,6 +602,12 @@ namespace Killtime.Multi
         public int destR;
         public List<VTTCoord> path = new();
         public int apCost;
+        // Brouillard asymétrique : cap + portée de l'unité qui bouge (filtre serveur).
+        public float facingYaw;
+        public int vision;
+        // Spécialités de vision (0/1), miroir de VTTUnitStateSyncEntry.
+        public int pano;
+        public int thermal;
 
         // Attaque ciblée anatomique
         public int targetedPart; // int cast de BodyPart
@@ -658,6 +691,15 @@ namespace Killtime.Multi
         public float cameraZoom;
         public string colorHex = "#FFDD00";
         public string message = "";
+    }
+
+    /// <summary>
+    /// Revendication d'avatars possédés par un client (brouillard asymétrique).
+    /// </summary>
+    [Serializable]
+    public class VTTUnitClaimPayload
+    {
+        public List<string> unitIds = new();
     }
 
     /// <summary>

@@ -89,10 +89,14 @@ namespace Killtime.UI
         private string _spawnRStr = "1";
         private bool _spawnAsPlayer = false;
 
-        // Sorts modulaires
+        // Sorts modulaires (Livre IV §19)
         private string _customSpellName = "Onde de Choc Causal";
-        private int _customSpellDamage = 6;
-        private int _customSpellCost = 3;
+        private string _customSpellDesc = "Impulsion de 5e Force comprimée.";
+        private PsychicDiscipline _customSpellDiscipline = PsychicDiscipline.Telekinesie;
+        private PsychicStage _customSpellStage = PsychicStage.Stade2_AccesProfond;
+        private SkillType _customSpellSkill = SkillType.MagieEsprit;
+        private readonly Dictionary<ArcanotechModuleId, int> _spellModuleRanks = new();
+        private Vector2 _spellForgeModulesScroll;
 
         protected override void OnOpened()
         {
@@ -663,6 +667,19 @@ namespace Killtime.UI
             }
             GUILayout.EndHorizontal();
 
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Gabarit :", GUILayout.Width(90));
+            _currentSheet.Footprint = (TitanFootprintType)GUILayout.Toolbar((int)_currentSheet.Footprint, new[] { "Normal (1x1)", "Titan (Rosette 7)", "Triangle (3)", "Colosse (19)" });
+            GUILayout.EndHorizontal();
+
+            if (_currentSheet.Footprint != TitanFootprintType.Single)
+            {
+                GUI.color = new Color(1f, 0.4f, 0.4f);
+                int cellCount = TitanFootprint.GetOccupiedCoordinates(new HexCoordinates(0, 0), _currentSheet.Footprint).Count;
+                GUILayout.Label($"⚠️ <b>Entité Colossale (Livre XI) :</b> Empreinte de {cellCount} hexagones. Nécessite une zone dégagée lors du spawn.", GUI.skin.box);
+                GUI.color = Color.white;
+            }
+
             DrawModelSelector();
 
             GUILayout.EndVertical();
@@ -1168,7 +1185,7 @@ namespace Killtime.UI
                 string m = modelName.ToLowerInvariant();
                 if (m.Contains("mina") || m.Contains("wife") || m.Contains("female") || m.Contains("femelle") || m.Contains("woman") || m.Contains("girl"))
                     return "Female";
-                if (m.Contains("soldier") || m.Contains("hitman") || m.Contains("boss") || m.Contains("male") || m.Contains("homme"))
+                if (m.Contains("soldier") || m.Contains("hitman") || m.Contains("boss") || m.Contains("male") || m.Contains("homme") || m.Contains("thomas") || m.Contains("lucas"))
                     return "Male";
             }
 
@@ -1868,10 +1885,14 @@ namespace Killtime.UI
                     GUILayout.BeginHorizontal(GUI.skin.box);
                     GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(entry.Skill)}</b>", GUILayout.Width(200));
                     GUI.color = new Color(0.95f, 0.4f, 0.4f);
-                    // Libellé héroïque délégué (voir MinaCharacter / LucasCharacter).
+                    // Libellé héroïque délégué (voir MinaCharacter / LucasCharacter / ThomasCharacter).
                     string lockLabel = MinaCharacter.IsMina(_currentSheet)
                         ? MinaCharacter.RestrictionLabel
-                        : (LucasCharacter.IsLucas(_currentSheet) ? LucasCharacter.RestrictionLabel : "🔒 Inaccessible (Affinité héroïque)");
+                        : (LucasCharacter.IsLucas(_currentSheet) 
+                            ? LucasCharacter.RestrictionLabel 
+                            : (ThomasCharacter.IsThomas(_currentSheet) 
+                                ? ThomasCharacter.RestrictionLabel 
+                                : "🔒 Inaccessible (Affinité héroïque)"));
                     GUILayout.Label(lockLabel, GUILayout.ExpandWidth(true));
                     GUI.color = Color.white;
                     GUILayout.EndHorizontal();
@@ -2104,44 +2125,275 @@ namespace Killtime.UI
             }
         }
 
-        // ================= TAB 2 : FORGE DE SORTS =================
+        // ================= TAB 3 : FORGE DE SORTS (LIVRE IV) =================
         private void DrawSpellForgeTab()
         {
-            GUILayout.Label("<b>Atelier de Sorts Modulaires (Livre IV — 1 XP = 1 PA) :</b>");
+            GUILayout.Label("<b>1. Presets Officiels du Codex (Livre IV §19.3) :</b>");
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            if (GUILayout.Button("📖 Charger 'Ralentissement Gravitationnel' (3 XP / 3 PA)"))
+            {
+                var preset = ArcanotechWorkshop.CreateRalentissementGravitationnel();
+                LoadSpellIntoForge(preset);
+                _statusMessage = "Preset 'Ralentissement Gravitationnel' chargé dans l'Atelier.";
+            }
+            if (GUILayout.Button("📖 Charger 'Écrasement de Matière' (3 XP / 3 PA)"))
+            {
+                var preset = ArcanotechWorkshop.CreateEcrasementDeMatiere();
+                LoadSpellIntoForge(preset);
+                _statusMessage = "Preset 'Écrasement de Matière' chargé dans l'Atelier.";
+            }
+            if (GUILayout.Button("↺ Vider", GUILayout.Width(70)))
+            {
+                _spellModuleRanks.Clear();
+                _customSpellName = "Nouveau Pouvoir";
+                _customSpellDesc = "";
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(6);
+            GUILayout.Label("<b>2. Fiche Technique du Pouvoir (Livre IV §19.1) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Nom du Sort :", GUILayout.Width(110));
+            GUILayout.Label("Nom :", GUILayout.Width(100));
             _customSpellName = GUILayout.TextField(_customSpellName);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"Dégâts : {_customSpellDamage}", GUILayout.Width(110));
-            _customSpellDamage = (int)GUILayout.HorizontalSlider(_customSpellDamage, 1, 20);
+            GUILayout.Label("Description :", GUILayout.Width(100));
+            _customSpellDesc = GUILayout.TextField(_customSpellDesc);
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label($"Coût XP / PA : {_customSpellCost}", GUILayout.Width(110));
-            _customSpellCost = (int)GUILayout.HorizontalSlider(_customSpellCost, 1, 10);
+            GUILayout.Label("Discipline :", GUILayout.Width(100));
+            _customSpellDiscipline = (PsychicDiscipline)GUILayout.Toolbar((int)_customSpellDiscipline, Enum.GetNames(typeof(PsychicDiscipline)));
             GUILayout.EndHorizontal();
 
-            if (GUILayout.Button($"🔮 Forger & Apprendre ce Sort ({_customSpellCost} XP)", GUILayout.Height(34)))
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Stade Neuronal :", GUILayout.Width(100));
+            int stageIdx = (int)_customSpellStage - 1;
+            int newStageIdx = GUILayout.Toolbar(stageIdx, new[] { "Stade 1", "Stade 2", "Stade 3", "Stade 4", "Stade 5", "Stade 6" });
+            _customSpellStage = (PsychicStage)(newStageIdx + 1);
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Compétence :", GUILayout.Width(100));
+            int skillIdx = _customSpellSkill switch
             {
-                var spell = new NythariteSpell(_customSpellName, PsychicDiscipline.Telekinesie, PsychicStage.Stade2_AccesProfond, _customSpellCost, damage: _customSpellDamage);
-                if (CharacterProgressionManager.LearnModularSpell(_currentSheet, spell, out string msg))
+                SkillType.MagieElementale => 0,
+                SkillType.MagiePrimale => 1,
+                _ => 2
+            };
+            int newSkillIdx = GUILayout.Toolbar(skillIdx, new[] { "Magie Élémentale", "Magie Primale", "Magie de l'Esprit" });
+            _customSpellSkill = newSkillIdx switch
+            {
+                0 => SkillType.MagieElementale,
+                1 => SkillType.MagiePrimale,
+                _ => SkillType.MagieEsprit
+            };
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+
+            var candidateSpell = BuildCandidateSpell();
+            var activeCats = candidateSpell.GetActiveCategories();
+            string catList = activeCats.Count > 0 ? string.Join(", ", activeCats) : "Aucune";
+
+            GUILayout.Space(6);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<b>3. Catalogue Modulaire des Effets Achetables (Livre IV §19.2) :</b>");
+            GUILayout.FlexibleSpace();
+            GUILayout.Label($"Solde : <color=yellow><b>{_currentSheet.AvailableXP} XP Libre</b></color>");
+            GUILayout.EndHorizontal();
+
+            _spellForgeModulesScroll = GUILayout.BeginScrollView(_spellForgeModulesScroll, GUILayout.Height(210));
+            DrawModuleCatalogGroup(PowerCategory.Offensif, "━━━ EFFETS OFFENSIFS (Attaques & Neutralisation) ━━━", "#FF4444");
+            DrawModuleCatalogGroup(PowerCategory.Defensif, "━━━ EFFETS DÉFENSIFS (Protection & Résistance) ━━━", "#4488FF");
+            DrawModuleCatalogGroup(PowerCategory.Utilitaire, "━━━ EFFETS UTILITAIRES & ÉTATS BÉNÉFIQUES ━━━", "#00FFAA");
+            GUILayout.EndScrollView();
+
+            GUILayout.Space(6);
+            GUILayout.Label("<b>4. Bilan Énergétique & Règle d'Or (XP = PA) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.BeginHorizontal();
+            GUI.color = Color.cyan;
+            GUILayout.Label($"⚡ Coût d'Activation Combat : <b>{candidateSpell.ActionPointCost} PA</b>", GUILayout.Width(240));
+            GUI.color = Color.yellow;
+            GUILayout.Label($"🔮 Coût de Création : <b>{candidateSpell.CreationXpCost} XP</b>", GUILayout.Width(220));
+            GUI.color = candidateSpell.HybridXpPenalty > 0 ? new Color(1f, 0.4f, 0.4f) : Color.gray;
+            GUILayout.Label($"Pénalité Hybride : <b>+{candidateSpell.HybridXpPenalty} XP</b> ({activeCats.Count} cat.)", GUILayout.ExpandWidth(true));
+            GUI.color = Color.white;
+            GUILayout.EndHorizontal();
+
+            int magicAttr = _currentSheet.BaseAttributes.Magie;
+            int training = _currentSheet.GetSkill(_customSpellSkill)?.TrainingLevel ?? 0;
+            int baseRange = NythariteSpell.CalculateBaseRange(magicAttr, training);
+            GUILayout.Label($"<color=#94A3B8>Portée nominale : <b>{baseRange} cases</b> (MAG {magicAttr} + Entraînement {training}) | Catégories : <b>{catList}</b></color>");
+
+            GUILayout.Space(4);
+            bool canAfford = _currentSheet.AvailableXP >= candidateSpell.CreationXpCost && candidateSpell.ActionPointCost > 0;
+            GUI.enabled = canAfford;
+            GUI.backgroundColor = canAfford ? new Color(0.2f, 0.85f, 0.45f) : Color.gray;
+
+            if (GUILayout.Button($"🔮 Forger & Apprendre '{candidateSpell.Name}' ({candidateSpell.CreationXpCost} XP ➔ {candidateSpell.ActionPointCost} PA)", GUILayout.Height(34)))
+            {
+                if (ArcanotechWorkshop.LearnSpell(_currentSheet, candidateSpell, out string msg))
+                {
+                    SaveCharacterAndSyncUnits(_currentSheet);
                     _statusMessage = msg;
+                }
                 else
+                {
                     _statusMessage = msg;
+                }
             }
+            GUI.backgroundColor = Color.white;
+            GUI.enabled = true;
 
             GUILayout.EndVertical();
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>Sorts Mémorisés :</b>");
-            foreach (var sp in _currentSheet.LearnedSpells)
+            GUILayout.Label($"<b>5. Sorts Mémorisés sur la Fiche ({_currentSheet.LearnedSpells.Count}) :</b>");
+
+            if (_currentSheet.LearnedSpells.Count == 0)
             {
-                GUILayout.Label($"• <b>{sp.Name}</b> — Coût : {sp.ActionPointCost} PA | Dégâts : {sp.BaseArcaneDamage}");
+                GUILayout.Label("<color=gray><i>Aucun sort mémorisé. Forgez un sort modulaire ou chargez un preset ci-dessus.</i></color>");
             }
+
+            for (int i = 0; i < _currentSheet.LearnedSpells.Count; i++)
+            {
+                var sp = _currentSheet.LearnedSpells[i];
+                if (sp == null) continue;
+
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginHorizontal();
+
+                int spTraining = _currentSheet.GetSkill(sp.AssociatedSkill)?.TrainingLevel ?? 0;
+                int spRange = NythariteSpell.CalculateBaseRange(_currentSheet.BaseAttributes.Magie, spTraining);
+
+                GUILayout.Label($"🔮 <b>{sp.Name}</b> <color=#00E5FF>[{sp.ActionPointCost} PA // {sp.CreationXpCost} XP]</color> — <i>{sp.Discipline} ({sp.Stage})</i>", GUILayout.ExpandWidth(true));
+
+                GUI.backgroundColor = Color.red;
+                if (GUILayout.Button("✕ Oublier", GUILayout.Width(75), GUILayout.Height(20)))
+                {
+                    _currentSheet.LearnedSpells.RemoveAt(i);
+                    SaveCharacterAndSyncUnits(_currentSheet);
+                    _statusMessage = $"Sort '{sp.Name}' oublié.";
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+
+                GUILayout.EndHorizontal();
+
+                var modSummary = new List<string>();
+                if (sp.Modules != null)
+                {
+                    for (int m = 0; m < sp.Modules.Count; m++)
+                    {
+                        var sel = sp.Modules[m];
+                        var def = ArcanotechWorkshop.GetModuleDefinition(sel.ModuleId);
+                        if (def != null) modSummary.Add($"{def.DisplayName} x{sel.Rank}");
+                    }
+                }
+                string modText = modSummary.Count > 0 ? string.Join(", ", modSummary) : "Aucun module";
+
+                GUILayout.Label($"<color=#7090A0>Portée: <b>{spRange} cases</b> | Dégâts bruts: <b>{sp.BaseArcaneDamage}</b> | Effets: <i>{modText}</i></color>");
+                if (!string.IsNullOrEmpty(sp.Description))
+                {
+                    GUILayout.Label($"<color=#94A3B8><i>« {sp.Description} »</i></color>");
+                }
+                GUILayout.EndVertical();
+            }
+        }
+
+        private void DrawModuleCatalogGroup(PowerCategory category, string header, string hexColor)
+        {
+            GUILayout.Space(4);
+            GUILayout.Label($"<color={hexColor}><b>{header}</b></color>");
+
+            foreach (var def in ArcanotechWorkshop.GetAllModuleDefinitions())
+            {
+                if (def.Category != category) continue;
+
+                _spellModuleRanks.TryGetValue(def.Id, out int currentRank);
+
+                GUILayout.BeginHorizontal(GUI.skin.box);
+                GUILayout.Label($"<b>{def.DisplayName}</b> <color=#94A3B8>({def.UnitPointCost} pt{(def.UnitPointCost > 1 ? "s" : "")})</color>\n<size=10><color=#7090A0>{def.Description}</color></size>", GUILayout.ExpandWidth(true));
+
+                if (def.IsStackable)
+                {
+                    GUI.enabled = currentRank > 0;
+                    if (GUILayout.Button("-", GUILayout.Width(26), GUILayout.Height(22)))
+                    {
+                        _spellModuleRanks[def.Id] = Mathf.Max(0, currentRank - 1);
+                    }
+                    GUI.enabled = true;
+
+                    GUILayout.Label($"<b>{currentRank}</b>", GUILayout.Width(22));
+
+                    if (GUILayout.Button("+", GUILayout.Width(26), GUILayout.Height(22)))
+                    {
+                        _spellModuleRanks[def.Id] = currentRank + 1;
+                    }
+                }
+                else
+                {
+                    bool active = currentRank > 0;
+                    GUI.backgroundColor = active ? new Color(0.1f, 0.75f, 0.4f) : Color.white;
+                    if (GUILayout.Button(active ? "✓ Actif" : "Ajouter", GUILayout.Width(70), GUILayout.Height(22)))
+                    {
+                        _spellModuleRanks[def.Id] = active ? 0 : 1;
+                    }
+                    GUI.backgroundColor = Color.white;
+                }
+
+                GUILayout.EndHorizontal();
+            }
+        }
+
+        private void LoadSpellIntoForge(NythariteSpell spell)
+        {
+            if (spell == null) return;
+            _customSpellName = spell.Name;
+            _customSpellDesc = spell.Description;
+            _customSpellDiscipline = spell.Discipline;
+            _customSpellStage = spell.Stage;
+            _customSpellSkill = spell.AssociatedSkill;
+
+            _spellModuleRanks.Clear();
+            if (spell.Modules != null)
+            {
+                for (int i = 0; i < spell.Modules.Count; i++)
+                {
+                    var m = spell.Modules[i];
+                    if (m != null) _spellModuleRanks[m.ModuleId] = m.Rank;
+                }
+            }
+        }
+
+        private NythariteSpell BuildCandidateSpell()
+        {
+            var selections = new List<PowerModuleSelection>();
+            foreach (var kvp in _spellModuleRanks)
+            {
+                if (kvp.Value > 0)
+                {
+                    selections.Add(new PowerModuleSelection(kvp.Key, kvp.Value));
+                }
+            }
+
+            var spell = new NythariteSpell(
+                name: string.IsNullOrWhiteSpace(_customSpellName) ? "Sort sans nom" : _customSpellName,
+                description: _customSpellDesc,
+                skill: _customSpellSkill,
+                associatedAttribute: "Magie",
+                discipline: _customSpellDiscipline,
+                stage: _customSpellStage,
+                modules: selections
+            );
+
+            return spell;
         }
 
         // ================= TAB 3 : FICHIERS =================
@@ -2196,10 +2448,17 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(12);
-            GUILayout.Label("<b>Fiches Héroïques Intégrées (tableau à part — voir MinaCharacter / LucasCharacter) :</b>");
+            GUILayout.Label("<b>Fiches Héroïques Intégrées (tableau à part — voir MinaCharacter / LucasCharacter / ThomasCharacter) :</b>");
 
             DrawHeroicSheetRow("Mina", MinaCharacter.DisplayTag, () => MinaCharacter.BuildHeroicSheet());
             DrawHeroicSheetRow("Lucas", LucasCharacter.DisplayTag, () => LucasCharacter.BuildHeroicSheet());
+            DrawHeroicSheetRow("Thomas", ThomasCharacter.DisplayTag, () => ThomasCharacter.BuildHeroicSheet());
+
+            GUILayout.Space(12);
+            GUILayout.Label("<b>Boss Titans du Livre XI (Gabarit Rosette7 / 7 Hexagones) :</b>");
+            DrawTitanBossRow("La Bête d'Hybris", "Boss Primal • 4m (13 PA / Con 6)", () => TitanBossCatalog.BuildTheBeastSheet());
+            DrawTitanBossRow("Disciple de Terre", "Missile Lithosphérique • 3m (Armure 6 / 45 Létal)", () => TitanBossCatalog.BuildDiscipleDeTerreSheet());
+            DrawTitanBossRow("Le Minulican", "Loup Quantique du Néant (14 PA / Magie 9)", () => TitanBossCatalog.BuildMinulicanSheet());
 
             GUILayout.Space(12);
             if (GUILayout.Button("📋 Copier le JSON de cette fiche dans le Presse-Papier"))
@@ -2248,6 +2507,41 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
         }
 
+        private void DrawTitanBossRow(string bossName, string bossTag, Func<CharacterSheet> builder)
+        {
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            GUILayout.Label($"👑 <b>{bossName}</b> <color=#94A3B8>{bossTag}</color> <color=#FF3B5C>[Rosette 7]</color>", GUILayout.Width(340));
+
+            if (GUILayout.Button("Charger", GUILayout.Width(80)))
+            {
+                var boss = builder != null ? builder() : null;
+                if (boss != null)
+                {
+                    CharacterProgressionManager.SynchronizeProgression(boss);
+                    _currentSheet = boss;
+                    _selectedInventoryItem = null;
+                    _showModelDropdown = false;
+                    _showAnimDropdown = false;
+                    _lastLoadedModelName = "__UNINITIALIZED__";
+                    _lastLoadedGenderKey = "__UNINITIALIZED__";
+                    _statusMessage = $"Boss Titan '{_currentSheet.Name}' chargé avec gabarit Rosette 7 !";
+                }
+            }
+
+            GUI.backgroundColor = new Color(0.85f, 0.25f, 0.2f);
+            if (GUILayout.Button("Sauver → Disque", GUILayout.Width(120)))
+            {
+                var boss = builder != null ? builder() : null;
+                if (boss != null)
+                {
+                    CharacterStorageService.SaveCharacter(boss);
+                    _statusMessage = $"Boss Titan '{boss.Name}' sauvegardé sur le disque !";
+                }
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+        }
+
         // ================= TAB 4 : SPAWN SUR LA GRILLE =================
         private void DrawMapInsertionTab()
         {
@@ -2257,6 +2551,8 @@ namespace Killtime.UI
             GUILayout.Label($"Personnage actif : <b>{_currentSheet.Name}</b> ({_currentSheet.Species})");
             string appliedModel = string.IsNullOrEmpty(_currentSheet.ModelPrefabName) ? "Avatar Procédural" : _currentSheet.ModelPrefabName;
             GUILayout.Label($"Modèle 3D appliqué : <b><color=#00E5FF>{appliedModel}</color></b>");
+            string footprintColor = _currentSheet.Footprint != TitanFootprintType.Single ? "#FF3B5C" : "#00E5FF";
+            GUILayout.Label($"Gabarit tactique : <b><color={footprintColor}>{_currentSheet.Footprint}</color></b>");
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("Coordonnée Hexagonale Q :", GUILayout.Width(180));
