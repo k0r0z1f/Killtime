@@ -379,9 +379,12 @@ namespace Killtime.Story.Scenes
             return unit;
         }
 
-        public void SpawnActorsForNode(string nodeId)
+        public void SpawnActorsForNode(string nodeId, bool isCombat = false)
         {
             if (_sceneData == null || _sceneData.Actors == null || string.IsNullOrEmpty(nodeId)) return;
+
+            var dataNode = _sceneData.FindNode(nodeId);
+            bool isCombatNode = isCombat || (dataNode != null && dataNode.TriggerCombatOnEnter) || (_turnManager != null && !_turnManager.IsInExploration);
 
             for (int i = 0; i < _sceneData.Actors.Count; i++)
             {
@@ -394,7 +397,7 @@ namespace Killtime.Story.Scenes
                 if (unit != null)
                 {
                     _turnManager?.RegisterUnit(unit);
-                    if (!actorData.IsPlayer)
+                    if (!actorData.IsPlayer && isCombatNode)
                     {
                         _arena?.RegisterHostileUnit(unit);
                         _arena?.SelectTarget(unit);
@@ -767,11 +770,13 @@ namespace Killtime.Story.Scenes
                 }
                 if (dataNode != null)
                 {
+                    // Déploiement des acteurs programmés pour apparaître à ce nœud (SpawnOnNodeId)
+                    SpawnActorsForNode(node.Id, dataNode.TriggerCombatOnEnter);
+
                     ExecuteNodeEvents(dataNode);
 
                     if (dataNode.TriggerCombatOnEnter && _turnManager != null && _turnManager.IsInExploration)
                     {
-                        SpawnActorsForNode(node.Id);
                         _turnManager.EnterCombatMode();
                     }
 
@@ -982,13 +987,13 @@ namespace Killtime.Story.Scenes
             switch (evt.Kind)
             {
                 case SceneEventKind.TriggerCombat:
-                    SpawnActorsForNode(_director?.CurrentNode?.Id);
+                    SpawnActorsForNode(_director?.CurrentNode?.Id, true);
                     _turnManager?.EnterCombatMode();
                     CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>ÉVÉNEMENT :</b> Combat déclenché [{evt.Title}].", LogCategory.Combat, "[COMBAT]", Color.red);
                     break;
 
                 case SceneEventKind.SpawnEnemies:
-                    SpawnActorsForNode(_director?.CurrentNode?.Id);
+                    SpawnActorsForNode(_director?.CurrentNode?.Id, true);
                     _turnManager?.EnterCombatMode();
                     CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>ÉVÉNEMENT :</b> Déploiement d'unités [{evt.Title}].", LogCategory.Combat, "[RENFORTS]", Color.red);
                     break;
@@ -1266,7 +1271,7 @@ namespace Killtime.Story.Scenes
 
             if (cons.TriggersCombat)
             {
-                SpawnActorsForNode(_director?.CurrentNode?.Id);
+                SpawnActorsForNode(_director?.CurrentNode?.Id, true);
                 _turnManager?.EnterCombatMode();
                 CombatHUD.Instance?.AddAdvancedLog("🚨 <b>CONSÉQUENCE :</b> Combat déclenché !", LogCategory.Combat, "[ALERTE]", Color.red);
             }
@@ -1504,7 +1509,7 @@ namespace Killtime.Story.Scenes
 
                 if (challenge.FailureTriggersCombat)
                 {
-                    SpawnActorsForNode(_director?.CurrentNode?.Id);
+                    SpawnActorsForNode(_director?.CurrentNode?.Id, true);
                     _turnManager?.EnterCombatMode();
                     CombatHUD.Instance?.AddAdvancedLog("🚨 <b>ÉCHEC CRITIQUE :</b> Alerte déclenchée ! Déploiement d'urgence hostile.", LogCategory.Combat, "[ALERTE]", Color.red);
                 }
@@ -1843,12 +1848,25 @@ namespace Killtime.Story.Scenes
             else if (node.Kind == ScenarioNodeKind.Choice)
             {
                 if (TryFireReadyTrigger()) return;
-                foreach (var choice in node.Choices)
+                if (node.Choices != null && node.Choices.Count > 0)
                 {
-                    if (GUILayout.Button(choice.Label, GUILayout.Height(28)))
+                    foreach (var choice in node.Choices)
                     {
-                        _director.Choose(choice.Id);
+                        if (GUILayout.Button(choice.Label, GUILayout.Height(28)))
+                        {
+                            _director.Choose(choice.Id);
+                        }
                     }
+                }
+                else
+                {
+                    GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
+                    string label = !string.IsNullOrWhiteSpace(node.ContinueLabel) ? node.ContinueLabel : "Continuer";
+                    if (GUILayout.Button($"➔ {label}", GUILayout.Width(240), GUILayout.Height(28)))
+                    {
+                        if (!TryFireReadyTrigger()) _director.Continue();
+                    }
+                    GUI.backgroundColor = Color.white;
                 }
             }
             else if (node.Kind == ScenarioNodeKind.Objective)

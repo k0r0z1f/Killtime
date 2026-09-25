@@ -1035,6 +1035,7 @@ namespace Killtime.Tactics.Units
             UpdateAnimatorParameters();
             UpdateFloatingTexts();
             UpdateHitFlash();
+            UpdateDuoTechHighlight();
             UpdateKOAnimation();
 
 #if UNITY_EDITOR
@@ -1816,7 +1817,71 @@ namespace Killtime.Tactics.Units
                             }
                         }
                     }
-                    ApplyBodyColor(_currentBodyColor);
+                    if (!_isDuoTechTarget)
+                    {
+                        ApplyBodyColor(_currentBodyColor);
+                    }
+                }
+            }
+        }
+
+        private bool _isDuoTechTarget = false;
+        private Color _duoTechHighlightColor = new Color(1f, 0.45f, 0.1f);
+        private float _duoTechPulseTime = 0f;
+
+        /// <summary>
+        /// Active ou désactive la surbrillance pulsante des cibles incluses dans la trajectoire Duo-Tech.
+        /// </summary>
+        public void SetDuoTechTargetHighlight(bool active, Color highlightColor)
+        {
+            if (_isDuoTechTarget == active && _duoTechHighlightColor == highlightColor) return;
+            _isDuoTechTarget = active;
+            _duoTechHighlightColor = highlightColor;
+
+            if (!active)
+            {
+                if (_isCustomModel)
+                {
+                    for (int i = 0; i < _customModelRenderers.Count; i++)
+                    {
+                        if (_customModelRenderers[i] != null)
+                            _customModelRenderers[i].SetPropertyBlock(null);
+                    }
+                }
+                else if (_bodyRenderer != null)
+                {
+                    _propBlock.SetColor("_EmissionColor", Color.black);
+                    _bodyRenderer.SetPropertyBlock(_propBlock);
+                }
+                ApplyBodyColor(_currentBodyColor);
+            }
+        }
+
+        private void UpdateDuoTechHighlight()
+        {
+            if (!_isDuoTechTarget || _hitFlashTimer > 0f) return;
+            _duoTechPulseTime += Time.deltaTime * 7f;
+            float pulse = 0.65f + 0.35f * Mathf.Sin(_duoTechPulseTime);
+            Color c = Color.Lerp(_duoTechHighlightColor, Color.white, pulse * 0.45f);
+
+            if (_isCustomModel)
+            {
+                _propBlock.SetColor("_BaseColor", c);
+                _propBlock.SetColor("_Color", c);
+                _propBlock.SetColor("_EmissionColor", c * (1.1f * pulse));
+                for (int i = 0; i < _customModelRenderers.Count; i++)
+                {
+                    if (_customModelRenderers[i] != null)
+                        _customModelRenderers[i].SetPropertyBlock(_propBlock);
+                }
+            }
+            else
+            {
+                ApplyBodyColor(c);
+                if (_bodyRenderer != null)
+                {
+                    _propBlock.SetColor("_EmissionColor", c * (1.1f * pulse));
+                    _bodyRenderer.SetPropertyBlock(_propBlock);
                 }
             }
         }
