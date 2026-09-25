@@ -154,6 +154,50 @@ Puis ouvrez votre navigateur à l'adresse : **`http://localhost:8000/`**
 
 ---
 
+## 🏗️ Note de l'Architecte : De l'Enclume et de l'Exosquelette
+
+> Le romantisme littéraire aime entretenir une légende tenace : celle de l'auteur isolé face au vide de la feuille, attendant qu'une muse mystique vienne guider sa plume. Cette vision appartient au siècle passé. Elle confond l'acte primitif de gribouiller avec l'ingénierie d'un univers total.
+
+Bâtir *Killtime* et la saga de l'*Hybris*, c'est administrer un système tentaculaire : onze livres de règles mécaniques, une topologie hexagonale, des équations d'attrition physique, cinq embranchements temporels interconnectés et une continuité qui lie un moteur de combat en C# à des centaines de pages de prose.
+
+Quiconque a déjà mené un projet d'une telle envergure connaît la vérité du métier : concevoir une fresque monumentale exige une discipline de fer, une traçabilité maniaque des causes et des effets, des milliers d'heures d'audit de cohérence, de vérification chronologique et de ciselage syntaxique.
+
+À ceux qui s'interrogent sur la présence de l'intelligence artificielle dans cette œuvre, voici le protocole exact de notre atelier.
+
+### 1. L'exosquelette, pas le pilote
+
+L'intelligence artificielle générative, dans les mains d'un faiseur de raccourcis, produit de la soupe statistique : des récits sans âme, des métaphores recyclées et des coquilles vides générées en un clic.
+
+Dans notre atelier, la machine occupe une fonction radicalement différente : celle d'un exosquelette cognitif et d'un compilateur d'intégrité.
+
+* **L'esprit humain commande :** Chaque blessure, chaque dilemme moral, chaque choix tactique, l'angoisse des protagonistes, la tragédie de Brum'korath et l'architecture globale proviennent exclusivement de la volonté, du vécu et de la vision de l'Architecte.
+* **Le système vérifie et calibre :** La machine opère comme un copilote de données. Elle traque les dérives de vocabulaire, audite la balance des Points d'Action, cartographie les paradoxes entre les lignes temporelles de l'An 0 et de 1772, indexe les fiches matricules et soumet chaque paragraphe à une friction critique impitoyable.
+
+Prétendre qu'un créateur s'affaiblit en s'équipant du meilleur analyseur de cohérence disponible équivaut à exiger d'un architecte moderne qu'il creuse les fondations d'une cathédrale avec une cuillère en bois sous prétexte que le labeur manuel confère davantage de mérite.
+
+### 2. La souveraineté de l'intention
+
+La machine ne ressent rien. Elle ignore le poids du sang versé par Wallace en quatre virgule deux secondes ; elle ignore la morsure du froid métrique de Lucas, le souffle vital de Mina ou la masse tellurique de Thomas. Elle est incapable d'engendrer le sens.
+
+Le sens est le monopole absolu de l'humain.
+
+Ce livre a été écrit à la sueur d'une direction éditoriale intraitable. Chaque terme conservé a subi l'épreuve du ciseau. Chaque phrase a été sculptée pour frapper avec la densité du roc. Le recours à l'assistance algorithmique a permis d'éliminer le gaspillage mental des tâches redondantes pour concentrer l'énergie créatrice là où elle est irremplaçable : dans l'impact narratif, l'innovation mécanique et la puissance brute de la mise en scène.
+
+### 3. Le pacte d'acier
+
+Nous refusons l'hypocrisie de ceux qui utilisent ces technologies dans l'ombre tout en proclamant leur pureté artisanale en façade.
+
+*Killtime* assume son hybridation. Cette saga est le fruit d'une rencontre entre une vision organique inflexible et un appareil de traitement computationnel de pointe. Le résultat sous vos yeux est un édifice blindé, cohérent jusque dans ses moindres engrenages, délivré sans complaisance et sans compromis.
+
+Aux nostalgiques de la rature solitaire : vous tenez entre vos mains la preuve qu'un outil ne remplace jamais le forgeron, mais qu'entre les mains d'un bâtisseur, un marteau plus lourd permet d'élever des citadelles indestructibles.
+
+Le livre est ouvert. La causalité est en marche.
+
+**— Alexis Lacasse**
+*Architecte de la Saga Hybris*
+
+---
+
 ## ⚖️ Licence & Droits
 
 - **Auteur & Architecte** : Alexis Lacasse ([@k0r0z1f](https://github.com/k0r0z1f))
