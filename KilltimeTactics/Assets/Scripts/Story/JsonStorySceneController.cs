@@ -73,6 +73,56 @@ namespace Killtime.Story.Scenes
             _sceneData = data;
         }
 
+        public IReadOnlyDictionary<string, TacticalUnit> SpawnedActors => _spawnedActors;
+        public IReadOnlyList<TacticalInteractable> SpawnedInteractables => _interactables;
+
+        /// <summary>
+        /// Déclenche les cinématiques liées à une carte en FIRE-AND-FORGET :
+        /// retour immédiat, la carte suivante s'enclenche sans attendre la fin
+        /// de la cinématique. Les ids inconnus sont ignorés avec un avertissement.
+        /// </summary>
+        public void FireLinkedCinematics(List<string> cinematicIds)
+        {
+            if (cinematicIds == null || cinematicIds.Count == 0 || _sceneData == null) return;
+            var director = FindAnyObjectByType<CinematicDirector>();
+            if (director == null)
+            {
+                Debug.LogWarning("[JsonStorySceneController] CinematicDirector introuvable : cinématiques ignorées.");
+                return;
+            }
+            for (int i = 0; i < cinematicIds.Count; i++)
+            {
+                string id = cinematicIds[i];
+                if (string.IsNullOrWhiteSpace(id)) continue;
+                var cine = _sceneData.FindCinematic(id);
+                if (cine == null)
+                {
+                    Debug.LogWarning($"[JsonStorySceneController] Cinématique introuvable : '{id}'.");
+                    continue;
+                }
+                director.PlaySceneCinematic(cine);
+                CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>Cinématique :</b> {cine.Title} [{cine.CinematicId}]", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
+            }
+        }
+
+        public bool TryGetSpawnedInteractable(string interactableId, out TacticalInteractable prop)
+        {
+            prop = null;
+            if (string.IsNullOrWhiteSpace(interactableId)) return false;
+            for (int i = 0; i < _interactables.Count; i++)
+            {
+                var p = _interactables[i];
+                if (p == null) continue;
+                if (string.Equals(p.gameObject.name, "Interactable_" + interactableId, StringComparison.OrdinalIgnoreCase)
+                    || string.Equals(p.ObjectName, interactableId, StringComparison.OrdinalIgnoreCase))
+                {
+                    prop = p;
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void OnEnable()
         {
             FloatingWindowChrome.RegisterExtraBlocker(IsPointerOverSceneChat);
@@ -396,6 +446,8 @@ namespace Killtime.Story.Scenes
                 var unit = SpawnSingleActor(actorData);
                 if (unit != null)
                 {
+                    // Cinématiques liées à l'acteur (spawn différé) : non-bloquantes.
+                    FireLinkedCinematics(actorData.CinematicIds);
                     _turnManager?.RegisterUnit(unit);
                     if (!actorData.IsPlayer && isCombatNode)
                     {
@@ -433,6 +485,8 @@ namespace Killtime.Story.Scenes
                     {
                         MarkInteractableActivated(data.InteractableId);
                     }
+                    // Cinématiques liées à l'interactable : non-bloquantes.
+                    FireLinkedCinematics(data.CinematicIds);
                     if (!string.IsNullOrEmpty(objId))
                     {
                         _director?.SetObjectiveComplete(objId, true);
@@ -734,6 +788,9 @@ namespace Killtime.Story.Scenes
                 if (!IsTriggerConditionMet(trg)) continue;
                 if (!_director.GoToNode(trg.TargetNodeId)) continue;
 
+                // Cinématiques liées au déclencheur : non-bloquantes (le saut a déjà eu lieu).
+                FireLinkedCinematics(trg.CinematicIds);
+
                 if (trg.OneShot) _firedTriggerIds.Add(trg.TriggerId);
                 var target = _sceneData.FindNode(trg.TargetNodeId);
                 CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>Déclencheur :</b> {trg.Label} ➔ {(target != null ? target.Title : trg.TargetNodeId)}", LogCategory.MovementAndTurns, "[ÉVÉNEMENT]", Color.yellow);
@@ -772,6 +829,9 @@ namespace Killtime.Story.Scenes
                 {
                     // Déploiement des acteurs programmés pour apparaître à ce nœud (SpawnOnNodeId)
                     SpawnActorsForNode(node.Id, dataNode.TriggerCombatOnEnter);
+
+                    // Cinématiques d'entrée de nœud : non-bloquantes (la suite s'enclenche aussitôt).
+                    FireLinkedCinematics(dataNode.CinematicIds);
 
                     ExecuteNodeEvents(dataNode);
 
@@ -822,6 +882,9 @@ namespace Killtime.Story.Scenes
                     return;
                 }
             }
+
+            // Cinématiques liées à la réplique : non-bloquantes (le dialogue continue aussitôt).
+            FireLinkedCinematics(line.CinematicIds);
 
             // Gestion de l'ambiance et des cues audio
             ApplyAmbienceSettings(line.Ambience, line.SoundCueId);
@@ -979,6 +1042,9 @@ namespace Killtime.Story.Scenes
                     return;
                 }
             }
+
+            // Cinématiques liées à l'événement : non-bloquantes.
+            FireLinkedCinematics(evt.CinematicIds);
 
             // Ambiance & Audio
             ApplyAmbienceSettings(evt.Ambience, "");
@@ -1217,6 +1283,9 @@ namespace Killtime.Story.Scenes
         {
             rewardsSummary = "";
             if (cons == null) return;
+
+            // Cinématiques liées à la conséquence : non-bloquantes.
+            FireLinkedCinematics(cons.CinematicIds);
 
             TacticalUnit unit = null;
             if (_turnManager != null && _turnManager.ActiveUnit != null && _turnManager.ActiveUnit.IsPlayerControlled)

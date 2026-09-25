@@ -33,6 +33,23 @@ namespace Killtime.Tactics
             _interactionRadius = radius;
         }
 
+        /// <summary>
+        /// Repositionne l'objet (logique + visuel) : utilisé par les cinématiques
+        /// et le mode éditeur cinématique. Sans ça, déplacer transform.position seul
+        /// désynchronise CanInteract (basé sur _gridCoords) et le bouton [E] projeté.
+        /// </summary>
+        public void Relocate(HexCoordinates coords, TacticalHexGrid grid)
+        {
+            _gridCoords = coords;
+            if (grid == null) return;
+            try
+            {
+                var node = grid.GetNode(coords);
+                if (node != null) transform.position = node.WorldPosition;
+            }
+            catch { /* ignore */ }
+        }
+
         public bool CanInteract(TacticalUnit unit)
         {
             if (_isOneShot && _hasInteracted) return false;

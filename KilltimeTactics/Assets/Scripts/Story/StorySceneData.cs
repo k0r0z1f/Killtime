@@ -24,6 +24,8 @@ namespace Killtime.Story.Data
         public bool StartInCombatStance = false;
         public bool SpawnInitially = true;
         public string SpawnOnNodeId = "";
+        // Sortie cinématique non-bloquante : jouée (fire-and-forget) au spawn différé de l'acteur.
+        public List<string> CinematicIds = new();
         public CharacterSheet EmbeddedSheet = new();
         // Position/taille dans le graphe nodal (éditeur uniquement, comme les Triggers).
         // 0/0 = jamais placé → l'éditeur auto-dispose sur la rangée acteurs au chargement.
@@ -56,6 +58,8 @@ namespace Killtime.Story.Data
         public string SuccessLog = "";
         public bool IsOneShot = true;
         public string TriggerNodeId = "";
+        // Sortie cinématique non-bloquante : jouée (fire-and-forget) à l'activation.
+        public List<string> CinematicIds = new();
         // Position/taille dans le graphe nodal (éditeur uniquement, comme les Triggers).
         // 0/0 = jamais placé → l'éditeur auto-dispose sous les déclencheurs au chargement.
         public float GraphPosX = 0f;
@@ -114,6 +118,8 @@ namespace Killtime.Story.Data
         public string StatusName = "Inconscient";
         public int HPPercentThreshold = 30;
         public bool OneShot = true;
+        // Sortie cinématique non-bloquante : jouée (fire-and-forget) quand le trigger tire.
+        public List<string> CinematicIds = new();
         public float GraphPosX = 0f;
         public float GraphPosY = 0f;
         public float CardWidth = 340f;
@@ -359,6 +365,9 @@ namespace Killtime.Story.Data
         public float CameraDistance = 9.5f;
         public string SoundCueId = "UI_Filter";
         public string NextLineId = "";
+        // Sortie cinématique non-bloquante : jouée (fire-and-forget) à l'affichage de la réplique,
+        // sans attendre la fin pour enclencher la carte suivante.
+        public List<string> CinematicIds = new();
         public float GraphPosX = 0f;
         public float GraphPosY = 0f;
         public float CardWidth = 340f;
@@ -405,6 +414,8 @@ namespace Killtime.Story.Data
         public SceneDialogueRewardData Rewards = new();
         public string NextEventId = "";
         public string CompletionObjectiveId = "";
+        // Sortie cinématique non-bloquante : jouée (fire-and-forget) à l'exécution de l'événement.
+        public List<string> CinematicIds = new();
     }
 
     [Serializable]
@@ -427,6 +438,8 @@ namespace Killtime.Story.Data
         // Chaînage : vers une réplique et/ou vers une autre conséquence.
         public string NextLineId = "";
         public string NextConsequenceId = "";
+        // Sortie cinématique non-bloquante : jouée (fire-and-forget) à l'exécution de la conséquence.
+        public List<string> CinematicIds = new();
 
         public float GraphPosX = 0f;
         public float GraphPosY = 0f;
@@ -461,6 +474,114 @@ namespace Killtime.Story.Data
         }
     }
 
+    // ================= CINÉMATIQUES =================
+    // Une cinématique = une carte globale 🎬 avec UNE entrée (liée depuis n'importe
+    // quelle autre carte) et AUCUNE sortie. Son exécution est fire-and-forget :
+    // elle ne bloque jamais l'enclenchement de la carte suivante.
+    public enum CinematicEase
+    {
+        Linear,
+        Smooth,
+        EaseIn,
+        EaseOut,
+        EaseInOut,
+        Punch
+    }
+
+    public enum CinematicCameraEffect
+    {
+        None,
+        HandheldShake,
+        PushIn,
+        PullOut,
+        OrbitLeft,
+        OrbitRight,
+        FovPunch,
+        DutchSway
+    }
+
+    [Serializable]
+    public class SceneCinematicActorPose
+    {
+        public string ActorId = "";
+        public int Q = 0;
+        public int R = 0;
+        public float FacingAngle = 0f;
+    }
+
+    [Serializable]
+    public class SceneCinematicPropPose
+    {
+        public string InteractableId = "";
+        public int Q = 0;
+        public int R = 0;
+    }
+
+    [Serializable]
+    public class SceneCinematicShotData
+    {
+        public string ShotId = "shot_1";
+        public string Label = "Plan 1";
+        public float Duration = 2.5f;
+        // Voyage caméra automatique : interpolation Start → End sur Duration.
+        public Vector3 CamStartPos = new Vector3(0f, 9f, -9f);
+        public Vector3 CamStartEuler = new Vector3(45f, 0f, 0f);
+        public float CamStartFov = 60f;
+        public Vector3 CamEndPos = new Vector3(0f, 4f, -5f);
+        public Vector3 CamEndEuler = new Vector3(38f, 12f, 0f);
+        public float CamEndFov = 48f;
+        public CinematicEase Ease = CinematicEase.Smooth;
+        public CinematicCameraEffect MoveEffect = CinematicCameraEffect.None;
+        public float ShakeIntensity = 0.15f;
+        public string FocusActorId = "";
+        // Sous-titre optionnel affiché pendant le plan.
+        public string SpeakerId = "";
+        public string Speech = "";
+        public string SoundCueId = "";
+        public bool Letterbox = true;
+        // Trajectoires des pions : positions de départ et d'arrivée du plan.
+        // Éditées dans le mode éditeur cinématique (capture depuis la carte de combat).
+        public List<SceneCinematicActorPose> StartPoses = new();
+        public List<SceneCinematicActorPose> EndPoses = new();
+        public List<SceneCinematicPropPose> StartProps = new();
+        public List<SceneCinematicPropPose> EndProps = new();
+
+        public string GetSummary()
+        {
+            int moves = 0;
+            if (StartPoses != null) moves += StartPoses.Count;
+            if (EndPoses != null) moves += EndPoses.Count;
+            string sub = string.IsNullOrWhiteSpace(Speech) ? "" : " 💬";
+            string fx = MoveEffect == CinematicCameraEffect.None ? "" : $" ✦{MoveEffect}";
+            return $"{Duration:0.0}s {Ease}{fx} · {moves} poses{sub}";
+        }
+    }
+
+    [Serializable]
+    public class SceneCinematicData
+    {
+        public string CinematicId = "cine_1";
+        public string Title = "Nouvelle cinématique";
+        public bool Skippable = true;
+        public float PlaybackSpeed = 1f;
+        public float GraphPosX = 0f;
+        public float GraphPosY = 0f;
+        public float CardWidth = 360f;
+        public float CardHeight = 0f;
+        public List<SceneCinematicShotData> Shots = new();
+
+        public string GetSummary()
+        {
+            int n = Shots != null ? Shots.Count : 0;
+            float total = 0f;
+            if (Shots != null)
+                for (int i = 0; i < Shots.Count; i++)
+                    if (Shots[i] != null) total += Mathf.Max(0.1f, Shots[i].Duration);
+            if (PlaybackSpeed > 0.01f) total /= PlaybackSpeed;
+            return n == 0 ? "(aucun plan)" : $"{n} plan(s) · ~{total:0.0}s";
+        }
+    }
+
     [Serializable]
     public class SceneNodeData
     {
@@ -472,6 +593,8 @@ namespace Killtime.Story.Data
         public string ContinueLabel = "Passer à l'action";
         public string NextNodeId = "";
         public bool TriggerCombatOnEnter = false;
+        // Sortie cinématique non-bloquante : jouée (fire-and-forget) à l'entrée du nœud.
+        public List<string> CinematicIds = new();
         public float GraphPosX = 0f;
         public float GraphPosY = 0f;
         public float FrameWidth = 0f;
@@ -532,10 +655,51 @@ namespace Killtime.Story.Data
         public List<SceneInteractableSpawnData> Interactables = new();
         public List<SceneNodeData> Nodes = new();
         public List<SceneTriggerData> Triggers = new();
+        // Cartes cinématiques globales 🎬 : entrée seule, aucune sortie, lecture non-bloquante.
+        // Sérialisées dans le JSON de la scène comme tout le reste.
+        public List<SceneCinematicData> Cinematics = new();
 
         public SceneNodeData FindNode(string nodeId)
         {
             return Nodes.Find(n => n != null && n.NodeId == nodeId);
+        }
+
+        public SceneCinematicData FindCinematic(string cinematicId)
+        {
+            if (string.IsNullOrEmpty(cinematicId) || Cinematics == null) return null;
+            return Cinematics.Find(c => c != null && string.Equals(c.CinematicId, cinematicId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        // --- Helpers sorties cinématiques (listes partagées par tous les types de cartes) ---
+        public static List<string> EnsureCineList(List<string> list)
+        {
+            if (list == null) return new List<string>();
+            for (int i = list.Count - 1; i >= 0; i--)
+                if (string.IsNullOrWhiteSpace(list[i])) list.RemoveAt(i);
+            return list;
+        }
+
+        public static void AddCineLink(List<string> list, string cinematicId)
+        {
+            if (list == null || string.IsNullOrWhiteSpace(cinematicId)) return;
+            for (int i = 0; i < list.Count; i++)
+                if (string.Equals(list[i], cinematicId, StringComparison.OrdinalIgnoreCase)) return;
+            list.Add(cinematicId);
+        }
+
+        public static string GetCineSummary(List<string> list)
+        {
+            if (list == null || list.Count == 0) return "(aucune)";
+            var clean = new List<string>(list.Count);
+            for (int i = 0; i < list.Count; i++)
+            {
+                if (string.IsNullOrWhiteSpace(list[i])) continue;
+                clean.Add(list[i]);
+                if (clean.Count >= 3) break;
+            }
+            string s = string.Join(", ", clean);
+            if (list.Count > clean.Count) s += $" (+{list.Count - clean.Count})";
+            return $"🎬→ {s}";
         }
 
         public static void EnsureNodeLists(SceneNodeData node)
@@ -568,6 +732,41 @@ namespace Killtime.Story.Data
             data.Interactables ??= new List<SceneInteractableSpawnData>();
             data.Nodes ??= new List<SceneNodeData>();
             data.Triggers ??= new List<SceneTriggerData>();
+            data.Cinematics ??= new List<SceneCinematicData>();
+            for (int ci = 0; ci < data.Cinematics.Count; ci++)
+            {
+                var cine = data.Cinematics[ci];
+                if (cine == null) continue;
+                if (string.IsNullOrWhiteSpace(cine.CinematicId)) cine.CinematicId = $"cine_{ci + 1}";
+                if (cine.PlaybackSpeed < 0.1f) cine.PlaybackSpeed = 1f;
+                cine.Shots ??= new List<SceneCinematicShotData>();
+                for (int s = 0; s < cine.Shots.Count; s++)
+                {
+                    var shot = cine.Shots[s];
+                    if (shot == null) continue;
+                    if (string.IsNullOrWhiteSpace(shot.ShotId)) shot.ShotId = $"shot_{s + 1}";
+                    if (shot.Duration < 0.1f) shot.Duration = 0.1f;
+                    shot.StartPoses ??= new List<SceneCinematicActorPose>();
+                    shot.EndPoses ??= new List<SceneCinematicActorPose>();
+                    shot.StartProps ??= new List<SceneCinematicPropPose>();
+                    shot.EndProps ??= new List<SceneCinematicPropPose>();
+                }
+            }
+            for (int t = 0; t < data.Triggers.Count; t++)
+            {
+                if (data.Triggers[t] == null) continue;
+                data.Triggers[t].CinematicIds = EnsureCineList(data.Triggers[t].CinematicIds);
+            }
+            for (int ii = 0; ii < data.Interactables.Count; ii++)
+            {
+                if (data.Interactables[ii] == null) continue;
+                data.Interactables[ii].CinematicIds = EnsureCineList(data.Interactables[ii].CinematicIds);
+            }
+            for (int ai = 0; ai < data.Actors.Count; ai++)
+            {
+                if (data.Actors[ai] == null) continue;
+                data.Actors[ai].CinematicIds = EnsureCineList(data.Actors[ai].CinematicIds);
+            }
 
             for (int a = 0; a < data.Actors.Count; a++)
             {
@@ -585,11 +784,13 @@ namespace Killtime.Story.Data
                 var node = data.Nodes[n];
                 if (node == null) continue;
                 EnsureNodeLists(node);
+                node.CinematicIds = EnsureCineList(node.CinematicIds);
 
                 for (int d = 0; d < node.Dialogues.Count; d++)
                 {
                     var line = node.Dialogues[d];
                     if (line == null) continue;
+                    line.CinematicIds = EnsureCineList(line.CinematicIds);
                     line.Prerequisite ??= new ScenePrerequisiteData();
                     line.Ambience ??= new SceneAmbienceData();
                     line.AutoSkillCheck ??= new SceneAutoSkillCheckData();
@@ -617,6 +818,7 @@ namespace Killtime.Story.Data
                 {
                     var evt = node.Events[e];
                     if (evt == null) continue;
+                    evt.CinematicIds = EnsureCineList(evt.CinematicIds);
                     evt.Prerequisite ??= new ScenePrerequisiteData();
                     evt.Ambience ??= new SceneAmbienceData();
                     evt.AutoSkillCheck ??= new SceneAutoSkillCheckData();
@@ -637,9 +839,22 @@ namespace Killtime.Story.Data
                     {
                         var cons = node.Consequences[k];
                         if (cons == null) continue;
+                        cons.CinematicIds = EnsureCineList(cons.CinematicIds);
                         cons.Rewards ??= new SceneDialogueRewardData();
                         EnsureRewardDefaults(cons.Rewards);
                         cons.Effects ??= new List<ScenarioEffect>();
+                    }
+                }
+
+                // Nœuds sans événement : les conséquences existent quand même (boucle ci-dessus
+                // imbriquée aux événements) → sécurise leurs listes cinématiques ici aussi.
+                if (node.Consequences != null)
+                {
+                    for (int k = 0; k < node.Consequences.Count; k++)
+                    {
+                        var cons = node.Consequences[k];
+                        if (cons == null) continue;
+                        cons.CinematicIds = EnsureCineList(cons.CinematicIds);
                     }
                 }
             }

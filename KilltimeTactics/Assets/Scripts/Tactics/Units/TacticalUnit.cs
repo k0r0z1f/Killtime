@@ -45,6 +45,35 @@ namespace Killtime.Tactics.Units
         public bool IsPlayerControlled => _isPlayerControlled;
         public bool IsMoving { get; private set; }
 
+        /// <summary>
+        /// Verrou posé par le CinematicDirector pendant qu'il pilote l'unité (trajectoire
+        /// de plan cinématique) : tout déplacement en cours s'interrompt au prochain pas et
+        /// aucun nouveau déplacement ne démarre tant que le verrou est posé.
+        /// Sans ce verrou, MoveAlongPath continuerait d'écrire transform.position et
+        /// CurrentCoords en concurrence avec la cinématique (désynchronisation visuel/logique).
+        /// </summary>
+        public bool CinematicDriveActive { get; set; }
+
+        /// <summary>
+        /// Interrompt un déplacement pour prise de contrôle cinématique : coupe IsMoving
+        /// et libère la réservation de destination (posée en début de trajet) sauf si
+        /// l'unité s'y trouve déjà ou qu'une autre unité l'occupe réellement.
+        /// </summary>
+        private void AbortMoveForCinematic(List<HexCoordinates> path, TacticalHexGrid grid)
+        {
+            IsMoving = false;
+            try
+            {
+                if (path != null && path.Count > 0 && grid != null)
+                {
+                    var dest = grid.GetNode(path[^1]);
+                    if (dest != null && !dest.Coordinates.Equals(CurrentCoords) && !IsAnyOtherUnitAt(path[^1]))
+                        dest.IsOccupied = false;
+                }
+            }
+            catch { /* ignore */ }
+        }
+
         public IReadOnlyList<HexCoordinates> OccupiedCoords => TitanFootprint.GetOccupiedCoordinates(CurrentCoords, _footprintType);
 
         public bool Occupies(HexCoordinates coords)
@@ -490,6 +519,10 @@ namespace Killtime.Tactics.Units
             if (path == null || path.Count <= 1) yield break;
             if (grid == null) yield break;
 
+            // Cinématique en cours de pilotage : refuse tout nouveau déplacement
+            // (avant consommation des PA et recalage).
+            if (CinematicDriveActive) yield break;
+
             _grid = grid;
 
             // En cas de léger décalage réseau ou rejeu, recalage immédiat sur le départ du chemin
@@ -529,6 +562,14 @@ namespace Killtime.Tactics.Units
 
             for (int i = 1; i < path.Count; i++)
             {
+                // Prise de contrôle cinématique : interrompt le déplacement en cours
+                // (la cinématique re-synchronise occupancy via TeleportTo).
+                if (CinematicDriveActive)
+                {
+                    AbortMoveForCinematic(path, grid);
+                    yield break;
+                }
+
                 var nextCoords = path[i];
 
                 if (IsOccupiedByOther(nextCoords, grid) && !nextCoords.Equals(path[^1]))
@@ -563,6 +604,13 @@ namespace Killtime.Tactics.Units
                 // Déplacement progressif
                 while (Vector3.Distance(transform.position, targetPos) > 0.05f)
                 {
+                    // Prise de contrôle cinématique même au milieu d'un pas.
+                    if (CinematicDriveActive)
+                    {
+                        AbortMoveForCinematic(path, grid);
+                        yield break;
+                    }
+
                     while (Time.timeScale <= 0.0001f)
                     {
                         yield return null;

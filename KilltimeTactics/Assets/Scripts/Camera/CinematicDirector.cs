@@ -1,7 +1,13 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Audio;
+using Killtime.Story.Data;
+using Killtime.Tactics;
+using Killtime.Tactics.Grid;
+using Killtime.Tactics.Units;
+using Killtime.UI;
 
 namespace Killtime.CameraSystem
 {
@@ -55,6 +61,23 @@ namespace Killtime.CameraSystem
         private float _freeYaw = 0.0f;
         private Coroutine _activeCinematicRoutine;
 
+        // ================= CINÉMATIQUES DE SCÈNE (cartes 🎬) =================
+        // Lecture fire-and-forget : le runtime déclenche sans attendre la fin,
+        // la carte suivante s'enclenche immédiatement. Les cinématiques qui se
+        // chevauchent sont mises en file au lieu de se couper.
+        private Coroutine _activeSceneCinematicRoutine;
+        private struct QueuedCinematic
+        {
+            public SceneCinematicData Data;
+            public Action OnComplete;
+        }
+        private readonly Queue<QueuedCinematic> _sceneCinematicQueue = new();
+        private Action _sceneCinematicOnComplete;
+        private bool _letterboxActive;
+        private float _skipNoiseSeed;
+
+        public bool IsPlayingSceneCinematic => _activeSceneCinematicRoutine != null;
+
         public void ResetCinematicState()
         {
             if (_activeCinematicRoutine != null)
@@ -62,6 +85,15 @@ namespace Killtime.CameraSystem
                 StopCoroutine(_activeCinematicRoutine);
                 _activeCinematicRoutine = null;
             }
+            if (_activeSceneCinematicRoutine != null)
+            {
+                StopCoroutine(_activeSceneCinematicRoutine);
+                _activeSceneCinematicRoutine = null;
+            }
+            _sceneCinematicQueue.Clear();
+            _sceneCinematicOnComplete = null;
+            _letterboxActive = false;
+            ClearAllCinematicLocks();
 
             Time.timeScale = DevTimeScale();
             if (KilltimeAudioManager.Instance != null)
@@ -89,6 +121,628 @@ namespace Killtime.CameraSystem
             if (_mainCamera != null && _normalFOV > 0)
             {
                 _mainCamera.fieldOfView = _normalFOV;
+            }
+            _skipNoiseSeed = UnityEngine.Random.Range(0f, 100f);
+        }
+
+        // ---------- API publique cinématiques de scène ----------
+
+        /// <summary>
+        /// Déclenche une cinématique de scène SANS bloquer : retour immédiat,
+        /// la carte suivante peut s'enclencher pendant la lecture.
+        /// </summary>
+        public void PlaySceneCinematic(SceneCinematicData cine, Action onComplete = null)
+        {
+            if (cine == null || cine.Shots == null || cine.Shots.Count == 0) return;
+            if (IsPlayingSceneCinematic)
+            {
+                _sceneCinematicQueue.Enqueue(new QueuedCinematic { Data = cine, OnComplete = onComplete });
+                return;
+            }
+            _sceneCinematicOnComplete = onComplete;
+            _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
+        }
+
+        public void StopSceneCinematic(bool restoreCamera = true)
+        {
+            // Idle : rien à restaurer (évite d'écraser FOV/timeScale pour rien).
+            if (!IsPlayingSceneCinematic && _sceneCinematicQueue.Count == 0) return;
+            _sceneCinematicQueue.Clear();
+            if (_activeSceneCinematicRoutine != null)
+            {
+                StopCoroutine(_activeSceneCinematicRoutine);
+                _activeSceneCinematicRoutine = null;
+            }
+            _letterboxActive = false;
+            ClearAllCinematicLocks();
+            if (restoreCamera) RestoreTacticalCamera();
+            else if (_tacticalCam != null) _tacticalCam.enabled = true;
+            if (CurrentMode == CameraMode.CinematicAction) CurrentMode = CameraMode.TacticalIsometric;
+            var cb = _sceneCinematicOnComplete;
+            _sceneCinematicOnComplete = null;
+            try { cb?.Invoke(); } catch { /* ignore */ }
+        }
+
+        /// <summary>Lecture de l'état caméra pour le mode éditeur cinématique (capture START/END).</summary>
+        public bool CaptureCameraState(out Vector3 pos, out Vector3 euler, out float fov)
+        {
+            pos = transform.position;
+            euler = transform.rotation.eulerAngles;
+            fov = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
+            return true;
+        }
+
+        /// <summary>Application d'un état caméra (prévisualisation dans le mode éditeur).</summary>
+        public void ApplyCameraState(Vector3 pos, Vector3 euler, float fov)
+        {
+            if (IsPlayingSceneCinematic) StopSceneCinematic(false);
+            transform.position = pos;
+            transform.rotation = Quaternion.Euler(euler);
+            if (_mainCamera != null && fov > 1f) _mainCamera.fieldOfView = fov;
+        }
+
+        public void SetTacticalControlEnabled(bool enabled)
+        {
+            if (_tacticalCam != null) _tacticalCam.enabled = enabled;
+            if (!enabled) CurrentMode = CameraMode.FreeLook;
+            else if (CurrentMode == CameraMode.FreeLook && !IsPlayingSceneCinematic)
+                CurrentMode = CameraMode.TacticalIsometric;
+        }
+
+        /// <summary>
+        /// Rend la main à la caméra tactique après une prévisualisation d'édition
+        /// (restaure le FOV normal, laissée sinon figée par ApplyCameraState).
+        /// </summary>
+        public void ReleaseToTactical()
+        {
+            if (IsPlayingSceneCinematic) StopSceneCinematic(false);
+            if (_tacticalCam != null) _tacticalCam.enabled = true;
+            if (_mainCamera != null && _normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
+            if (CurrentMode == CameraMode.FreeLook) CurrentMode = CameraMode.TacticalIsometric;
+            _letterboxActive = false;
+        }
+
+        private void RestoreTacticalCamera()
+        {
+            Time.timeScale = DevTimeScale();
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.ExitCinematicMode();
+            if (_tacticalCam != null) _tacticalCam.enabled = true;
+            if (_mainCamera != null && _normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
+            _letterboxActive = false;
+        }
+
+        private void OnGUI()
+        {
+            if (!_letterboxActive || !IsPlayingSceneCinematic) return;
+            try
+            {
+                float barH = Mathf.Max(24f, Screen.height * 0.11f);
+                Color prev = GUI.color;
+                GUI.color = Color.black;
+                GUI.DrawTexture(new Rect(0f, 0f, Screen.width, barH), Texture2D.whiteTexture);
+                GUI.DrawTexture(new Rect(0f, Screen.height - barH, Screen.width, barH), Texture2D.whiteTexture);
+                GUI.color = prev;
+            }
+            catch { /* ignore */ }
+        }
+
+        public static float ApplyCinematicEase(CinematicEase ease, float t)
+        {
+            t = Mathf.Clamp01(t);
+            switch (ease)
+            {
+                case CinematicEase.Linear: return t;
+                case CinematicEase.EaseIn: return t * t * t;
+                case CinematicEase.EaseOut: return 1f - Mathf.Pow(1f - t, 3f);
+                case CinematicEase.EaseInOut:
+                    return t < 0.5f ? 4f * t * t * t : 1f - Mathf.Pow(-2f * t + 2f, 3f) / 2f;
+                case CinematicEase.Punch:
+                    return t < 0.25f ? EaseOutQuad(t / 0.25f) * 1.06f - 0.06f * (t / 0.25f) : 1.06f - 0.06f * EaseInOutQuad((t - 0.25f) / 0.75f);
+                case CinematicEase.Smooth:
+                default: return t * t * (3f - 2f * t);
+            }
+        }
+
+        private static float EaseOutQuad(float t) { t = Mathf.Clamp01(t); return 1f - (1f - t) * (1f - t); }
+        private static float EaseInOutQuad(float t) { t = Mathf.Clamp01(t); return t < 0.5f ? 2f * t * t : 1f - Mathf.Pow(-2f * t + 2f, 2f) / 2f; }
+
+        private struct ShotActorTrack
+        {
+            public TacticalUnit Unit;
+            public Vector3 StartWorld;
+            public Vector3 EndWorld;
+            public int EndQ;
+            public int EndR;
+            public float StartYaw;
+            public float EndYaw;
+            public bool HasEnd;
+        }
+
+        // Sécurité : libère les verrous de pilotage sur toutes les unités (ex : Stop
+        // en plein plan, changement de scène). Sans ça, une unité resterait
+        // indéplaçable (MoveAlongPath refuse tant que CinematicDriveActive).
+        private static void ClearAllCinematicLocks()
+        {
+            try
+            {
+                var units = FindObjectsByType<TacticalUnit>();
+                for (int i = 0; i < units.Length; i++)
+                    if (units[i] != null) units[i].CinematicDriveActive = false;
+            }
+            catch { /* ignore */ }
+        }
+
+        private struct ShotPropTrack
+        {
+            public TacticalInteractable Prop;
+            public Vector3 StartWorld;
+            public Vector3 EndWorld;
+            public int EndQ;
+            public int EndR;
+            public bool HasEnd;
+        }
+
+        private static bool IsUnitTracked(List<ShotActorTrack> a, List<ShotActorTrack> b, TacticalUnit unit)
+        {
+            if (unit == null) return true;
+            if (a != null)
+                for (int i = 0; i < a.Count; i++)
+                    if (a[i].Unit == unit) return true;
+            if (b != null)
+                for (int i = 0; i < b.Count; i++)
+                    if (b[i].Unit == unit) return true;
+            return false;
+        }
+
+        private static bool IsPropTracked(List<ShotPropTrack> list, TacticalInteractable prop)
+        {
+            if (prop == null) return true;
+            if (list == null) return false;
+            for (int i = 0; i < list.Count; i++)
+                if (list[i].Prop == prop) return true;
+            return false;
+        }
+
+        private static TacticalUnit FindSceneUnit(string actorIdOrName)
+        {
+            if (string.IsNullOrWhiteSpace(actorIdOrName)) return null;
+            try
+            {
+                var units = FindObjectsByType<TacticalUnit>();
+                for (int i = 0; i < units.Length; i++)
+                {
+                    var u = units[i];
+                    if (u == null) continue;
+                    if (string.Equals(u.gameObject.name, "Actor_" + actorIdOrName, StringComparison.OrdinalIgnoreCase))
+                        return u;
+                    if (u.Stats != null && string.Equals(u.Stats.Name, actorIdOrName, StringComparison.OrdinalIgnoreCase))
+                        return u;
+                }
+            }
+            catch { /* ignore */ }
+            return null;
+        }
+
+        private static TacticalInteractable FindSceneProp(string interactableId)
+        {
+            if (string.IsNullOrWhiteSpace(interactableId)) return null;
+            try
+            {
+                var props = FindObjectsByType<TacticalInteractable>();
+                for (int i = 0; i < props.Length; i++)
+                {
+                    var p = props[i];
+                    if (p == null) continue;
+                    if (string.Equals(p.ObjectName, interactableId, StringComparison.OrdinalIgnoreCase))
+                        return p;
+                }
+            }
+            catch { /* ignore */ }
+            return null;
+        }
+
+        private static bool TryHexWorld(TacticalHexGrid grid, int q, int r, out Vector3 world)
+        {
+            world = Vector3.zero;
+            if (grid == null) return false;
+            try
+            {
+                var node = grid.GetNode(new HexCoordinates(q, r));
+                if (node == null) return false;
+                world = node.WorldPosition;
+                return true;
+            }
+            catch { return false; }
+        }
+
+        private IEnumerator SceneCinematicRoutine(SceneCinematicData cine)
+        {
+            float speed = cine.PlaybackSpeed > 0.01f ? cine.PlaybackSpeed : 1f;
+            bool driveCamera = !IsFreeLook && CurrentMode != CameraMode.FreeLook;
+            Vector3 returnPos = transform.position;
+            Quaternion returnRot = transform.rotation;
+            float returnFov = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
+
+            if (driveCamera)
+            {
+                CurrentMode = CameraMode.CinematicAction;
+                if (_tacticalCam != null) _tacticalCam.enabled = false;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.EnterCinematicMode();
+            }
+
+            var grid = FindAnyObjectByType<TacticalHexGrid>();
+            bool skipped = false;
+
+            // Snapshot de la structure de plans : l'auteur peut éditer la cinématique
+            // (ajout/suppression de plans) pendant la lecture sans faire planter
+            // la routine par IndexOutOfRange (ce qui laisserait verrous + caméra bloqués).
+            var shots = cine.Shots != null ? new List<SceneCinematicShotData>(cine.Shots) : new List<SceneCinematicShotData>();
+
+            for (int s = 0; s < shots.Count; s++)
+            {
+                var shot = shots[s];
+                if (shot == null) continue;
+                float duration = Mathf.Max(0.2f, shot.Duration / speed);
+
+                // Poses acteurs : verrou anti-déplacement + téléport au START,
+                // interpolation vers END, finalisation au END. Les doublons (même unité
+                // résolue deux fois) sont ignorés par référence pour éviter un double pilotage.
+                var tracks = new List<ShotActorTrack>();
+                if (shot.StartPoses != null)
+                {
+                    for (int p = 0; p < shot.StartPoses.Count; p++)
+                    {
+                        var pose = shot.StartPoses[p];
+                        if (pose == null || string.IsNullOrWhiteSpace(pose.ActorId)) continue;
+                        var unit = FindSceneUnit(pose.ActorId);
+                        if (unit == null || IsUnitTracked(tracks, null, unit)) continue;
+                        unit.CinematicDriveActive = true;
+                        SceneCinematicActorPose endPose = null;
+                        if (shot.EndPoses != null)
+                            endPose = shot.EndPoses.Find(e => e != null && string.Equals(e.ActorId, pose.ActorId, StringComparison.OrdinalIgnoreCase));
+                        var track = new ShotActorTrack { Unit = unit, HasEnd = endPose != null };
+                        if (TryHexWorld(grid, pose.Q, pose.R, out var sw))
+                        {
+                            try
+                            {
+                                // Échec possible (empreinte occupée) : l'unité reste sur place,
+                                // on part donc de sa position RÉELLE pour rester cohérent.
+                                if (grid != null) unit.TeleportTo(new HexCoordinates(pose.Q, pose.R), grid);
+                                else unit.transform.position = sw;
+                            }
+                            catch { try { unit.transform.position = sw; } catch { /* ignore */ } }
+                            try { unit.transform.rotation = Quaternion.Euler(0f, pose.FacingAngle, 0f); }
+                            catch { /* ignore */ }
+                            track.StartYaw = pose.FacingAngle;
+                        }
+                        else
+                        {
+                            track.StartYaw = unit.transform.rotation.eulerAngles.y;
+                        }
+                        try { track.StartWorld = unit.transform.position; }
+                        catch { track.StartWorld = sw; }
+                        if (endPose != null)
+                        {
+                            track.EndQ = endPose.Q;
+                            track.EndR = endPose.R;
+                            if (TryHexWorld(grid, endPose.Q, endPose.R, out var ew)) track.EndWorld = ew;
+                            else track.EndWorld = track.StartWorld;
+                            track.EndYaw = endPose.FacingAngle;
+                        }
+                        else
+                        {
+                            track.EndWorld = track.StartWorld;
+                            track.EndYaw = track.StartYaw;
+                        }
+                        tracks.Add(track);
+                    }
+                }
+                // Finisseurs seuls en END (sans START) : interpolation depuis la
+                // position actuelle, ancrage logique en fin de plan.
+                var endOnly = new List<ShotActorTrack>();
+                if (shot.EndPoses != null)
+                {
+                    for (int p = 0; p < shot.EndPoses.Count; p++)
+                    {
+                        var pose = shot.EndPoses[p];
+                        if (pose == null || string.IsNullOrWhiteSpace(pose.ActorId)) continue;
+                        var unit = FindSceneUnit(pose.ActorId);
+                        if (unit == null || IsUnitTracked(tracks, endOnly, unit)) continue;
+                        unit.CinematicDriveActive = true;
+                        var track = new ShotActorTrack { Unit = unit, HasEnd = true, EndQ = pose.Q, EndR = pose.R };
+                        try
+                        {
+                            track.StartWorld = unit.transform.position;
+                            track.StartYaw = unit.transform.rotation.eulerAngles.y;
+                        }
+                        catch { track.StartWorld = Vector3.zero; track.StartYaw = 0f; }
+                        if (TryHexWorld(grid, pose.Q, pose.R, out var ew)) track.EndWorld = ew;
+                        else track.EndWorld = track.StartWorld;
+                        track.EndYaw = pose.FacingAngle;
+                        endOnly.Add(track);
+                    }
+                }
+                // Props (interactables) : Relocate logique+visuel au START, interpolation
+                // visuelle pendant le plan, Relocate d'ancrage au END (CanInteract suit).
+                var propTracks = new List<ShotPropTrack>();
+                if (shot.StartProps != null)
+                {
+                    for (int p = 0; p < shot.StartProps.Count; p++)
+                    {
+                        var pose = shot.StartProps[p];
+                        if (pose == null || string.IsNullOrWhiteSpace(pose.InteractableId)) continue;
+                        var prop = FindSceneProp(pose.InteractableId);
+                        if (prop == null || IsPropTracked(propTracks, prop)) continue;
+                        var track = new ShotPropTrack { Prop = prop, HasEnd = false };
+                        if (grid != null)
+                        {
+                            // Sans grille on ne touche à rien (pas de monde hex de référence).
+                            try { prop.Relocate(new HexCoordinates(pose.Q, pose.R), grid); }
+                            catch { /* ignore */ }
+                        }
+                        try { track.StartWorld = prop.transform.position; }
+                        catch { track.StartWorld = Vector3.zero; }
+                        SceneCinematicPropPose endPose = null;
+                        if (shot.EndProps != null)
+                            endPose = shot.EndProps.Find(e => e != null && string.Equals(e.InteractableId, pose.InteractableId, StringComparison.OrdinalIgnoreCase));
+                        if (endPose != null)
+                        {
+                            track.EndQ = endPose.Q;
+                            track.EndR = endPose.R;
+                            if (TryHexWorld(grid, endPose.Q, endPose.R, out var ew))
+                            {
+                                track.EndWorld = ew;
+                                track.HasEnd = true;
+                            }
+                            else track.EndWorld = track.StartWorld;
+                        }
+                        else track.EndWorld = track.StartWorld;
+                        propTracks.Add(track);
+                    }
+                }
+
+                // Focus + sous-titre + son du plan.
+                if (!string.IsNullOrWhiteSpace(shot.FocusActorId))
+                {
+                    var focus = FindSceneUnit(shot.FocusActorId);
+                    try { focus?.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"🎬 {shot.Label}", Color.magenta); }
+                    catch { /* ignore */ }
+                }
+                if (!string.IsNullOrWhiteSpace(shot.Speech))
+                {
+                    string who = string.IsNullOrWhiteSpace(shot.SpeakerId) ? cine.Title : shot.SpeakerId;
+                    CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>[{who}]</b> « {shot.Speech} »", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
+                }
+                if (!string.IsNullOrWhiteSpace(shot.SoundCueId) && KilltimeAudioManager.Instance != null)
+                {
+                    try
+                    {
+                        if (Enum.TryParse<SoundId>(shot.SoundCueId, out var cue))
+                            KilltimeAudioManager.Instance.PlayUI(cue, 0.6f);
+                    }
+                    catch { /* ignore */ }
+                }
+                _letterboxActive = shot.Letterbox;
+
+                Vector3 camPos = driveCamera ? shot.CamStartPos : Vector3.zero;
+                Vector3 camEuler = driveCamera ? shot.CamStartEuler : Vector3.zero;
+                if (driveCamera)
+                {
+                    transform.position = shot.CamStartPos;
+                    transform.rotation = Quaternion.Euler(shot.CamStartEuler);
+                    if (_mainCamera != null) _mainCamera.fieldOfView = shot.CamStartFov;
+                }
+
+                float elapsed = 0f;
+                while (elapsed < duration)
+                {
+                    while (CombatHUD.IsPaused) yield return null;
+                    elapsed += Time.unscaledDeltaTime;
+                    float t = Mathf.Clamp01(elapsed / duration);
+                    float e = ApplyCinematicEase(shot.Ease, t);
+
+                    if (driveCamera)
+                    {
+                        camPos = Vector3.Lerp(shot.CamStartPos, shot.CamEndPos, e);
+                        camEuler = new Vector3(
+                            Mathf.LerpAngle(shot.CamStartEuler.x, shot.CamEndEuler.x, e),
+                            Mathf.LerpAngle(shot.CamStartEuler.y, shot.CamEndEuler.y, e),
+                            Mathf.Lerp(shot.CamStartEuler.z, shot.CamEndEuler.z, e));
+                        float fov = Mathf.Lerp(shot.CamStartFov, shot.CamEndFov, e);
+                        ApplyShotEffect(shot, t, e, ref camPos, ref camEuler, ref fov);
+                        transform.position = camPos;
+                        transform.rotation = Quaternion.Euler(camEuler);
+                        if (_mainCamera != null) _mainCamera.fieldOfView = fov;
+                    }
+
+                    for (int t2 = 0; t2 < tracks.Count; t2++)
+                    {
+                        var tr = tracks[t2];
+                        if (tr.Unit == null) continue;
+                        try
+                        {
+                            tr.Unit.transform.position = Vector3.Lerp(tr.StartWorld, tr.EndWorld, e);
+                            tr.Unit.transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(tr.StartYaw, tr.EndYaw, e), 0f);
+                        }
+                        catch { /* ignore */ }
+                    }
+                    for (int t2 = 0; t2 < endOnly.Count; t2++)
+                    {
+                        var tr = endOnly[t2];
+                        if (tr.Unit == null) continue;
+                        try
+                        {
+                            tr.Unit.transform.position = Vector3.Lerp(tr.StartWorld, tr.EndWorld, e);
+                            tr.Unit.transform.rotation = Quaternion.Euler(0f, Mathf.LerpAngle(tr.StartYaw, tr.EndYaw, e), 0f);
+                        }
+                        catch { /* ignore */ }
+                    }
+                    for (int t2 = 0; t2 < propTracks.Count; t2++)
+                    {
+                        var tr = propTracks[t2];
+                        if (tr.Prop == null || !tr.HasEnd) continue;
+                        try { tr.Prop.transform.position = Vector3.Lerp(tr.StartWorld, tr.EndWorld, e); }
+                        catch { /* ignore */ }
+                    }
+
+                    if (cine.Skippable && (Input.GetKeyDown(KeyCode.Escape))) { skipped = true; break; }
+                    yield return null;
+                }
+
+                // Finalisation du plan : ancrage logique END (occupancy grille à jour),
+                // libération systématique du verrou anti-déplacement. En cas d'échec
+                // de téléport (case occupée), le visuel est recalé sur la logique
+                // pour ne jamais laisser visuel/logique désynchronisés.
+                for (int t2 = 0; t2 < tracks.Count; t2++)
+                {
+                    var tr = tracks[t2];
+                    if (tr.Unit == null) continue;
+                    try
+                    {
+                        if (tr.HasEnd)
+                        {
+                            // Sans grille il n'y a pas de logique hex à ancrer : le visuel fait foi.
+                            bool ok = grid == null;
+                            if (grid != null) ok = tr.Unit.TeleportTo(new HexCoordinates(tr.EndQ, tr.EndR), grid);
+                            else tr.Unit.transform.position = tr.EndWorld;
+                            if (!ok)
+                            {
+                                var n = grid != null ? grid.GetNode(tr.Unit.CurrentCoords) : null;
+                                if (n != null) tr.Unit.transform.position = n.WorldPosition;
+                            }
+                            tr.Unit.transform.rotation = Quaternion.Euler(0f, tr.EndYaw, 0f);
+                        }
+                        tr.Unit.CinematicDriveActive = false;
+                    }
+                    catch
+                    {
+                        try { if (tr.Unit != null) tr.Unit.CinematicDriveActive = false; }
+                        catch { /* ignore */ }
+                    }
+                }
+                for (int t2 = 0; t2 < endOnly.Count; t2++)
+                {
+                    var tr = endOnly[t2];
+                    if (tr.Unit == null) continue;
+                    try
+                    {
+                        bool ok = grid == null;
+                        if (grid != null) ok = tr.Unit.TeleportTo(new HexCoordinates(tr.EndQ, tr.EndR), grid);
+                        else tr.Unit.transform.position = tr.EndWorld;
+                        if (!ok)
+                        {
+                            var n = grid != null ? grid.GetNode(tr.Unit.CurrentCoords) : null;
+                            if (n != null) tr.Unit.transform.position = n.WorldPosition;
+                        }
+                        tr.Unit.transform.rotation = Quaternion.Euler(0f, tr.EndYaw, 0f);
+                        tr.Unit.CinematicDriveActive = false;
+                    }
+                    catch
+                    {
+                        try { if (tr.Unit != null) tr.Unit.CinematicDriveActive = false; }
+                        catch { /* ignore */ }
+                    }
+                }
+                for (int t2 = 0; t2 < propTracks.Count; t2++)
+                {
+                    var tr = propTracks[t2];
+                    if (tr.Prop == null || !tr.HasEnd) continue;
+                    try { tr.Prop.Relocate(new HexCoordinates(tr.EndQ, tr.EndR), grid); }
+                    catch { /* ignore */ }
+                }
+
+                if (skipped) break;
+            }
+
+            _letterboxActive = false;
+            ClearAllCinematicLocks();
+            // Si une autre cinématique suit, on enchaîne DIRECTEMENT sans retour
+            // intermédiaire à la vue tactique (évite un double pop caméra).
+            bool chainMore = _sceneCinematicQueue.Count > 0;
+            if (driveCamera && !chainMore)
+            {
+                // Retour fluide à la vue tactique (la carte suivante a déjà pu s'enclencher).
+                float elapsed = 0f;
+                const float backDuration = 0.4f;
+                Vector3 fromPos = transform.position;
+                Quaternion fromRot = transform.rotation;
+                float fromFov = _mainCamera != null ? _mainCamera.fieldOfView : returnFov;
+                while (elapsed < backDuration)
+                {
+                    while (CombatHUD.IsPaused) yield return null;
+                    elapsed += Time.unscaledDeltaTime;
+                    float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / backDuration));
+                    transform.position = Vector3.Lerp(fromPos, returnPos, t);
+                    transform.rotation = Quaternion.Slerp(fromRot, returnRot, t);
+                    if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(fromFov, returnFov, t);
+                    yield return null;
+                }
+                RestoreTacticalCamera();
+                CurrentMode = CameraMode.TacticalIsometric;
+            }
+
+            _activeSceneCinematicRoutine = null;
+            var cb = _sceneCinematicOnComplete;
+            _sceneCinematicOnComplete = null;
+            try { cb?.Invoke(); } catch { /* ignore */ }
+
+            if (chainMore) PlayNextQueuedCinematic();
+        }
+
+        private void PlayNextQueuedCinematic()
+        {
+            if (_sceneCinematicQueue.Count == 0 || IsPlayingSceneCinematic) return;
+            var next = _sceneCinematicQueue.Dequeue();
+            if (next.Data == null)
+            {
+                // Paranoïa (l'enqueue filtre déjà les requêtes vides) : ne jamais
+                // avaler un callback ni caler la file.
+                try { next.OnComplete?.Invoke(); } catch { /* ignore */ }
+                PlayNextQueuedCinematic();
+                return;
+            }
+            _sceneCinematicOnComplete = next.OnComplete;
+            _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(next.Data));
+        }
+
+        private void ApplyShotEffect(SceneCinematicShotData shot, float t, float e, ref Vector3 pos, ref Vector3 euler, ref float fov)
+        {
+            if (shot == null || shot.MoveEffect == CinematicCameraEffect.None) return;
+            float intensity = Mathf.Max(0f, shot.ShakeIntensity);
+            float time = Time.unscaledTime + _skipNoiseSeed;
+            switch (shot.MoveEffect)
+            {
+                case CinematicCameraEffect.HandheldShake:
+                    pos.x += (Mathf.PerlinNoise(time * 1.7f, 0f) - 0.5f) * intensity * 0.9f;
+                    pos.y += (Mathf.PerlinNoise(0f, time * 2.1f) - 0.5f) * intensity * 0.6f;
+                    euler.z += (Mathf.PerlinNoise(time * 1.3f, 7f) - 0.5f) * intensity * 3f;
+                    break;
+                case CinematicCameraEffect.PushIn:
+                {
+                    Vector3 fwd = Quaternion.Euler(euler) * Vector3.forward;
+                    pos += fwd * (e * (0.8f + intensity * 2f));
+                    break;
+                }
+                case CinematicCameraEffect.PullOut:
+                {
+                    Vector3 fwd = Quaternion.Euler(euler) * Vector3.forward;
+                    pos -= fwd * (e * (0.8f + intensity * 2f));
+                    break;
+                }
+                case CinematicCameraEffect.OrbitLeft:
+                    euler.y -= e * 22f;
+                    break;
+                case CinematicCameraEffect.OrbitRight:
+                    euler.y += e * 22f;
+                    break;
+                case CinematicCameraEffect.FovPunch:
+                    fov += Mathf.Sin(t * Mathf.PI) * (4f + intensity * 10f);
+                    break;
+                case CinematicCameraEffect.DutchSway:
+                    euler.z += Mathf.Sin(e * Mathf.PI * 2f) * (2f + intensity * 4f);
+                    break;
             }
         }
 
