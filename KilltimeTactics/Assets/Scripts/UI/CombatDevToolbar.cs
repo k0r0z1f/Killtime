@@ -680,7 +680,7 @@ namespace Killtime.UI
             GUI.backgroundColor = Color.white;
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>🖥️ Système & Multitâche (Alt-Tab / Bureau) :</b>");
+            GUILayout.Label("<b>🖥️ Système & Multitâche (Alt-Tab / Multi-Écran) :</b>");
             bool runBg = Application.runInBackground;
             string bgBtnLabel = runBg
                 ? "🖥️ Multitâche : SANS PAUSE (Le jeu tourne en arrière-plan)"
@@ -694,6 +694,12 @@ namespace Killtime.UI
                     DevUIPreferences.Current.RunInBackground = Application.runInBackground;
                     DevUIPreferences.MarkDirty();
                 }
+            }
+            GUI.backgroundColor = new Color(0.2f, 0.5f, 0.8f);
+            if (GUILayout.Button("🖥️ Changer d'Écran / Moniteur (Ctrl + Shift + D)", GUILayout.Height(28)))
+            {
+                var dm = FindAnyObjectByType<KilltimeDisplayManager>();
+                if (dm != null) dm.CycleNextDisplay();
             }
             GUI.backgroundColor = Color.white;
 

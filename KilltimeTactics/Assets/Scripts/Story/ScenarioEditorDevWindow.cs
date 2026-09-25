@@ -59,6 +59,9 @@ namespace Killtime.Story
             // SourceCineList = référence directe de la liste CinematicIds de la carte source.
             public bool IsCinematicLink;
             public List<string> SourceCineList;
+            // Sortie "fin →" d'une carte 🎬 vers n'importe quelle carte (chaînage explicite).
+            public bool IsCinematicOut;
+            public SceneCinematicData SourceCinematic;
             public SceneDialogueLineData SourceLine;
             public SceneDialogueChoiceData SourceChoice;
             public SceneDialogueChallengeData SourceChallenge;
@@ -164,9 +167,11 @@ namespace Killtime.Story
         private bool _isDraggingSceneItem = false;
         private Vector2 _dragSceneMouseStart;
         private readonly List<Rect> _sceneRowRects = new();
+        private bool _pauseOnDeploy = true;
 
         protected override void OnAwake()
         {
+            _pauseOnDeploy = PlayerPrefs.GetInt("ScenarioEditor_PauseOnDeploy", 1) == 1;
             RefreshCatalogCache();
             if (_data.Nodes.Count == 0)
             {
@@ -529,6 +534,16 @@ namespace Killtime.Story
                 DeployCurrentSceneToRuntime();
             }
             GUI.backgroundColor = Color.white;
+
+            GUILayout.BeginHorizontal();
+            bool newPause = GUILayout.Toggle(_pauseOnDeploy, " ⏸️ Mettre sur pause par défaut au déploiement (Stase tactique)");
+            if (newPause != _pauseOnDeploy)
+            {
+                _pauseOnDeploy = newPause;
+                PlayerPrefs.SetInt("ScenarioEditor_PauseOnDeploy", _pauseOnDeploy ? 1 : 0);
+                PlayerPrefs.Save();
+            }
+            GUILayout.EndHorizontal();
 
             GUILayout.Space(6);
 
@@ -1348,23 +1363,40 @@ namespace Killtime.Story
             y += CineRowH;
         }
 
-        // Port de sortie 🎬 : drag vers l'entrée d'une carte cinématique = lier (multi-liens).
-        private void DrawCineOutPort(Vector2 centerWorld, List<string> list, Vector2 mouseWorld)
+        // Port de sortie 🎬 : drag vers une carte = lier.
+        // - list != null : sortie multi-liens d'une carte normale vers des cartes 🎬.
+        // - cineOwner != null : sortie "fin →" (unique) d'une carte 🎬 vers n'importe quelle carte.
+        private void DrawCineOutPort(Vector2 centerWorld, List<string> list, Vector2 mouseWorld, SceneCinematicData cineOwner = null)
         {
-            bool has = list != null && list.Count > 0;
+            bool has = cineOwner != null
+                ? !string.IsNullOrWhiteSpace(cineOwner.NextTargetId)
+                : (list != null && list.Count > 0);
             Color col = has ? CinePortCol : new Color(CinePortCol.r, CinePortCol.g, CinePortCol.b, 0.35f);
             Rect port = new Rect(centerWorld.x - 7f, centerWorld.y - 7f, 14f, 14f);
             DrawGraphSolidRect(port, col);
-            if (list == null) return;
+            if (cineOwner == null && list == null) return;
             if (GraphPrimaryDown(mouseWorld, port))
             {
-                _wireDraft = new WireConnectionDraft
+                if (cineOwner != null)
                 {
-                    IsActive = true,
-                    IsCinematicLink = true,
-                    SourceCineList = list,
-                    StartPos = centerWorld
-                };
+                    _wireDraft = new WireConnectionDraft
+                    {
+                        IsActive = true,
+                        IsCinematicOut = true,
+                        SourceCinematic = cineOwner,
+                        StartPos = centerWorld
+                    };
+                }
+                else
+                {
+                    _wireDraft = new WireConnectionDraft
+                    {
+                        IsActive = true,
+                        IsCinematicLink = true,
+                        SourceCineList = list,
+                        StartPos = centerWorld
+                    };
+                }
                 Event.current.Use();
             }
         }
@@ -1559,11 +1591,9 @@ namespace Killtime.Story
         {
             if (amb == null) return;
             GraphLabel(new Rect(x, y, 40f, 18f), "Cue:");
-            amb.SoundCueId = GraphTextField(new Rect(x + 42f, y, 92f, 18f), amb.SoundCueId ?? "");
-            GraphLabel(new Rect(x + 136f, y, 36f, 18f), "Sec:");
-            string shakeTxt = GraphTextField(new Rect(x + 174f, y, 34f, 18f), amb.CameraShakeIntensity.ToString("0.0"));
-            float.TryParse(shakeTxt, out amb.CameraShakeIntensity);
-            amb.TriggerAlarm = GraphToggle(new Rect(x + 210f, y, Mathf.Max(60f, x + w - x - 210f), 18f), amb.TriggerAlarm, "Alarme");
+            amb.SoundCueId = GraphTextField(new Rect(x + 42f, y, Mathf.Max(60f, x + w - x - 42f - 70f), 18f), amb.SoundCueId ?? "");
+            // DÉ-HARDCODÉ : secousse retirée (cartes 🎬 à effet). Rangée conservée (Cue + Alarme).
+            amb.TriggerAlarm = GraphToggle(new Rect(x + w - 66f, y, 66f, 18f), amb.TriggerAlarm, "Alarme");
             y += 20f;
             amb.ChangeMusic = GraphToggle(new Rect(x, y, 110f, 20f), amb.ChangeMusic, "Musique");
             if (amb.ChangeMusic)
@@ -1712,20 +1742,8 @@ namespace Killtime.Story
             DrawEffectsBlock(ref y, x + 12f, w - 12f, auto.FailureEffects, auto, "ffx", "fx ✕", true);
         }
 
-        // --- Caméra réplique : 2 lignes ---
-        private void DrawCameraDetail(ref float y, float x, float w, SceneDialogueLineData line)
-        {
-            GraphLabel(new Rect(x, y, 52f, 18f), "Focus:");
-            line.CameraFocusActorId = GraphTextField(new Rect(x + 54f, y, Mathf.Max(40f, x + w - x - 54f), 18f), line.CameraFocusActorId ?? "");
-            y += 20f;
-            GraphLabel(new Rect(x, y, 46f, 18f), "Pitch:");
-            string pTxt = GraphTextField(new Rect(x + 48f, y, 40f, 18f), line.CameraPitch.ToString("0.0"));
-            float.TryParse(pTxt, out line.CameraPitch);
-            GraphLabel(new Rect(x + 92f, y, 40f, 18f), "Dist:");
-            string dTxt = GraphTextField(new Rect(x + 134f, y, Mathf.Max(30f, x + w - x - 134f), 18f), line.CameraDistance.ToString("0.0"));
-            float.TryParse(dTxt, out line.CameraDistance);
-            y += 20f;
-        }
+        // DÉ-HARDCODÉ : l'édition du focus caméra des répliques est retirée
+        // (remplacée par des cartes 🎬 à tracking). Champs conservés en JSON, ignorés au runtime.
 
         // --- Détail défi (carte) : récompenses + effets + combat : 5+M+S+F ---
         private static int MeasureChallengeDetail(SceneDialogueChallengeData chal, bool open)
@@ -2252,11 +2270,10 @@ namespace Killtime.Story
                 }
                 needed += GetDialogueLineSummaryRows(line) * 18f;
             }
-            needed += 20f; // strip détails 🎥🔒🔊🎲
+            needed += 20f; // strip détails 🔒🔊🎲
             needed += CineRowH; // rangée sortie 🎬 (DrawCineLinkRow)
             if (line != null)
             {
-                if (SectionOpen(_expandedSections, line, "cam")) needed += 40f;
                 needed += MeasurePrereqDetail(line.Prerequisite, SectionOpen(_expandedSections, line, "pre")) * 20f;
                 needed += MeasureAmbienceDetail(line.Ambience, SectionOpen(_expandedSections, line, "amb")) * 20f;
                 needed += MeasureAutoDetail(line.AutoSkillCheck, SectionOpen(_expandedSections, line, "auto")) * 20f;
@@ -2355,16 +2372,24 @@ namespace Killtime.Story
             return new Vector2(w, h);
         }
 
-        // Carte cinématique 🎬 : 30 (haut) + 22 (ID/titre) + 20 (options) + 20 × plans + 22 (boutons) + marge.
+        // Carte cinématique 🎬 : 30 (haut) + 22 (ID/titre) + 20 (skip/vitesse) + 20 (bandes noires/masquer chat) + 20 × plans
+        // + 20 (sortie "fin →") + 22 (boutons) + marge.
         private static Vector2 GetCinematicCardSize(SceneCinematicData cine)
         {
             if (cine == null) return new Vector2(CineCardDefaultW, CineCardDefaultH);
             float w = cine.CardWidth > 100f ? cine.CardWidth : CineCardDefaultW;
             float h = cine.CardHeight > 80f ? cine.CardHeight : CineCardDefaultH;
             int n = cine.Shots != null ? cine.Shots.Count : 0;
-            float needed = 30f + 22f + 20f + 20f * n + 22f + 10f;
+            float needed = 30f + 22f + 20f + 20f + 20f + 20f * n + CineRowH + 22f + 10f;
             if (h < needed) h = needed;
             return new Vector2(w, h);
+        }
+
+        // Origine du wire de sortie "fin →" d'une carte 🎬 : flanc droit, rangée dédiée.
+        private static Vector2 GetCinematicOutCenter(SceneCinematicData cine)
+        {
+            Vector2 s = GetCinematicCardSize(cine);
+            return new Vector2(cine.GraphPosX + s.x, cine.GraphPosY + CinePortTopCards);
         }
 
         private static Vector2 GetInteractableCardSize(SceneInteractableSpawnData it)
@@ -3905,6 +3930,25 @@ namespace Killtime.Story
                     DrawCineWireList(new Vector2(a.GraphPosX + asize.x, a.GraphPosY + ActorCinePortTop), a.CinematicIds);
                 }
             }
+
+            // Wires "fin →" des cartes 🎬 vers leur carte cible (cinématique, réplique,
+            // conséquence, événement ou nœud). Magenta comme les entrées 🎬.
+            if (_data.Cinematics != null)
+            {
+                for (int i = 0; i < _data.Cinematics.Count; i++)
+                {
+                    var c = _data.Cinematics[i];
+                    if (c == null || string.IsNullOrWhiteSpace(c.NextTargetId)) continue;
+                    string target = c.NextTargetId.Trim();
+                    Vector2 from = GetCinematicOutCenter(c);
+                    if (_cachedCinematicInputSockets.TryGetValue(target, out var cineIn))
+                        DrawBezierWire(from, cineIn, new Color(1f, 0.35f, 0.85f, 0.95f), 3f);
+                    else if (_cachedInputSockets.TryGetValue(target, out var cardIn))
+                        DrawBezierWire(from, cardIn, new Color(1f, 0.35f, 0.85f, 0.95f), 3f);
+                    else if (_cachedNodeInputSockets.TryGetValue(target, out var nodeIn))
+                        DrawBezierWire(from, nodeIn, new Color(1f, 0.35f, 0.85f, 0.95f), 3f);
+                }
+            }
         }
 
         private bool SceneContainsLine(string id)
@@ -3999,6 +4043,53 @@ namespace Killtime.Story
                 {
                     StorySceneData.AddCineLink(_wireDraft.SourceCineList, pickedCine);
                     PlayWireSoundLocal();
+                }
+                return;
+            }
+
+            // Sortie "fin →" d'une carte 🎬 : drop sur une carte (cinématique, réplique,
+            // conséquence, événement ou nœud) = chaîner. Auto-lien refusé (boucle infinie).
+            // Drop dans le vide ou sur acteur/déclencheur/interactable = effacer le lien.
+            if (_wireDraft.IsCinematicOut && _wireDraft.SourceCinematic != null)
+            {
+                var src = _wireDraft.SourceCinematic;
+                // Simple clic sans drag = annulation (pas d'effacement accidentel).
+                if (Vector2.Distance(mousePos, _wireDraft.StartPos) * _zoom <= 6f) return;
+                if (_data.Cinematics == null || !_data.Cinematics.Contains(src)) return;
+                string picked = null;
+                float best = 34f;
+                foreach (var kvp in _cachedCinematicInputSockets)
+                {
+                    if (string.Equals(kvp.Key, src.CinematicId, StringComparison.OrdinalIgnoreCase)) continue;
+                    float dist = Vector2.Distance(kvp.Value, mousePos);
+                    if (dist < best) { best = dist; picked = kvp.Key; }
+                }
+                if (string.IsNullOrEmpty(picked))
+                {
+                    best = 34f;
+                    foreach (var kvp in _cachedInputSockets)
+                    {
+                        float dist = Vector2.Distance(kvp.Value, mousePos);
+                        if (dist < best) { best = dist; picked = kvp.Key; }
+                    }
+                }
+                if (string.IsNullOrEmpty(picked))
+                {
+                    best = 36f;
+                    foreach (var kvp in _cachedNodeInputSockets)
+                    {
+                        float dist = Vector2.Distance(kvp.Value, mousePos);
+                        if (dist < best) { best = dist; picked = kvp.Key; }
+                    }
+                }
+                if (!string.IsNullOrEmpty(picked))
+                {
+                    src.NextTargetId = picked;
+                    PlayWireSoundLocal();
+                }
+                else
+                {
+                    src.NextTargetId = "";
                 }
                 return;
             }
@@ -5279,15 +5370,14 @@ namespace Killtime.Story
                 y += 18f;
             }
 
-            // Strip détails (ex-inspecteur) : 🎥 caméra, 🔒 prérequis, 🔊 ambiance, 🎲 test auto.
+            // Strip détails (ex-inspecteur) : 🔒 prérequis, 🔊 ambiance, 🎲 test auto.
+            // (🎥 caméra retiré : voir cartes 🎬 à tracking.)
             {
                 float stripX = innerX;
-                bool camOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "cam", "🎥"); stripX += 48f;
                 bool preOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "pre", "🔒"); stripX += 48f;
                 bool ambOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "amb", "🔊"); stripX += 48f;
                 bool autoOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "auto", "🎲");
                 y += 20f;
-                if (camOpen) DrawCameraDetail(ref y, innerX + 12f, innerW - 12f, line);
                 if (preOpen) DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, line.Prerequisite);
                 if (ambOpen) DrawAmbienceDetail(ref y, innerX + 12f, innerW - 12f, line.Ambience);
                 if (autoOpen) DrawAutoDetail(ref y, innerX + 12f, innerW - 12f, line.AutoSkillCheck);
@@ -5519,11 +5609,24 @@ namespace Killtime.Story
             GraphLabel(new Rect(innerX, y, 45f, 18f), "Action:");
             {
                 int kindCount = Enum.GetValues(typeof(SceneEventKind)).Length;
+                int camFocusKind = (int)SceneEventKind.CameraFocus;
+                int camShakeKind = (int)SceneEventKind.CameraShake;
+                // Kinds caméra DÉ-HARDCODÉS (cartes 🎬) : sautés au cycle.
+                int CycleKind(int cur, int dir)
+                {
+                    for (int k = 0; k < kindCount; k++)
+                    {
+                        cur = (cur + dir + kindCount) % kindCount;
+                        if (cur != camFocusKind && cur != camShakeKind) return cur;
+                    }
+                    return (int)ev.Kind;
+                }
                 if (GraphButton(new Rect(innerX + 47f, y, 20f, 18f), "◀"))
-                    ev.Kind = (SceneEventKind)(((int)ev.Kind - 1 + kindCount) % kindCount);
-                GraphLabel(new Rect(innerX + 69f, y, Mathf.Max(40f, innerW - 69f - 22f), 18f), $"<b>{ev.Kind}</b>");
+                    ev.Kind = (SceneEventKind)CycleKind((int)ev.Kind, -1);
+                string kindWarn = (int)ev.Kind == camFocusKind || (int)ev.Kind == camShakeKind ? " (obsolète → 🎬)" : "";
+                GraphLabel(new Rect(innerX + 69f, y, Mathf.Max(40f, innerW - 69f - 22f), 18f), $"<b>{ev.Kind}</b>{kindWarn}");
                 if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
-                    ev.Kind = (SceneEventKind)(((int)ev.Kind + 1) % kindCount);
+                    ev.Kind = (SceneEventKind)CycleKind((int)ev.Kind, 1);
             }
             y += 22f;
 
@@ -6669,6 +6772,16 @@ namespace Killtime.Story
             GUI.color = Color.white;
             y += 20f;
 
+            cine.Letterbox = GraphToggle(new Rect(innerX, y, 115f, 18f), cine.Letterbox, "Bandes noires");
+            cine.HideSceneChat = GraphToggle(new Rect(innerX + 120f, y, 135f, 18f), cine.HideSceneChat, "Masquer dialogue");
+            y += 20f;
+
+            GraphLabel(new Rect(innerX, y, 48f, 18f), "Début:");
+            cine.StartTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 50f, y, 105f, 18f), (int)cine.StartTransition, new[] { "Téléport", "Fluide" });
+            GraphLabel(new Rect(innerX + 162f, y, 32f, 18f), "Fin:");
+            cine.EndTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 196f, y, 105f, 18f), (int)cine.EndTransition, new[] { "Téléport", "Fluide" });
+            y += 20f;
+
             for (int s = 0; s < cine.Shots.Count; s++)
             {
                 var shot = cine.Shots[s];
@@ -6702,6 +6815,13 @@ namespace Killtime.Story
                 GUI.color = Color.white;
             }
 
+            // Sortie "fin →" : à la fin de la lecture, enchaîner vers une carte
+            // (cinématique, réplique, conséquence, événement ou nœud). Vide = fin simple.
+            GraphLabel(new Rect(innerX, y, 62f, 18f), "Fin → :");
+            cine.NextTargetId = GraphTextField(new Rect(innerX + 64f, y, Mathf.Max(40f, innerW - 64f - 26f), 18f), cine.NextTargetId ?? "");
+            if (!string.IsNullOrEmpty(cine.NextTargetId) && GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "⊘")) cine.NextTargetId = "";
+            y += CineRowH;
+
             float halfBtn = (innerW - 6f) * 0.5f;
             float btnY = Mathf.Min(y, cardRect.yMax - 22f);
             GUI.backgroundColor = new Color(1f, 0.35f, 0.85f);
@@ -6718,6 +6838,10 @@ namespace Killtime.Story
                     CinematicEditorDevWindow.Instance.SelectCinematic(cine.CinematicId, Mathf.Max(0, cine.Shots.Count - 1));
             }
             GUI.backgroundColor = Color.white;
+
+            // Port de sortie "fin →" : flanc droit, rangée dédiée (magenta).
+            // La carte garde son port d'entrée à gauche : input + output coexistent.
+            DrawCineOutPort(GetCinematicOutCenter(cine), null, mouseWorld, cine);
         }
 
         private static Texture2D _pureWhiteTex;
@@ -6902,6 +7026,11 @@ namespace Killtime.Story
             director.StartScenario(_data.SceneId);
             sceneMgr.NotifyExternalScenarioStarted(_data.SceneId);
             StartCoroutine(controller.InitializeSceneRoutine(grid, turnManager, arena, director));
+
+            if (_pauseOnDeploy)
+            {
+                CombatHUD.EnsureInstance()?.SetPause(true);
+            }
         }
 
         private void MoveSceneInList(int fromIdx, int toIdx)

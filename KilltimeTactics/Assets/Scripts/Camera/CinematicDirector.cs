@@ -74,9 +74,13 @@ namespace Killtime.CameraSystem
         private readonly Queue<QueuedCinematic> _sceneCinematicQueue = new();
         private Action _sceneCinematicOnComplete;
         private bool _letterboxActive;
+        private float _letterboxProgress;
+        [SerializeField] private float _letterboxEnterDuration = 0.35f;
+        [SerializeField] private float _letterboxExitDuration = 0.45f;
         private float _skipNoiseSeed;
 
         public bool IsPlayingSceneCinematic => _activeSceneCinematicRoutine != null;
+        public SceneCinematicData CurrentPlayingSceneCinematic { get; private set; }
 
         public void ResetCinematicState()
         {
@@ -93,6 +97,7 @@ namespace Killtime.CameraSystem
             _sceneCinematicQueue.Clear();
             _sceneCinematicOnComplete = null;
             _letterboxActive = false;
+            _letterboxProgress = 0f;
             ClearAllCinematicLocks();
 
             Time.timeScale = DevTimeScale();
@@ -122,7 +127,18 @@ namespace Killtime.CameraSystem
             {
                 _mainCamera.fieldOfView = _normalFOV;
             }
+            ResolveTacticalCam();
             _skipNoiseSeed = UnityEngine.Random.Range(0f, 100f);
+        }
+
+        // Sécurité : si _tacticalCam n'est pas câblé dans l'inspecteur, le retrouver
+        // (sinon il resterait activé et écraserait la cinématique chaque frame —
+        // symptôme "ça veut jouer mais ça revient aussitôt").
+        private void ResolveTacticalCam()
+        {
+            if (_tacticalCam != null) return;
+            try { _tacticalCam = FindAnyObjectByType<TacticalCameraController>(); }
+            catch { /* ignore */ }
         }
 
         // ---------- API publique cinématiques de scène ----------
@@ -143,10 +159,14 @@ namespace Killtime.CameraSystem
             _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
         }
 
+        /// <summary>
+        /// Interrompt la lecture (abort) : la sortie "fin →" n'est PAS résolue
+        /// (un abort n'est pas une fin — seul le terme naturel ou le skip enchaîne).
+        /// </summary>
         public void StopSceneCinematic(bool restoreCamera = true)
         {
             // Idle : rien à restaurer (évite d'écraser FOV/timeScale pour rien).
-            if (!IsPlayingSceneCinematic && _sceneCinematicQueue.Count == 0) return;
+            if (!IsPlayingSceneCinematic && _sceneCinematicQueue.Count == 0 && _letterboxProgress <= 0.001f) return;
             _sceneCinematicQueue.Clear();
             if (_activeSceneCinematicRoutine != null)
             {
@@ -154,13 +174,13 @@ namespace Killtime.CameraSystem
                 _activeSceneCinematicRoutine = null;
             }
             _letterboxActive = false;
+            _letterboxProgress = 0f;
             ClearAllCinematicLocks();
             if (restoreCamera) RestoreTacticalCamera();
             else if (_tacticalCam != null) _tacticalCam.enabled = true;
             if (CurrentMode == CameraMode.CinematicAction) CurrentMode = CameraMode.TacticalIsometric;
-            var cb = _sceneCinematicOnComplete;
             _sceneCinematicOnComplete = null;
-            try { cb?.Invoke(); } catch { /* ignore */ }
+            CurrentPlayingSceneCinematic = null;
         }
 
         /// <summary>Lecture de l'état caméra pour le mode éditeur cinématique (capture START/END).</summary>
@@ -214,15 +234,20 @@ namespace Killtime.CameraSystem
 
         private void OnGUI()
         {
-            if (!_letterboxActive || !IsPlayingSceneCinematic) return;
+            if (_letterboxProgress <= 0.0001f) return;
             try
             {
-                float barH = Mathf.Max(24f, Screen.height * 0.11f);
-                Color prev = GUI.color;
-                GUI.color = Color.black;
-                GUI.DrawTexture(new Rect(0f, 0f, Screen.width, barH), Texture2D.whiteTexture);
-                GUI.DrawTexture(new Rect(0f, Screen.height - barH, Screen.width, barH), Texture2D.whiteTexture);
-                GUI.color = prev;
+                float maxBarH = Mathf.Max(24f, Screen.height * 0.11f);
+                float eased = ApplyCinematicEase(CinematicEase.Smooth, _letterboxProgress);
+                float barH = maxBarH * eased;
+                if (barH > 0.5f)
+                {
+                    Color prev = GUI.color;
+                    GUI.color = Color.black;
+                    GUI.DrawTexture(new Rect(0f, 0f, Screen.width, barH), Texture2D.whiteTexture);
+                    GUI.DrawTexture(new Rect(0f, Screen.height - barH, Screen.width, barH), Texture2D.whiteTexture);
+                    GUI.color = prev;
+                }
             }
             catch { /* ignore */ }
         }
@@ -257,6 +282,21 @@ namespace Killtime.CameraSystem
             public float StartYaw;
             public float EndYaw;
             public bool HasEnd;
+        }
+
+        // Vrai si piloter notre transform déplace réellement une caméra (rig direct,
+        // enfant, ou transform de la caméra principale). Sinon le travel est invisible.
+        private bool IsCameraOnDrivenTransform()
+        {
+            try
+            {
+                if (GetComponent<UnityEngine.Camera>() != null) return true;
+                if (GetComponentInChildren<UnityEngine.Camera>() != null) return true;
+                var main = _mainCamera != null ? _mainCamera : UnityEngine.Camera.main;
+                if (main != null && transform == main.transform) return true;
+            }
+            catch { /* ignore */ }
+            return false;
         }
 
         // Sécurité : libère les verrous de pilotage sur toutes les unités (ex : Stop
@@ -358,12 +398,39 @@ namespace Killtime.CameraSystem
 
         private IEnumerator SceneCinematicRoutine(SceneCinematicData cine)
         {
+            CurrentPlayingSceneCinematic = cine;
             float speed = cine.PlaybackSpeed > 0.01f ? cine.PlaybackSpeed : 1f;
+            ResolveTacticalCam();
+            // (Pas de mémorisation de "retour" : la fin de plan RESTE — voir bas de routine.)
+            // Validation décisive : sans caméra, le travel est invisible (symptôme
+            // "ça bouge [acteurs/barres] puis revient [rien]").
+            if (_mainCamera == null)
+            {
+                try { _mainCamera = UnityEngine.Camera.main; } catch { /* ignore */ }
+                if (_mainCamera == null)
+                {
+                    Debug.LogError("[CinematicDirector] Aucune caméra : cinématique annulée (CinematicDirector mal placé ?).");
+                    CombatHUD.Instance?.AddAdvancedLog("<color=red><b>[CINÉMATIQUE] Aucune caméra trouvée : lecture annulée.</b></color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.red);
+                    if (_tacticalCam != null) _tacticalCam.enabled = true;
+                    if (CurrentMode == CameraMode.CinematicAction) CurrentMode = CameraMode.TacticalIsometric;
+                    _letterboxActive = false;
+                    _activeSceneCinematicRoutine = null;
+                    _sceneCinematicOnComplete = null;
+                    yield break;
+                }
+            }
             bool driveCamera = !IsFreeLook && CurrentMode != CameraMode.FreeLook;
-            Vector3 returnPos = transform.position;
-            Quaternion returnRot = transform.rotation;
-            float returnFov = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
-
+            if (driveCamera && !IsCameraOnDrivenTransform())
+            {
+                Debug.LogError("[CinematicDirector] Le CinematicDirector ne porte aucune caméra (ni lui ni ses enfants, et ce n'est pas la transform de la caméra principale) : le travel sera INVISIBLE. Placez-le sur le rig caméra.");
+                CombatHUD.Instance?.AddAdvancedLog("<color=red><b>[CINÉMATIQUE] Director hors caméra : travel invisible (acteurs/barres seuls). Placez CinematicDirector sur le rig caméra.</b></color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.red);
+            }
+            if (!driveCamera)
+            {
+                // Pas un bug : en pilotage libre la caméra reste à la main (comme les
+                // killshots). Log visible pour ne pas passer pour un "skip".
+                CombatHUD.Instance?.AddAdvancedLog("<color=grey>[CINÉMATIQUE] Pilotage libre actif (F pour rendre la main) : caméra non prise en charge, les acteurs jouent.</color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray);
+            }
             if (driveCamera)
             {
                 CurrentMode = CameraMode.CinematicAction;
@@ -374,11 +441,69 @@ namespace Killtime.CameraSystem
 
             var grid = FindAnyObjectByType<TacticalHexGrid>();
             bool skipped = false;
+            Transform handoverTarget = null;
 
-            // Snapshot de la structure de plans : l'auteur peut éditer la cinématique
-            // (ajout/suppression de plans) pendant la lecture sans faire planter
-            // la routine par IndexOutOfRange (ce qui laisserait verrous + caméra bloqués).
             var shots = cine.Shots != null ? new List<SceneCinematicShotData>(cine.Shots) : new List<SceneCinematicShotData>();
+
+            Vector3 livePrePos = transform.position;
+            Quaternion livePreRot = transform.rotation;
+            float livePreFov = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
+            Vector3 preFocusPos = Vector3.zero;
+            bool hasPreFocus = false;
+            if (shots.Count > 0 && !string.IsNullOrWhiteSpace(shots[0]?.FocusActorId))
+            {
+                var fUnit = FindSceneUnit(shots[0].FocusActorId);
+                if (fUnit != null)
+                {
+                    preFocusPos = fUnit.transform.position;
+                    hasPreFocus = true;
+                }
+            }
+
+            if (driveCamera && cine.StartTransition == CinematicCameraTransition.Smooth && shots.Count > 0 && shots[0] != null)
+            {
+                var firstShot = shots[0];
+                Vector3 targetStartPos = firstShot.CamStartPos;
+                Vector3 targetStartEuler = firstShot.CamStartEuler;
+                float targetStartFov = firstShot.CamStartFov;
+
+                if (firstShot.TrackFocusActor && !string.IsNullOrWhiteSpace(firstShot.FocusActorId))
+                {
+                    var tracked = FindSceneUnit(firstShot.FocusActorId);
+                    if (tracked != null)
+                    {
+                        try
+                        {
+                            Vector3 anchor = new Vector3(tracked.transform.position.x, 0f, tracked.transform.position.z) + new Vector3(0f, 0.6f, 0f);
+                            float dist = Mathf.Clamp(firstShot.TrackDistance, 0.5f, 35f);
+                            Quaternion sRot = Quaternion.Euler(firstShot.CamStartEuler.x, firstShot.TrackYaw, firstShot.CamStartEuler.z);
+                            targetStartPos = anchor - (sRot * Vector3.forward) * dist;
+                            if (targetStartPos.y < 0.15f) targetStartPos.y = 0.15f;
+                            targetStartEuler = new Vector3(firstShot.CamStartEuler.x, firstShot.TrackYaw, firstShot.CamStartEuler.z);
+                        }
+                        catch { /* ignore */ }
+                    }
+                }
+
+                float startTransDur = Mathf.Max(0.05f, (cine.StartTransitionDuration > 0.01f ? cine.StartTransitionDuration : 0.5f) / speed);
+                float startTransElapsed = 0f;
+                while (startTransElapsed < startTransDur)
+                {
+                    while (CombatHUD.IsPaused) yield return null;
+                    startTransElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                    float st = Mathf.Clamp01(startTransElapsed / startTransDur);
+                    float se = ApplyCinematicEase(CinematicEase.Smooth, st);
+                    transform.position = Vector3.Lerp(livePrePos, targetStartPos, se);
+                    transform.rotation = Quaternion.Slerp(livePreRot, Quaternion.Euler(targetStartEuler), se);
+                    if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(livePreFov, targetStartFov, se);
+                    if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        skipped = true;
+                        break;
+                    }
+                    yield return null;
+                }
+            }
 
             for (int s = 0; s < shots.Count; s++)
             {
@@ -507,6 +632,7 @@ namespace Killtime.CameraSystem
                 if (!string.IsNullOrWhiteSpace(shot.FocusActorId))
                 {
                     var focus = FindSceneUnit(shot.FocusActorId);
+                    if (focus != null) handoverTarget = focus.transform;
                     try { focus?.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"🎬 {shot.Label}", Color.magenta); }
                     catch { /* ignore */ }
                 }
@@ -524,33 +650,102 @@ namespace Killtime.CameraSystem
                     }
                     catch { /* ignore */ }
                 }
-                _letterboxActive = shot.Letterbox;
 
-                Vector3 camPos = driveCamera ? shot.CamStartPos : Vector3.zero;
-                Vector3 camEuler = driveCamera ? shot.CamStartEuler : Vector3.zero;
+                bool isFinalShot = (s == shots.Count - 1) && (_sceneCinematicQueue.Count == 0);
+                bool shotLetterbox = (cine == null || cine.Letterbox) && shot.Letterbox;
+                _letterboxActive = shotLetterbox;
+
+                float retractStartTime = isFinalShot && shotLetterbox
+                    ? Mathf.Max(0f, duration - _letterboxExitDuration)
+                    : float.MaxValue;
+                bool exitRetractTriggered = false;
+
+                // Cadrage effectif du plan : absolu par défaut, ou dérivé de la scène live.
+                // - TrackFocusActor : framing calculé sur la position LIVE de FocusActorId
+                //   (miroir TacticalCameraController : pivot au sol + 0.6m, pitch/yaw/dist).
+                // - RelativeToCurrent : START = caméra live, END = START + (End − Start).
+                // Le tracking est prioritaire si les deux sont cochés. Les valeurs du
+                // shot ne sont JAMAIS mutées (copies locales : l'éditeur garde ses données).
+                Vector3 effStartPos = shot.CamStartPos;
+                Vector3 effStartEuler = shot.CamStartEuler;
+                float effStartFov = shot.CamStartFov;
+                Vector3 effEndPos = shot.CamEndPos;
+                Vector3 effEndEuler = shot.CamEndEuler;
+                float effEndFov = shot.CamEndFov;
+                if (shot.TrackFocusActor && !string.IsNullOrWhiteSpace(shot.FocusActorId))
+                {
+                    var tracked = FindSceneUnit(shot.FocusActorId);
+                    if (tracked != null)
+                    {
+                        try
+                        {
+                            Vector3 anchor = new Vector3(tracked.transform.position.x, 0f, tracked.transform.position.z) + new Vector3(0f, 0.6f, 0f);
+                            float dist = Mathf.Clamp(shot.TrackDistance, 0.5f, 35f);
+                            Quaternion sRot = Quaternion.Euler(shot.CamStartEuler.x, shot.TrackYaw, shot.CamStartEuler.z);
+                            Quaternion eRot = Quaternion.Euler(shot.CamEndEuler.x, shot.TrackYaw, shot.CamEndEuler.z);
+                            effStartPos = anchor - (sRot * Vector3.forward) * dist;
+                            effEndPos = anchor - (eRot * Vector3.forward) * dist;
+                            if (effStartPos.y < 0.15f) effStartPos.y = 0.15f;
+                            if (effEndPos.y < 0.15f) effEndPos.y = 0.15f;
+                            effStartEuler = new Vector3(shot.CamStartEuler.x, shot.TrackYaw, shot.CamStartEuler.z);
+                            effEndEuler = new Vector3(shot.CamEndEuler.x, shot.TrackYaw, shot.CamEndEuler.z);
+                        }
+                        catch { /* ignore : repli sur l'absolu */ }
+                    }
+                }
+                else if (shot.RelativeToCurrent)
+                {
+                    Vector3 livePos = transform.position;
+                    Vector3 liveEuler = transform.rotation.eulerAngles;
+                    float liveFov = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
+                    effStartPos = livePos;
+                    effStartEuler = liveEuler;
+                    effStartFov = liveFov;
+                    effEndPos = livePos + (shot.CamEndPos - shot.CamStartPos);
+                    effEndEuler = liveEuler + (shot.CamEndEuler - shot.CamStartEuler);
+                    effEndFov = liveFov + (shot.CamEndFov - shot.CamStartFov);
+                }
+
+                Vector3 camPos = driveCamera ? effStartPos : Vector3.zero;
+                Vector3 camEuler = driveCamera ? effStartEuler : Vector3.zero;
                 if (driveCamera)
                 {
-                    transform.position = shot.CamStartPos;
-                    transform.rotation = Quaternion.Euler(shot.CamStartEuler);
-                    if (_mainCamera != null) _mainCamera.fieldOfView = shot.CamStartFov;
+                    transform.position = effStartPos;
+                    transform.rotation = Quaternion.Euler(effStartEuler);
+                    if (_mainCamera != null) _mainCamera.fieldOfView = effStartFov;
                 }
 
                 float elapsed = 0f;
+                // Garde anti-conflit avec la pause (Escape/P) : reprendre avec Escape
+                // ne doit PAS skipper instantanément la cinématique.
+                bool wasPaused = CombatHUD.IsPaused;
                 while (elapsed < duration)
                 {
-                    while (CombatHUD.IsPaused) yield return null;
-                    elapsed += Time.unscaledDeltaTime;
+                    while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
+                    bool pausedNow = CombatHUD.IsPaused;
+                    // Temps borné : un hitch (surtout à l'entrée de scène / Deploy :
+                    // construction d'environnement, compilation shaders) fait bondir
+                    // unscaledDeltaTime de plusieurs secondes et AVALE la cinématique
+                    // (snap + retour instantané). Borné à 0.1s : la ciné dure sa vraie
+                    // durée même en cas de rame (quitte à durer plus en temps mural).
+                    elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
                     float t = Mathf.Clamp01(elapsed / duration);
                     float e = ApplyCinematicEase(shot.Ease, t);
 
+                    if (!exitRetractTriggered && elapsed >= retractStartTime)
+                    {
+                        exitRetractTriggered = true;
+                        _letterboxActive = false;
+                    }
+
                     if (driveCamera)
                     {
-                        camPos = Vector3.Lerp(shot.CamStartPos, shot.CamEndPos, e);
+                        camPos = Vector3.Lerp(effStartPos, effEndPos, e);
                         camEuler = new Vector3(
-                            Mathf.LerpAngle(shot.CamStartEuler.x, shot.CamEndEuler.x, e),
-                            Mathf.LerpAngle(shot.CamStartEuler.y, shot.CamEndEuler.y, e),
-                            Mathf.Lerp(shot.CamStartEuler.z, shot.CamEndEuler.z, e));
-                        float fov = Mathf.Lerp(shot.CamStartFov, shot.CamEndFov, e);
+                            Mathf.LerpAngle(effStartEuler.x, effEndEuler.x, e),
+                            Mathf.LerpAngle(effStartEuler.y, effEndEuler.y, e),
+                            Mathf.Lerp(effStartEuler.z, effEndEuler.z, e));
+                        float fov = Mathf.Lerp(effStartFov, effEndFov, e);
                         ApplyShotEffect(shot, t, e, ref camPos, ref camEuler, ref fov);
                         transform.position = camPos;
                         transform.rotation = Quaternion.Euler(camEuler);
@@ -587,7 +782,15 @@ namespace Killtime.CameraSystem
                         catch { /* ignore */ }
                     }
 
-                    if (cine.Skippable && (Input.GetKeyDown(KeyCode.Escape))) { skipped = true; break; }
+                    // Skip Escape : seulement hors pause et hors transition de pause
+                    // (sinon "reprendre" = "skipper", le symptôme "ça skip tout seul").
+                    if (cine.Skippable && !pausedNow && !wasPaused && Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        skipped = true;
+                        CombatHUD.Instance?.AddAdvancedLog("⏩ <b>Cinématique passée.</b>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray);
+                        break;
+                    }
+                    wasPaused = pausedNow;
                     yield return null;
                 }
 
@@ -656,34 +859,72 @@ namespace Killtime.CameraSystem
                 if (skipped) break;
             }
 
-            _letterboxActive = false;
-            ClearAllCinematicLocks();
-            // Si une autre cinématique suit, on enchaîne DIRECTEMENT sans retour
-            // intermédiaire à la vue tactique (évite un double pop caméra).
             bool chainMore = _sceneCinematicQueue.Count > 0;
-            if (driveCamera && !chainMore)
+
+            if (skipped)
             {
-                // Retour fluide à la vue tactique (la carte suivante a déjà pu s'enclencher).
-                float elapsed = 0f;
-                const float backDuration = 0.4f;
-                Vector3 fromPos = transform.position;
-                Quaternion fromRot = transform.rotation;
-                float fromFov = _mainCamera != null ? _mainCamera.fieldOfView : returnFov;
-                while (elapsed < backDuration)
+                _letterboxActive = false;
+                _letterboxProgress = 0f;
+            }
+            else if (!chainMore)
+            {
+                _letterboxActive = false;
+                while (_letterboxProgress > 0.001f)
                 {
-                    while (CombatHUD.IsPaused) yield return null;
-                    elapsed += Time.unscaledDeltaTime;
-                    float t = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(elapsed / backDuration));
-                    transform.position = Vector3.Lerp(fromPos, returnPos, t);
-                    transform.rotation = Quaternion.Slerp(fromRot, returnRot, t);
-                    if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(fromFov, returnFov, t);
                     yield return null;
                 }
-                RestoreTacticalCamera();
+                _letterboxProgress = 0f;
+            }
+
+            ClearAllCinematicLocks();
+            // Si une autre cinématique suit, on enchaîne DIRECTEMENT (évite un double pop).
+            if (driveCamera && !chainMore)
+            {
+                if (cine.EndTransition == CinematicCameraTransition.Smooth && !skipped)
+                {
+                    Vector3 endFromPos = transform.position;
+                    Quaternion endFromRot = transform.rotation;
+                    float endFromFov = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
+
+                    Vector3 targetTacticalPos = livePrePos;
+                    if (hasPreFocus && handoverTarget != null)
+                    {
+                        targetTacticalPos += (handoverTarget.position - preFocusPos);
+                    }
+
+                    float endTransDur = Mathf.Max(0.05f, (cine.EndTransitionDuration > 0.01f ? cine.EndTransitionDuration : 0.5f) / speed);
+                    float endTransElapsed = 0f;
+                    while (endTransElapsed < endTransDur)
+                    {
+                        while (CombatHUD.IsPaused) yield return null;
+                        endTransElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                        float et = Mathf.Clamp01(endTransElapsed / endTransDur);
+                        float ee = ApplyCinematicEase(CinematicEase.Smooth, et);
+                        transform.position = Vector3.Lerp(endFromPos, targetTacticalPos, ee);
+                        transform.rotation = Quaternion.Slerp(endFromRot, livePreRot, ee);
+                        if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(endFromFov, _normalFOV, ee);
+                        if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape)) break;
+                        yield return null;
+                    }
+                }
+                else
+                {
+                    if (_tacticalCam != null)
+                    {
+                        try { _tacticalCam.AdoptWorldPose(transform.position, transform.rotation.eulerAngles, handoverTarget); }
+                        catch { /* ignore */ }
+                    }
+                }
+
+                if (_tacticalCam != null) _tacticalCam.enabled = true;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.ExitCinematicMode();
+                Time.timeScale = DevTimeScale();
                 CurrentMode = CameraMode.TacticalIsometric;
             }
 
             _activeSceneCinematicRoutine = null;
+            CurrentPlayingSceneCinematic = null;
             var cb = _sceneCinematicOnComplete;
             _sceneCinematicOnComplete = null;
             try { cb?.Invoke(); } catch { /* ignore */ }
@@ -748,6 +989,8 @@ namespace Killtime.CameraSystem
 
         private void Update()
         {
+            UpdateLetterbox();
+
             // Basculer en mode Free Look avec la touche 'F' ou clic droit maintenu
             if (Input.GetKeyDown(KeyCode.F))
             {
@@ -757,6 +1000,18 @@ namespace Killtime.CameraSystem
             if (CurrentMode == CameraMode.FreeLook)
             {
                 HandleFreeLook();
+            }
+        }
+
+        private void UpdateLetterbox()
+        {
+            float target = _letterboxActive ? 1f : 0f;
+            float duration = _letterboxActive ? Mathf.Max(0.01f, _letterboxEnterDuration) : Mathf.Max(0.01f, _letterboxExitDuration);
+            float speed = 1f / duration;
+
+            if (!Mathf.Approximately(_letterboxProgress, target))
+            {
+                _letterboxProgress = Mathf.MoveTowards(_letterboxProgress, target, Time.unscaledDeltaTime * speed);
             }
         }
 

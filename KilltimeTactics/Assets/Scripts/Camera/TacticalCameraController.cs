@@ -275,6 +275,53 @@ namespace Killtime.CameraSystem
             }
         }
 
+        /// <summary>
+        /// Adopte une pose monde exacte (fin de cinématique) pour une reprise sans
+        /// couture : PAS de retour en arrière, la caméra RESTE où le plan l'a laissée.
+        /// Le pivot d'orbite est recalculé sous le point visé (intersection du rayon
+        /// de vue avec le plan du pivot) pour que pan/zoom repartent sainement.
+        /// followTarget != null : suivi verrouillé (ex : acteur tracké) ; sinon pan libre
+        /// (sinon l'ancien verrou ramenait la caméra en arrière = "refocus" fantôme).
+        /// </summary>
+        public void AdoptWorldPose(Vector3 camPos, Vector3 euler, Transform followTarget = null)
+        {
+            float pitch = Mathf.Clamp(euler.x, 30f, 60f);
+            float yaw = euler.y;
+            Quaternion rot = Quaternion.Euler(pitch, yaw, 0f);
+            Vector3 dir = rot * Vector3.forward;
+
+            float d = _targetDistance;
+            if (dir.y < -0.05f)
+            {
+                float hit = (camPos.y - _pivotOffset.y) / (-dir.y);
+                if (hit > 0.5f) d = hit;
+            }
+            d = Mathf.Clamp(d, _minDistance, _maxDistance);
+
+            Vector3 focus = camPos + dir * d;
+            _panPosition = new Vector3(focus.x, 0f, focus.z);
+            _currentYaw = yaw;
+            _pitchAngle = pitch;
+            _targetDistance = d;
+            _currentDistance = d;
+
+            _panVelocity = Vector3.zero;
+            _distanceVelocity = 0f;
+
+            if (followTarget != null)
+            {
+                FocusOn(followTarget);
+            }
+            else
+            {
+                _target = null;
+                IsLockedToTarget = false;
+            }
+
+            transform.position = camPos;
+            transform.rotation = rot;
+        }
+
         public void SetPitchAndDistance(float pitch, float distance)
         {
             _pitchAngle = Mathf.Clamp(pitch, 30f, 60f);

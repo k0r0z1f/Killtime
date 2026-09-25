@@ -139,6 +139,105 @@ namespace Killtime.Tests
         }
 
         [Test]
+        public void LegacyCameraFields_StillDeserializeForCompat()
+        {
+            // Vieux JSON avec focus/shake hardcodés : les champs survivent au parse
+            // (compat), même si le runtime les ignore au profit des cartes 🎬.
+            string legacy = "{\"SceneId\":\"legacy_cam\",\"Nodes\":[{\"NodeId\":\"n1\",\"Dialogues\":[{" +
+                "\"LineId\":\"l1\",\"CameraFocusActorId\":\"actor_x\",\"CameraPitch\":25.0,\"CameraDistance\":4.0," +
+                "\"Ambience\":{\"HasAmbience\":true,\"CameraShakeIntensity\":0.5}}]," +
+                "\"Events\":[{\"EventId\":\"e1\",\"Kind\":4,\"TargetActorId\":\"actor_x\"}]}]}";
+            var loaded = JsonUtility.FromJson<StorySceneData>(legacy);
+            StorySceneData.EnsureDeepDefaults(loaded);
+            Assert.AreEqual("actor_x", loaded.Nodes[0].Dialogues[0].CameraFocusActorId);
+            Assert.AreEqual(0.5f, loaded.Nodes[0].Dialogues[0].Ambience.CameraShakeIntensity, 0.001f);
+            Assert.AreEqual(SceneEventKind.CameraShake, loaded.Nodes[0].Events[0].Kind);
+            // Les sorties 🎬 existent et sont vides (prêtes pour la migration).
+            Assert.IsNotNull(loaded.Nodes[0].Dialogues[0].CinematicIds);
+            Assert.IsNotNull(loaded.Nodes[0].Events[0].CinematicIds);
+        }
+
+        [Test]
+        public void CinematicShot_NewModesDefaultOff()
+        {
+            var shot = new SceneCinematicShotData();
+            Assert.IsFalse(shot.RelativeToCurrent);
+            Assert.IsFalse(shot.TrackFocusActor);
+            Assert.AreEqual(7f, shot.TrackDistance, 0.001f);
+            Assert.AreEqual(45f, shot.TrackYaw, 0.001f);
+        }
+
+        [Test]
+        public void CinematicJson_RoundtripsTrackingAndRelative()
+        {
+            var data = new StorySceneData { SceneId = "cine_modes" };
+            var cine = new SceneCinematicData { CinematicId = "cine_track" };
+            cine.Shots.Add(new SceneCinematicShotData
+            {
+                ShotId = "shot_1",
+                TrackFocusActor = true,
+                TrackDistance = 4f,
+                TrackYaw = 45f,
+                FocusActorId = "actor_lucas"
+            });
+            var cine2 = new SceneCinematicData { CinematicId = "cine_rel" };
+            cine2.Shots.Add(new SceneCinematicShotData
+            {
+                ShotId = "shot_1",
+                RelativeToCurrent = true,
+                MoveEffect = CinematicCameraEffect.HandheldShake,
+                ShakeIntensity = 0.4f
+            });
+            data.Cinematics.Add(cine);
+            data.Cinematics.Add(cine2);
+
+            var loaded = JsonUtility.FromJson<StorySceneData>(JsonUtility.ToJson(data, true));
+            StorySceneData.EnsureDeepDefaults(loaded);
+
+            var back = loaded.FindCinematic("cine_track");
+            Assert.IsTrue(back.Shots[0].TrackFocusActor);
+            Assert.AreEqual(4f, back.Shots[0].TrackDistance, 0.001f);
+            var back2 = loaded.FindCinematic("cine_rel");
+            Assert.IsTrue(back2.Shots[0].RelativeToCurrent);
+            Assert.AreEqual(CinematicCameraEffect.HandheldShake, back2.Shots[0].MoveEffect);
+        }
+
+        [Test]
+        public void CinematicOutput_NextTargetDefaultsEmptyAndRoundtrips()
+        {
+            var cine = new SceneCinematicData { CinematicId = "cine_out" };
+            Assert.AreEqual("", cine.NextTargetId);
+
+            var data = new StorySceneData { SceneId = "cine_chain" };
+            cine.NextTargetId = "line_next";
+            data.Cinematics.Add(cine);
+
+            var loaded = JsonUtility.FromJson<StorySceneData>(JsonUtility.ToJson(data, true));
+            StorySceneData.EnsureDeepDefaults(loaded);
+            Assert.AreEqual("line_next", loaded.FindCinematic("cine_out").NextTargetId);
+        }
+
+        [Test]
+        public void ExecuteCinematicChain_UnknownTargetIsTolerated()
+        {
+            // Cible inexistante : aucun saut, aucune exception (contrat non-bloquant).
+            var go = new GameObject("TestCineChain");
+            var controller = go.AddComponent<JsonStorySceneController>();
+            try
+            {
+                var data = new StorySceneData { SceneId = "cine_chain_tol" };
+                data.Nodes.Add(new SceneNodeData { NodeId = "node_1" });
+                controller.SetSceneData(data);
+                // Pas de directeur actif : la chaîne ne doit rien faire mais ne pas lever.
+                Assert.DoesNotThrow(() => controller.FireLinkedCinematics(new List<string> { "cine_missing" }));
+            }
+            finally
+            {
+                Object.DestroyImmediate(go);
+            }
+        }
+
+        [Test]
         public void CinematicEase_ClampsAndHitsBounds()
         {
             Assert.AreEqual(0f, CinematicDirector.ApplyCinematicEase(CinematicEase.Linear, 0f), 0.0001f);
@@ -207,6 +306,21 @@ namespace Killtime.Tests
             {
                 Object.DestroyImmediate(go);
             }
+        }
+
+        [Test]
+        public void CinematicData_HasLetterboxAndHideSceneChatFlags()
+        {
+            var cine = new SceneCinematicData { CinematicId = "cine_flags" };
+            // Par défaut, cinématiques immersives = bandes noires et masquer chat
+            Assert.IsTrue(cine.Letterbox);
+            Assert.IsTrue(cine.HideSceneChat);
+
+            // Désactivation pour les cinématiques de focus/dialogue en direct
+            cine.Letterbox = false;
+            cine.HideSceneChat = false;
+            Assert.IsFalse(cine.Letterbox);
+            Assert.IsFalse(cine.HideSceneChat);
         }
     }
 }

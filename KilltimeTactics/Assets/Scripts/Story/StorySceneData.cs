@@ -255,6 +255,8 @@ namespace Killtime.Story.Data
         public bool ChangeMusic = false;
         public Killtime.Audio.MusicMood MusicMood = Killtime.Audio.MusicMood.Explore;
         public Killtime.Audio.MusicIntensity MusicIntensity = Killtime.Audio.MusicIntensity.Calm;
+        // HÉRITÉ (dé-hardcodé) : les secousses d'ambiance passent par des cartes 🎬
+        // (plan relatif + effet HandheldShake). Conservé pour compat JSON, ignoré au runtime.
         public float CameraShakeIntensity = 0f;
         public bool TriggerAlarm = false;
     }
@@ -360,6 +362,8 @@ namespace Killtime.Story.Data
         public string SpeakerId = "";
         public string StageDirection = "sourire en coin";
         public string Speech = "Nous partons dès que le signal est validé.";
+        // HÉRITÉ (dé-hardcodé) : les focus caméra des répliques passent par des cartes 🎬
+        // (plan avec TrackFocusActor). Conservés pour compat JSON, ignorés au runtime.
         public string CameraFocusActorId = "";
         public float CameraPitch = 42f;
         public float CameraDistance = 9.5f;
@@ -383,6 +387,8 @@ namespace Killtime.Story.Data
         Normal,
         TriggerCombat,
         SpawnEnemies,
+        // HÉRITÉS (dé-hardcodés) : remplacés par des cartes 🎬 (tracking / effet relatif).
+        // Conservés pour compat JSON, ignorés au runtime, masqués du cycleur éditeur.
         CameraFocus,
         CameraShake,
         ObjectiveUpdate,
@@ -397,6 +403,7 @@ namespace Killtime.Story.Data
         public string Title = "Nouvel Événement";
         public string Description = "";
         public SceneEventKind Kind = SceneEventKind.Normal;
+        // HÉRITÉS (dé-hardcodés, ne servaient qu'au kind CameraFocus) : compat JSON uniquement.
         public string TargetActorId = "";
         public float CameraPitch = 42f;
         public float CameraDistance = 9.5f;
@@ -534,6 +541,15 @@ namespace Killtime.Story.Data
         public CinematicCameraEffect MoveEffect = CinematicCameraEffect.None;
         public float ShakeIntensity = 0.15f;
         public string FocusActorId = "";
+        // Voyage RELATIF : START = caméra live au début du plan, END = START + (End − Start)
+        // utilisé comme DÉCALAGE. Pour les effets (secousse...) sans imposer de position absolue.
+        public bool RelativeToCurrent = false;
+        // TRACKING : cadrage calculé sur la POSITION LIVE de FocusActorId au début du plan
+        // (pitch = CamStartEuler.x, yaw = TrackYaw, distance = TrackDistance, hauteur pivot +0.6m).
+        // Reproduit les anciens focus dialogue hardcodés, via carte 🎬 au lieu du code.
+        public bool TrackFocusActor = false;
+        public float TrackDistance = 7f;
+        public float TrackYaw = 45f;
         // Sous-titre optionnel affiché pendant le plan.
         public string SpeakerId = "";
         public string Speech = "";
@@ -557,18 +573,31 @@ namespace Killtime.Story.Data
         }
     }
 
+    public enum CinematicCameraTransition
+    {
+        Teleport = 0,
+        Smooth = 1
+    }
+
     [Serializable]
     public class SceneCinematicData
     {
-        public string CinematicId = "cine_1";
+        public string CinematicId = "";
         public string Title = "Nouvelle cinématique";
         public bool Skippable = true;
         public float PlaybackSpeed = 1f;
-        public float GraphPosX = 0f;
-        public float GraphPosY = 0f;
-        public float CardWidth = 360f;
-        public float CardHeight = 0f;
+        public bool Letterbox = true;
+        public bool HideSceneChat = false;
+        public CinematicCameraTransition StartTransition = CinematicCameraTransition.Teleport;
+        public float StartTransitionDuration = 0.5f;
+        public CinematicCameraTransition EndTransition = CinematicCameraTransition.Teleport;
+        public float EndTransitionDuration = 0.5f;
+        public string NextTargetId = "";
         public List<SceneCinematicShotData> Shots = new();
+        public float GraphPosX = 60f;
+        public float GraphPosY = 1950f;
+        public float CardWidth = 360f;
+        public float CardHeight = 190f;
 
         public string GetSummary()
         {
@@ -746,6 +775,8 @@ namespace Killtime.Story.Data
                     if (shot == null) continue;
                     if (string.IsNullOrWhiteSpace(shot.ShotId)) shot.ShotId = $"shot_{s + 1}";
                     if (shot.Duration < 0.1f) shot.Duration = 0.1f;
+                    if (shot.TrackDistance < 0.5f) shot.TrackDistance = 0.5f;
+                    else if (shot.TrackDistance > 35f) shot.TrackDistance = 35f;
                     shot.StartPoses ??= new List<SceneCinematicActorPose>();
                     shot.EndPoses ??= new List<SceneCinematicActorPose>();
                     shot.StartProps ??= new List<SceneCinematicPropPose>();

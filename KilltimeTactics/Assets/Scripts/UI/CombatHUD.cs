@@ -396,11 +396,21 @@ namespace Killtime.UI
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
         private static void AutoInitialize()
         {
-            if (Instance == null && FindAnyObjectByType<CombatHUD>() == null)
+            EnsureInstance();
+        }
+
+        public static CombatHUD EnsureInstance()
+        {
+            if (Instance != null) return Instance;
+            var existing = FindAnyObjectByType<CombatHUD>();
+            if (existing != null)
             {
-                var go = new GameObject("[UI] MinimalistTacticalHUD");
-                go.AddComponent<CombatHUD>();
+                Instance = existing;
+                return Instance;
             }
+            var go = new GameObject("[UI] MinimalistTacticalHUD");
+            Instance = go.AddComponent<CombatHUD>();
+            return Instance;
         }
 
         private Func<Rect> _playerCardZone;

@@ -30,6 +30,13 @@ namespace Killtime.Story.Scenes
         private readonly List<TacticalInteractable> _interactables = new();
         private readonly HashSet<string> _firedTriggerIds = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> _activatedInteractableIds = new(StringComparer.OrdinalIgnoreCase);
+        // Cartes à payload (événements, conséquences) déjà exécutées depuis l'entrée du
+        // nœud courant. Évite les doubles payloads quand une chaîne "fin →" revient sur
+        // une carte déjà résolue (ex : event rejoué à la fin de sa propre cinématique amont).
+        // Vidé à chaque entrée de nœud (revenir = rejouer, comportement normal).
+        private readonly HashSet<string> _resolvedCardIdsThisNode = new(StringComparer.OrdinalIgnoreCase);
+        // Throttle session de l'erreur "CinematicDirector absent" (log jeu 1x, console à chaque fois).
+        private static bool _warnedMissingCinematicDirector = false;
         // Nœud courant au moment de chaque activation : un trigger InteractableActivated
         // scoped sur un nœud source ne tire que si l'activation a eu lieu PENDANT ce
         // nœud (sinon une utilisation précoce au nœud précédent skippe instantanément
@@ -40,8 +47,11 @@ namespace Killtime.Story.Scenes
         // valide gratuitement dès la première frame et skippe le nœud.
         private readonly Dictionary<TacticalUnit, HexCoordinates> _nodeEnterCoords = new();
 
+        private bool _isSceneInitialized = false;
         private int _currentDialogueIndex = 0;
         private string _lastNodeId = "";
+        private float _chatAnimProgress = 0f;
+        private ScenarioNode _lastActiveNode = null;
         private SceneDialogueChoiceData _activeReactionChoice = null;
         private SceneDialogueLineData _activeReactionPromptLine = null;
         private string _activeChallengeSummary = "";
@@ -80,14 +90,24 @@ namespace Killtime.Story.Scenes
         /// Déclenche les cinématiques liées à une carte en FIRE-AND-FORGET :
         /// retour immédiat, la carte suivante s'enclenche sans attendre la fin
         /// de la cinématique. Les ids inconnus sont ignorés avec un avertissement.
+        /// À la FIN de chaque cinématique, sa sortie "fin →" (NextTargetId) est
+        /// résolue via ExecuteCinematicChain (chaînage explicite : cine, nœud,
+        /// réplique, conséquence ou événement). chainVisited casse les boucles A→B→A.
         /// </summary>
-        public void FireLinkedCinematics(List<string> cinematicIds)
+        public void FireLinkedCinematics(List<string> cinematicIds, HashSet<string> chainVisited = null)
         {
             if (cinematicIds == null || cinematicIds.Count == 0 || _sceneData == null) return;
             var director = FindAnyObjectByType<CinematicDirector>();
             if (director == null)
             {
-                Debug.LogWarning("[JsonStorySceneController] CinematicDirector introuvable : cinématiques ignorées.");
+                Debug.LogWarning("[JsonStorySceneController] CinematicDirector introuvable : cinématiques ignorées (ajoutez CinematicDirector sur la caméra).");
+                // Erreur VISIBLE en jeu (1x par session) : sinon la cinématique "ne joue
+                // pas" sans aucune explication (symptôme trompeur).
+                if (!_warnedMissingCinematicDirector)
+                {
+                    _warnedMissingCinematicDirector = true;
+                    CombatHUD.Instance?.AddAdvancedLog("<color=red><b>[CINÉMATIQUE] Aucun CinematicDirector dans la scène : cinématique ignorée (ajoutez CinematicDirector sur la caméra).</b></color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.red);
+                }
                 return;
             }
             for (int i = 0; i < cinematicIds.Count; i++)
@@ -100,9 +120,88 @@ namespace Killtime.Story.Scenes
                     Debug.LogWarning($"[JsonStorySceneController] Cinématique introuvable : '{id}'.");
                     continue;
                 }
-                director.PlaySceneCinematic(cine);
+                var captured = cine;
+                var visited = chainVisited;
+                director.PlaySceneCinematic(captured, () => ExecuteCinematicChain(captured, visited));
+                _warnedMissingCinematicDirector = false;
                 CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>Cinématique :</b> {cine.Title} [{cine.CinematicId}]", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
             }
+        }
+
+        /// <summary>
+        /// Chaînage "fin →" d'une carte cinématique : résout NextTargetId à la fin
+        /// de la lecture (skip inclus ; jamais en cas d'abort — Stop n'invoque pas).
+        /// Ordre : autre cinématique (enchaînée, anti-boucle) → nœud (saut, sauf
+        /// vers le nœud courant) → réplique/conséquence du nœud courant → événement
+        /// (exécution ponctuelle, tous nœuds). Id inconnu : avertissement, rien d'autre.
+        /// </summary>
+        private void ExecuteCinematicChain(SceneCinematicData cine, HashSet<string> visited)
+        {
+            if (cine == null || _sceneData == null) return;
+            string targetId = (cine.NextTargetId ?? "").Trim();
+            if (string.IsNullOrEmpty(targetId)) return;
+
+            // 1. Autre cinématique : enchaîner (anti-boucle A→B→A).
+            var nextCine = _sceneData.FindCinematic(targetId);
+            if (nextCine != null)
+            {
+                visited ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+                if (!visited.Add(targetId))
+                {
+                    Debug.LogWarning($"[JsonStorySceneController] Boucle de cinématiques détectée vers '{targetId}' : chaîne interrompue.");
+                    CombatHUD.Instance?.AddAdvancedLog($"<color=grey>[CINÉMATIQUE] Boucle détectée vers '{targetId}' : chaîne interrompue.</color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray);
+                    return;
+                }
+                CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>Chaîne :</b> {cine.CinematicId} ─fin→ {targetId}", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
+                FireLinkedCinematics(new List<string> { targetId }, visited);
+                return;
+            }
+
+            // 2. Nœud : saut (si cible = nœud courant, mise en scène de la réplique d'entrée).
+            if (_sceneData.FindNode(targetId) != null)
+            {
+                string currentId = _director != null && _director.CurrentNode != null ? _director.CurrentNode.Id : "";
+                if (string.Equals(currentId, targetId, StringComparison.OrdinalIgnoreCase))
+                {
+                    StageCurrentLine();
+                    return;
+                }
+                CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>Chaîne :</b> {cine.CinematicId} ─fin→ nœud {targetId}", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
+                _director?.GoToNode(targetId);
+                return;
+            }
+
+            // 3. Réplique / conséquence du nœud courant (routage explicite existant).
+            // firePredecessors=false : la cinématique amont vient de se terminer, inutile
+            // (et bouclant) de la rejouer — idem pour l'événement ci-dessous.
+            // Une conséquence déjà résolue ce nœud stoppe la chaîne (anti double-payload).
+            var dataNodeNow = _director != null ? _sceneData.FindNode(_director.CurrentNode?.Id) : null;
+            if (dataNodeNow != null && dataNodeNow.FindConsequence(targetId) != null
+                && _resolvedCardIdsThisNode.Contains(targetId))
+            {
+                return;
+            }
+            if (TryAdvanceToId(targetId, null, false)) return;
+
+            // 4. Événement (tous nœuds) : exécution ponctuelle, sauf déjà résolu ce
+            // nœud (l'entrée l'a déjà joué + sa cinématique amont vient de finir).
+            if (_sceneData.Nodes != null)
+            {
+                for (int n = 0; n < _sceneData.Nodes.Count; n++)
+                {
+                    var node = _sceneData.Nodes[n];
+                    if (node == null) continue;
+                    var evt = node.FindEvent(targetId);
+                    if (evt != null)
+                    {
+                        if (_resolvedCardIdsThisNode.Contains(targetId)) return;
+                        ExecuteScenicEvent(evt, false);
+                        return;
+                    }
+                }
+            }
+
+            Debug.LogWarning($"[JsonStorySceneController] Cible 'fin →' introuvable : '{targetId}' (cinématique '{cine.CinematicId}').");
         }
 
         public bool TryGetSpawnedInteractable(string interactableId, out TacticalInteractable prop)
@@ -178,7 +277,7 @@ namespace Killtime.Story.Scenes
             }
             // Filet live : avant la première OnGUI (rects encore vides), recalcule
             // le rect théorique pour ne laisser passer aucun clic.
-            if ((_dialogueRect.width <= 0f || _dialogueRect.height <= 0f) && _director != null && _director.CurrentNode != null)
+            if ((_dialogueRect.width <= 0f || _dialogueRect.height <= 0f) && _director != null && _director.CurrentNode != null && _chatAnimProgress > 0.05f)
             {
                 Rect live = ComputeDialogueRect();
                 if (live.width > 0f && live.height > 0f && live.Contains(mouseGui))
@@ -210,6 +309,7 @@ namespace Killtime.Story.Scenes
 
         public IEnumerator InitializeSceneRoutine(TacticalHexGrid grid, TurnManager turnManager, CombatDevArena arena, ScenarioDirector director)
         {
+            _isSceneInitialized = false;
             _grid = grid;
             _turnManager = turnManager;
             _arena = arena;
@@ -226,6 +326,8 @@ namespace Killtime.Story.Scenes
             _activationNodeIds.Clear();
             _nodeEnterCoords.Clear();
             _pendingMiddleChat.Clear();
+            _chatAnimProgress = 0f;
+            _lastActiveNode = null;
             _activeReactionChoice = null;
             _activeReactionPromptLine = null;
             _activeChallengeSummary = "";
@@ -273,6 +375,7 @@ namespace Killtime.Story.Scenes
 
             CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>{_sceneData.Title}</b> [{_sceneData.Volume}] initialisée.", LogCategory.MovementAndTurns, "[SCÈNE]", Color.cyan);
 
+            _isSceneInitialized = true;
             UpdateNodeState();
         }
 
@@ -512,12 +615,53 @@ namespace Killtime.Story.Scenes
 
         private void Update()
         {
+            if (!_isSceneInitialized) return;
+            UpdateChatAnimation();
             if (CombatHUD.IsPaused || (StorySceneManager.Instance != null && StorySceneManager.Instance.IsTransitioning)) return;
+
+            var director = FindAnyObjectByType<CinematicDirector>();
+            if (director != null && director.IsPlayingSceneCinematic)
+            {
+                if (director.CurrentPlayingSceneCinematic == null || director.CurrentPlayingSceneCinematic.HideSceneChat)
+                {
+                    return;
+                }
+                // Si la cinématique active ne masque pas le chat, on autorise l'avancement du dialogue
+                HandleDialoguesInput();
+                return;
+            }
 
             HandlePartyInput();
             HandleDialoguesInput();
             CheckProximityObjectives();
             UpdateNodeState();
+        }
+
+        private bool ShouldShowSceneChat()
+        {
+            if (!_isSceneInitialized) return false;
+            if (CombatHUD.IsPaused) return false;
+            if (StorySceneManager.Instance != null && StorySceneManager.Instance.IsTransitioning) return false;
+
+            var director = FindAnyObjectByType<CinematicDirector>();
+            if (director != null && director.IsPlayingSceneCinematic)
+            {
+                if (director.CurrentPlayingSceneCinematic == null || director.CurrentPlayingSceneCinematic.HideSceneChat)
+                {
+                    return false;
+                }
+            }
+
+            return _director != null && _director.CurrentNode != null;
+        }
+
+        private void UpdateChatAnimation()
+        {
+            float target = ShouldShowSceneChat() ? 1f : 0f;
+            if (!Mathf.Approximately(_chatAnimProgress, target))
+            {
+                _chatAnimProgress = Mathf.MoveTowards(_chatAnimProgress, target, Time.unscaledDeltaTime * 2.85f);
+            }
         }
 
         private void HandlePartyInput()
@@ -708,10 +852,7 @@ namespace Killtime.Story.Scenes
             var prompt = new SceneDialogueLineData
             {
                 SpeakerId = msg.Speaker,
-                StageDirection = msg.StageDirection,
-                CameraFocusActorId = "",
-                CameraPitch = 42f,
-                CameraDistance = 9.5f
+                StageDirection = msg.StageDirection
             };
             SetupReactionDisplay(prompt, msg.Speech, msg.ActionLabel, InteractableInfoReturnSentinel, $"🔧 {msg.DisplayName}", msg.Rewards);
         }
@@ -817,6 +958,19 @@ namespace Killtime.Story.Scenes
                 // Entrée du nœud = carte sans lien entrant (routage explicite),
                 // repli sur l'index 0 si cycle ou setempat ambigu.
                 _currentDialogueIndex = FindEntryDialogueIndex(dataNode);
+                // Cinématiques placées EN AMONT (sortie "fin →" vers ce nœud ou vers
+                // sa réplique d'entrée) : si déclenchées, la réplique attend la fin de
+                // la cinématique qui enchaînera via ExecuteCinematicChain.
+                bool hasPredecessor = FirePredecessorCinematics(node.Id);
+                if (dataNode != null && _currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count)
+                {
+                    var entryLine = dataNode.Dialogues[_currentDialogueIndex];
+                    if (entryLine != null && FirePredecessorCinematics(entryLine.LineId))
+                        hasPredecessor = true;
+                }
+                // Nouvelle entrée : les cartes à payload rejouent (le garde anti
+                // double-payload ne vaut que pour l'entrée en cours).
+                _resolvedCardIdsThisNode.Clear();
                 // Snapshot des positions : anti validation par proximité gratuite
                 // (spawn sur l'objectif qui skippe le nœud dès son entrée).
                 _nodeEnterCoords.Clear();
@@ -851,7 +1005,10 @@ namespace Killtime.Story.Scenes
                     }
                 }
 
-                ApplyCameraFocusForCurrentLine();
+                if (!hasPredecessor)
+                {
+                    StageCurrentLine();
+                }
             }
 
             // Déclencheurs d'entrée : évalués en continu pendant l'exploration
@@ -865,7 +1022,10 @@ namespace Killtime.Story.Scenes
             }
         }
 
-        private void ApplyCameraFocusForCurrentLine()
+        // Mise en scène de la réplique courante : prérequis, cinématiques liées (cartes 🎬),
+        // ambiance sonore/musicale, tests auto. DÉ-HARDCODÉ : plus aucun focus caméra direct
+        // (l'ancien CameraFocusActorId/Pitch/Distance est ignoré — migré en cartes 🎬 à tracking).
+        private void StageCurrentLine()
         {
             var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
             if (dataNode == null || dataNode.Dialogues.Count == 0 || _currentDialogueIndex >= dataNode.Dialogues.Count) return;
@@ -894,18 +1054,6 @@ namespace Killtime.Story.Scenes
             {
                 ExecuteAutoSkillCheck(line);
             }
-
-            var cam = FindAnyObjectByType<TacticalCameraController>();
-            if (!string.IsNullOrEmpty(line.CameraFocusActorId) && _spawnedActors.TryGetValue(line.CameraFocusActorId, out var focusUnit))
-            {
-                if (cam != null && focusUnit != null)
-                {
-                    cam.FocusOn(focusUnit.transform);
-                    cam.SetPitchAndDistance(line.CameraPitch, line.CameraDistance);
-                }
-
-                focusUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"💬 {line.SpeakerId}", Color.cyan);
-            }
         }
 
         private void ApplyAmbienceSettings(SceneAmbienceData ambience, string fallbackSoundCueId)
@@ -926,10 +1074,8 @@ namespace Killtime.Story.Scenes
                     KilltimeAudioManager.Instance.PlayMusic(ambience.MusicMood, ambience.MusicIntensity, false);
                 }
 
-                if (ambience.CameraShakeIntensity > 0f)
-                {
-                    GrenadeCameraShake.Shake(ambience.CameraShakeIntensity);
-                }
+                // DÉ-HARDCODÉ : l'ancien CameraShakeIntensity est ignoré (migré en cartes 🎬
+                // à plan relatif + effet HandheldShake). Son / musique / alarme conservés.
 
                 if (ambience.TriggerAlarm)
                 {
@@ -1029,9 +1175,12 @@ namespace Killtime.Story.Scenes
             }
         }
 
-        public void ExecuteScenicEvent(SceneEventData evt)
+        public void ExecuteScenicEvent(SceneEventData evt, bool firePredecessors = true)
         {
             if (evt == null) return;
+
+            // Cinématiques placées en amont de l'événement (sauf arrivée via chaîne).
+            if (firePredecessors) FirePredecessorCinematics(evt.EventId);
 
             // Prérequis de l'événement
             if (evt.Prerequisite != null && evt.Prerequisite.HasPrerequisite)
@@ -1042,6 +1191,9 @@ namespace Killtime.Story.Scenes
                     return;
                 }
             }
+
+            // Marque la carte comme résolue pour ce nœud (anti double-payload via chaîne).
+            if (!string.IsNullOrEmpty(evt.EventId)) _resolvedCardIdsThisNode.Add(evt.EventId);
 
             // Cinématiques liées à l'événement : non-bloquantes.
             FireLinkedCinematics(evt.CinematicIds);
@@ -1064,17 +1216,14 @@ namespace Killtime.Story.Scenes
                     CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>ÉVÉNEMENT :</b> Déploiement d'unités [{evt.Title}].", LogCategory.Combat, "[RENFORTS]", Color.red);
                     break;
 
+                // DÉ-HARDCODÉS : kinds remplacés par des cartes 🎬 (tracking / effet relatif).
+                // Ignorés avec un avertissement de migration (1x par event pour ne pas spammer).
                 case SceneEventKind.CameraFocus:
-                    if (!string.IsNullOrEmpty(evt.TargetActorId) && _spawnedActors.TryGetValue(evt.TargetActorId, out var targetUnit))
-                    {
-                        var cam = FindAnyObjectByType<TacticalCameraController>();
-                        cam?.FocusOn(targetUnit.transform);
-                        cam?.SetPitchAndDistance(evt.CameraPitch, evt.CameraDistance);
-                    }
+                    CombatHUD.Instance?.AddAdvancedLog($"<color=grey>[OBSOLÈTE] Événement '{evt.Title}' : kind CameraFocus ignoré — migrer vers une carte 🎬 à tracking.</color>", LogCategory.MovementAndTurns, "[ÉVÉNEMENT]", Color.gray);
                     break;
 
                 case SceneEventKind.CameraShake:
-                    GrenadeCameraShake.Shake(evt.Ambience.CameraShakeIntensity > 0 ? evt.Ambience.CameraShakeIntensity : 0.35f);
+                    CombatHUD.Instance?.AddAdvancedLog($"<color=grey>[OBSOLÈTE] Événement '{evt.Title}' : kind CameraShake ignoré — migrer vers une carte 🎬 à effet.</color>", LogCategory.MovementAndTurns, "[ÉVÉNEMENT]", Color.gray);
                     break;
 
                 case SceneEventKind.ObjectiveUpdate:
@@ -1202,7 +1351,10 @@ namespace Killtime.Story.Scenes
 
         // Avance vers une réplique ou une conséquence (carte 🎁). Retourne false si l'id
         // est vide, introuvable, ou si une chaîne de conséquences boucle (anti-blocage).
-        private bool TryAdvanceToId(string id, HashSet<string> visited)
+        // Avance vers une réplique ou une conséquence, en jouant d'abord les
+        // cinématiques placées en amont (sauf si firePredecessors=false : arrivée
+        // via chaîne "fin →", dont la cinématique vient de se terminer).
+        private bool TryAdvanceToId(string id, HashSet<string> visited, bool firePredecessors = true)
         {
             if (string.IsNullOrEmpty(id)) return false;
             var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
@@ -1211,8 +1363,13 @@ namespace Killtime.Story.Scenes
             int targetIdx = dataNode.FindDialogueIndex(id);
             if (targetIdx >= 0)
             {
+                // Garde anti-boucle : ré-atterrir sur la réplique courante (ex : fin
+                // de sa propre cinématique amont) ne rejoue ni les amonts ni la mise
+                // en scène (qui rejouerait les cinématiques d'entrée de la réplique).
+                bool changed = _currentDialogueIndex != targetIdx;
                 _currentDialogueIndex = targetIdx;
-                ApplyCameraFocusForCurrentLine();
+                if (changed && firePredecessors) FirePredecessorCinematics(id);
+                StageCurrentLine();
                 return true;
             }
 
@@ -1222,9 +1379,38 @@ namespace Killtime.Story.Scenes
                 SceneDialogueLineData prompt = null;
                 if (_currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count)
                     prompt = dataNode.Dialogues[_currentDialogueIndex];
-                return ExecuteConsequenceChain(cons, prompt, visited ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase));
+                return ExecuteConsequenceChain(cons, prompt, visited ?? new HashSet<string>(StringComparer.OrdinalIgnoreCase), firePredecessors);
             }
 
+            return false;
+        }
+
+        /// <summary>
+        /// Cinématiques placées EN AMONT d'une carte (leur sortie "fin →" pointe vers
+        /// cardId) : jouées fire-and-forget quand la carte est atteinte. L'auto-lien
+        /// est exclu (l'éditeur l'interdit déjà). Les doublons sont dédupliqués.
+        /// </summary>
+        private bool FirePredecessorCinematics(string cardId)
+        {
+            if (string.IsNullOrWhiteSpace(cardId) || _sceneData == null || _sceneData.Cinematics == null) return false;
+            List<string> ids = null;
+            for (int i = 0; i < _sceneData.Cinematics.Count; i++)
+            {
+                var c = _sceneData.Cinematics[i];
+                if (c == null || string.IsNullOrWhiteSpace(c.NextTargetId)) continue;
+                if (!string.Equals(c.NextTargetId.Trim(), cardId.Trim(), StringComparison.OrdinalIgnoreCase)) continue;
+                if (string.Equals(c.CinematicId, cardId, StringComparison.OrdinalIgnoreCase)) continue;
+                ids ??= new List<string>();
+                bool dup = false;
+                for (int k = 0; k < ids.Count; k++)
+                    if (string.Equals(ids[k], c.CinematicId, StringComparison.OrdinalIgnoreCase)) { dup = true; break; }
+                if (!dup) ids.Add(c.CinematicId);
+            }
+            if (ids != null && ids.Count > 0)
+            {
+                FireLinkedCinematics(ids);
+                return true;
+            }
             return false;
         }
 
@@ -1283,6 +1469,9 @@ namespace Killtime.Story.Scenes
         {
             rewardsSummary = "";
             if (cons == null) return;
+
+            // Marque la carte comme résolue pour ce nœud (anti double-payload via chaîne).
+            if (!string.IsNullOrEmpty(cons.ConsequenceId)) _resolvedCardIdsThisNode.Add(cons.ConsequenceId);
 
             // Cinématiques liées à la conséquence : non-bloquantes.
             FireLinkedCinematics(cons.CinematicIds);
@@ -1348,12 +1537,16 @@ namespace Killtime.Story.Scenes
 
         // Exécute une conséquence et sa chaîne (cons → cons). Retourne true si le flux a
         // progressé (saut de réplique, affichage dialogue, avance d'index).
-        private bool ExecuteConsequenceChain(SceneConsequenceData first, SceneDialogueLineData promptLine, HashSet<string> visited)
+        private bool ExecuteConsequenceChain(SceneConsequenceData first, SceneDialogueLineData promptLine, HashSet<string> visited, bool firePredecessors = true)
         {
             if (first == null) return false;
             visited ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase);
             var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
             if (dataNode == null) return false;
+
+            // Cinématiques placées en amont de la conséquence d'entrée (sauf arrivée
+            // via chaîne "fin →", dont la cinématique vient de se terminer).
+            if (firePredecessors) FirePredecessorCinematics(first.ConsequenceId);
 
             var cons = first;
             int guard = 0;
@@ -1369,10 +1562,7 @@ namespace Killtime.Story.Scenes
                     var displayPrompt = new SceneDialogueLineData
                     {
                         SpeakerId = !string.IsNullOrEmpty(cons.SpeakerId) ? cons.SpeakerId : (promptLine != null ? promptLine.SpeakerId : "???"),
-                        StageDirection = cons.StageDirection ?? "",
-                        CameraFocusActorId = promptLine != null ? promptLine.CameraFocusActorId : "",
-                        CameraPitch = promptLine != null ? promptLine.CameraPitch : 42f,
-                        CameraDistance = promptLine != null ? promptLine.CameraDistance : 9.5f
+                        StageDirection = cons.StageDirection ?? ""
                     };
                     SetupReactionDisplay(displayPrompt, cons.Speech, cons.StageDirection, onwardId, $"🎁 {cons.Title}", rewardsSummary);
                     return true;
@@ -1388,8 +1578,10 @@ namespace Killtime.Story.Scenes
                     int idx = dataNode.FindDialogueIndex(cons.NextLineId);
                     if (idx >= 0)
                     {
+                        bool changed = _currentDialogueIndex != idx;
                         _currentDialogueIndex = idx;
-                        ApplyCameraFocusForCurrentLine();
+                        if (changed) FirePredecessorCinematics(cons.NextLineId);
+                        StageCurrentLine();
                         return true;
                     }
                 }
@@ -1569,6 +1761,8 @@ namespace Killtime.Story.Scenes
                 {
                     KilltimeAudioManager.Instance.Play(SoundId.Impact_DeepBoom, 0.6f);
                 }
+                // Conservé : micro-secousse d'IMPACT (feedback d'échec, pas un cadrage
+                // ni un travel — les défis n'ont pas de sortie vers cartes 🎬).
                 GrenadeCameraShake.Shake(0.2f);
 
                 if (challenge.FailureEffects != null && challenge.FailureEffects.Count > 0)
@@ -1607,16 +1801,7 @@ namespace Killtime.Story.Scenes
             _activeChallengeSummary = challengeSummary;
             _activeChallengeRewards = rewardsText;
 
-            if (!string.IsNullOrEmpty(promptLine.CameraFocusActorId) && _spawnedActors.TryGetValue(promptLine.CameraFocusActorId, out var focusUnit))
-            {
-                var cam = FindAnyObjectByType<TacticalCameraController>();
-                if (cam != null && focusUnit != null)
-                {
-                    cam.FocusOn(focusUnit.transform);
-                    cam.SetPitchAndDistance(promptLine.CameraPitch, promptLine.CameraDistance);
-                }
-                focusUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"💬 {promptLine.SpeakerId}", Color.yellow);
-            }
+            // DÉ-HARDCODÉ : plus de focus caméra direct ici (migré en cartes 🎬 à tracking).
 
             if (KilltimeAudioManager.Instance != null)
             {
@@ -1656,20 +1841,43 @@ namespace Killtime.Story.Scenes
 
         private void OnGUI()
         {
+            if (!_isSceneInitialized) return;
             if (CombatHUD.IsPaused || (StorySceneManager.Instance != null && StorySceneManager.Instance.IsTransitioning)) return;
 
+            var director = FindAnyObjectByType<CinematicDirector>();
+            bool hideByCine = director != null && director.IsPlayingSceneCinematic
+                && (director.CurrentPlayingSceneCinematic == null || director.CurrentPlayingSceneCinematic.HideSceneChat);
+
+            if (hideByCine && _chatAnimProgress <= 0.001f)
+            {
+                _dialogueRect = Rect.zero;
+                _partyBarRect = Rect.zero;
+                _hasPartyBar = false;
+                _interactButtonRects.Clear();
+                return;
+            }
+
             _interactButtonRects.Clear();
-            DrawPartySwitchBar();
-            DrawInteractablesWorldOverlay();
+            if (!hideByCine)
+            {
+                DrawPartySwitchBar();
+                DrawInteractablesWorldOverlay();
+            }
 
             var node = _director != null ? _director.CurrentNode : null;
-            if (node == null)
+            if (node != null)
+            {
+                _lastActiveNode = node;
+            }
+
+            var nodeToDraw = node ?? _lastActiveNode;
+            if (nodeToDraw == null || _chatAnimProgress <= 0.001f)
             {
                 _dialogueRect = Rect.zero;
                 return;
             }
 
-            DrawDialogueBox(node);
+            DrawDialogueBox(nodeToDraw);
         }
 
         private void DrawPartySwitchBar()
@@ -1757,8 +1965,16 @@ namespace Killtime.Story.Scenes
             }
 
             float boxHeight = Mathf.Min(baseHeight, Screen.height - 120f);
-            Rect rect = new Rect((Screen.width - boxWidth) * 0.5f, Screen.height - boxHeight - 20f, boxWidth, boxHeight);
-            _dialogueRect = rect;
+            float targetY = Screen.height - boxHeight - 20f;
+            float offscreenY = Screen.height + 25f;
+            float eased = Mathf.SmoothStep(0f, 1f, _chatAnimProgress);
+            float currentY = Mathf.Lerp(offscreenY, targetY, eased);
+
+            Rect rect = new Rect((Screen.width - boxWidth) * 0.5f, currentY, boxWidth, boxHeight);
+            _dialogueRect = _chatAnimProgress > 0.05f ? rect : Rect.zero;
+
+            Color prevGuiColor = GUI.color;
+            GUI.color = new Color(prevGuiColor.r, prevGuiColor.g, prevGuiColor.b, prevGuiColor.a * eased);
 
             GUI.Box(rect, GUIContent.none);
             GUILayout.BeginArea(rect);
@@ -1901,6 +2117,7 @@ namespace Killtime.Story.Scenes
             }
 
             GUILayout.EndArea();
+            GUI.color = prevGuiColor;
         }
 
         private void DrawActionButtons(ScenarioNode node)
@@ -1964,6 +2181,9 @@ namespace Killtime.Story.Scenes
 
         public void CleanupScene()
         {
+            _isSceneInitialized = false;
+            _chatAnimProgress = 0f;
+            _lastActiveNode = null;
             Killtime.Tactics.Units.DroppedWeaponPickup.ClearAllDropped();
             foreach (var kvp in _spawnedActors)
             {

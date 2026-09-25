@@ -40,6 +40,12 @@ namespace Killtime.Tactics
         [SerializeField] private TacticalCameraController _cameraController;
         [SerializeField] private CinematicDirector _cinematicDirector;
 
+        private bool IsStorySceneActive()
+        {
+            var sceneMgr = Killtime.Story.StorySceneManager.Instance ?? FindAnyObjectByType<Killtime.Story.StorySceneManager>();
+            return sceneMgr != null && sceneMgr.CurrentSceneController != null;
+        }
+
         [Header("Configuration")]
         [SerializeField] private ArenaLayoutType _initialLayout = ArenaLayoutType.TacticalBarricades;
         [SerializeField] private bool _enableCinematicKillcam = true;
@@ -701,7 +707,7 @@ namespace Killtime.Tactics
             // État verrouillé avant démarrage : aucune attaque/cinématique orpheline.
             _isAttackInProgress = false;
             _aiController?.StopAITurn();
-            _cinematicDirector?.ResetCinematicState();
+            if (!IsStorySceneActive()) _cinematicDirector?.ResetCinematicState();
             if (_enterCombatOnMapLoad) _turnManager?.EnterCombatMode(PlayerUnit);
             _turnManager?.StartNewRound();
             _aiController?.TriggerAITurnIfApplicable();
@@ -836,7 +842,7 @@ namespace Killtime.Tactics
             StopAllCoroutines();
             _isAttackInProgress = false;
             _aiController?.StopAITurn();
-            _cinematicDirector?.ResetCinematicState();
+            if (!IsStorySceneActive()) _cinematicDirector?.ResetCinematicState();
 
             CombatUI.CombatContextMenuUI.Instance?.CloseMenu();
             CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
@@ -992,7 +998,7 @@ namespace Killtime.Tactics
                 SelectTarget(SparringDummies[0]);
             }
 
-            if (_cameraController != null)
+            if (!IsStorySceneActive() && _cameraController != null)
             {
                 if (PlayerUnit != null)
                     _cameraController.FocusOn(PlayerUnit.transform);
@@ -1004,7 +1010,7 @@ namespace Killtime.Tactics
             // qui ferait ignorer toutes les attaques suivantes (IA bloquée en FullAuto).
             _isAttackInProgress = false;
             _aiController?.StopAITurn();
-            _cinematicDirector?.ResetCinematicState();
+            if (!IsStorySceneActive()) _cinematicDirector?.ResetCinematicState();
 
             bool isRemoteClient = TurnManager.IsMultiplayerPlayerClient()
                 || (Killtime.Multi.VTTTableSync.Instance != null && Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction);
@@ -1160,7 +1166,7 @@ namespace Killtime.Tactics
 
         private void HandleTurnStarted(TacticalUnit unit)
         {
-            if (_cameraController != null && unit != null)
+            if (!IsStorySceneActive() && _cameraController != null && unit != null)
             {
                 _cameraController.FocusOn(unit.transform);
             }

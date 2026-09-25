@@ -263,6 +263,45 @@ namespace Killtime.Story
             cine.PlaybackSpeed = NumField("cine_speed", cine.PlaybackSpeed, 50f);
             cine.PlaybackSpeed = Mathf.Clamp(cine.PlaybackSpeed, 0.1f, 4f);
             GUILayout.FlexibleSpace();
+            GUILayout.Label("Fin → :", GUILayout.Width(48));
+            cine.NextTargetId = GUILayout.TextField(cine.NextTargetId ?? "", GUILayout.Width(110));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            cine.Letterbox = GUILayout.Toggle(cine.Letterbox, "Bandes noires (Letterbox)", GUILayout.Width(180));
+            cine.HideSceneChat = GUILayout.Toggle(cine.HideSceneChat, "Masquer dialogue (chat de scène)", GUILayout.Width(220));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Cam Début :", GUILayout.Width(80));
+            cine.StartTransition = (CinematicCameraTransition)GUILayout.Toolbar((int)cine.StartTransition, new[] { "Téléportation", "Fluide" }, GUILayout.Width(170));
+            if (cine.StartTransition == CinematicCameraTransition.Smooth)
+            {
+                GUILayout.Label("Durée :", GUILayout.Width(45));
+                cine.StartTransitionDuration = NumField("cine_start_dur", cine.StartTransitionDuration, 45f);
+                cine.StartTransitionDuration = Mathf.Clamp(cine.StartTransitionDuration, 0.1f, 5f);
+                GUILayout.Label("s", GUILayout.Width(15));
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Cam Fin :", GUILayout.Width(80));
+            cine.EndTransition = (CinematicCameraTransition)GUILayout.Toolbar((int)cine.EndTransition, new[] { "Téléportation", "Fluide" }, GUILayout.Width(170));
+            if (cine.EndTransition == CinematicCameraTransition.Smooth)
+            {
+                GUILayout.Label("Durée :", GUILayout.Width(45));
+                cine.EndTransitionDuration = NumField("cine_end_dur", cine.EndTransitionDuration, 45f);
+                cine.EndTransitionDuration = Mathf.Clamp(cine.EndTransitionDuration, 0.1f, 5f);
+                GUILayout.Label("s", GUILayout.Width(15));
+            }
+            GUILayout.FlexibleSpace();
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("<color=grey>« Fin → » : carte enchaînée à la fin (ciné, réplique, conséquence, event, nœud). Vide = fin simple. Éditable aussi au wire depuis la carte graphe.</color>");
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
             GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
             if (GUILayout.Button("🗑 Supprimer", GUILayout.Width(100)))
             {
@@ -316,6 +355,27 @@ namespace Killtime.Story
             GUILayout.EndHorizontal();
 
             GUILayout.Label("<b>Voyage caméra (START → END automatique) :</b>");
+            GUILayout.BeginHorizontal();
+            bool newRel = GUILayout.Toggle(shot.RelativeToCurrent, "Relatif caméra live", GUILayout.Width(150));
+            bool newTrk = GUILayout.Toggle(shot.TrackFocusActor, "Tracking acteur (Focus)", GUILayout.Width(170));
+            // Mutuellement exclusifs : le dernier coché gagne (tracking prioritaire moteur).
+            if (newRel != shot.RelativeToCurrent && newRel) { shot.RelativeToCurrent = true; shot.TrackFocusActor = false; }
+            else if (newTrk != shot.TrackFocusActor && newTrk) { shot.TrackFocusActor = true; shot.RelativeToCurrent = false; }
+            else { shot.RelativeToCurrent = newRel; shot.TrackFocusActor = newTrk; }
+            GUILayout.EndHorizontal();
+            if (shot.RelativeToCurrent)
+                GUILayout.Label("<color=grey>START = caméra live, END = START + décalage (champs START/END ci-dessous).</color>");
+            if (shot.TrackFocusActor)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Dist. suivi :", GUILayout.Width(80));
+                shot.TrackDistance = NumField($"shot_{_shotIndex}_trkdist", shot.TrackDistance, 50f);
+                shot.TrackDistance = Mathf.Clamp(shot.TrackDistance, 0.5f, 35f);
+                GUILayout.Label("Yaw :", GUILayout.Width(36));
+                shot.TrackYaw = NumField($"shot_{_shotIndex}_trkyaw", shot.TrackYaw, 50f);
+                GUILayout.Label("<color=grey>(pitch = Rot.x, acteur = Focus)</color>", GUILayout.ExpandWidth(true));
+                GUILayout.EndHorizontal();
+            }
             GUILayout.Label("<color=grey>Ease :</color>");
             string[] easeNames = { "Lin", "Lisse", "In", "Out", "InOut", "Punch" };
             shot.Ease = (CinematicEase)GUILayout.Toolbar((int)shot.Ease, easeNames);
