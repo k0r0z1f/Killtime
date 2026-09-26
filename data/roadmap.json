@@ -5,7 +5,11 @@
   "sceneTitle": "Quadra-plen, Elara 1775 HSC — Salle de Commandement",
   "sourceFile": "Scenarios/volume_1_scene_01.json",
   "updated": "2026-09-26",
-  "statuses": ["todo", "in_progress", "done"],
+  "statuses": [
+    "todo",
+    "in_progress",
+    "done"
+  ],
   "epics": [
     "Planète / Ciel",
     "Débris",
@@ -23,10 +27,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Planet_Nefris_Model",
       "primitive": "Sphere",
-      "pos": [-34.5, 12.0, 32.0],
-      "scale": [16.0, 16.0, 16.0],
+      "pos": [
+        -34.5,
+        12.0,
+        32.0
+      ],
+      "scale": [
+        16.0,
+        16.0,
+        16.0
+      ],
       "suggestedAsset": "Planet_Nefris (prefab, cf. PlacedProps Q-18 R19)",
-      "details": "Grosse sphère orange (16m) vue par hublot. Remplacer par mesh planète texturé + shader atmosphère. Doublon potentiel avec PlacedProps Planet_Nefris."
+      "details": "Grosse sphère orange (16m) vue par hublot. Remplacer par mesh planète texturé + shader atmosphère. Doublon potentiel avec PlacedProps Planet_Nefris.",
+      "order": 0
     },
     {
       "id": "RD-002",
@@ -37,10 +50,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "AtmosphereScars",
       "primitive": "Sphere",
-      "pos": [-34.5, 12.0, 32.0],
-      "scale": [16.24, 16.24, 16.24],
+      "pos": [
+        -34.5,
+        12.0,
+        32.0
+      ],
+      "scale": [
+        16.24,
+        16.24,
+        16.24
+      ],
       "suggestedAsset": "VFX cicatrices atmosphériques (émissif orange)",
-      "details": "Coquille émissive autour de la planète (scale 16.24). Remplacer par shader fresnel / cicatrices animées."
+      "details": "Coquille émissive autour de la planète (scale 16.24). Remplacer par shader fresnel / cicatrices animées.",
+      "order": 1
     },
     {
       "id": "RD-003",
@@ -51,10 +73,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Debris_0",
       "primitive": "Cube",
-      "pos": [-25.2, 11.4, 24.1],
-      "scale": [1.4, 1.4, 1.4],
+      "pos": [
+        -25.2,
+        11.4,
+        24.1
+      ],
+      "scale": [
+        1.4,
+        1.4,
+        1.4
+      ],
       "suggestedAsset": "Prefab débris astéroïde / épave",
-      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation.",
+      "order": 2
     },
     {
       "id": "RD-004",
@@ -65,10 +96,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Debris_1",
       "primitive": "Cube",
-      "pos": [-18.8, 14.2, 28.5],
-      "scale": [1.9, 1.9, 1.9],
+      "pos": [
+        -18.8,
+        14.2,
+        28.5
+      ],
+      "scale": [
+        1.9,
+        1.9,
+        1.9
+      ],
       "suggestedAsset": "Prefab débris astéroïde / épave",
-      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation.",
+      "order": 3
     },
     {
       "id": "RD-005",
@@ -79,10 +119,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Debris_2",
       "primitive": "Cube",
-      "pos": [-13.5, 7.8, 21.7],
-      "scale": [2.2, 2.2, 2.2],
+      "pos": [
+        -13.5,
+        7.8,
+        21.7
+      ],
+      "scale": [
+        2.2,
+        2.2,
+        2.2
+      ],
       "suggestedAsset": "Prefab débris astéroïde / épave",
-      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation.",
+      "order": 4
     },
     {
       "id": "RD-006",
@@ -93,10 +142,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Debris_3",
       "primitive": "Cube",
-      "pos": [-22.1, 5.4, 19.3],
-      "scale": [1.1, 1.1, 1.1],
+      "pos": [
+        -22.1,
+        5.4,
+        19.3
+      ],
+      "scale": [
+        1.1,
+        1.1,
+        1.1
+      ],
       "suggestedAsset": "Prefab débris astéroïde / épave",
-      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+      "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation.",
+      "order": 5
     },
     {
       "id": "RD-007",
@@ -107,10 +165,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "CommandTable_Base",
       "primitive": "Cylinder",
-      "pos": [1.5, 0.35, 0.866],
-      "scale": [0.75, 0.7, 0.75],
+      "pos": [
+        1.5,
+        0.35,
+        0.866
+      ],
+      "scale": [
+        0.75,
+        0.7,
+        0.75
+      ],
       "suggestedAsset": "Table de commandement (pied central métallique)",
-      "details": "Cylindre gris sombre, pied de table. Modéliser pied + câblage."
+      "details": "Cylindre gris sombre, pied de table. Modéliser pied + câblage.",
+      "order": 6
     },
     {
       "id": "RD-008",
@@ -121,10 +188,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "CommandTable_Top",
       "primitive": "Cube",
-      "pos": [1.5, 0.72, 0.866],
-      "scale": [1.45, 0.08, 1.25],
+      "pos": [
+        1.5,
+        0.72,
+        0.866
+      ],
+      "scale": [
+        1.45,
+        0.08,
+        1.25
+      ],
       "suggestedAsset": "Plateau hexagonal / console",
-      "details": "Cube aplati (rot Y 30°). Remplacer par plateau avec rebords + surface tactile."
+      "details": "Cube aplati (rot Y 30°). Remplacer par plateau avec rebords + surface tactile.",
+      "order": 7
     },
     {
       "id": "RD-009",
@@ -135,10 +211,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Holoprojector_Base",
       "primitive": "Cylinder",
-      "pos": [1.5, 0.78, 0.866],
-      "scale": [0.45, 0.05, 0.45],
+      "pos": [
+        1.5,
+        0.78,
+        0.866
+      ],
+      "scale": [
+        0.45,
+        0.05,
+        0.45
+      ],
       "suggestedAsset": "Socle holoprojecteur",
-      "details": "Disque sombre posé sur la table. Remplacer par socle avec anneau lumineux."
+      "details": "Disque sombre posé sur la table. Remplacer par socle avec anneau lumineux.",
+      "order": 8
     },
     {
       "id": "RD-010",
@@ -149,10 +234,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Holoprojector_Emitter",
       "primitive": "Cylinder",
-      "pos": [1.5, 0.81, 0.866],
-      "scale": [0.22, 0.02, 0.22],
+      "pos": [
+        1.5,
+        0.81,
+        0.866
+      ],
+      "scale": [
+        0.22,
+        0.02,
+        0.22
+      ],
       "suggestedAsset": "Lentille émettrice cyan (émissif)",
-      "details": "Pastille cyan émissive. Garder émission cyan + ajouter point light / bloom."
+      "details": "Pastille cyan émissive. Garder émission cyan + ajouter point light / bloom.",
+      "order": 9
     },
     {
       "id": "RD-011",
@@ -163,10 +257,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Holo_Projection_Light",
       "primitive": "Cylinder",
-      "pos": [1.5, 0.92, 0.866],
-      "scale": [0.14, 0.2, 0.14],
+      "pos": [
+        1.5,
+        0.92,
+        0.866
+      ],
+      "scale": [
+        0.14,
+        0.2,
+        0.14
+      ],
       "suggestedAsset": "Cône volumétrique holographique",
-      "details": "Cylindre bleu émissif. Remplacer par cône transparent + shader scanlines."
+      "details": "Cylindre bleu émissif. Remplacer par cône transparent + shader scanlines.",
+      "order": 10
     },
     {
       "id": "RD-012",
@@ -177,10 +280,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Holo_Orbital_Map",
       "primitive": "Sphere",
-      "pos": [1.5, 1.08, 0.866],
-      "scale": [0.26, 0.26, 0.26],
+      "pos": [
+        1.5,
+        1.08,
+        0.866
+      ],
+      "scale": [
+        0.26,
+        0.26,
+        0.26
+      ],
       "suggestedAsset": "Mini-planète holographique animée",
-      "details": "Sphère cyan émissive flottante. Remplacer par holo animé (rotation + orbites)."
+      "details": "Sphère cyan émissive flottante. Remplacer par holo animé (rotation + orbites).",
+      "order": 11
     },
     {
       "id": "RD-013",
@@ -191,10 +303,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Holo_Patrol_Ring",
       "primitive": "Cylinder",
-      "pos": [1.5, 1.08, 0.866],
-      "scale": [0.62, 0.015, 0.62],
+      "pos": [
+        1.5,
+        1.08,
+        0.866
+      ],
+      "scale": [
+        0.62,
+        0.015,
+        0.62
+      ],
       "suggestedAsset": "Anneau orbital animé (patrouilles)",
-      "details": "Disque fin cyan incliné (22°,38°). Remplacer par anneau avec marqueurs de patrouille animés."
+      "details": "Disque fin cyan incliné (22°,38°). Remplacer par anneau avec marqueurs de patrouille animés.",
+      "order": 12
     },
     {
       "id": "RD-014",
@@ -205,10 +326,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Terminal_Pedestal",
       "primitive": "Cube",
-      "pos": [3.0, 0.45, 0.0],
-      "scale": [0.48, 0.9, 0.48],
+      "pos": [
+        3.0,
+        0.45,
+        0.0
+      ],
+      "scale": [
+        0.48,
+        0.9,
+        0.48
+      ],
       "suggestedAsset": "Borne / piédestal console",
-      "details": "Cube vertical (rot Y 30°). Remplacer par borne avec clavier / rainures."
+      "details": "Cube vertical (rot Y 30°). Remplacer par borne avec clavier / rainures.",
+      "order": 13
     },
     {
       "id": "RD-015",
@@ -219,10 +349,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Terminal_Datapad",
       "primitive": "Cube",
-      "pos": [3.0, 0.92, 0.0],
-      "scale": [0.32, 0.03, 0.24],
+      "pos": [
+        3.0,
+        0.92,
+        0.0
+      ],
+      "scale": [
+        0.32,
+        0.03,
+        0.24
+      ],
       "suggestedAsset": "Tablette inclinée (25°)",
-      "details": "Plaquette sombre inclinée. Remplacer par tablette biseautée."
+      "details": "Plaquette sombre inclinée. Remplacer par tablette biseautée.",
+      "order": 14
     },
     {
       "id": "RD-016",
@@ -233,10 +372,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Terminal_Screen_Glow",
       "primitive": "Cube",
-      "pos": [3.0, 0.94, 0.0],
-      "scale": [0.26, 0.01, 0.18],
+      "pos": [
+        3.0,
+        0.94,
+        0.0
+      ],
+      "scale": [
+        0.26,
+        0.01,
+        0.18
+      ],
       "suggestedAsset": "Écran lumineux bleu (émissif)",
-      "details": "Fine plaque bleue émissive sur datapad. Remplacer par écran avec UI / texture."
+      "details": "Fine plaque bleue émissive sur datapad. Remplacer par écran avec UI / texture.",
+      "order": 15
     },
     {
       "id": "RD-017",
@@ -247,10 +395,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Wall_Conduit_NorthWest",
       "primitive": "Cylinder",
-      "pos": [-3.8, 1.2, 0.0],
-      "scale": [0.16, 2.8, 0.16],
+      "pos": [
+        -3.8,
+        1.2,
+        0.0
+      ],
+      "scale": [
+        0.16,
+        2.8,
+        0.16
+      ],
       "suggestedAsset": "Conduit mural / tuyauterie",
-      "details": "Tube cuivré vertical. Remplacer par tuyau avec colliers + jonctions."
+      "details": "Tube cuivré vertical. Remplacer par tuyau avec colliers + jonctions.",
+      "order": 16
     },
     {
       "id": "RD-018",
@@ -261,10 +418,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Wall_Conduit_SouthWest",
       "primitive": "Cylinder",
-      "pos": [-1.5, 1.2, -4.3],
-      "scale": [0.16, 3.2, 0.16],
+      "pos": [
+        -1.5,
+        1.2,
+        -4.3
+      ],
+      "scale": [
+        0.16,
+        3.2,
+        0.16
+      ],
       "suggestedAsset": "Conduit mural / tuyauterie",
-      "details": "Tube horizontal (rot Z 90°). Remplacer par tuyau avec colliers + jonctions."
+      "details": "Tube horizontal (rot Z 90°). Remplacer par tuyau avec colliers + jonctions.",
+      "order": 17
     },
     {
       "id": "RD-019",
@@ -275,10 +441,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Wall_Conduit_SouthEast",
       "primitive": "Cylinder",
-      "pos": [2.5, 1.2, -3.8],
-      "scale": [0.16, 3.0, 0.16],
+      "pos": [
+        2.5,
+        1.2,
+        -3.8
+      ],
+      "scale": [
+        0.16,
+        3.0,
+        0.16
+      ],
       "suggestedAsset": "Conduit mural / tuyauterie",
-      "details": "Tube horizontal (rot Z 90°). Remplacer par tuyau avec colliers + jonctions."
+      "details": "Tube horizontal (rot Z 90°). Remplacer par tuyau avec colliers + jonctions.",
+      "order": 18
     },
     {
       "id": "RD-020",
@@ -289,10 +464,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "Wall_Conduit_East",
       "primitive": "Cylinder",
-      "pos": [5.2, 1.2, 1.2],
-      "scale": [0.16, 2.6, 0.16],
+      "pos": [
+        5.2,
+        1.2,
+        1.2
+      ],
+      "scale": [
+        0.16,
+        2.6,
+        0.16
+      ],
       "suggestedAsset": "Conduit mural / tuyauterie",
-      "details": "Tube cuivré vertical. Remplacer par tuyau avec colliers + jonctions."
+      "details": "Tube cuivré vertical. Remplacer par tuyau avec colliers + jonctions.",
+      "order": 19
     },
     {
       "id": "RD-021",
@@ -303,10 +487,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "JunctionBox_West",
       "primitive": "Cube",
-      "pos": [-3.8, 1.4, -0.6],
-      "scale": [0.35, 0.5, 0.35],
+      "pos": [
+        -3.8,
+        1.4,
+        -0.6
+      ],
+      "scale": [
+        0.35,
+        0.5,
+        0.35
+      ],
       "suggestedAsset": "Boîtier de jonction mural",
-      "details": "Petit coffret gris. Remplacer par boîtier avec voyants + câbles."
+      "details": "Petit coffret gris. Remplacer par boîtier avec voyants + câbles.",
+      "order": 20
     },
     {
       "id": "RD-022",
@@ -317,10 +510,19 @@
       "scene": "volume_1_scene_01",
       "placeholderId": "JunctionBox_Light_West",
       "primitive": "Cube",
-      "pos": [-3.65, 1.55, -0.6],
-      "scale": [0.06, 0.06, 0.06],
+      "pos": [
+        -3.65,
+        1.55,
+        -0.6
+      ],
+      "scale": [
+        0.06,
+        0.06,
+        0.06
+      ],
       "suggestedAsset": "Voyant orange clignotant (émissif)",
-      "details": "Petit cube orange émissif. Remplacer par LED + light intermittente."
+      "details": "Petit cube orange émissif. Remplacer par LED + light intermittente.",
+      "order": 21
     }
   ]
 }

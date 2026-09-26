@@ -1,5 +1,6 @@
 using System;
 using UnityEngine;
+using Killtime.Core.Character;
 
 namespace Killtime.Story
 {
@@ -138,6 +139,14 @@ namespace Killtime.Story
             State.AddJournal($"Scène terminée: {completedScenario.Title}.");
             Commit();
             ScenarioCompleted?.Invoke(completedScenario);
+        }
+
+        public void IntroduceCharacters(CharacterSheet a, CharacterSheet b, Killtime.Core.Character.RelationshipLinkType linkType = Killtime.Core.Character.RelationshipLinkType.NeutreInconnu, string context = null)
+        {
+            if (a == null || b == null) return;
+            string location = HybrisWorldMapData.Find(State?.PartyNodeId)?.Name ?? State?.PartyNodeId ?? "Hybris";
+            string ctx = context ?? (ActiveScenario != null ? ActiveScenario.Title : "Scénario Narratif");
+            Killtime.Core.Character.CharacterRelationshipStorageService.IntroduceCharacters(a, b, linkType, location, ctx);
         }
 
         // ================= OVERWORLD D'HYBRIS =================

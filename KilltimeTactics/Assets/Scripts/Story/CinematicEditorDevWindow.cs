@@ -60,6 +60,22 @@ namespace Killtime.Story
             catch { /* ignore */ }
         }
 
+        protected override void OnUpdate()
+        {
+            base.OnUpdate();
+
+            if (!_isOpen || _isMinimized || FloatingWindowChrome.IsDocked(WindowId)) return;
+
+            if (Input.GetKeyDown(KeyCode.PageUp))
+            {
+                CaptureShot(true);
+            }
+            else if (Input.GetKeyDown(KeyCode.PageDown))
+            {
+                CaptureShot(false);
+            }
+        }
+
         private List<SceneCinematicData> Cines()
         {
             var data = Data;
@@ -143,7 +159,7 @@ namespace Killtime.Story
                 GUILayout.Label($"<color=#FFC94D><b>⚠ Carte 3D : « {loadedId} » — pas la scène éditée.</b></color>");
             else
                 GUILayout.Label("<color=#FFC94D><b>⚠ Aucune scène chargée sur la carte 3D.</b></color>");
-            GUILayout.Label("<color=grey>1) Déplacez caméra + pions sur la carte 3D. 2) 📸 Capturez START/END. 3) ▶ Prévisualisez. 4) 💾 Enregistrez (JSON).</color>");
+            GUILayout.Label("<color=grey>1) Déplacez caméra + pions sur la carte 3D. 2) 📸 Capturez START [PgUp] / END [PgDn]. 3) ▶ Prévisualisez. 4) 💾 Enregistrez (JSON).</color>");
             GUILayout.EndVertical();
         }
 
@@ -443,7 +459,8 @@ namespace Killtime.Story
             GUILayout.BeginHorizontal();
             GUILayout.Label($"<b>{tag}</b>", GUILayout.Width(48));
             GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
-            if (GUILayout.Button("📸 Capturer", GUILayout.Width(95))) CaptureShot(isStart);
+            string capBtnText = isStart ? "📸 Capturer [PgUp]" : "📸 Capturer [PgDn]";
+            if (GUILayout.Button(capBtnText, GUILayout.Width(130))) CaptureShot(isStart);
             GUI.backgroundColor = new Color(0.25f, 0.85f, 0.45f);
             if (GUILayout.Button("▶ Voir", GUILayout.Width(60))) ApplyShot(isStart);
             GUI.backgroundColor = Color.white;

@@ -809,6 +809,72 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
     }
 
+    /* ================================================================
+       ROADMAP SOLO — autosave disque (PUT /api/roadmap)
+       ----------------------------------------------------------------
+       Le kanban roadmap.html pousse son état ici (debounced) quand le
+       site est servi par ce serveur Node. Écrit data/roadmap.json avec
+       une copie .bak. Sans ce serveur (Ruby/python/file://), le client
+       bascule en mode "local seul" (localStorage + export manuel).
+       ================================================================ */
+    const ROADMAP_PATH = path.join(PUBLIC_DIR, 'data', 'roadmap.json');
+    if (isRoute('/api/roadmap')) {
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || !Array.isArray(body.tasks)) {
+                    return sendJson(res, 400, { error: 'tasks[] manquant.' });
+                }
+                const json = JSON.stringify(body, null, 2);
+                if (json.length > 2 * 1024 * 1024) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                try { fs.mkdirSync(path.dirname(ROADMAP_PATH), { recursive: true }); } catch (e) { /* ignore */ }
+                try {
+                    if (fs.existsSync(ROADMAP_PATH)) {
+                        fs.copyFileSync(ROADMAP_PATH, ROADMAP_PATH + '.bak');
+                    }
+                } catch (e) { /* backup optionnel */ }
+                fs.writeFileSync(ROADMAP_PATH, json);
+                console.log(`[Roadmap] autosave disque : ${body.tasks.length} tâches.`);
+                return sendJson(res, 200, { success: true, tasks: body.tasks.length });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    /* ROADMAPS MULTI-BOARDS — autosave disque (PUT /api/roadmaps) */
+    const ROADMAPS_PATH = path.join(PUBLIC_DIR, 'data', 'roadmaps.json');
+    if (isRoute('/api/roadmaps')) {
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || !Array.isArray(body.boards)) {
+                    return sendJson(res, 400, { error: 'boards[] manquant.' });
+                }
+                const json = JSON.stringify(body, null, 2);
+                if (json.length > 4 * 1024 * 1024) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                try { fs.mkdirSync(path.dirname(ROADMAPS_PATH), { recursive: true }); } catch (e) { /* ignore */ }
+                try {
+                    if (fs.existsSync(ROADMAPS_PATH)) {
+                        fs.copyFileSync(ROADMAPS_PATH, ROADMAPS_PATH + '.bak');
+                    }
+                } catch (e) { /* backup optionnel */ }
+                fs.writeFileSync(ROADMAPS_PATH, json);
+                const n = body.boards.reduce((m, b) => m + (Array.isArray(b.tasks) ? b.tasks.length : 0), 0);
+                console.log(`[Roadmaps] autosave disque : ${body.boards.length} boards, ${n} tâches.`);
+                return sendJson(res, 200, { success: true, boards: body.boards.length, tasks: n });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
     if (req.method === 'GET' || req.method === 'HEAD') {
         return serveStatic(res, parsedUrl.pathname);
     }

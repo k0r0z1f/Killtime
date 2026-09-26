@@ -183,6 +183,15 @@ namespace Killtime.Tactics.Units
             }
         }
 
+        public void IntroduceTo(TacticalUnit other, RelationshipLinkType defaultLink = RelationshipLinkType.NeutreInconnu, string location = "Terrain Tactique", string context = "Rencontre Tactique")
+        {
+            if (other == null || other == this) return;
+            var sheetA = GetOrBuildSheet();
+            var sheetB = other.GetOrBuildSheet();
+            if (sheetA == null || sheetB == null) return;
+            CharacterRelationshipStorageService.IntroduceCharacters(sheetA, sheetB, defaultLink, location, context);
+        }
+
         private void Awake()
         {
             if (Stats == null)

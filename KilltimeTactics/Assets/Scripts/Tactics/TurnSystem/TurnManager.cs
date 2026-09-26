@@ -221,6 +221,8 @@ namespace Killtime.Tactics.TurnSystem
         {
             if (unit == null || _allUnits.Contains(unit)) return;
 
+            IntroduceUnitToRegisteredUnits(unit);
+
             _allUnits.Add(unit);
 
             if (unit.Stats != null && unit.Stats.IsAlive)
@@ -261,6 +263,58 @@ namespace Killtime.Tactics.TurnSystem
 
             InsertUnitIntoCurrentRound(unit);
         }   
+
+        private void IntroduceUnitToRegisteredUnits(TacticalUnit newUnit)
+        {
+            if (newUnit == null) return;
+            var sheetNew = newUnit.GetOrBuildSheet();
+            if (sheetNew == null) return;
+
+            string location = "Terrain Tactique";
+            var arena = FindAnyObjectByType<CombatDevArena>();
+            if (arena != null && arena.HasLoadedMap && arena.CurrentLoadedMap != null)
+            {
+                location = arena.CurrentLoadedMap.MapName;
+            }
+            else if (arena != null)
+            {
+                location = $"Arène ({arena.CurrentLayout})";
+            }
+
+            string context = IsInExploration ? "Exploration" : $"Engagement Tactique (Round {CurrentRound})";
+
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                var existing = _allUnits[i];
+                if (existing == null || existing == newUnit) continue;
+                var sheetExisting = existing.GetOrBuildSheet();
+                if (sheetExisting == null) continue;
+
+                RelationshipLinkType link = ResolveInitialRelationshipLink(newUnit, existing);
+                CharacterRelationshipStorageService.IntroduceCharacters(sheetNew, sheetExisting, link, location, context);
+            }
+        }
+
+        private RelationshipLinkType ResolveInitialRelationshipLink(TacticalUnit a, TacticalUnit b)
+        {
+            var sheetA = a.GetOrBuildSheet();
+            var sheetB = b.GetOrBuildSheet();
+
+            bool isHeroicTrioA = MinaCharacter.IsMina(sheetA) || LucasCharacter.IsLucas(sheetA) || ThomasCharacter.IsThomas(sheetA);
+            bool isHeroicTrioB = MinaCharacter.IsMina(sheetB) || LucasCharacter.IsLucas(sheetB) || ThomasCharacter.IsThomas(sheetB);
+
+            if (isHeroicTrioA && isHeroicTrioB)
+            {
+                return RelationshipLinkType.SymbioteLigneZero;
+            }
+
+            if (a.IsPlayerControlled == b.IsPlayerControlled)
+            {
+                return a.IsPlayerControlled ? RelationshipLinkType.FraterniteDarmes : RelationshipLinkType.HierarchieMilitaire;
+            }
+
+            return RelationshipLinkType.HostiliteDeclaree;
+        }
 
         private void InsertUnitIntoCurrentRound(TacticalUnit newUnit)
         {

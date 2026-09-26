@@ -36,7 +36,13 @@ namespace Killtime.UI
 
         private CharacterSheet _currentSheet = new();
         private int _selectedTab = 0;
-        private readonly string[] _tabTitles = { "👤 Création", "🎒 Inventaire", "📈 Progression", "🔮 Sorts (XP=PA)", "💾 Disque", "🗺️ Spawner" };
+        private readonly string[] _tabTitles = { "👤 Création", "🎒 Inventaire", "📈 Progression", "🔮 Sorts (XP=PA)", "💾 Disque", "🗺️ Spawner", "🤝 Relations" };
+
+        private CharacterSocialGraph _currentSocialGraph;
+        private string _lastLoadedSocialSheetId = string.Empty;
+        private Vector2 _socialScroll;
+        private string _newRelationKnownSince = "Temple de Brum'korath";
+        private string _newRelationLocation = "Secteur Zéro";
 
         private readonly List<string> _availableModelNames = new();
         private readonly List<string> _availableGunCatalog = new();
@@ -295,6 +301,7 @@ namespace Killtime.UI
                 case 3: DrawSpellForgeTab(); break;
                 case 4: DrawStorageTab(); break;
                 case 5: DrawMapInsertionTab(); break;
+                case 6: DrawRelationshipsTab(); break;
             }
 
             GUILayout.EndScrollView();
@@ -350,6 +357,8 @@ namespace Killtime.UI
 
             // Réinitialise l'état d'édition lié à l'ancienne fiche.
             _selectedInventoryItem = null;
+            _currentSocialGraph = null;
+            _lastLoadedSocialSheetId = string.Empty;
             _selectedTab = 0;
             _scrollPos = Vector2.zero;
             _invScroll = Vector2.zero;
@@ -2575,6 +2584,150 @@ namespace Killtime.UI
             GUI.backgroundColor = Color.white;
 
             GUILayout.EndVertical();
+        }
+
+        private void DrawRelationshipsTab()
+        {
+            if (_currentSheet == null) return;
+
+            if (_currentSocialGraph == null || _lastLoadedSocialSheetId != _currentSheet.SheetId)
+            {
+                _currentSocialGraph = CharacterRelationshipStorageService.LoadSocialGraph(_currentSheet);
+                _lastLoadedSocialSheetId = _currentSheet.SheetId;
+            }
+
+            GUILayout.BeginHorizontal(GUI.skin.box);
+            GUILayout.Label($"Matrice Sociale de : <b>{_currentSheet.Name}</b> (ID: {_currentSheet.SheetId[..Math.Min(8, _currentSheet.SheetId.Length)]}) | Liens actifs : <b>{_currentSocialGraph.Relationships.Count}</b>", GUILayout.ExpandWidth(true));
+            GUI.backgroundColor = new Color(0.2f, 0.75f, 0.4f);
+            if (GUILayout.Button("💾 Sauvegarder Relations", GUILayout.Width(180), GUILayout.Height(24)))
+            {
+                CharacterRelationshipStorageService.SaveSocialGraph(_currentSocialGraph);
+                _statusMessage = $"Graphe relationnel de '{_currentSheet.Name}' sauvegardé sous Relationships/Social_{_currentSheet.SheetId[..Math.Min(8, _currentSheet.SheetId.Length)]}.json";
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(6);
+            GUILayout.Label("<b>1. Introduire un Nouveau Personnage dans ce Graphe :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            var savedFiles = CharacterStorageService.GetSavedCharacterFiles();
+            var candidates = new List<CharacterSheet>();
+
+            for (int i = 0; i < savedFiles.Count; i++)
+            {
+                var s = CharacterStorageService.LoadCharacter(savedFiles[i]);
+                if (s != null && s.SheetId != _currentSheet.SheetId)
+                {
+                    candidates.Add(s);
+                }
+            }
+
+            if (candidates.Count == 0)
+            {
+                GUILayout.Label("<color=gray><i>Aucun autre personnage sauvegardé sur le disque pour établir un lien.</i></color>");
+            }
+            else
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Rencontrer :", GUILayout.Width(90));
+                for (int i = 0; i < candidates.Count; i++)
+                {
+                    var c = candidates[i];
+                    bool alreadyLinked = _currentSocialGraph.GetRelationship(c.SheetId) != null;
+                    GUI.enabled = !alreadyLinked;
+                    if (GUILayout.Button($"{c.Name} {(alreadyLinked ? "(Lié)" : "+")}", GUILayout.Height(22)))
+                    {
+                        CharacterRelationshipStorageService.IntroduceCharacters(_currentSheet, c, RelationshipLinkType.NeutreInconnu, _newRelationLocation, _newRelationKnownSince);
+                        _currentSocialGraph = CharacterRelationshipStorageService.LoadSocialGraph(_currentSheet);
+                        _statusMessage = $"'{_currentSheet.Name}' et '{c.Name}' introduits mutuellement !";
+                    }
+                    GUI.enabled = true;
+                }
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Connu depuis :", GUILayout.Width(90));
+                _newRelationKnownSince = GUILayout.TextField(_newRelationKnownSince, GUILayout.Width(180));
+                GUILayout.Label("Lieu :", GUILayout.Width(45));
+                _newRelationLocation = GUILayout.TextField(_newRelationLocation, GUILayout.ExpandWidth(true));
+                GUILayout.EndHorizontal();
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.Space(8);
+            GUILayout.Label($"<b>2. Registre des Relations Déclarées ({_currentSocialGraph.Relationships.Count}) :</b>");
+
+            _socialScroll = GUILayout.BeginScrollView(_socialScroll, GUILayout.Height(340));
+            if (_currentSocialGraph.Relationships.Count == 0)
+            {
+                GUILayout.Label("<color=gray><i>Aucune entrée relationnelle enregistrée pour ce protagoniste.</i></color>");
+            }
+
+            for (int i = 0; i < _currentSocialGraph.Relationships.Count; i++)
+            {
+                var rel = _currentSocialGraph.Relationships[i];
+                if (rel == null) continue;
+
+                GUILayout.BeginVertical(GUI.skin.box);
+                GUILayout.BeginHorizontal();
+
+                string linkGlyph = rel.LinkType switch
+                {
+                    RelationshipLinkType.SymbioteLigneZero => "🧬",
+                    RelationshipLinkType.FraterniteDarmes => "🛡️",
+                    RelationshipLinkType.HierarchieMilitaire => "🎖️",
+                    RelationshipLinkType.DetteDhonneur => "⚖️",
+                    RelationshipLinkType.RivaliteMartiale => "⚔️",
+                    RelationshipLinkType.MefianceInstinctive => "👁️",
+                    RelationshipLinkType.HostiliteDeclaree => "💀",
+                    RelationshipLinkType.MentorEleve => "📜",
+                    _ => "🔗"
+                };
+
+                GUILayout.Label($"{linkGlyph} <b>{rel.TargetCharacterName}</b> <color=#94A3B8>[{rel.TargetSheetId[..Math.Min(8, rel.TargetSheetId.Length)]}]</color>", GUILayout.Width(220));
+
+                rel.LinkType = (RelationshipLinkType)GUILayout.Toolbar((int)rel.LinkType, new[] { "Neutre", "Symbiote", "Frères d'armes", "Hiérarchie", "Dette", "Rival", "Méfiance", "Ennemi", "Mentor" }, GUILayout.ExpandWidth(true));
+
+                GUI.backgroundColor = Color.red;
+                if (GUILayout.Button("✕", GUILayout.Width(24), GUILayout.Height(18)))
+                {
+                    _currentSocialGraph.Relationships.RemoveAt(i);
+                    CharacterRelationshipStorageService.SaveSocialGraph(_currentSocialGraph);
+                    _statusMessage = $"Relation avec '{rel.TargetCharacterName}' dissoute.";
+                    break;
+                }
+                GUI.backgroundColor = Color.white;
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                string affColor = rel.Affinity > 20 ? "#10B981" : (rel.Affinity < -20 ? "#EF4444" : "#FBBF24");
+                GUILayout.Label($"Affinité : <color={affColor}><b>{rel.Affinity:+0;-0;0}</b></color>", GUILayout.Width(130));
+                rel.Affinity = (int)GUILayout.HorizontalSlider(rel.Affinity, -100, 100);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                string trustColor = rel.Trust >= 70 ? "#38BDF8" : (rel.Trust <= 30 ? "#F87171" : "#E2E8F0");
+                GUILayout.Label($"Confiance : <color={trustColor}><b>{rel.Trust}%</b></color>", GUILayout.Width(130));
+                rel.Trust = (int)GUILayout.HorizontalSlider(rel.Trust, 0, 100);
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Connu depuis :", GUILayout.Width(90));
+                rel.KnownSince = GUILayout.TextField(rel.KnownSince, GUILayout.Width(160));
+                GUILayout.Label("Lieu :", GUILayout.Width(45));
+                rel.FirstMetLocation = GUILayout.TextField(rel.FirstMetLocation, GUILayout.Width(160));
+                GUILayout.Label($"Interactions : <b>{rel.InteractionsCount}</b>", GUILayout.ExpandWidth(true));
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Notes :", GUILayout.Width(90));
+                rel.Notes = GUILayout.TextField(rel.Notes);
+                GUILayout.EndHorizontal();
+
+                GUILayout.EndVertical();
+            }
+            GUILayout.EndScrollView();
         }
 
         private void SpawnCharacterOnGrid()

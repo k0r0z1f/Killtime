@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Système RP — Roadmap Projet (solo, style Jira)</title>
+    <meta name="description" content="Roadmap projet solo du Système RP / Killtime Tactics : kanban éditable des placeholders Scene 01.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="users/auth.css">
+    <style>
+        /* ============ ROADMAP v2 — Kanban solo ============ */
+        /* Tabs multi-roadmaps */
+        .rm-tabs { display:flex; gap:8px; flex-wrap:wrap; align-items:center; margin:18px 0 2px; }
+        .rm-tab { display:inline-flex; align-items:center; gap:8px; background:var(--bg-surface);
+            border:1px solid var(--border-subtle); color:var(--text-secondary); border-radius:11px;
+            padding:8px 8px 8px 14px; font-size:13px; font-weight:700; cursor:pointer;
+            font-family:var(--font-body); transition:var(--transition-smooth); max-width:260px; }
+        .rm-tab:hover { border-color:var(--border-glow); color:var(--text-primary); }
+        .rm-tab.on { background:var(--bg-surface-elevated); color:var(--text-primary); border-color:var(--border-glow);
+            box-shadow:0 0 0 1px var(--arcane-cyan-glow); }
+        .rm-tab .lbl { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+        .rm-tab .cnt { font-family:var(--font-mono); font-size:11px; background:var(--bg-canvas);
+            border:1px solid var(--border-subtle); border-radius:99px; padding:1px 8px; }
+        .rm-tab .x { border:none; background:transparent; color:var(--text-muted); border-radius:7px;
+            width:22px; height:22px; cursor:pointer; font-size:13px; line-height:1; }
+        .rm-tab .x:hover { color:var(--vital-ruby); background:var(--vital-ruby-glow); }
+        .rm-tab .edit { border:none; background:transparent; color:var(--text-muted); border-radius:7px;
+            width:22px; height:22px; cursor:pointer; font-size:12px; line-height:1; }
+        .rm-tab .edit:hover { color:var(--arcane-cyan); background:var(--arcane-cyan-glow); }
+        .rm-tab input { background:var(--bg-canvas); border:1px solid var(--border-glow); color:var(--text-primary);
+            border-radius:7px; padding:3px 8px; font-size:13px; font-family:var(--font-body); width:150px; outline:none; }
+        .rm-tab-add { border:1px dashed var(--border-subtle); background:transparent; color:var(--text-secondary);
+            border-radius:11px; padding:8px 14px; font-size:13px; font-weight:700; cursor:pointer; font-family:var(--font-body); }
+        .rm-tab-add:hover { border-color:var(--border-glow); color:var(--text-primary); }
+        .rm-tab-add input { background:var(--bg-canvas); border:1px solid var(--border-glow); color:var(--text-primary);
+            border-radius:7px; padding:3px 8px; font-size:13px; font-family:var(--font-body); width:170px; outline:none; }
+        .rm-toolbar { display:flex; flex-wrap:wrap; gap:10px; align-items:center; margin:18px 0 6px; }
+        .rm-toolbar input[type="text"], .rm-toolbar select {
+            background:var(--bg-surface); border:1px solid var(--border-subtle); color:var(--text-primary);
+            border-radius:10px; padding:9px 12px; font-family:var(--font-body); font-size:13px; outline:none;
+        }
+        .rm-toolbar input[type="text"] { min-width:200px; flex:1; }
+        .rm-toolbar input:focus, .rm-toolbar select:focus { border-color:var(--border-glow); }
+        .rm-btn { background:var(--bg-surface); border:1px solid var(--border-subtle); color:var(--text-primary);
+            border-radius:10px; padding:9px 14px; font-size:13px; font-weight:600; cursor:pointer; transition:var(--transition-smooth);
+            display:inline-flex; align-items:center; gap:7px; font-family:var(--font-body); }
+        .rm-btn:hover { background:var(--bg-surface-hover); border-color:var(--border-glow); }
+        .rm-btn.primary { background:var(--arcane-cyan); border-color:transparent; color:#04121d; }
+        .rm-btn.primary:hover { filter:brightness(1.1); }
+        .rm-btn.danger { color:var(--vital-ruby); }
+        .rm-count-line { font-size:12px; color:var(--text-muted); margin:8px 2px 0; font-family:var(--font-mono); }
+        #rmSaveState { display:inline-flex; align-items:center; gap:7px; font-size:12.5px; font-weight:600;
+            padding:7px 13px; border-radius:99px; border:1px solid var(--border-subtle); color:var(--text-secondary);
+            background:var(--bg-surface); }
+        #rmSaveState .dot { width:8px; height:8px; border-radius:50%; background:var(--text-muted); }
+        #rmSaveState.saving .dot { background:var(--temporal-amber); animation:rmPulse 1s infinite; }
+        #rmSaveState.saved .dot { background:var(--matrix-emerald); }
+        #rmSaveState.local .dot { background:var(--temporal-amber); }
+        @keyframes rmPulse { 50% { opacity:.35; } }
+        .rm-stats { display:flex; gap:10px; flex-wrap:wrap; margin:12px 0 14px; }
+        .rm-stat { background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:12px; padding:10px 14px; font-size:12.5px; color:var(--text-secondary); }
+        .rm-stat strong { color:var(--text-primary); font-size:15px; display:block; }
+        .rm-progress { height:8px; background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:99px; overflow:hidden; margin:4px 0 18px; }
+        .rm-progress > div { height:100%; background:linear-gradient(90deg, var(--matrix-emerald), var(--arcane-cyan)); width:0%; transition:width .4s ease; }
+        /* Board */
+        .rm-board { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:14px; align-items:start; }
+        @media (max-width:1100px){
+            .rm-board { display:flex; overflow-x:auto; scroll-snap-type:x mandatory; padding-bottom:12px; }
+            .rm-col { min-width:min(340px, 86vw); scroll-snap-align:start; }
+        }
+        .rm-col { background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:14px; min-height:220px; display:flex; flex-direction:column; transition:border-color .2s; }
+        .rm-col.dragover { border-color:var(--arcane-cyan); box-shadow:0 0 0 2px var(--arcane-cyan-glow); }
+        .rm-col.wip-warn .rm-col-head { border-bottom-color:var(--vital-ruby-glow); }
+        .rm-col.wip-warn .rm-count { color:var(--vital-ruby); border-color:var(--vital-ruby-glow); }
+        .rm-col-head { display:flex; align-items:center; gap:8px; padding:12px 12px; border-bottom:1px solid var(--border-subtle); position:sticky; top:0; }
+        .rm-col-head h3 { font-family:var(--font-title); font-size:13.5px; letter-spacing:.04em; margin:0; flex:1; }
+        .rm-count { font-family:var(--font-mono); font-size:12px; background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); border-radius:99px; padding:2px 10px; color:var(--text-secondary); }
+        .rm-collapse { border:1px solid var(--border-subtle); background:transparent; color:var(--text-secondary); border-radius:8px; width:26px; height:26px; cursor:pointer; font-size:14px; line-height:1; }
+        .rm-collapse:hover { color:var(--text-primary); border-color:var(--border-glow); }
+        .rm-col.collapsed .rm-col-body, .rm-col.collapsed .rm-quickadd { display:none; }
+        .rm-col-body { padding:10px; display:flex; flex-direction:column; gap:10px; min-height:110px; max-height:62vh; overflow-y:auto; }
+        .rm-col-body > * { flex-shrink:0; } /* sans ça, les cartes s'écrasent en fines lamelles */
+        /* Cards */
+        .rm-card { position:relative; background:var(--bg-surface-elevated); border:1px solid var(--border-subtle);
+            border-radius:12px; padding:10px 11px 10px 14px; transition:border-color .18s, transform .18s, box-shadow .18s, opacity .18s; overflow:hidden; }
+        .rm-card::before { content:""; position:absolute; left:0; top:0; bottom:0; width:4px; background:var(--text-muted); }
+        .rm-card.pr-high::before { background:var(--vital-ruby); }
+        .rm-card.pr-medium::before { background:var(--temporal-amber); }
+        .rm-card.pr-low::before { background:var(--matrix-emerald); }
+        .rm-card:hover { border-color:var(--border-glow); }
+        .rm-card.flash { animation:rmFlash 1.1s ease; }
+        @keyframes rmFlash { 0%,40% { box-shadow:0 0 0 2px var(--arcane-cyan-glow); border-color:var(--arcane-cyan); } 100% {} }
+        .rm-card.drag-src { opacity:.3; }
+        .rm-card-top { display:flex; align-items:center; gap:7px; margin-bottom:6px; flex-wrap:wrap; }
+        .rm-grip { cursor:grab; color:var(--text-muted); font-size:13px; letter-spacing:1px; padding:2px 5px; margin-left:auto;
+            border-radius:6px; touch-action:none; user-select:none; -webkit-user-select:none; }
+        .rm-grip:hover { color:var(--text-primary); background:var(--bg-surface-hover); }
+        .rm-grip:active { cursor:grabbing; }
+        .rm-board.locked-order .rm-grip { opacity:.3; cursor:not-allowed; }
+        .rm-id { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); }
+        .rm-epic { font-size:11px; font-weight:700; padding:2px 9px; border-radius:99px; background:rgba(56,189,248,.14); color:var(--arcane-cyan); border:1px solid var(--border-glow); }
+        .rm-prio { font-size:11px; font-weight:700; padding:2px 9px; border-radius:99px; border:1px solid var(--border-subtle); }
+        .rm-prio.high { color:var(--vital-ruby); border-color:var(--vital-ruby-glow); background:var(--vital-ruby-glow); }
+        .rm-prio.medium { color:var(--temporal-amber); border-color:var(--temporal-glow); background:var(--temporal-glow); }
+        .rm-prio.low { color:var(--matrix-emerald); border-color:var(--matrix-glow); background:var(--matrix-glow); }
+        .rm-card h4 { font-size:13.5px; margin:0 0 6px; line-height:1.35; padding-right:4px; }
+        .rm-card p { font-size:12.5px; color:var(--text-secondary); margin:0 0 8px; line-height:1.45; display:-webkit-box; -webkit-line-clamp:3; -webkit-box-orient:vertical; overflow:hidden; }
+        .rm-card-meta { font-family:var(--font-mono); font-size:11px; color:var(--text-muted); margin-bottom:9px; }
+        .rm-card-actions { display:flex; gap:6px; flex-wrap:wrap; opacity:0; transition:opacity .18s; }
+        .rm-card:hover .rm-card-actions, .rm-card:focus-within .rm-card-actions { opacity:1; }
+        @media (hover:none){ .rm-card-actions { opacity:1; } }
+        .rm-mini { font-size:11.5px; padding:5px 10px; border-radius:8px; border:1px solid var(--border-subtle); background:transparent; color:var(--text-secondary); cursor:pointer; font-family:var(--font-body); font-weight:600; }
+        .rm-mini:hover { color:var(--text-primary); border-color:var(--border-glow); }
+        .rm-mini.del:hover { color:var(--vital-ruby); border-color:var(--vital-ruby-glow); }
+        .rm-drop-hint { border:2px dashed var(--arcane-cyan); border-radius:12px; background:var(--arcane-cyan-glow); }
+        .rm-ghost { position:fixed; z-index:500; pointer-events:none; opacity:.92; transform:rotate(2deg) scale(1.02);
+            box-shadow:0 14px 34px rgba(0,0,0,.5); margin:0; }
+        .rm-empty { text-align:center; color:var(--text-muted); font-size:12.5px; padding:18px 8px; border:1px dashed var(--border-subtle); border-radius:10px; }
+        /* Quick-add */
+        .rm-quickadd { display:flex; gap:7px; padding:0 10px 10px; }
+        .rm-quickadd input { flex:1; background:var(--bg-canvas); border:1px dashed var(--border-subtle); color:var(--text-primary);
+            border-radius:9px; padding:8px 11px; font-size:12.5px; font-family:var(--font-body); outline:none; min-width:0; }
+        .rm-quickadd input:focus { border-style:solid; border-color:var(--border-glow); }
+        .rm-quickadd button { border:1px solid var(--border-subtle); background:transparent; color:var(--text-secondary);
+            border-radius:9px; padding:0 13px; font-size:16px; cursor:pointer; }
+        .rm-quickadd button:hover { color:var(--text-primary); border-color:var(--border-glow); }
+        /* Modal */
+        .rm-modal-backdrop { position:fixed; inset:0; background:rgba(0,0,0,.62); backdrop-filter:blur(3px); display:none; align-items:center; justify-content:center; z-index:200; padding:18px; }
+        .rm-modal-backdrop.open { display:flex; }
+        .rm-modal { background:var(--bg-surface); border:1px solid var(--border-subtle); border-radius:16px; max-width:600px; width:100%; padding:22px; max-height:90vh; overflow:auto; animation:rmPop .18s ease; }
+        @keyframes rmPop { from { transform:translateY(8px) scale(.985); opacity:0; } }
+        .rm-modal h3 { font-family:var(--font-title); margin:0 0 4px; font-size:17px; }
+        .rm-live { display:flex; gap:7px; align-items:center; flex-wrap:wrap; margin-bottom:14px; font-size:11px; }
+        .rm-field { margin-bottom:12px; }
+        .rm-field label { display:block; font-size:11.5px; font-weight:700; color:var(--text-secondary); margin-bottom:5px; text-transform:uppercase; letter-spacing:.05em; }
+        .rm-field label .auto { color:var(--matrix-emerald); text-transform:none; letter-spacing:0; font-weight:500; }
+        .rm-field input, .rm-field select, .rm-field textarea { width:100%; background:var(--bg-canvas); border:1px solid var(--border-subtle); color:var(--text-primary); border-radius:10px; padding:10px 12px; font-family:var(--font-body); font-size:13.5px; outline:none; }
+        .rm-field input:focus, .rm-field select:focus, .rm-field textarea:focus { border-color:var(--border-glow); }
+        .rm-field textarea { min-height:90px; resize:vertical; }
+        .rm-field-row { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+        @media (max-width:560px){ .rm-field-row { grid-template-columns:1fr; } }
+        .rm-seg { display:flex; gap:7px; }
+        .rm-seg button { flex:1; padding:9px 4px; border-radius:10px; border:1px solid var(--border-subtle); background:var(--bg-canvas);
+            color:var(--text-secondary); font-size:12.5px; font-weight:700; cursor:pointer; font-family:var(--font-body); }
+        .rm-seg button.on[data-v="high"] { color:var(--vital-ruby); border-color:var(--vital-ruby); background:var(--vital-ruby-glow); }
+        .rm-seg button.on[data-v="medium"] { color:var(--temporal-amber); border-color:var(--temporal-amber); background:var(--temporal-glow); }
+        .rm-seg button.on[data-v="low"] { color:var(--matrix-emerald); border-color:var(--matrix-emerald); background:var(--matrix-glow); }
+        .rm-modal-foot { display:flex; gap:10px; justify-content:flex-end; margin-top:16px; }
+        .rm-toast { position:fixed; bottom:22px; left:50%; transform:translateX(-50%) translateY(20px); background:var(--bg-surface-elevated);
+            border:1px solid var(--border-glow); color:var(--text-primary); padding:11px 14px 11px 18px; border-radius:12px; font-size:13px;
+            opacity:0; pointer-events:none; transition:var(--transition-smooth); z-index:300; display:flex; gap:12px; align-items:center; max-width:min(520px, 92vw); }
+        .rm-toast.show { opacity:1; transform:translateX(-50%) translateY(0); pointer-events:auto; }
+        .rm-toast button { border:1px solid var(--border-glow); background:transparent; color:var(--arcane-cyan); border-radius:8px;
+            padding:5px 12px; font-weight:700; cursor:pointer; font-size:12.5px; white-space:nowrap; }
+        /* Epic progress (inspector) */
+        .rm-epic-row { margin-bottom:11px; }
+        .rm-epic-row .lbl { display:flex; justify-content:space-between; font-size:12px; color:var(--text-secondary); margin-bottom:4px; }
+        .rm-epic-row .lbl strong { color:var(--text-primary); font-family:var(--font-mono); font-size:11.5px; }
+        .rm-epic-bar { height:6px; border-radius:99px; background:var(--bg-surface-elevated); border:1px solid var(--border-subtle); overflow:hidden; }
+        .rm-epic-bar > div { height:100%; background:linear-gradient(90deg, var(--matrix-emerald), var(--arcane-cyan)); transition:width .4s ease; }
+        @media (prefers-reduced-motion:reduce){ * { animation:none !important; transition:none !important; } }
+    </style>
+</head>
+
+<body>
+    <div class="app-container">
+        <header class="topbar">
+            <div class="topbar-left">
+                <button class="mobile-toggle-btn" id="mobileToggle" aria-label="Ouvrir le menu">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+                </button>
+                <a href="index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
+                    </div>
+                    <div class="brand-info"><h1>Système RP <span class="brand-badge">Codex v2.4</span></h1></div>
+                </a>
+                <nav class="breadcrumbs"><span>Codex</span><span>/</span><span class="current">Roadmap Projet</span></nav>
+            </div>
+            <div class="topbar-right">
+                <a href="Killtime/index.html" class="topbar-site-link"><span>Site Killtime</span></a>
+                <div class="search-trigger" id="searchTrigger"><span>Rechercher...</span><kbd class="search-kbd">Ctrl+K</kbd></div>
+                <div id="authTopbarSlot">
+                    <button class="auth-trigger-btn" id="authModalTrigger" type="button"><span>Connexion</span></button>
+                </div>
+                <button class="theme-btn" id="themeToggle" title="Basculer le thème">
+                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="5"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+                </button>
+            </div>
+        </header>
+
+        <div class="content-wrapper">
+            <aside class="sidebar" id="sidebar">
+                <div class="sidebar-header">
+                    <div class="sidebar-title"><span>Table des Matières</span><span>9 Livres</span></div>
+                    <div class="sidebar-search-box">
+                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="filterInput" placeholder="Filtrer une règle ou un livre..." autocomplete="off">
+                    </div>
+                </div>
+                <nav class="sidebar-nav" id="sidebarNav">
+                    <div class="external-site-group">
+                        <a href="Killtime/index.html" class="nav-external-link"><span class="nav-external-label"><span>Site Killtime</span></span><span class="nav-item-badge badge-live">Univers ↗</span></a>
+                    </div>
+                    <div class="nav-group expanded">
+                        <button class="nav-group-header"><div class="group-meta"><span class="group-tag">◆</span><span>Pilotage</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list">
+                            <li><a href="roadmap.html" class="nav-item-link active"><span>Roadmap Projet (Kanban)</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                        </ul>
+                    </div>
+                    <div class="nav-group">
+                        <button class="nav-group-header"><div class="group-meta"><span class="group-tag">00</span><span>Prologue &amp; Vision</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="index.html#preface" class="nav-item-link"><span>Préface : Le Souffle &amp; Le Temps</span></a></li></ul>
+                    </div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.I</span><span>Bases &amp; Création PJ</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_1.html" class="nav-item-link"><span>Livre I (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.II</span><span>Paliers de Dés &amp; Épreuves</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_2.html" class="nav-item-link"><span>Livre II (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.III</span><span>Arbres de Compétences</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_3.html" class="nav-item-link"><span>Livre III (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.IV</span><span>5e Force &amp; Magie</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_4.html" class="nav-item-link"><span>Livre IV (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.V</span><span>Temps &amp; Causalité</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.VI</span><span>Combat Tactique</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_6.html" class="nav-item-link"><span>Livre VI (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.VII</span><span>Santé, États &amp; Blessures</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.VIII</span><span>Arsenal &amp; Arcanotech</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.IX</span><span>Outils Web Interactifs</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.X</span><span>Atlas des Mondes</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_10.html" class="nav-item-link"><span>Livre X (Fichier Dédié)</span></a></li></ul></div>
+                    <div class="nav-group"><button class="nav-group-header"><div class="group-meta"><span class="group-tag">L.XI</span><span>Bestiaire &amp; Menaces</span></div><svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg></button>
+                        <ul class="nav-items-list"><li><a href="livre_11.html" class="nav-item-link"><span>Livre XI (Fichier Dédié)</span></a></li></ul></div>
+                </nav>
+            </aside>
+
+            <main class="main-content" id="roadmap">
+                <header class="doc-header">
+                    <div class="doc-meta-tags">
+                        <span class="pill-badge cyan">Solo • Kanban • Autosave</span>
+                        <span class="pill-badge amber" id="rmBoardName">Scene 01 — Placeholders</span>
+                    </div>
+                    <h1 class="doc-title">Roadmap Projet</h1>
+                    <p class="doc-subtitle" id="rmBoardDesc">Mini-Jira solo : attrapez la poignée <code>⋮⋮</code> pour réordonner dans et entre colonnes.</p>
+                </header>
+
+                <article class="prose">
+                    <div class="rm-tabs" id="rmTabs"></div>
+                    <div class="rm-toolbar">
+                        <input type="text" id="rmSearch" placeholder="Filtrer…  ( / )">
+                        <select id="rmEpicFilter"><option value="">Tous épics</option></select>
+                        <select id="rmPrioFilter">
+                            <option value="">Toutes priorités</option>
+                            <option value="high">Haute</option>
+                            <option value="medium">Moyenne</option>
+                            <option value="low">Basse</option>
+                        </select>
+                        <select id="rmSort" title="Ordre d'affichage">
+                            <option value="manual">Tri : manuel ↕</option>
+                            <option value="priority">Tri : priorité</option>
+                            <option value="id">Tri : identifiant</option>
+                        </select>
+                        <button class="rm-btn primary" id="rmAdd">+ Nouvelle tâche <kbd style="opacity:.6">N</kbd></button>
+                        <button class="rm-btn" id="rmExport">Exporter JSON</button>
+                        <button class="rm-btn" id="rmImportBtn">Importer</button>
+                        <input type="file" id="rmImport" accept="application/json,.json" style="display:none">
+                        <button class="rm-btn danger" id="rmReset">Réinitialiser</button>
+                        <span id="rmSaveState"><span class="dot"></span><span id="rmSaveLabel">Prêt</span></span>
+                    </div>
+                    <div class="rm-count-line" id="rmCountLine"></div>
+
+                    <div class="rm-stats">
+                        <div class="rm-stat"><strong id="stTotal">0</strong>Total</div>
+                        <div class="rm-stat"><strong id="stTodo">0</strong>À faire</div>
+                        <div class="rm-stat"><strong id="stProg">0</strong>En cours</div>
+                        <div class="rm-stat"><strong id="stDone">0</strong>Terminées</div>
+                        <div class="rm-stat"><strong id="stPct">0%</strong>Avancement</div>
+                    </div>
+                    <div class="rm-progress"><div id="rmBar"></div></div>
+
+                    <div class="rm-board" id="rmBoard">
+                        <div class="rm-col" data-status="todo" id="rmCol-todo">
+                            <div class="rm-col-head"><h3>À FAIRE</h3><span class="rm-count" id="cTodo">0</span><button class="rm-collapse" data-col="todo" title="Replier">–</button></div>
+                            <div class="rm-col-body" id="col-todo"></div>
+                            <div class="rm-quickadd"><input placeholder="+ Ajout rapide…" data-qa="todo"><button data-qa-btn="todo" title="Ajouter">+</button></div>
+                        </div>
+                        <div class="rm-col" data-status="in_progress" id="rmCol-in_progress">
+                            <div class="rm-col-head"><h3>EN COURS</h3><span class="rm-count" id="cProg">0</span><button class="rm-collapse" data-col="in_progress" title="Replier">–</button></div>
+                            <div class="rm-col-body" id="col-in_progress"></div>
+                            <div class="rm-quickadd"><input placeholder="+ Ajout rapide…" data-qa="in_progress"><button data-qa-btn="in_progress" title="Ajouter">+</button></div>
+                        </div>
+                        <div class="rm-col" data-status="done" id="rmCol-done">
+                            <div class="rm-col-head"><h3>TERMINÉ</h3><span class="rm-count" id="cDone">0</span><button class="rm-collapse" data-col="done" title="Replier">–</button></div>
+                            <div class="rm-col-body" id="col-done"></div>
+                            <div class="rm-quickadd"><input placeholder="+ Ajout rapide…" data-qa="done"><button data-qa-btn="done" title="Ajouter">+</button></div>
+                        </div>
+                    </div>
+
+                    <div class="callout temporal" style="margin-top:22px;">
+                        <div class="callout-header">Autosave solo</div>
+                        <div class="callout-body">Chaque action (drag, édition, création) est sauvegardée aussitôt : en local (<code>localStorage</code>) et, via <code>node users/server.js</code>, directement dans <code>data/roadmaps.json</code> (avec <code>.bak</code>). Pastille d'état dans la barre d'outils. Raccourcis : <code>N</code> nouvelle tâche, <code>/</code> recherche, <code>Échap</code> fermer.</div>
+                    </div>
+                </article>
+            </main>
+
+            <aside class="inspector">
+                <div class="inspector-section">
+                    <div class="inspector-title">Sur cette page</div>
+                    <ul class="toc-on-page">
+                        <li><a href="#rmCol-todo">À faire</a></li>
+                        <li><a href="#rmCol-in_progress">En cours</a></li>
+                        <li><a href="#rmCol-done">Terminées</a></li>
+                    </ul>
+                </div>
+                <div class="inspector-section">
+                    <div class="inspector-title">Avancement par épic</div>
+                    <div id="rmEpics"></div>
+                </div>
+                <div class="inspector-section">
+                    <div class="inspector-title">Source</div>
+                    <div class="telemetry-card">
+                        <div class="telemetry-row"><span class="telemetry-label">JSON :</span><span class="telemetry-val">data/roadmaps.json</span></div>
+                        <div class="telemetry-row"><span class="telemetry-label">Scene :</span><span class="telemetry-val">v1_scene_01</span></div>
+                        <div class="telemetry-row"><span class="telemetry-label">Tâches :</span><span class="telemetry-val" id="inspTotal">22</span></div>
+                        <div class="telemetry-row"><span class="telemetry-label">Modifié :</span><span class="telemetry-val" id="inspDirty">non</span></div>
+                    </div>
+                </div>
+                <div class="next-stage-card">
+                    <h5>Retour Codex</h5>
+                    <p>Revenir à la préface du Système RP.</p>
+                    <a href="index.html" class="btn-step"><span>Ouvrir l'index</span></a>
+                </div>
+            </aside>
+        </div>
+    </div>
+
+    <div class="rm-modal-backdrop" id="rmBackdrop">
+        <div class="rm-modal" role="dialog" aria-modal="true">
+            <h3 id="rmModalTitle">Nouvelle tâche</h3>
+            <div class="rm-live" id="rmLive"></div>
+            <div class="rm-field"><label>Titre</label><input id="fTitle" placeholder="Ex : Remplacer X par asset final"></div>
+            <div class="rm-field"><label>Détails</label><textarea id="fDetails" placeholder="Description, cotes, intention..."></textarea></div>
+            <div class="rm-field-row">
+                <div class="rm-field"><label>Épic</label><input id="fEpic" list="epicList" placeholder="Ex : Terminal"><datalist id="epicList"></datalist></div>
+                <div class="rm-field"><label>Priorité <span class="auto">— appliquée aussitôt</span></label>
+                    <div class="rm-seg" id="fPrioSeg">
+                        <button type="button" data-v="high">Haute</button>
+                        <button type="button" data-v="medium">Moyenne</button>
+                        <button type="button" data-v="low">Basse</button>
+                    </div>
+                </div>
+            </div>
+            <div class="rm-field-row">
+                <div class="rm-field"><label>Statut <span class="auto">— appliqué aussitôt</span></label><select id="fStatus"><option value="todo">À faire</option><option value="in_progress">En cours</option><option value="done">Terminé</option></select></div>
+                <div class="rm-field"><label>Placeholder / ID objet</label><input id="fPlaceholder" placeholder="Ex : Debris_0"></div>
+            </div>
+            <div class="rm-field-row">
+                <div class="rm-field"><label>Primitive</label><select id="fPrim"><option>Sphere</option><option>Cube</option><option>Cylinder</option><option>Capsule</option><option>Quad</option><option>Prefab</option></select></div>
+                <div class="rm-field"><label>Asset suggéré</label><input id="fAsset" placeholder="Prefab / VFX cible"></div>
+            </div>
+            <div class="rm-modal-foot">
+                <button class="rm-btn" id="rmCancel">Annuler</button>
+                <button class="rm-btn primary" id="rmSave">Terminé ✓</button>
+            </div>
+        </div>
+    </div>
+    <div class="rm-toast" id="rmToast"><span id="rmToastMsg"></span><button id="rmToastBtn" style="display:none"></button></div>
+
+    <script src="js/codex.js"></script>
+    <script src="users/user_store.js"></script>
+    <script src="users/auth.js"></script>
+    <script src="js/roadmap.js"></script>
+</body>
+</html>
