@@ -270,33 +270,41 @@ namespace Killtime.Story
             GUILayout.BeginHorizontal();
             cine.Letterbox = GUILayout.Toggle(cine.Letterbox, "Bandes noires (Letterbox)", GUILayout.Width(180));
             cine.HideSceneChat = GUILayout.Toggle(cine.HideSceneChat, "Masquer dialogue (chat de scène)", GUILayout.Width(220));
+            cine.InPlace = GUILayout.Toggle(cine.InPlace, "Sur place (caméra fixe)", GUILayout.Width(170));
             GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Cam Début :", GUILayout.Width(80));
-            cine.StartTransition = (CinematicCameraTransition)GUILayout.Toolbar((int)cine.StartTransition, new[] { "Téléportation", "Fluide" }, GUILayout.Width(170));
-            if (cine.StartTransition == CinematicCameraTransition.Smooth)
+            if (!cine.InPlace)
             {
-                GUILayout.Label("Durée :", GUILayout.Width(45));
-                cine.StartTransitionDuration = NumField("cine_start_dur", cine.StartTransitionDuration, 45f);
-                cine.StartTransitionDuration = Mathf.Clamp(cine.StartTransitionDuration, 0.1f, 5f);
-                GUILayout.Label("s", GUILayout.Width(15));
-            }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Cam Début :", GUILayout.Width(80));
+                cine.StartTransition = (CinematicCameraTransition)GUILayout.Toolbar((int)cine.StartTransition, new[] { "Téléportation", "Fluide" }, GUILayout.Width(170));
+                if (cine.StartTransition == CinematicCameraTransition.Smooth)
+                {
+                    GUILayout.Label("Durée :", GUILayout.Width(45));
+                    cine.StartTransitionDuration = NumField("cine_start_dur", cine.StartTransitionDuration, 45f);
+                    cine.StartTransitionDuration = Mathf.Clamp(cine.StartTransitionDuration, 0.1f, 5f);
+                    GUILayout.Label("s", GUILayout.Width(15));
+                }
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
 
-            GUILayout.BeginHorizontal();
-            GUILayout.Label("Cam Fin :", GUILayout.Width(80));
-            cine.EndTransition = (CinematicCameraTransition)GUILayout.Toolbar((int)cine.EndTransition, new[] { "Téléportation", "Fluide" }, GUILayout.Width(170));
-            if (cine.EndTransition == CinematicCameraTransition.Smooth)
-            {
-                GUILayout.Label("Durée :", GUILayout.Width(45));
-                cine.EndTransitionDuration = NumField("cine_end_dur", cine.EndTransitionDuration, 45f);
-                cine.EndTransitionDuration = Mathf.Clamp(cine.EndTransitionDuration, 0.1f, 5f);
-                GUILayout.Label("s", GUILayout.Width(15));
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Cam Fin :", GUILayout.Width(80));
+                cine.EndTransition = (CinematicCameraTransition)GUILayout.Toolbar((int)cine.EndTransition, new[] { "Téléportation", "Fluide" }, GUILayout.Width(170));
+                if (cine.EndTransition == CinematicCameraTransition.Smooth)
+                {
+                    GUILayout.Label("Durée :", GUILayout.Width(45));
+                    cine.EndTransitionDuration = NumField("cine_end_dur", cine.EndTransitionDuration, 45f);
+                    cine.EndTransitionDuration = Mathf.Clamp(cine.EndTransitionDuration, 0.1f, 5f);
+                    GUILayout.Label("s", GUILayout.Width(15));
+                }
+                GUILayout.FlexibleSpace();
+                GUILayout.EndHorizontal();
             }
-            GUILayout.FlexibleSpace();
-            GUILayout.EndHorizontal();
+            else
+            {
+                GUILayout.Label("<color=#FFC94D>📷 <b>Mode Sur Place actif :</b> La caméra reste sur sa position de vue actuelle (aucun voyage, secousse/effets appliqués directement).</color>");
+            }
 
             GUILayout.BeginHorizontal();
             GUILayout.Label("<color=grey>« Fin → » : carte enchaînée à la fin (ciné, réplique, conséquence, event, nœud). Vide = fin simple. Éditable aussi au wire depuis la carte graphe.</color>");
@@ -346,12 +354,15 @@ namespace Killtime.Story
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
-            GUILayout.Label("Label :", GUILayout.Width(50));
-            shot.Label = GUILayout.TextField(shot.Label ?? "", GUILayout.Width(150));
-            GUILayout.Label("Durée s :", GUILayout.Width(60));
-            shot.Duration = NumField($"shot_{_shotIndex}_dur", shot.Duration, 50f);
+            GUILayout.Label("Label :", GUILayout.Width(46));
+            shot.Label = GUILayout.TextField(shot.Label ?? "", GUILayout.Width(110));
+            GUILayout.Label("Durée s :", GUILayout.Width(54));
+            shot.Duration = NumField($"shot_{_shotIndex}_dur", shot.Duration, 42f);
             shot.Duration = Mathf.Clamp(shot.Duration, 0.2f, 60f);
-            shot.Letterbox = GUILayout.Toggle(shot.Letterbox, "Letterbox", GUILayout.Width(90));
+            GUILayout.Label("Délai s :", GUILayout.Width(50));
+            shot.StartDelay = NumField($"shot_{_shotIndex}_delay", shot.StartDelay, 42f);
+            shot.StartDelay = Mathf.Clamp(shot.StartDelay, 0f, 60f);
+            shot.Letterbox = GUILayout.Toggle(shot.Letterbox, "Letterbox", GUILayout.Width(85));
             GUILayout.EndHorizontal();
 
             GUILayout.Label("<b>Voyage caméra (START → END automatique) :</b>");

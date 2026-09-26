@@ -1230,7 +1230,17 @@ namespace Killtime.Tactics
 
         private void HandleMouseInteraction()
         {
-            if (CombatHUD.IsPaused) return;
+            if (CombatHUD.IsPaused)
+            {
+                // Sur pause : seule la fonction dock des fenêtres flottantes reste active.
+                // Clic carte 3D (hors UI/HUD) => repli, sans sélection ni déplacement.
+                if (Input.GetMouseButtonDown(0)
+                    && !Killtime.UI.FloatingWindowChrome.IsPointerOverAnyWindow())
+                {
+                    Killtime.UI.FloatingWindowChrome.OnMapClicked();
+                }
+                return;
+            }
             if (UnityEngine.Camera.main == null || _gridVisualizer == null) return;
 
             // Souris sur fenêtre flottante/HUD : interaction exclusive avec l'UI, pas la carte 3D.

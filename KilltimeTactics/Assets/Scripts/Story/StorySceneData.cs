@@ -360,6 +360,7 @@ namespace Killtime.Story.Data
     {
         public string LineId = "";
         public string SpeakerId = "";
+        public bool IsNarration = false;
         public string StageDirection = "sourire en coin";
         public string Speech = "Nous partons dès que le signal est validé.";
         // HÉRITÉ (dé-hardcodé) : les focus caméra des répliques passent par des cartes 🎬
@@ -530,6 +531,7 @@ namespace Killtime.Story.Data
         public string ShotId = "shot_1";
         public string Label = "Plan 1";
         public float Duration = 2.5f;
+        public float StartDelay = 0f;
         // Voyage caméra automatique : interpolation Start → End sur Duration.
         public Vector3 CamStartPos = new Vector3(0f, 9f, -9f);
         public Vector3 CamStartEuler = new Vector3(45f, 0f, 0f);
@@ -569,7 +571,8 @@ namespace Killtime.Story.Data
             if (EndPoses != null) moves += EndPoses.Count;
             string sub = string.IsNullOrWhiteSpace(Speech) ? "" : " 💬";
             string fx = MoveEffect == CinematicCameraEffect.None ? "" : $" ✦{MoveEffect}";
-            return $"{Duration:0.0}s {Ease}{fx} · {moves} poses{sub}";
+            string delay = StartDelay > 0.01f ? $"[attente {StartDelay:0.0}s] " : "";
+            return $"{delay}{Duration:0.0}s {Ease}{fx} · {moves} poses{sub}";
         }
     }
 
@@ -577,6 +580,29 @@ namespace Killtime.Story.Data
     {
         Teleport = 0,
         Smooth = 1
+    }
+
+    public enum ScenePrimitiveKind
+    {
+        Sphere = 0,
+        Cube = 1,
+        Cylinder = 2,
+        Capsule = 3,
+        Quad = 4
+    }
+
+    [Serializable]
+    public class ScenePlaceholderData
+    {
+        public string Id = "placeholder_1";
+        public ScenePrimitiveKind Primitive = ScenePrimitiveKind.Sphere;
+        public Vector3 Position = Vector3.zero;
+        public Vector3 EulerAngles = Vector3.zero;
+        public Vector3 Scale = Vector3.one;
+        public Color Color = Color.white;
+        public float Smoothness = 0.2f;
+        public bool IsEmissive = false;
+        public Color EmissionColor = Color.black;
     }
 
     [Serializable]
@@ -588,6 +614,7 @@ namespace Killtime.Story.Data
         public float PlaybackSpeed = 1f;
         public bool Letterbox = true;
         public bool HideSceneChat = false;
+        public bool InPlace = false;
         public CinematicCameraTransition StartTransition = CinematicCameraTransition.Teleport;
         public float StartTransitionDuration = 0.5f;
         public CinematicCameraTransition EndTransition = CinematicCameraTransition.Teleport;
@@ -605,9 +632,10 @@ namespace Killtime.Story.Data
             float total = 0f;
             if (Shots != null)
                 for (int i = 0; i < Shots.Count; i++)
-                    if (Shots[i] != null) total += Mathf.Max(0.1f, Shots[i].Duration);
+                    if (Shots[i] != null) total += Mathf.Max(0.1f, Shots[i].Duration + Shots[i].StartDelay);
             if (PlaybackSpeed > 0.01f) total /= PlaybackSpeed;
-            return n == 0 ? "(aucun plan)" : $"{n} plan(s) · ~{total:0.0}s";
+            string inPlaceTag = InPlace ? " [sur place]" : "";
+            return n == 0 ? "(aucun plan)" : $"{n} plan(s) · ~{total:0.0}s{inPlaceTag}";
         }
     }
 
@@ -679,6 +707,7 @@ namespace Killtime.Story.Data
         public string EnvironmentId = "";
         public string NextSceneId = "";
 
+        public List<ScenePlaceholderData> EnvironmentPlaceholders = new();
         public Killtime.UI.TacticalMapSaveData EmbeddedMap;
         public List<SceneActorSpawnData> Actors = new();
         public List<SceneInteractableSpawnData> Interactables = new();
@@ -762,6 +791,7 @@ namespace Killtime.Story.Data
             data.Nodes ??= new List<SceneNodeData>();
             data.Triggers ??= new List<SceneTriggerData>();
             data.Cinematics ??= new List<SceneCinematicData>();
+            data.EnvironmentPlaceholders ??= new List<ScenePlaceholderData>();
             for (int ci = 0; ci < data.Cinematics.Count; ci++)
             {
                 var cine = data.Cinematics[ci];
@@ -775,6 +805,7 @@ namespace Killtime.Story.Data
                     if (shot == null) continue;
                     if (string.IsNullOrWhiteSpace(shot.ShotId)) shot.ShotId = $"shot_{s + 1}";
                     if (shot.Duration < 0.1f) shot.Duration = 0.1f;
+                    if (shot.StartDelay < 0f) shot.StartDelay = 0f;
                     if (shot.TrackDistance < 0.5f) shot.TrackDistance = 0.5f;
                     else if (shot.TrackDistance > 35f) shot.TrackDistance = 35f;
                     shot.StartPoses ??= new List<SceneCinematicActorPose>();

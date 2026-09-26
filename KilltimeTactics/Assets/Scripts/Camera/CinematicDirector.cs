@@ -61,6 +61,18 @@ namespace Killtime.CameraSystem
         private float _freeYaw = 0.0f;
         private Coroutine _activeCinematicRoutine;
 
+        private Vector3 _shakeOffsetPos = Vector3.zero;
+        private Vector3 _shakeOffsetEuler = Vector3.zero;
+        private float _shakeOffsetFov = 0f;
+
+        private Transform GetCameraTransform()
+        {
+            if (_mainCamera != null) return _mainCamera.transform;
+            var main = UnityEngine.Camera.main;
+            if (main != null) return main.transform;
+            return transform;
+        }
+
         // ================= CINÉMATIQUES DE SCÈNE (cartes 🎬) =================
         // Lecture fire-and-forget : le runtime déclenche sans attendre la fin,
         // la carte suivante s'enclenche immédiatement. Les cinématiques qui se
@@ -150,6 +162,15 @@ namespace Killtime.CameraSystem
         public void PlaySceneCinematic(SceneCinematicData cine, Action onComplete = null)
         {
             if (cine == null || cine.Shots == null || cine.Shots.Count == 0) return;
+
+            // Une cinématique sur place ne prend pas le contrôle exclusif de la caméra
+            // et ne s'empile pas : elle s'exécute immédiatement en superposition additive.
+            if (cine.InPlace)
+            {
+                StartCoroutine(InPlaceCinematicRoutine(cine, onComplete));
+                return;
+            }
+
             if (IsPlayingSceneCinematic)
             {
                 _sceneCinematicQueue.Enqueue(new QueuedCinematic { Data = cine, OnComplete = onComplete });
@@ -157,6 +178,96 @@ namespace Killtime.CameraSystem
             }
             _sceneCinematicOnComplete = onComplete;
             _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
+        }
+
+        private IEnumerator InPlaceCinematicRoutine(SceneCinematicData cine, Action onComplete)
+        {
+            float speed = cine.PlaybackSpeed > 0.01f ? cine.PlaybackSpeed : 1f;
+            var shots = cine.Shots != null ? new List<SceneCinematicShotData>(cine.Shots) : new List<SceneCinematicShotData>();
+
+            bool skipped = false;
+
+            for (int s = 0; s < shots.Count; s++)
+            {
+                var shot = shots[s];
+                if (shot == null) continue;
+                float duration = Mathf.Max(0.1f, shot.Duration / speed);
+                float startDelay = Mathf.Max(0f, shot.StartDelay / speed);
+
+                // Sécurité : si aucun effet n'est assigné sur un plan sur place, forcer la secousse tactique
+                if (shot.MoveEffect == CinematicCameraEffect.None)
+                {
+                    shot.MoveEffect = CinematicCameraEffect.HandheldShake;
+                    if (shot.ShakeIntensity < 0.05f) shot.ShakeIntensity = 0.25f;
+                }
+
+                if (!string.IsNullOrWhiteSpace(shot.Speech))
+                {
+                    string who = string.IsNullOrWhiteSpace(shot.SpeakerId) ? cine.Title : shot.SpeakerId;
+                    CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>[{who}]</b> « {shot.Speech} »", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
+                }
+                if (!string.IsNullOrWhiteSpace(shot.SoundCueId) && KilltimeAudioManager.Instance != null)
+                {
+                    try
+                    {
+                        if (Enum.TryParse<SoundId>(shot.SoundCueId, out var cue))
+                            KilltimeAudioManager.Instance.PlayUI(cue, 0.6f);
+                    }
+                    catch { /* ignore */ }
+                }
+
+                if (startDelay > 0.001f)
+                {
+                    float delayElapsed = 0f;
+                    while (delayElapsed < startDelay)
+                    {
+                        while (CombatHUD.IsPaused) yield return null;
+                        delayElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                        if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape)) { skipped = true; break; }
+                        yield return null;
+                    }
+                }
+                if (skipped) break;
+
+                float elapsed = 0f;
+                while (elapsed < duration)
+                {
+                    while (CombatHUD.IsPaused) yield return null;
+                    elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                    float t = Mathf.Clamp01(elapsed / duration);
+                    float e = ApplyCinematicEase(shot.Ease, t);
+
+                    // Génération de l'offset additif dans la passe normale (avant rendu)
+                    Vector3 sPos = Vector3.zero;
+                    Vector3 sEuler = Vector3.zero;
+                    float sFov = 0f;
+                    ApplyShotEffect(shot, t, e, ref sPos, ref sEuler, ref sFov);
+
+                    _shakeOffsetPos = sPos;
+                    _shakeOffsetEuler = sEuler;
+                    _shakeOffsetFov = sFov;
+
+                    if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape))
+                    {
+                        skipped = true;
+                        break;
+                    }
+
+                    yield return null;
+                }
+
+                _shakeOffsetPos = Vector3.zero;
+                _shakeOffsetEuler = Vector3.zero;
+                _shakeOffsetFov = 0f;
+
+                if (skipped) break;
+            }
+
+            _shakeOffsetPos = Vector3.zero;
+            _shakeOffsetEuler = Vector3.zero;
+            _shakeOffsetFov = 0f;
+
+            try { onComplete?.Invoke(); } catch { /* ignore */ }
         }
 
         /// <summary>
@@ -460,7 +571,7 @@ namespace Killtime.CameraSystem
                 }
             }
 
-            if (driveCamera && cine.StartTransition == CinematicCameraTransition.Smooth && shots.Count > 0 && shots[0] != null)
+            if (!cine.InPlace && driveCamera && cine.StartTransition == CinematicCameraTransition.Smooth && shots.Count > 0 && shots[0] != null)
             {
                 var firstShot = shots[0];
                 Vector3 targetStartPos = firstShot.CamStartPos;
@@ -672,7 +783,16 @@ namespace Killtime.CameraSystem
                 Vector3 effEndPos = shot.CamEndPos;
                 Vector3 effEndEuler = shot.CamEndEuler;
                 float effEndFov = shot.CamEndFov;
-                if (shot.TrackFocusActor && !string.IsNullOrWhiteSpace(shot.FocusActorId))
+                if (cine.InPlace)
+                {
+                    effStartPos = livePrePos;
+                    effStartEuler = livePreRot.eulerAngles;
+                    effStartFov = livePreFov;
+                    effEndPos = livePrePos;
+                    effEndEuler = livePreRot.eulerAngles;
+                    effEndFov = livePreFov;
+                }
+                else if (shot.TrackFocusActor && !string.IsNullOrWhiteSpace(shot.FocusActorId))
                 {
                     var tracked = FindSceneUnit(shot.FocusActorId);
                     if (tracked != null)
@@ -715,11 +835,40 @@ namespace Killtime.CameraSystem
                     if (_mainCamera != null) _mainCamera.fieldOfView = effStartFov;
                 }
 
-                float elapsed = 0f;
-                // Garde anti-conflit avec la pause (Escape/P) : reprendre avec Escape
-                // ne doit PAS skipper instantanément la cinématique.
+                float startDelay = Mathf.Max(0f, shot.StartDelay / speed);
                 bool wasPaused = CombatHUD.IsPaused;
-                while (elapsed < duration)
+
+                if (startDelay > 0.001f)
+                {
+                    float delayElapsed = 0f;
+                    while (delayElapsed < startDelay)
+                    {
+                        while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
+                        bool pausedNow = CombatHUD.IsPaused;
+                        delayElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                        if (driveCamera)
+                        {
+                            Vector3 waitPos = effStartPos;
+                            Vector3 waitEuler = effStartEuler;
+                            float waitFov = effStartFov;
+                            ApplyShotEffect(shot, 0f, 0f, ref waitPos, ref waitEuler, ref waitFov);
+                            transform.position = waitPos;
+                            transform.rotation = Quaternion.Euler(waitEuler);
+                            if (_mainCamera != null) _mainCamera.fieldOfView = waitFov;
+                        }
+                        if (cine.Skippable && !pausedNow && !wasPaused && Input.GetKeyDown(KeyCode.Escape))
+                        {
+                            skipped = true;
+                            CombatHUD.Instance?.AddAdvancedLog("⏩ <b>Cinématique passée.</b>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray);
+                            break;
+                        }
+                        wasPaused = pausedNow;
+                        yield return null;
+                    }
+                }
+
+                float elapsed = 0f;
+                while (!skipped && elapsed < duration)
                 {
                     while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
                     bool pausedNow = CombatHUD.IsPaused;
@@ -747,8 +896,15 @@ namespace Killtime.CameraSystem
                             Mathf.Lerp(effStartEuler.z, effEndEuler.z, e));
                         float fov = Mathf.Lerp(effStartFov, effEndFov, e);
                         ApplyShotEffect(shot, t, e, ref camPos, ref camEuler, ref fov);
-                        transform.position = camPos;
-                        transform.rotation = Quaternion.Euler(camEuler);
+
+                        // Injection additive de toute secousse concurrente (ex: focus Erika + secousse active)
+                        camPos += _shakeOffsetPos;
+                        camEuler += _shakeOffsetEuler;
+                        fov += _shakeOffsetFov;
+
+                        Transform camTrans = GetCameraTransform();
+                        camTrans.position = camPos;
+                        camTrans.rotation = Quaternion.Euler(camEuler);
                         if (_mainCamera != null) _mainCamera.fieldOfView = fov;
                     }
 
@@ -880,7 +1036,13 @@ namespace Killtime.CameraSystem
             // Si une autre cinématique suit, on enchaîne DIRECTEMENT (évite un double pop).
             if (driveCamera && !chainMore)
             {
-                if (cine.EndTransition == CinematicCameraTransition.Smooth && !skipped)
+                if (cine.InPlace)
+                {
+                    transform.position = livePrePos;
+                    transform.rotation = livePreRot;
+                    if (_mainCamera != null) _mainCamera.fieldOfView = livePreFov;
+                }
+                else if (cine.EndTransition == CinematicCameraTransition.Smooth && !skipped)
                 {
                     Vector3 endFromPos = transform.position;
                     Quaternion endFromRot = transform.rotation;
@@ -951,15 +1113,33 @@ namespace Killtime.CameraSystem
         private void ApplyShotEffect(SceneCinematicShotData shot, float t, float e, ref Vector3 pos, ref Vector3 euler, ref float fov)
         {
             if (shot == null || shot.MoveEffect == CinematicCameraEffect.None) return;
-            float intensity = Mathf.Max(0f, shot.ShakeIntensity);
+            float intensity = Mathf.Max(0.05f, shot.ShakeIntensity);
             float time = Time.unscaledTime + _skipNoiseSeed;
             switch (shot.MoveEffect)
             {
                 case CinematicCameraEffect.HandheldShake:
-                    pos.x += (Mathf.PerlinNoise(time * 1.7f, 0f) - 0.5f) * intensity * 0.9f;
-                    pos.y += (Mathf.PerlinNoise(0f, time * 2.1f) - 0.5f) * intensity * 0.6f;
-                    euler.z += (Mathf.PerlinNoise(time * 1.3f, 7f) - 0.5f) * intensity * 3f;
+                {
+                    float fastTime = time * 26f;
+                    float nx = (Mathf.PerlinNoise(fastTime, 0.3f) - 0.5f) * 2f;
+                    float ny = (Mathf.PerlinNoise(1.7f, fastTime) - 0.5f) * 2f;
+                    float nz = (Mathf.PerlinNoise(fastTime * 0.85f, 7.1f) - 0.5f) * 2f;
+
+                    float rx = (Mathf.PerlinNoise(fastTime * 1.15f, 12f) - 0.5f) * 2f;
+                    float ry = (Mathf.PerlinNoise(18f, fastTime * 1.15f) - 0.5f) * 2f;
+                    float rz = (Mathf.PerlinNoise(fastTime * 1.35f, 25f) - 0.5f) * 2f;
+
+                    float posScale = intensity * 1.5f;
+                    float rotScale = intensity * 8.5f;
+
+                    pos.x += nx * posScale;
+                    pos.y += ny * posScale * 0.7f;
+                    pos.z += nz * posScale * 0.8f;
+
+                    euler.x += rx * rotScale * 0.6f;
+                    euler.y += ry * rotScale * 0.6f;
+                    euler.z += rz * rotScale;
                     break;
+                }
                 case CinematicCameraEffect.PushIn:
                 {
                     Vector3 fwd = Quaternion.Euler(euler) * Vector3.forward;
@@ -1000,6 +1180,23 @@ namespace Killtime.CameraSystem
             if (CurrentMode == CameraMode.FreeLook)
             {
                 HandleFreeLook();
+            }
+        }
+
+        private void LateUpdate()
+        {
+            // Si aucune cinématique principale ne pilote la caméra mais qu'une secousse
+            // in-place est active, on applique l'offset directement sur la caméra après TacticalCameraController.
+            if (_activeSceneCinematicRoutine == null && (_shakeOffsetPos != Vector3.zero || _shakeOffsetEuler != Vector3.zero || _shakeOffsetFov != 0f))
+            {
+                Transform camTrans = GetCameraTransform();
+                if (camTrans != null)
+                {
+                    camTrans.position += _shakeOffsetPos;
+                    camTrans.rotation = Quaternion.Euler(camTrans.rotation.eulerAngles + _shakeOffsetEuler);
+                    if (_mainCamera != null && _shakeOffsetFov != 0f)
+                        _mainCamera.fieldOfView += _shakeOffsetFov;
+                }
             }
         }
 

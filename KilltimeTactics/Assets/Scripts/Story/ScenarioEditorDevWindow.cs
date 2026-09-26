@@ -5025,7 +5025,8 @@ namespace Killtime.Story
             // 3. Titre & Locuteur
             string chalBadge = chalVSCount > 0 ? $" ⚔️x{chalVSCount}" : (chalSDCount > 0 ? $" 🎲x{chalSDCount}" : "");
             string cineBadge = (line.CinematicIds != null && line.CinematicIds.Count > 0) ? $" 🎬×{line.CinematicIds.Count}" : "";
-            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>◆ {line.SpeakerId}</b> (<i>{line.LineId}</i>){chalBadge}{cineBadge}");
+            string headerSpeaker = line.IsNarration ? "📜 NARRATION" : $"◆ {line.SpeakerId}";
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>{headerSpeaker}</b> (<i>{line.LineId}</i>){chalBadge}{cineBadge}");
 
             // 4. Bouton Supprimer
             GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
@@ -5106,7 +5107,7 @@ namespace Killtime.Story
                 if (line.Ambience != null && line.Ambience.HasAmbience && !string.IsNullOrEmpty(line.Ambience.SoundCueId))
                     sb.AppendLine($"🔊 {line.Ambience.SoundCueId}");
                 _hasHoverCard = true;
-                _hoverTitle = $"◆ {line.SpeakerId}  ({line.LineId})";
+                _hoverTitle = line.IsNarration ? $"📜 NARRATION  ({line.LineId})" : $"◆ {line.SpeakerId}  ({line.LineId})";
                 _hoverBody = sb.ToString().Trim();
                 _hoverScreenPos = _graphMouseScreenPos;
             }
@@ -5118,19 +5119,28 @@ namespace Killtime.Story
             float y = cardRect.y + 30f;
 
             GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
-            line.LineId = GraphTextField(new Rect(innerX + 24f, y, 70f, 18f), line.LineId ?? "");
-            GraphLabel(new Rect(innerX + 98f, y, 28f, 18f), "Loc:");
-            line.SpeakerId = GraphTextField(new Rect(innerX + 128f, y, 60f, 18f), line.SpeakerId ?? "");
+            line.LineId = GraphTextField(new Rect(innerX + 24f, y, 64f, 18f), line.LineId ?? "");
+            line.IsNarration = GraphToggle(new Rect(innerX + 92f, y, 58f, 18f), line.IsNarration, "📜 Narr");
+
+            if (!line.IsNarration)
             {
-                Rect dropBtn = new Rect(innerX + 190f, y, 20f, 18f);
+                GraphLabel(new Rect(innerX + 154f, y, 26f, 18f), "Loc:");
+                line.SpeakerId = GraphTextField(new Rect(innerX + 182f, y, 56f, 18f), line.SpeakerId ?? "");
+                Rect dropBtn = new Rect(innerX + 240f, y, 18f, 18f);
                 string dropKey = $"dlg_{line.LineId}";
                 if (GraphButton(dropBtn, "▼"))
                 {
                     if (_actorDropKey == dropKey) _actorDropKey = null;
                     else OpenActorDropdown(dropKey, dropBtn, line.SpeakerId ?? "", v => line.SpeakerId = v);
                 }
+                line.StageDirection = GraphTextField(new Rect(innerX + 260f, y, Mathf.Max(30f, innerW - 260f), 18f), line.StageDirection ?? "");
             }
-            line.StageDirection = GraphTextField(new Rect(innerX + 212f, y, Mathf.Max(40f, innerW - 212f), 18f), line.StageDirection ?? "");
+            else
+            {
+                line.SpeakerId = "";
+                GraphLabel(new Rect(innerX + 154f, y, 32f, 18f), "Dida:");
+                line.StageDirection = GraphTextField(new Rect(innerX + 188f, y, Mathf.Max(40f, innerW - 188f), 18f), line.StageDirection ?? "");
+            }
             y += 20f;
 
             line.Speech = GraphTextArea(new Rect(innerX, y, innerW, 48f), line.Speech ?? "");
@@ -6772,31 +6782,53 @@ namespace Killtime.Story
             GUI.color = Color.white;
             y += 20f;
 
-            cine.Letterbox = GraphToggle(new Rect(innerX, y, 115f, 18f), cine.Letterbox, "Bandes noires");
-            cine.HideSceneChat = GraphToggle(new Rect(innerX + 120f, y, 135f, 18f), cine.HideSceneChat, "Masquer dialogue");
+            cine.Letterbox = GraphToggle(new Rect(innerX, y, 105f, 18f), cine.Letterbox, "Bandes noires");
+            cine.HideSceneChat = GraphToggle(new Rect(innerX + 110f, y, 125f, 18f), cine.HideSceneChat, "Masquer dialogue");
+            cine.InPlace = GraphToggle(new Rect(innerX + 240f, y, 95f, 18f), cine.InPlace, "Sur place");
             y += 20f;
 
-            GraphLabel(new Rect(innerX, y, 48f, 18f), "Début:");
-            cine.StartTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 50f, y, 105f, 18f), (int)cine.StartTransition, new[] { "Téléport", "Fluide" });
-            GraphLabel(new Rect(innerX + 162f, y, 32f, 18f), "Fin:");
-            cine.EndTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 196f, y, 105f, 18f), (int)cine.EndTransition, new[] { "Téléport", "Fluide" });
+            if (!cine.InPlace)
+            {
+                GraphLabel(new Rect(innerX, y, 48f, 18f), "Début:");
+                cine.StartTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 50f, y, 105f, 18f), (int)cine.StartTransition, new[] { "Téléport", "Fluide" });
+                GraphLabel(new Rect(innerX + 162f, y, 32f, 18f), "Fin:");
+                cine.EndTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 196f, y, 105f, 18f), (int)cine.EndTransition, new[] { "Téléport", "Fluide" });
+            }
+            else
+            {
+                GUI.color = new Color(1f, 0.82f, 0.35f, 0.9f);
+                GraphLabel(new Rect(innerX, y, innerW, 18f), "📷 <b>Sur place :</b> caméra fixe (secousse/effets en direct)");
+                GUI.color = Color.white;
+            }
             y += 20f;
 
             for (int s = 0; s < cine.Shots.Count; s++)
             {
                 var shot = cine.Shots[s];
                 if (shot == null) { cine.Shots.RemoveAt(s); s--; continue; }
+
+                // Initialisation automatique de l'effet de secousse si la carte est déclarée sur place
+                if (cine.InPlace && shot.MoveEffect == CinematicCameraEffect.None)
+                {
+                    shot.MoveEffect = CinematicCameraEffect.HandheldShake;
+                    if (shot.ShakeIntensity < 0.05f) shot.ShakeIntensity = 0.25f;
+                }
+
                 if (GraphButton(new Rect(innerX, y, 22f, 18f), "◉"))
                 {
                     CinematicEditorDevWindow.Open();
                     if (CinematicEditorDevWindow.Instance != null)
                         CinematicEditorDevWindow.Instance.SelectCinematic(cine.CinematicId, s);
                 }
-                shot.Label = GraphTextField(new Rect(innerX + 24f, y, Mathf.Max(40f, innerW - 24f - 72f - 24f), 18f), shot.Label ?? "");
-                GraphLabel(new Rect(innerX + innerW - 70f - 22f, y, 20f, 18f), "s:");
-                string durTxt = GraphTextField(new Rect(innerX + innerW - 70f, y, 44f, 18f), shot.Duration.ToString("0.0"));
+                shot.Label = GraphTextField(new Rect(innerX + 24f, y, Mathf.Max(40f, innerW - 24f - 134f - 24f), 18f), shot.Label ?? "");
+                GraphLabel(new Rect(innerX + innerW - 134f - 22f, y, 16f, 18f), "s:");
+                string durTxt = GraphTextField(new Rect(innerX + innerW - 134f, y, 36f, 18f), shot.Duration.ToString("0.0"));
                 float.TryParse(durTxt, out shot.Duration);
                 shot.Duration = Mathf.Clamp(shot.Duration, 0.2f, 60f);
+                GraphLabel(new Rect(innerX + innerW - 94f, y, 24f, 18f), "+d:");
+                string delTxt = GraphTextField(new Rect(innerX + innerW - 70f, y, 36f, 18f), shot.StartDelay.ToString("0.0"));
+                float.TryParse(delTxt, out shot.StartDelay);
+                shot.StartDelay = Mathf.Clamp(shot.StartDelay, 0f, 60f);
                 GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
                 if (GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "✕"))
                 {

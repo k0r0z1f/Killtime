@@ -426,7 +426,7 @@ namespace Killtime.Story.Scenes
 
             if (!string.IsNullOrEmpty(_sceneData.EnvironmentId))
             {
-                if (SceneEnvironmentLibrary.Build(_sceneData.EnvironmentId, transform, _grid))
+                if (SceneEnvironmentLibrary.Build(_sceneData.EnvironmentId, transform, _grid, _sceneData.EnvironmentPlaceholders))
                 {
                     yield return null;
                 }
@@ -2028,21 +2028,42 @@ namespace Killtime.Story.Scenes
             }
             else if (hasDialogues)
             {
-                GUILayout.BeginHorizontal();
-                GUI.color = Color.cyan;
-                GUILayout.Label($"<b>【 {line.SpeakerId} 】</b>", GUILayout.Width(180));
-                GUI.color = Color.white;
-
-                if (!string.IsNullOrEmpty(line.StageDirection))
+                if (line.IsNarration || string.IsNullOrEmpty(line.SpeakerId) || string.Equals(line.SpeakerId, "Narrateur", StringComparison.OrdinalIgnoreCase))
                 {
-                    GUILayout.Label($"<color=grey><i>({line.StageDirection})</i></color>");
-                }
-                GUILayout.FlexibleSpace();
-                GUILayout.Label($"<color=grey>{_currentDialogueIndex + 1} / {dataNode.Dialogues.Count}</color>", GUILayout.Width(50));
-                GUILayout.EndHorizontal();
+                    GUILayout.BeginHorizontal();
+                    GUI.color = new Color(0.95f, 0.82f, 0.45f);
+                    GUILayout.Label("<b>📜 NARRATION</b>", GUILayout.Width(180));
+                    GUI.color = Color.white;
 
-                GUILayout.Space(4);
-                GUILayout.Label($"« {line.Speech} »");
+                    if (!string.IsNullOrEmpty(line.StageDirection))
+                    {
+                        GUILayout.Label($"<color=grey><i>({line.StageDirection})</i></color>");
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Label($"<color=grey>{_currentDialogueIndex + 1} / {dataNode.Dialogues.Count}</color>", GUILayout.Width(50));
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(4);
+                    GUILayout.Label($"<color=#E0E8F0><i>{line.Speech}</i></color>");
+                }
+                else
+                {
+                    GUILayout.BeginHorizontal();
+                    GUI.color = Color.cyan;
+                    GUILayout.Label($"<b>【 {line.SpeakerId} 】</b>", GUILayout.Width(180));
+                    GUI.color = Color.white;
+
+                    if (!string.IsNullOrEmpty(line.StageDirection))
+                    {
+                        GUILayout.Label($"<color=grey><i>({line.StageDirection})</i></color>");
+                    }
+                    GUILayout.FlexibleSpace();
+                    GUILayout.Label($"<color=grey>{_currentDialogueIndex + 1} / {dataNode.Dialogues.Count}</color>", GUILayout.Width(50));
+                    GUILayout.EndHorizontal();
+
+                    GUILayout.Space(4);
+                    GUILayout.Label($"« {line.Speech} »");
+                }
 
                 if (hasChoices)
                 {

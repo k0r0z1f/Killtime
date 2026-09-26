@@ -54,7 +54,18 @@ namespace Killtime.Tactics.CombatUI
 
         private void HandleSelectionInputs()
         {
-            if (CombatHUD.IsPaused) return;
+            if (CombatHUD.IsPaused)
+            {
+                // Sur pause : seule la fonction dock des fenêtres flottantes reste active.
+                // Clic carte 3D (hors UI/HUD) => repli, sans sélection ni menu contextuel.
+                if (Input.GetMouseButtonDown(0))
+                {
+                    Vector2 pausedMouse = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+                    if (!FloatingWindowChrome.IsPointerOverAnyWindow(pausedMouse))
+                        FloatingWindowChrome.OnMapClicked();
+                }
+                return;
+            }
 
             // Tissage Duo-Tech en cours : clic gauche = dessin, clic droit = annulation.
             // Ne pas changer la sélection ni ouvrir de menu contextuel entre-temps.
