@@ -18,8 +18,11 @@ namespace Killtime.Tactics.Grid
 
         /// <summary>
         /// Calcule le chemin le plus économe en PA entre deux coordonnées hexagonales.
+        /// allowPassThroughOccupied (exploration) : on peut traverser les cases
+        /// occupées pour passer de l'autre côté, mais jamais s'y arrêter
+        /// (la destination doit toujours être libre).
         /// </summary>
-        public List<HexCoordinates> FindPath(HexCoordinates start, HexCoordinates target, int availableAP, out int totalAPCost, TitanFootprintType footprint = TitanFootprintType.Single)
+        public List<HexCoordinates> FindPath(HexCoordinates start, HexCoordinates target, int availableAP, out int totalAPCost, TitanFootprintType footprint = TitanFootprintType.Single, bool allowPassThroughOccupied = false)
         {
             totalAPCost = 0;
             var path = new List<HexCoordinates>();
@@ -114,7 +117,12 @@ namespace Killtime.Tactics.Grid
                     {
                         var cell = footprintCells[fc];
                         var n = _grid.GetNode(cell);
-                        if (n == null || !n.IsWalkable || (n.IsOccupied && occupiedCoords.Contains(cell)))
+                        // Comme le contrôle de destination et les validateurs
+                        // runtime : drapeau OU présence physique (un drapeau
+                        // périmé ne doit jamais autoriser la traversée).
+                        // Sauf faufile exploration : traverser oui, s'arrêter non.
+                        if (n == null || !n.IsWalkable
+                            || (!allowPassThroughOccupied && (n.IsOccupied || occupiedCoords.Contains(cell))))
                         {
                             footprintBlocked = true;
                             break;
@@ -149,8 +157,10 @@ namespace Killtime.Tactics.Grid
 
         /// <summary>
         /// Renvoie l'ensemble de toutes les cellules atteignables avec la réserve de PA courante.
+        /// allowPassThroughOccupied (exploration) : les cases occupées ne sont
+        /// pas des arrêts valides mais on peut les traverser pour aller plus loin.
         /// </summary>
-        public HashSet<HexCoordinates> GetReachableCoordinates(HexCoordinates center, int maxAP)
+        public HashSet<HexCoordinates> GetReachableCoordinates(HexCoordinates center, int maxAP, bool allowPassThroughOccupied = false)
         {
             var reachable = new HashSet<HexCoordinates>();
             var costSoFar = new Dictionary<HexCoordinates, int> { [center] = 0 };
@@ -178,13 +188,17 @@ namespace Killtime.Tactics.Grid
                     var neighbor = current.GetNeighbor(dir);
                     var node = _grid.GetNode(neighbor);
 
-                    if (node == null || !node.IsWalkable || node.IsOccupied || occupiedCoords.Contains(neighbor)) continue;
+                    if (node == null || !node.IsWalkable) continue;
+
+                    bool occupied = node.IsOccupied || occupiedCoords.Contains(neighbor);
+                    if (occupied && !allowPassThroughOccupied) continue;
 
                     int newCost = currentCost + node.ActionPointCost;
                     if (newCost <= maxAP && (!costSoFar.ContainsKey(neighbor) || newCost < costSoFar[neighbor]))
                     {
                         costSoFar[neighbor] = newCost;
-                        reachable.Add(neighbor);
+                        // Faufile : on traverse mais on ne s'y arrête pas.
+                        if (!occupied) reachable.Add(neighbor);
                         frontier.Enqueue(neighbor);
                     }
                 }

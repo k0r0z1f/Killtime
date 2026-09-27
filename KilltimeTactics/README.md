@@ -109,6 +109,7 @@
 | **`F10`** | **Weapon Grip Lab** | Calibrage précis des sockets d'armes en main sur les mannequins 3D |
 | **`F11`** | **Fleuve du Temps 3D** | Navigation chronologique spatiale et rembobinage de causalité |
 | **`F12`** | **Carte du Monde d'Hybris** | Navigateur et éditeur du réseau de secteurs planétaires |
+| **`B`** | **Bestiaire** | 22 créatures PNJ/boss/builds (JSON éditable), spawn direct, édition et sauvegarde |
 | **`F`** | **Mode Free Look** | Décrochage de la caméra isométrique vers l'inspection 3D libre |
 | **`Q` / `E`** | **Rotation Caméra** | Rotation orbitale tactique à 360° par pas fluide |
 | **`Espace`** | **Fin de Tour** | Validation et passage du tour de combat pour l'unité active |

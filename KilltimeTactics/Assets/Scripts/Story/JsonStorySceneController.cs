@@ -76,6 +76,47 @@ namespace Killtime.Story.Scenes
         private bool _hasPartyBar;
         private readonly List<Rect> _interactButtonRects = new();
 
+        // Popups monde ancrés aux interactables : le SuccessLog part dans le journal
+        // latéral + dans un popup au-dessus de l'objet (jamais dans le chat central,
+        // pour ne pas hijacker la conversation en cours). Info = fondu auto + ✕ manuel,
+        // saut = persistant avec [Suivre ➔] / [Rester].
+        private readonly List<InteractablePopup> _activePopups = new();
+        private const float InteractablePopupAutoCloseDelay = 7f;
+        private const float InteractablePopupFadeDuration = 1f;
+        private sealed class InteractablePopup
+        {
+            public string InteractableId = "";
+            public string DisplayName = "";
+            public string Message = "";
+            public string TargetNodeId = "";
+            public bool HasJump;
+            public float CreatedUnscaledTime;
+            // Dernier rect dessiné (coordonnées GUI) : sert au survol qui met
+            // le fondu auto en pause.
+            public Rect LastScreenRect;
+        }
+        // Saut différé : un interactable avec TriggerNodeId activé pendant une
+        // conversation ne saute plus immédiatement ; la cible attend ici jusqu'au
+        // clic [Suivre] ou à la sortie naturelle du nœud.
+        private string _pendingNodeJump = "";
+        private string _pendingNodeJumpSource = "";
+        // Réplique "Parler à" en attente après un saut de nœud : TalkToActor a
+        // enclenché un nœud différent du courant pour jouer une réplique précise ;
+        // consommée par UpdateNodeState une fois l'entrée du nœud rejouée.
+        private string _pendingTalkLineId = "";
+        // Point de retour "Parler à" : nœud (+ réplique) d'origine et nœud
+        // d'atterrissage. À la fin naturelle du nœud d'atterrissage (bouton
+        // "Passer à l'action" sans suite), on revient à la conversation
+        // d'origine au lieu de clore la scène (cf. TryReturnFromTalk).
+        private string _talkReturnNodeId = "";
+        private string _talkReturnLineId = "";
+        private string _talkLandingNodeId = "";
+        private bool _isReturningFromTalk = false;
+        // Boîtes d'info personnages : masquées par défaut en mode scène,
+        // valeur précédente restaurée à la sortie (touche N ou dev UI pour forcer).
+        private bool _overheadHudOverridden;
+        private bool _savedOverheadHud = true;
+
         public StorySceneData SceneData => _sceneData;
 
         public void SetSceneData(StorySceneData data)
@@ -110,6 +151,7 @@ namespace Killtime.Story.Scenes
                 }
                 return;
             }
+            bool firedOnce = false;
             for (int i = 0; i < cinematicIds.Count; i++)
             {
                 string id = cinematicIds[i];
@@ -122,7 +164,11 @@ namespace Killtime.Story.Scenes
                 }
                 var captured = cine;
                 var visited = chainVisited;
-                director.PlaySceneCinematic(captured, () => ExecuteCinematicChain(captured, visited));
+                // Batch même-frame : la 1re préempte la ciné en cours (raccord
+                // fluide), les suivantes s'enfilent derrière (pas de cut en cascade).
+                bool preempt = !firedOnce;
+                firedOnce = true;
+                director.PlaySceneCinematic(captured, () => ExecuteCinematicChain(captured, visited), preempt);
                 _warnedMissingCinematicDirector = false;
                 CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>Cinématique :</b> {cine.Title} [{cine.CinematicId}]", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
             }
@@ -326,6 +372,20 @@ namespace Killtime.Story.Scenes
             _activationNodeIds.Clear();
             _nodeEnterCoords.Clear();
             _pendingMiddleChat.Clear();
+            _activePopups.Clear();
+            _pendingNodeJump = "";
+            _pendingNodeJumpSource = "";
+            _pendingTalkLineId = "";
+            _talkReturnNodeId = "";
+            _talkReturnLineId = "";
+            _talkLandingNodeId = "";
+            // Mode scène : boîtes d'info personnages masquées par défaut.
+            if (!_overheadHudOverridden)
+            {
+                _overheadHudOverridden = true;
+                _savedOverheadHud = TacticalUnitVisual.ShowOverheadHUD;
+            }
+            TacticalUnitVisual.ShowOverheadHUD = false;
             _chatAnimProgress = 0f;
             _lastActiveNode = null;
             _activeReactionChoice = null;
@@ -446,6 +506,7 @@ namespace Killtime.Story.Scenes
 
                 SpawnSingleActor(actorData);
             }
+            SeparateStackedUnits();
         }
 
         public TacticalUnit SpawnSingleActor(SceneActorSpawnData actorData)
@@ -510,6 +571,16 @@ namespace Killtime.Story.Scenes
             var unit = go.AddComponent<TacticalUnit>();
             unit.InitializeFromSheet(sheet, coords, _grid, actorData.IsPlayer);
 
+            // Spawn refusé + fallback épuisé : pas de fantôme sans position
+            // logique (invisible aux contrôles d'occupation, traversable).
+            if (!unit.HasLogicalPosition)
+            {
+                Debug.LogError($"[JsonStorySceneController] Spawn impossible pour '{actorData.ActorId}' vers ({coords.Q}, {coords.R}) : zone saturée — acteur ignoré.");
+                CombatHUD.Instance?.AddAdvancedLog($"<color=red>[SCÈNE] Spawn impossible pour '{actorData.DisplayName}' : zone saturée.</color>", LogCategory.MovementAndTurns, "[SCÈNE]", Color.red);
+                Destroy(go);
+                return null;
+            }
+
             var visual = unit.GetComponent<TacticalUnitVisual>();
             if (visual != null)
             {
@@ -559,6 +630,322 @@ namespace Killtime.Story.Scenes
                     }
                 }
             }
+            SeparateStackedUnits();
+        }
+
+        /// <summary>
+        /// Retrouve la fiche de spawn (carte 👥 Acteur) associée à une unité live.
+        /// 1) lookup inverse _spawnedActors, 2) repli par nom (ActorId / DisplayName).
+        /// </summary>
+        public SceneActorSpawnData FindActorDataForUnit(TacticalUnit unit)
+        {
+            if (unit == null || _sceneData == null || _sceneData.Actors == null) return null;
+            foreach (var kvp in _spawnedActors)
+            {
+                if (kvp.Value == unit)
+                {
+                    var d = _sceneData.FindActor(kvp.Key);
+                    if (d != null) return d;
+                    break;
+                }
+            }
+            if (unit.Stats != null && !string.IsNullOrWhiteSpace(unit.Stats.Name))
+            {
+                string n = unit.Stats.Name.Trim();
+                for (int i = 0; i < _sceneData.Actors.Count; i++)
+                {
+                    var a = _sceneData.Actors[i];
+                    if (a == null) continue;
+                    if (string.Equals(a.ActorId?.Trim(), n, StringComparison.OrdinalIgnoreCase)
+                        || (!string.IsNullOrWhiteSpace(a.DisplayName) && string.Equals(a.DisplayName.Trim(), n, StringComparison.OrdinalIgnoreCase)))
+                        return a;
+                }
+            }
+            return null;
+        }
+
+        private string ResolveTalkSpeakerDisplay(string talkSpeakerId, SceneActorSpawnData targetActor, TacticalUnit targetUnit)
+        {
+            if (!string.IsNullOrWhiteSpace(talkSpeakerId) && _sceneData != null && _sceneData.Actors != null)
+            {
+                string want = talkSpeakerId.Trim();
+                for (int i = 0; i < _sceneData.Actors.Count; i++)
+                {
+                    var a = _sceneData.Actors[i];
+                    if (a == null) continue;
+                    if (string.Equals(a.ActorId?.Trim(), want, StringComparison.OrdinalIgnoreCase))
+                        return string.IsNullOrWhiteSpace(a.DisplayName) ? a.ActorId : a.DisplayName;
+                    if (!string.IsNullOrWhiteSpace(a.DisplayName) && string.Equals(a.DisplayName.Trim(), want, StringComparison.OrdinalIgnoreCase))
+                        return a.DisplayName;
+                }
+                return want;
+            }
+            if (targetActor != null && !string.IsNullOrWhiteSpace(targetActor.DisplayName)) return targetActor.DisplayName;
+            if (targetUnit != null && targetUnit.Stats != null && !string.IsNullOrWhiteSpace(targetUnit.Stats.Name)) return targetUnit.Stats.Name;
+            return "???";
+        }
+
+        /// <summary>
+        /// Action "Parler à" (menu contextuel carte) : enclenche la sortie 💬 de
+        /// la carte 👥 Acteur de la cible qui correspond à celui qui parle.
+        /// - L'entrée dont le Qui correspond au talker (ActorId / DisplayName /
+        ///   nom, insensible à la casse) gagne ; sinon l'entrée sans Qui (défaut,
+        ///   n'importe qui).
+        /// - Cible = NodeId → le nœud est enclenché (saut).
+        /// - Cible = LineId du nœud courant → saut dialogue normal (choix /
+        ///   défis / chaînage préservés, via TryAdvanceToId).
+        /// - Cible = LineId d'un autre nœud → saut vers ce nœud (enclenché) puis
+        ///   réplique en attente (_pendingTalkLineId).
+        /// - Sans entrée correspondante : bavardage d'ambiance par défaut.
+        /// </summary>
+        public bool TalkToActor(TacticalUnit talker, TacticalUnit target)
+        {
+            if (target == null || target.Stats == null || !target.Stats.IsAlive) return false;
+            string talkerName = (talker != null && talker.Stats != null && !string.IsNullOrWhiteSpace(talker.Stats.Name))
+                ? talker.Stats.Name : "Escouade";
+            var actorData = FindActorDataForUnit(target);
+            var entries = actorData != null ? actorData.TalkEntries : null;
+
+            SceneActorTalkEntry match = null;
+            SceneActorTalkEntry fallback = null;
+            if (entries != null && entries.Count > 0)
+            {
+                var talkerActor = FindActorDataForUnit(talker);
+                string k1 = talkerActor != null ? (talkerActor.ActorId ?? "").Trim() : "";
+                string k2 = talkerActor != null ? (talkerActor.DisplayName ?? "").Trim() : "";
+                string k3 = talker != null && talker.Stats != null ? (talker.Stats.Name ?? "").Trim() : "";
+                for (int i = 0; i < entries.Count; i++)
+                {
+                    var e = entries[i];
+                    if (e == null || string.IsNullOrWhiteSpace(e.TargetId)) continue;
+                    string who = (e.SpeakerId ?? "").Trim();
+                    if (string.IsNullOrEmpty(who)) { fallback ??= e; continue; }
+                    if ((!string.IsNullOrEmpty(k1) && string.Equals(who, k1, StringComparison.OrdinalIgnoreCase))
+                        || (!string.IsNullOrEmpty(k2) && string.Equals(who, k2, StringComparison.OrdinalIgnoreCase))
+                        || (!string.IsNullOrEmpty(k3) && string.Equals(who, k3, StringComparison.OrdinalIgnoreCase)))
+                    {
+                        match = e;
+                        break;
+                    }
+                }
+                match ??= fallback;
+            }
+
+            if (match == null)
+            {
+                string speaker = ResolveTalkSpeakerDisplay("", actorData, target);
+                string targetName = target.Stats.Name;
+                CombatHUD.Instance?.AddAdvancedLog($"💬 <b>{talkerName}</b> parle à <b>{targetName}</b> — <b>[{speaker}]</b> <i>hoche la tête — rien à signaler pour l'instant.</i> <color=grey>(carte 👥 sans sortie 💬 pour {talkerName} : ajoutez une rangée Parler à dans l'éditeur)</color>", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.cyan);
+                target.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("💬 …", Color.cyan);
+                return true;
+            }
+
+            string targetId = (match.TargetId ?? "").Trim();
+
+            // Origine de la conversation (avant tout saut) : sert à armer le
+            // retour vers la conversation principale (ArmTalkReturn).
+            string originNodeId = _director != null && _director.CurrentNode != null ? _director.CurrentNode.Id : "";
+            string originLineId = "";
+            var originDataNode = !string.IsNullOrEmpty(originNodeId) && _sceneData != null ? _sceneData.FindNode(originNodeId) : null;
+            if (originDataNode != null && originDataNode.Dialogues != null
+                && _currentDialogueIndex >= 0 && _currentDialogueIndex < originDataNode.Dialogues.Count)
+                originLineId = originDataNode.Dialogues[_currentDialogueIndex]?.LineId ?? "";
+
+            // 1. Cible = nœud : le nœud est enclenché (saut).
+            if (_sceneData != null && _sceneData.FindNode(targetId) != null)
+            {
+                CombatHUD.Instance?.AddAdvancedLog($"💬 <b>{talkerName}</b> parle à <b>{target.Stats.Name}</b> ➔ nœud <b>{targetId}</b>", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.cyan);
+                _pendingTalkLineId = "";
+                if (string.Equals(originNodeId, targetId, StringComparison.OrdinalIgnoreCase))
+                {
+                    StageCurrentLine();
+                    return true;
+                }
+                if (_director != null && _director.GoToNode(targetId))
+                {
+                    ArmTalkReturn(originNodeId, originLineId, targetId);
+                    return true;
+                }
+                return false;
+            }
+
+            // 2. Cible = réplique : retrouver son nœud propriétaire.
+            SceneDialogueLineData line = null;
+            SceneNodeData ownerNode = null;
+            if (_sceneData != null && _sceneData.Nodes != null)
+            {
+                for (int n = 0; n < _sceneData.Nodes.Count && line == null; n++)
+                {
+                    var node = _sceneData.Nodes[n];
+                    if (node == null) continue;
+                    var l = node.FindDialogue(targetId);
+                    if (l != null) { line = l; ownerNode = node; }
+                }
+            }
+            if (line == null)
+            {
+                Debug.LogWarning($"[JsonStorySceneController] Parler à : cible introuvable '{targetId}' (ni nœud, ni réplique).");
+                CombatHUD.Instance?.AddAdvancedLog($"<color=grey>[PARLER] Cible introuvable : '{targetId}'.</color>", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.gray);
+                target.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("💬 …?", Color.gray);
+                return false;
+            }
+
+            if (line.Prerequisite != null && line.Prerequisite.HasPrerequisite
+                && !line.Prerequisite.IsMet(_playerParty, talker, _director))
+            {
+                CombatHUD.Instance?.AddAdvancedLog($"<color=grey>[PARLER] Prérequis non satisfait pour '{targetId}' ({line.Prerequisite.GetSummary()}).</color>", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.gray);
+                return false;
+            }
+
+            if (string.IsNullOrWhiteSpace(line.SpeakerId))
+            {
+                line.SpeakerId = ResolveTalkSpeakerDisplay("", actorData, target);
+            }
+
+            // Cinématiques / ambiance / tests auto : joués par StageCurrentLine
+            // lors du staging (même nœud ou nœud enclenché) — pas ici (sinon
+            // doublons). Seul le repli direct ci-dessous les joue lui-même.
+            if (ownerNode != null && string.Equals(ownerNode.NodeId, originNodeId, StringComparison.OrdinalIgnoreCase))
+            {
+                CombatHUD.Instance?.AddAdvancedLog($"💬 <b>{talkerName}</b> parle à <b>{target.Stats.Name}</b> ➔ <b>{targetId}</b>", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.cyan);
+                _pendingTalkLineId = "";
+                ArmTalkReturn(originNodeId, originLineId, originNodeId);
+                return TryAdvanceToId(targetId, null, false);
+            }
+
+            // Réplique d'un autre nœud : on enclenche le nœud puis la réplique
+            // en attente (consommée par UpdateNodeState après l'entrée).
+            if (ownerNode != null && _director != null && _director.GoToNode(ownerNode.NodeId))
+            {
+                CombatHUD.Instance?.AddAdvancedLog($"💬 <b>{talkerName}</b> parle à <b>{target.Stats.Name}</b> ➔ nœud <b>{ownerNode.NodeId}</b> ➔ <b>{targetId}</b>", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.cyan);
+                _pendingTalkLineId = targetId;
+                ArmTalkReturn(originNodeId, originLineId, ownerNode.NodeId);
+                return true;
+            }
+
+            // Repli sans saut (saut refusé) : affichage direct, sans changer de nœud.
+            _pendingTalkLineId = "";
+            FireLinkedCinematics(line.CinematicIds);
+            ApplyAmbienceSettings(line.Ambience, line.SoundCueId);
+            string speakerShow = string.IsNullOrWhiteSpace(line.SpeakerId)
+                ? ResolveTalkSpeakerDisplay("", actorData, target) : line.SpeakerId;
+            string stage = !string.IsNullOrWhiteSpace(line.StageDirection) ? $" <i>({line.StageDirection})</i>" : "";
+            CombatHUD.Instance?.AddAdvancedLog($"💬 <b>{talkerName}</b> parle à <b>{target.Stats.Name}</b> — <b>[{speakerShow}]</b>{stage} « {line.Speech} »", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.cyan);
+            target.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"💬 {line.Speech}", Color.cyan);
+            if (line.Choices != null && line.Choices.Count > 0)
+                CombatHUD.Instance?.AddAdvancedLog($"<color=grey>[PARLER] {line.Choices.Count} choix disponibles dans le nœud '{ownerNode?.NodeId}'.</color>", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.gray);
+            else if (!string.IsNullOrWhiteSpace(line.NextLineId))
+            {
+                var next = ownerNode != null ? ownerNode.FindDialogue(line.NextLineId) : null;
+                if (next != null && !string.IsNullOrWhiteSpace(next.Speech))
+                    CombatHUD.Instance?.AddAdvancedLog($"💬 <b>[{next.SpeakerId}]</b> « {next.Speech} »", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.cyan);
+            }
+            return true;
+        }
+
+        private bool HasActiveTalkReturn()
+        {
+            if (string.IsNullOrWhiteSpace(_talkReturnNodeId)) return false;
+            string currentId = _director != null && _director.CurrentNode != null ? _director.CurrentNode.Id : "";
+            return string.Equals(currentId, _talkLandingNodeId, StringComparison.OrdinalIgnoreCase);
+        }
+
+        // Mémorise le retour vers la conversation principale après un saut
+        // "Parler à" (origine = nœud + réplique courants AVANT le saut).
+        private void ArmTalkReturn(string originNodeId, string originLineId, string landingNodeId)
+        {
+            _talkReturnNodeId = "";
+            _talkReturnLineId = "";
+            _talkLandingNodeId = "";
+            if (string.IsNullOrEmpty(originNodeId) || string.IsNullOrEmpty(landingNodeId)) return;
+            _talkReturnNodeId = originNodeId;
+            _talkReturnLineId = originLineId ?? "";
+            _talkLandingNodeId = landingNodeId;
+        }
+
+        // Fin naturelle du nœud d'atterrissage "Parler à" : revient au nœud
+        // d'origine (et à sa réplique) sans déclencher les prédécesseurs ni réinitialiser le nœud.
+        private bool TryReturnFromTalk()
+        {
+            if (string.IsNullOrWhiteSpace(_talkReturnNodeId)) return false;
+            string retNode = _talkReturnNodeId;
+            string retLine = _talkReturnLineId;
+            string landing = _talkLandingNodeId;
+            _talkReturnNodeId = "";
+            _talkReturnLineId = "";
+            _talkLandingNodeId = "";
+            if (_director == null || _sceneData == null) return false;
+            string currentId = _director.CurrentNode?.Id;
+            if (!string.Equals(currentId, landing, StringComparison.OrdinalIgnoreCase)) return false;
+            if (_sceneData.FindNode(retNode) == null) return false;
+
+            CombatHUD.Instance?.AddAdvancedLog($"💬 <b>Retour</b> vers la conversation (<b>{retNode}</b>).", LogCategory.MovementAndTurns, "[DIALOGUE]", Color.cyan);
+
+            // Cas intra-nœud
+            if (string.Equals(currentId, retNode, StringComparison.OrdinalIgnoreCase))
+            {
+                if (!string.IsNullOrEmpty(retLine))
+                {
+                    TryAdvanceToId(retLine, null, false);
+                }
+                return true;
+            }
+
+            // Cas inter-nœuds : armement de l'immunité aux cinématiques d'intro
+            _isReturningFromTalk = true;
+            if (!string.IsNullOrEmpty(retLine)) _pendingTalkLineId = retLine;
+            if (!_director.GoToNode(retNode))
+            {
+                _isReturningFromTalk = false;
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Séparation anti-empilement au spawn : deux avatars vivants ne
+        /// partagent jamais une case (données de scène avec mêmes Q,R, fallback
+        /// partiel...). Les doublons sont relocalisés vers la case libre la
+        /// plus proche, jamais laissés empilés.
+        /// </summary>
+        private void SeparateStackedUnits()
+        {
+            if (_grid == null) return;
+            var units = new List<TacticalUnit>(_spawnedActors.Values);
+            for (int i = 0; i < units.Count; i++)
+            {
+                var u = units[i];
+                if (u == null || u.Stats == null || !u.Stats.IsAlive || !u.HasLogicalPosition) continue;
+                bool stacked = false;
+                for (int j = 0; j < units.Count; j++)
+                {
+                    if (i == j) continue;
+                    var o = units[j];
+                    if (o == null || o.Stats == null || !o.Stats.IsAlive || !o.HasLogicalPosition) continue;
+                    var oc = o.OccupiedCoords;
+                    for (int c = 0; c < oc.Count; c++)
+                    {
+                        if (u.Occupies(oc[c])) { stacked = true; break; }
+                    }
+                    if (stacked) break;
+                }
+                if (!stacked) continue;
+                var from = u.CurrentCoords;
+                // Les unités déjà relocalisées sont prises en compte via la
+                // présence physique (TeleportTo refuse les cases occupées).
+                if (_grid.TryFindNearestFreeFootprint(from, u.FootprintType, out var free, 12, u)
+                    && !free.Equals(from)
+                    && u.TeleportTo(free, _grid))
+                {
+                    string who = u.Stats != null ? u.Stats.Name : u.name;
+                    Debug.Log($"[JsonStorySceneController] '{who}' séparé : ({from.Q}, {from.R}) ➔ ({free.Q}, {free.R}).");
+                    CombatHUD.Instance?.AddAdvancedLog($"🔀 <b>{who}</b> replacé sur case libre ({free.Q}, {free.R}).", LogCategory.MovementAndTurns, "[SCÈNE]", Color.gray);
+                }
+                else
+                {
+                    Debug.LogWarning($"[JsonStorySceneController] Empilement non résolu en ({from.Q}, {from.R}) : aucune case libre à proximité.");
+                }
+            }
         }
 
         private void SpawnInteractables()
@@ -578,38 +965,215 @@ namespace Killtime.Story.Scenes
                 var interactable = go.AddComponent<TacticalInteractable>();
                 interactable.Configure(data.DisplayName, data.ActionLabel, new HexCoordinates(data.Q, data.R), data.Radius);
 
-                string objId = data.CompletionObjectiveId;
-                string successMsg = data.SuccessLog;
-                string triggerNode = data.TriggerNodeId;
-
                 interactable.OnInteractionTriggered += (unit) =>
                 {
-                    if (!string.IsNullOrEmpty(data.InteractableId))
-                    {
-                        MarkInteractableActivated(data.InteractableId);
-                    }
-                    // Cinématiques liées à l'interactable : non-bloquantes.
-                    FireLinkedCinematics(data.CinematicIds);
-                    if (!string.IsNullOrEmpty(objId))
-                    {
-                        _director?.SetObjectiveComplete(objId, true);
-                    }
-                    if (!string.IsNullOrEmpty(successMsg))
-                    {
-                        CombatHUD.Instance?.AddAdvancedLog($"✔ {unit.Stats.Name} : {successMsg}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
-                        ShowInteractableSuccessInMiddleChat(unit, data);
-                    }
-                    if (!string.IsNullOrEmpty(triggerNode))
-                    {
-                        if (_director != null && !_director.GoToNode(triggerNode))
-                        {
-                            _director.Choose(triggerNode);
-                        }
-                    }
-                    unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"✔ {data.ActionLabel}", Color.green);
+                    HandleInteractableResolved(unit, data);
                 };
 
                 _interactables.Add(interactable);
+            }
+        }
+
+        /// <summary>
+        /// Point central de résolution d'un interactable (touche E ou bouton [E]).
+        /// Ne coupe jamais la conversation : log latéral + popup monde, et saut
+        /// différé si TriggerNodeId pendant un dialogue (voir _pendingNodeJump).
+        /// </summary>
+        private void HandleInteractableResolved(TacticalUnit unit, SceneInteractableSpawnData data)
+        {
+            if (data == null) return;
+            if (!string.IsNullOrEmpty(data.InteractableId))
+            {
+                MarkInteractableActivated(data.InteractableId);
+            }
+            // Cinématiques liées à l'interactable : non-bloquantes.
+            FireLinkedCinematics(data.CinematicIds);
+            if (!string.IsNullOrEmpty(data.CompletionObjectiveId))
+            {
+                _director?.SetObjectiveComplete(data.CompletionObjectiveId, true);
+            }
+            string actorName = unit != null && unit.Stats != null && !string.IsNullOrEmpty(unit.Stats.Name)
+                ? unit.Stats.Name
+                : (!string.IsNullOrEmpty(data.DisplayName) ? data.DisplayName : "Escouade");
+            if (!string.IsNullOrWhiteSpace(data.SuccessLog))
+            {
+                CombatHUD.Instance?.AddAdvancedLog($"✔ {actorName} : {data.SuccessLog}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+            }
+            bool hasJump = !string.IsNullOrWhiteSpace(data.TriggerNodeId);
+            if (!string.IsNullOrWhiteSpace(data.SuccessLog) || hasJump)
+            {
+                ShowInteractablePopup(data, hasJump);
+            }
+            if (hasJump)
+            {
+                if (IsConversationBusy())
+                {
+                    // Conversation en cours : on diffère, on propose, on ne coupe pas.
+                    _pendingNodeJump = data.TriggerNodeId.Trim();
+                    _pendingNodeJumpSource = data.InteractableId ?? "";
+                    CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>Suite disponible :</b> {data.DisplayName} ➔ {data.TriggerNodeId} (finissez la conversation, puis [Suivre]).", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                }
+                else if (!ExecuteInteractableNodeJump(data.TriggerNodeId))
+                {
+                    // Cible inconnue : déjà signalé dans Execute, le popup reste
+                    // en mode info (sans saut effectif).
+                    RemoveInteractableJumpOffer(data.InteractableId);
+                }
+            }
+            if (unit != null)
+            {
+                unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"✔ {data.ActionLabel}", Color.green);
+            }
+        }
+
+        /// <summary>
+        /// Conversation en cours = une réplique est affichée (ou un choix / une
+        /// réaction attend une validation). Hors dialogue (nœud objectif sans
+        /// répliques), le saut reste immédiat comme avant.
+        /// </summary>
+        private bool IsConversationBusy()
+        {
+            // Choix en attente ou réaction affichée : dialogue non terminé.
+            if (CurrentLineHasPendingChoice()) return true;
+            var dataNode = _sceneData != null && _director != null ? _sceneData.FindNode(_director.CurrentNode?.Id) : null;
+            if (dataNode == null || dataNode.Dialogues == null || dataNode.Dialogues.Count == 0) return false;
+            return _currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count;
+        }
+
+        private void ShowInteractablePopup(SceneInteractableSpawnData data, bool hasJump)
+        {
+            if (data == null) return;
+            for (int i = _activePopups.Count - 1; i >= 0; i--)
+            {
+                var p = _activePopups[i];
+                if (p != null && string.Equals(p.InteractableId, data.InteractableId, StringComparison.OrdinalIgnoreCase))
+                    _activePopups.RemoveAt(i);
+            }
+            _activePopups.Add(new InteractablePopup
+            {
+                InteractableId = data.InteractableId ?? "",
+                DisplayName = data.DisplayName ?? "",
+                Message = data.SuccessLog ?? "",
+                TargetNodeId = hasJump ? (data.TriggerNodeId ?? "").Trim() : "",
+                HasJump = hasJump && !string.IsNullOrWhiteSpace(data.TriggerNodeId),
+                CreatedUnscaledTime = Time.unscaledTime
+            });
+        }
+
+        private void RemoveInteractableJumpOffer(string interactableId)
+        {
+            for (int i = _activePopups.Count - 1; i >= 0; i--)
+            {
+                var p = _activePopups[i];
+                if (p == null || !p.HasJump) continue;
+                if (string.IsNullOrEmpty(interactableId)
+                    || string.Equals(p.InteractableId, interactableId, StringComparison.OrdinalIgnoreCase))
+                    _activePopups.RemoveAt(i);
+            }
+        }
+
+        /// <summary>
+        /// Exécute le saut vers le nœud cible (consentement explicite ou sortie
+        /// naturelle). Retourne false si la cible est introuvable.
+        /// </summary>
+        private bool ExecuteInteractableNodeJump(string targetNodeId)
+        {
+            string target = (targetNodeId ?? "").Trim();
+            if (string.IsNullOrEmpty(target) || _sceneData == null) return false;
+            if (_sceneData.FindNode(target) == null)
+            {
+                // Cible peut être un id de choix scénario (fallback Choose historique).
+                if (_director != null && _director.Choose(target))
+                {
+                    ClearPendingNodeJump();
+                    return true;
+                }
+                Debug.LogWarning($"[JsonStorySceneController] Interactable : nœud cible introuvable '{target}'.");
+                CombatHUD.Instance?.AddAdvancedLog($"<color=grey>[ACTION] Cible introuvable : '{target}'.</color>", LogCategory.MovementAndTurns, "[ACTION]", Color.gray);
+                return false;
+            }
+            string currentId = _director != null && _director.CurrentNode != null ? _director.CurrentNode.Id : "";
+            if (string.Equals(currentId, target, StringComparison.OrdinalIgnoreCase))
+            {
+                // Saut vers le nœud courant : pas de MoveTo (sans effet), on
+                // remet juste en scène la réplique et on solde le différé.
+                ClearPendingNodeJump();
+                StageCurrentLine();
+                return true;
+            }
+            bool ok = _director != null && _director.GoToNode(target);
+            if (!ok && _director != null) ok = _director.Choose(target);
+            if (ok)
+            {
+                CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>Saut :</b> ➔ {target}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                ClearPendingNodeJump();
+                RemoveInteractableJumpOffer(null);
+            }
+            return ok;
+        }
+
+        private void ClearPendingNodeJump()
+        {
+            _pendingNodeJump = "";
+            _pendingNodeJumpSource = "";
+        }
+
+        /// <summary>
+        /// Consomme le saut différé à la sortie naturelle du nœud (bouton
+        /// Continuer / fin de dialogue). Prioritaire sur les triggers et le
+        /// chaînage normal : c'était l'intention directe du joueur (touche E).
+        /// Jamais sur un nœud Objectif aux requis incomplets (pas de fuite).
+        /// </summary>
+        private bool TryConsumePendingJump()
+        {
+            if (string.IsNullOrWhiteSpace(_pendingNodeJump)) return false;
+            var node = _director != null ? _director.CurrentNode : null;
+            if (node != null && node.Kind == ScenarioNodeKind.Objective && !_director.AreRequiredObjectivesComplete())
+                return false;
+            return ExecuteInteractableNodeJump(_pendingNodeJump);
+        }
+
+        private void FollowPopupJump(InteractablePopup popup)
+        {
+            if (popup == null || string.IsNullOrWhiteSpace(popup.TargetNodeId)) return;
+            ExecuteInteractableNodeJump(popup.TargetNodeId);
+        }
+
+        private void DismissPopup(InteractablePopup popup)
+        {
+            if (popup == null) return;
+            _activePopups.Remove(popup);
+            if (popup.HasJump
+                && !string.IsNullOrEmpty(_pendingNodeJumpSource)
+                && string.Equals(_pendingNodeJumpSource, popup.InteractableId, StringComparison.OrdinalIgnoreCase))
+            {
+                ClearPendingNodeJump();
+                CombatHUD.Instance?.AddAdvancedLog("<color=grey>[ACTION] Suite ignorée (reste sur place).</color>", LogCategory.MovementAndTurns, "[ACTION]", Color.gray);
+            }
+        }
+
+        private void PruneInteractablePopups()
+        {
+            if (_activePopups.Count == 0) return;
+            float now = Time.unscaledTime;
+            // Souris en coordonnées GUI (origine en haut à gauche, comme les Rect IMGUI).
+            Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
+            for (int i = _activePopups.Count - 1; i >= 0; i--)
+            {
+                var p = _activePopups[i];
+                if (p == null) { _activePopups.RemoveAt(i); continue; }
+                // Les offres de saut persistent jusqu'à [Suivre]/[Rester].
+                if (p.HasJump) continue;
+                // Survol du popup : le timer de fondu est mis en pause (la
+                // création est repoussée d'une frame, donc le compteur fige
+                // tant que la souris reste dessus).
+                if (p.LastScreenRect.width > 0f && p.LastScreenRect.Contains(mouseGui))
+                {
+                    p.CreatedUnscaledTime += Time.unscaledDeltaTime;
+                    continue;
+                }
+                if (now - p.CreatedUnscaledTime >= InteractablePopupAutoCloseDelay + InteractablePopupFadeDuration)
+                    _activePopups.RemoveAt(i);
             }
         }
 
@@ -618,6 +1182,7 @@ namespace Killtime.Story.Scenes
             if (!_isSceneInitialized) return;
             UpdateChatAnimation();
             if (CombatHUD.IsPaused || (StorySceneManager.Instance != null && StorySceneManager.Instance.IsTransitioning)) return;
+            PruneInteractablePopups();
 
             var director = FindAnyObjectByType<CinematicDirector>();
             if (director != null && director.IsPlayingSceneCinematic)
@@ -791,7 +1356,10 @@ namespace Killtime.Story.Scenes
                             if (!string.IsNullOrWhiteSpace(it.SuccessLog))
                             {
                                 CombatHUD.Instance?.AddAdvancedLog($"✔ {memberName} : {it.SuccessLog}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
-                                ShowInteractableSuccessInMiddleChat(member, it);
+                                // Validation par proximité : info non-bloquante (log +
+                                // popup monde), jamais de hijack du chat central ni
+                                // de saut immédiat (le saut se fait à la touche E).
+                                ShowInteractablePopup(it, false);
                             }
                             member.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"✔ Objectif Validé", Color.green);
                         }
@@ -809,12 +1377,10 @@ namespace Killtime.Story.Scenes
         }
 
         /// <summary>
-        /// Envoie le texte de résolution d'un interactable (SuccessLog) vers le
-        /// chat central (boîte dialogue du milieu), en plus du flux latéral.
-        /// Utilise l'affichage Réaction existant : bloque les triggers d'entrée
-        /// (UpdateNodeState exige _activeReactionChoice==null) jusqu'au
-        /// "Continuer", pour laisser le temps de lire avant le saut de nœud.
-        /// Si une réaction est déjà affichée, mise en file d'attente.
+        /// HÉRITÉ (plus aucun appelant) : l'ancien chemin envoyait le SuccessLog
+        /// dans le chat central via le slot Réaction, ce qui cassait le flot de
+        /// conversation (une réplique sautée au Continuer). Conservé pour compat,
+        /// le chemin actuel est log latéral + popup monde (ShowInteractablePopup).
         /// </summary>
         private void ShowInteractableSuccessInMiddleChat(TacticalUnit unit, SceneInteractableSpawnData data)
         {
@@ -954,60 +1520,71 @@ namespace Killtime.Story.Scenes
                 _activeChallengeSummary = "";
                 _activeChallengeRewards = "";
 
+                bool isReturn = _isReturningFromTalk;
+                _isReturningFromTalk = false;
+
                 var dataNode = _sceneData != null ? _sceneData.FindNode(node.Id) : null;
-                // Entrée du nœud = carte sans lien entrant (routage explicite),
-                // repli sur l'index 0 si cycle ou setempat ambigu.
-                _currentDialogueIndex = FindEntryDialogueIndex(dataNode);
-                // Cinématiques placées EN AMONT (sortie "fin →" vers ce nœud ou vers
-                // sa réplique d'entrée) : si déclenchées, la réplique attend la fin de
-                // la cinématique qui enchaînera via ExecuteCinematicChain.
-                bool hasPredecessor = FirePredecessorCinematics(node.Id);
-                if (dataNode != null && _currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count)
+
+                if (isReturn && !string.IsNullOrEmpty(_pendingTalkLineId))
                 {
-                    var entryLine = dataNode.Dialogues[_currentDialogueIndex];
-                    if (entryLine != null && FirePredecessorCinematics(entryLine.LineId))
-                        hasPredecessor = true;
+                    // Retour d'une conversation "Parler à" : reprise directe de la réplique
+                    // d'origine SANS rejouer l'intro, les événements ou cinématiques prédécesseurs.
+                    string pendingTalk = _pendingTalkLineId;
+                    _pendingTalkLineId = "";
+                    int targetIdx = dataNode != null ? dataNode.FindDialogueIndex(pendingTalk) : -1;
+                    _currentDialogueIndex = targetIdx >= 0 ? targetIdx : 0;
+                    StageCurrentLine();
                 }
-                // Nouvelle entrée : les cartes à payload rejouent (le garde anti
-                // double-payload ne vaut que pour l'entrée en cours).
-                _resolvedCardIdsThisNode.Clear();
-                // Snapshot des positions : anti validation par proximité gratuite
-                // (spawn sur l'objectif qui skippe le nœud dès son entrée).
-                _nodeEnterCoords.Clear();
-                for (int p = 0; p < _playerParty.Count; p++)
+                else
                 {
-                    var u = _playerParty[p];
-                    if (u != null) _nodeEnterCoords[u] = u.CurrentCoords;
-                }
-                if (dataNode != null)
-                {
-                    // Déploiement des acteurs programmés pour apparaître à ce nœud (SpawnOnNodeId)
-                    SpawnActorsForNode(node.Id, dataNode.TriggerCombatOnEnter);
-
-                    // Cinématiques d'entrée de nœud : non-bloquantes (la suite s'enclenche aussitôt).
-                    FireLinkedCinematics(dataNode.CinematicIds);
-
-                    ExecuteNodeEvents(dataNode);
-
-                    if (dataNode.TriggerCombatOnEnter && _turnManager != null && _turnManager.IsInExploration)
+                    // Entrée standard dans un nouveau nœud
+                    _currentDialogueIndex = FindEntryDialogueIndex(dataNode);
+                    bool hasPredecessor = FirePredecessorCinematics(node.Id);
+                    if (dataNode != null && _currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count)
                     {
-                        _turnManager.EnterCombatMode();
+                        var entryLine = dataNode.Dialogues[_currentDialogueIndex];
+                        if (entryLine != null && FirePredecessorCinematics(entryLine.LineId))
+                            hasPredecessor = true;
                     }
 
-                    // Les spawns d'entrée (SpawnOnNodeId) arrivent après le
-                    // snapshot initial : sans ça, hasEntry=false => moved=true
-                    // => validation proximitée gratuite dès la frame suivante.
+                    _resolvedCardIdsThisNode.Clear();
+                    _nodeEnterCoords.Clear();
                     for (int p = 0; p < _playerParty.Count; p++)
                     {
                         var u = _playerParty[p];
-                        if (u != null && !_nodeEnterCoords.ContainsKey(u))
-                            _nodeEnterCoords[u] = u.CurrentCoords;
+                        if (u != null) _nodeEnterCoords[u] = u.CurrentCoords;
                     }
-                }
+                    if (dataNode != null)
+                    {
+                        SpawnActorsForNode(node.Id, dataNode.TriggerCombatOnEnter);
+                        FireLinkedCinematics(dataNode.CinematicIds);
+                        ExecuteNodeEvents(dataNode);
 
-                if (!hasPredecessor)
-                {
-                    StageCurrentLine();
+                        if (dataNode.TriggerCombatOnEnter && _turnManager != null && _turnManager.IsInExploration)
+                        {
+                            _turnManager.EnterCombatMode();
+                        }
+
+                        for (int p = 0; p < _playerParty.Count; p++)
+                        {
+                            var u = _playerParty[p];
+                            if (u != null && !_nodeEnterCoords.ContainsKey(u))
+                                _nodeEnterCoords[u] = u.CurrentCoords;
+                        }
+                    }
+
+                    if (!hasPredecessor)
+                    {
+                        StageCurrentLine();
+                    }
+
+                    if (!string.IsNullOrEmpty(_pendingTalkLineId))
+                    {
+                        string pendingTalk = _pendingTalkLineId;
+                        _pendingTalkLineId = "";
+                        if (dataNode != null && dataNode.FindDialogueIndex(pendingTalk) >= 0)
+                            TryAdvanceToId(pendingTalk, null);
+                    }
                 }
             }
 
@@ -1279,19 +1856,20 @@ namespace Killtime.Story.Scenes
 
             if (node.Kind == ScenarioNodeKind.Resolution)
             {
+                if (TryConsumePendingJump()) return;
+                if (TryReturnFromTalk()) return;
                 if (!TryFireReadyTrigger()) _director.CompleteActiveScenario();
             }
             else if (node.Kind == ScenarioNodeKind.Objective && !_director.AreRequiredObjectivesComplete())
             {
-                // Objectifs requis incomplets : on reste (pas de fuite en avant),
-                // mais on l'explique au lieu de rester muet.
+                if (TryReturnFromTalk()) return;
                 if (!TryFireReadyTrigger())
                     CombatHUD.Instance?.AddAdvancedLog("🎯 <b>Objectifs requis incomplets.</b> Terminez les objectifs principaux pour poursuivre.", LogCategory.MovementAndTurns, "[OBJECTIF]", Color.yellow);
             }
             else
             {
-                // Nœud épuisé (Briefing / Choice / Objective validé) : on suit le lien
-                // vers le nœud suivant, sinon la scène est terminée -> transition + scène suivante.
+                if (TryConsumePendingJump()) return;
+                if (TryReturnFromTalk()) return;
                 if (!TryFireReadyTrigger() && !_director.Continue()) _director.CompleteActiveScenario();
             }
         }
@@ -1830,6 +2408,13 @@ namespace Killtime.Story.Scenes
                 return;
             }
 
+            // Sentinelle info interactable (hérité) : dismiss pur, sans avancer
+            // dialogue ni nœud — on retrouve l'état sous-jacent inchangé.
+            if (string.Equals(choice.NextLineId, InteractableInfoReturnSentinel, StringComparison.Ordinal))
+            {
+                return;
+            }
+
             if (!string.IsNullOrEmpty(choice.NextLineId))
             {
                 if (TryAdvanceToId(choice.NextLineId, null)) return;
@@ -1862,6 +2447,7 @@ namespace Killtime.Story.Scenes
             {
                 DrawPartySwitchBar();
                 DrawInteractablesWorldOverlay();
+                DrawInteractablePopups();
             }
 
             var node = _director != null ? _director.CurrentNode : null;
@@ -1942,6 +2528,112 @@ namespace Killtime.Story.Scenes
                     GUI.backgroundColor = Color.white;
                 }
             }
+        }
+
+        /// <summary>
+        /// Popups monde des interactables : ancrés au-dessus de l'objet,
+        /// bloqueurs de clics 3D, info en fondu auto, offre de saut persistante.
+        /// </summary>
+        private void DrawInteractablePopups()
+        {
+            if (_activePopups.Count == 0 || UnityEngine.Camera.main == null) return;
+            var snapshot = _activePopups.ToArray();
+            var wrap = new GUIStyle(GUI.skin.label) { wordWrap = true };
+            for (int s = 0; s < snapshot.Length; s++)
+            {
+                var popup = snapshot[s];
+                if (popup == null || !_activePopups.Contains(popup)) continue;
+                if (!TryGetSpawnedInteractable(popup.InteractableId, out var prop) || prop == null) continue;
+
+                var hexNode = _grid?.GetNode(prop.Coordinates);
+                Vector3 worldPos = hexNode != null
+                    ? hexNode.WorldPosition + Vector3.up * 2.1f
+                    : prop.transform.position + Vector3.up * 2.1f;
+                Vector3 sp = UnityEngine.Camera.main.WorldToScreenPoint(worldPos);
+                if (sp.z <= 0f) { popup.LastScreenRect = Rect.zero; continue; }
+
+                float w = 300f;
+                float msgH = string.IsNullOrEmpty(popup.Message) ? 0f : wrap.CalcHeight(new GUIContent(popup.Message), w - 20f);
+                msgH = Mathf.Clamp(msgH, 0f, 120f);
+                float h = Mathf.Clamp(34f + msgH + (popup.HasJump ? 64f : 12f), 80f, 230f);
+                float x = Mathf.Clamp(sp.x - w * 0.5f, 8f, Mathf.Max(8f, Screen.width - w - 8f));
+                float yBase = Screen.height - sp.y;
+                float y = yBase - h - 34f;
+                if (y < 60f) y = yBase + 26f;
+                Rect r = new Rect(x, y, w, h);
+                // Le popup NE bloque les clics 3D que sur ses boutons (voir
+                // BlockPopupButton) : le titre et le message laissent passer,
+                // sinon un popup persistant recouvre les personnages derrière
+                // et les rend insélectionnables.
+                popup.LastScreenRect = r;
+
+                float alpha = 1f;
+                if (!popup.HasJump)
+                {
+                    float remain = InteractablePopupAutoCloseDelay + InteractablePopupFadeDuration
+                        - (Time.unscaledTime - popup.CreatedUnscaledTime);
+                    if (remain <= 0f) { popup.LastScreenRect = Rect.zero; continue; } // purgé par PruneInteractablePopups
+                    if (remain <= InteractablePopupFadeDuration)
+                        alpha = Mathf.Clamp01(remain / InteractablePopupFadeDuration);
+                }
+
+                Color prevColor = GUI.color;
+                Color prevBg = GUI.backgroundColor;
+                GUI.color = new Color(1f, 1f, 1f, alpha);
+                GUI.Box(r, GUIContent.none);
+                Rect area = new Rect(r.x + 8f, r.y + 4f, r.width - 16f, r.height - 8f);
+                GUILayout.BeginArea(area);
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"🔧 {popup.DisplayName}", GUILayout.ExpandWidth(true));
+                if (GUILayout.Button("✕", GUILayout.Width(24), GUILayout.Height(20)))
+                {
+                    DismissPopup(popup);
+                }
+                BlockPopupButton(area);
+                GUILayout.EndHorizontal();
+                if (!string.IsNullOrEmpty(popup.Message))
+                {
+                    GUILayout.Label(popup.Message, wrap);
+                }
+                if (popup.HasJump)
+                {
+                    GUILayout.Space(4);
+                    GUILayout.BeginHorizontal();
+                    GUI.backgroundColor = new Color(0.25f, 0.85f, 0.45f);
+                    if (GUILayout.Button($"Suivre ➔ {popup.TargetNodeId}", GUILayout.Height(26)))
+                    {
+                        FollowPopupJump(popup);
+                    }
+                    BlockPopupButton(area);
+                    GUI.backgroundColor = Color.white;
+                    if (GUILayout.Button("Rester", GUILayout.Width(70), GUILayout.Height(26)))
+                    {
+                        DismissPopup(popup);
+                    }
+                    BlockPopupButton(area);
+                    GUILayout.EndHorizontal();
+                }
+                GUILayout.EndArea();
+                GUI.color = prevColor;
+                GUI.backgroundColor = prevBg;
+            }
+        }
+
+        /// <summary>
+        /// Seuls les boutons du popup bloquent les clics 3D (la carte derrière
+        /// reste cliquable : sélection et déplacement possibles sous le popup).
+        /// </summary>
+        private void BlockPopupButton(Rect area)
+        {
+            try
+            {
+                Rect last = GUILayoutUtility.GetLastRect();
+                last.x += area.x;
+                last.y += area.y;
+                if (last.width > 0f && last.height > 0f)
+                    _interactButtonRects.Add(last);
+            }
+            catch { /* ignore */ }
         }
 
         private void DrawDialogueBox(ScenarioNode node)
@@ -2110,14 +2802,23 @@ namespace Killtime.Story.Scenes
                     GUILayout.BeginHorizontal();
                     GUILayout.FlexibleSpace();
 
-                    // Liaison vide = fin du nœud : on montre les actions de sortie,
-                    // sinon bouton Suivant vers la cible routée.
+                    // Liaison vide = fin du nœud : retour de conversation prioritaire,
+                    // sinon bouton Suivant vers la cible routée ou boutons d'actions.
                     if (!string.IsNullOrEmpty(line.NextLineId))
                     {
                         if (GUILayout.Button("Suivant (Espace) ➔", GUILayout.Width(170), GUILayout.Height(28)))
                         {
                             AdvanceDialogueOrNode();
                         }
+                    }
+                    else if (HasActiveTalkReturn())
+                    {
+                        GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
+                        if (GUILayout.Button("↩ Revenir (Espace)", GUILayout.Width(190), GUILayout.Height(28)))
+                        {
+                            TryReturnFromTalk();
+                        }
+                        GUI.backgroundColor = Color.white;
                     }
                     else
                     {
@@ -2143,17 +2844,33 @@ namespace Killtime.Story.Scenes
 
         private void DrawActionButtons(ScenarioNode node)
         {
+            if (HasActiveTalkReturn())
+            {
+                GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
+                if (GUILayout.Button("↩ Revenir à la conversation", GUILayout.Width(240), GUILayout.Height(28)))
+                {
+                    TryReturnFromTalk();
+                }
+                GUI.backgroundColor = Color.white;
+                return;
+            }
+
             if (node.Kind == ScenarioNodeKind.Briefing)
             {
                 GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
                 if (GUILayout.Button($"➔ {node.ContinueLabel}", GUILayout.Width(240), GUILayout.Height(28)))
                 {
-                    if (!TryFireReadyTrigger()) _director.Continue();
+                    if (TryConsumePendingJump()) { GUI.backgroundColor = Color.white; return; }
+                    if (TryReturnFromTalk()) { GUI.backgroundColor = Color.white; return; }
+                    if (!TryFireReadyTrigger() && !_director.Continue()) _director.CompleteActiveScenario();
                 }
                 GUI.backgroundColor = Color.white;
             }
             else if (node.Kind == ScenarioNodeKind.Choice)
             {
+                // Choix explicite : le joueur choisit, le saut différé attend
+                // (pas de consommation au dessin, seulement au clic Continuer
+                // ci-dessous ou en sortie de dialogue).
                 if (TryFireReadyTrigger()) return;
                 if (node.Choices != null && node.Choices.Count > 0)
                 {
@@ -2171,7 +2888,8 @@ namespace Killtime.Story.Scenes
                     string label = !string.IsNullOrWhiteSpace(node.ContinueLabel) ? node.ContinueLabel : "Continuer";
                     if (GUILayout.Button($"➔ {label}", GUILayout.Width(240), GUILayout.Height(28)))
                     {
-                        if (!TryFireReadyTrigger()) _director.Continue();
+                        if (TryConsumePendingJump()) { GUI.backgroundColor = Color.white; return; }
+                        if (!TryFireReadyTrigger() && !_director.Continue()) TryReturnFromTalk();
                     }
                     GUI.backgroundColor = Color.white;
                 }
@@ -2183,7 +2901,8 @@ namespace Killtime.Story.Scenes
                 GUI.backgroundColor = complete ? new Color(0.25f, 0.85f, 0.45f) : Color.gray;
                 if (GUILayout.Button(complete ? $"✔ {node.ContinueLabel}" : "Objectifs requis non validés", GUILayout.Width(260), GUILayout.Height(28)))
                 {
-                    if (!TryFireReadyTrigger()) _director.Continue();
+                    if (TryConsumePendingJump()) { GUI.backgroundColor = Color.white; GUI.enabled = true; return; }
+                    if (!TryFireReadyTrigger() && !_director.Continue()) TryReturnFromTalk();
                 }
                 GUI.backgroundColor = Color.white;
                 GUI.enabled = true;
@@ -2194,7 +2913,10 @@ namespace Killtime.Story.Scenes
                 string btnText = string.IsNullOrWhiteSpace(node.ContinueLabel) ? "✔ Conclure & Scène Suivante ➔" : $"✔ {node.ContinueLabel} ➔";
                 if (GUILayout.Button(btnText, GUILayout.Width(280), GUILayout.Height(28)))
                 {
-                    if (!TryFireReadyTrigger()) _director.CompleteActiveScenario();
+                    if (TryConsumePendingJump()) { GUI.backgroundColor = Color.white; return; }
+                    // Un "Parler à" atterri sur une résolution revient d'abord à
+                    // la conversation principale au lieu de clore la scène.
+                    if (!TryFireReadyTrigger() && !TryReturnFromTalk()) _director.CompleteActiveScenario();
                 }
                 GUI.backgroundColor = Color.white;
             }
@@ -2221,6 +2943,13 @@ namespace Killtime.Story.Scenes
 
             _grid?.ClearOccupancy();
             _turnManager?.ClearUnits();
+            _activePopups.Clear();
+            ClearPendingNodeJump();
+            if (_overheadHudOverridden)
+            {
+                _overheadHudOverridden = false;
+                TacticalUnitVisual.ShowOverheadHUD = _savedOverheadHud;
+            }
 
             if (gameObject != null) Destroy(gameObject);
         }

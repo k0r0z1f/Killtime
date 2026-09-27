@@ -75,8 +75,10 @@ namespace Killtime.CameraSystem
 
         // ================= CINÉMATIQUES DE SCÈNE (cartes 🎬) =================
         // Lecture fire-and-forget : le runtime déclenche sans attendre la fin,
-        // la carte suivante s'enclenche immédiatement. Les cinématiques qui se
-        // chevauchent sont mises en file au lieu de se couper.
+        // la carte suivante s'enclenche immédiatement. Si une cinématique caméra
+        // est déjà en cours, la nouvelle la PRÉEMPTE fluidement (handover depuis
+        // la position live, sans retour tactique ni snap) au lieu d'attendre en
+        // file. Seul un batch même-frame (plusieurs ids d'un coup) s'enfile.
         private Coroutine _activeSceneCinematicRoutine;
         private struct QueuedCinematic
         {
@@ -85,6 +87,9 @@ namespace Killtime.CameraSystem
         }
         private readonly Queue<QueuedCinematic> _sceneCinematicQueue = new();
         private Action _sceneCinematicOnComplete;
+        // Raccord fluide demandé par une préemption : force une transition d'entrée
+        // Smooth même si la nouvelle ciné est réglée en Téléportation.
+        private bool _handoverSmoothRequested;
         private bool _letterboxActive;
         private float _letterboxProgress;
         [SerializeField] private float _letterboxEnterDuration = 0.35f;
@@ -108,6 +113,7 @@ namespace Killtime.CameraSystem
             }
             _sceneCinematicQueue.Clear();
             _sceneCinematicOnComplete = null;
+            _handoverSmoothRequested = false;
             _letterboxActive = false;
             _letterboxProgress = 0f;
             ClearAllCinematicLocks();
@@ -158,8 +164,11 @@ namespace Killtime.CameraSystem
         /// <summary>
         /// Déclenche une cinématique de scène SANS bloquer : retour immédiat,
         /// la carte suivante peut s'enclencher pendant la lecture.
+        /// Si une cinématique caméra est en cours, la nouvelle la préempte
+        /// FLUIDEMENT (handover live, pas de snap) sauf si preemptCurrent=false
+        /// (batch même-frame : mise en file derrière).
         /// </summary>
-        public void PlaySceneCinematic(SceneCinematicData cine, Action onComplete = null)
+        public void PlaySceneCinematic(SceneCinematicData cine, Action onComplete = null, bool preemptCurrent = true)
         {
             if (cine == null || cine.Shots == null || cine.Shots.Count == 0) return;
 
@@ -173,7 +182,31 @@ namespace Killtime.CameraSystem
 
             if (IsPlayingSceneCinematic)
             {
-                _sceneCinematicQueue.Enqueue(new QueuedCinematic { Data = cine, OnComplete = onComplete });
+                if (!preemptCurrent)
+                {
+                    _sceneCinematicQueue.Enqueue(new QueuedCinematic { Data = cine, OnComplete = onComplete });
+                    return;
+                }
+                // Préemption fluide : on coupe l'ancienne SANS restaurer la caméra
+                // tactique (ni FOV, ni letterbox, ni timeScale) pour enchaîner depuis
+                // la position live exacte. L'ancienne sortie "fin →" est abandonnée
+                // (un abort ne chaîne pas — cf StopSceneCinematic). La file existante
+                // est conservée et jouera après la nouvelle.
+                if (_activeSceneCinematicRoutine != null)
+                {
+                    try { StopCoroutine(_activeSceneCinematicRoutine); }
+                    catch { /* ignore */ }
+                    _activeSceneCinematicRoutine = null;
+                }
+                ClearAllCinematicLocks();
+                _sceneCinematicOnComplete = null;
+                CurrentPlayingSceneCinematic = null;
+                _handoverSmoothRequested = true;
+                try { CombatHUD.Instance?.AddAdvancedLog($"🔀 <b>Cinématique préemptée →</b> {cine.Title} [{cine.CinematicId}] (raccord fluide).", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f)); }
+                catch { /* ignore */ }
+                _sceneCinematicOnComplete = onComplete;
+                CurrentPlayingSceneCinematic = cine;
+                _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
                 return;
             }
             _sceneCinematicOnComplete = onComplete;
@@ -284,6 +317,7 @@ namespace Killtime.CameraSystem
                 StopCoroutine(_activeSceneCinematicRoutine);
                 _activeSceneCinematicRoutine = null;
             }
+            _handoverSmoothRequested = false;
             _letterboxActive = false;
             _letterboxProgress = 0f;
             ClearAllCinematicLocks();
@@ -559,6 +593,10 @@ namespace Killtime.CameraSystem
             Vector3 livePrePos = transform.position;
             Quaternion livePreRot = transform.rotation;
             float livePreFov = _mainCamera != null ? _mainCamera.fieldOfView : _normalFOV;
+            // Handover de préemption : la nouvelle ciné part du live exact, avec un
+            // raccord Smooth même si elle est réglée en Téléportation (sinon snap).
+            bool handover = _handoverSmoothRequested;
+            _handoverSmoothRequested = false;
             Vector3 preFocusPos = Vector3.zero;
             bool hasPreFocus = false;
             if (shots.Count > 0 && !string.IsNullOrWhiteSpace(shots[0]?.FocusActorId))
@@ -571,14 +609,21 @@ namespace Killtime.CameraSystem
                 }
             }
 
-            if (!cine.InPlace && driveCamera && cine.StartTransition == CinematicCameraTransition.Smooth && shots.Count > 0 && shots[0] != null)
+            if (!cine.InPlace && driveCamera && (cine.StartTransition == CinematicCameraTransition.Smooth || handover) && shots.Count > 0 && shots[0] != null)
             {
                 var firstShot = shots[0];
                 Vector3 targetStartPos = firstShot.CamStartPos;
                 Vector3 targetStartEuler = firstShot.CamStartEuler;
                 float targetStartFov = firstShot.CamStartFov;
 
-                if (firstShot.TrackFocusActor && !string.IsNullOrWhiteSpace(firstShot.FocusActorId))
+                if (firstShot.RelativeToCurrent)
+                {
+                    // Le plan part du live de toute façon : aucun voyage d'entrée.
+                    targetStartPos = livePrePos;
+                    targetStartEuler = livePreRot.eulerAngles;
+                    targetStartFov = livePreFov;
+                }
+                else if (firstShot.TrackFocusActor && !string.IsNullOrWhiteSpace(firstShot.FocusActorId))
                 {
                     var tracked = FindSceneUnit(firstShot.FocusActorId);
                     if (tracked != null)
@@ -596,7 +641,10 @@ namespace Killtime.CameraSystem
                     }
                 }
 
-                float startTransDur = Mathf.Max(0.05f, (cine.StartTransitionDuration > 0.01f ? cine.StartTransitionDuration : 0.5f) / speed);
+                float baseDur = cine.StartTransitionDuration > 0.01f ? cine.StartTransitionDuration : 0.5f;
+                if (handover && cine.StartTransition != CinematicCameraTransition.Smooth)
+                    baseDur = Mathf.Clamp(baseDur, 0.35f, 0.6f);
+                float startTransDur = Mathf.Max(0.05f, baseDur / speed);
                 float startTransElapsed = 0f;
                 while (startTransElapsed < startTransDur)
                 {

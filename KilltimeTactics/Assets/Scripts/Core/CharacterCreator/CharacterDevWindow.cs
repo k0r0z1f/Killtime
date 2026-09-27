@@ -125,6 +125,31 @@ namespace Killtime.UI
             Instance?.InspectUnit(unit);
         }
 
+        public static void OpenForSheet(CharacterSheet sheet, string contextMessage = null)
+        {
+            if (sheet == null) return;
+            Open();
+            Instance?.InspectSheet(sheet, contextMessage);
+        }
+
+        public void InspectSheet(CharacterSheet sheet, string contextMessage = null)
+        {
+            if (sheet == null) return;
+            try { CharacterProgressionManager.SynchronizeProgression(sheet); } catch { /* ignore */ }
+            _currentSheet = sheet;
+            _selectedInventoryItem = null;
+            _showModelDropdown = false;
+            _showAnimDropdown = false;
+            _lastLoadedModelName = "__UNINITIALIZED__";
+            _lastLoadedGenderKey = "__UNINITIALIZED__";
+            _selectedTab = 0;
+            _scrollPos = Vector2.zero;
+            _statusMessage = !string.IsNullOrEmpty(contextMessage)
+                ? contextMessage
+                : $"Inspection active : {sheet.Name} (XP Total : {sheet.TotalSpentXP} XP)";
+            OpenInstance();
+        }
+
         public void InspectUnit(TacticalUnit unit)
         {
             if (unit == null) return;

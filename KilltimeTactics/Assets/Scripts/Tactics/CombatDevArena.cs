@@ -1243,6 +1243,23 @@ namespace Killtime.Tactics
             }
             if (UnityEngine.Camera.main == null || _gridVisualizer == null) return;
 
+            // Filet : unité active éventée (transition de scène, acteur détruit)
+            // = clics 3D totalement morts. On reprend le premier allié vivant.
+            if (_turnManager != null && _turnManager.IsInExploration && _turnManager.ActiveUnit == null)
+            {
+                var fallback = (PlayerUnit != null && PlayerUnit.Stats != null && PlayerUnit.Stats.IsAlive)
+                    ? PlayerUnit : null;
+                if (fallback == null)
+                {
+                    for (int i = 0; i < _additionalPlayers.Count; i++)
+                    {
+                        var p = _additionalPlayers[i];
+                        if (p != null && p.Stats != null && p.Stats.IsAlive) { fallback = p; break; }
+                    }
+                }
+                if (fallback != null) _turnManager.SetActiveUnitExplicit(fallback);
+            }
+
             // Souris sur fenêtre flottante/HUD : interaction exclusive avec l'UI, pas la carte 3D.
             // Évite clics fantômes (mouvement/sélection) et nettoie les survols derrière la fenêtre.
             if (Killtime.UI.FloatingWindowChrome.IsPointerOverAnyWindow())
@@ -1319,24 +1336,41 @@ namespace Killtime.Tactics
                             bool isTargetOccupied = clickedUnit != null || hoveredNode.IsOccupied;
                             if (!start.Equals(target) && hoveredNode.IsWalkable && !isTargetOccupied)
                             {
-                                int availableAP = activeUnit.Stats.CurrentActionPoints;
-                                bool hasInvisibleSteps = activeUnit.Stats.HasSpecialization("Protocole des Pas Invisibles") && activeUnit.Stats.MovesThisTurn == 0;
+                                // Anti-chevauchement : en exploration on peut changer
+                                // d'opérateur pendant qu'un autre marche encore ; deux
+                                // trajets simultanés se croisent et empilent les unités
+                                // (validations faites sur des positions périmées).
+                                if (IsAnotherPlayerUnitMoving(activeUnit))
+                                {
+                                    Log($"⏳ <b>{activeUnit.Stats.Name}</b> attend la fin du déplacement en cours.");
+                                    activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏳ Un allié marche...", new Color(1f, 0.8f, 0.3f));
+                                    return;
+                                }
+                                // Hors combat : déplacement libre (ni calcul ni coût de PA)
+                                // + faufile (on traverse les personnages sans s'y arrêter).
+                                bool isExploration = _turnManager != null && _turnManager.IsInExploration;
+                                bool traverse = isExploration;
+                                int availableAP = isExploration ? ExplorationFreeAP : activeUnit.Stats.CurrentActionPoints;
+                                bool hasInvisibleSteps = !isExploration && activeUnit.Stats.HasSpecialization("Protocole des Pas Invisibles") && activeUnit.Stats.MovesThisTurn == 0;
                                 if (hasInvisibleSteps) availableAP += 1;
 
-                                var path = _pathfinder.FindPath(start, target, availableAP, out int apCost);
+                                var path = _pathfinder.FindPath(start, target, availableAP, out int apCost, activeUnit.FootprintType, traverse);
 
                                 if (path.Count > 0)
                                 {
-                                    int effectiveCost = activeUnit.ComputeMovementAPCost(apCost);
+                                    int effectiveCost = isExploration ? 0 : activeUnit.ComputeMovementAPCost(apCost);
                                     int remainingAP = activeUnit.Stats.CurrentActionPoints - effectiveCost;
-                                    string moveTag = hasInvisibleSteps ? $"Déplacement (-{effectiveCost} PA / Pas Invisibles)" : $"Déplacement (-{effectiveCost} PA)";
-                                    Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{effectiveCost} PA | Restant: {remainingAP} PA]");
+                                    string moveTag = isExploration ? "Déplacement libre" : (hasInvisibleSteps ? $"Déplacement (-{effectiveCost} PA / Pas Invisibles)" : $"Déplacement (-{effectiveCost} PA)");
+                                    if (isExploration)
+                                        Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R})");
+                                    else
+                                        Log($"🚶 <b>{activeUnit.Stats.Name}</b> avance de {path.Count - 1} case(s) vers ({target.Q}, {target.R}) [Coût: -{effectiveCost} PA | Restant: {remainingAP} PA]");
                                     activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(moveTag, new Color(0.2f, 0.85f, 1.0f));
 
                                     _gridVisualizer.ClearPathPreview();
                                     if (KilltimeAudioManager.Instance != null)
                                         KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Dash, activeUnit.transform.position, 0.5f);
-                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, effectiveCost));
+                                    StartCoroutine(activeUnit.MoveAlongPath(path, _grid, effectiveCost, traverse));
                                 }
                             }
                         }
@@ -1345,11 +1379,12 @@ namespace Killtime.Tactics
                             // Aperçu du chemin au survol
                             if (!start.Equals(target) && hoveredNode.IsWalkable && !hoveredNode.IsOccupied)
                             {
-                                int previewAP = activeUnit.Stats.CurrentActionPoints;
-                                if (activeUnit.Stats.HasSpecialization("Protocole des Pas Invisibles") && activeUnit.Stats.MovesThisTurn == 0)
+                                bool previewTraverse = _turnManager != null && _turnManager.IsInExploration;
+                                int previewAP = previewTraverse ? ExplorationFreeAP : activeUnit.Stats.CurrentActionPoints;
+                                if (!previewTraverse && activeUnit.Stats.HasSpecialization("Protocole des Pas Invisibles") && activeUnit.Stats.MovesThisTurn == 0)
                                     previewAP += 1;
 
-                                var path = _pathfinder.FindPath(start, target, previewAP, out _);
+                                var path = _pathfinder.FindPath(start, target, previewAP, out _, activeUnit.FootprintType, previewTraverse);
                                 _gridVisualizer.SetPathPreview(path);
                             }
                             else
@@ -1378,17 +1413,40 @@ namespace Killtime.Tactics
             var active = _turnManager.ActiveUnit;
             if (IsPlayerManualControl(active) && _gridVisualizer != null)
             {
-                int reachAP = active.Stats.CurrentActionPoints;
-                if (active.Stats.HasSpecialization("Protocole des Pas Invisibles") && active.Stats.MovesThisTurn == 0)
+                bool reachTraverse = _turnManager != null && _turnManager.IsInExploration;
+                int reachAP = reachTraverse ? ExplorationFreeAP : active.Stats.CurrentActionPoints;
+                if (!reachTraverse && active.Stats.HasSpecialization("Protocole des Pas Invisibles") && active.Stats.MovesThisTurn == 0)
                     reachAP += 1;
 
-                var reachable = _pathfinder.GetReachableCoordinates(active.CurrentCoords, reachAP);
+                var reachable = _pathfinder.GetReachableCoordinates(active.CurrentCoords, reachAP, reachTraverse);
                 _gridVisualizer.SetReachableCoords(reachable);
             }
             else if (_gridVisualizer != null)
             {
                 _gridVisualizer.SetReachableCoords(null);
             }
+        }
+
+        /// <summary>
+        /// Budget PA fictif des déplacements hors combat : libres et illimités.
+        /// Largement au-dessus de toute carte (rayon 8 ≈ 217 cases).
+        /// </summary>
+        private const int ExplorationFreeAP = 100000;
+
+        /// <summary>
+        /// Vrai si un autre avatar contrôlé par le joueur est en train de marcher.
+        /// Verrou anti-chevauchement pour les ordres de déplacement manuels.
+        /// </summary>
+        private bool IsAnotherPlayerUnitMoving(TacticalUnit activeUnit)
+        {
+            var all = FindObjectsByType<TacticalUnit>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                var u = all[i];
+                if (u == null || u == activeUnit || !u.IsPlayerControlled || !u.IsMoving) continue;
+                return true;
+            }
+            return false;
         }
 
         public TacticalUnit GetUnitAtCoords(HexCoordinates coords)

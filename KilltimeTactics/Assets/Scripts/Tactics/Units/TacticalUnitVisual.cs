@@ -1996,6 +1996,14 @@ namespace Killtime.Tactics.Units
 
         public static bool ShowAnimationTelemetry = false;
 
+        /// <summary>
+        /// Boîte d'info au-dessus des personnages (nom + PV/PA). Visible par
+        /// défaut, masquée en mode scène narrative (le contrôleur de scène la
+        /// coupe à l'entrée et la restaure à la sortie). Bascule via touche N
+        /// ou option du dev UI.
+        /// </summary>
+        public static bool ShowOverheadHUD = true;
+
         private void OnGUI()
         {
             var cam = UnityEngine.Camera.main;
@@ -2016,7 +2024,10 @@ namespace Killtime.Tactics.Units
                 var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
                 float hudAlpha = ComputeVisionAlpha(cam, hudBoxPos, allUnits);
 
-                DrawOverheadHUD(uiX, uiY, hudAlpha);
+                if (ShowOverheadHUD)
+                {
+                    DrawOverheadHUD(uiX, uiY, hudAlpha);
+                }
                 if (ShowAnimationTelemetry)
                 {
                     DrawAnimationTelemetry(uiX, uiY);

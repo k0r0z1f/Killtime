@@ -199,6 +199,7 @@ namespace Killtime.UI
             else if (Input.GetKeyDown(KeyCode.F10)) EnsureDevWindow(WeaponGripEditorDevWindow.Instance, WeaponGripEditorDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F11)) EnsureDevWindow(RiverOfTimeDevWindow.Instance, RiverOfTimeDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F12)) EnsureDevWindow(Killtime.Story.HybrisWorldMapDevWindow.Instance, Killtime.Story.HybrisWorldMapDevWindow.Open);
+            else if (Input.GetKeyDown(KeyCode.B)) EnsureDevWindow(BestiaryDevWindow.Instance, BestiaryDevWindow.Open);
             else if (Input.GetKeyDown(KeyCode.F9))
             {
                 // Bascule ralenti : 1x <-> dernier ralenti (défaut 0.25x).
@@ -726,6 +727,7 @@ namespace Killtime.UI
                 _arena?.ResetArena();
             }
             GUILayout.EndHorizontal();
+            TacticalUnitVisual.ShowOverheadHUD = GUILayout.Toggle(TacticalUnitVisual.ShowOverheadHUD, "🏷️ Boîtes d'info personnages (Nom + PV/PA — Touche N)");
 
             GUILayout.Space(8);
             GUILayout.Label("<b>⏳ Ralenti Global (Time Scale Dev) :</b>");
@@ -778,6 +780,10 @@ namespace Killtime.UI
             if (GUILayout.Button("🗡️ Ancrage Armes / Grip (F10)", GUILayout.Height(32)))
             {
                 WeaponGripEditorDevWindow.Open();
+            }
+            if (GUILayout.Button("📖 Bestiaire (B)", GUILayout.Height(32)))
+            {
+                BestiaryDevWindow.Open();
             }
             GUILayout.EndHorizontal();
 

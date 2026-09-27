@@ -445,6 +445,44 @@ namespace Killtime.Tactics.CombatUI
                 ));
             }
 
+            // Parler à (social, éditeur de scènes) : enclenche la sortie 💬 de la
+            // carte 👥 Acteur de la cible qui correspond à celui qui parle
+            // (TalkEntries : réplique ou nœud). Portée 2 cases,
+            // 1 PA en combat, gratuit en exploration. Disponible sur tout
+            // personnage vivant autre que soi (allié comme ennemi).
+            if (!isSelf && targetIsAlive)
+            {
+                actions.Add(new CombatAction(
+                    "💬 Parler à",
+                    "Engage la conversation : joue la réplique configurée sur la carte d'acteur (éditeur de scènes, output 💬 + locuteur optionnel). 1 PA en combat, gratuit en exploration.",
+                    ActionCategory.TactiqueEtOrdres,
+                    0,
+                    (act, tgt) => act != null && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 2,
+                    (act, tgt) =>
+                    {
+                        if (act == null || tgt == null) return;
+                        var tm = Object.FindAnyObjectByType<TurnManager>();
+                        bool inExploration = tm != null && tm.IsInExploration;
+                        if (!inExploration)
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                        }
+                        var story = Object.FindAnyObjectByType<Killtime.Story.Scenes.JsonStorySceneController>();
+                        if (story != null)
+                        {
+                            story.TalkToActor(act, tgt);
+                            arena?.RecordChronoSnapshot($"Parler à : {act.Stats.Name} -> {tgt.Stats.Name}");
+                        }
+                        else
+                        {
+                            var tgtVis = tgt.GetComponent<TacticalUnitVisual>();
+                            tgtVis?.SpawnFloatingText("💬 …", Color.cyan);
+                            arena?.Log($"💬 <b>{act.Stats.Name}</b> parle à <b>{tgt.Stats.Name}</b> (aucun contrôleur de scène actif).");
+                        }
+                    }
+                ));
+            }
+
             // =========================================================================
             // 5. TECHNIQUES DE SPÉCIALISATION (LIVRE III)
             // Clé d'Articulation, Analyse de Faille, Rugissement, Regard de

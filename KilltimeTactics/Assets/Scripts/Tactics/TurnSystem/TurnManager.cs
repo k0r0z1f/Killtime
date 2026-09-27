@@ -211,7 +211,14 @@ namespace Killtime.Tactics.TurnSystem
 
         public void SetActiveUnitExplicit(TacticalUnit unit)
         {
-            if (unit == null || !_allUnits.Contains(unit)) return;
+            if (unit == null || !_allUnits.Contains(unit))
+            {
+                // Refus silencieux avant : une sélection impossible (acteur non
+                // enregistré) ne laissait aucune trace — d'où des clics "morts".
+                string label = unit == null ? "(détruite ou null)" : unit.name;
+                Debug.LogWarning($"[TurnManager] Sélection refusée pour '{label}' : unité non enregistrée au tour.");
+                return;
+            }
             ActiveUnit = unit;
             _activeUnitIndex = _allUnits.IndexOf(unit);
             OnTurnStarted?.Invoke(ActiveUnit);

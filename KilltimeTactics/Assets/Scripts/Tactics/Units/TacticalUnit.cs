@@ -74,6 +74,13 @@ namespace Killtime.Tactics.Units
             catch { /* ignore */ }
         }
 
+        /// <summary>
+        /// Vrai si l'unité a une position logique valide sur la grille.
+        /// Sans position (spawn refusé + fallback épuisé), l'unité est un
+        /// fantôme : invisible aux contrôles d'occupation, à détruire.
+        /// </summary>
+        public bool HasLogicalPosition => _hasPosition;
+
         public IReadOnlyList<HexCoordinates> OccupiedCoords => TitanFootprint.GetOccupiedCoordinates(CurrentCoords, _footprintType);
 
         public bool Occupies(HexCoordinates coords)
@@ -521,9 +528,11 @@ namespace Killtime.Tactics.Units
 
         /// <summary>
         /// Déplace l'unité case par case le long d'un chemin d'hexagones en consommant ses PA.
-        /// Refuse tout mouvement vers / à travers une case occupée (1 case = 1 avatar).
+        /// Par défaut refuse tout mouvement vers / à travers une case occupée (1 case = 1 avatar).
+        /// allowPassThrough (exploration) : traverser les cases occupées pour passer
+        /// de l'autre côté, sans jamais s'y arrêter (destination toujours contrôlée).
         /// </summary>
-        public IEnumerator MoveAlongPath(List<HexCoordinates> path, TacticalHexGrid grid, int apCost)
+        public IEnumerator MoveAlongPath(List<HexCoordinates> path, TacticalHexGrid grid, int apCost, bool allowPassThrough = false)
         {
             if (path == null || path.Count <= 1) yield break;
             if (grid == null) yield break;
@@ -540,10 +549,12 @@ namespace Killtime.Tactics.Units
                 TeleportTo(path[0], grid);
             }
 
-            // Validation préalable : aucune étape (sauf départ) ne doit être occupée.
+            // Validation préalable : praticable partout ; occupée = refus sauf
+            // faufile (traversée autorisée, destination toujours contrôlée).
             for (int v = 1; v < path.Count; v++)
             {
-                if (IsOccupiedByOther(path[v], grid))
+                bool isDest = v == path.Count - 1;
+                if ((!allowPassThrough || isDest) && IsOccupiedByOther(path[v], grid))
                 {
                     Debug.LogWarning($"[TacticalUnit] Déplacement refusé pour '{_unitName}' : {path[v]} occupée.");
                     yield break;
@@ -581,7 +592,15 @@ namespace Killtime.Tactics.Units
 
                 var nextCoords = path[i];
 
-                if (IsOccupiedByOther(nextCoords, grid) && !nextCoords.Equals(path[^1]))
+                // La destination est exclue du test drapeau (réservée en début
+                // de trajet) mais pas du test physique : si un autre avatar y
+                // est arrivé entre-temps, on s'arrête AVANT d'entrer (pas d'empilement).
+                // En faufile on traverse les étapes occupées, jamais la destination.
+                bool isDestStep = nextCoords.Equals(path[^1]);
+                bool stepBlocked = isDestStep
+                    ? IsAnyOtherUnitAt(nextCoords)
+                    : (!allowPassThrough && IsOccupiedByOther(nextCoords, grid));
+                if (stepBlocked)
                 {
                     Debug.LogWarning($"[TacticalUnit] Déplacement interrompu pour '{_unitName}' : {nextCoords} devenue occupée.");
                     var fallbackNode = grid.GetNode(CurrentCoords);

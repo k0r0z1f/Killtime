@@ -6,6 +6,19 @@ using Killtime.Tactics.Grid;
 
 namespace Killtime.Story.Data
 {
+    /// <summary>
+    /// Une sortie "Parler à" 💬 d'une carte 👥 Acteur : si <see cref="SpeakerId"/>
+    /// correspond à celui qui parle à l'acteur (ActorId OU DisplayName,
+    /// insensible à la casse ; vide = n'importe qui), <see cref="TargetId"/> est
+    /// enclenché — LineId de réplique ou NodeId de nœud.
+    /// </summary>
+    [Serializable]
+    public class SceneActorTalkEntry
+    {
+        public string SpeakerId = "";
+        public string TargetId = "";
+    }
+
     [Serializable]
     public class SceneActorSpawnData
     {
@@ -24,6 +37,12 @@ namespace Killtime.Story.Data
         public bool StartInCombatStance = false;
         public bool SpawnInitially = true;
         public string SpawnOnNodeId = "";
+        // Sorties "Parler à" 💬 : une entrée par interlocuteur possible. Quand on
+        // utilise "Parler à" (menu contextuel carte) sur cet acteur, l'entrée dont
+        // le Qui correspond à celui qui parle est enclenchée ; sinon l'entrée
+        // sans Qui (défaut, n'importe qui). La cible est un LineId de réplique
+        // OU un NodeId de nœud (le nœud est alors enclenché / rejoint).
+        public List<SceneActorTalkEntry> TalkEntries = new();
         // Sortie cinématique non-bloquante : jouée (fire-and-forget) au spawn différé de l'acteur.
         public List<string> CinematicIds = new();
         public CharacterSheet EmbeddedSheet = new();
@@ -828,6 +847,10 @@ namespace Killtime.Story.Data
             {
                 if (data.Actors[ai] == null) continue;
                 data.Actors[ai].CinematicIds = EnsureCineList(data.Actors[ai].CinematicIds);
+                data.Actors[ai].TalkEntries ??= new List<SceneActorTalkEntry>();
+                for (int te = data.Actors[ai].TalkEntries.Count - 1; te >= 0; te--)
+                    if (data.Actors[ai].TalkEntries[te] == null)
+                        data.Actors[ai].TalkEntries.RemoveAt(te);
             }
 
             for (int a = 0; a < data.Actors.Count; a++)

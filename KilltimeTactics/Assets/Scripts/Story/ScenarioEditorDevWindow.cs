@@ -62,6 +62,11 @@ namespace Killtime.Story
             // Sortie "fin →" d'une carte 🎬 vers n'importe quelle carte (chaînage explicite).
             public bool IsCinematicOut;
             public SceneCinematicData SourceCinematic;
+            // Sortie "Parler à" d'une carte 👥 Acteur vers une réplique (LineId)
+            // ou un nœud (NodeId) — TalkEntries[SourceTalkIndex].TargetId.
+            public bool IsActorTalk;
+            public SceneActorSpawnData SourceActor;
+            public int SourceTalkIndex;
             public SceneDialogueLineData SourceLine;
             public SceneDialogueChoiceData SourceChoice;
             public SceneDialogueChallengeData SourceChallenge;
@@ -78,9 +83,34 @@ namespace Killtime.Story
         private readonly Dictionary<string, Vector2> _cachedTriggerOutSockets = new();
         private readonly Dictionary<string, Vector2> _cachedInteractableOutSockets = new();
         private readonly Dictionary<string, Vector2> _cachedActorInSockets = new();
+        private readonly Dictionary<string, Vector2> _cachedActorTalkOutSockets = new(StringComparer.OrdinalIgnoreCase);
         // Entrées des cartes cinématiques 🎬 (input seul, jamais de sortie).
         private readonly Dictionary<string, Vector2> _cachedCinematicInputSockets = new(StringComparer.OrdinalIgnoreCase);
         private bool _hasInitializedLayout = false;
+
+        // --- Quick-create : drop d'un lien dans le vide → menu contextuel (style Blueprint) ---
+        // Le brouillon actif est copié ici au moment du MouseUp dans le vide, avec la
+        // position monde du drop et la position écran pour ancrer la popup.
+        private enum QuickCreateKind { Dialogue, Event, Consequence, Node, Cinematic }
+        private bool _quickCreateOpen;
+        private WireConnectionDraft _quickCreateDraft;
+        private Vector2 _quickCreateWorldPos;
+        private Vector2 _quickCreateScreenPos;
+        private string _quickCreateSearch = "";
+        private Vector2 _quickCreateScroll;
+        private Rect _quickCreatePanelRect;
+
+        // --- Anti-vol de drag (cartes chevauchantes) ---
+        // Une carte peinte AVANT une autre peut recouvrir son header : son champ texte,
+        // créé plus tôt dans la passe IMGUI, vole alors le MouseDown destiné au
+        // déplacement (clic sur le header => sélection de texte derrière).
+        // La pré-passe ci-dessous est purement mathématique (aucun appel GUI : elle ne
+        // perturbe pas la séquence des IDs de contrôles) : elle réserve le geste sur le
+        // MouseDown, et la prise effective a lieu au premier MouseDrag (seuil 6px).
+        private object _lateDragTarget;
+        private object _lateResizeTarget;
+        private Vector2 _lateDownWorld;
+        private Vector2 _lateDownScreen;
 
         // Couleur unique des ports/wires cinématiques + hauteur standard de la rangée 🎬.
         private static readonly Color CinePortCol = new Color(1f, 0.35f, 0.85f);
@@ -88,6 +118,12 @@ namespace Killtime.Story
         // Position verticale (relative carte) des ports de sortie 🎬 sur le flanc droit.
         private const float CinePortTopCards = 46f;
         private const float ActorCinePortTop = 26f;
+        // Sorties "Parler à" 💬 des cartes 👥 Acteur (TalkEntries) : une rangée
+        // de 20px par entrée après l'en-tête, port cyan sur le flanc droit au
+        // milieu de chaque rangée (comme les sorties de répliques).
+        private const float ActorTalkFirstRowTop = 170f;
+        private const float ActorTalkRowH = 20f;
+        private static readonly Color TalkPortCol = new Color(0f, 0.85f, 1f);
         // Position verticale (relative frame) du port 🎬 du nœud (sous NextNodeId, au-dessus des choix).
         private const float NodeCinePortTop = 50f;
 
@@ -922,7 +958,7 @@ namespace Killtime.Story
             }
 
             GUILayout.FlexibleSpace();
-            GUILayout.Label("<color=grey>Molette = Zoom  ·  Clic Droit = Pan  ·  Double-clic nœud = cadrer  ·  Drag port = lier (vide = effacer)  ·  Tag bord = suivre</color>");
+            GUILayout.Label("<color=grey>Molette = Zoom  ·  Clic Droit = Pan  ·  Double-clic nœud = cadrer  ·  Drag port = lier · Vide = créer (menu)  ·  Tag bord = suivre</color>");
             GUILayout.EndHorizontal();
             GUILayout.EndVertical();
 
@@ -2210,7 +2246,7 @@ namespace Killtime.Story
         private const float InterCardDefaultW = 340f;
         private const float InterCardDefaultH = 272f;
         private const float ActorCardDefaultW = 340f;
-        private const float ActorCardDefaultH = 228f;
+        private const float ActorCardDefaultH = 268f;
         private const float CineCardDefaultW = 360f;
         private const float CineCardDefaultH = 190f;
         private static float DlgCardDefaultH(int choiceCount) => 215f + choiceCount * 28f;
@@ -2406,8 +2442,36 @@ namespace Killtime.Story
             if (a == null) return new Vector2(ActorCardDefaultW, ActorCardDefaultH);
             float w = a.CardWidth > 100f ? a.CardWidth : ActorCardDefaultW;
             float h = a.CardHeight > 80f ? a.CardHeight : ActorCardDefaultH;
-            if (h < ActorCardDefaultH) h = ActorCardDefaultH;
+            int n = a.TalkEntries != null ? a.TalkEntries.Count : 0;
+            // En-tête 💬 + une rangée par sortie : la carte grandit avec le
+            // nombre d'interlocuteurs (défaut = place pour 1 sortie).
+            float needed = ActorCardDefaultH + ActorTalkRowH * Mathf.Max(0, n - 1);
+            if (h < needed) h = needed;
             return new Vector2(w, h);
+        }
+
+        private static string ActorTalkSocketKey(string actorId, int entryIndex)
+        {
+            return $"{actorId}#{entryIndex}";
+        }
+
+        // Écriture sécurisée de la cible d'une rangée Parler à (index né du drag,
+        // la liste a pu bouger entre-temps : suppression de rangée, undo...).
+        private static void SetActorTalkTarget(SceneActorSpawnData a, int entryIndex, string targetId)
+        {
+            if (a?.TalkEntries == null || entryIndex < 0 || entryIndex >= a.TalkEntries.Count) return;
+            var te = a.TalkEntries[entryIndex];
+            if (te == null) return;
+            te.TargetId = targetId ?? "";
+        }
+
+        // Centre du port de sortie 💬 de la rangée i (doit matcher l'ordre de
+        // dessin de DrawActorCard : 6 rangées fixes de 20px après le header 30px,
+        // puis l'en-tête 💬 20px, puis une rangée 20px par entrée).
+        private static Vector2 GetActorTalkOutCenter(SceneActorSpawnData a, int entryIndex)
+        {
+            Vector2 s = GetActorCardSize(a);
+            return new Vector2(a.GraphPosX + s.x, a.GraphPosY + ActorTalkFirstRowTop + entryIndex * ActorTalkRowH + 9f);
         }
 
         private Vector2 _lastCanvasSize = new Vector2(1100f, 600f);
@@ -2844,12 +2908,33 @@ namespace Killtime.Story
             // pan (clic = cadrer la cible) et sert de cible de drop pendant un drag.
             CollectOffscreenLinkTags(canvasRect);
             _pickerCapturesMouse = (IsItemPickerOpen() && GetItemPickerRect(canvasRect).Contains(evt.mousePosition))
-                || (_actorDropKey != null && WorldToScreenRect(canvasRect, _actorDropWorld).Contains(evt.mousePosition));
+                || (_actorDropKey != null && WorldToScreenRect(canvasRect, _actorDropWorld).Contains(evt.mousePosition))
+                || IsQuickCreateOpen();
 
             // Clic hors du dropdown locuteurs => le refermer (sauf sur son bouton ▼).
             if (_actorDropKey != null && evt.type == EventType.MouseDown
                 && !_actorDropWorld.Contains(mouseWorld) && !_actorDropAnchorWorld.Contains(mouseWorld))
                 _actorDropKey = null;
+
+            // Popup quick-create MODALE : interceptée AVANT tout le graphe pour que le
+            // fond (cartes, champs, tags, HUD) ne puisse jamais voler le clic — sinon la
+            // popup semble "incliquable" et ne se referme plus. Les clics dans le panneau
+            // traversent (le graphe les ignore via _pickerCapturesMouse) et sont traités
+            // au dessin du menu plus bas ; les clics hors panneau ferment ici même.
+            if (_quickCreateOpen)
+            {
+                Rect qcEarly = ComputeQuickCreateRect(canvasRect);
+                _quickCreatePanelRect = qcEarly;
+                if (evt.type == EventType.MouseDown && !qcEarly.Contains(evt.mousePosition))
+                {
+                    CloseQuickCreateMenu();
+                    evt.Use();
+                }
+            }
+
+            // Anti-vol de drag : réserve un MouseDown sur header/poignée avant que les
+            // champs texte peints avant (carte derrière) ne le volent. Pur calcul.
+            SwallowOverlappedHeaderPress(canvasRect, mouseWorld, _graphMouseScreenPos);
 
             // Zoom centré sur le curseur. IMPORTANT : aucun scale de GUI.matrix n'est utilisé
             // pour le graphe. Le clipping du BeginGroup reste donc en coordonnées écran 1:1.
@@ -2905,6 +2990,7 @@ namespace Killtime.Story
             _cachedTriggerOutSockets.Clear();
             _cachedInteractableOutSockets.Clear();
             _cachedActorInSockets.Clear();
+            _cachedActorTalkOutSockets.Clear();
             _cachedCinematicInputSockets.Clear();
 
             for (int n = 0; n < _data.Nodes.Count; n++)
@@ -3030,6 +3116,11 @@ namespace Killtime.Story
                     if (!seenActorIds.Add(a.ActorId)) a.ActorId = $"{a.ActorId}_{i + 1}";
                     Vector2 asize = GetActorCardSize(a);
                     _cachedActorInSockets[a.ActorId] = new Vector2(a.GraphPosX, a.GraphPosY + 26f);
+                    if (a.TalkEntries != null)
+                    {
+                        for (int ti = 0; ti < a.TalkEntries.Count; ti++)
+                            _cachedActorTalkOutSockets[ActorTalkSocketKey(a.ActorId, ti)] = GetActorTalkOutCenter(a, ti);
+                    }
                 }
             }
 
@@ -3071,7 +3162,10 @@ namespace Killtime.Story
                 DrawBezierWire(_wireDraft.StartPos, mouseWorld, Color.yellow, 3.5f);
                 if (evt.type == EventType.MouseUp && evt.button == 0 && !_pickerCapturesMouse)
                 {
-                    FinalizeGlobalWireDraft(mouseWorld);
+                    // NOTE : _graphMouseScreenPos est en coordonnées zone (capturé avant
+                    // BeginGroup), contrairement à evt.mousePosition ici (relatif au groupe).
+                    // La popup est dessinée après EndGroup : ancre en coordonnées zone.
+                    FinalizeGlobalWireDraft(mouseWorld, _graphMouseScreenPos);
                     _wireDraft.IsActive = false;
                     evt.Use();
                 }
@@ -3160,7 +3254,7 @@ namespace Killtime.Story
             }
 
             // Dropdown locuteurs par-dessus tout le graphe.
-            DrawActorDropdownPopup();
+            DrawActorDropdownPopup(canvasRect);
 
             // Le seul clip du graphe est terminé ici, avant tous les overlays écran.
             GUI.EndGroup();
@@ -3168,10 +3262,11 @@ namespace Killtime.Story
             DrawZoomControlsOverlay(canvasRect);
             DrawOffscreenLinkTags();
 
-            if (_hasHoverCard && !IsItemPickerOpen() && Event.current.type == EventType.Repaint)
+            if (_hasHoverCard && !IsItemPickerOpen() && !_quickCreateOpen && Event.current.type == EventType.Repaint)
                 DrawCardHoverTooltip(canvasRect);
 
             DrawItemPickerPanel(canvasRect);
+            DrawQuickCreateMenu(canvasRect);
         }
 
         // Moteur de recherche d'item du catalogue (récompenses des cartes).
@@ -3195,6 +3290,10 @@ namespace Killtime.Story
         private Rect _actorDropWorld = new Rect(-10000f, -10000f, 0f, 0f);
         private System.Action<string> _actorDropSetter = null;
         private string _actorDropCurrent = "";
+        // Défilement + index clavier de la dropdown locuteurs (sinon le bas de
+        // liste est inatteignable quand il y a beaucoup d'acteurs).
+        private Vector2 _actorDropScroll = Vector2.zero;
+        private int _actorDropIndex = -1;
 
         private bool IsItemPickerOpen()
         {
@@ -3511,6 +3610,8 @@ namespace Killtime.Story
             _actorDropAnchorWorld = anchorWorld;
             _actorDropCurrent = current ?? "";
             _actorDropSetter = setter;
+            _actorDropScroll = Vector2.zero;
+            _actorDropIndex = -1;
         }
 
         private System.Collections.Generic.List<string> BuildActorCandidates()
@@ -3564,7 +3665,7 @@ namespace Killtime.Story
             return list;
         }
 
-        private void DrawActorDropdownPopup()
+        private void DrawActorDropdownPopup(Rect canvasRect)
         {
             if (_actorDropKey == null) return;
             Event evt = Event.current;
@@ -3572,8 +3673,23 @@ namespace Killtime.Story
 
             const float rowH = 20f;
             const float popW = 210f;
-            float popH = (candidates.Count > 0 ? candidates.Count : 1) * rowH + 6f;
-            Rect pop = new Rect(_actorDropAnchorWorld.x, _actorDropAnchorWorld.yMax + 2f, popW, popH);
+            // Hauteur bornée + défilement : sans ça le bas de liste est
+            // inatteignable (popup plus haute que le canvas, sans scroll).
+            const int maxVisibleRows = 12;
+            int rows = candidates.Count > 0 ? candidates.Count : 1;
+            float fullH = rows * rowH + 6f;
+            float viewH = Mathf.Min(fullH, maxVisibleRows * rowH + 6f);
+
+            // Cadrage dans la zone monde visible (le BeginGroup clippe tout ce
+            // qui dépasse) : on rabat en X, et on bascule au-dessus de l'ancre
+            // s'il n'y a pas la place en dessous.
+            Rect visWorld = GetVisibleWorldRect(canvasRect);
+            float popX = Mathf.Clamp(_actorDropAnchorWorld.x, visWorld.xMin + 4f, Mathf.Max(visWorld.xMin + 4f, visWorld.xMax - popW - 4f));
+            float popY = _actorDropAnchorWorld.yMax + 2f;
+            if (popY + viewH > visWorld.yMax - 4f)
+                popY = _actorDropAnchorWorld.y - viewH - 2f;
+            popY = Mathf.Clamp(popY, visWorld.yMin + 4f, Mathf.Max(visWorld.yMin + 4f, visWorld.yMax - viewH - 4f));
+            Rect pop = new Rect(popX, popY, popW, viewH);
             _actorDropWorld = pop;
 
             DrawGraphSolidRect(pop, new Color(0.03f, 0.05f, 0.08f, 0.97f));
@@ -3588,26 +3704,78 @@ namespace Killtime.Story
             }
             else
             {
+                // Navigation clavier : index courant initialisé sur la valeur active.
+                if (_actorDropIndex < 0 || _actorDropIndex >= candidates.Count)
+                {
+                    _actorDropIndex = 0;
+                    for (int k = 0; k < candidates.Count; k++)
+                    {
+                        if (string.Equals(candidates[k], _actorDropCurrent, System.StringComparison.OrdinalIgnoreCase))
+                        {
+                            _actorDropIndex = k;
+                            break;
+                        }
+                    }
+                }
+                float zoom = Mathf.Max(0.0001f, _zoom);
+                float rowHs = rowH * zoom;
+                Rect viewScreen = GraphRect(pop);
+                // Réserve la barre de défilement quand le contenu déborde.
+                float sbW = fullH > viewH + 0.5f ? 16f : 0f;
+                Rect contentScreen = new Rect(0f, 0f, Mathf.Max(10f, viewScreen.width - sbW - 8f), candidates.Count * rowHs);
+                // Zone de scroll intérieure (marges de 3px comme avant).
+                Rect scrollScreen = new Rect(viewScreen.x + 3f * zoom, viewScreen.y + 3f * zoom, viewScreen.width - 6f * zoom, viewScreen.height - 6f * zoom);
+                _actorDropScroll = GUI.BeginScrollView(scrollScreen, _actorDropScroll, contentScreen, false, false);
                 for (int i = 0; i < candidates.Count; i++)
                 {
-                    Rect r = new Rect(pop.x + 3f, pop.y + 3f + i * rowH, popW - 6f, rowH - 2f);
-                    string label = string.Equals(candidates[i], _actorDropCurrent, System.StringComparison.OrdinalIgnoreCase)
-                        ? $"► {candidates[i]}" : candidates[i];
+                    Rect r = new Rect(0f, i * rowHs, contentScreen.width, rowHs - 2f * zoom);
+                    bool isCurrent = string.Equals(candidates[i], _actorDropCurrent, System.StringComparison.OrdinalIgnoreCase);
+                    string label = (i == _actorDropIndex ? "► " : (isCurrent ? "► " : "")) + candidates[i];
+                    // Survol souris = sélection clavier (Entrée valide la ligne survolée).
+                    if (evt.type == EventType.Repaint && r.Contains(Event.current.mousePosition))
+                        _actorDropIndex = i;
                     // Bouton brut (pas de wrapper) : la popup reste cliquable en mode modal.
-                    if (GUI.Button(GraphRect(r), label))
+                    if (GUI.Button(r, label))
                     {
                         _actorDropSetter?.Invoke(candidates[i]);
                         _actorDropKey = null;
+                        GUI.EndScrollView();
                         evt.Use();
                         return;
                     }
                 }
+                GUI.EndScrollView();
+                // Maintient la ligne clavier visible après un déplacement flèches.
+                float visTop = _actorDropScroll.y;
+                float visH = Mathf.Max(1f, scrollScreen.height);
+                float selTop = _actorDropIndex * rowHs;
+                if (selTop < visTop) _actorDropScroll.y = selTop;
+                else if (selTop + rowHs > visTop + visH) _actorDropScroll.y = selTop + rowHs - visH;
             }
 
-            if (evt.type == EventType.KeyDown && evt.keyCode == KeyCode.Escape)
+            if (evt.type == EventType.KeyDown)
             {
-                _actorDropKey = null;
-                evt.Use();
+                if (evt.keyCode == KeyCode.Escape)
+                {
+                    _actorDropKey = null;
+                    evt.Use();
+                }
+                else if (candidates.Count > 0 && (evt.keyCode == KeyCode.DownArrow || evt.keyCode == KeyCode.UpArrow))
+                {
+                    if (_actorDropIndex < 0) _actorDropIndex = 0;
+                    else _actorDropIndex = (evt.keyCode == KeyCode.DownArrow)
+                        ? Mathf.Min(candidates.Count - 1, _actorDropIndex + 1)
+                        : Mathf.Max(0, _actorDropIndex - 1);
+                    _actorDropCurrent = candidates[_actorDropIndex];
+                    evt.Use();
+                }
+                else if (candidates.Count > 0 && (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter))
+                {
+                    int pick = (_actorDropIndex >= 0 && _actorDropIndex < candidates.Count) ? _actorDropIndex : 0;
+                    _actorDropSetter?.Invoke(candidates[pick]);
+                    _actorDropKey = null;
+                    evt.Use();
+                }
             }
         }
 
@@ -3928,6 +4096,22 @@ namespace Killtime.Story
                     if (a == null) continue;
                     Vector2 asize = GetActorCardSize(a);
                     DrawCineWireList(new Vector2(a.GraphPosX + asize.x, a.GraphPosY + ActorCinePortTop), a.CinematicIds);
+                    // Wires sorties "Parler à" 💬 (TalkEntries) vers réplique (cyan)
+                    // ou nœud enclenché (cyan).
+                    if (a.TalkEntries != null)
+                    {
+                        for (int ti = 0; ti < a.TalkEntries.Count; ti++)
+                        {
+                            var te = a.TalkEntries[ti];
+                            if (te == null || string.IsNullOrWhiteSpace(te.TargetId)) continue;
+                            string tid = te.TargetId.Trim();
+                            if (!_cachedActorTalkOutSockets.TryGetValue(ActorTalkSocketKey(a.ActorId, ti), out var talkOut)) continue;
+                            if (_cachedInputSockets.TryGetValue(tid, out var talkIn))
+                                DrawBezierWire(talkOut, talkIn, new Color(0f, 0.85f, 1f, 0.95f), 3f);
+                            else if (_cachedNodeInputSockets.TryGetValue(tid, out var nodeIn))
+                                DrawBezierWire(talkOut, nodeIn, new Color(0f, 0.85f, 1f, 0.95f), 3f);
+                        }
+                    }
                 }
             }
 
@@ -3983,7 +4167,7 @@ namespace Killtime.Story
             return false;
         }
 
-        private void FinalizeGlobalWireDraft(Vector2 mousePos)
+        private void FinalizeGlobalWireDraft(Vector2 mousePos, Vector2 mouseScreenPos)
         {
             // Cible nœud la plus proche du drop (auto-lien exclu), sinon tag de bord
             // hors-champ sous le curseur. Faux si rien d'acceptable sous la souris.
@@ -4023,9 +4207,22 @@ namespace Killtime.Story
                 }
             }
 
+            bool IsClickWithoutDrag()
+            {
+                return Vector2.Distance(mousePos, _wireDraft.StartPos) * _zoom <= 6f;
+            }
+
+            // Drop dans le vide (style éditeur moderne) : ouvre le menu contextuel de
+            // création rapide au lieu d'effacer / d'ignorer. Simple clic = annulation.
+            void OpenMenuForVoid()
+            {
+                if (IsClickWithoutDrag()) return;
+                OpenQuickCreateMenu(_wireDraft, mousePos, mouseScreenPos);
+            }
+
             // Carte → cinématique 🎬 : drop sur l'entrée d'une carte cinématique =
-            // ajouter le lien (multi-liens autorisés), drop dans le vide = rien
-            // (on n'efface jamais une liste d'un simple raté : bouton ⊘ dédié).
+            // ajouter le lien (multi-liens autorisés), drop dans le vide = menu
+            // contextuel (créer une 🎬 et lier). On n'efface jamais d'un simple raté.
             if (_wireDraft.IsCinematicLink && _wireDraft.SourceCineList != null)
             {
                 float bestCine = 34f;
@@ -4044,17 +4241,21 @@ namespace Killtime.Story
                     StorySceneData.AddCineLink(_wireDraft.SourceCineList, pickedCine);
                     PlayWireSoundLocal();
                 }
+                else
+                {
+                    OpenMenuForVoid();
+                }
                 return;
             }
 
             // Sortie "fin →" d'une carte 🎬 : drop sur une carte (cinématique, réplique,
             // conséquence, événement ou nœud) = chaîner. Auto-lien refusé (boucle infinie).
-            // Drop dans le vide ou sur acteur/déclencheur/interactable = effacer le lien.
+            // Drop dans le vide = menu contextuel (créer + chaîner, ou rompre le lien).
             if (_wireDraft.IsCinematicOut && _wireDraft.SourceCinematic != null)
             {
                 var src = _wireDraft.SourceCinematic;
                 // Simple clic sans drag = annulation (pas d'effacement accidentel).
-                if (Vector2.Distance(mousePos, _wireDraft.StartPos) * _zoom <= 6f) return;
+                if (IsClickWithoutDrag()) return;
                 if (_data.Cinematics == null || !_data.Cinematics.Contains(src)) return;
                 string picked = null;
                 float best = 34f;
@@ -4089,19 +4290,19 @@ namespace Killtime.Story
                 }
                 else
                 {
-                    src.NextTargetId = "";
+                    OpenMenuForVoid();
                 }
                 return;
             }
 
             // Nœud → nœud (sortie principale NextNodeId) : drop sur l'entrée d'un
             // nœud = lier (auto-lien refusé), drop sur un tag de bord = lier la cible
-            // hors-champ, drop dans le vide = effacer le lien.
+            // hors-champ, drop dans le vide = menu (créer un nœud, ou rompre le lien).
             if (_wireDraft.IsNode && _wireDraft.SourceNode != null)
             {
                 var src = _wireDraft.SourceNode;
                 // Simple clic sans drag = annulation (pas d'effacement accidentel).
-                if (Vector2.Distance(mousePos, _wireDraft.StartPos) * _zoom <= 6f) return;
+                if (IsClickWithoutDrag()) return;
                 if (_data.Nodes.Contains(src))
                 {
                     if (TryPickNodeTarget(mousePos, src.NodeId, out string picked))
@@ -4111,7 +4312,7 @@ namespace Killtime.Story
                     }
                     else
                     {
-                        src.NextNodeId = "";
+                        OpenMenuForVoid();
                     }
                 }
                 return;
@@ -4123,44 +4324,90 @@ namespace Killtime.Story
                 int ci = _wireDraft.NodeChoiceIndex;
                 bool valid = _data.Nodes.Contains(src) && src.Choices != null && ci >= 0 && ci < src.Choices.Count && src.Choices[ci] != null;
                 // Simple clic sans drag = annulation (pas d'effacement accidentel).
-                if (valid && Vector2.Distance(mousePos, _wireDraft.StartPos) * _zoom <= 6f) return;
-                if (valid)
+                if (!valid) return;
+                if (IsClickWithoutDrag()) return;
+                if (TryPickNodeTarget(mousePos, src.NodeId, out string picked))
                 {
-                    if (TryPickNodeTarget(mousePos, src.NodeId, out string picked))
-                    {
-                        src.Choices[ci].NextNodeId = picked;
-                        PlayWireSoundLocal();
-                    }
-                    else
-                    {
-                        src.Choices[ci].NextNodeId = "";
-                    }
+                    src.Choices[ci].NextNodeId = picked;
+                    PlayWireSoundLocal();
+                }
+                else
+                {
+                    OpenMenuForVoid();
                 }
                 return;
             }
             // Déclencheur : déposé sur l'entrée d'un nœud, sa sortie entre dans ce nœud.
+            // Vide = menu (créer un nœud cible).
             if (_wireDraft.IsTrigger && _wireDraft.SourceTrigger != null)
             {
+                if (IsClickWithoutDrag()) return;
                 foreach (var kvp in _cachedNodeInputSockets)
                 {
                     if (Vector2.Distance(kvp.Value, mousePos) < 36f)
                     {
                         _wireDraft.SourceTrigger.TargetNodeId = kvp.Key;
+                        PlayWireSoundLocal();
                         return;
                     }
                 }
+                OpenMenuForVoid();
                 return;
             }
             // Interactable : même routage, la cible est TriggerNodeId (saut runtime existant).
+            // Vide = menu (créer un nœud cible).
             if (_wireDraft.IsInteractable && _wireDraft.SourceInteractable != null)
             {
+                if (IsClickWithoutDrag()) return;
                 foreach (var kvp in _cachedNodeInputSockets)
                 {
                     if (Vector2.Distance(kvp.Value, mousePos) < 36f)
                     {
                         _wireDraft.SourceInteractable.TriggerNodeId = kvp.Key;
+                        PlayWireSoundLocal();
                         return;
                     }
+                }
+                OpenMenuForVoid();
+                return;
+            }
+            // Acteur 👥 → réplique 💬 / nœud 🟧 : drop sur l'entrée d'une réplique
+            // (LineId) ou d'un nœud (NodeId, enclenché) = lier la rangée
+            // (TalkEntries[i].TargetId). Vide = menu (créer + lier).
+            // Simple clic = annulation.
+            if (_wireDraft.IsActorTalk && _wireDraft.SourceActor != null)
+            {
+                if (IsClickWithoutDrag()) return;
+                var srcActor = _wireDraft.SourceActor;
+                int srcIdx = _wireDraft.SourceTalkIndex;
+                if (_data.Actors == null || !_data.Actors.Contains(srcActor)
+                    || srcActor.TalkEntries == null || srcIdx < 0
+                    || srcIdx >= srcActor.TalkEntries.Count || srcActor.TalkEntries[srcIdx] == null) return;
+                float bestTalk = 32f;
+                string pickedTalk = null;
+                foreach (var kvp in _cachedInputSockets)
+                {
+                    if (!SceneContainsLine(kvp.Key)) continue;
+                    float dist = Vector2.Distance(kvp.Value, mousePos);
+                    if (dist < bestTalk)
+                    {
+                        bestTalk = dist;
+                        pickedTalk = kvp.Key;
+                    }
+                }
+                if (!string.IsNullOrEmpty(pickedTalk))
+                {
+                    srcActor.TalkEntries[srcIdx].TargetId = pickedTalk;
+                    PlayWireSoundLocal();
+                }
+                else if (TryPickNodeTarget(mousePos, "", out string pickedNode) && _data.FindNode(pickedNode) != null)
+                {
+                    srcActor.TalkEntries[srcIdx].TargetId = pickedNode;
+                    PlayWireSoundLocal();
+                }
+                else
+                {
+                    OpenMenuForVoid();
                 }
                 return;
             }
@@ -4181,6 +4428,9 @@ namespace Killtime.Story
             }
 
             // 2. Test de collision avec les sockets de Nœud complet
+            // (conservé pour compat : un drop précis sur un nœud lie quand même,
+            // mais le menu quick-create ne propose un nœud que pour les sorties
+            // globales — les sorties de cartes créent des cartes sœurs).
             if (string.IsNullOrEmpty(targetId))
             {
                 float bestNodeDist = 36f;
@@ -4195,7 +4445,12 @@ namespace Killtime.Story
                 }
             }
 
-            if (string.IsNullOrEmpty(targetId)) return;
+            // Vide = menu contextuel (créer une carte sœur + lier).
+            if (string.IsNullOrEmpty(targetId))
+            {
+                OpenMenuForVoid();
+                return;
+            }
 
             if (_wireDraft.IsEvent && _wireDraft.SourceEvent != null)
             {
@@ -4260,6 +4515,830 @@ namespace Killtime.Story
             {
                 Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.UI_Filter, 0.6f);
             }
+        }
+
+        // ------------------------------------------------------------------
+        // Quick-create : menu contextuel à la Unreal/Blender quand un lien est
+        // lâché dans le vide. Filtré par type de sortie pour ne proposer que
+        // des cartes compatibles + actions (rompre le lien / annuler).
+        // ------------------------------------------------------------------
+        private bool IsQuickCreateOpen() => _quickCreateOpen;
+
+        private void OpenQuickCreateMenu(WireConnectionDraft draft, Vector2 worldPos, Vector2 screenPos)
+        {
+            if (!IsQuickCreateDraftStillValid(draft)) return;
+            _quickCreateDraft = draft;
+            _quickCreateDraft.IsActive = true;
+            _quickCreateWorldPos = new Vector2(Mathf.Round(worldPos.x), Mathf.Round(worldPos.y));
+            _quickCreateScreenPos = screenPos;
+            _quickCreateSearch = "";
+            _quickCreateScroll = Vector2.zero;
+            _quickCreateOpen = true;
+            _quickCreateFocusSearch = true;
+            // Un seul popup à la fois : le dropdown locuteurs recouvrirait la popup
+            // (dessiné avant) et volerait ses clics.
+            _actorDropKey = null;
+        }
+
+        private void CloseQuickCreateMenu()
+        {
+            _quickCreateOpen = false;
+            _quickCreateDraft = new WireConnectionDraft();
+            _quickCreateSearch = "";
+        }
+
+        private bool _quickCreateFocusSearch;
+
+        private bool IsQuickCreateDraftStillValid(WireConnectionDraft draft)
+        {
+            if (_data == null) return false;
+            if (draft.IsCinematicLink) return draft.SourceCineList != null;
+            if (draft.IsCinematicOut) return draft.SourceCinematic != null && _data.Cinematics != null && _data.Cinematics.Contains(draft.SourceCinematic);
+            if (draft.IsActorTalk) return draft.SourceActor != null && _data.Actors != null && _data.Actors.Contains(draft.SourceActor);
+            if (draft.IsNode || draft.IsNodeChoice) return draft.SourceNode != null && _data.Nodes != null && _data.Nodes.Contains(draft.SourceNode);
+            if (draft.IsTrigger) return draft.SourceTrigger != null && _data.Triggers != null && _data.Triggers.Contains(draft.SourceTrigger);
+            if (draft.IsInteractable) return draft.SourceInteractable != null && _data.Interactables != null && _data.Interactables.Contains(draft.SourceInteractable);
+            if (draft.IsEvent) return draft.SourceEvent != null && FindParentNodeOfEvent(draft.SourceEvent) != null;
+            if (draft.FromChallengeLink) return draft.SourceChallenge != null && FindParentNodeOfChallenge(draft.SourceChallenge) != null;
+            if (draft.FromConsequence) return draft.SourceConsequence != null && FindParentNodeOfConsequence(draft.SourceConsequence) != null;
+            if (draft.FromChoice) return draft.SourceChoice != null && FindParentNodeOfChoice(draft.SourceChoice) != null;
+            if (draft.SourceLine != null) return FindParentNodeOfLine(draft.SourceLine) != null;
+            return false;
+        }
+
+        private struct QuickCreateOption
+        {
+            public QuickCreateKind Kind;
+            public string Label;
+            public string Hint;
+            public Color Accent;
+        }
+
+        private List<QuickCreateOption> GetQuickCreateOptions(WireConnectionDraft draft)
+        {
+            var list = new List<QuickCreateOption>(5);
+            void Add(QuickCreateKind k, string label, string hint, Color c) => list.Add(new QuickCreateOption { Kind = k, Label = label, Hint = hint, Accent = c });
+            Color dlgCol = new Color(0f, 0.85f, 1f);
+            Color evtCol = new Color(0.85f, 0.45f, 1f);
+            Color consCol = new Color(0.35f, 1f, 0.55f);
+            Color nodeCol = new Color(1f, 0.65f, 0.15f);
+            Color cineCol = new Color(1f, 0.35f, 0.85f);
+
+            if (draft.IsCinematicLink)
+            {
+                Add(QuickCreateKind.Cinematic, "🎬 Cinématique", "Nouvelle carte 🎬 liée", cineCol);
+                return list;
+            }
+            if (draft.IsCinematicOut)
+            {
+                Add(QuickCreateKind.Cinematic, "🎬 Cinématique", "Enchaîner une 🎬", cineCol);
+                Add(QuickCreateKind.Dialogue, "💬 Réplique", "Chaîner une réplique", dlgCol);
+                Add(QuickCreateKind.Event, "▲ Événement", "Chaîner un événement", evtCol);
+                Add(QuickCreateKind.Consequence, "◆ Conséquence", "Chaîner une conséquence", consCol);
+                Add(QuickCreateKind.Node, "🟧 Nœud", "Sauter vers un nœud", nodeCol);
+                return list;
+            }
+            if (draft.IsActorTalk)
+            {
+                Add(QuickCreateKind.Dialogue, "💬 Réplique", "Réplique de discussion (Parler à)", dlgCol);
+                Add(QuickCreateKind.Node, "🟧 Nœud", "Enclencher un nœud (Parler à)", nodeCol);
+                return list;
+            }
+            if (draft.IsNode || draft.IsNodeChoice || draft.IsTrigger || draft.IsInteractable)
+            {
+                Add(QuickCreateKind.Node, "🟧 Nœud", "Nouveau nœud cible", nodeCol);
+                return list;
+            }
+            if (draft.FromChallengeLink || draft.FromConsequence)
+            {
+                Add(QuickCreateKind.Dialogue, "💬 Réplique", "Continuer vers une réplique", dlgCol);
+                Add(QuickCreateKind.Consequence, "◆ Conséquence", "Enchaîner une conséquence", consCol);
+                return list;
+            }
+            // Sorties principales de cartes (réplique / choix / événement) :
+            // création de cartes sœurs dans le même nœud (visibles + exécutées).
+            Add(QuickCreateKind.Dialogue, "💬 Réplique", "Nouvelle réplique liée", dlgCol);
+            Add(QuickCreateKind.Event, "▲ Événement", "Nouvelle action scénique", evtCol);
+            Add(QuickCreateKind.Consequence, "◆ Conséquence", "Récompense / effet", consCol);
+            return list;
+        }
+
+        private string GetQuickCreateTitle(WireConnectionDraft draft)
+        {
+            if (draft.IsCinematicLink) return "Lien 🎬 → ?";
+            if (draft.IsCinematicOut) return "Fin 🎬 → ?";
+            if (draft.IsActorTalk) return "Acteur 💬 → ?";
+            if (draft.IsNode) return "Nœud → ?";
+            if (draft.IsNodeChoice) return "Choix nœud → ?";
+            if (draft.IsTrigger) return "Déclencheur → ?";
+            if (draft.IsInteractable) return "Interactable → ?";
+            if (draft.IsEvent) return "Événement → ?";
+            if (draft.FromChallengeLink) return draft.ChallengeLinkIsSuccess ? "Défi ✔ → ?" : "Défi ✕ → ?";
+            if (draft.FromConsequence) return draft.ConsLinkToCons ? "Conséquence ◆→ ?" : "Conséquence → ?";
+            if (draft.FromChoice) return "Choix → ?";
+            return "Réplique → ?";
+        }
+
+        private bool QuickCreateHasBreakableLink(WireConnectionDraft draft)
+        {
+            if (draft.IsCinematicOut && draft.SourceCinematic != null) return !string.IsNullOrWhiteSpace(draft.SourceCinematic.NextTargetId);
+            if (draft.IsNode && draft.SourceNode != null) return !string.IsNullOrWhiteSpace(draft.SourceNode.NextNodeId);
+            if (draft.IsNodeChoice && draft.SourceNode != null && draft.SourceNode.Choices != null && draft.NodeChoiceIndex >= 0 && draft.NodeChoiceIndex < draft.SourceNode.Choices.Count)
+                return !string.IsNullOrWhiteSpace(draft.SourceNode.Choices[draft.NodeChoiceIndex].NextNodeId);
+            // Les sorties de cartes conservent leur lien si le menu est annulé :
+            // "rompre" n'a de sens que pour les sorties globales qui effaçaient avant.
+            return false;
+        }
+
+        private void BreakQuickCreateLink(WireConnectionDraft draft)
+        {
+            if (draft.IsCinematicOut && draft.SourceCinematic != null) draft.SourceCinematic.NextTargetId = "";
+            else if (draft.IsNode && draft.SourceNode != null) draft.SourceNode.NextNodeId = "";
+            else if (draft.IsNodeChoice && draft.SourceNode != null && draft.SourceNode.Choices != null && draft.NodeChoiceIndex >= 0 && draft.NodeChoiceIndex < draft.SourceNode.Choices.Count && draft.SourceNode.Choices[draft.NodeChoiceIndex] != null)
+                draft.SourceNode.Choices[draft.NodeChoiceIndex].NextNodeId = "";
+        }
+
+        private SceneNodeData FindParentNodeOfLine(SceneDialogueLineData line)
+        {
+            if (_data?.Nodes == null || line == null) return null;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node?.Dialogues == null) continue;
+                for (int d = 0; d < node.Dialogues.Count; d++)
+                    if (ReferenceEquals(node.Dialogues[d], line)) return node;
+            }
+            return null;
+        }
+
+        private SceneNodeData FindParentNodeOfChoice(SceneDialogueChoiceData choice)
+        {
+            if (_data?.Nodes == null || choice == null) return null;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node?.Dialogues == null) continue;
+                for (int d = 0; d < node.Dialogues.Count; d++)
+                {
+                    var line = node.Dialogues[d];
+                    if (line?.Choices == null) continue;
+                    for (int c = 0; c < line.Choices.Count; c++)
+                        if (ReferenceEquals(line.Choices[c], choice)) return node;
+                }
+            }
+            return null;
+        }
+
+        private SceneNodeData FindParentNodeOfChallenge(SceneDialogueChallengeData chal)
+        {
+            if (_data?.Nodes == null || chal == null) return null;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node?.Dialogues == null) continue;
+                for (int d = 0; d < node.Dialogues.Count; d++)
+                {
+                    var line = node.Dialogues[d];
+                    if (line?.Choices == null) continue;
+                    for (int c = 0; c < line.Choices.Count; c++)
+                        if (line.Choices[c] != null && ReferenceEquals(line.Choices[c].Challenge, chal)) return node;
+                }
+            }
+            return null;
+        }
+
+        private SceneNodeData FindParentNodeOfEvent(SceneEventData ev)
+        {
+            if (_data?.Nodes == null || ev == null) return null;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node?.Events == null) continue;
+                for (int e = 0; e < node.Events.Count; e++)
+                    if (ReferenceEquals(node.Events[e], ev)) return node;
+            }
+            return null;
+        }
+
+        private SceneNodeData FindParentNodeOfConsequence(SceneConsequenceData cons)
+        {
+            if (_data?.Nodes == null || cons == null) return null;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node?.Consequences == null) continue;
+                for (int k = 0; k < node.Consequences.Count; k++)
+                    if (ReferenceEquals(node.Consequences[k], cons)) return node;
+            }
+            return null;
+        }
+
+        private SceneNodeData FindParentNodeForDraft(WireConnectionDraft draft)
+        {
+            if (draft.SourceLine != null)
+            {
+                var p = FindParentNodeOfLine(draft.SourceLine);
+                if (p != null) return p;
+            }
+            if (draft.SourceChoice != null)
+            {
+                var p = FindParentNodeOfChoice(draft.SourceChoice);
+                if (p != null) return p;
+            }
+            if (draft.SourceChallenge != null)
+            {
+                var p = FindParentNodeOfChallenge(draft.SourceChallenge);
+                if (p != null) return p;
+            }
+            if (draft.SourceEvent != null)
+            {
+                var p = FindParentNodeOfEvent(draft.SourceEvent);
+                if (p != null) return p;
+            }
+            if (draft.SourceConsequence != null)
+            {
+                var p = FindParentNodeOfConsequence(draft.SourceConsequence);
+                if (p != null) return p;
+            }
+            return null;
+        }
+
+        private string MakeUniqueLineId(SceneNodeData parent)
+        {
+            int nodeIdx = parent != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
+            int baseCount = parent?.Dialogues != null ? parent.Dialogues.Count : 0;
+            for (int attempt = 1; attempt < 500; attempt++)
+            {
+                string cand = $"line_{nodeIdx + 1}_{baseCount + attempt}";
+                if (!SceneContainsLine(cand) && !_cachedInputSockets.ContainsKey(cand)) return cand;
+            }
+            return $"line_{nodeIdx + 1}_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueEventId(SceneNodeData parent)
+        {
+            int nodeIdx = parent != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
+            int baseCount = parent?.Events != null ? parent.Events.Count : 0;
+            for (int attempt = 1; attempt < 500; attempt++)
+            {
+                string cand = $"evt_{nodeIdx + 1}_{baseCount + attempt}";
+                bool exists = false;
+                if (_data?.Nodes != null)
+                    for (int n = 0; n < _data.Nodes.Count && !exists; n++)
+                    {
+                        var nd = _data.Nodes[n];
+                        if (nd?.Events == null) continue;
+                        for (int e = 0; e < nd.Events.Count; e++)
+                            if (nd.Events[e] != null && string.Equals(nd.Events[e].EventId, cand, StringComparison.OrdinalIgnoreCase)) { exists = true; break; }
+                    }
+                if (!exists && !_cachedInputSockets.ContainsKey(cand)) return cand;
+            }
+            return $"evt_{nodeIdx + 1}_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueConsId(SceneNodeData parent)
+        {
+            int nodeIdx = parent != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
+            int baseCount = parent?.Consequences != null ? parent.Consequences.Count : 0;
+            for (int attempt = 1; attempt < 500; attempt++)
+            {
+                string cand = $"cons_{nodeIdx + 1}_{baseCount + attempt}";
+                if (!SceneContainsConsequence(cand) && !_cachedInputSockets.ContainsKey(cand)) return cand;
+            }
+            return $"cons_{nodeIdx + 1}_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueNodeId()
+        {
+            int baseCount = _data.Nodes != null ? _data.Nodes.Count : 0;
+            for (int attempt = 1; attempt < 1000; attempt++)
+            {
+                string cand = $"node_{baseCount + attempt}";
+                if (_data.FindNode(cand) == null && !_cachedNodeInputSockets.ContainsKey(cand)) return cand;
+            }
+            return $"node_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueCineId()
+        {
+            int baseCount = _data.Cinematics != null ? _data.Cinematics.Count : 0;
+            for (int attempt = 1; attempt < 1000; attempt++)
+            {
+                string cand = $"cine_{baseCount + attempt}";
+                if (_data.FindCinematic(cand) == null && !_cachedCinematicInputSockets.ContainsKey(cand)) return cand;
+            }
+            return $"cine_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private SceneNodeData FindBestHostNodeForCinematicCard(Vector2 dropWorld)
+        {
+            if (_data?.Nodes == null || _data.Nodes.Count == 0) return null;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node == null) continue;
+                Rect box = ComputeNodeBoundingBox(node);
+                if (box.Contains(dropWorld)) return node;
+            }
+            SceneNodeData best = null;
+            float bestDist = float.MaxValue;
+            for (int n = 0; n < _data.Nodes.Count; n++)
+            {
+                var node = _data.Nodes[n];
+                if (node == null) continue;
+                Rect box = ComputeNodeBoundingBox(node);
+                float d = Vector2.Distance(box.center, dropWorld);
+                if (d < bestDist) { bestDist = d; best = node; }
+            }
+            return bestDist <= 600f ? best : null;
+        }
+
+        private void PlayQuickCreateLinkSound()
+        {
+            if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.UI_Filter, 0.6f);
+        }
+
+        private void CreateQuickCreateCard(QuickCreateKind kind)
+        {
+            var draft = _quickCreateDraft;
+            Vector2 drop = _quickCreateWorldPos;
+            if (!IsQuickCreateDraftStillValid(draft)) { CloseQuickCreateMenu(); return; }
+
+            // --- Sorties globales vers un nouveau nœud ---
+            if (kind == QuickCreateKind.Node)
+            {
+                string newNodeId = MakeUniqueNodeId();
+                var newNode = new SceneNodeData
+                {
+                    NodeId = newNodeId,
+                    Title = "Nouveau Nœud",
+                    GraphPosX = drop.x,
+                    GraphPosY = drop.y - 18f
+                };
+                _data.Nodes.Add(newNode);
+                if (draft.IsNode && draft.SourceNode != null) draft.SourceNode.NextNodeId = newNodeId;
+                else if (draft.IsNodeChoice && draft.SourceNode != null && draft.SourceNode.Choices != null && draft.NodeChoiceIndex >= 0 && draft.NodeChoiceIndex < draft.SourceNode.Choices.Count && draft.SourceNode.Choices[draft.NodeChoiceIndex] != null) draft.SourceNode.Choices[draft.NodeChoiceIndex].NextNodeId = newNodeId;
+                else if (draft.IsTrigger && draft.SourceTrigger != null) draft.SourceTrigger.TargetNodeId = newNodeId;
+                else if (draft.IsInteractable && draft.SourceInteractable != null) draft.SourceInteractable.TriggerNodeId = newNodeId;
+                else if (draft.IsCinematicOut && draft.SourceCinematic != null) draft.SourceCinematic.NextTargetId = newNodeId;
+                else if (draft.IsActorTalk && draft.SourceActor != null) SetActorTalkTarget(draft.SourceActor, draft.SourceTalkIndex, newNodeId);
+                PlayQuickCreateLinkSound();
+                CloseQuickCreateMenu();
+                return;
+            }
+
+            // --- Nouvelle cinématique globale ---
+            if (kind == QuickCreateKind.Cinematic)
+            {
+                _data.Cinematics ??= new List<SceneCinematicData>();
+                string newCineId = MakeUniqueCineId();
+                var cine = new SceneCinematicData
+                {
+                    CinematicId = newCineId,
+                    Title = $"Cinématique {_data.Cinematics.Count + 1}",
+                    GraphPosX = drop.x + 30f,
+                    GraphPosY = drop.y - 26f
+                };
+                cine.Shots.Add(new SceneCinematicShotData { ShotId = "shot_1", Label = "Plan 1" });
+                _data.Cinematics.Add(cine);
+                if (draft.IsCinematicLink && draft.SourceCineList != null) StorySceneData.AddCineLink(draft.SourceCineList, newCineId);
+                else if (draft.IsCinematicOut && draft.SourceCinematic != null) draft.SourceCinematic.NextTargetId = newCineId;
+                PlayQuickCreateLinkSound();
+                CloseQuickCreateMenu();
+                return;
+            }
+
+            // --- Nouvelles cartes sœurs (même nœud que la source) ---
+            SceneNodeData parent = FindParentNodeForDraft(draft);
+            if (parent == null && (draft.IsCinematicOut || draft.IsActorTalk))
+            {
+                parent = FindBestHostNodeForCinematicCard(drop);
+                if (parent == null)
+                {
+                    string hostNodeId = MakeUniqueNodeId();
+                    parent = new SceneNodeData
+                    {
+                        NodeId = hostNodeId,
+                        Title = "Nouveau Nœud",
+                        GraphPosX = drop.x - 40f,
+                        GraphPosY = drop.y - 60f
+                    };
+                    _data.Nodes.Add(parent);
+                }
+            }
+            if (parent == null) { CloseQuickCreateMenu(); return; }
+            parent.Dialogues ??= new List<SceneDialogueLineData>();
+            parent.Events ??= new List<SceneEventData>();
+            parent.Consequences ??= new List<SceneConsequenceData>();
+
+            Vector2 cardPos = new Vector2(drop.x + 30f, drop.y - 26f);
+            string newId = "";
+            if (kind == QuickCreateKind.Dialogue)
+            {
+                newId = MakeUniqueLineId(parent);
+                parent.Dialogues.Add(new SceneDialogueLineData
+                {
+                    LineId = newId,
+                    SpeakerId = "",
+                    Speech = "Nouvelle réplique...",
+                    GraphPosX = cardPos.x,
+                    GraphPosY = cardPos.y
+                });
+            }
+            else if (kind == QuickCreateKind.Event)
+            {
+                newId = MakeUniqueEventId(parent);
+                parent.Events.Add(new SceneEventData
+                {
+                    EventId = newId,
+                    Title = "Action Scénique",
+                    GraphPosX = cardPos.x,
+                    GraphPosY = cardPos.y
+                });
+            }
+            else
+            {
+                newId = MakeUniqueConsId(parent);
+                parent.Consequences.Add(new SceneConsequenceData
+                {
+                    ConsequenceId = newId,
+                    Title = "Récompense",
+                    GraphPosX = cardPos.x,
+                    GraphPosY = cardPos.y
+                });
+            }
+
+            // Câblage auto vers la nouvelle carte (le wire fait foi, les champs
+            // concurrents sont effacés comme lors d'un drop classique).
+            if (draft.IsActorTalk && draft.SourceActor != null)
+            {
+                if (kind == QuickCreateKind.Dialogue) SetActorTalkTarget(draft.SourceActor, draft.SourceTalkIndex, newId);
+            }
+            else if (draft.IsCinematicOut && draft.SourceCinematic != null)
+            {
+                draft.SourceCinematic.NextTargetId = newId;
+            }
+            else if (draft.IsEvent && draft.SourceEvent != null)
+            {
+                draft.SourceEvent.NextEventId = newId;
+            }
+            else if (draft.FromChallengeLink && draft.SourceChallenge != null)
+            {
+                bool toCons = kind == QuickCreateKind.Consequence;
+                if (draft.ChallengeLinkIsSuccess)
+                {
+                    draft.SourceChallenge.SuccessConsequenceId = toCons ? newId : "";
+                    draft.SourceChallenge.SuccessNextLineId = toCons ? "" : newId;
+                }
+                else
+                {
+                    draft.SourceChallenge.FailureConsequenceId = toCons ? newId : "";
+                    draft.SourceChallenge.FailureNextLineId = toCons ? "" : newId;
+                }
+            }
+            else if (draft.FromConsequence && draft.SourceConsequence != null)
+            {
+                if (kind == QuickCreateKind.Consequence)
+                {
+                    draft.SourceConsequence.NextConsequenceId = newId;
+                    draft.SourceConsequence.NextLineId = "";
+                }
+                else
+                {
+                    draft.SourceConsequence.NextLineId = newId;
+                    draft.SourceConsequence.NextConsequenceId = "";
+                }
+            }
+            else if (draft.FromChoice && draft.SourceChoice != null)
+            {
+                draft.SourceChoice.NextLineId = newId;
+            }
+            else if (draft.SourceLine != null)
+            {
+                draft.SourceLine.NextLineId = newId;
+            }
+
+            PlayQuickCreateLinkSound();
+            CloseQuickCreateMenu();
+        }
+
+        private Rect ComputeQuickCreateRect(Rect canvasRect)
+        {
+            const float w = 320f;
+            var opts = GetQuickCreateOptions(_quickCreateDraft);
+            string search = (_quickCreateSearch ?? "").Trim();
+            int visibleCount = 0;
+            if (opts != null)
+            {
+                if (string.IsNullOrEmpty(search)) visibleCount = opts.Count;
+                else
+                {
+                    string normSearch = NormalizeForSearch(search);
+                    for (int i = 0; i < opts.Count; i++)
+                        if (NormalizeForSearch(opts[i].Label).Contains(normSearch) || NormalizeForSearch(opts[i].Hint).Contains(normSearch)) visibleCount++;
+                }
+            }
+            float h = 34f + 26f + Mathf.Max(1, visibleCount) * 36f + 8f;
+            if (QuickCreateHasBreakableLink(_quickCreateDraft)) h += 30f;
+            h += 32f;
+            h = Mathf.Min(h, Mathf.Max(180f, canvasRect.height - 40f));
+            Vector2 anchor = _quickCreateScreenPos;
+            if (anchor.x <= -5000f) anchor = new Vector2(canvasRect.x + canvasRect.width * 0.5f, canvasRect.y + canvasRect.height * 0.4f);
+            float x = Mathf.Clamp(anchor.x + 12f, canvasRect.x + 6f, canvasRect.xMax - w - 6f);
+            float y = Mathf.Clamp(anchor.y - 20f, canvasRect.y + 34f, canvasRect.yMax - h - 6f);
+            if (w + 12f >= canvasRect.width - 12f) x = canvasRect.x + 6f;
+            return new Rect(x, y, Mathf.Min(w, canvasRect.width - 12f), h);
+        }
+
+        private void DrawQuickCreateMenu(Rect canvasRect)
+        {
+            if (!_quickCreateOpen) return;
+            if (!IsQuickCreateDraftStillValid(_quickCreateDraft)) { CloseQuickCreateMenu(); return; }
+            Event evt = Event.current;
+            var allOpts = GetQuickCreateOptions(_quickCreateDraft);
+            string search = (_quickCreateSearch ?? "").Trim();
+            var visible = new List<QuickCreateOption>(allOpts.Count);
+            if (string.IsNullOrEmpty(search)) visible.AddRange(allOpts);
+            else
+            {
+                string ns = NormalizeForSearch(search);
+                for (int i = 0; i < allOpts.Count; i++)
+                    if (NormalizeForSearch(allOpts[i].Label).Contains(ns) || NormalizeForSearch(allOpts[i].Hint).Contains(ns)) visible.Add(allOpts[i]);
+            }
+
+            Rect panel = ComputeQuickCreateRect(canvasRect);
+            _quickCreatePanelRect = panel;
+
+            DrawSolidRect(panel, new Color(0.02f, 0.03f, 0.05f, 0.97f));
+            DrawSolidRect(new Rect(panel.x, panel.y, panel.width, 2f), new Color(1f, 0.78f, 0.2f, 0.95f));
+            DrawSolidRect(new Rect(panel.x, panel.yMax - 1f, panel.width, 1f), new Color(1f, 1f, 1f, 0.15f));
+            DrawSolidRect(new Rect(panel.x, panel.y, 1f, panel.height), new Color(1f, 1f, 1f, 0.15f));
+            DrawSolidRect(new Rect(panel.xMax - 1f, panel.y, 1f, panel.height), new Color(1f, 1f, 1f, 0.15f));
+
+            float x = panel.x + 10f;
+            float y = panel.y + 8f;
+            float w = panel.width - 20f;
+
+            GUI.Label(new Rect(x, y, w - 30f, 20f), $"<b>⚡ {GetQuickCreateTitle(_quickCreateDraft)}</b> <color=grey>· créer</color>");
+            if (GUI.Button(new Rect(panel.xMax - 30f, y, 22f, 20f), "✕")) { CloseQuickCreateMenu(); evt.Use(); return; }
+            y += 24f;
+
+            GUI.SetNextControlName("QuickCreateSearch");
+            string newSearch = GUI.TextField(new Rect(x, y, w, 20f), _quickCreateSearch ?? "");
+            if (newSearch != _quickCreateSearch) { _quickCreateSearch = newSearch; }
+            if (_quickCreateFocusSearch)
+            {
+                GUI.FocusControl("QuickCreateSearch");
+                _quickCreateFocusSearch = false;
+            }
+            y += 26f;
+
+            float listH = panel.height - (y - panel.y) - (QuickCreateHasBreakableLink(_quickCreateDraft) ? 30f : 0f) - 32f;
+            Rect listRect = new Rect(x, y, w, Mathf.Max(40f, listH));
+            Rect viewRect = new Rect(0f, 0f, w - 16f, visible.Count * 36f);
+            _quickCreateScroll = GUI.BeginScrollView(listRect, _quickCreateScroll, viewRect, false, false);
+            if (visible.Count == 0)
+            {
+                GUI.Label(new Rect(4f, 4f, viewRect.width - 8f, 28f), "<color=grey>(aucun type compatible — Entrée pour annuler)</color>");
+            }
+            for (int i = 0; i < visible.Count; i++)
+            {
+                var opt = visible[i];
+                Rect row = new Rect(0f, i * 36f, viewRect.width, 34f);
+                Color prev = GUI.color;
+                GUI.color = new Color(opt.Accent.r, opt.Accent.g, opt.Accent.b, 0.22f);
+                GUI.DrawTexture(row, PureWhiteTex);
+                GUI.color = prev;
+                DrawSolidRect(new Rect(row.x, row.y, 3f, row.height), opt.Accent);
+                if (GUI.Button(new Rect(row.x + 6f, row.y + 2f, row.width - 12f, 20f), $"<b>{opt.Label}</b>")) { CreateQuickCreateCard(opt.Kind); GUI.EndScrollView(); evt.Use(); return; }
+                GUI.Label(new Rect(row.x + 8f, row.y + 20f, row.width - 16f, 14f), $"<color=grey><size=11>{opt.Hint}</size></color>");
+            }
+            GUI.EndScrollView();
+            y += listRect.height + 4f;
+
+            if (QuickCreateHasBreakableLink(_quickCreateDraft))
+            {
+                GUI.backgroundColor = new Color(1f, 0.4f, 0.35f);
+                if (GUI.Button(new Rect(x, y, w, 22f), "⊘ Rompre le lien existant")) { BreakQuickCreateLink(_quickCreateDraft); CloseQuickCreateMenu(); GUI.backgroundColor = Color.white; evt.Use(); return; }
+                GUI.backgroundColor = Color.white;
+                y += 28f;
+            }
+            GUI.Label(new Rect(x, y, w, 18f), "<color=grey>Echap / clic hors menu = annuler (lien conservé)</color>");
+
+            if (evt.type == EventType.KeyDown)
+            {
+                if (evt.keyCode == KeyCode.Escape) { CloseQuickCreateMenu(); evt.Use(); return; }
+                if (evt.keyCode == KeyCode.Return || evt.keyCode == KeyCode.KeypadEnter)
+                {
+                    if (visible.Count == 1) { CreateQuickCreateCard(visible[0].Kind); evt.Use(); return; }
+                    if (visible.Count > 1 && string.IsNullOrEmpty(search)) { CreateQuickCreateCard(visible[0].Kind); evt.Use(); return; }
+                }
+            }
+            // Clic hors menu = annuler sans toucher au lien existant.
+            // (Cas nominal déjà intercepté en tête de canvas ; garde-fou si le rect
+            // a bougé entre-temps.)
+            if (evt.type == EventType.MouseDown && !panel.Contains(evt.mousePosition))
+            {
+                CloseQuickCreateMenu();
+                evt.Use();
+                return;
+            }
+        }
+
+        // ------------------------------------------------------------------
+        // Anti-vol de drag : pré-passe + prise différée (cartes chevauchantes).
+        // Ordre de peinture (du fond vers le dessus) : frames de nœuds, puis par
+        // nœud dialogues/événements/conséquences, déclencheurs, interactables,
+        // acteurs, cinématiques. On balaye en sens INVERSE : le premier header ou
+        // poignée contenant le point est l'élément légitime (le plus au-dessus).
+        // Tout appel GUI est interdit ici (stabilité des IDs de contrôles).
+        // ------------------------------------------------------------------
+        private void SwallowOverlappedHeaderPress(Rect canvasRect, Vector2 mouseWorld, Vector2 mouseScreen)
+        {
+            Event evt = Event.current;
+            if (evt == null) return;
+            // Fin de geste : purger les réservations (aucun Use : les nettoyages
+            // inline des drags doivent toujours voir ce MouseUp).
+            if (evt.type == EventType.MouseUp)
+            {
+                _lateDragTarget = null;
+                _lateResizeTarget = null;
+                return;
+            }
+            if (evt.type != EventType.MouseDown || evt.button != 0 || evt.clickCount >= 2) return;
+            if (_pickerCapturesMouse) return;
+            if (!string.IsNullOrEmpty(_draggingCardKey) || !string.IsNullOrEmpty(_resizingCardKey) || !string.IsNullOrEmpty(_draggingNodeId)) return;
+            if (_lateDragTarget != null || _lateResizeTarget != null) return;
+            if (!canvasRect.Contains(mouseScreen)) return;
+            if (_data == null || _data.Nodes == null) return;
+
+            Rect vis = GetVisibleWorldRect(canvasRect);
+
+            // Cartes globales, de la plus au-dessus vers le fond.
+            if (_data.Cinematics != null)
+            {
+                for (int i = _data.Cinematics.Count - 1; i >= 0; i--)
+                {
+                    var c = _data.Cinematics[i];
+                    if (c == null) continue;
+                    Vector2 s = GetCinematicCardSize(c);
+                    if (!vis.Overlaps(new Rect(c.GraphPosX, c.GraphPosY, s.x, s.y))) continue;
+                    if (HitCardGrip(c.GraphPosX, c.GraphPosY, s, mouseWorld)) { ClaimLateResize(c, mouseWorld, mouseScreen, evt); return; }
+                    if (HitCardHeader(c.GraphPosX, c.GraphPosY, s.x, mouseWorld)) { ClaimLateDrag(c, mouseWorld, mouseScreen, evt); return; }
+                }
+            }
+            if (_data.Actors != null)
+            {
+                for (int i = _data.Actors.Count - 1; i >= 0; i--)
+                {
+                    var a = _data.Actors[i];
+                    if (a == null) continue;
+                    Vector2 s = GetActorCardSize(a);
+                    if (!vis.Overlaps(new Rect(a.GraphPosX, a.GraphPosY, s.x, s.y))) continue;
+                    if (HitCardGrip(a.GraphPosX, a.GraphPosY, s, mouseWorld)) { ClaimLateResize(a, mouseWorld, mouseScreen, evt); return; }
+                    if (HitCardHeader(a.GraphPosX, a.GraphPosY, s.x, mouseWorld)) { ClaimLateDrag(a, mouseWorld, mouseScreen, evt); return; }
+                }
+            }
+            if (_data.Interactables != null)
+            {
+                for (int i = _data.Interactables.Count - 1; i >= 0; i--)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null) continue;
+                    Vector2 s = GetInteractableCardSize(it);
+                    if (!vis.Overlaps(new Rect(it.GraphPosX, it.GraphPosY, s.x, s.y))) continue;
+                    if (HitCardGrip(it.GraphPosX, it.GraphPosY, s, mouseWorld)) { ClaimLateResize(it, mouseWorld, mouseScreen, evt); return; }
+                    if (HitCardHeader(it.GraphPosX, it.GraphPosY, s.x, mouseWorld)) { ClaimLateDrag(it, mouseWorld, mouseScreen, evt); return; }
+                }
+            }
+            if (_data.Triggers != null)
+            {
+                for (int t = _data.Triggers.Count - 1; t >= 0; t--)
+                {
+                    var trg = _data.Triggers[t];
+                    if (trg == null) continue;
+                    Vector2 s = GetTriggerCardSize(trg);
+                    if (!vis.Overlaps(new Rect(trg.GraphPosX, trg.GraphPosY, s.x, s.y))) continue;
+                    if (HitCardGrip(trg.GraphPosX, trg.GraphPosY, s, mouseWorld)) { ClaimLateResize(trg, mouseWorld, mouseScreen, evt); return; }
+                    if (HitCardHeader(trg.GraphPosX, trg.GraphPosY, s.x, mouseWorld)) { ClaimLateDrag(trg, mouseWorld, mouseScreen, evt); return; }
+                }
+            }
+
+            // Cartes internes, nœuds en sens inverse, conséquences/événements/dialogues inversés.
+            for (int n = _data.Nodes.Count - 1; n >= 0; n--)
+            {
+                var node = _data.Nodes[n];
+                if (node == null) continue;
+                if (node.Consequences != null)
+                {
+                    for (int k = node.Consequences.Count - 1; k >= 0; k--)
+                    {
+                        var cons = node.Consequences[k];
+                        if (cons == null) continue;
+                        Vector2 s = GetConsequenceCardSize(cons);
+                        if (!vis.Overlaps(new Rect(cons.GraphPosX, cons.GraphPosY, s.x, s.y))) continue;
+                        if (HitCardGrip(cons.GraphPosX, cons.GraphPosY, s, mouseWorld)) { ClaimLateResize(cons, mouseWorld, mouseScreen, evt); return; }
+                        if (HitCardHeader(cons.GraphPosX, cons.GraphPosY, s.x, mouseWorld)) { ClaimLateDrag(cons, mouseWorld, mouseScreen, evt); return; }
+                    }
+                }
+                if (node.Events != null)
+                {
+                    for (int e = node.Events.Count - 1; e >= 0; e--)
+                    {
+                        var evd = node.Events[e];
+                        if (evd == null) continue;
+                        Vector2 s = GetEventCardSize(evd);
+                        if (!vis.Overlaps(new Rect(evd.GraphPosX, evd.GraphPosY, s.x, s.y))) continue;
+                        if (HitCardGrip(evd.GraphPosX, evd.GraphPosY, s, mouseWorld)) { ClaimLateResize(evd, mouseWorld, mouseScreen, evt); return; }
+                        if (HitCardHeader(evd.GraphPosX, evd.GraphPosY, s.x, mouseWorld)) { ClaimLateDrag(evd, mouseWorld, mouseScreen, evt); return; }
+                    }
+                }
+                if (node.Dialogues != null)
+                {
+                    for (int d = node.Dialogues.Count - 1; d >= 0; d--)
+                    {
+                        var dlg = node.Dialogues[d];
+                        if (dlg == null) continue;
+                        Vector2 s = GetDialogueCardSize(dlg);
+                        if (!vis.Overlaps(new Rect(dlg.GraphPosX, dlg.GraphPosY, s.x, s.y))) continue;
+                        if (HitCardGrip(dlg.GraphPosX, dlg.GraphPosY, s, mouseWorld)) { ClaimLateResize(dlg, mouseWorld, mouseScreen, evt); return; }
+                        if (HitCardHeader(dlg.GraphPosX, dlg.GraphPosY, s.x, mouseWorld)) { ClaimLateDrag(dlg, mouseWorld, mouseScreen, evt); return; }
+                    }
+                }
+            }
+
+            // Frames de nœuds (peintes en premier = tout en dessous). Miroir exact de
+            // isOverHeaderDragZone dans DrawNodeFrame (boutons d'actions et port de
+            // sortie exclus : un port reste un port, le bouton ✕ reste cliquable).
+            for (int n = _data.Nodes.Count - 1; n >= 0; n--)
+            {
+                var node = _data.Nodes[n];
+                if (node == null) continue;
+                Rect box = ComputeNodeBoundingBox(node);
+                if (!vis.Overlaps(box)) continue;
+                Rect header = new Rect(box.x, box.y, box.width, 38f);
+                Rect actions = new Rect(header.xMax - 360f, header.y + 5f, 350f, 26f);
+                Rect outSock = new Rect(box.xMax - 9f, box.y + 10f, 18f, 18f);
+                if (header.Contains(mouseWorld) && !actions.Contains(mouseWorld) && !outSock.Contains(mouseWorld))
+                {
+                    ClaimLateDrag(node, mouseWorld, mouseScreen, evt);
+                    return;
+                }
+            }
+        }
+
+        private static bool HitCardHeader(float gx, float gy, float gw, Vector2 mouseWorld)
+        {
+            // Miroir de dragHeaderRect : (x, y, W-26, 26). Le bouton ✕ (26px à droite)
+            // reste cliquable, les ports du flanc droit restent des ports.
+            return new Rect(gx, gy, gw - 26f, 26f).Contains(mouseWorld);
+        }
+
+        private static bool HitCardGrip(float gx, float gy, Vector2 size, Vector2 mouseWorld)
+        {
+            // Miroir de resizeGripRect : carré 14px en bas à droite.
+            return new Rect(gx + size.x - 14f, gy + size.y - 14f, 14f, 14f).Contains(mouseWorld);
+        }
+
+        private void ClaimLateDrag(object target, Vector2 mouseWorld, Vector2 mouseScreen, Event evt)
+        {
+            _lateDragTarget = target;
+            _lateResizeTarget = null;
+            _lateDownWorld = mouseWorld;
+            _lateDownScreen = mouseScreen;
+            evt.Use();
+        }
+
+        private void ClaimLateResize(object target, Vector2 mouseWorld, Vector2 mouseScreen, Event evt)
+        {
+            _lateResizeTarget = target;
+            _lateDragTarget = null;
+            _lateDownWorld = mouseWorld;
+            _lateDownScreen = mouseScreen;
+            evt.Use();
+        }
+
+        // Prise différée : vrai quand le MouseDown a été réservé pour cet objet et que
+        // la souris a dépassé le seuil (slop 6px écran). Appelé depuis les blocs de
+        // prise inline : la prise utilise alors les IDs générés dans CETTE passe (pas
+        // de décalage de séquence) avec l'offset du point d'appui d'origine (pas de saut).
+        private bool IsLateDragFor(object o)
+        {
+            if (!ReferenceEquals(_lateDragTarget, o)) return false;
+            if (!string.IsNullOrEmpty(_draggingCardKey) || !string.IsNullOrEmpty(_draggingNodeId)) return false;
+            var e = Event.current;
+            if (e == null || (e.type != EventType.MouseDrag && e.type != EventType.MouseMove)) return false;
+            return Vector2.Distance(_graphMouseScreenPos, _lateDownScreen) > 6f;
+        }
+
+        private bool IsLateResizeFor(object o)
+        {
+            if (!ReferenceEquals(_lateResizeTarget, o)) return false;
+            if (!string.IsNullOrEmpty(_resizingCardKey) || !string.IsNullOrEmpty(_draggingCardKey)) return false;
+            var e = Event.current;
+            if (e == null || (e.type != EventType.MouseDrag && e.type != EventType.MouseMove)) return false;
+            return Vector2.Distance(_graphMouseScreenPos, _lateDownScreen) > 6f;
         }
 
         // ------------------------------------------------------------------
@@ -4463,6 +5542,17 @@ namespace Killtime.Story
                 _dragNodeStartMouse = mouseWorld;
                 evt.Use();
             }
+            // Prise différée (pré-passe anti-vol) : le MouseDown sur ce header a été
+            // avalé car une carte peinte avant recouvrait le point.
+            else if (IsLateDragFor(node))
+            {
+                GUIUtility.hotControl = nodeControlId;
+                _draggingNodeId = node.NodeId;
+                _dragNodeStartMouse = _lateDownWorld;
+                _lateDragTarget = null;
+                GUIUtility.keyboardControl = 0;
+                evt.Use();
+            }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == nodeControlId && _draggingNodeId == node.NodeId)
             {
                 Vector2 delta = mouseWorld - _dragNodeStartMouse;
@@ -4600,7 +5690,7 @@ namespace Killtime.Story
             }
 
             // Sortie principale (NextNodeId) : toujours visible (atténuée si vide),
-            // drag vers l'entrée d'un nœud = lier, drop dans le vide = effacer.
+            // drag vers l'entrée d'un nœud = lier, drop dans le vide = menu créer.
             bool hasNext = !string.IsNullOrEmpty(node.NextNodeId);
             Color nextPortCol = hasNext ? new Color(1.0f, 0.65f, 0.15f) : new Color(1.0f, 0.65f, 0.15f, 0.35f);
             DrawGraphSolidRect(nodeOutSocket, nextPortCol);
@@ -4953,10 +6043,12 @@ namespace Killtime.Story
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
             // Redimensionnement de la carte
-            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            bool lateResizeLine = IsLateResizeFor(line);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeLine)
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
+                if (lateResizeLine) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
@@ -4973,11 +6065,13 @@ namespace Killtime.Story
             }
 
             // Déplacement de la carte
-            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            bool lateDragLine = IsLateDragFor(line);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragLine)
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
-                _dragOffset = mouseWorld - new Vector2(line.GraphPosX, line.GraphPosY);
+                _dragOffset = (lateDragLine ? _lateDownWorld : mouseWorld) - new Vector2(line.GraphPosX, line.GraphPosY);
+                if (lateDragLine) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
@@ -5515,10 +6609,12 @@ namespace Killtime.Story
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
             // Redimensionnement de la carte d'événement
-            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            bool lateResizeEvent = IsLateResizeFor(ev);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeEvent)
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
+                if (lateResizeEvent) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
@@ -5535,11 +6631,13 @@ namespace Killtime.Story
             }
 
             // Déplacement de la carte d'événement
-            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            bool lateDragEvent = IsLateDragFor(ev);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragEvent)
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
-                _dragOffset = mouseWorld - new Vector2(ev.GraphPosX, ev.GraphPosY);
+                _dragOffset = (lateDragEvent ? _lateDownWorld : mouseWorld) - new Vector2(ev.GraphPosX, ev.GraphPosY);
+                if (lateDragEvent) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
@@ -5711,10 +6809,12 @@ namespace Killtime.Story
             int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
-            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            bool lateResizeCons = IsLateResizeFor(cons);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeCons)
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
+                if (lateResizeCons) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
@@ -5730,11 +6830,13 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            bool lateDragCons = IsLateDragFor(cons);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragCons)
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
-                _dragOffset = mouseWorld - new Vector2(cons.GraphPosX, cons.GraphPosY);
+                _dragOffset = (lateDragCons ? _lateDownWorld : mouseWorld) - new Vector2(cons.GraphPosX, cons.GraphPosY);
+                if (lateDragCons) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
@@ -5982,10 +7084,12 @@ namespace Killtime.Story
             int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
-            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            bool lateResizeTrigger = IsLateResizeFor(trg);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeTrigger)
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
+                if (lateResizeTrigger) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
@@ -6001,11 +7105,13 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            bool lateDragTrigger = IsLateDragFor(trg);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragTrigger)
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
-                _dragOffset = mouseWorld - new Vector2(trg.GraphPosX, trg.GraphPosY);
+                _dragOffset = (lateDragTrigger ? _lateDownWorld : mouseWorld) - new Vector2(trg.GraphPosX, trg.GraphPosY);
+                if (lateDragTrigger) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
@@ -6202,10 +7308,12 @@ namespace Killtime.Story
             int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
-            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            bool lateResizeInter = IsLateResizeFor(it);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeInter)
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
+                if (lateResizeInter) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
@@ -6221,11 +7329,13 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            bool lateDragInter = IsLateDragFor(it);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragInter)
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
-                _dragOffset = mouseWorld - new Vector2(it.GraphPosX, it.GraphPosY);
+                _dragOffset = (lateDragInter ? _lateDownWorld : mouseWorld) - new Vector2(it.GraphPosX, it.GraphPosY);
+                if (lateDragInter) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
@@ -6466,16 +7576,18 @@ namespace Killtime.Story
             int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
-            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            bool lateResizeActor = IsLateResizeFor(a);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeActor)
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
+                if (lateResizeActor) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
             {
                 a.CardWidth = Mathf.Clamp(mouseWorld.x - cardRect.x, 300f, 750f);
-                a.CardHeight = Mathf.Clamp(mouseWorld.y - cardRect.y, 180f, 500f);
+                a.CardHeight = Mathf.Clamp(mouseWorld.y - cardRect.y, 220f, 500f);
                 evt.Use();
             }
             else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == resizeControlId)
@@ -6485,11 +7597,13 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            bool lateDragActor = IsLateDragFor(a);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragActor)
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
-                _dragOffset = mouseWorld - new Vector2(a.GraphPosX, a.GraphPosY);
+                _dragOffset = (lateDragActor ? _lateDownWorld : mouseWorld) - new Vector2(a.GraphPosX, a.GraphPosY);
+                if (lateDragActor) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
@@ -6548,7 +7662,20 @@ namespace Killtime.Story
             {
                 _hasHoverCard = true;
                 _hoverTitle = $"👥 {headerName}  ({a.ActorId})";
-                _hoverBody = $"{a.GetSummary()}\nFiche : {(string.IsNullOrEmpty(a.CharacterSheetFileName) ? "(Défaut)" : a.CharacterSheetFileName)}\nRépliques : {refLines} · Cibles : {refEvents} · Triggers : {refTriggers}";
+                string talkInfo = "(aucune sortie 💬)";
+                if (a.TalkEntries != null && a.TalkEntries.Count > 0)
+                {
+                    var bits = new System.Collections.Generic.List<string>();
+                    for (int bti = 0; bti < a.TalkEntries.Count; bti++)
+                    {
+                        var bte = a.TalkEntries[bti];
+                        if (bte == null || string.IsNullOrWhiteSpace(bte.TargetId)) continue;
+                        string who = string.IsNullOrWhiteSpace(bte.SpeakerId) ? "*" : bte.SpeakerId.Trim();
+                        bits.Add($"{who}➔{bte.TargetId.Trim()}");
+                    }
+                    if (bits.Count > 0) talkInfo = "💬 " + string.Join(", ", bits);
+                }
+                _hoverBody = $"{a.GetSummary()}\nFiche : {(string.IsNullOrEmpty(a.CharacterSheetFileName) ? "(Défaut)" : a.CharacterSheetFileName)}\nRépliques : {refLines} · Cibles : {refEvents} · Triggers : {refTriggers}\nParler à : {talkInfo}";
                 _hoverScreenPos = _graphMouseScreenPos;
             }
 
@@ -6602,7 +7729,7 @@ namespace Killtime.Story
             }
             y += 20f;
 
-            // Fiche personnage (cycleur catalogue des fiches disque).
+            // Fiche personnage (cycleur catalogue des fiches disque + bouton fiche complète).
             GraphLabel(new Rect(innerX, y, 42f, 18f), "Fiche:");
             {
                 int charIdx = Mathf.Max(0, _availableCharacterFiles.IndexOf(a.CharacterSheetFileName));
@@ -6612,7 +7739,13 @@ namespace Killtime.Story
                     a.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
                 }
                 string charDisplay = string.IsNullOrEmpty(a.CharacterSheetFileName) ? "(Défaut)" : a.CharacterSheetFileName;
-                GraphLabel(new Rect(innerX + 66f, y, Mathf.Max(40f, innerW - 66f - 22f), 18f), $"<b>{charDisplay}</b>");
+                GraphLabel(new Rect(innerX + 66f, y, Mathf.Max(40f, innerW - 66f - 22f - 32f), 18f), $"<b>{charDisplay}</b>");
+                GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
+                if (GraphButton(new Rect(innerX + innerW - 20f - 30f, y, 28f, 18f), "📜"))
+                {
+                    OpenActorSheet(a);
+                }
+                GUI.backgroundColor = Color.white;
                 if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
                 {
                     charIdx = (charIdx + 1) % _availableCharacterFiles.Count;
@@ -6627,19 +7760,188 @@ namespace Killtime.Story
             a.EquippedWeaponName = GraphTextField(new Rect(innerX + 198f, y, Mathf.Max(40f, innerW - 198f), 18f), a.EquippedWeaponName ?? "");
             y += 20f;
 
+            // Sorties "Parler à" 💬 : une rangée par interlocuteur (Qui). Le Qui
+            // filtre celui qui parle à l'acteur (vide = n'importe qui) ; la cible
+            // est une réplique (LineId) ou un nœud (NodeId, enclenché).
+            // Drag du port cyan d'une rangée = lier sa cible.
+            if (a.TalkEntries == null) a.TalkEntries = new System.Collections.Generic.List<SceneActorTalkEntry>();
+            {
+                int talkCount = a.TalkEntries.Count;
+                GraphLabel(new Rect(innerX, y, Mathf.Max(40f, innerW - 30f), 18f), $"💬 Parler à ({talkCount})");
+                GUI.backgroundColor = new Color(0f, 0.75f, 1f);
+                if (GraphButton(new Rect(innerX + innerW - 26f, y, 26f, 18f), "+"))
+                    a.TalkEntries.Add(new SceneActorTalkEntry());
+                GUI.backgroundColor = Color.white;
+                y += 20f;
+
+                for (int ti = 0; ti < a.TalkEntries.Count; ti++)
+                {
+                    var te = a.TalkEntries[ti];
+                    if (te == null) { a.TalkEntries.RemoveAt(ti); ti--; continue; }
+                    GraphLabel(new Rect(innerX, y, 30f, 18f), "Qui:");
+                    const float quiW = 104f;
+                    te.SpeakerId = GraphTextField(new Rect(innerX + 32f, y, quiW, 18f), te.SpeakerId ?? "");
+                    Rect dropBtn = new Rect(innerX + 34f + quiW, y, 20f, 18f);
+                    string dropKey = $"actor_talk_{index}_{a.ActorId}_{ti}";
+                    if (GraphButton(dropBtn, "▼"))
+                    {
+                        if (_actorDropKey == dropKey) _actorDropKey = null;
+                        else OpenActorDropdown(dropKey, dropBtn, te.SpeakerId ?? "", v => te.SpeakerId = v);
+                    }
+                    float tgtX = innerX + 34f + quiW + 22f;
+                    GraphLabel(new Rect(tgtX, y, 16f, 18f), "→");
+                    const float delW = 22f;
+                    te.TargetId = GraphTextField(new Rect(tgtX + 18f, y, Mathf.Max(30f, innerW - (tgtX + 18f - innerX) - delW - 2f), 18f), te.TargetId ?? "");
+                    if (GraphButton(new Rect(innerX + innerW - delW, y, delW, 18f), "✕"))
+                    {
+                        a.TalkEntries.RemoveAt(ti);
+                        ti--;
+                        continue;
+                    }
+                    y += 20f;
+
+                    // Port de sortie 💬 de la rangée (cyan), sur le flanc droit.
+                    Vector2 talkCenter = GetActorTalkOutCenter(a, ti);
+                    bool hasTalk = !string.IsNullOrWhiteSpace(te.TargetId);
+                    Color col = hasTalk ? TalkPortCol : new Color(TalkPortCol.r, TalkPortCol.g, TalkPortCol.b, 0.35f);
+                    Rect talkPort = new Rect(talkCenter.x - 7f, talkCenter.y - 7f, 14f, 14f);
+                    DrawGraphSolidRect(talkPort, col);
+                    if (GraphPrimaryDown(mouseWorld, talkPort))
+                    {
+                        _wireDraft = new WireConnectionDraft
+                        {
+                            IsActive = true,
+                            IsActorTalk = true,
+                            SourceActor = a,
+                            SourceTalkIndex = ti,
+                            StartPos = talkCenter
+                        };
+                        evt.Use();
+                    }
+                }
+            }
+
             // Sortie cinématique 🎬 : jouée au spawn différé (fire-and-forget).
             DrawCineLinkRow(ref y, innerX, innerW, a.CinematicIds);
 
             if (y + 4f <= cardRect.yMax)
             {
                 GUI.color = new Color(1f, 1f, 1f, 0.55f);
-                GraphLabel(new Rect(innerX, y, innerW, 18f), $"{a.GetSummary()} · ◀{refLines} ▶{refEvents} ▼{refTriggers}");
+                string talkSummary = "";
+                if (a.TalkEntries != null && a.TalkEntries.Count > 0)
+                {
+                    var sbits = new System.Collections.Generic.List<string>();
+                    for (int sti = 0; sti < a.TalkEntries.Count; sti++)
+                    {
+                        var ste = a.TalkEntries[sti];
+                        if (ste == null || string.IsNullOrWhiteSpace(ste.TargetId)) continue;
+                        string who = string.IsNullOrWhiteSpace(ste.SpeakerId) ? "*" : ste.SpeakerId.Trim();
+                        sbits.Add($"{who}➔{ste.TargetId.Trim()}");
+                        if (sbits.Count >= 3) break;
+                    }
+                    if (sbits.Count > 0) talkSummary = " · 💬" + string.Join(", ", sbits);
+                }
+                GraphLabel(new Rect(innerX, y, innerW, 18f), $"{a.GetSummary()} · ◀{refLines} ▶{refEvents} ▼{refTriggers}{talkSummary}");
                 GUI.color = Color.white;
             }
 
             // Port de sortie cinématique 🎬 : flanc droit (magenta). La carte acteur
             // garde son port d'entrée (spawn) à gauche : input + output 🎬 coexistent.
             DrawCineOutPort(new Vector2(cardRect.xMax, cardRect.y + ActorCinePortTop), a.CinematicIds, mouseWorld);
+        }
+
+        // ------------------------------------------------------------------
+        // Fiche complète d'un acteur : résout la fiche effective EXACTEMENT comme
+        // le runtime (JsonStorySceneController.SpawnSingleActor) puis l'ouvre dans
+        // le Créateur de Personnages (F1) en lecture/édition complète.
+        // Priorité : 1) fichier disque (CharacterSheetFileName) 2) fiche embarquée
+        // 3) fiche par défaut générée (Nom + Modèle + Arme de la carte).
+        // ------------------------------------------------------------------
+        private CharacterSheet ResolveActorSheet(SceneActorSpawnData a, out string sourceLabel)
+        {
+            sourceLabel = "Fiche par défaut générée";
+            if (a == null) return new CharacterSheet();
+
+            if (!string.IsNullOrEmpty(a.CharacterSheetFileName))
+            {
+                try
+                {
+                    string charFolder = Path.Combine(Application.persistentDataPath, "Characters");
+                    string sheetPath = Path.Combine(charFolder,
+                        a.CharacterSheetFileName.EndsWith(".json", StringComparison.OrdinalIgnoreCase)
+                            ? a.CharacterSheetFileName
+                            : $"{a.CharacterSheetFileName}.json");
+                    if (File.Exists(sheetPath))
+                    {
+                        var loaded = CharacterStorageService.LoadCharacter(sheetPath);
+                        if (loaded != null)
+                        {
+                            sourceLabel = $"Fichier '{a.CharacterSheetFileName}'";
+                            return loaded;
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[ScenarioEditor] Fiche introuvable : '{sheetPath}' — repli embarqué/défaut.");
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Debug.LogWarning($"[ScenarioEditor] Lecture fiche '{a.CharacterSheetFileName}' : {ex.Message}");
+                }
+            }
+
+            if (a.EmbeddedSheet != null && !string.IsNullOrEmpty(a.EmbeddedSheet.Name))
+            {
+                try
+                {
+                    var copy = JsonUtility.FromJson<CharacterSheet>(JsonUtility.ToJson(a.EmbeddedSheet));
+                    if (copy != null)
+                    {
+                        sourceLabel = "Fiche embarquée (JSON scène)";
+                        return copy;
+                    }
+                }
+                catch { /* repli défaut ci-dessous */ }
+            }
+
+            var sheet = new CharacterSheet
+            {
+                Name = string.IsNullOrEmpty(a.DisplayName) ? a.ActorId : a.DisplayName,
+                BaseAttributes = new Attributes(3, 3, 3, 3, 2, 2, 1, 2, 0),
+                BaseArmor = a.BaseArmor,
+                Profile = a.IsPlayer ? CharacterProfileType.HerosPJ : CharacterProfileType.PnjNormal,
+                ModelPrefabName = a.ModelPrefabName ?? ""
+            };
+
+            if (!string.IsNullOrEmpty(a.EquippedWeaponName) && sheet.GetEquippedWeapon() == null)
+            {
+                string lw = a.EquippedWeaponName.ToLowerInvariant();
+                bool isRanged = lw.Contains("laser") || lw.Contains("pistolet")
+                    || lw.Contains("fusil") || lw.Contains("blaster") || lw.Contains("carabine");
+                var weapon = new InventoryItem
+                {
+                    ItemId = $"weapon_{a.ActorId}",
+                    Name = a.EquippedWeaponName,
+                    Type = ItemType.Weapon,
+                    AssociatedSkill = isRanged ? SkillType.Ballistique : SkillType.ManiementArmes,
+                    RangeInTiles = isRanged ? 8 : 1,
+                    BaseDamage = isRanged ? 5 : 4,
+                    IsEquipped = true
+                };
+                sheet.AddItem(weapon);
+                if (sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel == 0)
+                    sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel = 1;
+            }
+            return sheet;
+        }
+
+        private void OpenActorSheet(SceneActorSpawnData a)
+        {
+            if (a == null) return;
+            CharacterSheet sheet = ResolveActorSheet(a, out string source);
+            string ctx = $"👥 {a.DisplayName} [{a.ActorId}] · {source} · {a.GetSummary()}";
+            CharacterDevWindow.OpenForSheet(sheet, ctx);
         }
 
         // ------------------------------------------------------------------
@@ -6671,10 +7973,12 @@ namespace Killtime.Story
             int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
             int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
 
-            if (GraphPrimaryDown(mouseWorld, resizeGripRect))
+            bool lateResizeCine = IsLateResizeFor(cine);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeCine)
             {
                 GUIUtility.hotControl = resizeControlId;
                 _resizingCardKey = resizeKey;
+                if (lateResizeCine) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
@@ -6690,11 +7994,13 @@ namespace Killtime.Story
                 evt.Use();
             }
 
-            if (GraphPrimaryDown(mouseWorld, dragHeaderRect))
+            bool lateDragCine = IsLateDragFor(cine);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragCine)
             {
                 GUIUtility.hotControl = dragControlId;
                 _draggingCardKey = dragKey;
-                _dragOffset = mouseWorld - new Vector2(cine.GraphPosX, cine.GraphPosY);
+                _dragOffset = (lateDragCine ? _lateDownWorld : mouseWorld) - new Vector2(cine.GraphPosX, cine.GraphPosY);
+                if (lateDragCine) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
                 evt.Use();
             }
             else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)

@@ -605,6 +605,13 @@ namespace Killtime.UI
                     KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Toggle, 0.6f);
             }
 
+            if (Input.GetKeyDown(KeyCode.N))
+            {
+                TacticalUnitVisual.ShowOverheadHUD = !TacticalUnitVisual.ShowOverheadHUD;
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Toggle, 0.6f);
+            }
+
             if (Input.GetKeyDown(KeyCode.Space))
             {
                 if (_turnManager != null && !_turnManager.IsInExploration)
