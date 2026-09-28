@@ -140,6 +140,8 @@ namespace Killtime.Story.Scenes
             holoPlanet.transform.localScale = new Vector3(0.45f, 0.45f, 0.45f);
             holoPlanet.GetComponent<Renderer>().sharedMaterial = _matHoloBlue;
             StripCollider(holoPlanet);
+            var holoSpin = holoPlanet.AddComponent<PlanetSimpleSpin>();
+            holoSpin.degreesPerSecond = 8f;
 
             BuildConsoleRow(deck, new Vector3(2.5f * r, 0.4f, 2.0f * r), 45f);
             BuildConsoleRow(deck, new Vector3(-2.5f * r, 0.4f, 2.0f * r), -45f);
@@ -172,6 +174,9 @@ namespace Killtime.Story.Scenes
             nefris.transform.localScale = new Vector3(14f, 14f, 14f);
             nefris.GetComponent<Renderer>().sharedMaterial = _matBurningPlanet;
             StripCollider(nefris);
+            // Placeholder intro : petite rotation visible (le vrai prefab Planet_Nefris utilise PlanetOrbitalController 22h).
+            var nefrisSpin = nefris.AddComponent<PlanetSimpleSpin>();
+            nefrisSpin.degreesPerSecond = 0.6f;
 
             var debrisBelt = new GameObject("Debris_Field");
             debrisBelt.transform.SetParent(vp.transform, false);

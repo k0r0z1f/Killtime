@@ -21,7 +21,11 @@ Shader "Killtime/Space/PlanetClouds"
 
         Blend SrcAlpha OneMinusSrcAlpha
         ZWrite Off
+        ZTest LEqual
         Cull Back
+        // Léger biais depth pour passer devant la surface même quand
+        // la précision depth s'effondre au loin (far/near élevé).
+        Offset -1, -1
 
         Pass
         {
@@ -31,6 +35,7 @@ Shader "Killtime/Space/PlanetClouds"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -80,7 +85,13 @@ Shader "Killtime/Space/PlanetClouds"
                 float4 tex = SAMPLE_TEXTURE2D(_CloudMap, sampler_CloudMap, input.uv);
                 float gray = tex.r;
 
-                float alpha = smoothstep(_Cutoff - _Softness, _Cutoff + _Softness, gray) * _Density;
+                // Anti-speckle à longue distance : la texture mipée converge vers
+                // sa moyenne (~_Cutoff) et le smoothstep fixe se met à scintiller.
+                // On élargit la transition avec la dérivée écran pour garder une
+                // couverture stable quand un pixel couvre beaucoup de texels.
+                float fw = max(fwidth(gray), 1e-4);
+                float w = max(_Softness, fw * 1.5);
+                float alpha = smoothstep(_Cutoff - w, _Cutoff + w, gray) * _Density;
                 alpha = saturate(alpha * _CloudColor.a);
 
                 Light mainLight = GetMainLight();

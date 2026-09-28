@@ -109,6 +109,12 @@ public static class PlanetTextureProcessor
         importer.sRGBTexture = !isMask;
         importer.alphaSource = TextureImporterAlphaSource.FromInput;
         importer.mipmapEnabled = true;
+        // Anti-artefacts longue distance (limbe en angle rasant + cutoff nuages) :
+        // trilinear + aniso élevé + preserveCoverage pour les alphas seuillés.
+        importer.filterMode = FilterMode.Trilinear;
+        importer.anisoLevel = 8;
+        importer.mipMapsPreserveCoverage = true;
+        importer.alphaTestReferenceValue = 0.62f;
         importer.wrapMode = TextureWrapMode.Repeat;
         importer.maxTextureSize = 4096;
         importer.SaveAndReimport();

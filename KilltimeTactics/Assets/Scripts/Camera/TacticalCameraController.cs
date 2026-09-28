@@ -87,11 +87,14 @@ namespace Killtime.CameraSystem
 
             _panPosition.y = 0f; // Sécurité absolue : le point focal est TOUJOURS au niveau du sol
 
-            // Ajuster le plan de découpe proche pour ne pas tronquer les modèles à 50cm
+            // Ajuster le plan de découpe proche pour ne pas tronquer les modèles à 50cm.
+            // NB : 0.03f détruit la précision depth au loin (ratio far/near ~333k)
+            // -> z-fighting des couches planète (surface/nuages/atmosphère).
+            // 0.3f garde le zoom ras-du-sol tout en divisant l'erreur par 10.
             var cam = GetComponent<UnityEngine.Camera>() ?? UnityEngine.Camera.main;
             if (cam != null)
             {
-                cam.nearClipPlane = 0.03f;
+                cam.nearClipPlane = 0.3f;
             }
         }
 

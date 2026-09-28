@@ -120,10 +120,11 @@ namespace Killtime.UI
 
                     GameObject sceneGo = FindSceneObjectUniversal(id);
 
+                    bool childOfEnv = p.ParentToEnvironment;
                     _unifiedItems.Add(new UnifiedEnvItem
                     {
                         Id = id,
-                        DisplayLabel = $"[Placeholder] {id}",
+                        DisplayLabel = childOfEnv ? $"[Placeholder] {id} (enfant décor · local)" : $"[Placeholder] {id}",
                         Source = EnvItemSource.Placeholder,
                         PlaceholderRef = p,
                         SceneObject = sceneGo,
@@ -209,7 +210,7 @@ namespace Killtime.UI
                     _unifiedItems.Add(new UnifiedEnvItem
                     {
                         Id = cName,
-                        DisplayLabel = $"[Instance Scène] {cName}",
+                        DisplayLabel = $"[Instance Scène] {_activeData.EnvironmentId}/{cName}",
                         Source = EnvItemSource.SceneInstance,
                         PlaceholderRef = null,
                         SceneObject = child.gameObject,
@@ -217,6 +218,36 @@ namespace Killtime.UI
                         EulerAngles = child.eulerAngles,
                         Scale = child.localScale
                     });
+                }
+            }
+
+            // --- Arborescence : les enfants du décor (instances + placeholders
+            // ParentToEnvironment) sont regroupés juste sous la racine d'environnement.
+            int envRootIdx = _unifiedItems.FindIndex(u => u != null && u.Source == EnvItemSource.EnvironmentRoot);
+            if (envRootIdx >= 0)
+            {
+                var children = new List<UnifiedEnvItem>();
+                for (int i = _unifiedItems.Count - 1; i >= 0; i--)
+                {
+                    if (i == envRootIdx) continue;
+                    var u = _unifiedItems[i];
+                    if (u == null) continue;
+                    bool isChild = u.Source == EnvItemSource.SceneInstance
+                        || (u.Source == EnvItemSource.Placeholder && u.PlaceholderRef != null && u.PlaceholderRef.ParentToEnvironment);
+                    if (isChild)
+                    {
+                        children.Add(u);
+                        _unifiedItems.RemoveAt(i);
+                        if (i < envRootIdx) envRootIdx--;
+                    }
+                }
+                children.Reverse();
+                for (int i = 0; i < children.Count; i++)
+                {
+                    var c = children[i];
+                    if (!c.DisplayLabel.StartsWith("  └─"))
+                        c.DisplayLabel = $"  └─ {c.DisplayLabel}";
+                    _unifiedItems.Insert(envRootIdx + 1 + i, c);
                 }
             }
 
@@ -409,7 +440,8 @@ namespace Killtime.UI
             GUILayout.EndVertical();
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>2. Position Monde (X, Y, Z) :</b>");
+            bool editingLocal = currentItem.PlaceholderRef != null && currentItem.PlaceholderRef.ParentToEnvironment;
+            GUILayout.Label(editingLocal ? "<b>2. Position Locale au décor (X, Y, Z) — <color=#00E5FF>hérite l'alignement</color> :</b>" : "<b>2. Position Monde (X, Y, Z) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             Vector3 pos = currentItem.Position;
@@ -465,6 +497,30 @@ namespace Killtime.UI
             GUILayout.EndVertical();
         }
 
+        /// <summary>
+        /// Vrai si l'objet vit sous la racine d'environnement ([Environment]*) :
+        /// ses coordonnées JSON sont alors locales au décor (alignement hérité).
+        /// </summary>
+        private bool IsChildOfEnvironment(UnifiedEnvItem item)
+        {
+            if (item == null) return false;
+            if (item.PlaceholderRef != null && item.PlaceholderRef.ParentToEnvironment) return true;
+            var go = item.SceneObject;
+            if (go == null && !string.IsNullOrWhiteSpace(item.Id))
+            {
+                go = FindSceneObjectUniversal(item.Id);
+                if (go != null) item.SceneObject = go;
+            }
+            if (go == null) return false;
+            var p = go.transform.parent;
+            while (p != null)
+            {
+                if (p.name.StartsWith("[Environment]")) return true;
+                p = p.parent;
+            }
+            return false;
+        }
+
         private void ApplyTransformChangesToItem(UnifiedEnvItem item, Vector3 newPos, Vector3 newRot, Vector3 newScale)
         {
             item.Position = newPos;
@@ -476,11 +532,23 @@ namespace Killtime.UI
                 item.SceneObject = FindSceneObjectUniversal(item.Id);
             }
 
+            // Référentiel local si placeholder enfant du décor : l'alignement est hérité.
+            bool useLocal = IsChildOfEnvironment(item);
+
             if (item.SceneObject != null)
             {
-                item.SceneObject.transform.position = newPos;
-                item.SceneObject.transform.rotation = Quaternion.Euler(newRot);
-                item.SceneObject.transform.localScale = newScale;
+                if (useLocal)
+                {
+                    item.SceneObject.transform.localPosition = newPos;
+                    item.SceneObject.transform.localRotation = Quaternion.Euler(newRot);
+                    item.SceneObject.transform.localScale = newScale;
+                }
+                else
+                {
+                    item.SceneObject.transform.position = newPos;
+                    item.SceneObject.transform.rotation = Quaternion.Euler(newRot);
+                    item.SceneObject.transform.localScale = newScale;
+                }
             }
 
             // Assurer une entrée 3D continue dans EnvironmentPlaceholders pour TOUT objet édité
@@ -508,7 +576,8 @@ namespace Killtime.UI
                         EulerAngles = newRot,
                         Scale = newScale,
                         Color = Color.white,
-                        Smoothness = 0.2f
+                        Smoothness = 0.2f,
+                        ParentToEnvironment = useLocal
                     };
                     _activeData.EnvironmentPlaceholders.Add(newPh);
                     item.PlaceholderRef = newPh;
@@ -520,6 +589,7 @@ namespace Killtime.UI
                 item.PlaceholderRef.Position = newPos;
                 item.PlaceholderRef.EulerAngles = newRot;
                 item.PlaceholderRef.Scale = newScale;
+                if (useLocal) item.PlaceholderRef.ParentToEnvironment = true;
             }
 
             if (item.Source == EnvItemSource.PlacedProp && _activeData.EmbeddedMap != null && _activeData.EmbeddedMap.PlacedProps != null)
@@ -549,15 +619,29 @@ namespace Killtime.UI
 
             _activeData.EnvironmentPlaceholders ??= new List<ScenePlaceholderData>();
 
+            // Objet parenté sous le décor : on stocke le transform LOCAL + le drapeau
+            // ParentToEnvironment pour que le runtime le ré-instancie en enfant (alignement hérité).
+            bool childOfEnv = IsChildOfEnvironment(item);
+            Vector3 storePos = item.Position;
+            Vector3 storeRot = item.EulerAngles;
+            if (childOfEnv && item.SceneObject != null)
+            {
+                storePos = item.SceneObject.transform.localPosition;
+                storeRot = item.SceneObject.transform.localRotation.eulerAngles;
+                item.Position = storePos;
+                item.EulerAngles = storeRot;
+            }
+
             var newPlaceholder = new ScenePlaceholderData
             {
                 Id = item.Id,
                 Primitive = ScenePrimitiveKind.Cube,
-                Position = item.Position,
-                EulerAngles = item.EulerAngles,
+                Position = storePos,
+                EulerAngles = storeRot,
                 Scale = item.Scale,
                 Color = Color.white,
-                Smoothness = 0.2f
+                Smoothness = 0.2f,
+                ParentToEnvironment = childOfEnv
             };
 
             _activeData.EnvironmentPlaceholders.Add(newPlaceholder);
@@ -1044,6 +1128,10 @@ namespace Killtime.UI
             }
 
             _cameraOrbitDistance = Mathf.Max(measuredRadius * 2.2f, 30f);
+            // Préserve la précision depth au loin : near proportionnel à la distance
+            // d'inspection (planète r=1000 -> recul ~2200m -> near ~11m).
+            // Sans ça, far/near = 15000/0.3 = 50k -> z-fighting surface/nuages.
+            cam.nearClipPlane = Mathf.Max(0.3f, _cameraOrbitDistance * 0.005f);
             UpdateLockedInspectionCamera();
 
             _statusMessage = $"Caméra braquée sur '{sceneObj.name}' à {_cameraOrbitDistance:0}m de recul.";
@@ -1067,6 +1155,9 @@ namespace Killtime.UI
         private void RestoreTacticalCamera()
         {
             _inspectedObject = null;
+
+            if (UnityEngine.Camera.main != null)
+                UnityEngine.Camera.main.nearClipPlane = 0.3f;
 
             var tcc = FindAnyObjectByType<TacticalCameraController>();
             if (tcc != null) tcc.enabled = true;

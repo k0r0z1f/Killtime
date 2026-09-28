@@ -640,6 +640,10 @@ namespace Killtime.Story.Data
         public Color LightColor = Color.white;
         public float LightIntensity = 8f;
         public float LightRange = 15f;
+        // Enfant du décor : instancié sous l'instance du préfab d'environnement,
+        // Position/EulerAngles/Scale étant alors exprimés en LOCAL (alignement hérité).
+        // À false (défaut, compatible avec les anciens JSON) : coordonnées monde.
+        public bool ParentToEnvironment = false;
     }
 
     [Serializable]

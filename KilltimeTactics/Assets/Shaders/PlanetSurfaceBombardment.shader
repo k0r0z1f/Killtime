@@ -17,6 +17,12 @@ Shader "Killtime/Space/PlanetSurfaceBombardment"
         _FlickerSpeed ("Flicker Speed", Float) = 14.0
         _FlickerIntensity ("Flicker Variation", Range(0.0, 1.0)) = 0.35
 
+        [Header(City Lights Night Side)]
+        _CityLightsMap ("City Lights Map (black = no cities)", 2D) = "black" {}
+        [HDR] _CityLightsColor ("City Lights Color HDR", Color) = (1.0, 0.75, 0.4, 1.0)
+        _CityLightsIntensity ("City Lights Intensity", Range(0.0, 5.0)) = 2.0
+        _CityLightsTerminator ("City Lights Night Sharpness", Range(0.001, 0.5)) = 0.12
+
         [Header(Terminator Settings)]
         _TerminatorSharpness ("Terminator Sharpness", Range(0.001, 0.5)) = 0.08
     }
@@ -38,6 +44,7 @@ Shader "Killtime/Space/PlanetSurfaceBombardment"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -72,6 +79,9 @@ Shader "Killtime/Space/PlanetSurfaceBombardment"
             TEXTURE2D(_BombardmentEmissionMap);
             SAMPLER(sampler_BombardmentEmissionMap);
 
+            TEXTURE2D(_CityLightsMap);
+            SAMPLER(sampler_CityLightsMap);
+
             CBUFFER_START(UnityPerMaterial)
                 float4 _BaseMap_ST;
                 float _NormalScale;
@@ -81,6 +91,9 @@ Shader "Killtime/Space/PlanetSurfaceBombardment"
                 float _FlickerSpeed;
                 float _FlickerIntensity;
                 float _TerminatorSharpness;
+                float4 _CityLightsColor;
+                float _CityLightsIntensity;
+                float _CityLightsTerminator;
             CBUFFER_END
 
             Varyings vert(Attributes input)
@@ -103,11 +116,17 @@ Shader "Killtime/Space/PlanetSurfaceBombardment"
             {
                 float4 albedo = SAMPLE_TEXTURE2D(_BaseMap, sampler_BaseMap, input.uv);
                 float4 mask = SAMPLE_TEXTURE2D(_MaskMap, sampler_MaskMap, input.uv);
-                float4 normalSample = SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, input.uv);
-                float3 normalTS = UnpackNormalScale(normalSample, _NormalScale);
-
-                float3x3 TBN = float3x3(normalize(input.worldTangent), normalize(input.worldBitangent), normalize(input.worldNormal));
-                float3 worldNormal = normalize(mul(normalTS, TBN));
+                // Si aucune normal map n'est assignée (cas actuel du prefab),
+                // on reste sur la normale géométrique : échantillonner une texture
+                // null donne des normales aberrantes -> vagues/moiré au loin.
+                float3 worldNormal = normalize(input.worldNormal);
+                if (_NormalScale > 0.001)
+                {
+                    float4 normalSample = SAMPLE_TEXTURE2D(_NormalMap, sampler_NormalMap, input.uv);
+                    float3 normalTS = UnpackNormalScale(normalSample, _NormalScale);
+                    float3x3 TBN = float3x3(normalize(input.worldTangent), normalize(input.worldBitangent), normalize(input.worldNormal));
+                    worldNormal = normalize(mul(normalTS, TBN));
+                }
 
                 Light mainLight = GetMainLight();
                 float3 lightDir = normalize(mainLight.direction);
@@ -121,6 +140,11 @@ Shader "Killtime/Space/PlanetSurfaceBombardment"
                 float3 halfVector = normalize(lightDir + viewDir);
                 float NdotH = saturate(dot(worldNormal, halfVector));
                 float oceanSpec = pow(NdotH, _WaterSmoothness * 128.0) * mask.a;
+                // Le spec eau très piqué (exposant ~117) scintille en sous-pixel
+                // quand la planète est loin : on l'atténue avec la distance.
+                float camDist = distance(GetCameraPositionWS(), input.worldPos);
+                float specFade = exp(-camDist * 0.00015);
+                oceanSpec *= specFade;
                 float3 specularLighting = oceanSpec * _WaterSpecularColor.rgb * mainLight.color * dayTerminator;
 
                 float4 bombTexture = SAMPLE_TEXTURE2D(_BombardmentEmissionMap, sampler_BombardmentEmissionMap, input.uv);
@@ -129,7 +153,16 @@ Shader "Killtime/Space/PlanetSurfaceBombardment"
                 float flickerMod = 1.0 - (_FlickerIntensity * flickerNoise);
                 float3 bombardmentEmission = bombTexture.rgb * mask.b * _BombardmentColor.rgb * flickerMod;
 
-                float3 finalColor = diffuseLighting + specularLighting + bombardmentEmission;
+                // --- City lights: visible on night side only ---
+                // nightMask = 1 on night side (negative NdotL), 0 on day side.
+                // Note: smoothstep requires edge0 < edge1, hence the 1.0 - inversion.
+                float nightMask = 1.0 - smoothstep(-_CityLightsTerminator, _CityLightsTerminator, NdotL);
+                float3 cityTex = SAMPLE_TEXTURE2D(_CityLightsMap, sampler_CityLightsMap, input.uv).rgb;
+                // Cities are on land: exclude oceans (mask.a = 1 on water).
+                float landMask = 1.0 - mask.a;
+                float3 cityEmission = cityTex * _CityLightsColor.rgb * _CityLightsIntensity * nightMask * landMask;
+
+                float3 finalColor = diffuseLighting + specularLighting + bombardmentEmission + cityEmission;
 
                 return float4(finalColor, 1.0);
             }

@@ -760,6 +760,7 @@ namespace Killtime.UI
             else
             {
                 Time.timeScale = _prePauseTimeScale;
+                Time.fixedDeltaTime = Mathf.Clamp(0.02f * _prePauseTimeScale, 0.0002f, 0.05f);
                 AudioListener.pause = false;
                 if (KilltimeAudioManager.Instance != null)
                 {
@@ -784,6 +785,18 @@ namespace Killtime.UI
                     Killtime.Multi.VTTTableSync.Instance?.BroadcastFullCombatState();
                 }
             }
+        }
+
+        /// <summary>
+        /// Mémorise une nouvelle consigne de vitesse (0.01x–100x) pendant la pause :
+        /// Time.timeScale reste à 0 (stase), la reprise utilisera cette valeur.
+        /// Appelé par TimeScaleDevWindow.SetTimeScale quand IsPaused.
+        /// </summary>
+        public static void UpdatePrePauseTimeScale(float scale)
+        {
+            if (!IsPaused) return;
+            if (Instance != null)
+                Instance._prePauseTimeScale = Mathf.Clamp(scale, 0.01f, 100f);
         }
 
         private void OnDestroy()

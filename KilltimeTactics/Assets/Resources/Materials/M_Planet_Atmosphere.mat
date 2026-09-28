@@ -118,7 +118,7 @@ Material:
     - _Parallax: 0.005
     - _QueueOffset: 0
     - _ReceiveShadows: 1
-    - _RimIntensity: 3.5
+    - _RimIntensity: 2.5
     - _RimPower: 3.8
     - _ScreenSpaceReflections: 1
     - _ScreenSpaceReflectionsContributeTransparent: 1

@@ -20,6 +20,10 @@ Shader "Killtime/Space/PlanetAtmosphere"
         Blend SrcAlpha One
         Cull Back
         ZWrite Off
+        ZTest LEqual
+        // La coquille est déjà géométriquement devant (1040 vs 1015/1000),
+        // ce biais évite le flip depth quand la précision s'effondre au loin.
+        Offset -2, -20
 
         Pass
         {
@@ -28,6 +32,7 @@ Shader "Killtime/Space/PlanetAtmosphere"
             HLSLPROGRAM
             #pragma vertex vert
             #pragma fragment frag
+            #pragma target 3.0
 
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
@@ -75,13 +80,21 @@ Shader "Killtime/Space/PlanetAtmosphere"
                 float3 normal = normalize(input.worldNormal);
 
                 float NdotV = saturate(dot(normal, viewDir));
-                float rim = pow(1.0 - NdotV, _RimPower) * _RimIntensity;
+                // Rim clampé : sans clamp, _RimIntensity (jusqu'à 15) + HDR + MSAA
+                // donne des pixels isolés très brillants quand le limbe ne fait
+                // que 1-2 px de large (vue lointaine) -> "carrés" dans le vide.
+                float rimBase = pow(1.0 - NdotV, _RimPower);
+                rimBase = saturate(rimBase);
+                float rim = min(rimBase * _RimIntensity, 4.0);
 
                 float NdotL = dot(normal, lightDir);
                 float lightMask = smoothstep(-_TerminatorSmoothness, _TerminatorSmoothness, NdotL);
 
                 float3 finalColor = _AtmosphereColor.rgb * rim * lightMask * mainLight.color;
                 float alpha = saturate(rim * lightMask * _AtmosphereColor.a);
+
+                // Coupe les résidus sous-pixel qui scintillent au loin.
+                if (alpha < 0.004) return float4(0, 0, 0, 0);
 
                 return float4(finalColor, alpha);
             }

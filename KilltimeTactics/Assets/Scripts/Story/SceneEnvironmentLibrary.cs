@@ -83,15 +83,19 @@ namespace Killtime.Story.Scenes
                     activeEnvInstance.transform.localScale = Vector3.one;
                 }
 
-                // Un préfab d'environnement complet est chargé : les placeholders primitifs internes
-                // (anciens conduits, tables de fortune) sont STRICTEMENT neutralisés.
-                // Seuls les éléments extérieurs lointains (ex: orbite à plus de 100m) n'ayant aucun préfab sont autorisés.
+                // Un préfab d'environnement complet est chargé : l'entrée qui DÉCRIT
+                // le décor lui-même (Id == EnvironmentId) est neutralisée (pas de doublon).
+                // - Mobilier marqué ParentToEnvironment : instancié ENFANT de l'instance
+                //   du décor, en coordonnées locales (alignement hérité du décor).
+                // - Éléments lointains (orbite à plus de 100m) : voie cosmique.
+                // - Autres placeholders internes monde (< 100m, non parentés) : neutralisés.
                 if (placeholders != null && placeholders.Count > 0)
                 {
                     BuildExternalCosmicPlaceholdersOnly(parent, placeholders);
+                    BuildChildFurniturePlaceholders(activeEnvInstance.transform, placeholders, targetName, cleanId);
                 }
 
-                Debug.Log($"[SceneEnvironmentLibrary] ✅ Environnement complet chargé via préfab '{targetName}'. Placeholders internes neutralisés.");
+                Debug.Log($"[SceneEnvironmentLibrary] ✅ Environnement complet chargé via préfab '{targetName}' (+ mobilier enfant).");
                 return true;
             }
 
@@ -229,6 +233,136 @@ namespace Killtime.Story.Scenes
                 Material mat = CreateMaterial(p.Color, p.Smoothness, p.IsEmissive, p.EmissionColor);
                 Renderer r = go.GetComponent<Renderer>();
                 if (r != null) r.sharedMaterial = mat;
+            }
+        }
+
+        /// <summary>
+        /// Mobilier enfant du décor : placeholders marqués ParentToEnvironment, instanciés
+        /// sous l'instance du préfab d'environnement avec Position/EulerAngles/Scale
+        /// appliqués en LOCAL — l'alignement (position/rotation/échelle du décor) est hérité.
+        /// L'entrée qui décrit le décor lui-même est ignorée (anti-doublon).
+        /// </summary>
+        private static void BuildChildFurniturePlaceholders(Transform envInstance, List<ScenePlaceholderData> placeholders, string targetName, string cleanId)
+        {
+            if (envInstance == null || placeholders == null) return;
+
+            int built = 0;
+            for (int i = 0; i < placeholders.Count; i++)
+            {
+                var p = placeholders[i];
+                if (p == null || string.IsNullOrWhiteSpace(p.Id)) continue;
+                if (!p.ParentToEnvironment) continue;
+
+                // Le décor lui-même : ne jamais dupliquer le préfab d'environnement.
+                if (!string.IsNullOrEmpty(targetName) && string.Equals(p.Id, targetName, StringComparison.OrdinalIgnoreCase)) continue;
+                if (!string.IsNullOrEmpty(cleanId) && string.Equals(p.Id, cleanId, StringComparison.OrdinalIgnoreCase)) continue;
+
+                if (IsObjectAlreadyInScene(p.Id)) continue;
+
+                GameObject prefab = ResolvePrefab(p.Id);
+                if (prefab != null)
+                {
+                    DestroyDuplicateCustomProp(prefab.name);
+
+                    GameObject instance = UnityEngine.Object.Instantiate(prefab, envInstance, false);
+                    instance.name = prefab.name;
+                    instance.transform.localPosition = p.Position;
+                    instance.transform.localRotation = Quaternion.Euler(p.EulerAngles);
+                    instance.transform.localScale = p.Scale;
+
+                    SetHierarchyLayerAndActive(instance, 0);
+
+                    if (p.HasLight)
+                    {
+                        var lightComp = instance.GetComponent<Light>() ?? instance.AddComponent<Light>();
+                        lightComp.type = p.LightType;
+                        lightComp.color = p.LightColor;
+                        lightComp.intensity = p.LightIntensity;
+                        lightComp.range = p.LightRange;
+                    }
+                    built++;
+                    continue;
+                }
+
+                PrimitiveType pt = p.Primitive switch
+                {
+                    ScenePrimitiveKind.Cube => PrimitiveType.Cube,
+                    ScenePrimitiveKind.Cylinder => PrimitiveType.Cylinder,
+                    ScenePrimitiveKind.Capsule => PrimitiveType.Capsule,
+                    ScenePrimitiveKind.Quad => PrimitiveType.Quad,
+                    _ => PrimitiveType.Sphere
+                };
+
+                GameObject go = GameObject.CreatePrimitive(pt);
+                go.name = p.Id;
+                go.transform.SetParent(envInstance, false);
+                go.transform.localPosition = p.Position;
+                go.transform.localRotation = Quaternion.Euler(p.EulerAngles);
+                go.transform.localScale = p.Scale;
+
+                Material mat = CreateMaterial(p.Color, p.Smoothness, p.IsEmissive, p.EmissionColor);
+                Renderer r = go.GetComponent<Renderer>();
+                if (r != null) r.sharedMaterial = mat;
+
+                if (p.HasLight)
+                {
+                    var lightComp = go.AddComponent<Light>();
+                    lightComp.type = p.LightType;
+                    lightComp.color = p.LightColor;
+                    lightComp.intensity = p.LightIntensity;
+                    lightComp.range = p.LightRange;
+                }
+                built++;
+            }
+
+            if (built > 0)
+            {
+                Debug.Log($"[SceneEnvironmentLibrary] 🪑 {built} meuble(s) enfant(s) instancié(s) sous '{envInstance.name}' (local, alignement hérité).");
+                try
+                {
+                    var hud = Killtime.UI.CombatHUD.Instance;
+                    if (hud != null) hud.AddAdvancedLog($"🪑 <b>[DÉCOR]</b> {built} meuble(s) instancié(s) sous '{envInstance.name}'.", Killtime.UI.LogCategory.MovementAndTurns, "[DÉCOR]", Color.cyan);
+                }
+                catch { /* HUD optionnel */ }
+            }
+
+            DumpFurnitureDebug(envInstance);
+        }
+
+        /// <summary>
+        /// TEMP-DEBUG : écrit les transforms live (instance + enfants + grille) dans
+        /// FurnitureDump.json (persistentDataPath) pour vérification hors-ligne.
+        /// </summary>
+        private static void DumpFurnitureDebug(Transform envInstance)
+        {
+            try
+            {
+                var sb = new System.Text.StringBuilder();
+                sb.AppendLine("{");
+                sb.AppendLine($"  \"instance\": \"{envInstance.name}\",");
+                sb.AppendLine($"  \"instancePos\": \"{envInstance.position}\",");
+                sb.AppendLine($"  \"instanceRot\": \"{envInstance.rotation.eulerAngles}\",");
+                sb.AppendLine($"  \"instanceScale\": \"{envInstance.localScale}\",");
+                sb.AppendLine($"  \"parent\": \"{(envInstance.parent != null ? envInstance.parent.name : "(root)")}\",");
+                sb.AppendLine("  \"children\": [");
+                for (int i = 0; i < envInstance.childCount; i++)
+                {
+                    var c = envInstance.GetChild(i);
+                    if (c == null) continue;
+                    sb.Append("    {\"name\": \"").Append(c.name).Append("\", ");
+                    sb.Append("\"local\": \"").Append(c.localPosition).Append("\", ");
+                    sb.Append("\"world\": \"").Append(c.position).Append("\"}");
+                    sb.AppendLine(i < envInstance.childCount - 1 ? "," : "");
+                }
+                sb.AppendLine("  ]");
+                sb.AppendLine("}");
+                string path = System.IO.Path.Combine(UnityEngine.Application.persistentDataPath, "FurnitureDump.json");
+                System.IO.File.WriteAllText(path, sb.ToString());
+                Debug.Log($"[SceneEnvironmentLibrary] 🔍 Dump meubles écrit : {path}");
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[SceneEnvironmentLibrary] Dump meubles impossible : {ex.Message}");
             }
         }
 

@@ -61,9 +61,9 @@ namespace Killtime.UI
         private bool _defenderWantsToDefend = true;
         private int _weaponDamage = 5;
 
-        // Ralenti global dev : 1 = normal, 0.1 = 10x plus lent. F9 = bascule 1x / ralenti.
-        private float _devTimeScale = 1f;
-        private float _lastSlowedScale = 0.25f;
+        // Vitesse du jeu : pilotée par TimeScaleDevWindow (F10, 0.01x–100x).
+        // Les wrappers CurrentDevTimeScale / SetDevTimeScale / ReadDevTimeScalePref
+        // ci-dessous délèguent vers cette fenêtre (compat cinématiques / pause).
 
         private int _selectedTab = 0;
         private readonly string[] _tabNames = { "🎯 Tir Ciblé (VATS)", "🛠️ Outils & Cheats", "⏳ Chronomancie", "📜 Logs" };
@@ -167,9 +167,7 @@ namespace Killtime.UI
             _selectedTab = Mathf.Clamp(p.CombatToolbarTab, 0, _tabNames.Length - 1);
             _scrollLock = p.CombatLogScrollLock;
             Application.runInBackground = p.RunInBackground;
-            _devTimeScale = Mathf.Clamp(p.GlobalTimeScale, 0.1f, 1f);
-            _lastSlowedScale = _devTimeScale < 1f ? _devTimeScale : 0.25f;
-            SetDevTimeScale(_devTimeScale);
+            TimeScaleDevWindow.SetTimeScale(TimeScaleDevWindow.ReadTimeScalePref());
         }
 
         private static SkillType SafeSkill(int raw, SkillType fallback)
@@ -197,7 +195,7 @@ namespace Killtime.UI
             p.CombatToolbarTab = _selectedTab;
             p.CombatLogScrollLock = _scrollLock;
             p.RunInBackground = Application.runInBackground;
-            p.GlobalTimeScale = _devTimeScale;
+            p.GlobalTimeScale = TimeScaleDevWindow.CurrentTimeScale;
             if (_arena != null)
             {
                 p.InfiniteAP = _arena.InfiniteAP;
@@ -264,9 +262,7 @@ namespace Killtime.UI
                 else if (Input.GetKeyDown(KeyCode.F9)) EnsureDevWindow(Killtime.Story.HybrisWorldMapEditorWindow.Instance, Killtime.Story.HybrisWorldMapEditorWindow.Open);
                 else if (Input.GetKeyDown(KeyCode.F10))
                 {
-                    float target = CurrentDevTimeScale >= 1f ? _lastSlowedScale : 1f;
-                    _devTimeScale = target;
-                    SetDevTimeScale(target);
+                    EnsureDevWindow(TimeScaleDevWindow.Instance, TimeScaleDevWindow.Open);
                 }
                 else if (Input.GetKeyDown(KeyCode.L) && GUIUtility.keyboardControl == 0)
                 {
@@ -276,44 +272,21 @@ namespace Killtime.UI
         }
 
         /// <summary>
-        /// Ralenti global dev (Time.timeScale), de 1x jusqu'à 0.1x. Ralentit tout :
-        /// animations, cinématiques, IA, projectiles. La pause (CombatHUD) reste
-        /// compatible : elle restaure la valeur pré-pause, pas forcément 1x.
+        /// Vitesse du jeu 0.01x–100x, pilotée par TimeScaleDevWindow (F10).
+        /// Ralentit/accélère tout : animations, cinématiques, IA, projectiles.
+        /// La pause (CombatHUD) reste compatible : elle restaure la consigne
+        /// pré-pause, pas forcément 1x. Wrappers conservés pour les appelants
+        /// existants (CinematicDirector, prefs).
         /// </summary>
-        public static float CurrentDevTimeScale { get; private set; } = 1f;
+        public static float CurrentDevTimeScale => TimeScaleDevWindow.CurrentTimeScale;
 
-        public static void SetDevTimeScale(float scale)
-        {
-            scale = Mathf.Clamp(scale, 0.1f, 1f);
-            CurrentDevTimeScale = scale;
-            Time.timeScale = scale;
-            Time.fixedDeltaTime = 0.02f * scale;
-            try
-            {
-                var p = DevUIPreferences.Current;
-                if (p != null)
-                {
-                    p.GlobalTimeScale = scale;
-                    DevUIPreferences.MarkDirty();
-                }
-            }
-            catch { /* prefs optionnelles */ }
-        }
+        public static void SetDevTimeScale(float scale) => TimeScaleDevWindow.SetTimeScale(scale);
 
         /// <summary>
         /// Valeur dev lue sans dépendre de la fenêtre (utilisée par le directeur
-        /// cinématique pour restaurer le bon ralenti après un plan d'action).
+        /// cinématique pour restaurer la bonne vitesse après un plan d'action).
         /// </summary>
-        public static float ReadDevTimeScalePref()
-        {
-            try
-            {
-                var p = DevUIPreferences.Current;
-                if (p != null) return Mathf.Clamp(p.GlobalTimeScale, 0.1f, 1f);
-            }
-            catch { /* ignore */ }
-            return 1f;
-        }
+        public static float ReadDevTimeScalePref() => TimeScaleDevWindow.ReadTimeScalePref();
 
         /// <summary>
         /// Crée+ouvre une fenêtre dev si elle n'existe pas encore (ou si désactivée).
@@ -796,27 +769,24 @@ namespace Killtime.UI
             TacticalUnitVisual.ShowOverheadHUD = GUILayout.Toggle(TacticalUnitVisual.ShowOverheadHUD, "🏷️ Boîtes d'info personnages (Nom + PV/PA — Touche N)");
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>⏳ Ralenti Global (Time Scale Dev) :</b>");
+            GUILayout.Label("<b>⏳ Vitesse du Jeu (0.01× – 100×) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
+            float toolbarScale = TimeScaleDevWindow.CurrentTimeScale;
             GUILayout.BeginHorizontal();
-            GUI.color = _devTimeScale < 1f ? new Color(1f, 0.6f, 0.2f) : Color.white;
-            GUILayout.Label($"Vitesse : <b>{_devTimeScale:0.00}×</b>", GUILayout.Width(130));
+            GUI.color = toolbarScale < 1f ? new Color(1f, 0.6f, 0.2f)
+                : toolbarScale > 1f ? new Color(0.4f, 0.9f, 1f) : Color.white;
+            GUILayout.Label($"Vitesse : <b>{TimeScaleDevWindow.FormatScale(toolbarScale)}</b>", GUILayout.Width(130));
             GUI.color = Color.white;
-            float pickedScale = GUILayout.HorizontalSlider(_devTimeScale, 0.1f, 1f);
-            if (Mathf.Abs(pickedScale - _devTimeScale) > 0.001f)
+            if (GUILayout.Button("⏳ Ouvrir Vitesse (F10)", GUILayout.Height(26)))
             {
-                _devTimeScale = pickedScale;
-                if (pickedScale < 1f) _lastSlowedScale = pickedScale;
-                SetDevTimeScale(pickedScale);
+                TimeScaleDevWindow.Open();
+            }
+            if (GUILayout.Button("▶ 1×", GUILayout.Width(52), GUILayout.Height(26)))
+            {
+                TimeScaleDevWindow.ResetToNormal();
             }
             GUILayout.EndHorizontal();
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("▶ 1×")) { _devTimeScale = 1f; SetDevTimeScale(1f); }
-            if (GUILayout.Button("0.5×")) { _devTimeScale = 0.5f; _lastSlowedScale = 0.5f; SetDevTimeScale(0.5f); }
-            if (GUILayout.Button("0.25×")) { _devTimeScale = 0.25f; _lastSlowedScale = 0.25f; SetDevTimeScale(0.25f); }
-            if (GUILayout.Button("🐌 0.1×")) { _devTimeScale = 0.1f; _lastSlowedScale = 0.1f; SetDevTimeScale(0.1f); }
-            GUILayout.EndHorizontal();
-            GUILayout.Label("<i>Ralentit tout (anims, cinématiques, IA). F9 = bascule 1× / ralenti. Min 0.1×.</i>");
+            GUILayout.Label("<i>Ralentit/accélère tout (anims, cinématiques, IA). Piloté par la fenêtre Vitesse du Jeu (F10), Shift+F10 = 1×.</i>");
             GUILayout.EndVertical();
 
             GUILayout.Space(8);

@@ -46,14 +46,15 @@ namespace Killtime.CameraSystem
         public bool IsFreeLook => CurrentMode == CameraMode.FreeLook;
 
         /// <summary>
-        /// Ralenti global dev (1x → 0.1x) : les plans d'action restaurent cette
-        /// valeur au lieu de forcer 1x, sinon le slider dev serait écrasé.
+        /// Vitesse du jeu dev (0.01x → 100x, fenêtre F10) : les plans d'action
+        /// restaurent cette consigne au lieu de forcer 1x, sinon le réglage
+        /// serait écrasé après chaque killcam.
         /// </summary>
         private static float DevTimeScale()
         {
             try
             {
-                return Killtime.UI.CombatDevToolbar.ReadDevTimeScalePref();
+                return Killtime.UI.TimeScaleDevWindow.ReadTimeScalePref();
             }
             catch { return 1f; }
         }

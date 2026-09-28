@@ -107,6 +107,13 @@ public class AsteroidBaseGenerator : MonoBehaviour
     public void GenerateBase()
     {
         ClearBase();
+
+        // La base est authorée dans l'espace hex (HexToWorld) : forcer l'origine
+        // pendant la génération, sinon les tuiles (positionnées en monde puis
+        // reparentées) et les conteneurs héritent d'un décalage qui désaligne
+        // ensuite le mobilier enfant (Placeholders ParentToEnvironment).
+        transform.localPosition = Vector3.zero;
+        transform.localRotation = Quaternion.identity;
         EnsureContainers();
 
         float targetCeilingOpacity = 0.22f;
@@ -219,6 +226,28 @@ public class AsteroidBaseGenerator : MonoBehaviour
 #if UNITY_EDITOR
         // 1. Purge systématique des scripts manquants et des composants obsolètes
         PurgeMissingScripts(gameObject);
+
+        // 2. Garantir un prefab centré : racine + conteneurs à zéro, sinon le
+        // mobilier enfant (local, alignement hérité) est désaligné de ~12m
+        // par rapport aux sols (ex: hangar).
+        gameObject.transform.localPosition = Vector3.zero;
+        gameObject.transform.localRotation = Quaternion.identity;
+        string[] containerNames = { "Interior_Floors", "Interior_Partitions_And_Rock", "Interior_Ceilings", "Room_Scene_Labels", "Asteroid_3D_FullHull", "Space_Environment" };
+        for (int i = 0; i < containerNames.Length; i++)
+        {
+            Transform c = transform.Find(containerNames[i]);
+            if (c != null)
+            {
+                c.localPosition = Vector3.zero;
+                c.localRotation = Quaternion.identity;
+            }
+        }
+        if (interiorFloorContainer != null) { interiorFloorContainer.localPosition = Vector3.zero; interiorFloorContainer.localRotation = Quaternion.identity; }
+        if (interiorWallsContainer != null) { interiorWallsContainer.localPosition = Vector3.zero; interiorWallsContainer.localRotation = Quaternion.identity; }
+        if (interiorCeilingsContainer != null) { interiorCeilingsContainer.localPosition = Vector3.zero; interiorCeilingsContainer.localRotation = Quaternion.identity; }
+        if (labelsContainer != null) { labelsContainer.localPosition = Vector3.zero; labelsContainer.localRotation = Quaternion.identity; }
+        if (exteriorHullContainer != null) { exteriorHullContainer.localPosition = Vector3.zero; exteriorHullContainer.localRotation = Quaternion.identity; }
+        if (spaceCosmosContainer != null) { spaceCosmosContainer.localPosition = Vector3.zero; spaceCosmosContainer.localRotation = Quaternion.identity; }
 
         string folder = "Assets/Resources/Prefabs/Environment";
         if (!Directory.Exists(folder))
@@ -368,45 +397,60 @@ public class AsteroidBaseGenerator : MonoBehaviour
 
     private void EnsureContainers()
     {
+        // Parentage SANS conservation du monde (worldPositionStays=false) :
+        // les conteneurs doivent être à zéro local, sinon les tuiles (espace
+        // hex) et le mobilier enfant (local hérité) sont désalignés.
         if (interiorFloorContainer == null)
         {
             GameObject go = new GameObject("Interior_Floors");
-            go.transform.SetParent(transform);
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
             interiorFloorContainer = go.transform;
         }
 
         if (interiorWallsContainer == null)
         {
             GameObject go = new GameObject("Interior_Partitions_And_Rock");
-            go.transform.SetParent(transform);
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
             interiorWallsContainer = go.transform;
         }
 
         if (interiorCeilingsContainer == null)
         {
             GameObject go = new GameObject("Interior_Ceilings");
-            go.transform.SetParent(transform);
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
             interiorCeilingsContainer = go.transform;
         }
 
         if (labelsContainer == null)
         {
             GameObject go = new GameObject("Room_Scene_Labels");
-            go.transform.SetParent(transform);
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
             labelsContainer = go.transform;
         }
 
         if (exteriorHullContainer == null)
         {
             GameObject go = new GameObject("Asteroid_3D_FullHull");
-            go.transform.SetParent(transform);
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
             exteriorHullContainer = go.transform;
         }
 
         if (spaceCosmosContainer == null)
         {
             GameObject go = new GameObject("Space_Environment");
-            go.transform.SetParent(transform);
+            go.transform.SetParent(transform, false);
+            go.transform.localPosition = Vector3.zero;
+            go.transform.localRotation = Quaternion.identity;
             spaceCosmosContainer = go.transform;
         }
     }

@@ -54,7 +54,7 @@ namespace Killtime.UI
         // --- Système & Multitâche ---
         public bool RunInBackground = true;
 
-        // --- Ralenti global dev (Time.timeScale, 0.1 = 10x plus lent, 1 = normal) ---
+        // --- Vitesse du jeu (Time.timeScale, 0.01 = 100x plus lent, 100 = 100x plus rapide) ---
         public float GlobalTimeScale = 1f;
 
         // --- IA tactique ---
@@ -361,6 +361,7 @@ namespace Killtime.UI
         private static void Sanitize(DevUIPreferencesData d)
         {
             if (d == null) return;
+            d.GlobalTimeScale = Mathf.Clamp(d.GlobalTimeScale, 0.01f, 100f);
             d.AiActionDelay = Mathf.Clamp(d.AiActionDelay, 0.05f, 10f);
             d.AiRetreatRatio = Mathf.Clamp(d.AiRetreatRatio, 0.05f, 0.6f);
             d.AiDefensiveReserve = Mathf.Clamp(d.AiDefensiveReserve, 0, 2);
