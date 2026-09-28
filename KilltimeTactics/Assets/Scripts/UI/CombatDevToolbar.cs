@@ -68,6 +68,58 @@ namespace Killtime.UI
         private int _selectedTab = 0;
         private readonly string[] _tabNames = { "🎯 Tir Ciblé (VATS)", "🛠️ Outils & Cheats", "⏳ Chronomancie", "📜 Logs" };
 
+        private static bool _devFullbrightActive = false;
+        private static Light _devFullbrightLight;
+        private static Color _cachedAmbientLight;
+        private static UnityEngine.Rendering.AmbientMode _cachedAmbientMode;
+        private const string DevLightName = "__DEV_FULLBRIGHT_LIGHT__";
+
+        public static void ToggleDevFullbrightLight()
+        {
+            _devFullbrightActive = !_devFullbrightActive;
+
+            if (_devFullbrightLight == null)
+            {
+                GameObject lightGo = GameObject.Find(DevLightName);
+                if (lightGo == null)
+                {
+                    lightGo = new GameObject(DevLightName);
+                    lightGo.transform.rotation = Quaternion.Euler(55f, -35f, 0f);
+                }
+                _devFullbrightLight = lightGo.GetComponent<Light>() ?? lightGo.AddComponent<Light>();
+                _devFullbrightLight.type = LightType.Directional;
+                _devFullbrightLight.cullingMask = ~0;
+            }
+
+            if (_devFullbrightActive)
+            {
+                _cachedAmbientLight = RenderSettings.ambientLight;
+                _cachedAmbientMode = RenderSettings.ambientMode;
+
+                RenderSettings.ambientMode = UnityEngine.Rendering.AmbientMode.Flat;
+                RenderSettings.ambientLight = new Color(0.72f, 0.72f, 0.72f, 1.0f);
+
+                _devFullbrightLight.color = Color.white;
+                _devFullbrightLight.intensity = 2.4f;
+                _devFullbrightLight.shadows = LightShadows.None;
+                _devFullbrightLight.enabled = true;
+
+                CombatHUD.Instance?.AddAdvancedLog("💡 <b>[DEV] Lumière Globale : ACTIVÉE (Touche L)</b>", LogCategory.MovementAndTurns, "[ÉCLAIRAGE]", Color.yellow);
+            }
+            else
+            {
+                if (_devFullbrightLight != null)
+                {
+                    _devFullbrightLight.enabled = false;
+                }
+
+                RenderSettings.ambientMode = _cachedAmbientMode;
+                RenderSettings.ambientLight = _cachedAmbientLight;
+
+                CombatHUD.Instance?.AddAdvancedLog("💡 <b>[DEV] Lumière Globale : DÉSACTIVÉE (Touche L)</b>", LogCategory.MovementAndTurns, "[ÉCLAIRAGE]", Color.gray);
+            }
+        }
+
         protected override void Awake()
         {
             base.Awake();
@@ -184,28 +236,42 @@ namespace Killtime.UI
 
         private void LateUpdate()
         {
-            // Les fenêtres dev ne sont pas dans la scène : aucun Update ne les écoute
-            // tant qu'elles n'ont pas été créées via Open(). On les crée+ouvre ici à la première
-            // pression ; une fois existantes et actives, leur propre Update gère le toggle tout seul.
-            // LateUpdate tourne après tous les Update : pas de double-toggle le même frame.
-            if (Input.GetKeyDown(KeyCode.F1)) EnsureDevWindow(CharacterDevWindow.Instance, CharacterDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F2)) EnsureDevWindow(MapEditorDevWindow.Instance, MapEditorDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F3)) EnsureDevWindow(CoreRulesDevTableWindow.Instance, CoreRulesDevTableWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F4)) EnsureDevWindow(VTTRoomWindow.Instance, VTTRoomWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F5) || Input.GetKeyDown(KeyCode.I)) EnsureDevWindow(InventoryDevWindow.Instance, InventoryDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F6)) EnsureDevWindow(Killtime.Multi.Video.VTTVideoRoomWindow.Instance, Killtime.Multi.Video.VTTVideoRoomWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F7)) EnsureDevWindow(ScenarioDevWindow.Instance, ScenarioDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F8)) EnsureDevWindow(ScenarioEditorDevWindow.Instance, ScenarioEditorDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F10)) EnsureDevWindow(WeaponGripEditorDevWindow.Instance, WeaponGripEditorDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F11)) EnsureDevWindow(RiverOfTimeDevWindow.Instance, RiverOfTimeDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F12)) EnsureDevWindow(Killtime.Story.HybrisWorldMapDevWindow.Instance, Killtime.Story.HybrisWorldMapDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.B)) EnsureDevWindow(BestiaryDevWindow.Instance, BestiaryDevWindow.Open);
-            else if (Input.GetKeyDown(KeyCode.F9))
+            bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+            bool ctrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+
+            if (shiftHeld && !ctrlHeld)
             {
-                // Bascule ralenti : 1x <-> dernier ralenti (défaut 0.25x).
-                float target = CurrentDevTimeScale >= 1f ? _lastSlowedScale : 1f;
-                _devTimeScale = target;
-                SetDevTimeScale(target);
+                if (Input.GetKeyDown(KeyCode.F1)) EnsureDevWindow(ScenarioDevWindow.Instance, ScenarioDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F2)) EnsureDevWindow(ScenarioEditorDevWindow.Instance, ScenarioEditorDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F3)) EnsureDevWindow(SceneEnvironmentDevWindow.Instance, SceneEnvironmentDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F4)) EnsureDevWindow(CinematicEditorDevWindow.Instance, CinematicEditorDevWindow.Open);
+            }
+            else if (ctrlHeld && !shiftHeld)
+            {
+                if (Input.GetKeyDown(KeyCode.F1)) EnsureDevWindow(VTTRoomWindow.Instance, VTTRoomWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F2)) EnsureDevWindow(Killtime.Multi.Video.VTTVideoRoomWindow.Instance, Killtime.Multi.Video.VTTVideoRoomWindow.Open);
+            }
+            else if (!shiftHeld && !ctrlHeld)
+            {
+                if (Input.GetKeyDown(KeyCode.F1)) EnsureDevWindow(CharacterDevWindow.Instance, CharacterDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F2)) EnsureDevWindow(MapEditorDevWindow.Instance, MapEditorDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F3)) EnsureDevWindow(CoreRulesDevTableWindow.Instance, CoreRulesDevTableWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F4) || Input.GetKeyDown(KeyCode.I)) EnsureDevWindow(InventoryDevWindow.Instance, InventoryDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F5)) EnsureDevWindow(WeaponGripEditorDevWindow.Instance, WeaponGripEditorDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F6) || Input.GetKeyDown(KeyCode.B)) EnsureDevWindow(BestiaryDevWindow.Instance, BestiaryDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F7)) EnsureDevWindow(RiverOfTimeDevWindow.Instance, RiverOfTimeDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F8)) EnsureDevWindow(Killtime.Story.HybrisWorldMapDevWindow.Instance, Killtime.Story.HybrisWorldMapDevWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F9)) EnsureDevWindow(Killtime.Story.HybrisWorldMapEditorWindow.Instance, Killtime.Story.HybrisWorldMapEditorWindow.Open);
+                else if (Input.GetKeyDown(KeyCode.F10))
+                {
+                    float target = CurrentDevTimeScale >= 1f ? _lastSlowedScale : 1f;
+                    _devTimeScale = target;
+                    SetDevTimeScale(target);
+                }
+                else if (Input.GetKeyDown(KeyCode.L) && GUIUtility.keyboardControl == 0)
+                {
+                    ToggleDevFullbrightLight();
+                }
             }
         }
 
@@ -755,6 +821,16 @@ namespace Killtime.UI
 
             GUILayout.Space(8);
             GUILayout.Label("<b>💡 Éclairage & Atmosphère :</b>");
+
+            string fullbrightLabel = _devFullbrightActive ? "💡 Lumière Globale : ACTIVÉE (Touche L)" : "💡 Lumière Globale : ÉTEINTE (Touche L)";
+            GUI.backgroundColor = _devFullbrightActive ? new Color(1.0f, 0.85f, 0.35f) : Color.white;
+            if (GUILayout.Button(fullbrightLabel, GUILayout.Height(32)))
+            {
+                ToggleDevFullbrightLight();
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.Space(4);
+
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("✨ Invoquer Pixie de Test", GUILayout.Height(30)))
             {
@@ -777,11 +853,11 @@ namespace Killtime.UI
             {
                 CharacterDevWindow.Open();
             }
-            if (GUILayout.Button("🗡️ Ancrage Armes / Grip (F10)", GUILayout.Height(32)))
+            if (GUILayout.Button("🗡️ Ancrage Armes / Grip (F5)", GUILayout.Height(32)))
             {
                 WeaponGripEditorDevWindow.Open();
             }
-            if (GUILayout.Button("📖 Bestiaire (B)", GUILayout.Height(32)))
+            if (GUILayout.Button("📖 Bestiaire (F6)", GUILayout.Height(32)))
             {
                 BestiaryDevWindow.Open();
             }
@@ -802,52 +878,68 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(4);
-            GUILayout.Label("<b>🗺️ Overworld & Campagne (réseau de secteurs) :</b>");
-            if (GUILayout.Button("🗺️ Carte Monde Hybris — Secteurs (F12)", GUILayout.Height(32)))
+            GUILayout.Label("<b>🎒 Inventaire, Armurerie & Marché :</b>");
+            if (GUILayout.Button("🎒🏪 Inventaire / Armurerie / Marché (F4 / I)", GUILayout.Height(32)))
             {
-                Killtime.Story.HybrisWorldMapDevWindow.Open();
-            }
-            if (GUILayout.Button("🛠️ Éditeur World Map (secteurs & liaisons)", GUILayout.Height(32)))
-            {
-                Killtime.Story.HybrisWorldMapEditorWindow.Open();
+                InventoryDevWindow.Open();
             }
 
             GUILayout.Space(4);
-            GUILayout.Label("<b>🎬 Campagne narrative & Chronomancie :</b>");
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("🎬 Scènes & Choix (F7)", GUILayout.Height(32)))
-            {
-                ScenarioDevWindow.Open();
-            }
-            if (GUILayout.Button("🛠️ Éditeur Scènes (F8)", GUILayout.Height(32)))
-            {
-                ScenarioEditorDevWindow.Open();
-            }
-            if (GUILayout.Button("🌊 Fleuve 3D (F11)", GUILayout.Height(32)))
+            GUILayout.Label("<b>🌊 Chronomancie & Simulation Temporelle :</b>");
+            if (GUILayout.Button("🌊 Ouvrir le Fleuve du Temps 3D (F7)", GUILayout.Height(32)))
             {
                 RiverOfTimeDevWindow.Open();
+            }
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>🗺️ Overworld & Campagne (réseau de secteurs) :</b>");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🗺️ Carte Monde Hybris (F8)", GUILayout.Height(32)))
+            {
+                Killtime.Story.HybrisWorldMapDevWindow.Open();
+            }
+            if (GUILayout.Button("🛠️ Éditeur World Map (F9)", GUILayout.Height(32)))
+            {
+                Killtime.Story.HybrisWorldMapEditorWindow.Open();
             }
             GUILayout.EndHorizontal();
 
             GUILayout.Space(4);
-            GUILayout.Label("<b>🌐 Multijoueur (Table Virtuelle) :</b>");
+            GUILayout.Label("<b>🎬 Suite de Scène & Narration (Shift + F1..F4) :</b>");
             GUILayout.BeginHorizontal();
-            if (GUILayout.Button("🌐 Room VTT (F4)", GUILayout.Height(32)))
+            if (GUILayout.Button("🎬 Scènes & Choix (Shift+F1)", GUILayout.Height(32)))
+            {
+                ScenarioDevWindow.Open();
+            }
+            if (GUILayout.Button("🛠️ Éditeur Scènes (Shift+F2)", GUILayout.Height(32)))
+            {
+                ScenarioEditorDevWindow.Open();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🪐 Décor & Lumières (Shift+F3)", GUILayout.Height(32)))
+            {
+                SceneEnvironmentDevWindow.Open();
+            }
+            if (GUILayout.Button("🎬 Cinématiques (Shift+F4)", GUILayout.Height(32)))
+            {
+                CinematicEditorDevWindow.Open();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>🌐 Multijoueur (Table Virtuelle — Ctrl + F1..F2) :</b>");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🌐 Room VTT (Ctrl+F1)", GUILayout.Height(32)))
             {
                 VTTRoomWindow.Open();
             }
-            if (GUILayout.Button("📹 Salon Vidéo (F6)", GUILayout.Height(32)))
+            if (GUILayout.Button("📹 Salon Vidéo (Ctrl+F2)", GUILayout.Height(32)))
             {
                 Killtime.Multi.Video.VTTVideoRoomWindow.Open();
             }
             GUILayout.EndHorizontal();
-
-            GUILayout.Space(4);
-            GUILayout.Label("<b>🎒 Inventaire, Armurerie & Marché :</b>");
-            if (GUILayout.Button("🎒🏪 Inventaire / Armurerie / Marché (F5 / I)", GUILayout.Height(32)))
-            {
-                InventoryDevWindow.Open();
-            }
             GUILayout.Space(16);
         }
 

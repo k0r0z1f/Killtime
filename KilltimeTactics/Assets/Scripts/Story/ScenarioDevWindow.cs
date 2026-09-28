@@ -10,7 +10,7 @@ namespace Killtime.Story
     public class ScenarioDevWindow : FloatingWindow<ScenarioDevWindow>
     {
         protected override int WindowId => 990;
-        protected override string Title => "Campagne — Scènes & Choix";
+        protected override string Title => "Campagne — Scènes & Choix (Shift+F1)";
         protected override Vector2 MinSize => _minSize;
         protected override Rect DefaultRect => new Rect(
             Mathf.Max(10f, Screen.width - 640f - 20f),
@@ -18,8 +18,9 @@ namespace Killtime.Story
             Mathf.Min(620f, Mathf.Max(_minSize.x, Screen.width - 40f)),
             Mathf.Min(660f, Mathf.Max(_minSize.y, Screen.height - 110f)));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
+        protected override bool RequireShift => true;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.F7 };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F1 };
         private static readonly Vector2 _minSize = new Vector2(520f, 480f);
         private Vector2 _scroll;
         private bool _showJournal;
@@ -64,9 +65,17 @@ namespace Killtime.Story
             GUILayout.Label($"Route: <b>{RouteLabel(director.State.Route)}</b>", GUILayout.Width(150));
             GUILayout.Label($"Compteurs: <b>{CountersSummary(director)}</b>");
             GUILayout.FlexibleSpace();
-            if (GUILayout.Button("🛠️ Éditeur (F8)", GUILayout.Width(110)))
+            if (GUILayout.Button("🛠️ Éditeur (Shift+F2)", GUILayout.Width(135)))
             {
                 ScenarioEditorDevWindow.Open();
+            }
+            if (GUILayout.Button("🪐 Décor (Shift+F3)", GUILayout.Width(130)))
+            {
+                SceneEnvironmentDevWindow.Open();
+            }
+            if (GUILayout.Button("🎬 Ciné (Shift+F4)", GUILayout.Width(120)))
+            {
+                CinematicEditorDevWindow.Open();
             }
             if (GUILayout.Button("↺ Réinitialiser", GUILayout.Width(105)))
             {

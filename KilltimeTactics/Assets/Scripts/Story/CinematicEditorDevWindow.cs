@@ -21,10 +21,11 @@ namespace Killtime.Story
     public class CinematicEditorDevWindow : FloatingWindow<CinematicEditorDevWindow>
     {
         protected override int WindowId => 994;
-        protected override string Title => "Éditeur de Cinématiques 🎬 — carte 3D (START / END)";
+        protected override string Title => "Éditeur de Cinématiques 🎬 — carte 3D (Shift+F4)";
         protected override Vector2 MinSize => new Vector2(560f, 600f);
         protected override Rect DefaultRect => new Rect(60f, 60f, 640f, 780f);
-        protected override KeyCode[] ToggleKeys => null;
+        protected override KeyCode[] ToggleKeys => new[] { KeyCode.F4 };
+        protected override bool RequireShift => true;
 
         private Vector2 _scroll;
         private int _cineIndex;

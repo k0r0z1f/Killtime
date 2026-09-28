@@ -16,12 +16,13 @@ namespace Killtime.Multi
     public class VTTRoomWindow : FloatingWindow<VTTRoomWindow>
     {
         protected override int WindowId => 886;
-        protected override string Title => "Room Multijoueur";
+        protected override string Title => "Room Multijoueur (Ctrl+F1)";
         protected override Vector2 MinSize => _minSize;
         protected override Rect DefaultRect => new Rect(600, 96, 420, 560);
         protected override KeyCode[] ToggleKeys => _toggleKeys;
+        protected override bool RequireControl => true;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.F4 };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F1 };
         private static readonly Vector2 _minSize = new Vector2(320, 200);
         private Vector2 _scrollPos;
         private Vector2 _chatScroll;
@@ -1391,7 +1392,7 @@ namespace Killtime.Multi
             }
             GUI.backgroundColor = prevBg;
 
-            if (GUILayout.Button("📹 Salon Vidéo (F6)", GUILayout.Width(135), GUILayout.Height(24)))
+            if (GUILayout.Button("📹 Salon Vidéo (Ctrl+F2)", GUILayout.Width(155), GUILayout.Height(24)))
             {
                 Killtime.Multi.Video.VTTVideoRoomWindow.Open();
             }

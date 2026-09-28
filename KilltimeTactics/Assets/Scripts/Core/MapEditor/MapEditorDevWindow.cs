@@ -414,8 +414,18 @@ namespace Killtime.UI
             }
 #endif
 
-            var prefab = Resources.Load<GameObject>($"Objects/{prefabName}")
+            var prefab = Resources.Load<GameObject>($"Environment/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Environments/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Prefabs/Environment/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Prefabs/Environments/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Objects/{prefabName}")
                       ?? Resources.Load<GameObject>($"objects/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Props/{prefabName}")
+                      ?? Resources.Load<GameObject>($"props/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Prefabs/Props/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Prefabs/Objects/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Prefabs/{prefabName}")
+                      ?? Resources.Load<GameObject>($"Models/{prefabName}")
                       ?? Resources.Load<GameObject>($"Characters/{prefabName}")
                       ?? Resources.Load<GameObject>(prefabName);
 
@@ -1566,6 +1576,7 @@ namespace Killtime.UI
                 var coords = new HexCoordinates(propData.Q, propData.R);
                 var node = _grid.GetNode(coords);
 
+                Vector3 propPos;
                 if (node != null)
                 {
                     node.HasCustomVisual = true;
@@ -1581,57 +1592,62 @@ namespace Killtime.UI
                         _grid.SetNodeCeiling(coords, true);
                     }
 
-                    var prefab = LoadPropPrefab(propData.PrefabName);
-                    if (prefab != null)
-                    {
-                        string propKey = GetPropKey(coords, propData.PlacementType);
+                    propPos = node.WorldPosition;
+                }
+                else
+                {
+                    propPos = coords.ToWorldPosition(_grid != null ? _grid.HexRadius : 1.0f, 0.0f);
+                }
+
+                var prefab = LoadPropPrefab(propData.PrefabName);
+                if (prefab != null)
+                {
+                    string propKey = GetPropKey(coords, propData.PlacementType);
 
 #if UNITY_EDITOR
-                        var instance = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefab, _propsRoot);
+                    var instance = (GameObject)UnityEditor.PrefabUtility.InstantiatePrefab(prefab, _propsRoot);
 #else
-                        var instance = Instantiate(prefab, _propsRoot);
+                    var instance = Instantiate(prefab, _propsRoot);
 #endif
-                        instance.name = $"Prop_{propData.PrefabName}_{coords.Q}_{coords.R}_{propData.PlacementType}";
+                    instance.name = $"Prop_{propData.PrefabName}_{coords.Q}_{coords.R}_{propData.PlacementType}";
 
-                        Vector3 propPos = node.WorldPosition;
-                        switch (propData.PlacementType)
-                        {
-                            case PropPlacementType.Plancher:
-                                propPos.y += propData.HeightOffset;
-                                break;
-                            case PropPlacementType.Plafond:
-                                propPos.y += _grid.CeilingHeight - propData.HeightOffset;
-                                break;
-                            case PropPlacementType.Mur:
-                                propPos.y += (_grid.CeilingHeight * 0.4f) + propData.HeightOffset;
-                                break;
-                            case PropPlacementType.Flottant:
-                                propPos.y += 1.8f + propData.HeightOffset;
-                                break;
-                        }
-
-                        instance.transform.position = propPos;
-                        instance.transform.rotation = Quaternion.Euler(0f, propData.RotationY, 0f);
-                        instance.transform.localScale = Vector3.Scale(prefab.transform.localScale, Vector3.one * propData.Scale);
-
-                        var propInstComp = instance.GetComponent<MapPropInstance>() ?? instance.AddComponent<MapPropInstance>();
-                        propInstComp.Data = propData;
-
-                        if (propData.PlacementType == PropPlacementType.Plafond)
-                        {
-                            var ceilingProp = instance.GetComponent<TacticalCeilingProp>() ?? instance.AddComponent<TacticalCeilingProp>();
-                            ceilingProp.Initialize();
-                            ceilingLoadedCount++;
-                        }
-
-                        _spawnedPropInstances[propKey] = instance;
-                        _placedPropRecords[propKey] = propData;
-                        loadedCount++;
-                    }
-                    else
+                    switch (propData.PlacementType)
                     {
-                        Debug.LogWarning($"[MapEditor] Modèle introuvable pour '{propData.PrefabName}' lors du chargement de la carte.");
+                        case PropPlacementType.Plancher:
+                            propPos.y += propData.HeightOffset;
+                            break;
+                        case PropPlacementType.Plafond:
+                            propPos.y += _grid.CeilingHeight - propData.HeightOffset;
+                            break;
+                        case PropPlacementType.Mur:
+                            propPos.y += (_grid.CeilingHeight * 0.4f) + propData.HeightOffset;
+                            break;
+                        case PropPlacementType.Flottant:
+                            propPos.y += 1.8f + propData.HeightOffset;
+                            break;
                     }
+
+                    instance.transform.position = propPos;
+                    instance.transform.rotation = Quaternion.Euler(0f, propData.RotationY, 0f);
+                    instance.transform.localScale = Vector3.Scale(prefab.transform.localScale, Vector3.one * propData.Scale);
+
+                    var propInstComp = instance.GetComponent<MapPropInstance>() ?? instance.AddComponent<MapPropInstance>();
+                    propInstComp.Data = propData;
+
+                    if (propData.PlacementType == PropPlacementType.Plafond)
+                    {
+                        var ceilingProp = instance.GetComponent<TacticalCeilingProp>() ?? instance.AddComponent<TacticalCeilingProp>();
+                        ceilingProp.Initialize();
+                        ceilingLoadedCount++;
+                    }
+
+                    _spawnedPropInstances[propKey] = instance;
+                    _placedPropRecords[propKey] = propData;
+                    loadedCount++;
+                }
+                else
+                {
+                    Debug.LogWarning($"[MapEditor] Modèle introuvable pour '{propData.PrefabName}' lors du chargement de la carte.");
                 }
             }
 

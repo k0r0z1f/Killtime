@@ -2,10 +2,10 @@ Shader "Killtime/Space/PlanetAtmosphere"
 {
     Properties
     {
-        _AtmosphereColor ("Atmosphere Color", Color) = (0.35, 0.65, 1.0, 1.0)
-        _RimPower ("Rim Power", Range(0.5, 8.0)) = 3.5
-        _RimIntensity ("Rim Intensity", Range(0.0, 10.0)) = 4.0
-        _TerminatorSmoothness ("Terminator Smoothness", Range(0.01, 1.0)) = 0.4
+        _AtmosphereColor ("Atmosphere Color", Color) = (0.25, 0.65, 1.0, 1.0)
+        _RimPower ("Rim Power (Concentration)", Range(0.5, 10.0)) = 3.5
+        _RimIntensity ("Rim Intensity", Range(0.0, 15.0)) = 6.0
+        _TerminatorSmoothness ("Terminator Softness", Range(0.01, 1.0)) = 0.3
     }
 
     SubShader
@@ -13,12 +13,12 @@ Shader "Killtime/Space/PlanetAtmosphere"
         Tags 
         { 
             "RenderType" = "Transparent" 
-            "Queue" = "Transparent" 
+            "Queue" = "Transparent+10" 
             "RenderPipeline" = "UniversalPipeline" 
         }
 
-        Blend One OneMinusSrcAlpha
-        Cull Front
+        Blend SrcAlpha One
+        Cull Back
         ZWrite Off
 
         Pass
@@ -74,14 +74,14 @@ Shader "Killtime/Space/PlanetAtmosphere"
                 float3 viewDir = normalize(input.worldViewDir);
                 float3 normal = normalize(input.worldNormal);
 
-                float NdotV = saturate(dot(-normal, viewDir));
+                float NdotV = saturate(dot(normal, viewDir));
                 float rim = pow(1.0 - NdotV, _RimPower) * _RimIntensity;
 
-                float lightDot = dot(-normal, lightDir);
-                float lightMask = smoothstep(-_TerminatorSmoothness, _TerminatorSmoothness, lightDot);
+                float NdotL = dot(normal, lightDir);
+                float lightMask = smoothstep(-_TerminatorSmoothness, _TerminatorSmoothness, NdotL);
 
-                float alpha = rim * lightMask * _AtmosphereColor.a;
                 float3 finalColor = _AtmosphereColor.rgb * rim * lightMask * mainLight.color;
+                float alpha = saturate(rim * lightMask * _AtmosphereColor.a);
 
                 return float4(finalColor, alpha);
             }

@@ -7,7 +7,7 @@ namespace Killtime.Story
     public class HybrisWorldMapDevWindow : FloatingWindow<HybrisWorldMapDevWindow>
     {
         protected override int WindowId => 992;
-        protected override string Title => "Overworld Hybris — Réseau de Secteurs (Causalité Codex)";
+        protected override string Title => "Overworld Hybris — Réseau de Secteurs (F8)";
         protected override Vector2 MinSize => new Vector2(980f, 640f);
         protected override Rect DefaultRect => new Rect(
             20f, 30f,
@@ -15,7 +15,7 @@ namespace Killtime.Story
             Mathf.Min(900f, Mathf.Max(640f, Screen.height - 60f)));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.F12 };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F8 };
 
         private string _selectedNodeId;
         private bool _godMode;

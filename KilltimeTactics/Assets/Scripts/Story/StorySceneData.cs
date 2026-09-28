@@ -611,6 +611,19 @@ namespace Killtime.Story.Data
     }
 
     [Serializable]
+    public class SceneLightingData
+    {
+        public bool OverrideLighting = false;
+        public Vector3 SunPosition = new Vector3(0f, 25f, 0f);
+        public Vector3 SunEulerAngles = new Vector3(25f, 315f, 0f);
+        public Color SunColor = new Color(1.0f, 0.92f, 0.85f);
+        public float SunIntensity = 1.8f;
+        public LightShadows Shadows = LightShadows.Soft;
+        public float ShadowStrength = 0.85f;
+        public Color AmbientColor = new Color(0.28f, 0.30f, 0.35f);
+    }
+
+    [Serializable]
     public class ScenePlaceholderData
     {
         public string Id = "placeholder_1";
@@ -622,6 +635,11 @@ namespace Killtime.Story.Data
         public float Smoothness = 0.2f;
         public bool IsEmissive = false;
         public Color EmissionColor = Color.black;
+        public bool HasLight = false;
+        public LightType LightType = LightType.Point;
+        public Color LightColor = Color.white;
+        public float LightIntensity = 8f;
+        public float LightRange = 15f;
     }
 
     [Serializable]
@@ -726,6 +744,7 @@ namespace Killtime.Story.Data
         public string EnvironmentId = "";
         public string NextSceneId = "";
 
+        public SceneLightingData Lighting = new();
         public List<ScenePlaceholderData> EnvironmentPlaceholders = new();
         public Killtime.UI.TacticalMapSaveData EmbeddedMap;
         public List<SceneActorSpawnData> Actors = new();
@@ -810,6 +829,7 @@ namespace Killtime.Story.Data
             data.Nodes ??= new List<SceneNodeData>();
             data.Triggers ??= new List<SceneTriggerData>();
             data.Cinematics ??= new List<SceneCinematicData>();
+            data.Lighting ??= new SceneLightingData();
             data.EnvironmentPlaceholders ??= new List<ScenePlaceholderData>();
             for (int ci = 0; ci < data.Cinematics.Count; ci++)
             {

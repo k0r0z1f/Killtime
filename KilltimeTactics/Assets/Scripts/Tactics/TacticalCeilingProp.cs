@@ -34,6 +34,13 @@ namespace Killtime.Tactics.Grid
             {
                 _allCeilingProps.Add(this);
             }
+
+            var visualizer = FindAnyObjectByType<HexGridVisualizer>();
+            if (visualizer != null)
+            {
+                bool isVisible = (visualizer.CurrentCeilingMode != CeilingVisualMode.InGame) || visualizer.ShowCeilingInGame;
+                ApplyVisualAlpha(visualizer.CeilingOpacity, isVisible);
+            }
         }
 
         private void OnDisable()

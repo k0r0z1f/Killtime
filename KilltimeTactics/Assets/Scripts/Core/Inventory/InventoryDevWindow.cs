@@ -18,7 +18,7 @@ namespace Killtime.UI
     public class InventoryDevWindow : FloatingWindow<InventoryDevWindow>
     {
         protected override int WindowId => 894;
-        protected override string Title => "Inventaire // Armurerie & Marché";
+        protected override string Title => "Inventaire // Armurerie & Marché (F4 / I)";
         protected override Vector2 MinSize => _minSize;
         protected override Rect DefaultRect => new Rect(
             Mathf.Max(10f, Screen.width - _defaultWidth - 20f), 96f,
@@ -26,7 +26,7 @@ namespace Killtime.UI
             Mathf.Min(740f, Mathf.Max(_minSize.y, Screen.height - 115f)));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.I, KeyCode.F5 };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F4, KeyCode.I };
         private static readonly Vector2 _minSize = new Vector2(640, 420);
         private const float _defaultWidth = 920f;
 

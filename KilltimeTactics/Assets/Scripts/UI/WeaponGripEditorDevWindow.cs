@@ -12,12 +12,12 @@ namespace Killtime.UI
     public class WeaponGripEditorDevWindow : FloatingWindow<WeaponGripEditorDevWindow>
     {
         protected override int WindowId => 899;
-        protected override string Title => "Éditeur d'Ancrage des Armes // Weapon Grip Lab";
+        protected override string Title => "Éditeur d'Ancrage des Armes // Weapon Grip Lab (F5)";
         protected override Vector2 MinSize => new Vector2(860f, 580f);
         protected override Rect DefaultRect => new Rect(60f, 50f, 960f, 680f);
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.F10 };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F5 };
 
         private readonly List<InventoryItem> _weaponList = new();
         private int _selectedWeaponIndex = 0;

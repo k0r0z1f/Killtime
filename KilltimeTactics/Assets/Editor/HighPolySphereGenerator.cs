@@ -2,17 +2,17 @@
 using UnityEngine;
 using UnityEditor;
 using UnityEngine.Rendering;
+using System.IO;
 
 public static class HighPolySphereGenerator
 {
+    private const string MESH_FOLDER = "Assets/Models";
+    private const string MESH_PATH = "Assets/Models/UVSphere_128x64.asset";
+
     [MenuItem("GameObject/3D Object/High-Poly Planet Sphere", false, 10)]
     public static void CreatePlanetSphere()
     {
-        int longitudeSegments = 128;
-        int latitudeRings = 64;
-        float radius = 1.0f;
-
-        Mesh sphereMesh = GenerateUVSphereMesh(radius, longitudeSegments, latitudeRings);
+        Mesh sphereMesh = GetOrCreateMeshAsset(1.0f, 128, 64);
 
         GameObject planetGo = new GameObject("Planet_HighPolySphere");
         MeshFilter filter = planetGo.AddComponent<MeshFilter>();
@@ -32,6 +32,59 @@ public static class HighPolySphereGenerator
 
         Selection.activeGameObject = planetGo;
         Undo.RegisterCreatedObjectUndo(planetGo, "Create High-Poly Planet Sphere");
+    }
+
+    [MenuItem("GameObject/3D Object/Restore Planet Prefab Meshes", false, 11)]
+    public static void RestorePlanetMeshes()
+    {
+        Mesh sphereMesh = GetOrCreateMeshAsset(1.0f, 128, 64);
+
+        GameObject target = Selection.activeGameObject;
+        if (target == null)
+        {
+            target = GameObject.Find("Planet_Nefris");
+            if (target == null) target = GameObject.Find("Planet_Root");
+        }
+
+        if (target == null)
+        {
+            Debug.LogError("Sélectionnez le GameObject de la planète (ex: Planet_Nefris) dans la Hierarchy avant de restaurer.");
+            return;
+        }
+
+        target.transform.position = Vector3.zero;
+
+        MeshFilter[] filters = target.GetComponentsInChildren<MeshFilter>(true);
+        foreach (MeshFilter filter in filters)
+        {
+            filter.sharedMesh = sphereMesh;
+            EditorUtility.SetDirty(filter);
+        }
+
+        PrefabUtility.RecordPrefabInstancePropertyModifications(target);
+        Debug.Log($"Restoration terminée : Le mesh physique a été réassigné aux {filters.Length} couches de {target.name}.");
+    }
+
+    public static Mesh GetOrCreateMeshAsset(float radius, int lonSegments, int latRings)
+    {
+        if (!Directory.Exists(MESH_FOLDER))
+        {
+            Directory.CreateDirectory(MESH_FOLDER);
+            AssetDatabase.Refresh();
+        }
+
+        Mesh existingMesh = AssetDatabase.LoadAssetAtPath<Mesh>(MESH_PATH);
+        if (existingMesh != null)
+        {
+            return existingMesh;
+        }
+
+        Mesh newMesh = GenerateUVSphereMesh(radius, lonSegments, latRings);
+        AssetDatabase.CreateAsset(newMesh, MESH_PATH);
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+
+        return newMesh;
     }
 
     private static Mesh GenerateUVSphereMesh(float radius, int lonSegments, int latRings)

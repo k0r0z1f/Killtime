@@ -15,10 +15,11 @@ namespace Killtime.Story
     public class ScenarioEditorDevWindow : FloatingWindow<ScenarioEditorDevWindow>
     {
         protected override int WindowId => 991;
-        protected override string Title => "Éditeur de Scènes Narratives & Graphe Nodal (JSON)";
+        protected override string Title => "Éditeur de Scènes Narratives & Graphe Nodal (Shift+F2)";
         protected override Vector2 MinSize => new Vector2(980f, 640f);
         protected override Rect DefaultRect => new Rect(20f, 40f, Mathf.Min(1280f, Screen.width - 40f), Mathf.Min(840f, Screen.height - 60f));
-        protected override KeyCode[] ToggleKeys => new[] { KeyCode.F8 };
+        protected override KeyCode[] ToggleKeys => new[] { KeyCode.F2 };
+        protected override bool RequireShift => true;
 
         private readonly string[] _tabs = { "📋 Scène & Fichier", "🎬 Nœuds & Graphe Nodal" };
         private int _selectedTab = 1;
@@ -916,8 +917,13 @@ namespace Killtime.Story
                 cine.Shots.Add(new SceneCinematicShotData { ShotId = "shot_1", Label = "Plan 1" });
                 _data.Cinematics.Add(cine);
             }
+            GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
+            if (GUILayout.Button("🪐 Décor (Shift+F3)", GUILayout.Width(135), GUILayout.Height(22)))
+            {
+                SceneEnvironmentDevWindow.Open();
+            }
             GUI.backgroundColor = new Color(0.7f, 0.25f, 0.6f);
-            if (GUILayout.Button("🎬 Édition Ciné", GUILayout.Width(120), GUILayout.Height(22)))
+            if (GUILayout.Button("🎬 Ciné (Shift+F4)", GUILayout.Width(125), GUILayout.Height(22)))
             {
                 CinematicEditorDevWindow.Open();
             }

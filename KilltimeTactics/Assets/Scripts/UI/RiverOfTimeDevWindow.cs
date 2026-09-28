@@ -9,10 +9,10 @@ namespace Killtime.UI
     public class RiverOfTimeDevWindow : FloatingWindow<RiverOfTimeDevWindow>
     {
         protected override int WindowId => 998;
-        protected override string Title => "Fleuve du Temps (River of Time 3D)";
+        protected override string Title => "Fleuve du Temps (River of Time 3D) (F7)";
         protected override Vector2 MinSize => new Vector2(620f, 420f);
         protected override Rect DefaultRect => new Rect(60f, 96f, 1020f, 680f);
-        protected override KeyCode[] ToggleKeys => new[] { KeyCode.F11 };
+        protected override KeyCode[] ToggleKeys => new[] { KeyCode.F7 };
 
         private const string ResourcePath = "Data/River of Time";
         private const string DiskFileName = "River of Time.json";

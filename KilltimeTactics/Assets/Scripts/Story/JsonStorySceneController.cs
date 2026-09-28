@@ -484,9 +484,12 @@ namespace Killtime.Story.Scenes
                 }
             }
 
-            if (!string.IsNullOrEmpty(_sceneData.EnvironmentId))
+            bool hasEnvironment = !string.IsNullOrEmpty(_sceneData.EnvironmentId);
+            bool hasPlaceholders = _sceneData.EnvironmentPlaceholders != null && _sceneData.EnvironmentPlaceholders.Count > 0;
+
+            if (hasEnvironment || hasPlaceholders)
             {
-                if (SceneEnvironmentLibrary.Build(_sceneData.EnvironmentId, transform, _grid, _sceneData.EnvironmentPlaceholders))
+                if (SceneEnvironmentLibrary.Build(_sceneData.EnvironmentId, transform, _grid, _sceneData.EnvironmentPlaceholders, _sceneData.Lighting))
                 {
                     yield return null;
                 }

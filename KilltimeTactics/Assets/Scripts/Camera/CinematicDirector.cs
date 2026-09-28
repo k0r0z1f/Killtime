@@ -31,6 +31,7 @@ namespace Killtime.CameraSystem
         [Header("Configuration Free Look")]
         [SerializeField] private float _freeLookSensitivity = 2.5f;
         [SerializeField] private float _freeLookSpeed = 12.0f;
+        [SerializeField] private float _freeLookFastMultiplier = 2.5f;
 
         [Header("Configuration Cinématique")]
         [SerializeField] private float _cinematicFOV = 48.0f;
@@ -1297,7 +1298,8 @@ namespace Killtime.CameraSystem
             if (Input.GetKey(KeyCode.Space)) upDown += 1f;
             if (Input.GetKey(KeyCode.LeftControl)) upDown -= 1f;
 
-            Vector3 move = (transform.forward * v + transform.right * h + Vector3.up * upDown) * (_freeLookSpeed * Time.deltaTime);
+            float speedMultiplier = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? _freeLookFastMultiplier : 1.0f;
+            Vector3 move = (transform.forward * v + transform.right * h + Vector3.up * upDown) * (_freeLookSpeed * speedMultiplier * Time.deltaTime);
             transform.position += move;
         }
 

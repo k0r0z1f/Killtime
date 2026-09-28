@@ -18,12 +18,12 @@ namespace Killtime.UI
     public class BestiaryDevWindow : FloatingWindow<BestiaryDevWindow>
     {
         protected override int WindowId => 889;
-        protected override string Title => "Bestiaire — Créatures & PNJ";
+        protected override string Title => "Bestiaire — Créatures & PNJ (F6 / B)";
         protected override Vector2 MinSize => new Vector2(560, 320);
         protected override Rect DefaultRect => new Rect(40f, 92f, 700f, Mathf.Min(720f, Screen.height - 110f));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.B };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F6, KeyCode.B };
 
         private static readonly string[] Categories = { "Toutes", "Minion", "Base", "Civil", "Bandit", "Elite", "Faune", "Automate", "Boss", "Build" };
         private static readonly string[] Profiles = { "PnjSbire", "PnjNormal", "PnjBoss", "HerosPJ" };

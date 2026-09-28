@@ -25,6 +25,9 @@ namespace Killtime.UI
         protected virtual Vector2 MinSize => new Vector2(360f, 220f);
         protected virtual Rect DefaultRect => new Rect(40f, 40f, 620f, 680f);
         protected virtual KeyCode[] ToggleKeys => null;
+        protected virtual bool RequireShift => false;
+        protected virtual bool RequireControl => false;
+        protected virtual bool RequireAlt => false;
         protected virtual bool CanDraw => true;
 
         [SerializeField] protected bool _isOpen;
@@ -217,13 +220,20 @@ namespace Killtime.UI
             KeyCode[] keys = ToggleKeys;
             if (keys != null)
             {
-                for (int i = 0; i < keys.Length; i++)
+                bool shiftHeld = Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift);
+                bool ctrlHeld = Input.GetKey(KeyCode.LeftControl) || Input.GetKey(KeyCode.RightControl);
+                bool altHeld = Input.GetKey(KeyCode.LeftAlt) || Input.GetKey(KeyCode.RightAlt);
+
+                if (shiftHeld == RequireShift && ctrlHeld == RequireControl && altHeld == RequireAlt)
                 {
-                    if (Input.GetKeyDown(keys[i]))
+                    for (int i = 0; i < keys.Length; i++)
                     {
-                        if (_isOpen) CloseWindow();
-                        else OpenInstance();
-                        break;
+                        if (Input.GetKeyDown(keys[i]))
+                        {
+                            if (_isOpen) CloseWindow();
+                            else OpenInstance();
+                            break;
+                        }
                     }
                 }
             }

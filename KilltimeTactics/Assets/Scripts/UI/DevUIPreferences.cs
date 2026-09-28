@@ -90,7 +90,7 @@ namespace Killtime.UI
         public int SelectedGroundIndex = 0;
         public int SelectedCategoryIndex = 0;
         public float CeilingOpacity = 0.22f;
-        public bool ShowCeilingInGame = true;
+        public bool ShowCeilingInGame = false;
 
         // --- Créateur de perso (F1) ---
         public int CharacterTab = 0;

@@ -33,7 +33,7 @@ namespace Killtime.Tactics.Grid
 
         [Header("Transparence du Plafond")]
         [SerializeField] [Range(0.01f, 0.80f)] private float _ceilingOpacity = 0.22f;
-        [SerializeField] private bool _showCeilingInGame = true;
+        [SerializeField] private bool _showCeilingInGame = false;
 
         public CeilingVisualMode CurrentCeilingMode { get; private set; } = CeilingVisualMode.InGame;
 

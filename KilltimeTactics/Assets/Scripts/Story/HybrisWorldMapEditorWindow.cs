@@ -9,12 +9,15 @@ namespace Killtime.Story
     public class HybrisWorldMapEditorWindow : FloatingWindow<HybrisWorldMapEditorWindow>
     {
         protected override int WindowId => 993;
-        protected override string Title => "Éditeur World Map — Overworld d'Hybris (Causalité Codex)";
+        protected override string Title => "Éditeur World Map — Overworld d'Hybris (F9)";
         protected override Vector2 MinSize => new Vector2(1040f, 680f);
         protected override Rect DefaultRect => new Rect(
             20f, 35f,
             Mathf.Min(1400f, Mathf.Max(1040f, Screen.width - 30f)),
             Mathf.Min(920f, Mathf.Max(680f, Screen.height - 45f)));
+        protected override KeyCode[] ToggleKeys => _toggleKeys;
+
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F9 };
 
         private readonly string[] _tabs = { "🗺️ Carte & Canevas", "📋 Secteurs", "🔗 Liaisons", "💾 Fichier", "🧪 Test & Validation" };
         private int _tab;
