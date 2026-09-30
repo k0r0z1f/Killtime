@@ -25,6 +25,7 @@
   let liveTimer = null;
   let saveWatchdog = null;
   let tabEditing = null; // boardId en cours de renommage, ou 'new'
+  let lastDiskSnap = '';
 
   const $ = (id) => document.getElementById(id);
   const els = {};
@@ -79,8 +80,13 @@
     return { version: 3, updated: new Date().toISOString().slice(0, 10), activeId: store.activeId, boards: store.boards };
   }
   function persistLocal() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ v: 3, store, views })); }
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ v: 3, savedAt: new Date().toISOString(), store, views })); }
     catch (e) { toast('Sauvegarde locale impossible'); }
+  }
+  // Snapshot stable pour comparer local vs disque sans se fier au champ `updated` (jour seul).
+  function snapBoards(doc) {
+    try { return JSON.stringify({ boards: doc.boards, activeId: doc.activeId || null }); }
+    catch (e) { return ''; }
   }
 
   async function pushDisk() {
@@ -101,6 +107,7 @@
       clearTimeout(to);
       if (!res.ok) throw new Error('HTTP ' + res.status);
       diskMode = 'ok';
+      try { lastDiskSnap = snapBoards({ boards: store.boards, activeId: store.activeId }); } catch (e2) { /* ignore */ }
       els.inspDirty.textContent = 'non';
       setSaveState('saved', 'Autosavé disque • ' + nowHM());
       els.rmSaveState.title = 'data/roadmaps.json écrit sur disque (.bak conservé).';
@@ -202,49 +209,168 @@
     store.activeId = bd.id;
   }
 
-  async function load() {
-    let fromLocal = false;
+  // Lit le localStorage sans l'appliquer (pour le réconcilier avec le disque).
+  function readLocalDoc() {
     try {
       const raw = localStorage.getItem(LS_KEY);
-      if (raw) {
-        const data = JSON.parse(raw);
-        if (data && data.v === 3 && data.store && Array.isArray(data.store.boards) && data.store.boards.length) {
-          adoptStore(data.store);
-          if (data.views) views = data.views;
-          fromLocal = true;
-        } else if (data && Array.isArray((data.v === 2 ? data.state : data || {}).tasks)) {
-          const doc = data.v === 2 ? data.state : data; // migration v1/v2
-          migrateSingle(doc);
-          if (data.v === 2 && data.view) views[store.activeId] = Object.assign({ search: '', epic: '', prio: '', sort: 'manual', collapsed: {} }, data.view);
-          fromLocal = true;
-        }
+      if (!raw) return null;
+      const data = JSON.parse(raw);
+      if (data && data.v === 3 && data.store && Array.isArray(data.store.boards) && data.store.boards.length) {
+        return { store: JSON.parse(JSON.stringify(data.store)), views: data.views || {}, savedAt: data.savedAt || null };
       }
-    } catch (e) { /* fallback fichiers */ }
-    if (!store.boards.length) {
-      try {
-        const res = await fetch(JSON_URL, { cache: 'no-store' });
-        if (!res.ok) throw new Error('HTTP ' + res.status);
-        const doc = await res.json();
-        if (Array.isArray(doc.boards) && doc.boards.length) adoptStore(doc);
-        else if (Array.isArray(doc.tasks)) migrateSingle(doc);
-        else throw new Error('format inconnu');
-        if (doc.activeId) store.activeId = doc.activeId;
-      } catch (e1) {
-        try { // repli legacy v1/v2
-          const res = await fetch(LEGACY_URL, { cache: 'no-store' });
-          if (!res.ok) throw new Error('HTTP ' + res.status);
-          migrateSingle(await res.json());
-        } catch (e2) {
-          toast('Impossible de charger les roadmaps');
-          store.boards = [{ id: 'board-1', name: 'Roadmap 1', desc: '', tasks: [] }];
-          store.activeId = 'board-1';
-        }
+      if (data && Array.isArray((data.v === 2 ? data.state : data || {}).tasks)) {
+        return { legacy: (data.v === 2 ? data.state : data), legacyView: data.v === 2 ? data.view : null };
       }
+    } catch (e) { /* ignore */ }
+    return null;
+  }
+  function applyDoc(doc) {
+    if (Array.isArray(doc.boards) && doc.boards.length) {
+      adoptStore(doc);
+      if (doc.activeId) store.activeId = doc.activeId;
+      return true;
     }
-    els.inspDirty.textContent = fromLocal ? 'oui (local)' : 'non';
+    if (Array.isArray(doc.tasks)) {
+      migrateSingle(doc);
+      return true;
+    }
+    return false;
+  }
+  // Disque toujours relu (anti-cache) : API Node d'abord, puis JSON statique + legacy.
+  async function fetchDiskDoc() {
+    const bust = (u) => u + (u.includes('?') ? '&' : '?') + 't=' + Date.now();
+    try {
+      const res = await fetch('/api/roadmaps', { cache: 'no-store' });
+      if (res.ok) {
+        const doc = await res.json();
+        if (Array.isArray(doc.boards) || Array.isArray(doc.tasks)) return doc;
+      }
+    } catch (e) { /* sans serveur Node : repli statique */ }
+    try {
+      const res = await fetch(bust(JSON_URL), { cache: 'no-store' });
+      if (res.ok) {
+        const doc = await res.json();
+        if (Array.isArray(doc.boards) || Array.isArray(doc.tasks)) return doc;
+      } else throw new Error('HTTP ' + res.status);
+    } catch (e1) {
+      const res = await fetch(bust(LEGACY_URL), { cache: 'no-store' });
+      if (!res.ok) throw new Error('HTTP ' + res.status);
+      return await res.json();
+    }
+    throw new Error('format inconnu');
+  }
+
+  async function load() {
+    const local = readLocalDoc();
+    let disk = null;
+    try { disk = await fetchDiskDoc(); }
+    catch (e) { disk = null; }
+
+    if (local && local.store) {
+      // Applique le local en premier (zéro perte), vues locales conservées.
+      adoptStore(local.store);
+      if (local.views) views = local.views;
+    } else if (local && local.legacy) {
+      migrateSingle(local.legacy);
+      if (local.legacyView) views[store.activeId] = Object.assign({ search: '', epic: '', prio: '', sort: 'manual', collapsed: {} }, local.legacyView);
+    }
+
+    if (disk && (Array.isArray(disk.boards) || Array.isArray(disk.tasks))) {
+      // Normalise le disque via cleanBoard pour une comparaison juste (y compris legacy v1/v2).
+      const normDisk = Array.isArray(disk.boards)
+        ? { boards: disk.boards.map((b, i) => cleanBoard(b, i)), activeId: disk.activeId || null }
+        : { boards: [cleanBoard({ id: 'board-prefabs-scene', name: 'Prefabs scènes', desc: '', tasks: disk.tasks }, 0)], activeId: 'board-prefabs-scene' };
+      const diskSnap = snapBoards(normDisk);
+      lastDiskSnap = diskSnap;
+      if (!store.boards.length) {
+        applyDoc(disk);
+        els.inspDirty.textContent = 'non';
+        syncViewControls();
+        render();
+        setSaveState('', 'Prêt — autosave actif');
+        return;
+      }
+      // Compare local appliqué vs disque frais : si identiques, rien à faire.
+      const localSnap = snapBoards({ boards: store.boards, activeId: store.activeId });
+      const equivalent = (localSnap === diskSnap);
+      if (equivalent) {
+        els.inspDirty.textContent = 'non';
+        syncViewControls();
+        render();
+        setSaveState('', 'À jour avec le disque • ' + nowHM());
+      } else {
+        // Divergence : on garde le local (pas de perte) mais on propose le disque.
+        els.inspDirty.textContent = 'oui (divergence disque)';
+        syncViewControls();
+        render();
+        setSaveState('local', 'Local ≠ disque — voir toast');
+        const diskCopy = JSON.parse(JSON.stringify(disk));
+        toast('Disque plus récent ou différent — local conservé', {
+          label: 'Charger disque', fn: () => {
+            if (local) { /* le local reste dans l'historique du navigateur */ }
+            views = {};
+            store = { boards: [], activeId: null };
+            applyDoc(diskCopy);
+            persistLocal();
+            lastDiskSnap = snapBoards({ boards: store.boards, activeId: store.activeId });
+            els.inspDirty.textContent = 'non';
+            syncViewControls(); render();
+            setSaveState('', 'Disque rechargé • ' + nowHM());
+            toast('Version disque chargée');
+          }
+        });
+      }
+      return;
+    }
+
+    // Pas de disque joignable : repli local pur.
+    if (!store.boards.length) {
+      toast('Impossible de charger les roadmaps (disque + local vides)');
+      store.boards = [{ id: 'board-1', name: 'Roadmap 1', desc: '', tasks: [] }];
+      store.activeId = 'board-1';
+    }
+    els.inspDirty.textContent = local ? 'oui (local)' : 'non';
     syncViewControls();
     render();
-    setSaveState('', fromLocal ? 'Modifs locales — autosave actif' : 'Prêt — autosave actif');
+    setSaveState('', local ? 'Hors-ligne — modifs locales' : 'Prêt — autosave actif');
+  }
+
+  // Revalidation silencieuse quand on revient sur l'onglet (git pull entre-temps).
+  let lastVisibleCheck = 0;
+  async function refreshDiskSilent() {
+    const now = Date.now();
+    if (now - lastVisibleCheck < 15000) return;
+    lastVisibleCheck = now;
+    if (!store.boards.length) return;
+    try {
+      const disk = await fetchDiskDoc();
+      if (!disk || (!Array.isArray(disk.boards) && !Array.isArray(disk.tasks))) return;
+      const norm = Array.isArray(disk.boards)
+        ? { boards: disk.boards.map((b, i) => cleanBoard(b, i)), activeId: disk.activeId || null }
+        : { boards: [cleanBoard({ id: 'board-prefabs-scene', name: 'Prefabs scènes', desc: '', tasks: disk.tasks }, 0)], activeId: 'board-prefabs-scene' };
+      const diskSnap = snapBoards(norm);
+      if (!diskSnap || diskSnap === lastDiskSnap) {
+        // Compare quand même avec l'état courant (modifs locales possibles).
+        if (diskSnap === snapBoards({ boards: store.boards, activeId: store.activeId })) return;
+      }
+      lastDiskSnap = diskSnap;
+      if (diskSnap !== snapBoards({ boards: store.boards, activeId: store.activeId })) {
+        const diskCopy = JSON.parse(JSON.stringify(disk));
+        toast('Nouvelle version disque détectée', {
+          label: 'Charger disque', fn: () => {
+            views = {};
+            store = { boards: [], activeId: null };
+            applyDoc(diskCopy);
+            persistLocal();
+            els.inspDirty.textContent = 'non';
+            syncViewControls(); render();
+            toast('Version disque chargée');
+          }
+        });
+        els.inspDirty.textContent = 'oui (divergence disque)';
+        setSaveState('local', 'Disque mis à jour — voir toast');
+      }
+    } catch (e) { /* disque injoinable : on reste en local */ }
   }
 
   /* ---------- filtres / tri (par board) ---------- */
@@ -862,6 +988,26 @@
       if (e.key === 'n' || e.key === 'N') { e.preventDefault(); openModal(null); }
       else if (e.key === '/') { e.preventDefault(); els.rmSearch.focus(); els.rmSearch.select(); }
     });
+    // Synchro inter-onglets : un autre onglet a écrit dans le localStorage.
+    window.addEventListener('storage', (e) => {
+      if (e.key !== LS_KEY || !e.newValue) return;
+      try {
+        const data = JSON.parse(e.newValue);
+        if (data && data.v === 3 && data.store && Array.isArray(data.store.boards)) {
+          // Ne pas écraser une modale en cours d'édition.
+          if (els.rmBackdrop.classList.contains('open')) return;
+          adoptStore(data.store);
+          if (data.views) views = data.views;
+          syncViewControls(); render();
+          toast('Synchro depuis un autre onglet');
+        }
+      } catch (err) { /* ignore */ }
+    });
+    // Retour sur l'onglet après `git pull` : revalide le disque (throttle 15 s).
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) refreshDiskSilent();
+    });
+    window.addEventListener('focus', () => { refreshDiskSilent(); });
     load();
   });
 })();

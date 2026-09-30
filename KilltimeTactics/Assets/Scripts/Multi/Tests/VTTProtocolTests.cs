@@ -150,6 +150,7 @@ namespace Killtime.Multi.Tests
             Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpSceneControl));
             Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpRoomSettings));
             Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpMapLoad));
+            Assert.IsTrue(VTTProtocol.IsGMOp(VTTProtocol.OpWorldMap));
 
             Assert.IsFalse(VTTProtocol.IsGMOp(VTTProtocol.OpChat));
             Assert.IsFalse(VTTProtocol.IsGMOp(VTTProtocol.OpDice));

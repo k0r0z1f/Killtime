@@ -5,8 +5,9 @@ namespace Killtime.UI
     /// <summary>
     /// Fenêtre de gestion de la vitesse du jeu (ex-ralentisseur de scène F10).
     /// Plage 0.01x (100x plus lent) à 100x (100x plus rapide), slider logarithmique
-    /// + presets + saisie directe. Pilote Time.timeScale / Time.fixedDeltaTime et
-    /// persiste la consigne dans DevUIPreferences.GlobalTimeScale.
+    /// + presets + saisie directe. Pilote Time.timeScale / Time.fixedDeltaTime.
+    /// Volontairement NON persistée : consigne de session uniquement
+    /// (CurrentTimeScale en mémoire), toujours 1x au redémarrage du jeu.
     /// Compatibilités : la pause CombatHUD (timeScale 0) conserve la consigne pour
     /// la reprise, les cinématiques forcent un 0.45x temporaire puis restaurent
     /// cette consigne via CinematicDirector.
@@ -26,7 +27,7 @@ namespace Killtime.UI
         private const float LogMin = -2f; // log10(0.01)
         private const float LogMax = 2f;  // log10(100)
 
-        /// <summary>Consigne désirée (persistée). Jamais 0 : la pause utilise Time.timeScale = 0 séparément.</summary>
+        /// <summary>Consigne désirée (session uniquement, jamais sauvegardée). Jamais 0 : la pause utilise Time.timeScale = 0 séparément.</summary>
         public static float CurrentTimeScale { get; private set; } = 1f;
 
         /// <summary>Dernier ralenti &lt; 1x (compatibilité avec l'ancien toggle F10 1x / ralenti).</summary>
@@ -38,20 +39,18 @@ namespace Killtime.UI
         private static Rect ClosedPillRect => new Rect(130f, Screen.height - 52f, 120f, 22f);
 
         [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
-        private static void ApplySavedPrefAfterSceneLoad()
+        private static void ReapplySessionScaleAfterSceneLoad()
         {
             try
             {
-                float saved = ReadTimeScalePref();
-                if (!Mathf.Approximately(saved, CurrentTimeScale))
-                {
-                    CurrentTimeScale = saved;
-                    if (saved < 1f) LastSlowedScale = saved;
-                }
+                // Pas de restauration disque : au redémarrage CurrentTimeScale vaut
+                // déjà 1f (reset statique). Ici on ré-applique juste la consigne de
+                // session (garde la vitesse choisie lors des changements de scène).
+                CurrentTimeScale = Mathf.Clamp(CurrentTimeScale, MinScale, MaxScale);
                 // N'applique au moteur que si personne n'a déjà pris la main
                 // (pause à 0 ou cinématique à 0.45) : ne jamais écraser un état live.
                 if (!CombatHUD.IsPaused && Time.timeScale > 0.001f && Mathf.Abs(Time.timeScale - 0.45f) > 0.001f)
-                    ApplyToUnity(saved);
+                    ApplyToUnity(CurrentTimeScale);
             }
             catch { /* l'application ne doit jamais échouer au chargement */ }
         }
@@ -61,15 +60,14 @@ namespace Killtime.UI
             base.Awake();
             try
             {
-                CurrentTimeScale = ReadTimeScalePref();
-                if (CurrentTimeScale < 1f) LastSlowedScale = CurrentTimeScale;
+                CurrentTimeScale = Mathf.Clamp(CurrentTimeScale, MinScale, MaxScale);
                 _inputText = FormatNumber(CurrentTimeScale);
                 if (CombatHUD.IsPaused)
                     CombatHUD.UpdatePrePauseTimeScale(CurrentTimeScale);
                 else
                     ApplyToUnity(CurrentTimeScale);
             }
-            catch { /* prefs optionnelles */ }
+            catch { /* session uniquement */ }
             // Comme CombatDevToolbar : la pilule fermée bloque aussi les clics 3D.
             FloatingWindowChrome.RegisterWindow(997,
                 () => _isOpen ? _windowRect : ClosedPillRect,
@@ -88,7 +86,6 @@ namespace Killtime.UI
         {
             try
             {
-                CurrentTimeScale = ReadTimeScalePref();
                 if (Mathf.Abs(Time.timeScale) > 0.001f && Mathf.Abs(Time.timeScale - 0.45f) > 0.02f
                     && Time.timeScale >= MinScale && Time.timeScale <= MaxScale)
                     CurrentTimeScale = Time.timeScale;
@@ -108,24 +105,15 @@ namespace Killtime.UI
         }
 
         /// <summary>
-        /// Applique une vitesse : clamp 0.01–100, persiste, pousse vers le moteur
-        /// sauf en pause (la consigne est alors mémorisée pour la reprise).
+        /// Applique une vitesse : clamp 0.01–100, session uniquement (jamais
+        /// sauvegardée), pousse vers le moteur sauf en pause (la consigne est
+        /// alors mémorisée pour la reprise).
         /// </summary>
         public static void SetTimeScale(float scale)
         {
             scale = Mathf.Clamp(scale, MinScale, MaxScale);
             CurrentTimeScale = scale;
             if (scale < 1f) LastSlowedScale = scale;
-            try
-            {
-                var p = DevUIPreferences.Current;
-                if (p != null)
-                {
-                    p.GlobalTimeScale = scale;
-                    DevUIPreferences.MarkDirty();
-                }
-            }
-            catch { /* prefs optionnelles */ }
 
             if (CombatHUD.IsPaused)
             {
@@ -136,15 +124,14 @@ namespace Killtime.UI
             ApplyToUnity(scale);
         }
 
+        /// <summary>
+        /// Consigne de session (compat : anciennement lue depuis les prefs disque).
+        /// Ne touche jamais au disque : retourne CurrentTimeScale.
+        /// Conservée pour CinematicDirector / CombatDevToolbar.
+        /// </summary>
         public static float ReadTimeScalePref()
         {
-            try
-            {
-                var p = DevUIPreferences.Current;
-                if (p != null) return Mathf.Clamp(p.GlobalTimeScale, MinScale, MaxScale);
-            }
-            catch { /* ignore */ }
-            return 1f;
+            return Mathf.Clamp(CurrentTimeScale, MinScale, MaxScale);
         }
 
         public static void ResetToNormal() => SetTimeScale(1f);

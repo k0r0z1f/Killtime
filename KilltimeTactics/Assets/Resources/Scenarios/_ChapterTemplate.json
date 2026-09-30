@@ -1,0 +1,51 @@
+{
+    "Version": 1,
+    "SceneId": "ch_00_modele",
+    "Volume": "Volume I",
+    "Title": "Chapitre modèle (à dupliquer)",
+    "CanonReference": "",
+    "LinkedMapName": "",
+    "FirstNodeId": "node_briefing",
+    "EnvironmentId": "",
+    "NextSceneId": "",
+    "Lighting": {
+        "OverrideLighting": true,
+        "SunPosition": {"x": 0.0, "y": 8.0, "z": -2.0},
+        "SunEulerAngles": {"x": 50.0, "y": 25.0, "z": 0.0},
+        "SunColor": {"r": 0.9, "g": 0.94, "b": 1.0, "a": 1.0},
+        "SunIntensity": 1.1,
+        "Shadows": 2,
+        "ShadowStrength": 0.85,
+        "AmbientColor": {"r": 0.32, "g": 0.35, "b": 0.42, "a": 1.0}
+    },
+    "EnvironmentPlaceholders": [],
+    "EmbeddedMap": {
+        "MapName": "ch_00_modele",
+        "GridRadius": 8,
+        "CeilingHeight": 3.5,
+        "SaveTimestamp": "",
+        "ModifiedTiles": [],
+        "PlacedProps": [],
+        "PlacedUnits": [],
+        "PlacedPixies": []
+    },
+    "Actors": [
+        {"ActorId": "pj_1", "DisplayName": "Opératif 1", "CharacterSheetFileName": "", "Q": 0, "R": 2, "IsPlayer": true, "FacingAngle": 0.0, "PrimaryColor": {"r": 0.2, "g": 0.5, "b": 0.9, "a": 1.0}, "AccentColor": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0}, "ModelPrefabName": "", "EquippedWeaponName": "", "BaseArmor": 1, "StartInCombatStance": false, "SpawnInitially": true, "SpawnOnNodeId": "", "TalkEntries": [], "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 208.0},
+        {"ActorId": "pj_2", "DisplayName": "Opératif 2", "CharacterSheetFileName": "", "Q": -1, "R": 2, "IsPlayer": true, "FacingAngle": 0.0, "PrimaryColor": {"r": 0.2, "g": 0.5, "b": 0.9, "a": 1.0}, "AccentColor": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0}, "ModelPrefabName": "", "EquippedWeaponName": "", "BaseArmor": 1, "StartInCombatStance": false, "SpawnInitially": true, "SpawnOnNodeId": "", "TalkEntries": [], "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 208.0},
+        {"ActorId": "pj_3", "DisplayName": "Opératif 3", "CharacterSheetFileName": "", "Q": 1, "R": 1, "IsPlayer": true, "FacingAngle": 0.0, "PrimaryColor": {"r": 0.2, "g": 0.5, "b": 0.9, "a": 1.0}, "AccentColor": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0}, "ModelPrefabName": "", "EquippedWeaponName": "", "BaseArmor": 1, "StartInCombatStance": false, "SpawnInitially": true, "SpawnOnNodeId": "", "TalkEntries": [], "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 208.0},
+        {"ActorId": "pj_4", "DisplayName": "Opératif 4", "CharacterSheetFileName": "", "Q": 0, "R": 3, "IsPlayer": true, "FacingAngle": 0.0, "PrimaryColor": {"r": 0.2, "g": 0.5, "b": 0.9, "a": 1.0}, "AccentColor": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0}, "ModelPrefabName": "", "EquippedWeaponName": "", "BaseArmor": 1, "StartInCombatStance": false, "SpawnInitially": true, "SpawnOnNodeId": "", "TalkEntries": [], "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 208.0},
+        {"ActorId": "ennemi_1", "DisplayName": "Hostile 1", "CharacterSheetFileName": "", "Q": 0, "R": -3, "IsPlayer": false, "FacingAngle": 180.0, "PrimaryColor": {"r": 0.85, "g": 0.25, "b": 0.2, "a": 1.0}, "AccentColor": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0}, "ModelPrefabName": "", "EquippedWeaponName": "", "BaseArmor": 1, "StartInCombatStance": false, "SpawnInitially": false, "SpawnOnNodeId": "node_action", "TalkEntries": [], "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 208.0},
+        {"ActorId": "ennemi_2", "DisplayName": "Hostile 2", "CharacterSheetFileName": "", "Q": 2, "R": -2, "IsPlayer": false, "FacingAngle": 180.0, "PrimaryColor": {"r": 0.85, "g": 0.25, "b": 0.2, "a": 1.0}, "AccentColor": {"r": 0.0, "g": 1.0, "b": 1.0, "a": 1.0}, "ModelPrefabName": "", "EquippedWeaponName": "", "BaseArmor": 1, "StartInCombatStance": false, "SpawnInitially": false, "SpawnOnNodeId": "node_action", "TalkEntries": [], "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 208.0}
+    ],
+    "Interactables": [
+        {"InteractableId": "terminal_1", "DisplayName": "Terminal", "ActionLabel": "Interagir", "Q": 4, "R": 0, "Radius": 1, "RequiredSkill": 23, "SkillThreshold": 10, "CompletionObjectiveId": "obj_principal", "SuccessLog": "", "IsOneShot": true, "TriggerNodeId": "node_action", "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 252.0}
+    ],
+    "Nodes": [
+        {"NodeId": "node_briefing", "Kind": 0, "Title": "Briefing", "Location": "", "Body": "Objectif : sécuriser la zone, puis passer à l'action.", "ContinueLabel": "Passer à l'action", "NextNodeId": "node_action", "TriggerCombatOnEnter": false, "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "FrameWidth": 0.0, "FrameHeight": 0.0, "Dialogues": [], "Events": [], "Consequences": [], "Objectives": [{"Id": "obj_principal", "Label": "Sécuriser la zone", "Detail": "", "Optional": false}], "Choices": [], "EnterEffects": []},
+        {"NodeId": "node_action", "Kind": 2, "Title": "Sécuriser la zone", "Location": "", "Body": "Zone d'action : terminer l'objectif pour enchaîner.", "ContinueLabel": "Terminer", "NextNodeId": "", "TriggerCombatOnEnter": true, "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "FrameWidth": 0.0, "FrameHeight": 0.0, "Dialogues": [], "Events": [], "Consequences": [], "Objectives": [], "Choices": [], "EnterEffects": []}
+    ],
+    "Triggers": [
+        {"TriggerId": "trig_objectif", "Label": "Objectif accompli → assaut", "Kind": 1, "SourceNodeId": "", "TargetNodeId": "node_action", "InteractableId": "", "ObjectiveId": "obj_principal", "FlagKey": "", "FlagMustBeSet": true, "ActorId": "", "ActorCondition": 0, "StatusName": "Inconscient", "HPPercentThreshold": 30, "OneShot": true, "CinematicIds": [], "GraphPosX": 0.0, "GraphPosY": 0.0, "CardWidth": 340.0, "CardHeight": 215.0}
+    ],
+    "Cinematics": []
+}

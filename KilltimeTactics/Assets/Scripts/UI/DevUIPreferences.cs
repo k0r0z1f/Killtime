@@ -54,8 +54,9 @@ namespace Killtime.UI
         // --- Système & Multitâche ---
         public bool RunInBackground = true;
 
-        // --- Vitesse du jeu (Time.timeScale, 0.01 = 100x plus lent, 100 = 100x plus rapide) ---
-        public float GlobalTimeScale = 1f;
+        // NOTE : la vitesse du jeu (Time.timeScale, fenêtre F10) est volontairement
+        // NON persistée : toujours 1x au redémarrage, consigne de session uniquement
+        // (TimeScaleDevWindow.CurrentTimeScale, en mémoire).
 
         // --- IA tactique ---
         public int AiMode = 0; // Normal
@@ -361,7 +362,7 @@ namespace Killtime.UI
         private static void Sanitize(DevUIPreferencesData d)
         {
             if (d == null) return;
-            d.GlobalTimeScale = Mathf.Clamp(d.GlobalTimeScale, 0.01f, 100f);
+            // Pas de sanitize timeScale : non persisté (toujours 1x au redémarrage).
             d.AiActionDelay = Mathf.Clamp(d.AiActionDelay, 0.05f, 10f);
             d.AiRetreatRatio = Mathf.Clamp(d.AiRetreatRatio, 0.05f, 0.6f);
             d.AiDefensiveReserve = Mathf.Clamp(d.AiDefensiveReserve, 0, 2);

@@ -155,7 +155,29 @@ function parseReturnPath(state) {
     return '/';
 }
 
-function serveStatic(res, pathname) {
+function staticCacheHeaders(ext, stats) {
+    const h = {};
+    if (['.html', '.js', '.json', '.css'].includes(ext)) {
+        // Pages + kanban + JSON : toujours revalidés, jamais de version périmée.
+        h['Cache-Control'] = 'no-cache, must-revalidate';
+    } else {
+        h['Cache-Control'] = 'public, max-age=3600';
+    }
+    if (stats && stats.mtime) h['Last-Modified'] = stats.mtime.toUTCString();
+    return h;
+}
+
+function isFresh(req, mtime) {
+    try {
+        const ims = req && req.headers && req.headers['if-modified-since'];
+        if (!ims || !mtime) return false;
+        const imsT = Math.floor(new Date(ims).getTime() / 1000);
+        const fileT = Math.floor(new Date(mtime).getTime() / 1000);
+        return Number.isFinite(imsT) && imsT >= fileT;
+    } catch (e) { return false; }
+}
+
+function serveStatic(req, res, pathname) {
     let safePath = path.normalize(decodeURI(pathname)).replace(/^(\.\.[\/\\])+/, '');
     if (safePath === '/' || safePath === '\\' || safePath === '') {
         safePath = '/index.html';
@@ -178,7 +200,14 @@ function serveStatic(res, pathname) {
                 }
                 const ext = path.extname(filePath).toLowerCase();
                 const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-                res.writeHead(200, { 'Content-Type': contentType });
+                if (isFresh(req, stats2.mtime)) {
+                    res.writeHead(304);
+                    return res.end();
+                }
+                res.writeHead(200, Object.assign(
+                    { 'Content-Type': contentType },
+                    staticCacheHeaders(ext, stats2)
+                ));
                 fs.createReadStream(filePath).pipe(res);
             });
         }
@@ -189,7 +218,14 @@ function serveStatic(res, pathname) {
 
         const ext = path.extname(filePath).toLowerCase();
         const contentType = MIME_TYPES[ext] || 'application/octet-stream';
-        res.writeHead(200, { 'Content-Type': contentType });
+        if (isFresh(req, stats.mtime)) {
+            res.writeHead(304);
+            return res.end();
+        }
+        res.writeHead(200, Object.assign(
+            { 'Content-Type': contentType },
+            staticCacheHeaders(ext, stats)
+        ));
         fs.createReadStream(filePath).pipe(res);
     });
 }
@@ -771,17 +807,20 @@ const server = http.createServer(async (req, res) => {
                 if (room.visibility === 'private') continue;
                 if (room.members.size === 0) continue;
                 if (buildFilter && (room.buildVersion || 'unknown') !== buildFilter) continue;
-                const gm = room.members.get(room.gmId);
-                rooms.push({
-                    code: room.code,
-                    tableName: room.tableName || room.code,
-                    buildVersion: room.buildVersion || 'unknown',
-                    gmName: gm ? gm.username : '?',
-                    players: room.members.size,
-                    maxPlayers: room.maxPlayers || 6,
-                    createdAt: room.createdAt,
-                    lastActive: room.lastActive || room.createdAt
-                });
+                if (vttPolicy) rooms.push(vttPolicy.roomDirectoryEntry(room));
+                else {
+                    const gm = room.members.get(room.gmId);
+                    rooms.push({
+                        code: room.code,
+                        tableName: room.tableName || room.code,
+                        buildVersion: room.buildVersion || 'unknown',
+                        gmName: gm ? gm.username : '?',
+                        players: room.members.size,
+                        maxPlayers: room.maxPlayers || 6,
+                        createdAt: room.createdAt,
+                        lastActive: room.lastActive || room.createdAt
+                    });
+                }
             }
             rooms.sort((a, b) => b.lastActive - a.lastActive);
             return sendJson(res, 200, {
@@ -848,6 +887,26 @@ const server = http.createServer(async (req, res) => {
     /* ROADMAPS MULTI-BOARDS — autosave disque (PUT /api/roadmaps) */
     const ROADMAPS_PATH = path.join(PUBLIC_DIR, 'data', 'roadmaps.json');
     if (isRoute('/api/roadmaps')) {
+        if (req.method === 'GET' || req.method === 'HEAD') {
+            // Lecture fraîche pour le kanban : jamais cachée (le client
+            // réconcilie localStorage vs disque au chargement).
+            try {
+                if (!fs.existsSync(ROADMAPS_PATH)) {
+                    return sendJson(res, 404, { error: 'roadmaps.json introuvable.' });
+                }
+                const st = fs.statSync(ROADMAPS_PATH);
+                const raw = fs.readFileSync(ROADMAPS_PATH, 'utf-8');
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Cache-Control': 'no-store, must-revalidate',
+                    'Last-Modified': st.mtime.toUTCString()
+                });
+                if (req.method === 'HEAD') return res.end();
+                return res.end(raw);
+            } catch (e) {
+                return sendJson(res, 500, { error: e.message });
+            }
+        }
         if (req.method === 'PUT' || req.method === 'POST') {
             try {
                 const body = await parseBody(req);
@@ -876,7 +935,7 @@ const server = http.createServer(async (req, res) => {
     }
 
     if (req.method === 'GET' || req.method === 'HEAD') {
-        return serveStatic(res, parsedUrl.pathname);
+        return serveStatic(req, res, parsedUrl.pathname);
     }
 
     res.writeHead(405, { 'Content-Type': 'text/plain; charset=utf-8' });
@@ -916,6 +975,16 @@ try {
     vttVis = require('./vtt_visibility.js');
 } catch (e) {
     console.warn('[VTT] vtt_visibility.js introuvable : filtrage asymétrique désactivé.');
+}
+
+// RD-066 : autorité GM + validation des ops (parité VTTProtocol.IsGMOp).
+// combat_action et worldmap sont GM-only comme côté Unity ; unit_move/chat/
+// dice restent ouverts (joueurs), avec validation de payload.
+let vttPolicy = null;
+try {
+    vttPolicy = require('./vtt_hub_policy.js');
+} catch (e) {
+    console.warn('[VTT] vtt_hub_policy.js introuvable : garde-fous GM réduits.');
 }
 
 function vttGenClientId() {
@@ -1374,7 +1443,11 @@ function vttHandleMessage(conn, msg) {
             // Brouillard asymétrique : état autoritaire (positions, murs, claims).
             units: new Map(),
             clientUnits: new Map(),
-            covers: new Map()
+            covers: new Map(),
+            // Sync tour/round (RD-066) : suivi hub pour l'annuaire.
+            currentRound: 1,
+            activeUnitId: null,
+            lastTurnAction: null
         };
         vttRooms.set(code, room);
         conn.roomCode = code;
@@ -1478,14 +1551,57 @@ function vttHandleMessage(conn, msg) {
         if (!room) { vttSendError(conn, 'Rejoignez une room avant d’envoyer des ops.', 'not_in_room'); return; }
         const op = String(msg.op || '');
         if (!op || op.length > 64) { vttSendError(conn, 'Champ "op" manquant ou invalide.'); return; }
-        // Garde-fou GM minimal : seul le GM peut émettre les ops de contrôle de table.
-        const gmOnlyOps = new Set(['turn_control', 'scene_control', 'room_settings', 'map_load']);
-        if (gmOnlyOps.has(op) && conn.role !== 'gm' && room.gmId !== conn.id) {
+        // Garde-fou GM (RD-066, parité VTTProtocol.IsGMOp) : turn_control,
+        // combat_action, scene_control, room_settings, map_load, worldmap.
+        if (vttPolicy) {
+            const verdict = vttPolicy.shouldRejectOp(room, conn, op);
+            if (verdict.reject) { vttSendError(conn, verdict.message, verdict.code); return; }
+        } else if (['turn_control', 'scene_control', 'room_settings', 'map_load'].includes(op)
+            && conn.role !== 'gm' && room.gmId !== conn.id) {
             vttSendError(conn, `Op "${op}" réservée au GM.`, 'forbidden');
             return;
         }
         room.lastActive = Date.now();
-        const payload = (msg.payload !== undefined ? msg.payload : {});
+        let payload = (msg.payload !== undefined ? msg.payload : {});
+        // Garde-fou taille par op (anti-spam / anti-crash) — voice/vidéo gérés
+        // au niveau frame WS (512 Ko), les autres ops ont leur quota dédié.
+        if (vttPolicy && payload !== undefined) {
+            try {
+                const size = Buffer.byteLength(JSON.stringify(payload), 'utf8');
+                if (size > vttPolicy.opPayloadLimit(op)) {
+                    vttSendError(conn, `Payload "${op}" trop volumineux (${size} o).`, 'payload_too_large');
+                    return;
+                }
+            } catch (e) { vttSendError(conn, 'Payload illisible.'); return; }
+        }
+        // Chat : texte assaini + tronqué (500 car.), jamais vide diffusé.
+        if (op === 'chat' && vttPolicy) {
+            const clean = vttPolicy.sanitizeChat(payload && payload.text);
+            if (!clean.text) { vttSendError(conn, 'Message vide.'); return; }
+            payload = clean;
+        }
+        // Dés : jet validé + clampé sur la formule (anti-triche douce).
+        if (op === 'dice' && vttPolicy) {
+            const sane = vttPolicy.validateDice(payload);
+            if (!sane) { vttSendError(conn, 'Jet de dés invalide (roll entier requis).'); return; }
+            payload = sane;
+        }
+        // Sync tour/round : le hub mémorise round + unité active (annuaire).
+        if (op === 'turn_control' && vttPolicy) {
+            try { vttPolicy.trackRound(room, op, payload); } catch (e) { /* ignore */ }
+        }
+        // Anti-spam : 30 ops / 5 s max par client (voice/vidéo exemptés :
+        // flux temps réel légitime à haute fréquence).
+        if (op !== 'voice' && op !== 'video') {
+            const nowMs = Date.now();
+            if (!Array.isArray(conn.opTimes)) conn.opTimes = [];
+            conn.opTimes = conn.opTimes.filter((t) => nowMs - t < 5000);
+            if (conn.opTimes.length >= 30) {
+                vttSendError(conn, 'Trop de requêtes, ralentissez.', 'rate_limited');
+                return;
+            }
+            conn.opTimes.push(nowMs);
+        }
 
         // Revendication d'avatars : memorisee, jamais diffusee (hub seul).
         if (op === 'unit_claim') {
@@ -1496,8 +1612,14 @@ function vttHandleMessage(conn, msg) {
         }
 
         // Apprentissage passif de possession : un joueur declare son acteur.
+        // unit_move auto-revendique aussi son acteur (cohérence du brouillard :
+        // le hub connaît au moins un observateur pour l'émetteur).
         if (op === 'action_request' && payload && typeof payload.actorId === 'string' && payload.actorId) {
             vttLearnClaims(room, conn.id, [payload.actorId]);
+        }
+        if (op === 'unit_move' && payload && typeof payload === 'object') {
+            const claimId = String(payload.actorId || payload.unitId || '').slice(0, 64);
+            if (claimId) vttLearnClaims(room, conn.id, [claimId]);
         }
 
         // Snapshot initial : enregistre (murs + positions), transmis complet
@@ -1648,7 +1770,7 @@ function vttHandleMessage(conn, msg) {
             fromName: conn.username,
             fromRole: conn.role,
             op,
-            payload: (msg.payload !== undefined ? msg.payload : {}),
+            payload,
             at: Date.now()
         }, exceptSender);
         return;

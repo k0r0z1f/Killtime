@@ -22,6 +22,11 @@ namespace Killtime.Audio
 
         private Vector2 _scrollPos;
         private static GUIStyle _richLabel;
+        private bool _showGenStyleList;
+        private static readonly string[] _genStyleNames =
+        {
+            "Auto (dynamique)", "Electro", "Drum & Bass", "Rétro 16-bit", "Ciné moderne"
+        };
 
         protected override void OnAwake()
         {
@@ -83,9 +88,12 @@ namespace Killtime.Audio
             };
 
             int trackCount = ProceduralAudioFactory.GetTrackCount(mgr.CurrentMood);
-            string trackTag = trackCount > 1 
-                ? $" <color=#00E5FF>[{mgr.CurrentTrackIndex + 1}/{trackCount}]</color>" 
-                : "";
+            bool genActive = mgr.GenerativeCombatEnabled && KilltimeAudioManager.IsGenerativeMood(mgr.CurrentMood);
+            string trackTag = genActive
+                ? $" <color=#00E5FF>[∞ G{mgr.GenerativeGeneration} {mgr.CurrentGenerativeParams.bpm:0}BPM]</color>"
+                : (trackCount > 1
+                    ? $" <color=#00E5FF>[{mgr.CurrentTrackIndex + 1}/{trackCount}]</color>"
+                    : "");
 
             GUILayout.BeginHorizontal();
             GUILayout.Label($"<b>Humeur :</b> <color={moodColor}>{mgr.CurrentMood}</color> [{mgr.CurrentIntensityLevel}]{trackTag}", RichLabel(), GUILayout.ExpandWidth(true));
@@ -93,15 +101,19 @@ namespace Killtime.Audio
             GUILayout.EndHorizontal();
 
             // Bouton persistant : toujours présent pour fixer le layout, grisé si inactif
-            bool canRotate = (mgr.CurrentMood == MusicMood.Combat && trackCount > 1);
+            // En génératif, la rotation = variation inédite (pas de playlist fixe).
+            bool isGen = mgr.GenerativeCombatEnabled && KilltimeAudioManager.IsGenerativeMood(mgr.CurrentMood);
+            bool canRotate = isGen || (mgr.CurrentMood == MusicMood.Combat && trackCount > 1);
             GUI.enabled = canRotate;
-            if (GUILayout.Button(canRotate ? "⏭️ Piste Suivante (Rotation)" : "⏭️ Piste Unique (Fixe)", GUILayout.Height(20)))
+            string rotateLabel = isGen ? $"⏭️ Variation suivante (G{mgr.GenerativeGeneration + 1})"
+                : (canRotate ? "⏭️ Piste Suivante (Rotation)" : "⏭️ Piste Unique (Fixe)");
+            if (GUILayout.Button(rotateLabel, GUILayout.Height(20)))
             {
                 mgr.NextCombatTrack();
             }
             GUI.enabled = true;
 
-            if (mgr.CurrentMood == MusicMood.Combat && trackCount > 1)
+            if (!isGen && mgr.CurrentMood == MusicMood.Combat && trackCount > 1)
             {
                 GUILayout.BeginHorizontal();
                 for (int tIdx = 0; tIdx < trackCount; tIdx++)
@@ -122,6 +134,93 @@ namespace Killtime.Audio
 
             GUILayout.Space(4);
 
+            // 1.a Mode Génératif ∞ (sans chanson préfaite) — dynamise combats/scènes.
+            // Les chansons préfaites restent disponibles : le toggle ne fait que
+            // router Combat/Boss/Tension vers la composition live.
+            GUILayout.BeginVertical(GUI.skin.box);
+            // Gros bouton explicite (style bouton natif : fond + cadre visibles).
+            // L'ancien Toggle avec style label rendait la case quasi invisible.
+            bool genOn = mgr.GenerativeCombatEnabled;
+            Color prevGenBg = GUI.backgroundColor;
+            if (genOn) GUI.backgroundColor = new Color(0f, 0.85f, 1f);
+            string genBtnLabel = genOn
+                ? "∞ MODE GENERATIF : ON (clic = retour prefaites)"
+                : "∞ ACTIVER LE MODE GENERATIF (live, jamais 2x pareil)";
+            if (GUILayout.Button(genBtnLabel, GUILayout.Height(24)))
+            {
+                mgr.SetGenerativeMode(!genOn);
+            }
+            GUI.backgroundColor = prevGenBg;
+            if (mgr.GenerativeCombatEnabled)
+            {
+                var gp = mgr.CurrentGenerativeParams;
+                string genInfo = $"<color=#00E5FF>G{mgr.GenerativeGeneration}</color> {gp.bpm:0} BPM {gp.drumStyle}/{gp.scale} "
+                    + $"E:{Mathf.RoundToInt(gp.intensity01 * 100)}% T:{Mathf.RoundToInt(gp.tension01 * 100)}% "
+                    + $"▶ {Mathf.RoundToInt(mgr.GenerativeLoopProgress * 100)}%";
+                GUILayout.Label(genInfo, RichLabel());
+                // Preuve anti-doute : les 2 seules sources du bus musique.
+                // On doit voir UN clip GEN_* qui joue, l'autre à "stop".
+                GUILayout.Label("Bus: " + mgr.GetMusicSourcesDebug(), RichLabel());
+
+                // Droplist de style : Auto = comportement actuel par défaut.
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Style :", GUILayout.Width(70));
+                int curStyle = Mathf.Clamp((int)mgr.GenerativePreset, 0, _genStyleNames.Length - 1);
+                if (GUILayout.Button((_showGenStyleList ? "▾ " : "▸ ") + _genStyleNames[curStyle], GUILayout.Height(20)))
+                {
+                    _showGenStyleList = !_showGenStyleList;
+                }
+                GUILayout.EndHorizontal();
+                if (_showGenStyleList)
+                {
+                    int sel = GUILayout.SelectionGrid(curStyle, _genStyleNames, 1, GUILayout.Height(20 * _genStyleNames.Length));
+                    if (sel != curStyle)
+                    {
+                        mgr.SetGenerativePreset((GenerativeStylePreset)sel);
+                        _showGenStyleList = false;
+                    }
+                }
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Brillance :", GUILayout.Width(70));
+                float bCur = mgr.GenerativeBrightness;
+                float bNew = GUILayout.HorizontalSlider(bCur, 0f, 1f);
+                GUILayout.Label($"{Mathf.RoundToInt(bNew * 100)}%", GUILayout.Width(35));
+                GUILayout.EndHorizontal();
+
+                GUILayout.BeginHorizontal();
+                GUILayout.Label("Chaos :", GUILayout.Width(70));
+                float cCur = mgr.GenerativeChaos;
+                float cNew = GUILayout.HorizontalSlider(cCur, 0f, 1f);
+                GUILayout.Label($"{Mathf.RoundToInt(cNew * 100)}%", GUILayout.Width(35));
+                GUILayout.EndHorizontal();
+
+                if (!Mathf.Approximately(bNew, bCur) || !Mathf.Approximately(cNew, cCur))
+                {
+                    mgr.SetGenerativeColor(bNew, cNew);
+                }
+
+                GUILayout.BeginHorizontal();
+                if (GUILayout.Button("🎲 Nouvelle variation", GUILayout.Height(20)))
+                {
+                    mgr.RequestGenerativeVariation();
+                }
+                if (GUILayout.Button("💥 Strike test", GUILayout.Height(20), GUILayout.Width(95)))
+                {
+                    mgr.NotifyCombatStrike(true, false);
+                }
+                GUILayout.EndHorizontal();
+
+                GUILayout.Label("<color=#8899AA><i>Combat/Boss/Tension = live. Explore/Victoire/Defaite = prefaites.</i></color>", RichLabel());
+            }
+            else
+            {
+                GUILayout.Label("<color=#8899AA><i>Off : playlist prefaite (3 themes combat + rotation 48s).</i></color>", RichLabel());
+            }
+            GUILayout.EndVertical();
+
+            GUILayout.Space(4);
+
             // 1.b Module Caméléon (Écoute & Imitation Système)
             // Pas de AddComponent pendant l'OnGUI : la création à la volée jouait
             // son Start (AudioSettings.Reset) et coupait la musique à la 1re
@@ -131,7 +230,7 @@ namespace Killtime.Audio
             if (chameleon == null)
             {
                 GUILayout.BeginVertical(GUI.skin.box);
-                GUILayout.Label("<color=gray><i>🦎 Caméléon indisponible (bootstrap audio incomplet).</i></color>", RichLabel());
+                GUILayout.Label("<color=#8899AA><i>🦎 Caméléon indisponible (bootstrap audio incomplet).</i></color>", RichLabel());
                 GUILayout.EndVertical();
             }
             else
@@ -170,7 +269,7 @@ namespace Killtime.Audio
 
                         if (chameleon.DetectedMediaApps.Count == 0)
                         {
-                            GUILayout.Label("<color=gray><i>Aucun lecteur externe actif (lancez Chrome, Spotify, etc.)</i></color>", RichLabel());
+                            GUILayout.Label("<color=#8899AA><i>Aucun lecteur externe actif (lancez Chrome, Spotify, etc.)</i></color>", RichLabel());
                         }
                         else
                         {
@@ -277,7 +376,7 @@ namespace Killtime.Audio
                     }
                     else
                     {
-                        GUILayout.Label("<color=gray><i>Flux silencieux ou inharmonique. Jouez une source externe.</i></color>", RichLabel());
+                        GUILayout.Label("<color=#8899AA><i>Flux silencieux ou inharmonique. Jouez une source externe.</i></color>", RichLabel());
                     }
 
                     GUILayout.Space(4);
@@ -608,7 +707,7 @@ namespace Killtime.Audio
                 GUILayout.EndHorizontal();
 
                 GUILayout.BeginHorizontal();
-                string micStatus = voiceMgr.IsMuted ? "<color=red>🔇 Muet</color>" : (voiceMgr.IsLocalSpeaking ? "<color=#00FF88>● En parole</color>" : "<color=gray>○ Écoute</color>");
+                string micStatus = voiceMgr.IsMuted ? "<color=red>🔇 Muet</color>" : (voiceMgr.IsLocalSpeaking ? "<color=#00FF88>● En parole</color>" : "<color=#8899AA>○ Écoute</color>");
                 GUILayout.Label($"Micro : {micStatus}", RichLabel(), GUILayout.ExpandWidth(true));
                 if (GUILayout.Button("⚙️ Config Voix (F4)", GUILayout.Width(130), GUILayout.Height(20)))
                 {

@@ -50,6 +50,18 @@ namespace Killtime.Audio
         [Tooltip("Durée avant de basculer automatiquement sur le thème suivant de la liste combat (secondes).")]
         [SerializeField, Range(16f, 120f)] private float _combatRotationInterval = 48f;
 
+        [Header("Musique générative ∞ (sans chanson préfaite)")]
+        [Tooltip("Si actif, Combat / Boss / Tension = boucles génératives infinies (jamais 2x pareil). Explore / Victory / Defeat restent les chansons préfaites.")]
+        [SerializeField] private bool _generativeCombat = false;
+        [Tooltip("Identité de la famille motivique (changez pour un autre 'groupe virtuel').")]
+        [SerializeField] private int _generativeSeed = 1337;
+        [SerializeField, Range(0f, 1f)] private float _generativeBrightness = 0.55f;
+        [SerializeField, Range(0f, 1f)] private float _generativeChaos = 0.35f;
+        [Tooltip("Style imposé au moteur génératif. Auto = pilotage énergie/tension actuel (défaut).")]
+        [SerializeField] private GenerativeStylePreset _generativePreset = GenerativeStylePreset.Auto;
+        [Tooltip("Fondu entre deux variations génératives. Plus court que le legacy (1.6s) : les variations s'enchaînent sur un impact/crash qui masque la transition.")]
+        [SerializeField, Range(0.4f, 3f)] private float _generativeCrossfade = 1.1f;
+
         [Header("Volumes initiaux")]
         [SerializeField, Range(0f, 1f)] private float _masterVolume = 0.9f;
         [SerializeField, Range(0f, 1f)] private float _musicVolume = 0.75f;
@@ -109,6 +121,26 @@ namespace Killtime.Audio
         public float CurrentIntensity => _targetIntensity01;
         public MusicIntensity CurrentIntensityLevel => AdaptiveMusicDirector.Quantize(_targetIntensity01);
         public bool IsMuted => _muted;
+
+        // --- État génératif ∞ ---
+        private int _genGeneration = 0;
+        private GenerativeMusicParams _genParams;
+        private bool _genParamsValid = false;
+        private float _genLoopTimer = 0f;
+        private float _genLoopDur = 16f;
+        private float _pendingStrike = 0f;
+        private float _lastAllyHp = 1f;
+        private int _lastAllies = 3;
+        private int _lastEnemies = 2;
+        private int _lastTurn = 0;
+
+        public bool GenerativeCombatEnabled => _generativeCombat;
+        public GenerativeStylePreset GenerativePreset => _generativePreset;
+        public float GenerativeBrightness => _generativeBrightness;
+        public float GenerativeChaos => _generativeChaos;
+        public int GenerativeGeneration => _genGeneration;
+        public GenerativeMusicParams CurrentGenerativeParams => _genParams;
+        public float GenerativeLoopProgress => _genLoopDur > 0f ? Mathf.Clamp01(_genLoopTimer / _genLoopDur) : 0f;
 
         // =====================================================================
         // Cycle de vie
@@ -215,7 +247,16 @@ namespace Killtime.Audio
             if (_musicB != null && _musicB.pitch != 1f)
                 _musicB.pitch = 1f;
 
-            if (_targetMood == MusicMood.Combat && !_isFading)
+            if (_generativeCombat && IsGenerativeMood(_targetMood) && !_isFading && _genParamsValid)
+            {
+                // Scheduler infini : on pré-génère la variation suivante juste
+                // avant la fin de la boucle pour un enchaînement sans blanc.
+                _genLoopTimer += Time.unscaledDeltaTime;
+                float lookahead = Mathf.Max(0.6f, _generativeCrossfade + 0.4f);
+                if (_genLoopTimer >= _genLoopDur - lookahead)
+                    AdvanceGenerativeVariation();
+            }
+            else if (_targetMood == MusicMood.Combat && !_isFading)
             {
                 int trackCount = ProceduralAudioFactory.GetTrackCount(MusicMood.Combat);
                 if (trackCount > 1)
@@ -274,6 +315,13 @@ namespace Killtime.Audio
         public void PlayCombatResult(bool isHit, bool isBlocked, bool isCritical, bool armorAbsorbed,
             bool shock, string fatalResolution, Vector3 atPos)
         {
+            // Voie générative : chaque coup marquant injecte un accent dans la musique.
+            if (_generativeCombat && isHit)
+            {
+                bool kill = !string.IsNullOrEmpty(fatalResolution) && fatalResolution != "None"
+                    && fatalResolution != "MiracleSaved" && fatalResolution != "EligibleForLastBreath";
+                NotifyCombatStrike(isCritical, kill);
+            }
             if (!isHit && isBlocked) { PlayAt(SoundId.Defense_Parry, atPos); return; }
             if (!isHit) { PlayAt(SoundId.Attack_Miss, atPos); PlayAt(SoundId.Defense_Dodge, atPos, 0.6f); return; }
 
@@ -307,17 +355,23 @@ namespace Killtime.Audio
             else PlayAt(SoundId.Grenade_Throw, fromPos, 0.8f);
         }
 
+        public void NotifyGrenadeStrike(bool heavy)
+        {
+            if (_generativeCombat) NotifyCombatStrike(false, heavy, heavy ? 0.9f : 0.6f);
+        }
+
         public void PlayGrenadeDetonation(Vector3 atPos, string kind, bool heavy)
         {
             string k = (kind ?? "").ToLowerInvariant();
             bool isFlash = k.Contains("flash") || k.Contains("stun") || k.Contains("sonique");
             bool isSmoke = k.Contains("fumi") || k.Contains("smoke");
             bool isGas = k.Contains("gaz") || k.Contains("gas");
-            if (isFlash) { PlayAt(SoundId.Grenade_Flash, atPos, 1f); PlayAt(SoundId.Impact_DeepBoom, atPos, 0.4f); return; }
+            if (isFlash) { PlayAt(SoundId.Grenade_Flash, atPos, 1f); PlayAt(SoundId.Impact_DeepBoom, atPos, 0.4f); NotifyGrenadeStrike(false); return; }
             if (isSmoke || isGas) { PlayAt(SoundId.Grenade_Smoke, atPos, 1f); PlayAt(SoundId.Grenade_Gas, atPos, 0.8f); return; }
             PlayAt(heavy ? SoundId.Grenade_Explosion_Heavy : SoundId.Grenade_Explosion_Frag, atPos, 1f);
             PlayAt(SoundId.Grenade_Shrapnel, atPos, 0.7f);
             PlayAt(SoundId.Impact_DeepBoom, atPos, heavy ? 0.9f : 0.5f);
+            NotifyGrenadeStrike(heavy);
         }
 
         // --- Musique adaptative ---
@@ -351,6 +405,12 @@ namespace Killtime.Audio
         {
             if (mood == MusicMood.None) { StopMusic(); return; }
             intensity01 = Mathf.Clamp01(intensity01);
+            // Mode génératif ∞ : Combat / Boss / Tension = composition live, pas de chanson préfaite.
+            if (_generativeCombat && IsGenerativeMood(mood))
+            {
+                StartGenerativeLoop(mood, intensity01, forceRestart);
+                return;
+            }
             int level = (int)AdaptiveMusicDirector.Quantize(intensity01);
             int trackCount = ProceduralAudioFactory.GetTrackCount(mood);
             trackIndex = Mathf.Clamp(trackIndex, 0, Mathf.Max(0, trackCount - 1));
@@ -379,6 +439,12 @@ namespace Killtime.Audio
 
         public void NextCombatTrack()
         {
+            // En génératif, "piste suivante" = variation inédite immédiate.
+            if (_generativeCombat && IsGenerativeMood(_targetMood))
+            {
+                RequestGenerativeVariation();
+                return;
+            }
             if (_targetMood != MusicMood.Combat) return;
             int count = ProceduralAudioFactory.GetTrackCount(MusicMood.Combat);
             if (count <= 1) return;
@@ -388,12 +454,177 @@ namespace Killtime.Audio
             PlayMusic(MusicMood.Combat, next, _targetIntensity01, forceRestart: true);
         }
 
+        // =====================================================================
+        // MODE GÉNÉRATIF ∞ — composition live sans chanson préfaite
+        // =====================================================================
+        public static bool IsGenerativeMood(MusicMood mood)
+            => mood == MusicMood.Combat || mood == MusicMood.CombatBoss || mood == MusicMood.Tension;
+
+        /// <summary>Active/coupe le mode génératif. Les chansons préfaites restent intactes.</summary>
+        public void SetGenerativeMode(bool on, int seed = -1)
+        {
+            bool wasOn = _generativeCombat;
+            _generativeCombat = on;
+            if (seed >= 0) _generativeSeed = seed;
+            if (on && !wasOn)
+            {
+                _genGeneration = 0;
+                _genParamsValid = false;
+                _genLoopTimer = 0f;
+                _pendingStrike = 0f;
+                // Rebranche immédiatement le mood courant en génératif s'il s'y prête.
+                if (IsGenerativeMood(_targetMood))
+                    StartGenerativeLoop(_targetMood, _targetIntensity01, forceRestart: true);
+            }
+            else if (!on && wasOn)
+            {
+                _genParamsValid = false;
+                _genLoopTimer = 0f;
+                _pendingStrike = 0f;
+                // Retour aux chansons préfaites sur le mood courant.
+                if (IsGenerativeMood(_targetMood))
+                    PlayMusic(_targetMood, _currentTrackIndex, _targetIntensity01, forceRestart: true);
+            }
+        }
+
+        public void SetGenerativeColor(float brightness01, float chaos01)
+        {
+            _generativeBrightness = Mathf.Clamp01(brightness01);
+            _generativeChaos = Mathf.Clamp01(chaos01);
+        }
+
+        /// <summary>Impose un style au moteur génératif (Auto = défaut actuel).
+        /// Changer de style régénère aussitôt une variation dans le nouveau style.</summary>
+        public void SetGenerativePreset(GenerativeStylePreset preset)
+        {
+            if (_generativePreset == preset) return;
+            _generativePreset = preset;
+            if (_generativeCombat && IsGenerativeMood(_targetMood))
+                RequestGenerativeVariation();
+        }
+
+        /// <summary>
+        /// Accent réactif : à appeler sur coup critique / kill / gros dégât.
+        /// Le sub-drop + taiko sont cousés dans la variation SUIVANTE (barre 4),
+        /// donc le coup "colle" musicalement au lieu de juste empiler un SFX.
+        /// </summary>
+        public void NotifyCombatStrike(bool critical, bool kill, float amount01 = -1f)
+        {
+            float s = amount01 >= 0f ? Mathf.Clamp01(amount01) : (kill ? 1f : (critical ? 0.75f : 0.4f));
+            _pendingStrike = Mathf.Max(_pendingStrike, s);
+            // Si on est à mi-boucle, on force une régénération anticipée pour
+            // que l'accent arrive vite (sinon il attendrait la fin du loop).
+            if (_generativeCombat && _genParamsValid && _genLoopTimer > 3f && _genLoopDur - _genLoopTimer > 4f)
+            {
+                _genLoopTimer = _genLoopDur - Mathf.Max(0.6f, _generativeCrossfade + 0.4f) - 0.05f;
+            }
+        }
+
+        /// <summary>Force immédiatement une variation inédite (bouton UI / rotation).</summary>
+        public void RequestGenerativeVariation()
+        {
+            if (!IsGenerativeMood(_targetMood))
+            {
+                PlayMusic(MusicMood.Combat, _targetIntensity01, forceRestart: true);
+                return;
+            }
+            _genGeneration++;
+            float strike = _pendingStrike;
+            _pendingStrike = 0f;
+            _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
+                _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
+                _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset);
+            _genParamsValid = true;
+            _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
+            _genLoopTimer = 0f;
+            _targetIntensity01 = _genParams.intensity01;
+            _lastAdaptiveSwitchTime = Time.unscaledTime;
+            AudioClip clip;
+            try { clip = ProceduralAudioFactory.GetGenerativeLoop(_genParams); }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[Audio] Génératif G{_genGeneration} impossible : {ex.GetType().Name}: {ex.Message}");
+                return;
+            }
+            if (_musicRoutine != null) StopCoroutine(_musicRoutine);
+            _musicRoutine = StartCoroutine(CrossfadeClipRoutine(clip, _targetMood, _genGeneration, _genParams.intensity01));
+            Debug.Log($"[Audio] ∞ Génératif {_targetMood} G{_genGeneration} : {clip.samples} spl ({clip.length:F1}s) bpm={_genParams.bpm:0} sty={_genParams.drumStyle} gam={_genParams.scale} int={_genParams.intensity01:F2} ten={_genParams.tension01:F2} strike={strike:F2}");
+        }
+
+        private void StartGenerativeLoop(MusicMood mood, float intensity01, bool forceRestart)
+        {
+            bool sameMood = (mood == _targetMood);
+            _targetMood = mood;
+            _targetIntensity01 = Mathf.Clamp01(intensity01);
+            if (!sameMood || !_genParamsValid || forceRestart)
+            {
+                if (!sameMood || forceRestart) { _genGeneration = forceRestart && sameMood ? _genGeneration + 1 : 0; }
+                float strike = _pendingStrike;
+                _pendingStrike = 0f;
+                _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
+                    _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
+                    _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset);
+                // L'intensité de référence vient de l'état tactique, pas du paramètre d'appel,
+                // pour que le BPM/gamme suivent le vrai danger (l'appel ne donne qu'une base).
+                if (!sameMood && _genParamsValid) { /* garde la continuité */ }
+                _genParamsValid = true;
+                _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
+                _genLoopTimer = 0f;
+                _targetIntensity01 = _genParams.intensity01;
+                _currentLevel = (int)AdaptiveMusicDirector.Quantize(_targetIntensity01);
+                _lastAdaptiveSwitchTime = Time.unscaledTime;
+                AudioClip clip;
+                try { clip = ProceduralAudioFactory.GetGenerativeLoop(_genParams); }
+                catch (System.Exception ex)
+                {
+                    Debug.LogError($"[Audio] Génératif {mood} G{_genGeneration} impossible : {ex.GetType().Name}: {ex.Message}");
+                    return;
+                }
+                if (_musicRoutine != null) StopCoroutine(_musicRoutine);
+                _musicRoutine = StartCoroutine(CrossfadeClipRoutine(clip, mood, _genGeneration, _genParams.intensity01));
+                Debug.Log($"[Audio] ∞ Génératif {mood} G{_genGeneration} : {clip.samples} spl ({clip.length:F1}s) bpm={_genParams.bpm:0} sty={_genParams.drumStyle} gam={_genParams.scale}");
+            }
+            else
+            {
+                _targetIntensity01 = Mathf.Clamp01(intensity01);
+            }
+        }
+
+        private void AdvanceGenerativeVariation()
+        {
+            // Garde-fou : une seule transition à la fois.
+            if (_isFading) return;
+            _genGeneration++;
+            float strike = _pendingStrike;
+            _pendingStrike = 0f;
+            _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
+                _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
+                _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset);
+            _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
+            _genLoopTimer = 0f;
+            _targetIntensity01 = _genParams.intensity01;
+            _currentLevel = (int)AdaptiveMusicDirector.Quantize(_targetIntensity01);
+            _lastAdaptiveSwitchTime = Time.unscaledTime;
+            AudioClip clip;
+            try { clip = ProceduralAudioFactory.GetGenerativeLoop(_genParams); }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[Audio] Génératif advance G{_genGeneration} impossible : {ex.GetType().Name}: {ex.Message}");
+                return;
+            }
+            if (_musicRoutine != null) StopCoroutine(_musicRoutine);
+            _musicRoutine = StartCoroutine(CrossfadeClipRoutine(clip, _targetMood, _genGeneration, _genParams.intensity01));
+        }
+
         public void StopMusic()
         {
             _targetMood = MusicMood.None;
             _currentMood = MusicMood.None;
             _currentTrackIndex = 0;
             _combatTrackTimer = 0f;
+            _genLoopTimer = 0f;
+            _genParamsValid = false;
+            _pendingStrike = 0f;
             _currentLevel = 1;
             _targetIntensity01 = 0.5f;
             _currentIntensity01 = 0.5f;
@@ -431,12 +662,30 @@ namespace Killtime.Audio
         /// </summary>
         public bool NotifyBattleState(float allyHpRatio01, int alliesAlive, int enemiesAlive, int turnIndex)
         {
+            _lastAllyHp = Mathf.Clamp01(allyHpRatio01);
+            _lastAllies = alliesAlive;
+            _lastEnemies = enemiesAlive;
+            _lastTurn = turnIndex;
             var (mood, intensity) = AdaptiveMusicDirector.ComputeTarget(
                 allyHpRatio01, alliesAlive, enemiesAlive, turnIndex, _targetMood, _targetIntensity01);
-            bool moodChange = mood != _targetMood;
-            bool bigShift = Mathf.Abs(intensity - _targetIntensity01) >= _adaptiveHysteresis;
-            if (!moodChange && !bigShift) return false;
-            if (!moodChange && Time.unscaledTime - _lastAdaptiveSwitchTime < _adaptiveCooldown) return false;
+            // Mode génératif : le mood Combat/Boss/Tension part en composition live.
+            if (_generativeCombat && IsGenerativeMood(mood))
+            {
+                bool moodChange = mood != _targetMood;
+                var genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
+                    allyHpRatio01, alliesAlive, enemiesAlive, turnIndex,
+                    _generativeSeed, _genGeneration, 0f, _generativeBrightness, _generativeChaos, _generativePreset);
+                bool bigShift = Mathf.Abs(genParams.intensity01 - _targetIntensity01) >= _adaptiveHysteresis
+                    || Mathf.Abs(genParams.tension01 - (_genParamsValid ? _genParams.tension01 : 0.5f)) >= 0.25f;
+                if (!moodChange && !bigShift && _genParamsValid) return false;
+                if (!moodChange && Time.unscaledTime - _lastAdaptiveSwitchTime < _adaptiveCooldown && _genParamsValid) return false;
+                StartGenerativeLoop(mood, genParams.intensity01, forceRestart: moodChange || bigShift);
+                return true;
+            }
+            bool legacyMoodChange = mood != _targetMood;
+            bool legacyShift = Mathf.Abs(intensity - _targetIntensity01) >= _adaptiveHysteresis;
+            if (!legacyMoodChange && !legacyShift) return false;
+            if (!legacyMoodChange && Time.unscaledTime - _lastAdaptiveSwitchTime < _adaptiveCooldown) return false;
             PlayMusic(mood, intensity);
             return true;
         }
@@ -848,6 +1097,104 @@ namespace Killtime.Audio
                 _isFading = false;
                 ApplyAllVolumes();
             }
+        }
+
+        /// <summary>
+        /// Crossfade vers un clip déjà généré (voie générative ∞).
+        /// Même courbe que la voie legacy, sans re-résolution SoundBank.
+        /// </summary>
+        private IEnumerator CrossfadeClipRoutine(AudioClip clip, MusicMood mood, int generation, float intensity01)
+        {
+            if (clip == null)
+            {
+                Debug.LogError($"[Audio] Clip génératif null : {mood} G{generation} (piste silencieuse).");
+                _isFading = false;
+                yield break;
+            }
+            var fadeIn = _musicFlip ? _musicA : _musicB;
+            var fadeOut = _musicFlip ? _musicB : _musicA;
+            if (fadeIn == null)
+            {
+                Debug.LogError("[Audio] Source musique fadeIn manquante (BuildPools non appelé ?).");
+                _isFading = false;
+                yield break;
+            }
+            _isFading = true;
+            _currentMood = mood;
+            _currentIntensity01 = intensity01;
+            _currentLevel = (int)AdaptiveMusicDirector.Quantize(intensity01);
+            _musicFlip = !_musicFlip;
+            try
+            {
+                fadeIn.clip = clip;
+                fadeIn.loop = true;
+                fadeIn.pitch = 1f;
+                fadeIn.volume = 0f;
+                fadeIn.Play();
+                try { fadeIn.time = 0f; }
+                catch (System.Exception) { }
+                _activeMusic = fadeIn;
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogError($"[Audio] Démarrage génératif {mood} G{generation} impossible : {ex.GetType().Name}: {ex.Message}");
+                _isFading = false;
+                ApplyAllVolumes();
+                yield break;
+            }
+            float t = 0f;
+            float dur = Mathf.Max(0.4f, _generativeCrossfade);
+            try
+            {
+                while (t < dur)
+                {
+                    t += Time.unscaledDeltaTime;
+                    float k = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / dur));
+                    float gIn = Mathf.Sin(k * Mathf.PI * 0.5f);
+                    float gOut = Mathf.Cos(k * Mathf.PI * 0.5f);
+                    float targetVol = _musicVolume * _masterVolume;
+                    float duck = Mathf.Max(0f, 1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck);
+                    float mute = _muted ? 0f : 1f;
+                    fadeIn.volume = mute * targetVol * gIn * duck;
+                    if (fadeOut != null) fadeOut.volume = mute * targetVol * gOut * duck;
+                    yield return null;
+                }
+                if (fadeOut != null)
+                {
+                    fadeOut.Stop();
+                    fadeOut.volume = 0f;
+                }
+            }
+            finally
+            {
+                _isFading = false;
+                ApplyAllVolumes();
+            }
+        }
+
+        /// <summary>
+        /// Preuve visuelle anti-doute : nom + état des 2 seules sources du bus
+        /// musique. En génératif on doit y voir UN clip GEN_* qui joue et
+        /// l'autre source à "stop" (hors le ~1s de fondu entre variations).
+        /// Legacy et génératif partagent ce bus : ils ne peuvent pas coexister.
+        /// </summary>
+        public string GetMusicSourcesDebug()
+        {
+            return $"A:{SrcTag(_musicA)}  B:{SrcTag(_musicB)}";
+        }
+
+        private static string SrcTag(AudioSource s)
+        {
+            if (s == null) return "-";
+            try
+            {
+                if (!s.isPlaying) return "stop";
+                string n = s.clip != null ? s.clip.name : "?";
+                if (n.StartsWith("PROC_")) n = n.Substring(5);
+                if (n.Length > 24) n = n.Substring(0, 24) + "…";
+                return $"{n} v={s.volume:0.0}";
+            }
+            catch (System.Exception) { return "?"; }
         }
 
         private void LoadVolumes()

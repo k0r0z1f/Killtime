@@ -167,7 +167,7 @@ namespace Killtime.UI
             _selectedTab = Mathf.Clamp(p.CombatToolbarTab, 0, _tabNames.Length - 1);
             _scrollLock = p.CombatLogScrollLock;
             Application.runInBackground = p.RunInBackground;
-            TimeScaleDevWindow.SetTimeScale(TimeScaleDevWindow.ReadTimeScalePref());
+            // Vitesse du jeu volontairement non restaurée : session uniquement (toujours 1x au redémarrage).
         }
 
         private static SkillType SafeSkill(int raw, SkillType fallback)
@@ -195,7 +195,7 @@ namespace Killtime.UI
             p.CombatToolbarTab = _selectedTab;
             p.CombatLogScrollLock = _scrollLock;
             p.RunInBackground = Application.runInBackground;
-            p.GlobalTimeScale = TimeScaleDevWindow.CurrentTimeScale;
+            // Vitesse du jeu volontairement non sauvegardée : session uniquement.
             if (_arena != null)
             {
                 p.InfiniteAP = _arena.InfiniteAP;

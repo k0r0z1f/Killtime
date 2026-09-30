@@ -538,10 +538,11 @@ namespace Killtime.UI
                 ys[i] = i == 0 ? topSafeY : ys[i - 1] + heights[i - 1] + DockMargin;
             }
 
-            // Les vignettes dockées ne doivent jamais recouvrir l'élément derrière
-            // (fenêtre normale/minimisée restée visible au bord, panneau HUD latéral...).
-            // Chaque dock qui chevauche un bloqueur descend sous celui-ci ; l'ordre
-            // haut->bas de la pile est préservé.
+            // Les vignettes dockées sont fixes : une fenêtre non dockée qui passe
+            // dessus (drag / resize / ouverture) ne les déplace jamais. Seul
+            // l'empilement interne de la colonne (ordre haut->bas) est préservé
+            // ici ; les collisions entre colonnes sont réglées par
+            // ResolveAllDockOverlaps.
             for (int i = 0; i < count; i++)
             {
                 Rect r = new Rect(colX, ys[i], w, heights[i]);
@@ -550,27 +551,6 @@ namespace Killtime.UI
                 do
                 {
                     moved = false;
-                    foreach (var kvp in _rectProviders)
-                    {
-                        int id = kvp.Key;
-                        if (id == NoDockWindowId) continue;
-                        if (_docked.ContainsKey(id)) continue; // autres docks : gérés par la pile elle-même
-                        Rect b;
-                        try
-                        {
-                            if (_visibilityProviders.TryGetValue(id, out var vis) && vis != null && !vis()) continue;
-                            if (kvp.Value == null) continue;
-                            b = kvp.Value();
-                        }
-                        catch { continue; }
-                        if (b.width <= 0f || b.height <= 0f) continue;
-                        if (b.xMax <= r.xMin || b.xMin >= r.xMax) continue; // hors colonne : ignore
-                        if (r.Overlaps(b))
-                        {
-                            r.y = b.yMax + DockMargin;
-                            moved = true;
-                        }
-                    }
                     for (int j = 0; j < i; j++)
                     {
                         Rect prev = new Rect(colX, ys[j], w, heights[j]);
@@ -675,6 +655,10 @@ namespace Killtime.UI
         private static bool ConsumeDockedClick(Vector2 mp)
         {
             if (!TryGetHoveredDock(mp, out int hoveredId, out Rect dockRect)) return false;
+            // Une fenêtre normale au premier plan qui recouvre le dock garde le
+            // clic : on ne restaure jamais un aperçu caché sous une autre fenêtre.
+            // (Une fenêtre derrière le dock, elle, ne bloque pas sa restauration.)
+            if (IsCoveredByFrontNormalWindow(mp, hoveredId)) return false;
 
             if (DockRestoreAllButtonRect(dockRect).Contains(mp))
             {
@@ -702,6 +686,9 @@ namespace Killtime.UI
             if (e == null || !TryGetHoveredDock(e.mousePosition, out int hoveredId, out Rect dockRect)
                 || hoveredId != windowId)
                 return;
+            // Bouton recouvert par une fenêtre normale au premier plan : la fenêtre
+            // du dessus garde la main, on ne dessine pas de commande par-dessus elle.
+            if (IsCoveredByFrontNormalWindow(e.mousePosition, hoveredId)) return;
 
             Rect buttonRect = DockRestoreAllButtonRect(dockRect);
             // L'action est traitée en pré-fenêtre par ConsumeDockedClick : cette
@@ -897,6 +884,9 @@ namespace Killtime.UI
             ref Vector2 savedSize, int windowId, Action onClose = null, string title = "")
         {
             if (rect.width <= 0f || rect.height <= 0f) return;
+            // Dock entièrement caché sous une fenêtre normale au premier plan :
+            // on ne peint rien par-dessus elle (ni boutons fantômes, ni titre).
+            if (IsFullyCoveredByFrontNormalWindow(rect, windowId)) return;
 
             float ghost = DockGhostT(windowId);
             Color borderCol = new Color(0.0f, 0.85f, 1.0f, 0.35f * Mathf.Max(ghost, 0.2f));
@@ -909,58 +899,78 @@ namespace Killtime.UI
             if (!string.IsNullOrEmpty(title))
             {
                 Rect titleRect = new Rect(rect.x + 8f, rect.y + 2f, Mathf.Max(10f, dragW - 10f), 20f);
-                Color previousTitleColor = GUI.color;
-                GUI.color = new Color(0.92f, 0.96f, 1f, 0.75f);
-                GUI.Label(titleRect, TruncateTitle(title, titleRect.width), TitleStyle());
-                GUI.color = previousTitleColor;
+                // Titre recouvert : on le masque plutôt que de le peindre sur la fenêtre du dessus.
+                if (!IsRectCoveredByFrontNormalWindow(titleRect, windowId))
+                {
+                    Color previousTitleColor = GUI.color;
+                    GUI.color = new Color(0.92f, 0.96f, 1f, 0.75f);
+                    GUI.Label(titleRect, TruncateTitle(title, titleRect.width), TitleStyle());
+                    GUI.color = previousTitleColor;
+                }
             }
 
             Rect minR = new Rect(rect.x + rect.width - (BtnW * 2f + Pad * 2f), rect.y + Pad, BtnW, BtnH);
             Rect closeR = new Rect(rect.x + rect.width - (BtnW + Pad), rect.y + Pad, BtnW, BtnH);
 
-            string minLabel = isMinimized ? "▢" : "–";
-            if (GUI.Button(minR, new GUIContent(minLabel, isMinimized ? "Restaurer" : "Minimiser")))
+            // Commande recouverte par la fenêtre du dessus : on ne la dessine pas,
+            // sinon elle resterait cliquable à travers cette fenêtre.
+            if (!IsRectCoveredByFrontNormalWindow(minR, windowId))
             {
-                if (!isMinimized)
+                string minLabel = isMinimized ? "▢" : "–";
+                if (GUI.Button(minR, new GUIContent(minLabel, isMinimized ? "Restaurer" : "Minimiser")))
                 {
-                    savedSize = new Vector2(rect.width, rect.height);
-                    isMinimized = true;
-                }
-                else
-                {
-                    isMinimized = false;
-                    savedSize = Vector2.zero;
+                    if (!isMinimized)
+                    {
+                        savedSize = new Vector2(rect.width, rect.height);
+                        isMinimized = true;
+                    }
+                    else
+                    {
+                        isMinimized = false;
+                        savedSize = Vector2.zero;
+                    }
                 }
             }
 
-            Color previousBackground = GUI.backgroundColor;
-            GUI.backgroundColor = new Color(1f, 0.38f, 0.38f, 1f);
-            if (GUI.Button(closeR, new GUIContent("✕", "Fermer")))
+            if (!IsRectCoveredByFrontNormalWindow(closeR, windowId))
             {
-                isOpen = false;
-                isMinimized = false;
-                savedSize = Vector2.zero;
-                if (_resizing.ContainsKey(windowId)) _resizing[windowId] = false;
-                _grabOffset.Remove(windowId);
-                try { onClose?.Invoke(); } catch (Exception e) { Debug.LogWarning($"[FloatingWindowChrome] onClose: {e.Message}"); }
+                Color previousBackground = GUI.backgroundColor;
+                GUI.backgroundColor = new Color(1f, 0.38f, 0.38f, 1f);
+                try
+                {
+                    if (GUI.Button(closeR, new GUIContent("✕", "Fermer")))
+                    {
+                        isOpen = false;
+                        isMinimized = false;
+                        savedSize = Vector2.zero;
+                        if (_resizing.ContainsKey(windowId)) _resizing[windowId] = false;
+                        _grabOffset.Remove(windowId);
+                        try { onClose?.Invoke(); } catch (Exception e) { Debug.LogWarning($"[FloatingWindowChrome] onClose: {e.Message}"); }
+                    }
+                }
+                finally
+                {
+                    GUI.backgroundColor = previousBackground;
+                }
             }
-            GUI.backgroundColor = previousBackground;
         }
 
-        private static float _lastDockAvoidRecalc;
-
         /// <summary>
-        /// Teste si une cible de dock recouvre une fenêtre visible non dockée.
-        /// Rects seuls, sans allocation : appelé chaque frame via HandleResizeEvents.
+        /// Teste les fenêtres normales visibles (non dockées, hors menu contextuel
+        /// transitoire) situées DEVANT le dock indiqué. Seule une fenêtre réellement
+        /// au premier plan recouvre le dock : une fenêtre derrière lui ne l'empêche
+        /// ni de se restaurer ni d'afficher ses commandes.
         /// </summary>
-        private static bool DockTargetOverlapsBlocker(Rect target, int selfId)
+        private static bool AnyFrontNormalWindowMatches(int dockId, Func<Rect, bool> match)
         {
-            if (target.width <= 0f || target.height <= 0f) return false;
+            if (match == null) return false;
+            int dockIdx = _zOrder.IndexOf(dockId);
             foreach (var kvp in _rectProviders)
             {
                 int id = kvp.Key;
-                if (id == selfId || id == NoDockWindowId) continue;
+                if (id == NoDockWindowId || id == dockId) continue;
                 if (_docked.ContainsKey(id)) continue;
+                if (_zOrder.IndexOf(id) < dockIdx) continue; // derrière le dock : ne couvre pas
                 Rect b;
                 try
                 {
@@ -970,31 +980,46 @@ namespace Killtime.UI
                 }
                 catch { continue; }
                 if (b.width <= 0f || b.height <= 0f) continue;
-                if (target.Overlaps(b)) return true;
+                try
+                {
+                    if (match(b)) return true;
+                }
+                catch { /* prédicat défaillant : ignore ce bloqueur */ }
             }
             return false;
         }
 
         /// <summary>
-        /// Garde-fou temps réel : si une fenêtre a été déplacée ou ouverte sous une
-        /// vignette dockée existante, la pile se décale pour libérer l'élément derrière.
-        /// Recalcul throttlé (la pile converge en un passage, pas de ping-pong).
+        /// Vrai si le point est recouvert par une fenêtre normale visible située
+        /// devant le dock. Dans ce cas la fenêtre du dessus garde le clic et le
+        /// dock reste fixe à sa place.
         /// </summary>
-        private static void RefreshDockLayoutIfOverlapping()
+        private static bool IsCoveredByFrontNormalWindow(Vector2 mp, int dockId)
         {
-            if (_docked.Count == 0) return;
-            if (Time.realtimeSinceStartup - _lastDockAvoidRecalc < 0.25f) return;
-            foreach (var kvp in _docked)
-            {
-                if (kvp.Value.restoring) continue;
-                if (kvp.Value.targetDockRect.width <= 0f) continue;
-                if (DockTargetOverlapsBlocker(kvp.Value.targetDockRect, kvp.Key))
-                {
-                    _lastDockAvoidRecalc = Time.realtimeSinceStartup;
-                    RecalculateDockTargets();
-                    return;
-                }
-            }
+            return AnyFrontNormalWindowMatches(dockId, b => b.Contains(mp));
+        }
+
+        /// <summary>
+        /// Vrai si le rect est (même partiellement) recouvert par une fenêtre normale
+        /// visible située devant le dock. Sert à masquer les commandes du chrome docké
+        /// qu'une fenêtre du dessus recouvre, pour ne jamais cliquer à travers elle.
+        /// </summary>
+        private static bool IsRectCoveredByFrontNormalWindow(Rect r, int dockId)
+        {
+            if (r.width <= 0f || r.height <= 0f) return false;
+            return AnyFrontNormalWindowMatches(dockId, b => r.Overlaps(b));
+        }
+
+        /// <summary>
+        /// Vrai si le rect est entièrement contenu dans une fenêtre normale visible
+        /// située devant le dock. Le chrome docké est alors intégralement caché :
+        /// on ne peint rien par-dessus la fenêtre du dessus.
+        /// </summary>
+        private static bool IsFullyCoveredByFrontNormalWindow(Rect r, int dockId)
+        {
+            if (r.width <= 0f || r.height <= 0f) return false;
+            return AnyFrontNormalWindowMatches(dockId,
+                b => b.xMin <= r.xMin && b.yMin <= r.yMin && b.xMax >= r.xMax && b.yMax >= r.yMax);
         }
 
         /// <summary>
@@ -1010,9 +1035,8 @@ namespace Killtime.UI
         /// </summary>
         public static void HandleResizeEvents(ref Rect rect, int windowId, Vector2 minSize, bool isMinimized = false)
         {
-            // Les docks ne recouvrent jamais l'élément derrière : si une fenêtre est
-            // passée sous une vignette existante, la pile se décale (throttlé).
-            RefreshDockLayoutIfOverlapping();
+            // Les docks sont fixes : une fenêtre non dockée qui passe dessus ne les
+            // déplace jamais (ni en drag, ni en resize, ni à l'ouverture).
             Event e = Event.current;
             int resizeControlId = GUIUtility.GetControlID(windowId, FocusType.Passive);
             if (_pendingFront.Remove(windowId))
@@ -1037,10 +1061,12 @@ namespace Killtime.UI
 
             // Fenêtre repliée : contenu non utilisable / non cliquable.
             // Consomme les autres événements souris sur l'aperçu et le bouton
-            // latéral pour éviter tout click-through vers la carte.
+            // latéral pour éviter tout click-through vers la carte. Si une fenêtre
+            // normale au premier plan recouvre le dock, l'événement lui revient.
             if ((e.type == EventType.MouseUp || e.type == EventType.MouseDrag
                     || e.type == EventType.ContextClick || e.type == EventType.ScrollWheel)
-                && TryGetHoveredDock(e.mousePosition, out _, out _))
+                && TryGetHoveredDock(e.mousePosition, out int hoveredDockId, out _)
+                && !IsCoveredByFrontNormalWindow(e.mousePosition, hoveredDockId))
             {
                 e.Use();
                 return;
