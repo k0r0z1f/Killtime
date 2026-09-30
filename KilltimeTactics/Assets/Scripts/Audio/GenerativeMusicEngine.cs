@@ -39,6 +39,25 @@ namespace Killtime.Audio
         ModernCinematic = 4
     }
 
+    public enum ProceduralStemType
+    {
+        Drums = 0,
+        Bass = 1,
+        Pad = 2,
+        Arp = 3,
+        Lead = 4,
+        Choir = 5,
+        Staccato = 6,
+        SubAir = 7
+    }
+
+    public enum StemOverrideState
+    {
+        Auto = 0,
+        ForceActive = 1,
+        Muted = 2
+    }
+
     /// <summary>
     /// Paramètres d'une boucle générative. Chaque (seed, generation) donne une
     /// variation inédite mais cohérente (même famille motivique, même tonalité
@@ -61,6 +80,7 @@ namespace Killtime.Audio
         public float bpm;           // 96..180, morphé par l'énergie
         public int bars;            // 4..16, 8 par défaut
         public float strike01;      // accent réactif ponctuel (coup critique / kill)
+        public int stemOverrides;   // Masque 16-bit des 8 stems (2 bits par stem : 0=Auto, 1=ForceActive, 2=Muted)
 
         public static GenerativeMusicParams DefaultCombat(int seed = 1337)
         {
@@ -163,27 +183,71 @@ namespace Killtime.Audio
             bool isBreakLoop = (p.generation % 5 == 4) && p.intensity01 < 0.85f;
             float drumGate = isBreakLoop ? 0.25f : 1f; // break : batterie filtrée, pad devant
 
+            StemOverrideState drumOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.Drums * 2)) & 0x3);
+            StemOverrideState bassOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.Bass * 2)) & 0x3);
+            StemOverrideState padOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.Pad * 2)) & 0x3);
+            StemOverrideState arpOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.Arp * 2)) & 0x3);
+            StemOverrideState leadOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.Lead * 2)) & 0x3);
+            StemOverrideState choirOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.Choir * 2)) & 0x3);
+            StemOverrideState staccatoOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.Staccato * 2)) & 0x3);
+            StemOverrideState subAirOverride = (StemOverrideState)((p.stemOverrides >> ((int)ProceduralStemType.SubAir * 2)) & 0x3);
+
             // --- 5. Batterie (pose le sidechain d'abord) ---
-            float drumVol = (0.55f + 0.65f * p.intensity01) * drumGate;
-            AddGenerativeDrums(s, sidechain, rng, p, style, beatSec, barSec, drumVol);
+            if (drumOverride != StemOverrideState.Muted)
+            {
+                float drumVol = (drumOverride == StemOverrideState.ForceActive)
+                    ? Mathf.Max(0.6f, (0.55f + 0.65f * p.intensity01) * drumGate)
+                    : (0.55f + 0.65f * p.intensity01) * drumGate;
+                AddGenerativeDrums(s, sidechain, rng, p, style, beatSec, barSec, drumVol);
+            }
 
             // --- 6. Basse FM growl / sub (duckée) ---
-            AddGenerativeBass(s, sidechain, rng, p, bassRoots, chordDur, beatSec, 0.30f + 0.14f * p.intensity01);
+            if (bassOverride != StemOverrideState.Muted)
+            {
+                float bassVol = (bassOverride == StemOverrideState.ForceActive)
+                    ? 0.38f
+                    : (0.30f + 0.14f * p.intensity01);
+                AddGenerativeBass(s, sidechain, rng, p, bassRoots, chordDur, beatSec, bassVol);
+            }
 
             // --- 7. Pad supersaw + staccato strings (duckés) ---
-            AddGenerativePad(s, sidechain, p, chords, chordDur, 0.20f + 0.10f * (1f - p.intensity01) + 0.06f * p.tension01);
-            if (p.intensity01 > 0.35f)
-                AddStaccatoLayer(s, rng, p, chords, chordDur, beatSec, 0.10f + 0.10f * p.intensity01);
+            if (padOverride != StemOverrideState.Muted)
+            {
+                float padVol = (padOverride == StemOverrideState.ForceActive)
+                    ? 0.28f
+                    : (0.20f + 0.10f * (1f - p.intensity01) + 0.06f * p.tension01);
+                AddGenerativePad(s, sidechain, p, chords, chordDur, padVol);
+            }
+
+            bool playStaccato = (staccatoOverride == StemOverrideState.ForceActive) || (staccatoOverride == StemOverrideState.Auto && p.intensity01 > 0.35f);
+            if (playStaccato && staccatoOverride != StemOverrideState.Muted)
+            {
+                float staccVol = (staccatoOverride == StemOverrideState.ForceActive) ? 0.16f : (0.10f + 0.10f * p.intensity01);
+                AddStaccatoLayer(s, rng, p, chords, chordDur, beatSec, staccVol);
+            }
 
             // --- 8. Arpège euclidien + lead call-response ---
-            if (p.intensity01 > 0.25f)
-                AddEuclideanArp(s, rng, p, chords, chordDur, beatSec, 0.08f + 0.10f * p.intensity01, motifA);
-            if (p.intensity01 > 0.45f || p.tension01 > 0.5f)
-                AddLeadCallResponse(s, rng, p, motifA, motifB, barSec, beatSec, 0.10f + 0.09f * p.intensity01);
+            bool playArp = (arpOverride == StemOverrideState.ForceActive) || (arpOverride == StemOverrideState.Auto && p.intensity01 > 0.25f);
+            if (playArp && arpOverride != StemOverrideState.Muted)
+            {
+                float arpVol = (arpOverride == StemOverrideState.ForceActive) ? 0.15f : (0.08f + 0.10f * p.intensity01);
+                AddEuclideanArp(s, rng, p, chords, chordDur, beatSec, arpVol, motifA);
+            }
+
+            bool playLead = (leadOverride == StemOverrideState.ForceActive) || (leadOverride == StemOverrideState.Auto && (p.intensity01 > 0.45f || p.tension01 > 0.5f));
+            if (playLead && leadOverride != StemOverrideState.Muted)
+            {
+                float leadVol = (leadOverride == StemOverrideState.ForceActive) ? 0.16f : (0.10f + 0.09f * p.intensity01);
+                AddLeadCallResponse(s, rng, p, motifA, motifB, barSec, beatSec, leadVol);
+            }
 
             // --- 9. Chœur arcanotech en tension haute (jamais en chip 16-bit) ---
-            if (p.tension01 > 0.45f && !chip)
-                AddChoirBed(s, p, chords, chordDur, 0.05f + 0.09f * p.tension01);
+            bool playChoir = (choirOverride == StemOverrideState.ForceActive) || (choirOverride == StemOverrideState.Auto && p.tension01 > 0.45f && !chip);
+            if (playChoir && choirOverride != StemOverrideState.Muted)
+            {
+                float choirVol = (choirOverride == StemOverrideState.ForceActive) ? 0.12f : (0.05f + 0.09f * p.tension01);
+                AddChoirBed(s, p, chords, chordDur, choirVol);
+            }
 
             // --- 10. Structure FX : impact bar 0, riser mi-parcours, fill bar finale ---
             AddSectionFx(s, sidechain, rng, p, barSec, beatSec, isBreakLoop);
@@ -191,8 +255,11 @@ namespace Killtime.Audio
                 AddStrikeAccent(s, sidechain, rng, p, barSec, beatSec, p.strike01);
 
             // Sub profond + air
-            AddSubDrone(s, keyRoot, 0.07f + 0.03f * p.tension01);
-            AddAirShimmer(s, rng, p, 0.015f + 0.02f * p.brightness01);
+            if (subAirOverride != StemOverrideState.Muted)
+            {
+                AddSubDrone(s, keyRoot, 0.07f + 0.03f * p.tension01);
+                AddAirShimmer(s, rng, p, 0.015f + 0.02f * p.brightness01);
+            }
 
             // --- 11. Boucle propre + mastering ---
             LoopCrossfade(s, Mathf.Min(SampleRate / 2, n / 6));

@@ -55,7 +55,8 @@ namespace Killtime.Audio
             int trackCount = GetTrackCount(mood);
             trackIndex = Mathf.Clamp(trackIndex, 0, Mathf.Max(0, trackCount - 1));
 
-            int key = ((int)mood * 100) + (trackIndex * 10) + level;
+            int stemMask = KilltimeAudioManager.Instance != null ? KilltimeAudioManager.Instance.StemOverridesMask : 0;
+            int key = ((int)mood * 10000) + (trackIndex * 1000) + (level * 100) + (stemMask & 0xFF);
             // Un clip en cache peut devenir vide/déchargé côté Unity (vu en console :
             // 2e lecture de Combat T0 rendue avec 0 spl). On ne rejoue jamais un
             // clip vide : on régénère et on écrase le cache.
@@ -142,7 +143,7 @@ namespace Killtime.Audio
             int bQ = Mathf.RoundToInt(p.brightness01 * 10f);
             int cQ = Mathf.RoundToInt(p.chaos01 * 10f);
             int sQ = Mathf.RoundToInt(p.strike01 * 10f);
-            return $"{p.seed}:{p.generation}:{iQ}:{tQ}:{bQ}:{cQ}:{p.rootMidi}:{(int)p.scale}:{(int)p.drumStyle}:{(int)p.preset}:{p.bpm:0}:{p.bars}:{sQ}";
+            return $"{p.seed}:{p.generation}:{iQ}:{tQ}:{bQ}:{cQ}:{p.rootMidi}:{(int)p.scale}:{(int)p.drumStyle}:{(int)p.preset}:{p.bpm:0}:{p.bars}:{sQ}:{p.stemOverrides}";
         }
 
         // =====================================================================
@@ -245,22 +246,38 @@ namespace Killtime.Audio
             GetProgression(mood, trackIndex, out int[][] chords, out int[] roots, out float bpm,
                 out float padVol, out float drumAmount, out float arpRate, out float arpVol);
 
+            int stemMask = KilltimeAudioManager.Instance != null ? KilltimeAudioManager.Instance.StemOverridesMask : 0;
+            StemOverrideState drumOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.Drums * 2)) & 0x3);
+            StemOverrideState bassOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.Bass * 2)) & 0x3);
+            StemOverrideState padOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.Pad * 2)) & 0x3);
+            StemOverrideState arpOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.Arp * 2)) & 0x3);
+            StemOverrideState leadOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.Lead * 2)) & 0x3);
+            StemOverrideState choirOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.Choir * 2)) & 0x3);
+            StemOverrideState staccatoOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.Staccato * 2)) & 0x3);
+            StemOverrideState subAirOverride = (StemOverrideState)((stemMask >> ((int)ProceduralStemType.SubAir * 2)) & 0x3);
+
             float density = level / 2f;
             float drumVol = drumAmount * (0.35f + 0.65f * density);
 
-            if (drumVol > 0.04f && level >= 1)
+            bool playDrums = (drumOverride == StemOverrideState.ForceActive) || (drumOverride == StemOverrideState.Auto && drumVol > 0.04f && level >= 1);
+            if (playDrums && drumOverride != StemOverrideState.Muted)
             {
-                AddProductionDrums(s, sidechain, rng, bpm, drumVol, density, level);
+                AddProductionDrums(s, sidechain, rng, bpm, Mathf.Max(0.5f, drumVol), density, level);
             }
 
-            AddMasterChordProgression(s, sidechain, chords, bpm, padVol * (1f + 0.25f * level), level);
+            if (padOverride != StemOverrideState.Muted)
+            {
+                AddMasterChordProgression(s, sidechain, chords, bpm, padVol * (1f + 0.25f * level), level);
+            }
 
-            if (level >= 1)
+            bool playBass = (bassOverride == StemOverrideState.ForceActive) || (bassOverride == StemOverrideState.Auto && level >= 1);
+            if (playBass && bassOverride != StemOverrideState.Muted)
             {
                 AddMasterBassLine(s, sidechain, roots, chords, bpm, 0.22f + 0.08f * level, level);
             }
 
-            if (level >= 1 && arpVol > 0.01f)
+            bool playArp = (arpOverride == StemOverrideState.ForceActive) || (arpOverride == StemOverrideState.Auto && level >= 1 && arpVol > 0.01f);
+            if (playArp && arpOverride != StemOverrideState.Muted)
             {
                 AddMasterArpProgression(s, chords, bpm, arpRate, arpVol * (0.7f + 0.45f * level), level);
             }

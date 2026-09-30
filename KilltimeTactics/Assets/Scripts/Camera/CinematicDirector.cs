@@ -1421,6 +1421,10 @@ namespace Killtime.CameraSystem
 
             // Point d'impact physique : calculs, flash et apparition des textes au-dessus des têtes
             onStrikePoint?.Invoke();
+            if (KilltimeAudioManager.Instance != null)
+            {
+                KilltimeAudioManager.Instance.NotifyCombatStrike(false, false, 0.8f);
+            }
 
             // Temps de lecture de l'impact pendant que la jambe termine son mouvement et que le texte flotte
             float readTimer = 0f;

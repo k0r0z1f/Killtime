@@ -2030,10 +2030,7 @@ namespace Killtime.Tactics
                 // SFX combat : mapping complet du résultat (hybride procédural/clips).
                 if (KilltimeAudioManager.Instance != null && defender != null)
                 {
-                    KilltimeAudioManager.Instance.PlayCombatResult(
-                        result.IsHit, result.IsBlocked, result.IsCritical,
-                        result.ArmorAbsorbed > 0, result.ExceededEncaissement,
-                        result.FatalResolution.ToString(), defender.transform.position);
+                    KilltimeAudioManager.Instance.PlayCombatResult(result, defender.transform.position);
                     KilltimeAudioManager.Instance.Play(SoundId.Dice_Roll, 0.35f);
                 }
 
@@ -2338,10 +2335,7 @@ namespace Killtime.Tactics
 
             if (KilltimeAudioManager.Instance != null && defender != null)
             {
-                KilltimeAudioManager.Instance.PlayCombatResult(
-                    result.IsHit, result.IsBlocked, result.IsCritical,
-                    result.ArmorAbsorbed > 0, result.ExceededEncaissement,
-                    result.FatalResolution.ToString(), defender.transform.position);
+                KilltimeAudioManager.Instance.PlayCombatResult(result, defender.transform.position);
                 KilltimeAudioManager.Instance.Play(SoundId.Dice_Roll, 0.35f);
             }
 
@@ -2631,6 +2625,11 @@ namespace Killtime.Tactics
             var attVisual = attacker.GetComponent<TacticalUnitVisual>();
             attVisual?.TriggerGrenadeThrow();
 
+            if (KilltimeAudioManager.Instance != null)
+            {
+                KilltimeAudioManager.Instance.PlayGrenadeThrow(attacker.transform.position, useLauncher);
+            }
+
             // Brouillard de guerre : l'explosion révèle le lanceur (tirs bruyants).
             try { Killtime.Tactics.Visibility.FogOfWarManager.Instance?.NotifyLoudShot(attacker); }
             catch { /* fog optionnel */ }
@@ -2686,6 +2685,12 @@ namespace Killtime.Tactics
             }
 
             GrenadeExplosionFX.Detonate(blastPos, grenadeDef, Mathf.Max(0, grenadeDef.BlastRadius), _grid != null ? _grid.HexRadius : 1f);
+
+            if (KilltimeAudioManager.Instance != null)
+            {
+                bool heavy = grenadeDef.DamageDiceCount >= 3 || grenadeDef.BaseDamage >= 12;
+                KilltimeAudioManager.Instance.PlayGrenadeDetonation(blastPos, grenadeDef.GrenadeKind, heavy);
+            }
 
             ResolveGrenadeBlast(attacker, grenadeDef, launcher, aimedCoords, blastCoords, throwOutcome, dist, maxRange, totalPa, blastPos);
 

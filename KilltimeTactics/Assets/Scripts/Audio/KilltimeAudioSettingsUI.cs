@@ -23,6 +23,7 @@ namespace Killtime.Audio
         private Vector2 _scrollPos;
         private static GUIStyle _richLabel;
         private bool _showGenStyleList;
+        private bool _showStemGraph = true;
         private static readonly string[] _genStyleNames =
         {
             "Auto (dynamique)", "Electro", "Drum & Bass", "Rétro 16-bit", "Ciné moderne"
@@ -221,7 +222,12 @@ namespace Killtime.Audio
 
             GUILayout.Space(4);
 
-            // 1.b Module Caméléon (Écoute & Imitation Système)
+            // 1.b Matrice d'Orchestration & Graphe des 8 Voix / Stems
+            DrawStemOrchestrationGraph(mgr);
+
+            GUILayout.Space(4);
+
+            // 1.c Module Caméléon (Écoute & Imitation Système)
             // Pas de AddComponent pendant l'OnGUI : la création à la volée jouait
             // son Start (AudioSettings.Reset) et coupait la musique à la 1re
             // ouverture. Le composant est pré-créé par l'AutoBootstrap.
@@ -910,6 +916,125 @@ namespace Killtime.Audio
 
             GUILayout.Label($"{Mathf.RoundToInt(val * 100)}%", RichLabel(), GUILayout.Width(30));
             GUILayout.EndHorizontal();
+        }
+
+        private void DrawStemOrchestrationGraph(KilltimeAudioManager mgr)
+        {
+            var stems = mgr.GetProceduralStemsStatus();
+            int activeCount = 0;
+            for (int i = 0; i < stems.Count; i++) if (stems[i].IsActive) activeCount++;
+
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.BeginHorizontal();
+            string foldoutIcon = _showStemGraph ? "▾" : "▸";
+            if (GUILayout.Button($"{foldoutIcon} 🎼 <b>Orchestration Procédurale</b> <color=#00E5FF>[{activeCount}/8 Stems]</color>", RichLabel(), GUILayout.ExpandWidth(true)))
+            {
+                _showStemGraph = !_showStemGraph;
+            }
+
+            if (mgr.StemOverridesMask != 0 && GUILayout.Button("↺ Auto", GUILayout.Width(54), GUILayout.Height(18)))
+            {
+                mgr.ResetAllStemOverrides();
+            }
+            GUILayout.EndHorizontal();
+
+            if (_showStemGraph)
+            {
+                GUILayout.Space(2);
+
+                // Graphe cumulé d'énergie (Spectre horizontal global)
+                Rect spectrumRect = GUILayoutUtility.GetRect(ScopeW, 10);
+                Color prevColor = GUI.color;
+                GUI.color = new Color(0.04f, 0.08f, 0.12f, 0.9f);
+                GUI.DrawTexture(spectrumRect, Texture2D.whiteTexture);
+
+                float stepW = spectrumRect.width / Mathf.Max(1, stems.Count);
+                for (int i = 0; i < stems.Count; i++)
+                {
+                    var stem = stems[i];
+                    if (!stem.IsActive) continue;
+
+                    float hVal = Mathf.Clamp01(stem.Intensity * stem.RhythmicPulse);
+                    if (hVal <= 0.02f) continue;
+
+                    Rect barRect = new Rect(spectrumRect.x + i * stepW + 1f, spectrumRect.y + (1f - hVal) * spectrumRect.height, stepW - 2f, spectrumRect.height * hVal);
+                    GUI.color = stem.Color;
+                    GUI.DrawTexture(barRect, Texture2D.whiteTexture);
+                }
+                GUI.color = prevColor;
+
+                GUILayout.Space(4);
+
+                // Grille détaillée des 8 Stems avec commandes de priorité
+                for (int i = 0; i < stems.Count; i++)
+                {
+                    var stem = stems[i];
+                    GUILayout.BeginHorizontal();
+
+                    // Bouton de priorité manuel : [AUTO] (gris) -> [ON] (vert) -> [MUTE] (rouge)
+                    string ovLabel;
+                    Color ovBtnBg;
+                    switch (stem.OverrideState)
+                    {
+                        case StemOverrideState.Muted:
+                            ovLabel = "🔇";
+                            ovBtnBg = new Color(0.9f, 0.25f, 0.25f, 0.9f);
+                            break;
+                        case StemOverrideState.ForceActive:
+                            ovLabel = "🔊";
+                            ovBtnBg = new Color(0.15f, 0.85f, 0.35f, 0.9f);
+                            break;
+                        default:
+                            ovLabel = "⚡A";
+                            ovBtnBg = new Color(0.2f, 0.3f, 0.4f, 0.6f);
+                            break;
+                    }
+
+                    Color prevBg = GUI.backgroundColor;
+                    GUI.backgroundColor = ovBtnBg;
+                    if (GUILayout.Button(ovLabel, GUILayout.Width(28), GUILayout.Height(18)))
+                    {
+                        StemOverrideState nextState = stem.OverrideState switch
+                        {
+                            StemOverrideState.Auto => StemOverrideState.ForceActive,
+                            StemOverrideState.ForceActive => StemOverrideState.Muted,
+                            _ => StemOverrideState.Auto
+                        };
+                        mgr.SetStemOverride(stem.Type, nextState);
+                    }
+                    GUI.backgroundColor = prevBg;
+
+                    string statusColor = stem.IsActive ? "#00FF88" : "#667788";
+                    string nameText = stem.IsActive ? $"<color={statusColor}>●</color> <b>{stem.Name}</b>" : $"<color={statusColor}>○</color> <color=#778899>{stem.Name}</color>";
+                    GUILayout.Label(nameText, RichLabel(), GUILayout.Width(72));
+
+                    string subText = stem.IsActive ? $"<color=#A0B0C0>{TruncateDeviceName(stem.SubType, 13)}</color>" : "<color=#556677>Mute</color>";
+                    GUILayout.Label(subText, RichLabel(), GUILayout.Width(78));
+
+                    // VU-mètre d'activité par canal
+                    Rect vuRect = GUILayoutUtility.GetRect(50, 10);
+                    GUI.color = new Color(0.06f, 0.10f, 0.14f, 0.9f);
+                    GUI.DrawTexture(vuRect, Texture2D.whiteTexture);
+
+                    if (stem.IsActive)
+                    {
+                        float activity = Mathf.Clamp01(stem.Intensity * (0.35f + stem.RhythmicPulse * 0.65f));
+                        GUI.color = stem.Color;
+                        GUI.DrawTexture(new Rect(vuRect.x, vuRect.y, vuRect.width * activity, vuRect.height), Texture2D.whiteTexture);
+                        GUI.color = Color.white;
+                        GUILayout.Label($"{Mathf.RoundToInt(activity * 100)}%", RichLabel(), GUILayout.Width(26));
+                    }
+                    else
+                    {
+                        GUI.color = Color.white;
+                        GUILayout.Label("<color=#556677>0%</color>", RichLabel(), GUILayout.Width(26));
+                    }
+
+                    GUI.color = prevColor;
+                    GUILayout.EndHorizontal();
+                }
+            }
+            GUILayout.EndVertical();
         }
 
         private static string TruncateDeviceName(string name, int maxChars)

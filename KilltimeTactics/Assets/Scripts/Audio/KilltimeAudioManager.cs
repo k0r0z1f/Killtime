@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using Killtime.Core.Combat;
 
 namespace Killtime.Audio
 {
@@ -15,6 +16,18 @@ namespace Killtime.Audio
     ///
     /// Aucune dépendance externe (pas de FMOD/Wwise) pour garder l'export WebGL léger.
     /// </summary>
+    public struct ProceduralStemStatus
+    {
+        public ProceduralStemType Type;
+        public string Name;
+        public string SubType;
+        public bool IsActive;
+        public float Intensity;
+        public float RhythmicPulse;
+        public Color Color;
+        public StemOverrideState OverrideState;
+    }
+
     [DisallowMultipleComponent]
     public class KilltimeAudioManager : MonoBehaviour
     {
@@ -76,8 +89,10 @@ namespace Killtime.Audio
         [Tooltip("Legacy : la musique reste désormais à pitch 1 pendant les cinématiques (non-régression ralenti). Conservé pour compatibilité Inspecteur.")]
         [SerializeField, Range(0.4f, 1f)] private float _slowMoMusicPitch = 0.62f;
 #pragma warning restore CS0414
-        [Tooltip("Plafond du filtre bullet-time : 3800 Hz adoucit les SFX sans effet 'sous l'eau' sur tout le master (750 Hz étouffait aussi la musique).")]
+        #pragma warning disable CS0414
+        [Tooltip("Legacy : le filtre passe-bas sur l'AudioListener a été neutralisé pour préserver l'intégrité fréquentielle de la musique.")]
         [SerializeField] private float _slowMoLowpass = 3800f;
+#pragma warning restore CS0414
 
         private const string PP_MASTER = "KT_Audio_Master";
         private const string PP_MUSIC = "KT_Audio_Music";
@@ -109,7 +124,6 @@ namespace Killtime.Audio
         public int CurrentTrackIndex => _currentTrackIndex;
 
         private AudioSource _ambienceSource;
-        private AudioLowPassFilter _masterLowpass;
 
         private readonly Dictionary<SoundId, float> _lastPlayTime = new();
         private float _slowMoWeight;           // 0 normal -> 1 bullet-time
@@ -121,6 +135,291 @@ namespace Killtime.Audio
         public float CurrentIntensity => _targetIntensity01;
         public MusicIntensity CurrentIntensityLevel => AdaptiveMusicDirector.Quantize(_targetIntensity01);
         public bool IsMuted => _muted;
+        public AudioSource ActiveMusicSource => _activeMusic;
+
+        private readonly float[] _rmsBuffer = new float[64];
+
+        public float GetActiveMusicRms()
+        {
+            if (_activeMusic == null || !_activeMusic.isPlaying) return 0f;
+            try
+            {
+                _activeMusic.GetOutputData(_rmsBuffer, 0);
+                float sum = 0f;
+                for (int i = 0; i < _rmsBuffer.Length; i++)
+                {
+                    sum += _rmsBuffer[i] * _rmsBuffer[i];
+                }
+                return Mathf.Sqrt(sum / _rmsBuffer.Length);
+            }
+            catch (System.Exception)
+            {
+                return 0f;
+            }
+        }
+
+        public List<ProceduralStemStatus> GetProceduralStemsStatus()
+        {
+            var stems = new List<ProceduralStemStatus>(8);
+            float rms = GetActiveMusicRms();
+            float t = (_activeMusic != null && _activeMusic.isPlaying) ? _activeMusic.time : Time.unscaledTime;
+
+            if (_generativeCombat && IsGenerativeMood(_targetMood) && _genParamsValid)
+            {
+                var gp = _genParams;
+                float bpm = Mathf.Max(60f, gp.bpm);
+                float beat = t * (bpm / 60f);
+
+                float cineStemDucking = Mathf.Clamp01(1f - 0.45f * _cinematicDuck);
+
+                // 1. Batterie
+                var drumOv = GetStemOverride(ProceduralStemType.Drums);
+                bool isBreak = (gp.generation % 5 == 4) && gp.intensity01 < 0.85f;
+                float drumGate = isBreak ? 0.25f : 1f;
+                float drumVol = (drumOv == StemOverrideState.ForceActive) ? 0.85f : ((0.55f + 0.65f * gp.intensity01) * drumGate * cineStemDucking);
+                bool drumsOn = drumOv == StemOverrideState.ForceActive || (drumOv == StemOverrideState.Auto && drumVol > 0.04f);
+                if (drumOv == StemOverrideState.Muted) drumsOn = false;
+                float drumPulse = drumsOn ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * Mathf.PI)), 3f) : 0f;
+                string drumSub = isBreak ? $"Break ({gp.drumStyle})" : gp.drumStyle.ToString();
+                if (_cinematicDuck > 0.1f) drumSub += " [Ciné-Duck]";
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.Drums,
+                    Name = "Batterie",
+                    SubType = drumSub,
+                    IsActive = drumsOn,
+                    Intensity = drumsOn ? Mathf.Clamp01(drumVol) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(drumPulse * (0.6f + rms * 2.5f)),
+                    Color = new Color(1.0f, 0.25f, 0.4f),
+                    OverrideState = drumOv
+                });
+
+                // 2. Basse
+                var bassOv = GetStemOverride(ProceduralStemType.Bass);
+                float bassVol = (bassOv == StemOverrideState.ForceActive) ? 0.42f : (0.30f + 0.14f * gp.intensity01);
+                bool bassOn = bassOv != StemOverrideState.Muted;
+                bool bassGrowl = gp.intensity01 > 0.62f && gp.preset != GenerativeStylePreset.Retro16Bit;
+                float bassPulse = bassOn ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * 2f * Mathf.PI)), 2.5f) : 0f;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.Bass,
+                    Name = "Basse FM",
+                    SubType = bassGrowl ? "Growl FM & Reese" : "Sub Clean / 808",
+                    IsActive = bassOn,
+                    Intensity = bassOn ? Mathf.Clamp01(bassVol * 1.5f) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(bassPulse * (0.5f + rms * 3f)),
+                    Color = new Color(0.2f, 0.9f, 0.3f),
+                    OverrideState = bassOv
+                });
+
+                // 3. Pad Supersaw
+                var padOv = GetStemOverride(ProceduralStemType.Pad);
+                float padVol = (padOv == StemOverrideState.ForceActive) ? 0.32f : (0.20f + 0.10f * (1f - gp.intensity01) + 0.06f * gp.tension01);
+                bool padOn = padOv != StemOverrideState.Muted;
+                float padPulse = padOn ? (0.65f + 0.35f * Mathf.Sin(t * 0.75f)) : 0f;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.Pad,
+                    Name = "Nappe (Pad)",
+                    SubType = $"Supersaw (Bri {Mathf.RoundToInt(gp.brightness01 * 100)}%)",
+                    IsActive = padOn,
+                    Intensity = padOn ? Mathf.Clamp01(padVol * 2.2f) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(padPulse * (0.7f + rms * 1.5f)),
+                    Color = new Color(0.15f, 0.75f, 1.0f),
+                    OverrideState = padOv
+                });
+
+                // 4. Arpège Euclidien
+                var arpOv = GetStemOverride(ProceduralStemType.Arp);
+                bool arpAuto = gp.intensity01 > 0.25f;
+                bool arpOn = arpOv == StemOverrideState.ForceActive || (arpOv == StemOverrideState.Auto && arpAuto);
+                if (arpOv == StemOverrideState.Muted) arpOn = false;
+                float arpVol = arpOn ? (0.08f + 0.10f * gp.intensity01) : 0f;
+                float arpPulse = arpOn ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * 4f * Mathf.PI)), 2f) : 0f;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.Arp,
+                    Name = "Arpège",
+                    SubType = arpOn ? "Euclidien 16-step" : "Mute (< 25% Énergie)",
+                    IsActive = arpOn,
+                    Intensity = arpOn ? Mathf.Clamp01(arpVol * 3.5f) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(arpPulse * (0.6f + rms * 2f)),
+                    Color = new Color(0.95f, 0.85f, 0.2f),
+                    OverrideState = arpOv
+                });
+
+                // 5. Lead Soliste
+                var leadOv = GetStemOverride(ProceduralStemType.Lead);
+                bool leadAuto = gp.intensity01 > 0.45f || gp.tension01 > 0.5f;
+                bool leadOn = leadOv == StemOverrideState.ForceActive || (leadOv == StemOverrideState.Auto && leadAuto);
+                if (leadOv == StemOverrideState.Muted) leadOn = false;
+                float leadVol = leadOn ? ((0.10f + 0.09f * gp.intensity01) * cineStemDucking) : 0f;
+                float leadPulse = leadOn ? Mathf.Abs(Mathf.Sin(beat * 0.5f * Mathf.PI)) : 0f;
+                string leadSub = leadOn ? (gp.preset == GenerativeStylePreset.Retro16Bit ? "Square 16-Bit" : "Call-Response Saw") : "Standby";
+                if (_cinematicDuck > 0.1f && leadOn) leadSub += " [Ciné-Duck]";
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.Lead,
+                    Name = "Lead Synth",
+                    SubType = leadSub,
+                    IsActive = leadOn,
+                    Intensity = leadOn ? Mathf.Clamp01(leadVol * 3f) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(leadPulse * (0.5f + rms * 2.5f)),
+                    Color = new Color(1.0f, 0.55f, 0.1f),
+                    OverrideState = leadOv
+                });
+
+                // 6. Chœur Arcanotech
+                var choirOv = GetStemOverride(ProceduralStemType.Choir);
+                bool choirAuto = gp.tension01 > 0.45f && gp.preset != GenerativeStylePreset.Retro16Bit;
+                bool choirOn = choirOv == StemOverrideState.ForceActive || (choirOv == StemOverrideState.Auto && choirAuto);
+                if (choirOv == StemOverrideState.Muted) choirOn = false;
+                float choirVol = choirOn ? (0.05f + 0.09f * gp.tension01) : 0f;
+                float choirPulse = choirOn ? (0.6f + 0.4f * Mathf.Sin(t * 1.1f)) : 0f;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.Choir,
+                    Name = "Chœur",
+                    SubType = choirOn ? "Arcanotech Vox Bed" : "Inactif (Tension < 45%)",
+                    IsActive = choirOn,
+                    Intensity = choirOn ? Mathf.Clamp01(choirVol * 4f) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(choirPulse * (0.7f + rms * 1.5f)),
+                    Color = new Color(0.8f, 0.45f, 1.0f),
+                    OverrideState = choirOv
+                });
+
+                // 7. Staccato / Djent
+                var staccOv = GetStemOverride(ProceduralStemType.Staccato);
+                bool staccAuto = gp.intensity01 > 0.35f;
+                bool staccOn = staccOv == StemOverrideState.ForceActive || (staccOv == StemOverrideState.Auto && staccAuto);
+                if (staccOv == StemOverrideState.Muted) staccOn = false;
+                float staccVol = staccOn ? (0.10f + 0.10f * gp.intensity01) : 0f;
+                float staccPulse = staccOn ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * 2f * Mathf.PI + 0.5f)), 3f) : 0f;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.Staccato,
+                    Name = "Staccato",
+                    SubType = staccOn ? "Strings & Chug" : "Mute (< 35% Énergie)",
+                    IsActive = staccOn,
+                    Intensity = staccOn ? Mathf.Clamp01(staccVol * 3f) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(staccPulse * (0.5f + rms * 2.5f)),
+                    Color = new Color(0.9f, 0.3f, 0.6f),
+                    OverrideState = staccOv
+                });
+
+                // 8. Sub & Shimmer
+                var subAirOv = GetStemOverride(ProceduralStemType.SubAir);
+                bool subAirOn = subAirOv != StemOverrideState.Muted;
+                float subPulse = subAirOn ? (0.8f + 0.2f * Mathf.Sin(t * 0.4f)) : 0f;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Type = ProceduralStemType.SubAir,
+                    Name = "Sub & Air",
+                    SubType = $"{gp.rootMidi} MIDI / Shimmer",
+                    IsActive = subAirOn,
+                    Intensity = subAirOn ? (0.5f + 0.3f * gp.tension01) : 0f,
+                    RhythmicPulse = Mathf.Clamp01(subPulse * (0.8f + rms * 1.2f)),
+                    Color = new Color(0.0f, 0.85f, 0.95f),
+                    OverrideState = subAirOv
+                });
+            }
+            else
+            {
+                // Mode Standard / Préfaites (Explore, Tension, Combat T0-T2, Boss, Victory, Defeat)
+                int level = _currentLevel;
+                float bpm = (_targetMood == MusicMood.Explore || _targetMood == MusicMood.Tension || _targetMood == MusicMood.Defeat) ? 60f : 120f;
+                float beat = t * (bpm / 60f);
+
+                bool drumsActive = level >= 1 && (_targetMood == MusicMood.Combat || _targetMood == MusicMood.CombatBoss || _targetMood == MusicMood.Victory);
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Batterie",
+                    SubType = drumsActive ? (_targetMood == MusicMood.CombatBoss ? "War Taikos" : "Production Drums") : "Mute (Niveau 0)",
+                    IsActive = drumsActive,
+                    Intensity = drumsActive ? (0.4f + level * 0.3f) : 0f,
+                    RhythmicPulse = drumsActive ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * Mathf.PI)), 2.5f) : 0f,
+                    Color = new Color(1.0f, 0.25f, 0.4f)
+                });
+
+                bool bassActive = level >= 1 && (_targetMood == MusicMood.Combat || _targetMood == MusicMood.CombatBoss || _targetMood == MusicMood.Victory);
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Basse",
+                    SubType = bassActive ? (_targetMood == MusicMood.Combat && _currentTrackIndex == 2 ? "Neuro Cyber Bass" : "Master Bassline") : "Mute",
+                    IsActive = bassActive,
+                    Intensity = bassActive ? (0.4f + level * 0.28f) : 0f,
+                    RhythmicPulse = bassActive ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * 2f * Mathf.PI)), 2f) : 0f,
+                    Color = new Color(0.2f, 0.9f, 0.3f)
+                });
+
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Harmonie (Pad)",
+                    SubType = $"{_targetMood} Chords",
+                    IsActive = true,
+                    Intensity = 0.6f + level * 0.2f,
+                    RhythmicPulse = 0.7f + 0.3f * Mathf.Sin(t * 0.8f),
+                    Color = new Color(0.15f, 0.75f, 1.0f)
+                });
+
+                bool arpActive = level >= 1 && (_targetMood == MusicMood.Combat || _targetMood == MusicMood.CombatBoss || _targetMood == MusicMood.Victory);
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Arpège",
+                    SubType = arpActive ? "Master Arp Echo" : "Mute",
+                    IsActive = arpActive,
+                    Intensity = arpActive ? (0.35f + level * 0.3f) : 0f,
+                    RhythmicPulse = arpActive ? Mathf.Abs(Mathf.Sin(beat * 4f * Mathf.PI)) : 0f,
+                    Color = new Color(0.95f, 0.85f, 0.2f)
+                });
+
+                bool leadActive = _targetMood == MusicMood.CombatBoss && level >= 1;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Lead Acid",
+                    SubType = leadActive ? "Cybernetic Acid Lead" : "Inactif",
+                    IsActive = leadActive,
+                    Intensity = leadActive ? (0.45f + level * 0.25f) : 0f,
+                    RhythmicPulse = leadActive ? Mathf.Abs(Mathf.Sin(beat * Mathf.PI)) : 0f,
+                    Color = new Color(1.0f, 0.55f, 0.1f)
+                });
+
+                bool choirActive = _targetMood == MusicMood.CombatBoss;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Chœur",
+                    SubType = choirActive ? "Arcanotech Choir (Boss)" : "Inactif",
+                    IsActive = choirActive,
+                    Intensity = choirActive ? (0.5f + level * 0.25f) : 0f,
+                    RhythmicPulse = choirActive ? (0.6f + 0.4f * Mathf.Sin(t * 1.2f)) : 0f,
+                    Color = new Color(0.8f, 0.45f, 1.0f)
+                });
+
+                bool staccActive = _targetMood == MusicMood.Combat && (_currentTrackIndex == 0 || _currentTrackIndex == 1);
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Staccato / Clang",
+                    SubType = staccActive ? "Pulse Strings & Anvil" : (_targetMood == MusicMood.Combat && _currentTrackIndex == 2 ? "Djent Chug" : "Mute"),
+                    IsActive = staccActive || (_targetMood == MusicMood.Combat && _currentTrackIndex == 2),
+                    Intensity = staccActive ? 0.65f : 0f,
+                    RhythmicPulse = staccActive ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * 2f * Mathf.PI)), 2.5f) : 0f,
+                    Color = new Color(0.9f, 0.3f, 0.6f)
+                });
+
+                bool heartActive = _targetMood == MusicMood.Tension && level >= 1;
+                stems.Add(new ProceduralStemStatus
+                {
+                    Name = "Sub / Atmos",
+                    SubType = heartActive ? "Heartbeat & Riser" : (_targetMood == MusicMood.Explore ? "Sub & Shimmer" : "Sub Rumble"),
+                    IsActive = true,
+                    Intensity = 0.6f,
+                    RhythmicPulse = heartActive ? Mathf.Pow(Mathf.Abs(Mathf.Sin(beat * Mathf.PI)), 4f) : (0.7f + 0.3f * Mathf.Sin(t * 0.5f)),
+                    Color = new Color(0.0f, 0.85f, 0.95f)
+                });
+            }
+
+            return stems;
+        }
 
         // --- État génératif ∞ ---
         private int _genGeneration = 0;
@@ -133,6 +432,41 @@ namespace Killtime.Audio
         private int _lastAllies = 3;
         private int _lastEnemies = 2;
         private int _lastTurn = 0;
+        private int _stemOverrides = 0;
+
+        public int StemOverridesMask => _stemOverrides;
+
+        public StemOverrideState GetStemOverride(ProceduralStemType stem)
+        {
+            return (StemOverrideState)((_stemOverrides >> ((int)stem * 2)) & 0x3);
+        }
+
+        public void SetStemOverride(ProceduralStemType stem, StemOverrideState state)
+        {
+            int shift = (int)stem * 2;
+            _stemOverrides = (_stemOverrides & ~(0x3 << shift)) | (((int)state & 0x3) << shift);
+            ApplyStemOverridesAndRefresh();
+        }
+
+        public void ResetAllStemOverrides()
+        {
+            if (_stemOverrides == 0) return;
+            _stemOverrides = 0;
+            ApplyStemOverridesAndRefresh();
+        }
+
+        private void ApplyStemOverridesAndRefresh()
+        {
+            if (_generativeCombat && IsGenerativeMood(_targetMood))
+            {
+                _genParams.stemOverrides = _stemOverrides;
+                RequestGenerativeVariation();
+            }
+            else if (_targetMood != MusicMood.None)
+            {
+                PlayMusic(_targetMood, _currentTrackIndex, _targetIntensity01, forceRestart: true);
+            }
+        }
 
         public bool GenerativeCombatEnabled => _generativeCombat;
         public GenerativeStylePreset GenerativePreset => _generativePreset;
@@ -181,34 +515,6 @@ namespace Killtime.Audio
             ProceduralAudioFactory.ClearCache();
             LoadVolumes();
             BuildPools();
-            // Lowpass global (bullet-time) : doit vivre sur un objet avec
-            // AudioListener/AudioSource, sinon AddComponent loggue une erreur native
-            // "Add required component..." à chaque lancement. Le manager n'en a pas
-            // (sources sur enfants), donc on tente le Listener principal, sinon on
-            // reste sans filtre (Update() gère déjà _masterLowpass == null).
-            _masterLowpass = null;
-            try
-            {
-                var listener = FindAnyObjectByType<AudioListener>();
-                GameObject host = listener != null ? listener.gameObject : gameObject;
-                bool hostHasAudio = host.GetComponent<AudioListener>() != null
-                    || host.GetComponent<AudioSource>() != null;
-                if (hostHasAudio)
-                {
-                    _masterLowpass = host.GetComponent<AudioLowPassFilter>();
-                    if (_masterLowpass == null) _masterLowpass = host.AddComponent<AudioLowPassFilter>();
-                    if (_masterLowpass != null)
-                    {
-                        _masterLowpass.enabled = false;
-                        _masterLowpass.cutoffFrequency = 22000f;
-                    }
-                }
-            }
-            catch (System.Exception ex)
-            {
-                Debug.LogWarning($"[Audio] Lowpass global désactivé : {ex.Message}");
-                _masterLowpass = null;
-            }
             ApplyAllVolumes();
         }   
 
@@ -230,14 +536,6 @@ namespace Killtime.Audio
             // _cinematicDuck*0.5 qui pitchait déjà à 0.81 pendant le zoom.
             float targetSlow = (Time.timeScale < 0.7f && Time.timeScale > 0.0001f) ? 1f : 0f;
             _slowMoWeight = Mathf.MoveTowards(_slowMoWeight, targetSlow, Time.unscaledDeltaTime * 5f);
-
-            if (_masterLowpass != null)
-            {
-                bool needFilter = _slowMoWeight > 0.02f;
-                _masterLowpass.enabled = needFilter;
-                if (needFilter)
-                    _masterLowpass.cutoffFrequency = Mathf.Lerp(22000f, _slowMoLowpass, _slowMoWeight);
-            }
 
             // Musique : pitch constant. Le bullet-time ne s'applique qu'aux SFX
             // (voir ConfigureAndPlay avec _slowMoSfxPitch). Forcer 1f corrige
@@ -311,7 +609,31 @@ namespace Killtime.Audio
             ConfigureAndPlay(src, def, clip, volumeScale, pitchScale, worldPos, is3D);
         }
 
-        /// <summary>Helper combat : mappe un DamageResult vers les bons SFX (appelé par l'arène).</summary>
+        /// <summary>
+        /// Résolution audio directe depuis la structure DamageResult officielle (Livre VI).
+        /// Automatise les accents percussifs et l'élévation de tension des stems procéduraux.
+        /// </summary>
+        public void PlayCombatResult(DamageResult result, Vector3 atPos)
+        {
+            if (_generativeCombat && result.IsHit)
+            {
+                bool isKill = result.FatalResolution == FatalBlowResolution.InstantDeath;
+                float strikeWeight = isKill ? 1.0f : (result.IsCritical ? 0.85f : (result.ExceededEncaissement ? 0.65f : 0.4f));
+                NotifyCombatStrike(result.IsCritical, isKill, strikeWeight);
+            }
+
+            PlayCombatResult(
+                result.IsHit,
+                result.IsBlocked,
+                result.IsCritical,
+                result.ArmorAbsorbed > 0,
+                result.ExceededEncaissement,
+                result.FatalResolution != FatalBlowResolution.None ? result.FatalResolution.ToString() : null,
+                atPos
+            );
+        }
+
+        /// <summary>Helper combat legacy : mappe un DamageResult vers les bons SFX (appelé par l'arène).</summary>
         public void PlayCombatResult(bool isHit, bool isBlocked, bool isCritical, bool armorAbsorbed,
             bool shock, string fatalResolution, Vector3 atPos)
         {
@@ -512,12 +834,6 @@ namespace Killtime.Audio
         {
             float s = amount01 >= 0f ? Mathf.Clamp01(amount01) : (kill ? 1f : (critical ? 0.75f : 0.4f));
             _pendingStrike = Mathf.Max(_pendingStrike, s);
-            // Si on est à mi-boucle, on force une régénération anticipée pour
-            // que l'accent arrive vite (sinon il attendrait la fin du loop).
-            if (_generativeCombat && _genParamsValid && _genLoopTimer > 3f && _genLoopDur - _genLoopTimer > 4f)
-            {
-                _genLoopTimer = _genLoopDur - Mathf.Max(0.6f, _generativeCrossfade + 0.4f) - 0.05f;
-            }
         }
 
         /// <summary>Force immédiatement une variation inédite (bouton UI / rotation).</summary>
@@ -534,6 +850,7 @@ namespace Killtime.Audio
             _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                 _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
                 _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset);
+            _genParams.stemOverrides = _stemOverrides;
             _genParamsValid = true;
             _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
             _genLoopTimer = 0f;
@@ -564,6 +881,7 @@ namespace Killtime.Audio
                 _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                     _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
                     _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset);
+                _genParams.stemOverrides = _stemOverrides;
                 // L'intensité de référence vient de l'état tactique, pas du paramètre d'appel,
                 // pour que le BPM/gamme suivent le vrai danger (l'appel ne donne qu'une base).
                 if (!sameMood && _genParamsValid) { /* garde la continuité */ }
@@ -600,6 +918,7 @@ namespace Killtime.Audio
             _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                 _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
                 _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset);
+            _genParams.stemOverrides = _stemOverrides;
             _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
             _genLoopTimer = 0f;
             _targetIntensity01 = _genParams.intensity01;
@@ -935,7 +1254,7 @@ namespace Killtime.Audio
             }
 
             float catVol = CategoryVolume(cat);
-            float duck = cat == SoundCategory.Music ? (1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck)
+            float duck = cat == SoundCategory.Music ? (1f - 0.5f * _pauseDuck)
                        : cat == SoundCategory.Ambience ? (1f - 0.4f * _cinematicDuck)
                        : 1f;
             src.volume = (_muted ? 0f : 1f) * _masterVolume * catVol * def.Volume * volumeScale * Mathf.Max(0f, duck);
@@ -1079,7 +1398,7 @@ namespace Killtime.Audio
                     float gIn = Mathf.Sin(k * Mathf.PI * 0.5f);
                     float gOut = Mathf.Cos(k * Mathf.PI * 0.5f);
                     float targetVol = _musicVolume * _masterVolume;
-                    float duck = Mathf.Max(0f, 1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck);
+                    float duck = Mathf.Max(0f, 1f - 0.5f * _pauseDuck);
                     float mute = _muted ? 0f : 1f;
                     fadeIn.volume = mute * targetVol * gIn * duck;
                     if (fadeOut != null) fadeOut.volume = mute * targetVol * gOut * duck;
@@ -1153,7 +1472,7 @@ namespace Killtime.Audio
                     float gIn = Mathf.Sin(k * Mathf.PI * 0.5f);
                     float gOut = Mathf.Cos(k * Mathf.PI * 0.5f);
                     float targetVol = _musicVolume * _masterVolume;
-                    float duck = Mathf.Max(0f, 1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck);
+                    float duck = Mathf.Max(0f, 1f - 0.5f * _pauseDuck);
                     float mute = _muted ? 0f : 1f;
                     fadeIn.volume = mute * targetVol * gIn * duck;
                     if (fadeOut != null) fadeOut.volume = mute * targetVol * gOut * duck;
@@ -1212,7 +1531,7 @@ namespace Killtime.Audio
             {
                 // Paramètres exposés en dB : 0dB = 1.0, -40dB = quasi muet.
                 SetMixerDb(_masterParam, _masterVolume);
-                SetMixerDb(_musicParam, _musicVolume * (1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck));
+                SetMixerDb(_musicParam, _musicVolume * (1f - 0.5f * _pauseDuck));
                 SetMixerDb(_sfxParam, _sfxVolume);
                 SetMixerDb(_uiParam, _uiVolume);
                 SetMixerDb(_ambienceParam, _ambienceVolume);
@@ -1223,7 +1542,7 @@ namespace Killtime.Audio
             // où la coroutine pilote déjà les volumes chaque frame).
             if (_activeMusic != null && !_isFading)
             {
-                float duck = Mathf.Max(0f, 1f - 0.35f * _cinematicDuck - 0.5f * _pauseDuck);
+                float duck = Mathf.Max(0f, 1f - 0.5f * _pauseDuck);
                 _activeMusic.volume = (_muted ? 0f : 1f) * _musicVolume * _masterVolume * duck;
             }
         }
