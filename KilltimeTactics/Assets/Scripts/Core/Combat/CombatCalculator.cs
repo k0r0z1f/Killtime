@@ -56,6 +56,9 @@ namespace Killtime.Core.Combat
         public bool IsRangedAttack;
         public bool IsMartialArtsStrike;
         public bool AppliedCanonEntrave;
+        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §31.2).
+        // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
+        public int WeaponBonusEc;
 
         // Couvert & visibilité (Livre VI §25.3) : Half -1, ThreeQuarters -2,
         // Full = cible non visible => attaque impossible (BeginDuel refuse).
@@ -136,7 +139,8 @@ namespace Killtime.Core.Combat
             int defenderBonusAP = 0,
             int attackerPE = 0,
             int defenderPE = 0,
-            CoverType cover = CoverType.None)
+            CoverType cover = CoverType.None,
+            int weaponBonusEc = 0)
         {
             // RÈGLE CODEX : aucun mod de caractéristique ajouté. Malus d'états uniquement.
             // Le dé offensif applique le Corps Augmenté (Mains Nues : MAG substituable à FOR).
@@ -179,7 +183,8 @@ namespace Killtime.Core.Combat
                 attackSkill: attackSkill,
                 defenseSkill: defenseSkill,
                 defenderSpecialization: defenderSpecialization,
-                cover: cover
+                cover: cover,
+                weaponBonusEc: weaponBonusEc
             );
         }
 
@@ -205,7 +210,8 @@ namespace Killtime.Core.Combat
             SkillType defenseSkill = SkillType.Esquive,
             int attackerPE = 0,
             int defenderPE = 0,
-            CoverType cover = CoverType.None)
+            CoverType cover = CoverType.None,
+            int weaponBonusEc = 0)
         {
             return ResolveTargetedAttackInternal(
                 attacker: attacker,
@@ -226,7 +232,8 @@ namespace Killtime.Core.Combat
                 attackSkill: attackSkill,
                 defenseSkill: defenseSkill,
                 defenderSpecialization: null,
-                cover: cover
+                cover: cover,
+                weaponBonusEc: weaponBonusEc
             );
         }
 
@@ -256,7 +263,8 @@ namespace Killtime.Core.Combat
             SkillType attackSkill,
             SkillType defenseSkill,
             out string error,
-            CoverType cover = CoverType.None)
+            CoverType cover = CoverType.None,
+            int weaponBonusEc = 0)
         {
             error = null;
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
@@ -297,8 +305,9 @@ namespace Killtime.Core.Combat
                 BlockedByCover = false
             };
 
-            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert.
-            int baseAtt = attackModifier + duel.CoverAttackPenalty;
+            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC.
+            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc);
+            duel.WeaponBonusEc = Math.Max(0, weaponBonusEc);
             if (duel.IsRangedAttack && !cancelPenaltyWithAP)
             {
                 baseAtt += targetInfo.DifficultyModifier;
@@ -377,7 +386,8 @@ namespace Killtime.Core.Combat
             string defenderSpecialization,
             int defenderArmor,
             out string error,
-            CoverType cover = CoverType.None)
+            CoverType cover = CoverType.None,
+            int weaponBonusEc = 0)
         {
             DiceType attackDie = attacker.GetSkillDie(attackSkill, true);
             int attackModifier = attacker.GetStatusModifier(attackSkill, isOffensive: true);
@@ -391,7 +401,7 @@ namespace Killtime.Core.Combat
             }
             return BeginDuel(attacker, defender, targetedPart, attackDie, attackModifier,
                 defenseDie, defenseModifier, weaponBaseDamage, cancelPenaltyWithAP,
-                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover);
+                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover, weaponBonusEc);
         }
 
         /// <summary>
@@ -688,7 +698,8 @@ namespace Killtime.Core.Combat
             for (int i = 0; i < requested; i++)
             {
                 // 1 PA bonus = +1 au jet ; Ralenti / Dernier Souffle gérés dans ConsumeActionPoints.
-                if (stats.ConsumeActionPoints(1)) applied++;
+                // Mises exemptées du malus armures (ce sont des modificateurs, pas des actions).
+                if (stats.ConsumeActionPoints(1, true)) applied++;
                 else break;
             }
             return applied;
@@ -713,7 +724,8 @@ namespace Killtime.Core.Combat
             SkillType attackSkill,
             SkillType defenseSkill,
             string defenderSpecialization = null,
-            CoverType cover = CoverType.None)
+            CoverType cover = CoverType.None,
+            int weaponBonusEc = 0)
         {
             // --- Duel aveugle : base attaque -> mise attaquant (cachée) ->
             // --- mise défenseur à l'aveugle -> révélation simultanée -> résolution normale.
@@ -721,7 +733,7 @@ namespace Killtime.Core.Combat
                 attacker, defender, targetedPart,
                 attackDie, attackModifier, defenseDie, defenseModifier,
                 weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend,
-                defenderArmor, attackSkill, defenseSkill, out string error, cover);
+                defenderArmor, attackSkill, defenseSkill, out string error, cover, weaponBonusEc);
             if (duel == null)
             {
                 var cfg0 = Rules.CoreRulesConfig.Instance;
@@ -816,13 +828,14 @@ namespace Killtime.Core.Combat
                 : duel.Cover == CoverType.ThreeQuarters
                     ? $" [Couvert : 3/4 couvert {duel.CoverAttackPenalty}]"
                     : "";
+            string ecText = duel.WeaponBonusEc > 0 ? $" [+{duel.WeaponBonusEc}ec arme]" : "";
 
             int normalRef = (attacker.Attributes.Force + attacker.Attributes.Agilite + 1) / 2;
             string augText = (attacker.IsMagicAugmented(attackSkill, true)
                     && attacker.Attributes.Magie > normalRef)
                 ? $" [Corps Augmenté : MAG {attacker.Attributes.Magie} (+{SkillDefinitions.CharacteristicSteps(attacker.Attributes.Magie)} paliers)]"
                 : "";
-            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText} = Total {attackRoll.Total}]{augText}{critAttText}";
+            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
             // Traçabilité Livre VI §24.1 (duel aveugle) : déclarations masquées puis révélation.
             string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.";
@@ -876,7 +889,7 @@ namespace Killtime.Core.Combat
                 dmgFormula += $" x{actualInfo.CriticalDamageMultiplier} (Critique {actualInfo.DisplayName})";
             }
 
-            int totalArmor = duel.DefenderArmor + defender.BaseArmorAbsorption;
+            int totalArmor = duel.DefenderArmor + defender.BaseArmorAbsorption + defender.GetWornArmorBonus();
             if (attacker.HasSpecialization("Leviers Densifiés : Pointe Cristalline") && duel.AttackSkill == SkillType.MainsNues)
             {
                 totalArmor = Math.Max(0, totalArmor - 3);
@@ -979,6 +992,10 @@ namespace Killtime.Core.Combat
 
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = Math.Max(0, rawDamage - absorbed);
+            // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
+            // chair — aucun choc traumatique tant qu'elle encaisse tout.
+            int shieldAbsorbed = defender.AbsorbShield(finalDamage);
+            finalDamage -= shieldAbsorbed;
             int prevHp = defender.CurrentHealth;
 
             bool exceededEncaissement = finalDamage > defender.EncaissementThreshold;
@@ -1047,7 +1064,9 @@ namespace Killtime.Core.Combat
             log += $"   {phaseAtt}\n";
             log += $"   {phaseDef}\n";
             log += $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> Attaque {attackRollStr} vs Défense {defRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
-            log += $"   ⚔️ <b>Dégâts :</b> [{dmgFormula} = {rawDamage} Bruts] &minus; [Armure {totalArmor} (Absorbé: {absorbed})] ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
+            log += $"   ⚔️ <b>Dégâts :</b> [{dmgFormula} = {rawDamage} Bruts] &minus; [Armure {totalArmor} (Absorbé: {absorbed})]"
+                + (shieldAbsorbed > 0 ? $" &minus; [🔮Bouclier {shieldAbsorbed}]" : "")
+                + $" ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
             log += $"   ❤️ <b>Vitalité {defender.Name} :</b> {prevHp} ➔ <b>{defender.CurrentHealth}/{defender.MaxHealth} PV</b>";
 
             if (exceededEncaissement)
@@ -1096,6 +1115,7 @@ namespace Killtime.Core.Combat
                 Differential = differential,
                 RawDamage = rawDamage,
                 ArmorAbsorbed = absorbed,
+                ShieldAbsorbed = shieldAbsorbed,
                 FinalDamageApplied = finalDamage,
                 ExceededEncaissement = exceededEncaissement,
                 InflictedStatus = inflictedStatus,

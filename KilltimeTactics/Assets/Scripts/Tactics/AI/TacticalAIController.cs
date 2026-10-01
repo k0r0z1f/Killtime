@@ -647,7 +647,7 @@ namespace Killtime.Tactics.AI
                 return TacticalPosture.HitAndRun;
             }
 
-            CoverType targetCover = GetCoverLevel(actor.CurrentCoords, target.CurrentCoords);
+            CoverType targetCover = GetCoverLevel(actor.CurrentCoords, target.CurrentCoords, TitanFootprintType.Single, TitanFootprintType.Single, actor);
             if (targetCover == CoverType.ThreeQuarters || targetCover == CoverType.Full)
             {
                 return TacticalPosture.FlankAndSuppress;
@@ -687,9 +687,9 @@ namespace Killtime.Tactics.AI
             int targetHp = target.Stats.CurrentHealth;
             int weaponDmg = 5;
             var weapon = actor.Sheet?.GetEquippedWeapon();
-            if (weapon != null && weapon.BaseDamage > 0) weaponDmg = weapon.BaseDamage;
+            if (weapon != null && weapon.BaseDamage > 0) weaponDmg = weapon.BaseDamage + (weapon.LoadedHD ? 1 : 0);
 
-            int estimatedDmg = Mathf.Max(4, (weaponDmg + 3 - target.Stats.BaseArmorAbsorption) * 2);
+            int estimatedDmg = Mathf.Max(4, (weaponDmg + 3 - target.Stats.BaseArmorAbsorption - target.Stats.GetWornArmorBonus()) * 2);
             return targetHp <= estimatedDmg;
         }
 
@@ -735,17 +735,20 @@ namespace Killtime.Tactics.AI
 
                 float allyHpRatio = (float)ally.Stats.CurrentHealth / Mathf.Max(1, ally.Stats.MaxHealth);
                 bool hasBleed = (ally.Stats.ActiveStatus & StatusEffect.Saignement) != 0;
+                bool hasPoison = (ally.Stats.ActiveStatus & StatusEffect.Empoisonne) != 0;
+                bool hasChirKit = SmokeScreen.FindItemByName(actor.Stats, "Chirurgie") != null;
 
-                if (ally.Stats.IsAlive && (allyHpRatio <= 0.35f || hasBleed) && actor.Stats.CurrentActionPoints >= healCost)
+                if (ally.Stats.IsAlive && (allyHpRatio <= 0.35f || hasBleed || (hasPoison && hasChirKit)) && actor.Stats.CurrentActionPoints >= healCost)
                 {
                     if (actor.Stats.ConsumeActionPoints(healCost))
                     {
-                        int healAmount = ally.Stats.Attributes.Constitution * 2;
+                        int healAmount = ally.Stats.Attributes.Constitution * (hasChirKit ? 3 : 2);
                         ally.Stats.CurrentHealth = Mathf.Min(ally.Stats.MaxHealth, ally.Stats.CurrentHealth + healAmount);
                         ally.Stats.ActiveStatus &= ~StatusEffect.Saignement;
+                        if (hasChirKit) ally.Stats.RemoveStatus(StatusEffect.Empoisonne);
                         visual?.SpawnFloatingText($"🩹 [SOINS] Suture Tactique (-{healCost} PA)", Color.green);
-                        ally.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"+{healAmount} PV", Color.green);
-                        _arena?.Log($"🩹 <b>{actor.Stats.Name}</b> soigne <b>{ally.Stats.Name}</b> (+{healAmount} PV) !");
+                        ally.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"+{healAmount} PV{(hasChirKit ? " (Kit)" : "")}", Color.green);
+                        _arena?.Log($"🩹 <b>{actor.Stats.Name}</b> soigne <b>{ally.Stats.Name}</b> (+{healAmount} PV{(hasChirKit ? ", Kit Chirurgie" : "")}) !");
                         return true;
                     }
                 }
@@ -756,7 +759,8 @@ namespace Killtime.Tactics.AI
 
         private bool TryExecuteIntimidation(TacticalUnit actor, TacticalUnit target, int dist, TacticalUnitVisual visual)
         {
-            if (dist > 6 || actor.Stats.CurrentActionPoints < 2) return false;
+            int maxTauntRange = SmokeScreen.HasItemByName(actor.Stats, "Radio") ? 12 : 6;
+            if (dist > maxTauntRange || actor.Stats.CurrentActionPoints < 2) return false;
             if ((target.Stats.ActiveStatus & StatusEffect.Destabilise) != 0) return false;
             if (_defaultPersonality != AIPersonality.Tactician && _defaultPersonality != AIPersonality.Aggressive) return false;
 
@@ -808,13 +812,14 @@ namespace Killtime.Tactics.AI
                 }
             }
 
+            int orderRange = SmokeScreen.HasItemByName(actor.Stats, "Radio") ? 12 : 6;
             for (int i = 0; i < _cachedUnits.Count; i++)
             {
                 var ally = _cachedUnits[i];
                 if (ally == null || ally == actor || ally.Stats == null || !ally.Stats.IsAlive) continue;
                 if (ally.IsPlayerControlled != actor.IsPlayerControlled) continue;
 
-                if (actor.CurrentCoords.DistanceTo(ally.CurrentCoords) <= 6 && ally.Stats.CurrentActionPoints < ally.Stats.MaxActionPoints)
+                if (actor.CurrentCoords.DistanceTo(ally.CurrentCoords) <= orderRange && ally.Stats.CurrentActionPoints < ally.Stats.MaxActionPoints)
                 {
                     if (actor.Stats.ConsumeActionPoints(2))
                     {
@@ -1106,6 +1111,51 @@ namespace Killtime.Tactics.AI
         {
             _arena?.SelectTarget(target);
 
+            // RD-033 : maintenance munitions avant le tir (désenrayer, recharger).
+            // Sans coup disponible, l'attaque est annulée (repli mêlée/déplacement de l'appelant).
+            if (isRanged && actor != null && actor.Sheet != null)
+            {
+                var mag = actor.Sheet.GetEquippedWeapon();
+                if (mag != null && mag.AmmoCapacity > 0)
+                {
+                    if (mag.Jammed)
+                    {
+                        if (_arena != null && _arena.TryClearJam(actor, out string jamMsg))
+                        {
+                            _arena.Log(jamMsg);
+                            yield return new WaitForSeconds(Mathf.Min(0.4f, _actionDelay * 0.3f));
+                        }
+                        else
+                        {
+                            _arena?.Log($"⚠️ {actor.Stats.Name} ne peut ni tirer ni désenrayer.");
+                            yield break;
+                        }
+                    }
+                    if (mag.AmmoRemaining <= 0)
+                    {
+                        bool reloaded = false;
+                        if (_arena != null)
+                        {
+                            // Standard de préférence, HD seulement si c'est la seule réserve.
+                            if (WeaponAmmo.StockShots(actor.Sheet, mag.AmmoType, false) > 0)
+                                reloaded = _arena.TryReloadWeapon(actor, false, out _);
+                            else if (mag.HeavyAmmo && WeaponAmmo.StockShots(actor.Sheet, mag.AmmoType, true) > 0)
+                                reloaded = _arena.TryReloadWeapon(actor, true, out _);
+                        }
+                        if (reloaded)
+                        {
+                            _arena?.Log($"🔋 <b>{actor.Stats.Name}</b> recharge <b>{mag.Name}</b> [{mag.AmmoRemaining}/{mag.AmmoCapacity}].");
+                            yield return new WaitForSeconds(Mathf.Min(0.4f, _actionDelay * 0.3f));
+                        }
+                        else
+                        {
+                            _arena?.Log($"⚠️ {actor.Stats.Name} : chargeur vide, aucune réserve ({mag.AmmoType}).");
+                            yield break;
+                        }
+                    }
+                }
+            }
+
             SkillType defenseSkill = target.Stats.Attributes.Agilite >= target.Stats.Attributes.Force
                 ? SkillType.Esquive
                 : SkillType.DefenseCorporelle;
@@ -1129,7 +1179,7 @@ namespace Killtime.Tactics.AI
 
             int weaponDmg = 5;
             var equippedWeapon = actor.Sheet?.GetEquippedWeapon();
-            if (equippedWeapon != null && equippedWeapon.BaseDamage > 0) weaponDmg = equippedWeapon.BaseDamage;
+            if (equippedWeapon != null && equippedWeapon.BaseDamage > 0) weaponDmg = equippedWeapon.BaseDamage + (equippedWeapon.LoadedHD ? 1 : 0);
 
             _arena?.ExecuteAttack(
                 targetedPart: plan.TargetedPart,
@@ -1183,14 +1233,14 @@ namespace Killtime.Tactics.AI
             int attStatusMod = actor.Stats.GetStatusModifier(attackSkill, true);
             int defStatusMod = target.Stats.GetStatusModifier(defenseSkill, false);
 
-            CoverType targetCover = isRanged ? GetCoverLevel(actor.CurrentCoords, target.CurrentCoords) : CoverType.None;
+            CoverType targetCover = isRanged ? GetCoverLevel(actor.CurrentCoords, target.CurrentCoords, TitanFootprintType.Single, TitanFootprintType.Single, actor) : CoverType.None;
             int coverPen = CoverSystem.AttackPenalty(targetCover);
 
             int weaponDmg = 5;
             var equippedWeapon = actor.Sheet?.GetEquippedWeapon();
-            if (equippedWeapon != null && equippedWeapon.BaseDamage > 0) weaponDmg = equippedWeapon.BaseDamage;
+            if (equippedWeapon != null && equippedWeapon.BaseDamage > 0) weaponDmg = equippedWeapon.BaseDamage + (equippedWeapon.LoadedHD ? 1 : 0);
 
-            int targetArmor = target.Stats.BaseArmorAbsorption;
+            int targetArmor = target.Stats.BaseArmorAbsorption + target.Stats.GetWornArmorBonus();
             int targetEncaissement = target.Stats.EncaissementThreshold;
             int targetHp = target.Stats.CurrentHealth;
 
@@ -1620,10 +1670,18 @@ namespace Killtime.Tactics.AI
             return CoverSystem.EvaluateCover(from, to, _grid, toFootprint, fromFootprint) != CoverType.Full;
         }
 
-        private CoverType GetCoverLevel(HexCoordinates from, HexCoordinates to, TitanFootprintType toFootprint = TitanFootprintType.Single, TitanFootprintType fromFootprint = TitanFootprintType.Single)
+        private CoverType GetCoverLevel(HexCoordinates from, HexCoordinates to, TitanFootprintType toFootprint = TitanFootprintType.Single, TitanFootprintType fromFootprint = TitanFootprintType.Single, TacticalUnit viewer = null)
         {
             if (_grid == null) return CoverType.None;
-            return CoverSystem.EvaluateCover(from, to, _grid, toFootprint, fromFootprint);
+            CoverType baseCover = CoverSystem.EvaluateCover(from, to, _grid, toFootprint, fromFootprint);
+            // RD-041 : la fumée coupe aussi la visée de l'IA (sauf thermique).
+            if (baseCover != CoverType.Full && _arena != null
+                && Killtime.Core.Combat.SmokeScreen.SegmentSmoked(from, to, _arena.SmokeZones)
+                && (viewer == null || !CombatDevArena.SeesThroughSmoke(viewer)))
+            {
+                return CoverType.Full;
+            }
+            return baseCover;
         }
 
         private TacticalUnit EvaluateBestTarget(TacticalUnit actor)
@@ -1692,7 +1750,7 @@ namespace Killtime.Tactics.AI
                     {
                         score += 50f;
                         if (dist >= 2 && dist <= maxRange) score += 15f;
-                        CoverType targetCover = GetCoverLevel(actor.CurrentCoords, potential.CurrentCoords);
+                        CoverType targetCover = GetCoverLevel(actor.CurrentCoords, potential.CurrentCoords, TitanFootprintType.Single, TitanFootprintType.Single, actor);
                         if (targetCover == CoverType.Half) score -= 10f;
                         else if (targetCover == CoverType.ThreeQuarters) score -= 25f;
                     }

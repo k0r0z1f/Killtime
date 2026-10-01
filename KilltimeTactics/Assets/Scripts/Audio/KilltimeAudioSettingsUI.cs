@@ -7,7 +7,7 @@ namespace Killtime.Audio
     /// <summary>
     /// Panneau de mixage audio tactique unifié (Master, Musique, Ambiance, SFX, UI).
     /// Hérite de FloatingWindow pour partager le chrome, le style et le cycle de vie du HUD.
-    /// Raccourcis : F9 pour ouvrir/fermer, M pour couper/rétablir le son.
+    /// Raccourcis : F11 pour ouvrir/fermer, M pour couper/rétablir le son.
     /// </summary>
     public class KilltimeAudioSettingsUI : FloatingWindow<KilltimeAudioSettingsUI>
     {
@@ -17,7 +17,7 @@ namespace Killtime.Audio
         protected override Rect DefaultRect => new Rect(24f, 140f, 320f, 380f);
         protected override KeyCode[] ToggleKeys => _toggleKeys;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.F9 };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F11 };
         private static readonly Vector2 _minSize = new Vector2(280f, 260f);
 
         private Vector2 _scrollPos;
@@ -56,7 +56,7 @@ namespace Killtime.Audio
             Color prevBg = GUI.backgroundColor;
             GUI.backgroundColor = new Color(0.02f, 0.035f, 0.05f, 0.65f);
 
-            string label = (mgr != null && mgr.IsMuted) ? "🔇 SON (M)" : "🔊 SON (F9)";
+            string label = (mgr != null && mgr.IsMuted) ? "🔇 SON (M)" : "🔊 SON (F11)";
             if (GUI.Button(pill, label))
             {
                 OpenInstance();

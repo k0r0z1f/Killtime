@@ -836,28 +836,31 @@
                     </div>
 
                     <div class="formula-box">
-                        <div class="formula-label">Lecture Rigoureuse de la Ligne de Mire : Coin Optimal + Cône (attaquant ➔ cible)</div>
+                        <div class="formula-label">Lecture Humaine de la Ligne de Mire : Meilleur Coin ➔ Ce Que Tu Vois ➔ Couvert</div>
                         <div class="formula-math">
-                            <span class="hl-cyan">Meilleur coin</span> &nbsp;➔&nbsp; <span class="hl-gold">Cône 28 rayons sur 1,8 m</span> &nbsp;➔&nbsp; <span class="hl-emerald">Surface visible</span> &nbsp;➔&nbsp; <span class="hl-ruby">Couvert</span>
+                            <span class="hl-cyan">Meilleur coin</span> &nbsp;➔&nbsp; <span class="hl-gold">Ce que tu vois</span> &nbsp;➔&nbsp; <span class="hl-emerald">Surface visible</span> &nbsp;➔&nbsp; <span class="hl-ruby">Couvert</span>
                         </div>
                         <div class="formula-desc">
-                            Le personnage occupe <strong>toute sa case</strong> : il ne tire jamais « du centre ».<br>
-                            <strong>1. Coin optimal de l'attaquant :</strong> on teste les <strong>6 coins</strong> de la
-                            case de l'attaquant (hauteur des yeux, 1,5 m) et on retient le <strong>plus avantageux</strong>,
-                            c'est-à-dire celui qui laisse le <strong>moins de couvert</strong> à la cible. Le cône part
-                            de ce coin.<br>
-                            <strong>2. Cône sur la hauteur de la cible :</strong> depuis ce coin, <strong>28 rayons</strong>
-                            balaient la silhouette (7 positions de la case — 6 coins + centre — × 4 hauteurs : 0,2 / 0,6 /
-                            1,1 / 1,5 m sur un corps de 1,8 m). Chaque rayon est testé en 3D exacte contre les prismes
-                            des obstacles (<strong>muret 0,7 m, barricade 1,2 m, mur 2,2 m</strong>), contre les
-                            <strong>accessoires 3D</strong> (<strong>piliers, caisses, mobilier</strong> : leurs dimensions
-                            réelles comptent, même si la case est marquée à découvert) et contre le
-                            <strong>relief</strong> lui-même : une crête masque aussi bien qu'un mur.<br>
-                            <strong>3. Surface visible ➔ couvert :</strong> soit <em>f</em> la fraction de rayons non bloqués :
-                            <strong>f ≥ 90 %</strong> ➔ à découvert (<strong>0</strong>) ;
-                            <strong>45 % ≤ f &lt; 90 %</strong> ➔ moitié visible (<strong>-1</strong>) ;
-                            <strong>0 % &lt; f &lt; 45 %</strong> ➔ trois-quarts couvert (<strong>-2</strong>) ;
-                            <strong>f = 0 %</strong> ➔ couvert total, <strong>attaque directe impossible</strong>.<br>
+                            Le personnage occupe <strong>toute sa case</strong> : il se penche toujours du bon côté
+                            pour tirer, jamais « du centre ».<br>
+                            <strong>1. Prends ton meilleur coin :</strong> mets ton œil au <strong>coin de ta
+                            case</strong> qui voit le mieux la cible. Si un seul coin passe, c'est celui-là qui
+                            compte.<br>
+                            <strong>2. Regarde à hauteur de table :</strong> baisse-toi à hauteur des figurines et
+                            vise la silhouette adverse, des pieds au sommet de la tête (1,8 m). Tout ce qui est
+                            entre compte pour de vrai : <strong>muret (genoux, 0,7 m), barricade (ventre, 1,2 m),
+                            mur (caché, 2,2 m), piliers, caisses, mobilier</strong> — même si la case est marquée
+                            à découvert — et le <strong>relief</strong> lui-même : une crête masque aussi bien
+                            qu'un mur.<br>
+                            <strong>3. Combien tu en vois :</strong> <strong>tout le corps</strong> ➔ à découvert
+                            (<strong>0</strong>) ; <strong>la moitié cachée</strong> (jambes derrière un muret, flanc
+                            derrière un coin de mur) ➔ moitié couvert (<strong>-1</strong>) ;
+                            <strong>il ne dépasse qu'une tête, une épaule, une main</strong> (torse caché par une
+                            barricade, deux obstacles en enfilade) ➔ trois-quarts couvert (<strong>-2</strong>) ;
+                            <strong>rien ne dépasse</strong> ➔ couvert total, <strong>attaque directe
+                            impossible</strong>.<br>
+                            En cas de doute : moitié = ça cache jusqu'à la taille, trois-quarts = ça cache jusqu'au
+                            cou.<br>
                             <strong>Au contact (distance ≤ 1 case)</strong>, les combattants se voient : le couvert est
                             <strong>ignoré</strong>.
                         </div>
@@ -879,13 +882,6 @@
                             le couvert <strong>réduit les dégâts</strong> au lieu d'interdire (muret -2, barricade haute
                             -3, mur -4 et bloque les éclats). Un tir lobé (mortier) ignore les couverts partiels. Voir
                             Livre VIII §31.3.</li>
-                        <li><strong>Lecture en arène (Killtime Tactics) :</strong> le cône effectivement testé
-                            s'affiche en jeu entre l'unité active et sa cible : <strong>rayons verts</strong> (passent),
-                            <strong>rayons rouges jusqu'au point d'impact</strong> (bloqués, puis ombre atténuée derrière
-                            l'obstacle), plus une <strong>ligne de synthèse</strong> —
-                            <strong>verte</strong> à découvert (0), <strong>jaune</strong> moitié (-1),
-                            <strong>orange</strong> 3/4 (-2), <strong>rouge</strong> couvert total (attaque impossible).
-                            Interrupteur <em>🎯 Ligne de Mire Couvert</em> dans la barre d'outils dev.</li>
                     </ul>
 
                     <div class="callout temporal">
@@ -915,24 +911,22 @@
                     </p>
 
                     <div class="formula-box">
-                        <div class="formula-label">Vision à 360° & Portée d'Ambiance (jamais les stats)</div>
+                        <div class="formula-label">Vision à 360°, limitée seulement par l'environnement</div>
                         <div class="formula-math">
-                            <span class="hl-emerald">360° sans direction</span> &nbsp;➔&nbsp; <span class="hl-cyan">Portée d'ambiance</span> &nbsp;➔&nbsp; <span class="hl-gold">Murs Full = obscurité</span>
+                            <span class="hl-emerald">360° tout autour</span> &nbsp;➔&nbsp; <span class="hl-cyan">Le décor décide</span> &nbsp;➔&nbsp; <span class="hl-gold">Mur plein = obscurité</span>
                         </div>
                         <div class="formula-desc">
-                            <strong>1. Pas de direction de vision :</strong> en combat, un personnage voit à
-                            <strong>360° autour de lui</strong>. Il n'y a ni cône frontal, ni dos, ni angle mort :
-                            attaquer « par-derrière » ne confère aucun bonus et n'existe pas comme règle.<br>
-                            <strong>2. Portée environnementale :</strong> la distance de vue dépend du
-                            <strong>terrain et de la météo</strong>, jamais des attributs :
-                            <strong>courte portée (6 cases)</strong> en intérieur ou obstacles denses,
-                            <strong>longue portée (12 cases)</strong> en extérieur dégagé par météo claire.
-                            Le MJ annonce la portée en début d'affrontement et peut la changer (nuit, fumée,
-                            tempête).<br>
-                            <strong>3. Vision & Ouïe (1d6) = compétences, pas jumelles :</strong> les attributs
-                            sensoriels ne modifient jamais la portée. Ils servent aux jets :
-                            <strong>Observation</strong> (Vision + Instinct), <strong>Écoute</strong>
-                            (Ouïe + Instinct), Discrétion adverse et révélation au bruit (ci-dessous).<br>
+                            <strong>1. Pas de dos :</strong> en combat, un personnage voit à <strong>360° autour de
+                            lui</strong>. Pas de cône frontal, pas d'angle mort : attaquer « par-derrière » ne donne
+                            aucun bonus.<br>
+                            <strong>2. Pas de limite chiffrée :</strong> tu vois <strong>aussi loin que le décor le
+                            permet</strong>. Pas de courte ou longue portée. Seuls l'<strong>environnement et la
+                            météo</strong> t'arrêtent : mur, pilier, relief, nuit, fumée, tempête, pluie. Le MJ annonce
+                            en début d'affrontement ce qui bouche la vue, et le change quand la situation change.<br>
+                            <strong>3. Tes yeux ne sont pas des jumelles :</strong> Vision et Ouïe ne prolongent jamais
+                            la vue. Ils servent à <strong>repérer</strong> : jet d'<strong>Observation</strong>
+                            (Vision + Instinct), jet d'<strong>Écoute</strong> (Ouïe + Instinct), Discrétion adverse
+                            et révélation au bruit (ci-dessous).<br>
                             <strong>4. Murs et contact :</strong> un mur plein (<strong>couvert total</strong>, §25.3)
                             entre l'observateur et la case la plonge dans l'obscurité ; murets et barricades
                             (moitié, trois-quarts) restent visibles. <strong>Au contact (≤ 1 case), on se voit
@@ -949,17 +943,13 @@
                             au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert
                             (moitié, trois-quarts, total — un couvert total rend l'observation
                             <strong>impossible</strong>). Réussite ➔ cible <strong>révélée jusqu'à la fin du round
-                            suivant</strong>. Spécialités : <strong>Œil de Lynx +2</strong> au duel,
-                            <strong>Détection Thermique +2</strong> et voit jusqu'à <strong>la moitié de la
-                            portée</strong> même derrière un mur plein.</li>
+                            suivant</strong>.                             Spécialités : <strong>Œil de Lynx +2</strong> au duel,
+                            <strong>Détection Thermique +2</strong> et devine une présence juste derrière un mur
+                            plein tout proche.</li>
                         <li><strong>Tir bruyant = révélé :</strong> tout tir à distance (Ballistique, grenade,
                             sort offensif — <strong>la mêlée reste silencieuse</strong>) révèle le tireur aux
                             ennemis situés dans son <strong>rayon d'Ouïe</strong>, jusqu'à la <strong>fin du round
                             suivant</strong>, sauf mur plein entre les deux.</li>
-                        <li><strong>Table virtuelle (VTT) :</strong> le serveur ne transmet la position d'un ennemi
-                            à un joueur que s'il est dans le champ d'au moins un de ses avatars (filtrage
-                            anti-triche en mémoire). Chaque joueur déclare ses avatars ; le MJ diffuse la portée
-                            d'ambiance avec ses synchronisations d'état.</li>
                     </ul>
 
                     <div class="callout temporal">
@@ -972,13 +962,13 @@
                             Exemple de Table : Repérage sous Brouillard
                         </div>
                         <div class="callout-body">
-                            Par météo claire (portée 12), Lucas ne voit pas le tireur embusqué à 9 cases :
+                            Par météo claire, Lucas ne voit pas le tireur embusqué à 9 cases :
                             un pilier (couvert total) barre sa ligne de mire ➔ obscurité. Il dépense
                             <strong>1 PA</strong> en Observation active, mais à travers un couvert total
                             l'observation est <strong>impossible</strong> : PA perdu. Le tireur riposte au fusil :
                             <strong>tir bruyant</strong>, mais le pilier fait toujours mur plein entre eux ➔
-                            toujours invisible. Lucas contourne alors le pilier : le tireur entre dans sa portée,
-                            à découvert ➔ <strong>automatiquement visible</strong>, sans aucun jet.
+                            toujours invisible. Lucas contourne alors le pilier : le tireur passe à découvert
+                            devant lui ➔ <strong>automatiquement visible</strong>, sans aucun jet.
                         </div>
                     </div>
 

@@ -367,7 +367,7 @@ namespace Killtime.Audio.Experimental
         private void Start()
         {
             // Pas de AudioSettings.Reset ici : il coupe toutes les sources en cours
-            // (c'était le "la musique se coupe à la 1re ouverture de F9", le panneau
+            // (c'était le "la musique se coupe à la 1re ouverture de F11", le panneau
             // créant ce composant à la volée). Le Reset vit dans StartCapture().
             if (_enableChameleonMode)
             {

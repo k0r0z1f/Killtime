@@ -81,8 +81,10 @@ namespace Killtime.Tactics.Visibility
             p.HearingRange = Mathf.Clamp(stats.Attributes.Ouie, 1, 6);
             try
             {
-                if (stats.HasSpecialization(SpecThermal))
+                if (stats.HasSpecialization(SpecThermal) || SmokeScreen.HasGoggles(stats))
                     p.Thermal = true;
+                if (SmokeScreen.HasItemByName(stats, "Radio"))
+                    p.HearingRange = Mathf.Max(p.HearingRange, 6);
             }
             catch { /* fiche partielle en tests */ }
             return p;
@@ -333,9 +335,31 @@ namespace Killtime.Tactics.Visibility
                 lynx = observer.HasSpecialization(SpecLynx);
             }
             catch { thermal = false; lynx = false; }
+            // Optiques du marketplace : Jumelles Thermiques +1, Lampe Frontale + Balise +1
+            // (allumée = Batterie en poche). Cumulables avec l'Œil de Lynx.
+            int optics = 0;
+            try
+            {
+                var inv = observer.Sheet?.Inventory;
+                if (inv != null)
+                {
+                    bool goggles = false, lamp = false, battery = false;
+                    for (int i = 0; i < inv.Count; i++)
+                    {
+                        var it = inv[i];
+                        if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                        if (!goggles && it.Name.Contains("Jumelles")) goggles = true;
+                        else if (!lamp && it.Name.Contains("Lampe")) lamp = true;
+                        else if (!battery && it.Name.Contains("Batterie")) battery = true;
+                    }
+                    if (goggles) optics += 1;
+                    if (lamp && battery) optics += 1;
+                }
+            }
+            catch { /* fiche partielle en tests */ }
             // L'Œil de Lynx n'étend plus la portée (environnementale, §25.4) :
             // acuité dans l'obscurité = +2 au duel de détection (pur bonus skill).
-            int mod = BuildDetectionModifier(distance, cover, thermal) + (lynx ? 2 : 0);
+            int mod = BuildDetectionModifier(distance, cover, thermal) + (lynx ? 2 : 0) + optics;
             // ResolveOpposedCheck ne prend pas de modificateur libre : duel à
             // mises nulles (aucun PA/PE engagé par le duel lui-même ; le coût
             // d'Observation est débité par l'appelant), puis ajustement direct

@@ -241,6 +241,20 @@ namespace Killtime.Core.Character
             return Inventory.Find(i => i != null && i.IsEquipped && i.Type == ItemType.Weapon);
         }
 
+        /// <summary>Blindage porté (Livre VIII §32) : une seule armure à la fois.</summary>
+        public InventoryItem GetEquippedArmor()
+        {
+            if (Inventory == null) return null;
+            return Inventory.Find(i => i != null && i.IsEquipped && i.Type == ItemType.Armor);
+        }
+
+        /// <summary>Champ de force porté : tout item équipé à barrière (ShieldHP &gt; 0).</summary>
+        public InventoryItem GetEquippedShield()
+        {
+            if (Inventory == null) return null;
+            return Inventory.Find(i => i != null && i.IsEquipped && i.ShieldHP > 0);
+        }
+
         /// <summary>
         /// Règle Livre VII : une unité qui tombe <b>Inconsciente</b> (K.O., coma, mort)
         /// lâche ce qu'elle tient. Extrait TOUTES les armes équipées de l'inventaire
@@ -283,6 +297,28 @@ namespace Killtime.Core.Character
                 }
             }
 
+            // Un seul blindage porté et un seul champ de force à la fois (Livre VIII §32).
+            if (item.Type == ItemType.Armor)
+            {
+                for (int i = 0; i < Inventory.Count; i++)
+                {
+                    if (Inventory[i] != null && Inventory[i].Type == ItemType.Armor)
+                    {
+                        Inventory[i].IsEquipped = false;
+                    }
+                }
+            }
+            if (item.ShieldHP > 0)
+            {
+                for (int i = 0; i < Inventory.Count; i++)
+                {
+                    if (Inventory[i] != null && Inventory[i].ShieldHP > 0)
+                    {
+                        Inventory[i].IsEquipped = false;
+                    }
+                }
+            }
+
             item.IsEquipped = true;
             return true;
         }
@@ -307,6 +343,26 @@ namespace Killtime.Core.Character
         {
             if (Inventory == null) return false;
             return Inventory.RemoveAll(i => i != null && i.ItemId == itemId) > 0;
+        }
+
+        /// <summary>
+        /// Consomme 1 dose d'un consommable stackable (Pharma/Médical, Livre VIII §32.3).
+        /// Décrémente Quantity ou retire l'item si dernière dose. Retourne false si introuvable.
+        /// </summary>
+        public bool ConsumeOne(string itemId)
+        {
+            if (Inventory == null) return false;
+            for (int i = 0; i < Inventory.Count; i++)
+            {
+                var it = Inventory[i];
+                if (it == null || it.ItemId != itemId) continue;
+                if (it.IsStackable && it.Quantity > 1)
+                    it.Quantity--;
+                else
+                    Inventory.RemoveAt(i);
+                return true;
+            }
+            return false;
         }
 
         public float GetTotalWeightKg()

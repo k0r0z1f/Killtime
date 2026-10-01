@@ -492,7 +492,7 @@ namespace Killtime.Audio
                 var ui = new GameObject("[Audio] KilltimeAudioSettingsUI");
                 ui.AddComponent<KilltimeAudioSettingsUI>();
             }
-            // Pré-créé au démarrage (et non à la 1re ouverture du panneau F9) :
+            // Pré-créé au démarrage (et non à la 1re ouverture du panneau F11) :
             // son Start() ne doit plus jamais couper la musique en cours.
             if (Experimental.SystemAudioChameleon.Instance == null
                 && FindAnyObjectByType<Experimental.SystemAudioChameleon>() == null)

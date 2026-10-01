@@ -31,8 +31,8 @@ namespace Killtime.Core.Combat
         public int Differential;
         public int RawDamage;
         public int ArmorAbsorbed;
+        public int ShieldAbsorbed;
         public int FinalDamageApplied;
-        
         public bool ExceededEncaissement;
         public StatusEffect InflictedStatus;
         public FatalBlowResolution FatalResolution;

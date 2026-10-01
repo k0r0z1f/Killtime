@@ -1141,7 +1141,9 @@ namespace Killtime.UI
             float margin = 20f;
             float width = Mathf.Clamp(Screen.width * 0.20f, 200f, 280f);
             float x = Screen.width - margin - pauseW - 12f - width;
-            Rect rect = new Rect(x, 22f, width, 56f);
+            bool hasShield = target.Stats.MaxShieldHP > 0;
+            float shieldDy = hasShield ? 13f : 0f;
+            Rect rect = new Rect(x, 22f, width, 56f + shieldDy);
             bool hovered = rect.Contains(Event.current.mousePosition);
 
             DrawSoftPanel(rect, new Color(0.055f, 0.025f, 0.035f, hovered ? 0.70f : 0.54f));
@@ -1155,16 +1157,24 @@ namespace Killtime.UI
             GUI.Label(new Rect(rect.x + 12, rect.y + 7, targetNameAvail, 19),
                 TruncateToFit(target.Stats.Name.ToUpperInvariant(), _hudNameStyle, targetNameAvail), _hudNameStyle);
             GUI.color = ColorTextMuted;
-            GUI.Label(armRect, $"ARM {target.Stats.BaseArmorAbsorption}", _hudSubStyle);
+            int wornArmor = target.Stats.GetWornArmorBonus();
+            GUI.Label(armRect, $"ARM {target.Stats.BaseArmorAbsorption + wornArmor}", _hudSubStyle);
+            if (hasShield)
+            {
+                GUI.color = new Color(0.0f, 0.85f, 1f);
+                GUI.Label(new Rect(rect.x + 12, rect.y + 25, width - 24, 12),
+                    $"🔮 BOUCLIER {target.Stats.CurrentShieldHP}/{target.Stats.MaxShieldHP}", _hudSubStyle);
+                GUI.color = ColorTextMuted;
+            }
 
             float maxHp = Mathf.Max(1f, target.Stats.MaxHealth);
             float ratio = Mathf.Clamp01(_smoothTargetHealth / maxHp);
-            Rect bar = new Rect(rect.x + 12, rect.y + 33, width - 24, 4);
+            Rect bar = new Rect(rect.x + 12, rect.y + 33 + shieldDy, width - 24, 4);
             DrawSolidRect(bar, new Color(0.20f, 0.06f, 0.09f, 0.70f));
             DrawSolidRect(new Rect(bar.x, bar.y, bar.width * ratio, bar.height), ColorCrimson);
 
             GUI.color = ColorTextMuted;
-            GUI.Label(new Rect(rect.x + 12, rect.y + 40, width - 24, 12), "CIBLE ACTIVE", _hudSubStyle);
+            GUI.Label(new Rect(rect.x + 12, rect.y + 40 + shieldDy, width - 24, 12), "CIBLE ACTIVE", _hudSubStyle);
             GUI.color = Color.white;
         }
 
@@ -1179,6 +1189,10 @@ namespace Killtime.UI
             // est à couvert (le bouton TIR est repoussé vers le bas d'autant).
             CoverType preCover = _arena != null ? _arena.GetCoverToTarget(unit, _arena.CurrentTarget) : CoverType.None;
             if (preCover != CoverType.None) height += 18f;
+            // RD-033 : ligne compteur chargeur si arme à munitions équipée.
+            var hudWeapon = unit.Sheet?.GetEquippedWeapon();
+            bool hudAmmoLine = hudWeapon != null && hudWeapon.AmmoCapacity > 0;
+            if (hudAmmoLine) height += 18f;
             float targetY = Screen.height - height - 24f;
             float y = Mathf.Lerp(Screen.height + 10f, targetY, _anatomyOpenAnim);
             Rect rect = new Rect((Screen.width - width) * 0.5f, y, width, height);
@@ -1265,7 +1279,21 @@ namespace Killtime.UI
             // (moitié -1, 3/4 -2, total = tir impossible).
             CoverType hudCover = preCover;
             bool coverBlocks = hudCover == CoverType.Full;
-            bool canAttack = !unit.IsMoving && !coverBlocks && unit.Stats.CurrentActionPoints >= apCost && unit.Stats.CanAttack(unit.Stats.GetSkillDie(hudAttackSkill, true));
+            // RD-033 : vide ou enrayé = tir impossible (recharger / désenrayer).
+            bool hudJammed = hudWeapon != null && hudWeapon.Jammed;
+            bool hudEmpty = hudWeapon != null && hudWeapon.AmmoCapacity > 0 && hudWeapon.AmmoRemaining <= 0;
+            bool canAttack = !unit.IsMoving && !coverBlocks && !hudJammed && !hudEmpty && unit.Stats.CurrentActionPoints >= apCost && unit.Stats.CanAttack(unit.Stats.GetSkillDie(hudAttackSkill, true));
+
+            if (hudAmmoLine && hudWeapon != null)
+            {
+                GUI.color = hudJammed ? new Color(1f, 0.35f, 0.4f) : (hudEmpty ? new Color(1f, 0.75f, 0.3f) : new Color(0.4f, 0.85f, 1f));
+                GUI.Label(new Rect(rect.x + 14f, rowY + 19f, width - 28f, 16f),
+                    hudJammed ? $"🔧 {hudWeapon.Name} ENRAYÉE — désenrayer (1 PA)"
+                    : hudEmpty ? $"🔋 {hudWeapon.Name} VIDE — recharger ({hudWeapon.ReloadAPCost} PA)"
+                    : $"🔫 {hudWeapon.Name} [🔋{hudWeapon.AmmoRemaining}/{hudWeapon.AmmoCapacity}{(hudWeapon.LoadedHD ? "+HD" : "")}]", _hudSubStyle);
+                GUI.color = Color.white;
+                rowY += 18f;
+            }
 
             if (hudCover == CoverType.Half || hudCover == CoverType.ThreeQuarters)
             {
@@ -1283,8 +1311,12 @@ namespace Killtime.UI
             }
 
             Rect fire = new Rect(rect.x + 12f, rect.y + height - 38f, width - 24f, 28f);
+            string fireLabel = coverBlocks ? "CIBLE À COUVERT"
+                : hudJammed ? "ENRAYÉE — DÉSENRAYER (1 PA)"
+                : hudEmpty ? "VIDE — RECHARGER"
+                : (canAttack ? $"TIR  ·  {apCost} PA" : "TIR INDISPONIBLE");
             if (DrawTacticalButton(fire,
-                coverBlocks ? "CIBLE À COUVERT" : (canAttack ? $"TIR  ·  {apCost} PA" : "TIR INDISPONIBLE"),
+                fireLabel,
                 null, false, canAttack ? ColorCrimson : ColorTextMuted, canAttack))
             {
                 _showAnatomyDrawer = false;

@@ -12,8 +12,9 @@ namespace Killtime.UI
     /// <summary>
     /// Inventaire PJ + Armurerie complète (Livre VIII) + Marché (achat/revente CE).
     /// Accessible via : bouton 🎒 Sac (HUD/Dev Arena), touche I/F5, onglet Inventaire du Créateur (F1).
-    /// Catalogue = ArmoryCatalog (60+ items, tout ce qui peut aller en inventaire) ;
+    /// Catalogue = ArmoryCatalog (121 items JSON, tout ce qui peut aller en inventaire) ;
     /// modèles 3D = prefabs Resources/Guns si présents, sinon placeholders procéduraux.
+    /// Données éditables : Resources/Data/Armory.json + fenêtre Armurerie (F12).
     /// </summary>
     public class InventoryDevWindow : FloatingWindow<InventoryDevWindow>
     {
@@ -54,6 +55,7 @@ namespace Killtime.UI
 
         // Filtres armurerie / marché
         private string _searchFilter = "";
+        private int _eraFilter = -1; // -1 = toutes les ères
         private int _categoryFilter = -1; // -1 = toutes
         private bool _affordableOnly = false;
         private bool _showOnlyRealPrefabs = false;
@@ -585,11 +587,33 @@ namespace Killtime.UI
             var list = GetFilteredCatalog();
 
             GUILayout.Label($"<b>Catalogue Livre VIII : {list.Count} article(s)</b> <color=gray>(dotation directe, sans paiement)</color>");
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"<color=gray>Source : {ArmoryCatalog.LoadedFrom} — éditable via 🛠️ Armurerie (F12)</color>", RichLabel());
+            if (GUILayout.Button("Recharger JSON", GUILayout.Width(110)))
+            {
+                ArmoryCatalog.InvalidateCache();
+                _statusMessage = "Catalogue rechargé : " + ArmoryCatalog.LoadedFrom;
+            }
+            if (GUILayout.Button("🛠️ Éditeur (F12)", GUILayout.Width(110)))
+            {
+                ArmoryDevWindow.Open();
+            }
+            GUILayout.EndHorizontal();
             _catalogScroll = GUILayout.BeginScrollView(_catalogScroll, GUILayout.Height(320));
 
+            string lastEra = "";
             for (int i = 0; i < list.Count; i++)
             {
                 var def = list[i];
+                string itemEra = ArmoryCatalog.DeduceEra(def);
+                if (_eraFilter < 0 && itemEra != lastEra)
+                {
+                    lastEra = itemEra;
+                    GUI.color = new Color(0.0f, 0.9f, 1.0f);
+                    GUILayout.Label($"<b>━━━ ⏳ {itemEra.ToUpperInvariant()} ━━━</b>", GUI.skin.box);
+                    GUI.color = Color.white;
+                }
+
                 bool isSelected = (_previewCatalogDef == def);
                 GUI.backgroundColor = isSelected ? new Color(0.0f, 0.85f, 1.0f) : Color.white;
                 GUILayout.BeginVertical(GUI.skin.box);
@@ -607,7 +631,7 @@ namespace Killtime.UI
                 }
                 GUI.backgroundColor = Color.white;
                 GUILayout.EndHorizontal();
-                GUILayout.Label($"<color=#7090A0>{def.Category} • {def.DlphCode} • {def.PriceCE} CE{(string.IsNullOrEmpty(def.PrefabPath) ? " • 🧱 placeholder" : " • 🔫 prefab")}</color>", RichLabel());
+                GUILayout.Label($"<color=#7090A0><b>[{itemEra}]</b> {def.Category} • {def.DlphCode} • {def.PriceCE} CE{(string.IsNullOrEmpty(def.PrefabPath) ? " • 🧱 placeholder" : " • 🔫 prefab")}</color>", RichLabel());
                 GUILayout.EndVertical();
             }
 
@@ -648,15 +672,25 @@ namespace Killtime.UI
             var list = GetFilteredCatalog();
 
             _marketScroll = GUILayout.BeginScrollView(_marketScroll, GUILayout.Height(220));
+            string lastMarketEra = "";
             for (int i = 0; i < list.Count; i++)
             {
                 var def = list[i];
+                string itemEra = ArmoryCatalog.DeduceEra(def);
+                if (_eraFilter < 0 && itemEra != lastMarketEra)
+                {
+                    lastMarketEra = itemEra;
+                    GUI.color = new Color(1.0f, 0.75f, 0.15f);
+                    GUILayout.Label($"<b>━━━ ⏳ {itemEra.ToUpperInvariant()} ━━━</b>", GUI.skin.box);
+                    GUI.color = Color.white;
+                }
+
                 bool afford = sheet.CanAfford(def.PriceCE);
                 bool isSelected = (_previewCatalogDef == def);
                 GUI.backgroundColor = isSelected ? new Color(0.0f, 0.85f, 1.0f) : (afford ? Color.white : new Color(0.6f, 0.6f, 0.6f));
                 GUILayout.BeginVertical(GUI.skin.box);
                 GUILayout.BeginHorizontal();
-                if (GUILayout.Button($"{IconFor(def)} <b>{def.Name}</b>\n{def.PriceCE} CE", GUI.skin.label, GUILayout.ExpandWidth(true)))
+                if (GUILayout.Button($"{IconFor(def)} <b>{def.Name}</b>  <color=#7090A0>[{itemEra} • {def.Category}]</color>\n{def.PriceCE} CE", GUI.skin.label, GUILayout.ExpandWidth(true)))
                 {
                     _selectedMarketIndex = i;
                     _previewCatalogDef = def;
@@ -711,10 +745,21 @@ namespace Killtime.UI
             _searchFilter = GUILayout.TextField(_searchFilter ?? "", GUILayout.ExpandWidth(true));
             GUILayout.EndHorizontal();
 
-            // 15 catégories + "Toutes" : un Toolbar mono-ligne les écrase / clippe
-            // (seules les 4 premières restaient visibles). Grille multi-lignes =>
-            // TOUS les types d'équipements sont visibles et cliquables, et le scroll
-            // global permet de tout atteindre même en fenêtre petite.
+            // 1. Filtrage par Ère Technologique (Livre VIII §30-32)
+            GUILayout.Label("<b>Ère Technologique :</b>");
+            string[] eras = ArmoryCatalog.Eras;
+            string[] eraOptions = new string[eras.Length + 1];
+            eraOptions[0] = "Toutes les ères";
+            Array.Copy(eras, 0, eraOptions, 1, eras.Length);
+            int selEra = _eraFilter + 1;
+            int nextEra = GUILayout.SelectionGrid(selEra, eraOptions, 4);
+            if (nextEra != selEra)
+            {
+                _eraFilter = nextEra - 1;
+                _previewCatalogDef = null;
+            }
+
+            // 2. Filtrage par Catégorie d'équipement
             GUILayout.Label("<b>Catégorie :</b>");
             string[] cats = ArmoryCatalog.Categories;
             string[] options = new string[cats.Length + 1];
@@ -735,6 +780,7 @@ namespace Killtime.UI
             if (GUILayout.Button("✕", GUILayout.Width(26)))
             {
                 _searchFilter = "";
+                _eraFilter = -1;
                 _categoryFilter = -1;
                 _affordableOnly = false;
                 _showOnlyRealPrefabs = false;
@@ -750,6 +796,8 @@ namespace Killtime.UI
             {
                 var def = ArmoryCatalog.All[i];
                 if (def == null) continue;
+                string era = ArmoryCatalog.DeduceEra(def);
+                if (_eraFilter >= 0 && era != ArmoryCatalog.Eras[_eraFilter]) continue;
                 if (_categoryFilter >= 0 && def.Category != ArmoryCatalog.Categories[_categoryFilter]) continue;
                 if (_showOnlyRealPrefabs && string.IsNullOrEmpty(def.PrefabPath)) continue;
                 if (_affordableOnly && sheet != null && !sheet.CanAfford(def.PriceCE)) continue;
@@ -757,10 +805,23 @@ namespace Killtime.UI
                 {
                     string q = _searchFilter.ToLowerInvariant();
                     if (!def.Name.ToLowerInvariant().Contains(q) && !(def.Category ?? "").ToLowerInvariant().Contains(q)
-                        && !(def.Description ?? "").ToLowerInvariant().Contains(q)) continue;
+                        && !(def.Description ?? "").ToLowerInvariant().Contains(q)
+                        && !era.ToLowerInvariant().Contains(q)) continue;
                 }
                 result.Add(def);
             }
+
+            // Tri par Ère technologique chronologique, puis Catégorie, puis Nom
+            result.Sort((a, b) =>
+            {
+                int eraA = Array.IndexOf(ArmoryCatalog.Eras, ArmoryCatalog.DeduceEra(a));
+                int eraB = Array.IndexOf(ArmoryCatalog.Eras, ArmoryCatalog.DeduceEra(b));
+                if (eraA != eraB) return eraA.CompareTo(eraB);
+                int catCmp = string.Compare(a.Category, b.Category, StringComparison.Ordinal);
+                if (catCmp != 0) return catCmp;
+                return string.Compare(a.Name, b.Name, StringComparison.Ordinal);
+            });
+
             return result;
         }
 
@@ -958,6 +1019,7 @@ namespace Killtime.UI
                 if (item.HealingAmount > 0) stats += $" • 💉+{item.HealingAmount} PV";
                 if (item.AttackBonusEc != 0) stats += $" • +{item.AttackBonusEc}ec";
                 if (item.ApCostModifier != 0) stats += $" • {item.ApCostModifier:+0;-0} PA";
+                if (item.AmmoCapacity > 0) stats += $" • 🔋{item.AmmoRemaining}/{item.AmmoCapacity} ({item.AmmoType}{(item.LoadedHD ? " HD+1D" : "")}, reload {item.ReloadAPCost} PA){(item.Jammed ? " <color=red>ENRAYÉE</color>" : "")}";
                 GUILayout.Label(stats, RichLabel());
                 GUILayout.Label($"Compétence <b>{item.AssociatedSkill}</b> • Slot <b>{item.EquipSlot}</b> • {(item.IsEquipped ? "<color=#00FF88>Équipé</color>" : "En réserve")}", RichLabel());
                 if (item.IsGrenade)

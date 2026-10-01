@@ -207,12 +207,16 @@ namespace Killtime.Story
             string nextTitle = scenarioId;
             string nextCanon = "";
 
-            if (Story.Data.StorySceneRepository.TryLoadSceneData(scenarioId, out var previewData))
+            Story.Data.StorySceneData previewData = null;
+            if (Story.Data.StorySceneRepository.TryLoadSceneData(scenarioId, out previewData))
             {
                 if (!string.IsNullOrWhiteSpace(previewData.Volume)) nextVolume = previewData.Volume;
                 if (!string.IsNullOrWhiteSpace(previewData.Title)) nextTitle = previewData.Title;
                 if (!string.IsNullOrWhiteSpace(previewData.CanonReference)) nextCanon = previewData.CanonReference;
             }
+
+            // Basculement musical immédiat dès l'initiation de la transition
+            ApplyInitialSceneMusic(scenarioId, previewData);
 
             // Lancer la transition cinématique
             yield return _transitionOverlay.PlaySceneTransitionRoutine(nextVolume, nextTitle, nextCanon, () => LoadScenarioCoreRoutine(scenarioId));
@@ -220,6 +224,7 @@ namespace Killtime.Story
 
         private IEnumerator LoadScenarioRoutine(string scenarioId)
         {
+            ApplyInitialSceneMusic(scenarioId);
             yield return LoadScenarioCoreRoutine(scenarioId);
         }
 
@@ -276,11 +281,6 @@ namespace Killtime.Story
 
             IsSceneLoading = false;
             OnSceneLoadCompleted?.Invoke(scenarioId);
-
-            if (KilltimeAudioManager.Instance != null)
-            {
-                KilltimeAudioManager.Instance.PlayMusic(MusicMood.Explore, MusicIntensity.Calm, forceRestart: true);
-            }
         }
 
         public void CleanupCurrentScene()
@@ -316,6 +316,87 @@ namespace Killtime.Story
         {
             if (IsTransitioning || CombatHUD.IsPaused) return;
             _director?.Continue();
+        }
+
+        private void ApplyInitialSceneMusic(string scenarioId, Story.Data.StorySceneData sceneData = null)
+        {
+            if (KilltimeAudioManager.Instance == null) return;
+
+            if (sceneData == null)
+            {
+                Story.Data.StorySceneRepository.TryLoadSceneData(scenarioId, out sceneData);
+            }
+
+            ResolveInitialSceneMusic(sceneData, out var targetMood, out var targetIntensity);
+            KilltimeAudioManager.Instance.PlayMusic(targetMood, targetIntensity, forceRestart: true);
+        }
+
+        public static void ResolveInitialSceneMusic(Story.Data.StorySceneData sceneData, out MusicMood mood, out MusicIntensity intensity)
+        {
+            mood = MusicMood.Explore;
+            intensity = MusicIntensity.Calm;
+
+            if (sceneData == null) return;
+
+            string firstNodeId = !string.IsNullOrWhiteSpace(sceneData.FirstNodeId)
+                ? sceneData.FirstNodeId
+                : (sceneData.Nodes != null && sceneData.Nodes.Count > 0 ? sceneData.Nodes[0].NodeId : null);
+
+            var firstNode = !string.IsNullOrWhiteSpace(firstNodeId) ? sceneData.FindNode(firstNodeId) : null;
+            if (firstNode == null && sceneData.Nodes != null && sceneData.Nodes.Count > 0)
+            {
+                firstNode = sceneData.Nodes[0];
+            }
+
+            if (firstNode != null)
+            {
+                if (firstNode.TriggerCombatOnEnter)
+                {
+                    mood = MusicMood.Combat;
+                    intensity = MusicIntensity.Intense;
+                    return;
+                }
+
+                if (firstNode.Dialogues != null && firstNode.Dialogues.Count > 0)
+                {
+                    int entryIdx = Scenes.JsonStorySceneController.FindEntryDialogueIndex(firstNode);
+                    if (entryIdx >= 0 && entryIdx < firstNode.Dialogues.Count)
+                    {
+                        var entryLine = firstNode.Dialogues[entryIdx];
+                        if (entryLine != null && entryLine.Ambience != null && entryLine.Ambience.HasAmbience && entryLine.Ambience.ChangeMusic)
+                        {
+                            mood = entryLine.Ambience.MusicMood;
+                            intensity = entryLine.Ambience.MusicIntensity;
+                            return;
+                        }
+                    }
+
+                    for (int i = 0; i < firstNode.Dialogues.Count; i++)
+                    {
+                        var diag = firstNode.Dialogues[i];
+                        if (diag != null && diag.Ambience != null && diag.Ambience.HasAmbience && diag.Ambience.ChangeMusic)
+                        {
+                            mood = diag.Ambience.MusicMood;
+                            intensity = diag.Ambience.MusicIntensity;
+                            return;
+                        }
+                    }
+                }
+
+                if (firstNode.Events != null && firstNode.Events.Count > 0)
+                {
+                    for (int i = 0; i < firstNode.Events.Count; i++)
+                    {
+                        var evt = firstNode.Events[i];
+                        if (evt != null && evt.Ambience != null && evt.Ambience.HasAmbience && evt.Ambience.ChangeMusic)
+                        {
+                            mood = evt.Ambience.MusicMood;
+                            intensity = evt.Ambience.MusicIntensity;
+                            return;
+                        }
+                    }
+                }
+            }
         }
     }
 

@@ -179,6 +179,10 @@ namespace Killtime.Tactics
         /// <summary>Vrai pendant une passe d'armes OU un lancer de grenade (anti double-clic / attente IA).</summary>
         public bool IsResolving => _isAttackInProgress;
 
+        /// <summary>Zones persistantes actives (fumée, gaz, feu...). Purgées au reset, tickées en début de tour.</summary>
+        private readonly List<SmokeZone> _smokeZones = new List<SmokeZone>();
+        public IReadOnlyList<SmokeZone> SmokeZones => _smokeZones;
+
         private void Awake()
         {
             _diceRoller = new DiceRoller();
@@ -258,10 +262,12 @@ namespace Killtime.Tactics
                 _turnManager.OnCombatEnded -= HandleCombatEnded;
                 _turnManager.OnUnitStatusExpired -= HandleUnitStatusExpired;
                 _turnManager.OnInitiativeRolled -= HandleInitiativeRolled;
+                _turnManager.OnRoundStarted -= HandleRoundStarted;
                 _turnManager.OnTurnStarted += HandleTurnStarted;
                 _turnManager.OnCombatEnded += HandleCombatEnded;
                 _turnManager.OnUnitStatusExpired += HandleUnitStatusExpired;
                 _turnManager.OnInitiativeRolled += HandleInitiativeRolled;
+                _turnManager.OnRoundStarted += HandleRoundStarted;
             }
 
             // 4. Sélectionner le premier mannequin par défaut
@@ -535,7 +541,7 @@ namespace Killtime.Tactics
             var active = _turnManager != null ? _turnManager.ActiveUnit : null;
             if (active != null && CurrentTarget != null && CurrentTarget.Stats != null && CurrentTarget.Stats.IsAlive)
             {
-                _gridVisualizer.ShowLineOfSight(active.CurrentCoords, CurrentTarget.CurrentCoords);
+                _gridVisualizer.ShowLineOfSight(active.CurrentCoords, CurrentTarget.CurrentCoords, _smokeZones, SeesThroughSmoke(active));
                 if (active != _losLoggedAttacker || CurrentTarget != _losLoggedTarget)
                 {
                     _losLoggedAttacker = active;
@@ -555,7 +561,7 @@ namespace Killtime.Tactics
         {
             if (_grid == null) return;
             CoverScanResult scan;
-            try { scan = CoverSystem.ScanCover(attacker.CurrentCoords, defender.CurrentCoords, _grid); }
+            try { scan = CoverSystem.ScanCover(attacker.CurrentCoords, defender.CurrentCoords, _grid, smokeZones: _smokeZones, seesThroughSmoke: SeesThroughSmoke(attacker)); }
             catch (Exception e)
             {
                 Log($"🎯 Ligne de mire : échec du scan ({e.Message}).");
@@ -589,6 +595,8 @@ namespace Killtime.Tactics
         {
             // 0. Combat (ré)initialisé : aucun gourdin / objet du combat précédent ne survit.
             DroppedWeaponPickup.ClearAllDropped();
+            _smokeZones.Clear();
+            _gridVisualizer?.UpdatePersistentZones(_smokeZones);
             CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
             // 1. Purger et neutraliser immédiatement les instances actives (anti-fantômes même frame)
             if (PlayerUnit != null)
@@ -815,6 +823,8 @@ namespace Killtime.Tactics
 
             // Carte ré-initialisée : purge les objets au sol avant re-spawn.
             DroppedWeaponPickup.ClearAllDropped();
+            _smokeZones.Clear();
+            _gridVisualizer?.UpdatePersistentZones(_smokeZones);
             CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
             var mapEditor = MapEditorDevWindow.Instance ?? FindAnyObjectByType<MapEditorDevWindow>();
             if (mapEditor != null)
@@ -847,6 +857,8 @@ namespace Killtime.Tactics
             CombatUI.CombatContextMenuUI.Instance?.CloseMenu();
             CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
             DroppedWeaponPickup.ClearAllDropped();
+            _smokeZones.Clear();
+            _gridVisualizer?.UpdatePersistentZones(_smokeZones);
             CombatUI.TacticalSelectionManager.Instance?.ClearSelection();
 
             var allUnits = FindObjectsByType<TacticalUnit>();
@@ -1145,6 +1157,8 @@ namespace Killtime.Tactics
             {
                 var vis = units[i].GetComponent<TacticalUnitVisual>();
                 vis?.SetCombatStance(false);
+                // Champs rechargés hors combat (Livre VIII §32.2).
+                if (units[i] != null && units[i].Stats != null) units[i].Stats.RefillShield();
             }
 
             if (KilltimeAudioManager.Instance != null)
@@ -1192,9 +1206,201 @@ namespace Killtime.Tactics
 
             if (unit != null)
             {
+                // Moteur Arcanique de Poche : régénération passive de bouclier (+2 PV)
+                if (unit.Stats.MaxShieldHP > 0 && unit.Stats.CurrentShieldHP < unit.Stats.MaxShieldHP
+                    && SmokeScreen.HasItemByName(unit.Stats, "Moteur"))
+                {
+                    unit.Stats.CurrentShieldHP = Math.Min(unit.Stats.MaxShieldHP, unit.Stats.CurrentShieldHP + 2);
+                    visual?.SpawnFloatingText("⚙️ Moteur Arcanique (+2 Bouclier)", Color.cyan);
+                    Log($"⚙️ <b>Moteur Arcanique de Poche</b> : flux continu vers le champ de force de <b>{unit.Stats.Name}</b> (+2 PV Bouclier).");
+                }
+
                 Log($"--- Tour de 10s : <b>{unit.Stats.Name}</b> (PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints}) ---");
                 RecordChronoSnapshot($"Début du tour de {unit.Stats.Name}");
+                // Zones persistantes : l'unité subit son environnement en début de tour.
+                TickSmokeForUnit(unit);
             }
+        }
+
+        /// <summary>Décompte des zones à chaque round ; dissipation loggée.</summary>
+        private void HandleRoundStarted(int round)
+        {
+            if (_smokeZones.Count == 0) return;
+            for (int i = _smokeZones.Count - 1; i >= 0; i--)
+            {
+                var z = _smokeZones[i];
+                z.TurnsLeft--;
+                if (z.TurnsLeft <= 0)
+                {
+                    Log($"🌫️ La zone <b>{z.Kind}</b> en ({z.Center.Q},{z.Center.R}) se dissipe.");
+                    _smokeZones.RemoveAt(i);
+                }
+                else
+                {
+                    _smokeZones[i] = z;
+                }
+            }
+            _gridVisualizer?.UpdatePersistentZones(_smokeZones);
+        }
+
+        /// <summary>Case couverte par un écran de fumée actif ?</summary>
+        public bool IsSmoked(HexCoordinates coords)
+        {
+            return SmokeScreen.IsCellSmoked(coords, _smokeZones);
+        }
+
+        /// <summary>Thermique (spécialisation ou Jumelles) : voit à travers la fumée.</summary>
+        public static bool SeesThroughSmoke(TacticalUnit viewer)
+        {
+            var st = viewer?.Stats;
+            if (st == null) return false;
+            try
+            {
+                if (st.HasSpecialization(Killtime.Tactics.Visibility.FogOfWarSystem.SpecThermal)) return true;
+            }
+            catch { /* fiche partielle */ }
+            return SmokeScreen.HasGoggles(st);
+        }
+
+        /// <summary>
+        /// Effets d'environnement en début de tour : dégâts (ignore armure, barrière
+        /// d'abord) + statuts de la zone. Masque : filtre les gaz (dégâts /2).
+        /// </summary>
+        public void TickSmokeForUnit(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null || !unit.Stats.IsAlive) return;
+            if (_smokeZones.Count == 0) return;
+            for (int i = 0; i < _smokeZones.Count; i++)
+            {
+                var z = _smokeZones[i];
+                if (z.TurnsLeft <= 0) continue;
+                if (unit.CurrentCoords.DistanceTo(z.Center) > Math.Max(0, z.Radius)) continue;
+
+                bool masked = SmokeScreen.HasGasMask(unit.Stats) && SmokeScreen.IsGas(z.Kind);
+                StatusEffect fx = z.Statuses;
+                if (masked) fx = SmokeScreen.FilterGasStatuses(fx, z.Kind, z.Arcanotech);
+                if (fx != StatusEffect.None)
+                {
+                    unit.Stats.ApplyStatus(fx, 1);
+                    unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
+                        $"[{GrenadeCalculator.StatusesToLabel(fx)}]{(masked ? " 😷" : "")}", new Color(1f, 0.4f, 0.95f));
+                }
+
+                int dmg = SmokeScreen.ZoneDamagePerTurn(z.Kind);
+                if (masked) dmg = SmokeScreen.HalveGasDamage(dmg, z.Kind, z.Arcanotech);
+                if (dmg > 0)
+                {
+                    int shieldAbs = unit.Stats.AbsorbShield(dmg);
+                    int finalDmg = Math.Max(0, dmg - shieldAbs);
+                    if (!SmokeScreen.ZoneIgnoresArmor(z.Kind))
+                    {
+                        int totalArmor = unit.Stats.BaseArmorAbsorption + unit.Stats.GetWornArmorBonus();
+                        int armorAbs = Math.Min(totalArmor, finalDmg);
+                        finalDmg = Math.Max(0, finalDmg - armorAbs);
+                    }
+
+                    if (finalDmg > 0)
+                    {
+                        if (unit.Stats.CurrentHealth - finalDmg <= 0)
+                            unit.Stats.EvaluateFatalBlow(BodyPart.Torse, finalDmg);
+                        else
+                            unit.Stats.CurrentHealth -= finalDmg;
+                    }
+
+                    unit.GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
+                    unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"-{finalDmg} PV ({z.Kind})", new Color(1f, 0.30f, 0.20f));
+                    Log($"🌫️ <b>Zone {z.Kind}</b> : {unit.Stats.Name} subit <b>{finalDmg} PV</b> (bruts {dmg}{(shieldAbs > 0 ? $", bouclier -{shieldAbs}" : "")}{(masked ? ", masque 😷" : "")}).");
+                    if (!unit.Stats.IsAlive)
+                    {
+                        unit.GetComponent<TacticalUnitVisual>()?.TriggerFallingBackDeath();
+                        if (CurrentTarget == unit) AutoTargetNextAlive();
+                        UpdateAdaptiveMusic();
+                        _turnManager?.CheckCombatOver();
+                    }
+                }
+                else if (fx != StatusEffect.None)
+                {
+                    Log($"🌫️ <b>Zone {z.Kind}</b> : {unit.Stats.Name} [{GrenadeCalculator.StatusesToLabel(fx)}]{(masked ? " (masque 😷)" : "")}.");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Grappin Magnétique (2 PA, 2-4 cases) : harpon 3D, À Terre si Diff ≥ 2.
+        /// Le grappin revient (non consommé). Requiert l'outil en poche.
+        /// </summary>
+        public void ExecuteGrapnel(TacticalUnit attacker, TacticalUnit defender)
+        {
+            if (_isAttackInProgress)
+            {
+                Log("⚠️ Lancer ignoré : une résolution est déjà en cours.");
+                return;
+            }
+            if (TurnManager.IsMultiplayerPlayerClient())
+            {
+                Log("⚠️ Grappin réservé au GM en multijoueur (pas encore synchronisé VTT).");
+                return;
+            }
+            if (attacker == null) attacker = _turnManager != null ? _turnManager.ActiveUnit : PlayerUnit;
+            if (attacker == null || attacker.Stats == null) { Log("⚠️ Aucun attaquant pour le grappin."); return; }
+            if (defender == null || defender.Stats == null || !defender.Stats.IsAlive) { Log("⚠️ Aucune cible valide pour le grappin."); return; }
+            if (attacker.IsMoving) { Log($"⚠️ <b>{attacker.Stats.Name}</b> est en déplacement : attendez l'arrivée !"); return; }
+            if (SmokeScreen.FindItemByName(attacker.Stats, "Grappin") == null)
+            {
+                Log($"⚠️ <b>{attacker.Stats.Name}</b> n'a pas de Grappin Magnétique en poche !");
+                return;
+            }
+            int dist = attacker.CurrentCoords.DistanceTo(defender.CurrentCoords);
+            if (dist < 2 || dist > 4)
+            {
+                Log($"⚠️ <b>Grappin impossible</b> : {dist} cases (portée 2-4).");
+                return;
+            }
+            DiceType atkDie = attacker.Stats.GetSkillDie(SkillType.Ballistique, true);
+            if (!attacker.Stats.CanAttack(atkDie)) { Log($"⚠️ <b>{attacker.Stats.Name}</b> a épuisé son quota d'attaque ce tour !"); return; }
+            if (!InfiniteAP && attacker.Stats.CurrentActionPoints < 2)
+            {
+                Log($"⚠️ PA insuffisants : grappin = 2 PA (reste {attacker.Stats.CurrentActionPoints}).");
+                return;
+            }
+
+            Vector3 dir = defender.transform.position - attacker.transform.position;
+            dir.y = 0f;
+            if (dir != Vector3.zero) attacker.transform.rotation = Quaternion.LookRotation(dir);
+            attacker.GetComponent<TacticalUnitVisual>()?.TriggerGrenadeThrow();
+
+            _combatCalculator.SetContactDistanceState(false);
+            CoverType cover = GetCoverToTarget(attacker, defender);
+            var throwDuel = _combatCalculator.BeginSkillDuel(
+                attacker.Stats, defender.Stats, BodyPart.Torse,
+                SkillType.Ballistique, SkillType.Esquive, 3, false,
+                true, null, null,
+                defender.Stats.BaseArmorAbsorption, out string throwError, cover);
+            if (throwDuel == null)
+            {
+                Log(throwError ?? "⚠️ Grappin impossible : PA insuffisants.");
+                return;
+            }
+            _combatCalculator.DeclareAttackerStakes(throwDuel, 0, 0);
+            if (throwDuel.DefenderWantsToDefend && !throwDuel.IsDefenderIncapacitated && throwDuel.CanDefenderReact)
+                _combatCalculator.AutoDeclareDefenderStakes(throwDuel);
+            else
+                _combatCalculator.DeclareDefenderStakes(throwDuel, SkillType.Esquive, false, 0, 0);
+            var result = _combatCalculator.ResolveBlindDuel(throwDuel);
+            attacker.Stats.RegisterAttack();
+
+            Log($"🪝 <b>HARPON</b> : {attacker.Stats.Name} harponne {defender.Stats.Name} ({dist} cases, -2 PA)\n   {result.CombatLog}");
+            var defVis = defender.GetComponent<TacticalUnitVisual>();
+            if (result.IsHit) defVis?.TriggerHitFlash();
+            if (result.IsHit && result.Differential >= 2)
+            {
+                defender.Stats.ApplyStatus(StatusEffect.ATerre, 1);
+                defVis?.SpawnFloatingText("[À TERRE] happé !", Color.yellow);
+                Log($"🪝 Le grappin fait chuter <b>{defender.Stats.Name}</b> (<b>À Terre</b>, Diff +{result.Differential}).");
+            }
+            if (!defender.Stats.IsAlive) AutoTargetNextAlive();
+            UpdateAdaptiveMusic();
+            _turnManager?.CheckCombatOver();
         }
 
         /// <summary>
@@ -1539,6 +1745,10 @@ namespace Killtime.Tactics
             {
                 _gridVisualizer.SetTargetCoord(path[path.Count - 1]);
             }
+            if (unit != null && unit.Stats != null && unit.Stats.IsAlive && _smokeZones.Count > 0)
+            {
+                TickSmokeForUnit(unit);
+            }
         }
 
         private void HandleTargetTeleportedFollow(TacticalUnit unit, HexCoordinates coords)
@@ -1546,6 +1756,10 @@ namespace Killtime.Tactics
             if (CurrentTarget != null && CurrentTarget == unit && _gridVisualizer != null)
             {
                 _gridVisualizer.SetTargetCoord(coords);
+            }
+            if (unit != null && unit.Stats != null && unit.Stats.IsAlive && _smokeZones.Count > 0)
+            {
+                TickSmokeForUnit(unit);
             }
         }
 
@@ -1625,7 +1839,14 @@ namespace Killtime.Tactics
         {
             if (attacker == null || defender == null || _grid == null) return CoverType.None;
             if (TitanFootprint.MinDistanceBetweenUnits(attacker.CurrentCoords, attacker.FootprintType, defender.CurrentCoords, defender.FootprintType) <= 1) return CoverType.None;
-            return CoverSystem.EvaluateCover(attacker.CurrentCoords, defender.CurrentCoords, _grid, defender.FootprintType, attacker.FootprintType);
+            return CoverSystem.EvaluateCover(
+                attacker.CurrentCoords,
+                defender.CurrentCoords,
+                _grid,
+                defender.FootprintType,
+                attacker.FootprintType,
+                _smokeZones,
+                SeesThroughSmoke(attacker));
         }
 
         public void ExecuteAttack(
@@ -1793,6 +2014,27 @@ namespace Killtime.Tactics
                 return;
             }
 
+            // RD-033 Munitions : un tir consomme 1 coup ; vide ou enrayé = refus sans PA.
+            // Mêlée au contact avec l'arme (coup de crosse) : aucun coup consommé.
+            bool ammoFiredHere = WeaponAmmo.UsesAmmo(activeWeapon, attackSkill);
+            if (ammoFiredHere)
+            {
+                if (activeWeapon.Jammed)
+                {
+                    Log($"🔧 <b>Enrayée</b> : {activeWeapon.Name} de {attacker.Stats.Name} est enrayée ! Désenrayez (1 PA).");
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                    return;
+                }
+                if (activeWeapon.AmmoRemaining <= 0)
+                {
+                    Log($"🔋 <b>Chargeur vide</b> : {activeWeapon.Name} ({attacker.Stats.Name}) — rechargez ({activeWeapon.ReloadAPCost} PA).");
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                    return;
+                }
+            }
+
             // Duel aveugle Livres II §7 + VI §24.1 : les mises (PA bonus + PE) se déclarent
             // AVANT les jets et restent cachées jusqu'à la révélation simultanée.
             // Bonus explicite (>= 0) : mise déclarée du défenseur (fenêtre paramétrage).
@@ -1888,6 +2130,10 @@ namespace Killtime.Tactics
                 {
                     effectiveWeaponDamage = equippedWeapon.BaseDamage;
                 }
+                int weaponBonusEc = equippedWeapon != null ? Math.Max(0, equippedWeapon.AttackBonusEc) : 0;
+                // RD-033 : charge Haute Densité chambrée = +1 dégât (sniper/Deglazer).
+                bool hdShot = ammoFiredHere && equippedWeapon != null && equippedWeapon.LoadedHD;
+                if (hdShot) effectiveWeaponDamage += 1;
 
                 _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
 
@@ -1916,15 +2162,15 @@ namespace Killtime.Tactics
                             resolvedAttackDie, attacker.Stats.GetSkillModifier(attackSkill, isOffensive: true),
                             reactiveDefDie, defender.Stats.GetSkillModifier(defenseSkill, isOffensive: false),
                             effectiveWeaponDamage, cancelPenaltyWithAP, defenderWantsToDefend,
-                            defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError, freshCover);
+                            defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError, freshCover, weaponBonusEc);
                     }
                     else
                     {
                         duel = _combatCalculator.BeginSkillDuel(
                             attacker.Stats, defender.Stats, targetedPart,
-                            attackSkill, defenseSkill, weaponBaseDamage, cancelPenaltyWithAP,
+                            attackSkill, defenseSkill, effectiveWeaponDamage, cancelPenaltyWithAP,
                             defenderWantsToDefend, attackerSpecialization, defenderSpecialization,
-                            defender.Stats.BaseArmorAbsorption, out duelError, freshCover);
+                            defender.Stats.BaseArmorAbsorption, out duelError, freshCover, weaponBonusEc);
                     }
                     if (duel == null)
                     {
@@ -1968,7 +2214,8 @@ namespace Killtime.Tactics
                         defenseSkill: defenseSkill,
                         attackerPE: attackerPE,
                         defenderPE: defenderPE,
-                        cover: freshCover
+                        cover: freshCover,
+                        weaponBonusEc: weaponBonusEc
                     );
                 }
                 else
@@ -1979,7 +2226,7 @@ namespace Killtime.Tactics
                         targetedPart: targetedPart,
                         attackSkill: attackSkill,
                         defenseSkill: defenseSkill,
-                        weaponBaseDamage: weaponBaseDamage,
+                        weaponBaseDamage: effectiveWeaponDamage,
                         cancelPenaltyWithAP: cancelPenaltyWithAP,
                         defenderWantsToDefend: defenderWantsToDefend,
                         attackerSpecialization: attackerSpecialization,
@@ -1989,11 +2236,15 @@ namespace Killtime.Tactics
                         defenderBonusAP: resolvedDefenderBonus,
                         attackerPE: attackerPE,
                         defenderPE: defenderPE,
-                        cover: freshCover
+                        cover: freshCover,
+                        weaponBonusEc: weaponBonusEc
                     );
                 }
 
                 Log(result.CombatLog);
+                TryDisarmDefender(attacker, defender, targetedPart, result);
+                if (ammoFiredHere && equippedWeapon != null && result.AttackRoll.RawRoll > 0)
+                    ConsumeShotAndCheckJam(attacker, equippedWeapon, result, hdShot);
 
                 var laserWeapon = attacker.GetComponentInChildren<LaserRifleWeapon>();
                 // Un roundkick / une frappe au corps-à-corps (Mains Nues, Maniement,
@@ -2063,8 +2314,8 @@ namespace Killtime.Tactics
                             defVisual.SpawnFloatingText($"[TOUCHÉ] {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff {diffSign})", new Color(0.9f, 0.9f, 1.0f));
                         }
 
-                        string dmgText = result.ArmorAbsorbed > 0 
-                            ? $"-{result.FinalDamageApplied} PV (Bruts {result.RawDamage} | Armure -{result.ArmorAbsorbed})" 
+                        string dmgText = (result.ArmorAbsorbed > 0 || result.ShieldAbsorbed > 0) 
+                            ? $"-{result.FinalDamageApplied} PV (Bruts {result.RawDamage} | Armure -{result.ArmorAbsorbed}" + (result.ShieldAbsorbed > 0 ? $" | Bouclier -{result.ShieldAbsorbed}" : "") + ")" 
                             : $"-{result.FinalDamageApplied} PV";
                         defVisual.SpawnFloatingText(dmgText, new Color(1.0f, 0.25f, 0.25f));
 
@@ -2234,6 +2485,10 @@ namespace Killtime.Tactics
             {
                 effectiveWeaponDamage = equippedWeapon.BaseDamage;
             }
+            int weaponBonusEc2 = equippedWeapon != null ? Math.Max(0, equippedWeapon.AttackBonusEc) : 0;
+            // RD-033 : charge Haute Densité chambrée = +1 dégât (sniper/Deglazer).
+            bool hdShot2 = WeaponAmmo.UsesAmmo(equippedWeapon, attackSkill) && equippedWeapon.LoadedHD;
+            if (hdShot2) effectiveWeaponDamage += 1;
 
             _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
 
@@ -2246,7 +2501,7 @@ namespace Killtime.Tactics
                 attacker.Stats, defender.Stats, targetedPart,
                 attackSkill, defenseSkill, effectiveWeaponDamage, cancelPenaltyWithAP,
                 false, attackerSpecialization, defenderSpecialization,
-                defender.Stats.BaseArmorAbsorption, out string duelError, defenseCover);
+                defender.Stats.BaseArmorAbsorption, out string duelError, defenseCover, weaponBonusEc2);
 
             if (duel == null)
             {
@@ -2305,6 +2560,9 @@ namespace Killtime.Tactics
 
             attacker.Stats.RegisterAttack();
             Log(result.CombatLog);
+            TryDisarmDefender(attacker, defender, targetedPart, result);
+            if (WeaponAmmo.UsesAmmo(equippedWeapon, attackSkill) && equippedWeapon != null && result.AttackRoll.RawRoll > 0)
+                ConsumeShotAndCheckJam(attacker, equippedWeapon, result, hdShot2);
 
             var laserWeapon = attacker.GetComponentInChildren<LaserRifleWeapon>();
             bool skillIsMelee = SkillDefinitions.IsMeleeAttackSkill(attackSkill);
@@ -2369,8 +2627,8 @@ namespace Killtime.Tactics
                         defVisual.SpawnFloatingText($"[TOUCHÉ] {BodyPartInfo.GetInfo(result.ActualHitPart).DisplayName} (Diff {diffSign})", new Color(0.9f, 0.9f, 1.0f));
                     }
 
-                    string dmgText = result.ArmorAbsorbed > 0 
-                        ? $"-{result.FinalDamageApplied} PV (Bruts {result.RawDamage} | Armure -{result.ArmorAbsorbed})" 
+                    string dmgText = (result.ArmorAbsorbed > 0 || result.ShieldAbsorbed > 0) 
+                        ? $"-{result.FinalDamageApplied} PV (Bruts {result.RawDamage} | Armure -{result.ArmorAbsorbed}" + (result.ShieldAbsorbed > 0 ? $" | Bouclier -{result.ShieldAbsorbed}" : "") + ")" 
                         : $"-{result.FinalDamageApplied} PV";
                     defVisual.SpawnFloatingText(dmgText, new Color(1.0f, 0.25f, 0.25f));
 
@@ -2573,6 +2831,9 @@ namespace Killtime.Tactics
             }
 
             int baseCost = GrenadeRules.ComputeAPCost(launcher, aimed);
+            // Milkor MGL : cadence de zone, -1 PA par tir (ApCostModifier du lanceur utilisé).
+            if (launcher != null && launcher.ApCostModifier != 0)
+                baseCost = Math.Max(1, baseCost + launcher.ApCostModifier);
             int bonusWant = Mathf.Max(0, attackerBonusAP);
             DiceType atkDie = attacker.Stats.GetSkillDie(SkillType.Ballistique, true);
             if (!attacker.Stats.CanAttack(atkDie))
@@ -2589,14 +2850,15 @@ namespace Killtime.Tactics
                 return;
             }
 
-            // Débit PA de base puis bonus d'injection (plafonné au reste, comme les passes d'armes).
+            // Débit PA de base (malus armures inclus) puis bonus d'injection
+            // (mises exemptées du malus, comme les passes d'armes).
             if (!InfiniteAP)
             {
                 attacker.Stats.ConsumeActionPoints(baseCost);
                 int applied = 0;
                 for (int i = 0; i < bonusWant; i++)
                 {
-                    if (attacker.Stats.ConsumeActionPoints(1)) applied++;
+                    if (attacker.Stats.ConsumeActionPoints(1, true)) applied++;
                     else break;
                 }
                 bonusWant = applied;
@@ -2732,6 +2994,25 @@ namespace Killtime.Tactics
                 totalDealt += hit.FinalDamage;
             }
 
+            // --- Zone persistante (RD-041/042/043) : fumée, gaz, feu... ---
+            string zoneNote = "";
+            if (grenadeDef != null && grenadeDef.ZoneDurationTurns > 0 && blastR > 0)
+            {
+                _smokeZones.Add(new SmokeZone
+                {
+                    Center = blastCoords,
+                    Radius = blastR,
+                    Kind = grenadeDef.GrenadeKind ?? "",
+                    Statuses = GrenadeCalculator.ParseStatuses(grenadeDef.GrenadeStatuses ?? ""),
+                    TurnsLeft = Math.Max(1, grenadeDef.ZoneDurationTurns),
+                    Arcanotech = SmokeScreen.IsArcanotechEra(grenadeDef.Era)
+                });
+                _gridVisualizer?.UpdatePersistentZones(_smokeZones);
+                zoneNote = $" 🌫️ <b>Zone {grenadeDef.GrenadeKind}</b> R{blastR} persistante {grenadeDef.ZoneDurationTurns} round(s) en ({blastCoords.Q},{blastCoords.R})"
+                    + (SmokeScreen.BlocksSight(grenadeDef.GrenadeKind) ? " — <b>bloque la visée</b> (sauf thermique)" : "")
+                    + (SmokeScreen.ZoneDamagePerTurn(grenadeDef.GrenadeKind) > 0 ? " — dégâts/round" : "");
+            }
+
             // --- Log tactique ---
             string via = (launcher != null && launcher.IsLauncher) ? $" au <b>{launcher.Name}</b>" : " à la main";
             string aimTag = throwOutcome.DistancePenalty != 0 ? $" (malus dist {throwOutcome.DistancePenalty})" : "";
@@ -2742,6 +3023,7 @@ namespace Killtime.Tactics
             log += $"   🎲 Lancer : {throwOutcome.LogFragment}\n";
             log += $"   💥 Souffle R{blastR} : [{grenadeDef.BaseDamage} + {diceDetail} ({grenadeDef.DamageDiceCount}d10) = {grenadeDef.BaseDamage + diceTotal}] x falloff (-25%/case, min 25%) + shrapnels +{grenadeDef.ShrapnelDamage} ➔ {hits.Count} cible(s) dans la zone.";
             if (hits.Count == 0) log += " <i>Souffle dans le vide.</i>";
+            if (!string.IsNullOrEmpty(zoneNote)) log += "\n  " + zoneNote;
 
             // --- Retours visuels/sonores par cible ---
             for (int i = 0; i < hits.Count; i++)
@@ -2752,7 +3034,7 @@ namespace Killtime.Tactics
                 if (unit != null && unit != attacker && unit.IsPlayerControlled == attacker.IsPlayerControlled)
                     allyTag = " ⚠️<b>TIR ALLIÉ</b>";
                 string hpTag = unit != null ? unit.Stats.CurrentHealth + "/" + unit.Stats.MaxHealth + " PV" : "?";
-                log += $"\n   • <b>{h.TargetName}</b>{allyTag} à {h.DistanceFromBlast} case(s) : bruts {h.RawDamage} − couv {h.CoverReduction} − armure {h.ArmorAbsorbed} ➔ <color=#FF3B5C><b>{h.FinalDamage} PV</b></color> ({hpTag})";
+                log += $"\n   • <b>{h.TargetName}</b>{allyTag} à {h.DistanceFromBlast} case(s) : bruts {h.RawDamage} − couv {h.CoverReduction} − armure {h.ArmorAbsorbed}{(h.ShieldAbsorbed > 0 ? $" − bouclier {h.ShieldAbsorbed}" : "")}{(h.Masked ? " 😷<i>masque</i>" : "")} ➔ <color=#FF3B5C><b>{h.FinalDamage} PV</b></color> ({hpTag})";
                 if (h.InflictedStatus != StatusEffect.None)
                     log += $" | [{GrenadeCalculator.StatusesToLabel(h.InflictedStatus)}]";
                 if (h.ExceededEncaissement) log += " | ⚡<b>CHOC</b>";
@@ -2773,7 +3055,7 @@ namespace Killtime.Tactics
                     false,
                     false,
                     h.RawDamage,
-                    h.CoverReduction + h.ArmorAbsorbed,
+                    h.CoverReduction + h.ArmorAbsorbed + h.ShieldAbsorbed,
                     h.FinalDamage,
                     h.ExceededEncaissement,
                     isGrenadeFatal,
@@ -2872,6 +3154,267 @@ namespace Killtime.Tactics
             if (CurrentTarget != null && !CurrentTarget.Stats.IsAlive) AutoTargetNextAlive();
             UpdateAdaptiveMusic();
             _turnManager?.CheckCombatOver();
+        }
+
+        // =====================================================================
+        // ARMES : lancer 2 PA + désarmement Bras Droit fait tomber (Livre VI §24).
+        // =====================================================================
+
+        public const int WeaponThrowAPCost = 2;
+        public const int WeaponThrowMaxRange = 4;
+        public const int WeaponSwapAPCost = 1;
+
+        /// <summary>
+        /// Lancer d'arme équipée (2 PA) : Hachette de Jet et armes de fortune.
+        /// Duel Ballistique à 2-4 cases, dégâts = BaseDamage + différentiel + EC,
+        /// puis l'arme quitte l'inventaire et tombe à la case de la cible.
+        /// </summary>
+        public void ExecuteWeaponThrow(TacticalUnit attacker, TacticalUnit defender)
+        {
+            if (_isAttackInProgress)
+            {
+                Log("⚠️ Lancer ignoré : une résolution est déjà en cours.");
+                return;
+            }
+            if (TurnManager.IsMultiplayerPlayerClient())
+            {
+                Log("⚠️ Lancer d'arme réservé au GM en multijoueur (pas encore synchronisé VTT).");
+                return;
+            }
+            if (attacker == null) attacker = _turnManager != null ? _turnManager.ActiveUnit : PlayerUnit;
+            if (attacker == null || attacker.Stats == null) { Log("⚠️ Aucun attaquant pour le lancer."); return; }
+            if (defender == null || defender.Stats == null || !defender.Stats.IsAlive) { Log("⚠️ Aucune cible valide pour le lancer."); return; }
+            if (attacker.IsMoving) { Log($"⚠️ <b>{attacker.Stats.Name}</b> est en déplacement : attendez l'arrivée !"); return; }
+
+            var sheet = attacker.GetOrBuildSheet();
+            var weapon = sheet?.GetEquippedWeapon();
+            if (weapon == null) { Log($"⚠️ <b>{attacker.Stats.Name}</b> n'a aucune arme équipée à lancer !"); return; }
+            if (weapon.IsThrowableGrenade()) { Log("⚠️ Grenades : utilisez l'action Grenade (2 PA), pas le lancer d'arme."); return; }
+
+            int dist = attacker.CurrentCoords.DistanceTo(defender.CurrentCoords);
+            if (dist < 2 || dist > WeaponThrowMaxRange)
+            {
+                Log($"⚠️ <b>Lancer impossible</b> : {dist} cases (portée {2}-{WeaponThrowMaxRange}). Au contact, frappez ; au-delà, rapprochez-vous.");
+                return;
+            }
+
+            DiceType atkDie = attacker.Stats.GetSkillDie(SkillType.Ballistique, true);
+            if (!attacker.Stats.CanAttack(atkDie)) { Log($"⚠️ <b>{attacker.Stats.Name}</b> a épuisé son quota d'attaque ce tour !"); return; }
+            if (!InfiniteAP && attacker.Stats.CurrentActionPoints < WeaponThrowAPCost)
+            {
+                Log($"⚠️ PA insuffisants : lancer = {WeaponThrowAPCost} PA (reste {attacker.Stats.CurrentActionPoints}).");
+                return;
+            }
+
+            string weaponName = weapon.Name;
+            int weaponDmg = Math.Max(1, weapon.BaseDamage);
+            int weaponEc = Math.Max(0, weapon.AttackBonusEc);
+            string weaponId = weapon.ItemId;
+
+            Vector3 dir = defender.transform.position - attacker.transform.position;
+            dir.y = 0f;
+            if (dir != Vector3.zero) attacker.transform.rotation = Quaternion.LookRotation(dir);
+            attacker.GetComponent<TacticalUnitVisual>()?.TriggerGrenadeThrow();
+
+            _combatCalculator.SetContactDistanceState(false);
+            CoverType cover = GetCoverToTarget(attacker, defender);
+            // Duel aveugle manuel (pas de double débit PA) : Begin consomme la base 2 PA,
+            // échec => on avorte sans perdre l'arme ni le quota d'attaque.
+            var throwDuel = _combatCalculator.BeginSkillDuel(
+                attacker.Stats, defender.Stats, BodyPart.Torse,
+                SkillType.Ballistique, SkillType.Esquive, weaponDmg, false,
+                true, null, null,
+                defender.Stats.BaseArmorAbsorption, out string throwError, cover, weaponEc);
+            if (throwDuel == null)
+            {
+                Log(throwError ?? "⚠️ Lancer impossible : PA insuffisants.");
+                return;
+            }
+            _combatCalculator.DeclareAttackerStakes(throwDuel, 0, 0);
+            if (throwDuel.DefenderWantsToDefend && !throwDuel.IsDefenderIncapacitated && throwDuel.CanDefenderReact)
+                _combatCalculator.AutoDeclareDefenderStakes(throwDuel);
+            else
+                _combatCalculator.DeclareDefenderStakes(throwDuel, SkillType.Esquive, false, 0, 0);
+            var result = _combatCalculator.ResolveBlindDuel(throwDuel);
+            attacker.Stats.RegisterAttack();
+
+            Log($"🗡️ <b>LANCER</b> : {attacker.Stats.Name} lance <b>{weaponName}</b> sur {defender.Stats.Name} ({dist} cases, -{WeaponThrowAPCost} PA)\n   {result.CombatLog}");
+
+            // L'arme quitte la main dans tous les cas (touché ou manqué) et tombe à la case cible.
+            try
+            {
+                var toDrop = sheet.Inventory?.Find(i => i != null && i.ItemId == weaponId);
+                if (toDrop != null) sheet.RemoveItem(weaponId);
+                else toDrop = weapon;
+                toDrop.IsEquipped = false;
+                attacker.NotifyInventoryChanged(true);
+                Vector3 spawnPos = defender.transform.position;
+                var node = _grid != null ? _grid.GetNode(defender.CurrentCoords) : null;
+                if (node != null) spawnPos = node.WorldPosition;
+                DroppedWeaponPickup.SpawnAt(toDrop, spawnPos, attacker.Stats.Name);
+                Log($"⚔ <b>{weaponName}</b> tombe au sol en ({defender.CurrentCoords.Q},{defender.CurrentCoords.R}).");
+            }
+            catch (Exception e) { Log($"⚠️ Dépôt de l'arme lancée impossible : {e.Message}"); }
+
+            var defVis = defender.GetComponent<TacticalUnitVisual>();
+            if (result.IsHit) defVis?.TriggerHitFlash();
+            if (!defender.Stats.IsAlive) AutoTargetNextAlive();
+            UpdateAdaptiveMusic();
+            _turnManager?.CheckCombatOver();
+        }
+
+        /// <summary>
+        /// RD-033 : décompte le coup tiré puis enraye sur critique adverse.
+        /// Appelé après chaque duel où un coup est réellement parti (jet attaquant lancé).
+        /// </summary>
+        public void ConsumeShotAndCheckJam(TacticalUnit attacker, InventoryItem weapon, DamageResult result, bool hdShot)
+        {
+            if (attacker == null || weapon == null || weapon.AmmoCapacity <= 0) return;
+            weapon.AmmoRemaining = Math.Max(0, weapon.AmmoRemaining - 1);
+            if (weapon.AmmoRemaining <= 0) weapon.LoadedHD = false;
+            string ammoNote = $" [🔋{weapon.AmmoRemaining}/{weapon.AmmoCapacity}{(weapon.LoadedHD ? "+HD" : "")}]";
+            attacker.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
+                hdShot ? $"Tir HD +1D{ammoNote}" : $"Coup parti{ammoNote}", new Color(1f, 0.72f, 0.15f));
+            // Enrayement sur critique adverse (parade/tir contré magistral).
+            if (result.DefenseRoll.IsCriticalSuccess && !weapon.Jammed)
+            {
+                weapon.Jammed = true;
+                attacker.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🔧 ENRAYÉE !", Color.red);
+                Log($"🔧 <b>ENRAYEMENT</b> : {weapon.Name} de {attacker.Stats.Name} s'enraye sur la parade critique ! Désenrayez (1 PA).");
+            }
+            if (weapon.AmmoRemaining <= 0)
+                Log($"🔋 <b>Chargeur vide</b> : {weapon.Name} — rechargez ({weapon.ReloadAPCost} PA).");
+            attacker.NotifyInventoryChanged(true);
+        }
+
+        /// <summary>
+        /// RD-033 : recharge le chargeur depuis la réserve (éjecte le reste d'un autre
+        /// type). useHD exige HeavyAmmo (sniper/Deglazer). Ne compte pas comme attaque.
+        /// </summary>
+        public bool TryReloadWeapon(TacticalUnit unit, bool useHD, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            var sheet = unit.GetOrBuildSheet();
+            var weapon = sheet?.GetEquippedWeapon();
+            if (weapon == null || weapon.AmmoCapacity <= 0) { message = "Aucune arme à chargeur équipée."; return false; }
+            if (weapon.Jammed) { message = $"🔧 {weapon.Name} est enrayée : désenrayez d'abord (1 PA)."; return false; }
+            if (useHD && !weapon.HeavyAmmo) { message = $"⛔ {weapon.Name} n'accepte pas la Haute Densité (sniper/Deglazer)."; return false; }
+            int need = weapon.AmmoCapacity - weapon.AmmoRemaining;
+            if (need <= 0) { message = $"🔋 {weapon.Name} déjà plein ({weapon.AmmoCapacity})."; return false; }
+            int stock = WeaponAmmo.StockShots(sheet, weapon.AmmoType, useHD);
+            if (stock <= 0) { message = $"⚠️ Aucune réserve {(useHD ? "Haute Densité" : weapon.AmmoType)} — achetez au marché."; return false; }
+            int cost = Math.Max(1, weapon.ReloadAPCost);
+            if (!InfiniteAP && unit.Stats.CurrentActionPoints < cost) { message = $"⚠️ PA insuffisants : recharger = {cost} PA."; return false; }
+            int taken = WeaponAmmo.TakeShots(sheet, weapon.AmmoType, useHD, Math.Min(need, stock));
+            if (taken <= 0) { message = "⚠️ Réserve introuvable."; return false; }
+            int ejected = (weapon.LoadedHD != useHD) ? weapon.AmmoRemaining : 0;
+            weapon.AmmoRemaining = Math.Min(weapon.AmmoCapacity, taken);
+            weapon.LoadedHD = useHD;
+            if (!InfiniteAP) unit.Stats.ConsumeActionPoints(cost);
+            unit.NotifyInventoryChanged(true);
+            message = $"🔋 <b>{unit.Stats.Name}</b> recharge <b>{weapon.Name}</b>{(useHD ? " <b>HD +1D</b>" : "")} : +{taken} coups"
+                + (ejected > 0 ? $" ({ejected} éjectés)" : "")
+                + (taken < need ? " — réserve épuisée" : "")
+                + $" [{weapon.AmmoRemaining}/{weapon.AmmoCapacity}] (-{cost} PA).";
+            return true;
+        }
+
+        /// <summary>RD-033 : désenraye l'arme équipée (1 PA, gratuit 0 PA avec Kit d'Entretien d'Armes).</summary>
+        public bool TryClearJam(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            var weapon = unit.GetOrBuildSheet()?.GetEquippedWeapon();
+            if (weapon == null || !weapon.Jammed) { message = "Arme non enrayée."; return false; }
+            bool hasKit = SmokeScreen.HasItemByName(unit.Stats, "Kit d'Entretien");
+            int cost = hasKit ? 0 : 1;
+            if (!InfiniteAP && cost > 0 && unit.Stats.CurrentActionPoints < cost) { message = $"⚠️ PA insuffisants : désenrayer = {cost} PA."; return false; }
+            weapon.Jammed = false;
+            if (!InfiniteAP && cost > 0) unit.Stats.ConsumeActionPoints(cost);
+            unit.NotifyInventoryChanged(true);
+            message = hasKit
+                ? $"🔧 <b>{unit.Stats.Name}</b> désenraye <b>{weapon.Name}</b> avec son <b>Kit d'Entretien d'Armes</b> (0 PA) !"
+                : $"🔧 <b>{unit.Stats.Name}</b> désenraye <b>{weapon.Name}</b> (-1 PA).";
+            return true;
+        }
+
+        /// <summary>
+        /// Recharge d'urgence de la barrière de champ de force (1 PA) via Cellule Nytharite (Standard 10 PV / Pure 25 PV).
+        /// </summary>
+        public bool TryRechargeShieldWithCell(TacticalUnit unit, bool usePureCell, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (unit.Stats.MaxShieldHP <= 0) { message = "Aucun champ de force équipé."; return false; }
+            if (unit.Stats.CurrentShieldHP >= unit.Stats.MaxShieldHP) { message = "Barrière énergétique déjà au maximum."; return false; }
+            if (!InfiniteAP && unit.Stats.CurrentActionPoints < 1) { message = "⚠️ PA insuffisants (1 PA requis)."; return false; }
+
+            string cellName = usePureCell ? "Cellule Nytharite Pure" : "Cellule Nytharite Standard";
+            var sheet = unit.GetOrBuildSheet();
+            var cell = SmokeScreen.FindItemByName(unit.Stats, cellName);
+            if (cell == null) { message = $"⚠️ Aucune {cellName} en inventaire."; return false; }
+
+            int restoreAmount = usePureCell ? 25 : 10;
+            int before = unit.Stats.CurrentShieldHP;
+            unit.Stats.CurrentShieldHP = Math.Min(unit.Stats.MaxShieldHP, unit.Stats.CurrentShieldHP + restoreAmount);
+            int restored = unit.Stats.CurrentShieldHP - before;
+
+            sheet.ConsumeOne(cell.ItemId);
+            unit.NotifyInventoryChanged(true);
+            if (!InfiniteAP) unit.Stats.ConsumeActionPoints(1);
+
+            var vis = unit.GetComponent<TacticalUnitVisual>();
+            vis?.SpawnFloatingText($"🔮 +{restored} Bouclier", Color.cyan);
+            message = $"🔮 <b>{unit.Stats.Name}</b> consomme une <b>{cellName}</b> : +{restored} PV de bouclier [{unit.Stats.CurrentShieldHP}/{unit.Stats.MaxShieldHP}] (-1 PA).";
+            return true;
+        }
+
+        /// <summary>
+        /// Désarmement Bras Droit : sur touché au bras porteur, différentiel élevé
+        /// arrache l'arme qui tombe au sol (2 cases max). Seuils Livre III :
+        /// base 4, Croc de Désarmement 3, Désarmement Fleuret 2.
+        /// </summary>
+        public void TryDisarmDefender(TacticalUnit attacker, TacticalUnit defender, BodyPart targetedPart, DamageResult result)
+        {
+            if (attacker == null || defender == null) return;
+            if (targetedPart != BodyPart.BrasDroit && result.TargetPart != BodyPart.BrasDroit) return;
+            if (!result.IsHit) return;
+            if (defender.Stats == null || !defender.Stats.IsAlive) return;
+            var sheet = defender.GetOrBuildSheet();
+            var held = sheet?.GetEquippedWeapon();
+            if (held == null) return;
+
+            int threshold = 4;
+            try
+            {
+                if (attacker.Stats != null)
+                {
+                    if (attacker.Stats.HasSpecialization("Escrime : Désarmement Fleuret")) threshold = 2;
+                    else if (attacker.Stats.HasSpecialization("Hache de Guerre : Croc de Désarmement")) threshold = 3;
+                }
+            }
+            catch { }
+            if (result.Differential < threshold) return;
+
+            try
+            {
+                string droppedName = held.Name;
+                string droppedId = held.ItemId;
+                var toDrop = sheet.Inventory?.Find(i => i != null && i.ItemId == droppedId) ?? held;
+                sheet.RemoveItem(droppedId);
+                toDrop.IsEquipped = false;
+                defender.NotifyInventoryChanged(true);
+                Vector3 spawnPos = defender.transform.position;
+                var node = _grid != null ? _grid.GetNode(defender.CurrentCoords) : null;
+                if (node != null) spawnPos = node.WorldPosition;
+                // L'arme vole à la case du porteur (2 cases au sol selon Livre VI, ici stessa case).
+                DroppedWeaponPickup.SpawnAt(toDrop, spawnPos, defender.Stats.Name);
+                defender.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"🗡️ DÉSARMÉ ! {droppedName}", Color.yellow);
+                Log($"🗡️ <b>DÉSARMEMENT</b> : {attacker.Stats.Name} arrache <b>{droppedName}</b> à {defender.Stats.Name} (Diff +{result.Differential} ≥ {threshold}) — tombe au sol !");
+                RecordChronoSnapshot($"Désarmement : {attacker.Stats.Name} -> {defender.Stats.Name}");
+            }
+            catch (Exception e) { Log($"⚠️ Désarmement impossible : {e.Message}"); }
         }
 
         private TacticalUnit FindUnitByName(string unitName)
@@ -3115,6 +3658,8 @@ namespace Killtime.Tactics
 
             // 0. Nettoyer les armes/objets au sol (gourdins, lames...) du combat précédent.
             DroppedWeaponPickup.ClearAllDropped();
+            _smokeZones.Clear();
+            _gridVisualizer?.UpdatePersistentZones(_smokeZones);
             CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
 
             // 1. Interrompre toutes les coroutines actives et rétablir le temps réel

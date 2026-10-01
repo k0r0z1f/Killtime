@@ -177,6 +177,13 @@ namespace Killtime.Tactics.TurnSystem
             CurrentRound = 1;
             ResetDuoTechTracking();
 
+            // Champs de force portés : barrières rechargées en début de combat (Livre VIII §32.2).
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                var u = _allUnits[i];
+                if (u != null && u.Stats != null) u.Stats.RefillShield();
+            }
+
             var ai = FindAnyObjectByType<Killtime.Tactics.AI.TacticalAIController>();
             if (ai != null)
             {

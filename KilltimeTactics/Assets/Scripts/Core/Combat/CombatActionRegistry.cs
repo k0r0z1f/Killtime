@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
+using Killtime.Tactics.Grid;
 using Killtime.Core.Combat;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
@@ -98,6 +99,38 @@ namespace Killtime.Tactics.CombatUI
             return SkillType.MainsNues;
         }
 
+        /// <summary>RD-033 : ce duel consomme-t-il un coup du chargeur ? (même règle que l'arène).</summary>
+        private static bool FiresShot(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor == null) return false;
+            var weapon = actor.Sheet?.GetEquippedWeapon();
+            if (weapon == null || weapon.AmmoCapacity <= 0) return false;
+            return WeaponAmmo.UsesAmmo(weapon, ResolveContactSkill(actor, target));
+        }
+
+        /// <summary>RD-033 : tir possible (chargeur non vide, arme non enrayée) ?</summary>
+        private static bool CanFireShot(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor == null) return false;
+            var weapon = actor.Sheet?.GetEquippedWeapon();
+            if (weapon == null || weapon.AmmoCapacity <= 0) return true;
+            if (!FiresShot(actor, target)) return true;
+            return !weapon.Jammed && weapon.AmmoRemaining > 0;
+        }
+
+        /// <summary>RD-033 : compteur chargeur pour les libellés ([🔋X/Y], [VIDE], [ENRAYÉE]).</summary>
+        private static string AmmoTag(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor == null) return "";
+            var weapon = actor.Sheet?.GetEquippedWeapon();
+            if (weapon == null || weapon.AmmoCapacity <= 0) return "";
+            if (!FiresShot(actor, target)) return "";
+            if (weapon.Jammed) return " [ENRAYÉE]";
+            return weapon.AmmoRemaining > 0
+                ? $" [🔋{weapon.AmmoRemaining}/{weapon.AmmoCapacity}{(weapon.LoadedHD ? "+HD" : "")}]"
+                : " [VIDE]";
+        }
+
         public static List<CombatAction> GetAvailableActions(TacticalUnit actor, TacticalUnit target, CombatDevArena arena)
         {
             var actions = new List<CombatAction>();
@@ -114,44 +147,44 @@ namespace Killtime.Tactics.CombatUI
             {
                 // Frappe Standard
                 actions.Add(new CombatAction(
-                    "🎯 Attaque Standard (2 PA)",
+                    $"🎯 Attaque Standard (2 PA){AmmoTag(actor, target)}",
                     "Frappe générale sur le centre de masse (Torse).",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => CanAttackTarget(act, tgt, 2),
+                    (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
                 // Visée Chirurgicale Tête
                 actions.Add(new CombatAction(
-                    "💀 Visée : Tête (3 PA)",
+                    $"💀 Visée : Tête (3 PA){AmmoTag(actor, target)}",
                     "Tir chirurgical avec dépense préalable de +1 PA pour annuler le malus de -2.",
                     ActionCategory.AttaqueEtPassesDarmes,
                     3,
-                    (act, tgt) => CanAttackTarget(act, tgt, 3),
+                    (act, tgt) => CanAttackTarget(act, tgt, 3) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Tete, cancelPenaltyWithAP: true,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
-                // Désarmement (Bras Droit)
+                // Désarmement (Bras Droit) : fait tomber l'arme au sol sur gros différentiel.
                 actions.Add(new CombatAction(
-                    "🗡️ Visée : Bras Droit (2 PA)",
-                    "Frappe ciblée pour tenter un désarmement ou un malus d'attaque.",
+                    $"🗡️ Visée : Bras Droit (2 PA){AmmoTag(actor, target)}",
+                    "Frappe le bras porteur : désarme et fait tomber l'arme au sol si Diff ≥ 4 (≥ 3 Croc, ≥ 2 Fleuret).",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => CanAttackTarget(act, tgt, 2),
+                    (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.BrasDroit, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
                 // Faucher (Jambes)
                 actions.Add(new CombatAction(
-                    "🦵 Visée : Jambes (2 PA)",
+                    $"🦵 Visée : Jambes (2 PA){AmmoTag(actor, target)}",
                     "Impact sur les membres inférieurs pour infliger l'état À Terre et Ralenti.",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => CanAttackTarget(act, tgt, 2),
+                    (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Jambes, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
@@ -186,15 +219,130 @@ namespace Killtime.Tactics.CombatUI
                         var lCap = anyLauncher;
                         var gCap2 = firstGrenade;
                         int launcherMaxRange = GrenadeRules.ComputeMaxRange(gCap2, lCap);
+                        int launcherCost = Mathf.Max(1, 3 + lCap.ApCostModifier);
                         actions.Add(new CombatAction(
-                            $"💣 Lance-grenades : {gCap2.Name} via {lCap.Name} (3 PA)",
+                            $"💣 Lance-grenades : {gCap2.Name} via {lCap.Name} ({launcherCost} PA)",
                             $"Portée {launcherMaxRange} cases, dispersion réduite. Vise la case de la cible.",
                             ActionCategory.AttaqueEtPassesDarmes,
-                            3,
-                            (act, tgt) => act.Stats.CurrentActionPoints >= 3 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= launcherMaxRange,
+                            launcherCost,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= launcherCost && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= launcherMaxRange,
                             (act, tgt) => arena.ExecuteGrenadeThrow(tgt.CurrentCoords, gCap2.ItemId, true, false, 0)
                         ));
                     }
+                }
+
+                // Lancer d'arme équipée (2 PA) : 2-4 cases, duel Ballistique, l'arme tombe à la case cible.
+                InventoryItem equippedForThrow = actor.Sheet?.GetEquippedWeapon();
+                if (equippedForThrow != null && !equippedForThrow.IsThrowableGrenade() && !equippedForThrow.IsLauncher)
+                {
+                    string throwName = equippedForThrow.Name;
+                    int throwDmg = equippedForThrow.BaseDamage;
+                    actions.Add(new CombatAction(
+                        $"🗡️ Lancer : {throwName} (2 PA, 2-4 cases)",
+                        $"Projette l'arme ({throwDmg}D + diff) en Ballistique. L'arme quitte la main et tombe au sol, même manquée.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) =>
+                        {
+                            if (act.Stats.CurrentActionPoints < 2 || !targetIsAlive) return false;
+                            var w = act.Sheet?.GetEquippedWeapon();
+                            if (w == null || w.IsThrowableGrenade() || w.IsLauncher) return false;
+                            int d = act.CurrentCoords.DistanceTo(tgt.CurrentCoords);
+                            return d >= 2 && d <= 4;
+                        },
+                        (act, tgt) => arena.ExecuteWeaponThrow(act, tgt)
+                    ));
+                }
+
+                // Balise laser (Lampe + Batterie) : 1 PA, ≤12 cases, cible visible.
+                // Expose la faille (prochaine attaque ignore l'encaissement).
+                if (HasTool(actor, "Lampe") && HasTool(actor, "Batterie"))
+                {
+                    actions.Add(new CombatAction(
+                        "🔦 Balise Laser (1 PA, 12 cases)",
+                        "Désigne la cible (visible, 12 cases) : expose sa faille, la prochaine attaque ignore son encaissement.",
+                        ActionCategory.TactiqueEtOrdres,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 12
+                            && HasTool(act, "Lampe") && HasTool(act, "Batterie")
+                            && (arena == null || arena.GetCoverToTarget(act, tgt) != CoverType.Full),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            Killtime.Core.Combat.SkillTechniqueState.ApplyExposedFlaw(act.Stats, tgt.Stats);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("🔦 DÉSIGNÉ", Color.yellow);
+                            arena?.Log($"🔦 <b>{act.Stats.Name}</b> désigne <b>{tgt.Stats.Name}</b> à la balise (faille exposée).");
+                            arena?.RecordChronoSnapshot($"Balise : {act.Stats.Name} -> {tgt.Stats.Name}");
+                        }
+                    ));
+                }
+
+                // Grappin Magnétique (2 PA, 2-4 cases) : harpon 3D, À Terre si Diff ≥ 2.
+                if (HasTool(actor, "Grappin"))
+                {
+                    actions.Add(new CombatAction(
+                        "🪝 Grappin : Harpon (2 PA, 2-4 cases)",
+                        "Projette le grappin (3D Ballistique) : À Terre si différentiel ≥ 2. Le grappin revient.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) =>
+                        {
+                            if (act.Stats.CurrentActionPoints < 2 || !targetIsAlive) return false;
+                            if (!HasTool(act, "Grappin")) return false;
+                            int d = act.CurrentCoords.DistanceTo(tgt.CurrentCoords);
+                            return d >= 2 && d <= 4;
+                        },
+                        (act, tgt) => arena.ExecuteGrapnel(act, tgt)
+                    ));
+                }
+
+                // Menottes Magnétiques (2 PA, contact, cible affaiblie) : Immobilise 2 tours, consommées.
+                InventoryItem cuffs = FindTool(actor, "Menottes");
+                if (cuffs != null)
+                {
+                    actions.Add(new CombatAction(
+                        "🔗 Menotter (2 PA, contact)",
+                        "Entrave une cible affaiblie (À Terre, Déstabilisée, Sonnée, Étourdie, Paralysée) : Immobilise 2 tours. Menottes consommées.",
+                        ActionCategory.TactiqueEtOrdres,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && HasWeakenedStatus(tgt.Stats) && HasTool(act, "Menottes"),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(2)) return;
+                            if (!ConsumeTool(act, "Menottes")) return;
+                            act.NotifyInventoryChanged(true);
+                            tgt.Stats.ApplyStatus(StatusEffect.Immobilise, 2);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("🔗 MENOTTÉ (2 tours)", Color.yellow);
+                            arena?.Log($"🔗 <b>{act.Stats.Name}</b> menotte <b>{tgt.Stats.Name}</b> (Immobilise 2 tours).");
+                        }
+                    ));
+                }
+
+                // Corde : Ligoter (1 PA, contact, ennemi À Terre) → Immobilise 1 tour, réutilisable.
+                if (HasTool(actor, "Corde") && target.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre))
+                {
+                    actions.Add(new CombatAction(
+                        "🪢 Ligoter (1 PA, contact)",
+                        "Ligue un ennemi à terre : Immobilise 1 tour. La corde est réutilisable.",
+                        ActionCategory.TactiqueEtOrdres,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && tgt.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre) && HasTool(act, "Corde"),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            tgt.Stats.ApplyStatus(StatusEffect.Immobilise, 1);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("🪢 LIGOTÉ", Color.yellow);
+                            arena?.Log($"🪢 <b>{act.Stats.Name}</b> ligote <b>{tgt.Stats.Name}</b> (Immobilise 1 tour).");
+                        }
+                    ));
                 }
             }
 
@@ -203,14 +351,17 @@ namespace Killtime.Tactics.CombatUI
             // =========================================================================
             if (actor.Sheet != null && actor.Sheet.LearnedSpells.Count > 0)
             {
+                bool hasFocus = Killtime.Core.Arcanotech.ArcanotechWorkshop.HasFocus(actor.Sheet);
+                bool hasEclat = Killtime.Core.Arcanotech.ArcanotechWorkshop.HasEclat(actor.Sheet);
                 foreach (var spell in actor.Sheet.LearnedSpells)
                 {
+                    int spellCost = spell.ActionPointCost + (hasFocus ? 0 : 2);
                     actions.Add(new CombatAction(
-                        $"🔮 Canaliser : {spell.Name} ({spell.ActionPointCost} PA)",
+                        $"🔮 Canaliser : {spell.Name} ({spellCost} PA{(hasFocus ? "" : ", sans focus +2")}{(hasEclat ? ", +1 Éclat" : "")})",
                         $"5e Force ({spell.Discipline}) — Dégâts de base: {spell.BaseArcaneDamage}",
                         ActionCategory.CinquiemeForceEtSorts,
-                        spell.ActionPointCost,
-                        (act, tgt) => act.Stats.CurrentActionPoints >= spell.ActionPointCost && targetIsAlive,
+                        spellCost,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= spell.ActionPointCost + Killtime.Core.Arcanotech.ArcanotechWorkshop.FocusTax(act.Sheet) && targetIsAlive,
                         (act, tgt) =>
                         {
                             var dice = new DiceRoller();
@@ -232,12 +383,15 @@ namespace Killtime.Tactics.CombatUI
             {
                 // Chirurgie : Suture Réflexe (Livre III) — gestes médicaux d'urgence
                 // sur le front : les premiers soins passent de 3 PA à 2 PA.
+                // Kit de Chirurgie en poche (non consommé) : CON×3 + purge Empoisonne.
                 int healCost = (actor.Stats != null && actor.Stats.HasSpecialization("Chirurgie : Suture Réflexe")) ? 2 : 3;
-                string healDesc = healCost == 2
+                bool hasChirKit = HasTool(actor, "Chirurgie");
+                string healDesc = (healCost == 2
                     ? "Suture Réflexe au contact (Régénère Constitution × 2 PV). Coût réduit à 2 PA par la spécialisation."
-                    : "Stabilisation et suture d'urgence au contact (Régénère Constitution × 2 PV).";
+                    : "Stabilisation et suture d'urgence au contact (Régénère Constitution × 2 PV).")
+                    + (hasChirKit ? " Kit de Chirurgie : CON×3 + purge Empoisonne." : "");
                 actions.Add(new CombatAction(
-                    $"🩹 Premiers Soins d'Urgence ({healCost} PA)",
+                    $"🩹 Premiers Soins d'Urgence ({healCost} PA{(hasChirKit ? " +Kit" : "")})",
                     healDesc,
                     ActionCategory.TraumatologieEtSoins,
                     healCost,
@@ -246,15 +400,87 @@ namespace Killtime.Tactics.CombatUI
                     {
                         if (act.Stats.ConsumeActionPoints(healCost))
                         {
-                            int healAmount = tgt.Stats.Attributes.Constitution * 2;
+                            bool kit = HasTool(act, "Chirurgie");
+                            int healAmount = tgt.Stats.Attributes.Constitution * (kit ? 3 : 2);
                             tgt.Stats.CurrentHealth = Mathf.Min(tgt.Stats.MaxHealth, tgt.Stats.CurrentHealth + healAmount);
                             tgt.Stats.ActiveStatus &= ~StatusEffect.Saignement;
+                            if (kit) tgt.Stats.RemoveStatus(StatusEffect.Empoisonne);
 
                             var vis = tgt.GetComponent<TacticalUnitVisual>();
-                            vis?.SpawnFloatingText($"+{healAmount} PV Soignés", Color.green);
+                            vis?.SpawnFloatingText($"+{healAmount} PV Soignés{(kit ? " (kit)" : "")}", Color.green);
+                            if (kit) arena?.Log($"🩹 Bloc opératoire de campagne : Empoisonne purgé sur <b>{tgt.Stats.Name}</b>.");
                         }
                     }
                 ));
+
+                // Consommables marketplace Livre VIII §32.3 : seringues + bandage (HealingAmount).
+                // 1 PA, soi-même ou allié adjacent, consomme 1 dose du stock.
+                InventoryItem bestHeal = FindBestHealingConsumable(actor);
+                if (bestHeal != null)
+                {
+                    string healName = bestHeal.Name;
+                    int healValue = bestHeal.HealingAmount;
+                    int healStock = CountConsumableStock(actor, healName);
+                    bool isBandage = healName.Contains("Bandage");
+                    actions.Add(new CombatAction(
+                        $"💉 {healName} (+{healValue} PV, 1 PA){(healStock > 1 ? $" x{healStock}" : "")}",
+                        isBandage
+                            ? $"Injection/pansement au contact : +{healValue} PV + stoppe Saignement. Consomme 1 dose."
+                            : $"Injection au contact : +{healValue} PV. Consomme 1 dose (ne réanime pas).",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1
+                            && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && FindBestHealingConsumable(act) != null,
+                        (act, tgt) =>
+                        {
+                            var dose = FindBestHealingConsumable(act);
+                            if (dose == null) return;
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            string usedName = dose.Name;
+                            int usedHeal = dose.HealingAmount;
+                            bool usedBandage = usedName.Contains("Bandage");
+                            act.Sheet?.ConsumeOne(dose.ItemId);
+                            act.NotifyInventoryChanged(true);
+                            int healed = tgt.Stats.Heal(usedHeal);
+                            if (usedBandage) tgt.Stats.RemoveStatus(StatusEffect.Saignement);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText($"+{healed} PV ({usedName})", Color.green);
+                            arena?.Log($"💉 <b>{act.Stats.Name}</b> utilise <b>{usedName}</b> sur <b>{tgt.Stats.Name}</b> (+{healed} PV{(usedBandage ? ", Saignement stoppé" : "")}).");
+                            arena?.RecordChronoSnapshot($"Soin {usedName} : {act.Stats.Name} -> {tgt.Stats.Name}");
+                        }
+                    ));
+                }
+
+                // Attelle Rigide : retire Ralenti (fracture immobilisée), 1 PA, contact.
+                InventoryItem attelle = FindConsumableByName(actor, "Attelle");
+                if (attelle != null)
+                {
+                    string attName = attelle.Name;
+                    actions.Add(new CombatAction(
+                        $"🦴 {attName} (retire Ralenti, 1 PA)",
+                        "Immobilise un membre fracturé : retire Ralenti (et Immobilise léger). Consomme 1 dose.",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1
+                            && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && FindConsumableByName(act, "Attelle") != null,
+                        (act, tgt) =>
+                        {
+                            var dose = FindConsumableByName(act, "Attelle");
+                            if (dose == null) return;
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            act.Sheet?.ConsumeOne(dose.ItemId);
+                            act.NotifyInventoryChanged(true);
+                            tgt.Stats.RemoveStatus(StatusEffect.Ralenti);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("🦴 Fracture immobilisée", Color.green);
+                            arena?.Log($"🦴 <b>{act.Stats.Name}</b> pose <b>{dose.Name}</b> sur <b>{tgt.Stats.Name}</b> (Ralenti retiré).");
+                        }
+                    ));
+                }
             }
             else
             {
@@ -350,6 +576,291 @@ namespace Killtime.Tactics.CombatUI
                         }
                     }
                 ));
+
+                // Cellules Nytharite : recharge tactique du champ de force personnel (1 PA).
+                if (actor.Stats.MaxShieldHP > 0 && actor.Stats.CurrentShieldHP < actor.Stats.MaxShieldHP)
+                {
+                    if (HasTool(actor, "Cellule Nytharite Standard"))
+                    {
+                        actions.Add(new CombatAction(
+                            "🔮 Cellule Nytharite (+10 Bouclier, 1 PA)",
+                            "Consomme 1 Cellule Nytharite Standard pour restaurer 10 PV de barrière énergétique.",
+                            ActionCategory.TraumatologieEtSoins,
+                            1,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 1 && act.Stats.CurrentShieldHP < act.Stats.MaxShieldHP && HasTool(act, "Cellule Nytharite Standard"),
+                            (act, tgt) =>
+                            {
+                                if (arena != null)
+                                {
+                                    if (arena.TryRechargeShieldWithCell(act, false, out string msg)) arena.Log(msg);
+                                    else arena.Log("⚠️ " + msg);
+                                }
+                            }
+                        ));
+                    }
+                    if (HasTool(actor, "Cellule Nytharite Pure"))
+                    {
+                        actions.Add(new CombatAction(
+                            "🔮 Cellule Pure (+25 Bouclier, 1 PA)",
+                            "Consomme 1 Cellule Nytharite Pure pour restaurer 25 PV de barrière énergétique.",
+                            ActionCategory.TraumatologieEtSoins,
+                            1,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 1 && act.Stats.CurrentShieldHP < act.Stats.MaxShieldHP && HasTool(act, "Cellule Nytharite Pure"),
+                            (act, tgt) =>
+                            {
+                                if (arena != null)
+                                {
+                                    if (arena.TryRechargeShieldWithCell(act, true, out string msg)) arena.Log(msg);
+                                    else arena.Log("⚠️ " + msg);
+                                }
+                            }
+                        ));
+                    }
+                }
+
+                // Boîte à Outils Arcanotech : maintenance de son propre bouclier (1 PA).
+                if (actor.Stats.MaxShieldHP > 0 && actor.Stats.CurrentShieldHP < actor.Stats.MaxShieldHP && HasTool(actor, "Boîte à Outils"))
+                {
+                    actions.Add(new CombatAction(
+                        "🔧 Boîte à Outils : Réparer Bouclier (1 PA)",
+                        "Répare le circuit du champ de force (+10 Bouclier, outil réutilisable).",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && act.Stats.CurrentShieldHP < act.Stats.MaxShieldHP && HasTool(act, "Boîte à Outils"),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            int before = act.Stats.CurrentShieldHP;
+                            act.Stats.CurrentShieldHP = Mathf.Min(act.Stats.MaxShieldHP, act.Stats.CurrentShieldHP + 10);
+                            int gained = act.Stats.CurrentShieldHP - before;
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText($"🔧 +{gained} Bouclier", Color.cyan);
+                            arena?.Log($"🔧 <b>{act.Stats.Name}</b> répare son champ à la Boîte à Outils (+{gained} Bouclier, -1 PA).");
+                        }
+                    ));
+                }
+
+                // Moteur Arcanique de Poche : injection d'énergie de secours (1 PA, non consommé).
+                if (actor.Stats.MaxShieldHP > 0 && actor.Stats.CurrentShieldHP < actor.Stats.MaxShieldHP && HasTool(actor, "Moteur"))
+                {
+                    actions.Add(new CombatAction(
+                        "⚙️ Moteur Arcanique (+10 Bouclier, 1 PA)",
+                        "Force une suralimentation du champ de force via le générateur portatif (10 PV barrière, non consommé).",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && act.Stats.CurrentShieldHP < act.Stats.MaxShieldHP && HasTool(act, "Moteur"),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            int before = act.Stats.CurrentShieldHP;
+                            act.Stats.CurrentShieldHP = Mathf.Min(act.Stats.MaxShieldHP, act.Stats.CurrentShieldHP + 10);
+                            int gained = act.Stats.CurrentShieldHP - before;
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText($"⚙️ +{gained} Bouclier", Color.cyan);
+                            arena?.Log($"⚙️ <b>{act.Stats.Name}</b> déclenche son <b>Moteur Arcanique de Poche</b> (+{gained} Bouclier, -1 PA).");
+                        }
+                    ));
+                }
+
+                // Résonateur Nytharite (focus) : harmonisation psi offensive (1 PA).
+                if (HasTool(actor, "Résonateur"))
+                {
+                    actions.Add(new CombatAction(
+                        "🔮 Harmonisation Psi (1 PA)",
+                        "Canalise le Résonateur Nytharite : confère l'état Survolté (+1 EC) pour 1 tour.",
+                        ActionCategory.CinquiemeForceEtSorts,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && !act.Stats.ActiveStatus.HasFlag(StatusEffect.Survolte) && HasTool(act, "Résonateur"),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            act.Stats.ApplyStatus(StatusEffect.Survolte, 1);
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("🔮 SURVOLTÉ (+1 EC)", Color.magenta);
+                            arena?.Log($"🔮 <b>{act.Stats.Name}</b> s'harmonise avec son <b>Résonateur Nytharite</b> (+1 EC, Survolté).");
+                        }
+                    ));
+                }
+
+                // Dopants marketplace Livre VIII §32.3 : Antidouleurs + Speed, 1 PA, soi-même.
+                InventoryItem antalgique = FindConsumableByName(actor, "Antidouleur");
+                if (antalgique != null)
+                {
+                    actions.Add(new CombatAction(
+                        $"💊 {antalgique.Name} (+2 Encaissement, 1 PA)",
+                        "Dopage 2h : +2 Encaissement pour le combat, dissipe Étourdi/Déstabilisé. Consomme 1 dose. Continue au-delà des limites.",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && FindConsumableByName(act, "Antidouleur") != null,
+                        (act, tgt) =>
+                        {
+                            var dose = FindConsumableByName(act, "Antidouleur");
+                            if (dose == null) return;
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            act.Sheet?.ConsumeOne(dose.ItemId);
+                            act.NotifyInventoryChanged(true);
+                            act.Stats.AddEncaissementBonus(2);
+                            act.Stats.RemoveStatus(StatusEffect.Etourdi);
+                            act.Stats.RemoveStatus(StatusEffect.Destabilise);
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("💊 Dopé (+2 Encaissement)", new Color(1f, 0.6f, 0.2f));
+                            arena?.Log($"💊 <b>{act.Stats.Name}</b> prend <b>{dose.Name}</b> (+2 Encaissement, douleurs ignorées).");
+                        }
+                    ));
+                }
+                InventoryItem speed = FindConsumableByName(actor, "Speed");
+                if (speed != null)
+                {
+                    actions.Add(new CombatAction(
+                        $"💨 {speed.Name} (+3 PA, 1 PA)",
+                        "Stimulant : +3 PA immédiats + état Rapide affiché. Consomme 1 dose.",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && FindConsumableByName(act, "Speed") != null,
+                        (act, tgt) =>
+                        {
+                            var dose = FindConsumableByName(act, "Speed");
+                            if (dose == null) return;
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            act.Sheet?.ConsumeOne(dose.ItemId);
+                            act.NotifyInventoryChanged(true);
+                            act.Stats.CurrentActionPoints += 3;
+                            act.Stats.ApplyStatus(StatusEffect.Rapide, 3);
+                            var vis = act.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("💨 SPEED (+3 PA)", Color.yellow);
+                            arena?.Log($"💨 <b>{act.Stats.Name}</b> prend <b>{dose.Name}</b> (+3 PA, Rapide).");
+                        }
+                    ));
+                }
+
+                // RD-033 Munitions : recharger le chargeur + désenrayer (gratuit avec Kit d'Entretien).
+                InventoryItem magWeapon = actor.Sheet?.GetEquippedWeapon();
+                if (magWeapon != null && magWeapon.AmmoCapacity > 0)
+                {
+                    if (magWeapon.Jammed)
+                    {
+                        bool hasMaintenanceKit = HasTool(actor, "Kit d'Entretien");
+                        int clearCost = hasMaintenanceKit ? 0 : 1;
+                        actions.Add(new CombatAction(
+                            hasMaintenanceKit ? "🔧 Désenrayer (0 PA, Kit d'Entretien)" : "🔧 Désenrayer (1 PA)",
+                            $"Remet {magWeapon.Name} en batterie après un enrayement sur critique adverse.{(hasMaintenanceKit ? " Kit d'Entretien : 0 PA !" : "")}",
+                            ActionCategory.TactiqueEtOrdres,
+                            clearCost,
+                            (act, tgt) =>
+                            {
+                                var w = act.Sheet?.GetEquippedWeapon();
+                                int reqCost = HasTool(act, "Kit d'Entretien") ? 0 : 1;
+                                return w != null && w.Jammed && act.Stats.CurrentActionPoints >= reqCost;
+                            },
+                            (act, tgt) =>
+                            {
+                                if (arena.TryClearJam(act, out string msg)) arena?.Log(msg);
+                                else arena?.Log("⚠️ " + msg);
+                            }
+                        ));
+                    }
+                    else if (magWeapon.AmmoRemaining < magWeapon.AmmoCapacity)
+                    {
+                        int rcost = Mathf.Max(1, magWeapon.ReloadAPCost);
+                        int stdStock = WeaponAmmo.StockShots(actor.Sheet, magWeapon.AmmoType, false);
+                        int hdStock = magWeapon.HeavyAmmo ? WeaponAmmo.StockShots(actor.Sheet, magWeapon.AmmoType, true) : 0;
+                        if (stdStock > 0)
+                        {
+                            actions.Add(new CombatAction(
+                                $"🔋 Recharger ({rcost} PA) — {magWeapon.AmmoRemaining}/{magWeapon.AmmoCapacity}, réserve {stdStock}",
+                                $"Recharge {magWeapon.Name} en charges standard (éjecte le reste HD éventuel).",
+                                ActionCategory.TactiqueEtOrdres,
+                                rcost,
+                                (act, tgt) =>
+                                {
+                                    var w = act.Sheet?.GetEquippedWeapon();
+                                    return w != null && !w.Jammed && w.AmmoCapacity > 0
+                                        && w.AmmoRemaining < w.AmmoCapacity
+                                        && WeaponAmmo.StockShots(act.Sheet, w.AmmoType, false) > 0
+                                        && act.Stats.CurrentActionPoints >= Mathf.Max(1, w.ReloadAPCost);
+                                },
+                                (act, tgt) =>
+                                {
+                                    if (arena.TryReloadWeapon(act, false, out string msg)) arena?.Log(msg);
+                                    else arena?.Log("⚠️ " + msg);
+                                }
+                            ));
+                        }
+                        if (hdStock > 0)
+                        {
+                            actions.Add(new CombatAction(
+                                $"🔋 Recharger HD +1D ({rcost} PA) — {magWeapon.AmmoRemaining}/{magWeapon.AmmoCapacity}, réserve {hdStock}",
+                                $"Recharge {magWeapon.Name} en Haute Densité : +1 dégât tant que chambrée (sniper/Deglazer).",
+                                ActionCategory.TactiqueEtOrdres,
+                                rcost,
+                                (act, tgt) =>
+                                {
+                                    var w = act.Sheet?.GetEquippedWeapon();
+                                    return w != null && !w.Jammed && w.HeavyAmmo && w.AmmoCapacity > 0
+                                        && w.AmmoRemaining < w.AmmoCapacity
+                                        && WeaponAmmo.StockShots(act.Sheet, w.AmmoType, true) > 0
+                                        && act.Stats.CurrentActionPoints >= Mathf.Max(1, w.ReloadAPCost);
+                                },
+                                (act, tgt) =>
+                                {
+                                    if (arena.TryReloadWeapon(act, true, out string msg)) arena?.Log(msg);
+                                    else arena?.Log("⚠️ " + msg);
+                                }
+                            ));
+                        }
+                    }
+                }
+
+                // Manips d'armes Livre VI : ramasser au sol (1 PA combat / gratuit explo) + swap (1 PA combat).
+                int pickupPa = Killtime.Tactics.Units.DroppedWeaponPickup.PickupCostPA();
+                actions.Add(new CombatAction(
+                    pickupPa > 0 ? "⚔ Ramasser arme au sol (1 PA)" : "⚔ Ramasser arme au sol",
+                    "Ramasse la plus proche arme au sol à portée. 1 PA en combat, gratuit en exploration.",
+                    ActionCategory.TactiqueEtOrdres,
+                    pickupPa,
+                    (act, tgt) => act.Stats.CurrentActionPoints >= Killtime.Tactics.Units.DroppedWeaponPickup.PickupCostPA(),
+                    (act, tgt) =>
+                    {
+                        bool ok = Killtime.Tactics.Units.DroppedWeaponPickup.TryPickupNearest(act, out string msg);
+                        arena?.Log((ok ? "⚔ " : "⚠️ ") + $"<b>{act.Stats.Name}</b> : {msg}");
+                    }
+                ));
+                if (actor.Sheet?.Inventory != null)
+                {
+                    int swapPa = Killtime.Tactics.Units.DroppedWeaponPickup.PickupCostPA();
+                    for (int i = 0; i < actor.Sheet.Inventory.Count; i++)
+                    {
+                        var sw = actor.Sheet.Inventory[i];
+                        if (sw == null || sw.Type != ItemType.Weapon || sw.IsEquipped) continue;
+                        if (sw.IsThrowableGrenade() || sw.IsLauncher) continue;
+                        string swapName = sw.Name;
+                        string swapId = sw.ItemId;
+                        actions.Add(new CombatAction(
+                            swapPa > 0 ? $"🔄 Équiper : {swapName} (1 PA)" : $"🔄 Équiper : {swapName}",
+                            $"Swap d'arme : range l'arme en main et équipe {swapName}. Coût 1 PA en combat.",
+                            ActionCategory.TactiqueEtOrdres,
+                            swapPa,
+                            (act, tgt) =>
+                            {
+                                if (act.Stats.CurrentActionPoints < Killtime.Tactics.Units.DroppedWeaponPickup.PickupCostPA()) return false;
+                                var cand = act.Sheet?.Inventory?.Find(x => x != null && x.ItemId == swapId);
+                                return cand != null && !cand.IsEquipped;
+                            },
+                            (act, tgt) =>
+                            {
+                                int cost = Killtime.Tactics.Units.DroppedWeaponPickup.PickupCostPA();
+                                if (cost > 0 && !act.Stats.ConsumeActionPoints(cost)) return;
+                                if (act.Sheet.EquipItem(swapId))
+                                {
+                                    act.NotifyInventoryChanged(true);
+                                    var vis = act.GetComponent<TacticalUnitVisual>();
+                                    vis?.SpawnFloatingText(cost > 0 ? $"🔄 {swapName} équipée (-1 PA)" : $"🔄 {swapName} équipée", Color.cyan);
+                                    arena?.Log(cost > 0 ? $"🔄 <b>{act.Stats.Name}</b> équipe <b>{swapName}</b> (-1 PA)." : $"🔄 <b>{act.Stats.Name}</b> équipe <b>{swapName}</b>.");
+                                }
+                            }
+                        ));
+                    }
+                }
             }
 
             // =========================================================================
@@ -357,12 +868,13 @@ namespace Killtime.Tactics.CombatUI
             // =========================================================================
             if (!isSelf && !isEnemy && targetIsAlive)
             {
+                int orderRange = HasTool(actor, "Radio") ? 12 : 6;
                 actions.Add(new CombatAction(
-                    "📢 Ordre Tactique : Couvrir (+1 PA) (2 PA)",
-                    "Délègue un point d'action réflexe à l'allié désigné.",
+                    $"📢 Ordre Tactique : Couvrir (+1 PA) (2 PA, {orderRange} cases)",
+                    $"Délègue un point d'action réflexe à l'allié désigné.{(orderRange > 6 ? " Radio Tactique : portée étendue." : "")}",
                     ActionCategory.TactiqueEtOrdres,
                     2,
-                    (act, tgt) => act != null && act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 6,
+                    (act, tgt) => act != null && act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= (HasTool(act, "Radio") ? 12 : 6),
                     (act, tgt) =>
                     {
                         if (act == null || tgt == null) return;
@@ -385,16 +897,126 @@ namespace Killtime.Tactics.CombatUI
                         }
                     }
                 ));
+
+                // Corde : Relever (1 PA) un allié À Terre adjacent. Non consommée.
+                if (target.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre) && HasTool(actor, "Corde"))
+                {
+                    actions.Add(new CombatAction(
+                        "🪢 Relever (1 PA, contact)",
+                        "Remet sur pied un allié à terre (retire À Terre). La corde est réutilisable.",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && tgt.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre) && HasTool(act, "Corde"),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            tgt.Stats.RemoveStatus(StatusEffect.ATerre);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("🪢 RELEVÉ", Color.green);
+                            arena?.Log($"🪢 <b>{act.Stats.Name}</b> relève <b>{tgt.Stats.Name}</b> à la corde.");
+                        }
+                    ));
+                }
+
+                // Clé Magnétique / Crochetage : Libérer (1 PA) un allié entravé. Non consommés.
+                if (target.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise)
+                    && (HasTool(actor, "Clé Magnétique") || HasTool(actor, "Crochetage")))
+                {
+                    actions.Add(new CombatAction(
+                        "🔓 Libérer (1 PA, contact)",
+                        "Crochette les menottes / liens d'un allié immobilisé (retire Immobilise). Outil réutilisable.",
+                        ActionCategory.TraumatologieEtSoins,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && tgt.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise)
+                            && (HasTool(act, "Clé Magnétique") || HasTool(act, "Crochetage")),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            tgt.Stats.RemoveStatus(StatusEffect.Immobilise);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("🔓 LIBÉRÉ", Color.green);
+                            arena?.Log($"🔓 <b>{act.Stats.Name}</b> libère <b>{tgt.Stats.Name}</b> de ses entraves.");
+                        }
+                    ));
+                }
+
+                // Boîte à Outils Arcanotech : maintenance de terrain sur un allié (1 PA, contact : bouclier ou arme enrayée).
+                bool targetNeedsToolRepair = target.Sheet?.GetEquippedWeapon()?.Jammed == true
+                    || (target.Stats.MaxShieldHP > 0 && target.Stats.CurrentShieldHP < target.Stats.MaxShieldHP);
+                if (HasTool(actor, "Boîte à Outils") && targetNeedsToolRepair)
+                {
+                    actions.Add(new CombatAction(
+                        "🔧 Maintenance de Terrain (1 PA, contact)",
+                        "Répare le circuit du champ de force d'un allié (+10 Bouclier) ou désenraye son arme avec la Boîte à Outils (outil réutilisable).",
+                        ActionCategory.TactiqueEtOrdres,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && HasTool(act, "Boîte à Outils")
+                            && (tgt.Sheet?.GetEquippedWeapon()?.Jammed == true || (tgt.Stats.MaxShieldHP > 0 && tgt.Stats.CurrentShieldHP < tgt.Stats.MaxShieldHP)),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            var tgtWeapon = tgt.Sheet?.GetEquippedWeapon();
+                            if (tgtWeapon != null && tgtWeapon.Jammed)
+                            {
+                                tgtWeapon.Jammed = false;
+                                tgt.NotifyInventoryChanged(true);
+                                var tgtVis = tgt.GetComponent<TacticalUnitVisual>();
+                                tgtVis?.SpawnFloatingText($"🔧 {tgtWeapon.Name} DÉSENRAYÉE", Color.cyan);
+                                arena?.Log($"🔧 <b>{act.Stats.Name}</b> désenraye <b>{tgtWeapon.Name}</b> de <b>{tgt.Stats.Name}</b> à la Boîte à Outils (-1 PA).");
+                            }
+                            else if (tgt.Stats.MaxShieldHP > 0 && tgt.Stats.CurrentShieldHP < tgt.Stats.MaxShieldHP)
+                            {
+                                int before = tgt.Stats.CurrentShieldHP;
+                                tgt.Stats.CurrentShieldHP = Mathf.Min(tgt.Stats.MaxShieldHP, tgt.Stats.CurrentShieldHP + 10);
+                                int gained = tgt.Stats.CurrentShieldHP - before;
+                                var tgtVis = tgt.GetComponent<TacticalUnitVisual>();
+                                tgtVis?.SpawnFloatingText($"🔧 +{gained} Bouclier", Color.cyan);
+                                arena?.Log($"🔧 <b>{act.Stats.Name}</b> répare le champ de <b>{tgt.Stats.Name}</b> (+{gained} Bouclier).");
+                            }
+                        }
+                    ));
+                }
+
+                // Radio Tactique : Ralliement d'escouade à distance (1 PA, 12 cases).
+                if (HasTool(actor, "Radio") && (target.Stats.ActiveStatus.HasFlag(StatusEffect.Destabilise) || target.Stats.ActiveStatus.HasFlag(StatusEffect.Etourdi)))
+                {
+                    actions.Add(new CombatAction(
+                        "📻 Ralliement Radio (1 PA, 12 cases)",
+                        "Transmet des repères audio d'urgence par radio : dissipe Déstabilisé et Étourdi sur l'allié.",
+                        ActionCategory.TactiqueEtOrdres,
+                        1,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 1 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 12
+                            && (tgt.Stats.ActiveStatus.HasFlag(StatusEffect.Destabilise) || tgt.Stats.ActiveStatus.HasFlag(StatusEffect.Etourdi))
+                            && HasTool(act, "Radio"),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(1)) return;
+                            tgt.Stats.RemoveStatus(StatusEffect.Destabilise);
+                            tgt.Stats.RemoveStatus(StatusEffect.Etourdi);
+                            var vis = tgt.GetComponent<TacticalUnitVisual>();
+                            vis?.SpawnFloatingText("📻 RALLIÉ", Color.cyan);
+                            arena?.Log($"📻 <b>{act.Stats.Name}</b> coordonne <b>{tgt.Stats.Name}</b> par radio (Déstabilisé/Étourdi purgés).");
+                        }
+                    ));
+                }
             }
 
             if (!isSelf && isEnemy && targetIsAlive)
             {
+                int tauntRange = HasTool(actor, "Radio") ? 12 : 6;
                 actions.Add(new CombatAction(
-                    "🗣️ Intimidation / Provocation (2 PA)",
+                    $"🗣️ Intimidation / Provocation (2 PA, {tauntRange} cases)",
                     "Défi opposé aveugle Intimidation vs Intuition : mises masquées (PA/PE), révélation simultanée. Victoire = cible Déstabilisée (-2) et -1 PA de réaction.",
                     ActionCategory.TactiqueEtOrdres,
                     2,
-                    (act, tgt) => act != null && act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 6,
+                    (act, tgt) => act != null && act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= (HasTool(act, "Radio") ? 12 : 6),
                     (act, tgt) =>
                     {
                         if (act == null || tgt == null) return;
@@ -583,6 +1205,80 @@ namespace Killtime.Tactics.CombatUI
             ));
 
             return actions;
+        }
+
+        // Helpers consommables marketplace (Livre VIII §32.3). Résolus à l'exécution
+        // pour suivre le stock réel (Quantity / ConsumeOne).
+        private static InventoryItem FindBestHealingConsumable(TacticalUnit actor)
+        {
+            if (actor?.Sheet?.Inventory == null) return null;
+            InventoryItem best = null;
+            for (int i = 0; i < actor.Sheet.Inventory.Count; i++)
+            {
+                var it = actor.Sheet.Inventory[i];
+                if (it == null) continue;
+                if (it.Type != ItemType.Consumable) continue;
+                if (it.HealingAmount <= 0) continue;
+                if (best == null || it.HealingAmount > best.HealingAmount) best = it;
+            }
+            return best;
+        }
+
+        private static InventoryItem FindConsumableByName(TacticalUnit actor, string nameFragment)
+        {
+            if (actor?.Sheet?.Inventory == null || string.IsNullOrEmpty(nameFragment)) return null;
+            for (int i = 0; i < actor.Sheet.Inventory.Count; i++)
+            {
+                var it = actor.Sheet.Inventory[i];
+                if (it == null) continue;
+                if (!string.IsNullOrEmpty(it.Name) && it.Name.Contains(nameFragment)) return it;
+            }
+            return null;
+        }
+
+        private static int CountConsumableStock(TacticalUnit actor, string itemName)
+        {
+            if (actor?.Sheet?.Inventory == null) return 0;
+            int total = 0;
+            for (int i = 0; i < actor.Sheet.Inventory.Count; i++)
+            {
+                var it = actor.Sheet.Inventory[i];
+                if (it == null) continue;
+                if (it.Name == itemName) total += it.IsStackable ? System.Math.Max(1, it.Quantity) : 1;
+            }
+            return total;
+        }
+
+        // Helpers outils marketplace (possession sauf mention, §32-33).
+        private static InventoryItem FindTool(TacticalUnit actor, string fragment)
+        {
+            var inv = actor?.Sheet?.Inventory;
+            if (inv == null || string.IsNullOrEmpty(fragment)) return null;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                if (it.Name.Contains(fragment)) return it;
+            }
+            return null;
+        }
+
+        private static bool HasTool(TacticalUnit actor, string fragment) => FindTool(actor, fragment) != null;
+
+        private static bool ConsumeTool(TacticalUnit actor, string fragment)
+        {
+            var tool = FindTool(actor, fragment);
+            if (tool == null || actor?.Sheet == null) return false;
+            return actor.Sheet.ConsumeOne(tool.ItemId);
+        }
+
+        private static bool HasWeakenedStatus(CharacterStats stats)
+        {
+            if (stats == null) return false;
+            var fx = stats.ActiveStatus;
+            return fx.HasFlag(StatusEffect.ATerre) || fx.HasFlag(StatusEffect.Destabilise)
+                || fx.HasFlag(StatusEffect.Sonne) || fx.HasFlag(StatusEffect.Etourdi)
+                || fx.HasFlag(StatusEffect.Paralyse);
         }
     }
 }

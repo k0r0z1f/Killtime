@@ -250,13 +250,26 @@ namespace Killtime.Tactics.Units
 
         /// <summary>
         /// Transfère l'arme du sol vers l'inventaire de l'unité (équipe si main libre).
-        /// Retourne false si trop loin / inconscient / inventaire plein (jamais plein actuellement).
+        /// Coût Livre VI : 1 PA en combat (gratuit en exploration), anti-spam loot.
+        /// Retourne false si trop loin / inconscient / PA insuffisants.
         /// </summary>
         public bool TryPickup(TacticalUnit unit)
         {
             if (!CanBePickedUpBy(unit)) return false;
             var sheet = unit.GetOrBuildSheet();
             if (sheet == null) return false;
+
+            bool charged = false;
+            if (IsInCombat() && !IsInfiniteAP())
+            {
+                if (!unit.Stats.ConsumeActionPoints(1))
+                {
+                    var visualFail = unit.GetComponent<TacticalUnitVisual>();
+                    if (visualFail != null) visualFail.SpawnFloatingText("⚠️ PA insuffisants (1 PA)", Color.red);
+                    return false;
+                }
+                charged = true;
+            }
 
             DroppedItem.IsEquipped = false;
             sheet.AddItem(DroppedItem);
@@ -269,14 +282,65 @@ namespace Killtime.Tactics.Units
             unit.NotifyInventoryChanged(saveToDisk: true);
 
             var visual = unit.GetComponent<TacticalUnitVisual>();
-            if (visual != null) visual.SpawnFloatingText($"⚔ {pickedName} ramassée", Color.green);
+            if (visual != null) visual.SpawnFloatingText(charged ? $"⚔ {pickedName} ramassée (-1 PA)" : $"⚔ {pickedName} ramassée", Color.green);
 
             Destroy(gameObject);
             return true;
         }
 
+        /// <summary>1 PA en combat, gratuit en exploration (cohérent avec le menu objet).</summary>
+        public static int PickupCostPA()
+        {
+            if (!IsInCombatStatic()) return 0;
+            if (IsInfiniteAPStatic()) return 0;
+            return 1;
+        }
+
+        private bool IsInCombat()
+        {
+            try
+            {
+                var tm = Object.FindAnyObjectByType<Killtime.Tactics.TurnSystem.TurnManager>();
+                if (tm == null) return false;
+                return !tm.IsInExploration && !tm.IsCombatOver;
+            }
+            catch { return false; }
+        }
+
+        private bool IsInfiniteAP()
+        {
+            try
+            {
+                var arena = Object.FindAnyObjectByType<Killtime.Tactics.CombatDevArena>();
+                return arena != null && arena.InfiniteAP;
+            }
+            catch { return false; }
+        }
+
+        private static bool IsInCombatStatic()
+        {
+            try
+            {
+                var tm = Object.FindAnyObjectByType<Killtime.Tactics.TurnSystem.TurnManager>();
+                if (tm == null) return false;
+                return !tm.IsInExploration && !tm.IsCombatOver;
+            }
+            catch { return false; }
+        }
+
+        private static bool IsInfiniteAPStatic()
+        {
+            try
+            {
+                var arena = Object.FindAnyObjectByType<Killtime.Tactics.CombatDevArena>();
+                return arena != null && arena.InfiniteAP;
+            }
+            catch { return false; }
+        }
+
         /// <summary>
         /// Ramassage de la plus proche arme au sol à portée (appel UI / touche d'interaction).
+        /// Coût 1 PA en combat via TryPickup.
         /// </summary>
         public static bool TryPickupNearest(TacticalUnit unit, out string message)
         {
@@ -297,10 +361,15 @@ namespace Killtime.Tactics.Units
                 message = "Aucune arme au sol à portée.";
                 return false;
             }
+            string itemName = best.DroppedItem?.Name ?? "Arme";
+            int cost = PickupCostPA();
+            if (cost > 0 && unit.Stats != null && unit.Stats.CurrentActionPoints < cost)
+            {
+                message = $"⚠️ PA insuffisants : ramasser coûte {cost} PA.";
+                return false;
+            }
             bool ok = best.TryPickup(unit);
-            message = ok ? $"⚔ {best.DroppedItem?.Name ?? "Arme"} ramassée." : "Ramassage impossible.";
-            // best est détruit en cas de succès : message déjà copié avant ? on reformule :
-            if (ok) message = "⚔ Arme ramassée.";
+            message = ok ? $"⚔ {itemName} ramassée. (-{cost} PA)" : "Ramassage impossible (PA insuffisants ?).";
             return ok;
         }
 
@@ -367,6 +436,45 @@ namespace Killtime.Tactics.Units
             }
             try { Destroy(gameObject); }
             catch { }
+        }
+
+        /// <summary>
+        /// Fait apparaître un item d'inventaire au sol (désarmement, lancer d'arme).
+        /// L'item doit déjà être retiré de l'inventaire du porteur (exemplaire unique).
+        /// Retourne le pickup créé ou null si échec.
+        /// </summary>
+        public static DroppedWeaponPickup SpawnAt(InventoryItem item, Vector3 worldPos, string formerOwner)
+        {
+            if (item == null) return null;
+            GameObject go = null;
+            try
+            {
+                go = Killtime.Core.Inventory.ArmoryPlaceholderFactory.ResolveOrBuild(item, null);
+            }
+            catch { go = null; }
+            if (go == null)
+            {
+                go = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                go.transform.localScale = new Vector3(0.08f, 0.08f, 0.7f);
+            }
+            go.transform.SetParent(null, true);
+            go.transform.position = worldPos + Vector3.up * 0.4f;
+            go.transform.rotation = UnityEngine.Random.rotation;
+            go.name = "Dropped_" + item.Name;
+            var pickup = go.GetComponent<DroppedWeaponPickup>();
+            if (pickup == null) pickup = go.AddComponent<DroppedWeaponPickup>();
+            item.IsEquipped = false;
+            Vector3 vel = new Vector3(
+                UnityEngine.Random.Range(-0.8f, 0.8f),
+                UnityEngine.Random.Range(0.4f, 1.0f),
+                UnityEngine.Random.Range(-0.8f, 0.8f));
+            Vector3 angVel = new Vector3(
+                UnityEngine.Random.Range(-5f, 5f),
+                UnityEngine.Random.Range(-4f, 4f),
+                UnityEngine.Random.Range(-6f, 6f));
+            pickup.PickupRadius = 1.2f;
+            pickup.Initialize(item, formerOwner ?? "", vel, angVel);
+            return pickup;
         }
 
         private void OnGUI()

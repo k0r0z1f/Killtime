@@ -164,6 +164,37 @@ namespace Killtime.Core.Arcanotech
 
         public static IEnumerable<PowerModuleDefinition> GetAllModuleDefinitions() => _catalog.Values;
 
+        /// <summary>Marketplace : Résonateur Nytharite en poche = focus stable.</summary>
+        public static bool HasFocus(CharacterSheet sheet)
+        {
+            var inv = sheet?.Inventory;
+            if (inv == null) return false;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                if (it.Name.Contains("Résonateur")) return true;
+            }
+            return false;
+        }
+
+        /// <summary>Sans focus, la canalisation est instable : +2 PA par sort.</summary>
+        public static int FocusTax(CharacterSheet sheet) => HasFocus(sheet) ? 0 : 2;
+
+        /// <summary>Marketplace : Éclat de Nytharite en poche = catalyseur (+1 dégât).</summary>
+        public static bool HasEclat(CharacterSheet sheet)
+        {
+            var inv = sheet?.Inventory;
+            if (inv == null) return false;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                if (it.Name.Contains("Éclat")) return true;
+            }
+            return false;
+        }
+
         public static bool ValidateSpell(NythariteSpell spell, out string error)
         {
             if (spell == null)
@@ -295,7 +326,7 @@ namespace Killtime.Core.Arcanotech
             int baseRange = NythariteSpell.CalculateBaseRange(caster.Attributes.Magie, trainingCount);
             int distancePenalty = cancelRangePenaltyWithAP ? 0 : NythariteSpell.CalculateDistancePenalty(distanceInTiles, baseRange);
 
-            int totalPaCost = spell.ActionPointCost + (cancelRangePenaltyWithAP ? 1 : 0);
+            int totalPaCost = spell.ActionPointCost + (cancelRangePenaltyWithAP ? 1 : 0) + FocusTax(caster.Sheet);
 
             if (!caster.ConsumeActionPoints(totalPaCost))
             {
@@ -419,11 +450,19 @@ namespace Killtime.Core.Arcanotech
             int effectiveMod = caster.GetStatusModifier(spell.AssociatedSkill, isOffensive: true) + testBonus + distancePenalty;
             var roll = diceRoller.Roll(skillDie, effectiveMod, 12);
 
+            // Marketplace : Éclat de Nytharite en poche = catalyseur (+1 dégât direct).
+            bool eclatBoost = HasEclat(caster.Sheet);
+            if (eclatBoost) directDamage += 1;
+
             int finalDamageApplied = 0;
+            int shieldAbsorbedSpell = 0;
             if (!isSymbioticImmune && target != null)
             {
-                int absorbed = Math.Min(target.BaseArmorAbsorption, directDamage);
+                int totalArmorSpell = target.BaseArmorAbsorption + target.GetWornArmorBonus();
+                int absorbed = Math.Min(totalArmorSpell, directDamage);
                 int netDirect = Math.Max(0, directDamage - absorbed);
+                shieldAbsorbedSpell = target.AbsorbShield(netDirect);
+                netDirect -= shieldAbsorbedSpell;
                 finalDamageApplied = netDirect + absoluteDamage;
 
                 target.CurrentHealth = Math.Max(0, target.CurrentHealth - finalDamageApplied);
@@ -444,7 +483,8 @@ namespace Killtime.Core.Arcanotech
                 caster.ApplyStatus(casterBuffs, 1);
             }
 
-            string log = $"🔮 <b>ARCANOTECH</b> : {caster.Name} canalise <b>{spell.Name}</b> ({totalPaCost} PA)\n"
+            string log = $"🔮 <b>ARCANOTECH</b> : {caster.Name} canalise <b>{spell.Name}</b> ({totalPaCost} PA"
+                + (eclatBoost ? " +1 Éclat" : "") + (FocusTax(caster.Sheet) > 0 ? ", sans focus +2 PA" : "") + ")\n"
                 + $"   🎯 Portée {distanceInTiles}/{baseRange} cases (Malus: {distancePenalty})\n"
                 + $"   🎲 Épreuve [{spell.AssociatedSkill}] : {skillDie} (Total {roll.Total})\n";
 
@@ -454,7 +494,7 @@ namespace Killtime.Core.Arcanotech
             }
             else if (target != null)
             {
-                log += $"   💥 Impact sur {target.Name} : {finalDamageApplied} PV infligés (Absolu: {absoluteDamage} | Bruts: {directDamage}) | PA drainés: -{drainAP}\n";
+                log += $"   💥 Impact sur {target.Name} : {finalDamageApplied} PV infligés (Absolu: {absoluteDamage} | Bruts: {directDamage}{(shieldAbsorbedSpell > 0 ? $" | Bouclier: -{shieldAbsorbedSpell}" : "")}) | PA drainés: -{drainAP}\n";
                 if (targetStatuses != StatusEffect.None)
                 {
                     log += $"   ⚡ Altérations subies : [{targetStatuses}]\n";

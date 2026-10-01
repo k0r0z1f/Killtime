@@ -264,6 +264,7 @@ namespace Killtime.UI
                 {
                     EnsureDevWindow(TimeScaleDevWindow.Instance, TimeScaleDevWindow.Open);
                 }
+                else if (Input.GetKeyDown(KeyCode.F12)) EnsureDevWindow(ArmoryDevWindow.Instance, ArmoryDevWindow.Open);
                 else if (Input.GetKeyDown(KeyCode.L) && GUIUtility.keyboardControl == 0)
                 {
                     ToggleDevFullbrightLight();
@@ -852,6 +853,10 @@ namespace Killtime.UI
             if (GUILayout.Button("🎒🏪 Inventaire / Armurerie / Marché (F4 / I)", GUILayout.Height(32)))
             {
                 InventoryDevWindow.Open();
+            }
+            if (GUILayout.Button("🛠️ Éditeur Armurerie JSON : tout le catalogue (F12)", GUILayout.Height(32)))
+            {
+                ArmoryDevWindow.Open();
             }
 
             GUILayout.Space(4);

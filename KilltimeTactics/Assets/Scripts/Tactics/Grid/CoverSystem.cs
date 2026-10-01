@@ -136,7 +136,9 @@ namespace Killtime.Tactics.Grid
             Func<HexCoordinates, HexNode> getNode,
             CoverScanParams p,
             TitanFootprintType toFootprint = TitanFootprintType.Single,
-            TitanFootprintType fromFootprint = TitanFootprintType.Single)
+            TitanFootprintType fromFootprint = TitanFootprintType.Single,
+            IReadOnlyList<Killtime.Core.Combat.SmokeZone> smokeZones = null,
+            bool seesThroughSmoke = false)
         {
             var result = new CoverScanResult
             {
@@ -194,7 +196,7 @@ namespace Killtime.Tactics.Grid
                 var rays = new List<CoverRayHit>(samples.Length);
                 for (int i = 0; i < samples.Length; i++)
                 {
-                    bool blocked = RayBlocked(origin, samples[i], getNode, p, out HexCoordinates cell, out Vector3 hit);
+                    bool blocked = RayBlocked(origin, samples[i], getNode, p, out HexCoordinates cell, out Vector3 hit, smokeZones, seesThroughSmoke);
                     if (!blocked) visible++;
                     rays.Add(new CoverRayHit
                     {
@@ -237,10 +239,12 @@ namespace Killtime.Tactics.Grid
             HexCoordinates to, 
             TacticalHexGrid grid,
             TitanFootprintType toFootprint = TitanFootprintType.Single,
-            TitanFootprintType fromFootprint = TitanFootprintType.Single)
+            TitanFootprintType fromFootprint = TitanFootprintType.Single,
+            IReadOnlyList<Killtime.Core.Combat.SmokeZone> smokeZones = null,
+            bool seesThroughSmoke = false)
         {
             if (grid == null) return new CoverScanResult { Cover = CoverType.None, Rays = new List<CoverRayHit>() };
-            return ScanCover(from, to, c => grid.GetNode(c), ResolveParams(grid.HexRadius), toFootprint, fromFootprint);
+            return ScanCover(from, to, c => grid.GetNode(c), ResolveParams(grid.HexRadius), toFootprint, fromFootprint, smokeZones, seesThroughSmoke);
         }
 
         /// <summary>Niveau de couvert seul (sans détail des rayons).</summary>
@@ -250,10 +254,12 @@ namespace Killtime.Tactics.Grid
             Func<HexCoordinates, HexNode> getNode,
             float hexRadius = 1f,
             TitanFootprintType toFootprint = TitanFootprintType.Single,
-            TitanFootprintType fromFootprint = TitanFootprintType.Single)
+            TitanFootprintType fromFootprint = TitanFootprintType.Single,
+            IReadOnlyList<Killtime.Core.Combat.SmokeZone> smokeZones = null,
+            bool seesThroughSmoke = false)
         {
             if (getNode == null) return CoverType.None;
-            return ScanCover(from, to, getNode, ResolveParams(hexRadius), toFootprint, fromFootprint).Cover;
+            return ScanCover(from, to, getNode, ResolveParams(hexRadius), toFootprint, fromFootprint, smokeZones, seesThroughSmoke).Cover;
         }
 
         /// <summary>Variante pratique branchée directement sur la grille.</summary>
@@ -262,10 +268,12 @@ namespace Killtime.Tactics.Grid
             HexCoordinates to, 
             TacticalHexGrid grid,
             TitanFootprintType toFootprint = TitanFootprintType.Single,
-            TitanFootprintType fromFootprint = TitanFootprintType.Single)
+            TitanFootprintType fromFootprint = TitanFootprintType.Single,
+            IReadOnlyList<Killtime.Core.Combat.SmokeZone> smokeZones = null,
+            bool seesThroughSmoke = false)
         {
             if (grid == null) return CoverType.None;
-            return ScanCover(from, to, grid, toFootprint, fromFootprint).Cover;
+            return ScanCover(from, to, grid, toFootprint, fromFootprint, smokeZones, seesThroughSmoke).Cover;
         }
 
         /// <summary>Vrai si la cible est attaquable (tout sauf Full / non visible).</summary>
@@ -347,7 +355,9 @@ namespace Killtime.Tactics.Grid
             Func<HexCoordinates, HexNode> getNode,
             CoverScanParams p,
             out HexCoordinates blockingCell,
-            out Vector3 hitPoint)
+            out Vector3 hitPoint,
+            IReadOnlyList<Killtime.Core.Combat.SmokeZone> smokeZones = null,
+            bool seesThroughSmoke = false)
         {
             blockingCell = default;
             hitPoint = target;
@@ -418,6 +428,15 @@ namespace Killtime.Tactics.Grid
                         hitPoint = origin + (target - origin) * tProp;
                         return true;
                     }
+                }
+
+                // 4) Écran de fumée persistant (RD-041) : bloque la ligne de visée sauf vision thermique
+                if (!seesThroughSmoke && smokeZones != null && smokeZones.Count > 0
+                    && Killtime.Core.Combat.SmokeScreen.IsCellSmoked(stepped, smokeZones))
+                {
+                    blockingCell = stepped;
+                    hitPoint = origin + (target - origin) * t;
+                    return true;
                 }
             }
             return false;

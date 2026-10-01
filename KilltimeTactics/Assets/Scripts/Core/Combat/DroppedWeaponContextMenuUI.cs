@@ -10,7 +10,7 @@ namespace Killtime.Tactics.CombatUI
     /// <summary>
     /// Menu contextuel d'un objet au sol (gourdin / arme lâchée après K.O.).
     /// Ouvert au clic droit sur l'objet (voir <see cref="TacticalSelectionManager.OnOpenDroppedWeaponMenuRequested"/>).
-    /// Actions : ramasser (gratuit, à portée), shooter plus loin (1 PA en combat),
+    /// Actions : ramasser (1 PA en combat, gratuit en exploration), shooter plus loin (1 PA en combat),
     /// détruire (définitif). Fermé sur Échap / clic extérieur / reset d'arène.
     /// </summary>
     public class DroppedWeaponContextMenuUI : MonoBehaviour
@@ -306,20 +306,27 @@ namespace Killtime.Tactics.CombatUI
             int kickCost = (inCombat && !infiniteAP) ? 1 : 0;
             bool canAffordKick = !actorValid || kickCost <= 0 || actor.Stats.CurrentActionPoints >= kickCost;
 
+            // Ramassage : 1 PA en combat (DroppedWeaponPickup.TryPickup débite), gratuit en exploration.
+            int pickupCost = (inCombat && !infiniteAP) ? 1 : 0;
+            bool canAffordPickup = !actorValid || pickupCost <= 0 || actor.Stats.CurrentActionPoints >= pickupCost;
+
             float btnY = _panelRect.y + 44f;
             float btnH = 26f;
             float gap = 6f;
 
             // --- Ramasser ---
             bool prevEnabled = GUI.enabled;
-            GUI.enabled = canPickup;
-            string pickupLabel = actor == null ? "✋ Ramasser (aucune unité)" : $"✋ Ramasser — {actor.Stats.Name}";
+            GUI.enabled = canPickup && canAffordPickup;
+            string pickupLabel = actor == null ? "✋ Ramasser (aucune unité)"
+                : pickupCost > 0 ? $"✋ Ramasser — {actor.Stats.Name} (1 PA)" : $"✋ Ramasser — {actor.Stats.Name}";
             if (GUI.Button(new Rect(cx, btnY, cw, btnH), pickupLabel))
             {
                 bool ok = _target.TryPickup(actor);
                 _arena?.Log(ok
-                    ? $"⚔ <b>{actor.Stats.Name}</b> ramasse <b>{itemName}</b>."
-                    : $"⚠️ Ramassage impossible : rapprochez <b>{(actor != null ? actor.Stats.Name : "?")}</b> (à {dist:0.0} m).");
+                    ? $"⚔ <b>{actor.Stats.Name}</b> ramasse <b>{itemName}</b> (-{pickupCost} PA)."
+                    : (canAffordPickup
+                        ? $"⚠️ Ramassage impossible : rapprochez <b>{(actor != null ? actor.Stats.Name : "?")}</b> (à {dist:0.0} m)."
+                        : $"⚠️ PA insuffisants : ramasser coûte 1 PA."));
                 if (ok) { ArmInputBlocker(); CloseMenu(); }
                 GUI.enabled = prevEnabled;
                 e.Use();
@@ -331,6 +338,8 @@ namespace Killtime.Tactics.CombatUI
                 GUI.Label(new Rect(cx, btnY - gap + 1f, cw, 12f), "", hintStyle);
             else if (!canPickup)
                 GUI.Label(new Rect(cx, btnY - 16f, cw, 14f), $"<i>Trop loin : rapprochez-vous (portée {(_target.PickupRadius + 0.35f):0.0} m)</i>", hintStyle);
+            else if (!canAffordPickup)
+                GUI.Label(new Rect(cx, btnY - 16f, cw, 14f), "<i>PA insuffisants (1 PA requis)</i>", hintStyle);
 
             // --- Kicker plus loin ---
             prevEnabled = GUI.enabled;

@@ -430,7 +430,11 @@ namespace Killtime.Story.Scenes
 
             if (KilltimeAudioManager.Instance != null)
             {
-                KilltimeAudioManager.Instance.PlayMusic(MusicMood.Explore, MusicIntensity.Calm, true);
+                StorySceneManager.ResolveInitialSceneMusic(_sceneData, out var targetMood, out var targetIntensity);
+                if (KilltimeAudioManager.Instance.CurrentMood != targetMood || KilltimeAudioManager.Instance.CurrentIntensityLevel != targetIntensity)
+                {
+                    KilltimeAudioManager.Instance.PlayMusic(targetMood, targetIntensity, forceRestart: false);
+                }
             }
 
             CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>{_sceneData.Title}</b> [{_sceneData.Volume}] initialisée.", LogCategory.MovementAndTurns, "[SCÈNE]", Color.cyan);
@@ -1997,7 +2001,7 @@ namespace Killtime.Story.Scenes
 
         // Entrée du nœud = première carte dialogue sans lien entrant (routage explicite).
         // Repli sur 0 si aucune (cycle) ou liste vide.
-        private static int FindEntryDialogueIndex(SceneNodeData dataNode)
+        public static int FindEntryDialogueIndex(SceneNodeData dataNode)
         {
             if (dataNode == null || dataNode.Dialogues == null || dataNode.Dialogues.Count == 0) return 0;
             if (dataNode.Dialogues.Count == 1) return 0;

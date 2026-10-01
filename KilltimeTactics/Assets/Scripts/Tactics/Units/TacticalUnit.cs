@@ -183,6 +183,8 @@ namespace Killtime.Tactics.Units
         {
             var visual = GetComponent<TacticalUnitVisual>();
             visual?.RefreshEquippedWeaponVisual();
+            // Barrière : suit le champ porté (crédite le gain immédiat).
+            if (Stats != null) Stats.RecalcShieldMax();
 
             if (Sheet != null && saveToDisk)
             {

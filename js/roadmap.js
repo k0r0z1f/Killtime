@@ -31,11 +31,11 @@
   const els = {};
   function cacheEls() {
     ['rmTabs', 'rmBoardDesc', 'rmSearch', 'rmEpicFilter', 'rmPrioFilter', 'rmSort', 'rmAdd', 'rmExport',
-     'rmImport', 'rmImportBtn', 'rmReset', 'rmBoard', 'col-todo', 'col-in_progress', 'col-done',
-     'cTodo', 'cProg', 'cDone', 'rmCountLine', 'stTotal', 'stTodo', 'stProg', 'stDone', 'stPct', 'rmBar',
-     'rmBoardName', 'rmEpics', 'inspTotal', 'inspDirty', 'rmSaveState', 'rmSaveLabel', 'rmBackdrop',
-     'rmModalTitle', 'rmLive', 'fTitle', 'fDetails', 'fEpic', 'fPrioSeg', 'fStatus', 'fPlaceholder',
-     'fPrim', 'fAsset', 'rmCancel', 'rmSave', 'rmToast', 'rmToastMsg', 'rmToastBtn', 'epicList'
+      'rmImport', 'rmImportBtn', 'rmReset', 'rmBoard', 'col-todo', 'col-in_progress', 'col-done',
+      'cTodo', 'cProg', 'cDone', 'rmCountLine', 'stTotal', 'stTodo', 'stProg', 'stDone', 'stPct', 'rmBar',
+      'rmBoardName', 'rmEpics', 'inspTotal', 'inspDirty', 'rmSaveState', 'rmSaveLabel', 'rmBackdrop',
+      'rmModalTitle', 'rmLive', 'fTitle', 'fDetails', 'fEpic', 'fPrioSeg', 'fStatus', 'fPlaceholder',
+      'fPrim', 'fAsset', 'rmCancel', 'rmSave', 'rmToast', 'rmToastMsg', 'rmToastBtn', 'epicList'
     ].forEach((id) => { els[id] = $(id); });
   }
 
@@ -80,7 +80,7 @@
     return { version: 3, updated: new Date().toISOString().slice(0, 10), activeId: store.activeId, boards: store.boards };
   }
   function persistLocal() {
-    try { localStorage.setItem(LS_KEY, JSON.stringify({ v: 3, savedAt: new Date().toISOString(), store, views })); }
+    try { localStorage.setItem(LS_KEY, JSON.stringify({ v: 3, savedAt: new Date().toISOString(), store, views, baseDiskSnap: lastDiskSnap })); }
     catch (e) { toast('Sauvegarde locale impossible'); }
   }
   // Snapshot stable pour comparer local vs disque sans se fier au champ `updated` (jour seul).
@@ -216,7 +216,7 @@
       if (!raw) return null;
       const data = JSON.parse(raw);
       if (data && data.v === 3 && data.store && Array.isArray(data.store.boards) && data.store.boards.length) {
-        return { store: JSON.parse(JSON.stringify(data.store)), views: data.views || {}, savedAt: data.savedAt || null };
+        return { store: JSON.parse(JSON.stringify(data.store)), views: data.views || {}, savedAt: data.savedAt || null, baseDiskSnap: data.baseDiskSnap || null };
       }
       if (data && Array.isArray((data.v === 2 ? data.state : data || {}).tasks)) {
         return { legacy: (data.v === 2 ? data.state : data), legacyView: data.v === 2 ? data.view : null };
@@ -266,65 +266,52 @@
     try { disk = await fetchDiskDoc(); }
     catch (e) { disk = null; }
 
-    if (local && local.store) {
-      // Applique le local en premier (zéro perte), vues locales conservées.
-      adoptStore(local.store);
-      if (local.views) views = local.views;
-    } else if (local && local.legacy) {
-      migrateSingle(local.legacy);
-      if (local.legacyView) views[store.activeId] = Object.assign({ search: '', epic: '', prio: '', sort: 'manual', collapsed: {} }, local.legacyView);
-    }
+    if (local && local.views) views = local.views;
 
     if (disk && (Array.isArray(disk.boards) || Array.isArray(disk.tasks))) {
-      // Normalise le disque via cleanBoard pour une comparaison juste (y compris legacy v1/v2).
       const normDisk = Array.isArray(disk.boards)
         ? { boards: disk.boards.map((b, i) => cleanBoard(b, i)), activeId: disk.activeId || null }
         : { boards: [cleanBoard({ id: 'board-prefabs-scene', name: 'Prefabs scènes', desc: '', tasks: disk.tasks }, 0)], activeId: 'board-prefabs-scene' };
       const diskSnap = snapBoards(normDisk);
       lastDiskSnap = diskSnap;
-      if (!store.boards.length) {
-        applyDoc(disk);
-        els.inspDirty.textContent = 'non';
+
+      const localSnap = (local && local.store) ? snapBoards(local.store) : null;
+      const hasUnpushedLocalEdits = local && local.baseDiskSnap && local.baseDiskSnap === diskSnap && localSnap && localSnap !== diskSnap;
+
+      if (hasUnpushedLocalEdits) {
+        adoptStore(local.store);
+        els.inspDirty.textContent = 'oui (local)';
         syncViewControls();
         render();
-        setSaveState('', 'Prêt — autosave actif');
-        return;
-      }
-      // Compare local appliqué vs disque frais : si identiques, rien à faire.
-      const localSnap = snapBoards({ boards: store.boards, activeId: store.activeId });
-      const equivalent = (localSnap === diskSnap);
-      if (equivalent) {
-        els.inspDirty.textContent = 'non';
-        syncViewControls();
-        render();
-        setSaveState('', 'À jour avec le disque • ' + nowHM());
-      } else {
-        // Divergence : on garde le local (pas de perte) mais on propose le disque.
-        els.inspDirty.textContent = 'oui (divergence disque)';
-        syncViewControls();
-        render();
-        setSaveState('local', 'Local ≠ disque — voir toast');
+        setSaveState('local', 'Modifs locales non poussées • ' + nowHM());
         const diskCopy = JSON.parse(JSON.stringify(disk));
-        toast('Disque plus récent ou différent — local conservé', {
-          label: 'Charger disque', fn: () => {
-            if (local) { /* le local reste dans l'historique du navigateur */ }
-            views = {};
-            store = { boards: [], activeId: null };
+        toast('Modifications locales en attente (disque inchangé)', {
+          label: 'Écraser par disque',
+          fn: () => {
             applyDoc(diskCopy);
             persistLocal();
-            lastDiskSnap = snapBoards({ boards: store.boards, activeId: store.activeId });
-            els.inspDirty.textContent = 'non';
             syncViewControls(); render();
-            setSaveState('', 'Disque rechargé • ' + nowHM());
+            setSaveState('', 'Disque chargé • ' + nowHM());
             toast('Version disque chargée');
           }
         });
+        return;
       }
+
+      applyDoc(disk);
+      persistLocal();
+      els.inspDirty.textContent = 'non';
+      syncViewControls();
+      render();
+      setSaveState('', 'À jour avec le disque • ' + nowHM());
       return;
     }
 
-    // Pas de disque joignable : repli local pur.
-    if (!store.boards.length) {
+    if (local && local.store) {
+      adoptStore(local.store);
+    } else if (local && local.legacy) {
+      migrateSingle(local.legacy);
+    } else {
       toast('Impossible de charger les roadmaps (disque + local vides)');
       store.boards = [{ id: 'board-1', name: 'Roadmap 1', desc: '', tasks: [] }];
       store.activeId = 'board-1';
@@ -356,19 +343,13 @@
       lastDiskSnap = diskSnap;
       if (diskSnap !== snapBoards({ boards: store.boards, activeId: store.activeId })) {
         const diskCopy = JSON.parse(JSON.stringify(disk));
-        toast('Nouvelle version disque détectée', {
-          label: 'Charger disque', fn: () => {
-            views = {};
-            store = { boards: [], activeId: null };
-            applyDoc(diskCopy);
-            persistLocal();
-            els.inspDirty.textContent = 'non';
-            syncViewControls(); render();
-            toast('Version disque chargée');
-          }
-        });
-        els.inspDirty.textContent = 'oui (divergence disque)';
-        setSaveState('local', 'Disque mis à jour — voir toast');
+        applyDoc(diskCopy);
+        persistLocal();
+        els.inspDirty.textContent = 'non';
+        syncViewControls();
+        render();
+        setSaveState('', 'Disque synchronisé • ' + nowHM());
+        toast('Roadmap mise à jour depuis le disque');
       }
     } catch (e) { /* disque injoinable : on reste en local */ }
   }
@@ -763,13 +744,15 @@
     renumber(gone.status);
     commit();
     render();
-    toast(id + ' supprimée', { label: 'Annuler', fn: () => {
-      arr.splice(Math.min(idx, arr.length), 0, gone);
-      renumber(gone.status);
-      flashId = id;
-      commit(id + ' restaurée');
-      render();
-    }});
+    toast(id + ' supprimée', {
+      label: 'Annuler', fn: () => {
+        arr.splice(Math.min(idx, arr.length), 0, gone);
+        renumber(gone.status);
+        flashId = id;
+        commit(id + ' restaurée');
+        render();
+      }
+    });
   }
 
   function quickAdd(status, title) {
@@ -869,7 +852,7 @@
     const t = arr.find((x) => x.id === editingId);
     clearTimeout(liveTimer);
     if (t && createdInModal && !t.title?.trim() && !t.details?.trim() && !t.placeholderId?.trim() && !t.suggestedAsset?.trim()
-        && t.title !== '(sans titre)') {
+      && t.title !== '(sans titre)') {
       const i = arr.findIndex((x) => x.id === t.id);
       if (i !== -1) arr.splice(i, 1);
       renumber(t.status);

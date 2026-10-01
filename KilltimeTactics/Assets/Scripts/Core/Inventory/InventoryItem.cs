@@ -90,6 +90,19 @@ namespace Killtime.Core.Inventory
         // Positif = plus précis (réduit la dispersion), négatif = rustique.
         public int AccuracyBonus = 0;
 
+        // === Munitions & Enrayement (Livre VIII §31-32, RD-033) ===
+        // Arme à chargeur : chaque tir Ballistique consomme 1 coup. Capacité 0 = sans munition.
+        // AmmoType = fragment de nom de la réserve ("Charge Laser", "Carquois Flèches").
+        // LoadedHD = charge Haute Densité chambrée (+1 dégât, sniper/Deglazer).
+        // Jammed = enrayée sur critique adverse, Désenrayer 1 PA pour réparer.
+        public int AmmoCapacity = 0;
+        public string AmmoType = "";
+        public int AmmoRemaining = 0;
+        public bool LoadedHD = false;
+        public bool HeavyAmmo = false;
+        public int ReloadAPCost = 2;
+        public bool Jammed = false;
+
         public InventoryItem Clone()
         {
             return new InventoryItem
@@ -128,7 +141,14 @@ namespace Killtime.Core.Inventory
                 ZoneDurationTurns = this.ZoneDurationTurns,
                 LauncherCompatible = this.LauncherCompatible,
                 LauncherRangeBonus = this.LauncherRangeBonus,
-                AccuracyBonus = this.AccuracyBonus
+                AccuracyBonus = this.AccuracyBonus,
+                AmmoCapacity = this.AmmoCapacity,
+                AmmoType = this.AmmoType,
+                AmmoRemaining = this.AmmoRemaining,
+                LoadedHD = this.LoadedHD,
+                HeavyAmmo = this.HeavyAmmo,
+                ReloadAPCost = this.ReloadAPCost,
+                Jammed = this.Jammed
             };
         }
 

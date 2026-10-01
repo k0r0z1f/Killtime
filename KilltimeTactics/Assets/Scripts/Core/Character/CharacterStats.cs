@@ -42,6 +42,11 @@ namespace Killtime.Core.Character
         public int MovesThisTurn { get; private set; }
         public bool HasUsedSecondeRespiration { get; set; }
 
+        // Barrière ablative des champs de force portés (Livre VIII §32.2) : absorbe
+        // les dégâts avant l'armure et la chair. Rechargée hors combat / en début de combat.
+        public int MaxShieldHP { get; private set; }
+        public int CurrentShieldHP { get; set; }
+
         // Jet d'initiative (Livre I §4.3) : valeurs roulées par le TurnManager au début du
         // combat, stockées sur l'unité elle-même (meurt avec elle, pas de dictionnaire d'objets).
         public int InitiativeRollTotal { get; set; } = int.MinValue;
@@ -145,6 +150,14 @@ namespace Killtime.Core.Character
             // Livre VII : Agonisant (-2 détresse vitale / panique)
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) mod -= 2;
 
+            // Livre IV §19 : bénédictions arcanotech offensives (+EC au jet).
+            // Survolte +1 EC, EnTranse +2 EC — offensif uniquement, cumulables.
+            if (isOffensive)
+            {
+                if (ActiveStatus.HasFlag(StatusEffect.Survolte)) mod += 1;
+                if (ActiveStatus.HasFlag(StatusEffect.EnTranse)) mod += 2;
+            }
+
             return mod;
         }
 
@@ -173,6 +186,11 @@ namespace Killtime.Core.Character
                 parts.Add("Immobilisé -2");
             }
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) parts.Add("Agonisant -2");
+            if (isOffensive)
+            {
+                if (ActiveStatus.HasFlag(StatusEffect.Survolte)) parts.Add("Survolte +1ec");
+                if (ActiveStatus.HasFlag(StatusEffect.EnTranse)) parts.Add("EnTranse +2ec");
+            }
 
             return parts.Count > 0 ? string.Join(", ", parts) : string.Empty;
         }
@@ -439,6 +457,7 @@ namespace Killtime.Core.Character
 
             MaxHealth = Attributes.CalculateLethalMaximum();
             CurrentHealth = MaxHealth;
+            RecalcShieldMax();
         }
 
         /// <summary>
@@ -495,12 +514,18 @@ namespace Killtime.Core.Character
             }
         }
 
-        public bool ConsumeActionPoints(int cost)
+        /// <summary>
+        /// Paie un coût PA. Les blindages lourds portés ajoutent leur malus à TOUTE action
+        /// (Livre VIII §32.1), avant le multiplicateur Ralenti. Les mises de duel aveugle
+        /// (1 PA = +1 au jet) en sont exemptées : passer ignoreArmorMalus.
+        /// </summary>
+        public bool ConsumeActionPoints(int cost, bool ignoreArmorMalus = false)
         {
+            int withArmor = cost + (ignoreArmorMalus ? 0 : GetWornApMalus());
             bool isRalenti = ActiveStatus.HasFlag(StatusEffect.Ralenti) && !HasSpecialization("Élan Sans Drag");
-            int effectiveCost = isRalenti 
-                ? cost * Rules.CoreRulesConfig.Instance.RalentiAPMultiplier 
-                : cost;
+            int effectiveCost = isRalenti
+                ? withArmor * Rules.CoreRulesConfig.Instance.RalentiAPMultiplier
+                : withArmor;
 
             if (CurrentActionPoints >= effectiveCost)
             {
@@ -571,6 +596,96 @@ namespace Killtime.Core.Character
             {
                 Essoufflement = Math.Max(0, Essoufflement - Math.Max(1, amount));
             }
+        }
+
+        /// <summary>
+        /// Soin par consommable marketplace (Livre VIII §32.3 : seringues, bandage).
+        /// Ne réanime pas (IsDead ou Inconscient profond exclu) : la réanimation
+        /// reste à la Défibrillation. Plafonné à MaxHealth. Retourne le soin réel.
+        /// </summary>
+        public int Heal(int amount)
+        {
+            if (IsDead || amount <= 0) return 0;
+            if (ActiveStatus.HasFlag(StatusEffect.Inconscient)) return 0;
+            if (!IsAlive && CurrentHealth <= 0) return 0;
+            int before = CurrentHealth;
+            CurrentHealth = Math.Min(MaxHealth, CurrentHealth + amount);
+            return Math.Max(0, CurrentHealth - before);
+        }
+
+        /// <summary>
+        /// Bonus temporaire d'encaissement (Antidouleurs +2, Livre VIII).
+        /// Cumulable en combat, réinitialisé par RecalculateDerivedStats.
+        /// </summary>
+        public void AddEncaissementBonus(int amount)
+        {
+            if (amount == 0) return;
+            EncaissementThreshold = Math.Max(0, EncaissementThreshold + amount);
+        }
+
+        /// <summary>Blindage porté : somme des protections des armures équipées (Livre VIII §32.1).</summary>
+        public int GetWornArmorBonus()
+        {
+            if (Sheet?.Inventory == null) return 0;
+            int total = 0;
+            for (int i = 0; i < Sheet.Inventory.Count; i++)
+            {
+                var it = Sheet.Inventory[i];
+                if (it == null || !it.IsEquipped) continue;
+                if (it.Type == Killtime.Core.Inventory.ItemType.Armor)
+                    total += Math.Max(0, it.ArmorProtection);
+            }
+            return total;
+        }
+
+        /// <summary>Malus PA permanent des blindages lourds portés (Livre VIII §32.1).</summary>
+        public int GetWornApMalus()
+        {
+            if (Sheet?.Inventory == null) return 0;
+            int total = 0;
+            for (int i = 0; i < Sheet.Inventory.Count; i++)
+            {
+                var it = Sheet.Inventory[i];
+                if (it == null || !it.IsEquipped) continue;
+                if (it.Type == Killtime.Core.Inventory.ItemType.Armor)
+                    total += it.ApCostModifier;
+            }
+            return Math.Max(0, total);
+        }
+
+        /// <summary>Recalcule la barrière max depuis le champ porté ; crédite le gain immédiat.</summary>
+        public void RecalcShieldMax()
+        {
+            int max = 0;
+            if (Sheet?.Inventory != null)
+            {
+                for (int i = 0; i < Sheet.Inventory.Count; i++)
+                {
+                    var it = Sheet.Inventory[i];
+                    if (it == null || !it.IsEquipped) continue;
+                    if (it.ShieldHP > 0) max += it.ShieldHP;
+                }
+            }
+            max = Math.Max(0, max);
+            if (max > MaxShieldHP) CurrentShieldHP += max - MaxShieldHP;
+            MaxShieldHP = max;
+            CurrentShieldHP = Math.Clamp(CurrentShieldHP, 0, Math.Max(0, MaxShieldHP));
+        }
+
+        /// <summary>Recharge auto hors combat (Livre VIII §32.2).</summary>
+        public void RefillShield()
+        {
+            RecalcShieldMax();
+            CurrentShieldHP = MaxShieldHP;
+        }
+
+        /// <summary>Absorbe les dégâts sur la barrière, retourne le reste pour l'armure/la chair.</summary>
+        public int AbsorbShield(int damage)
+        {
+            if (damage <= 0 || CurrentShieldHP <= 0) return Math.Max(0, damage);
+            int taken = Math.Min(CurrentShieldHP, damage);
+            CurrentShieldHP -= taken;
+            return damage - taken;
         }
 
         public bool TriggerRedlineAP(int extraAP = 1)

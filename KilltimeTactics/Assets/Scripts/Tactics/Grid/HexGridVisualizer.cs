@@ -86,6 +86,8 @@ namespace Killtime.Tactics.Grid
         private readonly Dictionary<HexCoordinates, MeshRenderer> _tileRenderers = new();
         private readonly Dictionary<HexCoordinates, MeshRenderer> _ceilingRenderers = new();
         private readonly Dictionary<HexCoordinates, GameObject> _obstacleObjects = new();
+        private readonly Dictionary<HexCoordinates, GameObject> _zoneVisualObjects = new();
+        private readonly List<Killtime.Core.Combat.SmokeZone> _activeZones = new();
         private readonly HashSet<HexCoordinates> _currentReachable = new();
         private readonly List<HexCoordinates> _currentPath = new();
 
@@ -139,6 +141,7 @@ namespace Killtime.Tactics.Grid
         private Transform _tilesParent;
         private Transform _ceilingsParent;
         private Transform _obstaclesParent;
+        private Transform _zonesParent;
         private LineRenderer _pathLineRenderer;
         private LineRenderer _losLineRenderer;
         private readonly System.Collections.Generic.List<LineRenderer> _losRayRenderers = new();
@@ -459,7 +462,11 @@ namespace Killtime.Tactics.Grid
         /// découvert, jaune moitié (-1), orange 3/4 (-2), rouge couvert total.
         /// Au contact (couvert ignoré) : simple segment vert.
         /// </summary>
-        public void ShowLineOfSight(HexCoordinates from, HexCoordinates to)
+        public void ShowLineOfSight(
+            HexCoordinates from,
+            HexCoordinates to,
+            IReadOnlyList<Killtime.Core.Combat.SmokeZone> smokeZones = null,
+            bool seesThroughSmoke = false)
         {
             if (_losLineRenderer == null || _grid == null)
             {
@@ -476,7 +483,12 @@ namespace Killtime.Tactics.Grid
                 return;
             }
 
-            CoverScanResult scan = CoverSystem.ScanCover(from, to, _grid);
+            CoverScanResult scan = CoverSystem.ScanCover(
+                from,
+                to,
+                _grid,
+                smokeZones: smokeZones ?? _activeZones,
+                seesThroughSmoke: seesThroughSmoke);
             DrawLosFan(scan.Rays, scan.Cover);
         }
 
@@ -629,9 +641,11 @@ namespace Killtime.Tactics.Grid
             if (_tilesParent != null) Destroy(_tilesParent.gameObject);
             if (_ceilingsParent != null) Destroy(_ceilingsParent.gameObject);
             if (_obstaclesParent != null) Destroy(_obstaclesParent.gameObject);
+            if (_zonesParent != null) Destroy(_zonesParent.gameObject);
             _tileRenderers.Clear();
             _ceilingRenderers.Clear();
             _obstacleObjects.Clear();
+            _zoneVisualObjects.Clear();
 
             _tilesParent = new GameObject("HexTiles").transform;
             _tilesParent.SetParent(transform, false);
@@ -641,6 +655,9 @@ namespace Killtime.Tactics.Grid
 
             _obstaclesParent = new GameObject("HexObstacles").transform;
             _obstaclesParent.SetParent(transform, false);
+
+            _zonesParent = new GameObject("HexZones").transform;
+            _zonesParent.SetParent(transform, false);
 
             foreach (var kvp in _grid.Nodes)
             {
@@ -1366,6 +1383,83 @@ namespace Killtime.Tactics.Grid
             RefreshAllTileColors();
         }
 
+        /// <summary>
+        /// Met à jour les surfaces de zones persistantes affichées au sol.
+        /// </summary>
+        public void UpdatePersistentZones(IReadOnlyList<Killtime.Core.Combat.SmokeZone> zones)
+        {
+            _activeZones.Clear();
+            if (zones != null)
+            {
+                for (int i = 0; i < zones.Count; i++)
+                {
+                    if (zones[i].TurnsLeft > 0)
+                        _activeZones.Add(zones[i]);
+                }
+            }
+
+            if (_zonesParent == null)
+            {
+                _zonesParent = new GameObject("HexZones").transform;
+                _zonesParent.SetParent(transform, false);
+            }
+
+            foreach (var kvp in _zoneVisualObjects)
+            {
+                if (kvp.Value != null) Destroy(kvp.Value);
+            }
+            _zoneVisualObjects.Clear();
+
+            if (_grid == null || _cachedFlatCeilingMesh == null)
+            {
+                _cachedFlatCeilingMesh = GenerateFlatPointyHexMesh(_grid != null ? _grid.HexRadius * 0.95f : 0.95f);
+            }
+
+            var coveredCoords = new HashSet<HexCoordinates>();
+            for (int zi = 0; zi < _activeZones.Count; zi++)
+            {
+                var zone = _activeZones[zi];
+                int rad = Math.Max(0, zone.Radius);
+                Color zoneCol = Killtime.Core.Combat.SmokeScreen.ZoneThemeColor(zone.Kind);
+
+                for (int q = -rad; q <= rad; q++)
+                {
+                    int r1 = Mathf.Max(-rad, -q - rad);
+                    int r2 = Mathf.Min(rad, -q + rad);
+                    for (int r = r1; r <= r2; r++)
+                    {
+                        var c = new HexCoordinates(zone.Center.Q + q, zone.Center.R + r);
+                        if (!coveredCoords.Add(c)) continue;
+
+                        var node = _grid.GetNode(c);
+                        if (node == null) continue;
+
+                        var overlay = new GameObject($"ZoneOverlay_{c.Q}_{c.R}");
+                        overlay.transform.SetParent(_zonesParent, false);
+                        overlay.transform.position = node.WorldPosition + Vector3.up * 0.035f;
+                        overlay.layer = 2;
+
+                        var mf = overlay.AddComponent<MeshFilter>();
+                        mf.sharedMesh = _cachedFlatCeilingMesh;
+
+                        var mr = overlay.AddComponent<MeshRenderer>();
+                        mr.sharedMaterial = _ceilingMaterial;
+                        mr.shadowCastingMode = ShadowCastingMode.Off;
+                        mr.receiveShadows = false;
+
+                        var block = new MaterialPropertyBlock();
+                        block.SetColor("_BaseColor", zoneCol);
+                        block.SetColor("_Color", zoneCol);
+                        mr.SetPropertyBlock(block);
+
+                        _zoneVisualObjects[c] = overlay;
+                    }
+                }
+            }
+
+            RefreshAllTileColors();
+        }
+
         private void RefreshAllTileColors()
         {
             foreach (var kvp in _tileRenderers)
@@ -1378,6 +1472,18 @@ namespace Killtime.Tactics.Grid
                 bool isTextured = node != null && !string.IsNullOrEmpty(node.GroundTexture);
 
                 Color c = isTextured ? Color.white : _defaultTileColor;
+
+                for (int zi = 0; zi < _activeZones.Count; zi++)
+                {
+                    var z = _activeZones[zi];
+                    if (coords.DistanceTo(z.Center) <= Math.Max(0, z.Radius))
+                    {
+                        Color zCol = Killtime.Core.Combat.SmokeScreen.ZoneThemeColor(z.Kind);
+                        zCol.a = 1f;
+                        c = isTextured ? Color.Lerp(Color.white, zCol, 0.45f) : Color.Lerp(_defaultTileColor, zCol, 0.55f);
+                        break;
+                    }
+                }
 
                 if (node != null && !node.IsWalkable)
                 {
