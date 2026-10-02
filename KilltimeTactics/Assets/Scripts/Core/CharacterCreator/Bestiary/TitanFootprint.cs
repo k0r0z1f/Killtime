@@ -133,5 +133,111 @@ namespace Killtime.Tactics.Grid
             }
             return best;
         }
+
+        public static int GetHexCount(TitanFootprintType type)
+        {
+            return type switch
+            {
+                TitanFootprintType.Single => 1,
+                TitanFootprintType.Triangle3 => 3,
+                TitanFootprintType.Rosette7 => 7,
+                TitanFootprintType.Colossus19 => 19,
+                _ => 1
+            };
+        }
+
+        public static bool IsTitan(TitanFootprintType type)
+        {
+            return type == TitanFootprintType.Rosette7 || type == TitanFootprintType.Colossus19;
+        }
+
+        public static List<HexCoordinates> GetPerimeterCoordinates(HexCoordinates anchor, TitanFootprintType type)
+        {
+            var occupied = GetOccupiedCoordinates(anchor, type);
+            var occupiedSet = new HashSet<HexCoordinates>(occupied);
+            var perimeterSet = new HashSet<HexCoordinates>();
+
+            for (int i = 0; i < occupied.Count; i++)
+            {
+                var cell = occupied[i];
+                for (int d = 0; d < 6; d++)
+                {
+                    var neighbor = cell.GetNeighbor(d);
+                    if (!occupiedSet.Contains(neighbor))
+                    {
+                        perimeterSet.Add(neighbor);
+                    }
+                }
+            }
+
+            return new List<HexCoordinates>(perimeterSet);
+        }
+
+        public static bool IsAdjacentToFootprint(HexCoordinates target, HexCoordinates anchor, TitanFootprintType type)
+        {
+            return MinDistance(target, anchor, type) <= 1;
+        }
+
+        public static List<HexCoordinates> GetStompZone(HexCoordinates impactCenter, TitanFootprintType stompType)
+        {
+            return GetOccupiedCoordinates(impactCenter, stompType);
+        }
+
+        public static List<HexCoordinates> GetBreathZone(HexCoordinates targetCenter, TitanFootprintType breathType)
+        {
+            return GetOccupiedCoordinates(targetCenter, breathType);
+        }
+
+        public static List<HexCoordinates> GetBreathConeCoordinates(HexCoordinates origin, int directionIndex, int length = 3)
+        {
+            var results = new HashSet<HexCoordinates>();
+            int dir = ((directionIndex % 6) + 6) % 6;
+            var fwd = HexCoordinates.Directions[dir];
+            var leftDir = HexCoordinates.Directions[(dir + 4) % 6];
+            var rightDir = HexCoordinates.Directions[(dir + 2) % 6];
+
+            HexCoordinates currentCenter = origin;
+            for (int step = 1; step <= length; step++)
+            {
+                currentCenter = new HexCoordinates(currentCenter.Q + fwd.Q, currentCenter.R + fwd.R);
+                results.Add(currentCenter);
+
+                HexCoordinates leftSpread = currentCenter;
+                HexCoordinates rightSpread = currentCenter;
+                for (int w = 1; w < step; w++)
+                {
+                    leftSpread = new HexCoordinates(leftSpread.Q + leftDir.Q, leftSpread.R + leftDir.R);
+                    rightSpread = new HexCoordinates(rightSpread.Q + rightDir.Q, rightSpread.R + rightDir.R);
+                    results.Add(leftSpread);
+                    results.Add(rightSpread);
+                }
+            }
+
+            return new List<HexCoordinates>(results);
+        }
+
+        public static List<HexCoordinates> GetSweptCoordinates(IEnumerable<HexCoordinates> path, TitanFootprintType type)
+        {
+            var swept = new HashSet<HexCoordinates>();
+            if (path == null) return new List<HexCoordinates>();
+
+            foreach (var step in path)
+            {
+                var cells = GetOccupiedCoordinates(step, type);
+                for (int i = 0; i < cells.Count; i++)
+                {
+                    swept.Add(cells[i]);
+                }
+            }
+
+            return new List<HexCoordinates>(swept);
+        }
+
+        public static bool CanTitanGrab(TitanFootprintType titanFootprint, TitanFootprintType targetFootprint, int minDistance)
+        {
+            if (!IsTitan(titanFootprint)) return false;
+            if (minDistance > 1) return false;
+            return GetHexCount(targetFootprint) < GetHexCount(titanFootprint);
+        }
     }
 }

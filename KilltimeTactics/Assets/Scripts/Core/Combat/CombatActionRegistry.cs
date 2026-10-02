@@ -17,6 +17,14 @@ namespace Killtime.Tactics.CombatUI
     /// </summary>
     public static class CombatActionRegistry
     {
+        private static int GetDistance(TacticalUnit a, TacticalUnit b)
+        {
+            if (a == null || b == null) return int.MaxValue;
+            if (a.FootprintType == TitanFootprintType.Single && b.FootprintType == TitanFootprintType.Single)
+                return a.CurrentCoords.DistanceTo(b.CurrentCoords);
+            return TitanFootprint.MinDistanceBetweenUnits(a.CurrentCoords, a.FootprintType, b.CurrentCoords, b.FootprintType);
+        }
+
         public static bool HasRangedWeaponEquipped(TacticalUnit actor)
         {
             if (actor == null) return false;
@@ -35,7 +43,7 @@ namespace Killtime.Tactics.CombatUI
         public static bool IsTargetInRange(TacticalUnit actor, TacticalUnit target)
         {
             if (actor == null || target == null) return false;
-            int distance = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            int distance = GetDistance(actor, target);
             int maxRange = GetAttackMaxRange(actor);
 
             // Arme de contact ou mains nues (portée 1)
@@ -59,7 +67,7 @@ namespace Killtime.Tactics.CombatUI
             if (target.Stats == null || !target.Stats.IsAlive) return false;
             if (actor.Stats == null || actor.Stats.CurrentActionPoints < apCost) return false;
 
-            int distance = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            int distance = GetDistance(actor, target);
             int maxRange = GetAttackMaxRange(actor);
 
             // Combat à mains nues ou arme de contact : contact immédiat requis (<= 1 case)
@@ -86,7 +94,7 @@ namespace Killtime.Tactics.CombatUI
             // puis l'unité s'est déplacée avant de valider.
             if (actor != null && target != null)
             {
-                int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+                int dist = GetDistance(actor, target);
                 if (dist > 1 && HasRangedWeaponEquipped(actor))
                 {
                     return SkillType.Ballistique;
@@ -149,7 +157,7 @@ namespace Killtime.Tactics.CombatUI
             if (actor == null || target == null) return actions;
 
             bool isSelf = (actor == target);
-            bool isEnemy = !target.IsPlayerControlled;
+            bool isEnemy = (actor.IsPlayerControlled != target.IsPlayerControlled);
             bool targetIsAlive = target.Stats.IsAlive;
 
             // =========================================================================
@@ -459,7 +467,8 @@ namespace Killtime.Tactics.CombatUI
                         ActionCategory.AttaqueEtPassesDarmes,
                         2,
                         (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive
-                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && GetDistance(act, tgt) <= 1
+                            && TitanFootprint.GetHexCount(act.FootprintType) >= TitanFootprint.GetHexCount(tgt.FootprintType)
                             && !act.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise),
                         (act, tgt) => arena.ExecuteGrapple(act, tgt)
                     ));
@@ -471,7 +480,7 @@ namespace Killtime.Tactics.CombatUI
                             "Suffocation au corps-à-corps (Athlétisme vs Endurance) sur cible immobilisée : dégâts bruts au cou + statut Asphyxie (2 tours, drain 1 PA/tour).",
                             ActionCategory.AttaqueEtPassesDarmes,
                             2,
-                            (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && GetDistance(act, tgt) <= 1,
                             (act, tgt) => arena.ExecuteStrangulation(act, tgt)
                         ));
 
@@ -480,10 +489,183 @@ namespace Killtime.Tactics.CombatUI
                             "Déplace le corps d'une cible immobilisée d'1 case (coût 2 PA).",
                             ActionCategory.AttaqueEtPassesDarmes,
                             2,
-                            (act, tgt) => act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1 && (arena == null || arena.CanDragBody(act, tgt)),
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 2 && GetDistance(act, tgt) <= 1 && (arena == null || arena.CanDragBody(act, tgt)),
                             (act, tgt) => arena.ExecuteDragBody(act, tgt)
                         ));
                     }
+                }
+
+                // =============================================================
+                // ACTIONS TITANESQUES (RD-052 : ROSETTE 7 / COLOSSUS 19)
+                // =============================================================
+                if (TitanFootprint.IsTitan(actor.FootprintType))
+                {
+                    int zoneHexCount = TitanFootprint.GetHexCount(actor.FootprintType);
+                    int estGrabDmg = Mathf.Max(3, actor.Stats.Attributes.Force);
+                    int estStompDmg = Mathf.Max(4, actor.Stats.Attributes.Force + 2);
+                    int estBreathDmg = Mathf.Max(5, (actor.Stats.Attributes.Magie > 0 ? actor.Stats.Attributes.Magie : actor.Stats.Attributes.Constitution) + 2);
+
+                    // 1. Saisie Colossale (Grab)
+                    actions.Add(new CombatAction(
+                        "✊ Saisie Titanesque (Grab) (2 PA)",
+                        $"Saisit une créature plus petite au contact du corps colosse : {estGrabDmg} dégâts de broyage immédiats + Immobilisé en lutte active.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive
+                            && TitanFootprint.CanTitanGrab(act.FootprintType, tgt.FootprintType, GetDistance(act, tgt))
+                            && !act.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise),
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(2)) return;
+                            int grabDmg = Mathf.Max(3, act.Stats.Attributes.Force);
+                            int rem = tgt.Stats.CurrentHealth - grabDmg;
+                            if (rem <= 0) tgt.Stats.EvaluateFatalBlow(BodyPart.Torse, grabDmg);
+                            else tgt.Stats.CurrentHealth = rem;
+
+                            var tgtVis = tgt.GetComponent<TacticalUnitVisual>();
+                            tgtVis?.TriggerHitFlash();
+
+                            if (tgt.Stats.IsAlive)
+                            {
+                                Killtime.Core.Combat.GrappleState.SetGrapple(act.Stats, tgt.Stats);
+                                tgt.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+                                tgtVis?.SpawnFloatingText($"-{grabDmg} SAISIE [IMMOBILISÉ]", Color.yellow);
+                            }
+                            else
+                            {
+                                tgtVis?.TriggerFallingBackDeath();
+                                arena?.AutoTargetNextAlive();
+                            }
+
+                            var actVis = act.GetComponent<TacticalUnitVisual>();
+                            actVis?.SpawnFloatingText("✊ SAISIE TITANESQUE", Color.cyan);
+
+                            arena?.Log($"✊ <b>{act.Stats.Name}</b> saisit <b>{tgt.Stats.Name}</b> d'une poigne colossale (-2 PA) : {grabDmg} dégâts de broyage !");
+                            arena?.RecordChronoSnapshot($"Saisie Titanesque : {act.Stats.Name} -> {tgt.Stats.Name}");
+                        }
+                    ));
+
+                    // 2. Piétinement de Zone (Stomp 7/19 hex)
+                    actions.Add(new CombatAction(
+                        $"💥 Piétinement de Zone ({zoneHexCount} hex, 3 PA)",
+                        $"Écrase la zone ciblée ({zoneHexCount} cases, gabarit {actor.FootprintType}) : {estStompDmg} dégâts de choc à toutes les unités dans la zone, chute [À Terre] et [Déstabilisé].",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        3,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 3 && targetIsAlive
+                            && GetDistance(act, tgt) <= 2,
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(3)) return;
+                            var zone = TitanFootprint.GetStompZone(tgt.CurrentCoords, act.FootprintType);
+                            var zoneSet = new HashSet<HexCoordinates>(zone);
+                            var all = Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                            int hitCount = 0;
+                            int stompDmg = Mathf.Max(4, act.Stats.Attributes.Force + 2);
+
+                            for (int i = 0; i < all.Length; i++)
+                            {
+                                var u = all[i];
+                                if (u == null || u.Stats == null || !u.Stats.IsAlive || u == act) continue;
+
+                                bool inZone = false;
+                                var uCoords = u.OccupiedCoords;
+                                for (int c = 0; c < uCoords.Count; c++)
+                                {
+                                    if (zoneSet.Contains(uCoords[c]))
+                                    {
+                                        inZone = true;
+                                        break;
+                                    }
+                                }
+
+                                if (inZone)
+                                {
+                                    hitCount++;
+                                    int rem = u.Stats.CurrentHealth - stompDmg;
+                                    if (rem <= 0) u.Stats.EvaluateFatalBlow(BodyPart.Torse, stompDmg);
+                                    else u.Stats.CurrentHealth = rem;
+
+                                    u.Stats.ApplyStatus(StatusEffect.ATerre, 1);
+                                    u.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+
+                                    var uVis = u.GetComponent<TacticalUnitVisual>();
+                                    uVis?.TriggerHitFlash();
+                                    uVis?.SpawnFloatingText($"-{stompDmg} PIÉTINÉ [À TERRE]", Color.red);
+                                    if (!u.Stats.IsAlive)
+                                    {
+                                        uVis?.TriggerFallingBackDeath();
+                                        if (u == tgt) arena?.AutoTargetNextAlive();
+                                    }
+                                }
+                            }
+
+                            var actVis = act.GetComponent<TacticalUnitVisual>();
+                            actVis?.SpawnFloatingText($"💥 PIÉTINEMENT ({hitCount} touché(s))", new Color(1f, 0.4f, 0.1f));
+                            arena?.Log($"💥 <b>{act.Stats.Name}</b> déclenche un <b>Piétinement de Zone ({zone.Count} hex)</b> sur {tgt.CurrentCoords} (-3 PA) : {hitCount} unité(s) écrasée(s) ({stompDmg} dégâts, À Terre + Déstabilisé) !");
+                            arena?.RecordChronoSnapshot($"Piétinement : {act.Stats.Name} ({zone.Count} hex)");
+                        }
+                    ));
+
+                    // 3. Souffle Titanesque (Breath 7/19 hex)
+                    actions.Add(new CombatAction(
+                        $"🔥 Souffle Titanesque ({zoneHexCount} hex, 3 PA)",
+                        $"Projette un torrent destructeur couvrant une zone de {zoneHexCount} cases (gabarit {actor.FootprintType}, portée 8) : {estBreathDmg} dégâts élémentaires/arcaniques à toutes les unités, [En Feu] et [Déstabilisé].",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        3,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 3 && targetIsAlive
+                            && GetDistance(act, tgt) <= 8,
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(3)) return;
+                            var zone = TitanFootprint.GetBreathZone(tgt.CurrentCoords, act.FootprintType);
+                            var zoneSet = new HashSet<HexCoordinates>(zone);
+                            var all = Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                            int hitCount = 0;
+                            int breathDmg = Mathf.Max(5, (act.Stats.Attributes.Magie > 0 ? act.Stats.Attributes.Magie : act.Stats.Attributes.Constitution) + 2);
+
+                            for (int i = 0; i < all.Length; i++)
+                            {
+                                var u = all[i];
+                                if (u == null || u.Stats == null || !u.Stats.IsAlive || u == act) continue;
+
+                                bool inZone = false;
+                                var uCoords = u.OccupiedCoords;
+                                for (int c = 0; c < uCoords.Count; c++)
+                                {
+                                    if (zoneSet.Contains(uCoords[c]))
+                                    {
+                                        inZone = true;
+                                        break;
+                                    }
+                                }
+
+                                if (inZone)
+                                {
+                                    hitCount++;
+                                    int rem = u.Stats.CurrentHealth - breathDmg;
+                                    if (rem <= 0) u.Stats.EvaluateFatalBlow(BodyPart.Torse, breathDmg);
+                                    else u.Stats.CurrentHealth = rem;
+
+                                    u.Stats.ApplyStatus(StatusEffect.EnFeu, 2);
+                                    u.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+
+                                    var uVis = u.GetComponent<TacticalUnitVisual>();
+                                    uVis?.TriggerHitFlash();
+                                    uVis?.SpawnFloatingText($"-{breathDmg} SOUFFLE [EN FEU]", new Color(1f, 0.45f, 0.1f));
+                                    if (!u.Stats.IsAlive)
+                                    {
+                                        uVis?.TriggerFallingBackDeath();
+                                        if (u == tgt) arena?.AutoTargetNextAlive();
+                                    }
+                                }
+                            }
+
+                            var actVis = act.GetComponent<TacticalUnitVisual>();
+                            actVis?.SpawnFloatingText($"🔥 SOUFFLE ({hitCount} touché(s))", new Color(1f, 0.5f, 0.1f));
+                            arena?.Log($"🔥 <b>{act.Stats.Name}</b> crache un <b>Souffle Titanesque ({zone.Count} hex)</b> sur {tgt.CurrentCoords} (-3 PA) : {hitCount} unité(s) calcinée(s) ({breathDmg} dégâts, En Feu + Déstabilisé) !");
+                            arena?.RecordChronoSnapshot($"Souffle Titanesque : {act.Stats.Name} ({zone.Count} hex)");
+                        }
+                    ));
                 }
             }
 
@@ -657,6 +839,67 @@ namespace Killtime.Tactics.CombatUI
             // Ici : les deux conversions Souffle <-> PA, jouables sur soi-même.
             if (isSelf)
             {
+                if (TitanFootprint.IsTitan(actor.FootprintType))
+                {
+                    int zoneHexCount = TitanFootprint.GetHexCount(actor.FootprintType);
+                    int estSelfStompDmg = Mathf.Max(4, actor.Stats.Attributes.Force + 2);
+
+                    actions.Add(new CombatAction(
+                        $"💥 Piétinement au Sol ({zoneHexCount} hex, 3 PA)",
+                        $"Écrase le sol sous et autour du corps colosse ({zoneHexCount} cases) : {estSelfStompDmg} dégâts à tous les ennemis au contact direct, [À Terre] et [Déstabilisé].",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        3,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 3,
+                        (act, tgt) =>
+                        {
+                            if (!act.Stats.ConsumeActionPoints(3)) return;
+                            var perimeter = TitanFootprint.GetPerimeterCoordinates(act.CurrentCoords, act.FootprintType);
+                            var pSet = new HashSet<HexCoordinates>(perimeter);
+                            var all = Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                            int hitCount = 0;
+                            int stompDmg = Mathf.Max(4, act.Stats.Attributes.Force + 2);
+
+                            for (int i = 0; i < all.Length; i++)
+                            {
+                                var u = all[i];
+                                if (u == null || u.Stats == null || !u.Stats.IsAlive || u == act) continue;
+
+                                bool touchesPerimeter = false;
+                                var uCoords = u.OccupiedCoords;
+                                for (int c = 0; c < uCoords.Count; c++)
+                                {
+                                    if (pSet.Contains(uCoords[c]))
+                                    {
+                                        touchesPerimeter = true;
+                                        break;
+                                    }
+                                }
+
+                                if (u.IsPlayerControlled != act.IsPlayerControlled && touchesPerimeter)
+                                {
+                                    hitCount++;
+                                    int rem = u.Stats.CurrentHealth - stompDmg;
+                                    if (rem <= 0) u.Stats.EvaluateFatalBlow(BodyPart.Torse, stompDmg);
+                                    else u.Stats.CurrentHealth = rem;
+
+                                    u.Stats.ApplyStatus(StatusEffect.ATerre, 1);
+                                    u.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+
+                                    var uVis = u.GetComponent<TacticalUnitVisual>();
+                                    uVis?.TriggerHitFlash();
+                                    uVis?.SpawnFloatingText($"-{stompDmg} PIÉTINÉ [À TERRE]", Color.red);
+                                    if (!u.Stats.IsAlive) uVis?.TriggerFallingBackDeath();
+                                }
+                            }
+
+                            var actVis = act.GetComponent<TacticalUnitVisual>();
+                            actVis?.SpawnFloatingText($"💥 IMPACT SOL ({hitCount} écrasé(s))", new Color(1f, 0.4f, 0.1f));
+                            arena?.Log($"💥 <b>{act.Stats.Name}</b> piétine le sol autour de lui (-3 PA) : {hitCount} ennemi(s) écrasé(s) ({stompDmg} dégâts, À Terre) !");
+                            arena?.RecordChronoSnapshot($"Piétinement Sol : {act.Stats.Name}");
+                        }
+                    ));
+                }
+
                 bool hasMarathonHeart = actor.Stats.HasSpecialization("Course d'Endurance : Cœur de Marathon");
                 int breathPA = hasMarathonHeart ? 3 : 2;
                 actions.Add(new CombatAction(

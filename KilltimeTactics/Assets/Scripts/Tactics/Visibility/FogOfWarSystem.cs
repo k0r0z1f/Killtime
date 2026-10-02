@@ -40,6 +40,7 @@ namespace Killtime.Tactics.Visibility
         public bool Panoramic;       // Toujours vrai (conservé pour compatibilité)
         public bool Thermal;         // Détection Thermique
         public int HearingRange;     // Ouïe (1..6), pour la révélation au bruit
+        public bool HasLight;        // RD-053 : Lampe / source lumineuse portée
     }
 
     /// <summary>
@@ -67,7 +68,7 @@ namespace Killtime.Tactics.Visibility
         /// fournissent que l'Ouïe et les sens (Thermique) ; la Vision sert aux
         /// jets d'Observation, jamais à la portée.
         /// </summary>
-        public static FogVisionParams ResolveObserverParams(CharacterStats stats, int baseRange)
+        public static FogVisionParams ResolveObserverParams(CharacterStats stats, int baseRange, bool isNight = false)
         {
             var p = new FogVisionParams
             {
@@ -76,6 +77,7 @@ namespace Killtime.Tactics.Visibility
                 Panoramic = true,
                 Thermal = false,
                 HearingRange = 3,
+                HasLight = false,
             };
             if (stats == null) return p;
             p.HearingRange = Mathf.Clamp(stats.Attributes.Ouie, 1, 6);
@@ -85,8 +87,31 @@ namespace Killtime.Tactics.Visibility
                     p.Thermal = true;
                 if (SmokeScreen.HasItemByName(stats, "Radio"))
                     p.HearingRange = Mathf.Max(p.HearingRange, 6);
+
+                var inv = stats.Sheet?.Inventory;
+                if (inv != null)
+                {
+                    for (int i = 0; i < inv.Count; i++)
+                    {
+                        var it = inv[i];
+                        if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                        if (it.Name.IndexOf("Lampe", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            it.Name.IndexOf("Torche", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                            it.Name.IndexOf("Flashlight", StringComparison.OrdinalIgnoreCase) >= 0)
+                        {
+                            p.HasLight = true;
+                            break;
+                        }
+                    }
+                }
             }
             catch { /* fiche partielle en tests */ }
+
+            if (isNight && !p.HasLight && !p.Thermal)
+            {
+                p.Range = Mathf.Min(p.Range, 4);
+            }
+
             return p;
         }
 
@@ -295,9 +320,9 @@ namespace Killtime.Tactics.Visibility
 
         /// <summary>
         /// Malus de distance + couvert pour le duel de détection
-        /// (Observation vs Discretion). Thermique : +2 (voit les camouflés).
+        /// (Observation vs Discretion). Thermique : +2 (voit les camouflés). Nuit sans lampe : -1.
         /// </summary>
-        public static int BuildDetectionModifier(int distance, CoverType cover, bool thermal)
+        public static int BuildDetectionModifier(int distance, CoverType cover, bool thermal, bool isNight = false, bool hasLight = false)
         {
             int mod = -Math.Max(0, distance - 1); // -1 par case au-delà du contact.
             mod += cover switch
@@ -308,6 +333,7 @@ namespace Killtime.Tactics.Visibility
                 _ => 0,
             };
             if (thermal) mod += 2;
+            if (isNight && !thermal && !hasLight) mod -= 1;
             return mod;
         }
 
@@ -357,9 +383,19 @@ namespace Killtime.Tactics.Visibility
                 }
             }
             catch { /* fiche partielle en tests */ }
+            bool isNight = false;
+            try
+            {
+                var fog = FogOfWarManager.Instance;
+                if (fog != null && fog.IsNight) isNight = true;
+            }
+            catch { /* ignore */ }
+
+            bool hasLight = optics > 0;
+
             // L'Œil de Lynx n'étend plus la portée (environnementale, §25.4) :
             // acuité dans l'obscurité = +2 au duel de détection (pur bonus skill).
-            int mod = BuildDetectionModifier(distance, cover, thermal) + (lynx ? 2 : 0) + optics;
+            int mod = BuildDetectionModifier(distance, cover, thermal, isNight, hasLight) + (lynx ? 2 : 0) + optics;
             // ResolveOpposedCheck ne prend pas de modificateur libre : duel à
             // mises nulles (aucun PA/PE engagé par le duel lui-même ; le coût
             // d'Observation est débité par l'appelant), puis ajustement direct

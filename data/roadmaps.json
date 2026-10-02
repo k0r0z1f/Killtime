@@ -268,7 +268,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "GrenadeEffectKind",
-          "details": "FAIT : Zones persistantes multi-effets branchées : Lacrymogène CM-6 2t (2 PV DoT gaz, Aveugle/Asphyxie/Etourdi), Cryo C-9 1t (2 PV DoT froid, Ralenti/Immobilise), Stase Chrono T-0 2t (0 PV, Paralyse/ChronoFracture), Pestilentielle Karkjiue 3t (3 PV DoT arcanotech, Empoisonne/Saignement). Masque Filtrant neutralise ou divise par 2. Overlays de couleurs distinctes au sol pour chaque zone."
+          "details": "FAIT : Zones persistantes multi-effets branchées : Lacrymogène CM-6 2t (2 PV DoT gaz, Aveugle/Asphyxie/Etourdi), Cryo C-9 1t (2 PV DoT froid, Ralenti/Immobilise), Stase Chrono T-0 2t (0 PV, Paralyse), Pestilentielle Karkjiue 3t (3 PV DoT arcanotech, Empoisonne/Saignement). Masque Filtrant neutralise ou divise par 2. Overlays de couleurs distinctes au sol pour chaque zone."
         },
         {
           "id": "RD-044",
@@ -299,21 +299,6 @@
           "scale": null,
           "suggestedAsset": "CharacterStats.TickTurnStatus",
           "details": "FAIT : Dégâts résiduels dégressifs (tick en début de tour personnel, pool décroît de 1/tour jusqu'à 0). Saignement, Empoisonné, EnFeu (absorbé en priorité par bouclier ablatif), Asphyxie (dégâts + drain 1 PA). Aggravation (+1/tour au lieu de -1). Soins (Heal, bandages, chirurgie) et dissipation arrêtent immédiatement le DoT et purgent le pool. Évaluation des seuils létaux et chocs branchée."
-        },
-        {
-          "id": "RD-046",
-          "title": "Chrono-Fracture effet combat",
-          "epic": "États/DoT",
-          "status": "todo",
-          "priority": "low",
-          "order": 16,
-          "scene": "",
-          "placeholderId": "",
-          "primitive": "",
-          "pos": null,
-          "scale": null,
-          "suggestedAsset": "Livre V",
-          "details": "Statut existe sans effet. Proposer : -2PA + rejouer init en fin de round, snapshot F11."
         },
         {
           "id": "RD-047",
@@ -349,7 +334,7 @@
           "id": "RD-049",
           "title": "Surprise embuscade 1er round",
           "epic": "Tours/Surprise",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 19,
           "scene": "",
@@ -357,8 +342,8 @@
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "FogOfWarSystem",
-          "details": "Si non détecté : +2 attaque round 1, pas de réaction adverse. Base du stealth."
+          "suggestedAsset": "StealthState + CombatCalculator + FogOfWarManager",
+          "details": "FAIT : Système de Furtivité / Embuscade (RD-049, Codex). 1) StealthState (Core) : gestionnaire d'état statique sur CharacterStats, bonus +2 attaque depuis le stealth, rupture de furtivité à l'attaque/bruit. 2) Duel aveugle : CombatCalculator.BeginDuel intègre le bonus d'attaque +2, neutralise toute réaction adverse (encaissement passif forcé 0 PA sans réaction), traçabilité combat log. 3) Brouillard de guerre : FogOfWarManager masque les unités furtives à 360°, révélation réservée au contact direct (<=1 case), vision thermique ou révélation persistante (Observation réussie / bruit de tir). 4) Arène & Contrôleurs : CombatDevArena.TryEnterStealth (action 2 PA), contournement du prompt de défense interactif et des animations/SFX de blocage sur cible surprise, rafraîchissement synchrone du brouillard post-mêlée. 5) IA : TacticalAIController ignore les cibles furtives hors capteurs/bruit. TurnManager assure la purge au cycle de vie."
         },
         {
           "id": "RD-050",
@@ -377,24 +362,24 @@
         },
         {
           "id": "RD-051",
-          "title": "Véhicules embarquer/écraser",
+          "title": "Combat de Véhicules & Sous-systèmes (Livre VI §26.3)",
           "epic": "Véhicules/Titans",
           "status": "todo",
-          "priority": "low",
+          "priority": "medium",
           "order": 21,
           "scene": "",
           "placeholderId": "",
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "Livre VI §26",
-          "details": "Embarquer 2PA, blindage véhicule, écraser piéton, carburant. Requis Kingston rues."
+          "suggestedAsset": "Livre VI §26.3",
+          "details": "Sous-systèmes et calibres Livre VI §26.3 : zones essentielles (Cockpit, Moteur, Cadre, Rails -> destruction véhicule si 0 PV) vs zones superficielles (Guidon, Canons/Tourelles, Passagers, Queue, Roues -> perte fonctionnelle sans détruire l'engin). Échelle des paliers de PV : 1-10 (vélo), 11-50 (charrette), 51-1000 (jet, tank), 1001-10000 (croiseur stellaire Aeschylus), 10001+ (stations orbitales, forteresses). Dégâts de masse des armes lourdes : +100 dégâts contre structures et véhicules. Manœuvres d'embarquement (2 PA) et écrasement de piéton."
         },
         {
           "id": "RD-052",
           "title": "Titans multi-cases piétinement",
           "epic": "Véhicules/Titans",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 22,
           "scene": "",
@@ -403,13 +388,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "TitanFootprint Rosette7/Colossus19",
-          "details": "Init prio + PAx2 existent. Ajouter : piétinement zone, grab, souffle. Cible 7/19 hex."
+          "details": "FAIT : Support complet des Titans colossaux multi-hexagones (RD-052, Livres VI, X & XI). 1) Géométrie axiale (TitanFootprint) : calcul du périmètre d'adjacence extérieure (GetPerimeterCoordinates), gabarits d'impact 7 hex (Rosette7) et 19 hex (Colossus19) pour zones d'effet (GetStompZone, GetBreathZone), balayage spatial de déplacement (GetSweptCoordinates) et projection de cône directionnel (GetBreathConeCoordinates). 2) Saisie Colossale (Grab 2 PA) : validation par taille (CanTitanGrab), contrainte d'adjacence au périmètre, dégâts de broyage, lien de lutte GrappleState et état Immobilisé. Protection anti-grapple interdisant aux gabarits inférieurs de saisir un Titan. 3) Piétinement de Zone (Stomp 3 PA) : écrasement AoE 7 ou 19 hexes avec test de collision volumétrique sur l'ensemble des cases occupées (OccupiedCoords), infligeant dégâts bruts, chute À Terre et Déstabilisé (+ variante Piétinement au Sol sur soi). 4) Souffle Titanesque (Breath 3 PA, portée 8) : torrent destructeur 7/19 hexes appliquant dégâts de souffle, EnFeu et Déstabilisé. 5) Intégration globale : correction des portées de mêlée multi-cases (GetDistance / MinDistanceBetweenUnits), anneau de faction Colossus19 (TacticalUnitVisual) et actions contextuelles branchées (CombatActionRegistry)."
         },
         {
           "id": "RD-053",
           "title": "Nuit / lampe / bruit attire IA",
           "epic": "Lumière/Env",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 23,
           "scene": "",
@@ -418,7 +403,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "FogOfWar + Lighting",
-          "details": "Malus tir nuit -1 sans lampe/thermique, tir bruyant révèle déjà, ajouter patrouille alertée."
+          "details": "FAIT : Système Nuit & Éclairage (RD-053, FogOfWar + Combat + IA). 1) FogOfWar : ambiance nocturne (_isNight, NightSightRange = 4 cases), portée de vue bridée sans lampe ni thermique. 2) Combat : malus balistique de -1 au tir de nuit (CombatCalculator.BeginDuel + log) si absence de lampe d'inventaire ou d'optique thermique (spécialisation / lunettes), pris en compte par la prédiction IA. 3) Équipement éclairage : TacticalUnit (HasFlashlight, HasThermalVision). Une lampe allumée dans la nuit brise le stealth et trahit la position pour toute ligne de mire directe. 4) IA & Patrouille alertée : TacticalPosture.AlertedPatrol. Traçage des coups de feu (NotifyLoudShot + VTT sans fausse alerte sur tirs alliés) et faisceaux lumineux. Sans cible en vue, l'IA patrouille et converge vers la source sonore ou lumineuse avec son budget de mouvement et réserve défensive."
         },
         {
           "id": "RD-074",
@@ -524,6 +509,126 @@
           "scale": null,
           "suggestedAsset": "ArmoryCatalog + InventoryDevWindow + ArmoryDevWindow",
           "details": "FAIT : Classification intégrale du catalogue et du marché par les 7 Ères technologiques (Poudre Noire, Grande Guerre, Seconde Guerre, Guerre Froide, Moderne, Futuriste, Arcanotech). Armures, armes blanches, fusils laser, protections énergétiques et consommables étiquetés avec leur ère. Grille de sélection d'ères dans la fenêtre Armurerie (F12) et Marché (F4), tri hiérarchique Ère ➔ Catégorie ➔ Nom, séparateurs visuels d'époques, inférence rétrocompatible DeduceEra pour JSON existants."
+        },
+        {
+          "id": "RD-081",
+          "title": "Table Universelle des Critiques d2–d24 (Livre II §8.2)",
+          "epic": "Critiques/VATS",
+          "status": "done",
+          "priority": "high",
+          "order": 31,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "CombatCalculator + DiceRoller",
+          "details": "FAIT : Table Universelle des Conséquences Critiques d2-d24 (Livre II §8.2) opérationnelle. 1) DiceRoller : relance brute sans modificateur de même calibre (RollRaw) sur face maximale du dé de base, évaluation par paliers décroissants (GetCriticalThreshold) et lookup complet 4 domaines (Offensif, Défensif, Social, Utilitaire). 2) DamageResult : enrichi avec HasCriticalConsequence et CriticalConsequence (palier, tirage brut, titre, description). 3) CombatCalculator.ResolveDuelDamage : cumul du multiplicateur anatomique VATS et de la conséquence offensive (P1 À Terre, P2 Knockback 1 case, P3/P4 +1 dégât, P5 +2 dégâts, P6 Étourdi, P8 purge altération négative, P9 Essoufflement -1, P10 Ralenti, P12 Déstabilisé, P16 +2 PA, P20 Saignement résiduel 3 tours, P24 syncope K.O. ForcedUnconscious sécurisée sans écraser Miracle/InstantDeath). Conséquence défensive sur parade/esquive critique (P1/P24 assaillant à terre, P6 étourdi en retour, P8 purge, P9 regain souffle, P10 ralenti, P12 déstabilisé, P16 +2 PA, P20 riposte 3 dégâts nets). 4) CombatHUD : détection et traçage prioritaire avec tag [CRITIQUE] ambré."
+        },
+        {
+          "id": "RD-082",
+          "title": "Déviation Anatomique Conforme & Effets sur Marge Élevée (Livres VI §26.1 & VII §28.4)",
+          "epic": "Critiques/VATS",
+          "status": "todo",
+          "priority": "high",
+          "order": 32,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "CombatCalculator",
+          "details": "1) Remplacement du random de déviation sur Différentiel = 0 par la table d4/d6 exacte Livre VI §26.1 : 1=Yeux/Visage (cécité, hémorragie), 2=Cou/Trachée (asphyxie, perte essoufflement), 3=Tête/Crâne (commotion, test CON), 4=Poumons/Cœur (dégâts massifs, perforation), 5-6=Torse/Membres. 2) Déclenchement automatique des effets sur différentiel élevé Livre VII §28.4 : Saigner sur Diff >= 5 avec arme tranchante/perçante (DoT résiduel = rang entraînement), Brûler sur Diff >= 5 avec feu/plasma (EnFeu 1-3t), Assommer sur Diff >= 10 et visée crânienne (Inconscient 1t direct), Désintégrer sur Diff >= 20 et Spé Destruction 6."
+        },
+        {
+          "id": "RD-083",
+          "title": "Statut « Souffrant » & Règle des Soins Majeurs (Livre VII §28.3, 29.1)",
+          "epic": "États/DoT",
+          "status": "todo",
+          "priority": "medium",
+          "order": 33,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "CharacterStats + StatusEffect",
+          "details": "Mécanique du statut Souffrant (Livre VII §28.3 & §29.1) : blessure critique ouverte impossible à guérir par des soins ordinaires (seringues, repos standard, pansements légers). Levée du statut conditionnée à une épreuve de Premiers Soins / Chirurgie soignant d'un seul coup au moins CON × 2 dégâts. Séquelle post-mortem de résurrection (Livre VII §29.3) : malus de -1 ec sur tous les jets pendant (10 - CON) jours réels."
+        },
+        {
+          "id": "RD-084",
+          "title": "Attaques Combinées de Groupe & Poursuite (Livre VI §25.1 & §25.2)",
+          "epic": "Tours/Surprise",
+          "status": "todo",
+          "priority": "medium",
+          "order": 34,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "CombatCalculator + TurnManager",
+          "details": "1) Attaques combinées de groupe (Livre VI §25.2) : synchronisation sur l'initiative du membre le plus lent, sommation des résultats offensifs de chaque attaquant face à l'unique défense de la cible pour pulvériser l'armure et l'encaissement par dépassement massif. 2) Concours d'Athlétisme de poursuite (Livre VI §25.1) : épreuve opposée Proie vs Poursuivants (Athlétisme vs Athlétisme) ; réussite de la proie = distance maintenue à 1 case min ; faillite = poursuivant gagne du terrain ; arrêt et capture immédiate aux 4 faillites cumulées."
+        },
+        {
+          "id": "RD-085",
+          "title": "Extension des 6 Duo-Techs Manquantes du Codex (Livre VI §25.5)",
+          "epic": "Duo-Tech",
+          "status": "todo",
+          "priority": "high",
+          "order": 35,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "DuoTechRegistry + DuoTechWeaveController",
+          "details": "Intégration dans DuoTechRegistry et WeaveController des 6 Duo-Techs officielles de la table Livre VI §25.5 : 1) Trempe Inversée (9 PA, ND 6 AGI+INT, cibles groupées <= 2 cases, Ralenti 1t + armure fissurée -2 absorption), 2) Railgun Artisanale (11 PA, ND 7 FOR+INT, couloir 4+ cases, 8 perforants ignorant 1/2 armure), 3) Cisaille Entropique (9 PA, ND 6 AGI+INT, axes croisés X, 5 bruts + Saignement), 4) Parallaxe (6 PA, ND 5 AGI+INT, 180° opposés, cible score 0 en défense face à 4 bruts), 5) Mirage à Deux Temps (4 PA, ND 4 AGI+INT, défensif, replacement 3 cases + réaction gratuite), 6) Uppercut Thermobarique (9 PA, ND 6 FOR+INT, cible entravée <= 50% PV, 7 bruts + À Terre, whiff = +1 ESS chacun)."
+        },
+        {
+          "id": "RD-086",
+          "title": "Synergie Tri-Fusion & Ancrage Tellurique de Thomas (Livres IV & VI)",
+          "epic": "Duo-Tech",
+          "status": "todo",
+          "priority": "high",
+          "order": 36,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "DuoTechRegistry + ThomasCharacter",
+          "details": "Extension du système de synergie héroïque au trio complet : Thomas-0 comme ancre tellurique physique (réflexion des ondes cinétiques de Mina, absorption du contrecoup thermodynamique de Lucas). Actions combinées Thomas + Mina (Rempart Tellurique : onde de choc radiale et création de barricade rocheuse CoverType.Half) et Thomas + Lucas (Zéro Tectonique : faille de vide au sol gelant les hexagones traversés). Déclencheur d'ultime Tri-Fusion (consommation synchronisée des trois héros)."
+        },
+        {
+          "id": "RD-087",
+          "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XI §45-46)",
+          "epic": "Véhicules/Titans",
+          "status": "todo",
+          "priority": "medium",
+          "order": 37,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "TitanBossCatalog + TacticalAIController",
+          "details": "Comportements réactifs et vulnérabilités élémentaires des Boss colossaux (Livre XI §45-46) : 1) La Bête d'Hybris : Mémoire des Flammes (réduction passive de 2 dégâts par attaque de feu successive dans le même combat), Balayage de griffes triple-cible (4D + projection 4m + À Terre), Charge tellurique (5 PA 10 cases sans pénalité + effondrement falaise 3D zone). 2) Le Minulican : Absorption Thermique (réaction 2 PA = convertit 50% des dégâts feu/plasma en PV), Éclairs de néant en chaîne (4 PA, 3 cibles 15 cases, 5D + Déstabilisé), Saut quantique déphasé (3 PA, téléport + revers +2 EC). 3) Disciple de Terre : Poing tectonique (3 PA, 7D pulvérise structures), Régénération lithosphérique (3 PV/tour contact pierre), Point faible Choc Thermique (alternance froid puis feu = fissuration cuirasse, perte armure 2 tours et dégâts doublés)."
+        },
+        {
+          "id": "RD-088",
+          "title": "Manœuvres Avancées des PNJ & Automates (Livre XI §44 & §47)",
+          "epic": "PNJ",
+          "status": "todo",
+          "priority": "medium",
+          "order": 38,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "TacticalAIController + BestiaryCatalog",
+          "details": "Intégration tactique des PNJ spécialisés Livre XI : 1) Bandit #3 : Tir préparé en interruption (réserve 4 PA au tour N pour tir réflexe dès sortie de couvert ou canalisation), Prise d'otage (6 PA, arme sur tempe de cible adjacente à terre/essoufflée). 2) Illumo : Combustion spontanée sans jet projectile (4 PA, 18m, 5 bruts + EnFeu), Foulée de cendres (2 PA, téléport 6 cases + Aveuglé). 3) Drones & Molosses : Morsure hydraulique du molosse (verrouillage mâchoire : Immobilisé + 2 dégâts auto/tour), Flash aveuglant et balise d'appel de renforts réseau du drone."
         }
       ]
     },
@@ -1403,6 +1508,21 @@
           "scale": null,
           "suggestedAsset": "GenerativeMusicEngine F11",
           "details": "Chansons préfaites gardées. Combat/Boss/Tension en composition live (jamais 2x pareil) : harmonie fonctionnelle, 5 styles batterie, lead call-response, strikes réactifs crit/kill/grenade, scheduler + crossfade 1.1s, preuve bus A/B dans le panneau F11."
+        },
+        {
+          "id": "RD-089",
+          "title": "Synchronisation VTT des Objets au Sol & Zones Persistantes",
+          "epic": "VTT",
+          "status": "todo",
+          "priority": "high",
+          "order": 8,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "VTTProtocol + VTTTableSync",
+          "details": "Extension du protocole réseau VTT pour la parité plateau complète : 1) Synchronisation des armes et objets au sol (DroppedWeaponPickup) via nouvelles opérations VTTProtocol (drop_weapon, pickup_weapon, kick_weapon) exécutées autoritairement par le GM et répliquées chez les clients. 2) Diffusion de la liste active des SmokeZone (nuages de gaz, feu au sol, fumigènes, durée restante en rounds) dans le paquet state_sync pour réconciliation immédiate des clients connectés ou reconnectés."
         }
       ]
     }

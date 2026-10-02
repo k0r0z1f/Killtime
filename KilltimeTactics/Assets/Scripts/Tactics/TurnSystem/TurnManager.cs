@@ -459,6 +459,8 @@ namespace Killtime.Tactics.TurnSystem
             if (unit.Stats != null) Killtime.Core.Combat.GrappleState.ReleaseGrapple(unit.Stats);
             // RD-038 : ... et ses états de charge et de sprint.
             if (unit.Stats != null) Killtime.Core.Combat.ChargeState.Cancel(unit.Stats);
+            // RD-049 : ... et son état de furtivité.
+            if (unit.Stats != null) Killtime.Core.Combat.StealthState.Cancel(unit.Stats);
 
             bool wasActive = (ActiveUnit == unit);
             int idx = _allUnits.IndexOf(unit);
@@ -516,6 +518,8 @@ namespace Killtime.Tactics.TurnSystem
             Killtime.Core.Combat.GrappleState.ClearAll();
             // RD-038 : purge des états de charge et de sprint.
             Killtime.Core.Combat.ChargeState.ClearAll();
+            // RD-049 : purge des états de furtivité au reset de combat.
+            Killtime.Core.Combat.StealthState.ClearAll();
             // Nouveau combat (ré)initialisé : aucun objet au sol (gourdin...) ne survit.
             try { DroppedWeaponPickup.ClearAllDropped(); } catch { }
         }

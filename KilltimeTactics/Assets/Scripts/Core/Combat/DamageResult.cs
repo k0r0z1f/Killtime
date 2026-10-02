@@ -48,6 +48,10 @@ namespace Killtime.Core.Combat
         // RD-047 : Test de moral / Déroute / Reddition (28% PV)
         public MoraleCheckResult MoraleResult;
 
+        // RD-081 : Table Universelle des Critiques d2-d24 (Livre II §8.2)
+        public bool HasCriticalConsequence;
+        public CriticalConsequence CriticalConsequence;
+
         public override string ToString() => CombatLog;
     }
 }

@@ -330,8 +330,7 @@ namespace Killtime.Core.Character
                 || effect == StatusEffect.Saignement
                 || effect == StatusEffect.Empoisonne
                 || effect == StatusEffect.EnFeu
-                || effect == StatusEffect.Asphyxie
-                || effect == StatusEffect.ChronoFracture;
+                || effect == StatusEffect.Asphyxie;
         }
 
         /// <summary>

@@ -451,7 +451,6 @@ namespace Killtime.Core.Combat
                 else if (t.Contains("empois")) acc |= StatusEffect.Empoisonne;
                 else if (t.Contains("feu") || t.Contains("brul")) acc |= StatusEffect.EnFeu;
                 else if (t.Contains("saign")) acc |= StatusEffect.Saignement;
-                else if (t.Contains("chrono")) acc |= StatusEffect.ChronoFracture;
             }
             return acc;
         }

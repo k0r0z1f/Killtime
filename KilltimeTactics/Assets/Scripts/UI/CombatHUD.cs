@@ -677,11 +677,17 @@ namespace Killtime.UI
 
             if (forcedCategory == LogCategory.All)
             {
-                if (message.Contains("attaque") || message.Contains("Touché") || message.Contains("DÉVIATION") || message.Contains("PARADE") || message.Contains("ESQUIVE"))
+                if (message.Contains("CRITIQUE") || message.Contains("CONSÉQUENCE CRITIQUE"))
+                {
+                    resolvedCategory = LogCategory.Combat;
+                    tag = tag ?? "[CRITIQUE]";
+                    tagCol = forcedColor ?? ColorAmber;
+                }
+                else if (message.Contains("attaque") || message.Contains("Touché") || message.Contains("DÉVIATION") || message.Contains("PARADE") || message.Contains("ESQUIVE"))
                 {
                     resolvedCategory = LogCategory.Combat;
                     tag = tag ?? (message.Contains("PARADE") || message.Contains("ESQUIVE") ? "[PARADE]" : "[BALISTIQUE]");
-                    tagCol = message.Contains("PARADE") ? ColorCyanAccent : ColorCrimson;
+                    tagCol = forcedColor ?? (message.Contains("PARADE") ? ColorCyanAccent : ColorCrimson);
                 }
                 else if (message.Contains("PA") || message.Contains("Points d'Action") || message.Contains("souffle"))
                 {

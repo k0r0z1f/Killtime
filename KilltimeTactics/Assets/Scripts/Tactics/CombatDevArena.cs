@@ -2446,6 +2446,46 @@ namespace Killtime.Tactics
             return true;
         }
 
+        /// <summary>
+        /// RD-049 Furtivité / Stealth : fait passer l'unité en furtivité (2 PA).
+        /// Considéré invisible dans le brouillard de guerre, confère +2 à la
+        /// prochaine attaque et interdit toute réaction adverse (embuscade).
+        /// </summary>
+        public bool TryEnterStealth(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (!unit.Stats.IsAlive)
+            {
+                message = $"{unit.Stats.Name} est hors de combat : furtivité impossible.";
+                Log(message);
+                return false;
+            }
+            if (StealthState.IsStealthed(unit.Stats))
+            {
+                message = $"{unit.Stats.Name} est déjà en furtivité.";
+                Log(message);
+                return false;
+            }
+            int cost = StealthState.EnterStealthAPCost;
+            if (!InfiniteAP && unit.Stats.CurrentActionPoints < cost)
+            {
+                message = $"⚠️ PA insuffisants : furtivité = {cost} PA (reste {unit.Stats.CurrentActionPoints}).";
+                Log(message);
+                return false;
+            }
+            if (!InfiniteAP) unit.Stats.ConsumeActionPoints(cost);
+
+            StealthState.SetStealth(unit.Stats, true);
+            var vis = unit.GetComponent<TacticalUnitVisual>();
+            vis?.SpawnFloatingText($"🥷 FURTIVITÉ (-{cost} PA)", new Color(0.2f, 0.95f, 0.75f));
+            message = $"🥷 <b>{unit.Stats.Name}</b> passe en <b>furtivité</b> (-{cost} PA) : invisible, +2 prochaine attaque, cible surprise.";
+            Log(message);
+            Killtime.Tactics.Visibility.FogOfWarManager.Instance?.RefreshFog("stealth");
+            RecordChronoSnapshot($"Furtivité : {unit.Stats.Name}");
+            return true;
+        }
+
         /// <summary>Diffuse l'état après une réaction (GM seul, comme le guet).</summary>
         private void BroadcastOpportunityState()
         {
@@ -2705,6 +2745,8 @@ namespace Killtime.Tactics
                 catch { /* fog optionnel */ }
             }
 
+            bool isAttackerStealthed = StealthState.IsStealthed(attacker.Stats);
+
             // Recalcul au moment du déclenchement : la distance a pu changer entre le clic
             // et l'impact (fin de déplacement, cinématique). Le visuel doit refléter la
             // position réelle, pas celle figée au clic.
@@ -2733,7 +2775,7 @@ namespace Killtime.Tactics
 
             Action triggerDefenseAction = () =>
             {
-                if (defender != null && defender.Stats != null && defender.Stats.CanDefendActively())
+                if (!isAttackerStealthed && defender != null && defender.Stats != null && defender.Stats.CanDefendActively())
                 {
                     defVisual?.TriggerBodyBlock();
                     if (KilltimeAudioManager.Instance != null)
@@ -2742,7 +2784,7 @@ namespace Killtime.Tactics
             };
 
             TacticalUnit aiInterceptionProtector = null;
-            if (!defender.IsPlayerControlled || (_aiController != null && _aiController.Mode == AI.CombatAIMode.FullAuto))
+            if (!isAttackerStealthed && (!defender.IsPlayerControlled || (_aiController != null && _aiController.Mode == AI.CombatAIMode.FullAuto)))
             {
                 var aiProtector = Killtime.Tactics.CombatUI.CombatTechniqueRegistry.FindBestAIProtector(defender);
                 if (aiProtector != null)
@@ -2756,8 +2798,9 @@ namespace Killtime.Tactics
                 }
             }
 
-            bool hasPlayerProtector = Killtime.Tactics.CombatUI.CombatTechniqueRegistry.HasPlayerControlledProtector(defender);
-            bool isInteractivePlayerDefense = (defender.IsPlayerControlled || hasPlayerProtector) 
+            bool hasPlayerProtector = !isAttackerStealthed && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.HasPlayerControlledProtector(defender);
+            bool isInteractivePlayerDefense = !isAttackerStealthed
+                && (defender.IsPlayerControlled || hasPlayerProtector) 
                 && (_aiController == null || _aiController.Mode != AI.CombatAIMode.FullAuto)
                 && defenderBonusAP < 0
                 && !TurnManager.IsMultiplayerPlayerClient();
@@ -2984,7 +3027,14 @@ namespace Killtime.Tactics
                 if (attVisual != null)
                 {
                     int totalCost = (cancelPenaltyWithAP ? 3 : 2) + attackerBonusAP;
-                    attVisual.SpawnFloatingText($"Attaque {targetedPart} (-{totalCost} PA)", new Color(0.3f, 0.8f, 1.0f));
+                    if (isAttackerStealthed)
+                    {
+                        attVisual.SpawnFloatingText($"🥷 EMBUSCADE (+2 Attaque)", new Color(0.2f, 0.95f, 0.75f));
+                    }
+                    else
+                    {
+                        attVisual.SpawnFloatingText($"Attaque {targetedPart} (-{totalCost} PA)", new Color(0.3f, 0.8f, 1.0f));
+                    }
                 }
 
                 // Textes flottants et retours visuels sur le défenseur à l'impact exact
@@ -2997,6 +3047,11 @@ namespace Killtime.Tactics
                         if (result.IsCritical)
                         {
                             defVisual.SpawnFloatingText("[CRITIQUE] COUP DÉCISIF !", new Color(1.0f, 0.85f, 0.1f));
+                        }
+
+                        if (isAttackerStealthed)
+                        {
+                            defVisual.SpawnFloatingText("SURPRIS ! (0 réaction)", Color.yellow);
                         }
 
                         if (result.WasDeflected)
@@ -3133,6 +3188,12 @@ namespace Killtime.Tactics
                 if (!defender.Stats.IsAlive || defender.Stats.IsSurrendered)
                 {
                     AutoTargetNextAlive();
+                }
+
+                // RD-049 : rupture de furtivité répercutée immédiatement sur le brouillard
+                if (isAttackerStealthed)
+                {
+                    Killtime.Tactics.Visibility.FogOfWarManager.Instance?.RefreshFog("stealth-broken");
                 }
 
                 // RD-030 : l'attaque en zone surveillée expose l'attaquant aux

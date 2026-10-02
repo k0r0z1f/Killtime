@@ -50,12 +50,89 @@ namespace Killtime.Tactics.Units
         [SerializeField] private string _modelPrefabName = "";
         [SerializeField] private TitanFootprintType _footprintType = TitanFootprintType.Single;
 
+        [Header("Équipement Optique & Éclairage (RD-053)")]
+        [SerializeField] private bool _hasFlashlight = false;
+        [SerializeField] private bool _flashlightActive = true;
+
         public CharacterStats Stats { get; private set; }
         public CharacterSheet Sheet { get; private set; }
         public HexCoordinates CurrentCoords { get; private set; }
         public TitanFootprintType FootprintType => _footprintType;
         public bool IsPlayerControlled => _isPlayerControlled;
         public bool IsMoving { get; private set; }
+        public bool IsStealthed => StealthState.IsStealthed(Stats);
+
+        public bool HasFlashlight
+        {
+            get => (_hasFlashlight || CheckInventoryFlashlight()) && _flashlightActive;
+            set
+            {
+                _hasFlashlight = value;
+                _flashlightActive = value;
+                Visibility.FogOfWarManager.Instance?.RefreshFog("flashlight");
+            }
+        }
+
+        public bool FlashlightActive
+        {
+            get => _flashlightActive;
+            set
+            {
+                _flashlightActive = value;
+                Visibility.FogOfWarManager.Instance?.RefreshFog("flashlight");
+            }
+        }
+
+        public bool HasThermalVision
+        {
+            get
+            {
+                if (Stats != null && Stats.HasSpecialization(Visibility.FogOfWarSystem.SpecThermal)) return true;
+                if (SmokeScreen.HasGoggles(Stats)) return true;
+                return CheckInventoryThermal();
+            }
+        }
+
+        private bool CheckInventoryFlashlight()
+        {
+            var inv = Sheet?.Inventory ?? Stats?.Sheet?.Inventory;
+            if (inv == null) return false;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                if (it.Name.IndexOf("Lampe", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    it.Name.IndexOf("Torche", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    it.Name.IndexOf("Flashlight", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private bool CheckInventoryThermal()
+        {
+            var inv = Sheet?.Inventory ?? Stats?.Sheet?.Inventory;
+            if (inv == null) return false;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                if (it.Name.IndexOf("Thermique", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    it.Name.IndexOf("Vision Nocturne", StringComparison.OrdinalIgnoreCase) >= 0 ||
+                    it.Name.IndexOf("Infrarouge", StringComparison.OrdinalIgnoreCase) >= 0)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        public void SetStealth(bool stealthed)
+        {
+            if (Stats != null) StealthState.SetStealth(Stats, stealthed);
+        }
 
         /// <summary>
         /// Verrou posé par le CinematicDirector pendant qu'il pilote l'unité (trajectoire

@@ -86,6 +86,33 @@ namespace Killtime.Tactics.Visibility
         [Tooltip("Portée personnalisée (cases). -1 = utilise le preset. Le MJ peut imposer la sienne à la table VTT.")]
         [SerializeField] private int _customSightRange = -1;
 
+        [Header("Éclairage & Nuit (RD-053)")]
+        [Tooltip("Ambiance nocturne active. Sans lampe ni thermique : malus de tir -1 et portée visuelle de base réduite.")]
+        [SerializeField] private bool _isNight = false;
+        [Tooltip("Portée de vue nocturne par défaut sans lampe (cases).")]
+        [SerializeField] private int _nightSightRange = 4;
+
+        public bool IsNight
+        {
+            get => _isNight;
+            set
+            {
+                if (_isNight == value) return;
+                _isNight = value;
+                RefreshFog("night");
+            }
+        }
+
+        public int NightSightRange
+        {
+            get => _nightSightRange;
+            set
+            {
+                _nightSightRange = Mathf.Clamp(value, 1, 32);
+                if (_isNight) RefreshFog("night-range");
+            }
+        }
+
         /// <summary>
         /// Portée effective (cases) : ordre MJ reçu en VTT > personnalisée > preset.
         /// Jamais issue des stats (Vision = jets de compétences).
@@ -257,7 +284,12 @@ namespace Killtime.Tactics.Visibility
             {
                 var sync = VTTTableSync.Instance;
                 var shooter = sync != null ? sync.FindUnit(p.actorId) : null;
-                if (shooter != null) ApplyNoiseReveal(shooter);
+                if (shooter != null)
+                {
+                    ApplyNoiseReveal(shooter);
+                    int currentRound = _turnManager != null ? _turnManager.CurrentRound : 1;
+                    Killtime.Tactics.AI.TacticalAIController.AlertSquadToNoise(shooter.CurrentCoords, currentRound, shooter.IsPlayerControlled);
+                }
             }
             RefreshFog("vtt-combat");
         }
@@ -286,13 +318,17 @@ namespace Killtime.Tactics.Visibility
         public void NotifyLoudShot(TacticalUnit shooter)
         {
             if (shooter == null) return;
+            StealthState.BreakStealth(shooter.Stats);
             ApplyNoiseReveal(shooter);
+            int currentRound = _turnManager != null ? _turnManager.CurrentRound : 1;
+            Killtime.Tactics.AI.TacticalAIController.AlertSquadToNoise(shooter.CurrentCoords, currentRound, shooter.IsPlayerControlled);
             RefreshFog("noise");
         }
 
         private void ApplyNoiseReveal(TacticalUnit shooter)
         {
             if (shooter?.Stats == null) return;
+            StealthState.BreakStealth(shooter.Stats);
             int round = _turnManager != null ? _turnManager.CurrentRound : 1;
             string id = shooter.gameObject.name;
             if (!_detections.TryGetValue(id, out var entry))
@@ -353,6 +389,7 @@ namespace Killtime.Tactics.Visibility
                 entry.LastKnownCoords = target.CurrentCoords;
                 entry.EverDetected = true;
                 entry.ManualRevealUntilRound = round + FogOfWarSystem.NoiseRevealExtraRounds;
+                StealthState.BreakStealth(target.Stats);
                 log += $"\n👁️ <b>{target.Stats.Name} REPÉRÉ</b> (révélé jusqu'à la fin du round {entry.ManualRevealUntilRound}).";
             }
             else
@@ -467,7 +504,7 @@ namespace Killtime.Tactics.Visibility
             foreach (var obs in observers)
             {
                 if (obs == null || obs.Stats == null) continue;
-                var p = FogOfWarSystem.ResolveObserverParams(obs.Stats, CurrentSightRange);
+                var p = FogOfWarSystem.ResolveObserverParams(obs.Stats, CurrentSightRange, _isNight);
                 if (FogOfWarSystem.IsCellVisible(
                     obs.CurrentCoords, FacingYawDeg(obs), target.CurrentCoords,
                     c => _grid.GetNode(c), p, _grid.HexRadius))
@@ -479,25 +516,95 @@ namespace Killtime.Tactics.Visibility
         /// <summary>
         /// Vrai si l'ennemi doit être affiché (champ 360° actuel OU révélation
         /// persistante bruit/observation non expirée avec LOS bruit : pas de mur Full).
+        /// En furtivité (StealthState), l'ennemi est invisible à 360° sauf contact direct
+        /// (dist &lt;= 1), détection thermique ou révélation persistante (Observation/bruit).
         /// </summary>
         public bool IsEnemyVisible(TacticalUnit enemy, List<TacticalUnit> observers = null)
         {
             if (enemy == null) return false;
             if (LocalSeesAll()) return true;
             if (enemy.Stats == null || !enemy.Stats.IsAlive) return true; // cadavres visibles.
+
+            observers ??= GetLocalObservers();
+
+            // RD-053 : Nuit — un ennemi avec une lampe allumée brise la furtivité et est repérable
+            if (_isNight && enemy.HasFlashlight)
+            {
+                StealthState.BreakStealth(enemy.Stats);
+                for (int i = 0; i < observers.Count; i++)
+                {
+                    var obs = observers[i];
+                    if (obs == null || obs.Stats == null) continue;
+                    if (FogOfWarSystem.HasFogLineOfSight(obs.CurrentCoords, enemy.CurrentCoords, c => _grid.GetNode(c), _grid.HexRadius, ignoreWalls: false))
+                    {
+                        return true;
+                    }
+                }
+            }
+
+            bool isStealthed = StealthState.IsStealthed(enemy.Stats);
+
+            if (isStealthed)
+            {
+                string id = enemy.gameObject.name;
+                int round = _turnManager != null ? _turnManager.CurrentRound : 1;
+                if (_detections.TryGetValue(id, out var entry))
+                {
+                    bool persisted = entry.NoiseRevealUntilRound >= round
+                        || entry.ManualRevealUntilRound >= round;
+                    if (persisted && IsNoiseAudible(enemy, observers))
+                    {
+                        StealthState.BreakStealth(enemy.Stats);
+                        return true;
+                    }
+                }
+
+                if (IsStealthedEnemyDetectedBySensors(enemy, observers))
+                {
+                    StealthState.BreakStealth(enemy.Stats);
+                    return true;
+                }
+
+                return false;
+            }
+
             if (IsEnemyInAnySight(enemy, observers)) return true;
 
-            string id = enemy.gameObject.name;
-            int round = _turnManager != null ? _turnManager.CurrentRound : 1;
-            if (_detections.TryGetValue(id, out var entry))
+            string idLegacy = enemy.gameObject.name;
+            int roundLegacy = _turnManager != null ? _turnManager.CurrentRound : 1;
+            if (_detections.TryGetValue(idLegacy, out var entryLegacy))
             {
-                bool persisted = entry.NoiseRevealUntilRound >= round
-                    || entry.ManualRevealUntilRound >= round;
+                bool persisted = entryLegacy.NoiseRevealUntilRound >= roundLegacy
+                    || entryLegacy.ManualRevealUntilRound >= roundLegacy;
                 if (persisted)
                 {
                     // La persistance ne traverse jamais un mur Full : on vérifie
                     // qu'au moins un observateur a une ligne bruit (portée Ouïe).
                     if (IsNoiseAudible(enemy, observers)) return true;
+                }
+            }
+            return false;
+        }
+
+        private bool IsStealthedEnemyDetectedBySensors(TacticalUnit enemy, List<TacticalUnit> observers)
+        {
+            if (_grid == null || enemy == null || observers == null) return false;
+            for (int i = 0; i < observers.Count; i++)
+            {
+                var obs = observers[i];
+                if (obs == null || obs.Stats == null || !obs.Stats.IsAlive) continue;
+                int dist = obs.CurrentCoords.DistanceTo(enemy.CurrentCoords);
+                if (dist <= 1)
+                {
+                    if (FogOfWarSystem.HasFogLineOfSight(obs.CurrentCoords, enemy.CurrentCoords, c => _grid.GetNode(c), _grid.HexRadius, ignoreWalls: false))
+                        return true;
+                }
+                var p = FogOfWarSystem.ResolveObserverParams(obs.Stats, CurrentSightRange, _isNight);
+                if (p.Thermal)
+                {
+                    int thermalRange = Mathf.Max(1, (p.Range + 1) / 2);
+                    if (dist <= thermalRange && FogOfWarSystem.HasFogLineOfSight(obs.CurrentCoords, enemy.CurrentCoords, c => _grid.GetNode(c), _grid.HexRadius, ignoreWalls: true))
+                        return true;
                 }
             }
             return false;
@@ -560,7 +667,7 @@ namespace Killtime.Tactics.Visibility
             {
                 var o = observers[i];
                 if (o == null || o.Stats == null) continue;
-                specs.Add((o.CurrentCoords, FacingYawDeg(o), FogOfWarSystem.ResolveObserverParams(o.Stats, CurrentSightRange)));
+                specs.Add((o.CurrentCoords, FacingYawDeg(o), FogOfWarSystem.ResolveObserverParams(o.Stats, CurrentSightRange, _isNight)));
             }
             // Phase de déploiement (aucun observateur vivant) : pas de masque,
             // sinon la carte serait noire avant même le placement des unités.

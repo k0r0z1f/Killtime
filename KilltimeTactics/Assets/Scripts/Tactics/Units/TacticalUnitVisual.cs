@@ -1676,7 +1676,13 @@ namespace Killtime.Tactics.Units
             disk.transform.SetParent(_modelRoot, false);
             disk.transform.localPosition = new Vector3(0, 0.02f, 0);
 
-            float ringFactor = _unit != null && _unit.FootprintType == Killtime.Tactics.Grid.TitanFootprintType.Rosette7 ? 2.85f : 0.95f;
+            float ringFactor = 0.95f;
+            if (_unit != null)
+            {
+                if (_unit.FootprintType == Killtime.Tactics.Grid.TitanFootprintType.Rosette7) ringFactor = 2.85f;
+                else if (_unit.FootprintType == Killtime.Tactics.Grid.TitanFootprintType.Colossus19) ringFactor = 4.85f;
+                else if (_unit.FootprintType == Killtime.Tactics.Grid.TitanFootprintType.Triangle3) ringFactor = 1.90f;
+            }
             disk.transform.localScale = new Vector3(ringFactor, 0.02f, ringFactor) * _unitScale;
 
             var diskCol = disk.GetComponent<Collider>();
@@ -2539,14 +2545,6 @@ namespace Killtime.Tactics.Units
                     bool smallD = (dDrop2 <= 0.10f) || (v >= -0.24f && v <= -0.08f && Mathf.Abs(u - 0.20f) <= (-0.08f - v) * 0.5f);
                     return (mainD || smallD) ? 1f : 0f;
 
-                case StatusEffect.ChronoFracture:
-                    float dDial = Mathf.Sqrt(u * u + v * v);
-                    bool dial = dDial <= 0.36f && !(dDial <= 0.26f);
-                    bool handH = Mathf.Abs(v) <= 0.035f && u >= 0f && u <= 0.24f;
-                    bool handV = Mathf.Abs(u) <= 0.035f && v >= 0f && v <= 0.26f;
-                    bool fracture = Mathf.Abs(u - v * 0.5f) <= 0.04f && u >= 0.10f;
-                    return (dial || handH || handV || fracture) ? 1f : 0f;
-
                 default:
                     return (Mathf.Abs(u) + Mathf.Abs(v) <= 0.35f) ? 1f : 0f;
             }
@@ -2571,7 +2569,6 @@ namespace Killtime.Tactics.Units
                 StatusEffect.Empoisonne => new StatusVisualInfo { Status = status, Tag = "TOX", Name = "EMPOISONNÉ", Description = "Dégâts toxiques récurrents par tour", PrimaryColor = new Color(0.35f, 0.95f, 0.25f) },
                 StatusEffect.EnFeu => new StatusVisualInfo { Status = status, Tag = "BRN", Name = "EN FEU", Description = "Dégâts thermiques continus", PrimaryColor = new Color(1f, 0.35f, 0.1f) },
                 StatusEffect.Saignement => new StatusVisualInfo { Status = status, Tag = "BLD", Name = "SAIGNEMENT", Description = "Hémorragie active, perte continue de PV", PrimaryColor = new Color(1f, 0.2f, 0.25f) },
-                StatusEffect.ChronoFracture => new StatusVisualInfo { Status = status, Tag = "CHR", Name = "CHRONO-FRACTURE", Description = "Déphasage causal du Fleuve du Temps", PrimaryColor = new Color(0f, 0.95f, 1f) },
                 _ => new StatusVisualInfo { Status = status, Tag = "ALT", Name = "ALTÉRATION", Description = "Statut actif", PrimaryColor = Color.yellow }
             };
         }

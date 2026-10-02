@@ -36,7 +36,8 @@ namespace Killtime.Tactics.AI
         FlankAndSuppress, // Manœuvre de contournement de couvert avant tir
         SupportAndHeal,   // Assistance d'urgence à un allié au contact
         HitAndRun,        // Frappe puis décrochage vers un couvert
-        TacticalRetreat   // Danger mortel : repli vers couvert maximal et rupture de vue
+        TacticalRetreat,  // Danger mortel : repli vers couvert maximal et rupture de vue
+        AlertedPatrol     // RD-053 : Patrouille alertée (suspicion bruit/lampe, convergence vers la source)
     }
 
     /// <summary>
@@ -250,6 +251,16 @@ namespace Killtime.Tactics.AI
 
         private static TacticalUnit _squadMarkedEnemyOfPlayers;
         private static TacticalUnit _squadMarkedEnemyOfAI;
+        private static HexCoordinates? _squadLastHeardNoiseCoords;
+        private static int _squadNoiseAlertRound = -1;
+        private static bool _squadNoiseFromPlayer = true;
+
+        public static void AlertSquadToNoise(HexCoordinates coords, int currentRound, bool isPlayerShooter)
+        {
+            _squadLastHeardNoiseCoords = coords;
+            _squadNoiseAlertRound = currentRound;
+            _squadNoiseFromPlayer = isPlayerShooter;
+        }
 
         private void Awake()
         {
@@ -345,6 +356,8 @@ namespace Killtime.Tactics.AI
             StopAITurn();
             _squadMarkedEnemyOfPlayers = null;
             _squadMarkedEnemyOfAI = null;
+            _squadLastHeardNoiseCoords = null;
+            _squadNoiseAlertRound = -1;
         }
 
         private void EnsureDependencies()
@@ -458,7 +471,17 @@ namespace Killtime.Tactics.AI
                 }
 
                 var target = EvaluateBestTarget(unit);
-                if (target == null) break;
+                if (target == null)
+                {
+                    // RD-053 : Patrouille alertée — bruit / lampe attire l'IA vers la dernière position suspecte
+                    if (HasAlertedPatrolTarget(unit, out HexCoordinates suspiciousTarget, out string patrolReason))
+                    {
+                        yield return StartCoroutine(ExecuteAlertedPatrol(unit, suspiciousTarget, patrolReason, visual));
+                        yield return new WaitForSeconds(_actionDelay);
+                        continue;
+                    }
+                    break;
+                }
 
                 int dist = TitanFootprint.MinDistanceBetweenUnits(unit.CurrentCoords, unit.FootprintType, target.CurrentCoords, target.FootprintType);
                 var posture = EvaluateTacticalPosture(unit, target, dist);
@@ -705,6 +728,7 @@ namespace Killtime.Tactics.AI
         {
             if (posture == TacticalPosture.AllInLethal) return 0;
             if (_defaultPersonality == AIPersonality.Aggressive) return 0;
+            if (posture == TacticalPosture.AlertedPatrol) return 1;
             return Mathf.Clamp(_baseDefensiveAPReserve, 0, 1);
         }
 
@@ -1095,6 +1119,133 @@ namespace Killtime.Tactics.AI
             return bestHex;
         }
 
+        // =========================================================================
+        // RD-053 : PATROUILLE ALERTÉE & CONVERGENCE VERS LE BRUIT / LUMIÈRE
+        // =========================================================================
+        private bool HasAlertedPatrolTarget(TacticalUnit actor, out HexCoordinates suspiciousTarget, out string patrolReason)
+        {
+            suspiciousTarget = default;
+            patrolReason = "Bruit suspect";
+
+            if (actor?.Stats == null || !actor.Stats.IsAlive || actor.Stats.CurrentActionPoints <= 0) return false;
+            if (_grid == null || _pathfinder == null) return false;
+
+            int currentRound = _turnManager != null ? _turnManager.CurrentRound : 1;
+            bool isNoiseHostile = actor.IsPlayerControlled ? !_squadNoiseFromPlayer : _squadNoiseFromPlayer;
+
+            if (_squadLastHeardNoiseCoords.HasValue && isNoiseHostile && (_squadNoiseAlertRound >= currentRound - 1))
+            {
+                int noiseDist = actor.CurrentCoords.DistanceTo(_squadLastHeardNoiseCoords.Value);
+                if (noiseDist > 1)
+                {
+                    suspiciousTarget = _squadLastHeardNoiseCoords.Value;
+                    patrolReason = "Tir bruyant entendu";
+                    return true;
+                }
+                else
+                {
+                    _squadLastHeardNoiseCoords = null;
+                }
+            }
+
+            var fog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+            if (fog != null)
+            {
+                for (int i = 0; i < _cachedUnits.Count; i++)
+                {
+                    var enemy = _cachedUnits[i];
+                    if (enemy == null || enemy == actor || enemy.Stats == null || !enemy.Stats.IsAlive) continue;
+                    bool hostile = actor.IsPlayerControlled ? !enemy.IsPlayerControlled : enemy.IsPlayerControlled;
+                    if (_mode == CombatAIMode.FullAuto && enemy.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
+                    if (!hostile) continue;
+
+                    int d = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords);
+                    if (d <= 1) continue;
+
+                    if (fog.IsNoiseActive(enemy.gameObject.name))
+                    {
+                        var lastPos = fog.GetLastKnownPosition(enemy.gameObject.name);
+                        suspiciousTarget = lastPos ?? enemy.CurrentCoords;
+                        patrolReason = "Tir bruyant localisé";
+                        return true;
+                    }
+
+                    if (fog.IsNight && enemy.HasFlashlight)
+                    {
+                        suspiciousTarget = enemy.CurrentCoords;
+                        patrolReason = "Faisceau lumineux repéré";
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private IEnumerator ExecuteAlertedPatrol(TacticalUnit actor, HexCoordinates targetCoords, string reason, TacticalUnitVisual visual)
+        {
+            int reserve = GetRequiredDefensiveReserve(actor, TacticalPosture.AlertedPatrol);
+            int moveBudget = Mathf.Max(1, actor.Stats.CurrentActionPoints - reserve);
+
+            var path = FindPathTowardsCoords(actor.CurrentCoords, targetCoords, moveBudget, out int rawCost);
+            if (path != null && path.Count > 1)
+            {
+                int apCost = actor.ComputeMovementAPCost(rawCost);
+                visual?.SpawnFloatingText($"🚨 [PATROUILLE] {reason} (-{apCost} PA)", new Color(1f, 0.55f, 0.1f));
+                _arena?.Log($"🚨 <b>{actor.Stats.Name}</b> passe en <b>Patrouille Alertée</b> ({reason}) ➔ convergence vers {targetCoords}.");
+                yield return StartCoroutine(actor.MoveAlongPath(path, _grid, apCost));
+            }
+        }
+
+        private List<HexCoordinates> FindPathTowardsCoords(HexCoordinates start, HexCoordinates destination, int apBudget, out int totalRawCost)
+        {
+            totalRawCost = 0;
+            if (_pathfinder == null || _grid == null || apBudget <= 0) return null;
+
+            HexCoordinates targetNodeCoords = destination;
+            var destNode = _grid.GetNode(destination);
+            if (destNode == null || !destNode.IsWalkable || destNode.IsOccupied)
+            {
+                int minDistance = int.MaxValue;
+                for (int dir = 0; dir < 6; dir++)
+                {
+                    var n = destination.GetNeighbor(dir);
+                    var nNode = _grid.GetNode(n);
+                    if (nNode != null && nNode.IsWalkable && !nNode.IsOccupied)
+                    {
+                        int d = start.DistanceTo(n);
+                        if (d < minDistance)
+                        {
+                            minDistance = d;
+                            targetNodeCoords = n;
+                        }
+                    }
+                }
+            }
+
+            var fullPath = _pathfinder.FindPath(start, targetNodeCoords, 50, out _);
+            if (fullPath == null || fullPath.Count <= 1) return null;
+
+            var truncatedPath = new List<HexCoordinates> { fullPath[0] };
+            int accumulatedCost = 0;
+
+            for (int i = 1; i < fullPath.Count; i++)
+            {
+                var step = fullPath[i];
+                var stepNode = _grid.GetNode(step);
+                int stepCost = stepNode != null ? stepNode.ActionPointCost : 1;
+
+                if (accumulatedCost + stepCost > apBudget) break;
+                if (stepNode != null && (stepNode.IsOccupied || !stepNode.IsWalkable)) break;
+
+                accumulatedCost += stepCost;
+                truncatedPath.Add(step);
+            }
+
+            totalRawCost = accumulatedCost;
+            return truncatedPath.Count > 1 ? truncatedPath : null;
+        }
+
         private IEnumerator ExecuteCoveredRetreat(TacticalUnit actor, TacticalUnit threat)
         {
             if (CanTakeBreathSafely(actor) && actor.Stats.CurrentActionPoints < 3)
@@ -1417,6 +1568,13 @@ namespace Killtime.Tactics.AI
             CoverType targetCover = isRanged ? GetCoverLevel(actor.CurrentCoords, target.CurrentCoords, TitanFootprintType.Single, TitanFootprintType.Single, actor) : CoverType.None;
             int coverPen = CoverSystem.AttackPenalty(targetCover);
 
+            int nightPen = 0;
+            var fowManager = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+            if (isRanged && fowManager != null && fowManager.IsNight && !CombatCalculator.HasLampOrThermal(actor.Stats))
+            {
+                nightPen = -1;
+            }
+
             int weaponDmg = 5;
             var equippedWeapon = actor.Sheet?.GetEquippedWeapon();
             if (equippedWeapon != null && equippedWeapon.BaseDamage > 0) weaponDmg = equippedWeapon.BaseDamage + (equippedWeapon.LoadedHD ? 1 : 0);
@@ -1429,7 +1587,7 @@ namespace Killtime.Tactics.AI
             int reserveNeeded = GetRequiredDefensiveReserve(actor, posture);
             int spendablePE = actor.Stats.GetSpendablePE();
 
-            double baseAttExpected = CombatCalculator.DieAverage(attackDie) + attStatusMod + coverPen;
+            double baseAttExpected = CombatCalculator.DieAverage(attackDie) + attStatusMod + coverPen + nightPen;
             double baseDefExpected = target.Stats.CanDefendActively()
                 ? CombatCalculator.DieAverage(defenseDie) + defStatusMod
                 : 0.0;
@@ -1629,6 +1787,8 @@ namespace Killtime.Tactics.AI
                         if (_mode == CombatAIMode.FullAuto && enemy.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
                         if (!hostile) continue;
 
+                        int dThrow = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords);
+
                         // Brouillard symétrique (§25.4) : pas de grenade sur un ennemi
                         // invisible à 360° (sauf révélé au bruit / Observation).
                         if (_grid != null && actor.Stats != null && enemy.Stats != null)
@@ -1641,7 +1801,8 @@ namespace Killtime.Tactics.AI
                             bool gseen = Killtime.Tactics.Visibility.FogOfWarSystem.IsCellVisible(
                                 actor.CurrentCoords, gyaw, enemy.CurrentCoords,
                                 c => _grid.GetNode(c), gvp, _grid.HexRadius);
-                            if (!gseen)
+                            bool gestealthed = Killtime.Core.Combat.StealthState.IsStealthed(enemy.Stats);
+                            if (!gseen || (gestealthed && dThrow > 1 && !gvp.Thermal))
                             {
                                 bool grevealed = gfog != null
                                     && (gfog.IsNoiseActive(enemy.gameObject.name)
@@ -1649,8 +1810,6 @@ namespace Killtime.Tactics.AI
                                 if (!grevealed) continue;
                             }
                         }
-
-                        int dThrow = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords);
                         if (dThrow > maxRange) continue;
                         if (actor.CurrentCoords.DistanceTo(enemy.CurrentCoords) <= Mathf.Max(0, g.BlastRadius)) continue;
 
@@ -1925,14 +2084,24 @@ namespace Killtime.Tactics.AI
                 if (_grid != null && actor.Stats != null && potential.Stats != null)
                 {
                     var fog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+                    bool isNight = fog != null && fog.IsNight;
                     int range = fog != null ? fog.CurrentSightRange
                         : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange;
-                    var vp = Killtime.Tactics.Visibility.FogOfWarSystem.ResolveObserverParams(actor.Stats, range);
+                    var vp = Killtime.Tactics.Visibility.FogOfWarSystem.ResolveObserverParams(actor.Stats, range, isNight);
                     float actorYaw = Killtime.Tactics.Visibility.FogOfWarManager.FacingYawDeg(actor);
                     bool seen = Killtime.Tactics.Visibility.FogOfWarSystem.IsCellVisible(
                         actor.CurrentCoords, actorYaw, potential.CurrentCoords,
                         c => _grid.GetNode(c), vp, _grid.HexRadius);
-                    if (!seen)
+
+                    // RD-053 : Lampe dans la nuit — la lumière trahit la position même au-delà de la portée nocturne
+                    if (!seen && isNight && potential.HasFlashlight && HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords))
+                    {
+                        seen = true;
+                    }
+
+                    bool stealthed = Killtime.Core.Combat.StealthState.IsStealthed(potential.Stats);
+                    int targetDist = actor.CurrentCoords.DistanceTo(potential.CurrentCoords);
+                    if (!seen || (stealthed && targetDist > 1 && !vp.Thermal))
                     {
                         bool revealed = fog != null
                             && (fog.IsNoiseActive(potential.gameObject.name)
@@ -1985,6 +2154,14 @@ namespace Killtime.Tactics.AI
                 if (squadTarget != null && squadTarget == potential)
                 {
                     score += 45f;
+                }
+
+                // RD-053 : Nuit / Lampe / Bruit attire l'IA
+                var fogInstance = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+                if (fogInstance != null)
+                {
+                    if (fogInstance.IsNight && potential.HasFlashlight) score += 25f;
+                    if (fogInstance.IsNoiseActive(potential.gameObject.name)) score += 20f;
                 }
 
                 // Exploitation des brèches défensives créées par les alliés
