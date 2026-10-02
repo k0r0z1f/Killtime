@@ -52,6 +52,11 @@ namespace Killtime.Core.Combat
         public bool HasCriticalConsequence;
         public CriticalConsequence CriticalConsequence;
 
+        // RD-082 : Déviation Anatomique Conforme (Livre VI §26.1) & Effets sur Marge Élevée (Livre VII §28.4)
+        public int DeflectionRoll;
+        public string DeflectionMedicalConsequence;
+        public bool WasDisintegrated;
+
         public override string ToString() => CombatLog;
     }
 }

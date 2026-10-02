@@ -1488,7 +1488,13 @@ namespace Killtime.Core.Combat
             }
 
             bool wasDeflected = effectiveDefenderWantsToDefend && (differential == 0);
-            BodyPart actualHitPart = wasDeflected ? GetAdjacentBodyPart(targetedPart) : targetedPart;
+            int deflectionRoll = 0;
+            string deflectionMedical = null;
+            BodyPart actualHitPart = targetedPart;
+            if (wasDeflected)
+            {
+                actualHitPart = ResolveAnatomicalDeflection(targetedPart, out deflectionRoll, out deflectionMedical);
+            }
             var actualInfo = BodyPartInfo.GetInfo(actualHitPart);
 
             int rawDamage = duel.WeaponBaseDamage;
@@ -1723,6 +1729,8 @@ namespace Killtime.Core.Combat
             }
 
             FatalBlowResolution fatalRes = FatalBlowResolution.None;
+            bool wasDisintegrated = false;
+
             if (defender.CurrentHealth - finalDamage <= 0)
             {
                 fatalRes = defender.EvaluateFatalBlow(actualHitPart, finalDamage);
@@ -1739,9 +1747,68 @@ namespace Killtime.Core.Combat
                 defender.CurrentHealth = 0;
             }
 
+            // =====================================================================
+            // RD-082 (Livre VII §28.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
+            // =====================================================================
+            bool bleedApplied = false;
+            int bleedDoT = 0;
+            bool fireApplied = false;
+            int fireTurns = 0;
+            bool stunApplied = false;
+
+            if (!isThomasSymbioticImmune && differential > 0)
+            {
+                // 4) Désintégrer sur Diff >= 20 et Spé Destruction 6 (pulvérisation totale prioritaire)
+                if (differential >= 20 && HasDestructionTier6(attacker))
+                {
+                    defender.CurrentHealth = 0;
+                    defender.IsDead = true;
+                    defender.ActiveStatus |= StatusEffect.Inconscient;
+                    fatalRes = FatalBlowResolution.InstantDeath;
+                    wasDisintegrated = true;
+                }
+                else if (!defender.IsDead)
+                {
+                    var equippedWep = attacker.Sheet?.GetEquippedWeapon();
+
+                    // 1) Saigner sur Diff >= 5 avec arme tranchante / perçante (DoT résiduel = rang d'entraînement)
+                    if (differential >= 5 && IsSlashingOrPiercingAttack(duel.AttackSkill, equippedWep, attacker))
+                    {
+                        int trainingRank = attacker.Sheet != null ? attacker.Sheet.GetSkill(duel.AttackSkill).TrainingLevel : 0;
+                        bleedDoT = Math.Max(1, trainingRank);
+                        defender.ApplyResidualDamage(StatusEffect.Saignement, bleedDoT);
+                        inflictedStatus |= StatusEffect.Saignement;
+                        bleedApplied = true;
+                    }
+
+                    // 2) Brûler sur Diff >= 5 avec feu / plasma (EnFeu 1-3 tours)
+                    if (differential >= 5 && IsFireOrPlasmaAttack(duel.AttackSkill, equippedWep, attacker))
+                    {
+                        fireTurns = Math.Clamp(1 + (differential - 5) / 3, 1, 3);
+                        defender.ApplyStatus(StatusEffect.EnFeu, fireTurns, residualDamage: 2 * fireTurns);
+                        inflictedStatus |= StatusEffect.EnFeu;
+                        fireApplied = true;
+                    }
+
+                    // 3) Assommer sur Diff >= 10 et visée crânienne (Inconscient 1 tour direct)
+                    bool isCranialTarget = (targetedPart == BodyPart.Tete || targetedPart == BodyPart.YeuxVisage
+                        || actualHitPart == BodyPart.Tete || actualHitPart == BodyPart.YeuxVisage);
+                    if (differential >= 10 && isCranialTarget)
+                    {
+                        defender.ApplyStatus(StatusEffect.Inconscient, 1);
+                        inflictedStatus |= StatusEffect.Inconscient;
+                        if (fatalRes == FatalBlowResolution.None)
+                        {
+                            fatalRes = FatalBlowResolution.ForcedUnconscious;
+                        }
+                        stunApplied = true;
+                    }
+                }
+            }
+
             // RD-047 : Test de moral au seuil critique de 28% PV
             MoraleCheckResult moraleRes = default;
-            if (defender.IsAlive && !defender.HasTestedMorale && defender.CurrentHealth > 0)
+            if (!wasDisintegrated && defender.IsAlive && !defender.HasTestedMorale && defender.CurrentHealth > 0)
             {
                 moraleRes = defender.CheckMoraleAtThreshold(_diceRoller, cfg.StandardTargetDC);
             }
@@ -1755,7 +1822,7 @@ namespace Killtime.Core.Combat
                         : (attackRoll.IsCriticalSuccess ? "💥 <b>COUP CRITIQUE CHIRURGICAL</b>" : "🎯 <b>TOUCHÉ CHIRURGICAL</b>")));
 
             string hitPartStr = wasDeflected
-                ? $"Visait <b>{targetInfo.DisplayName}</b> ➔ Dévie sur <b>{actualInfo.DisplayName}</b> (Diff 0)"
+                ? $"Visait <b>{targetInfo.DisplayName}</b> ➔ Dévie au d6 [Tirage {deflectionRoll} : {deflectionMedical}] sur <b>{actualInfo.DisplayName}</b> (Diff 0)"
                 : $"Frappe sur <b>{actualInfo.DisplayName}</b>";
 
             string log = $"{headerTag} : {attacker.Name} ➔ {defender.Name} ({hitPartStr})\n";
@@ -1786,7 +1853,26 @@ namespace Killtime.Core.Combat
                 log += " | 🛡️ <b>ANCRE SYMBIOTIQUE</b> (0 dégât : neutralité de fréquence face aux alliés)";
             }
 
-            if (fatalRes == FatalBlowResolution.InstantDeath)
+            if (bleedApplied)
+            {
+                log += $" | 🩸 <b>HÉMORRAGIE (Livre VII §28.4)</b> : Saignement (DoT résiduel {bleedDoT})";
+            }
+
+            if (fireApplied)
+            {
+                log += $" | 🔥 <b>COMBUSTION (Livre VII §28.4)</b> : En Feu pendant {fireTurns} tour(s)";
+            }
+
+            if (stunApplied)
+            {
+                log += " | 😵 <b>ASSOMMEMENT NET (Livre VII §28.4)</b> : Inconscient 1 tour direct";
+            }
+
+            if (wasDisintegrated)
+            {
+                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VII §28.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
+            }
+            else if (fatalRes == FatalBlowResolution.InstantDeath)
             {
                 log += " | 💀 <b>MORT INSTANTANÉE (Tête détruite)</b>";
             }
@@ -1830,6 +1916,9 @@ namespace Killtime.Core.Combat
                 TargetPart = targetedPart,
                 ActualHitPart = actualHitPart,
                 WasDeflected = wasDeflected,
+                DeflectionRoll = deflectionRoll,
+                DeflectionMedicalConsequence = deflectionMedical,
+                WasDisintegrated = wasDisintegrated,
                 Differential = differential,
                 RawDamage = rawDamage,
                 ArmorAbsorbed = absorbed,
@@ -2005,18 +2094,177 @@ namespace Killtime.Core.Combat
             return calc.ResolveAreaFire(attacker, attackerPos, targetPos, profile, combatantsOnField, attackerBonusAP, attackerPE, fieldCover);
         }
 
+        /// <summary>
+        /// Rétro-compatibilité : redirige vers la table d6 exacte du Livre VI §26.1.
+        /// </summary>
         private BodyPart GetAdjacentBodyPart(BodyPart targeted)
         {
-            return targeted switch
+            return ResolveAnatomicalDeflection(targeted, out _, out _);
+        }
+
+        public static bool IsUpperBodyPart(BodyPart part)
+        {
+            return part == BodyPart.Tete
+                || part == BodyPart.YeuxVisage
+                || part == BodyPart.CouTrachee
+                || part == BodyPart.CoeurPoumons
+                || part == BodyPart.Torse;
+        }
+
+        /// <summary>
+        /// Table de déviation d4/d6 chirurgicale officielle (Livre VI §26.1).
+        /// </summary>
+        public BodyPart ResolveAnatomicalDeflection(BodyPart targeted, out int rollDie, out string medicalConsequence)
+        {
+            rollDie = _diceRoller != null ? _diceRoller.Roll(DiceType.D6, 0, 0).RawRoll : _random.Next(1, 7);
+            if (rollDie < 1 || rollDie > 6) rollDie = _random.Next(1, 7);
+
+            bool isUpper = IsUpperBodyPart(targeted);
+
+            if (isUpper)
             {
-                BodyPart.Tete or BodyPart.YeuxVisage => _random.Next(0, 2) == 0 ? BodyPart.CouTrachee : BodyPart.Torse,
-                BodyPart.CouTrachee => _random.Next(0, 2) == 0 ? BodyPart.BrasDroit : BodyPart.Torse,
-                BodyPart.CoeurPoumons => BodyPart.Torse,
-                BodyPart.Torse => _random.Next(0, 2) == 0 ? BodyPart.BrasGauche : BodyPart.Jambes,
-                BodyPart.BrasDroit or BodyPart.BrasGauche => BodyPart.Torse,
-                BodyPart.Jambes => BodyPart.Torse,
-                _ => BodyPart.Torse
-            };
+                switch (rollDie)
+                {
+                    case 1:
+                        medicalConsequence = "Cécité partielle, hémorragie faciale, désorientation";
+                        return BodyPart.YeuxVisage;
+                    case 2:
+                        medicalConsequence = "Risque d'asphyxie, perte d'essoufflement immédiate";
+                        return BodyPart.CouTrachee;
+                    case 3:
+                        medicalConsequence = "Commotion, épreuve de Constitution pour rester conscient";
+                        return BodyPart.Tete;
+                    case 4:
+                        medicalConsequence = "Dégâts massifs, perforation, incapacité respiratoire";
+                        return BodyPart.CoeurPoumons;
+                    case 5:
+                    case 6:
+                    default:
+                        medicalConsequence = "Encaissement standard";
+                        return BodyPart.Torse;
+                }
+            }
+            else
+            {
+                switch (rollDie)
+                {
+                    case 1:
+                        medicalConsequence = "Impact claviculaire / épaule, désorientation";
+                        return targeted == BodyPart.BrasGauche ? BodyPart.BrasGauche : (targeted == BodyPart.BrasDroit ? BodyPart.BrasDroit : BodyPart.Torse);
+                    case 2:
+                        medicalConsequence = "Impact bras droit (porteur d'arme)";
+                        return BodyPart.BrasDroit;
+                    case 3:
+                        medicalConsequence = "Impact bras gauche (bouclier / parade)";
+                        return BodyPart.BrasGauche;
+                    case 4:
+                        medicalConsequence = "Abdomen et côtes heurtés, incapacité respiratoire";
+                        return BodyPart.Torse;
+                    case 5:
+                    case 6:
+                    default:
+                        medicalConsequence = "Encaissement standard, perte de motricité si jambe brisée";
+                        return BodyPart.Jambes;
+                }
+            }
+        }
+
+        /// <summary>
+        /// RD-082 (Livre VII §28.4) : Vérifie si l'attaque utilise une arme tranchante ou perçante.
+        /// </summary>
+        public static bool IsSlashingOrPiercingAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker)
+        {
+            SkillType baseSkill = SkillDefinitions.ResolveBaseSkill(skill);
+            if (baseSkill == SkillType.ArmesPercantes) return true;
+
+            if (weapon != null)
+            {
+                string desc = $"{weapon.Name} {weapon.Description} {weapon.Category}".ToLowerInvariant();
+                if (desc.Contains("marteau") || desc.Contains("masse") || desc.Contains("gourdin") || desc.Contains("matraque") || desc.Contains("bâton") || desc.Contains("baton"))
+                {
+                    return false;
+                }
+
+                if (desc.Contains("tranchant") || desc.Contains("perçant") || desc.Contains("percant") ||
+                    desc.Contains("épée") || desc.Contains("epee") || desc.Contains("lame") ||
+                    desc.Contains("dague") || desc.Contains("hache") || desc.Contains("lance") ||
+                    desc.Contains("pique") || desc.Contains("couteau") || desc.Contains("rapière") ||
+                    desc.Contains("rapiere") || desc.Contains("baïonnette") || desc.Contains("baionnette") ||
+                    desc.Contains("flèche") || desc.Contains("fleche") || desc.Contains("carreau"))
+                {
+                    return true;
+                }
+            }
+
+            if (baseSkill == SkillType.ManiementArmes)
+            {
+                if (attacker != null && (attacker.HasSpecialization("Armes Contondantes") || attacker.HasSpecialization("Marteau de Guerre")))
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// RD-082 (Livre VII §28.4) : Vérifie si l'attaque utilise une énergie thermique, feu ou plasma.
+        /// </summary>
+        public static bool IsFireOrPlasmaAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker)
+        {
+            if (skill == SkillType.MagieElementale || skill == SkillType.MagiePrimale)
+            {
+                if (attacker != null && (attacker.HasSpecialization("Feu") || attacker.HasSpecialization("Flamme") || attacker.HasSpecialization("Pyromancie") || attacker.HasSpecialization("Thermique")))
+                    return true;
+            }
+
+            if (weapon != null)
+            {
+                string desc = $"{weapon.Name} {weapon.Description} {weapon.Category} {weapon.AmmoType} {weapon.GrenadeKind}".ToLowerInvariant();
+                if (desc.Contains("feu") || desc.Contains("flamme") || desc.Contains("plasma") ||
+                    desc.Contains("incendiaire") || desc.Contains("thermique") || desc.Contains("pyro") ||
+                    desc.Contains("laser") || desc.Contains("brûl") || desc.Contains("brul") ||
+                    desc.Contains("thermobarique"))
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// RD-082 (Livre VII §28.4) : Vérifie si l'assaillant possède la spécialisation Destruction de Rang 6.
+        /// </summary>
+        public static bool HasDestructionTier6(CharacterStats attacker)
+        {
+            if (attacker == null) return false;
+            if (attacker.HasSpecialization("Destruction 6")
+                || attacker.HasSpecialization("Destruction : Rang 6")
+                || attacker.HasSpecialization("Destruction : Stade 6")
+                || attacker.HasSpecialization("Voie de la Destruction : Rang 6")
+                || attacker.HasSpecialization("Voie de la Destruction 6")
+                || attacker.HasSpecialization("Destruction"))
+            {
+                return true;
+            }
+
+            if (attacker.Sheet?.UnlockedSpecializations != null)
+            {
+                for (int i = 0; i < attacker.Sheet.UnlockedSpecializations.Count; i++)
+                {
+                    string spec = attacker.Sheet.UnlockedSpecializations[i];
+                    if (string.IsNullOrEmpty(spec)) continue;
+                    if (spec.IndexOf("Destruction", StringComparison.OrdinalIgnoreCase) >= 0)
+                    {
+                        if (spec.Contains("6") || spec.IndexOf("VI", StringComparison.OrdinalIgnoreCase) >= 0 || spec.Equals("Destruction", StringComparison.OrdinalIgnoreCase))
+                            return true;
+                    }
+                }
+            }
+
+            return false;
         }
 
         private StatusEffect DetermineInflictedStatus(BodyPart hitPart)

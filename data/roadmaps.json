@@ -529,7 +529,7 @@
           "id": "RD-082",
           "title": "Déviation Anatomique Conforme & Effets sur Marge Élevée (Livres VI §26.1 & VII §28.4)",
           "epic": "Critiques/VATS",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 32,
           "scene": "",
@@ -538,7 +538,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CombatCalculator",
-          "details": "1) Remplacement du random de déviation sur Différentiel = 0 par la table d4/d6 exacte Livre VI §26.1 : 1=Yeux/Visage (cécité, hémorragie), 2=Cou/Trachée (asphyxie, perte essoufflement), 3=Tête/Crâne (commotion, test CON), 4=Poumons/Cœur (dégâts massifs, perforation), 5-6=Torse/Membres. 2) Déclenchement automatique des effets sur différentiel élevé Livre VII §28.4 : Saigner sur Diff >= 5 avec arme tranchante/perçante (DoT résiduel = rang entraînement), Brûler sur Diff >= 5 avec feu/plasma (EnFeu 1-3t), Assommer sur Diff >= 10 et visée crânienne (Inconscient 1t direct), Désintégrer sur Diff >= 20 et Spé Destruction 6."
+          "details": "FAIT : 1) Déviation anatomique exacte Livre VI §26.1 sur Différentiel = 0 : table d6 Haute (1 Yeux/Visage, 2 Cou/Trachée, 3 Tête/Crâne, 4 Cœur/Poumons, 5-6 Torse) vs Membres (1 Épaule/Clavicule, 2 Bras Droit, 3 Bras Gauche, 4 Abdomen/Torse, 5-6 Jambes) avec conséquences médicales associées et traçabilité DamageResult (DeflectionRoll, DeflectionMedicalConsequence). 2) Effets automatiques sur marge élevée Livre VII §28.4 : Saignement sur Diff >= 5 arme tranchante/perçante (DoT dégressif = rang d'entraînement de la compétence), Combustion EnFeu 1-3 tours sur Diff >= 5 arme thermique/feu/plasma, Assommé K.O. Inconscient 1 tour direct sur Diff >= 10 et visée crânienne, Désintégration totale prioritaire en poussière sur Diff >= 20 avec spécialisation Destruction Rang 6 (InstantDeath, WasDisintegrated). Traçabilité intégrale dans le log de combat même sans dépassement d'encaissement et neutralisation du test de moral sur cible pulvérisée."
         },
         {
           "id": "RD-083",
