@@ -206,5 +206,109 @@ namespace Killtime.Tactics.Grid
 
             return reachable;
         }
+
+        /// <summary>
+        /// Vrai si le chemin constitue une Charge / Sprint valide (RD-038) :
+        /// longueur du trajet continu >= distance minimale (3 cases par défaut).
+        /// </summary>
+        public static bool IsChargePath(List<HexCoordinates> path, int minDistance = 3)
+        {
+            return path != null && (path.Count - 1) >= minDistance;
+        }
+
+        /// <summary>
+        /// Vrai si la distance géométrique directe entre deux coordonnées permet une charge (>= minDistance).
+        /// </summary>
+        public static bool IsChargeDistance(HexCoordinates from, HexCoordinates to, int minDistance = 3)
+        {
+            return from.DistanceTo(to) >= minDistance;
+        }
+
+        /// <summary>
+        /// Recherche le meilleur chemin d'assaut (RD-038 Charge) vers une cible adverse :
+        /// - Atterrit sur une case libre adjacente à targetUnitCoords.
+        /// - Longueur du trajet >= minDistance (3 cases par défaut pour conférer +2 dégâts et -1 défense).
+        /// - Coût en PA de déplacement + coût d'attaque <= availableAP.
+        /// </summary>
+        public List<HexCoordinates> FindChargePath(
+            HexCoordinates start,
+            HexCoordinates targetUnitCoords,
+            int availableAP,
+            int attackCost,
+            out int totalMovementCost,
+            int minDistance = 3,
+            TitanFootprintType footprint = TitanFootprintType.Single,
+            bool allowPassThroughOccupied = false)
+        {
+            totalMovementCost = 0;
+            List<HexCoordinates> bestPath = new List<HexCoordinates>();
+            int bestMoveCost = int.MaxValue;
+
+            if (_grid == null) return bestPath;
+            int maxMoveAP = availableAP - attackCost;
+            if (maxMoveAP < minDistance) return bestPath;
+
+            for (int dir = 0; dir < 6; dir++)
+            {
+                var candidate = targetUnitCoords.GetNeighbor(dir);
+                var node = _grid.GetNode(candidate);
+                if (node == null || !node.IsWalkable) continue;
+
+                // Si la case candidate est le point de départ, ce n'est pas une charge (distance 0)
+                if (candidate.Equals(start)) continue;
+
+                var path = FindPath(start, candidate, maxMoveAP, out int moveCost, footprint, allowPassThroughOccupied);
+                if (path != null && path.Count > 0 && (path.Count - 1) >= minDistance)
+                {
+                    if (moveCost < bestMoveCost)
+                    {
+                        bestMoveCost = moveCost;
+                        bestPath = path;
+                    }
+                }
+            }
+
+            if (bestPath.Count > 0)
+            {
+                totalMovementCost = bestMoveCost;
+            }
+            return bestPath;
+        }
+
+        /// <summary>
+        /// Renvoie l'ensemble des coordonnées atteignables à distance de charge (>= minDistance)
+        /// pour une réserve de PA donnée.
+        /// </summary>
+        public HashSet<HexCoordinates> GetChargeReachableCoordinates(
+            HexCoordinates center,
+            int maxAP,
+            int minDistance = 3,
+            bool allowPassThroughOccupied = false)
+        {
+            var reachable = GetReachableCoordinates(center, maxAP, allowPassThroughOccupied);
+            reachable.RemoveWhere(coord => center.DistanceTo(coord) < minDistance);
+            return reachable;
+        }
+
+        /// <summary>
+        /// Vérifie si l'acteur est en mesure d'exécuter une charge complète sur la cible
+        /// (distance >= minDistance, case d'arrêt libre au contact, budget PA suffisant pour déplacement + frappe).
+        /// </summary>
+        public bool CanChargeTarget(
+            TacticalUnit actor,
+            TacticalUnit target,
+            int minDistance = 3,
+            int attackCost = 2)
+        {
+            if (actor == null || target == null || actor == target) return false;
+            if (actor.Stats == null || !actor.Stats.IsAlive) return false;
+            if (target.Stats == null || !target.Stats.IsAlive) return false;
+
+            int ap = actor.Stats.CurrentActionPoints;
+            if (ap < attackCost + minDistance) return false;
+
+            var path = FindChargePath(actor.CurrentCoords, target.CurrentCoords, ap, attackCost, out _, minDistance, actor.FootprintType);
+            return path != null && path.Count > 0;
+        }
     }
 }

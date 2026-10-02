@@ -455,6 +455,10 @@ namespace Killtime.Tactics.TurnSystem
             if (unit.Stats != null) Killtime.Core.Combat.OverwatchState.Cancel(unit.Stats);
             // RD-031 : ... et sa posture/réaction/décrochage d'opportunité.
             if (unit.Stats != null) Killtime.Core.Combat.OpportunityState.RemoveUnit(unit.Stats);
+            // RD-039 : ... et toute prise de lutte active.
+            if (unit.Stats != null) Killtime.Core.Combat.GrappleState.ReleaseGrapple(unit.Stats);
+            // RD-038 : ... et ses états de charge et de sprint.
+            if (unit.Stats != null) Killtime.Core.Combat.ChargeState.Cancel(unit.Stats);
 
             bool wasActive = (ActiveUnit == unit);
             int idx = _allUnits.IndexOf(unit);
@@ -508,6 +512,10 @@ namespace Killtime.Tactics.TurnSystem
             Killtime.Core.Combat.OverwatchState.ClearAll();
             // RD-031 : aucune posture/réaction/décrochage ne survit non plus.
             Killtime.Core.Combat.OpportunityState.ClearAll();
+            // RD-039 : aucune prise de lutte ne survit à un reset de combat.
+            Killtime.Core.Combat.GrappleState.ClearAll();
+            // RD-038 : purge des états de charge et de sprint.
+            Killtime.Core.Combat.ChargeState.ClearAll();
             // Nouveau combat (ré)initialisé : aucun objet au sol (gourdin...) ne survit.
             try { DroppedWeaponPickup.ClearAllDropped(); } catch { }
         }
@@ -1020,6 +1028,7 @@ namespace Killtime.Tactics.TurnSystem
             if (!unit.Stats.IsAlive)
             {
                 visual?.TriggerFallingBackDeath();
+                Killtime.Core.Combat.GrappleState.ReleaseGrapple(unit.Stats);
                 return;
             }
 
@@ -1035,6 +1044,12 @@ namespace Killtime.Tactics.TurnSystem
             // RD-031 Opportunités : la réaction se recharge au début du tour
             // personnel (1/round) ; le décrochage armé non consommé expire.
             Killtime.Core.Combat.OpportunityState.OnUnitTurnStart(unit.Stats);
+
+            // RD-039 Lutte / Grapple : vérification et maintien des prises au contact.
+            Killtime.Core.Combat.GrappleState.OnUnitTurnStart(unit.Stats);
+
+            // RD-038 Charge & Sprint : expiration du malus défensif (-1 défense) et levée du blocage tir.
+            Killtime.Core.Combat.ChargeState.OnUnitTurnStart(unit.Stats);
 
             int newAP = unit.Stats.CurrentActionPoints;
             int deltaAP = newAP - prevAP;

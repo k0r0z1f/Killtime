@@ -148,6 +148,7 @@ namespace Killtime.Tactics
             public bool IsPlayer;
         }
         public CombatCalculator Calculator => _combatCalculator;
+        public HexPathfinder Pathfinder => _pathfinder;
         public TimelineBranch Timeline => _timelineBranch;
         public ArenaLayoutType CurrentLayout => _currentLayout;
 
@@ -1608,6 +1609,20 @@ namespace Killtime.Tactics
                                 bool hasInvisibleSteps = !isExploration && activeUnit.Stats.HasSpecialization("Protocole des Pas Invisibles") && activeUnit.Stats.MovesThisTurn == 0;
                                 if (hasInvisibleSteps) availableAP += 1;
 
+                                if (!activeUnit.Stats.CanMove())
+                                {
+                                    Log($"⚠️ <b>{activeUnit.Stats.Name}</b> ne peut pas se déplacer ({activeUnit.Stats.ActiveStatus}).");
+                                    activeUnit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("IMMOBILISÉ", Color.yellow);
+                                    return;
+                                }
+
+                                // Si l'unité maintenait une prise de lutte et se déplace seule (hors traînée), la prise cède
+                                if (Killtime.Core.Combat.GrappleState.IsGrappling(activeUnit.Stats))
+                                {
+                                    Killtime.Core.Combat.GrappleState.ReleaseGrapple(activeUnit.Stats);
+                                    Log($"🥋 <b>{activeUnit.Stats.Name}</b> rompt sa prise de lutte pour se déplacer.");
+                                }
+
                                 var path = _pathfinder.FindPath(start, target, availableAP, out int apCost, activeUnit.FootprintType, traverse);
 
                                 if (path.Count > 0)
@@ -1667,6 +1682,12 @@ namespace Killtime.Tactics
             var active = _turnManager.ActiveUnit;
             if (IsPlayerManualControl(active) && _gridVisualizer != null)
             {
+                if (!active.Stats.CanMove())
+                {
+                    _gridVisualizer.SetReachableCoords(null);
+                    return;
+                }
+
                 bool reachTraverse = _turnManager != null && _turnManager.IsInExploration;
                 int reachAP = reachTraverse ? ExplorationFreeAP : active.Stats.CurrentActionPoints;
                 if (!reachTraverse && active.Stats.HasSpecialization("Protocole des Pas Invisibles") && active.Stats.MovesThisTurn == 0)
@@ -2480,6 +2501,15 @@ namespace Killtime.Tactics
 
             bool isRangedAttackSkill = (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir);
             bool hasRangedArmament = (activeWeapon != null && activeWeapon.RangeInTiles > 1) || hasRifleVisual;
+
+            // RD-038 : Le sprint bloque tout tir à distance ce tour
+            if ((isRangedAttackSkill || (!isMeleeAttack && distanceToTarget > 1)) && !ChargeState.CanFireRanged(attacker.Stats))
+            {
+                Log($"⚠️ <b>Tir impossible</b> : {attacker.Stats.Name} a sprinté ce tour ! (RD-038 : Le sprint bloque le tir)");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
 
             if (isRangedAttackSkill && !hasRangedArmament && distanceToTarget > 1)
             {
@@ -3981,6 +4011,250 @@ namespace Killtime.Tactics
             catch (Exception e) { Log($"⚠️ Désarmement impossible : {e.Message}"); }
         }
 
+        // =========================================================================
+        // RD-039 : LUTTE, GRAPPLE, ÉTRANGLEMENT & TRAÎNÉE DE CORPS
+        // =========================================================================
+
+        public const int GrappleAPCost = 2;
+        public const int StrangulationAPCost = 2;
+        public const int DragBodyAPCost = 2;
+
+        /// <summary>
+        /// RD-039 : Exécute une prise de lutte au corps-à-corps (2 PA).
+        /// Duel opposé aveugle Athlétisme vs Athlétisme. Succès = cible Immobilisée et saisie en lutte.
+        /// </summary>
+        public void ExecuteGrapple(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor == null || target == null || actor.Stats == null || target.Stats == null) return;
+            if (!actor.Stats.IsAlive || !target.Stats.IsAlive) return;
+
+            int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            if (dist > 1)
+            {
+                Log($"⚠️ <b>Lutte impossible</b> : cible hors de portée de contact ({dist} cases > 1).");
+                return;
+            }
+
+            if (!InfiniteAP && actor.Stats.CurrentActionPoints < GrappleAPCost)
+            {
+                Log($"⚠️ PA insuffisants : la prise de lutte exige {GrappleAPCost} PA (reste {actor.Stats.CurrentActionPoints}).");
+                return;
+            }
+
+            if (!InfiniteAP) actor.Stats.ConsumeActionPoints(GrappleAPCost);
+
+            int injectedAP = CombatUI.CombatContextMenuUI.CurrentInjectedAP;
+            int injectedPE = CombatUI.CombatContextMenuUI.CurrentInjectedPE;
+
+            var duel = _combatCalculator.ResolveGrappleDuel(
+                actor.Stats, target.Stats,
+                attackerBonusAP: injectedAP, attackerPE: injectedPE,
+                defenderAutoStakes: true);
+
+            var actVis = actor.GetComponent<TacticalUnitVisual>();
+            var tgtVis = target.GetComponent<TacticalUnitVisual>();
+
+            if (duel.AttackerWins)
+            {
+                actVis?.SpawnFloatingText("🥋 PRISE EN LUTTE (-2 PA)", Color.cyan);
+                tgtVis?.TriggerHitFlash();
+                tgtVis?.SpawnFloatingText("IMMOBILISÉ", new Color(1f, 0.45f, 0.15f));
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Trauma_Shock, target.transform.position, 0.8f);
+            }
+            else
+            {
+                actVis?.SpawnFloatingText("Prise manquée (-2 PA)", Color.gray);
+                tgtVis?.SpawnFloatingText("ESQUIVÉ", Color.cyan);
+            }
+
+            Log($"🥋 <b>{actor.Stats.Name}</b> tente une prise de lutte sur <b>{target.Stats.Name}</b> (-{GrappleAPCost} PA) :\n   {duel.CombatLog}");
+            RecordChronoSnapshot($"Lutte : {actor.Stats.Name} -> {target.Stats.Name}");
+            _turnManager?.CheckCombatOver();
+        }
+
+        /// <summary>
+        /// RD-039 : Tente de se libérer d'une étreinte de lutte (2 PA).
+        /// Duel opposé aveugle Athlétisme/MainsNues/Acrobatie (victime) vs Athlétisme (grappler).
+        /// Succès = prise brisée et statut Immobilisé dissipé.
+        /// </summary>
+        public void ExecuteGrappleEscape(TacticalUnit victim, TacticalUnit grappler)
+        {
+            if (victim == null || grappler == null || victim.Stats == null || grappler.Stats == null) return;
+            if (!victim.Stats.IsAlive || !grappler.Stats.IsAlive) return;
+
+            if (!InfiniteAP && victim.Stats.CurrentActionPoints < GrappleAPCost)
+            {
+                Log($"⚠️ PA insuffisants : se dégager exige {GrappleAPCost} PA (reste {victim.Stats.CurrentActionPoints}).");
+                return;
+            }
+
+            if (!InfiniteAP) victim.Stats.ConsumeActionPoints(GrappleAPCost);
+
+            int injectedAP = CombatUI.CombatContextMenuUI.CurrentInjectedAP;
+            int injectedPE = CombatUI.CombatContextMenuUI.CurrentInjectedPE;
+
+            var duel = _combatCalculator.ResolveGrappleEscapeDuel(
+                victim.Stats, grappler.Stats,
+                victimBonusAP: injectedAP, victimPE: injectedPE,
+                grapplerAutoStakes: true);
+
+            var vicVis = victim.GetComponent<TacticalUnitVisual>();
+            var grpVis = grappler.GetComponent<TacticalUnitVisual>();
+
+            if (duel.AttackerWins)
+            {
+                vicVis?.SpawnFloatingText("🔓 DÉGAGÉ ! (-2 PA)", Color.green);
+                grpVis?.SpawnFloatingText("Prise rompue", Color.gray);
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Trauma_Shock, victim.transform.position, 0.8f);
+            }
+            else
+            {
+                vicVis?.SpawnFloatingText("Maintenu en lutte (-2 PA)", Color.red);
+            }
+
+            Log($"🔓 <b>{victim.Stats.Name}</b> tente de se libérer de la prise de <b>{grappler.Stats.Name}</b> (-{GrappleAPCost} PA) :\n   {duel.CombatLog}");
+            RecordChronoSnapshot($"Dégagement lutte : {victim.Stats.Name} -> {grappler.Stats.Name}");
+            _turnManager?.CheckCombatOver();
+        }
+
+        /// <summary>
+        /// RD-039 : Étranglement au contact sur cible saisie ou immobilisée (2 PA).
+        /// Duel opposé aveugle Athlétisme vs Endurance. Succès = Asphyxie (2 tours, DoT + drain PA).
+        /// </summary>
+        public void ExecuteStrangulation(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor == null || target == null || actor.Stats == null || target.Stats == null) return;
+            if (!actor.Stats.IsAlive || !target.Stats.IsAlive) return;
+
+            int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            if (dist > 1)
+            {
+                Log($"⚠️ <b>Étranglement impossible</b> : hors de portée de contact ({dist} cases > 1).");
+                return;
+            }
+
+            if (!InfiniteAP && actor.Stats.CurrentActionPoints < StrangulationAPCost)
+            {
+                Log($"⚠️ PA insuffisants : l'étranglement exige {StrangulationAPCost} PA (reste {actor.Stats.CurrentActionPoints}).");
+                return;
+            }
+
+            if (!InfiniteAP) actor.Stats.ConsumeActionPoints(StrangulationAPCost);
+
+            int injectedAP = CombatUI.CombatContextMenuUI.CurrentInjectedAP;
+            int injectedPE = CombatUI.CombatContextMenuUI.CurrentInjectedPE;
+
+            var duel = _combatCalculator.ResolveStrangulationDuel(
+                actor.Stats, target.Stats,
+                attackerBonusAP: injectedAP, attackerPE: injectedPE,
+                defenderAutoStakes: true);
+
+            var actVis = actor.GetComponent<TacticalUnitVisual>();
+            var tgtVis = target.GetComponent<TacticalUnitVisual>();
+
+            if (duel.AttackerWins)
+            {
+                actVis?.SpawnFloatingText("🫁 ÉTRANGLEMENT (-2 PA)", new Color(0.2f, 0.95f, 0.75f));
+                tgtVis?.TriggerHitFlash();
+                tgtVis?.SpawnFloatingText("ASPHYXIE (-1 PA/tour)", new Color(0.2f, 0.95f, 0.75f));
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Trauma_Shock, target.transform.position, 0.9f);
+                if (!target.Stats.IsAlive) AutoTargetNextAlive();
+            }
+            else
+            {
+                actVis?.SpawnFloatingText("Étranglement repoussé (-2 PA)", Color.gray);
+                tgtVis?.SpawnFloatingText("RÉSISTÉ", Color.cyan);
+            }
+
+            Log($"🫁 <b>{actor.Stats.Name}</b> étrangle <b>{target.Stats.Name}</b> (-{StrangulationAPCost} PA) :\n   {duel.CombatLog}");
+            RecordChronoSnapshot($"Étranglement : {actor.Stats.Name} -> {target.Stats.Name}");
+            _turnManager?.CheckCombatOver();
+        }
+
+        /// <summary>
+        /// RD-039 : Vrai si le dragger peut traîner le corps de la victime d'1 case.
+        /// </summary>
+        public bool CanDragBody(TacticalUnit dragger, TacticalUnit victim)
+        {
+            if (dragger == null || victim == null || dragger == victim) return false;
+            if (dragger.Stats == null || victim.Stats == null) return false;
+            if (!dragger.Stats.IsAlive) return false;
+            if (!InfiniteAP && dragger.Stats.CurrentActionPoints < DragBodyAPCost) return false;
+            if (dragger.CurrentCoords.DistanceTo(victim.CurrentCoords) > 1) return false;
+
+            bool isDraggable = Killtime.Core.Combat.GrappleState.IsGrappling(dragger.Stats, victim.Stats)
+                || victim.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise)
+                || victim.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient)
+                || victim.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre)
+                || !victim.Stats.IsAlive;
+
+            if (!isDraggable) return false;
+            if (_grid == null) return false;
+
+            for (int i = 0; i < 6; i++)
+            {
+                var n = dragger.CurrentCoords.GetNeighbor(i);
+                if (n.Equals(victim.CurrentCoords)) continue;
+                if (_grid.IsFootprintFree(n, dragger.FootprintType, dragger)) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// RD-039 : Traîne le corps d'une cible saisie, immobilisée ou inconsciente d'1 case (2 PA).
+        /// Le porteur recule ou pivote vers une case libre adjacente et tire la victime
+        /// dans la case qu'il vient de libérer.
+        /// </summary>
+        public bool ExecuteDragBody(TacticalUnit dragger, TacticalUnit victim)
+        {
+            if (!CanDragBody(dragger, victim)) return false;
+
+            HexCoordinates bestHex = default;
+            bool found = false;
+            int bestDist = -1;
+
+            for (int i = 0; i < 6; i++)
+            {
+                var n = dragger.CurrentCoords.GetNeighbor(i);
+                if (n.Equals(victim.CurrentCoords)) continue;
+                if (_grid.IsFootprintFree(n, dragger.FootprintType, dragger))
+                {
+                    int d = n.DistanceTo(victim.CurrentCoords);
+                    if (d > bestDist)
+                    {
+                        bestDist = d;
+                        bestHex = n;
+                        found = true;
+                    }
+                }
+            }
+
+            if (!found) return false;
+
+            if (!InfiniteAP) dragger.Stats.ConsumeActionPoints(DragBodyAPCost);
+
+            HexCoordinates vacated = dragger.CurrentCoords;
+
+            var draggerPath = new List<HexCoordinates> { dragger.CurrentCoords, bestHex };
+            var victimPath = new List<HexCoordinates> { victim.CurrentCoords, vacated };
+
+            StartCoroutine(dragger.MoveAlongPath(draggerPath, _grid, 0, false, false));
+            StartCoroutine(victim.MoveAlongPath(victimPath, _grid, 0, false, false));
+
+            dragger.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🤼 TRAÎNÉE (-2 PA)", Color.cyan);
+            victim.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("TRAÎNÉ", Color.yellow);
+
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Footstep, dragger.transform.position, 0.7f);
+
+            Log($"🤼 <b>{dragger.Stats.Name}</b> traîne le corps de <b>{victim.Stats.Name}</b> d'1 case vers {vacated} (-{DragBodyAPCost} PA) !");
+            RecordChronoSnapshot($"Traînée corps : {dragger.Stats.Name} -> {victim.Stats.Name}");
+            return true;
+        }
+
         private TacticalUnit FindUnitByName(string unitName)
         {
             if (string.IsNullOrEmpty(unitName)) return null;
@@ -4014,6 +4288,7 @@ namespace Killtime.Tactics
             }
             if (!best.Equals(defender.CurrentCoords) && defender.TeleportTo(best, _grid))
             {
+                Killtime.Core.Combat.GrappleState.ReleaseGrapple(defender.Stats);
                 var vis = defender.GetComponent<TacticalUnitVisual>();
                 vis?.SpawnFloatingText("[SOUFFLE] Projeté !", Color.yellow);
                 Log($"💨 <b>SOUFFLE</b> : {defender.Stats.Name} est projeté(e) en ({best.Q}, {best.R}) !");
@@ -4021,6 +4296,100 @@ namespace Killtime.Tactics
             }
             defender.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
             return false;
+        }
+
+        /// <summary>
+        /// Exécute une manœuvre de Charge (RD-038, Livre VI) :
+        /// - Déplacement d'au moins 3 cases vers un voisin libre de la cible.
+        /// - Débite les PA de déplacement (+ surcoût éventuel de manœuvre).
+        /// - À l'arrivée au contact, exécute immédiatement l'attaque de mêlée (+2 dégâts, -1 défense jusqu'au prochain tour personnel).
+        /// - Bloque le tir pour le reste du tour en cours.
+        /// </summary>
+        public void ExecuteChargeAttack(TacticalUnit actor, TacticalUnit target, BodyPart targetedPart, int attackerBonusAP = 0, int attackerPE = 0)
+        {
+            if (actor == null || target == null || actor == target) return;
+            if (actor.Stats == null || !actor.Stats.IsAlive || target.Stats == null || !target.Stats.IsAlive) return;
+
+            if (_isAttackInProgress)
+            {
+                Log("⚠️ Charge ignorée : une action est déjà en cours.");
+                return;
+            }
+
+            int attackCost = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.BaseAttackAPCost : 2;
+            int ap = actor.Stats.CurrentActionPoints;
+            if (_pathfinder == null) _pathfinder = new HexPathfinder(_grid);
+
+            int minDistance = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.ChargeMinDistance : 3;
+            var path = _pathfinder.FindChargePath(actor.CurrentCoords, target.CurrentCoords, ap, attackCost, out int moveCost, minDistance, actor.FootprintType);
+            if (path == null || path.Count <= 1 || (path.Count - 1) < minDistance)
+            {
+                Log($"⚠️ <b>Charge impossible</b> : aucun chemin de {minDistance}+ cases disponible vers {target.Stats.Name} pour {actor.Stats.Name}.");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+
+            int extraCost = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.ChargeManeuverExtraAPCost : 0;
+            int effectiveCost = actor.ComputeMovementAPCost(moveCost) + extraCost;
+            if (actor.Stats.CurrentActionPoints < effectiveCost + attackCost)
+            {
+                Log($"⚠️ <b>Charge impossible</b> : PA insuffisants ({actor.Stats.CurrentActionPoints} PA disponibles pour un coût de {effectiveCost + attackCost} PA).");
+                return;
+            }
+
+            Log($"⚡ <b>{actor.Stats.Name}</b> s'élance en <b>CHARGE D'ASSAUT</b> sur {target.Stats.Name} ({path.Count - 1} cases, coût déplacement {effectiveCost} PA) !");
+            StartCoroutine(ChargeAndStrikeRoutine(actor, target, targetedPart, path, effectiveCost, attackCost, attackerBonusAP, attackerPE));
+        }
+
+        private IEnumerator ChargeAndStrikeRoutine(
+            TacticalUnit actor,
+            TacticalUnit target,
+            BodyPart targetedPart,
+            List<HexCoordinates> path,
+            int moveCost,
+            int attackCost,
+            int attackerBonusAP,
+            int attackerPE)
+        {
+            _isAttackInProgress = true;
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Dash, actor.transform.position, 0.7f);
+
+            // Exécute le déplacement jusqu'au contact
+            yield return StartCoroutine(actor.MoveAlongPath(path, _grid, moveCost));
+
+            // Attend la fin effective du mouvement
+            while (actor.IsMoving)
+            {
+                yield return null;
+            }
+
+            _isAttackInProgress = false;
+
+            // Si l'attaquant a survécu et est toujours au contact de la cible
+            if (actor.Stats != null && actor.Stats.IsAlive && target.Stats != null && target.Stats.IsAlive)
+            {
+                int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+                if (dist <= 1)
+                {
+                    var weapon = actor.Sheet?.GetEquippedWeapon();
+                    SkillType meleeSkill = weapon != null
+                        ? SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill)
+                        : SkillType.MainsNues;
+
+                    ExecuteAttack(targetedPart, cancelPenaltyWithAP: false,
+                        attackSkill: meleeSkill,
+                        attackerBonusAP: attackerBonusAP,
+                        attackerPE: attackerPE,
+                        explicitTarget: target,
+                        explicitAttacker: actor);
+                }
+                else
+                {
+                    Log($"⚠️ <b>Charge interrompue</b> : {actor.Stats.Name} n'a pas pu atteindre le contact de {target.Stats.Name}.");
+                }
+            }
         }
 
         public void RecordChronoSnapshot(string description)

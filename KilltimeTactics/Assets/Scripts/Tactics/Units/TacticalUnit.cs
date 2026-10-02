@@ -649,6 +649,14 @@ namespace Killtime.Tactics.Units
                 {
                     Debug.LogWarning($"[TacticalUnit] Déplacement bloqué pour '{_unitName}' : réaction d'opportunité (pas {previous} -> {nextCoords} annulé).");
                     RefundUnspentMovePA(apCost, path.Count - 1, i - 1);
+                    if (Stats != null && i - 1 > 0)
+                    {
+                        bool charged = ChargeState.ApplyMovement(Stats, i - 1);
+                        if (charged)
+                        {
+                            GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⚡ CHARGE / SPRINT", new Color(1f, 0.85f, 0.2f));
+                        }
+                    }
                     var blockedFallback = grid.GetNode(CurrentCoords);
                     if (blockedFallback != null) blockedFallback.IsOccupied = true;
                     if (destNode != null && !destNode.Coordinates.Equals(CurrentCoords)) destNode.IsOccupied = false;
@@ -745,6 +753,15 @@ namespace Killtime.Tactics.Units
             }
 
             IsMoving = false;
+            int totalSteps = path.Count - 1;
+            if (Stats != null && totalSteps > 0)
+            {
+                bool charged = ChargeState.ApplyMovement(Stats, totalSteps);
+                if (charged)
+                {
+                    GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⚡ CHARGE / SPRINT", new Color(1f, 0.85f, 0.2f));
+                }
+            }
             try { OnAnyUnitMoveCompleted?.Invoke(this); } catch { /* ignore */ }
         }
 

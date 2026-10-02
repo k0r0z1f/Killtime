@@ -184,7 +184,7 @@
           "id": "RD-038",
           "title": "Charge / sprint + attaque",
           "epic": "Positionnement",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 8,
           "scene": "",
@@ -193,13 +193,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "HexPathfinder",
-          "details": "Charge 3+ cases : +2 dégâts, -1 défense jusqu'au prochain tour. Sprint bloque tir ce tour."
+          "details": "FAIT : Charge 3+ cases : +2 dégâts d'impact sur frappe au contact (mêlée/mains nues), -1 défense jusqu'au début du prochain tour personnel. Sprint 3+ cases : bloque tout tir à distance ce tour. ChargeState (Core pur) + CombatCalculator (bonus dégâts d'impact + malus défense aveugle + log) + HexPathfinder (IsChargePath, IsChargeDistance, FindChargePath, GetChargeReachableCoordinates, CanChargeTarget) + TacticalUnit (MoveAlongPath détection 3+ cases + floating text) + CombatDevArena (ExecuteChargeAttack manœuvre assaut + blocage tir sprint) + CombatActionRegistry (action contextuelle ⚡ Charge au contact + tag sprint bloqué) + TurnManager & CharacterStats (ResetTurn & OnUnitTurnStart) + TacticalAIController (repli mêlée si sprint) + CoreRulesConfig paramétrable + tests ChargeSprintTests."
         },
         {
           "id": "RD-039",
           "title": "Lutte / grapple / traînée corps",
           "epic": "Corps-à-corps",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 9,
           "scene": "",
@@ -208,7 +208,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CombatCalculator duel",
-          "details": "Immobilisé vs Immobilisé opposé, traînée 1 case/2PA, étranglement Asphyxie. Clé existe, grapple non."
+          "details": "FAIT : Système complet de lutte et prise au corps-à-corps (Livre VI §24.6). 1) Prise de lutte (2 PA, contact) : duel opposé aveugle Athlétisme vs Athlétisme (ou Mains Nues / Défense Corporelle) appliquant l'état Immobilisé 1 tour et enregistrant l'étreinte (GrappleState). 2) Se libérer (2 PA) : duel opposé de la victime pour briser la prise et dissiper Immobilisé. 3) Relâchement volontaire (0 PA) ou rupture sur déplacement/incapacitation du grappler. 4) Traînée de corps (2 PA, 1 case) : déplacement coordonné du porteur et de la victime dans la case libérée (valide sur cibles saisies, immobilisées, à terre ou inconscientes, alliés ou ennemis). 5) Étranglement (2 PA, contact) : compression de la trachée (Athlétisme vs Endurance) infligeant 2+ dégâts bruts au cou et l'état Asphyxie (2 tours, DoT pool 2 et -1 PA/tour). Intégration Core (GrappleState, CombatCalculator, CharacterStats.CanMove), Arène (CombatDevArena), UI (CombatContextMenuUI, CombatActionRegistry), IA (TacticalAIController) et tests unitaires (GrappleTests)."
         },
         {
           "id": "RD-040",

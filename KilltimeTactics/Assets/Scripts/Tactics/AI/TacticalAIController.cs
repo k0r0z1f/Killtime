@@ -442,6 +442,10 @@ namespace Killtime.Tactics.AI
                 var posture = EvaluateTacticalPosture(unit, target, dist);
 
                 bool isRanged = HasRangedWeapon(unit, out int maxRange, out int minRange, out SkillType attackSkill);
+                if (isRanged && !ChargeState.CanFireRanged(unit.Stats))
+                {
+                    isRanged = false; // RD-038 : Le sprint bloque le tir ce tour
+                }
                 bool hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType);
                 CoverType targetCover = GetCoverLevel(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType);
                 bool inAttackRange = isRanged ? (dist <= maxRange && hasLOS) : (dist <= 1);
@@ -961,6 +965,29 @@ namespace Killtime.Tactics.AI
                 bool finisher = target.Stats.CurrentHealth <= Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CleRawDamage;
                 bool neutralise = !isAggressive && pa >= 4 && target.Stats.CurrentActionPoints >= 4;
                 if ((finisher || neutralise) && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteCle(actor, target, _arena)) return true;
+            }
+
+            // 7. LUTTE, GRAPPLE & ÉTRANGLEMENT (RD-039)
+            if (dist <= 1 && pa >= 2)
+            {
+                if (Killtime.Core.Combat.GrappleState.IsGrappling(actor.Stats, target.Stats))
+                {
+                    _arena.ExecuteStrangulation(actor, target);
+                    return true;
+                }
+
+                if (Killtime.Core.Combat.GrappleState.IsGrappling(target.Stats, actor.Stats))
+                {
+                    _arena.ExecuteGrappleEscape(actor, target);
+                    return true;
+                }
+
+                bool isGrapplerProfile = actor.Stats.Attributes.Force >= 5 || actor.Stats.Attributes.Constitution >= 5;
+                if (isGrapplerProfile && !target.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise) && pa >= 4)
+                {
+                    _arena.ExecuteGrapple(actor, target);
+                    return true;
+                }
             }
 
             return false;
@@ -1757,6 +1784,30 @@ namespace Killtime.Tactics.AI
                     if (provoker != null && provoker.Stats == taunter && provoker.Stats.IsAlive)
                     {
                         return provoker;
+                    }
+                }
+            }
+
+            // RD-039 : En lutte active (victime ou grappler) → priorité absolue au partenaire de lutte.
+            if (GrappleState.TryGetGrappler(actor.Stats, out var holdingGrappler) && holdingGrappler != null)
+            {
+                for (int i = 0; i < _cachedUnits.Count; i++)
+                {
+                    var gUnit = _cachedUnits[i];
+                    if (gUnit != null && gUnit.Stats == holdingGrappler && gUnit.Stats.IsAlive)
+                    {
+                        return gUnit;
+                    }
+                }
+            }
+            if (GrappleState.TryGetGrappledVictim(actor.Stats, out var heldVictim) && heldVictim != null)
+            {
+                for (int i = 0; i < _cachedUnits.Count; i++)
+                {
+                    var vUnit = _cachedUnits[i];
+                    if (vUnit != null && vUnit.Stats == heldVictim && vUnit.Stats.IsAlive)
+                    {
+                        return vUnit;
                     }
                 }
             }

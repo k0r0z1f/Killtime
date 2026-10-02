@@ -706,9 +706,11 @@
                                 <span class="pill-badge amber">+1 PA Extra</span>
                             </div>
                             <ul style="padding-left: 15px; margin: 10px 0; font-size: 0.9em;">
-                                <li><strong>La Charge :</strong> Déplacement d'approche qui coûte <strong>+1 PA de plus
-                                        que la normale</strong>, immédiatement suivi d'une action principale d'attaque
-                                    au contact.</li>
+                                <li><strong>La Charge & le Sprint (RD-038) :</strong> Déplacement d'assaut d'au moins
+                                    <strong>3 cases</strong> menant au contact direct. Confère <strong>+2 dégâts</strong>
+                                    d'impact cinétique sur la frappe de mêlée consécutive, mais expose l'assaillant avec
+                                    <strong>-1 en défense jusqu'au prochain tour personnel</strong>. Tout déplacement
+                                    de 3+ cases (sprint) <strong>bloque le tir</strong> pour le reste du tour en cours.</li>
                                 <li><strong>Le GetAway (Dégagement) :</strong> Action principale (attaque ou parade)
                                     immédiatement suivie d'un déplacement de fuite coûtant <strong>+1 PA
                                         supplémentaire</strong>.</li>
@@ -747,6 +749,8 @@
                                 <li><strong>Guet / Overwatch :</strong> <strong>2 PA</strong> payés pendant son propre tour (arme à distance requise) : réserve <strong>1 tir automatique en duel aveugle</strong> dans le rayon de l'arme, consommé au premier déclenchement, expiré au prochain tour personnel, annulé si Étourdi / Paralysé.</li>
                                 <li><strong>Opportunité / Désengagement (§24.4) :</strong> quitter le <strong>contact (≤ 1 case)</strong> expose à <strong>1 réaction par voisin ennemi</strong> au contact (1/round chacun) : <strong>Frappe gratuite</strong>, <strong>Poursuite</strong> (1 PA, suit d'1 case), <strong>Blocage</strong> (1 PA, annule le pas, sans grapple, PA remboursés), <strong>Balayage</strong> (gratuit, Jambes). <strong>Décrochage</strong> (1 PA) ou <strong>spé esquive</strong> (Roulade de Décrochage, Acrobatie d'Évitement) : aucun déclenchement.</li>
                                 <li><strong>Garde du corps / Interception (§24.5, RD-032) :</strong> coût de réaction (<strong>1 PA</strong>) : s'interposer au contact (distance ≤ 1 case) pour <strong>prendre le coup à la place d'un allié</strong> visé par une attaque (Tenir la Ligne). Le duel est réorienté vers le protecteur qui encaisse avec son armure et ses compétences défensives.</li>
+                                <li><strong>Lutte / Grapple & Traînée (§24.6, RD-039) :</strong> coût <strong>2 PA</strong> au contact (distance ≤ 1 case) : <strong>duel opposé aveugle Athlétisme vs Athlétisme</strong>. Succès = cible <strong>Immobilisée</strong>. Permet ensuite la <strong>traînée de corps</strong> (2 PA, 1 case) et l'<strong>étranglement</strong> (2 PA, Asphyxie). Dégagement en duel opposé (2 PA) ou relâchement volontaire (0 PA).</li>
+                                <li><strong>Charge & Sprint (§24.7, RD-038) :</strong> assaut d'approche de <strong>3+ cases</strong> au contact : <strong>+2 dégâts</strong> sur l'attaque de mêlée consécutive, <strong>-1 défense</strong> jusqu'au prochain tour personnel. Tout déplacement de 3+ cases (sprint) <strong>bloque le tir</strong> pour le reste du tour en cours.</li>
                             </ul>
                         </div>
                     </div>
@@ -837,6 +841,92 @@
                         <li><strong>Restrictions :</strong> impossible si le protecteur est neutralisé (Étourdi, Paralysé,
                             Sonné, Inconscient), s'il a déjà dépensé sa réaction ce round, s'il manque de PA (1 PA de base,
                             2 PA sous Ralenti), ou si la distance dépasse 1 mètre (1 case).</li>
+                    </ul>
+
+                    <h3>24.6 Lutte, Grapple & Traînée de Corps (RD-039)</h3>
+                    <p>
+                        Alors que la <em>Clé d'Articulation</em> relève d'une technique martiale spécialisée
+                        (Livre III, Mains Nues), la <strong>lutte au corps-à-corps (grapple)</strong> est une
+                        manœuvre physique générique accessible à tout combattant au contact direct
+                        (<strong>distance ≤ 1 case</strong>). Elle permet de ceinturer, clouer sur place,
+                        traîner ou asphyxier un adversaire.
+                    </p>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Manœuvres de Lutte au Corps-à-Corps (Coût : 2 PA, contact)</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Prise (2 PA)</span> ➔ <span class="hl-gold">Immobilisé (duel opposé)</span> ➔ <span class="hl-ruby">Étranglement (Asphyxie) / Traînée (1 case / 2 PA)</span>
+                        </div>
+                        <div class="formula-desc">
+                            La tentative de prise engage un duel opposé aveugle <strong>Athlétisme vs Athlétisme</strong> (mises masquées PA/PE autorisées).
+                            En cas de succès de l'attaquant, la cible subit l'état <strong>Immobilisé</strong> et le lien d'étreinte est enregistré.
+                            La victime peut tenter de se libérer à son tour via un duel opposé, ou le grappler peut relâcher l'emprise gratuitement (0 PA).
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>🥋 Prise au Corps-à-Corps (2 PA, contact) :</strong> duel opposé aveugle
+                            <strong>Athlétisme</strong> (ou Mains Nues) de l'assaillant contre <strong>Athlétisme</strong>
+                            (ou Défense Corporelle) du défenseur. Victoire de l'assaillant (Diff ≥ 0) = la cible est saisie
+                            et subit l'état <strong>Immobilisé 1 tour</strong> (-2 esquive active, déplacement impossible).
+                            En cas d'échec (Diff &lt; 0), la prise est esquivée ou repoussée.</li>
+                        <li><strong>🔓 Se Libérer de la Prise (2 PA) :</strong> la victime saisie peut tenter de briser
+                            l'étreinte lors de son propre tour via un duel opposé aveugle (meilleure compétence entre
+                            Athlétisme, Mains Nues et Acrobatie vs Athlétisme du grappler). Victoire = l'état Immobilisé
+                            est immédiatement dissipé et la prise est rompue.</li>
+                        <li><strong>🥋 Relâcher la Prise (0 PA) :</strong> le grappler peut rompre volontairement son étreinte
+                            à tout moment pendant son tour, libérant la cible de son immobilisation. Tout déplacement
+                            individuel du grappler rompt automatiquement la prise.</li>
+                        <li><strong>🤼 Traîner le corps (2 PA, 1 case) :</strong> le porteur recule ou pivote vers une case libre
+                            adjacente (coût 2 PA) et tire la victime saisie (ou tout allié/ennemi immobilisé, inconscient ou à terre)
+                            dans la case qu'il vient de libérer. Les deux combattants avancent de concert sans déclencher de réaction
+                            d'opportunité, préservant la distance de contact et le verrou de lutte.</li>
+                        <li><strong>🫁 Étranglement (2 PA, contact) :</strong> compression de la gorge sur cible saisie ou immobilisée
+                            (duel opposé <strong>Athlétisme vs Endurance Physique</strong>). Victoire = 2+ dégâts bruts ignorant
+                            l'armure au cou (trachée) + application du statut <strong>Asphyxie pendant 2 tours</strong>
+                            (drain d'1 PA de réserve par tour et pool de 2 dégâts résiduels dégressifs).</li>
+                        <li><strong>Rupture automatique :</strong> la lutte est immédiatement rompue si le grappler ou la victime
+                            meurt, tombe inconsciente, est sonnée, paralysée ou étourdie.</li>
+                    </ul>
+
+                    <h3>24.7 Charge d'Assaut, Sprint & Verrouillage du Tir (RD-038)</h3>
+                    <p>
+                        La <strong>Charge</strong> et le <strong>Sprint</strong> incarnent l'exploitation de l'élan cinétique
+                        brut sur l'échiquier tactique. Lorsqu'un combattant prend de la vitesse sur une distance
+                        significative (<strong>au moins 3 cases continues</strong>), sa masse en mouvement modifie
+                        radicalement l'équilibre de son offensive et de sa défense.
+                    </p>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Règles de Charge & Sprint (RD-038, Seuil : 3+ cases)</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Assaut 3+ cases</span> ➔ <span class="hl-gold">+2 Dégâts Frappe Mêlée</span> &amp; <span class="hl-ruby">-1 Défense (1 tour)</span> | <span class="hl-amber">Tir Bloqué</span>
+                        </div>
+                        <div class="formula-desc">
+                            Parcourir 3 cases ou plus confère immédiatement <strong>+2 dégâts d'impact brut</strong> sur la première
+                            attaque de contact (mains nues ou arme de mêlée) délivrée lors du même tour. En contrepartie,
+                            le déséquilibre de l'assaut impose une pénalité de <strong>-1 sur tous les jets de défense</strong>
+                            jusqu'au début du prochain tour personnel. L'inertie de course empêche toute visée stable :
+                            <strong>le sprint bloque tout tir à distance pour le reste du tour</strong>.
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>⚡ Impact de Charge (+2 dégâts) :</strong> le bonus s'applique aux dégâts bruts de l'attaque
+                            de contact (mêlée, mains nues, arme blanche ou contondante). Il est consommé dès la résolution de la frappe.
+                            Il n'augmente pas les tirs à distance.</li>
+                        <li><strong>🛡️ Exposition défensive (-1 défense jusqu'au prochain tour) :</strong> le chargeur s'expose
+                            en brisant sa garde pour maximiser son élan. Tout duel où il se défend (parade, esquive active ou réflexe)
+                            subit un malus de <strong>-1</strong>. Ce malus persiste pendant le reste de son tour et durant les tours
+                            adverses, jusqu'au début de son propre tour personnel suivant (recalage à <code>ResetTurn</code>).</li>
+                        <li><strong>🏃 Verrouillage du Tir (« Sprint bloque tir ce tour ») :</strong> courir à pleine vitesse
+                            (3 cases ou plus) rompt la posture de visée. Toute arme à distance (pistolets, fusils, arcs,
+                            armes de jet) est neutralisée pour le reste du tour en cours. La frappe au corps-à-corps reste
+                            pleinement accessible.</li>
+                        <li><strong>🧭 Pathfinder & Exécution :</strong> l'algorithme <code>HexPathfinder</code> calcule
+                            les trajectoires d'assaut vers les flancs libres de la cible (<code>FindChargePath</code>).
+                            L'action contextuelle <strong>⚡ Charge au contact</strong> permet d'enchaîner en un clic
+                            la course d'approche et la frappe chirurgicale au Torse.</li>
                     </ul>
 
                     <!-- ================= CHAPITRE 25 ================= -->

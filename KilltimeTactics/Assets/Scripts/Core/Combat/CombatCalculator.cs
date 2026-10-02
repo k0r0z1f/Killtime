@@ -348,6 +348,14 @@ namespace Killtime.Core.Combat
                 return null;
             }
 
+            // RD-038 : Le sprint bloque tout tir à distance ce tour
+            bool isRangedShot = attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir;
+            if (isRangedShot && !ChargeState.CanFireRanged(attacker))
+            {
+                error = $"{attacker.Name} a sprinté ce tour : tir impossible (RD-038).";
+                return null;
+            }
+
             // Éligibilité du Défenseur SANS prélèvement ni révélation.
             // Sa mise sera engagée à sa déclaration aveugle (DeclareDefenderStakes).
             duel.BaseDefenseCost = cfg.BaseReactionAPCost;
@@ -371,6 +379,10 @@ namespace Killtime.Core.Combat
             if (effectiveWants && !duel.CanDefenderReact)
             {
                 defBase += cfg.UnreactiveDefensePenalty;
+            }
+            if (ChargeState.HasDefensePenalty(defender))
+            {
+                defBase += cfg.ChargeDefensePenalty;
             }
             duel.DefenseBaseMod = defBase;
 
@@ -472,6 +484,10 @@ namespace Killtime.Core.Combat
                 if (!hasDefSpec) duel.DefenseDie = SkillDefinitions.StepDownDie(duel.DefenseDie);
             }
             int statusMod = duel.Defender.GetStatusModifier(defenseSkill, isOffensive: false);
+            if (ChargeState.HasDefensePenalty(duel.Defender))
+            {
+                statusMod += cfg.ChargeDefensePenalty;
+            }
             duel.DefenseStatusMod = statusMod;
             duel.DefenseBaseMod = statusMod;
             duel.CanDefenderReact = true;
@@ -715,6 +731,10 @@ namespace Killtime.Core.Combat
                 if (!hasDefSpec) duel.DefenseDie = SkillDefinitions.StepDownDie(duel.DefenseDie);
             }
             int statusMod = protector.GetStatusModifier(defSkill, isOffensive: false);
+            if (ChargeState.HasDefensePenalty(protector))
+            {
+                statusMod += Rules.CoreRulesConfig.Instance.ChargeDefensePenalty;
+            }
             duel.DefenseStatusMod = statusMod;
             duel.DefenseBaseMod = statusMod;
 
@@ -908,6 +928,157 @@ namespace Killtime.Core.Combat
             };
         }
 
+        // =====================================================================
+        // RD-039 : LUTTE, GRAPPLE & ÉTRANGLEMENT (Livre VI — Corps-à-corps)
+        // =====================================================================
+
+        /// <summary>
+        /// RD-039 : Tentative de prise au corps-à-corps (Lutte / Grapple).
+        /// Duel opposé aveugle Athlétisme (ou Mains Nues) vs Athlétisme (ou Défense Corporelle).
+        /// Victoire de l'attaquant (Diff >= 0) : cible saisie et Immobilisée (1 tour).
+        /// </summary>
+        public OpposedCheckResult ResolveGrappleDuel(
+            CharacterStats attacker,
+            CharacterStats defender,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderAutoStakes = false)
+        {
+            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
+            if (defender == null) throw new ArgumentNullException(nameof(defender));
+
+            SkillType atkSkill = attacker.GetSkillDie(SkillType.Athletisme, true) >= attacker.GetSkillDie(SkillType.MainsNues, true)
+                ? SkillType.Athletisme
+                : SkillType.MainsNues;
+
+            SkillType defSkill = defender.GetSkillDie(SkillType.Athletisme, false) >= defender.GetSkillDie(SkillType.DefenseCorporelle, false)
+                ? SkillType.Athletisme
+                : SkillType.DefenseCorporelle;
+
+            var opposed = ResolveOpposedCheck(
+                attacker, atkSkill,
+                defender, defSkill,
+                attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE,
+                defenderAutoStakes);
+
+            if (opposed.AttackerWins)
+            {
+                GrappleState.SetGrapple(attacker, defender);
+                opposed.CombatLog = $"🥋 <b>LUTTE — PRISE RÉUSSIE</b> : {attacker.Name} ceinture et verrouille {defender.Name} (Diff {opposed.Differential:+0;-0;0}) — Cible <b>IMMOBILISÉE</b> !\n" + opposed.CombatLog;
+            }
+            else
+            {
+                opposed.CombatLog = $"🥋 <b>LUTTE — ÉCHEC</b> : {defender.Name} repousse la saisie de {attacker.Name} (Diff {opposed.Differential:+0;-0;0}).\n" + opposed.CombatLog;
+            }
+
+            return opposed;
+        }
+
+        /// <summary>
+        /// RD-039 : Se libérer d'une étreinte de lutte (Lutte — Dégagement).
+        /// Duel opposé aveugle Athlétisme/Acrobatie/MainsNues (victime) vs Athlétisme (grappler).
+        /// Victoire de la victime (Diff >= 0) : prise rompue, statut Immobilisé retiré.
+        /// </summary>
+        public OpposedCheckResult ResolveGrappleEscapeDuel(
+            CharacterStats victim,
+            CharacterStats grappler,
+            int victimBonusAP = 0,
+            int victimPE = 0,
+            int grapplerBonusAP = 0,
+            int grapplerPE = 0,
+            bool grapplerAutoStakes = false)
+        {
+            if (victim == null) throw new ArgumentNullException(nameof(victim));
+            if (grappler == null) throw new ArgumentNullException(nameof(grappler));
+
+            SkillType escaperSkill = SkillType.Athletisme;
+            var bestDie = victim.GetSkillDie(SkillType.Athletisme, true);
+            var mnDie = victim.GetSkillDie(SkillType.MainsNues, true);
+            if (mnDie > bestDie) { bestDie = mnDie; escaperSkill = SkillType.MainsNues; }
+            var acroDie = victim.GetSkillDie(SkillType.Acrobatie, true);
+            if (acroDie > bestDie) { escaperSkill = SkillType.Acrobatie; }
+
+            var opposed = ResolveOpposedCheck(
+                victim, escaperSkill,
+                grappler, SkillType.Athletisme,
+                victimBonusAP, victimPE,
+                grapplerBonusAP, grapplerPE,
+                grapplerAutoStakes);
+
+            if (opposed.AttackerWins)
+            {
+                GrappleState.ReleaseGrapple(victim);
+                opposed.CombatLog = $"🔓 <b>LUTTE — PRISE BRISÉE</b> : {victim.Name} se dégage de l'étreinte de {grappler.Name} (Diff {opposed.Differential:+0;-0;0}) — Statut Immobilisé dissipé !\n" + opposed.CombatLog;
+            }
+            else
+            {
+                opposed.CombatLog = $"🔒 <b>LUTTE — ÉCHEC DU DÉGAGEMENT</b> : {grappler.Name} maintient fermement {victim.Name} en lutte (Diff {opposed.Differential:+0;-0;0}).\n" + opposed.CombatLog;
+            }
+
+            return opposed;
+        }
+
+        /// <summary>
+        /// RD-039 : Étranglement au corps-à-corps sur cible saisie ou immobilisée.
+        /// Duel opposé aveugle Athlétisme (attaquant) vs Endurance Physique (défenseur).
+        /// Victoire de l'attaquant (Diff >= 0) : dégâts bruts au cou + statut Asphyxie (2 tours, drain PA).
+        /// </summary>
+        public OpposedCheckResult ResolveStrangulationDuel(
+            CharacterStats attacker,
+            CharacterStats defender,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderAutoStakes = false)
+        {
+            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
+            if (defender == null) throw new ArgumentNullException(nameof(defender));
+
+            SkillType atkSkill = attacker.GetSkillDie(SkillType.Athletisme, true) >= attacker.GetSkillDie(SkillType.MainsNues, true)
+                ? SkillType.Athletisme
+                : SkillType.MainsNues;
+
+            SkillType defSkill = defender.GetSkillDie(SkillType.EndurancePhysique, false) >= defender.GetSkillDie(SkillType.Athletisme, false)
+                ? SkillType.EndurancePhysique
+                : SkillType.Athletisme;
+
+            var opposed = ResolveOpposedCheck(
+                attacker, atkSkill,
+                defender, defSkill,
+                attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE,
+                defenderAutoStakes);
+
+            if (opposed.AttackerWins)
+            {
+                int rawDmg = Math.Max(2, 1 + opposed.Differential / 2);
+                int remaining = defender.CurrentHealth - rawDmg;
+                if (remaining <= 0)
+                {
+                    defender.EvaluateFatalBlow(BodyPart.CouTrachee, rawDmg);
+                }
+                else
+                {
+                    defender.CurrentHealth = remaining;
+                }
+
+                defender.ApplyStatus(StatusEffect.Asphyxie, 2);
+                defender.ApplyResidualDamage(StatusEffect.Asphyxie, 2);
+
+                opposed.CombatLog = $"🫁 <b>ÉTRANGLEMENT — SUFFOCATION</b> : {attacker.Name} compresse la trachée de {defender.Name} (Diff {opposed.Differential:+0;-0;0}) — {rawDmg} dégâts bruts au cou + <b>ASPHYXIE</b> (2 tours, pool 2 résiduels, -1 PA/tour) !\n" + opposed.CombatLog;
+            }
+            else
+            {
+                opposed.CombatLog = $"🫁 <b>ÉTRANGLEMENT — RÉSISTÉ</b> : {defender.Name} résiste à l'étranglement de {attacker.Name} (Diff {opposed.Differential:+0;-0;0}).\n" + opposed.CombatLog;
+            }
+
+            return opposed;
+        }
+
         /// <summary>Espérance d'un dé (pour l'estimation aveugle de l'IA, mise adverse inconnue).</summary>
         public static double DieAverage(DiceType die)
         {
@@ -1021,6 +1192,9 @@ namespace Killtime.Core.Combat
             var defenseSkill = duel.DefenseSkill;
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
             var cfg = Rules.CoreRulesConfig.Instance;
+            // RD-038 Charge 3+ cases : consommation de l'élan cinétique sur cette frappe de contact
+            bool isMeleeAttackForCharge = SkillDefinitions.IsMeleeAttackSkill(duel.AttackSkill) || duel.AttackSkill == SkillType.MainsNues;
+            bool chargeApplied = isMeleeAttackForCharge && ChargeState.ConsumeChargeBonus(attacker);
 
             var attackRoll = duel.AttackFinalRoll;
             int attCommittedPA = duel.AttackerBonusPAApplied;
@@ -1061,6 +1235,10 @@ namespace Killtime.Core.Combat
                 }
                 string critDefText = defenseRoll.IsCriticalSuccess ? " <color=#00E5FF>[CRITIQUE !]</color>" : "";
                 string defStatusDetail = !string.IsNullOrEmpty(statusDefInfo) ? $" {statusDefInfo}" : " 0";
+                if (ChargeState.HasDefensePenalty(defender))
+                {
+                    defStatusDetail += $" [Malus Charge : {cfg.ChargeDefensePenalty} Déf]";
+                }
                 // Les deux jets sont révélés ensemble : aucune injection après tirage.
                 defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {duel.DefenseDie} [Tirage {defenseRoll.RawRoll} + États {duel.DefenseStatusMod} ({defStatusDetail}){defPaText} = Total {defenseRoll.Total}]{critDefText}";
             }
@@ -1093,8 +1271,8 @@ namespace Killtime.Core.Combat
             string phaseDef = !effectiveDefenderWantsToDefend
                 ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} encaisse (0 PA, 0 PE), sans voir le jet adverse."
                 : ((duel.CanDefenderReact && duel.DefenderBasePaid)
-                    ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse."
-                    : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe.");
+                    ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}."
+                    : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}.");
 
             // 4. Résolution du Différentiel
             if (effectiveDefenderWantsToDefend && differential < 0)
@@ -1239,6 +1417,14 @@ namespace Killtime.Core.Combat
             else if (attacker.HasSpecialization("Hache de Guerre") && meleeSkill == SkillType.ManiementArmes)
             {
                 rawDamage += 2;
+            }
+
+            // RD-038 Charge 3+ cases : +2 dégâts sur la frappe de contact (mêlée / mains nues)
+            if (chargeApplied)
+            {
+                int chargeBonus = cfg.ChargeDamageBonus;
+                rawDamage += chargeBonus;
+                dmgFormula += $" + {chargeBonus} (⚡ Charge)";
             }
 
             int absorbed = Math.Min(totalArmor, rawDamage);

@@ -68,6 +68,12 @@ namespace Killtime.Tactics.CombatUI
                 return distance <= 1;
             }
 
+            // RD-038 : Le sprint bloque tout tir à distance ce tour
+            if (!ChargeState.CanFireRanged(actor.Stats))
+            {
+                return false;
+            }
+
             return distance <= maxRange;
         }
 
@@ -112,6 +118,8 @@ namespace Killtime.Tactics.CombatUI
         private static bool CanFireShot(TacticalUnit actor, TacticalUnit target)
         {
             if (actor == null) return false;
+            // RD-038 : Le sprint bloque tout tir ce tour
+            if (FiresShot(actor, target) && !ChargeState.CanFireRanged(actor.Stats)) return false;
             var weapon = actor.Sheet?.GetEquippedWeapon();
             if (weapon == null || weapon.AmmoCapacity <= 0) return true;
             if (!FiresShot(actor, target)) return true;
@@ -122,6 +130,10 @@ namespace Killtime.Tactics.CombatUI
         private static string AmmoTag(TacticalUnit actor, TacticalUnit target)
         {
             if (actor == null) return "";
+            if (FiresShot(actor, target) && !ChargeState.CanFireRanged(actor.Stats))
+            {
+                return " [SPRINT : TIR BLOQUÉ]";
+            }
             var weapon = actor.Sheet?.GetEquippedWeapon();
             if (weapon == null || weapon.AmmoCapacity <= 0) return "";
             if (!FiresShot(actor, target)) return "";
@@ -188,6 +200,26 @@ namespace Killtime.Tactics.CombatUI
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Jambes, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
+
+                // RD-038 : Charge au contact (3+ cases) + frappe d'assaut
+                int chargeAtkCost = 2;
+                bool isChargeDistance = actor.CurrentCoords.DistanceTo(target.CurrentCoords) >= 3;
+                bool canChargeTarget = arena != null && arena.Pathfinder != null
+                    && arena.Pathfinder.CanChargeTarget(actor, target, 3, chargeAtkCost)
+                    && !GrappleState.IsGrappled(actor.Stats);
+
+                if (canChargeTarget || isChargeDistance)
+                {
+                    int minChargeAP = 3 + chargeAtkCost;
+                    actions.Add(new CombatAction(
+                        $"⚡ Charge au contact ({minChargeAP}+ PA)",
+                        "Manœuvre d'assaut (RD-038, Livre VI) : déplacement d'au moins 3 cases vers un flanc libre de la cible immédiatement suivi d'une frappe au contact (+2 dégâts d'impact, -1 défense jusqu'au prochain tour personnel, tir bloqué ce tour).",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        minChargeAP,
+                        (act, tgt) => arena != null && arena.Pathfinder != null && arena.Pathfinder.CanChargeTarget(act, tgt, 3, chargeAtkCost) && !GrappleState.IsGrappled(act.Stats),
+                        (act, tgt) => arena.ExecuteChargeAttack(act, tgt, BodyPart.Torse, CombatContextMenuUI.CurrentInjectedAP, CombatContextMenuUI.CurrentInjectedPE)
+                    ));
+                }
 
                 // --- Grenades : lancer sur la case de la cible si à portée ---
                 InventoryItem firstGrenade = null;
@@ -343,6 +375,92 @@ namespace Killtime.Tactics.CombatUI
                             arena?.Log($"🪢 <b>{act.Stats.Name}</b> ligote <b>{tgt.Stats.Name}</b> (Immobilise 1 tour).");
                         }
                     ));
+                }
+
+                // =============================================================
+                // RD-039 : LUTTE, GRAPPLE, ÉTRANGLEMENT & TRAÎNÉE DE CORPS
+                // =============================================================
+                bool isGrappledByMe = Killtime.Core.Combat.GrappleState.IsGrappling(actor.Stats, target.Stats);
+                bool isGrappledByTarget = Killtime.Core.Combat.GrappleState.IsGrappling(target.Stats, actor.Stats);
+
+                if (isGrappledByTarget)
+                {
+                    actions.Add(new CombatAction(
+                        "🔓 Lutte : Se Libérer de la Prise (2 PA)",
+                        "Duel opposé aveugle Athlétisme/MainsNues/Acrobatie vs Athlétisme pour briser la prise et dissiper l'état Immobilisé.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && Killtime.Core.Combat.GrappleState.IsGrappling(tgt.Stats, act.Stats),
+                        (act, tgt) => arena.ExecuteGrappleEscape(act, tgt)
+                    ));
+                }
+                else if (isGrappledByMe)
+                {
+                    actions.Add(new CombatAction(
+                        "🥋 Lutte : Relâcher la Prise (0 PA)",
+                        $"Relâche l'étreinte sur {target.Stats.Name} (dissipe son état Immobilisé de lutte).",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        0,
+                        (act, tgt) => Killtime.Core.Combat.GrappleState.IsGrappling(act.Stats, tgt.Stats),
+                        (act, tgt) =>
+                        {
+                            Killtime.Core.Combat.GrappleState.ReleaseGrapple(act.Stats);
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("Prise relâchée", Color.gray);
+                            arena?.Log($"🥋 <b>{act.Stats.Name}</b> relâche sa prise de lutte sur <b>{tgt.Stats.Name}</b>.");
+                        }
+                    ));
+
+                    actions.Add(new CombatAction(
+                        "🫁 Étranglement (2 PA, contact)",
+                        "Suffocation au corps-à-corps (Athlétisme vs Endurance) : dégâts bruts au cou + statut Asphyxie (2 tours, drain 1 PA/tour, pool 2 dégâts continus).",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
+                        (act, tgt) => arena.ExecuteStrangulation(act, tgt)
+                    ));
+
+                    actions.Add(new CombatAction(
+                        "🤼 Traîner le corps (2 PA, 1 case)",
+                        "Recule ou pivote d'1 case et tire la cible saisie dans la case libérée (coût 2 PA pour le grappler).",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1 && (arena == null || arena.CanDragBody(act, tgt)),
+                        (act, tgt) => arena.ExecuteDragBody(act, tgt)
+                    ));
+                }
+                else
+                {
+                    actions.Add(new CombatAction(
+                        "🥋 Lutte : Prise au Corps-à-Corps (2 PA)",
+                        "Duel opposé aveugle Athlétisme vs Athlétisme : saisit et applique l'état Immobilisé 1 tour. Permet ensuite la traînée (1 case / 2 PA) et l'étranglement (Asphyxie).",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && !act.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise),
+                        (act, tgt) => arena.ExecuteGrapple(act, tgt)
+                    ));
+
+                    if (target.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise))
+                    {
+                        actions.Add(new CombatAction(
+                            "🫁 Étranglement (2 PA, contact)",
+                            "Suffocation au corps-à-corps (Athlétisme vs Endurance) sur cible immobilisée : dégâts bruts au cou + statut Asphyxie (2 tours, drain 1 PA/tour).",
+                            ActionCategory.AttaqueEtPassesDarmes,
+                            2,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
+                            (act, tgt) => arena.ExecuteStrangulation(act, tgt)
+                        ));
+
+                        actions.Add(new CombatAction(
+                            "🤼 Traîner le corps (2 PA, 1 case)",
+                            "Déplace le corps d'une cible immobilisée d'1 case (coût 2 PA).",
+                            ActionCategory.AttaqueEtPassesDarmes,
+                            2,
+                            (act, tgt) => act.Stats.CurrentActionPoints >= 2 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1 && (arena == null || arena.CanDragBody(act, tgt)),
+                            (act, tgt) => arena.ExecuteDragBody(act, tgt)
+                        ));
+                    }
                 }
             }
 
@@ -1033,6 +1151,23 @@ namespace Killtime.Tactics.CombatUI
                             vis?.SpawnFloatingText("🔓 LIBÉRÉ", Color.green);
                             arena?.Log($"🔓 <b>{act.Stats.Name}</b> libère <b>{tgt.Stats.Name}</b> de ses entraves.");
                         }
+                    ));
+                }
+
+                // RD-039 : Traîner un allié (2 PA, contact) : évacue un allié immobilisé, inconscient ou à terre
+                if (target.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise)
+                    || target.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient)
+                    || target.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre))
+                {
+                    actions.Add(new CombatAction(
+                        "🤼 Traîner l'allié (2 PA, 1 case)",
+                        "Évacue un allié immobilisé, à terre ou inconscient d'1 case (coût 2 PA pour le sauveteur).",
+                        ActionCategory.TraumatologieEtSoins,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2
+                            && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1
+                            && (arena == null || arena.CanDragBody(act, tgt)),
+                        (act, tgt) => arena.ExecuteDragBody(act, tgt)
                     ));
                 }
 

@@ -16,7 +16,7 @@ namespace Killtime.Core.Dice
             _random = seed.HasValue ? new Random(seed.Value) : new Random();
         }
 
-        public DiceRollResult Roll(DiceType dieType, int modifier = 0, int targetDC = 10)
+        public virtual DiceRollResult Roll(DiceType dieType, int modifier = 0, int targetDC = 10)
         {
             int rawRoll;
             bool isCriticalSuccess = false;

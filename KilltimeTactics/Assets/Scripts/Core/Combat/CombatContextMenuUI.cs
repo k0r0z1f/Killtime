@@ -763,6 +763,18 @@ namespace Killtime.Tactics.CombatUI
                     GUI.color = ColorArcaneEmerald;
                     GUILayout.Label("🛡️ <b>LIGNE TENUE</b> (+armure)", descStyle);
                 }
+
+                // RD-039 : Étreintes de lutte actives (Livre VI)
+                if (Killtime.Core.Combat.GrappleState.TryGetGrappledVictim(_contextTarget.Stats, out var heldVictim) && heldVictim != null)
+                {
+                    GUI.color = ColorArcaneCyan;
+                    GUILayout.Label($"🥋 <b>LUTTE : Maintient {heldVictim.Name}</b>", descStyle);
+                }
+                else if (Killtime.Core.Combat.GrappleState.TryGetGrappler(_contextTarget.Stats, out var grappler) && grappler != null)
+                {
+                    GUI.color = ColorArcaneAmber;
+                    GUILayout.Label($"🥋 <b>LUTTE : Saisi par {grappler.Name}</b>", descStyle);
+                }
             }
 
             GUILayout.FlexibleSpace();

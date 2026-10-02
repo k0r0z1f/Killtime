@@ -63,9 +63,19 @@ namespace Killtime.Core.Character
 
         public CharacterSheet Sheet { get; set; }
 
-        public void RegisterMove()
+        // RD-038 : Charge & Sprint (Positionnement)
+        public bool HasSprintedThisTurn => ChargeState.HasSprinted(this);
+        public bool HasChargeBonus => ChargeState.HasChargeBonus(this);
+        public bool HasChargeDefensePenalty => ChargeState.HasDefensePenalty(this);
+        public int TilesMovedThisTurn => ChargeState.GetTilesMovedThisTurn(this);
+
+        public void RegisterMove(int tilesMoved = 0)
         {
             MovesThisTurn++;
+            if (tilesMoved > 0)
+            {
+                ChargeState.ApplyMovement(this, tilesMoved);
+            }
         }
 
         public CharacterStats(string name, Attributes attributes, int baseArmor = 0, CharacterSheet sheet = null)
@@ -289,6 +299,21 @@ namespace Killtime.Core.Character
             if (ActiveStatus.HasFlag(StatusEffect.Inconscient)) return false;
             if (ActiveStatus.HasFlag(StatusEffect.Sonne)) return false;
             if (ActiveStatus.HasFlag(StatusEffect.Paralyse)) return false;
+            return true;
+        }
+
+        /// <summary>
+        /// Vrai si l'unité est en état physique de se déplacer sur la grille.
+        /// Faux si morte, inconsciente, sonnée, paralysée ou immobilisée (RD-039).
+        /// </summary>
+        public bool CanMove()
+        {
+            if (!IsAlive) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Inconscient)) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Sonne)) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Paralyse)) return false;
+            if (ActiveStatus.HasFlag(StatusEffect.Immobilise)) return false;
+            if (Combat.GrappleState.IsGrappled(this)) return false;
             return true;
         }
 
@@ -665,6 +690,7 @@ namespace Killtime.Core.Character
 
             AttacksThisTurn = 0;
             MovesThisTurn = 0;
+            ChargeState.OnUnitTurnStart(this);
 
             if (IsAlive && CurrentHealth < MaxHealth)
             {

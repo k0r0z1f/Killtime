@@ -96,6 +96,19 @@ namespace Killtime.Core.Rules
         [Tooltip("Si vrai, la frappe et le balayage d'opportunité sont gratuits (0 PA, réaction seule).")]
         public bool OpportunityStrikeIsFree = true;
 
+        // --- RD-038 : Charge & Sprint (Positionnement) ---
+        [Header("Charge & Sprint (RD-038)")]
+        [Tooltip("Distance minimale en cases pour déclencher une charge / sprint (3 par défaut).")]
+        public int ChargeMinDistance = 3;
+        [Tooltip("Bonus aux dégâts sur l'attaque de contact suivant une charge (+2 par défaut).")]
+        public int ChargeDamageBonus = 2;
+        [Tooltip("Malus en défense jusqu'au prochain tour personnel après une charge (-1 par défaut).")]
+        public int ChargeDefensePenalty = -1;
+        [Tooltip("Coût PA supplémentaire pour la manœuvre de charge déclarée (+1 PA Livre VI §Manœuvres Mobiles).")]
+        public int ChargeManeuverExtraAPCost = 1;
+        [Tooltip("Si vrai, le sprint (3+ cases) bloque tout tir à distance pour le reste du tour (RD-038).")]
+        public bool SprintBlocksRanged = true;
+
         // --- Livre VI, Chap. 26 : VATS Anatomique ---
         [Header("Anatomie Chirurgicale (Livre VI, Chap. 26)")]
         public List<BodyPartRuleEntry> BodyPartRules = new();
@@ -177,6 +190,12 @@ namespace Killtime.Core.Rules
             OpportunityBlockAPCost = 1;
             DisengageAPCost = 1;
             OpportunityStrikeIsFree = true;
+
+            ChargeMinDistance = 3;
+            ChargeDamageBonus = 2;
+            ChargeDefensePenalty = -1;
+            ChargeManeuverExtraAPCost = 1;
+            SprintBlocksRanged = true;
 
             BodyPartRules.Clear();
             BodyPartRules.Add(new BodyPartRuleEntry { Part = BodyPart.Tete, DifficultyModifier = -2, CriticalDamageMultiplier = 3 });
