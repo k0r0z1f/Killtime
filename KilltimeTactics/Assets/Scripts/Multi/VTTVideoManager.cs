@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Killtime.UI;
 
 namespace Killtime.Multi.Video
 {
@@ -54,6 +55,7 @@ namespace Killtime.Multi.Video
             _cropZoom = Mathf.Clamp(zoom, 1.0f, 2.5f);
             _cropOffsetX = Mathf.Clamp(offsetX, -0.5f, 0.5f);
             _cropOffsetY = Mathf.Clamp(offsetY, -0.5f, 0.5f);
+            SavePreferences();
         }
 
         public void ResetCrop()
@@ -61,6 +63,7 @@ namespace Killtime.Multi.Video
             _cropZoom = 1.0f;
             _cropOffsetX = 0.0f;
             _cropOffsetY = 0.0f;
+            SavePreferences();
         }
 
         public string ActiveDeviceName => _activeDeviceName;
@@ -72,12 +75,20 @@ namespace Killtime.Multi.Video
         public bool BlurBackground
         {
             get => _blurBackground;
-            set => _blurBackground = value;
+            set
+            {
+                _blurBackground = value;
+                SavePreferences();
+            }
         }
         public int BlurRadius
         {
             get => _blurRadius;
-            set => _blurRadius = Mathf.Clamp(value, 2, 12);
+            set
+            {
+                _blurRadius = Mathf.Clamp(value, 2, 12);
+                SavePreferences();
+            }
         }
 
         public Texture2D LocalPreviewTexture => _localPreviewTexture;
@@ -89,6 +100,7 @@ namespace Killtime.Multi.Video
         private Color32[] _dstPixels;
         private Color32[] _blurredPixels;
         private Color32[] _tempBlurPixels;
+        private Color32[] _rawSrcPixels;
         private float[] _smoothedMask;
 
         private bool _isCameraActive;
@@ -127,6 +139,7 @@ namespace Killtime.Multi.Video
                 wrapMode = TextureWrapMode.Clamp
             };
 
+            LoadPreferences();
             RefreshDevices();
         }
 
@@ -221,6 +234,33 @@ namespace Killtime.Multi.Video
         public void SetBlurBackground(bool enabled)
         {
             _blurBackground = enabled;
+            SavePreferences();
+        }
+
+        private void LoadPreferences()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+
+            _blurBackground = p.VideoBlurBackground;
+            _blurRadius = Mathf.Clamp(p.VideoBlurRadius, 2, 12);
+            _cropZoom = Mathf.Clamp(p.VideoCropZoom, 1.0f, 2.5f);
+            _cropOffsetX = Mathf.Clamp(p.VideoCropOffsetX, -0.5f, 0.5f);
+            _cropOffsetY = Mathf.Clamp(p.VideoCropOffsetY, -0.5f, 0.5f);
+        }
+
+        private void SavePreferences()
+        {
+            var p = DevUIPreferences.Current;
+            if (p == null) return;
+
+            p.VideoBlurBackground = _blurBackground;
+            p.VideoBlurRadius = _blurRadius;
+            p.VideoCropZoom = _cropZoom;
+            p.VideoCropOffsetX = _cropOffsetX;
+            p.VideoCropOffsetY = _cropOffsetY;
+
+            DevUIPreferences.MarkDirty();
         }
 
         private void InitSentisWorker()
@@ -387,8 +427,13 @@ namespace Killtime.Multi.Video
             int srcH = _webCamTexture.height;
             if (srcW <= 16 || srcH <= 16) return;
 
-            Color32[] srcPixels = _webCamTexture.GetPixels32();
-            if (srcPixels == null || srcPixels.Length != srcW * srcH) return;
+            int totalSrc = srcW * srcH;
+            if (_rawSrcPixels == null || _rawSrcPixels.Length != totalSrc)
+            {
+                _rawSrcPixels = new Color32[totalSrc];
+            }
+            Color32[] srcPixels = _webCamTexture.GetPixels32(_rawSrcPixels);
+            if (srcPixels == null || srcPixels.Length != totalSrc) return;
 
             const float targetAspect = (float)TargetWidth / TargetHeight;
             float srcAspect = (float)srcW / srcH;

@@ -724,6 +724,41 @@ namespace Killtime.Tactics.TurnSystem
             }
         }
 
+        private void NotifyAudioBattleState()
+        {
+            if (IsInExploration || IsCombatOver) return;
+            var audioMgr = Killtime.Audio.KilltimeAudioManager.Instance;
+            if (audioMgr == null) return;
+
+            int alliesAlive = 0;
+            int enemiesAlive = 0;
+            int totalMaxHp = 0;
+            int totalCurrentHp = 0;
+
+            for (int i = 0; i < _allUnits.Count; i++)
+            {
+                var u = _allUnits[i];
+                if (u == null || u.Stats == null) continue;
+
+                if (u.IsPlayerControlled)
+                {
+                    totalMaxHp += u.Stats.MaxHealth;
+                    if (u.Stats.IsAlive)
+                    {
+                        alliesAlive++;
+                        totalCurrentHp += Mathf.Max(0, u.Stats.CurrentHealth);
+                    }
+                }
+                else if (u.Stats.IsAlive)
+                {
+                    enemiesAlive++;
+                }
+            }
+
+            float allyHpRatio = totalMaxHp > 0 ? (float)totalCurrentHp / totalMaxHp : 0f;
+            audioMgr.NotifyBattleState(allyHpRatio, alliesAlive, enemiesAlive, CurrentRound);
+        }
+
         public void EndCombatWithOutcome(CombatOutcome outcome, string reason)
         {
             if (IsCombatOver) return;
@@ -731,6 +766,22 @@ namespace Killtime.Tactics.TurnSystem
             IsCombatOver = true;
             CurrentOutcome = outcome;
             CombatEndReason = reason ?? "";
+
+            var audioMgr = Killtime.Audio.KilltimeAudioManager.Instance;
+            if (audioMgr != null)
+            {
+                if (outcome == CombatOutcome.Victory)
+                {
+                    audioMgr.PlayStinger(Killtime.Audio.MusicMood.Victory);
+                    audioMgr.PlayMusic(Killtime.Audio.MusicMood.Victory, Killtime.Audio.MusicIntensity.Intense, forceRestart: true);
+                }
+                else if (outcome == CombatOutcome.Defeat)
+                {
+                    audioMgr.PlayStinger(Killtime.Audio.MusicMood.Defeat);
+                    audioMgr.PlayMusic(Killtime.Audio.MusicMood.Defeat, Killtime.Audio.MusicIntensity.Calm, forceRestart: true);
+                }
+            }
+
             OnCombatEnded?.Invoke(CurrentOutcome);
 
             if (IsMultiplayerGM())
@@ -948,6 +999,8 @@ namespace Killtime.Tactics.TurnSystem
                 EndCurrentTurn();
                 return;
             }
+
+            NotifyAudioBattleState();
 
             OnTurnStarted?.Invoke(ActiveUnit);
 

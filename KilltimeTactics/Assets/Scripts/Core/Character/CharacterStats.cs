@@ -61,6 +61,12 @@ namespace Killtime.Core.Character
         public bool IsInLastBreath { get; set; }
         public FatalBlowResolution LastFatalBlowResolution { get; set; } = FatalBlowResolution.None;
 
+        // RD-047 : Déroute, Reddition & Moral
+        public bool IsPlayerControlled { get; set; }
+        public bool IsSurvivor { get; set; }
+        public bool HasTestedMorale { get; set; }
+        public bool IsSurrendered { get; set; }
+
         public CharacterSheet Sheet { get; set; }
 
         // RD-038 : Charge & Sprint (Positionnement)
@@ -295,7 +301,7 @@ namespace Killtime.Core.Character
 
         public bool CanDefendActively()
         {
-            if (!IsAlive) return false;
+            if (!IsAlive || IsSurrendered) return false;
             if (ActiveStatus.HasFlag(StatusEffect.Inconscient)) return false;
             if (ActiveStatus.HasFlag(StatusEffect.Sonne)) return false;
             if (ActiveStatus.HasFlag(StatusEffect.Paralyse)) return false;
@@ -723,6 +729,11 @@ namespace Killtime.Core.Character
                     CurrentHealth = Math.Min(MaxHealth, CurrentHealth + 1);
                 }
             }
+
+            if (CurrentHealth > (int)Math.Ceiling(MaxHealth * 0.28f))
+            {
+                HasTestedMorale = false;
+            }
         }
 
         /// <summary>
@@ -787,7 +798,7 @@ namespace Killtime.Core.Character
 
         public bool CanAttack(DiceType attackDie)
         {
-            if (!IsAlive) return false;
+            if (!IsAlive || IsSurrendered) return false;
             if (ActiveStatus.HasFlag(StatusEffect.Inconscient) || 
                 ActiveStatus.HasFlag(StatusEffect.Sonne) || 
                 ActiveStatus.HasFlag(StatusEffect.Paralyse))
@@ -806,8 +817,9 @@ namespace Killtime.Core.Character
         {
             var cfg = Rules.CoreRulesConfig.Instance;
             int appliedBonus = (bonusAP < 0) ? cfg.EmergencyBreathBonusAP : bonusAP;
+            int maxEss = Attributes.Constitution + (HasSpecialization("Restructuration Neurale : Volonté d'Inflexible") ? 2 : 0);
 
-            if (Essoufflement >= Attributes.Constitution)
+            if (Essoufflement >= maxEss)
             {
                 return false;
             }
@@ -841,6 +853,10 @@ namespace Killtime.Core.Character
             CurrentHealth = Math.Min(MaxHealth, CurrentHealth + amount);
             if (ActiveStatus.HasFlag(StatusEffect.Saignement))
                 RemoveStatus(StatusEffect.Saignement);
+            if (CurrentHealth > (int)Math.Ceiling(MaxHealth * 0.28f))
+            {
+                HasTestedMorale = false;
+            }
             return Math.Max(0, CurrentHealth - before);
         }
 
@@ -921,10 +937,11 @@ namespace Killtime.Core.Character
 
         public bool TriggerRedlineAP(int extraAP = 1)
         {
-            if (!IsAlive || Essoufflement >= Attributes.Constitution) return false;
+            int maxEss = Attributes.Constitution + (HasSpecialization("Restructuration Neurale : Volonté d'Inflexible") ? 2 : 0);
+            if (!IsAlive || Essoufflement >= maxEss) return false;
             CurrentActionPoints += extraAP;
             Essoufflement += extraAP;
-            if (Essoufflement >= Attributes.Constitution)
+            if (Essoufflement >= maxEss)
             {
                 ApplyStatus(StatusEffect.Ralenti, 1);
             }
@@ -937,7 +954,8 @@ namespace Killtime.Core.Character
         /// </summary>
         public int GetSpendablePE()
         {
-            return Math.Max(0, Attributes.Constitution - Essoufflement);
+            int maxEss = Attributes.Constitution + (HasSpecialization("Restructuration Neurale : Volonté d'Inflexible") ? 2 : 0);
+            return Math.Max(0, maxEss - Essoufflement);
         }
 
         /// <summary>
@@ -956,6 +974,16 @@ namespace Killtime.Core.Character
         public FatalBlowResolution EvaluateFatalBlow(BodyPart hitPart, int finalDamageDealt)
         {
             bool exceedsEncaissement = finalDamageDealt > EncaissementThreshold;
+
+            if (HasSpecialization("Restructuration Neurale : Volonté d'Inflexible")
+                && (CurrentHealth - finalDamageDealt) >= -5
+                && hitPart != BodyPart.Tete
+                && hitPart != BodyPart.YeuxVisage)
+            {
+                CurrentHealth -= finalDamageDealt;
+                LastFatalBlowResolution = FatalBlowResolution.None;
+                return FatalBlowResolution.None;
+            }
 
             if (exceedsEncaissement)
             {
@@ -1024,7 +1052,77 @@ namespace Killtime.Core.Character
             ActiveStatus &= ~StatusEffect.Inconscient;
         }
 
-        public bool IsAlive => !IsDead && (CurrentHealth > 0 || IsInLastBreath) && !ActiveStatus.HasFlag(StatusEffect.Inconscient);
+        public bool IsAlive => !IsDead && (CurrentHealth > 0 || IsInLastBreath || (HasSpecialization("Restructuration Neurale : Volonté d'Inflexible") && CurrentHealth >= -5)) && !ActiveStatus.HasFlag(StatusEffect.Inconscient);
+
+        /// <summary>
+        /// RD-047 : Test de moral au seuil critique des 28% PV (Livre VII).
+        /// Épreuve basée sur le palier max(Charisme, Instinct) vs SD standard.
+        /// Réussite = moral intact. Échec = Reddition si IA Survivor, Déroute (Agonisant) sinon.
+        /// </summary>
+        public MoraleCheckResult CheckMoraleAtThreshold(DiceRoller diceRoller, int targetDC = 6)
+        {
+            if (HasTestedMorale || !IsAlive || IsSurrendered || CurrentHealth <= 0)
+                return default;
+
+            diceRoller ??= new DiceRoller();
+
+            int threshold = (int)Math.Ceiling(MaxHealth * 0.28f);
+            if (CurrentHealth > threshold)
+                return default;
+
+            HasTestedMorale = true;
+            int chaVal = Attributes.Charisme;
+            int insVal = Attributes.Instinct;
+            int bestAttr = Math.Max(chaVal, insVal);
+            var die = SkillDefinitions.DieFromTotalSteps(SkillDefinitions.CharacteristicSteps(bestAttr));
+            int statusMod = GetStatusModifier(SkillType.Intuition, false);
+
+            var roll = diceRoller.Roll(die, statusMod, targetDC);
+            bool passed = roll.IsSuccess;
+
+            var result = new MoraleCheckResult
+            {
+                Triggered = true,
+                Passed = passed,
+                Roll = roll
+            };
+
+            if (passed)
+            {
+                result.Log = $"🧠 <b>JET DE MORAL (28% PV)</b> : {Name} résiste à la panique [Max(CHA {chaVal}, INS {insVal}) ➔ {die}, Total {roll.Total} vs SD {targetDC}] ➔ <b>MORAL INTACT</b>.";
+            }
+            else
+            {
+                if (IsSurvivor && !IsPlayerControlled)
+                {
+                    IsSurrendered = true;
+                    result.Surrendered = true;
+                    result.Log = $"🏳️ <b>JET DE MORAL ÉCHOUÉ (28% PV)</b> : {Name} [Total {roll.Total} vs SD {targetDC}] ➔ <b>REDDITION (IA Survivor)</b> ! L'unité dépose les armes.";
+                }
+                else
+                {
+                    ApplyStatus(StatusEffect.Agonisant, -1);
+                    result.Routed = true;
+                    result.Log = $"😱 <b>JET DE MORAL ÉCHOUÉ (28% PV)</b> : {Name} [Total {roll.Total} vs SD {targetDC}] ➔ <b>DÉROUTE</b> ! Altération [Agonisant] infligée (Fuite éperdue).";
+                }
+            }
+
+            return result;
+        }
+    }
+
+    /// <summary>
+    /// RD-047 : Résultat du test de moral au seuil critique des 28% PV.
+    /// </summary>
+    [Serializable]
+    public struct MoraleCheckResult
+    {
+        public bool Triggered;
+        public bool Passed;
+        public bool Surrendered;
+        public bool Routed;
+        [NonSerialized] public DiceRollResult Roll;
+        public string Log;
     }
 
     /// <summary>

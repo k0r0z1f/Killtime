@@ -31,7 +31,6 @@ namespace Killtime.Core.Character.Classes
                     new SkillTrainingStep(SkillType.MedecineAvancee, 2),
                     new SkillTrainingStep(SkillType.PremiersSoins, 2),
                     new SkillTrainingStep(SkillType.Academie, 1),
-                    new SkillTrainingStep(SkillType.Observation, 1),
                 },
                 StartingSpecializations = new List<string>
                 {

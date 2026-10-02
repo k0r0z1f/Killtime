@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-01",
+  "updated": "2026-10-02",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -139,7 +139,7 @@
           "id": "RD-034",
           "title": "Rafale / full-auto / shotgun cône",
           "epic": "Munitions",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 4,
           "scene": "",
@@ -148,7 +148,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "GrenadeSystem + CombatCalculator",
-          "details": "Rafale 4 cases refoule déjà en spec. Généraliser : cône, dispersion, friendly fire, falloff longue portée."
+          "details": "FAIT : Balistique de zone et tirs multiples généralisés (Livre VI). 1) Géométrie axiale : cône progressif Shotgun (portée 4, évasement 1-3 cases), rafale Burst rectiligne (couloir 4 cases), cône étendu FullAuto et Suppression (5 cases, front large). 2) Dispersion (scatter) : déviation angulaire sur échec Ballistique (SD 10) réorientant tout le cône avec sécurisation anti-retour sur case d'origine. 3) Friendly Fire : détection et application intégrale des dégâts/effets sur toutes les entités du cône sans exclusion d'alliés + alertes dédiées dans le combat log. 4) Falloff longue portée : décroissance par case (Shotgun -25%/case plancher 25%, Burst -15% plancher 40%, FullAuto -10% plancher 50%). 5) Refoulement cinétique (knockback) d'une case dans le prolongement de l'axe de tir pour Burst/Shotgun. 6) Consommation de munitions calibrée (Shotgun 1, Burst 3, FullAuto 6, Suppression 10) décomptée de l'inventaire. Intégration AreaFireProfile/AreaFireCalculator (GrenadeSystem.cs) + CombatCalculator.ResolveAreaFireShot + tests unitaires exhaustifs (GrenadeSystemTests)."
         },
         {
           "id": "RD-035",
@@ -214,7 +214,7 @@
           "id": "RD-040",
           "title": "Bousculade générique + coup bouclier",
           "epic": "Corps-à-corps",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 10,
           "scene": "",
@@ -223,7 +223,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "DamageResult.CausedKnockback",
-          "details": "Knockback existe que arts martiaux. Généraliser : 2PA, 1 case recul, test FOR, À terre si mur."
+          "details": "FAIT : Action corps-à-corps 2 PA (Bousculade générique ou Coup de bouclier si bouclier équipé). Duel aveugle de Force (Athlétisme/Mains Nues/Défense Corporelle) via CombatCalculator.ResolveShoveDuel. Victoire : recul forcé d'1 case (DamageResult.CausedKnockback = true). Si mur ou obstacle bloque le recul : arrêt et chute À Terre (StatusEffect.ATerre + Destabilise). Rupture automatique des prises de lutte (GrappleState.ReleaseGrapple) et résolution létale 0 PV sécurisées. Intégration CombatActionRegistry, CombatDevArena, TryApplyKnockback et VTT."
         },
         {
           "id": "RD-041",
@@ -272,9 +272,9 @@
         },
         {
           "id": "RD-044",
-          "title": "Couvert destructible PV",
+          "title": "Environnement destructible PV & Matériaux",
           "epic": "Zones persistantes",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 14,
           "scene": "",
@@ -282,8 +282,8 @@
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "PropObstacleRegistry",
-          "details": "Caisses/piliers avec PV. Barricade indestructible reste exception. Transition Full->Half->None."
+          "suggestedAsset": "PropObstacleRegistry + DestructibleEnvironment",
+          "details": "FAIT : Système complet d'environnement destructible selon les matériaux (Livre VI). 8 matériaux (Bois, Pierre, Métal, Verre, Composite, Arcanotech, Plafond, Indestructible) avec seuils de dureté et PV structurels. Multiplicateurs selon l'attaque (Contondant brise la pierre, Tranchant/Thermique fauche le bois, Plasma découpe le métal, Souffle rase les structures). Dégradation et transition Full/ThreeQuarters -> Half -> None (décombres franchissables au sol, mise à jour dynamique des MeshBounds et MaxY dans PropObstacleRegistry pour libérer les lignes de vue). Effondrement de plafond sous souffle explosif. Dégâts de souffle de grenade étendus aux obstacles. Dégâts collatéraux sur couvert bloquant les tirs et action directe ExecuteAttackOnObstacle."
         },
         {
           "id": "RD-045",
@@ -319,7 +319,7 @@
           "id": "RD-047",
           "title": "Jet moral / déroute / reddition",
           "epic": "Moral",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 17,
           "scene": "",
@@ -328,7 +328,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "StatusEffect.Agonisant",
-          "details": "Agonisant=fuite existe en théorie, Thomas purge. Ajouter : test CHA/INS à 28% PV, reddition IA Survivor."
+          "details": "FAIT : Test de moral automatique au seuil critique des 28% PV (Livre VII). Épreuve d'attribut Max(CHA, INS) convertie en dé de palier Codex Livre II §6 vs SD standard (CoreRulesConfig.StandardTargetDC). Échec pour profil IA Survivor : Reddition (IsSurrendered = true, désarmement physique DropHeldItemsWithPhysics, fin de tour immédiate, exclusion du ciblage offensif). Échec autres profils : Déroute avec statut persistant Agonisant (-2 aux jets). Comportement IA Agonisant branché : fuite panique désordonnée à l'opposé des menaces (ExecutePanickedFlee). Intégration complète CharacterStats (CheckMoraleAtThreshold, réarmement si soin >28%), DamageResult (MoraleResult), CombatCalculator (ResolveDuelDamage), CombatDevArena (attaques directes, guet, opportunité, grenades, DoT) et TacticalAIController. Spec d'origine : Agonisant=fuite existe en théorie, Thomas purge. Ajouter : test CHA/INS à 28% PV, reddition IA Survivor."
         },
         {
           "id": "RD-048",
@@ -1219,7 +1219,7 @@
         },
         {
           "id": "RD-025",
-          "title": "Brancher Animator state machine",
+          "title": "Brancher Animator state machine & Blend Tree locomotion",
           "epic": "Intégration",
           "status": "todo",
           "priority": "medium",
@@ -1230,13 +1230,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Animator Controller",
-          "details": "Transitions, blend trees, tests combat. PlayerAnimator.controller existe."
+          "details": "State machine, transitions, triggers et orchestration combat déjà opérationnels (TacticalUnitVisual + CombatDevArena). Option B : remplacer l'état Walking par un véritable Blend Tree 1D de locomotion (paramètre float Speed : Idle ➔ Marche ➔ Course ➔ Sprint pour supporter la charge RD-038 et les spés de mobilité) dans PlayerAnimator.controller et synchroniser Speed dans TacticalUnitVisual."
         },
         {
           "id": "RD-063",
           "title": "Trio héroïque Lucas/Mina/Thomas voies",
           "epic": "Héros",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 3,
           "scene": "",
@@ -1245,13 +1245,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "LucasCharacter MinaCharacter ThomasCharacter",
-          "details": "Vide calculant, atavisme cinétique, ancre. Bonus avatar, purge panique déjà partiels."
+          "details": "FAIT : Intégration complète des voies et synergies du trio (Livre I, III, IV, VI, VII). Thomas-0 : Ancre Symbiotique (immunité absolue dégâts/critiques/statuts/projections des fréquences de Mina et Lucas + recharge PA via Paratonnerre Cinétique), Impact de Bedrock (-2 armure permanente et Sonné sur Delta ≥ 2, Enclume Mortelle ignore armure +6 dégâts), Commandement Tectonique (+1 PA manœuvre zone 4 cases), Pas de Retraite ! (purge Déstabilisé/Étourdi/Agonisant zone 3 cases), Protocole Zéro (+2 Essoufflement max et poursuite du combat jusqu'à -5 PV sans syncope). Lucas-0 : Vide Calculant (soustraction thermodynamique convertissant tous les dégâts élémentaux en dégâts Absolus de froid), Thermostat Inversé branché en live avec la position de Mina (-1 PA si Mina vivante ≤ 3 cases, contrecoup 3 dégâts Absolus + Sonné critique si > 6 cases ou absente), Chute de Pression (4 dégâts Absolus + Déstabilisé), Suggestions Brèves (drain 1 PA réserve + Déstabilisé), Arrêt Vectoriel (3 dégâts Absolus + Immobilisé). Mina-0 : Avatar (+10 dégâts Mains Nues), Résonance Cinétique (+2 dégâts bruts), Peau de Chlorophylle (+2 armure), Floraison Cinétique (ronces réflexes 3 dégâts/PE au contact), Cœur d'Éclosion (résurrection 50% PV + purge statuts). Tests et résolutions létales sécurisés."
         },
         {
           "id": "RD-064",
           "title": "8 classes + presets builds F1",
           "epic": "Héros",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 4,
           "scene": "",
@@ -1260,13 +1260,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CharacterClassCatalog F1",
-          "details": "Guerrier, tireur, mage, moine, ingé, chef, ombre, médecin. Équilibrage PA."
+          "details": "FAIT : 8 classes sous Classes/Classe*.cs + CharacterClassCatalog + CharacterClassDefinition. Budgets attributs Héros PJ validés (1x5, 1x4, secondaires 15 / 17 MAG), équilibrage PA 8-11 selon formule Codex (Max(AGI,INT)+RAP+Min), budget d'entraînements de départ aligné strictement sur l'Érudition (somme StartingTrainings = ÉRU), arbres de spécialisations BuildPath et guides de progression intégrés, injection ToCombatStats fiabilisée avec transmission de fiche."
         },
         {
           "id": "RD-065",
           "title": "Bestiaire 22 entrées spawn B",
           "epic": "PNJ",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 5,
           "scene": "",
@@ -1275,7 +1275,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Bestiary.json",
-          "details": "JSON éditable, spawn direct, boss Titans. Test BestiaryDevWindow."
+          "details": "FAIT : Bestiaire 22 entrées Livre XI sérialisé (2 Sbires, 1 Civil, 1 Garde, 3 Bandits, 1 Élite, 1 Faune, 2 Automates, 3 Boss Titans, 8 Builds PNJ). Double-source JSON BestiaryCatalog (override persistentDataPath > Resources/Data/Bestiary.json). Fenêtre runtime BestiaryDevWindow (raccourcis B et F6) avec édition live (attributs, compétences, spés, équipement), validation des budgets Livre I, sauvegarde override disque et export éditeur. Spawn live direct (allié/ennemi) et instanciation de carte CombatDevArena avec validation d'empreinte multi-hex Rosette7 et anti-collision."
         }
       ]
     },
@@ -1303,22 +1303,7 @@
           "id": "RD-067",
           "title": "VoIP ADPCM/G711 + DSP + visio Sentis F6",
           "epic": "VTT",
-          "status": "todo",
-          "priority": "medium",
-          "order": 0,
-          "scene": "",
-          "placeholderId": "",
-          "primitive": "",
-          "pos": null,
-          "scale": null,
-          "suggestedAsset": "VTTVoiceManager + ONNX",
-          "details": "Noise gate, limiteur, EQ, voice changer, flou arrière-plan, pop-out."
-        },
-        {
-          "id": "RD-068",
-          "title": "Audio 100% procédural + musique 3 paliers",
-          "epic": "Audio",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 1,
           "scene": "",
@@ -1326,14 +1311,14 @@
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "KilltimeAudioManager F9",
-          "details": "Sans assets externes WebGL léger. Calme/tendu/intense via PV/menaces + Caméléon PipeWire."
+          "suggestedAsset": "VTTVoiceManager + ONNX",
+          "details": "FAIT : Pipeline VoIP & Visio IA temps réel complet. VoIP : codecs IMA-ADPCM 16k et G.711/PCM relayés par WebSocket OpVoice, DSP avec VAD hystérésis, Gate Deleter exponentiel, limiteur crête soft-knee tanh, EQ clarté vocale (2.6-5.4 kHz), filtre radio comms tactique, Voice Changer complet (pitch -12/+12, formants, harmonic drive, ring mod robotique). Visio : capture WebCamTexture 240x180, segmentation IA via Unity Sentis (modèle ONNX selfie_segmentation_landscape NHWC/NCHW), flou Bokeh cinématographique à 2 passes séparables avec repli portrait géométrique, diffusion JPEG OpVideo. Galerie mosaïque responsive (VTTVideoRoomWindow) et fenêtres pop-up flottantes détachables (VTTPopupVideoManager) avec contour vert néon #00FF88 asservi au VAD en temps réel. Persistance DevUIPreferences branchée."
         },
         {
-          "id": "RD-069",
-          "title": "Caméra iso + free + cinématique F7",
-          "epic": "Caméra",
-          "status": "todo",
+          "id": "RD-068",
+          "title": "Audio 100% procédural + musique 3 paliers",
+          "epic": "Audio",
+          "status": "done",
           "priority": "medium",
           "order": 2,
           "scene": "",
@@ -1341,8 +1326,23 @@
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "TacticalCameraController",
-          "details": "Iso Y=0, Q/E 360°, F free-look, letterbox + cartes titre scènes."
+          "suggestedAsset": "KilltimeAudioManager F11",
+          "details": "FAIT : Audio 100% procédural sans assets externes (mono 22050 Hz WebGL-safe). Musique adaptative 3 paliers (Calme/Tendu/Intense via AdaptiveMusicDirector et ratios PV/menaces branchés dans TurnManager) + Stinger et crossfade double-source A/B sans coupure. Module expérimental Caméléon PipeWire / auto-gain / anti-larsen. UI panneau mixage et matrice 8 stems F11 (KilltimeAudioSettingsUI)."
+        },
+        {
+          "id": "RD-069",
+          "title": "Caméra iso + free + cinématique F7",
+          "epic": "Caméra",
+          "status": "done",
+          "priority": "medium",
+          "order": 3,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "TacticalCameraController + CinematicDirector",
+          "details": "FAIT : Caméra tactique isométrique complète avec sol verrouillé à Y=0, pitch borné 30°-60° (défaut 45°), rotation lacet continue Q/E 360° et orbite clic droit sécurisée anti-UI. Mode Free-Look 6DOF (WASD + Space/Ctrl + Shift) piloté sur la touche F avec libération du conflit de zoom (dézoom clavier remappé sur T), filtrage de frappe textuelle (GUIUtility.keyboardControl) et raccordement fluide sans snap au retour tactique via AdoptWorldPose. Pipeline cinématique complet : travelling caméra START/END, interpolation poses acteurs/objets (Q, R), easing et secousses procédurales. Éditeur cinématique 3D WYSIWYG live Shift+F4 (CinematicEditorDevWindow). Rendu cinématique immersif : Letterbox dynamique (bandes noires lissées en jeu) et cartons de titre arcanotech plein écran lors des transitions de scènes (SceneTransitionOverlay : Volume, Titre, Référence de Canon, glyphes et balayage de chargement)."
         },
         {
           "id": "RD-070",
@@ -1350,7 +1350,7 @@
           "epic": "Chrono",
           "status": "todo",
           "priority": "low",
-          "order": 3,
+          "order": 4,
           "scene": "",
           "placeholderId": "",
           "primitive": "",
@@ -1365,7 +1365,7 @@
           "epic": "Tests",
           "status": "todo",
           "priority": "high",
-          "order": 4,
+          "order": 5,
           "scene": "",
           "placeholderId": "",
           "primitive": "",
@@ -1380,7 +1380,7 @@
           "epic": "Build",
           "status": "todo",
           "priority": "high",
-          "order": 5,
+          "order": 6,
           "scene": "",
           "placeholderId": "",
           "primitive": "",
@@ -1395,14 +1395,14 @@
           "epic": "Audio",
           "status": "done",
           "priority": "high",
-          "order": 6,
+          "order": 7,
           "scene": "",
           "placeholderId": "",
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "GenerativeMusicEngine F9",
-          "details": "Chansons préfaites gardées. Combat/Boss/Tension en composition live (jamais 2x pareil) : harmonie fonctionnelle, 5 styles batterie, lead call-response, strikes réactifs crit/kill/grenade, scheduler + crossfade 1.1s, preuve bus A/B dans le panneau F9."
+          "suggestedAsset": "GenerativeMusicEngine F11",
+          "details": "Chansons préfaites gardées. Combat/Boss/Tension en composition live (jamais 2x pareil) : harmonie fonctionnelle, 5 styles batterie, lead call-response, strikes réactifs crit/kill/grenade, scheduler + crossfade 1.1s, preuve bus A/B dans le panneau F11."
         }
       ]
     }

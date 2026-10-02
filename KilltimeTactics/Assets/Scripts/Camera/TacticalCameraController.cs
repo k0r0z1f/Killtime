@@ -215,9 +215,9 @@ namespace Killtime.CameraSystem
                 scroll = Input.GetAxis("Mouse ScrollWheel");
             }
 
-            // Raccourcis clavier (R = zoom vers le sol / F = dézoom vers le ciel)
+            // Raccourcis clavier (R = zoom vers le sol / T = dézoom vers le ciel ; F réservé au Free-Look)
             if (Input.GetKey(KeyCode.R)) scroll += 0.06f;
-            if (Input.GetKey(KeyCode.F)) scroll -= 0.06f;
+            if (Input.GetKey(KeyCode.T)) scroll -= 0.06f;
 
             if (Mathf.Abs(scroll) > 0.0001f)
             {

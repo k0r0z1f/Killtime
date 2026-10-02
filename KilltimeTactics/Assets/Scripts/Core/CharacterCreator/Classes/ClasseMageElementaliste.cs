@@ -30,7 +30,6 @@ namespace Killtime.Core.Character.Classes
                 {
                     new SkillTrainingStep(SkillType.MagieElementale, 2),
                     new SkillTrainingStep(SkillType.MagieEsprit, 1),
-                    new SkillTrainingStep(SkillType.TactiqueStrategie, 1),
                     new SkillTrainingStep(SkillType.Esquive, 1),
                 },
                 StartingSpecializations = new List<string>

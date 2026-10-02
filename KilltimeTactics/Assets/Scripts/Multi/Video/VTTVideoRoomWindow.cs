@@ -15,7 +15,7 @@ namespace Killtime.Multi.Video
     public class VTTVideoRoomWindow : FloatingWindow<VTTVideoRoomWindow>
     {
         protected override int WindowId => 898;
-        protected override string Title => "Salon Vidéo // Table Virtuelle (Ctrl+F2)";
+        protected override string Title => "Salon Vidéo // Table Virtuelle (F6)";
         protected override Vector2 MinSize => new Vector2(480f, 340f);
         protected override Rect DefaultRect => new Rect(
             Mathf.Max(20f, (Screen.width - 820f) * 0.5f),
@@ -23,9 +23,9 @@ namespace Killtime.Multi.Video
             Mathf.Min(820f, Screen.width - 40f),
             Mathf.Min(620f, Screen.height - 60f));
         protected override KeyCode[] ToggleKeys => _toggleKeys;
-        protected override bool RequireControl => true;
+        protected override bool RequireControl => false;
 
-        private static readonly KeyCode[] _toggleKeys = { KeyCode.F2 };
+        private static readonly KeyCode[] _toggleKeys = { KeyCode.F6 };
 
         private Vector2 _galleryScroll;
         private static GUIStyle _richLabel;

@@ -29,9 +29,7 @@ namespace Killtime.Core.Character.Classes
                 StartingTrainings = new List<SkillTrainingStep>
                 {
                     new SkillTrainingStep(SkillType.MainsNues, 2),
-                    new SkillTrainingStep(SkillType.Esquive, 2),
-                    new SkillTrainingStep(SkillType.Athletisme, 1),
-                    new SkillTrainingStep(SkillType.EndurancePhysique, 1),
+                    new SkillTrainingStep(SkillType.Esquive, 1),
                 },
                 StartingSpecializations = new List<string>
                 {

@@ -22,15 +22,14 @@ namespace Killtime.Core.Character.Classes
                 ThemeColor = new Color(0.95f, 0.25f, 0.35f),
                 SuggestedSpecies = SpeciesType.Mikyai,
                 Profile = CharacterProfileType.HerosPJ,
-                BaseAttributes = new Attributes(@for: 5, agi: 3, con: 4, rap: 3, @int: 2, eru: 3, cha: 1, ins: 3, mag: 0),
+                // 5/4 + secondaires 15 : AGI3 RAP3 INT2 ERU2 CHA2 INS3 = 15 ✓ (Min=2 -> 8 PA)
+                BaseAttributes = new Attributes(@for: 5, agi: 3, con: 4, rap: 3, @int: 2, eru: 2, cha: 2, ins: 3, mag: 0),
                 BaseArmor = 2,
                 StartingCreditsCE = 8000,
                 StartingTrainings = new List<SkillTrainingStep>
                 {
-                    new SkillTrainingStep(SkillType.ManiementArmes, 2),
+                    new SkillTrainingStep(SkillType.ManiementArmes, 1),
                     new SkillTrainingStep(SkillType.DefenseCorporelle, 1),
-                    new SkillTrainingStep(SkillType.Athletisme, 1),
-                    new SkillTrainingStep(SkillType.EndurancePhysique, 1),
                 },
                 StartingSpecializations = new List<string>
                 {

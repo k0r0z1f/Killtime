@@ -282,58 +282,74 @@ namespace Killtime.Audio
                 AddMasterArpProgression(s, chords, bpm, arpRate, arpVol * (0.7f + 0.45f * level), level);
             }
 
+            bool playSubAir = subAirOverride != StemOverrideState.Muted;
+            bool playStaccato = (staccatoOverride == StemOverrideState.ForceActive) || (staccatoOverride == StemOverrideState.Auto);
+            if (staccatoOverride == StemOverrideState.Muted) playStaccato = false;
+
+            bool playChoir = (choirOverride == StemOverrideState.ForceActive) || (choirOverride == StemOverrideState.Auto);
+            if (choirOverride == StemOverrideState.Muted) playChoir = false;
+
+            bool playLead = (leadOverride == StemOverrideState.ForceActive) || (leadOverride == StemOverrideState.Auto && level >= 1);
+            if (leadOverride == StemOverrideState.Muted) playLead = false;
+
             switch (mood)
             {
                 case MusicMood.Explore:
-                    AddSubRumble(s, 36.7f, 0.06f);
-                    AddChronoShimmer(s, 587.33f, 0.035f);
+                    if (playSubAir)
+                    {
+                        AddSubRumble(s, 36.7f, 0.06f);
+                        AddChronoShimmer(s, 587.33f, 0.035f);
+                    }
                     break;
 
                 case MusicMood.Combat:
                     if (trackIndex == 0)
                     {
-                        AddSubRumble(s, 65.4f, 0.12f + 0.04f * level);
-                        AddPulseStaccatoStrings(s, chords, bpm, 0.20f + 0.06f * level);
+                        if (playSubAir) AddSubRumble(s, 65.4f, 0.12f + 0.04f * level);
+                        if (playStaccato) AddPulseStaccatoStrings(s, chords, bpm, 0.20f + 0.06f * level);
                         AddAnvilBeat(s, bpm, 0.14f + 0.04f * level);
                         if (level >= 1) AddIndustrialClang(s, bpm, 0.14f + 0.04f * level);
-                        if (level >= 2) AddCyberDjentChug(s, sidechain, rng, roots, bpm, 0.18f, level);
+                        if (level >= 2 && playStaccato) AddCyberDjentChug(s, sidechain, rng, roots, bpm, 0.18f, level);
                     }
                     else if (trackIndex == 1)
                     {
-                        AddSubRumble(s, 55.0f, 0.10f + 0.04f * level);
-                        AddPulseStaccatoStrings(s, chords, bpm, 0.14f + 0.05f * level);
+                        if (playSubAir) AddSubRumble(s, 55.0f, 0.10f + 0.04f * level);
+                        if (playStaccato) AddPulseStaccatoStrings(s, chords, bpm, 0.14f + 0.05f * level);
                         if (level >= 1) AddAnvilBeat(s, bpm, 0.11f + 0.04f * level);
                     }
                     else
                     {
-                        AddSubRumble(s, 48.0f, 0.12f + 0.05f * level);
-                        AddCyberDjentChug(s, sidechain, rng, roots, bpm, 0.26f + 0.08f * level, level);
+                        if (playSubAir) AddSubRumble(s, 48.0f, 0.12f + 0.05f * level);
+                        if (playStaccato) AddCyberDjentChug(s, sidechain, rng, roots, bpm, 0.26f + 0.08f * level, level);
                         AddNeuroCyberBass(s, roots, bpm, 0.16f + 0.06f * level);
                         if (level >= 1) AddIndustrialClang(s, bpm, 0.15f);
                     }
                     break;
 
                 case MusicMood.CombatBoss:
-                    AddSubRumble(s, 36.7f, 0.10f + 0.06f * level);
+                    if (playSubAir) AddSubRumble(s, 36.7f, 0.10f + 0.06f * level);
                     AddHeavyWarPercussion(s, rng, bpm, 0.18f + 0.08f * level, level);
-                    AddArcanotechChoir(s, chords, bpm, 0.14f + 0.06f * level);
-                    if (level >= 1) AddCyberneticAcidLead(s, roots, bpm, 0.12f + 0.05f * level, level);
+                    if (playChoir) AddArcanotechChoir(s, chords, bpm, 0.14f + 0.06f * level);
+                    if (playLead) AddCyberneticAcidLead(s, roots, bpm, 0.12f + 0.05f * level, level);
                     if (level >= 2) AddIndustrialClang(s, bpm, 0.16f);
                     break;
 
                 case MusicMood.Tension:
                     if (level >= 1) AddBiologicalHeartbeat(s, 60f, 0.26f + 0.08f * level);
                     AddRiser(s, 0.08f + 0.06f * level);
-                    AddSubRumble(s, 34.6f, 0.10f);
+                    if (playSubAir) AddSubRumble(s, 34.6f, 0.10f);
                     break;
 
                 case MusicMood.Victory:
-                    AddSubRumble(s, 32.7f, 0.08f);
-                    AddChronoShimmer(s, 1046.5f, 0.05f * level);
+                    if (playSubAir)
+                    {
+                        AddSubRumble(s, 32.7f, 0.08f);
+                        AddChronoShimmer(s, 1046.5f, 0.05f * level);
+                    }
                     break;
 
                 case MusicMood.Defeat:
-                    AddSubRumble(s, 27.5f, 0.12f);
+                    if (playSubAir) AddSubRumble(s, 27.5f, 0.12f);
                     AddDyingHarmonicFade(s, 0.15f);
                     break;
             }

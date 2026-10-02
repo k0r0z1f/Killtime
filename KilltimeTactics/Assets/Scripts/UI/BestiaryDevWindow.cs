@@ -44,6 +44,8 @@ namespace Killtime.UI
         private string _newEquipName = "";
         private int _spawnQ = 0;
         private int _spawnR = 1;
+        private string _spawnQStr = "0";
+        private string _spawnRStr = "1";
 
         protected override void OnOpened() { Refresh(); }
 
@@ -251,9 +253,11 @@ namespace Killtime.UI
             GUILayout.Label("Spawner en scène", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold });
             GUILayout.BeginHorizontal();
             GUILayout.Label("Q", GUILayout.Width(16));
-            if (int.TryParse(GUILayout.TextField(_spawnQ.ToString(), GUILayout.Width(44)), out int q)) _spawnQ = q;
+            _spawnQStr = GUILayout.TextField(_spawnQStr, GUILayout.Width(44));
+            if (int.TryParse(_spawnQStr, out int q)) _spawnQ = q;
             GUILayout.Label("R", GUILayout.Width(16));
-            if (int.TryParse(GUILayout.TextField(_spawnR.ToString(), GUILayout.Width(44)), out int r)) _spawnR = r;
+            _spawnRStr = GUILayout.TextField(_spawnRStr, GUILayout.Width(44));
+            if (int.TryParse(_spawnRStr, out int r)) _spawnR = r;
             if (GUILayout.Button("Spawner ENNEMI")) SpawnSelected(false);
             if (GUILayout.Button("Spawner ALLIÉ")) SpawnSelected(true);
             GUILayout.EndHorizontal();
@@ -433,16 +437,45 @@ namespace Killtime.UI
             if (grid == null) { message = "Pas de grille tactique en scène."; return null; }
 
             var coords = new HexCoordinates(_spawnQ, _spawnR);
-            var node = grid.GetNode(coords);
-            if (node == null || !node.IsWalkable)
+            var occupiedCoords = TitanFootprint.GetOccupiedCoordinates(coords, sheet.Footprint);
+            var existingUnits = FindObjectsByType<TacticalUnit>();
+
+            for (int i = 0; i < occupiedCoords.Count; i++)
             {
-                message = $"Case ({_spawnQ},{_spawnR}) invalide.";
-                return null;
+                var c = occupiedCoords[i];
+                var n = grid.GetNode(c);
+                if (n == null || !n.IsWalkable)
+                {
+                    message = $"Case ({c.Q},{c.R}) impraticable pour le gabarit {sheet.Footprint}.";
+                    return null;
+                }
+
+                if (n.IsOccupied)
+                {
+                    message = $"Case ({c.Q},{c.R}) déjà occupée.";
+                    return null;
+                }
+
+                for (int u = 0; u < existingUnits.Length; u++)
+                {
+                    if (existingUnits[u] != null && existingUnits[u].Stats != null && existingUnits[u].Stats.IsAlive && existingUnits[u].CurrentCoords.Equals(c))
+                    {
+                        message = $"Case ({c.Q},{c.R}) occupée par {existingUnits[u].Stats.Name}.";
+                        return null;
+                    }
+                }
             }
 
             var go = new GameObject($"Bestiary_{sheet.Name.Replace(" ", "_")}");
             var unit = go.AddComponent<TacticalUnit>();
             unit.InitializeFromSheet(sheet, coords, grid, asPlayer);
+
+            for (int i = 0; i < occupiedCoords.Count; i++)
+            {
+                var n = grid.GetNode(occupiedCoords[i]);
+                if (n != null) n.IsOccupied = true;
+            }
+
             unit.GetComponent<TacticalUnitVisual>()?.SetCombatStance(true);
 
             var tm = FindAnyObjectByType<TurnManager>();

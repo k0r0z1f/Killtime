@@ -19,6 +19,17 @@ namespace Killtime.Tactics.Units
         [Header("Identité & Faction")]
         [SerializeField] private string _unitName = "Roger";
         [SerializeField] private bool _isPlayerControlled = true;
+        [SerializeField] private AI.AIPersonality _aiPersonality = AI.AIPersonality.Balanced;
+
+        public AI.AIPersonality AIPersonality
+        {
+            get => _aiPersonality;
+            set
+            {
+                _aiPersonality = value;
+                if (Stats != null) Stats.IsSurvivor = (_aiPersonality == AI.AIPersonality.Survivor);
+            }
+        }
 
         [Header("Attributs Physiques (Livre I)")]
         [SerializeField] private int _force = 3;
@@ -342,6 +353,11 @@ namespace Killtime.Tactics.Units
             }
 
             _footprintType = Sheet != null ? Sheet.Footprint : sheet.Footprint;
+            if (Stats != null)
+            {
+                Stats.IsPlayerControlled = isPlayerControlled;
+                Stats.IsSurvivor = (_aiPersonality == AI.AIPersonality.Survivor);
+            }
             InitializePosition(coords, grid);
             // Filet de sécurité : si l'appelant n'a pas résolu une case libre
             // (ex: chargement direct sans arène), on relocalise au lieu d'empiler.
@@ -406,6 +422,8 @@ namespace Killtime.Tactics.Units
             };
 
             Stats = new CharacterStats(unitName, attributes, baseArmor, Sheet);
+            Stats.IsPlayerControlled = isPlayer;
+            Stats.IsSurvivor = (_aiPersonality == AI.AIPersonality.Survivor);
         }
 
         public CharacterSheet GetOrBuildSheet()

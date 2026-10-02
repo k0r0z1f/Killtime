@@ -200,6 +200,115 @@ namespace Killtime.Tests
             Assert.IsTrue(lp.IsLauncher);
             Assert.AreEqual(20, lp.RangeInTiles);
         }
+
+        [Test]
+        public void AreaFire_ConeGeometry_ShotgunSpreadsProgressively()
+        {
+            var origin = new Killtime.Tactics.Grid.HexCoordinates(0, 0);
+            var target = new Killtime.Tactics.Grid.HexCoordinates(4, 0);
+            var cells = AreaFireRules.ComputeConeCells(origin, target, range: 4, spreadWidth: 1);
+
+            Assert.IsNotNull(cells);
+            Assert.Contains(new Killtime.Tactics.Grid.HexCoordinates(1, 0), cells);
+            Assert.Contains(new Killtime.Tactics.Grid.HexCoordinates(2, 0), cells);
+            Assert.Contains(new Killtime.Tactics.Grid.HexCoordinates(2, -1), cells);
+            Assert.Contains(new Killtime.Tactics.Grid.HexCoordinates(1, 1), cells);
+
+            for (int i = 0; i < cells.Count; i++)
+            {
+                int dist = origin.DistanceTo(cells[i]);
+                Assert.GreaterOrEqual(dist, 1);
+                Assert.LessOrEqual(dist, 4);
+            }
+        }
+
+        [Test]
+        public void AreaFire_BurstGeometry_IsStraightCorridor()
+        {
+            var origin = new Killtime.Tactics.Grid.HexCoordinates(0, 0);
+            var target = new Killtime.Tactics.Grid.HexCoordinates(4, 0);
+            var cells = AreaFireRules.ComputeConeCells(origin, target, range: 4, spreadWidth: 0);
+
+            Assert.AreEqual(4, cells.Count);
+            Assert.AreEqual(new Killtime.Tactics.Grid.HexCoordinates(1, 0), cells[0]);
+            Assert.AreEqual(new Killtime.Tactics.Grid.HexCoordinates(2, 0), cells[1]);
+            Assert.AreEqual(new Killtime.Tactics.Grid.HexCoordinates(3, 0), cells[2]);
+            Assert.AreEqual(new Killtime.Tactics.Grid.HexCoordinates(4, 0), cells[3]);
+        }
+
+        [Test]
+        public void AreaFire_Falloff_DecreasesWithDistanceAndFloors()
+        {
+            float f1 = AreaFireRules.ComputeDistanceFalloff(1, AreaFireMode.ShotgunCone);
+            float f2 = AreaFireRules.ComputeDistanceFalloff(2, AreaFireMode.ShotgunCone);
+            float f3 = AreaFireRules.ComputeDistanceFalloff(3, AreaFireMode.ShotgunCone);
+            float f4 = AreaFireRules.ComputeDistanceFalloff(4, AreaFireMode.ShotgunCone);
+            float f8 = AreaFireRules.ComputeDistanceFalloff(8, AreaFireMode.ShotgunCone);
+
+            Assert.AreEqual(1.0f, f1, 0.001f);
+            Assert.AreEqual(0.75f, f2, 0.001f);
+            Assert.AreEqual(0.50f, f3, 0.001f);
+            Assert.AreEqual(0.25f, f4, 0.001f);
+            Assert.AreEqual(0.25f, f8, 0.001f, "Le plancher shotgun doit être verrouillé à 25%.");
+        }
+
+        [Test]
+        public void AreaFire_Knockback_CalculatesNextCellCorrectly()
+        {
+            var origin = new Killtime.Tactics.Grid.HexCoordinates(0, 0);
+            var target = new Killtime.Tactics.Grid.HexCoordinates(2, 0);
+            var knock = AreaFireRules.ComputeKnockbackCell(origin, target);
+
+            Assert.AreEqual(new Killtime.Tactics.Grid.HexCoordinates(3, 0), knock);
+            Assert.AreEqual(3, origin.DistanceTo(knock));
+        }
+
+        [Test]
+        public void AreaFire_FriendlyFire_HitsAlliesAndEnemiesInCone()
+        {
+            var calc = new AreaFireCalculator(new DiceRoller(10));
+            var shooter = MakeStats(con: 5);
+            var enemy = MakeStats(con: 3);
+            var ally = MakeStats(con: 3);
+
+            var origin = new Killtime.Tactics.Grid.HexCoordinates(0, 0);
+            var target = new Killtime.Tactics.Grid.HexCoordinates(4, 0);
+
+            var field = new System.Collections.Generic.List<(CharacterStats stats, Killtime.Tactics.Grid.HexCoordinates pos, bool isAlly)>
+            {
+                (enemy, new Killtime.Tactics.Grid.HexCoordinates(2, 0), false),
+                (ally, new Killtime.Tactics.Grid.HexCoordinates(1, 0), true)
+            };
+
+            var profile = new AreaFireProfile
+            {
+                WeaponName = "Fusil à Pompe Cal.12",
+                Mode = AreaFireMode.ShotgunCone,
+                RangeTiles = 4,
+                BaseDamage = 12,
+                AmmoCost = 1,
+                CausesKnockback = true
+            };
+
+            var res = calc.ResolveAreaFire(shooter, origin, target, profile, field, attackerBonusAP: 5);
+
+            Assert.AreEqual(2, res.Hits.Count);
+            Assert.AreEqual(1, res.FriendlyFireHits.Count);
+            Assert.IsTrue(res.FriendlyFireHits[0].IsAlly);
+            Assert.Greater(res.FriendlyFireHits[0].FinalDamage, 0);
+            Assert.IsTrue(res.FriendlyFireHits[0].KnockedBack);
+            Assert.AreEqual(new Killtime.Tactics.Grid.HexCoordinates(2, 0), res.FriendlyFireHits[0].KnockbackTargetCell);
+        }
+
+        [Test]
+        public void AreaFire_AmmoCosts_MatchWeaponSpecifications()
+        {
+            Assert.AreEqual(1, AreaFireRules.DefaultAmmoCost(AreaFireMode.SingleShot));
+            Assert.AreEqual(1, AreaFireRules.DefaultAmmoCost(AreaFireMode.ShotgunCone));
+            Assert.AreEqual(3, AreaFireRules.DefaultAmmoCost(AreaFireMode.Burst));
+            Assert.AreEqual(6, AreaFireRules.DefaultAmmoCost(AreaFireMode.FullAuto));
+            Assert.AreEqual(10, AreaFireRules.DefaultAmmoCost(AreaFireMode.Suppression));
+        }
     }
 }
 #endif

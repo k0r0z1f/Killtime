@@ -45,6 +45,11 @@ namespace Killtime.Tactics.CombatUI
         public const string SpecMener = "Mener (Commandement)";
         public const string SpecTenir = "Mener : Tenir la Ligne !";
         public const string SpecGardeDuCorps = "Garde du corps";
+        public const string SpecCommandementTectonique = "Commandement Tectonique";
+        public const string SpecPasDeRetraite = "Commandement Tectonique : Pas de Retraite !";
+        public const string SpecChuteDePression = "Vide Calculant : Chute de Pression";
+        public const string SpecSuggestionsBreves = "Pare-feu Psychologique : Suggestions Brèves";
+        public const string SpecArretVectoriel = "Arrêt Vectoriel";
 
         // =====================================================================
         // REQUÊTES GÉNÉRIQUES
@@ -60,7 +65,12 @@ namespace Killtime.Tactics.CombatUI
                 || s.HasSpecialization(SpecRegard)
                 || s.HasSpecialization(SpecMener)
                 || s.HasSpecialization(SpecTenir)
-                || s.HasSpecialization(SpecGardeDuCorps);
+                || s.HasSpecialization(SpecGardeDuCorps)
+                || s.HasSpecialization(SpecCommandementTectonique)
+                || s.HasSpecialization(SpecPasDeRetraite)
+                || s.HasSpecialization(SpecChuteDePression)
+                || s.HasSpecialization(SpecSuggestionsBreves)
+                || s.HasSpecialization(SpecArretVectoriel);
         }
 
         private static List<TacticalUnit> GetAllUnits()
@@ -388,6 +398,184 @@ namespace Killtime.Tactics.CombatUI
         }
 
         // =====================================================================
+        // 7. TECHNIQUES HÉROÏQUES : THOMAS-0 & LUCAS-0 (RD-063)
+        // =====================================================================
+
+        public static bool CanUseCommandementTectonique(TacticalUnit actor)
+        {
+            if (!IsAliveUnit(actor)) return false;
+            if (!actor.Stats.HasSpecialization(SpecCommandementTectonique)) return false;
+            return actor.Stats.CurrentActionPoints >= 2 && CountAlliesInRange(actor, 4) > 0;
+        }
+
+        public static bool ExecuteCommandementTectonique(TacticalUnit actor, CombatDevArena arena)
+        {
+            if (!CanUseCommandementTectonique(actor)) return false;
+            if (!actor.Stats.ConsumeActionPoints(2)) return false;
+
+            int boosted = 0;
+            var all = GetAllUnits();
+            for (int i = 0; i < all.Count; i++)
+            {
+                var u = all[i];
+                if (!IsAliveUnit(u) || u == actor || IsEnemyOf(actor, u)) continue;
+                if (actor.CurrentCoords.DistanceTo(u.CurrentCoords) > 4) continue;
+                u.Stats.CurrentActionPoints = Mathf.Min(u.Stats.MaxActionPoints + 2, u.Stats.CurrentActionPoints + 1);
+                u.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("+1 PA Manœuvre", Color.cyan);
+                boosted++;
+            }
+
+            actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⚡ Manœuvre Tectonique (-2 PA)", Color.cyan);
+            arena?.Log($"⚡ <b>{actor.Stats.Name}</b> ordonne une manœuvre coordonnée (-2 PA) : +1 PA de mouvement accordé à {boosted} allié(s) !");
+            TickProgression(actor.Sheet, SkillType.Leadership, arena);
+            return true;
+        }
+
+        public static bool CanUsePasDeRetraite(TacticalUnit actor)
+        {
+            if (!IsAliveUnit(actor)) return false;
+            if (!actor.Stats.HasSpecialization(SpecPasDeRetraite)) return false;
+            return actor.Stats.CurrentActionPoints >= 2;
+        }
+
+        public static bool ExecutePasDeRetraite(TacticalUnit actor, CombatDevArena arena)
+        {
+            if (!CanUsePasDeRetraite(actor)) return false;
+            if (!actor.Stats.ConsumeActionPoints(2)) return false;
+
+            int purged = 0;
+            var all = GetAllUnits();
+            for (int i = 0; i < all.Count; i++)
+            {
+                var u = all[i];
+                if (!IsAliveUnit(u) || IsEnemyOf(actor, u)) continue;
+                if (actor.CurrentCoords.DistanceTo(u.CurrentCoords) > 3) continue;
+
+                bool hadStatus = u.Stats.ActiveStatus.HasFlag(StatusEffect.Destabilise)
+                              || u.Stats.ActiveStatus.HasFlag(StatusEffect.Etourdi)
+                              || u.Stats.ActiveStatus.HasFlag(StatusEffect.Agonisant);
+
+                if (hadStatus)
+                {
+                    u.Stats.RemoveStatus(StatusEffect.Destabilise);
+                    u.Stats.RemoveStatus(StatusEffect.Etourdi);
+                    u.Stats.RemoveStatus(StatusEffect.Agonisant);
+                    u.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("PANIQUE PURGÉE !", Color.green);
+                    purged++;
+                }
+            }
+
+            actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🛡️ Pas de Retraite ! (-2 PA)", Color.green);
+            arena?.Log($"🛡️ <b>{actor.Stats.Name}</b> lance '<b>Pas de Retraite !</b>' (-2 PA) : panique et étourdissement purgés sur {purged} allié(s) !");
+            TickProgression(actor.Sheet, SkillType.Leadership, arena);
+            return true;
+        }
+
+        public static bool CanUseChuteDePression(TacticalUnit actor, TacticalUnit target)
+        {
+            if (!IsAliveUnit(actor) || !IsAliveUnit(target) || !IsEnemyOf(actor, target)) return false;
+            if (!actor.Stats.HasSpecialization(SpecChuteDePression)) return false;
+            return actor.Stats.CurrentActionPoints >= 2 && actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 4;
+        }
+
+        public static bool ExecuteChuteDePression(TacticalUnit actor, TacticalUnit target, CombatDevArena arena)
+        {
+            if (!CanUseChuteDePression(actor, target)) return false;
+            if (!actor.Stats.ConsumeActionPoints(2)) return false;
+
+            int remaining = target.Stats.CurrentHealth - 4;
+            if (remaining <= 0)
+            {
+                target.Stats.EvaluateFatalBlow(BodyPart.Torse, 4);
+            }
+            else
+            {
+                target.Stats.CurrentHealth = remaining;
+            }
+
+            target.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+
+            actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("❄️ Chute de Pression (-2 PA)", Color.cyan);
+            var tgtVis = target.GetComponent<TacticalUnitVisual>();
+            tgtVis?.TriggerHitFlash();
+            tgtVis?.SpawnFloatingText("-4 PV Absolus (Vide) [Déstabilisé]", Color.cyan);
+
+            if (!target.Stats.IsAlive)
+            {
+                tgtVis?.TriggerFallingBackDeath();
+                arena?.AutoTargetNextAlive();
+            }
+
+            arena?.Log($"❄️ <b>{actor.Stats.Name}</b> raréfie l'air autour de <b>{target.Stats.Name}</b> (Vide Calculant : -2 PA) : 4 dégâts Absolus et [Déstabilisé] !");
+            TickProgression(actor.Sheet, SkillType.MagieElementale, arena);
+            return true;
+        }
+
+        public static bool CanUseSuggestionsBreves(TacticalUnit actor, TacticalUnit target)
+        {
+            if (!IsAliveUnit(actor) || !IsAliveUnit(target) || !IsEnemyOf(actor, target)) return false;
+            if (!actor.Stats.HasSpecialization(SpecSuggestionsBreves)) return false;
+            return actor.Stats.CurrentActionPoints >= 2 && actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 4;
+        }
+
+        public static bool ExecuteSuggestionsBreves(TacticalUnit actor, TacticalUnit target, CombatDevArena arena)
+        {
+            if (!CanUseSuggestionsBreves(actor, target)) return false;
+            if (!actor.Stats.ConsumeActionPoints(2)) return false;
+
+            target.Stats.CurrentActionPoints = Mathf.Max(0, target.Stats.CurrentActionPoints - 1);
+            target.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+
+            actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🧠 Suggestion Brève (-2 PA)", new Color(0.7f, 0.4f, 1f));
+            var tgtVis = target.GetComponent<TacticalUnitVisual>();
+            tgtVis?.SpawnFloatingText("-1 PA Réserve & Déstabilisé", Color.magenta);
+
+            arena?.Log($"🧠 <b>{actor.Stats.Name}</b> perturbe les synapses de <b>{target.Stats.Name}</b> (Pare-feu Psychologique : -2 PA) : perte de 1 PA et [Déstabilisé] !");
+            TickProgression(actor.Sheet, SkillType.MagieEsprit, arena);
+            return true;
+        }
+
+        public static bool CanUseArretVectoriel(TacticalUnit actor, TacticalUnit target)
+        {
+            if (!IsAliveUnit(actor) || !IsAliveUnit(target) || !IsEnemyOf(actor, target)) return false;
+            if (!actor.Stats.HasSpecialization(SpecArretVectoriel)) return false;
+            return actor.Stats.CurrentActionPoints >= 1 && actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 4;
+        }
+
+        public static bool ExecuteArretVectoriel(TacticalUnit actor, TacticalUnit target, CombatDevArena arena)
+        {
+            if (!CanUseArretVectoriel(actor, target)) return false;
+            if (!actor.Stats.ConsumeActionPoints(1)) return false;
+
+            target.Stats.ApplyStatus(StatusEffect.Immobilise, 1);
+
+            int remaining = target.Stats.CurrentHealth - 3;
+            if (remaining <= 0)
+            {
+                target.Stats.EvaluateFatalBlow(BodyPart.Torse, 3);
+            }
+            else
+            {
+                target.Stats.CurrentHealth = remaining;
+            }
+
+            actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🛑 Arrêt Vectoriel (-1 PA)", Color.cyan);
+            var tgtVis = target.GetComponent<TacticalUnitVisual>();
+            tgtVis?.TriggerHitFlash();
+            tgtVis?.SpawnFloatingText("IMMOBILISÉ (-3 PV Absolus)", Color.cyan);
+
+            if (!target.Stats.IsAlive)
+            {
+                tgtVis?.TriggerFallingBackDeath();
+                arena?.AutoTargetNextAlive();
+            }
+
+            arena?.Log($"🛑 <b>{actor.Stats.Name}</b> brise les vecteurs cinétiques de <b>{target.Stats.Name}</b> (-1 PA) : cible figée [Immobilisé] et 3 dégâts Absolus !");
+            TickProgression(actor.Sheet, SkillType.MagieEsprit, arena);
+            return true;
+        }
+
+        // =====================================================================
         // GARDE DU CORPS & INTERCEPTION D'ALLIÉ (RD-032, Livre VI §24.5)
         // =====================================================================
 
@@ -622,6 +810,42 @@ namespace Killtime.Tactics.CombatUI
                         (act, tgt) => ExecuteRegard(act, tgt, arena)
                     ));
                 }
+
+                if (actor.Stats.HasSpecialization(SpecChuteDePression))
+                {
+                    actions.Add(new CombatAction(
+                        "❄️ Vide Calculant : Chute de Pression (2 PA)",
+                        "Raréfaction d'air (≤4 cases) : 4 dégâts Absolus (ignore armure) + cible Déstabilisée.",
+                        ActionCategory.TechniquesDeSpecialisation,
+                        2,
+                        (act, tgt) => CanUseChuteDePression(act, tgt),
+                        (act, tgt) => ExecuteChuteDePression(act, tgt, arena)
+                    ));
+                }
+
+                if (actor.Stats.HasSpecialization(SpecSuggestionsBreves))
+                {
+                    actions.Add(new CombatAction(
+                        "🧠 Suggestions Brèves (2 PA)",
+                        "Aiguillage synaptique (≤4 cases) : draine 1 PA de réserve et applique Déstabilisé.",
+                        ActionCategory.TechniquesDeSpecialisation,
+                        2,
+                        (act, tgt) => CanUseSuggestionsBreves(act, tgt),
+                        (act, tgt) => ExecuteSuggestionsBreves(act, tgt, arena)
+                    ));
+                }
+
+                if (actor.Stats.HasSpecialization(SpecArretVectoriel))
+                {
+                    actions.Add(new CombatAction(
+                        "🛑 Arrêt Vectoriel (1 PA)",
+                        "Télékinésie mathématique (≤4 cases) : fige sur place (Immobilisé 1 tour) et inflige 3 dégâts Absolus.",
+                        ActionCategory.TechniquesDeSpecialisation,
+                        1,
+                        (act, tgt) => CanUseArretVectoriel(act, tgt),
+                        (act, tgt) => ExecuteArretVectoriel(act, tgt, arena)
+                    ));
+                }
             }
 
             if (!isSelf && !isEnemy && targetIsAlive)
@@ -697,6 +921,30 @@ namespace Killtime.Tactics.CombatUI
                         (act, tgt) => IsAliveUnit(act) && act.Stats.HasSpecialization(SpecTenir)
                             && act.Stats.CurrentActionPoints >= TenirCost && alliesNoLineAtOpen > 0,
                         (act, tgt) => ExecuteTenir(act, arena)
+                    ));
+                }
+
+                if (actor.Stats.HasSpecialization(SpecCommandementTectonique))
+                {
+                    actions.Add(new CombatAction(
+                        "⚡ Commandement Tectonique (2 PA)",
+                        "Manœuvre coordonnée (alliés ≤4 cases) : +1 PA immédiat pour le repositionnement.",
+                        ActionCategory.TechniquesDeSpecialisation,
+                        2,
+                        (act, tgt) => CanUseCommandementTectonique(act),
+                        (act, tgt) => ExecuteCommandementTectonique(act, arena)
+                    ));
+                }
+
+                if (actor.Stats.HasSpecialization(SpecPasDeRetraite))
+                {
+                    actions.Add(new CombatAction(
+                        "🛡️ Pas de Retraite ! (2 PA)",
+                        "Discipline morale (alliés ≤3 cases) : purge immédiatement la panique, Déstabilisé et Étourdi.",
+                        ActionCategory.TechniquesDeSpecialisation,
+                        2,
+                        (act, tgt) => CanUsePasDeRetraite(act),
+                        (act, tgt) => ExecutePasDeRetraite(act, arena)
                     ));
                 }
             }

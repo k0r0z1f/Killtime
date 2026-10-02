@@ -201,6 +201,29 @@ namespace Killtime.Tactics.CombatUI
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
 
+                // RD-040 : Bousculade générique & Coup de bouclier (2 PA, contact)
+                bool hasShield = HasEquippedShield(actor);
+                if (hasShield)
+                {
+                    actions.Add(new CombatAction(
+                        "🛡️ Coup de Bouclier (2 PA)",
+                        "Percussion au bouclier (test FOR opposé, 2 PA) : repousse la cible d'1 case (Knockback) + dégâts contondants légers. Chute À Terre si mur ou obstacle !",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
+                        (act, tgt) => arena.ExecuteShove(act, tgt, true, CombatContextMenuUI.CurrentInjectedAP, CombatContextMenuUI.CurrentInjectedPE)
+                    ));
+                }
+
+                actions.Add(new CombatAction(
+                    "💨 Bousculade (2 PA)",
+                    "Poussée physique au corps-à-corps (test FOR opposé, 2 PA) : repousse la cible d'1 case (Knockback). Chute À Terre si mur ou obstacle !",
+                    ActionCategory.AttaqueEtPassesDarmes,
+                    2,
+                    (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
+                    (act, tgt) => arena.ExecuteShove(act, tgt, false, CombatContextMenuUI.CurrentInjectedAP, CombatContextMenuUI.CurrentInjectedPE)
+                ));
+
                 // RD-038 : Charge au contact (3+ cases) + frappe d'assaut
                 int chargeAtkCost = 2;
                 bool isChargeDistance = actor.CurrentCoords.DistanceTo(target.CurrentCoords) >= 3;
@@ -1506,6 +1529,22 @@ namespace Killtime.Tactics.CombatUI
             return fx.HasFlag(StatusEffect.ATerre) || fx.HasFlag(StatusEffect.Destabilise)
                 || fx.HasFlag(StatusEffect.Sonne) || fx.HasFlag(StatusEffect.Etourdi)
                 || fx.HasFlag(StatusEffect.Paralyse);
+        }
+
+        public static bool HasEquippedShield(TacticalUnit actor)
+        {
+            var inv = actor?.Sheet?.Inventory;
+            if (inv == null) return false;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || !it.IsEquipped) continue;
+                if (!string.IsNullOrEmpty(it.Name) && it.Name.IndexOf("Bouclier", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+                if (!string.IsNullOrEmpty(it.Category) && it.Category.IndexOf("Bouclier", System.StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+            }
+            return false;
         }
     }
 }

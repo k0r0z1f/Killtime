@@ -45,6 +45,9 @@ namespace Killtime.Core.Combat
         public int CoverAttackPenalty;
         public bool BlockedByCover;
 
+        // RD-047 : Test de moral / Déroute / Reddition (28% PV)
+        public MoraleCheckResult MoraleResult;
+
         public override string ToString() => CombatLog;
     }
 }

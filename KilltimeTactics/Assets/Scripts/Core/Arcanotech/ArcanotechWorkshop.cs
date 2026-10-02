@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using Killtime.Core.Character;
+using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 
 namespace Killtime.Core.Arcanotech
@@ -14,6 +15,8 @@ namespace Killtime.Core.Arcanotech
     /// </summary>
     public static class ArcanotechWorkshop
     {
+        public static Func<CharacterStats, string, int> DistanceToHeroProvider;
+
         private static readonly Dictionary<ArcanotechModuleId, PowerModuleDefinition> _catalog = new()
         {
             // --- OFFENSIFS (Livre IV §19.2) ---
@@ -326,7 +329,19 @@ namespace Killtime.Core.Arcanotech
             int baseRange = NythariteSpell.CalculateBaseRange(caster.Attributes.Magie, trainingCount);
             int distancePenalty = cancelRangePenaltyWithAP ? 0 : NythariteSpell.CalculateDistancePenalty(distanceInTiles, baseRange);
 
-            int totalPaCost = spell.ActionPointCost + (cancelRangePenaltyWithAP ? 1 : 0) + FocusTax(caster.Sheet);
+            bool isLucasVoid = (LucasCharacter.IsLucas(caster.Sheet) || caster.HasSpecialization("Vide Calculant"))
+                               && spell.AssociatedSkill == SkillType.MagieElementale;
+            int voidReduction = 0;
+            bool minaFarOrAbsent = true;
+            if (isLucasVoid)
+            {
+                int distMina = DistanceToHeroProvider != null ? DistanceToHeroProvider(caster, "Mina") : -1;
+                bool minaNear = distMina >= 0 && distMina <= 3;
+                minaFarOrAbsent = distMina < 0 || distMina > 6;
+                voidReduction = LucasCharacter.GetVoidCostReduction(minaNear);
+            }
+
+            int totalPaCost = Math.Max(1, spell.ActionPointCost - voidReduction) + (cancelRangePenaltyWithAP ? 1 : 0) + FocusTax(caster.Sheet);
 
             if (!caster.ConsumeActionPoints(totalPaCost))
             {
@@ -454,6 +469,12 @@ namespace Killtime.Core.Arcanotech
             bool eclatBoost = HasEclat(caster.Sheet);
             if (eclatBoost) directDamage += 1;
 
+            if (isLucasVoid)
+            {
+                absoluteDamage += directDamage;
+                directDamage = 0;
+            }
+
             int finalDamageApplied = 0;
             int shieldAbsorbedSpell = 0;
             if (!isSymbioticImmune && target != null)
@@ -493,6 +514,26 @@ namespace Killtime.Core.Arcanotech
                 + (eclatBoost ? " +1 Éclat" : "") + (FocusTax(caster.Sheet) > 0 ? ", sans focus +2 PA" : "") + ")\n"
                 + $"   🎯 Portée {distanceInTiles}/{baseRange} cases (Malus: {distancePenalty})\n"
                 + $"   🎲 Épreuve [{spell.AssociatedSkill}] : {skillDie} (Total {roll.Total})\n";
+
+            if (isLucasVoid && LucasCharacter.HasVoidBacklash(minaFarOrAbsent, !roll.IsSuccess))
+            {
+                int backlashRemaining = caster.CurrentHealth - 3;
+                if (backlashRemaining <= 0)
+                {
+                    caster.EvaluateFatalBlow(BodyPart.Torse, 3);
+                }
+                else
+                {
+                    caster.CurrentHealth = backlashRemaining;
+                }
+
+                log += "   ❄️ <b>[THERMOSTAT INVERSÉ]</b> Backlash de vide : Lucas subit 3 dégâts Absolus (Mina absente ou distante) !\n";
+                if (roll.IsCriticalFailure)
+                {
+                    caster.ApplyStatus(StatusEffect.Sonne, 1);
+                    log += "   ⚡ <b>[ÉCHEC CRITIQUE]</b> Lucas est Sonné par la saturation du Vide !\n";
+                }
+            }
 
             if (isSymbioticImmune)
             {

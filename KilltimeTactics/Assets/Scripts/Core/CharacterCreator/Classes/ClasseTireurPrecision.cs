@@ -28,10 +28,8 @@ namespace Killtime.Core.Character.Classes
                 StartingCreditsCE = 10000,
                 StartingTrainings = new List<SkillTrainingStep>
                 {
-                    new SkillTrainingStep(SkillType.Ballistique, 2),
+                    new SkillTrainingStep(SkillType.Ballistique, 1),
                     new SkillTrainingStep(SkillType.Discretion, 1),
-                    new SkillTrainingStep(SkillType.Observation, 1),
-                    new SkillTrainingStep(SkillType.Esquive, 1),
                 },
                 StartingSpecializations = new List<string>
                 {

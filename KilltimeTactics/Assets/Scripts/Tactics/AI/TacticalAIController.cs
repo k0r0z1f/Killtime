@@ -387,10 +387,15 @@ namespace Killtime.Tactics.AI
             LoadDevUIPrefs();
             if (!_isAIEnabled || unit == null || unit.Stats == null) return;
 
-            if (!unit.Stats.IsAlive)
+            if (!unit.Stats.IsAlive || unit.Stats.IsSurrendered)
             {
                 _turnManager?.EndCurrentTurn();
                 return;
+            }
+
+            if (_defaultPersonality == AIPersonality.Survivor && unit.Stats != null)
+            {
+                unit.Stats.IsSurvivor = true;
             }
 
             bool shouldControl = (_mode == CombatAIMode.FullAuto) || (!unit.IsPlayerControlled);
@@ -426,6 +431,23 @@ namespace Killtime.Tactics.AI
                 while (Killtime.UI.CombatHUD.IsPaused)
                 {
                     yield return null;
+                }
+
+                // RD-047 : Reddition (Unité désarmée, hors combat)
+                if (unit.Stats.IsSurrendered)
+                {
+                    visual?.SpawnFloatingText("🏳️ [REDDITION] Dépôt des armes", Color.white);
+                    _turnManager?.EndCurrentTurn();
+                    yield break;
+                }
+
+                // RD-047 : Déroute & Fuite Panique (StatusEffect.Agonisant)
+                if (unit.Stats.ActiveStatus.HasFlag(StatusEffect.Agonisant))
+                {
+                    visual?.SpawnFloatingText("😱 [DÉROUTE] Fuite Panique !", new Color(0.95f, 0.2f, 0.85f));
+                    yield return StartCoroutine(ExecutePanickedFlee(unit));
+                    yield return new WaitForSeconds(_actionDelay);
+                    break;
                 }
 
                 // 1. SOUTIEN MÉDICAL D'URGENCE (Livre VII)
@@ -1094,6 +1116,81 @@ namespace Killtime.Tactics.AI
                     yield return StartCoroutine(actor.MoveAlongPath(path, _grid, cost));
                 }
             }
+        }
+
+        // RD-047 : Fuite panique désordonnée pour unité en Déroute (Agonisant)
+        private IEnumerator ExecutePanickedFlee(TacticalUnit actor)
+        {
+            if (CanTakeBreathSafely(actor) && actor.Stats.CurrentActionPoints < 3)
+            {
+                actor.Stats.TakeEmergencyBreath(2);
+                var visual = actor.GetComponent<TacticalUnitVisual>();
+                visual?.SpawnFloatingText("🫁 Souffle de Panique (+2 PA)", Color.red);
+                yield return new WaitForSeconds(_actionDelay);
+            }
+
+            int ap = actor.Stats.CurrentActionPoints;
+            if (ap <= 0 || _pathfinder == null || _grid == null) yield break;
+
+            TacticalUnit nearestThreat = null;
+            int minThreatDist = int.MaxValue;
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var u = _cachedUnits[i];
+                if (u == null || u == actor || u.Stats == null || !u.Stats.IsAlive || u.Stats.IsSurrendered) continue;
+                bool hostile = actor.IsPlayerControlled ? !u.IsPlayerControlled : u.IsPlayerControlled;
+                if (_mode == CombatAIMode.FullAuto && u.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
+                if (!hostile) continue;
+                int d = actor.CurrentCoords.DistanceTo(u.CurrentCoords);
+                if (d < minThreatDist)
+                {
+                    minThreatDist = d;
+                    nearestThreat = u;
+                }
+            }
+
+            HexCoordinates? fleeHex = nearestThreat != null
+                ? FindBestPanickedFleeHex(actor.CurrentCoords, nearestThreat.CurrentCoords, ap)
+                : null;
+
+            if (fleeHex.HasValue && !fleeHex.Value.Equals(actor.CurrentCoords))
+            {
+                var path = _pathfinder.FindPath(actor.CurrentCoords, fleeHex.Value, ap, out int cost);
+                if (path != null && path.Count > 1)
+                {
+                    actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("💨 Fuite éperdue !", new Color(1f, 0.4f, 0.2f));
+                    yield return StartCoroutine(actor.MoveAlongPath(path, _grid, cost));
+                }
+            }
+        }
+
+        private HexCoordinates? FindBestPanickedFleeHex(HexCoordinates current, HexCoordinates threatCoords, int apBudget)
+        {
+            if (_pathfinder == null) return null;
+            var reachable = _pathfinder.GetReachableCoordinates(current, apBudget);
+            if (reachable == null || reachable.Count == 0) return null;
+
+            HexCoordinates? bestHex = null;
+            float highestScore = float.MinValue;
+
+            foreach (var hex in reachable)
+            {
+                var node = _grid.GetNode(hex);
+                if (node == null || !node.IsWalkable || (node.IsOccupied && !hex.Equals(current))) continue;
+
+                int dist = hex.DistanceTo(threatCoords);
+                float score = dist * 10f + UnityEngine.Random.Range(0f, 4f);
+                CoverType cover = CoverSystem.EvaluateCover(threatCoords, hex, _grid);
+                if (cover != CoverType.None) score += 15f;
+
+                if (score > highestScore)
+                {
+                    highestScore = score;
+                    bestHex = hex;
+                }
+            }
+
+            return bestHex;
         }
 
         private HexCoordinates? FindBestCoveredRetreatHex(HexCoordinates current, HexCoordinates threatCoords, int apBudget)
@@ -1815,7 +1912,7 @@ namespace Killtime.Tactics.AI
             for (int i = 0; i < _cachedUnits.Count; i++)
             {
                 var potential = _cachedUnits[i];
-                if (potential == null || potential == actor || potential.Stats == null || !potential.Stats.IsAlive) continue;
+                if (potential == null || potential == actor || potential.Stats == null || !potential.Stats.IsAlive || potential.Stats.IsSurrendered) continue;
 
                 bool isHostile = actor.IsPlayerControlled ? !potential.IsPlayerControlled : potential.IsPlayerControlled;
                 if (_mode == CombatAIMode.FullAuto && potential.IsPlayerControlled != actor.IsPlayerControlled) isHostile = true;

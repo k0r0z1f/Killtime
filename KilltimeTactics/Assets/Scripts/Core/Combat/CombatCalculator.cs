@@ -1079,6 +1079,106 @@ namespace Killtime.Core.Combat
             return opposed;
         }
 
+        // =====================================================================
+        // RD-040 : BOUSCULADE GÉNÉRIQUE & COUP DE BOUCLIER (Livre VI — Corps-à-corps)
+        // =====================================================================
+
+        /// <summary>
+        /// RD-040 : Résolution de la Bousculade générique ou du Coup de bouclier (2 PA).
+        /// Duel opposé aveugle basé sur la Force (Athlétisme / Mains Nues vs Défense Corporelle / Athlétisme).
+        /// Victoire de l'attaquant (Diff >= 0) : recul forcé d'1 case (CausedKnockback = true).
+        /// Si le recul heurte un obstacle ou un mur, la cible chute À Terre (résolu dans l'arène).
+        /// </summary>
+        public DamageResult ResolveShoveDuel(
+            CharacterStats attacker,
+            CharacterStats defender,
+            bool isShieldBash,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderAutoStakes = false)
+        {
+            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
+            if (defender == null) throw new ArgumentNullException(nameof(defender));
+
+            SkillType atkSkill;
+            if (isShieldBash)
+            {
+                atkSkill = attacker.GetSkillDie(SkillType.DefenseCorporelle, true) >= attacker.GetSkillDie(SkillType.Athletisme, true)
+                    ? SkillType.DefenseCorporelle
+                    : SkillType.Athletisme;
+            }
+            else
+            {
+                atkSkill = attacker.GetSkillDie(SkillType.Athletisme, true) >= attacker.GetSkillDie(SkillType.MainsNues, true)
+                    ? SkillType.Athletisme
+                    : SkillType.MainsNues;
+            }
+
+            SkillType defSkill = defender.GetSkillDie(SkillType.DefenseCorporelle, false) >= defender.GetSkillDie(SkillType.Athletisme, false)
+                ? SkillType.DefenseCorporelle
+                : SkillType.Athletisme;
+
+            var opposed = ResolveOpposedCheck(
+                attacker, atkSkill,
+                defender, defSkill,
+                attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE,
+                defenderAutoStakes);
+
+            bool success = opposed.AttackerWins;
+            int diff = opposed.Differential;
+
+            int rawDmg = 0;
+            int absorbed = 0;
+            int finalDmg = 0;
+
+            if (success && isShieldBash)
+            {
+                rawDmg = 3 + Math.Max(0, diff / 2);
+                int totalArmor = defender.BaseArmorAbsorption + defender.GetWornArmorBonus();
+                absorbed = Math.Min(totalArmor, rawDmg);
+                int postArmor = Math.Max(0, rawDmg - absorbed);
+                int shieldRem = defender.AbsorbShield(postArmor);
+                finalDmg = Math.Max(0, shieldRem);
+
+                if (defender.CurrentHealth - finalDmg <= 0)
+                {
+                    defender.EvaluateFatalBlow(BodyPart.Torse, finalDmg);
+                }
+                else
+                {
+                    defender.CurrentHealth -= finalDmg;
+                }
+            }
+
+            string actionLabel = isShieldBash ? "COUP DE BOUCLIER" : "BOUSCULADE";
+            string log = success
+                ? $"💨 <b>{actionLabel} — RÉUSSIE</b> : {attacker.Name} repousse violemment {defender.Name} (Diff {diff:+0;-0;0}) ➔ <b>Recul forcé d'1 case (Knockback) !</b>"
+                    + (isShieldBash && finalDmg > 0 ? $"\n   ⚔️ Impact : {rawDmg} bruts &minus; {absorbed} armure = <color=#FF3B5C>{finalDmg} Dégâts Nets</color> ({defender.CurrentHealth}/{defender.MaxHealth} PV)." : "")
+                : $"🛡️ <b>{actionLabel} — ÉCHEC</b> : {defender.Name} résiste et absorbe la poussée de {attacker.Name} (Diff {diff:+0;-0;0}).";
+
+            log += $"\n{opposed.CombatLog}";
+
+            return new DamageResult
+            {
+                IsHit = success,
+                IsBlocked = !success,
+                Differential = diff,
+                AttackRoll = opposed.AttackRoll,
+                DefenseRoll = opposed.DefenseRoll,
+                TargetPart = BodyPart.Torse,
+                ActualHitPart = BodyPart.Torse,
+                RawDamage = rawDmg,
+                ArmorAbsorbed = absorbed,
+                FinalDamageApplied = finalDmg,
+                FatalResolution = (success && isShieldBash && defender.CurrentHealth <= 0) ? defender.EvaluateFatalBlow(BodyPart.Torse, finalDmg) : FatalBlowResolution.None,
+                CausedKnockback = success,
+                CombatLog = log
+            };
+        }
+
         /// <summary>Espérance d'un dé (pour l'estimation aveugle de l'IA, mise adverse inconnue).</summary>
         public static double DieAverage(DiceType die)
         {
@@ -1385,6 +1485,20 @@ namespace Killtime.Core.Combat
             // Marteau de Guerre et Hache de Guerre : branches du Maniement d'Arme.
             // La valeur legacy ArmesContondantes est rabattue sur ManiementArmes.
             SkillType meleeSkill = SkillDefinitions.ResolveBaseSkill(duel.AttackSkill);
+
+            if (attacker.HasSpecialization("Corps Augmenté : Résonance Cinétique Pure") && duel.AttackSkill == SkillType.MainsNues)
+            {
+                rawDamage += 2;
+                dmgFormula += " + 2 (Résonance Cinétique)";
+            }
+
+            if (attacker.HasSpecialization("Impact de Bedrock : Enclume Mortelle") && meleeSkill == SkillType.ManiementArmes)
+            {
+                totalArmor = 0;
+                rawDamage += 6;
+                dmgFormula += " + 6 (Enclume Mortelle, Armure Ignorée)";
+            }
+
             if (attacker.HasSpecialization("Marteau de Guerre : Cataclysme de Fer") && meleeSkill == SkillType.ManiementArmes)
             {
                 rawDamage += 5;
@@ -1427,8 +1541,15 @@ namespace Killtime.Core.Combat
                 dmgFormula += $" + {chargeBonus} (⚡ Charge)";
             }
 
+            bool isThomasSymbioticImmune = ThomasCharacter.IsImmuneToCasterMagic(defender.Sheet, attacker.Sheet);
+            if (isThomasSymbioticImmune)
+            {
+                rawDamage = 0;
+                totalArmor = 0;
+            }
+
             int absorbed = Math.Min(totalArmor, rawDamage);
-            int finalDamage = Math.Max(0, rawDamage - absorbed);
+            int finalDamage = isThomasSymbioticImmune ? 0 : Math.Max(0, rawDamage - absorbed);
             // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
             // chair — aucun choc traumatique tant qu'elle encaisse tout.
             int shieldRemainder = defender.AbsorbShield(finalDamage);
@@ -1444,7 +1565,7 @@ namespace Killtime.Core.Combat
             // Déstabilisée AVANT ce coup (le statut infligé par ce même coup ne compte pas).
             bool wasDestabilisedBefore = (defender.ActiveStatus & StatusEffect.Destabilise) != 0;
 
-            if (exceededEncaissement || attackRoll.IsCriticalSuccess)
+            if (!isThomasSymbioticImmune && (exceededEncaissement || attackRoll.IsCriticalSuccess))
             {
                 inflictedStatus = DetermineInflictedStatus(actualHitPart);
                 defender.ActiveStatus |= inflictedStatus;
@@ -1452,7 +1573,7 @@ namespace Killtime.Core.Combat
 
             // Analyse de Faille (Livre III) : la faille exposée est consommée à la
             // touche — la prochaine attaque ignore le seuil d'encaissement adverse.
-            if (!exceededEncaissement && SkillTechniqueState.ConsumeExposedFlaw(defender))
+            if (!isThomasSymbioticImmune && !exceededEncaissement && SkillTechniqueState.ConsumeExposedFlaw(defender))
             {
                 exceededEncaissement = true;
                 inflictedStatus |= DetermineInflictedStatus(actualHitPart);
@@ -1462,16 +1583,31 @@ namespace Killtime.Core.Combat
 
             // Arts Martiaux : Balayage Rotatif (Livre III) — sur différentiel net
             // Delta >= 2 à mains nues, la cible chute À Terre (même sans choc).
-            if (duel.AttackSkill == SkillType.MainsNues && differential >= 2
+            if (!isThomasSymbioticImmune && duel.AttackSkill == SkillType.MainsNues && differential >= 2
                 && attacker.HasSpecialization("Arts Martiaux : Balayage Rotatif"))
             {
                 inflictedStatus |= StatusEffect.ATerre;
                 defender.ActiveStatus |= StatusEffect.ATerre;
             }
 
+            // Thomas-0 : Impact de Bedrock — fracture d'armure de -2 et Sonné sur Delta >= 2
+            if (differential >= 2 && attacker.HasSpecialization("Impact de Bedrock") && meleeSkill == SkillType.ManiementArmes)
+            {
+                defender.BaseArmorAbsorption = Math.Max(0, defender.BaseArmorAbsorption - 2);
+                inflictedStatus |= StatusEffect.Sonne;
+                defender.ApplyStatus(StatusEffect.Sonne, 1);
+            }
+
+            // Mina-0 : Floraison Cinétique — ronces réflexes sur engagement d'essoufflement au contact
+            if (defender.HasSpecialization("Éveil Chlorophyllien : Floraison Cinétique") && defCommittedPE > 0 && _currentCombatIsAtContactDistance)
+            {
+                int thorns = defCommittedPE * 3;
+                attacker.CurrentHealth = Math.Max(0, attacker.CurrentHealth - thorns);
+            }
+
             // Arts Martiaux : Rupture Ligamentaire (Livre III) — cible Déstabilisée
             // avant le coup → torsion destructrice : Paralysé pendant 1 tour.
-            if (duel.AttackSkill == SkillType.MainsNues && wasDestabilisedBefore
+            if (!isThomasSymbioticImmune && duel.AttackSkill == SkillType.MainsNues && wasDestabilisedBefore
                 && attacker.HasSpecialization("Arts Martiaux : Rupture Ligamentaire"))
             {
                 inflictedStatus |= StatusEffect.Paralyse;
@@ -1486,6 +1622,13 @@ namespace Killtime.Core.Combat
             else
             {
                 defender.CurrentHealth -= finalDamage;
+            }
+
+            // RD-047 : Test de moral au seuil critique de 28% PV
+            MoraleCheckResult moraleRes = default;
+            if (defender.IsAlive && !defender.HasTestedMorale && defender.CurrentHealth > 0)
+            {
+                moraleRes = defender.CheckMoraleAtThreshold(_diceRoller, cfg.StandardTargetDC);
             }
 
             string headerTag = !effectiveDefenderWantsToDefend
@@ -1517,6 +1660,11 @@ namespace Killtime.Core.Combat
                 log += " | 📡 <b>FAILLE EXPOSÉE EXPLOITÉE</b> (Analyse de Faille : encaissement ignoré)";
             }
 
+            if (isThomasSymbioticImmune)
+            {
+                log += " | 🛡️ <b>ANCRE SYMBIOTIQUE</b> (0 dégât : neutralité de fréquence face aux alliés)";
+            }
+
             if (fatalRes == FatalBlowResolution.InstantDeath)
             {
                 log += " | 💀 <b>MORT INSTANTANÉE (Tête détruite)</b>";
@@ -1534,8 +1682,13 @@ namespace Killtime.Core.Combat
                 log += " | ⚡ <b>0 PV (Choix Sombrer ou Dernier Souffle)</b>";
             }
 
-            bool causedKnockback = (duel.IsMartialArtsStrike && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4))
-                || (attacker.HasSpecialization("Teep de Rupture") && duel.AttackSkill == SkillType.MainsNues && differential >= 0);
+            if (moraleRes.Triggered)
+            {
+                log += "\n   " + moraleRes.Log;
+            }
+
+            bool causedKnockback = !isThomasSymbioticImmune && ((duel.IsMartialArtsStrike && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4))
+                || (attacker.HasSpecialization("Teep de Rupture") && duel.AttackSkill == SkillType.MainsNues && differential >= 0));
 
             // Livre I §5 : l'attaquant a RÉUSSI (touché, même dévié diff 0) → +1 case de progression.
             log += ApplySkillProgression(attacker, attackSkill, true);
@@ -1563,7 +1716,8 @@ namespace Killtime.Core.Combat
                 Cover = duel.Cover,
                 CoverAttackPenalty = duel.CoverAttackPenalty,
                 BlockedByCover = false,
-                CombatLog = log
+                CombatLog = log,
+                MoraleResult = moraleRes
             };
         }
 
@@ -1604,6 +1758,24 @@ namespace Killtime.Core.Combat
             if (roll.IsSuccess && !roll.IsCriticalFailure && user.Sheet != null)
                 CharacterProgressionManager.RegisterSuccessfulSkillUse(user.Sheet, skill, out _, out _, isOffensive);
             return roll;
+        }
+
+        /// <summary>
+        /// RD-034 : Résout un tir de cône, rafale ou suppression balistique avec dispersion,
+        /// friendly fire et falloff de distance.
+        /// </summary>
+        public AreaFireResult ResolveAreaFireShot(
+            CharacterStats attacker,
+            HexCoordinates attackerPos,
+            HexCoordinates targetPos,
+            AreaFireProfile profile,
+            System.Collections.Generic.IReadOnlyList<(CharacterStats stats, HexCoordinates pos, bool isAlly)> combatantsOnField,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            CoverType fieldCover = CoverType.None)
+        {
+            var calc = new AreaFireCalculator(_diceRoller);
+            return calc.ResolveAreaFire(attacker, attackerPos, targetPos, profile, combatantsOnField, attackerBonusAP, attackerPE, fieldCover);
         }
 
         private BodyPart GetAdjacentBodyPart(BodyPart targeted)

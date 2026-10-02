@@ -1221,8 +1221,8 @@ namespace Killtime.CameraSystem
         {
             UpdateLetterbox();
 
-            // Basculer en mode Free Look avec la touche 'F' ou clic droit maintenu
-            if (Input.GetKeyDown(KeyCode.F))
+            // Basculer en mode Free Look avec la touche 'F' (ignoré en cours de saisie texte UI)
+            if (Input.GetKeyDown(KeyCode.F) && GUIUtility.keyboardControl == 0)
             {
                 ToggleFreeLook();
             }
@@ -1267,7 +1267,8 @@ namespace Killtime.CameraSystem
             if (CurrentMode == CameraMode.TacticalIsometric)
             {
                 CurrentMode = CameraMode.FreeLook;
-                _tacticalCam.enabled = false;
+                ResolveTacticalCam();
+                if (_tacticalCam != null) _tacticalCam.enabled = false;
                 
                 Vector3 euler = transform.rotation.eulerAngles;
                 _freePitch = euler.x;
@@ -1277,7 +1278,12 @@ namespace Killtime.CameraSystem
             else if (CurrentMode == CameraMode.FreeLook)
             {
                 CurrentMode = CameraMode.TacticalIsometric;
-                _tacticalCam.enabled = true;
+                ResolveTacticalCam();
+                if (_tacticalCam != null)
+                {
+                    _tacticalCam.AdoptWorldPose(transform.position, transform.rotation.eulerAngles);
+                    _tacticalCam.enabled = true;
+                }
                 Cursor.lockState = CursorLockMode.None;
             }
         }

@@ -190,6 +190,26 @@ namespace Killtime.Tactics
             _combatCalculator = new CombatCalculator(_diceRoller);
             _timelineBranch = new TimelineBranch(TimelineId.Timeline0_Prime);
 
+            Killtime.Core.Arcanotech.ArcanotechWorkshop.DistanceToHeroProvider = (stats, heroName) =>
+            {
+                if (stats == null || string.IsNullOrEmpty(heroName)) return -1;
+                var allUnits = FindObjectsByType<TacticalUnit>();
+                TacticalUnit origin = null;
+                TacticalUnit hero = null;
+                for (int i = 0; i < allUnits.Length; i++)
+                {
+                    var u = allUnits[i];
+                    if (u != null && u.Stats == stats) origin = u;
+                    if (u != null && u.Stats != null && u.Stats.IsAlive && !string.IsNullOrEmpty(u.Stats.Name) && u.Stats.Name.IndexOf(heroName, StringComparison.OrdinalIgnoreCase) >= 0)
+                        hero = u;
+                }
+                if (origin != null && hero != null)
+                {
+                    return origin.CurrentCoords.DistanceTo(hero.CurrentCoords);
+                }
+                return -1;
+            };
+
             EnsureDependencies();
             EnsureAIController();
             try { LoadDevUIPrefs(); } catch { /* prefs optionnelles */ }
@@ -1353,6 +1373,22 @@ namespace Killtime.Tactics
                         else
                         {
                             unit.Stats.CurrentHealth -= finalDmg;
+                            var mRes = unit.Stats.CheckMoraleAtThreshold(_diceRoller, CoreRulesConfig.Instance.StandardTargetDC);
+                            if (mRes.Triggered)
+                            {
+                                Log(mRes.Log);
+                                var uVis = unit.GetComponent<TacticalUnitVisual>();
+                                if (mRes.Surrendered)
+                                {
+                                    uVis?.SpawnFloatingText("🏳️ REDDITION !", Color.white);
+                                    uVis?.DropHeldItemsWithPhysics();
+                                    uVis?.SetCombatStance(false);
+                                }
+                                else if (mRes.Routed)
+                                {
+                                    uVis?.SpawnFloatingText("😱 DÉROUTE ! [Agonisant]", new Color(0.95f, 0.2f, 0.85f));
+                                }
+                            }
                         }
                     }
 
@@ -1378,6 +1414,75 @@ namespace Killtime.Tactics
         /// Grappin Magnétique (2 PA, 2-4 cases) : harpon 3D, À Terre si Diff ≥ 2.
         /// Le grappin revient (non consommé). Requiert l'outil en poche.
         /// </summary>
+        /// <summary>
+        /// Attaque directe contre un obstacle ou élément du décor (Livre VI).
+        /// Applique les dégâts selon le matériau et le type de frappe (Contondant, Tranchant, Perforant, Thermique...).
+        /// </summary>
+        public bool ExecuteAttackOnObstacle(
+            HexCoordinates targetCoords,
+            SkillType attackSkill = SkillType.ManiementArmes,
+            TacticalUnit explicitAttacker = null)
+        {
+            if (_isAttackInProgress) return false;
+            var attacker = explicitAttacker != null ? explicitAttacker : (_turnManager != null ? _turnManager.ActiveUnit : PlayerUnit);
+            if (attacker == null || attacker.Stats == null || !attacker.Stats.IsAlive) return false;
+            if (attacker.IsMoving) return false;
+
+            int cost = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.BaseAttackAPCost : 2;
+            if (!InfiniteAP && attacker.Stats.CurrentActionPoints < cost)
+            {
+                Log($"⚠️ PA insuffisants : attaque de décor = {cost} PA (reste {attacker.Stats.CurrentActionPoints}).");
+                return false;
+            }
+
+            var weapon = attacker.Sheet?.GetEquippedWeapon();
+            int dmg = weapon != null && weapon.BaseDamage > 0 ? weapon.BaseDamage : 5;
+            bool isMelee = SkillDefinitions.IsMeleeAttackSkill(attackSkill) || (weapon != null && weapon.RangeInTiles <= 1);
+            int dist = attacker.CurrentCoords.DistanceTo(targetCoords);
+            int maxReach = weapon != null ? Mathf.Max(1, weapon.RangeInTiles) : 1;
+
+            if (dist > maxReach)
+            {
+                Log($"⚠️ Obstacle hors de portée ({dist} cases > max {maxReach}).");
+                return false;
+            }
+
+            ObstacleDamageType dmgType = ObstacleDamageType.Perforant;
+            if (isMelee)
+            {
+                dmgType = (attackSkill == SkillType.ManiementArmes && attacker.Stats.HasSpecialization("Marteau de Guerre"))
+                    ? ObstacleDamageType.Contondant
+                    : (attacker.Stats.HasSpecialization("Hache de Guerre") ? ObstacleDamageType.Tranchant : ObstacleDamageType.Contondant);
+            }
+            else if (weapon != null && weapon.Category.Contains("Laser"))
+            {
+                dmgType = ObstacleDamageType.Thermique;
+            }
+
+            if (!InfiniteAP) attacker.Stats.ConsumeActionPoints(cost);
+            attacker.Stats.RegisterAttack();
+
+            Vector3 dir = targetCoords.ToWorldPosition(_grid != null ? _grid.HexRadius : 1f, 0f) - attacker.transform.position;
+            dir.y = 0f;
+            if (dir != Vector3.zero) attacker.transform.rotation = Quaternion.LookRotation(dir);
+
+            var attVis = attacker.GetComponent<TacticalUnitVisual>();
+            attVis?.TriggerRoundkick();
+
+            if (PropObstacleRegistry.ApplyDamage(targetCoords, dmg, dmgType, _grid, _gridVisualizer, out var obsRes))
+            {
+                Log($"🎯 <b>{attacker.Stats.Name}</b> attaque le décor en ({targetCoords.Q}, {targetCoords.R}) (-{cost} PA) :\n   {obsRes.Log}");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Trauma_Shock, attacker.transform.position, 0.7f);
+                return true;
+            }
+            else
+            {
+                Log($"🎯 <b>{attacker.Stats.Name}</b> frappe en ({targetCoords.Q}, {targetCoords.R}) : aucun obstacle destructible.");
+                return false;
+            }
+        }
+
         public void ExecuteGrapnel(TacticalUnit attacker, TacticalUnit defender)
         {
             if (_isAttackInProgress)
@@ -1791,7 +1896,7 @@ namespace Killtime.Tactics
             }
             else
             {
-                if (PlayerUnit != null && PlayerUnit.Stats != null && PlayerUnit.Stats.IsAlive)
+                if (PlayerUnit != null && PlayerUnit.Stats != null && PlayerUnit.Stats.IsAlive && !PlayerUnit.Stats.IsSurrendered)
                 {
                     SelectTarget(PlayerUnit);
                     return;
@@ -1799,7 +1904,7 @@ namespace Killtime.Tactics
                 for (int i = 0; i < _additionalPlayers.Count; i++)
                 {
                     var p = _additionalPlayers[i];
-                    if (p != null && p.Stats != null && p.Stats.IsAlive)
+                    if (p != null && p.Stats != null && p.Stats.IsAlive && !p.Stats.IsSurrendered)
                     {
                         SelectTarget(p);
                         return;
@@ -1867,7 +1972,7 @@ namespace Killtime.Tactics
             for (int i = 0; i < SparringDummies.Count; i++)
             {
                 var dummy = SparringDummies[i];
-                if (dummy != null && dummy.Stats != null && dummy.Stats.IsAlive)
+                if (dummy != null && dummy.Stats != null && dummy.Stats.IsAlive && !dummy.Stats.IsSurrendered)
                 {
                     SelectTarget(dummy);
                     return;
@@ -1880,7 +1985,7 @@ namespace Killtime.Tactics
                 for (int i = 0; i < units.Count; i++)
                 {
                     var u = units[i];
-                    if (u != null && !u.IsPlayerControlled && u.Stats != null && u.Stats.IsAlive)
+                    if (u != null && !u.IsPlayerControlled && u.Stats != null && u.Stats.IsAlive && !u.Stats.IsSurrendered)
                     {
                         SelectTarget(u);
                         return;
@@ -2800,6 +2905,38 @@ namespace Killtime.Tactics
                 }
 
                 Log(result.CombatLog);
+
+                // Dégâts collatéraux sur l'obstacle si l'attaque est absorbée par le couvert ou neutralisée
+                if (result.IsBlocked && freshCover != CoverType.None && _grid != null)
+                {
+                    ObstacleDamageType directDmgType = ObstacleDamageType.Perforant;
+                    if (isMeleeAtTrigger())
+                    {
+                        directDmgType = (attackSkill == SkillType.ManiementArmes && attacker.Stats.HasSpecialization("Marteau de Guerre"))
+                            ? ObstacleDamageType.Contondant
+                            : (attacker.Stats.HasSpecialization("Hache de Guerre") ? ObstacleDamageType.Tranchant : ObstacleDamageType.Contondant);
+                    }
+                    else if (equippedWeapon != null && equippedWeapon.Category.Contains("Laser"))
+                    {
+                        directDmgType = ObstacleDamageType.Thermique;
+                    }
+
+                    if (CoverSystem.ScanCover(attacker.CurrentCoords, defender.CurrentCoords, _grid, smokeZones: _smokeZones, seesThroughSmoke: SeesThroughSmoke(attacker)).Rays is var rays && rays != null)
+                    {
+                        for (int rIdx = 0; rIdx < rays.Count; rIdx++)
+                        {
+                            if (rays[rIdx].Blocked && rays[rIdx].HasBlockingCell)
+                            {
+                                if (PropObstacleRegistry.ApplyDamage(rays[rIdx].BlockingCell, effectiveWeaponDamage, directDmgType, _grid, _gridVisualizer, out var obsRes))
+                                {
+                                    Log($"   🛡️ <b>IMPACT COLLATÉRAL</b> : {obsRes.Log}");
+                                }
+                                break;
+                            }
+                        }
+                    }
+                }
+
                 TryDisarmDefender(attacker, defender, targetedPart, result);
                 if (ammoFiredHere && equippedWeapon != null && result.AttackRoll.RawRoll > 0)
                     ConsumeShotAndCheckJam(attacker, equippedWeapon, result, hdShot);
@@ -2885,6 +3022,23 @@ namespace Killtime.Tactics
                         if (result.CausedKnockback)
                         {
                             TryApplyKnockback(attacker, defender);
+                        }
+
+                        if (result.MoraleResult.Triggered)
+                        {
+                            if (result.MoraleResult.Surrendered)
+                            {
+                                defVisual.SpawnFloatingText("🏳️ REDDITION !", Color.white);
+                                defVisual.DropHeldItemsWithPhysics();
+                            }
+                            else if (result.MoraleResult.Routed)
+                            {
+                                defVisual.SpawnFloatingText("😱 DÉROUTE ! [Agonisant]", new Color(0.95f, 0.2f, 0.85f));
+                            }
+                            else
+                            {
+                                defVisual.SpawnFloatingText("🧠 Sang-froid préservé", Color.cyan);
+                            }
                         }
 
                         if (result.FatalResolution == FatalBlowResolution.InstantDeath)
@@ -2976,7 +3130,7 @@ namespace Killtime.Tactics
                     Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
                 }
 
-                if (!defender.Stats.IsAlive)
+                if (!defender.Stats.IsAlive || defender.Stats.IsSurrendered)
                 {
                     AutoTargetNextAlive();
                 }
@@ -3151,6 +3305,38 @@ namespace Killtime.Tactics
 
             attacker.Stats.RegisterAttack();
             Log(result.CombatLog);
+
+            // Dégâts collatéraux sur l'obstacle si l'attaque est absorbée par le couvert ou neutralisée
+            if (result.IsBlocked && defenseCover != CoverType.None && _grid != null)
+            {
+                ObstacleDamageType directDmgType = ObstacleDamageType.Perforant;
+                if (isMeleeHere)
+                {
+                    directDmgType = (attackSkill == SkillType.ManiementArmes && attacker.Stats.HasSpecialization("Marteau de Guerre"))
+                        ? ObstacleDamageType.Contondant
+                        : (attacker.Stats.HasSpecialization("Hache de Guerre") ? ObstacleDamageType.Tranchant : ObstacleDamageType.Contondant);
+                }
+                else if (equippedWeapon != null && equippedWeapon.Category.Contains("Laser"))
+                {
+                    directDmgType = ObstacleDamageType.Thermique;
+                }
+
+                if (CoverSystem.ScanCover(attacker.CurrentCoords, defender.CurrentCoords, _grid, smokeZones: _smokeZones, seesThroughSmoke: SeesThroughSmoke(attacker)).Rays is var rays && rays != null)
+                {
+                    for (int rIdx = 0; rIdx < rays.Count; rIdx++)
+                    {
+                        if (rays[rIdx].Blocked && rays[rIdx].HasBlockingCell)
+                        {
+                            if (PropObstacleRegistry.ApplyDamage(rays[rIdx].BlockingCell, effectiveWeaponDamage, directDmgType, _grid, _gridVisualizer, out var obsRes))
+                            {
+                                Log($"   🛡️ <b>IMPACT COLLATÉRAL</b> : {obsRes.Log}");
+                            }
+                            break;
+                        }
+                    }
+                }
+            }
+
             TryDisarmDefender(attacker, defender, targetedPart, result);
             if (WeaponAmmo.UsesAmmo(equippedWeapon, attackSkill) && equippedWeapon != null && result.AttackRoll.RawRoll > 0)
                 ConsumeShotAndCheckJam(attacker, equippedWeapon, result, hdShot2);
@@ -3231,6 +3417,23 @@ namespace Killtime.Tactics
                     if (result.CausedKnockback)
                     {
                         TryApplyKnockback(attacker, defender);
+                    }
+
+                    if (result.MoraleResult.Triggered)
+                    {
+                        if (result.MoraleResult.Surrendered)
+                        {
+                            defVisual.SpawnFloatingText("🏳️ REDDITION !", Color.white);
+                            defVisual.DropHeldItemsWithPhysics();
+                        }
+                        else if (result.MoraleResult.Routed)
+                        {
+                            defVisual.SpawnFloatingText("😱 DÉROUTE ! [Agonisant]", new Color(0.95f, 0.2f, 0.85f));
+                        }
+                        else
+                        {
+                            defVisual.SpawnFloatingText("🧠 Sang-froid préservé", Color.cyan);
+                        }
                     }
 
                     if (result.FatalResolution == FatalBlowResolution.InstantDeath)
@@ -3585,6 +3788,36 @@ namespace Killtime.Tactics
                 totalDealt += hit.FinalDamage;
             }
 
+            // Dégradation structurelle de l'environnement par le souffle de la grenade
+            var damagedObstacles = new List<ObstacleDamageResult>();
+            if (_grid != null && blastR >= 0)
+            {
+                ObstacleDamageType envDmgType = ObstacleDamageType.Explosif;
+                if (grenadeDef != null && !string.IsNullOrEmpty(grenadeDef.GrenadeKind))
+                {
+                    string k = grenadeDef.GrenadeKind.ToLowerInvariant();
+                    if (k.Contains("incend") || k.Contains("thermite") || k.Contains("feu")) envDmgType = ObstacleDamageType.Thermique;
+                    else if (k.Contains("plasma")) envDmgType = ObstacleDamageType.Plasma;
+                    else if (k.Contains("sonique") || k.Contains("flash")) envDmgType = ObstacleDamageType.Sonique;
+                }
+
+                for (int q = -blastR; q <= blastR; q++)
+                {
+                    int r1 = Mathf.Max(-blastR, -q - blastR);
+                    int r2 = Mathf.Min(blastR, -q + blastR);
+                    for (int r = r1; r <= r2; r++)
+                    {
+                        var targetCell = new HexCoordinates(blastCoords.Q + q, blastCoords.R + r);
+                        int d = blastCoords.DistanceTo(targetCell);
+                        int cellRaw = calc.ComputeRawDamage(grenadeDef, diceTotal, d);
+                        if (cellRaw > 0 && PropObstacleRegistry.ApplyDamage(targetCell, cellRaw, envDmgType, _grid, _gridVisualizer, out var obsRes))
+                        {
+                            damagedObstacles.Add(obsRes);
+                        }
+                    }
+                }
+            }
+
             // --- Zone persistante (RD-041/042/043) : fumée, gaz, feu... ---
             string zoneNote = "";
             if (grenadeDef != null && grenadeDef.ZoneDurationTurns > 0 && blastR > 0)
@@ -3614,6 +3847,13 @@ namespace Killtime.Tactics
             log += $"   🎲 Lancer : {throwOutcome.LogFragment}\n";
             log += $"   💥 Souffle R{blastR} : [{grenadeDef.BaseDamage} + {diceDetail} ({grenadeDef.DamageDiceCount}d10) = {grenadeDef.BaseDamage + diceTotal}] x falloff (-25%/case, min 25%) + shrapnels +{grenadeDef.ShrapnelDamage} ➔ {hits.Count} cible(s) dans la zone.";
             if (hits.Count == 0) log += " <i>Souffle dans le vide.</i>";
+            if (damagedObstacles.Count > 0)
+            {
+                for (int oIdx = 0; oIdx < damagedObstacles.Count; oIdx++)
+                {
+                    log += $"\n   • {damagedObstacles[oIdx].Log}";
+                }
+            }
             if (!string.IsNullOrEmpty(zoneNote)) log += "\n  " + zoneNote;
 
             // --- Retours visuels/sonores par cible ---
@@ -3657,6 +3897,25 @@ namespace Killtime.Tactics
                 {
                     vis?.TriggerHitFlash();
                     vis?.SpawnFloatingText($"-{h.FinalDamage} PV (💣)", new Color(1f, 0.30f, 0.20f));
+
+                    if (unit.Stats.IsAlive && unit.Stats.CurrentHealth > 0)
+                    {
+                        var mRes = unit.Stats.CheckMoraleAtThreshold(_diceRoller, CoreRulesConfig.Instance.StandardTargetDC);
+                        if (mRes.Triggered)
+                        {
+                            log += $"\n   • {mRes.Log}";
+                            if (mRes.Surrendered)
+                            {
+                                vis?.SpawnFloatingText("🏳️ REDDITION !", Color.white);
+                                vis?.DropHeldItemsWithPhysics();
+                                vis?.SetCombatStance(false);
+                            }
+                            else if (mRes.Routed)
+                            {
+                                vis?.SpawnFloatingText("😱 DÉROUTE ! [Agonisant]", new Color(0.95f, 0.2f, 0.85f));
+                            }
+                        }
+                    }
                     if (h.InflictedStatus != StatusEffect.None)
                         vis?.SpawnFloatingText($"[{GrenadeCalculator.StatusesToLabel(h.InflictedStatus)}]", new Color(1f, 0.4f, 0.95f));
                     if (KilltimeAudioManager.Instance != null)
@@ -4175,6 +4434,158 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
+        /// RD-040 : Exécute une Bousculade générique ou un Coup de bouclier (2 PA).
+        /// Duel opposé aveugle de Force (Athlétisme / Mains Nues / Défense Corporelle).
+        /// Victoire : recul forcé d'1 case (Knockback). Si un mur ou un obstacle bloque le recul, la cible chute À Terre.
+        /// </summary>
+        public void ExecuteShove(TacticalUnit attacker, TacticalUnit defender, bool isShieldBash, int attackerBonusAP = 0, int attackerPE = 0)
+        {
+            if (_isAttackInProgress)
+            {
+                Log("⚠️ Action ignorée : une résolution est déjà en cours.");
+                return;
+            }
+            if (attacker == null || defender == null || attacker.Stats == null || defender.Stats == null) return;
+            if (!attacker.Stats.IsAlive || !defender.Stats.IsAlive) return;
+
+            if (attacker.IsMoving)
+            {
+                Log($"⚠️ <b>{attacker.Stats.Name}</b> est en déplacement : attendez l'arrivée !");
+                return;
+            }
+
+            int dist = TitanFootprint.MinDistanceBetweenUnits(attacker.CurrentCoords, attacker.FootprintType, defender.CurrentCoords, defender.FootprintType);
+            if (dist > 1)
+            {
+                Log($"⚠️ <b>Bousculade impossible</b> : cible hors de portée de contact ({dist} cases > 1).");
+                return;
+            }
+
+            if (TurnManager.IsMultiplayerPlayerClient())
+            {
+                Log("⚠️ Bousculade réservée au GM en multijoueur (pas encore synchronisée VTT).");
+                return;
+            }
+
+            SkillType checkSkill = isShieldBash ? SkillType.DefenseCorporelle : SkillType.Athletisme;
+            DiceType atkDie = attacker.Stats.GetSkillDie(checkSkill, true);
+            if (!attacker.Stats.CanAttack(atkDie))
+            {
+                int maxAttacks = attacker.Stats.GetMaxAttacksAllowed(atkDie);
+                Log($"⚠️ <b>{attacker.Stats.Name}</b> a déjà épuisé son quota d'attaque ce tour ({attacker.Stats.AttacksThisTurn}/{maxAttacks}) !");
+                return;
+            }
+
+            const int shoveCost = 2;
+            if (!InfiniteAP && attacker.Stats.CurrentActionPoints < shoveCost)
+            {
+                Log($"⚠️ PA insuffisants : la bousculade exige {shoveCost} PA (reste {attacker.Stats.CurrentActionPoints}).");
+                return;
+            }
+
+            if (!InfiniteAP) attacker.Stats.ConsumeActionPoints(shoveCost);
+
+            int injectedAP = attackerBonusAP > 0 ? attackerBonusAP : CombatUI.CombatContextMenuUI.CurrentInjectedAP;
+            int injectedPE = attackerPE > 0 ? attackerPE : CombatUI.CombatContextMenuUI.CurrentInjectedPE;
+
+            Vector3 combatDir = defender.transform.position - attacker.transform.position;
+            combatDir.y = 0f;
+            if (combatDir != Vector3.zero)
+            {
+                attacker.transform.rotation = Quaternion.LookRotation(combatDir);
+                if (defender.Stats.CanDefendActively())
+                {
+                    defender.transform.rotation = Quaternion.LookRotation(-combatDir);
+                }
+            }
+
+            var attVis = attacker.GetComponent<TacticalUnitVisual>();
+            var defVis = defender.GetComponent<TacticalUnitVisual>();
+
+            if (isShieldBash)
+            {
+                attVis?.TriggerBodyBlock();
+            }
+            else
+            {
+                attVis?.TriggerRoundkick();
+            }
+
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.PlayAt(SoundId.Attack_Whoosh, attacker.transform.position, 0.7f);
+
+            var result = _combatCalculator.ResolveShoveDuel(
+                attacker.Stats, defender.Stats, isShieldBash,
+                attackerBonusAP: injectedAP, attackerPE: injectedPE,
+                defenderAutoStakes: true);
+
+            attacker.Stats.RegisterAttack();
+            Log(result.CombatLog);
+
+            string actionTag = isShieldBash ? "COUP DE BOUCLIER" : "BOUSCULADE";
+            if (result.IsHit)
+            {
+                attVis?.SpawnFloatingText($"💨 {actionTag} (-{shoveCost} PA)", Color.cyan);
+                defVis?.TriggerHitFlash();
+
+                if (result.FinalDamageApplied > 0)
+                {
+                    defVis?.SpawnFloatingText($"-{result.FinalDamageApplied} PV", new Color(1.0f, 0.25f, 0.25f));
+                }
+
+                if (result.CausedKnockback)
+                {
+                    TryApplyKnockback(attacker, defender);
+                }
+
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Trauma_Shock, defender.transform.position, 0.8f);
+
+                if (result.FatalResolution == FatalBlowResolution.InstantDeath || result.FatalResolution == FatalBlowResolution.ForcedUnconscious)
+                {
+                    defVis?.TriggerFallingBackDeath();
+                }
+                else if (result.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
+                {
+                    if (!defender.IsPlayerControlled)
+                    {
+                        defender.Stats.ChooseSombrer();
+                        defVis?.SpawnFloatingText("[SYNCOPE] CHUTE HORS COMBAT (0 PV)", Color.cyan);
+                        defVis?.TriggerFallingBackDeath();
+                    }
+                    else
+                    {
+                        defender.Stats.ChooseLastBreath();
+                        defVis?.SpawnFloatingText("[SURVIE] DERNIER SOUFFLE (0 PV)", new Color(1.0f, 0.5f, 0.1f));
+                    }
+                }
+
+                if (!defender.Stats.IsAlive)
+                {
+                    AutoTargetNextAlive();
+                }
+            }
+            else
+            {
+                attVis?.SpawnFloatingText($"{actionTag} contenue (-{shoveCost} PA)", Color.gray);
+                defVis?.SpawnFloatingText("RÉSISTÉ", Color.cyan);
+            }
+
+            RecordChronoSnapshot($"{actionTag} : {attacker.Stats.Name} -> {defender.Stats.Name}");
+            UpdateAdaptiveMusic();
+            _turnManager?.CheckCombatOver();
+
+            if (Killtime.Multi.VTTTableSync.Instance != null 
+                && !Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction 
+                && Killtime.Multi.VTTRoomManager.Instance != null 
+                && Killtime.Multi.VTTRoomManager.Instance.InRoom 
+                && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+            {
+                Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
+            }
+        }
+
+        /// <summary>
         /// RD-039 : Vrai si le dragger peut traîner le corps de la victime d'1 case.
         /// </summary>
         public bool CanDragBody(TacticalUnit dragger, TacticalUnit victim)
@@ -4679,7 +5090,7 @@ namespace Killtime.Tactics
                 foreach (var u in units)
                 {
                     if (u == null || u.Stats == null) continue;
-                    bool alive = u.Stats.IsAlive;
+                    bool alive = u.Stats.IsAlive && !u.Stats.IsSurrendered;
                     if (u.IsPlayerControlled)
                     {
                         if (alive) alliesAlive++;
@@ -4740,18 +5151,20 @@ namespace Killtime.Tactics
                         bool isDevastating = attacker.Stats.HasSpecialization("Teep de Rupture : Impact Dévastateur");
                         int shockDamage = isDevastating ? 6 : 3;
                         defender.Stats.ApplyStatus(StatusEffect.Sonne, 1);
+                        defender.Stats.ApplyStatus(StatusEffect.ATerre, 1);
                         if (isDevastating) defender.Stats.ApplyStatus(StatusEffect.Destabilise, 2);
                         defender.Stats.CurrentHealth = Math.Max(0, defender.Stats.CurrentHealth - shockDamage);
                         defVis?.TriggerHitFlash();
                         string shockLabel = isDevastating ? $"[TEEP DÉVASTATEUR] SONNÉ (-{shockDamage} PV) !" : $"[TEEP PAROI] SONNÉ (-{shockDamage} PV) !";
                         defVis?.SpawnFloatingText(shockLabel, Color.red);
-                        Log($"💥 <b>TEEP DE RUPTURE (Collision)</b> : {defender.Stats.Name} est projeté(e) contre un obstacle, subit {shockDamage} dégâts de choc et [Sonné] !");
+                        Log($"💥 <b>TEEP DE RUPTURE (Collision)</b> : {defender.Stats.Name} est projeté(e) contre un obstacle, subit {shockDamage} dégâts de choc et [Sonné / À Terre] !");
                     }
                     else
                     {
+                        defender.Stats.ApplyStatus(StatusEffect.ATerre, 1);
                         defender.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
-                        defVis?.SpawnFloatingText("[IMPACT PAROI] Déstabilisé !", Color.red);
-                        Log($"💥 <b>IMPACT CONTRE OBSTACLE</b> : {defender.Stats.Name} heurte la paroi et subit [Déstabilisé] !");
+                        defVis?.SpawnFloatingText("[IMPACT PAROI] À TERRE !", Color.red);
+                        Log($"💥 <b>IMPACT CONTRE OBSTACLE</b> : {defender.Stats.Name} heurte la paroi et s'écroule <b>À Terre</b> !");
                     }
                     return tilesMoved > 0;
                 }
@@ -4760,6 +5173,7 @@ namespace Killtime.Tactics
             if (tilesMoved > 0)
             {
                 defender.TeleportTo(currentDest, _grid);
+                Killtime.Core.Combat.GrappleState.ReleaseGrapple(defender.Stats);
                 var defVis = defender.GetComponent<TacticalUnitVisual>();
                 string teepTag = isTeepDeRupture ? "[TEEP DE RUPTURE]" : (isBedrock ? "[IMPACT DE BEDROCK]" : "[REFOULEMENT]");
                 defVis?.SpawnFloatingText($"{teepTag} Repoussé ({tilesMoved} cases) !", Color.yellow);

@@ -418,8 +418,7 @@ namespace Killtime.Core.Character
         public CharacterStats ToCombatStats()
         {
             var effective = GetEffectiveAttributes();
-            var stats = new CharacterStats(Name, effective, BaseArmor);
-            stats.Sheet = this;
+            var stats = new CharacterStats(Name, effective, BaseArmor, this);
             return stats;
         }
     }
