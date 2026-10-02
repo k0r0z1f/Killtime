@@ -76,6 +76,26 @@ namespace Killtime.Core.Rules
         public float CoverFullVisibleFraction = 0.9f;
         public float CoverHalfVisibleFraction = 0.45f;
 
+        // --- RD-030 : Guet / Overwatch (Réactions) ---
+        [Header("Guet / Overwatch (RD-030)")]
+        [Tooltip("Coût en PA pour se mettre en guet (tir de réaction réservé).")]
+        public int OverwatchAPCost = 2;
+        [Tooltip("Tirs de réaction par guet (1 : le guet est consommé au premier tir).")]
+        public int OverwatchShotsPerWatch = 1;
+
+        // --- RD-031 : Attaque d'opportunité / désengagement (Réactions) ---
+        [Header("Opportunité / Désengagement (RD-031)")]
+        [Tooltip("Portée de contact : quitter cette distance provoque 1 réaction (cases).")]
+        public int OpportunityReach = 1;
+        [Tooltip("Coût en PA de la Poursuite (suit d'1 case en réaction).")]
+        public int OpportunityFollowAPCost = 1;
+        [Tooltip("Coût en PA du Blocage (duel opposé qui annule le pas).")]
+        public int OpportunityBlockAPCost = 1;
+        [Tooltip("Coût en PA du Décrochage (prochain déplacement sans réaction).")]
+        public int DisengageAPCost = 1;
+        [Tooltip("Si vrai, la frappe et le balayage d'opportunité sont gratuits (0 PA, réaction seule).")]
+        public bool OpportunityStrikeIsFree = true;
+
         // --- Livre VI, Chap. 26 : VATS Anatomique ---
         [Header("Anatomie Chirurgicale (Livre VI, Chap. 26)")]
         public List<BodyPartRuleEntry> BodyPartRules = new();
@@ -148,6 +168,15 @@ namespace Killtime.Core.Rules
 
             BaseMovementAPCost = 1;
             RalentiAPMultiplier = 2;
+
+            OverwatchAPCost = 2;
+            OverwatchShotsPerWatch = 1;
+
+            OpportunityReach = 1;
+            OpportunityFollowAPCost = 1;
+            OpportunityBlockAPCost = 1;
+            DisengageAPCost = 1;
+            OpportunityStrikeIsFree = true;
 
             BodyPartRules.Clear();
             BodyPartRules.Add(new BodyPartRuleEntry { Part = BodyPart.Tete, DifficultyModifier = -2, CriticalDamageMultiplier = 3 });

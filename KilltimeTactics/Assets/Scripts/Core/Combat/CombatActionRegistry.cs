@@ -403,12 +403,18 @@ namespace Killtime.Tactics.CombatUI
                             bool kit = HasTool(act, "Chirurgie");
                             int healAmount = tgt.Stats.Attributes.Constitution * (kit ? 3 : 2);
                             tgt.Stats.CurrentHealth = Mathf.Min(tgt.Stats.MaxHealth, tgt.Stats.CurrentHealth + healAmount);
-                            tgt.Stats.ActiveStatus &= ~StatusEffect.Saignement;
-                            if (kit) tgt.Stats.RemoveStatus(StatusEffect.Empoisonne);
+                            // RD-045 : le soin stoppe le DoT (RemoveStatus purge le pool résiduel).
+                            tgt.Stats.RemoveStatus(StatusEffect.Saignement);
+                            if (kit)
+                            {
+                                tgt.Stats.RemoveStatus(StatusEffect.Empoisonne);
+                                tgt.Stats.RemoveStatus(StatusEffect.EnFeu);
+                                tgt.Stats.RemoveStatus(StatusEffect.Asphyxie);
+                            }
 
                             var vis = tgt.GetComponent<TacticalUnitVisual>();
                             vis?.SpawnFloatingText($"+{healAmount} PV Soignés{(kit ? " (kit)" : "")}", Color.green);
-                            if (kit) arena?.Log($"🩹 Bloc opératoire de campagne : Empoisonne purgé sur <b>{tgt.Stats.Name}</b>.");
+                            if (kit) arena?.Log($"🩹 Bloc opératoire de campagne : Empoisonne/EnFeu/Asphyxie purgés sur <b>{tgt.Stats.Name}</b>.");
                         }
                     }
                 ));
@@ -574,6 +580,92 @@ namespace Killtime.Tactics.CombatUI
                             vis?.SpawnFloatingText("⚡ REDLINE (+1 PA, +1 ESS)", UnityEngine.Color.red);
                             arena?.Log($"⚡ <b>{act.Stats.Name}</b> entre en <b>Poussée Cardiovasculaire (Redline)</b> (+1 PA, +1 ESS) !");
                         }
+                    }
+                ));
+
+                // RD-030 Guet / Overwatch : réserve un tir de réaction (2 PA, arme à
+                // distance). Duel aveugle auto pendant le tour adverse, 1 tir puis
+                // consommé. Expire au prochain tour personnel, annulé si Étourdi/Paralysé.
+                int overwatchCost = Killtime.Core.Rules.CoreRulesConfig.Instance.OverwatchAPCost;
+                actions.Add(new CombatAction(
+                    $"👁️ Guet / Overwatch ({overwatchCost} PA, tir réservé)",
+                    "Réserve un tir de réaction dans le rayon de l'arme à distance : duel aveugle automatique (Ballistique vs Esquive) pendant le tour adverse. 1 tir puis consommé.",
+                    ActionCategory.TactiqueEtOrdres,
+                    overwatchCost,
+                    (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                        && HasRangedWeaponEquipped(act)
+                        && act.Stats.CurrentActionPoints >= Killtime.Core.Rules.CoreRulesConfig.Instance.OverwatchAPCost
+                        && !OverwatchState.IsWatching(act.Stats)
+                        && !OverwatchState.IsCancelledByStatus(act.Stats),
+                    (act, tgt) =>
+                    {
+                        if (arena != null)
+                        {
+                            arena.TryEnterOverwatch(act, out _);
+                        }
+                        else
+                        {
+                            var w = act.Sheet?.GetEquippedWeapon();
+                            int range = w != null ? Mathf.Max(1, w.RangeInTiles) : 1;
+                            if (new CombatCalculator().TryEnterOverwatch(act.Stats, range, out _))
+                            {
+                                var vis = act.GetComponent<TacticalUnitVisual>();
+                                vis?.SpawnFloatingText($"👁️ EN GUET ({range} cases)", Color.cyan);
+                            }
+                        }
+                    }
+                ));
+
+                // RD-031 Opportunités (Livre VI §24.4) : posture de réaction au contact
+                // rompu (persistante, 0 PA, changeable à volonté pendant son tour) +
+                // Décrochage (1 PA : prochain déplacement sans réaction adverse).
+                // 1 réaction/round : Frappe gratuite (défaut), Poursuite 1 PA (suit
+                // d'1 case), Blocage 1 PA (annule le pas, sans grapple), Balayage
+                // gratuit (Jambes : À Terre + Ralenti si choc).
+                var opportunityStances = new (OpportunityReactionType stance, string icon, string desc)[]
+                {
+                    (OpportunityReactionType.Strike, "🗡️", "Frappe gratuite de mêlée en duel aveugle auto quand un ennemi quitte votre contact. Base du hit-and-run."),
+                    (OpportunityReactionType.Follow, "👣", "Suit le fuyard d'1 case (1 PA de réaction) au lieu de frapper. Sans attaque, sans grapple."),
+                    (OpportunityReactionType.Block, "🛡️", "Retient le fuyard (duel Athlétisme, 1 PA) : succès = pas annulé, sans grapple permanent, PA du fuyard remboursés."),
+                    (OpportunityReactionType.Trip, "🦵", "Balayage gratuit visant les Jambes : À Terre + Ralenti en cas de choc, au lieu de dégâts max."),
+                };
+                for (int si = 0; si < opportunityStances.Length; si++)
+                {
+                    var stanceChoice = opportunityStances[si].stance;
+                    string stanceIcon = opportunityStances[si].icon;
+                    string stanceDesc = opportunityStances[si].desc;
+                    actions.Add(new CombatAction(
+                        $"{stanceIcon} Posture : {OpportunityState.StanceLabel(stanceChoice)} (0 PA)",
+                        stanceDesc + $" Posture actuelle : {OpportunityState.StanceLabel(OpportunityState.GetStance(actor.Stats))}.",
+                        ActionCategory.TactiqueEtOrdres,
+                        0,
+                        (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                            && OpportunityState.GetStance(act.Stats) != stanceChoice,
+                        (act, tgt) =>
+                        {
+                            OpportunityState.SetStance(act.Stats, stanceChoice);
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"{stanceIcon} {OpportunityState.StanceLabel(stanceChoice)}", Color.cyan);
+                            arena?.Log($"🎯 <b>{act.Stats.Name}</b> adopte la posture d'opportunité <b>{OpportunityState.StanceLabel(stanceChoice)}</b> (réaction au contact rompu).");
+                        }
+                    ));
+                }
+
+                int disengageCost = Killtime.Core.Rules.CoreRulesConfig.Instance.DisengageAPCost;
+                actions.Add(new CombatAction(
+                    $"💨 Décrochage ({disengageCost} PA : prochain déplacement sans opportunité)",
+                    "Prépare un retrait propre (Livre VI §26.2) : le prochain déplacement ne provoque aucune frappe/poursuite/blocage/balayage. Expire au prochain tour personnel si inutilisé.",
+                    ActionCategory.TactiqueEtOrdres,
+                    disengageCost,
+                    (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                        && !OpportunityState.HasSafeDisengage(act.Stats)
+                        && !OpportunityState.IsExemptFromProvoking(act.Stats)
+                        && act.Stats.CurrentActionPoints >= Killtime.Core.Rules.CoreRulesConfig.Instance.DisengageAPCost
+                        && !OpportunityState.IsCancelledByStatus(act.Stats),
+                    (act, tgt) =>
+                    {
+                        if (arena != null) arena.TryRequestSafeDisengage(act, out _);
+                        else if (OpportunityState.RequestSafeDisengage(act.Stats, Killtime.Core.Rules.CoreRulesConfig.Instance.DisengageAPCost, out _))
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("💨 DÉCROCHAGE", Color.cyan);
                     }
                 ));
 

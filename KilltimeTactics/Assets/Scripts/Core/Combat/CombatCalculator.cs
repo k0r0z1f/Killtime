@@ -59,7 +59,10 @@ namespace Killtime.Core.Combat
         // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §31.2).
         // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
         public int WeaponBonusEc;
-
+        // RD-036 Hauteur / contrebas (palier 1.5 m) : bonus/malus vertical
+        // calculé par ElevationAdvantage, additionné à AttackBaseMod.
+        public int ElevationAttackMod;
+        public string ElevationLabel;
         // Couvert & visibilité (Livre VI §25.3) : Half -1, ThreeQuarters -2,
         // Full = cible non visible => attaque impossible (BeginDuel refuse).
         public CoverType Cover;
@@ -264,7 +267,10 @@ namespace Killtime.Core.Combat
             SkillType defenseSkill,
             out string error,
             CoverType cover = CoverType.None,
-            int weaponBonusEc = 0)
+            int weaponBonusEc = 0,
+            bool skipAttackerCost = false,
+            int elevationAttackMod = 0,
+            string elevationLabel = null)
         {
             error = null;
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
@@ -305,9 +311,11 @@ namespace Killtime.Core.Combat
                 BlockedByCover = false
             };
 
-            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC.
-            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc);
+            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC + hauteur RD-036.
+            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc) + elevationAttackMod;
             duel.WeaponBonusEc = Math.Max(0, weaponBonusEc);
+            duel.ElevationAttackMod = elevationAttackMod;
+            duel.ElevationLabel = elevationLabel ?? "";
             if (duel.IsRangedAttack && !cancelPenaltyWithAP)
             {
                 baseAtt += targetInfo.DifficultyModifier;
@@ -334,7 +342,7 @@ namespace Killtime.Core.Combat
                 duel.BaseAttackCost = Math.Max(1, duel.BaseAttackCost - 1);
             }
 
-            if (!attacker.ConsumeActionPoints(duel.BaseAttackCost))
+            if (!skipAttackerCost && !attacker.ConsumeActionPoints(duel.BaseAttackCost))
             {
                 error = $"{attacker.Name} n'a pas assez de PA ({attacker.CurrentActionPoints}/{duel.BaseAttackCost}) pour attaquer !";
                 return null;
@@ -387,7 +395,10 @@ namespace Killtime.Core.Combat
             int defenderArmor,
             out string error,
             CoverType cover = CoverType.None,
-            int weaponBonusEc = 0)
+            int weaponBonusEc = 0,
+            bool skipAttackerCost = false,
+            int elevationAttackMod = 0,
+            string elevationLabel = null)
         {
             DiceType attackDie = attacker.GetSkillDie(attackSkill, true);
             int attackModifier = attacker.GetStatusModifier(attackSkill, isOffensive: true);
@@ -401,7 +412,7 @@ namespace Killtime.Core.Combat
             }
             return BeginDuel(attacker, defender, targetedPart, attackDie, attackModifier,
                 defenseDie, defenseModifier, weaponBaseDamage, cancelPenaltyWithAP,
-                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover, weaponBonusEc);
+                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover, weaponBonusEc, skipAttackerCost, elevationAttackMod, elevationLabel);
         }
 
         /// <summary>
@@ -444,7 +455,6 @@ namespace Killtime.Core.Combat
             duel.DefenderStakesDeclared = true;
             duel.DefenderBonusPAApplied = 0;
             duel.DefenderPEApplied = 0;
-            duel.DefenderBasePaid = false;
 
             if (!duel.DefenderWantsToDefend)
             {
@@ -466,16 +476,19 @@ namespace Killtime.Core.Combat
             duel.DefenseBaseMod = statusMod;
             duel.CanDefenderReact = true;
 
-            // Base réaction : débitée à la déclaration ; échec -> réflexe à -2.
-            if (duel.Defender.ConsumeActionPoints(duel.BaseDefenseCost))
+            // Base réaction : débitée à la déclaration (sauf si déjà acquittée, ex: interception RD-032) ; échec -> réflexe à -2.
+            if (!duel.DefenderBasePaid)
             {
-                duel.DefenderBasePaid = true;
-            }
-            else
-            {
-                duel.DefenseBaseMod += cfg.UnreactiveDefensePenalty;
-                duel.CanDefenderReact = false;
-                return 0;
+                if (duel.Defender.ConsumeActionPoints(duel.BaseDefenseCost))
+                {
+                    duel.DefenderBasePaid = true;
+                }
+                else
+                {
+                    duel.DefenseBaseMod += cfg.UnreactiveDefensePenalty;
+                    duel.CanDefenderReact = false;
+                    return 0;
+                }
             }
 
             duel.DefenderBonusPAApplied = SpendBonusPA(duel.Defender, Math.Max(0, bonusPA));
@@ -504,6 +517,243 @@ namespace Killtime.Core.Combat
             int affordable = Math.Max(0, duel.Defender.CurrentActionPoints - duel.BaseDefenseCost);
             int committed = Math.Min(need, affordable);
             return DeclareDefenderStakes(duel, duel.DefenseSkill, true, committed, 0, defenderSpecialization);
+        }
+
+        // =====================================================================
+        // RD-030 : GUET / OVERWATCH — tir de réaction en duel aveugle auto.
+        // Le coût d'entrée (2 PA) est payé à la pose : le tir est GRATUIT
+        // (skipAttackerCost). Mise attaquant 0/0 (tir réflexe), défense auto.
+        // =====================================================================
+
+        /// <summary>
+        /// Entre en guet : réserve un tir de réaction (coût config, rayon figé).
+        /// </summary>
+        public bool TryEnterOverwatch(CharacterStats watcher, int range, out string error)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return OverwatchState.TryEnter(watcher, range, cfg.OverwatchAPCost, out error, cfg.OverwatchShotsPerWatch);
+        }
+
+        /// <summary>
+        /// Tir de réaction du guetteur sur une cible dans son rayon : duel aveugle
+        /// automatique (Ballistique vs Esquive, mises 0, défense auto), puis le guet
+        /// est consommé (1 tir). Retourne null si le guet n'est pas valide.
+        /// </summary>
+        public DamageResult? ResolveOverwatchFire(
+            CharacterStats watcher,
+            CharacterStats target,
+            int weaponBaseDamage,
+            CoverType cover = CoverType.None,
+            int weaponBonusEc = 0,
+            BodyPart targetedPart = BodyPart.Torse,
+            SkillType attackSkill = SkillType.Ballistique,
+            int elevationAttackMod = 0,
+            string elevationLabel = null)
+        {
+            if (watcher == null || target == null) return null;
+            if (!OverwatchState.IsWatching(watcher)) return null;
+            if (!target.IsAlive) return null;
+            if (attackSkill != SkillType.Ballistique && attackSkill != SkillType.ProjectilesTir)
+                attackSkill = SkillType.Ballistique;
+
+            var duel = BeginSkillDuel(
+                watcher, target, targetedPart,
+                attackSkill, SkillType.Esquive,
+                weaponBaseDamage, false, true,
+                null, null, target.BaseArmorAbsorption,
+                out _, cover, weaponBonusEc, true, elevationAttackMod, elevationLabel);
+            if (duel == null) return null;
+
+            DeclareAttackerStakes(duel, 0, 0);
+            AutoDeclareDefenderStakes(duel);
+            var result = ResolveBlindDuel(duel);
+            OverwatchState.ConsumeShot(watcher);
+            result.CombatLog = $"👁️ <b>GUET — tir de réaction</b> : {watcher.Name} ➔ {target.Name} (rayon réservé, duel aveugle auto)\n" + result.CombatLog;
+            return result;
+        }
+
+        // =====================================================================
+        // RD-031 : OPPORTUNITÉ / DÉSENGAGEMENT — réactions au contact rompu.
+        // La frappe et le balayage sont GRATUITS (skipAttackerCost, réaction seule
+        // consommée par l'appelant via OpportunityState). Mise attaquant 0/0
+        // (coup réflexe), défense auto. Le blocage est un défi opposé Athlétisme
+        // vs Athlétisme (Livre VI §25.1, course-poursuite) : à l'attaquant (bloqueur).
+        // =====================================================================
+
+        /// <summary>
+        /// Choisit la compétence de mêlée du frappeur : arme de contact équipée
+        /// (compétence associée rabattue) ou Mains Nues à défaut.
+        /// </summary>
+        public static SkillType ResolveOpportunitySkill(CharacterStats reactor)
+        {
+            if (reactor != null && reactor.Sheet != null)
+            {
+                var weapon = reactor.Sheet.GetEquippedWeapon();
+                // Arme de contact : compétence associée. Arme longue / à distance :
+                // coup de crosse d'urgence résolu à Mains Nues (V1).
+                if (weapon != null && weapon.RangeInTiles <= 1 && weapon.RangeInTiles > 0)
+                    return SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
+            }
+            return SkillType.MainsNues;
+        }
+
+        /// <summary>
+        /// Frappe d'opportunité : quitte le contact ⇒ 1 frappe gratuite de mêlée
+        /// en duel aveugle auto (mises 0, défense auto). Ne consomme que la réaction
+        /// (appelant : OpportunityState.TryConsumeReaction). Retourne null si invalide.
+        /// </summary>
+        public DamageResult? ResolveOpportunityStrike(
+            CharacterStats reactor,
+            CharacterStats target,
+            int weaponBaseDamage,
+            SkillType attackSkill,
+            BodyPart targetedPart = BodyPart.Torse,
+            int elevationAttackMod = 0,
+            string elevationLabel = null)
+        {
+            if (reactor == null || target == null) return null;
+            if (!reactor.IsAlive || !target.IsAlive) return null;
+            if (!SkillDefinitions.IsMeleeAttackSkill(SkillDefinitions.ResolveBaseSkill(attackSkill)))
+                attackSkill = SkillType.MainsNues;
+
+            var duel = BeginSkillDuel(
+                reactor, target, targetedPart,
+                attackSkill, SkillType.Esquive,
+                weaponBaseDamage, false, true,
+                null, null, target.BaseArmorAbsorption,
+                out _, CoverType.None, 0, true, elevationAttackMod, elevationLabel);
+            if (duel == null) return null;
+
+            DeclareAttackerStakes(duel, 0, 0);
+            AutoDeclareDefenderStakes(duel);
+            var result = ResolveBlindDuel(duel);
+            result.CombatLog = $"⚔️ <b>OPPORTUNITÉ — frappe</b> : {reactor.Name} ➔ {target.Name} (contact rompu, duel aveugle auto, gratuit)\n" + result.CombatLog;
+            return result;
+        }
+
+        /// <summary>
+        /// Balayage d'opportunité (variante) : frappe gratuite visant les Jambes
+        /// (À Terre + Ralenti en cas de choc, Livre VI §26). Même coût qu'une frappe.
+        /// </summary>
+        public DamageResult? ResolveOpportunityTrip(
+            CharacterStats reactor,
+            CharacterStats target,
+            int weaponBaseDamage,
+            SkillType attackSkill,
+            int elevationAttackMod = 0,
+            string elevationLabel = null)
+        {
+            var result = ResolveOpportunityStrike(reactor, target, weaponBaseDamage, attackSkill, BodyPart.Jambes, elevationAttackMod, elevationLabel);
+            if (result.HasValue)
+            {
+                var r = result.Value;
+                r.CombatLog = r.CombatLog.Replace(
+                    "⚔️ <b>OPPORTUNITÉ — frappe</b>",
+                    "🦵 <b>OPPORTUNITÉ — balayage</b>");
+                return r;
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Blocage d'opportunité : duel opposé aveugle Athlétisme (bloqueur) vs
+        /// Athlétisme (fuyard), mises 0, défense auto. Le coût de réaction (1 PA
+        /// config) est payé par l'appelant AVANT l'appel. Victoire du bloqueur
+        /// (différentiel ≥ 0) = le pas est annulé, sans grapple : le fuyard reste
+        /// sur sa case et ses PA de déplacement sont remboursés.
+        /// </summary>
+        public OpposedCheckResult ResolveOpportunityBlock(
+            CharacterStats blocker,
+            CharacterStats mover)
+        {
+            var opposed = ResolveOpposedCheck(
+                blocker, SkillType.Athletisme,
+                mover, SkillType.Athletisme,
+                attackerBonusAP: 0, attackerPE: 0,
+                defenderAutoStakes: true);
+            opposed.CombatLog = $"🛡️ <b>OPPORTUNITÉ — blocage</b> : {blocker.Name} retient {mover.Name} (Athlétisme vs Athlétisme, aveugle) — "
+                + (opposed.AttackerWins ? "<b>BLOQUÉ</b>, le pas est annulé." : "<b>ESQUIVÉ</b>, le fuyard passe.")
+                + "\n" + opposed.CombatLog;
+            return opposed;
+        }
+
+        // =====================================================================
+        // RD-032 : GARDE DU CORPS / INTERCEPTION ALLIÉ (Livre VI §24.5)
+        // Coût 1 PA réaction : le protecteur au contact (distance <= 1) prend
+        // le coup à la place de l'allié ciblé. Le duel est réorienté vers lui.
+        // =====================================================================
+
+        /// <summary>
+        /// Réoriente un duel d'attaque vers un protecteur qui s'interpose pour
+        /// prendre le coup à la place de l'allié (RD-032, Livre VI §24.5).
+        /// Le protecteur devient le défenseur du duel avec son armure et ses défenses.
+        /// </summary>
+        public AttackDuel RedirectDuelToProtector(
+            AttackDuel duel,
+            CharacterStats protector,
+            SkillType? defenseSkill = null,
+            string protectorSpecialization = null)
+        {
+            if (duel == null || protector == null) return duel;
+
+            duel.Defender = protector;
+            duel.DefenderArmor = protector.BaseArmorAbsorption;
+            duel.IsDefenderIncapacitated = OpportunityState.IsCancelledByStatus(protector);
+            duel.CanDefenderReact = !duel.IsDefenderIncapacitated;
+            // La base de réaction (1 PA) a déjà été payée lors de l'interception.
+            duel.DefenderBasePaid = true;
+
+            SkillType defSkill = defenseSkill ?? (protector.Attributes.Agilite >= protector.Attributes.Force
+                ? SkillType.Esquive
+                : SkillType.DefenseCorporelle);
+            duel.DefenseSkill = defSkill;
+            duel.DefenseDie = protector.GetSkillDie(defSkill);
+            if (!SkillDefinitions.IsExclusivelyDefensive(defSkill))
+            {
+                bool hasDefSpec = (!string.IsNullOrEmpty(protectorSpecialization) && protector.HasSpecialization(protectorSpecialization))
+                                || SkillDefinitions.HasDefensiveSpecialization(protector.Sheet, defSkill);
+                if (!hasDefSpec) duel.DefenseDie = SkillDefinitions.StepDownDie(duel.DefenseDie);
+            }
+            int statusMod = protector.GetStatusModifier(defSkill, isOffensive: false);
+            duel.DefenseStatusMod = statusMod;
+            duel.DefenseBaseMod = statusMod;
+
+            return duel;
+        }
+
+        /// <summary>
+        /// Résout une attaque interceptée en duel aveugle : le protecteur prend le coup
+        /// à la place au contact (coût 1 PA réaction).
+        /// </summary>
+        public DamageResult ResolveInterceptedAttack(
+            CharacterStats attacker,
+            CharacterStats protector,
+            BodyPart targetedPart,
+            SkillType attackSkill,
+            int weaponBaseDamage,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            CoverType cover = CoverType.None,
+            int weaponBonusEc = 0)
+        {
+            var duel = BeginSkillDuel(
+                attacker, protector, targetedPart,
+                attackSkill, SkillType.Esquive,
+                weaponBaseDamage, false, true,
+                null, null, protector.BaseArmorAbsorption,
+                out _, cover, weaponBonusEc, skipAttackerCost: false);
+
+            if (duel == null)
+            {
+                return new DamageResult { CombatLog = "⚠️ Attaque interceptée impossible." };
+            }
+
+            duel.DefenderBasePaid = true;
+            DeclareAttackerStakes(duel, attackerBonusAP, attackerPE);
+            AutoDeclareDefenderStakes(duel);
+            var result = ResolveBlindDuel(duel);
+            result.CombatLog = $"🛡️ <b>[INTERCEPTION] {protector.Name}</b> prend le coup à la place !\n" + result.CombatLog;
+            return result;
         }
 
         /// <summary>
@@ -829,13 +1079,14 @@ namespace Killtime.Core.Combat
                     ? $" [Couvert : 3/4 couvert {duel.CoverAttackPenalty}]"
                     : "";
             string ecText = duel.WeaponBonusEc > 0 ? $" [+{duel.WeaponBonusEc}ec arme]" : "";
+            string elevationText = duel.ElevationAttackMod != 0 ? $" [Hauteur {duel.ElevationAttackMod:+0;-0} {duel.ElevationLabel}]" : "";
 
             int normalRef = (attacker.Attributes.Force + attacker.Attributes.Agilite + 1) / 2;
             string augText = (attacker.IsMagicAugmented(attackSkill, true)
                     && attacker.Attributes.Magie > normalRef)
                 ? $" [Corps Augmenté : MAG {attacker.Attributes.Magie} (+{SkillDefinitions.CharacteristicSteps(attacker.Attributes.Magie)} paliers)]"
                 : "";
-            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText} = Total {attackRoll.Total}]{augText}{critAttText}";
+            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
             // Traçabilité Livre VI §24.1 (duel aveugle) : déclarations masquées puis révélation.
             string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.";
@@ -994,8 +1245,9 @@ namespace Killtime.Core.Combat
             int finalDamage = Math.Max(0, rawDamage - absorbed);
             // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
             // chair — aucun choc traumatique tant qu'elle encaisse tout.
-            int shieldAbsorbed = defender.AbsorbShield(finalDamage);
-            finalDamage -= shieldAbsorbed;
+            int shieldRemainder = defender.AbsorbShield(finalDamage);
+            int shieldAbsorbed = Math.Max(0, finalDamage - shieldRemainder);
+            finalDamage = Math.Max(0, shieldRemainder);
             int prevHp = defender.CurrentHealth;
 
             bool exceededEncaissement = finalDamage > defender.EncaissementThreshold;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.Grid;
+using Killtime.Tactics.Objectives;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
 
@@ -36,6 +37,10 @@ namespace Killtime.Tactics.TurnSystem
         [SerializeField] private TacticalHexGrid _grid;
         [SerializeField] private List<TacticalUnit> _allUnits = new();
 
+        [Header("Objectifs Tactiques (RD-050)")]
+        [SerializeField] private List<CombatObjective> _objectives = new();
+        [SerializeField] private bool _allowAnnihilationFallback = true;
+
         public TurnSystemMode SystemMode { get; private set; } = TurnSystemMode.Exploration;
         public bool IsInExploration => SystemMode == TurnSystemMode.Exploration;
 
@@ -43,6 +48,10 @@ namespace Killtime.Tactics.TurnSystem
         public TacticalUnit ActiveUnit { get; private set; }
         public bool IsCombatOver { get; private set; } = false;
         public CombatOutcome CurrentOutcome { get; private set; } = CombatOutcome.InProgress;
+        public string CombatEndReason { get; private set; } = "";
+        public bool AllowAnnihilationFallback { get => _allowAnnihilationFallback; set => _allowAnnihilationFallback = value; }
+        public bool HasCustomObjectives => _objectives != null && _objectives.Count > 0;
+        public IReadOnlyList<CombatObjective> Objectives => _objectives.AsReadOnly();
 
         /// <summary>
         /// Quand vrai, RegisterUnit se contente d'ajouter sans démarrer de round.
@@ -64,7 +73,11 @@ namespace Killtime.Tactics.TurnSystem
         public event Action<int> OnRoundStarted;
         public event Action<CombatOutcome> OnCombatEnded;
         public event Action<TacticalUnit, List<StatusEffect>> OnUnitStatusExpired;
+        public event Action<TacticalUnit, DotTickResult> OnUnitDotTick;
         public event Action<IReadOnlyList<InitiativeRollResult>> OnInitiativeRolled;
+        public event Action<CombatObjective> OnObjectiveCompleted;
+        public event Action<CombatObjective> OnObjectiveFailed;
+        public event Action<CombatObjective> OnObjectiveUpdated;
 
         /// <summary>
         /// Ordre de passage actuel (après jet d'initiative).
@@ -106,6 +119,57 @@ namespace Killtime.Tactics.TurnSystem
         {
             var room = Killtime.Multi.VTTRoomManager.Instance;
             return room != null && room.InRoom && room.IsGM;
+        }
+
+        private void OnEnable()
+        {
+            TacticalInteractable.OnAnyInteractionTriggered += HandleAnyInteractableTriggered;
+            TacticalUnit.OnAnyUnitMoveCompleted += HandleAnyUnitMoveCompleted;
+        }
+
+        private void OnDisable()
+        {
+            TacticalInteractable.OnAnyInteractionTriggered -= HandleAnyInteractableTriggered;
+            TacticalUnit.OnAnyUnitMoveCompleted -= HandleAnyUnitMoveCompleted;
+        }
+
+        private void HandleAnyInteractableTriggered(TacticalInteractable prop, TacticalUnit unit)
+        {
+            if (IsInExploration || IsCombatOver || prop == null) return;
+            if (unit != null && !_allUnits.Contains(unit)) return;
+
+            bool updated = false;
+            for (int i = 0; i < _objectives.Count; i++)
+            {
+                var obj = _objectives[i];
+                if (obj == null || obj.Status != CombatObjectiveStatus.InProgress) continue;
+                if (obj.Type == CombatObjectiveType.HackTerminal)
+                {
+                    if (obj.TargetInteractable == prop 
+                        || (!string.IsNullOrEmpty(obj.TargetInteractableId) && (string.Equals(prop.ObjectName, obj.TargetInteractableId, StringComparison.OrdinalIgnoreCase) || string.Equals(prop.name, obj.TargetInteractableId, StringComparison.OrdinalIgnoreCase)))
+                        || (obj.TargetInteractable == null && string.IsNullOrEmpty(obj.TargetInteractableId)))
+                    {
+                        obj.RegisterTerminalHacked();
+                        updated = true;
+                        OnObjectiveUpdated?.Invoke(obj);
+                        if (obj.IsCompleted)
+                        {
+                            OnObjectiveCompleted?.Invoke(obj);
+                        }
+                    }
+                }
+            }
+            if (updated)
+            {
+                CheckCombatOver();
+            }
+        }
+
+        private void HandleAnyUnitMoveCompleted(TacticalUnit unit)
+        {
+            if (IsInExploration || IsCombatOver || unit == null) return;
+            if (!_allUnits.Contains(unit)) return;
+            CheckCombatOver();
         }
 
         private void Start()
@@ -173,6 +237,8 @@ namespace Killtime.Tactics.TurnSystem
             SystemMode = TurnSystemMode.CombatTurnBased;
             IsCombatOver = false;
             CurrentOutcome = CombatOutcome.InProgress;
+            CombatEndReason = "";
+            ResetObjectivesState();
             _needsInitiativeRoll = true;
             CurrentRound = 1;
             ResetDuoTechTracking();
@@ -385,6 +451,11 @@ namespace Killtime.Tactics.TurnSystem
         {
             if (unit == null) return;
 
+            // RD-030 : l'unité qui quitte la carte perd son guet.
+            if (unit.Stats != null) Killtime.Core.Combat.OverwatchState.Cancel(unit.Stats);
+            // RD-031 : ... et sa posture/réaction/décrochage d'opportunité.
+            if (unit.Stats != null) Killtime.Core.Combat.OpportunityState.RemoveUnit(unit.Stats);
+
             bool wasActive = (ActiveUnit == unit);
             int idx = _allUnits.IndexOf(unit);
             if (idx >= 0)
@@ -425,12 +496,18 @@ namespace Killtime.Tactics.TurnSystem
         {
             IsCombatOver = false;
             CurrentOutcome = CombatOutcome.InProgress;
+            CombatEndReason = "";
+            ResetObjectivesState();
             CurrentRound = 1;
             _activeUnitIndex = 0;
             _allUnits.RemoveAll(u => u == null);
             _needsInitiativeRoll = true;
             SystemMode = TurnSystemMode.Exploration;
             ResetDuoTechTracking();
+            // RD-030 : aucun guet ne survit à un reset de combat.
+            Killtime.Core.Combat.OverwatchState.ClearAll();
+            // RD-031 : aucune posture/réaction/décrochage ne survit non plus.
+            Killtime.Core.Combat.OpportunityState.ClearAll();
             // Nouveau combat (ré)initialisé : aucun objet au sol (gourdin...) ne survit.
             try { DroppedWeaponPickup.ClearAllDropped(); } catch { }
         }
@@ -537,25 +614,209 @@ namespace Killtime.Tactics.TurnSystem
                 }
             }
 
-            if (playerUnitsAlive == 0 || enemyUnitsAlive == 0)
+            // Cas d'anéantissement de l'escouade : Défaite absolue dans tous les modes
+            if (playerUnitsAlive == 0)
             {
-                IsCombatOver = true;
-                CurrentOutcome = (playerUnitsAlive > 0) ? CombatOutcome.Victory : CombatOutcome.Defeat;
-                OnCombatEnded?.Invoke(CurrentOutcome);
-                if (IsMultiplayerGM())
+                EndCombatWithOutcome(CombatOutcome.Defeat, "Tous les membres de l'escouade sont hors de combat (Anéantissement).");
+                return true;
+            }
+
+            // Si aucun objectif personnalisé n'est configuré : logique classique Kill-All (Livre I §4)
+            if (!HasCustomObjectives)
+            {
+                if (enemyUnitsAlive == 0)
                 {
-                    var payload = new Killtime.Multi.VTTTurnControlPayload
-                    {
-                        action = "combat_ended",
-                        round = CurrentRound,
-                        outcome = CurrentOutcome.ToString()
-                    };
-                    Killtime.Multi.VTTTableSync.Instance?.BroadcastTurnControl(payload);
+                    EndCombatWithOutcome(CombatOutcome.Victory, "Toutes les unités ennemies ont été neutralisées.");
+                    return true;
                 }
+                return false;
+            }
+
+            // Évaluation des objectifs personnalisés (RD-050)
+            EvaluateObjectives(playerUnitsAlive, enemyUnitsAlive);
+
+            // 1. Échec critique : un objectif obligatoire a échoué (ex: VIP mort)
+            for (int i = 0; i < _objectives.Count; i++)
+            {
+                var obj = _objectives[i];
+                if (obj == null) continue;
+                if (!obj.IsOptional && obj.Status == CombatObjectiveStatus.Failed)
+                {
+                    string reason = !string.IsNullOrEmpty(obj.FailureReason)
+                        ? obj.FailureReason
+                        : $"Échec de l'objectif critique : {obj.Title}.";
+                    EndCombatWithOutcome(CombatOutcome.Defeat, reason);
+                    return true;
+                }
+            }
+
+            // 2. Victoire par objectifs : TOUS les objectifs obligatoires sont complétés
+            bool allRequiredCompleted = true;
+            int requiredCount = 0;
+            for (int i = 0; i < _objectives.Count; i++)
+            {
+                var obj = _objectives[i];
+                if (obj == null) continue;
+                if (!obj.IsOptional)
+                {
+                    requiredCount++;
+                    if (obj.Status != CombatObjectiveStatus.Completed)
+                    {
+                        allRequiredCompleted = false;
+                        break;
+                    }
+                }
+            }
+
+            if (requiredCount > 0 && allRequiredCompleted)
+            {
+                EndCombatWithOutcome(CombatOutcome.Victory, BuildObjectivesVictorySummary());
+                return true;
+            }
+
+            // 3. Fallback Annihilation : si tous les ennemis sont morts et que le repli
+            // par annihilation est autorisé (par défaut oui)
+            if (enemyUnitsAlive == 0 && _allowAnnihilationFallback)
+            {
+                for (int i = 0; i < _objectives.Count; i++)
+                {
+                    var obj = _objectives[i];
+                    if (obj != null && obj.Status == CombatObjectiveStatus.InProgress)
+                    {
+                        if (obj.Type == CombatObjectiveType.Annihilation || obj.Type == CombatObjectiveType.EscortVIP)
+                        {
+                            obj.MarkCompleted();
+                            OnObjectiveCompleted?.Invoke(obj);
+                        }
+                    }
+                }
+                EndCombatWithOutcome(CombatOutcome.Victory, "Zone pacifiée : toutes les menaces ont été neutralisées.");
                 return true;
             }
 
             return false;
+        }
+
+        private void EvaluateObjectives(int playerUnitsAlive, int enemyUnitsAlive)
+        {
+            for (int i = 0; i < _objectives.Count; i++)
+            {
+                var obj = _objectives[i];
+                if (obj == null) continue;
+                var prevStatus = obj.Status;
+                obj.Evaluate(this, playerUnitsAlive, enemyUnitsAlive);
+                if (obj.Status != prevStatus)
+                {
+                    OnObjectiveUpdated?.Invoke(obj);
+                    if (obj.Status == CombatObjectiveStatus.Completed)
+                        OnObjectiveCompleted?.Invoke(obj);
+                    else if (obj.Status == CombatObjectiveStatus.Failed)
+                        OnObjectiveFailed?.Invoke(obj);
+                }
+            }
+        }
+
+        public void EndCombatWithOutcome(CombatOutcome outcome, string reason)
+        {
+            if (IsCombatOver) return;
+
+            IsCombatOver = true;
+            CurrentOutcome = outcome;
+            CombatEndReason = reason ?? "";
+            OnCombatEnded?.Invoke(CurrentOutcome);
+
+            if (IsMultiplayerGM())
+            {
+                var payload = new Killtime.Multi.VTTTurnControlPayload
+                {
+                    action = "combat_ended",
+                    round = CurrentRound,
+                    outcome = CurrentOutcome.ToString()
+                };
+                Killtime.Multi.VTTTableSync.Instance?.BroadcastTurnControl(payload);
+            }
+        }
+
+        private string BuildObjectivesVictorySummary()
+        {
+            var completedTitles = new List<string>();
+            for (int i = 0; i < _objectives.Count; i++)
+            {
+                var obj = _objectives[i];
+                if (obj != null && obj.Status == CombatObjectiveStatus.Completed && !obj.IsOptional)
+                {
+                    completedTitles.Add(obj.Title);
+                }
+            }
+
+            if (completedTitles.Count == 1)
+            {
+                return $"Objectif accompli avec succès : {completedTitles[0]}.";
+            }
+            if (completedTitles.Count > 1)
+            {
+                return $"Tous les objectifs prioritaires ont été accomplis ({string.Join(", ", completedTitles)}).";
+            }
+            return "Engagement remporté : objectifs accomplis.";
+        }
+
+        public void AddObjective(CombatObjective objective)
+        {
+            if (objective == null || _objectives.Contains(objective)) return;
+            _objectives.Add(objective);
+            OnObjectiveUpdated?.Invoke(objective);
+        }
+
+        public bool RemoveObjective(CombatObjective objective)
+        {
+            if (objective == null) return false;
+            return _objectives.Remove(objective);
+        }
+
+        public void ClearObjectives()
+        {
+            _objectives.Clear();
+        }
+
+        public void ResetObjectivesState()
+        {
+            for (int i = 0; i < _objectives.Count; i++)
+            {
+                _objectives[i]?.ResetState();
+            }
+        }
+
+        public void SetupAnnihilationPreset()
+        {
+            ClearObjectives();
+            AddObjective(CombatObjective.CreateAnnihilation());
+        }
+
+        public void SetupExtractionPreset(IEnumerable<HexCoordinates> exitZone, bool requireAllLiving = true)
+        {
+            ClearObjectives();
+            AddObjective(CombatObjective.CreateExtraction(exitZone, requireAllLiving));
+        }
+
+        public void SetupSurvivePreset(int roundsToSurvive)
+        {
+            ClearObjectives();
+            AddObjective(CombatObjective.CreateSurvive(CurrentRound + roundsToSurvive - 1));
+        }
+
+        public void SetupEscortPreset(TacticalUnit vip, IEnumerable<HexCoordinates> destination = null)
+        {
+            ClearObjectives();
+            AddObjective(CombatObjective.CreateEscort(vip, destination));
+        }
+
+        public void SetupHackTerminalPreset(TacticalInteractable terminal = null, string terminalId = null)
+        {
+            ClearObjectives();
+            if (terminal != null)
+                AddObjective(CombatObjective.CreateHackTerminal(terminal));
+            else
+                AddObjective(CombatObjective.CreateHackTerminalById(terminalId ?? "Console_Terminal"));
         }
 
         public void StartNewRound()
@@ -674,6 +935,12 @@ namespace Killtime.Tactics.TurnSystem
 
             RefreshAndNotifyActiveUnitTurnStart(ActiveUnit);
 
+            if (ActiveUnit == null || ActiveUnit.Stats == null || !ActiveUnit.Stats.IsAlive)
+            {
+                EndCurrentTurn();
+                return;
+            }
+
             OnTurnStarted?.Invoke(ActiveUnit);
 
             if (IsMultiplayerGM() && ActiveUnit != null)
@@ -714,15 +981,64 @@ namespace Killtime.Tactics.TurnSystem
                 unit.Stats.CurrentActionPoints = unit.Stats.MaxActionPoints * 2;
             }
 
+            var visual = unit.GetComponent<TacticalUnitVisual>();
+
+            // RD-045 : tick DoT résiduel en DÉBUT de tour personnel (après ResetTurn
+            // pour que le drain PA d'Asphyxie s'applique sur la réserve rechargée).
+            // Ignore l'armure ; EnFeu via bouclier ; dégressif -1/tour ; soin stoppe.
+            DotTickResult dotTick = unit.Stats.TickTurnStatus();
+            if (dotTick != null && dotTick.HasTick)
+            {
+                foreach (var kv in dotTick.DamageByStatus)
+                {
+                    if (kv.Value > 0)
+                        visual?.SpawnFloatingText($"-{kv.Value} PV [{kv.Key}]", new Color(1f, 0.25f, 0.2f));
+                }
+                if (dotTick.PaDrained > 0)
+                    visual?.SpawnFloatingText($"🫁 Asphyxie -{dotTick.PaDrained} PA", new Color(0.2f, 0.95f, 0.75f));
+                for (int i = 0; i < dotTick.ClearedStatuses.Count; i++)
+                    visual?.SpawnFloatingText($"[{dotTick.ClearedStatuses[i]}] dissipé", new Color(0.4f, 0.9f, 1.0f));
+
+                if (dotTick.FatalResolution == Killtime.Core.Combat.FatalBlowResolution.EligibleForLastBreath)
+                {
+                    if (!unit.IsPlayerControlled)
+                    {
+                        unit.Stats.ChooseSombrer();
+                        visual?.SpawnFloatingText("[SYNCOPE] CHUTE HORS COMBAT (0 PV)", Color.cyan);
+                        visual?.TriggerFallingBackDeath();
+                    }
+                    else
+                    {
+                        unit.Stats.ChooseLastBreath();
+                        visual?.SpawnFloatingText("[SURVIE] DERNIER SOUFFLE (0 PV)", new Color(1.0f, 0.5f, 0.1f));
+                    }
+                }
+
+                OnUnitDotTick?.Invoke(unit, dotTick);
+            }
+
+            if (!unit.Stats.IsAlive)
+            {
+                visual?.TriggerFallingBackDeath();
+                return;
+            }
+
             // Techniques de spécialisation (Livre III) : vieillissement des marques
             // (failles exposées, provocations) et expiration des bonus de ligne
             // « Tenir la Ligne ! » du donneur qui rejoue son tour.
             Killtime.Core.Combat.SkillTechniqueState.OnUnitTurnStart(unit.Stats);
 
+            // RD-030 Guet / Overwatch : le guet du guetteur qui rejoue expire
+            // (utilisé ou non) ; les guets invalidés (étourdi/paralysé) sont purgés.
+            Killtime.Core.Combat.OverwatchState.OnUnitTurnStart(unit.Stats);
+
+            // RD-031 Opportunités : la réaction se recharge au début du tour
+            // personnel (1/round) ; le décrochage armé non consommé expire.
+            Killtime.Core.Combat.OpportunityState.OnUnitTurnStart(unit.Stats);
+
             int newAP = unit.Stats.CurrentActionPoints;
             int deltaAP = newAP - prevAP;
 
-            var visual = unit.GetComponent<TacticalUnitVisual>();
             if (visual != null)
             {
                 if (deltaAP > 0)

@@ -461,8 +461,9 @@ namespace Killtime.Core.Arcanotech
                 int totalArmorSpell = target.BaseArmorAbsorption + target.GetWornArmorBonus();
                 int absorbed = Math.Min(totalArmorSpell, directDamage);
                 int netDirect = Math.Max(0, directDamage - absorbed);
-                shieldAbsorbedSpell = target.AbsorbShield(netDirect);
-                netDirect -= shieldAbsorbedSpell;
+                int shieldRemainderSpell = target.AbsorbShield(netDirect);
+                shieldAbsorbedSpell = Math.Max(0, netDirect - shieldRemainderSpell);
+                netDirect = Math.Max(0, shieldRemainderSpell);
                 finalDamageApplied = netDirect + absoluteDamage;
 
                 target.CurrentHealth = Math.Max(0, target.CurrentHealth - finalDamageApplied);
@@ -475,6 +476,11 @@ namespace Killtime.Core.Arcanotech
                 if (targetStatuses != StatusEffect.None)
                 {
                     target.ApplyStatus(targetStatuses, 1);
+                }
+                // RD-045 : les modules résiduels posent un pool dégressif (Saignement).
+                if (residualDamage > 0)
+                {
+                    target.ApplyResidualDamage(StatusEffect.Saignement, residualDamage);
                 }
             }
 

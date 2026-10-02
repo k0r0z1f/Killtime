@@ -354,8 +354,10 @@ namespace Killtime.Core.Combat
             int afterCover = Math.Max(0, raw - coverRed);
 
             // Champs de force portés (Livre VIII §32.2) : barrière avant armure/chair.
-            int shieldAbs = target.AbsorbShield(afterCover);
-            int afterShield = afterCover - shieldAbs;
+            // AbsorbShield retourne le RESTE : absorbé = avant - reste.
+            int shieldRemainder = target.AbsorbShield(afterCover);
+            int shieldAbs = Math.Max(0, afterCover - shieldRemainder);
+            int afterShield = Math.Max(0, shieldRemainder);
 
             int totalArmor = target.BaseArmorAbsorption + target.GetWornArmorBonus();
             int absorbed = Math.Min(totalArmor, afterShield);

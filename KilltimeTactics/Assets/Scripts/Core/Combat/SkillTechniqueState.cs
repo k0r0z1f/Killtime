@@ -148,6 +148,21 @@ namespace Killtime.Core.Combat
             return _lineBonuses.ContainsKey(beneficiary);
         }
 
+        /// <summary>
+        /// Retrouve le donneur du bonus de ligne (le leader qui a ordonné Tenir la Ligne !).
+        /// </summary>
+        public static bool TryGetLineBonusDonor(CharacterStats beneficiary, out CharacterStats donor)
+        {
+            donor = null;
+            if (beneficiary == null) return false;
+            if (_lineBonuses.TryGetValue(beneficiary, out var bonus) && bonus?.Donor != null && bonus.Donor.IsAlive)
+            {
+                donor = bonus.Donor;
+                return true;
+            }
+            return false;
+        }
+
         private static void RemoveDonorBonuses(CharacterStats donor)
         {
             if (donor == null) return;
@@ -161,6 +176,73 @@ namespace Killtime.Core.Combat
                     _lineBonuses.Remove(keys[i]);
                 }
             }
+        }
+
+        // =====================================================================
+        // GARDE DU CORPS (Mener : Tenir la Ligne ! / Interception allié — RD-032)
+        // =====================================================================
+
+        private static readonly Dictionary<CharacterStats, CharacterStats> _bodyguardLinks = new();
+
+        /// <summary>
+        /// Établit une veille de garde du corps : le protecteur se lie à l'allié désigné.
+        /// Un protecteur ne veille que sur un allié à la fois.
+        /// </summary>
+        public static void SetBodyguard(CharacterStats protector, CharacterStats guardedAlly)
+        {
+            if (protector == null || guardedAlly == null) return;
+            ClearBodyguard(protector);
+            _bodyguardLinks[guardedAlly] = protector;
+        }
+
+        /// <summary>
+        /// Retrouve le garde du corps attitré d'un allié, s'il est vivant.
+        /// </summary>
+        public static bool TryGetBodyguard(CharacterStats guardedAlly, out CharacterStats protector)
+        {
+            protector = null;
+            if (guardedAlly == null) return false;
+            if (_bodyguardLinks.TryGetValue(guardedAlly, out var prot) && prot != null && prot.IsAlive)
+            {
+                protector = prot;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Vrai si l'allié est explicitement sous la garde de ce protecteur.
+        /// </summary>
+        public static bool IsGuardedBy(CharacterStats guardedAlly, CharacterStats protector)
+        {
+            if (guardedAlly == null || protector == null) return false;
+            return _bodyguardLinks.TryGetValue(guardedAlly, out var p) && p == protector;
+        }
+
+        /// <summary>
+        /// Révoque la mission de garde du corps d'un protecteur.
+        /// </summary>
+        public static void ClearBodyguard(CharacterStats protector)
+        {
+            if (protector == null || _bodyguardLinks.Count == 0) return;
+            CharacterStats foundKey = null;
+            foreach (var kvp in _bodyguardLinks)
+            {
+                if (kvp.Value == protector)
+                {
+                    foundKey = kvp.Key;
+                    break;
+                }
+            }
+            if (foundKey != null) _bodyguardLinks.Remove(foundKey);
+        }
+
+        public static void ClearAll()
+        {
+            _exposedFlaws.Clear();
+            _taunts.Clear();
+            _lineBonuses.Clear();
+            _bodyguardLinks.Clear();
         }
 
         // =====================================================================
@@ -200,6 +282,20 @@ namespace Killtime.Core.Combat
                     {
                         mark.TicksLeft--;
                         if (mark.TicksLeft <= 0 || !keys[i].IsAlive || mark.Taunter == null || !mark.Taunter.IsAlive) _taunts.Remove(keys[i]);
+                    }
+                }
+            }
+
+            if (_bodyguardLinks.Count > 0)
+            {
+                CharacterStats[] keys = new CharacterStats[_bodyguardLinks.Count];
+                _bodyguardLinks.Keys.CopyTo(keys, 0);
+                for (int i = 0; i < keys.Length; i++)
+                {
+                    var ally = keys[i];
+                    if (!_bodyguardLinks.TryGetValue(ally, out var prot) || ally == null || prot == null || !ally.IsAlive || !prot.IsAlive)
+                    {
+                        _bodyguardLinks.Remove(ally);
                     }
                 }
             }

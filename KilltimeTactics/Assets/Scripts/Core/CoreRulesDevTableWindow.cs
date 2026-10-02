@@ -154,6 +154,12 @@ namespace Killtime.UI
             cfg.StandardTargetDC = DrawIntSlider("Seuil de Difficulté par Défaut (SD)", cfg.StandardTargetDC, 5, 25);
             cfg.SingleAttackActionLimit = DrawIntSlider("Attaques max autorisées (Dés simples)", cfg.SingleAttackActionLimit, 1, 3);
             cfg.MultiDiceAttackActionLimit = DrawIntSlider("Attaques max autorisées (Dés doubles 2d6+)", cfg.MultiDiceAttackActionLimit, 1, 4);
+            cfg.OverwatchAPCost = DrawIntSlider("Coût en PA Guet / Overwatch (RD-030)", cfg.OverwatchAPCost, 1, 4);
+            cfg.OverwatchShotsPerWatch = DrawIntSlider("Tirs de réaction par guet (RD-030)", cfg.OverwatchShotsPerWatch, 1, 3);
+            cfg.OpportunityReach = DrawIntSlider("Portée de contact opportunité (RD-031)", cfg.OpportunityReach, 0, 2);
+            cfg.OpportunityFollowAPCost = DrawIntSlider("Coût en PA Poursuite (RD-031)", cfg.OpportunityFollowAPCost, 0, 3);
+            cfg.OpportunityBlockAPCost = DrawIntSlider("Coût en PA Blocage (RD-031)", cfg.OpportunityBlockAPCost, 0, 3);
+            cfg.DisengageAPCost = DrawIntSlider("Coût en PA Décrochage (RD-031)", cfg.DisengageAPCost, 0, 3);
             GUILayout.EndVertical();
 
             GUILayout.Space(8);

@@ -11,6 +11,7 @@ using Killtime.Tactics;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
+using Killtime.Tactics.Objectives;
 
 namespace Killtime.UI
 {
@@ -861,6 +862,9 @@ namespace Killtime.UI
 
             // 5. Cue central d'avertissement de début de round
             DrawRoundStartBanner();
+
+            // 6. Suivi des objectifs tactiques (RD-050)
+            DrawObjectivesTracker();
         }
 
         private void EnsureStyles()
@@ -2233,8 +2237,9 @@ namespace Killtime.UI
             Color accent = isVictory ? ColorCyanAccent : ColorCrimson;
             bool isPlayerClient = TurnManager.IsMultiplayerPlayerClient();
 
-            float width = Mathf.Clamp(Screen.width * 0.46f, 520f, 620f);
-            float height = isPlayerClient ? 285f : 335f;
+            float extraHeight = (_turnManager != null && _turnManager.HasCustomObjectives) ? 34f : 0f;
+            float width = Mathf.Clamp(Screen.width * 0.46f, 520f, 640f);
+            float height = (isPlayerClient ? 285f : 335f) + extraHeight;
 
             DrawSolidRect(new Rect(0, 0, Screen.width, Screen.height),
                 new Color(0.005f, 0.010f, 0.018f, 0.55f));
@@ -2252,9 +2257,11 @@ namespace Killtime.UI
                 ? (isVictory ? "🏆 ENGAGEMENT REMPORTÉ" : "💀 SIGNAUX VITAUX ROMPUS")
                 : (isVictory ? "🏆 ENGAGEMENT TERMINÉ (GM)" : "💀 SIGNAUX VITAUX ROMPUS (GM)");
 
-            string subtitle = isVictory
-                ? "Menace neutralisée. Télémétrie causale synchronisée avec les 11 Livres du Codex."
-                : "L'escouade a succombé au combat. Données vitales archivées.";
+            string subtitle = !string.IsNullOrEmpty(_turnManager?.CombatEndReason)
+                ? _turnManager.CombatEndReason
+                : (isVictory
+                    ? "Menace neutralisée. Télémétrie causale synchronisée avec les 11 Livres du Codex."
+                    : "L'escouade a succombé au combat. Données vitales archivées.");
 
             GUI.color = accent;
             GUI.Label(new Rect(rect.x + 20, rect.y + 16, width - 40, 20), title, _hudNameStyle);
@@ -2314,11 +2321,35 @@ namespace Killtime.UI
             GUI.Label(new Rect(mvpRect.x + 115f, mvpY + 4f, mvpRect.width - 125f, 16f), mvpText, _hudSubStyle);
             GUI.color = Color.white;
 
-            DrawAccentLine(new Rect(rect.x + 20f, mvpRect.yMax + 8f, width - 40f, 1f), ColorCyanDim, 0.45f);
+            Rect lastDivider = mvpRect;
+            if (_turnManager != null && _turnManager.HasCustomObjectives)
+            {
+                float objY = mvpY + 28f;
+                Rect objRect = new Rect(rect.x + 20f, objY, width - 40f, 24f);
+                DrawSolidRect(objRect, new Color(0.015f, 0.035f, 0.055f, 0.85f));
+                DrawAccentLine(new Rect(objRect.x, objRect.y, 2f, objRect.height), ColorCyanAccent, 1f);
+
+                string objListText = "";
+                var objs = _turnManager.Objectives;
+                for (int i = 0; i < objs.Count; i++)
+                {
+                    var o = objs[i];
+                    if (o == null) continue;
+                    string statusIcon = o.IsCompleted ? "<color=#00FFAA>✔</color>" : (o.IsFailed ? "<color=#FF4444>❌</color>" : "<color=#FFAA00>⏳</color>");
+                    if (i > 0) objListText += "   ";
+                    objListText += $"{statusIcon} <b>{o.Title}</b> ({o.GetProgressString(_turnManager)})";
+                }
+                GUI.color = ColorTextBright;
+                GUI.Label(new Rect(objRect.x + 8f, objY + 4f, objRect.width - 16f, 16f), objListText, _hudSubStyle);
+                GUI.color = Color.white;
+                lastDivider = objRect;
+            }
+
+            DrawAccentLine(new Rect(rect.x + 20f, lastDivider.yMax + 8f, width - 40f, 1f), ColorCyanDim, 0.45f);
 
             if (isPlayerClient)
             {
-                float bottomY = mvpRect.yMax + 14f;
+                float bottomY = lastDivider.yMax + 14f;
                 Rect statusRect = new Rect(rect.x + 20f, bottomY, width - 165f, 30f);
                 DrawSolidRect(statusRect, new Color(0.02f, 0.05f, 0.08f, 0.75f));
                 DrawAccentLine(new Rect(statusRect.x, statusRect.y, 2f, statusRect.height), ColorAmber, 0.9f);
@@ -2337,7 +2368,7 @@ namespace Killtime.UI
             }
             else
             {
-                float bottomY = mvpRect.yMax + 14f;
+                float bottomY = lastDivider.yMax + 14f;
                 float btnW = (width - 40f - 12f) / 3f;
 
                 Rect rewindBtn = new Rect(rect.x + 20f, bottomY, btnW, 30f);
@@ -2455,6 +2486,64 @@ namespace Killtime.UI
 
             GUI.color = Color.white;
             return clicked;
+        }
+
+        private void DrawObjectivesTracker()
+        {
+            if (_turnManager == null || !_turnManager.HasCustomObjectives || _turnManager.IsInExploration) return;
+
+            var objectives = _turnManager.Objectives;
+            if (objectives == null || objectives.Count == 0) return;
+
+            float cardW = Mathf.Clamp(Screen.width * 0.28f, 260f, 360f);
+            float itemH = 22f;
+            float headerH = 24f;
+            float totalH = headerH + (objectives.Count * itemH) + 6f;
+
+            float x = (Screen.width - cardW) * 0.5f;
+            float y = 16f;
+
+            if (_roundBannerTimer > 0f)
+            {
+                y = 104f;
+            }
+
+            Rect rect = new Rect(x, y, cardW, totalH);
+            bool hovered = rect.Contains(Event.current.mousePosition);
+
+            DrawSoftPanel(rect, new Color(0.015f, 0.030f, 0.048f, hovered ? 0.88f : 0.72f));
+            DrawAccentLine(new Rect(rect.x, rect.y, rect.width, 2f), ColorCyanAccent, 0.85f);
+
+            GUI.color = ColorCyanAccent;
+            GUI.Label(new Rect(rect.x + 12f, rect.y + 4f, cardW - 24f, 16f), "🎯 OBJECTIFS DE MISSION (RD-050)", _hudNameStyle);
+            GUI.color = Color.white;
+
+            float curY = rect.y + headerH;
+            for (int i = 0; i < objectives.Count; i++)
+            {
+                var obj = objectives[i];
+                if (obj == null) continue;
+
+                Rect lineRect = new Rect(rect.x + 8f, curY, cardW - 16f, itemH - 2f);
+                Color statusCol = obj.IsCompleted ? new Color(0.1f, 0.95f, 0.6f) :
+                                 (obj.IsFailed ? new Color(1.0f, 0.3f, 0.3f) : new Color(0.85f, 0.9f, 0.95f));
+                string badge = obj.IsCompleted ? "✔" : (obj.IsFailed ? "❌" : obj.GetTypeIcon());
+                string optTag = obj.IsOptional ? " <color=grey>[Opt]</color>" : "";
+
+                GUI.color = statusCol;
+                GUI.Label(new Rect(lineRect.x + 4f, lineRect.y, 22f, lineRect.height), badge, _hudSubStyle);
+
+                GUI.color = ColorTextBright;
+                string titleText = $"{obj.Title}{optTag}";
+                GUI.Label(new Rect(lineRect.x + 28f, lineRect.y, lineRect.width - 124f, lineRect.height), titleText, _hudSubStyle);
+
+                GUI.color = statusCol;
+                string progressText = obj.GetProgressString(_turnManager);
+                GUI.Label(new Rect(lineRect.x + lineRect.width - 96f, lineRect.y, 92f, lineRect.height), progressText, _hudStatStyle);
+                GUI.color = Color.white;
+
+                curY += itemH;
+            }
         }
 
         private static void DrawSolidRect(Rect r, Color c)

@@ -238,6 +238,10 @@ namespace Killtime.Tactics
             _pathfinder = new HexPathfinder(_grid);
             TacticalUnit.OnAnyUnitMoved += HandleTargetMovedFollow;
             TacticalUnit.OnAnyUnitTeleported += HandleTargetTeleportedFollow;
+            // RD-031 : réactions d'opportunité pas-à-pas (blocage avant pas,
+            // frappe/poursuite/balayage après pas si contact rompu).
+            TacticalUnit.OnAnyUnitStepCompleted += HandleUnitStepOpportunity;
+            TacticalUnit.StepBlockCheck = CheckOpportunityBlock;
 
             // 1-2. Carte par défaut (Killzone_Alpha3) prioritaire sur l'arène procédurale.
             // L'ancienne arène (TacticalBarricades + mannequins) ne sert plus que de repli
@@ -1217,6 +1221,9 @@ namespace Killtime.Tactics
 
                 Log($"--- Tour de 10s : <b>{unit.Stats.Name}</b> (PA: {unit.Stats.CurrentActionPoints}/{unit.Stats.MaxActionPoints}) ---");
                 RecordChronoSnapshot($"Début du tour de {unit.Stats.Name}");
+                // RD-045 : DoT résiduel déjà appliqué par TurnManager (début de tour
+                // personnel) — ici log + gestion létale, sans re-tick.
+                LogDotTick(unit);
                 // Zones persistantes : l'unité subit son environnement en début de tour.
                 TickSmokeForUnit(unit);
             }
@@ -1263,6 +1270,37 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
+        /// RD-045 : journalise le tick DoT résiduel du début de tour (déjà appliqué
+        /// par TurnManager.RefreshAndNotifyActiveUnitTurnStart) et gère la mort.
+        /// </summary>
+        public void LogDotTick(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null) return;
+            var tick = unit.Stats.LastDotTick;
+            if (tick == null || !tick.HasTick) return;
+            var parts = new System.Collections.Generic.List<string>();
+            foreach (var kv in tick.DamageByStatus)
+            {
+                if (kv.Value > 0) parts.Add($"{kv.Value} PV [{kv.Key}]");
+            }
+            string detail = parts.Count > 0 ? string.Join(" + ", parts) : "effet";
+            string extra = "";
+            if (tick.ShieldAbsorbed > 0) extra += $", bouclier -{tick.ShieldAbsorbed}";
+            if (tick.PaDrained > 0) extra += $", -{tick.PaDrained} PA (asphyxie)";
+            Log($"🩸 <b>DoT résiduel</b> : {unit.Stats.Name} subit <b>{detail}</b> (dégressif -1/tour{extra}).");
+            for (int i = 0; i < tick.ClearedStatuses.Count; i++)
+                Log($"✅ <b>{unit.Stats.Name}</b> : [{tick.ClearedStatuses[i]}] dissipé (résiduels épuisés).");
+            // Consomme le tick pour ne pas le re-journaliser (téléport/move).
+            unit.Stats.LastDotTick = new Killtime.Core.Character.DotTickResult();
+            if (!unit.Stats.IsAlive)
+            {
+                unit.GetComponent<TacticalUnitVisual>()?.TriggerFallingBackDeath();
+                if (CurrentTarget == unit) AutoTargetNextAlive();
+                UpdateAdaptiveMusic();
+                _turnManager?.CheckCombatOver();
+            }
+        }
+
         /// Effets d'environnement en début de tour : dégâts (ignore armure, barrière
         /// d'abord) + statuts de la zone. Masque : filtre les gaz (dégâts /2).
         /// </summary>
@@ -1290,8 +1328,9 @@ namespace Killtime.Tactics
                 if (masked) dmg = SmokeScreen.HalveGasDamage(dmg, z.Kind, z.Arcanotech);
                 if (dmg > 0)
                 {
-                    int shieldAbs = unit.Stats.AbsorbShield(dmg);
-                    int finalDmg = Math.Max(0, dmg - shieldAbs);
+                    int shieldRemainder = unit.Stats.AbsorbShield(dmg);
+                    int shieldAbs = Math.Max(0, dmg - shieldRemainder);
+                    int finalDmg = Math.Max(0, shieldRemainder);
                     if (!SmokeScreen.ZoneIgnoresArmor(z.Kind))
                     {
                         int totalArmor = unit.Stats.BaseArmorAbsorption + unit.Stats.GetWornArmorBonus();
@@ -1302,9 +1341,18 @@ namespace Killtime.Tactics
                     if (finalDmg > 0)
                     {
                         if (unit.Stats.CurrentHealth - finalDmg <= 0)
-                            unit.Stats.EvaluateFatalBlow(BodyPart.Torse, finalDmg);
+                        {
+                            var fatalRes = unit.Stats.EvaluateFatalBlow(BodyPart.Torse, finalDmg);
+                            if (fatalRes == FatalBlowResolution.EligibleForLastBreath)
+                            {
+                                if (!unit.IsPlayerControlled) unit.Stats.ChooseSombrer();
+                                else unit.Stats.ChooseLastBreath();
+                            }
+                        }
                         else
+                        {
                             unit.Stats.CurrentHealth -= finalDmg;
+                        }
                     }
 
                     unit.GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
@@ -1749,6 +1797,11 @@ namespace Killtime.Tactics
             {
                 TickSmokeForUnit(unit);
             }
+            // RD-030 : l'arrivée en case adverse déclenche les tirs de guet en portée.
+            if (unit != null && path != null && path.Count > 1)
+            {
+                CheckOverwatchTriggers(unit, path[path.Count - 1]);
+            }
         }
 
         private void HandleTargetTeleportedFollow(TacticalUnit unit, HexCoordinates coords)
@@ -1760,6 +1813,11 @@ namespace Killtime.Tactics
             if (unit != null && unit.Stats != null && unit.Stats.IsAlive && _smokeZones.Count > 0)
             {
                 TickSmokeForUnit(unit);
+            }
+            // RD-030 : la réapparition déclenche les tirs de guet en portée.
+            if (unit != null)
+            {
+                CheckOverwatchTriggers(unit, coords);
             }
         }
 
@@ -1847,6 +1905,436 @@ namespace Killtime.Tactics
                 attacker.FootprintType,
                 _smokeZones,
                 SeesThroughSmoke(attacker));
+        }
+
+        /// <summary>
+        /// RD-036 Hauteur / contrebas : élévation d'une unité (0 si grille
+        /// absente ou case inconnue — les arènes sans relief restent à 0).
+        /// </summary>
+        public float GetUnitElevation(TacticalUnit unit)
+        {
+            if (unit == null || _grid == null) return 0f;
+            try
+            {
+                var node = _grid.GetNode(unit.CurrentCoords);
+                if (node != null) return node.Elevation;
+            }
+            catch { /* ignore */ }
+            return 0f;
+        }
+
+        /// <summary>
+        /// RD-036 : ruling hauteur/contrebas attaquant ➔ défenseur pour le type
+        /// d'attaque donné (palier 1.5 m, table mêlée + gate, ±1 balistique,
+        /// laser/énergie exempté). Voir ElevationAdvantage.
+        /// </summary>
+        public ElevationRuling GetElevationRuling(TacticalUnit attacker, TacticalUnit defender, SkillType attackSkill, InventoryItem weapon, bool isMeleeAttack)
+        {
+            return ElevationAdvantage.Resolve(
+                GetUnitElevation(attacker), GetUnitElevation(defender),
+                isMeleeAttack, attackSkill, weapon);
+        }
+
+        /// <summary>
+        /// RD-030 Guet / Overwatch : met l'unité en guet (2 PA, rayon = portée de
+        /// l'arme à distance équipée). Le tir de réaction partira automatiquement
+        /// pendant le tour adverse (CheckOverwatchTriggers).
+        /// </summary>
+        public bool TryEnterOverwatch(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            var weapon = unit.Sheet?.GetEquippedWeapon();
+            int range = weapon != null ? Mathf.Max(1, weapon.RangeInTiles) : 1;
+            if (!_combatCalculator.TryEnterOverwatch(unit.Stats, range, out string error))
+            {
+                message = $"⚠️ {error}";
+                Log(message);
+                return false;
+            }
+            var vis = unit.GetComponent<TacticalUnitVisual>();
+            vis?.SpawnFloatingText($"👁️ EN GUET ({range} cases, -{CoreRulesConfig.Instance.OverwatchAPCost} PA)", Color.cyan);
+            message = $"👁️ <b>{unit.Stats.Name}</b> se met en <b>guet</b> (tir de réaction réservé, rayon {range} cases).";
+            Log(message);
+            RecordChronoSnapshot($"Guet : {unit.Stats.Name} (rayon {range})");
+            return true;
+        }
+
+        /// <summary>
+        /// RD-030 : après qu'une unité a agi en `atCoords` (fin de déplacement,
+        /// téléportation, attaque), chaque guetteur ennemi dont le rayon couvre
+        /// cette case lâche son tir de réaction en duel aveugle automatique.
+        /// 1 tir par guet, couvert total = pas de tir, munitions consommées.
+        /// </summary>
+        public void CheckOverwatchTriggers(TacticalUnit mover, HexCoordinates atCoords)
+        {
+            if (mover == null || mover.Stats == null || !mover.Stats.IsAlive) return;
+            if (_turnManager != null && _turnManager.IsInExploration) return;
+            if (_turnManager == null) return;
+            // Autorité sim : seul le GM/hôte résout les tirs de réaction (sinon
+            // client + GM appliqueraient les dégâts en double). Le GM diffuse
+            // l'état complet après chaque tir (convergence clients).
+            if (TurnManager.IsMultiplayerPlayerClient()) return;
+
+            var order = _turnManager.TurnOrder;
+            for (int i = 0; i < order.Count; i++)
+            {
+                var watcher = order[i];
+                if (watcher == null || watcher == mover || watcher.Stats == null) continue;
+                if (!watcher.Stats.IsAlive) continue;
+                if (watcher.IsPlayerControlled == mover.IsPlayerControlled) continue;
+                if (!OverwatchState.IsWatching(watcher.Stats)) continue;
+                if (!OverwatchState.TryGetRange(watcher.Stats, out int range)) continue;
+
+                int dist = TitanFootprint.MinDistanceBetweenUnits(
+                    watcher.CurrentCoords, watcher.FootprintType, atCoords, mover.FootprintType);
+                if (dist > range) continue;
+
+                CoverType cover = CoverType.None;
+                if (dist > 1 && _grid != null)
+                {
+                    cover = CoverSystem.EvaluateCover(
+                        watcher.CurrentCoords, atCoords, _grid,
+                        mover.FootprintType, watcher.FootprintType,
+                        _smokeZones, SeesThroughSmoke(watcher));
+                }
+                if (cover == CoverType.Full) continue;
+
+                var weapon = watcher.Sheet?.GetEquippedWeapon();
+                SkillType owSkill = (weapon != null && weapon.AssociatedSkill == SkillType.ProjectilesTir)
+                    ? SkillType.ProjectilesTir
+                    : SkillType.Ballistique;
+                bool usesAmmo = WeaponAmmo.UsesAmmo(weapon, owSkill);
+                if (weapon != null && usesAmmo && (weapon.Jammed || weapon.AmmoRemaining <= 0)) continue;
+
+                int dmg = (weapon != null && weapon.BaseDamage > 0) ? weapon.BaseDamage : 5;
+                int bonusEc = weapon != null ? Math.Max(0, weapon.AttackBonusEc) : 0;
+                bool hdShot = usesAmmo && weapon != null && weapon.LoadedHD;
+                if (hdShot) dmg += 1;
+
+                // RD-036 : le tir de réaction suit la même règle hauteur que le
+                // tir direct (balistique ±1, laser exempté — voir ElevationAdvantage).
+                ElevationRuling owRuling = GetElevationRuling(watcher, mover, owSkill, weapon, false);
+                DamageResult? result = _combatCalculator.ResolveOverwatchFire(
+                    watcher.Stats, mover.Stats, dmg, cover, bonusEc, BodyPart.Torse, owSkill,
+                    owRuling.AttackMod, owRuling.Label);
+                if (result == null) continue;
+
+                if (usesAmmo && weapon != null && result.Value.AttackRoll.RawRoll > 0)
+                    ConsumeShotAndCheckJam(watcher, weapon, result.Value, hdShot);
+
+                try { Killtime.Tactics.Visibility.FogOfWarManager.Instance?.NotifyLoudShot(watcher); }
+                catch { /* fog optionnel */ }
+
+                var watchVis = watcher.GetComponent<TacticalUnitVisual>();
+                var moverVis = mover.GetComponent<TacticalUnitVisual>();
+                watchVis?.SpawnFloatingText("👁️ TIR DE RÉACTION", new Color(0.2f, 0.9f, 1.0f));
+                Log(result.Value.CombatLog);
+                if (result.Value.IsHit)
+                {
+                    moverVis?.TriggerHitFlash();
+                    moverVis?.SpawnFloatingText($"-{result.Value.FinalDamageApplied} PV (guet)", new Color(1.0f, 0.25f, 0.25f));
+                    if (!mover.Stats.IsAlive)
+                    {
+                        moverVis?.TriggerFallingBackDeath();
+                        if (result.Value.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
+                        {
+                            if (!mover.IsPlayerControlled) mover.Stats.ChooseSombrer();
+                            else mover.Stats.ChooseLastBreath();
+                        }
+                        if (CurrentTarget == mover) AutoTargetNextAlive();
+                    }
+                }
+                else if (result.Value.IsBlocked)
+                {
+                    moverVis?.SpawnFloatingText("[PARADE] Tir de guet neutralisé", new Color(0.2f, 0.9f, 1.0f));
+                }
+                RecordChronoSnapshot($"Guet : {watcher.Stats.Name} -> {mover.Stats.Name}");
+                UpdateAdaptiveMusic();
+                _turnManager?.CheckCombatOver();
+
+                if (Killtime.Multi.VTTTableSync.Instance != null
+                    && !Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction
+                    && Killtime.Multi.VTTRoomManager.Instance != null
+                    && Killtime.Multi.VTTRoomManager.Instance.InRoom
+                    && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+                {
+                    Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
+                }
+
+                if (!mover.Stats.IsAlive) break;
+            }
+        }
+
+        // =====================================================================
+        // RD-031 : OPPORTUNITÉ / DÉSENGAGEMENT (Livre VI §24.4).
+        // Quitter le contact (distance ≤ portée → > portée) expose à 1 réaction
+        // par voisin ennemi au contact (1 réaction/round chacun, posture au choix :
+        // Frappe gratuite, Poursuite 1 PA, Blocage 1 PA, Balayage gratuit).
+        // Spé esquive (Roulade de Décrochage, Acrobatie d'Évitement) ou Décrochage
+        // payé (1 PA) : aucun déclenchement. Autorité sim = GM/hôte (comme le guet).
+        // =====================================================================
+
+        /// <summary>
+        /// Voisins ennemis dont le contact est ROMPU par ce pas (≤ portée avant,
+        /// > portée après). Rester au contact (pas latéral) ne provoque rien.
+        /// </summary>
+        private List<TacticalUnit> FindContactBreakers(TacticalUnit mover, HexCoordinates from, HexCoordinates to)
+        {
+            var result = new List<TacticalUnit>();
+            if (mover == null || mover.Stats == null || _turnManager == null) return result;
+            int reach = Mathf.Max(0, CoreRulesConfig.Instance.OpportunityReach);
+            var order = _turnManager.TurnOrder;
+            for (int i = 0; i < order.Count; i++)
+            {
+                var u = order[i];
+                if (u == null || u == mover || u.Stats == null || !u.Stats.IsAlive) continue;
+                if (u.IsPlayerControlled == mover.IsPlayerControlled) continue;
+                int dFrom = TitanFootprint.MinDistanceBetweenUnits(from, mover.FootprintType, u.CurrentCoords, u.FootprintType);
+                if (dFrom > reach) continue;
+                int dTo = TitanFootprint.MinDistanceBetweenUnits(to, mover.FootprintType, u.CurrentCoords, u.FootprintType);
+                if (dTo <= reach) continue;
+                result.Add(u);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// RD-031 Blocage (hook TacticalUnit.StepBlockCheck, avant chaque pas) :
+        /// chaque briseur en posture Blocage peut tenter de retenir le fuyard
+        /// (duel opposé Athlétisme, 1 PA). Succès = pas annulé, sans grapple ;
+        /// les PA du fuyard sont remboursés par MoveAlongPath. Vrai = bloqué.
+        /// </summary>
+        public bool CheckOpportunityBlock(TacticalUnit mover, HexCoordinates from, HexCoordinates to)
+        {
+            if (mover == null || mover.Stats == null || !mover.Stats.IsAlive) return false;
+            if (_turnManager == null || _turnManager.IsInExploration) return false;
+            if (TurnManager.IsMultiplayerPlayerClient()) return false;
+
+            var breakers = FindContactBreakers(mover, from, to);
+            if (breakers.Count == 0) return false;
+
+            int blockCost = CoreRulesConfig.Instance.OpportunityBlockAPCost;
+            for (int i = 0; i < breakers.Count; i++)
+            {
+                var blocker = breakers[i];
+                if (blocker == null || blocker.Stats == null || !blocker.Stats.IsAlive) continue;
+                if (OpportunityState.GetStance(blocker.Stats) != OpportunityReactionType.Block) continue;
+                if (!OpportunityState.CanReact(blocker.Stats)) continue;
+                // Estimation du coût réel (Ralenti x2 + malus armure) avant engagement.
+                int need = blockCost + blocker.Stats.GetWornApMalus();
+                if (blocker.Stats.ActiveStatus.HasFlag(StatusEffect.Ralenti))
+                    need *= CoreRulesConfig.Instance.RalentiAPMultiplier;
+                if (blocker.Stats.CurrentActionPoints < need) continue;
+                if (!OpportunityState.TryConsumeReaction(blocker.Stats)) continue;
+                if (!blocker.Stats.ConsumeActionPoints(blockCost))
+                {
+                    OpportunityState.CancelReaction(blocker.Stats);
+                    continue;
+                }
+
+                var opposed = _combatCalculator.ResolveOpportunityBlock(blocker.Stats, mover.Stats);
+                Log(opposed.CombatLog);
+                var bVis = blocker.GetComponent<TacticalUnitVisual>();
+                bVis?.SpawnFloatingText(opposed.AttackerWins ? "🛡️ BLOCAGE !" : "🛡️ Blocage manqué", new Color(0.4f, 0.8f, 1.0f));
+                mover.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
+                    opposed.AttackerWins ? "⛔ Retenu au contact" : "💨 Esquive le blocage", new Color(1.0f, 0.8f, 0.3f));
+                RecordChronoSnapshot($"Opportunité blocage : {blocker.Stats.Name} -> {mover.Stats.Name}");
+                BroadcastOpportunityState();
+                if (opposed.AttackerWins) return true;
+                // Échec : réaction + PA dépensés, le fuyard passe (autres bloqueurs tentent).
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// RD-031 (hook TacticalUnit.OnAnyUnitStepCompleted, après chaque pas) :
+        /// chaque briseur non-bloqueur réagit selon sa posture — Frappe (gratuite),
+        /// Balayage (gratuit, Jambes), Poursuite (1 PA, suit d'1 case).
+        /// </summary>
+        private void HandleUnitStepOpportunity(TacticalUnit mover, HexCoordinates from, HexCoordinates to, bool provoked)
+        {
+            if (!provoked) return;
+            if (mover == null || mover.Stats == null || !mover.Stats.IsAlive) return;
+            if (_turnManager == null || _turnManager.IsInExploration) return;
+            if (TurnManager.IsMultiplayerPlayerClient()) return;
+
+            var breakers = FindContactBreakers(mover, from, to);
+            for (int i = 0; i < breakers.Count; i++)
+            {
+                var reactor = breakers[i];
+                if (reactor == null || reactor.Stats == null || !reactor.Stats.IsAlive) continue;
+                if (!OpportunityState.CanReact(reactor.Stats)) continue;
+
+                var stance = OpportunityState.GetStance(reactor.Stats);
+                switch (stance)
+                {
+                    case OpportunityReactionType.Follow:
+                        TryOpportunityFollow(reactor, mover, from);
+                        break;
+                    case OpportunityReactionType.Trip:
+                        if (IsOpportunityMeleeReachable(reactor, mover)
+                            && OpportunityState.TryConsumeReaction(reactor.Stats))
+                            ResolveOpportunityMelee(reactor, mover, true);
+                        break;
+                    case OpportunityReactionType.Block:
+                        // Déjà résolu avant le pas ( CheckOpportunityBlock ) : le pas a eu
+                        // lieu donc le blocage a échoué ou manquait de PA — rien à faire.
+                        break;
+                    default:
+                        if (IsOpportunityMeleeReachable(reactor, mover)
+                            && OpportunityState.TryConsumeReaction(reactor.Stats))
+                            ResolveOpportunityMelee(reactor, mover, false);
+                        break;
+                }
+
+                if (!mover.Stats.IsAlive) break;
+            }
+        }
+
+        /// <summary>
+        /// RD-031 Poursuite : suit le fuyard d'1 case (case libérée `from`) pour
+        /// 1 PA de réaction. Sans grapple : simple suivi, pas d'attaque.
+        /// Le coût est débité UNE fois, par MoveAlongPath (malus armure / Ralenti inclus).
+        /// </summary>
+        private void TryOpportunityFollow(TacticalUnit follower, TacticalUnit mover, HexCoordinates vacated)
+        {
+            if (follower == null || mover == null || _grid == null) return;
+            if (follower.IsMoving) return;
+            int followCost = CoreRulesConfig.Instance.OpportunityFollowAPCost;
+            int need = followCost + follower.Stats.GetWornApMalus();
+            if (follower.Stats.ActiveStatus.HasFlag(StatusEffect.Ralenti))
+                need *= CoreRulesConfig.Instance.RalentiAPMultiplier;
+            if (follower.Stats.CurrentActionPoints < need) return;
+            if (!_grid.IsFootprintFree(vacated, follower.FootprintType, follower)) return;
+            if (!OpportunityState.TryConsumeReaction(follower.Stats)) return;
+
+            var path = new List<HexCoordinates> { follower.CurrentCoords, vacated };
+            Log($"👣 <b>OPPORTUNITÉ — poursuite</b> : {follower.Stats.Name} suit {mover.Stats.Name} en {vacated} (-{followCost} PA réaction).");
+            follower.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("👣 POURSUITE", new Color(0.4f, 0.9f, 1.0f));
+            RecordChronoSnapshot($"Opportunité poursuite : {follower.Stats.Name} -> {mover.Stats.Name}");
+            // Mouvement de réaction : coût débité par MoveAlongPath (une seule fois),
+            // sans provoquer d'opportunité à son tour (pas de ping-pong).
+            // Note : l'arrivée peut toujours déclencher un GUET adverse (RD-030).
+            StartCoroutine(follower.MoveAlongPath(path, _grid, followCost, false, false));
+            BroadcastOpportunityState();
+        }
+
+        /// <summary>
+        /// RD-036 : la frappe d'opportunité ne part que si le fuyard est
+        /// verticalement atteignable (table mêlée par paliers). Vérifié AVANT
+        /// de consommer la réaction : sinon le fuyard est simplement hors
+        /// d'atteinte et le réacteur garde sa réaction.
+        /// </summary>
+        private bool IsOpportunityMeleeReachable(TacticalUnit reactor, TacticalUnit mover)
+        {
+            if (reactor == null || mover == null) return false;
+            var weapon = reactor.Sheet?.GetEquippedWeapon();
+            int range = weapon != null ? Math.Max(1, weapon.RangeInTiles) : 1;
+            if (!ElevationAdvantage.IsMeleeReachable(GetUnitElevation(reactor), GetUnitElevation(mover), range))
+            {
+                Log($"⛰️ <b>OPPORTUNITÉ manquée</b> : {mover.Stats.Name} est hors d'atteinte verticale pour {reactor.Stats.Name} — réaction conservée.");
+                return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// RD-031 Frappe / Balayage : coup de mêlée en duel aveugle auto (réaction
+        /// seule, 0 PA par défaut — voir OpportunityStrikeIsFree). Balayage = visée
+        /// Jambes (À Terre + Ralenti si choc).
+        /// </summary>
+        private void ResolveOpportunityMelee(TacticalUnit reactor, TacticalUnit mover, bool trip)
+        {
+            var cfg = CoreRulesConfig.Instance;
+            SkillType skill = CombatCalculator.ResolveOpportunitySkill(reactor.Stats);
+            var weapon = reactor.Sheet?.GetEquippedWeapon();
+            // RD-036 : modificateur hauteur de la frappe (l'atteignabilité a été
+            // vérifiée par l'appelant AVANT de consommer la réaction).
+            ElevationRuling oppRuling = ElevationAdvantage.Resolve(
+                GetUnitElevation(reactor), GetUnitElevation(mover), true, skill, weapon);
+            if (!cfg.OpportunityStrikeIsFree)
+            {
+                if (!reactor.Stats.ConsumeActionPoints(cfg.BaseReactionAPCost))
+                {
+                    OpportunityState.CancelReaction(reactor.Stats);
+                    return;
+                }
+            }
+
+            int dmg = (weapon != null && weapon.BaseDamage > 0) ? weapon.BaseDamage : 5;
+
+            DamageResult? result = trip
+                ? _combatCalculator.ResolveOpportunityTrip(reactor.Stats, mover.Stats, dmg, skill, oppRuling.AttackMod, oppRuling.Label)
+                : _combatCalculator.ResolveOpportunityStrike(reactor.Stats, mover.Stats, dmg, skill, BodyPart.Torse, oppRuling.AttackMod, oppRuling.Label);
+            if (result == null) return;
+
+            Log(result.Value.CombatLog);
+            var moverVis = mover.GetComponent<TacticalUnitVisual>();
+            reactor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
+                trip ? "🦵 BALAYAGE !" : "⚔️ OPPORTUNITÉ !", new Color(1.0f, 0.55f, 0.15f));
+            if (result.Value.IsHit)
+            {
+                moverVis?.TriggerHitFlash();
+                moverVis?.SpawnFloatingText($"-{result.Value.FinalDamageApplied} PV (opportunité)", new Color(1.0f, 0.25f, 0.25f));
+                if (!mover.Stats.IsAlive)
+                {
+                    moverVis?.TriggerFallingBackDeath();
+                    if (result.Value.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
+                    {
+                        if (!mover.IsPlayerControlled) mover.Stats.ChooseSombrer();
+                        else mover.Stats.ChooseLastBreath();
+                    }
+                    if (CurrentTarget == mover) AutoTargetNextAlive();
+                }
+            }
+            else if (result.Value.IsBlocked)
+            {
+                moverVis?.SpawnFloatingText("[PARADE] Opportunité neutralisée", new Color(0.2f, 0.9f, 1.0f));
+            }
+            RecordChronoSnapshot($"Opportunité {(trip ? "balayage" : "frappe")} : {reactor.Stats.Name} -> {mover.Stats.Name}");
+            UpdateAdaptiveMusic();
+            _turnManager?.CheckCombatOver();
+            BroadcastOpportunityState();
+        }
+
+        /// <summary>
+        /// RD-031 Décrochage (Livre VI §26.2) : paie 1 PA pour que le prochain
+        /// déplacement de l'unité ne provoque aucune réaction d'opportunité.
+        /// </summary>
+        public bool TryRequestSafeDisengage(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (!OpportunityState.RequestSafeDisengage(unit.Stats, CoreRulesConfig.Instance.DisengageAPCost, out string error))
+            {
+                message = $"⚠️ {error}";
+                Log(message);
+                return false;
+            }
+            unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
+                $"💨 DÉCROCHAGE (-{CoreRulesConfig.Instance.DisengageAPCost} PA)", Color.cyan);
+            message = $"💨 <b>{unit.Stats.Name}</b> prépare son <b>décrochage</b> : prochain déplacement sans réaction d'opportunité.";
+            Log(message);
+            RecordChronoSnapshot($"Décrochage : {unit.Stats.Name}");
+            return true;
+        }
+
+        /// <summary>Diffuse l'état après une réaction (GM seul, comme le guet).</summary>
+        private void BroadcastOpportunityState()
+        {
+            try
+            {
+                if (Killtime.Multi.VTTTableSync.Instance != null
+                    && !Killtime.Multi.VTTTableSync.Instance.IsApplyingRemoteAction
+                    && Killtime.Multi.VTTRoomManager.Instance != null
+                    && Killtime.Multi.VTTRoomManager.Instance.InRoom
+                    && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+                {
+                    Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
+                }
+            }
+            catch { /* VTT optionnel */ }
         }
 
         public void ExecuteAttack(
@@ -1965,6 +2453,22 @@ namespace Killtime.Tactics
 
             int maxReach = activeWeapon != null ? Mathf.Max(1, activeWeapon.RangeInTiles) : 1;
             if (hasRifleVisual && maxReach < 6) maxReach = 8;
+
+            // RD-036 Hauteur / contrebas (palier 1.5 m) : gate verticale en
+            // mêlée (inatteignable au-delà d'1 palier sans allonge, 2 avec),
+            // bonus/malus au jet sinon. Le tir n'a pas de gate (vue tranche).
+            ElevationRuling elevationRuling = GetElevationRuling(attacker, defender, attackSkill, activeWeapon, isMeleeAttack);
+            if (isMeleeAttack && !elevationRuling.Reachable)
+            {
+                Log($"⛰️ <b>Hors d'atteinte verticale</b> : {defender.Stats.Name} est {elevationRuling.Label} pour {attacker.Stats.Name} — rapprochez-vous du même palier ou utilisez une arme à allonge / à distance !");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.6f);
+                return;
+            }
+            if (elevationRuling.AttackMod != 0)
+            {
+                Log($"⛰️ <b>Hauteur</b> : {attacker.Stats.Name} ➔ {defender.Stats.Name} {elevationRuling.Label} ({elevationRuling.AttackMod:+0;-0} attaque).");
+            }
 
             if (isMeleeAttack && distanceToTarget > maxReach)
             {
@@ -2102,7 +2606,23 @@ namespace Killtime.Tactics
                 }
             };
 
-            bool isInteractivePlayerDefense = defender.IsPlayerControlled 
+            TacticalUnit aiInterceptionProtector = null;
+            if (!defender.IsPlayerControlled || (_aiController != null && _aiController.Mode == AI.CombatAIMode.FullAuto))
+            {
+                var aiProtector = Killtime.Tactics.CombatUI.CombatTechniqueRegistry.FindBestAIProtector(defender);
+                if (aiProtector != null)
+                {
+                    if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteIntercept(aiProtector, defender, this))
+                    {
+                        aiInterceptionProtector = aiProtector;
+                        defender = aiProtector;
+                        defVisual = defender.GetComponent<TacticalUnitVisual>();
+                    }
+                }
+            }
+
+            bool hasPlayerProtector = Killtime.Tactics.CombatUI.CombatTechniqueRegistry.HasPlayerControlledProtector(defender);
+            bool isInteractivePlayerDefense = (defender.IsPlayerControlled || hasPlayerProtector) 
                 && (_aiController == null || _aiController.Mode != AI.CombatAIMode.FullAuto)
                 && defenderBonusAP < 0
                 && !TurnManager.IsMultiplayerPlayerClient();
@@ -2162,7 +2682,8 @@ namespace Killtime.Tactics
                             resolvedAttackDie, attacker.Stats.GetSkillModifier(attackSkill, isOffensive: true),
                             reactiveDefDie, defender.Stats.GetSkillModifier(defenseSkill, isOffensive: false),
                             effectiveWeaponDamage, cancelPenaltyWithAP, defenderWantsToDefend,
-                            defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError, freshCover, weaponBonusEc);
+                            defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError, freshCover, weaponBonusEc,
+                            false, elevationRuling.AttackMod, elevationRuling.Label);
                     }
                     else
                     {
@@ -2170,7 +2691,8 @@ namespace Killtime.Tactics
                             attacker.Stats, defender.Stats, targetedPart,
                             attackSkill, defenseSkill, effectiveWeaponDamage, cancelPenaltyWithAP,
                             defenderWantsToDefend, attackerSpecialization, defenderSpecialization,
-                            defender.Stats.BaseArmorAbsorption, out duelError, freshCover, weaponBonusEc);
+                            defender.Stats.BaseArmorAbsorption, out duelError, freshCover, weaponBonusEc,
+                            false, elevationRuling.AttackMod, elevationRuling.Label);
                     }
                     if (duel == null)
                     {
@@ -2179,6 +2701,12 @@ namespace Killtime.Tactics
                     }
                     else
                     {
+                        if (aiInterceptionProtector != null)
+                        {
+                            duel.DefenderBasePaid = true;
+                            duel.CanDefenderReact = !duel.IsDefenderIncapacitated;
+                        }
+
                         // Duel aveugle auto : déclaration attaquant (mise cachée), puis
                         // déclaration aveugle auto du défenseur (estimation sans voir le jet),
                         // puis révélation simultanée. Aucun résultat révélé entre les deux.
@@ -2423,6 +2951,13 @@ namespace Killtime.Tactics
                     AutoTargetNextAlive();
                 }
 
+                // RD-030 : l'attaque en zone surveillée expose l'attaquant aux
+                // tirs de guet ennemis (duel aveugle auto, tour adverse).
+                if (attacker != null && attacker.Stats != null && attacker.Stats.IsAlive)
+                {
+                    CheckOverwatchTriggers(attacker, attacker.CurrentCoords);
+                }
+
                 // Les PV ont changé : réévalue mood + intensité AVANT le verdict final
                 // (si le combat est plié, CheckCombatOver -> HandleCombatEnded impose Victory/Defeat après).
                 UpdateAdaptiveMusic();
@@ -2496,12 +3031,19 @@ namespace Killtime.Tactics
             // (mise cachée, aucun jet lancé). La fenêtre défenseur s'ouvre ensuite en
             // aveugle : le défenseur ne voit ni jet ni mise adverse.
             // Livre VI §25.3 : couvert évalué sur positions réelles (Full => refus).
+            // RD-036 : ruling hauteur recalculé sur positions réelles (même gate
+            // que ExecuteAttack — la routine n'est atteinte qu'après le gate, le
+            // mod suffit ici).
             CoverType defenseCover = GetCoverToTarget(attacker, defender);
+            bool isMeleeHere = SkillDefinitions.IsMeleeAttackSkill(attackSkill)
+                || (equippedWeapon != null && equippedWeapon.RangeInTiles <= 1);
+            ElevationRuling defenseRuling = GetElevationRuling(attacker, defender, attackSkill, equippedWeapon, isMeleeHere);
             var duel = _combatCalculator.BeginSkillDuel(
                 attacker.Stats, defender.Stats, targetedPart,
                 attackSkill, defenseSkill, effectiveWeaponDamage, cancelPenaltyWithAP,
                 false, attackerSpecialization, defenderSpecialization,
-                defender.Stats.BaseArmorAbsorption, out string duelError, defenseCover, weaponBonusEc2);
+                defender.Stats.BaseArmorAbsorption, out string duelError, defenseCover, weaponBonusEc2,
+                false, defenseRuling.AttackMod, defenseRuling.Label);
 
             if (duel == null)
             {
@@ -2520,8 +3062,13 @@ namespace Killtime.Tactics
 
             // La défense se paramètre dans le menu contextuel radial, centré sur le
             // défenseur comme après un clic droit sur lui (aucun modal séparé).
-            CombatUI.CombatContextMenuUI.EnsureInstance().OpenDefenseMenu(duel, attacker, defender, (chosenSkill, wantsDef, bonusAP, pe) =>
+            var menu = CombatUI.CombatContextMenuUI.EnsureInstance();
+            menu.OpenDefenseMenu(duel, attacker, defender, (chosenSkill, wantsDef, bonusAP, pe) =>
             {
+                if (menu.InterceptedBy != null)
+                {
+                    defender = menu.InterceptedBy;
+                }
                 finalDefSkill = chosenSkill;
                 finalWantsDefend = wantsDef;
                 finalBonusAP = bonusAP;
@@ -2547,6 +3094,11 @@ namespace Killtime.Tactics
                 yield return null;
             }
 
+            if (menu.InterceptedBy != null)
+            {
+                defender = menu.InterceptedBy;
+            }
+
             // Déclaration aveugle du défenseur (mise débitée, rien révélé).
             _combatCalculator.DeclareDefenderStakes(duel, finalDefSkill, finalWantsDefend, finalBonusAP, finalPE, defenderSpecialization);
 
@@ -2555,7 +3107,16 @@ namespace Killtime.Tactics
 
             triggerKick?.Invoke();
             yield return new WaitForSeconds(0.06f);
-            if (finalWantsDefend) triggerDefense?.Invoke();
+            if (finalWantsDefend)
+            {
+                var curDefVisual = defender != null ? defender.GetComponent<TacticalUnitVisual>() : null;
+                if (defender != null && defender.Stats != null && defender.Stats.CanDefendActively())
+                {
+                    curDefVisual?.TriggerBodyBlock();
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayAt(SoundId.Defense_Block, defender.transform.position, 0.5f);
+                }
+            }
             yield return new WaitForSeconds(0.16f);
 
             attacker.Stats.RegisterAttack();
@@ -3220,11 +3781,14 @@ namespace Killtime.Tactics
             CoverType cover = GetCoverToTarget(attacker, defender);
             // Duel aveugle manuel (pas de double débit PA) : Begin consomme la base 2 PA,
             // échec => on avorte sans perdre l'arme ni le quota d'attaque.
+            // RD-036 : le lancer suit la règle hauteur du tir (balistique ±1, laser exempté).
+            ElevationRuling throwRuling = GetElevationRuling(attacker, defender, SkillType.Ballistique, weapon, false);
             var throwDuel = _combatCalculator.BeginSkillDuel(
                 attacker.Stats, defender.Stats, BodyPart.Torse,
                 SkillType.Ballistique, SkillType.Esquive, weaponDmg, false,
                 true, null, null,
-                defender.Stats.BaseArmorAbsorption, out string throwError, cover, weaponEc);
+                defender.Stats.BaseArmorAbsorption, out string throwError, cover, weaponEc,
+                false, throwRuling.AttackMod, throwRuling.Label);
             if (throwDuel == null)
             {
                 Log(throwError ?? "⚠️ Lancer impossible : PA insuffisants.");
@@ -3860,6 +4424,10 @@ namespace Killtime.Tactics
         {
             TacticalUnit.OnAnyUnitMoved -= HandleTargetMovedFollow;
             TacticalUnit.OnAnyUnitTeleported -= HandleTargetTeleportedFollow;
+            // RD-031 : retire le hook d'opportunité (aucun blocage fantôme).
+            TacticalUnit.OnAnyUnitStepCompleted -= HandleUnitStepOpportunity;
+            if (TacticalUnit.StepBlockCheck != null && TacticalUnit.StepBlockCheck.Method?.DeclaringType == GetType())
+                TacticalUnit.StepBlockCheck = null;
         }
     }
 }

@@ -19,6 +19,7 @@ namespace Killtime.Tactics
 
         private bool _hasInteracted = false;
         public Action<TacticalUnit> OnInteractionTriggered;
+        public static event Action<TacticalInteractable, TacticalUnit> OnAnyInteractionTriggered;
 
         public HexCoordinates Coordinates => _gridCoords;
         public string ObjectName => _objectName;
@@ -84,8 +85,9 @@ namespace Killtime.Tactics
                 logMessage = $"✔ Succès {SkillDefinitions.GetDisplayName(_requiredSkill)} validé ({roll.Total} vs SD {_skillDifficultyThreshold}) !";
             }
 
-            if (_isOneShot) _hasInteracted = true;
+            _hasInteracted = true;
             OnInteractionTriggered?.Invoke(unit);
+            try { OnAnyInteractionTriggered?.Invoke(this, unit); } catch { /* ignore */ }
 
             if (KilltimeAudioManager.Instance != null)
                 KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Open, 0.8f);

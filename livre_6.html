@@ -563,7 +563,7 @@
                         </div>
                     </div>
 
-                    <div class="cards-grid-2">
+                    <div class="cards-grid-3">
                         <div class="spec-card">
                             <div class="spec-card-title">
                                 <span>Actions Principales</span>
@@ -600,6 +600,33 @@
                             <div class="spec-card-footer">
                                 <span class="tag-pill cyan">Esquive / Parade</span>
                                 <span class="tag-pill green">Mise Aveugle</span>
+                            </div>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Guet / Overwatch</span>
+                                <span class="pill-badge amber">2 PA (Réservés)</span>
+                            </div>
+                            <div class="spec-card-world">Réactif // Tir Réservé</div>
+                            <p>
+                                Pendant son propre tour, un combattant armé d'une <strong>arme à distance</strong>
+                                peut dépenser <strong>2 PA</strong> pour se mettre en <strong>guet</strong> : il réserve
+                                un tir de réaction couvrant le <strong>rayon de son arme</strong> (cône à 360°, sans
+                                facing).<br><br>
+                                <strong>Déclenchement :</strong> dès qu'un ennemi agit dans le rayon pendant le tour
+                                adverse, le guetteur lâche <strong>un tir automatique en duel aveugle</strong>
+                                (<em>Ballistique</em> vs <em>Esquive</em>, mises à 0, défense adverse automatique),
+                                puis le guet est <strong>consommé</strong> (1 tir par guet). Le tir est gratuit : les
+                                2 PA ont été payés à la pose.<br><br>
+                                <strong>Fin du guet :</strong> au début du prochain tour personnel du guetteur
+                                (utilisé ou non). <strong>Annulé</strong> si le guetteur est <strong>Étourdi</strong>,
+                                <strong>Paralysé</strong>, Sonné ou Inconscient. Une cible en couvert total ne peut
+                                pas être prise pour cible.
+                            </p>
+                            <div class="spec-card-footer">
+                                <span class="tag-pill amber">2 PA</span>
+                                <span class="tag-pill cyan">Duel Aveugle Auto</span>
                             </div>
                         </div>
                     </div>
@@ -704,6 +731,113 @@
                             </p>
                         </div>
                     </div>
+
+                    <div class="callout temporal">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <polyline points="12 6 12 12 14 14" />
+                            </svg>
+                            Barème des Réactions (Hors de son Tour)
+                        </div>
+                        <div class="callout-body">
+                            <ul style="margin-bottom: 0;">
+                                <li><strong>Parade / Esquive réactive :</strong> coût de base de réaction (<strong>1 PA</strong>) + mises aveugles (PA bonus / PE). Sans PA : réflexe à -2.</li>
+                                <li><strong>Guet / Overwatch :</strong> <strong>2 PA</strong> payés pendant son propre tour (arme à distance requise) : réserve <strong>1 tir automatique en duel aveugle</strong> dans le rayon de l'arme, consommé au premier déclenchement, expiré au prochain tour personnel, annulé si Étourdi / Paralysé.</li>
+                                <li><strong>Opportunité / Désengagement (§24.4) :</strong> quitter le <strong>contact (≤ 1 case)</strong> expose à <strong>1 réaction par voisin ennemi</strong> au contact (1/round chacun) : <strong>Frappe gratuite</strong>, <strong>Poursuite</strong> (1 PA, suit d'1 case), <strong>Blocage</strong> (1 PA, annule le pas, sans grapple, PA remboursés), <strong>Balayage</strong> (gratuit, Jambes). <strong>Décrochage</strong> (1 PA) ou <strong>spé esquive</strong> (Roulade de Décrochage, Acrobatie d'Évitement) : aucun déclenchement.</li>
+                                <li><strong>Garde du corps / Interception (§24.5, RD-032) :</strong> coût de réaction (<strong>1 PA</strong>) : s'interposer au contact (distance ≤ 1 case) pour <strong>prendre le coup à la place d'un allié</strong> visé par une attaque (Tenir la Ligne). Le duel est réorienté vers le protecteur qui encaisse avec son armure et ses compétences défensives.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <h3>24.4 Attaques d'Opportunité & Désengagement (RD-031)</h3>
+                    <p>
+                        Quitter le <strong>contact (distance ≤ 1 case, empreintes incluses)</strong> n'est jamais
+                        gratuit : chaque ennemi au contact dont on rompt l'allonge gagne <strong>1 réaction
+                        d'opportunité</strong>. Rester au contact (pas latéral, rotation) ne provoque rien ;
+                        seuls les pas qui font passer la distance de ≤ 1 à &gt; 1 déclenchent. Base du
+                        <strong>hit-and-run</strong> : frapper puis fuir expose à la riposte, sauf retrait propre.
+                    </p>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Les 4 réactions au contact rompu (1 par combattant et par round)</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Frappe (0 PA)</span> vs <span class="hl-ruby">Poursuite (1 PA)</span> vs <span class="hl-gold">Blocage (1 PA)</span> vs <span class="hl-cyan">Balayage (0 PA)</span>
+                        </div>
+                        <div class="formula-desc">
+                            La posture de réaction se choisit pendant son propre tour (0 PA, persistante).
+                            La frappe et le balayage sont <strong>gratuits</strong> (réaction seule, duel aveugle
+                            automatique, mises à 0, défense adverse automatique).
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>🗡️ Frappe d'opportunité (0 PA, défaut) :</strong> coup de mêlée réflexe en duel
+                            aveugle auto (compétence de l'arme de contact, sinon Mains Nues). Consomme l'unique
+                            réaction du round.</li>
+                        <li><strong>👣 Poursuite (1 PA) :</strong> au lieu de frapper, suit le fuyard d'<strong>1 case</strong>
+                            (case libérée) en réaction à son déplacement. Sans attaque, sans grapple. Le suivi ne
+                            provoque aucune réaction <strong>d'opportunité</strong> à son tour (pas de ping-pong ;
+                            un <strong>guet</strong> adverse peut toujours tirer sur l'arrivée, RD-030).</li>
+                        <li><strong>🛡️ Blocage (1 PA) :</strong> duel opposé aveugle <strong>Athlétisme vs
+                            Athlétisme</strong> (mises à 0). Victoire du bloqueur = le <strong>pas est annulé</strong>,
+                            sans grapple permanent : le fuyard reste sur sa case et <strong>ses PA de déplacement
+                            sont remboursés</strong> (intégral s'il n'a pas bougé, prorata sinon). Échec = réaction
+                            et PA dépensés, le fuyard passe.</li>
+                        <li><strong>🦵 Balayage (0 PA, variante) :</strong> frappe gratuite visant les
+                            <strong>Jambes</strong> : <strong>À Terre + Ralenti</strong> en cas de choc traumatique,
+                            au lieu de dégâts maximaux. Idéal pour clouer un fuyard.</li>
+                    </ul>
+
+                    <ul>
+                        <li><strong>💨 Décrochage (1 PA, Livre VI §26.2) :</strong> retrait propre payé pendant son tour :
+                            le <strong>prochain déplacement</strong> ne provoque aucune réaction (frappe, poursuite,
+                            blocage, balayage). Expire au prochain tour personnel si inutilisé. L'IA l'utilise pour
+                            ses replis quand ses PA le permettent.</li>
+                        <li><strong>Exemption esquive :</strong> les spécialisations <strong>Roulade de Décrochage</strong>
+                            (et branches) et <strong>Acrobatie d'Évitement</strong> permettent de quitter le contact
+                            <strong>sans provoquer</strong> — base du hit-and-run des duellistes.</li>
+                        <li><strong>Budget :</strong> 1 réaction d'opportunité par round et par combattant, rechargée au
+                            début de son tour personnel. Annulée si Étourdi / Paralysé / Sonné / Inconscient (même
+                            assiette que le guet). Tué en cours de trajet par une frappe : le déplacement s'interrompt
+                            sur la case atteinte.</li>
+                    </ul>
+
+                    <h3>24.5 Garde du Corps & Interception d'Allié (RD-032)</h3>
+                    <p>
+                        La discipline tactique et la protection d'escouade (technique <strong>Mener : Tenir la Ligne !</strong>
+                        ou spécialisation <strong>Garde du corps</strong>) permettent à un combattant situé au
+                        <strong>contact direct (distance ≤ 1 case)</strong> d'un allié attaqué de s'interposer pour
+                        <strong>prendre le coup à sa place</strong>.
+                    </p>
+
+                    <div class="formula-box">
+                        <div class="formula-label">Interception d'allié (1 réaction du round, contact direct)</div>
+                        <div class="formula-math">
+                            <span class="hl-cyan">Coût : 1 PA (réaction)</span> + <span class="hl-gold">Contact ≤ 1 case</span> ➔ <span class="hl-ruby">Redirection du coup sur le protecteur</span>
+                        </div>
+                        <div class="formula-desc">
+                            Le protecteur dépense 1 PA et consomme son unique réaction du round. Le duel d'attaque est
+                            instantanément réorienté vers lui : il devient le défenseur légitime et encaisse la frappe
+                            avec sa propre armure, son seuil d'encaissement et ses capacités défensives.
+                        </div>
+                    </div>
+
+                    <ul>
+                        <li><strong>🛡️ Prise de coup réflexe (1 PA réaction) :</strong> dès qu'un ennemi déclare une
+                            attaque contre un allié adjacent, le protecteur qualifié (spé <em>Tenir la Ligne</em>,
+                            donneur du bonus de blindage d'escouade ou garde du corps désigné) peut dépenser 1 PA
+                            et sa réaction du round pour absorber l'offensive.</li>
+                        <li><strong>Posture préventive (0 PA) :</strong> pendant son propre tour, le protecteur peut
+                            désigner un allié adjacent via le menu contextuel pour en faire son protégé prioritaire.</li>
+                        <li><strong>Résolution du duel :</strong> l'attaque touche le protecteur. La base de réaction
+                            étant déjà payée lors de l'interposition, le protecteur peut engager ses mises défensives
+                            (ou absorber en encaissement passif). L'allié ciblé initialement n'encourt aucun dégât.</li>
+                        <li><strong>Restrictions :</strong> impossible si le protecteur est neutralisé (Étourdi, Paralysé,
+                            Sonné, Inconscient), s'il a déjà dépensé sa réaction ce round, s'il manque de PA (1 PA de base,
+                            2 PA sous Ralenti), ou si la distance dépasse 1 mètre (1 case).</li>
+                    </ul>
 
                     <!-- ================= CHAPITRE 25 ================= -->
                     <h2 id="chap-25">

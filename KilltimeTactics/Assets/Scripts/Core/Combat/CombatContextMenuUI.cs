@@ -74,6 +74,9 @@ namespace Killtime.Tactics.CombatUI
         private TacticalUnit _defenseAttacker;
         private TacticalUnit _defenseDefender;
         private Action<SkillType, bool, int, int> _defenseCallback;
+        private List<TacticalUnit> _eligibleProtectors = new();
+        private TacticalUnit _interceptedBy;
+        public TacticalUnit InterceptedBy => _interceptedBy;
         private SkillType _defenseSkill = SkillType.Esquive;
         private SkillType _defenseParrySkill = SkillType.ManiementArmes;
         private string _defenseParryLabel = "Parade";
@@ -253,6 +256,8 @@ namespace Killtime.Tactics.CombatUI
             _defenseCallback = null;
             _hoveredDefenseNode = -1;
             _defenseHasAnchor = false;
+            _eligibleProtectors.Clear();
+            _interceptedBy = null;
             _contextTarget = null;
             _hoveredAction = null;
             _hoveredCategory = null;
@@ -279,6 +284,8 @@ namespace Killtime.Tactics.CombatUI
             _defenseDefender = defender;
             _defenseCallback = onDecision;
             _contextTarget = defender;
+            _eligibleProtectors = CombatTechniqueRegistry.GetEligibleProtectors(defender);
+            _interceptedBy = null;
 
             // Focus logique sur la cible : réticule d'arène + surlignage de sélection.
             if (_arena != null) _arena.SelectTarget(defender);
@@ -1057,15 +1064,16 @@ namespace Killtime.Tactics.CombatUI
 
         private int DefenseRequiredBase()
         {
-            int required = Killtime.Core.Rules.CoreRulesConfig.Instance.BaseReactionAPCost;
-            if (_defenseDefender.Stats.ActiveStatus.HasFlag(StatusEffect.Ralenti))
-                required *= Killtime.Core.Rules.CoreRulesConfig.Instance.RalentiAPMultiplier;
-            return required;
+            if (_defenseDuel != null && _defenseDuel.DefenderBasePaid) return 0;
+            if (_defenseDefender == null) return Killtime.Core.Rules.CoreRulesConfig.Instance.BaseReactionAPCost;
+            return _defenseDefender.Stats.GetEffectiveApCost(Killtime.Core.Rules.CoreRulesConfig.Instance.BaseReactionAPCost);
         }
 
         private bool DefenseCanUseActive()
         {
             if (_defenseDefender == null) return false;
+            if (_defenseDuel != null && _defenseDuel.DefenderBasePaid)
+                return _defenseDefender.Stats.CanDefendActively();
             return _defenseDefender.Stats.CanDefendActively()
                 && _defenseDefender.Stats.CurrentActionPoints >= DefenseRequiredBase();
         }
@@ -1280,6 +1288,52 @@ namespace Killtime.Tactics.CombatUI
                 GUI.color = remainPA >= 0 ? ColorArcaneCyan : ColorArcaneCrimson;
                 GUILayout.Label($"Mise {totalCost} PA + {_defenseBonusPE} PE · [{availPA} ➔ {remainPA}]", bodyStyle);
                 GUI.color = Color.white;
+            }
+
+            if (_eligibleProtectors != null && _eligibleProtectors.Count > 0)
+            {
+                for (int pIdx = 0; pIdx < _eligibleProtectors.Count; pIdx++)
+                {
+                    var prot = _eligibleProtectors[pIdx];
+                    if (prot == null || !prot.Stats.IsAlive) continue;
+                    GUI.backgroundColor = new Color(0.2f, 0.7f, 1f, 1f);
+                    if (GUILayout.Button($"🛡️ Interception : {prot.Stats.Name} (-1 PA)", GUILayout.Height(20)))
+                    {
+                        if (CombatTechniqueRegistry.ExecuteIntercept(prot, _defenseDefender, _arena))
+                        {
+                            _interceptedBy = prot;
+                            _defenseDefender = prot;
+                            _contextTarget = prot;
+                            if (_defenseDuel != null)
+                            {
+                                var calc = new CombatCalculator();
+                                calc.RedirectDuelToProtector(_defenseDuel, prot.Stats);
+                            }
+
+                            _defenseSkill = prot.Stats.Attributes.Agilite >= prot.Stats.Attributes.Force
+                                ? SkillType.Esquive
+                                : SkillType.DefenseCorporelle;
+                            _defenseParrySkill = SkillType.ManiementArmes;
+                            _defenseParryLabel = "Parade";
+                            var weapon = prot.Sheet?.GetEquippedWeapon();
+                            if (weapon != null && weapon.RangeInTiles <= 1 && weapon.AssociatedSkill != SkillType.Ballistique)
+                            {
+                                _defenseSkill = SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
+                                _defenseParrySkill = SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
+                                _defenseParryLabel = $"Parade ({weapon.Name})";
+                            }
+
+                            _defenseWants = DefenseCanUseActive();
+                            _defenseBonusAP = 0;
+                            _defenseBonusPE = 0;
+                            _centerPos = DefenseScreenCenter(prot);
+                            UpdateDefenseAnchor();
+                            _eligibleProtectors.RemoveAt(pIdx);
+                            break;
+                        }
+                    }
+                    GUI.backgroundColor = Color.white;
+                }
             }
 
             GUI.backgroundColor = ColorArcaneAmber;

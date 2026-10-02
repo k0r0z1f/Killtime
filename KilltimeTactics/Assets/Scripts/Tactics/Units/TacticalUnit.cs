@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Audio;
 using Killtime.Core.Character;
+using Killtime.Core.Combat;
 using Killtime.Tactics.Grid;
 
 namespace Killtime.Tactics.Units
@@ -149,6 +150,22 @@ namespace Killtime.Tactics.Units
 
         public static event Action<TacticalUnit, List<HexCoordinates>, int> OnAnyUnitMoved;
         public static event Action<TacticalUnit, HexCoordinates> OnAnyUnitTeleported;
+        public static event Action<TacticalUnit> OnAnyUnitMoveCompleted;
+
+        /// <summary>
+        /// Émis après chaque case franchie (RD-031) : (unité, case quittée, case
+        /// d'arrivée, moveProvokes). L'arène y résout les réactions d'opportunité
+        /// (frappe / poursuite / balayage) quand le contact est rompu.
+        /// moveProvokes = faux si spé esquive ou Décrochage payé (aucune réaction).
+        /// </summary>
+        public static event Action<TacticalUnit, HexCoordinates, HexCoordinates, bool> OnAnyUnitStepCompleted;
+
+        /// <summary>
+        /// Hook de blocage (RD-031) posé par l'arène : avant chaque pas, retourne
+        /// vrai pour annuler le pas (réaction Blocage réussie). Null = aucun blocage.
+        /// Appelé uniquement si le déplacement provoque (ni esquive ni Décrochage).
+        /// </summary>
+        public static Func<TacticalUnit, HexCoordinates, HexCoordinates, bool> StepBlockCheck;
 
         private TacticalHexGrid _grid;
         private bool _hasPosition;
@@ -457,6 +474,26 @@ namespace Killtime.Tactics.Units
         }
 
         /// <summary>
+        /// Positionne directement l'unité sans validation complexe (utile pour les tests et placements scriptés).
+        /// </summary>
+        public void SetPositionDirect(HexCoordinates coords, TacticalHexGrid grid = null)
+        {
+            CurrentCoords = coords;
+            _hasPosition = true;
+            if (grid != null)
+            {
+                _grid = grid;
+                var node = grid.GetNode(coords);
+                float yPos = node != null ? node.WorldPosition.y : 0.0f;
+                transform.position = coords.ToWorldPosition(grid.HexRadius, yPos);
+            }
+            else
+            {
+                transform.position = coords.ToWorldPosition(1.0f, 0.0f);
+            }
+        }
+
+        /// <summary>
         /// Vrai si un autre avatar occupe ces coordonnées.
         /// La présence physique d'une unité vivante fait foi et répare le nœud.
         /// </summary>
@@ -533,8 +570,13 @@ namespace Killtime.Tactics.Units
         /// Par défaut refuse tout mouvement vers / à travers une case occupée (1 case = 1 avatar).
         /// allowPassThrough (exploration) : traverser les cases occupées pour passer
         /// de l'autre côté, sans jamais s'y arrêter (destination toujours contrôlée).
+        /// provokesOpportunity (RD-031) : si vrai (défaut), quitter le contact (≤ portée)
+        /// expose aux réactions d'opportunité (frappe / poursuite / blocage / balayage),
+        /// sauf spé esquive (Roulade de Décrochage, Acrobatie d'Évitement) ou Décrochage
+        /// payé. Les déplacements de réaction (poursuite) passent faux (pas de ping-pong).
+        /// Un pas annulé par Blocage rembourse les PA non consommés (intégral si immobile).
         /// </summary>
-        public IEnumerator MoveAlongPath(List<HexCoordinates> path, TacticalHexGrid grid, int apCost, bool allowPassThrough = false)
+        public IEnumerator MoveAlongPath(List<HexCoordinates> path, TacticalHexGrid grid, int apCost, bool allowPassThrough = false, bool provokesOpportunity = true)
         {
             if (path == null || path.Count <= 1) yield break;
             if (grid == null) yield break;
@@ -580,6 +622,12 @@ namespace Killtime.Tactics.Units
             Stats.RegisterMove();
             OnAnyUnitMoved?.Invoke(this, path, apCost);
 
+            // RD-031 : ce déplacement expose-t-il aux réactions d'opportunité ?
+            // Faux si spé esquive (Roulade de Décrochage, Acrobatie d'Évitement)
+            // ou Décrochage payé (consommé ici, valable pour tout le trajet).
+            bool moveProvokes = provokesOpportunity
+                && (Stats == null || OpportunityState.TryBeginProvokingMove(Stats));
+
             HexCoordinates previous = path[0];
 
             for (int i = 1; i < path.Count; i++)
@@ -593,6 +641,20 @@ namespace Killtime.Tactics.Units
                 }
 
                 var nextCoords = path[i];
+
+                // RD-031 Blocage : un voisin en posture Blocage peut annuler le pas
+                // (duel opposé résolu par l'arène). Les PA non consommés sont
+                // remboursés — intégralement si l'unité n'a pas bougé.
+                if (moveProvokes && IsStepBlockedByReaction(previous, nextCoords))
+                {
+                    Debug.LogWarning($"[TacticalUnit] Déplacement bloqué pour '{_unitName}' : réaction d'opportunité (pas {previous} -> {nextCoords} annulé).");
+                    RefundUnspentMovePA(apCost, path.Count - 1, i - 1);
+                    var blockedFallback = grid.GetNode(CurrentCoords);
+                    if (blockedFallback != null) blockedFallback.IsOccupied = true;
+                    if (destNode != null && !destNode.Coordinates.Equals(CurrentCoords)) destNode.IsOccupied = false;
+                    IsMoving = false;
+                    yield break;
+                }
 
                 // La destination est exclue du test drapeau (réservée en début
                 // de trajet) mais pas du test physique : si un autre avatar y
@@ -664,9 +726,58 @@ namespace Killtime.Tactics.Units
                 // SFX : pas spatialisé à chaque case (cooldown interne anti-spam).
                 if (KilltimeAudioManager.Instance != null)
                     KilltimeAudioManager.Instance.PlayAt(SoundId.Move_Footstep, transform.position, 0.8f);
+
+                // RD-031 : notifie la case franchie pour les réactions d'opportunité
+                // (frappe / poursuite / balayage si le contact est rompu).
+                if (moveProvokes)
+                {
+                    try { OnAnyUnitStepCompleted?.Invoke(this, path[i - 1], nextCoords, moveProvokes); }
+                    catch { /* handler arène optionnel */ }
+                }
+
+                // Tué en cours de trajet (frappe d'opportunité) : le reste du
+                // chemin est annulé, l'unité reste sur la case atteinte.
+                if (Stats != null && !Stats.IsAlive)
+                {
+                    IsMoving = false;
+                    yield break;
+                }
             }
 
             IsMoving = false;
+            try { OnAnyUnitMoveCompleted?.Invoke(this); } catch { /* ignore */ }
+        }
+
+        /// <summary>
+        /// Interroge le hook de blocage posé par l'arène (RD-031 Blocage).
+        /// Toute exception du handler vaut "pas autorisé" (jamais de blocage fantôme).
+        /// </summary>
+        private bool IsStepBlockedByReaction(HexCoordinates from, HexCoordinates to)
+        {
+            var check = StepBlockCheck;
+            if (check == null) return false;
+            try { return check(this, from, to); }
+            catch { return false; }
+        }
+
+        /// <summary>
+        /// Rembourse les PA du trajet non effectué après un Blocage (RD-031) :
+        /// intégral si aucun pas accompli, prorata arrondi au supérieur sinon.
+        /// Plafonné au maximum (jamais de PA au-delà du plafond).
+        /// </summary>
+        private void RefundUnspentMovePA(int apCost, int totalSteps, int completedSteps)
+        {
+            if (Stats == null || apCost <= 0 || totalSteps <= 0) return;
+            int refund = apCost;
+            if (completedSteps > 0)
+            {
+                int remaining = totalSteps - completedSteps;
+                if (remaining <= 0) return;
+                refund = Mathf.CeilToInt((float)apCost * remaining / totalSteps);
+            }
+            refund = Mathf.Clamp(refund, 0, apCost);
+            if (refund > 0)
+                Stats.CurrentActionPoints = Mathf.Min(Stats.MaxActionPoints, Stats.CurrentActionPoints + refund);
         }
     }
 }

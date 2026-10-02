@@ -317,10 +317,10 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "low",
-      "gameDesignRef": "Livre VI : esquive vs parade (flanc ignore parade non-exclusive RD-037, attaque d'opportunité RD-031 si spé)",
+      "gameDesignRef": "Livre VI : esquive vs parade (attaque d'opportunité RD-031 si spé)",
       "codeRef": "Aucun (Body Block couvre parade, pas esquive)",
       "fallback": "Body Block",
-      "action": "RD-024 (P2) : 1 pas de côté. Dépend de RD-037."
+      "action": "RD-024 (P2) : 1 pas de côté."
     },
     {
       "id": "ANM-023",

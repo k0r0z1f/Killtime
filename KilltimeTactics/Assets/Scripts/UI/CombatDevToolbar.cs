@@ -5,6 +5,7 @@ using Killtime.Tactics;
 using Killtime.Tactics.AI;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
+using Killtime.Tactics.Objectives;
 using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Character;
@@ -720,6 +721,8 @@ namespace Killtime.UI
             }
             GUI.backgroundColor = Color.white;
 
+            DrawObjectivesSection();
+
             GUILayout.Space(8);
             GUILayout.Label("<b>🖥️ Système & Multitâche (Alt-Tab / Multi-Écran) :</b>");
             bool runBg = Application.runInBackground;
@@ -916,6 +919,89 @@ namespace Killtime.UI
             }
             GUILayout.EndHorizontal();
             GUILayout.Space(16);
+        }
+
+        private void DrawObjectivesSection()
+        {
+            if (_turnManager == null) return;
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>🎯 Objectifs Tactiques de Mission (RD-050) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            if (!_turnManager.HasCustomObjectives)
+            {
+                GUI.color = new Color(0.7f, 0.85f, 1f);
+                GUILayout.Label("<i>Mode par défaut : Annihilation (Kill-All). Tous les ennemis abattus = Victoire.</i>");
+                GUI.color = Color.white;
+            }
+            else
+            {
+                var objs = _turnManager.Objectives;
+                for (int i = 0; i < objs.Count; i++)
+                {
+                    var o = objs[i];
+                    if (o == null) continue;
+                    GUILayout.BeginHorizontal();
+                    string statusIcon = o.IsCompleted ? "<color=#00FFAA>✔ COMPLÉTÉ</color>" : (o.IsFailed ? "<color=#FF4444>❌ ÉCHEC</color>" : "<color=#FFAA00>⏳ EN COURS</color>");
+                    string optStr = o.IsOptional ? " [Optionnel]" : "";
+                    GUILayout.Label($"{o.GetTypeIcon()} <b>{o.Title}</b>{optStr} : {statusIcon} ({o.GetProgressString(_turnManager)})");
+                    if (GUILayout.Button("✔ Valider", GUILayout.Width(75)))
+                    {
+                        o.MarkCompleted();
+                        _turnManager.CheckCombatOver();
+                    }
+                    GUILayout.EndHorizontal();
+                }
+            }
+
+            GUILayout.Space(4);
+            _turnManager.AllowAnnihilationFallback = GUILayout.Toggle(_turnManager.AllowAnnihilationFallback, "⚔️ Victoire si tous les ennemis meurent (Fallback Pacification)");
+
+            GUILayout.Space(4);
+            GUILayout.Label("<b>Presets d'Objectifs Rapides :</b>");
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("⚔️ Annihilation"))
+            {
+                _turnManager.SetupAnnihilationPreset();
+                _turnManager.CheckCombatOver();
+            }
+            if (GUILayout.Button("🚀 Extraction"))
+            {
+                var target = _arena != null && _arena.CurrentTarget != null ? _arena.CurrentTarget.CurrentCoords : new Killtime.Tactics.Grid.HexCoordinates(3, 0);
+                var zone = new List<Killtime.Tactics.Grid.HexCoordinates> { target, target.GetNeighbor(0), target.GetNeighbor(1) };
+                _turnManager.SetupExtractionPreset(zone, requireAllLiving: true);
+                _turnManager.CheckCombatOver();
+            }
+            if (GUILayout.Button("⏳ Survie (+3 Rounds)"))
+            {
+                _turnManager.SetupSurvivePreset(3);
+                _turnManager.CheckCombatOver();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🛡️ Escorte VIP"))
+            {
+                var vip = (_arena != null && _arena.CurrentTarget != null) ? _arena.CurrentTarget : _arena?.PlayerUnit;
+                var dest = new List<Killtime.Tactics.Grid.HexCoordinates> { new Killtime.Tactics.Grid.HexCoordinates(4, 0) };
+                _turnManager.SetupEscortPreset(vip, dest);
+                _turnManager.CheckCombatOver();
+            }
+            if (GUILayout.Button("💻 Hacker Terminal"))
+            {
+                var term = FindAnyObjectByType<TacticalInteractable>();
+                _turnManager.SetupHackTerminalPreset(term, "Console_Terminal");
+                _turnManager.CheckCombatOver();
+            }
+            if (GUILayout.Button("🧹 Réinitialiser"))
+            {
+                _turnManager.ClearObjectives();
+                _turnManager.CheckCombatOver();
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
         }
 
         private void DrawChronomancyTab()

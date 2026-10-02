@@ -410,6 +410,12 @@ namespace Killtime.Tactics.AI
             if (_pathfinder == null && _grid != null) _pathfinder = new HexPathfinder(_grid);
             UpdateUnitCache();
 
+            // RD-031 : posture d'opportunité pour les tours adverses (réaction au
+            // contact rompu : grappler → Blocage, rapide → Poursuite, esquiveur →
+            // Balayage, défaut → Frappe gratuite).
+            try { OpportunityState.SetStance(unit.Stats, ChooseOpportunityStance(unit)); }
+            catch { /* posture optionnelle */ }
+
             var visual = unit.GetComponent<TacticalUnitVisual>();
             int loopGuard = 0;
             const int maxSteps = 10;
@@ -597,6 +603,19 @@ namespace Killtime.Tactics.AI
                     yield return new WaitForSeconds(_actionDelay);
                 }
 
+                // 10b. GUET / OVERWATCH (RD-030) : sans autre action rentable et
+                // avec du surplus au-delà de la réserve défensive, l'IA à distance
+                // réserve un tir de réaction au lieu de finir inactive.
+                if (isRanged && _arena != null
+                    && !OverwatchState.IsWatching(unit.Stats)
+                    && unit.Stats.CurrentActionPoints >= CoreRulesConfig.Instance.OverwatchAPCost + GetRequiredDefensiveReserve(unit, posture))
+                {
+                    if (_arena.TryEnterOverwatch(unit, out _))
+                    {
+                        yield return new WaitForSeconds(_actionDelay);
+                    }
+                }
+
                 break;
             }
 
@@ -744,8 +763,14 @@ namespace Killtime.Tactics.AI
                     {
                         int healAmount = ally.Stats.Attributes.Constitution * (hasChirKit ? 3 : 2);
                         ally.Stats.CurrentHealth = Mathf.Min(ally.Stats.MaxHealth, ally.Stats.CurrentHealth + healAmount);
-                        ally.Stats.ActiveStatus &= ~StatusEffect.Saignement;
-                        if (hasChirKit) ally.Stats.RemoveStatus(StatusEffect.Empoisonne);
+                        // RD-045 : le soin stoppe le DoT (purge le pool résiduel).
+                        ally.Stats.RemoveStatus(StatusEffect.Saignement);
+                        if (hasChirKit)
+                        {
+                            ally.Stats.RemoveStatus(StatusEffect.Empoisonne);
+                            ally.Stats.RemoveStatus(StatusEffect.EnFeu);
+                            ally.Stats.RemoveStatus(StatusEffect.Asphyxie);
+                        }
                         visual?.SpawnFloatingText($"🩹 [SOINS] Suture Tactique (-{healCost} PA)", Color.green);
                         ally.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"+{healAmount} PV{(hasChirKit ? " (Kit)" : "")}", Color.green);
                         _arena?.Log($"🩹 <b>{actor.Stats.Name}</b> soigne <b>{ally.Stats.Name}</b> (+{healAmount} PV{(hasChirKit ? ", Kit Chirurgie" : "")}) !");
@@ -1081,6 +1106,21 @@ namespace Killtime.Tactics.AI
             int ap = actor.Stats.CurrentActionPoints;
             if (ap <= 0) yield break;
 
+            // RD-031 : le retrait rompt le contact et provoque (sauf spé esquive).
+            // Quand les PA le permettent, sécurise le pas par un Décrochage payé
+            // (reste ≥ 1 PA pour marcher après).
+            if (actor.Stats != null
+                && !OpportunityState.IsExemptFromProvoking(actor.Stats)
+                && !OpportunityState.HasSafeDisengage(actor.Stats))
+            {
+                int disCost = CoreRulesConfig.Instance.DisengageAPCost;
+                if (ap >= disCost + 1
+                    && OpportunityState.RequestSafeDisengage(actor.Stats, disCost, out _))
+                {
+                    actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("💨 Décrochage IA", new Color(0.4f, 0.9f, 1.0f));
+                }
+            }
+
             var retreatHex = FindBestCoveredRetreatHex(actor.CurrentCoords, threat.CurrentCoords, 1);
             if (retreatHex.HasValue && !retreatHex.Value.Equals(actor.CurrentCoords))
             {
@@ -1090,6 +1130,23 @@ namespace Killtime.Tactics.AI
                     yield return StartCoroutine(actor.MoveAlongPath(path, _grid, cost));
                 }
             }
+        }
+
+        /// <summary>
+        /// RD-031 : choisit la posture d'opportunité de l'IA pour ce round.
+        /// Grappler (Athlétisme) → Blocage ; rapide (RAP 5+) → Poursuite ;
+        /// esquiveur → Balayage ; défaut → Frappe gratuite.
+        /// </summary>
+        private OpportunityReactionType ChooseOpportunityStance(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null) return OpportunityReactionType.Strike;
+            if (unit.Sheet != null && unit.Sheet.GetSkill(SkillType.Athletisme).TrainingLevel >= 1)
+                return OpportunityReactionType.Block;
+            if (unit.Stats.Attributes.Rapidite >= 5)
+                return OpportunityReactionType.Follow;
+            if (unit.Sheet != null && unit.Sheet.GetSkill(SkillType.Esquive).TrainingLevel >= 1)
+                return OpportunityReactionType.Trip;
+            return OpportunityReactionType.Strike;
         }
 
         // =========================================================================

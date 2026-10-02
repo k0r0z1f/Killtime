@@ -299,10 +299,68 @@ namespace Killtime.Core.Character
                 || effect == StatusEffect.Saignement
                 || effect == StatusEffect.Empoisonne
                 || effect == StatusEffect.EnFeu
+                || effect == StatusEffect.Asphyxie
                 || effect == StatusEffect.ChronoFracture;
         }
 
-        public void ApplyStatus(StatusEffect effect, int durationInTurns = 1)
+        /// <summary>
+        /// RD-045 : statuts à dégâts résiduels (DoT). Tick en début de tour personnel.
+        /// </summary>
+        public static bool IsDotStatus(StatusEffect effect)
+        {
+            return effect == StatusEffect.Saignement
+                || effect == StatusEffect.Empoisonne
+                || effect == StatusEffect.EnFeu
+                || effect == StatusEffect.Asphyxie;
+        }
+
+        // RD-045 : pool de dégâts résiduels dégressifs par statut DoT.
+        // Ex : 3 résiduels sur Roger → début de tour : 3 dégâts, pool → 2, etc.
+        // jusqu'à 0 (disparition du statut) ou soin (RemoveStatus/Heal).
+        private readonly System.Collections.Generic.Dictionary<StatusEffect, int> _residualDamages = new();
+        public System.Collections.Generic.IReadOnlyDictionary<StatusEffect, int> ResidualDamages => _residualDamages;
+
+        // RD-045 : aggravation (ex : Hémorragie Profonde) : au lieu de décroître
+        // de 1/tour, le pool augmente de +1/tour jusqu'au soin.
+        private readonly System.Collections.Generic.HashSet<StatusEffect> _aggravatingDots = new();
+
+        /// <summary>
+        /// Dégât résiduel restant pour un DoT (0 = aucun pool, tick minimal 1 si statut présent).
+        /// </summary>
+        public int GetResidualDamage(StatusEffect dot)
+        {
+            return _residualDamages.TryGetValue(dot, out int v) ? Math.Max(0, v) : 0;
+        }
+
+        /// <summary>
+        /// Pose un pool résiduel dégressif + le statut persistant associé.
+        /// Prend le max (pas de cumul infini). aggravating=true : +1/tour au lieu de -1.
+        /// </summary>
+        public void ApplyResidualDamage(StatusEffect dot, int amount, bool aggravating = false)
+        {
+            if (!IsDotStatus(dot) || amount <= 0) return;
+            ApplyStatus(dot, 1);
+            int existing = _residualDamages.TryGetValue(dot, out int v) ? v : 0;
+            _residualDamages[dot] = Math.Max(existing, amount);
+            if (aggravating) _aggravatingDots.Add(dot);
+        }
+
+        /// <summary>
+        /// Stoppe un DoT (soin) : purge le pool + le statut. Retourne vrai si présent.
+        /// </summary>
+        public bool ClearResidualDamage(StatusEffect dot)
+        {
+            bool had = _residualDamages.Remove(dot);
+            _aggravatingDots.Remove(dot);
+            if (ActiveStatus.HasFlag(dot))
+            {
+                RemoveStatus(dot);
+                return true;
+            }
+            return had;
+        }
+
+        public void ApplyStatus(StatusEffect effect, int durationInTurns = 1, int residualDamage = 0, bool aggravatingResidual = false)
         {
             if (effect == StatusEffect.None) return;
 
@@ -324,6 +382,13 @@ namespace Killtime.Core.Character
                         int existing = _statusDurations.TryGetValue(flag, out int d) ? d : 0;
                         _statusDurations[flag] = Math.Max(existing, Math.Max(1, durationInTurns));
                     }
+                    // RD-045 : pool résiduel posé via ApplyStatus(..., residualDamage).
+                    if (residualDamage > 0 && IsDotStatus(flag))
+                    {
+                        int existingRes = _residualDamages.TryGetValue(flag, out int r) ? r : 0;
+                        _residualDamages[flag] = Math.Max(existingRes, residualDamage);
+                        if (aggravatingResidual) _aggravatingDots.Add(flag);
+                    }
                 }
             }
         }
@@ -340,6 +405,9 @@ namespace Killtime.Core.Character
                 {
                     _statusDurations.Remove(flag);
                     _activeStatus &= ~flag;
+                    // RD-045 : le soin stoppe le DoT → purge le pool résiduel.
+                    _residualDamages.Remove(flag);
+                    _aggravatingDots.Remove(flag);
                 }
             }
         }
@@ -347,6 +415,8 @@ namespace Killtime.Core.Character
         public void ClearAllStatus()
         {
             _statusDurations.Clear();
+            _residualDamages.Clear();
+            _aggravatingDots.Clear();
             _activeStatus = StatusEffect.None;
         }
 
@@ -403,6 +473,121 @@ namespace Killtime.Core.Character
             }
 
             return expired;
+        }
+
+        /// <summary>
+        /// RD-045 : tick DoT en DÉBUT de tour personnel (Livre VII §27.1).
+        /// Pour chaque Saignement/Empoisonne/EnFeu/Asphyxie actif : inflige le pool
+        /// résiduel (ou le tick minimal si aucun pool), puis décrémente de 1
+        /// (0 = disparition) sauf aggravation (+1). Ignore l'armure ; EnFeu passe
+        /// par le bouclier d'abord ; Asphyxie draine aussi 1 PA. Soin = RemoveStatus.
+        /// </summary>
+        public DotTickResult TickTurnStatus()
+        {
+            var result = new DotTickResult();
+            if (IsDead) return result;
+
+            StatusEffect[] dots = new StatusEffect[]
+            {
+                StatusEffect.Saignement,
+                StatusEffect.Empoisonne,
+                StatusEffect.EnFeu,
+                StatusEffect.Asphyxie
+            };
+
+            for (int i = 0; i < dots.Length; i++)
+            {
+                var dot = dots[i];
+                if (!ActiveStatus.HasFlag(dot)) continue;
+
+                int pool = GetResidualDamage(dot);
+                if (pool <= 0)
+                {
+                    pool = 3;
+                    _residualDamages[dot] = pool;
+                }
+                bool aggravating = _aggravatingDots.Contains(dot);
+                int dmg = Math.Max(1, pool);
+
+                int shieldAbs = 0;
+                int finalDmg = dmg;
+
+                // EnFeu : brûlure externe → bouclier d'abord (Livre VIII §32.2).
+                // AbsorbShield retourne le RESTE (test ArmoryJsonTests) : absorbé = dmg - reste.
+                if (dot == StatusEffect.EnFeu)
+                {
+                    int remainder = AbsorbShield(dmg);
+                    shieldAbs = Math.Max(0, dmg - remainder);
+                    finalDmg = Math.Max(0, remainder);
+                    result.ShieldAbsorbed += shieldAbs;
+                }
+
+                if (finalDmg > 0)
+                {
+                    if (CurrentHealth - finalDmg <= 0)
+                    {
+                        result.FatalResolution = EvaluateFatalBlow(BodyPart.Torse, finalDmg);
+                    }
+                    else
+                    {
+                        CurrentHealth -= finalDmg;
+                    }
+                }
+
+                // Asphyxie : suffocation → 1 PA drainé en plus des PV.
+                if (dot == StatusEffect.Asphyxie && IsAlive)
+                {
+                    CurrentActionPoints = Math.Max(0, CurrentActionPoints - 1);
+                    result.PaDrained += 1;
+                }
+
+                result.TotalDamage += finalDmg;
+                result.DamageByStatus[dot] = finalDmg;
+
+                // Décrément dégressif : 3 → 2 → 1 → 0 (disparition).
+                if (pool > 0)
+                {
+                    if (aggravating)
+                    {
+                        int grown = Math.Min(10, pool + 1);
+                        _residualDamages[dot] = grown;
+                    }
+                    else
+                    {
+                        int left = pool - 1;
+                        if (left <= 0)
+                        {
+                            RemoveStatus(dot);
+                            result.ClearedStatuses.Add(dot);
+                        }
+                        else
+                        {
+                            _residualDamages[dot] = left;
+                        }
+                    }
+                }
+                // Pool à 0 (statut legacy sans valeur) : tick minimal permanent,
+                // ne disparaît qu'au soin (RemoveStatus) — pas d'auto-clear ici.
+
+                if (!IsAlive)
+                {
+                    result.Died = true;
+                    break;
+                }
+            }
+
+            LastDotTick = result;
+            return result;
+        }
+
+        /// <summary>Dernier tick DoT (posé par TickTurnStatus, lu par l'arène pour logs/FX).</summary>
+        public DotTickResult LastDotTick { get; set; } = new DotTickResult();
+
+        /// <summary>Tick minimal quand un DoT est actif sans pool résiduel (legacy).</summary>
+        public static int DefaultDotDamage(StatusEffect dot)
+        {
+            if (dot == StatusEffect.EnFeu) return 2;
+            return 1;
         }
 
         public void RecalculateDerivedStats()
@@ -515,17 +700,33 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
+        /// Calcule le coût PA effectif après malus d'armure lourde portée et multiplicateur Ralenti.
+        /// </summary>
+        public int GetEffectiveApCost(int baseCost, bool ignoreArmorMalus = false)
+        {
+            int withArmor = baseCost + (ignoreArmorMalus ? 0 : GetWornApMalus());
+            bool isRalenti = ActiveStatus.HasFlag(StatusEffect.Ralenti) && !HasSpecialization("Élan Sans Drag");
+            return isRalenti
+                ? withArmor * Rules.CoreRulesConfig.Instance.RalentiAPMultiplier
+                : withArmor;
+        }
+
+        /// <summary>
+        /// Vrai si le combattant dispose d'assez de PA pour payer le coût effectif.
+        /// </summary>
+        public bool CanAffordActionPoints(int baseCost, bool ignoreArmorMalus = false)
+        {
+            return CurrentActionPoints >= GetEffectiveApCost(baseCost, ignoreArmorMalus);
+        }
+
+        /// <summary>
         /// Paie un coût PA. Les blindages lourds portés ajoutent leur malus à TOUTE action
         /// (Livre VIII §32.1), avant le multiplicateur Ralenti. Les mises de duel aveugle
         /// (1 PA = +1 au jet) en sont exemptées : passer ignoreArmorMalus.
         /// </summary>
         public bool ConsumeActionPoints(int cost, bool ignoreArmorMalus = false)
         {
-            int withArmor = cost + (ignoreArmorMalus ? 0 : GetWornApMalus());
-            bool isRalenti = ActiveStatus.HasFlag(StatusEffect.Ralenti) && !HasSpecialization("Élan Sans Drag");
-            int effectiveCost = isRalenti
-                ? withArmor * Rules.CoreRulesConfig.Instance.RalentiAPMultiplier
-                : withArmor;
+            int effectiveCost = GetEffectiveApCost(cost, ignoreArmorMalus);
 
             if (CurrentActionPoints >= effectiveCost)
             {
@@ -602,6 +803,8 @@ namespace Killtime.Core.Character
         /// Soin par consommable marketplace (Livre VIII §32.3 : seringues, bandage).
         /// Ne réanime pas (IsDead ou Inconscient profond exclu) : la réanimation
         /// reste à la Défibrillation. Plafonné à MaxHealth. Retourne le soin réel.
+        /// RD-045 : tout soin stoppe le Saignement (compression + cautérisation).
+        /// Empoisonne/EnFeu/Asphyxie exigent un traitement dédié (kit, eau, airway).
         /// </summary>
         public int Heal(int amount)
         {
@@ -610,6 +813,8 @@ namespace Killtime.Core.Character
             if (!IsAlive && CurrentHealth <= 0) return 0;
             int before = CurrentHealth;
             CurrentHealth = Math.Min(MaxHealth, CurrentHealth + amount);
+            if (ActiveStatus.HasFlag(StatusEffect.Saignement))
+                RemoveStatus(StatusEffect.Saignement);
             return Math.Max(0, CurrentHealth - before);
         }
 
@@ -794,5 +999,23 @@ namespace Killtime.Core.Character
         }
 
         public bool IsAlive => !IsDead && (CurrentHealth > 0 || IsInLastBreath) && !ActiveStatus.HasFlag(StatusEffect.Inconscient);
+    }
+
+    /// <summary>
+    /// RD-045 : résultat du tick DoT de début de tour (CharacterStats.TickTurnStatus).
+    /// Pur (aucune dépendance Unity) pour tests et logs d'arène.
+    /// </summary>
+    [Serializable]
+    public class DotTickResult
+    {
+        public int TotalDamage;
+        [System.NonSerialized]
+        public System.Collections.Generic.Dictionary<StatusEffect, int> DamageByStatus = new();
+        public System.Collections.Generic.List<StatusEffect> ClearedStatuses = new();
+        public int ShieldAbsorbed;
+        public int PaDrained;
+        public FatalBlowResolution FatalResolution = FatalBlowResolution.None;
+        public bool Died;
+        public bool HasTick => TotalDamage > 0 || PaDrained > 0 || ClearedStatuses.Count > 0;
     }
 }

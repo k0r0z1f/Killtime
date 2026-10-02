@@ -79,7 +79,7 @@
           "id": "RD-030",
           "title": "Overwatch / guet : réserver PA pour tir ennemi",
           "epic": "Réactions",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 0,
           "scene": "",
@@ -88,13 +88,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CombatCalculator + TurnManager",
-          "details": "Action 2PA : cône/rayon, duel auto à l'aveugle pendant tour adverse. Annulé si étourdi/paralysé."
+          "details": "FAIT : action 2 PA (rayon = portée arme, 360°), tir auto en duel aveugle Ballistique/Projectiles vs Esquive pendant tour adverse (déplacement, téléportation, attaque en zone surveillée), gratuit (déjà payé), 1 tir puis consommé, expire au prochain tour personnel, annulé si Étourdi/Paralysé (+Sonné/Inconscient), couvert total = pas de tir, munitions consommées + enrayement. OverwatchState (Core) + CombatCalculator.TryEnter/ResolveOverwatchFire + TurnManager (expiration/purge) + CombatDevArena (triggers) + registre d'action + IA + Livre VI §24 + tests OverwatchTests. Action 2PA : cône/rayon, duel auto à l'aveugle pendant tour adverse. Annulé si étourdi/paralysé."
         },
         {
           "id": "RD-031",
           "title": "Attaque d'opportunité désengagement",
           "epic": "Réactions",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 1,
           "scene": "",
@@ -103,13 +103,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "TacticalUnit.MoveAlongPath",
-          "details": "Quitter contact <=1 case provoque 1 frappe gratuite sauf spec esquive. Base du hit-and-run."
+          "details": "FAIT : quitter le contact (<=1 case -> >1) provoque 1 réaction/voisin ennemi (1/round, posture persistante 0 PA : Frappe gratuite / Poursuite 1 PA suit d'1 case / Blocage 1 PA annule le pas sans grapple + PA remboursés / Balayage gratuit Jambes À Terre+Ralenti). Décrochage 1 PA (prochain déplacement sans réaction), spé esquive exempte (Roulade de Décrochage, Acrobatie d'Évitement). OpportunityState (Core) + CombatCalculator.ResolveOpportunityStrike/Trip/Block + TacticalUnit.MoveAlongPath (events par pas, hook blocage, refund PA, arrêt si tué) + CombatDevArena (triggers GM, VTT) + registre (4 postures + Décrochage) + TurnManager (recharge/purge) + IA (postures + décrochage de repli) + Livre VI §24.4 + tests OpportunityTests."
         },
         {
           "id": "RD-032",
           "title": "Garde du corps / interception allié",
           "epic": "Réactions",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 2,
           "scene": "",
@@ -118,7 +118,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CombatTechniqueRegistry",
-          "details": "Tenir la Ligne existe partiel. Ajouter : prendre le coup à la place au contact, coût 1PA réaction."
+          "details": "FAIT : Prendre le coup à la place au contact (<=1 case), coût 1 PA réaction. Consomme l'unique réaction du round (OpportunityState.TryConsumeReaction) et 1 PA (ajusté avec Ralenti). Protecteur qualifié par Mener : Tenir la Ligne !, don du bonus de ligne Tenir (+2 armure) ou posture active Garde du corps (0 PA, contact). Duel d'attaque réorienté vers le protecteur avec son armure et ses compétences (CombatCalculator.RedirectDuelToProtector / ResolveInterceptedAttack). Support joueur interactif (bouton Interception dans le hub de défense radial CombatContextMenuUI) + IA automatique (priorité VIP/faible PV CombatDevArena / TacticalAIController). SkillTechniqueState (liens garde, TryGetLineBonusDonor, purge tour) + Livre VI §24.5 + tests BodyguardTests."
         },
         {
           "id": "RD-033",
@@ -169,7 +169,7 @@
           "id": "RD-036",
           "title": "Bonus hauteur / contrebas",
           "epic": "Positionnement",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 6,
           "scene": "",
@@ -178,22 +178,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "TacticalHexGrid Elevation",
-          "details": "Elevation existe dans JSON mais ignorée. Ajouter : +1 attaque si +1 hauteur, -1 en contrebas, portée +1."
-        },
-        {
-          "id": "RD-037",
-          "title": "Bonus flanc / dos mécanique",
-          "epic": "Positionnement",
-          "status": "todo",
-          "priority": "high",
-          "order": 7,
-          "scene": "",
-          "placeholderId": "",
-          "primitive": "",
-          "pos": null,
-          "scale": null,
-          "suggestedAsset": "CoverSystem.EvaluateCover",
-          "details": "IA cherche flank pour annuler couvert mais pas de bonus. Ajouter : flanc ignore parade non-exclusive, dos +2."
+          "details": "FAIT : palier vertical 1 case 3D = 1.5 m (round dh/1.5, micro-reliefs <0.75 m neutres). Mêlée : +1 surplomb 1 palier (+2 si allonge range>=2), -1 par palier en contrebas, inatteignable au-delà d'1 palier sans allonge / 2 avec / ±3 et plus ; gate verticale + réaction opportunité conservée si hors d'atteinte. Tir balistique conventionnel ±1 capé, laser/énergie exempté, magie/techniques non modifiées, tir sans gate (vue tranche). ElevationAdvantage (Core pur) + CombatCalculator (AttackBaseMod + log) + CombatDevArena (direct, défense joueur, guet, opportunité, lancer) + IA via gate centrale + tests ElevationAdvantageTests. Spec d'origine : Elevation existe dans JSON mais ignorée. Ajouter : +1 attaque si +1 hauteur, -1 en contrebas, portée +1."
         },
         {
           "id": "RD-038",
@@ -304,7 +289,7 @@
           "id": "RD-045",
           "title": "Tick DoT Saignement/Poison/Feu/Asphyxie",
           "epic": "États/DoT",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 15,
           "scene": "",
@@ -313,7 +298,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CharacterStats.TickTurnStatus",
-          "details": "Durées expirent mais pas de dégâts. Ajouter : tick CON, aggravation, soin stoppe."
+          "details": "FAIT : Dégâts résiduels dégressifs (tick en début de tour personnel, pool décroît de 1/tour jusqu'à 0). Saignement, Empoisonné, EnFeu (absorbé en priorité par bouclier ablatif), Asphyxie (dégâts + drain 1 PA). Aggravation (+1/tour au lieu de -1). Soins (Heal, bandages, chirurgie) et dissipation arrêtent immédiatement le DoT et purgent le pool. Évaluation des seuils létaux et chocs branchée."
         },
         {
           "id": "RD-046",
@@ -379,7 +364,7 @@
           "id": "RD-050",
           "title": "Objectifs autres que kill-all",
           "epic": "Tours/Surprise",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 20,
           "scene": "",
