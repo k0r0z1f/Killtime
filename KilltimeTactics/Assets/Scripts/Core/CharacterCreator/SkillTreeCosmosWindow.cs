@@ -48,6 +48,8 @@ namespace Killtime.UI
 
         private bool IsCurrentMina => MinaCharacter.IsMina(_sheet);
         private bool IsCurrentLucas => LucasCharacter.IsLucas(_sheet);
+        private bool IsCurrentJohn => JohnCharacter.IsJohn(_sheet);
+        private bool IsCurrentErika => ErikaCharacter.IsErika(_sheet);
 
         private class CosmosSector
         {
@@ -160,7 +162,7 @@ namespace Killtime.UI
             _selectedNode = null;
             BuildProceduralCosmology();
             _statusFeedback = sheet != null
-                ? $"Constellation synchronisée : {sheet.Name} {(MinaCharacter.IsMina(sheet) ? MinaCharacter.DisplayTag : "")}{(LucasCharacter.IsLucas(sheet) ? LucasCharacter.DisplayTag : "")} | Réserve : {sheet.AvailableXP} XP."
+                ? $"Constellation synchronisée : {sheet.Name} {(MinaCharacter.IsMina(sheet) ? MinaCharacter.DisplayTag : "")}{(LucasCharacter.IsLucas(sheet) ? LucasCharacter.DisplayTag : "")}{(JohnCharacter.IsJohn(sheet) ? JohnCharacter.DisplayTag : "")}{(ErikaCharacter.IsErika(sheet) ? ErikaCharacter.DisplayTag : "")} | Réserve : {sheet.AvailableXP} XP."
                 : "Aucune fiche active.";
         }
 
@@ -192,6 +194,8 @@ namespace Killtime.UI
 
             bool isMina = IsCurrentMina;
             bool isLucas = IsCurrentLucas;
+            bool isJohn = IsCurrentJohn;
+            bool isErika = IsCurrentErika;
 
             // =========================================================================
             // LES 7 PILIERS UNIVERSELS DU CODEX (GÉOMÉTRIE ESPACÉE ANTI-COLLISION)
@@ -713,6 +717,50 @@ namespace Killtime.UI
                 var clA1 = AddImprovementNode(spClair, "Clairvoyance : Œil Distant", sMag.Position + new Vector2(370f, 350f), sMag.SectorColor);
                 var clA2 = AddImprovementNode(clA1, "Clairvoyance : Prescience du Danger", sMag.Position + new Vector2(460f, 360f), sMag.SectorColor);
                 AddImprovementNode(clA2, "Clairvoyance : Champ de Prescience", sMag.Position + new Vector2(550f, 370f), sMag.SectorColor);
+
+                // Constellation du Passeur (voir JohnCharacter.RegisterSpecializations) :
+                // greffée sur les piliers mundans déjà construits (tir, contrat, instinct, plan de vol).
+                if (isJohn)
+                {
+                    var colJohn = new Color(0.98f, 0.7f, 0.15f);
+                    var spJohnTir = AddSpecNode(nBAL, "Tir de Couverture du Passeur", sAgi.Position + new Vector2(-240f, -160f), colJohn);
+                    var jtA1 = AddImprovementNode(spJohnTir, "Tir de Couverture du Passeur : Rideau de Fer du Hangar", sAgi.Position + new Vector2(-340f, -200f), colJohn);
+                    AddImprovementNode(jtA1, "Tir de Couverture du Passeur : Dernier Chargeur", sAgi.Position + new Vector2(-440f, -230f), colJohn);
+
+                    var spJohnContrat = AddSpecNode(nCOM, "Contrat du Passeur", sCha.Position + new Vector2(-240f, 140f), colJohn);
+                    var jcA1 = AddImprovementNode(spJohnContrat, "Contrat du Passeur : Renégociation Forcée", sCha.Position + new Vector2(-340f, 160f), colJohn);
+                    AddImprovementNode(jcA1, "Contrat du Passeur : Prix du Retour", sCha.Position + new Vector2(-440f, 180f), colJohn);
+
+                    var spJohnVivant = AddSpecNode(nINTU, "Revenir Vivant", sIns.Position + new Vector2(200f, 200f), colJohn);
+                    var jvA1 = AddImprovementNode(spJohnVivant, "Revenir Vivant : Lecture du Braconnier", sIns.Position + new Vector2(320f, 220f), colJohn);
+                    AddImprovementNode(jvA1, "Revenir Vivant : Passeur Insubmersible", sIns.Position + new Vector2(440f, 240f), colJohn);
+
+                    var spJohnVol = AddSpecNode(nTAC, "Plan de Vol du Starlight", sInt.Position + new Vector2(0f, 330f), colJohn);
+                    var jvolA1 = AddImprovementNode(spJohnVol, "Plan de Vol du Starlight : Route Sans Balise", sInt.Position + new Vector2(-110f, 400f), colJohn);
+                    AddImprovementNode(jvolA1, "Plan de Vol du Starlight : Traversée du Creuset", sInt.Position + new Vector2(-190f, 460f), colJohn);
+                }
+
+                // Constellation Cleyane (voir ErikaCharacter.RegisterSpecializations) :
+                // flamme frontale sur le foyer Élémentale, lame sur le pilier Fer, sang-chaud sur le Bastion.
+                if (isErika)
+                {
+                    var colErika = new Color(1.0f, 0.45f, 0.15f);
+                    var spFlamme = AddSpecNode(nMAG_E, "Flamme Cleyane", sMag.Position + new Vector2(-60f, -110f), colErika);
+                    var flA1 = AddImprovementNode(spFlamme, "Flamme Cleyane : Doigts de Braise", sMag.Position + new Vector2(-160f, -140f), colErika);
+                    AddImprovementNode(flA1, "Flamme Cleyane : Fournaise Cleyane", sMag.Position + new Vector2(-260f, -170f), colErika);
+
+                    var spVoile = AddSpecNode(nMAG_E, "Voile de Cendres", sMag.Position + new Vector2(-60f, 10f), colErika);
+                    var voA1 = AddImprovementNode(spVoile, "Voile de Cendres : Rideau Aveuglant", sMag.Position + new Vector2(-160f, 30f), colErika);
+                    AddImprovementNode(voA1, "Voile de Cendres : Cendre Mémoire", sMag.Position + new Vector2(-260f, 50f), colErika);
+
+                    var spLame = AddSpecNode(nMA, "Lame d'Escorte", sForce.Position + new Vector2(120f, 240f), colErika);
+                    var lmA1 = AddImprovementNode(spLame, "Lame d'Escorte : Riposte Enflammée", sForce.Position + new Vector2(220f, 300f), colErika);
+                    AddImprovementNode(lmA1, "Lame d'Escorte : Jugement du Creuset", sForce.Position + new Vector2(310f, 360f), colErika);
+
+                    var spSang = AddSpecNode(nEND, "Sang-Chaud Cleyan", sCon.Position + new Vector2(80f, 120f), colErika);
+                    var scA1 = AddImprovementNode(spSang, "Sang-Chaud Cleyan : Fièvre Combative", sCon.Position + new Vector2(170f, 180f), colErika);
+                    AddImprovementNode(scA1, "Sang-Chaud Cleyan : Cœur de Fournaise", sCon.Position + new Vector2(260f, 240f), colErika);
+                }
             }
         }
 
@@ -847,6 +895,8 @@ namespace Killtime.UI
 
             bool isMina = IsCurrentMina;
             bool isLucas = IsCurrentLucas;
+            bool isJohn = IsCurrentJohn;
+            bool isErika = IsCurrentErika;
             string charName = _sheet != null ? _sheet.Name : "Sans Alter-Ego";
             int xp = _sheet != null ? _sheet.AvailableXP : 0;
 
@@ -870,6 +920,14 @@ namespace Killtime.UI
             if (isLucas)
             {
                 if (GUI.Button(new Rect(btnX, 5, 125, 22), "❄ Vide Calculant")) FocusSector(-260f, 30f); btnX += 128f;
+            }
+            if (isJohn)
+            {
+                if (GUI.Button(new Rect(btnX, 5, 125, 22), "🛰 Passeur")) FocusSector(0f, -880f); btnX += 128f;
+            }
+            if (isErika)
+            {
+                if (GUI.Button(new Rect(btnX, 5, 125, 22), "🔥 Flamme")) FocusSector(-60f, -110f); btnX += 128f;
             }
 
             // Bouton DEV CHEAT
@@ -1499,10 +1557,14 @@ namespace Killtime.UI
             if (_sheet == null || node == null) return false;
             if (node.IsSpecialization || node.IsImprovement)
             {
-                // Maîtrises innées des fiches héroïques (voir MinaCharacter / LucasCharacter).
+                // Maîtrises innées des fiches héroïques (voir MinaCharacter / LucasCharacter / JohnCharacter / ErikaCharacter).
                 if (MinaCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
                     return true;
                 if (LucasCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
+                    return true;
+                if (JohnCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
+                    return true;
+                if (ErikaCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
                     return true;
 
                 return _sheet.UnlockedSpecializations != null &&

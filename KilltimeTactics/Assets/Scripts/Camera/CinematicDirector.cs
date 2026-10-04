@@ -36,6 +36,7 @@ namespace Killtime.CameraSystem
         [Header("Configuration Cinématique")]
         [SerializeField] private float _cinematicFOV = 48.0f;
         [SerializeField] private float _normalFOV = 60.0f;
+        [SerializeField] private float _cinematicFarClip = 500000.0f;
 
         public CameraMode CurrentMode { get; private set; } = CameraMode.TacticalIsometric;
 
@@ -143,9 +144,12 @@ namespace Killtime.CameraSystem
             {
                 _mainCamera = GetComponent<UnityEngine.Camera>() ?? UnityEngine.Camera.main;
             }
-            if (_mainCamera != null && _normalFOV > 0)
+            if (_mainCamera != null)
             {
-                _mainCamera.fieldOfView = _normalFOV;
+                if (_normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
+                float targetFar = Mathf.Max(_cinematicFarClip, 500000f);
+                if (_mainCamera.farClipPlane < targetFar) _mainCamera.farClipPlane = targetFar;
+                if (_mainCamera.nearClipPlane < 0.3f) _mainCamera.nearClipPlane = 0.3f;
             }
             ResolveTacticalCam();
             _skipNoiseSeed = UnityEngine.Random.Range(0f, 100f);

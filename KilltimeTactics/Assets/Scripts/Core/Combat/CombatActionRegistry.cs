@@ -252,6 +252,45 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
 
+                // RD-084 : Assaut groupé (Livre VI §25.2) — synchronisé sur le plus
+                // lent, résultats offensifs sommés face à l'unique défense (armure 1×).
+                {
+                    int combinedCost = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.CombinedAttackAPCost : 2;
+                    int combinedMin = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.CombinedAttackMinMembers : 2;
+                    actions.Add(new CombatAction(
+                        $"⚔️ Assaut Groupé ({combinedCost} PA chacun)",
+                        "Attaque combinée (Livre VI §25.2) : les alliés à portée frappent à l'unisson sur l'initiative du membre le plus lent, résultats offensifs sommés face à l'unique défense de la cible — armure et encaissement pulvérisés par le dépassement massif.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        combinedCost,
+                        (act, tgt) =>
+                        {
+                            if (act.Stats.CurrentActionPoints < combinedCost || !targetIsAlive) return false;
+                            if (arena == null) return false;
+                            if (GrappleState.IsGrappled(act.Stats)) return false;
+                            if (!arena.TryResolveCombinedSkill(act, tgt, out var sk)) return false;
+                            var members = arena.CollectCombinedAttackers(act, tgt, sk);
+                            return members.Count >= combinedMin && members.Contains(act);
+                        },
+                        (act, tgt) => arena.ExecuteCombinedAttack(act, tgt, BodyPart.Torse)
+                    ));
+                }
+
+                // RD-084 : Course-poursuite (Livre VI §25.1) — concours d'Athlétisme
+                // proie vs poursuivant ; 4 faillites cumulées = capture immédiate.
+                {
+                    int pursuitCost = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.PursuitAPCost : 1;
+                    actions.Add(new CombatAction(
+                        $"🏃 Poursuite : gain de terrain ({pursuitCost} PA)",
+                        "Course-poursuite (Livre VI §25.1) : concours d'Athlétisme contre la cible. Réussite de la proie = distance maintenue (≥ 1 case) ; faillite = le poursuivant gagne du terrain. 4 faillites cumulées = proie rattrapée et acculée (arrêt immédiat).",
+                        ActionCategory.TactiqueEtOrdres,
+                        pursuitCost,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= pursuitCost && targetIsAlive
+                            && !PursuitState.IsCaught(tgt.Stats)
+                            && GetDistance(act, tgt) >= 1,
+                        (act, tgt) => arena.ExecutePursuitRound(tgt, new List<TacticalUnit> { act })
+                    ));
+                }
+
                 // --- Grenades : lancer sur la case de la cible si à portée ---
                 InventoryItem firstGrenade = null;
                 InventoryItem anyLauncher = null;
@@ -712,7 +751,8 @@ namespace Killtime.Tactics.CombatUI
                 string healDesc = (healCost == 2
                     ? "Suture Réflexe au contact (Régénère Constitution × 2 PV). Coût réduit à 2 PA par la spécialisation."
                     : "Stabilisation et suture d'urgence au contact (Régénère Constitution × 2 PV).")
-                    + (hasChirKit ? " Kit de Chirurgie : CON×3 + purge Empoisonne." : "");
+                    + (hasChirKit ? " Kit de Chirurgie : CON×3 + purge Empoisonne." : "")
+                    + " RD-083 : Soins Majeurs — lève Souffrant si le soin unique atteint CON×2 (×3 au kit).";
                 actions.Add(new CombatAction(
                     $"🩹 Premiers Soins d'Urgence ({healCost} PA{(hasChirKit ? " +Kit" : "")})",
                     healDesc,
@@ -725,9 +765,9 @@ namespace Killtime.Tactics.CombatUI
                         {
                             bool kit = HasTool(act, "Chirurgie");
                             int healAmount = tgt.Stats.Attributes.Constitution * (kit ? 3 : 2);
-                            tgt.Stats.CurrentHealth = Mathf.Min(tgt.Stats.MaxHealth, tgt.Stats.CurrentHealth + healAmount);
-                            // RD-045 : le soin stoppe le DoT (RemoveStatus purge le pool résiduel).
-                            tgt.Stats.RemoveStatus(StatusEffect.Saignement);
+                            // RD-083 : Premiers Soins / Chirurgie = Soins Majeurs (CON×2/×3
+                            // en un seul coup → lève Souffrant, cf. Livre VII §29.1).
+                            var major = tgt.Stats.ApplyMajorCare(healAmount);
                             if (kit)
                             {
                                 tgt.Stats.RemoveStatus(StatusEffect.Empoisonne);
@@ -736,7 +776,8 @@ namespace Killtime.Tactics.CombatUI
                             }
 
                             var vis = tgt.GetComponent<TacticalUnitVisual>();
-                            vis?.SpawnFloatingText($"+{healAmount} PV Soignés{(kit ? " (kit)" : "")}", Color.green);
+                            vis?.SpawnFloatingText($"+{major.Healed} PV Soignés{(kit ? " (kit)" : "")}{(major.SouffrantLifted ? " — Souffrant LEVÉ" : "")}", Color.green);
+                            arena?.Log($"🩹 <b>{act.Stats.Name}</b> prodigue des premiers soins à <b>{tgt.Stats.Name}</b> (+{major.Healed} PV{(kit ? " (kit)" : "")}, seuil CON×2 = {major.Threshold}){(major.SouffrantLifted ? " ➔ <b>Souffrant LEVÉ</b> (blessure refermée) !" : (major.HadSouffrant ? " ➔ <b>Souffrant PERSISTE</b>." : ""))}");
                             if (kit) arena?.Log($"🩹 Bloc opératoire de campagne : Empoisonne/EnFeu/Asphyxie purgés sur <b>{tgt.Stats.Name}</b>.");
                         }
                     }
@@ -772,11 +813,14 @@ namespace Killtime.Tactics.CombatUI
                             bool usedBandage = usedName.Contains("Bandage");
                             act.Sheet?.ConsumeOne(dose.ItemId);
                             act.NotifyInventoryChanged(true);
+                            // RD-083 : soin ordinaire (seringue/bandage) — restaure des PV
+                            // mais ne lève JAMAIS Souffrant (Livre VII §28.3).
+                            bool hadSouffrant = tgt.Stats.ActiveStatus.HasFlag(StatusEffect.Souffrant);
                             int healed = tgt.Stats.Heal(usedHeal);
                             if (usedBandage) tgt.Stats.RemoveStatus(StatusEffect.Saignement);
                             var vis = tgt.GetComponent<TacticalUnitVisual>();
-                            vis?.SpawnFloatingText($"+{healed} PV ({usedName})", Color.green);
-                            arena?.Log($"💉 <b>{act.Stats.Name}</b> utilise <b>{usedName}</b> sur <b>{tgt.Stats.Name}</b> (+{healed} PV{(usedBandage ? ", Saignement stoppé" : "")}).");
+                            vis?.SpawnFloatingText($"+{healed} PV ({usedName}){(hadSouffrant ? " — Souffrant persiste" : "")}", Color.green);
+                            arena?.Log($"💉 <b>{act.Stats.Name}</b> utilise <b>{usedName}</b> sur <b>{tgt.Stats.Name}</b> (+{healed} PV{(usedBandage ? ", Saignement stoppé" : "")}{(hadSouffrant ? " — <b>Souffrant PERSISTE</b> (Soins Majeurs CON×2 requis, Livre VII §29.1)" : "")}).");
                             arena?.RecordChronoSnapshot($"Soin {usedName} : {act.Stats.Name} -> {tgt.Stats.Name}");
                         }
                     ));
@@ -813,10 +857,10 @@ namespace Killtime.Tactics.CombatUI
             }
             else
             {
-                // Réanimation d'urgence
+                // Réanimation d'urgence (Livre VII §29.3 : Poids du Trépas)
                 actions.Add(new CombatAction(
                     "⚡ Défibrillation Arcanique (4 PA)",
-                    "Tente de ramener un combattant au contact à 1 PV avant le coma définitif.",
+                    "Tente de ramener un combattant au contact à 1 PV avant le coma définitif. Résurrection : -1 ec pendant (10 - CON) jours réels.",
                     ActionCategory.TraumatologieEtSoins,
                     4,
                     (act, tgt) => act.Stats.CurrentActionPoints >= 4 && act.CurrentCoords.DistanceTo(tgt.CurrentCoords) <= 1,
@@ -824,8 +868,9 @@ namespace Killtime.Tactics.CombatUI
                     {
                         if (act.Stats.ConsumeActionPoints(4))
                         {
-                            tgt.Stats.CurrentHealth = 1;
-                            tgt.Stats.ActiveStatus &= ~StatusEffect.Inconscient;
+                            // RD-083 : centralise la résurrection + horodate la séquelle.
+                            int convalescence = tgt.Stats.ApplyResurrection(1);
+                            arena?.Log($"⚡ <b>{act.Stats.Name}</b> réanime <b>{tgt.Stats.Name}</b> (1 PV) — <b>Poids du Trépas</b> : -1 ec pendant {convalescence} jour(s) réels (10 - CON, Livre VII §29.3).");
 
                             var vis = tgt.GetComponent<TacticalUnitVisual>();
                             vis?.SpawnFloatingText("RÉANIMATION!", Color.cyan);
@@ -1050,6 +1095,66 @@ namespace Killtime.Tactics.CombatUI
                         if (arena != null) arena.TryRequestSafeDisengage(act, out _);
                         else if (OpportunityState.RequestSafeDisengage(act.Stats, Killtime.Core.Rules.CoreRulesConfig.Instance.DisengageAPCost, out _))
                             act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("💨 DÉCROCHAGE", Color.cyan);
+                    }
+                ));
+
+                // RD-048 Retarder / Tenir / Canalisation (Livre VI — Tours) :
+                // Tenir (0 PA, en attente + interruption), Retarder (-2 init,
+                // 1/round), Canalisation (1 PA, +2 au jet, -1 en défense,
+                // interrompue si dégât net > encaissement).
+                int holdCost = Killtime.Core.Rules.CoreRulesConfig.Instance.HoldAPCost;
+                actions.Add(new CombatAction(
+                    $"⏸️ Tenir l'action ({holdCost} PA : en attente + interruption)",
+                    "Passe son tour en conservant ses PA et se déclare en attente : interviendra juste après l'unité active du moment (interruption), ou rejouera normalement au round suivant.",
+                    ActionCategory.TactiqueEtOrdres,
+                    holdCost,
+                    (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                        && !DelayedTurnState.IsHolding(act.Stats)
+                        && act.Stats.CurrentActionPoints >= Killtime.Core.Rules.CoreRulesConfig.Instance.HoldAPCost
+                        && !DelayedTurnState.IsCancelledByStatus(act.Stats),
+                    (act, tgt) =>
+                    {
+                        if (arena != null) arena.TryHoldAction(act, out _);
+                        else if (new CombatCalculator().TryHoldAction(act.Stats, out _))
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏸️ EN ATTENTE", Color.cyan);
+                    }
+                ));
+
+                int delayPenalty = Killtime.Core.Rules.CoreRulesConfig.Instance.DelayInitiativePenalty;
+                actions.Add(new CombatAction(
+                    $"⏳ Retarder (init -{delayPenalty}, 1/round)",
+                    "Repousse son tour plus tard dans le round en cours : initiative réduite de la pénalité puis réinsertion après les unités qui devancent encore. Passe la main à l'unité suivante.",
+                    ActionCategory.TactiqueEtOrdres,
+                    0,
+                    (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                        && !DelayedTurnState.HasDelayed(act.Stats)
+                        && act.Stats.InitiativeRollTotal != int.MinValue
+                        && !DelayedTurnState.IsCancelledByStatus(act.Stats),
+                    (act, tgt) =>
+                    {
+                        if (arena != null) arena.TryDelayTurn(act, out _);
+                        else if (new CombatCalculator().TryDelayInitiative(act.Stats, out _, out _))
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏳ RETARDÉ", Color.yellow);
+                    }
+                ));
+
+                int channelCost = Killtime.Core.Rules.CoreRulesConfig.Instance.ChannelStartAPCost;
+                int channelBonus = Killtime.Core.Rules.CoreRulesConfig.Instance.ChannelAttackBonus;
+                int channelMalus = Killtime.Core.Rules.CoreRulesConfig.Instance.ChannelDefensePenalty;
+                actions.Add(new CombatAction(
+                    $"⏳ Canaliser le coup ({channelCost} PA : +{channelBonus} au jet)",
+                    $"Étale l'effort (Livre VI §24.3) : +{channelBonus} au jet de la prochaine attaque, {channelMalus} en défense tant qu'on canalise. Interrompue si dégât net > encaissement.",
+                    ActionCategory.TactiqueEtOrdres,
+                    channelCost,
+                    (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                        && !ChannelingState.IsChanneling(act.Stats)
+                        && act.Stats.CurrentActionPoints >= Killtime.Core.Rules.CoreRulesConfig.Instance.ChannelStartAPCost
+                        && !ChannelingState.IsCancelledByStatus(act.Stats),
+                    (act, tgt) =>
+                    {
+                        if (arena != null) arena.TryBeginChanneling(act, "Coup en progression", out _);
+                        else if (new CombatCalculator().TryBeginChanneling(act.Stats, "Coup en progression", out _))
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏳ CANALISE", Color.magenta);
                     }
                 ));
 

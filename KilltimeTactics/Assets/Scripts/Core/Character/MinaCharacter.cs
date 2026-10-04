@@ -196,7 +196,10 @@ namespace Killtime.Core.Character
             if (!stats.HasSpecialization(HeartOfBloomSpecialization)) return false;
             stats.HasUsedHeartOfBloom = true;
             stats.CurrentHealth = Math.Max(1, stats.MaxHealth / 2);
+            // RD-083 : Cœur d'Éclosion ≠ Premiers Soins/Chirurgie — Souffrant persiste.
+            bool keepSouffrant = stats.ActiveStatus.HasFlag(StatusEffect.Souffrant);
             stats.ClearAllStatus();
+            if (keepSouffrant) stats.ApplyStatus(StatusEffect.Souffrant);
             return true;
         }
 

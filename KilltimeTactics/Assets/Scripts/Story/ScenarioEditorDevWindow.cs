@@ -113,6 +113,9 @@ namespace Killtime.Story
         private Vector2 _lateDownWorld;
         private Vector2 _lateDownScreen;
 
+        // Seuil de zoom en dessous duquel les contrôles d'édition internes sont remplacés par un rendu LOD rapide.
+        private const float CardLodThreshold = 0.42f;
+
         // Couleur unique des ports/wires cinématiques + hauteur standard de la rangée 🎬.
         private static readonly Color CinePortCol = new Color(1f, 0.35f, 0.85f);
         private const float CineRowH = 20f;
@@ -819,10 +822,38 @@ namespace Killtime.Story
             int interCount = _data.Interactables != null ? _data.Interactables.Count : 0;
             int actorCount = _data.Actors != null ? _data.Actors.Count : 0;
             int cineCount = _data.Cinematics != null ? _data.Cinematics.Count : 0;
-            GUILayout.Label($"<b>■ SCÈNE {sceneNumPrefix}: {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color> + <color=#FFD75E>{trigCount} ▼</color> + <color=#33E6CC>{interCount} 🔧</color> + <color=#7CB3FF>{actorCount} 👥</color> + <color=#FF59D9>{cineCount} 🎬</color>)", GUILayout.ExpandWidth(true));
+            var headerTitleStyle = new GUIStyle(GUI.skin.label) { wordWrap = false, richText = true, alignment = TextAnchor.MiddleLeft };
+            GUILayout.Label($"<b>■ SCÈNE {sceneNumPrefix}: {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color> + <color=#FFD75E>{trigCount} ▼</color> + <color=#33E6CC>{interCount} 🔧</color> + <color=#7CB3FF>{actorCount} 👥</color> + <color=#FF59D9>{cineCount} 🎬</color>)", headerTitleStyle, GUILayout.Height(22));
+
+            GUILayout.FlexibleSpace();
+
+            GUI.backgroundColor = new Color(0.15f, 0.85f, 0.5f);
+            if (GUILayout.Button("↺ Auto-Disposition", GUILayout.Width(135), GUILayout.Height(22)))
+            {
+                AutoLayoutGlobalScene();
+            }
+
+            GUILayout.Space(4);
+            GUI.backgroundColor = new Color(0.55f, 0.85f, 1f);
+            if (GUILayout.Button("▦ Mosaïque", GUILayout.Width(90), GUILayout.Height(22)))
+            {
+                AutoLayoutMosaic();
+            }
+
+            GUILayout.Space(4);
+            GUI.backgroundColor = new Color(1.0f, 0.75f, 0.2f);
+            if (GUILayout.Button("🔍 Cadrer Tout", GUILayout.Width(100), GUILayout.Height(22)))
+            {
+                FocusAllNodes();
+            }
+            GUI.backgroundColor = Color.white;
+            GUILayout.EndHorizontal();
+
+            GUILayout.Space(2);
+            GUILayout.BeginHorizontal();
 
             GUI.backgroundColor = new Color(0.2f, 0.75f, 1f);
-            if (GUILayout.Button("+ Nouveau Nœud", GUILayout.Width(120), GUILayout.Height(22)))
+            if (GUILayout.Button("+ Nouveau Nœud", GUILayout.Width(115), GUILayout.Height(22)))
             {
                 ComputeNewNodeSpawn(out float newX, out float newY);
                 _data.Nodes.Add(new SceneNodeData
@@ -834,7 +865,7 @@ namespace Killtime.Story
                 });
             }
             GUI.backgroundColor = new Color(0.2f, 0.92f, 0.45f);
-            if (GUILayout.Button("+ Nœud Objectif", GUILayout.Width(120), GUILayout.Height(22)))
+            if (GUILayout.Button("+ Nœud Objectif", GUILayout.Width(115), GUILayout.Height(22)))
             {
                 ComputeNewNodeSpawn(out float newX, out float newY);
                 var objNode = new SceneNodeData
@@ -852,9 +883,9 @@ namespace Killtime.Story
             }
             GUI.backgroundColor = Color.white;
 
-            GUILayout.Space(6);
+            GUILayout.Space(4);
             GUI.backgroundColor = new Color(1f, 0.78f, 0.25f);
-            if (GUILayout.Button("+ Déclencheur", GUILayout.Width(110), GUILayout.Height(22)))
+            if (GUILayout.Button("+ Déclencheur", GUILayout.Width(105), GUILayout.Height(22)))
             {
                 if (_data.Triggers == null) _data.Triggers = new System.Collections.Generic.List<SceneTriggerData>();
                 Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
@@ -868,7 +899,7 @@ namespace Killtime.Story
                 });
             }
             GUI.backgroundColor = new Color(0.2f, 0.9f, 0.85f);
-            if (GUILayout.Button("+ Interactable", GUILayout.Width(110), GUILayout.Height(22)))
+            if (GUILayout.Button("+ Interactable", GUILayout.Width(105), GUILayout.Height(22)))
             {
                 if (_data.Interactables == null) _data.Interactables = new System.Collections.Generic.List<SceneInteractableSpawnData>();
                 Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
@@ -885,7 +916,7 @@ namespace Killtime.Story
                 });
             }
             GUI.backgroundColor = new Color(0.35f, 0.6f, 1f);
-            if (GUILayout.Button("+ Acteur", GUILayout.Width(90), GUILayout.Height(22)))
+            if (GUILayout.Button("+ Acteur", GUILayout.Width(85), GUILayout.Height(22)))
             {
                 if (_data.Actors == null) _data.Actors = new System.Collections.Generic.List<SceneActorSpawnData>();
                 Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
@@ -901,7 +932,7 @@ namespace Killtime.Story
                 });
             }
             GUI.backgroundColor = new Color(1f, 0.35f, 0.85f);
-            if (GUILayout.Button("+ Cinéma", GUILayout.Width(90), GUILayout.Height(22)))
+            if (GUILayout.Button("+ Cinéma", GUILayout.Width(85), GUILayout.Height(22)))
             {
                 if (_data.Cinematics == null) _data.Cinematics = new System.Collections.Generic.List<SceneCinematicData>();
                 Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
@@ -918,38 +949,17 @@ namespace Killtime.Story
                 _data.Cinematics.Add(cine);
             }
             GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
-            if (GUILayout.Button("🪐 Décor (Shift+F3)", GUILayout.Width(135), GUILayout.Height(22)))
+            if (GUILayout.Button("🪐 Décor (Shift+F3)", GUILayout.Width(130), GUILayout.Height(22)))
             {
                 SceneEnvironmentDevWindow.Open();
             }
             GUI.backgroundColor = new Color(0.7f, 0.25f, 0.6f);
-            if (GUILayout.Button("🎬 Ciné (Shift+F4)", GUILayout.Width(125), GUILayout.Height(22)))
+            if (GUILayout.Button("🎬 Ciné (Shift+F4)", GUILayout.Width(120), GUILayout.Height(22)))
             {
                 CinematicEditorDevWindow.Open();
             }
             GUI.backgroundColor = Color.white;
-
-            GUILayout.Space(6);
-            GUI.backgroundColor = new Color(0.15f, 0.85f, 0.5f);
-            if (GUILayout.Button("↺ Auto-Disposition", GUILayout.Width(140), GUILayout.Height(22)))
-            {
-                AutoLayoutGlobalScene();
-            }
-
-            GUILayout.Space(4);
-            GUI.backgroundColor = new Color(0.55f, 0.85f, 1f);
-            if (GUILayout.Button("▦ Mosaïque", GUILayout.Width(95), GUILayout.Height(22)))
-            {
-                AutoLayoutMosaic();
-            }
-
-            GUI.backgroundColor = new Color(1.0f, 0.75f, 0.2f);
-            if (GUILayout.Button("🔍 Cadrer Tout", GUILayout.Width(105), GUILayout.Height(22)))
-            {
-                FocusAllNodes();
-            }
-            GUI.backgroundColor = Color.white;
-            GUILayout.Space(6);
+            GUILayout.FlexibleSpace();
             GUILayout.EndHorizontal();
 
             GUILayout.BeginHorizontal();
@@ -5397,6 +5407,14 @@ namespace Killtime.Story
         private void DrawNodeSection(SceneNodeData node, float secX, float secY, float secW)
         {
             if (node == null) return;
+            if (_zoom < CardLodThreshold)
+            {
+                float totalH = GetNodeSectionHeight(node);
+                DrawGraphSolidRect(new Rect(secX, secY, secW, totalH), new Color(0.04f, 0.06f, 0.08f, 0.5f));
+                DrawGraphSolidRect(new Rect(secX, secY, secW, 1f), new Color(1f, 1f, 1f, 0.08f));
+                GraphLabel(new Rect(secX + 8f, secY + 2f, secW - 16f, 18f), $"<color=grey>⚙ Nœud : {node.Title} [{node.Kind}]</color>");
+                return;
+            }
             node.Choices ??= new System.Collections.Generic.List<ScenarioChoice>();
             node.Objectives ??= new System.Collections.Generic.List<ScenarioObjective>();
             node.EnterEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
@@ -5869,9 +5887,8 @@ namespace Killtime.Story
         private void DrawGraphGridBackground(Rect rect)
         {
             DrawSolidRect(rect, new Color(0.035f, 0.045f, 0.06f, 1f));
-            const float baseGrid = 32f;
+            float baseGrid = _zoom < 0.35f ? 128f : (_zoom < 0.65f ? 64f : 32f);
             float gridSize = baseGrid * _zoom;
-            if (gridSize < 10f) gridSize = 10f;
             float offX = ((_graphPan.x % gridSize) + gridSize) % gridSize;
             float offY = ((_graphPan.y % gridSize) + gridSize) % gridSize;
 
@@ -6212,303 +6229,319 @@ namespace Killtime.Story
                 _hoverScreenPos = _graphMouseScreenPos;
             }
 
-            // 6. Contenu ÉDITABLE en GUI ABSOLU (pas de GUILayout : incompatible avec la matrice zoomée,
-            //    c'était la cause du rendu écrasé/chevauché du screenshot).
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
-            float y = cardRect.y + 30f;
-
-            GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
-            line.LineId = GraphTextField(new Rect(innerX + 24f, y, 64f, 18f), line.LineId ?? "");
-            line.IsNarration = GraphToggle(new Rect(innerX + 92f, y, 58f, 18f), line.IsNarration, "📜 Narr");
-
-            if (!line.IsNarration)
-            {
-                GraphLabel(new Rect(innerX + 154f, y, 26f, 18f), "Loc:");
-                line.SpeakerId = GraphTextField(new Rect(innerX + 182f, y, 56f, 18f), line.SpeakerId ?? "");
-                Rect dropBtn = new Rect(innerX + 240f, y, 18f, 18f);
-                string dropKey = $"dlg_{line.LineId}";
-                if (GraphButton(dropBtn, "▼"))
-                {
-                    if (_actorDropKey == dropKey) _actorDropKey = null;
-                    else OpenActorDropdown(dropKey, dropBtn, line.SpeakerId ?? "", v => line.SpeakerId = v);
-                }
-                line.StageDirection = GraphTextField(new Rect(innerX + 260f, y, Mathf.Max(30f, innerW - 260f), 18f), line.StageDirection ?? "");
-            }
-            else
-            {
-                line.SpeakerId = "";
-                GraphLabel(new Rect(innerX + 154f, y, 32f, 18f), "Dida:");
-                line.StageDirection = GraphTextField(new Rect(innerX + 188f, y, Mathf.Max(40f, innerW - 188f), 18f), line.StageDirection ?? "");
-            }
-            y += 20f;
-
-            line.Speech = GraphTextArea(new Rect(innerX, y, innerW, 48f), line.Speech ?? "");
-            y += 50f;
-
-            // Choix Multiples / Liaison : première rangée à cardY+100, pas vertical de 22 + 20/ligne de défi (référence des wires).
             var cardChoiceOffsets = new List<float>();
-            GetDialogueChoiceRowOffsets(line, cardChoiceOffsets);
-            if (line.Choices.Count > 0)
+
+            if (_zoom < CardLodThreshold)
             {
-                int skillCount = Enum.GetValues(typeof(SkillType)).Length;
-                for (int c = 0; c < line.Choices.Count; c++)
+                // LOD rapide : silhouettes sans contrôles IMGUI
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 32f, innerW * 0.9f, 8f), new Color(1f, 1f, 1f, 0.09f));
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 44f, innerW * 0.65f, 6f), new Color(1f, 1f, 1f, 0.06f));
+                if (line.Choices.Count > 0)
                 {
-                    var ch = line.Choices[c];
-                    if (ch == null) { y += 22f; continue; }
-                    ch.Challenge ??= new SceneDialogueChallengeData();
-                    ch.Prerequisite ??= new ScenePrerequisiteData();
-                    ch.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
-                    var chal = ch.Challenge;
-
-                    // Rangée principale : [mode 30][label][➔][next 70][⋯][⊘].
-                    string modeLabel = !chal.HasChallenge ? "–" : (chal.IsOpposed ? "VS" : "SD");
-                    Color prevBg = GUI.backgroundColor;
-                    GUI.backgroundColor = !chal.HasChallenge ? new Color(0.35f, 0.38f, 0.42f)
-                        : (chal.IsOpposed ? new Color(1.0f, 0.55f, 0.2f) : new Color(1.0f, 0.78f, 0.25f));
-                    if (GraphButton(new Rect(innerX, y, 30f, 20f), modeLabel))
+                    GetDialogueChoiceRowOffsets(line, cardChoiceOffsets);
+                    for (int c = 0; c < line.Choices.Count; c++)
                     {
-                        if (!chal.HasChallenge) { chal.HasChallenge = true; chal.IsOpposed = false; if (chal.TargetDC <= 0) chal.TargetDC = 10; }
-                        else if (!chal.IsOpposed) { chal.IsOpposed = true; }
-                        else { chal.HasChallenge = false; chal.IsOpposed = false; }
+                        float rowTop = (c < cardChoiceOffsets.Count) ? cardChoiceOffsets[c] : (100f + c * 22f);
+                        DrawGraphSolidRect(new Rect(innerX, cardRect.y + rowTop + 4f, innerW - 14f, 8f), new Color(1f, 0.8f, 0.25f, 0.14f));
                     }
-                    GUI.backgroundColor = prevBg;
-
-                    float labelW = Mathf.Max(40f, innerW - 32f - 144f);
-                    ch.Label = GraphTextField(new Rect(innerX + 32f, y, labelW, 20f), ch.Label ?? "");
-                    GraphLabel(new Rect(innerX + 32f + labelW + 2f, y, 16f, 20f), "➔");
-                    ch.NextLineId = GraphTextField(new Rect(innerX + 32f + labelW + 20f, y, 70f, 20f), ch.NextLineId ?? "");
-                    bool detAny = SectionOpen(_expandedSections, ch, "pre") || SectionOpen(_expandedSections, ch, "fx") || SectionOpen(_expandedSections, ch, "chd");
-                    if (GraphButton(new Rect(innerX + 32f + labelW + 92f, y, 20f, 20f), detAny ? "▾" : "▸"))
-                    {
-                        _expandedSections.Remove(SKey(ch, "pre"));
-                        _expandedSections.Remove(SKey(ch, "fx"));
-                        _expandedSections.Remove(SKey(ch, "chd"));
-                        if (!detAny)
-                        {
-                            _expandedSections.Add(SKey(ch, "pre"));
-                            _expandedSections.Add(SKey(ch, "fx"));
-                            _expandedSections.Add(SKey(ch, "chd"));
-                        }
-                    }
-                    if (GraphButton(new Rect(innerX + 32f + labelW + 114f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
-                    y += 22f;
-
-                    if (chal.HasChallenge && !chal.IsOpposed)
-                    {
-                        // Sous-rangée test SD : [<][compétence][>][SD][val][Acteur].
-                        float sx = innerX + 12f;
-                        if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
-                        {
-                            int si = ((int)chal.RequiredSkill - 1 + skillCount) % skillCount;
-                            chal.RequiredSkill = (SkillType)si;
-                        }
-                        sx += 20f;
-                        GraphLabel(new Rect(sx, y, 95f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.RequiredSkill)}</b>");
-                        sx += 97f;
-                        if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
-                        {
-                            int si = ((int)chal.RequiredSkill + 1) % skillCount;
-                            chal.RequiredSkill = (SkillType)si;
-                        }
-                        sx += 20f;
-                        GraphLabel(new Rect(sx, y, 24f, 18f), "SD:");
-                        sx += 26f;
-                        string sdTxt = GraphTextField(new Rect(sx, y, 30f, 18f), chal.TargetDC.ToString());
-                        int.TryParse(sdTxt, out chal.TargetDC);
-                        sx += 32f;
-                        GraphLabel(new Rect(sx, y, 28f, 18f), "Act:");
-                        sx += 30f;
-                        chal.SpecificActorId = GraphTextField(new Rect(sx, y, Mathf.Max(30f, innerX + innerW - sx), 18f), chal.SpecificActorId ?? "");
-                        y += 20f;
-                    }
-                    else if (chal.HasChallenge && chal.IsOpposed)
-                    {
-                        // Sous-rangée 1 : compétence joueur vs compétence adverse.
-                        float sx = innerX + 12f;
-                        GraphLabel(new Rect(sx, y, 18f, 18f), "J:");
-                        sx += 20f;
-                        if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
-                        {
-                            int si = ((int)chal.RequiredSkill - 1 + skillCount) % skillCount;
-                            chal.RequiredSkill = (SkillType)si;
-                        }
-                        sx += 20f;
-                        GraphLabel(new Rect(sx, y, 72f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.RequiredSkill)}</b>");
-                        sx += 74f;
-                        if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
-                        {
-                            int si = ((int)chal.RequiredSkill + 1) % skillCount;
-                            chal.RequiredSkill = (SkillType)si;
-                        }
-                        sx += 20f;
-                        GraphLabel(new Rect(sx, y, 22f, 18f), "vs");
-                        sx += 24f;
-                        if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
-                        {
-                            int oi = ((int)chal.OpposedSkill - 1 + skillCount) % skillCount;
-                            chal.OpposedSkill = (SkillType)oi;
-                        }
-                        sx += 20f;
-                        GraphLabel(new Rect(sx, y, 72f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.OpposedSkill)}</b>");
-                        sx += 74f;
-                        if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
-                        {
-                            int oi = ((int)chal.OpposedSkill + 1) % skillCount;
-                            chal.OpposedSkill = (SkillType)oi;
-                        }
-                        y += 20f;
-
-                        // Sous-rangée 2 : opposant + bonus + SD de repli (total fixe si opposant introuvable).
-                        float qx = innerX + 12f;
-                        GraphLabel(new Rect(qx, y, 32f, 18f), "Adv:");
-                        qx += 34f;
-                        chal.OpposedActorId = GraphTextField(new Rect(qx, y, 80f, 18f), chal.OpposedActorId ?? "");
-                        qx += 82f;
-                        GraphLabel(new Rect(qx, y, 26f, 18f), "+B:");
-                        qx += 28f;
-                        string bTxt = GraphTextField(new Rect(qx, y, 30f, 18f), chal.OpposedBonus.ToString());
-                        int.TryParse(bTxt, out chal.OpposedBonus);
-                        qx += 32f;
-                        GraphLabel(new Rect(qx, y, 44f, 18f), "SD fix:");
-                        qx += 46f;
-                        string fixTxt = GraphTextField(new Rect(qx, y, 30f, 18f), chal.TargetDC.ToString());
-                        int.TryParse(fixTxt, out chal.TargetDC);
-                        y += 20f;
-                    }
-
-                    if (chal.HasChallenge)
-                    {
-                        chal.SuccessEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
-                        chal.FailureEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
-
-                        // Sortie succès : vers carte Conséquence (prioritaire) + lien direct vers réplique.
-                        {
-                            float rx = innerX + 12f;
-                            GUI.color = new Color(0.35f, 1f, 0.55f);
-                            GraphLabel(new Rect(rx, y, 18f, 18f), "✔");
-                            GUI.color = Color.white;
-                            rx += 20f;
-                            GraphLabel(new Rect(rx, y, 52f, 18f), "→Cons:");
-                            rx += 54f;
-                            chal.SuccessConsequenceId = GraphTextField(new Rect(rx, y, 84f, 18f), chal.SuccessConsequenceId ?? "");
-                            rx += 86f;
-                            GraphLabel(new Rect(rx, y, 14f, 18f), "→");
-                            rx += 16f;
-                            chal.SuccessNextLineId = GraphTextField(new Rect(rx, y, Mathf.Max(30f, innerX + innerW - rx), 18f), chal.SuccessNextLineId ?? "");
-                            y += 20f;
-                        }
-
-                        // Sortie échec : vers carte Conséquence (prioritaire) + lien direct vers réplique.
-                        {
-                            float fx2 = innerX + 12f;
-                            GUI.color = new Color(1f, 0.45f, 0.4f);
-                            GraphLabel(new Rect(fx2, y, 18f, 18f), "✕");
-                            GUI.color = Color.white;
-                            fx2 += 20f;
-                            GraphLabel(new Rect(fx2, y, 52f, 18f), "→Cons:");
-                            fx2 += 54f;
-                            chal.FailureConsequenceId = GraphTextField(new Rect(fx2, y, 84f, 18f), chal.FailureConsequenceId ?? "");
-                            fx2 += 86f;
-                            GraphLabel(new Rect(fx2, y, 14f, 18f), "→");
-                            fx2 += 16f;
-                            chal.FailureNextLineId = GraphTextField(new Rect(fx2, y, Mathf.Max(30f, innerX + innerW - fx2), 18f), chal.FailureNextLineId ?? "");
-                            y += 20f;
-                        }
-
-                    }
-
-                    // Méta du choix : prérequis et effets (résumé).
-                    {
-                        bool hasPre = ch.Prerequisite != null && ch.Prerequisite.HasPrerequisite;
-                        int fxCount = ch.Effects != null ? ch.Effects.Count : 0;
-                        int sfx = (chal.HasChallenge && chal.SuccessEffects != null) ? chal.SuccessEffects.Count : 0;
-                        int ffx = (chal.HasChallenge && chal.FailureEffects != null) ? chal.FailureEffects.Count : 0;
-                        if (hasPre || fxCount > 0 || sfx + ffx > 0)
-                        {
-                            string meta = "";
-                            if (hasPre) meta += $"🔒 {ch.Prerequisite.GetSummary()}  ";
-                            if (fxCount > 0) meta += $" +fx:{fxCount}";
-                            if (sfx + ffx > 0) meta += $" 🎲fx:{sfx}/{ffx}";
-                            GUI.color = new Color(1f, 1f, 1f, 0.55f);
-                            GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f), meta);
-                            GUI.color = Color.white;
-                            y += 20f;
-                        }
-                    }
-
-                    // Détails repliables du choix (ex-inspecteur) : prérequis / effets / défi.
-                    if (SectionOpen(_expandedSections, ch, "pre"))
-                        DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, ch.Prerequisite);
-                    DrawEffectsBlock(ref y, innerX + 12f, innerW - 12f, ch.Effects, ch, "fx", "+fx", false);
-                    if (chal.HasChallenge && SectionOpen(_expandedSections, ch, "chd"))
-                        DrawChallengeDetail(ref y, innerX + 12f, innerW - 12f, ch);
                 }
             }
             else
             {
-                GraphLabel(new Rect(innerX, y, 65f, 20f), "Liaison ➔ :");
-                line.NextLineId = GraphTextField(new Rect(innerX + 67f, y, Mathf.Max(60f, innerW - 67f - 26f), 20f), line.NextLineId ?? "");
-                if (GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 20f), "⊘")) line.NextLineId = "";
-                y += 22f;
-            }
+                // 6. Contenu ÉDITABLE en GUI ABSOLU (zoom lisible)
+                float y = cardRect.y + 30f;
 
-            // Résumés de la réplique (rien de caché : prérequis / test auto / ambiance).
-            if (line.Prerequisite != null && line.Prerequisite.HasPrerequisite)
-            {
-                GUI.color = new Color(1f, 1f, 1f, 0.6f);
-                GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f), $"🔒 Prérequis : {line.Prerequisite.GetSummary()}");
-                GUI.color = Color.white;
-                y += 18f;
-            }
-            if (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck)
-            {
-                var auto = line.AutoSkillCheck;
-                GUI.color = new Color(0.7f, 0.85f, 1f, 0.65f);
-                GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f),
-                    $"🎲 Auto : {SkillDefinitions.GetDisplayName(auto.RequiredSkill)} SD {auto.TargetDC} ✔→{auto.SuccessNextLineId} ✕→{auto.FailureNextLineId}");
-                GUI.color = Color.white;
-                y += 18f;
-            }
-            if (line.Ambience != null && line.Ambience.HasAmbience)
-            {
-                var amb = line.Ambience;
-                GUI.color = new Color(1f, 1f, 1f, 0.6f);
-                GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f),
-                    $"🔊 Ambiance : {amb.SoundCueId}{(amb.ChangeMusic ? $" ♪{amb.MusicMood}/{amb.MusicIntensity}" : "")}{(amb.TriggerAlarm ? " 🚨" : "")}");
-                GUI.color = Color.white;
-                y += 18f;
-            }
+                GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
+                line.LineId = GraphTextField(new Rect(innerX + 24f, y, 64f, 18f), line.LineId ?? "");
+                line.IsNarration = GraphToggle(new Rect(innerX + 92f, y, 58f, 18f), line.IsNarration, "📜 Narr");
 
-            // Strip détails (ex-inspecteur) : 🔒 prérequis, 🔊 ambiance, 🎲 test auto.
-            // (🎥 caméra retiré : voir cartes 🎬 à tracking.)
-            {
-                float stripX = innerX;
-                bool preOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "pre", "🔒"); stripX += 48f;
-                bool ambOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "amb", "🔊"); stripX += 48f;
-                bool autoOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "auto", "🎲");
+                if (!line.IsNarration)
+                {
+                    GraphLabel(new Rect(innerX + 154f, y, 26f, 18f), "Loc:");
+                    line.SpeakerId = GraphTextField(new Rect(innerX + 182f, y, 56f, 18f), line.SpeakerId ?? "");
+                    Rect dropBtn = new Rect(innerX + 240f, y, 18f, 18f);
+                    string dropKey = $"dlg_{line.LineId}";
+                    if (GraphButton(dropBtn, "▼"))
+                    {
+                        if (_actorDropKey == dropKey) _actorDropKey = null;
+                        else OpenActorDropdown(dropKey, dropBtn, line.SpeakerId ?? "", v => line.SpeakerId = v);
+                    }
+                    line.StageDirection = GraphTextField(new Rect(innerX + 260f, y, Mathf.Max(30f, innerW - 260f), 18f), line.StageDirection ?? "");
+                }
+                else
+                {
+                    line.SpeakerId = "";
+                    GraphLabel(new Rect(innerX + 154f, y, 32f, 18f), "Dida:");
+                    line.StageDirection = GraphTextField(new Rect(innerX + 188f, y, Mathf.Max(40f, innerW - 188f), 18f), line.StageDirection ?? "");
+                }
                 y += 20f;
-                if (preOpen) DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, line.Prerequisite);
-                if (ambOpen) DrawAmbienceDetail(ref y, innerX + 12f, innerW - 12f, line.Ambience);
-                if (autoOpen) DrawAutoDetail(ref y, innerX + 12f, innerW - 12f, line.AutoSkillCheck);
-            }
 
-            // Sortie cinématique 🎬 : fire-and-forget, ne bloque pas la carte suivante.
-            DrawCineLinkRow(ref y, innerX, innerW, line.CinematicIds);
+                line.Speech = GraphTextArea(new Rect(innerX, y, innerW, 48f), line.Speech ?? "");
+                y += 50f;
 
-            // Rangée basse : +Choix / toggles (protégée du débordement par CardHeight auto).
-            if (y + 20f <= cardRect.yMax - 4f)
-            {
-                if (GraphButton(new Rect(innerX, y, 64f, 18f), "+ Choix"))
+                // Choix Multiples / Liaison : première rangée à cardY+100, pas vertical de 22 + 20/ligne de défi (référence des wires).
+                GetDialogueChoiceRowOffsets(line, cardChoiceOffsets);
+                if (line.Choices.Count > 0)
+                {
+                    int skillCount = Enum.GetValues(typeof(SkillType)).Length;
+                    for (int c = 0; c < line.Choices.Count; c++)
+                    {
+                        var ch = line.Choices[c];
+                        if (ch == null) { y += 22f; continue; }
+                        ch.Challenge ??= new SceneDialogueChallengeData();
+                        ch.Prerequisite ??= new ScenePrerequisiteData();
+                        ch.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
+                        var chal = ch.Challenge;
+
+                        // Rangée principale : [mode 30][label][➔][next 70][⋯][⊘].
+                        string modeLabel = !chal.HasChallenge ? "–" : (chal.IsOpposed ? "VS" : "SD");
+                        Color prevBg = GUI.backgroundColor;
+                        GUI.backgroundColor = !chal.HasChallenge ? new Color(0.35f, 0.38f, 0.42f)
+                            : (chal.IsOpposed ? new Color(1.0f, 0.55f, 0.2f) : new Color(1.0f, 0.78f, 0.25f));
+                        if (GraphButton(new Rect(innerX, y, 30f, 20f), modeLabel))
+                        {
+                            if (!chal.HasChallenge) { chal.HasChallenge = true; chal.IsOpposed = false; if (chal.TargetDC <= 0) chal.TargetDC = 10; }
+                            else if (!chal.IsOpposed) { chal.IsOpposed = true; }
+                            else { chal.HasChallenge = false; chal.IsOpposed = false; }
+                        }
+                        GUI.backgroundColor = prevBg;
+
+                        float labelW = Mathf.Max(40f, innerW - 32f - 144f);
+                        ch.Label = GraphTextField(new Rect(innerX + 32f, y, labelW, 20f), ch.Label ?? "");
+                        GraphLabel(new Rect(innerX + 32f + labelW + 2f, y, 16f, 20f), "➔");
+                        ch.NextLineId = GraphTextField(new Rect(innerX + 32f + labelW + 20f, y, 70f, 20f), ch.NextLineId ?? "");
+                        bool detAny = SectionOpen(_expandedSections, ch, "pre") || SectionOpen(_expandedSections, ch, "fx") || SectionOpen(_expandedSections, ch, "chd");
+                        if (GraphButton(new Rect(innerX + 32f + labelW + 92f, y, 20f, 20f), detAny ? "▾" : "▸"))
+                        {
+                            _expandedSections.Remove(SKey(ch, "pre"));
+                            _expandedSections.Remove(SKey(ch, "fx"));
+                            _expandedSections.Remove(SKey(ch, "chd"));
+                            if (!detAny)
+                            {
+                                _expandedSections.Add(SKey(ch, "pre"));
+                                _expandedSections.Add(SKey(ch, "fx"));
+                                _expandedSections.Add(SKey(ch, "chd"));
+                            }
+                        }
+                        if (GraphButton(new Rect(innerX + 32f + labelW + 114f, y, 20f, 20f), "⊘")) ch.NextLineId = "";
+                        y += 22f;
+
+                        if (chal.HasChallenge && !chal.IsOpposed)
+                        {
+                            // Sous-rangée test SD : [<][compétence][>][SD][val][Acteur].
+                            float sx = innerX + 12f;
+                            if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
+                            {
+                                int si = ((int)chal.RequiredSkill - 1 + skillCount) % skillCount;
+                                chal.RequiredSkill = (SkillType)si;
+                            }
+                            sx += 20f;
+                            GraphLabel(new Rect(sx, y, 95f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.RequiredSkill)}</b>");
+                            sx += 97f;
+                            if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
+                            {
+                                int si = ((int)chal.RequiredSkill + 1) % skillCount;
+                                chal.RequiredSkill = (SkillType)si;
+                            }
+                            sx += 20f;
+                            GraphLabel(new Rect(sx, y, 24f, 18f), "SD:");
+                            sx += 26f;
+                            string sdTxt = GraphTextField(new Rect(sx, y, 30f, 18f), chal.TargetDC.ToString());
+                            int.TryParse(sdTxt, out chal.TargetDC);
+                            sx += 32f;
+                            GraphLabel(new Rect(sx, y, 28f, 18f), "Act:");
+                            sx += 30f;
+                            chal.SpecificActorId = GraphTextField(new Rect(sx, y, Mathf.Max(30f, innerX + innerW - sx), 18f), chal.SpecificActorId ?? "");
+                            y += 20f;
+                        }
+                        else if (chal.HasChallenge && chal.IsOpposed)
+                        {
+                            // Sous-rangée 1 : compétence joueur vs compétence adverse.
+                            float sx = innerX + 12f;
+                            GraphLabel(new Rect(sx, y, 18f, 18f), "J:");
+                            sx += 20f;
+                            if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
+                            {
+                                int si = ((int)chal.RequiredSkill - 1 + skillCount) % skillCount;
+                                chal.RequiredSkill = (SkillType)si;
+                            }
+                            sx += 20f;
+                            GraphLabel(new Rect(sx, y, 72f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.RequiredSkill)}</b>");
+                            sx += 74f;
+                            if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
+                            {
+                                int si = ((int)chal.RequiredSkill + 1) % skillCount;
+                                chal.RequiredSkill = (SkillType)si;
+                            }
+                            sx += 20f;
+                            GraphLabel(new Rect(sx, y, 22f, 18f), "vs");
+                            sx += 24f;
+                            if (GraphButton(new Rect(sx, y, 18f, 18f), "◀"))
+                            {
+                                int oi = ((int)chal.OpposedSkill - 1 + skillCount) % skillCount;
+                                chal.OpposedSkill = (SkillType)oi;
+                            }
+                            sx += 20f;
+                            GraphLabel(new Rect(sx, y, 72f, 18f), $"<b>{SkillDefinitions.GetDisplayName(chal.OpposedSkill)}</b>");
+                            sx += 74f;
+                            if (GraphButton(new Rect(sx, y, 18f, 18f), "▶"))
+                            {
+                                int oi = ((int)chal.OpposedSkill + 1) % skillCount;
+                                chal.OpposedSkill = (SkillType)oi;
+                            }
+                            y += 20f;
+
+                            // Sous-rangée 2 : opposant + bonus + SD de repli (total fixe si opposant introuvable).
+                            float qx = innerX + 12f;
+                            GraphLabel(new Rect(qx, y, 32f, 18f), "Adv:");
+                            qx += 34f;
+                            chal.OpposedActorId = GraphTextField(new Rect(qx, y, 80f, 18f), chal.OpposedActorId ?? "");
+                            qx += 82f;
+                            GraphLabel(new Rect(qx, y, 26f, 18f), "+B:");
+                            qx += 28f;
+                            string bTxt = GraphTextField(new Rect(qx, y, 30f, 18f), chal.OpposedBonus.ToString());
+                            int.TryParse(bTxt, out chal.OpposedBonus);
+                            qx += 32f;
+                            GraphLabel(new Rect(qx, y, 44f, 18f), "SD fix:");
+                            qx += 46f;
+                            string fixTxt = GraphTextField(new Rect(qx, y, 30f, 18f), chal.TargetDC.ToString());
+                            int.TryParse(fixTxt, out chal.TargetDC);
+                            y += 20f;
+                        }
+
+                        if (chal.HasChallenge)
+                        {
+                            chal.SuccessEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+                            chal.FailureEffects ??= new System.Collections.Generic.List<ScenarioEffect>();
+
+                            // Sortie succès : vers carte Conséquence (prioritaire) + lien direct vers réplique.
+                            {
+                                float rx = innerX + 12f;
+                                GUI.color = new Color(0.35f, 1f, 0.55f);
+                                GraphLabel(new Rect(rx, y, 18f, 18f), "✔");
+                                GUI.color = Color.white;
+                                rx += 20f;
+                                GraphLabel(new Rect(rx, y, 52f, 18f), "→Cons:");
+                                rx += 54f;
+                                chal.SuccessConsequenceId = GraphTextField(new Rect(rx, y, 84f, 18f), chal.SuccessConsequenceId ?? "");
+                                rx += 86f;
+                                GraphLabel(new Rect(rx, y, 14f, 18f), "→");
+                                rx += 16f;
+                                chal.SuccessNextLineId = GraphTextField(new Rect(rx, y, Mathf.Max(30f, innerX + innerW - rx), 18f), chal.SuccessNextLineId ?? "");
+                                y += 20f;
+                            }
+
+                            // Sortie échec : vers carte Conséquence (prioritaire) + lien direct vers réplique.
+                            {
+                                float fx2 = innerX + 12f;
+                                GUI.color = new Color(1f, 0.45f, 0.4f);
+                                GraphLabel(new Rect(fx2, y, 18f, 18f), "✕");
+                                GUI.color = Color.white;
+                                fx2 += 20f;
+                                GraphLabel(new Rect(fx2, y, 52f, 18f), "→Cons:");
+                                fx2 += 54f;
+                                chal.FailureConsequenceId = GraphTextField(new Rect(fx2, y, 84f, 18f), chal.FailureConsequenceId ?? "");
+                                fx2 += 86f;
+                                GraphLabel(new Rect(fx2, y, 14f, 18f), "→");
+                                fx2 += 16f;
+                                chal.FailureNextLineId = GraphTextField(new Rect(fx2, y, Mathf.Max(30f, innerX + innerW - fx2), 18f), chal.FailureNextLineId ?? "");
+                                y += 20f;
+                            }
+                        }
+
+                        // Méta du choix : prérequis et effets (résumé).
+                        {
+                            bool hasPre = ch.Prerequisite != null && ch.Prerequisite.HasPrerequisite;
+                            int fxCount = ch.Effects != null ? ch.Effects.Count : 0;
+                            int sfx = (chal.HasChallenge && chal.SuccessEffects != null) ? chal.SuccessEffects.Count : 0;
+                            int ffx = (chal.HasChallenge && chal.FailureEffects != null) ? chal.FailureEffects.Count : 0;
+                            if (hasPre || fxCount > 0 || sfx + ffx > 0)
+                            {
+                                string meta = "";
+                                if (hasPre) meta += $"🔒 {ch.Prerequisite.GetSummary()}  ";
+                                if (fxCount > 0) meta += $" +fx:{fxCount}";
+                                if (sfx + ffx > 0) meta += $" 🎲fx:{sfx}/{ffx}";
+                                GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                                GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f), meta);
+                                GUI.color = Color.white;
+                                y += 20f;
+                            }
+                        }
+
+                        // Détails repliables du choix (ex-inspecteur) : prérequis / effets / défi.
+                        if (SectionOpen(_expandedSections, ch, "pre"))
+                            DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, ch.Prerequisite);
+                        DrawEffectsBlock(ref y, innerX + 12f, innerW - 12f, ch.Effects, ch, "fx", "+fx", false);
+                        if (chal.HasChallenge && SectionOpen(_expandedSections, ch, "chd"))
+                            DrawChallengeDetail(ref y, innerX + 12f, innerW - 12f, ch);
+                    }
+                }
+                else
+                {
+                    GraphLabel(new Rect(innerX, y, 65f, 20f), "Liaison ➔ :");
+                    line.NextLineId = GraphTextField(new Rect(innerX + 67f, y, Mathf.Max(60f, innerW - 67f - 26f), 20f), line.NextLineId ?? "");
+                    if (GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 20f), "⊘")) line.NextLineId = "";
+                    y += 22f;
+                }
+
+                // Résumés de la réplique (rien de caché : prérequis / test auto / ambiance).
+                if (line.Prerequisite != null && line.Prerequisite.HasPrerequisite)
+                {
+                    GUI.color = new Color(1f, 1f, 1f, 0.6f);
+                    GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f), $"🔒 Prérequis : {line.Prerequisite.GetSummary()}");
+                    GUI.color = Color.white;
+                    y += 18f;
+                }
+                if (line.AutoSkillCheck != null && line.AutoSkillCheck.HasAutoCheck)
+                {
+                    var auto = line.AutoSkillCheck;
+                    GUI.color = new Color(0.7f, 0.85f, 1f, 0.65f);
+                    GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f),
+                        $"🎲 Auto : {SkillDefinitions.GetDisplayName(auto.RequiredSkill)} SD {auto.TargetDC} ✔→{auto.SuccessNextLineId} ✕→{auto.FailureNextLineId}");
+                    GUI.color = Color.white;
+                    y += 18f;
+                }
+                if (line.Ambience != null && line.Ambience.HasAmbience)
+                {
+                    var amb = line.Ambience;
+                    GUI.color = new Color(1f, 1f, 1f, 0.6f);
+                    GraphLabel(new Rect(innerX + 12f, y, Mathf.Max(40f, innerW - 12f), 18f),
+                        $"🔊 Ambiance : {amb.SoundCueId}{(amb.ChangeMusic ? $" ♪{amb.MusicMood}/{amb.MusicIntensity}" : "")}{(amb.TriggerAlarm ? " 🚨" : "")}");
+                    GUI.color = Color.white;
+                    y += 18f;
+                }
+
+                // Strip détails (ex-inspecteur) : 🔒 prérequis, 🔊 ambiance, 🎲 test auto.
+                {
+                    float stripX = innerX;
+                    bool preOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "pre", "🔒"); stripX += 48f;
+                    bool ambOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "amb", "🔊"); stripX += 48f;
+                    bool autoOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), line, "auto", "🎲");
+                    y += 20f;
+                    if (preOpen) DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, line.Prerequisite);
+                    if (ambOpen) DrawAmbienceDetail(ref y, innerX + 12f, innerW - 12f, line.Ambience);
+                    if (autoOpen) DrawAutoDetail(ref y, innerX + 12f, innerW - 12f, line.AutoSkillCheck);
+                }
+
+                // Sortie cinématique 🎬 : fire-and-forget, ne bloque pas la carte suivante.
+                DrawCineLinkRow(ref y, innerX, innerW, line.CinematicIds);
+
+                // Rangée basse : +Choix / toggles (protégée du débordement par CardHeight auto).
+                if (y + 20f <= cardRect.yMax - 4f)
+                {
+                    if (GraphButton(new Rect(innerX, y, 64f, 18f), "+ Choix"))
+                    {
+                        line.Choices.Add(new SceneDialogueChoiceData { ChoiceId = $"ch_{line.Choices.Count + 1}", Label = "Option..." });
+                    }
+                    line.Ambience.HasAmbience = GraphToggle(new Rect(innerX + 68f, y, 90f, 18f), line.Ambience.HasAmbience, "Ambiance");
+                    line.Prerequisite.HasPrerequisite = GraphToggle(new Rect(innerX + 160f, y, Mathf.Max(60f, innerW - 160f), 18f), line.Prerequisite.HasPrerequisite, "Prérequis");
+                }
+                else if (GraphButton(new Rect(innerX, cardRect.yMax - 22f, 64f, 18f), "+ Choix"))
                 {
                     line.Choices.Add(new SceneDialogueChoiceData { ChoiceId = $"ch_{line.Choices.Count + 1}", Label = "Option..." });
                 }
-                line.Ambience.HasAmbience = GraphToggle(new Rect(innerX + 68f, y, 90f, 18f), line.Ambience.HasAmbience, "Ambiance");
-                line.Prerequisite.HasPrerequisite = GraphToggle(new Rect(innerX + 160f, y, Mathf.Max(60f, innerW - 160f), 18f), line.Prerequisite.HasPrerequisite, "Prérequis");
-            }
-            else if (GraphButton(new Rect(innerX, cardRect.yMax - 22f, 64f, 18f), "+ Choix"))
-            {
-                line.Choices.Add(new SceneDialogueChoiceData { ChoiceId = $"ch_{line.Choices.Count + 1}", Label = "Option..." });
             }
 
             // Port de Sortie Principal : rouge + gros si point de sortie (sans liaison).
@@ -6712,62 +6745,71 @@ namespace Killtime.Story
             // Contenu éditable en coordonnées monde, converti en coordonnées écran par GraphRect().
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
-            float y = cardRect.y + 30f;
 
-            GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
-            ev.EventId = GraphTextField(new Rect(innerX + 24f, y, 70f, 18f), ev.EventId ?? "");
-            GraphLabel(new Rect(innerX + 98f, y, 35f, 18f), "Titre:");
-            ev.Title = GraphTextField(new Rect(innerX + 135f, y, Mathf.Max(40f, innerW - 135f), 18f), ev.Title ?? "");
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 45f, 18f), "Action:");
+            if (_zoom < CardLodThreshold)
             {
-                int kindCount = Enum.GetValues(typeof(SceneEventKind)).Length;
-                int camFocusKind = (int)SceneEventKind.CameraFocus;
-                int camShakeKind = (int)SceneEventKind.CameraShake;
-                // Kinds caméra DÉ-HARDCODÉS (cartes 🎬) : sautés au cycle.
-                int CycleKind(int cur, int dir)
-                {
-                    for (int k = 0; k < kindCount; k++)
-                    {
-                        cur = (cur + dir + kindCount) % kindCount;
-                        if (cur != camFocusKind && cur != camShakeKind) return cur;
-                    }
-                    return (int)ev.Kind;
-                }
-                if (GraphButton(new Rect(innerX + 47f, y, 20f, 18f), "◀"))
-                    ev.Kind = (SceneEventKind)CycleKind((int)ev.Kind, -1);
-                string kindWarn = (int)ev.Kind == camFocusKind || (int)ev.Kind == camShakeKind ? " (obsolète → 🎬)" : "";
-                GraphLabel(new Rect(innerX + 69f, y, Mathf.Max(40f, innerW - 69f - 22f), 18f), $"<b>{ev.Kind}</b>{kindWarn}");
-                if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
-                    ev.Kind = (SceneEventKind)CycleKind((int)ev.Kind, 1);
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 32f, innerW * 0.85f, 8f), new Color(0.85f, 0.4f, 1f, 0.12f));
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 44f, innerW * 0.5f, 6f), new Color(1f, 1f, 1f, 0.06f));
             }
-            y += 22f;
-
-            // Strip + détails (ex-inspecteur) : prérequis, ambiance, test auto, effets.
+            else
             {
-                float stripX = innerX;
-                bool preOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "pre", "🔒"); stripX += 48f;
-                bool ambOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "amb", "🔊"); stripX += 48f;
-                bool autoOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "auto", "🎲");
+                float y = cardRect.y + 30f;
+
+                GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
+                ev.EventId = GraphTextField(new Rect(innerX + 24f, y, 70f, 18f), ev.EventId ?? "");
+                GraphLabel(new Rect(innerX + 98f, y, 35f, 18f), "Titre:");
+                ev.Title = GraphTextField(new Rect(innerX + 135f, y, Mathf.Max(40f, innerW - 135f), 18f), ev.Title ?? "");
                 y += 20f;
-                if (preOpen) DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, ev.Prerequisite);
-                if (ambOpen) DrawAmbienceDetail(ref y, innerX + 12f, innerW - 12f, ev.Ambience);
-                if (autoOpen) DrawAutoDetail(ref y, innerX + 12f, innerW - 12f, ev.AutoSkillCheck);
-            }
-            DrawEffectsBlock(ref y, innerX + 12f, innerW - 12f, ev.Effects, ev, "fx", "+fx", true);
 
-            // Sortie cinématique 🎬 : fire-and-forget.
-            DrawCineLinkRow(ref y, innerX, innerW, ev.CinematicIds);
+                GraphLabel(new Rect(innerX, y, 45f, 18f), "Action:");
+                {
+                    int kindCount = Enum.GetValues(typeof(SceneEventKind)).Length;
+                    int camFocusKind = (int)SceneEventKind.CameraFocus;
+                    int camShakeKind = (int)SceneEventKind.CameraShake;
+                    // Kinds caméra DÉ-HARDCODÉS (cartes 🎬) : sautés au cycle.
+                    int CycleKind(int cur, int dir)
+                    {
+                        for (int k = 0; k < kindCount; k++)
+                        {
+                            cur = (cur + dir + kindCount) % kindCount;
+                            if (cur != camFocusKind && cur != camShakeKind) return cur;
+                        }
+                        return (int)ev.Kind;
+                    }
+                    if (GraphButton(new Rect(innerX + 47f, y, 20f, 18f), "◀"))
+                        ev.Kind = (SceneEventKind)CycleKind((int)ev.Kind, -1);
+                    string kindWarn = (int)ev.Kind == camFocusKind || (int)ev.Kind == camShakeKind ? " (obsolète → 🎬)" : "";
+                    GraphLabel(new Rect(innerX + 69f, y, Mathf.Max(40f, innerW - 69f - 22f), 18f), $"<b>{ev.Kind}</b>{kindWarn}");
+                    if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                        ev.Kind = (SceneEventKind)CycleKind((int)ev.Kind, 1);
+                }
+                y += 22f;
 
-            Color prevBg = GUI.backgroundColor;
-            GUI.backgroundColor = new Color(1f, 0.7f, 0.2f);
-            if (GraphButton(new Rect(innerX, y, innerW, 20f), "▲ Tester en Direct"))
-            {
-                var controller = FindAnyObjectByType<Scenes.JsonStorySceneController>();
-                controller?.ExecuteScenicEvent(ev);
+                // Strip + détails (ex-inspecteur) : prérequis, ambiance, test auto, effets.
+                {
+                    float stripX = innerX;
+                    bool preOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "pre", "🔒"); stripX += 48f;
+                    bool ambOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "amb", "🔊"); stripX += 48f;
+                    bool autoOpen = FoldoutButton(new Rect(stripX, y, 46f, 20f), ev, "auto", "🎲");
+                    y += 20f;
+                    if (preOpen) DrawPrereqDetail(ref y, innerX + 12f, innerW - 12f, ev.Prerequisite);
+                    if (ambOpen) DrawAmbienceDetail(ref y, innerX + 12f, innerW - 12f, ev.Ambience);
+                    if (autoOpen) DrawAutoDetail(ref y, innerX + 12f, innerW - 12f, ev.AutoSkillCheck);
+                }
+                DrawEffectsBlock(ref y, innerX + 12f, innerW - 12f, ev.Effects, ev, "fx", "+fx", true);
+
+                // Sortie cinématique 🎬 : fire-and-forget.
+                DrawCineLinkRow(ref y, innerX, innerW, ev.CinematicIds);
+
+                Color prevBg = GUI.backgroundColor;
+                GUI.backgroundColor = new Color(1f, 0.7f, 0.2f);
+                if (GraphButton(new Rect(innerX, y, innerW, 20f), "▲ Tester en Direct"))
+                {
+                    var controller = FindAnyObjectByType<Scenes.JsonStorySceneController>();
+                    controller?.ExecuteScenicEvent(ev);
+                }
+                GUI.backgroundColor = prevBg;
             }
-            GUI.backgroundColor = prevBg;
 
             bool evtIsExit = !EventHasOutgoing(ev);
             Rect outPort = evtIsExit
@@ -6906,129 +6948,139 @@ namespace Killtime.Story
 
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
-            float y = cardRect.y + 30f;
+            float nextRowTop = GetConsLinkRowTop(cons);
 
-            GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
-            cons.ConsequenceId = GraphTextField(new Rect(innerX + 24f, y, 80f, 18f), cons.ConsequenceId ?? "");
-            GraphLabel(new Rect(innerX + 108f, y, 38f, 18f), "Titre:");
-            cons.Title = GraphTextField(new Rect(innerX + 148f, y, Mathf.Max(40f, innerW - 148f), 18f), cons.Title ?? "");
-            y += 22f;
-
-            cons.HasDialogue = GraphToggle(new Rect(innerX, y, 110f, 18f), cons.HasDialogue, "💬 Dialogue");
-            cons.TriggersCombat = GraphToggle(new Rect(innerX + 114f, y, 100f, 18f), cons.TriggersCombat, "⚔ Combat");
-            GUI.color = new Color(1f, 1f, 1f, 0.55f);
-            GraphLabel(new Rect(innerX + 218f, y, Mathf.Max(40f, innerW - 218f), 18f), cons.Effects.Count > 0 ? $"+fx:{cons.Effects.Count}" : "");
-            GUI.color = Color.white;
-            y += 20f;
-
-            if (cons.HasDialogue)
+            if (_zoom < CardLodThreshold)
             {
-                GraphLabel(new Rect(innerX, y, 30f, 18f), "Loc:");
-                cons.SpeakerId = GraphTextField(new Rect(innerX + 32f, y, 64f, 18f), cons.SpeakerId ?? "");
-                {
-                    Rect dropBtn = new Rect(innerX + 98f, y, 20f, 18f);
-                    string dropKey = $"cons_{cons.ConsequenceId}";
-                    if (GraphButton(dropBtn, "▼"))
-                    {
-                        if (_actorDropKey == dropKey) _actorDropKey = null;
-                        else OpenActorDropdown(dropKey, dropBtn, cons.SpeakerId ?? "", v => cons.SpeakerId = v);
-                    }
-                }
-                cons.StageDirection = GraphTextField(new Rect(innerX + 122f, y, Mathf.Max(40f, innerW - 122f), 18f), cons.StageDirection ?? "");
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 32f, innerW * 0.85f, 8f), new Color(0.35f, 1f, 0.55f, 0.14f));
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 44f, innerW * 0.6f, 6f), new Color(1f, 1f, 1f, 0.06f));
+            }
+            else
+            {
+                float y = cardRect.y + 30f;
+
+                GraphLabel(new Rect(innerX, y, 22f, 18f), "ID:");
+                cons.ConsequenceId = GraphTextField(new Rect(innerX + 24f, y, 80f, 18f), cons.ConsequenceId ?? "");
+                GraphLabel(new Rect(innerX + 108f, y, 38f, 18f), "Titre:");
+                cons.Title = GraphTextField(new Rect(innerX + 148f, y, Mathf.Max(40f, innerW - 148f), 18f), cons.Title ?? "");
                 y += 22f;
-                cons.Speech = GraphTextArea(new Rect(innerX, y, innerW, 42f), cons.Speech ?? "");
-                y += 44f;
-            }
 
-            cons.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
-            DrawEffectsBlock(ref y, innerX, innerW, cons.Effects, cons, "fx", "+fx", true);
-
-            float nextRowTop = y - cardRect.y;
-            GraphLabel(new Rect(innerX, y, 52f, 18f), "→Diag:");
-            cons.NextLineId = GraphTextField(new Rect(innerX + 54f, y, 84f, 18f), cons.NextLineId ?? "");
-            GraphLabel(new Rect(innerX + 142f, y, 52f, 18f), "→Cons:");
-            cons.NextConsequenceId = GraphTextField(new Rect(innerX + 196f, y, Mathf.Max(40f, innerW - 196f), 18f), cons.NextConsequenceId ?? "");
-            y += 22f;
-
-            GraphLabel(new Rect(innerX, y, 30f, 18f), "+XP");
-            string cxp = GraphTextField(new Rect(innerX + 32f, y, 34f, 18f), rew.EarnXP.ToString());
-            int.TryParse(cxp, out rew.EarnXP);
-            GraphLabel(new Rect(innerX + 70f, y, 30f, 18f), "+CE");
-            string cce = GraphTextField(new Rect(innerX + 102f, y, 34f, 18f), rew.EarnCredits.ToString());
-            int.TryParse(cce, out rew.EarnCredits);
-            GraphLabel(new Rect(innerX + 140f, y, 30f, 18f), "Obj:");
-            rew.CompletionObjectiveId = GraphTextField(new Rect(innerX + 172f, y, Mathf.Max(40f, innerW - 172f), 18f), rew.CompletionObjectiveId ?? "");
-            y += 22f;
-
-            // Ligne item principal.
-            {
-                float ix = innerX + 12f;
-                GraphLabel(new Rect(ix, y, 20f, 18f), "🎁");
-                ix += 22f;
-                float tailW = 14f + 2f + 30f + 2f + 22f + 2f + 22f;
-                rew.ItemRewardName = GraphTextField(new Rect(ix, y, Mathf.Max(40f, innerX + innerW - ix - tailW), 18f), rew.ItemRewardName ?? "");
-                ix = innerX + innerW - tailW;
-                GraphLabel(new Rect(ix, y, 14f, 18f), "x");
-                ix += 16f;
-                string cq = GraphTextField(new Rect(ix, y, 30f, 18f), rew.ItemRewardQuantity.ToString());
-                int.TryParse(cq, out rew.ItemRewardQuantity);
-                if (rew.ItemRewardQuantity < 1) rew.ItemRewardQuantity = 1;
-                ix += 32f;
-                Color prevPkM = GUI.backgroundColor;
-                if (IsPickerOpenForCons(cons, -1)) GUI.backgroundColor = new Color(0.35f, 1f, 0.55f);
-                if (GraphButton(new Rect(ix, y, 22f, 18f), "🔍"))
-                {
-                    if (IsPickerOpenForCons(cons, -1)) CloseItemPicker();
-                    else OpenItemPicker(cons, -1);
-                }
-                GUI.backgroundColor = prevPkM;
-                ix += 24f;
-                if (GraphButton(new Rect(ix, y, 22f, 18f), "+"))
-                {
-                    rew.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
-                }
+                cons.HasDialogue = GraphToggle(new Rect(innerX, y, 110f, 18f), cons.HasDialogue, "💬 Dialogue");
+                cons.TriggersCombat = GraphToggle(new Rect(innerX + 114f, y, 100f, 18f), cons.TriggersCombat, "⚔ Combat");
+                GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                GraphLabel(new Rect(innerX + 218f, y, Mathf.Max(40f, innerW - 218f), 18f), cons.Effects.Count > 0 ? $"+fx:{cons.Effects.Count}" : "");
+                GUI.color = Color.white;
                 y += 20f;
-            }
 
-            // Lignes items supplémentaires.
-            for (int ri = 0; ri < rew.AdditionalItems.Count; ri++)
-            {
-                var entry = rew.AdditionalItems[ri];
-                if (entry == null) { rew.AdditionalItems.RemoveAt(ri); break; }
-                float ix = innerX + 12f;
-                GraphLabel(new Rect(ix, y, 20f, 18f), "🎁");
-                ix += 22f;
-                float tailW = 14f + 2f + 30f + 2f + 22f + 2f + 22f;
-                entry.ItemName = GraphTextField(new Rect(ix, y, Mathf.Max(40f, innerX + innerW - ix - tailW), 18f), entry.ItemName ?? "");
-                ix = innerX + innerW - tailW;
-                GraphLabel(new Rect(ix, y, 14f, 18f), "x");
-                ix += 16f;
-                string eq2 = GraphTextField(new Rect(ix, y, 30f, 18f), entry.Quantity.ToString());
-                int.TryParse(eq2, out entry.Quantity);
-                if (entry.Quantity < 1) entry.Quantity = 1;
-                ix += 32f;
-                Color prevPkC = GUI.backgroundColor;
-                if (IsPickerOpenForCons(cons, ri)) GUI.backgroundColor = new Color(0.35f, 1f, 0.55f);
-                if (GraphButton(new Rect(ix, y, 22f, 18f), "🔍"))
+                if (cons.HasDialogue)
                 {
-                    if (IsPickerOpenForCons(cons, ri)) CloseItemPicker();
-                    else OpenItemPicker(cons, ri);
+                    GraphLabel(new Rect(innerX, y, 30f, 18f), "Loc:");
+                    cons.SpeakerId = GraphTextField(new Rect(innerX + 32f, y, 64f, 18f), cons.SpeakerId ?? "");
+                    {
+                        Rect dropBtn = new Rect(innerX + 98f, y, 20f, 18f);
+                        string dropKey = $"cons_{cons.ConsequenceId}";
+                        if (GraphButton(dropBtn, "▼"))
+                        {
+                            if (_actorDropKey == dropKey) _actorDropKey = null;
+                            else OpenActorDropdown(dropKey, dropBtn, cons.SpeakerId ?? "", v => cons.SpeakerId = v);
+                        }
+                    }
+                    cons.StageDirection = GraphTextField(new Rect(innerX + 122f, y, Mathf.Max(40f, innerW - 122f), 18f), cons.StageDirection ?? "");
+                    y += 22f;
+                    cons.Speech = GraphTextArea(new Rect(innerX, y, innerW, 42f), cons.Speech ?? "");
+                    y += 44f;
                 }
-                GUI.backgroundColor = prevPkC;
-                ix += 24f;
-                GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
-                if (GraphButton(new Rect(ix, y, 22f, 18f), "✕"))
+
+                cons.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();
+                DrawEffectsBlock(ref y, innerX, innerW, cons.Effects, cons, "fx", "+fx", true);
+
+                nextRowTop = y - cardRect.y;
+                GraphLabel(new Rect(innerX, y, 52f, 18f), "→Diag:");
+                cons.NextLineId = GraphTextField(new Rect(innerX + 54f, y, 84f, 18f), cons.NextLineId ?? "");
+                GraphLabel(new Rect(innerX + 142f, y, 52f, 18f), "→Cons:");
+                cons.NextConsequenceId = GraphTextField(new Rect(innerX + 196f, y, Mathf.Max(40f, innerW - 196f), 18f), cons.NextConsequenceId ?? "");
+                y += 22f;
+
+                GraphLabel(new Rect(innerX, y, 30f, 18f), "+XP");
+                string cxp = GraphTextField(new Rect(innerX + 32f, y, 34f, 18f), rew.EarnXP.ToString());
+                int.TryParse(cxp, out rew.EarnXP);
+                GraphLabel(new Rect(innerX + 70f, y, 30f, 18f), "+CE");
+                string cce = GraphTextField(new Rect(innerX + 102f, y, 34f, 18f), rew.EarnCredits.ToString());
+                int.TryParse(cce, out rew.EarnCredits);
+                GraphLabel(new Rect(innerX + 140f, y, 30f, 18f), "Obj:");
+                rew.CompletionObjectiveId = GraphTextField(new Rect(innerX + 172f, y, Mathf.Max(40f, innerW - 172f), 18f), rew.CompletionObjectiveId ?? "");
+                y += 22f;
+
+                // Ligne item principal.
                 {
-                    rew.AdditionalItems.RemoveAt(ri);
+                    float ix = innerX + 12f;
+                    GraphLabel(new Rect(ix, y, 20f, 18f), "🎁");
+                    ix += 22f;
+                    float tailW = 14f + 2f + 30f + 2f + 22f + 2f + 22f;
+                    rew.ItemRewardName = GraphTextField(new Rect(ix, y, Mathf.Max(40f, innerX + innerW - ix - tailW), 18f), rew.ItemRewardName ?? "");
+                    ix = innerX + innerW - tailW;
+                    GraphLabel(new Rect(ix, y, 14f, 18f), "x");
+                    ix += 16f;
+                    string cq = GraphTextField(new Rect(ix, y, 30f, 18f), rew.ItemRewardQuantity.ToString());
+                    int.TryParse(cq, out rew.ItemRewardQuantity);
+                    if (rew.ItemRewardQuantity < 1) rew.ItemRewardQuantity = 1;
+                    ix += 32f;
+                    Color prevPkM = GUI.backgroundColor;
+                    if (IsPickerOpenForCons(cons, -1)) GUI.backgroundColor = new Color(0.35f, 1f, 0.55f);
+                    if (GraphButton(new Rect(ix, y, 22f, 18f), "🔍"))
+                    {
+                        if (IsPickerOpenForCons(cons, -1)) CloseItemPicker();
+                        else OpenItemPicker(cons, -1);
+                    }
+                    GUI.backgroundColor = prevPkM;
+                    ix += 24f;
+                    if (GraphButton(new Rect(ix, y, 22f, 18f), "+"))
+                    {
+                        rew.AdditionalItems.Add(new SceneItemRewardEntry { ItemName = "", Quantity = 1 });
+                    }
+                    y += 20f;
+                }
+
+                // Lignes items supplémentaires.
+                for (int ri = 0; ri < rew.AdditionalItems.Count; ri++)
+                {
+                    var entry = rew.AdditionalItems[ri];
+                    if (entry == null) { rew.AdditionalItems.RemoveAt(ri); break; }
+                    float ix = innerX + 12f;
+                    GraphLabel(new Rect(ix, y, 20f, 18f), "🎁");
+                    ix += 22f;
+                    float tailW = 14f + 2f + 30f + 2f + 22f + 2f + 22f;
+                    entry.ItemName = GraphTextField(new Rect(ix, y, Mathf.Max(40f, innerX + innerW - ix - tailW), 18f), entry.ItemName ?? "");
+                    ix = innerX + innerW - tailW;
+                    GraphLabel(new Rect(ix, y, 14f, 18f), "x");
+                    ix += 16f;
+                    string eq2 = GraphTextField(new Rect(ix, y, 30f, 18f), entry.Quantity.ToString());
+                    int.TryParse(eq2, out entry.Quantity);
+                    if (entry.Quantity < 1) entry.Quantity = 1;
+                    ix += 32f;
+                    Color prevPkC = GUI.backgroundColor;
+                    if (IsPickerOpenForCons(cons, ri)) GUI.backgroundColor = new Color(0.35f, 1f, 0.55f);
+                    if (GraphButton(new Rect(ix, y, 22f, 18f), "🔍"))
+                    {
+                        if (IsPickerOpenForCons(cons, ri)) CloseItemPicker();
+                        else OpenItemPicker(cons, ri);
+                    }
+                    GUI.backgroundColor = prevPkC;
+                    ix += 24f;
+                    GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
+                    if (GraphButton(new Rect(ix, y, 22f, 18f), "✕"))
+                    {
+                        rew.AdditionalItems.RemoveAt(ri);
+                        GUI.backgroundColor = Color.white;
+                        break;
+                    }
                     GUI.backgroundColor = Color.white;
-                    break;
+                    y += 20f;
                 }
-                GUI.backgroundColor = Color.white;
-                y += 20f;
-            }
 
-            // Sortie cinématique 🎬 : fire-and-forget.
-            DrawCineLinkRow(ref y, innerX, innerW, cons.CinematicIds);
+                // Sortie cinématique 🎬 : fire-and-forget.
+                DrawCineLinkRow(ref y, innerX, innerW, cons.CinematicIds);
+            }
 
             // Ports de sortie : → réplique (cyan, rouge + gros si sortie) et → conséquence (vert).
             bool consIsExit = !ConsHasOutgoing(cons);
@@ -7176,92 +7228,101 @@ namespace Killtime.Story
 
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
-            float y = cardRect.y + 30f;
 
-            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
-            trg.TriggerId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), trg.TriggerId ?? "");
-            GUI.color = new Color(1f, 0.85f, 0.25f);
-            GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), $"➔ {targetDisplay}");
-            GUI.color = Color.white;
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 42f, 18f), "Titre:");
-            trg.Label = GraphTextField(new Rect(innerX + 44f, y, Mathf.Max(40f, innerW - 44f), 18f), trg.Label ?? "");
-            y += 20f;
-
-            trg.Kind = (SceneTriggerKind)GraphToolbar(new Rect(innerX, y, innerW, 18f), (int)trg.Kind, new[] { "Action", "Objectif", "Flag", "Acteur" });
-            y += 22f;
-
-            if (trg.Kind == SceneTriggerKind.InteractableActivated)
+            if (_zoom < CardLodThreshold)
             {
-                GraphLabel(new Rect(innerX, y, 95f, 18f), "Action carte :");
-                float fldX = innerX + 97f;
-                bool hasInters = _data.Interactables != null && _data.Interactables.Count > 0;
-                float arrowsW = hasInters ? 44f : 0f;
-                trg.InteractableId = GraphTextField(new Rect(fldX, y, Mathf.Max(40f, innerW - 97f - arrowsW), 18f), trg.InteractableId ?? "");
-                if (hasInters)
-                {
-                    int curIdx = _data.Interactables.FindIndex(a => a != null && string.Equals(a.InteractableId, trg.InteractableId, System.StringComparison.OrdinalIgnoreCase));
-                    if (GraphButton(new Rect(innerX + innerW - 42f, y, 20f, 18f), "◀"))
-                    {
-                        curIdx = (curIdx < 0 ? _data.Interactables.Count - 1 : (curIdx - 1 + _data.Interactables.Count) % _data.Interactables.Count);
-                        trg.InteractableId = _data.Interactables[curIdx]?.InteractableId ?? "";
-                    }
-                    if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
-                    {
-                        curIdx = (curIdx < 0 ? 0 : (curIdx + 1) % _data.Interactables.Count);
-                        trg.InteractableId = _data.Interactables[curIdx]?.InteractableId ?? "";
-                    }
-                }
-                y += 20f;
-            }
-            else if (trg.Kind == SceneTriggerKind.ObjectiveCompleted)
-            {
-                GraphLabel(new Rect(innerX, y, 65f, 18f), "Objectif :");
-                trg.ObjectiveId = GraphTextField(new Rect(innerX + 67f, y, Mathf.Max(40f, innerW - 67f), 18f), trg.ObjectiveId ?? "");
-                y += 20f;
-            }
-            else if (trg.Kind == SceneTriggerKind.CampaignFlagSet)
-            {
-                GraphLabel(new Rect(innerX, y, 42f, 18f), "Flag :");
-                trg.FlagKey = GraphTextField(new Rect(innerX + 44f, y, 150f, 18f), trg.FlagKey ?? "");
-                trg.FlagMustBeSet = GraphToggle(new Rect(innerX + 198f, y, Mathf.Max(60f, innerW - 198f), 18f), trg.FlagMustBeSet, "Présent");
-                y += 20f;
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 32f, innerW * 0.8f, 8f), new Color(1f, 0.85f, 0.25f, 0.14f));
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 44f, innerW * 0.5f, 6f), new Color(1f, 1f, 1f, 0.06f));
             }
             else
             {
-                GraphLabel(new Rect(innerX, y, 58f, 18f), "Acteur :");
-                trg.ActorId = GraphTextField(new Rect(innerX + 60f, y, 110f, 18f), trg.ActorId ?? "");
-                trg.ActorCondition = (SceneActorConditionKind)GraphToolbar(new Rect(innerX + 174f, y, Mathf.Max(60f, innerW - 174f), 18f), (int)trg.ActorCondition, new[] { "Statut", "PV < %" });
+                float y = cardRect.y + 30f;
+
+                GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+                trg.TriggerId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), trg.TriggerId ?? "");
+                GUI.color = new Color(1f, 0.85f, 0.25f);
+                GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), $"➔ {targetDisplay}");
+                GUI.color = Color.white;
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 42f, 18f), "Titre:");
+                trg.Label = GraphTextField(new Rect(innerX + 44f, y, Mathf.Max(40f, innerW - 44f), 18f), trg.Label ?? "");
+                y += 20f;
+
+                trg.Kind = (SceneTriggerKind)GraphToolbar(new Rect(innerX, y, innerW, 18f), (int)trg.Kind, new[] { "Action", "Objectif", "Flag", "Acteur" });
                 y += 22f;
-                if (trg.ActorCondition == SceneActorConditionKind.HasStatus)
+
+                if (trg.Kind == SceneTriggerKind.InteractableActivated)
                 {
-                    GraphLabel(new Rect(innerX, y, 58f, 18f), "Statut :");
-                    trg.StatusName = GraphTextField(new Rect(innerX + 60f, y, Mathf.Max(40f, innerW - 60f), 18f), trg.StatusName ?? "");
+                    GraphLabel(new Rect(innerX, y, 95f, 18f), "Action carte :");
+                    float fldX = innerX + 97f;
+                    bool hasInters = _data.Interactables != null && _data.Interactables.Count > 0;
+                    float arrowsW = hasInters ? 44f : 0f;
+                    trg.InteractableId = GraphTextField(new Rect(fldX, y, Mathf.Max(40f, innerW - 97f - arrowsW), 18f), trg.InteractableId ?? "");
+                    if (hasInters)
+                    {
+                        int curIdx = _data.Interactables.FindIndex(a => a != null && string.Equals(a.InteractableId, trg.InteractableId, System.StringComparison.OrdinalIgnoreCase));
+                        if (GraphButton(new Rect(innerX + innerW - 42f, y, 20f, 18f), "◀"))
+                        {
+                            curIdx = (curIdx < 0 ? _data.Interactables.Count - 1 : (curIdx - 1 + _data.Interactables.Count) % _data.Interactables.Count);
+                            trg.InteractableId = _data.Interactables[curIdx]?.InteractableId ?? "";
+                        }
+                        if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                        {
+                            curIdx = (curIdx < 0 ? 0 : (curIdx + 1) % _data.Interactables.Count);
+                            trg.InteractableId = _data.Interactables[curIdx]?.InteractableId ?? "";
+                        }
+                    }
+                    y += 20f;
+                }
+                else if (trg.Kind == SceneTriggerKind.ObjectiveCompleted)
+                {
+                    GraphLabel(new Rect(innerX, y, 65f, 18f), "Objectif :");
+                    trg.ObjectiveId = GraphTextField(new Rect(innerX + 67f, y, Mathf.Max(40f, innerW - 67f), 18f), trg.ObjectiveId ?? "");
+                    y += 20f;
+                }
+                else if (trg.Kind == SceneTriggerKind.CampaignFlagSet)
+                {
+                    GraphLabel(new Rect(innerX, y, 42f, 18f), "Flag :");
+                    trg.FlagKey = GraphTextField(new Rect(innerX + 44f, y, 150f, 18f), trg.FlagKey ?? "");
+                    trg.FlagMustBeSet = GraphToggle(new Rect(innerX + 198f, y, Mathf.Max(60f, innerW - 198f), 18f), trg.FlagMustBeSet, "Présent");
+                    y += 20f;
                 }
                 else
                 {
-                    GraphLabel(new Rect(innerX, y, 45f, 18f), "PV <");
-                    int.TryParse(GraphTextField(new Rect(innerX + 47f, y, 45f, 18f), trg.HPPercentThreshold.ToString()), out trg.HPPercentThreshold);
-                    trg.HPPercentThreshold = Mathf.Clamp(trg.HPPercentThreshold, 1, 100);
-                    GraphLabel(new Rect(innerX + 96f, y, Mathf.Max(30f, innerW - 96f), 18f), "% max");
+                    GraphLabel(new Rect(innerX, y, 58f, 18f), "Acteur :");
+                    trg.ActorId = GraphTextField(new Rect(innerX + 60f, y, 110f, 18f), trg.ActorId ?? "");
+                    trg.ActorCondition = (SceneActorConditionKind)GraphToolbar(new Rect(innerX + 174f, y, Mathf.Max(60f, innerW - 174f), 18f), (int)trg.ActorCondition, new[] { "Statut", "PV < %" });
+                    y += 22f;
+                    if (trg.ActorCondition == SceneActorConditionKind.HasStatus)
+                    {
+                        GraphLabel(new Rect(innerX, y, 58f, 18f), "Statut :");
+                        trg.StatusName = GraphTextField(new Rect(innerX + 60f, y, Mathf.Max(40f, innerW - 60f), 18f), trg.StatusName ?? "");
+                    }
+                    else
+                    {
+                        GraphLabel(new Rect(innerX, y, 45f, 18f), "PV <");
+                        int.TryParse(GraphTextField(new Rect(innerX + 47f, y, 45f, 18f), trg.HPPercentThreshold.ToString()), out trg.HPPercentThreshold);
+                        trg.HPPercentThreshold = Mathf.Clamp(trg.HPPercentThreshold, 1, 100);
+                        GraphLabel(new Rect(innerX + 96f, y, Mathf.Max(30f, innerW - 96f), 18f), "% max");
+                    }
+                    y += 20f;
                 }
+
+                GraphLabel(new Rect(innerX, y, 68f, 18f), "Si nœud :");
+                trg.SourceNodeId = GraphTextField(new Rect(innerX + 70f, y, 120f, 18f), trg.SourceNodeId ?? "");
+                trg.OneShot = GraphToggle(new Rect(innerX + 194f, y, Mathf.Max(60f, innerW - 194f), 18f), trg.OneShot, "Unique");
                 y += 20f;
-            }
 
-            GraphLabel(new Rect(innerX, y, 68f, 18f), "Si nœud :");
-            trg.SourceNodeId = GraphTextField(new Rect(innerX + 70f, y, 120f, 18f), trg.SourceNodeId ?? "");
-            trg.OneShot = GraphToggle(new Rect(innerX + 194f, y, Mathf.Max(60f, innerW - 194f), 18f), trg.OneShot, "Unique");
-            y += 20f;
+                // Sortie cinématique 🎬 : fire-and-forget.
+                DrawCineLinkRow(ref y, innerX, innerW, trg.CinematicIds);
 
-            // Sortie cinématique 🎬 : fire-and-forget.
-            DrawCineLinkRow(ref y, innerX, innerW, trg.CinematicIds);
-
-            if (y + 4f <= cardRect.yMax)
-            {
-                GUI.color = new Color(1f, 1f, 1f, 0.55f);
-                GraphLabel(new Rect(innerX, y, innerW, 18f), trg.GetSummary());
-                GUI.color = Color.white;
+                if (y + 4f <= cardRect.yMax)
+                {
+                    GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                    GraphLabel(new Rect(innerX, y, innerW, 18f), trg.GetSummary());
+                    GUI.color = Color.white;
+                }
             }
 
             // Sortie seule : pas de port d'entrée sur un déclencheur.
@@ -7401,75 +7462,84 @@ namespace Killtime.Story
 
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
-            float y = cardRect.y + 30f;
 
-            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
-            it.InteractableId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), it.InteractableId ?? "");
-            GUI.color = new Color(0.2f, 0.95f, 0.85f);
-            GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), $"➔ {targetDisplay}");
-            GUI.color = Color.white;
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 36f, 18f), "Nom:");
-            it.DisplayName = GraphTextField(new Rect(innerX + 38f, y, Mathf.Max(40f, innerW - 38f), 18f), it.DisplayName ?? "");
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 48f, 18f), "Action:");
-            it.ActionLabel = GraphTextField(new Rect(innerX + 50f, y, Mathf.Max(40f, innerW - 50f), 18f), it.ActionLabel ?? "");
-            y += 20f;
-
-            // Position hex + rayon sur une ligne compacte.
-            GraphLabel(new Rect(innerX, y, 16f, 18f), "Q:");
-            int.TryParse(GraphTextField(new Rect(innerX + 18f, y, 36f, 18f), it.Q.ToString()), out it.Q);
-            GraphLabel(new Rect(innerX + 58f, y, 14f, 18f), "R:");
-            int.TryParse(GraphTextField(new Rect(innerX + 72f, y, 36f, 18f), it.R.ToString()), out it.R);
-            GraphLabel(new Rect(innerX + 112f, y, 44f, 18f), "Rayon:");
-            int.TryParse(GraphTextField(new Rect(innerX + 158f, y, 32f, 18f), it.Radius.ToString()), out it.Radius);
-            it.Radius = Mathf.Clamp(it.Radius, 0, 12);
-            it.IsOneShot = GraphToggle(new Rect(innerX + 194f, y, Mathf.Max(60f, innerW - 194f), 18f), it.IsOneShot, "Unique");
-            y += 20f;
-
-            // Compétence requise + SD.
-            GraphLabel(new Rect(innerX, y, 46f, 18f), "Test :");
+            if (_zoom < CardLodThreshold)
             {
-                int skillCount = Enum.GetValues(typeof(SkillType)).Length;
-                int skillIdx = (int)it.RequiredSkill;
-                if (GraphButton(new Rect(innerX + 48f, y, 20f, 18f), "◀"))
-                {
-                    skillIdx = (skillIdx - 1 + skillCount) % skillCount;
-                    it.RequiredSkill = (SkillType)skillIdx;
-                }
-                GraphLabel(new Rect(innerX + 70f, y, Mathf.Max(40f, innerW - 70f - 72f), 18f), $"<b>{SkillDefinitions.GetDisplayName(it.RequiredSkill)}</b>");
-                if (GraphButton(new Rect(innerX + innerW - 70f, y, 20f, 18f), "▶"))
-                {
-                    skillIdx = (skillIdx + 1) % skillCount;
-                    it.RequiredSkill = (SkillType)skillIdx;
-                }
-                GraphLabel(new Rect(innerX + innerW - 48f, y, 20f, 18f), "SD:");
-                int.TryParse(GraphTextField(new Rect(innerX + innerW - 26f, y, 26f, 18f), it.SkillThreshold.ToString()), out it.SkillThreshold);
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 32f, innerW * 0.8f, 8f), new Color(0.2f, 0.95f, 0.85f, 0.14f));
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 44f, innerW * 0.55f, 6f), new Color(1f, 1f, 1f, 0.06f));
             }
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 68f, 18f), "→ Nœud :");
-            it.TriggerNodeId = GraphTextField(new Rect(innerX + 70f, y, Mathf.Max(40f, innerW - 70f), 18f), it.TriggerNodeId ?? "");
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 66f, 18f), "Objectif :");
-            it.CompletionObjectiveId = GraphTextField(new Rect(innerX + 68f, y, Mathf.Max(40f, innerW - 68f), 18f), it.CompletionObjectiveId ?? "");
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 66f, 18f), "Log ✔ :");
-            it.SuccessLog = GraphTextField(new Rect(innerX + 68f, y, Mathf.Max(40f, innerW - 68f), 18f), it.SuccessLog ?? "");
-            y += 20f;
-
-            // Sortie cinématique 🎬 : fire-and-forget.
-            DrawCineLinkRow(ref y, innerX, innerW, it.CinematicIds);
-
-            if (y + 4f <= cardRect.yMax)
+            else
             {
-                GUI.color = new Color(1f, 1f, 1f, 0.55f);
-                GraphLabel(new Rect(innerX, y, innerW, 18f), it.GetSummary());
+                float y = cardRect.y + 30f;
+
+                GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+                it.InteractableId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), it.InteractableId ?? "");
+                GUI.color = new Color(0.2f, 0.95f, 0.85f);
+                GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), $"➔ {targetDisplay}");
                 GUI.color = Color.white;
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 36f, 18f), "Nom:");
+                it.DisplayName = GraphTextField(new Rect(innerX + 38f, y, Mathf.Max(40f, innerW - 38f), 18f), it.DisplayName ?? "");
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 48f, 18f), "Action:");
+                it.ActionLabel = GraphTextField(new Rect(innerX + 50f, y, Mathf.Max(40f, innerW - 50f), 18f), it.ActionLabel ?? "");
+                y += 20f;
+
+                // Position hex + rayon sur une ligne compacte.
+                GraphLabel(new Rect(innerX, y, 16f, 18f), "Q:");
+                int.TryParse(GraphTextField(new Rect(innerX + 18f, y, 36f, 18f), it.Q.ToString()), out it.Q);
+                GraphLabel(new Rect(innerX + 58f, y, 14f, 18f), "R:");
+                int.TryParse(GraphTextField(new Rect(innerX + 72f, y, 36f, 18f), it.R.ToString()), out it.R);
+                GraphLabel(new Rect(innerX + 112f, y, 44f, 18f), "Rayon:");
+                int.TryParse(GraphTextField(new Rect(innerX + 158f, y, 32f, 18f), it.Radius.ToString()), out it.Radius);
+                it.Radius = Mathf.Clamp(it.Radius, 0, 12);
+                it.IsOneShot = GraphToggle(new Rect(innerX + 194f, y, Mathf.Max(60f, innerW - 194f), 18f), it.IsOneShot, "Unique");
+                y += 20f;
+
+                // Compétence requise + SD.
+                GraphLabel(new Rect(innerX, y, 46f, 18f), "Test :");
+                {
+                    int skillCount = Enum.GetValues(typeof(SkillType)).Length;
+                    int skillIdx = (int)it.RequiredSkill;
+                    if (GraphButton(new Rect(innerX + 48f, y, 20f, 18f), "◀"))
+                    {
+                        skillIdx = (skillIdx - 1 + skillCount) % skillCount;
+                        it.RequiredSkill = (SkillType)skillIdx;
+                    }
+                    GraphLabel(new Rect(innerX + 70f, y, Mathf.Max(40f, innerW - 70f - 72f), 18f), $"<b>{SkillDefinitions.GetDisplayName(it.RequiredSkill)}</b>");
+                    if (GraphButton(new Rect(innerX + innerW - 70f, y, 20f, 18f), "▶"))
+                    {
+                        skillIdx = (skillIdx + 1) % skillCount;
+                        it.RequiredSkill = (SkillType)skillIdx;
+                    }
+                    GraphLabel(new Rect(innerX + innerW - 48f, y, 20f, 18f), "SD:");
+                    int.TryParse(GraphTextField(new Rect(innerX + innerW - 26f, y, 26f, 18f), it.SkillThreshold.ToString()), out it.SkillThreshold);
+                }
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 68f, 18f), "→ Nœud :");
+                it.TriggerNodeId = GraphTextField(new Rect(innerX + 70f, y, Mathf.Max(40f, innerW - 70f), 18f), it.TriggerNodeId ?? "");
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 66f, 18f), "Objectif :");
+                it.CompletionObjectiveId = GraphTextField(new Rect(innerX + 68f, y, Mathf.Max(40f, innerW - 68f), 18f), it.CompletionObjectiveId ?? "");
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 66f, 18f), "Log ✔ :");
+                it.SuccessLog = GraphTextField(new Rect(innerX + 68f, y, Mathf.Max(40f, innerW - 68f), 18f), it.SuccessLog ?? "");
+                y += 20f;
+
+                // Sortie cinématique 🎬 : fire-and-forget.
+                DrawCineLinkRow(ref y, innerX, innerW, it.CinematicIds);
+
+                if (y + 4f <= cardRect.yMax)
+                {
+                    GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                    GraphLabel(new Rect(innerX, y, innerW, 18f), it.GetSummary());
+                    GUI.color = Color.white;
+                }
             }
 
             // Sortie seule : pas de port d'entrée sur un interactable.
@@ -7687,168 +7757,201 @@ namespace Killtime.Story
 
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
-            float y = cardRect.y + 30f;
 
-            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
-            a.ActorId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), a.ActorId ?? "");
-            GUI.color = a.SpawnInitially ? new Color(0.4f, 1f, 0.55f) : new Color(1f, 1f, 1f, 0.75f);
-            GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), spawnDisplay);
-            GUI.color = Color.white;
-            y += 20f;
-
-            GraphLabel(new Rect(innerX, y, 36f, 18f), "Nom:");
-            a.DisplayName = GraphTextField(new Rect(innerX + 38f, y, Mathf.Max(40f, innerW - 38f), 18f), a.DisplayName ?? "");
-            y += 20f;
-
-            // Faction + position hex + orientation sur une ligne compacte.
-            a.IsPlayer = GraphToggle(new Rect(innerX, y, 52f, 18f), a.IsPlayer, "PJ");
-            GraphLabel(new Rect(innerX + 54f, y, 16f, 18f), "Q:");
-            int.TryParse(GraphTextField(new Rect(innerX + 70f, y, 36f, 18f), a.Q.ToString()), out a.Q);
-            GraphLabel(new Rect(innerX + 110f, y, 14f, 18f), "R:");
-            int.TryParse(GraphTextField(new Rect(innerX + 124f, y, 36f, 18f), a.R.ToString()), out a.R);
-            GraphLabel(new Rect(innerX + 164f, y, 30f, 18f), "Ori:");
-            float.TryParse(GraphTextField(new Rect(innerX + 196f, y, 40f, 18f), a.FacingAngle.ToString("0")), out a.FacingAngle);
-            y += 20f;
-
-            // Spawn : initiale ou différé sur nœud (avec cycleur de nœuds).
-            a.SpawnInitially = GraphToggle(new Rect(innerX, y, 78f, 18f), a.SpawnInitially, "Initiale");
-            GraphLabel(new Rect(innerX + 80f, y, 58f, 18f), "Si nœud:");
+            if (_zoom < CardLodThreshold)
             {
-                bool hasNodes = _data.Nodes != null && _data.Nodes.Count > 0;
-                float arrowsW = hasNodes ? 44f : 0f;
-                float fldW = Mathf.Max(40f, innerW - 80f - 58f - arrowsW);
-                a.SpawnOnNodeId = GraphTextField(new Rect(innerX + 140f, y, fldW, 18f), a.SpawnOnNodeId ?? "");
-                if (hasNodes)
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 32f, innerW * 0.7f, 8f), new Color(factionCol.r, factionCol.g, factionCol.b, 0.18f));
+                if (a.TalkEntries != null)
                 {
-                    int curIdx = _data.Nodes.FindIndex(n => n != null && string.Equals(n.NodeId, a.SpawnOnNodeId, System.StringComparison.OrdinalIgnoreCase));
-                    if (GraphButton(new Rect(innerX + innerW - 42f, y, 20f, 18f), "◀"))
+                    for (int ti = 0; ti < a.TalkEntries.Count; ti++)
                     {
-                        curIdx = (curIdx < 0 ? _data.Nodes.Count - 1 : (curIdx - 1 + _data.Nodes.Count) % _data.Nodes.Count);
-                        a.SpawnOnNodeId = _data.Nodes[curIdx] != null ? _data.Nodes[curIdx].NodeId : "";
-                    }
-                    if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
-                    {
-                        curIdx = (curIdx < 0 ? 0 : (curIdx + 1) % _data.Nodes.Count);
-                        a.SpawnOnNodeId = _data.Nodes[curIdx] != null ? _data.Nodes[curIdx].NodeId : "";
+                        var te = a.TalkEntries[ti];
+                        if (te == null) continue;
+                        Vector2 talkCenter = GetActorTalkOutCenter(a, ti);
+                        bool hasTalk = !string.IsNullOrWhiteSpace(te.TargetId);
+                        Color col = hasTalk ? TalkPortCol : new Color(TalkPortCol.r, TalkPortCol.g, TalkPortCol.b, 0.35f);
+                        Rect talkPort = new Rect(talkCenter.x - 7f, talkCenter.y - 7f, 14f, 14f);
+                        DrawGraphSolidRect(talkPort, col);
+                        if (GraphPrimaryDown(mouseWorld, talkPort))
+                        {
+                            _wireDraft = new WireConnectionDraft
+                            {
+                                IsActive = true,
+                                IsActorTalk = true,
+                                SourceActor = a,
+                                SourceTalkIndex = ti,
+                                StartPos = talkCenter
+                            };
+                            evt.Use();
+                        }
                     }
                 }
             }
-            y += 20f;
-
-            // Fiche personnage (cycleur catalogue des fiches disque + bouton fiche complète).
-            GraphLabel(new Rect(innerX, y, 42f, 18f), "Fiche:");
+            else
             {
-                int charIdx = Mathf.Max(0, _availableCharacterFiles.IndexOf(a.CharacterSheetFileName));
-                if (GraphButton(new Rect(innerX + 44f, y, 20f, 18f), "◀"))
-                {
-                    charIdx = (charIdx - 1 + _availableCharacterFiles.Count) % _availableCharacterFiles.Count;
-                    a.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
-                }
-                string charDisplay = string.IsNullOrEmpty(a.CharacterSheetFileName) ? "(Défaut)" : a.CharacterSheetFileName;
-                GraphLabel(new Rect(innerX + 66f, y, Mathf.Max(40f, innerW - 66f - 22f - 32f), 18f), $"<b>{charDisplay}</b>");
-                GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
-                if (GraphButton(new Rect(innerX + innerW - 20f - 30f, y, 28f, 18f), "📜"))
-                {
-                    OpenActorSheet(a);
-                }
-                GUI.backgroundColor = Color.white;
-                if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
-                {
-                    charIdx = (charIdx + 1) % _availableCharacterFiles.Count;
-                    a.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
-                }
-            }
-            y += 20f;
+                float y = cardRect.y + 30f;
 
-            GraphLabel(new Rect(innerX, y, 38f, 18f), "Mod:");
-            a.ModelPrefabName = GraphTextField(new Rect(innerX + 40f, y, 110f, 18f), a.ModelPrefabName ?? "");
-            GraphLabel(new Rect(innerX + 154f, y, 42f, 18f), "Arme:");
-            a.EquippedWeaponName = GraphTextField(new Rect(innerX + 198f, y, Mathf.Max(40f, innerW - 198f), 18f), a.EquippedWeaponName ?? "");
-            y += 20f;
-
-            // Sorties "Parler à" 💬 : une rangée par interlocuteur (Qui). Le Qui
-            // filtre celui qui parle à l'acteur (vide = n'importe qui) ; la cible
-            // est une réplique (LineId) ou un nœud (NodeId, enclenché).
-            // Drag du port cyan d'une rangée = lier sa cible.
-            if (a.TalkEntries == null) a.TalkEntries = new System.Collections.Generic.List<SceneActorTalkEntry>();
-            {
-                int talkCount = a.TalkEntries.Count;
-                GraphLabel(new Rect(innerX, y, Mathf.Max(40f, innerW - 30f), 18f), $"💬 Parler à ({talkCount})");
-                GUI.backgroundColor = new Color(0f, 0.75f, 1f);
-                if (GraphButton(new Rect(innerX + innerW - 26f, y, 26f, 18f), "+"))
-                    a.TalkEntries.Add(new SceneActorTalkEntry());
-                GUI.backgroundColor = Color.white;
+                GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+                a.ActorId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), a.ActorId ?? "");
+                GUI.color = a.SpawnInitially ? new Color(0.4f, 1f, 0.55f) : new Color(1f, 1f, 1f, 0.75f);
+                GraphLabel(new Rect(innerX + 130f, y, Mathf.Max(40f, innerW - 130f), 18f), spawnDisplay);
+                GUI.color = Color.white;
                 y += 20f;
 
-                for (int ti = 0; ti < a.TalkEntries.Count; ti++)
+                GraphLabel(new Rect(innerX, y, 36f, 18f), "Nom:");
+                a.DisplayName = GraphTextField(new Rect(innerX + 38f, y, Mathf.Max(40f, innerW - 38f), 18f), a.DisplayName ?? "");
+                y += 20f;
+
+                // Faction + position hex + orientation sur une ligne compacte.
+                a.IsPlayer = GraphToggle(new Rect(innerX, y, 52f, 18f), a.IsPlayer, "PJ");
+                GraphLabel(new Rect(innerX + 54f, y, 16f, 18f), "Q:");
+                int.TryParse(GraphTextField(new Rect(innerX + 70f, y, 36f, 18f), a.Q.ToString()), out a.Q);
+                GraphLabel(new Rect(innerX + 110f, y, 14f, 18f), "R:");
+                int.TryParse(GraphTextField(new Rect(innerX + 124f, y, 36f, 18f), a.R.ToString()), out a.R);
+                GraphLabel(new Rect(innerX + 164f, y, 30f, 18f), "Ori:");
+                float.TryParse(GraphTextField(new Rect(innerX + 196f, y, 40f, 18f), a.FacingAngle.ToString("0")), out a.FacingAngle);
+                y += 20f;
+
+                // Spawn : initiale ou différé sur nœud (avec cycleur de nœuds).
+                a.SpawnInitially = GraphToggle(new Rect(innerX, y, 78f, 18f), a.SpawnInitially, "Initiale");
+                GraphLabel(new Rect(innerX + 80f, y, 58f, 18f), "Si nœud:");
                 {
-                    var te = a.TalkEntries[ti];
-                    if (te == null) { a.TalkEntries.RemoveAt(ti); ti--; continue; }
-                    GraphLabel(new Rect(innerX, y, 30f, 18f), "Qui:");
-                    const float quiW = 104f;
-                    te.SpeakerId = GraphTextField(new Rect(innerX + 32f, y, quiW, 18f), te.SpeakerId ?? "");
-                    Rect dropBtn = new Rect(innerX + 34f + quiW, y, 20f, 18f);
-                    string dropKey = $"actor_talk_{index}_{a.ActorId}_{ti}";
-                    if (GraphButton(dropBtn, "▼"))
+                    bool hasNodes = _data.Nodes != null && _data.Nodes.Count > 0;
+                    float arrowsW = hasNodes ? 44f : 0f;
+                    float fldW = Mathf.Max(40f, innerW - 80f - 58f - arrowsW);
+                    a.SpawnOnNodeId = GraphTextField(new Rect(innerX + 140f, y, fldW, 18f), a.SpawnOnNodeId ?? "");
+                    if (hasNodes)
                     {
-                        if (_actorDropKey == dropKey) _actorDropKey = null;
-                        else OpenActorDropdown(dropKey, dropBtn, te.SpeakerId ?? "", v => te.SpeakerId = v);
+                        int curIdx = _data.Nodes.FindIndex(n => n != null && string.Equals(n.NodeId, a.SpawnOnNodeId, System.StringComparison.OrdinalIgnoreCase));
+                        if (GraphButton(new Rect(innerX + innerW - 42f, y, 20f, 18f), "◀"))
+                        {
+                            curIdx = (curIdx < 0 ? _data.Nodes.Count - 1 : (curIdx - 1 + _data.Nodes.Count) % _data.Nodes.Count);
+                            a.SpawnOnNodeId = _data.Nodes[curIdx] != null ? _data.Nodes[curIdx].NodeId : "";
+                        }
+                        if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                        {
+                            curIdx = (curIdx < 0 ? 0 : (curIdx + 1) % _data.Nodes.Count);
+                            a.SpawnOnNodeId = _data.Nodes[curIdx] != null ? _data.Nodes[curIdx].NodeId : "";
+                        }
                     }
-                    float tgtX = innerX + 34f + quiW + 22f;
-                    GraphLabel(new Rect(tgtX, y, 16f, 18f), "→");
-                    const float delW = 22f;
-                    te.TargetId = GraphTextField(new Rect(tgtX + 18f, y, Mathf.Max(30f, innerW - (tgtX + 18f - innerX) - delW - 2f), 18f), te.TargetId ?? "");
-                    if (GraphButton(new Rect(innerX + innerW - delW, y, delW, 18f), "✕"))
+                }
+                y += 20f;
+
+                // Fiche personnage (cycleur catalogue des fiches disque + bouton fiche complète).
+                GraphLabel(new Rect(innerX, y, 42f, 18f), "Fiche:");
+                {
+                    int charIdx = Mathf.Max(0, _availableCharacterFiles.IndexOf(a.CharacterSheetFileName));
+                    if (GraphButton(new Rect(innerX + 44f, y, 20f, 18f), "◀"))
                     {
-                        a.TalkEntries.RemoveAt(ti);
-                        ti--;
-                        continue;
+                        charIdx = (charIdx - 1 + _availableCharacterFiles.Count) % _availableCharacterFiles.Count;
+                        a.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
                     }
+                    string charDisplay = string.IsNullOrEmpty(a.CharacterSheetFileName) ? "(Défaut)" : a.CharacterSheetFileName;
+                    GraphLabel(new Rect(innerX + 66f, y, Mathf.Max(40f, innerW - 66f - 22f - 32f), 18f), $"<b>{charDisplay}</b>");
+                    GUI.backgroundColor = new Color(0.2f, 0.6f, 1.0f);
+                    if (GraphButton(new Rect(innerX + innerW - 20f - 30f, y, 28f, 18f), "📜"))
+                    {
+                        OpenActorSheet(a);
+                    }
+                    GUI.backgroundColor = Color.white;
+                    if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                    {
+                        charIdx = (charIdx + 1) % _availableCharacterFiles.Count;
+                        a.CharacterSheetFileName = charIdx == 0 ? "" : _availableCharacterFiles[charIdx];
+                    }
+                }
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 38f, 18f), "Mod:");
+                a.ModelPrefabName = GraphTextField(new Rect(innerX + 40f, y, 110f, 18f), a.ModelPrefabName ?? "");
+                GraphLabel(new Rect(innerX + 154f, y, 42f, 18f), "Arme:");
+                a.EquippedWeaponName = GraphTextField(new Rect(innerX + 198f, y, Mathf.Max(40f, innerW - 198f), 18f), a.EquippedWeaponName ?? "");
+                y += 20f;
+
+                // Sorties "Parler à" 💬 : une rangée par interlocuteur (Qui). Le Qui
+                // filtre celui qui parle à l'acteur (vide = n'importe qui) ; la cible
+                // est une réplique (LineId) ou un nœud (NodeId, enclenché).
+                // Drag du port cyan d'une rangée = lier sa cible.
+                if (a.TalkEntries == null) a.TalkEntries = new System.Collections.Generic.List<SceneActorTalkEntry>();
+                {
+                    int talkCount = a.TalkEntries.Count;
+                    GraphLabel(new Rect(innerX, y, Mathf.Max(40f, innerW - 30f), 18f), $"💬 Parler à ({talkCount})");
+                    GUI.backgroundColor = new Color(0f, 0.75f, 1f);
+                    if (GraphButton(new Rect(innerX + innerW - 26f, y, 26f, 18f), "+"))
+                        a.TalkEntries.Add(new SceneActorTalkEntry());
+                    GUI.backgroundColor = Color.white;
                     y += 20f;
 
-                    // Port de sortie 💬 de la rangée (cyan), sur le flanc droit.
-                    Vector2 talkCenter = GetActorTalkOutCenter(a, ti);
-                    bool hasTalk = !string.IsNullOrWhiteSpace(te.TargetId);
-                    Color col = hasTalk ? TalkPortCol : new Color(TalkPortCol.r, TalkPortCol.g, TalkPortCol.b, 0.35f);
-                    Rect talkPort = new Rect(talkCenter.x - 7f, talkCenter.y - 7f, 14f, 14f);
-                    DrawGraphSolidRect(talkPort, col);
-                    if (GraphPrimaryDown(mouseWorld, talkPort))
+                    for (int ti = 0; ti < a.TalkEntries.Count; ti++)
                     {
-                        _wireDraft = new WireConnectionDraft
+                        var te = a.TalkEntries[ti];
+                        if (te == null) { a.TalkEntries.RemoveAt(ti); ti--; continue; }
+                        GraphLabel(new Rect(innerX, y, 30f, 18f), "Qui:");
+                        const float quiW = 104f;
+                        te.SpeakerId = GraphTextField(new Rect(innerX + 32f, y, quiW, 18f), te.SpeakerId ?? "");
+                        Rect dropBtn = new Rect(innerX + 34f + quiW, y, 20f, 18f);
+                        string dropKey = $"actor_talk_{index}_{a.ActorId}_{ti}";
+                        if (GraphButton(dropBtn, "▼"))
                         {
-                            IsActive = true,
-                            IsActorTalk = true,
-                            SourceActor = a,
-                            SourceTalkIndex = ti,
-                            StartPos = talkCenter
-                        };
-                        evt.Use();
+                            if (_actorDropKey == dropKey) _actorDropKey = null;
+                            else OpenActorDropdown(dropKey, dropBtn, te.SpeakerId ?? "", v => te.SpeakerId = v);
+                        }
+                        float tgtX = innerX + 34f + quiW + 22f;
+                        GraphLabel(new Rect(tgtX, y, 16f, 18f), "→");
+                        const float delW = 22f;
+                        te.TargetId = GraphTextField(new Rect(tgtX + 18f, y, Mathf.Max(30f, innerW - (tgtX + 18f - innerX) - delW - 2f), 18f), te.TargetId ?? "");
+                        if (GraphButton(new Rect(innerX + innerW - delW, y, delW, 18f), "✕"))
+                        {
+                            a.TalkEntries.RemoveAt(ti);
+                            ti--;
+                            continue;
+                        }
+                        y += 20f;
+
+                        // Port de sortie 💬 de la rangée (cyan), sur le flanc droit.
+                        Vector2 talkCenter = GetActorTalkOutCenter(a, ti);
+                        bool hasTalk = !string.IsNullOrWhiteSpace(te.TargetId);
+                        Color col = hasTalk ? TalkPortCol : new Color(TalkPortCol.r, TalkPortCol.g, TalkPortCol.b, 0.35f);
+                        Rect talkPort = new Rect(talkCenter.x - 7f, talkCenter.y - 7f, 14f, 14f);
+                        DrawGraphSolidRect(talkPort, col);
+                        if (GraphPrimaryDown(mouseWorld, talkPort))
+                        {
+                            _wireDraft = new WireConnectionDraft
+                            {
+                                IsActive = true,
+                                IsActorTalk = true,
+                                SourceActor = a,
+                                SourceTalkIndex = ti,
+                                StartPos = talkCenter
+                            };
+                            evt.Use();
+                        }
                     }
                 }
-            }
 
-            // Sortie cinématique 🎬 : jouée au spawn différé (fire-and-forget).
-            DrawCineLinkRow(ref y, innerX, innerW, a.CinematicIds);
+                // Sortie cinématique 🎬 : jouée au spawn différé (fire-and-forget).
+                DrawCineLinkRow(ref y, innerX, innerW, a.CinematicIds);
 
-            if (y + 4f <= cardRect.yMax)
-            {
-                GUI.color = new Color(1f, 1f, 1f, 0.55f);
-                string talkSummary = "";
-                if (a.TalkEntries != null && a.TalkEntries.Count > 0)
+                if (y + 4f <= cardRect.yMax)
                 {
-                    var sbits = new System.Collections.Generic.List<string>();
-                    for (int sti = 0; sti < a.TalkEntries.Count; sti++)
+                    GUI.color = new Color(1f, 1f, 1f, 0.55f);
+                    string talkSummary = "";
+                    if (a.TalkEntries != null && a.TalkEntries.Count > 0)
                     {
-                        var ste = a.TalkEntries[sti];
-                        if (ste == null || string.IsNullOrWhiteSpace(ste.TargetId)) continue;
-                        string who = string.IsNullOrWhiteSpace(ste.SpeakerId) ? "*" : ste.SpeakerId.Trim();
-                        sbits.Add($"{who}➔{ste.TargetId.Trim()}");
-                        if (sbits.Count >= 3) break;
+                        var sbits = new System.Collections.Generic.List<string>();
+                        for (int sti = 0; sti < a.TalkEntries.Count; sti++)
+                        {
+                            var ste = a.TalkEntries[sti];
+                            if (ste == null || string.IsNullOrWhiteSpace(ste.TargetId)) continue;
+                            string who = string.IsNullOrWhiteSpace(ste.SpeakerId) ? "*" : ste.SpeakerId.Trim();
+                            sbits.Add($"{who}➔{ste.TargetId.Trim()}");
+                            if (sbits.Count >= 3) break;
+                        }
+                        if (sbits.Count > 0) talkSummary = " · 💬" + string.Join(", ", sbits);
                     }
-                    if (sbits.Count > 0) talkSummary = " · 💬" + string.Join(", ", sbits);
+                    GraphLabel(new Rect(innerX, y, innerW, 18f), $"{a.GetSummary()} · ◀{refLines} ▶{refEvents} ▼{refTriggers}{talkSummary}");
+                    GUI.color = Color.white;
                 }
-                GraphLabel(new Rect(innerX, y, innerW, 18f), $"{a.GetSummary()} · ◀{refLines} ▶{refEvents} ▼{refTriggers}{talkSummary}");
-                GUI.color = Color.white;
             }
 
             // Port de sortie cinématique 🎬 : flanc droit (magenta). La carte acteur
@@ -7911,6 +8014,22 @@ namespace Killtime.Story
                 catch { /* repli défaut ci-dessous */ }
             }
 
+            // Fallback héroïque (sans JSON, miroir du runtime JsonStorySceneController) :
+            // "john.json" / "Operative_John" sans fichier disque → fiche héroïque intégrée.
+            if (IsJohnActor(a))
+            {
+                sourceLabel = "Fiche héroïque intégrée [John : Passeur du Creuset]";
+                return JohnCharacter.BuildHeroicSheet();
+            }
+
+            // Fallback héroïque (sans JSON, miroir du runtime) :
+            // "erika.json" / "Cleyan_Erika" sans fichier disque → fiche héroïque intégrée.
+            if (IsErikaActor(a))
+            {
+                sourceLabel = "Fiche héroïque intégrée [Erika de Cleya : Flamme Cleyane]";
+                return ErikaCharacter.BuildHeroicSheet();
+            }
+
             var sheet = new CharacterSheet
             {
                 Name = string.IsNullOrEmpty(a.DisplayName) ? a.ActorId : a.DisplayName,
@@ -7940,6 +8059,46 @@ namespace Killtime.Story
                     sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel = 1;
             }
             return sheet;
+        }
+
+        /// <summary>
+        /// Détecte l'acteur John (miroir du runtime) : "john.json", nom ou modèle contenant "John".
+        /// </summary>
+        private static bool IsJohnActor(SceneActorSpawnData a)
+        {
+            if (a == null) return false;
+            if (!string.IsNullOrEmpty(a.CharacterSheetFileName)
+                && a.CharacterSheetFileName.IndexOf("john", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(a.DisplayName)
+                && a.DisplayName.IndexOf("john", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(a.ModelPrefabName)
+                && a.ModelPrefabName.IndexOf("john", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (a.EmbeddedSheet != null && JohnCharacter.IsJohn(a.EmbeddedSheet))
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Détecte l'actrice Erika (miroir du runtime) : "erika.json", nom ou modèle contenant "Erika".
+        /// </summary>
+        private static bool IsErikaActor(SceneActorSpawnData a)
+        {
+            if (a == null) return false;
+            if (!string.IsNullOrEmpty(a.CharacterSheetFileName)
+                && a.CharacterSheetFileName.IndexOf("erika", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(a.DisplayName)
+                && a.DisplayName.IndexOf("erika", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(a.ModelPrefabName)
+                && a.ModelPrefabName.IndexOf("erika", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (a.EmbeddedSheet != null && ErikaCharacter.IsErika(a.EmbeddedSheet))
+                return true;
+            return false;
         }
 
         private void OpenActorSheet(SceneActorSpawnData a)
@@ -8076,112 +8235,121 @@ namespace Killtime.Story
 
             float innerX = cardRect.x + 8f;
             float innerW = cardW - 16f;
-            float y = cardRect.y + 30f;
 
-            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
-            cine.CinematicId = GraphTextField(new Rect(innerX + 26f, y, 92f, 18f), cine.CinematicId ?? "");
-            GraphLabel(new Rect(innerX + 122f, y, 40f, 18f), "Titre:");
-            cine.Title = GraphTextField(new Rect(innerX + 164f, y, Mathf.Max(40f, innerW - 164f), 18f), cine.Title ?? "");
-            y += 22f;
-
-            cine.Skippable = GraphToggle(new Rect(innerX, y, 96f, 18f), cine.Skippable, "Esc = skip");
-            GraphLabel(new Rect(innerX + 100f, y, 44f, 18f), "Vit x");
-            string speedTxt = GraphTextField(new Rect(innerX + 146f, y, 40f, 18f), cine.PlaybackSpeed.ToString("0.0"));
-            float.TryParse(speedTxt, out cine.PlaybackSpeed);
-            cine.PlaybackSpeed = Mathf.Clamp(cine.PlaybackSpeed, 0.1f, 4f);
-            GUI.color = new Color(1f, 1f, 1f, 0.6f);
-            GraphLabel(new Rect(innerX + 190f, y, Mathf.Max(40f, innerW - 190f), 18f), cine.GetSummary());
-            GUI.color = Color.white;
-            y += 20f;
-
-            cine.Letterbox = GraphToggle(new Rect(innerX, y, 105f, 18f), cine.Letterbox, "Bandes noires");
-            cine.HideSceneChat = GraphToggle(new Rect(innerX + 110f, y, 125f, 18f), cine.HideSceneChat, "Masquer dialogue");
-            cine.InPlace = GraphToggle(new Rect(innerX + 240f, y, 95f, 18f), cine.InPlace, "Sur place");
-            y += 20f;
-
-            if (!cine.InPlace)
+            if (_zoom < CardLodThreshold)
             {
-                GraphLabel(new Rect(innerX, y, 48f, 18f), "Début:");
-                cine.StartTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 50f, y, 105f, 18f), (int)cine.StartTransition, new[] { "Téléport", "Fluide" });
-                GraphLabel(new Rect(innerX + 162f, y, 32f, 18f), "Fin:");
-                cine.EndTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 196f, y, 105f, 18f), (int)cine.EndTransition, new[] { "Téléport", "Fluide" });
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 32f, innerW * 0.85f, 8f), new Color(1f, 0.35f, 0.85f, 0.16f));
+                DrawGraphSolidRect(new Rect(innerX, cardRect.y + 44f, innerW * 0.5f, 6f), new Color(1f, 1f, 1f, 0.06f));
             }
             else
             {
-                GUI.color = new Color(1f, 0.82f, 0.35f, 0.9f);
-                GraphLabel(new Rect(innerX, y, innerW, 18f), "📷 <b>Sur place :</b> caméra fixe (secousse/effets en direct)");
+                float y = cardRect.y + 30f;
+
+                GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+                cine.CinematicId = GraphTextField(new Rect(innerX + 26f, y, 92f, 18f), cine.CinematicId ?? "");
+                GraphLabel(new Rect(innerX + 122f, y, 40f, 18f), "Titre:");
+                cine.Title = GraphTextField(new Rect(innerX + 164f, y, Mathf.Max(40f, innerW - 164f), 18f), cine.Title ?? "");
+                y += 22f;
+
+                cine.Skippable = GraphToggle(new Rect(innerX, y, 96f, 18f), cine.Skippable, "Esc = skip");
+                GraphLabel(new Rect(innerX + 100f, y, 44f, 18f), "Vit x");
+                string speedTxt = GraphTextField(new Rect(innerX + 146f, y, 40f, 18f), cine.PlaybackSpeed.ToString("0.0"));
+                float.TryParse(speedTxt, out cine.PlaybackSpeed);
+                cine.PlaybackSpeed = Mathf.Clamp(cine.PlaybackSpeed, 0.1f, 4f);
+                GUI.color = new Color(1f, 1f, 1f, 0.6f);
+                GraphLabel(new Rect(innerX + 190f, y, Mathf.Max(40f, innerW - 190f), 18f), cine.GetSummary());
                 GUI.color = Color.white;
-            }
-            y += 20f;
+                y += 20f;
 
-            for (int s = 0; s < cine.Shots.Count; s++)
-            {
-                var shot = cine.Shots[s];
-                if (shot == null) { cine.Shots.RemoveAt(s); s--; continue; }
+                cine.Letterbox = GraphToggle(new Rect(innerX, y, 105f, 18f), cine.Letterbox, "Bandes noires");
+                cine.HideSceneChat = GraphToggle(new Rect(innerX + 110f, y, 125f, 18f), cine.HideSceneChat, "Masquer dialogue");
+                cine.InPlace = GraphToggle(new Rect(innerX + 240f, y, 95f, 18f), cine.InPlace, "Sur place");
+                y += 20f;
 
-                // Initialisation automatique de l'effet de secousse si la carte est déclarée sur place
-                if (cine.InPlace && shot.MoveEffect == CinematicCameraEffect.None)
+                if (!cine.InPlace)
                 {
-                    shot.MoveEffect = CinematicCameraEffect.HandheldShake;
-                    if (shot.ShakeIntensity < 0.05f) shot.ShakeIntensity = 0.25f;
+                    GraphLabel(new Rect(innerX, y, 48f, 18f), "Début:");
+                    cine.StartTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 50f, y, 105f, 18f), (int)cine.StartTransition, new[] { "Téléport", "Fluide" });
+                    GraphLabel(new Rect(innerX + 162f, y, 32f, 18f), "Fin:");
+                    cine.EndTransition = (CinematicCameraTransition)GraphToolbar(new Rect(innerX + 196f, y, 105f, 18f), (int)cine.EndTransition, new[] { "Téléport", "Fluide" });
+                }
+                else
+                {
+                    GUI.color = new Color(1f, 0.82f, 0.35f, 0.9f);
+                    GraphLabel(new Rect(innerX, y, innerW, 18f), "📷 <b>Sur place :</b> caméra fixe (secousse/effets en direct)");
+                    GUI.color = Color.white;
+                }
+                y += 20f;
+
+                for (int s = 0; s < cine.Shots.Count; s++)
+                {
+                    var shot = cine.Shots[s];
+                    if (shot == null) { cine.Shots.RemoveAt(s); s--; continue; }
+
+                    // Initialisation automatique de l'effet de secousse si la carte est déclarée sur place
+                    if (cine.InPlace && shot.MoveEffect == CinematicCameraEffect.None)
+                    {
+                        shot.MoveEffect = CinematicCameraEffect.HandheldShake;
+                        if (shot.ShakeIntensity < 0.05f) shot.ShakeIntensity = 0.25f;
+                    }
+
+                    if (GraphButton(new Rect(innerX, y, 22f, 18f), "◉"))
+                    {
+                        CinematicEditorDevWindow.Open();
+                        if (CinematicEditorDevWindow.Instance != null)
+                            CinematicEditorDevWindow.Instance.SelectCinematic(cine.CinematicId, s);
+                    }
+                    shot.Label = GraphTextField(new Rect(innerX + 24f, y, Mathf.Max(40f, innerW - 24f - 134f - 24f), 18f), shot.Label ?? "");
+                    GraphLabel(new Rect(innerX + innerW - 134f - 22f, y, 16f, 18f), "s:");
+                    string durTxt = GraphTextField(new Rect(innerX + innerW - 134f, y, 36f, 18f), shot.Duration.ToString("0.0"));
+                    float.TryParse(durTxt, out shot.Duration);
+                    shot.Duration = Mathf.Clamp(shot.Duration, 0.2f, 60f);
+                    GraphLabel(new Rect(innerX + innerW - 94f, y, 24f, 18f), "+d:");
+                    string delTxt = GraphTextField(new Rect(innerX + innerW - 70f, y, 36f, 18f), shot.StartDelay.ToString("0.0"));
+                    float.TryParse(delTxt, out shot.StartDelay);
+                    shot.StartDelay = Mathf.Clamp(shot.StartDelay, 0f, 60f);
+                    GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
+                    if (GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "✕"))
+                    {
+                        cine.Shots.RemoveAt(s);
+                        GUI.backgroundColor = Color.white;
+                        break;
+                    }
+                    GUI.backgroundColor = Color.white;
+                    y += 20f;
                 }
 
-                if (GraphButton(new Rect(innerX, y, 22f, 18f), "◉"))
+                if (cine.Shots.Count == 0 && y + 18f <= cardRect.yMax)
+                {
+                    GUI.color = new Color(1f, 1f, 1f, 0.5f);
+                    GraphLabel(new Rect(innerX, y, innerW, 18f), "<i>(aucun plan — + Plan pour commencer)</i>");
+                    GUI.color = Color.white;
+                }
+
+                // Sortie "fin →" : à la fin de la lecture, enchaîner vers une carte
+                // (cinématique, réplique, conséquence, événement ou nœud). Vide = fin simple.
+                GraphLabel(new Rect(innerX, y, 62f, 18f), "Fin → :");
+                cine.NextTargetId = GraphTextField(new Rect(innerX + 64f, y, Mathf.Max(40f, innerW - 64f - 26f), 18f), cine.NextTargetId ?? "");
+                if (!string.IsNullOrEmpty(cine.NextTargetId) && GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "⊘")) cine.NextTargetId = "";
+                y += CineRowH;
+
+                float halfBtn = (innerW - 6f) * 0.5f;
+                float btnY = Mathf.Min(y, cardRect.yMax - 22f);
+                GUI.backgroundColor = new Color(1f, 0.35f, 0.85f);
+                if (GraphButton(new Rect(innerX, btnY, halfBtn, 20f), "+ Plan"))
+                {
+                    int ns = cine.Shots.Count + 1;
+                    cine.Shots.Add(new SceneCinematicShotData { ShotId = $"shot_{ns}", Label = $"Plan {ns}" });
+                }
+                GUI.backgroundColor = new Color(0.7f, 0.25f, 0.6f);
+                if (GraphButton(new Rect(innerX + halfBtn + 6f, btnY, halfBtn, 20f), "⤴ Éditer (carte 3D)"))
                 {
                     CinematicEditorDevWindow.Open();
                     if (CinematicEditorDevWindow.Instance != null)
-                        CinematicEditorDevWindow.Instance.SelectCinematic(cine.CinematicId, s);
-                }
-                shot.Label = GraphTextField(new Rect(innerX + 24f, y, Mathf.Max(40f, innerW - 24f - 134f - 24f), 18f), shot.Label ?? "");
-                GraphLabel(new Rect(innerX + innerW - 134f - 22f, y, 16f, 18f), "s:");
-                string durTxt = GraphTextField(new Rect(innerX + innerW - 134f, y, 36f, 18f), shot.Duration.ToString("0.0"));
-                float.TryParse(durTxt, out shot.Duration);
-                shot.Duration = Mathf.Clamp(shot.Duration, 0.2f, 60f);
-                GraphLabel(new Rect(innerX + innerW - 94f, y, 24f, 18f), "+d:");
-                string delTxt = GraphTextField(new Rect(innerX + innerW - 70f, y, 36f, 18f), shot.StartDelay.ToString("0.0"));
-                float.TryParse(delTxt, out shot.StartDelay);
-                shot.StartDelay = Mathf.Clamp(shot.StartDelay, 0f, 60f);
-                GUI.backgroundColor = new Color(0.85f, 0.25f, 0.25f);
-                if (GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "✕"))
-                {
-                    cine.Shots.RemoveAt(s);
-                    GUI.backgroundColor = Color.white;
-                    break;
+                        CinematicEditorDevWindow.Instance.SelectCinematic(cine.CinematicId, Mathf.Max(0, cine.Shots.Count - 1));
                 }
                 GUI.backgroundColor = Color.white;
-                y += 20f;
             }
-
-            if (cine.Shots.Count == 0 && y + 18f <= cardRect.yMax)
-            {
-                GUI.color = new Color(1f, 1f, 1f, 0.5f);
-                GraphLabel(new Rect(innerX, y, innerW, 18f), "<i>(aucun plan — + Plan pour commencer)</i>");
-                GUI.color = Color.white;
-            }
-
-            // Sortie "fin →" : à la fin de la lecture, enchaîner vers une carte
-            // (cinématique, réplique, conséquence, événement ou nœud). Vide = fin simple.
-            GraphLabel(new Rect(innerX, y, 62f, 18f), "Fin → :");
-            cine.NextTargetId = GraphTextField(new Rect(innerX + 64f, y, Mathf.Max(40f, innerW - 64f - 26f), 18f), cine.NextTargetId ?? "");
-            if (!string.IsNullOrEmpty(cine.NextTargetId) && GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "⊘")) cine.NextTargetId = "";
-            y += CineRowH;
-
-            float halfBtn = (innerW - 6f) * 0.5f;
-            float btnY = Mathf.Min(y, cardRect.yMax - 22f);
-            GUI.backgroundColor = new Color(1f, 0.35f, 0.85f);
-            if (GraphButton(new Rect(innerX, btnY, halfBtn, 20f), "+ Plan"))
-            {
-                int ns = cine.Shots.Count + 1;
-                cine.Shots.Add(new SceneCinematicShotData { ShotId = $"shot_{ns}", Label = $"Plan {ns}" });
-            }
-            GUI.backgroundColor = new Color(0.7f, 0.25f, 0.6f);
-            if (GraphButton(new Rect(innerX + halfBtn + 6f, btnY, halfBtn, 20f), "⤴ Éditer (carte 3D)"))
-            {
-                CinematicEditorDevWindow.Open();
-                if (CinematicEditorDevWindow.Instance != null)
-                    CinematicEditorDevWindow.Instance.SelectCinematic(cine.CinematicId, Mathf.Max(0, cine.Shots.Count - 1));
-            }
-            GUI.backgroundColor = Color.white;
 
             // Port de sortie "fin →" : flanc droit, rangée dédiée (magenta).
             // La carte garde son port d'entrée à gauche : input + output coexistent.
@@ -8232,8 +8400,11 @@ namespace Killtime.Story
             Vector2 endTan = end - new Vector2(tangentDist, 0f);
 
             float approxLength = Vector2.Distance(start, startTan) + Vector2.Distance(startTan, endTan) + Vector2.Distance(endTan, end);
-            int steps = Mathf.Clamp(Mathf.RoundToInt(approxLength / 2.0f), 24, 180);
-            float dotSize = width;
+            float stepDist = _zoom < CardLodThreshold ? 5.5f : 2.0f;
+            int minSteps = _zoom < CardLodThreshold ? 8 : 24;
+            int maxSteps = _zoom < CardLodThreshold ? 45 : 180;
+            int steps = Mathf.Clamp(Mathf.RoundToInt(approxLength / stepDist), minSteps, maxSteps);
+            float dotSize = _zoom < CardLodThreshold ? Mathf.Max(2f, width * 0.75f) : width;
 
             Color prevCol = GUI.color;
             GUI.color = color;

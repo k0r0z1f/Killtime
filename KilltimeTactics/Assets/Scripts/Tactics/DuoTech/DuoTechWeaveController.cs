@@ -41,6 +41,20 @@ namespace Killtime.Tactics.DuoTech
         private const float FournaiseTargetDist = 2.2f;
         private const int FournaiseIsolationRadius = 2;
 
+        // RD-085 (Livre VI §25.5) : 1 case ≈ 1.7 unité monde.
+        private const float CaseWorld = 1.7f;
+        private const float TrempeCatchDist = 2.5f;
+        private const float RailgunMinLengthWorld = 4f * 1.7f;
+        private const float RailgunStraightTol = 0.6f;
+        private const float RailgunWidthTol = 1.0f;
+        private const float RailgunTargetDist = 2.5f;
+        private const float CisailleCrossGap = 1.2f;
+        private const float CisailleCatchDist = 1.5f;
+        private const float ParallaxeTargetDist = 2.5f;
+        private const float ParallaxeMinDot = -0.8f;
+        private const float UppercutTargetDist = 2.5f;
+        private const float MirageMaxLengthWorld = 3.5f * 1.7f;
+
         private WeavePhase _phase = WeavePhase.Idle;
         private DuoTechDef _def;
         private TacticalUnit _initiator;
@@ -536,6 +550,131 @@ namespace Killtime.Tactics.DuoTech
                             caught.Add(best);
                     }
                     break;
+
+                case DuoTechId.TrempeInversee:
+                    // Groupés : tous les ennemis à portée du centroïde T1.
+                    if (_t1.Count >= 3)
+                    {
+                        Vector3 centroid = Vector3.zero;
+                        for (int i = 0; i < _t1.Count; i++) centroid += _t1[i];
+                        centroid /= Mathf.Max(1, _t1.Count);
+                        Vector2 c2 = new Vector2(centroid.x, centroid.z);
+                        for (int i = 0; i < enemies.Count; i++)
+                        {
+                            Vector2 e2 = new Vector2(enemies[i].transform.position.x, enemies[i].transform.position.z);
+                            if (Vector2.Distance(e2, c2) <= TrempeCatchDist)
+                                caught.Add(enemies[i]);
+                        }
+                    }
+                    break;
+
+                case DuoTechId.RailgunArtisanale:
+                    // Cible dure au bout du rail (fin de T1).
+                    if (_t1.Count >= 2)
+                    {
+                        Vector3 end = _t1[_t1.Count - 1];
+                        TacticalUnit best = null;
+                        float bestD = float.MaxValue;
+                        for (int i = 0; i < enemies.Count; i++)
+                        {
+                            float d = Vector3.Distance(
+                                new Vector3(enemies[i].transform.position.x, 0f, enemies[i].transform.position.z),
+                                new Vector3(end.x, 0f, end.z));
+                            if (d < bestD) { bestD = d; best = enemies[i]; }
+                        }
+                        if (best != null && bestD <= RailgunTargetDist)
+                            caught.Add(best);
+                    }
+                    break;
+
+                case DuoTechId.CisailleEntropique:
+                    // Intersection du X : croisement T1/T2 si T2 tracé, sinon proximité T1.
+                    if (_t1.Count >= 2)
+                    {
+                        var w1 = ToVec2(_t1);
+                        if (_t2.Count >= 2)
+                        {
+                            var w2 = ToVec2(_t2);
+                            if (DuoTechGeometry.TryFindCrossingPoint(w1, w2, CisailleCrossGap, out WeaveVec2 cross))
+                            {
+                                for (int i = 0; i < enemies.Count; i++)
+                                {
+                                    var ep = new WeaveVec2(enemies[i].transform.position.x, enemies[i].transform.position.z);
+                                    if (WeaveVec2.Distance(ep, cross) <= CisailleCatchDist)
+                                        caught.Add(enemies[i]);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            for (int i = 0; i < enemies.Count; i++)
+                            {
+                                if (DistToPolyXZ(enemies[i].transform.position, _t1) <= SillageCatchDist)
+                                    caught.Add(enemies[i]);
+                            }
+                        }
+                    }
+                    break;
+
+                case DuoTechId.Parallaxe:
+                    // Opposition 180° : Mina et Lucas de part et d'autre de la cible.
+                    if (_mina != null && _lucas != null)
+                    {
+                        var minaP = new WeaveVec2(_mina.transform.position.x, _mina.transform.position.z);
+                        var lucasP = new WeaveVec2(_lucas.transform.position.x, _lucas.transform.position.z);
+                        for (int i = 0; i < enemies.Count; i++)
+                        {
+                            var tp = new WeaveVec2(enemies[i].transform.position.x, enemies[i].transform.position.z);
+                            if (WeaveVec2.Distance(minaP, tp) > ParallaxeTargetDist * 3f
+                                && WeaveVec2.Distance(lucasP, tp) > ParallaxeTargetDist * 3f)
+                                continue;
+                            if (DuoTechGeometry.AreOpposed180(minaP, lucasP, tp, ParallaxeMinDot))
+                                caught.Add(enemies[i]);
+                        }
+                        // Repli : si aucune opposition stricte, surligne le plus proche du centroïde T1.
+                        if (caught.Count == 0 && _t1.Count >= 3)
+                        {
+                            Vector3 centroid = Vector3.zero;
+                            for (int k = 0; k < _t1.Count; k++) centroid += _t1[k];
+                            centroid /= Mathf.Max(1, _t1.Count);
+                            TacticalUnit best = null;
+                            float bestD = float.MaxValue;
+                            for (int i = 0; i < enemies.Count; i++)
+                            {
+                                float d = Vector3.Distance(
+                                    new Vector3(enemies[i].transform.position.x, 0f, enemies[i].transform.position.z),
+                                    new Vector3(centroid.x, 0f, centroid.z));
+                                if (d < bestD) { bestD = d; best = enemies[i]; }
+                            }
+                            if (best != null && bestD <= ParallaxeTargetDist)
+                                caught.Add(best);
+                        }
+                    }
+                    break;
+
+                case DuoTechId.MirageDeuxTemps:
+                    // Défensif : aucune cible ennemie à surligner.
+                    break;
+
+                case DuoTechId.UppercutThermobarique:
+                    if (_t1.Count >= 3)
+                    {
+                        Vector3 centroid = Vector3.zero;
+                        for (int i = 0; i < _t1.Count; i++) centroid += _t1[i];
+                        centroid /= Mathf.Max(1, _t1.Count);
+                        TacticalUnit best = null;
+                        float bestD = float.MaxValue;
+                        for (int i = 0; i < enemies.Count; i++)
+                        {
+                            float d = Vector3.Distance(
+                                new Vector3(enemies[i].transform.position.x, 0f, enemies[i].transform.position.z),
+                                new Vector3(centroid.x, 0f, centroid.z));
+                            if (d < bestD) { bestD = d; best = enemies[i]; }
+                        }
+                        if (best != null && bestD <= UppercutTargetDist)
+                            caught.Add(best);
+                    }
+                    break;
             }
 
             return caught;
@@ -552,6 +691,18 @@ namespace Killtime.Tactics.DuoTech
                     return new Color(0.2f, 0.9f, 1f);   // Cyan Nytharite
                 case DuoTechId.FournaiseRetardement:
                     return new Color(1f, 0.8f, 0.2f);   // Ambre thermique
+                case DuoTechId.TrempeInversee:
+                    return new Color(0.5f, 0.9f, 1f);   // Gel inversé
+                case DuoTechId.RailgunArtisanale:
+                    return new Color(0.7f, 0.4f, 1f);   // Arc artisanal
+                case DuoTechId.CisailleEntropique:
+                    return new Color(1f, 0.2f, 0.4f);   // Entropie
+                case DuoTechId.Parallaxe:
+                    return new Color(1f, 0.85f, 0.3f);  // Parallaxe or
+                case DuoTechId.MirageDeuxTemps:
+                    return new Color(0.7f, 0.7f, 0.8f);  // Spectral
+                case DuoTechId.UppercutThermobarique:
+                    return new Color(1f, 0.5f, 0.1f);   // Thermobarique
                 default:
                     return new Color(1f, 0.45f, 0.1f);
             }
@@ -832,6 +983,41 @@ namespace Killtime.Tactics.DuoTech
                     _arena?.RecordChronoSnapshot($"{_def.Name} résolu : {_mina.Stats.Name} + {_lucas.Stats.Name}");
                     EndSession();
                     break;
+                case DuoTechId.TrempeInversee:
+                    ResolveTrempe(log);
+                    _arena?.RecordChronoSnapshot($"{_def.Name} résolu : {_mina.Stats.Name} + {_lucas.Stats.Name}");
+                    EndSession();
+                    break;
+                case DuoTechId.RailgunArtisanale:
+                    ResolveRailgun(log);
+                    _arena?.RecordChronoSnapshot($"{_def.Name} résolu : {_mina.Stats.Name} + {_lucas.Stats.Name}");
+                    EndSession();
+                    break;
+                case DuoTechId.CisailleEntropique:
+                    ResolveCisaille(log);
+                    _arena?.RecordChronoSnapshot($"{_def.Name} résolu : {_mina.Stats.Name} + {_lucas.Stats.Name}");
+                    EndSession();
+                    break;
+                case DuoTechId.Parallaxe:
+                    ResolveParallaxe(log);
+                    _arena?.RecordChronoSnapshot($"{_def.Name} résolu : {_mina.Stats.Name} + {_lucas.Stats.Name}");
+                    EndSession();
+                    break;
+                case DuoTechId.MirageDeuxTemps:
+                    // Replacement animé (dash Mina vers fin T1) : termine lui-même la session.
+                    _phase = WeavePhase.Executing;
+                    if (_waveMarker != null) _waveMarker.SetActive(false);
+                    if (_waveMarkerOccluded != null) _waveMarkerOccluded.SetActive(false);
+                    if (_waveMarkerGreen != null) _waveMarkerGreen.SetActive(false);
+                    if (_waveMarkerGreenOccluded != null) _waveMarkerGreenOccluded.SetActive(false);
+                    ClearLine(_lineSyncTrace_Front, _lineSyncTrace_Occluded);
+                    ResolveMirage(log);
+                    break;
+                case DuoTechId.UppercutThermobarique:
+                    ResolveUppercut(log);
+                    _arena?.RecordChronoSnapshot($"{_def.Name} résolu : {_mina.Stats.Name} + {_lucas.Stats.Name}");
+                    EndSession();
+                    break;
             }
         }
 
@@ -1078,6 +1264,270 @@ namespace Killtime.Tactics.DuoTech
                 log($"♨️ Fournaise : {best.Stats.Name} n'est pas isolé ({neighbours} à ≤{FournaiseIsolationRadius} cases) — triangle strict exigé.");
 
             DuoTechRegistry.ResolveFournaise(best.Stats, closed && neighbours == 0, log);
+            best.GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
+        }
+
+        // ============================ RD-085 (Livre VI §25.5) ============================
+        // Tissage binaire (comme Lacet/Fournaise) : condition de placement
+        // validée = Parfaite table, sinon Ratée table (PA perdus). Le Semi
+        // n'existe qu'aux dés via DuoTechRegistry.TableOutcome + Resolve*.
+
+        private Vector3 CentroidOfT1()
+        {
+            Vector3 centroid = Vector3.zero;
+            for (int i = 0; i < _t1.Count; i++) centroid += _t1[i];
+            return centroid / Mathf.Max(1, _t1.Count);
+        }
+
+        private TacticalUnit BestEnemyNear(Vector3 centroid, float maxDist, List<TacticalUnit> enemies, out float bestD)
+        {
+            TacticalUnit best = null;
+            bestD = float.MaxValue;
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                float d = Vector3.Distance(
+                    new Vector3(enemies[i].transform.position.x, 0f, enemies[i].transform.position.z),
+                    new Vector3(centroid.x, 0f, centroid.z));
+                if (d < bestD) { bestD = d; best = enemies[i]; }
+            }
+            if (best == null || bestD > maxDist) return null;
+            return best;
+        }
+
+        private void ResolveTrempe(System.Action<string> log)
+        {
+            var enemies = EnemiesAlive();
+            if (_t1.Count < 3)
+            {
+                DuoTechRegistry.ResolveTrempe(null, DuoTechOutcome.Miss, log);
+                return;
+            }
+            Vector3 centroid = CentroidOfT1();
+            var caught = new List<TacticalUnit>();
+            Vector2 c2 = new Vector2(centroid.x, centroid.z);
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                Vector2 e2 = new Vector2(enemies[i].transform.position.x, enemies[i].transform.position.z);
+                if (Vector2.Distance(e2, c2) <= TrempeCatchDist)
+                    caught.Add(enemies[i]);
+            }
+            if (caught.Count < 2)
+            {
+                log("❄️ Trempe : pas de groupe (≥ 2 ennemis à ≤ 2 cases d'un point exigés) — le gel ne prend pas (PA perdus).");
+                DuoTechRegistry.ResolveTrempe(null, DuoTechOutcome.Miss, log);
+                return;
+            }
+            // Groupés en cases hexa autour du centroïde (≤ 2 cases d'un point).
+            float avgQ = 0f, avgR = 0f;
+            for (int i = 0; i < caught.Count; i++)
+            {
+                avgQ += caught[i].CurrentCoords.Q;
+                avgR += caught[i].CurrentCoords.R;
+            }
+            avgQ /= caught.Count;
+            avgR /= caught.Count;
+            var centerHex = new Killtime.Tactics.Grid.HexCoordinates(Mathf.RoundToInt(avgQ), Mathf.RoundToInt(avgR));
+            var dists = new List<int>(caught.Count);
+            for (int i = 0; i < caught.Count; i++)
+                dists.Add(caught[i].CurrentCoords.DistanceTo(centerHex));
+            if (!DuoTechGeometry.AreGrouped(dists, 2))
+            {
+                log("❄️ Trempe : cibles trop dispersées (≤ 2 cases d'un point exigées) — le gel ne prend pas (PA perdus).");
+                DuoTechRegistry.ResolveTrempe(null, DuoTechOutcome.Miss, log);
+                return;
+            }
+            var stats = new List<CharacterStats>(caught.Count);
+            for (int i = 0; i < caught.Count; i++) stats.Add(caught[i].Stats);
+            DuoTechRegistry.ResolveTrempe(stats, DuoTechOutcome.Perfect, log);
+            for (int i = 0; i < caught.Count; i++)
+                caught[i].GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
+        }
+
+        private void ResolveRailgun(System.Action<string> log)
+        {
+            var w1 = ToVec2(_t1);
+            var enemies = EnemiesAlive();
+            if (_t1.Count < 2)
+            {
+                log("🛤️ <b>Railgun Artisanale</b> [Ratée] : le couloir se referme (PA perdus).");
+                return;
+            }
+            float dev = DuoTechGeometry.MaxDeviationFromSegment(w1[0], w1[w1.Count - 1], w1);
+            float len = 0f;
+            for (int i = 1; i < _t1.Count; i++)
+                len += Vector3.Distance(_t1[i - 1], _t1[i]);
+            if (dev > RailgunStraightTol * 2f)
+            {
+                log($"🛤️ Railgun : rail pas rectiligne (écart {dev:F2}) — le couloir se referme (PA perdus).");
+                if (enemies.Count > 0) DuoTechRegistry.ResolveRailgun(enemies[0].Stats, DuoTechOutcome.Miss, log);
+                else log("🛤️ <b>Railgun Artisanale</b> [Ratée] : le couloir se referme (PA perdus).");
+                return;
+            }
+            if (len < RailgunMinLengthWorld)
+            {
+                log($"🛤️ Railgun : couloir trop court ({len / CaseWorld:F1} cases < 4) — le couloir se referme (PA perdus).");
+                if (enemies.Count > 0) DuoTechRegistry.ResolveRailgun(enemies[0].Stats, DuoTechOutcome.Miss, log);
+                else log("🛤️ <b>Railgun Artisanale</b> [Ratée] : le couloir se referme (PA perdus).");
+                return;
+            }
+            Vector3 end = _t1[_t1.Count - 1];
+            TacticalUnit best = BestEnemyNear(end, RailgunTargetDist, enemies, out _);
+            if (best == null)
+            {
+                log("🛤️ Railgun : aucune cible dure au bout du couloir (PA perdus).");
+                return;
+            }
+            // Couloir vide : personne d'autre dans la bande (alliés + ennemis sauf cible).
+            var all = new List<TacticalUnit>(
+                UnityEngine.Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude));
+            var wStart = new WeaveVec2(_t1[0].x, _t1[0].z);
+            var wEnd = new WeaveVec2(end.x, end.z);
+            var obstacles = new List<WeaveVec2>();
+            int targetIdx = -1;
+            for (int i = 0; i < all.Count; i++)
+            {
+                var u = all[i];
+                if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
+                if (u == _mina || u == _lucas) continue;
+                var p = new WeaveVec2(u.transform.position.x, u.transform.position.z);
+                if (u == best) { targetIdx = obstacles.Count; }
+                obstacles.Add(p);
+            }
+            if (!DuoTechGeometry.IsStraightCorridor(wStart, wEnd, RailgunMinLengthWorld, RailgunWidthTol, obstacles, targetIdx))
+            {
+                log("🛤️ Railgun : couloir obstrué — le couloir se referme (PA perdus).");
+                DuoTechRegistry.ResolveRailgun(best.Stats, DuoTechOutcome.Miss, log);
+                return;
+            }
+            DuoTechRegistry.ResolveRailgun(best.Stats, DuoTechOutcome.Perfect, log);
+            best.GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
+        }
+
+        private void ResolveCisaille(System.Action<string> log)
+        {
+            var w1 = ToVec2(_t1);
+            var w2 = ToVec2(_t2);
+            if (!DuoTechGeometry.TryFindCrossingPoint(w1, w2, CisailleCrossGap, out WeaveVec2 cross))
+            {
+                log("✖️ Cisaille : aucun croisement en X — les branches se désynchronisent (PA perdus).");
+                DuoTechRegistry.ResolveCisaille(null, DuoTechOutcome.Miss, log);
+                return;
+            }
+            var enemies = EnemiesAlive();
+            var caughtStats = new List<CharacterStats>();
+            var caughtUnits = new List<TacticalUnit>();
+            for (int i = 0; i < enemies.Count; i++)
+            {
+                var ep = new WeaveVec2(enemies[i].transform.position.x, enemies[i].transform.position.z);
+                if (WeaveVec2.Distance(ep, cross) <= CisailleCatchDist)
+                {
+                    caughtStats.Add(enemies[i].Stats);
+                    caughtUnits.Add(enemies[i]);
+                }
+            }
+            if (caughtStats.Count == 0)
+            {
+                log("✖️ Cisaille : personne à l'intersection du X (PA perdus).");
+                DuoTechRegistry.ResolveCisaille(null, DuoTechOutcome.Miss, log);
+                return;
+            }
+            DuoTechRegistry.ResolveCisaille(caughtStats, DuoTechOutcome.Perfect, log);
+            for (int i = 0; i < caughtUnits.Count; i++)
+                caughtUnits[i].GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
+        }
+
+        private void ResolveParallaxe(System.Action<string> log)
+        {
+            var enemies = EnemiesAlive();
+            if (_mina == null || _lucas == null || enemies.Count == 0)
+            {
+                log("⧉ Parallaxe : binôme ou cible introuvable (PA perdus).");
+                return;
+            }
+            Vector3 centroid = _t1.Count >= 3 ? CentroidOfT1() : _t1.Count > 0 ? _t1[_t1.Count - 1] : _mina.transform.position;
+            TacticalUnit best = BestEnemyNear(centroid, ParallaxeTargetDist, enemies, out _);
+            if (best == null)
+            {
+                // Repli : cible ennemie la plus proche de la paire.
+                float bd = float.MaxValue;
+                for (int i = 0; i < enemies.Count; i++)
+                {
+                    float d = Vector3.Distance(enemies[i].transform.position, centroid);
+                    if (d < bd) { bd = d; best = enemies[i]; }
+                }
+                if (best == null)
+                {
+                    log("⧉ Parallaxe : aucune cible (PA perdus).");
+                    return;
+                }
+            }
+            var minaP = new WeaveVec2(_mina.transform.position.x, _mina.transform.position.z);
+            var lucasP = new WeaveVec2(_lucas.transform.position.x, _lucas.transform.position.z);
+            var tp = new WeaveVec2(best.transform.position.x, best.transform.position.z);
+            if (!DuoTechGeometry.AreOpposed180(minaP, lucasP, tp, ParallaxeMinDot))
+            {
+                log($"⧉ Parallaxe : {best.Stats.Name} n'est pas en opposition 180° — la cible esquive entre les deux temps (PA perdus).");
+                DuoTechRegistry.ResolveParallaxe(best.Stats, DuoTechOutcome.Miss, log);
+                return;
+            }
+            DuoTechRegistry.ResolveParallaxe(best.Stats, DuoTechOutcome.Perfect, log);
+            best.GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
+        }
+
+        private void ResolveMirage(System.Action<string> log)
+        {
+            float len = 0f;
+            for (int i = 1; i < _t1.Count; i++)
+                len += Vector3.Distance(_t1[i - 1], _t1[i]);
+            if (len > MirageMaxLengthWorld)
+            {
+                log($"🌫️ Mirage : replacement trop long ({len / CaseWorld:F1} cases > 3) — la pré-vision se brouille (PA perdus).");
+                DuoTechRegistry.ResolveMirage(_mina != null ? _mina.Stats : null, DuoTechOutcome.Miss, log);
+                _arena?.RecordChronoSnapshot($"{_def.Name} raté : {(_mina != null ? _mina.Stats.Name : "Mina")} + {(_lucas != null ? _lucas.Stats.Name : "Lucas")}");
+                EndSession();
+                return;
+            }
+            StartCoroutine(MirageThenFinish(log));
+        }
+
+        private System.Collections.IEnumerator MirageThenFinish(System.Action<string> log)
+        {
+            yield return DashMina();
+            DuoTechRegistry.ResolveMirage(_mina != null ? _mina.Stats : null, DuoTechOutcome.Perfect, log);
+            _mina?.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("MIRAGE !", new Color(0.7f, 0.7f, 0.9f));
+            _arena?.RecordChronoSnapshot($"{_def.Name} résolu : {_mina.Stats.Name} + {_lucas.Stats.Name}");
+            EndSession();
+        }
+
+        private void ResolveUppercut(System.Action<string> log)
+        {
+            var enemies = EnemiesAlive();
+            Vector3 centroid = _t1.Count > 0 ? CentroidOfT1() : (_mina != null ? _mina.transform.position : Vector3.zero);
+            TacticalUnit best = BestEnemyNear(centroid, UppercutTargetDist, enemies, out _);
+            if (best == null)
+            {
+                log("⬆️ Uppercut : aucune cible à portée (whiff : +1 ESS chacun, PA perdus).");
+                DuoTechRegistry.ResolveUppercut(
+                    _mina != null ? _mina.Stats : null,
+                    _lucas != null ? _lucas.Stats : null,
+                    null, DuoTechOutcome.Miss, log);
+                return;
+            }
+            if (!DuoTechRegistry.IsUppercutCondition(best.Stats))
+            {
+                string hp = $"{best.Stats.CurrentHealth}/{best.Stats.MaxHealth}";
+                log($"⬆️ Uppercut : {best.Stats.Name} n'est pas entravée à ≤ 50% PV ({hp}, entrave : {DuoTechRegistry.IsEntraveeForUppercut(best.Stats)}) — whiff : +1 ESS chacun (PA perdus).");
+                DuoTechRegistry.ResolveUppercut(
+                    _mina != null ? _mina.Stats : null,
+                    _lucas != null ? _lucas.Stats : null,
+                    best.Stats, DuoTechOutcome.Miss, log);
+                best.GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
+                return;
+            }
+            DuoTechRegistry.ResolveUppercut(
+                _mina != null ? _mina.Stats : null,
+                _lucas != null ? _lucas.Stats : null,
+                best.Stats, DuoTechOutcome.Perfect, log);
             best.GetComponent<TacticalUnitVisual>()?.TriggerHitFlash();
         }
 

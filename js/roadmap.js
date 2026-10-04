@@ -26,6 +26,29 @@
   let saveWatchdog = null;
   let tabEditing = null; // boardId en cours de renommage, ou 'new'
   let lastDiskSnap = '';
+  let searchTimer = null;
+
+  /* ---------- préserve position (scroll window + colonnes) pendant les re-rendus ---------- */
+  function captureScroll() {
+    const s = { x: window.scrollX || 0, y: window.scrollY || 0, cols: {} };
+    try {
+      STATUSES.forEach((st) => {
+        const c = els['col-' + st];
+        if (c) s.cols[st] = c.scrollTop;
+      });
+    } catch (e) { /* ignore */ }
+    return s;
+  }
+  function restoreScroll(s) {
+    if (!s) return;
+    try {
+      STATUSES.forEach((st) => {
+        const c = els['col-' + st];
+        if (c && Number.isFinite(s.cols[st])) c.scrollTop = s.cols[st];
+      });
+      if (s.x !== undefined || s.y !== undefined) window.scrollTo(s.x || 0, s.y || 0);
+    } catch (e) { /* ignore */ }
+  }
 
   const $ = (id) => document.getElementById(id);
   const els = {};
@@ -322,13 +345,18 @@
     setSaveState('', local ? 'Hors-ligne — modifs locales' : 'Prêt — autosave actif');
   }
 
-  // Revalidation silencieuse quand on revient sur l'onglet (git pull entre-temps).
+  // Revalidation NON-destructive quand on revient sur l'onglet (git pull entre-temps).
+  // Ne recharge jamais en boucle : propose seulement via toast, ne touche pas au scroll.
+  // L'autoload initial depuis le JSON (load()) reste inchangé.
   let lastVisibleCheck = 0;
   async function refreshDiskSilent() {
     const now = Date.now();
-    if (now - lastVisibleCheck < 15000) return;
+    if (now - lastVisibleCheck < 30000) return;
     lastVisibleCheck = now;
     if (!store.boards.length) return;
+    // Ne jamais interrompre une interaction en cours.
+    if (editingId || (els.rmBackdrop && els.rmBackdrop.classList.contains('open'))) return;
+    if (drag || tabEditing) return;
     try {
       const disk = await fetchDiskDoc();
       if (!disk || (!Array.isArray(disk.boards) && !Array.isArray(disk.tasks))) return;
@@ -336,28 +364,37 @@
         ? { boards: disk.boards.map((b, i) => cleanBoard(b, i)), activeId: disk.activeId || null }
         : { boards: [cleanBoard({ id: 'board-prefabs-scene', name: 'Prefabs scènes', desc: '', tasks: disk.tasks }, 0)], activeId: 'board-prefabs-scene' };
       const diskSnap = snapBoards(norm);
-      if (!diskSnap || diskSnap === lastDiskSnap) {
-        // Compare quand même avec l'état courant (modifs locales possibles).
-        if (diskSnap === snapBoards({ boards: store.boards, activeId: store.activeId })) return;
+      if (!diskSnap || diskSnap === lastDiskSnap) return;
+      if (diskSnap === snapBoards({ boards: store.boards, activeId: store.activeId })) {
+        lastDiskSnap = diskSnap;
+        return;
       }
+      // Disque différent : on ne l'applique PAS d'office (ça faisait "recharger" + perdre sa place).
+      // On propose seulement, l'utilisateur garde sa position et ses filtres.
       lastDiskSnap = diskSnap;
-      if (diskSnap !== snapBoards({ boards: store.boards, activeId: store.activeId })) {
-        const diskCopy = JSON.parse(JSON.stringify(disk));
-        applyDoc(diskCopy);
-        persistLocal();
-        els.inspDirty.textContent = 'non';
-        syncViewControls();
-        render();
-        setSaveState('', 'Disque synchronisé • ' + nowHM());
-        toast('Roadmap mise à jour depuis le disque');
-      }
+      const diskCopy = JSON.parse(JSON.stringify(disk));
+      toast('Une version disque plus récente existe', {
+        label: 'Charger',
+        fn: () => {
+          const sc = captureScroll();
+          applyDoc(diskCopy);
+          persistLocal();
+          els.inspDirty.textContent = 'non';
+          syncViewControls();
+          render();
+          restoreScroll(sc);
+          setSaveState('', 'Disque synchronisé • ' + nowHM());
+          toast('Version disque chargée');
+        }
+      });
     } catch (e) { /* disque injoinable : on reste en local */ }
   }
 
   /* ---------- filtres / tri (par board) ---------- */
   function syncViewControls() {
     const v = view();
-    els.rmSearch.value = v.search || '';
+    // Ne pas écraser un champ en cours de frappe (évite curseur qui saute + re-render).
+    if (document.activeElement !== els.rmSearch) els.rmSearch.value = v.search || '';
     els.rmPrioFilter.value = v.prio || '';
     els.rmSort.value = v.sort || 'manual';
   }
@@ -647,10 +684,13 @@
     render();
   }
 
-  /* ---------- rendu ---------- */
+  /* ---------- rendu (préserve scroll window + colonnes + focus) ---------- */
   function render() {
     const b = board();
     if (!b) return;
+    const sc = captureScroll();
+    const activeId = document.activeElement && document.activeElement.id;
+    const selStart = (activeId === 'rmSearch' && document.activeElement.selectionStart) || null;
     const v = view();
     renderTabs();
     if (els.rmBoardName) els.rmBoardName.textContent = b.name;
@@ -718,6 +758,16 @@
       els.rmEpics.appendChild(row);
     });
     flashId = null;
+    restoreScroll(sc);
+    // Si on tapait dans la recherche, on garde le focus + position curseur.
+    if (activeId === 'rmSearch' && document.activeElement !== els.rmSearch) {
+      try {
+        els.rmSearch.focus({ preventScroll: true });
+        if (selStart !== null && els.rmSearch.setSelectionRange) {
+          els.rmSearch.setSelectionRange(selStart, selStart);
+        }
+      } catch (e) { /* ignore */ }
+    }
   }
 
   /* ---------- actions tâche ---------- */
@@ -804,8 +854,11 @@
       renumber(from); renumber(newStatus);
     }
     liveChips(t);
+    // Édition live : on autosave SANS re-rendre le board en boucle.
+    // Ça évitait le flicker + perte de scroll derrière la modale.
+    // Le board est re-rendu une seule fois à closeModal().
     clearTimeout(liveTimer);
-    liveTimer = setTimeout(() => { commit(); render(); liveChips(t); }, 500);
+    liveTimer = setTimeout(() => { commit(); liveChips(t); }, 500);
   }
 
   function openModal(id, presetStatus) {
@@ -915,7 +968,13 @@
   document.addEventListener('DOMContentLoaded', () => {
     cacheEls();
     if (!els['col-todo']) return;
-    els.rmSearch.addEventListener('input', () => { view().search = els.rmSearch.value; persistLocal(); renderTabs(); render(); });
+    // Recherche debouncée : un seul re-render 200 ms après la frappe, sans reconstruire les onglets.
+    els.rmSearch.addEventListener('input', () => {
+      view().search = els.rmSearch.value;
+      persistLocal();
+      clearTimeout(searchTimer);
+      searchTimer = setTimeout(() => render(), 200);
+    });
     els.rmEpicFilter.addEventListener('change', () => { view().epic = els.rmEpicFilter.value; persistLocal(); render(); });
     els.rmPrioFilter.addEventListener('change', () => { view().prio = els.rmPrioFilter.value; persistLocal(); render(); });
     els.rmSort.addEventListener('change', () => { view().sort = els.rmSort.value; persistLocal(); render(); });
@@ -977,20 +1036,31 @@
       try {
         const data = JSON.parse(e.newValue);
         if (data && data.v === 3 && data.store && Array.isArray(data.store.boards)) {
-          // Ne pas écraser une modale en cours d'édition.
+          // Ne pas écraser une modale / un drag / un renommage en cours.
           if (els.rmBackdrop.classList.contains('open')) return;
+          if (drag || tabEditing) return;
+          // Si on est en train de taper dans la recherche, on garde le filtre local.
+          const keepSearch = (document.activeElement === els.rmSearch) ? view().search : null;
+          const sc = captureScroll();
           adoptStore(data.store);
           if (data.views) views = data.views;
+          if (keepSearch !== null) view().search = keepSearch;
           syncViewControls(); render();
+          restoreScroll(sc);
           toast('Synchro depuis un autre onglet');
         }
       } catch (err) { /* ignore */ }
     });
-    // Retour sur l'onglet après `git pull` : revalide le disque (throttle 15 s).
+    // Retour sur l'onglet après `git pull` : propose la version disque SANS recharger d'office
+    // (throttle 30 s, jamais pendant une frappe / modale / drag). Autoload initial via load() inchangé.
     document.addEventListener('visibilitychange', () => {
       if (!document.hidden) refreshDiskSilent();
     });
-    window.addEventListener('focus', () => { refreshDiskSilent(); });
+    window.addEventListener('focus', () => {
+      // focus() se déclenche aussi au clic dans la page : on ignore si la frappe est en cours.
+      if (isTyping()) return;
+      refreshDiskSilent();
+    });
     load();
   });
 })();

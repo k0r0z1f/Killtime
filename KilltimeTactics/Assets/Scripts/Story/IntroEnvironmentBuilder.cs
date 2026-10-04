@@ -336,10 +336,10 @@ namespace Killtime.Story.Scenes
             var keyLight = new GameObject("Key_Light").AddComponent<Light>();
             keyLight.transform.SetParent(lights.transform, false);
             keyLight.transform.position = new Vector3(0, 4.5f, -2f);
-            keyLight.type = LightType.Directional;
-            keyLight.transform.rotation = Quaternion.Euler(50f, 25f, 0);
+            keyLight.type = LightType.Point;
+            keyLight.range = 25f;
+            keyLight.intensity = 2.2f;
             keyLight.color = new Color(0.85f, 0.92f, 1.0f);
-            keyLight.intensity = 1.1f;
 
             var holoLight = new GameObject("Holo_PointLight").AddComponent<Light>();
             holoLight.transform.SetParent(lights.transform, false);

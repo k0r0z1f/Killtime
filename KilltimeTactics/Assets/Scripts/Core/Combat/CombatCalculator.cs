@@ -60,6 +60,9 @@ namespace Killtime.Core.Combat
         // RD-049 : Furtivité / Embuscade (+2 attaque, pas de réaction adverse)
         public bool IsStealthAttack;
         public int StealthAttackBonus;
+        // RD-048 : Canalisation / Action en Progression (+2 au jet, -1 en défense)
+        public bool IsChannelAttack;
+        public int ChannelAttackBonus;
         // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §31.2).
         // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
         public int WeaponBonusEc;
@@ -101,6 +104,70 @@ namespace Killtime.Core.Combat
         public int DefenderPEApplied;
         public int Differential;
         public bool AttackerWins;
+        public string CombatLog;
+    }
+
+    /// <summary>
+    /// Résultat d'une attaque combinée de groupe (RD-084, Livre VI §25.2) :
+    /// sommation des résultats offensifs face à l'unique défense de la cible.
+    /// </summary>
+    public sealed class CombinedAttackResult
+    {
+        public bool IsValid;
+        public string Error;
+        public System.Collections.Generic.List<CharacterStats> Attackers = new();
+        public CharacterStats Defender;
+        public BodyPart TargetedPart;
+        public SkillType AttackSkill;
+        public SkillType DefenseSkill;
+        public System.Collections.Generic.List<DiceRollResult> AttackRolls = new();
+        public int SummedAttackTotal;
+        public int SummedWeaponBase;
+        public DiceRollResult DefenseRoll;
+        public int UniqueDefenseTotal;
+        public bool DefenderDefended;
+        public int Differential;
+        public int RawDamage;
+        public int ArmorAbsorbed;
+        public int ShieldAbsorbed;
+        public int FinalDamageApplied;
+        public bool ExceededEncaissement;
+        public StatusEffect InflictedStatus;
+        public FatalBlowResolution FatalResolution;
+        public MoraleCheckResult MoraleResult;
+        public bool IsHit;
+        public int SlowestInitiative;
+        public CharacterStats SlowestMember;
+        // RD-048 : canalisation interrompue par la sommation (dégât net > encaissement).
+        public bool ChannelInterrupted;
+        public string InterruptedChannelLabel;
+        public string CombatLog;
+    }
+
+    /// <summary>
+    /// Entrée individuelle d'un poursuivant dans un round de course-poursuite.
+    /// </summary>
+    public sealed class PursuitDuelEntry
+    {
+        public CharacterStats Pursuer;
+        public DiceRollResult PursuerRoll;
+        public int Differential;
+        public bool PreyWins;
+    }
+
+    /// <summary>
+    /// Résultat d'un round de course-poursuite (RD-084, Livre VI §25.1) :
+    /// un unique jet de la proie opposé à chaque poursuivant.
+    /// </summary>
+    public sealed class PursuitRoundResult
+    {
+        public CharacterStats Prey;
+        public DiceRollResult PreyRoll;
+        public System.Collections.Generic.List<PursuitDuelEntry> Entries = new();
+        public int FailuresAdded;
+        public int TotalFailures;
+        public int FailuresToCapture;
+        public bool Caught;
         public string CombatLog;
     }
 
@@ -332,6 +399,9 @@ namespace Killtime.Core.Combat
 
             bool isStealthAttack = StealthState.IsStealthed(attacker);
             int stealthBonus = isStealthAttack ? StealthState.StealthAttackBonus : 0;
+            // RD-048 : attaque en canalisant = +2 au jet (consommé à la résolution).
+            bool isChannelAttack = ChannelingState.IsChanneling(attacker);
+            int channelBonus = isChannelAttack ? ChannelingState.PeekAttackBonus(attacker) : 0;
 
             bool isRangedShot = (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir);
             bool effectiveNight = isNight;
@@ -371,12 +441,14 @@ namespace Killtime.Core.Combat
                 BlockedByCover = false,
                 IsStealthAttack = isStealthAttack,
                 StealthAttackBonus = stealthBonus,
+                IsChannelAttack = isChannelAttack,
+                ChannelAttackBonus = channelBonus,
                 IsNightAttack = effectiveNight,
                 NightAttackMod = nightMod
             };
 
-            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC + hauteur RD-036 + stealth RD-049 + nuit RD-053.
-            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc) + elevationAttackMod + stealthBonus + nightMod;
+            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC + hauteur RD-036 + stealth RD-049 + nuit RD-053 + canalisation RD-048.
+            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc) + elevationAttackMod + stealthBonus + nightMod + channelBonus;
             duel.WeaponBonusEc = Math.Max(0, weaponBonusEc);
             duel.ElevationAttackMod = elevationAttackMod;
             duel.ElevationLabel = elevationLabel ?? "";
@@ -447,6 +519,8 @@ namespace Killtime.Core.Combat
             {
                 defBase += cfg.ChargeDefensePenalty;
             }
+            // RD-048 : punition de progression (-1 en défense tant qu'on canalise).
+            defBase += ChannelingState.GetDefenseModifier(defender);
             duel.DefenseBaseMod = defBase;
 
             return duel;
@@ -553,6 +627,8 @@ namespace Killtime.Core.Combat
             {
                 statusMod += cfg.ChargeDefensePenalty;
             }
+            // RD-048 : punition de progression en canalisation.
+            statusMod += ChannelingState.GetDefenseModifier(duel.Defender);
             duel.DefenseStatusMod = statusMod;
             duel.DefenseBaseMod = statusMod;
             duel.CanDefenderReact = true;
@@ -759,6 +835,51 @@ namespace Killtime.Core.Combat
         }
 
         // =====================================================================
+        // RD-048 : RETARDER / TENIR / CANALISATION (Livre VI — Tours).
+        // - Tenir : 0 PA, passe en attente (interruption ultérieure).
+        // - Retarder : 0 PA, initiative -pénalité (réinsertion par TurnManager).
+        // - Canalisation : coût config, +2 au jet à l'attaque, -1 en défense,
+        //   interrompue si dégât net > encaissement.
+        // =====================================================================
+
+        /// <summary>
+        /// Tient son action : passe en attente (coût config, 0 PA par défaut).
+        /// </summary>
+        public bool TryHoldAction(CharacterStats unit, out string error)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return DelayedTurnState.TryHold(unit, cfg != null ? cfg.HoldAPCost : 0, out error);
+        }
+
+        /// <summary>
+        /// Retarde son tour : initiative réduite de la pénalité (config, -2).
+        /// La réinsertion dans l'ordre est effectuée par le TurnManager.
+        /// </summary>
+        public bool TryDelayInitiative(CharacterStats unit, out int newTotal, out string error)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return DelayedTurnState.TryDelay(unit, cfg != null ? cfg.DelayInitiativePenalty : 2, out newTotal, out error);
+        }
+
+        /// <summary>
+        /// Entre en canalisation / action en progression (coût config, 1 PA).
+        /// </summary>
+        public bool TryBeginChanneling(CharacterStats unit, string label, out string error)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return ChannelingState.TryBeginChannel(unit, label, cfg != null ? cfg.ChannelStartAPCost : 1, out error);
+        }
+
+        /// <summary>
+        /// Vérifie l'interruption de canalisation après des dégâts nets
+        /// (après armure/bouclier) : vrai si la canalisation est rompue.
+        /// </summary>
+        public bool CheckChannelInterruption(CharacterStats defender, int finalDamageApplied, out string interruptedLabel)
+        {
+            return ChannelingState.NotifyDamage(defender, finalDamageApplied, out interruptedLabel);
+        }
+
+        // =====================================================================
         // RD-032 : GARDE DU CORPS / INTERCEPTION ALLIÉ (Livre VI §24.5)
         // Coût 1 PA réaction : le protecteur au contact (distance <= 1) prend
         // le coup à la place de l'allié ciblé. Le duel est réorienté vers lui.
@@ -800,6 +921,8 @@ namespace Killtime.Core.Combat
             {
                 statusMod += Rules.CoreRulesConfig.Instance.ChargeDefensePenalty;
             }
+            // RD-048 : punition de progression en canalisation.
+            statusMod += ChannelingState.GetDefenseModifier(protector);
             duel.DefenseStatusMod = statusMod;
             duel.DefenseBaseMod = statusMod;
 
@@ -1244,6 +1367,441 @@ namespace Killtime.Core.Combat
             };
         }
 
+        // =====================================================================
+        // RD-084 : ATTAQUES COMBINÉES DE GROUPE (Livre VI §25.2) & POURSUITE (§25.1)
+        // =====================================================================
+
+        /// <summary>
+        /// RD-084 : Attaque combinée de groupe (Livre VI §25.2). Les participants
+        /// se synchronisent sur l'initiative du membre le plus lent, chacun
+        /// effectue son épreuve (dé de sa compétence + états + mises aveugles),
+        /// les résultats totaux s'additionnent face à l'UNIQUE défense de la cible.
+        /// L'armure et le bouclier ne sont appliqués qu'UNE fois sur le total
+        /// sommationné : le dépassement massif pulvérise les défenses.
+        /// Chaque attaquant paie le coût de base (config) + ses mises ; la cible
+        /// paie sa réaction de base + ses mises (ou encaisse à 0 sans réaction).
+        /// </summary>
+        public CombinedAttackResult ResolveCombinedAttack(
+            System.Collections.Generic.IList<CharacterStats> attackers,
+            CharacterStats defender,
+            BodyPart targetedPart,
+            SkillType attackSkill,
+            SkillType defenseSkill,
+            int weaponBaseDamagePerAttacker = 5,
+            System.Collections.Generic.IList<int> attackerBonusAP = null,
+            System.Collections.Generic.IList<int> attackerPE = null,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderWantsToDefend = true,
+            bool defenderAutoStakes = false)
+        {
+            System.Collections.Generic.List<int> uniform = null;
+            if (attackers != null)
+            {
+                uniform = new System.Collections.Generic.List<int>(attackers.Count);
+                for (int i = 0; i < attackers.Count; i++) uniform.Add(weaponBaseDamagePerAttacker);
+            }
+            return ResolveCombinedAttack(attackers, defender, targetedPart, attackSkill, defenseSkill,
+                uniform, attackerBonusAP, attackerPE, defenderBonusAP, defenderPE,
+                defenderWantsToDefend, defenderAutoStakes);
+        }
+
+        /// <summary>
+        /// RD-084 : Variante à dégâts d'arme différenciés par participant
+        /// (arme équipée de chacun, 5 à mains nues). La sommation reste comparée
+        /// à l'unique défense, armure appliquée une seule fois.
+        /// </summary>
+        public CombinedAttackResult ResolveCombinedAttack(
+            System.Collections.Generic.IList<CharacterStats> attackers,
+            CharacterStats defender,
+            BodyPart targetedPart,
+            SkillType attackSkill,
+            SkillType defenseSkill,
+            System.Collections.Generic.IList<int> weaponBaseDamages,
+            System.Collections.Generic.IList<int> attackerBonusAP = null,
+            System.Collections.Generic.IList<int> attackerPE = null,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderWantsToDefend = true,
+            bool defenderAutoStakes = false)
+        {
+            var result = new CombinedAttackResult
+            {
+                IsValid = false,
+                Defender = defender,
+                TargetedPart = targetedPart,
+                AttackSkill = attackSkill,
+                DefenseSkill = defenseSkill
+            };
+            var cfg = Rules.CoreRulesConfig.Instance;
+            // Livre VI §25.2 : « Deux combattants ou plus » — plancher à 2
+            // même si la config est abaissée (évite les groupes vides/dégénérés).
+            int minMembers = cfg != null ? Math.Max(2, cfg.CombinedAttackMinMembers) : 2;
+            int baseCost = cfg != null ? cfg.CombinedAttackAPCost : 2;
+
+            if (attackers == null || attackers.Count < minMembers)
+            {
+                result.Error = $"Attaque combinée impossible : {minMembers} attaquants minimum requis.";
+                result.CombatLog = $"⚠️ {result.Error}";
+                return result;
+            }
+            if (defender == null || !defender.IsAlive)
+            {
+                result.Error = "Attaque combinée impossible : cible hors de combat.";
+                result.CombatLog = $"⚠️ {result.Error}";
+                return result;
+            }
+
+            var members = new System.Collections.Generic.List<CharacterStats>(attackers.Count);
+            for (int i = 0; i < attackers.Count; i++)
+            {
+                var a = attackers[i];
+                if (a == null || !a.IsAlive || a == defender)
+                {
+                    result.Error = $"Attaque combinée impossible : participant invalide ({(a == null ? "null" : a.Name)}).";
+                    result.CombatLog = $"⚠️ {result.Error}";
+                    return result;
+                }
+                members.Add(a);
+            }
+
+            if (!GroupAssaultState.TryValidateGroup(members, baseCost, minMembers, out string groupError))
+            {
+                result.Error = groupError;
+                result.CombatLog = $"⚠️ {groupError}";
+                return result;
+            }
+
+            // Synchronisation sur le membre le plus lent (traçabilité TurnManager).
+            result.SlowestInitiative = GroupAssaultState.RegisterSynchronizedGroup(members);
+            result.SlowestMember = GroupAssaultState.GetSlowestMember(members);
+            result.Attackers.AddRange(members);
+
+            // Coûts de base débités aussitôt (un par participant).
+            for (int i = 0; i < members.Count; i++)
+            {
+                if (!members[i].ConsumeActionPoints(baseCost))
+                {
+                    result.Error = $"{members[i].Name} n'a plus assez de PA pour frapper à l'unisson !";
+                    result.CombatLog = $"⚠️ {result.Error}";
+                    return result;
+                }
+            }
+
+            // Épreuves offensives individuelles (mises aveugles par participant).
+            int summedAttack = 0;
+            int summedBase = 0;
+            for (int i = 0; i < members.Count; i++)
+            {
+                var a = members[i];
+                DiceType die = a.GetSkillDie(attackSkill, true);
+                int status = a.GetStatusModifier(attackSkill, isOffensive: true);
+                int bAP = (attackerBonusAP != null && i < attackerBonusAP.Count) ? Math.Max(0, attackerBonusAP[i]) : 0;
+                int bPE = (attackerPE != null && i < attackerPE.Count) ? Math.Max(0, attackerPE[i]) : 0;
+                int paidPA = SpendBonusPA(a, bAP);
+                int paidPE = a.SpendDuelPE(bPE);
+                int committed = paidPA + paidPE * cfg.DuelPEBonusPerPoint;
+                var roll = _diceRoller.Roll(die, status + committed, cfg.StandardTargetDC);
+                result.AttackRolls.Add(roll);
+                summedAttack += roll.Total;
+                int wBase = (weaponBaseDamages != null && i < weaponBaseDamages.Count) ? weaponBaseDamages[i] : 5;
+                summedBase += Math.Max(0, wBase);
+            }
+            result.SummedAttackTotal = summedAttack;
+            result.SummedWeaponBase = summedBase;
+
+            // Unique défense de la cible (réaction de base + mises, ou passif à 0).
+            bool wants = defenderWantsToDefend && defender.CanDefendActively();
+            bool basePaid = false;
+            int defCommitted = 0;
+            DiceType defDie = defender.GetSkillDie(defenseSkill);
+            int defStatus = defender.GetStatusModifier(defenseSkill, isOffensive: false);
+            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill)
+                && !SkillDefinitions.HasDefensiveSpecialization(defender.Sheet, defenseSkill))
+            {
+                defDie = SkillDefinitions.StepDownDie(defDie);
+            }
+            if (wants)
+            {
+                if (defender.ConsumeActionPoints(cfg.BaseReactionAPCost))
+                {
+                    basePaid = true;
+                    if (defenderAutoStakes)
+                    {
+                        int expectedDef = (int)Math.Round(DieAverage(defDie)) + defStatus;
+                        int need = Math.Max(0, summedAttack - expectedDef + 1);
+                        int affordable = Math.Max(0, defender.CurrentActionPoints);
+                        defCommitted = SpendBonusPA(defender, Math.Min(need, affordable));
+                    }
+                    else
+                    {
+                        int paidPA = SpendBonusPA(defender, Math.Max(0, defenderBonusAP));
+                        int paidPE = defender.SpendDuelPE(Math.Max(0, defenderPE));
+                        defCommitted = paidPA + paidPE * cfg.DuelPEBonusPerPoint;
+                    }
+                }
+                else
+                {
+                    wants = false;
+                }
+            }
+
+            DiceRollResult defRoll;
+            if (wants && basePaid)
+            {
+                int penalty = 0;
+                if (ChargeState.HasDefensePenalty(defender)) penalty += cfg.ChargeDefensePenalty;
+                // RD-048 : punition de progression en canalisation.
+                penalty += ChannelingState.GetDefenseModifier(defender);
+                defRoll = _diceRoller.Roll(defDie, defStatus + penalty + defCommitted, cfg.StandardTargetDC);
+                result.DefenderDefended = true;
+            }
+            else
+            {
+                defRoll = new DiceRollResult
+                {
+                    DieType = defDie, RawRoll = 0, Modifier = 0, Total = 0,
+                    TargetDC = cfg.StandardTargetDC, Differential = -cfg.StandardTargetDC,
+                    IsSuccess = false, IsCriticalSuccess = false, IsCriticalFailure = false
+                };
+                result.DefenderDefended = false;
+            }
+            result.DefenseRoll = defRoll;
+            result.UniqueDefenseTotal = result.DefenderDefended ? defRoll.Total : 0;
+
+            int differential = result.DefenderDefended
+                ? summedAttack - defRoll.Total
+                : summedAttack;
+            result.Differential = differential;
+            result.IsHit = differential >= 0;
+
+            if (!result.IsHit)
+            {
+                string blockLog = $"🛡️ <b>ASSAUT GROUPÉ PARÉ</b> : {members.Count} assaillants synchronisés (lenteur : {(result.SlowestMember != null ? result.SlowestMember.Name : "?")}, ini {result.SlowestInitiative}) mais {defender.Name} neutralise la sommation !\n";
+                blockLog += $"   ⚔️ Sommation : {summedAttack} vs Défense unique {defRoll.Total} ➔ <b>Différentiel {differential}</b> — <b>0 dégât</b>.";
+                blockLog += ApplySkillProgression(defender, defenseSkill, false);
+                for (int i = 0; i < members.Count; i++) StealthState.BreakStealth(members[i]);
+                result.CombatLog = blockLog;
+                result.FatalResolution = FatalBlowResolution.None;
+                result.IsValid = true;
+                return result;
+            }
+
+            // Dépassement massif : armure + bouclier appliqués UNE SEULE FOIS.
+            int rawDamage = summedBase + Math.Max(0, differential);
+            int totalArmor = defender.BaseArmorAbsorption + defender.GetWornArmorBonus();
+            int absorbed = Math.Min(totalArmor, rawDamage);
+            int shieldRemainder = defender.AbsorbShield(Math.Max(0, rawDamage - absorbed));
+            int shieldAbsorbed = Math.Max(0, Math.Max(0, rawDamage - absorbed) - shieldRemainder);
+            int finalDamage = Math.Max(0, shieldRemainder);
+            result.RawDamage = rawDamage;
+            result.ArmorAbsorbed = absorbed;
+            result.ShieldAbsorbed = shieldAbsorbed;
+            result.FinalDamageApplied = finalDamage;
+
+            bool exceeded = finalDamage > defender.EncaissementThreshold;
+            result.ExceededEncaissement = exceeded;
+            StatusEffect inflicted = StatusEffect.None;
+            // RD-048 : capture avant statuts (purge silencieuse par K.O. sinon).
+            bool combinedWasChanneling = ChannelingState.IsChanneling(defender);
+            string combinedPriorLabel = null;
+            if (combinedWasChanneling) ChannelingState.TryGetLabel(defender, out combinedPriorLabel);
+            if (exceeded)
+            {
+                inflicted = DetermineInflictedStatus(targetedPart);
+                defender.ActiveStatus |= inflicted;
+            }
+            result.InflictedStatus = inflicted;
+
+            FatalBlowResolution fatalRes = FatalBlowResolution.None;
+            if (defender.CurrentHealth - finalDamage <= 0)
+            {
+                fatalRes = defender.EvaluateFatalBlow(targetedPart, finalDamage);
+            }
+            else
+            {
+                defender.CurrentHealth -= finalDamage;
+            }
+            result.FatalResolution = fatalRes;
+
+            MoraleCheckResult moraleRes = default;
+            if (defender.IsAlive && !defender.HasTestedMorale && defender.CurrentHealth > 0)
+            {
+                moraleRes = defender.CheckMoraleAtThreshold(_diceRoller, cfg.StandardTargetDC);
+            }
+            result.MoraleResult = moraleRes;
+
+            // RD-048 : la sommation interrompt aussi la canalisation (dégât net > encaissement).
+            bool combinedChannelInterrupted = false;
+            string combinedChannelLabel = null;
+            if (combinedWasChanneling)
+            {
+                if (ChannelingState.IsChanneling(defender))
+                {
+                    if (!defender.IsAlive || exceeded)
+                    {
+                        if (ChannelingState.NotifyDamage(defender, finalDamage, out combinedChannelLabel))
+                            combinedChannelInterrupted = true;
+                    }
+                }
+                else
+                {
+                    combinedChannelInterrupted = true;
+                    combinedChannelLabel = combinedPriorLabel;
+                    ChannelingState.Cancel(defender);
+                }
+            }
+            result.ChannelInterrupted = combinedChannelInterrupted;
+            result.InterruptedChannelLabel = combinedChannelLabel;
+
+            var info = BodyPartInfo.GetInfo(targetedPart);
+            string log = $"⚔️ <b>ASSAUT GROUPÉ ({members.Count})</b> : synchronisés sur {(result.SlowestMember != null ? result.SlowestMember.Name : "?")} (initiative la plus lente : {result.SlowestInitiative}) ➔ {defender.Name} ({info.DisplayName})\n";
+            for (int i = 0; i < members.Count; i++)
+            {
+                var r = result.AttackRolls[i];
+                log += $"   🗡️ {members[i].Name} : {attackSkill} [{r.DieType} tirage {r.RawRoll} + mod {r.Modifier} = <b>{r.Total}</b>]\n";
+            }
+            log += $"   ➕ <b>SOMMATION OFFENSIVE : {summedAttack}</b> vs <b>DÉFENSE UNIQUE : {(result.DefenderDefended ? defRoll.Total.ToString() : "0 (passif)")}</b> ➔ <b>Différentiel +{differential}</b>\n";
+            log += $"   ⚔️ Dégâts : [{summedBase} (armes cumulées) + {Math.Max(0, differential)} (dépassement) = {rawDamage} bruts] − [Armure {totalArmor} (1×, absorbé {absorbed})]";
+            if (shieldAbsorbed > 0) log += $" − [🔮Bouclier {shieldAbsorbed}]";
+            log += $" ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
+            log += $"   ❤️ Vitalité {defender.Name} : ➔ <b>{defender.CurrentHealth}/{defender.MaxHealth} PV</b>";
+            if (exceeded) log += $" | ⚡ <b>CHOC TRAUMATIQUE</b> (> Encaissement {defender.EncaissementThreshold}) ➔ [{inflicted}]";
+            if (combinedChannelInterrupted) log += $" | ⏳ <b>CANALISATION INTERROMPUE</b> ({finalDamage} dégâts nets &gt; encaissement {defender.EncaissementThreshold}) : « {combinedChannelLabel} » perdue !";
+            if (fatalRes == FatalBlowResolution.InstantDeath) log += " | 💀 <b>MORT INSTANTANÉE</b>";
+            else if (fatalRes == FatalBlowResolution.ForcedUnconscious) log += " | 💥 <b>SYNCOPE TRAUMATIQUE (K.O.)</b>";
+            else if (fatalRes == FatalBlowResolution.EligibleForLastBreath) log += " | ⚡ <b>0 PV (Sombrer ou Dernier Souffle)</b>";
+            if (moraleRes.Triggered) log += "\n   " + moraleRes.Log;
+            for (int i = 0; i < members.Count; i++)
+            {
+                log += ApplySkillProgression(members[i], attackSkill, true);
+                StealthState.BreakStealth(members[i]);
+            }
+            result.CombatLog = log;
+            result.IsValid = true;
+            return result;
+        }
+
+        /// <summary>
+        /// RD-084 : Round de course-poursuite (Livre VI §25.1). La proie effectue
+        /// UNE unique épreuve d'Athlétisme (mises une seule fois), chaque
+        /// poursuivant effectue la sienne et se compare à ce total :
+        /// réussite de la proie = distance maintenue (≥ 1 case), faillite =
+        /// le poursuivant gagne du terrain (+1 faillite cumulée). À 4 faillites
+        /// cumulées : arrêt et capture immédiate (PursuitState + Immobilisé).
+        /// </summary>
+        public PursuitRoundResult ResolvePursuitRound(
+            CharacterStats prey,
+            System.Collections.Generic.IList<CharacterStats> pursuers,
+            int preyBonusAP = 0,
+            int preyPE = 0,
+            bool pursuersAutoStakes = true,
+            System.Collections.Generic.IList<int> pursuerBonusAP = null,
+            System.Collections.Generic.IList<int> pursuerPE = null)
+        {
+            var result = new PursuitRoundResult { Prey = prey };
+            var cfg = Rules.CoreRulesConfig.Instance;
+            PursuitState.FailuresToCapture = cfg != null ? cfg.PursuitFailuresToCapture : 4;
+            PursuitState.MinKeptDistance = cfg != null ? cfg.PursuitMinDistance : 1;
+            result.FailuresToCapture = PursuitState.FailuresToCapture;
+
+            var alive = new System.Collections.Generic.List<CharacterStats>();
+            if (pursuers != null)
+            {
+                for (int i = 0; i < pursuers.Count; i++)
+                {
+                    var p = pursuers[i];
+                    if (p != null && p != prey && p.IsAlive) alive.Add(p);
+                }
+            }
+
+            if (prey == null || !prey.IsAlive)
+            {
+                result.CombatLog = "⚠️ Poursuite impossible : proie hors de combat.";
+                result.TotalFailures = 0;
+                return result;
+            }
+            if (alive.Count == 0)
+            {
+                result.CombatLog = $"⚠️ Poursuite impossible : aucun poursuivant valide pour {prey.Name}.";
+                result.TotalFailures = PursuitState.GetFailures(prey);
+                return result;
+            }
+
+            // Unique épreuve de la proie (notée puis opposée à chacun).
+            DiceType preyDie = prey.GetSkillDie(SkillType.Athletisme, true);
+            int preyStatus = prey.GetStatusModifier(SkillType.Athletisme, isOffensive: true);
+            int preyPA = SpendBonusPA(prey, Math.Max(0, preyBonusAP));
+            int preyPEPaid = prey.SpendDuelPE(Math.Max(0, preyPE));
+            int preyCommitted = preyPA + preyPEPaid * cfg.DuelPEBonusPerPoint;
+            var preyRoll = _diceRoller.Roll(preyDie, preyStatus + preyCommitted, cfg.StandardTargetDC);
+            result.PreyRoll = preyRoll;
+
+            PursuitState.TrackPursuers(prey, alive);
+            int added = 0;
+            string log = $"🏃 <b>COURSE-POURSUITE</b> : {prey.Name} fuit ({alive.Count} poursuivant(s)) — Athlétisme vs Athlétisme\n";
+            log += $"   🦌 Proie {prey.Name} : [d{preyDie} tirage {preyRoll.RawRoll} + mod {preyRoll.Modifier} = <b>{preyRoll.Total}</b>]\n";
+
+            for (int i = 0; i < alive.Count; i++)
+            {
+                var p = alive[i];
+                DiceType pDie = p.GetSkillDie(SkillType.Athletisme, true);
+                int pStatus = p.GetStatusModifier(SkillType.Athletisme, isOffensive: true);
+                int paidPA = 0;
+                int paidPE = 0;
+                if (pursuersAutoStakes)
+                {
+                    int expectedPrey = preyRoll.Total;
+                    int expectedSelf = (int)Math.Round(DieAverage(pDie)) + pStatus;
+                    int need = Math.Max(0, expectedPrey - expectedSelf + 1);
+                    paidPA = SpendBonusPA(p, Math.Min(need, Math.Max(0, p.CurrentActionPoints)));
+                }
+                else
+                {
+                    int wantPA = (pursuerBonusAP != null && i < pursuerBonusAP.Count) ? Math.Max(0, pursuerBonusAP[i]) : 0;
+                    int wantPE = (pursuerPE != null && i < pursuerPE.Count) ? Math.Max(0, pursuerPE[i]) : 0;
+                    paidPA = SpendBonusPA(p, wantPA);
+                    paidPE = p.SpendDuelPE(wantPE);
+                }
+                int committed = paidPA + paidPE * cfg.DuelPEBonusPerPoint;
+                var pRoll = _diceRoller.Roll(pDie, pStatus + committed, cfg.StandardTargetDC);
+                int diff = preyRoll.Total - pRoll.Total;
+                bool preyWins = diff >= 0;
+
+                var entry = new PursuitDuelEntry
+                {
+                    Pursuer = p,
+                    PursuerRoll = pRoll,
+                    Differential = diff,
+                    PreyWins = preyWins
+                };
+                result.Entries.Add(entry);
+
+                if (preyWins)
+                {
+                    PursuitState.RegisterSuccess(prey, p);
+                    log += $"   ✅ vs {p.Name} [{pRoll.Total}] : Diff {diff:+0;-0;0} — <b>DISTANCE MAINTENUE</b> (bloqué à ≥ {PursuitState.MinKeptDistance} case).\n";
+                }
+                else
+                {
+                    PursuitState.RegisterFailure(prey, p);
+                    added++;
+                    log += $"   ❌ vs {p.Name} [{pRoll.Total}] : Diff {diff:+0;-0;0} — <b>TERRAIN GAGNÉ</b> par le poursuivant ! (faillites : {PursuitState.GetFailures(prey)}/{PursuitState.FailuresToCapture})\n";
+                }
+                log += ApplyOpposedProgression(prey, SkillType.Athletisme, true, p, SkillType.Athletisme, true, diff);
+            }
+
+            result.FailuresAdded = added;
+            result.TotalFailures = PursuitState.GetFailures(prey);
+            result.Caught = PursuitState.IsCaught(prey);
+            if (result.Caught)
+            {
+                log += $"   🛑 <b>RÈGLE D'ARRÊT AUX {PursuitState.FailuresToCapture} FAILLITES</b> : {prey.Name} est <b>DÉFINITIVEMENT RATTRAPÉ(E) ET ACCULÉ(E)</b> — arrêt et capture immédiate ! [Immobilisé]";
+            }
+            result.CombatLog = log;
+            return result;
+        }
+
         /// <summary>Espérance d'un dé (pour l'estimation aveugle de l'IA, mise adverse inconnue).</summary>
         public static double DieAverage(DiceType die)
         {
@@ -1361,6 +1919,9 @@ namespace Killtime.Core.Combat
             // RD-038 Charge 3+ cases : consommation de l'élan cinétique sur cette frappe de contact
             bool isMeleeAttackForCharge = SkillDefinitions.IsMeleeAttackSkill(duel.AttackSkill) || duel.AttackSkill == SkillType.MainsNues;
             bool chargeApplied = isMeleeAttackForCharge && ChargeState.ConsumeChargeBonus(attacker);
+            // RD-048 Canalisation : consommée à l'attaque (bonus déjà inclus dans
+            // AttackBaseMod au BeginDuel). Consommée même si parée (effort dépensé).
+            bool channelApplied = duel.IsChannelAttack && ChannelingState.ConsumeChannelBonus(attacker);
 
             var attackRoll = duel.AttackFinalRoll;
             int attCommittedPA = duel.AttackerBonusPAApplied;
@@ -1407,6 +1968,10 @@ namespace Killtime.Core.Combat
                 {
                     defStatusDetail += $" [Malus Charge : {cfg.ChargeDefensePenalty} Déf]";
                 }
+                if (ChannelingState.IsChanneling(defender))
+                {
+                    defStatusDetail += $" [Canalisation : {ChannelingState.GetDefenseModifier(defender)} Déf]";
+                }
                 // Les deux jets sont révélés ensemble : aucune injection après tirage.
                 defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {duel.DefenseDie} [Tirage {defenseRoll.RawRoll} + États {duel.DefenseStatusMod} ({defStatusDetail}){defPaText} = Total {defenseRoll.Total}]{critDefText}";
             }
@@ -1427,6 +1992,7 @@ namespace Killtime.Core.Combat
             string ecText = duel.WeaponBonusEc > 0 ? $" [+{duel.WeaponBonusEc}ec arme]" : "";
             string elevationText = duel.ElevationAttackMod != 0 ? $" [Hauteur {duel.ElevationAttackMod:+0;-0} {duel.ElevationLabel}]" : "";
             string stealthText = duel.IsStealthAttack ? $" [🥷 Embuscade/Stealth : +{duel.StealthAttackBonus}]" : "";
+            string channelText = duel.IsChannelAttack ? $" [⏳ Canalisation : +{duel.ChannelAttackBonus}]" : "";
             string nightText = duel.NightAttackMod != 0 ? $" [Nuit : {duel.NightAttackMod} Tir (sans lampe/thermique)]" : "";
 
             int normalRef = (attacker.Attributes.Force + attacker.Attributes.Agilite + 1) / 2;
@@ -1434,17 +2000,21 @@ namespace Killtime.Core.Combat
                     && attacker.Attributes.Magie > normalRef)
                 ? $" [Corps Augmenté : MAG {attacker.Attributes.Magie} (+{SkillDefinitions.CharacteristicSteps(attacker.Attributes.Magie)} paliers)]"
                 : "";
-            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
+            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{channelText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
             // Traçabilité Livre VI §24.1 (duel aveugle) : déclarations masquées puis révélation.
-            string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.";
+            // RD-048 : la canalisation consommée à l'attaque est tracée, la punition
+            // de progression du défenseur aussi.
+            string channelDefTag = ChannelingState.IsChanneling(defender) ? " [Canalisation -1]" : "";
+            string channelAttTag = channelApplied ? $" [⏳ Canalisation « +{duel.ChannelAttackBonus} » consommée]" : (duel.IsChannelAttack ? " [⏳ Canalisation déjà rompue]" : "");
+            string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.{channelAttTag}";
             string phaseDef = duel.IsStealthAttack
                 ? $"Phase 2 — Déclaration défenseur (surpris) : {defender.Name} subit l'embuscade depuis le stealth (aucune réaction adverse possible)."
                 : (!effectiveDefenderWantsToDefend
                     ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} encaisse (0 PA, 0 PE), sans voir le jet adverse."
                     : ((duel.CanDefenderReact && duel.DefenderBasePaid)
-                        ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}."
-                        : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}."));
+                        ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}."
+                        : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}."));
 
             // 4. Résolution du Différentiel
             if (effectiveDefenderWantsToDefend && differential < 0)
@@ -1668,6 +2238,12 @@ namespace Killtime.Core.Combat
             StatusEffect inflictedStatus = StatusEffect.None;
             bool failleExploitee = false;
 
+            // RD-048 : capture de la canalisation AVANT dégâts/statuts (l'IsChanneling
+            // d'après-coup purgerait silencieusement une canalisation rompue par K.O.).
+            bool defenderWasChanneling = ChannelingState.IsChanneling(defender);
+            string defenderChannelLabel = null;
+            if (defenderWasChanneling) ChannelingState.TryGetLabel(defender, out defenderChannelLabel);
+
             // Arts Martiaux : Rupture Ligamentaire (Livre III) — la cible doit être
             // Déstabilisée AVANT ce coup (le statut infligé par ce même coup ne compte pas).
             bool wasDestabilisedBefore = (defender.ActiveStatus & StatusEffect.Destabilise) != 0;
@@ -1813,6 +2389,30 @@ namespace Killtime.Core.Combat
                 moraleRes = defender.CheckMoraleAtThreshold(_diceRoller, cfg.StandardTargetDC);
             }
 
+            // RD-048 : interruption de canalisation si dégât net > encaissement
+            // (ou mort/neutralisation : la progression est perdue dans tous les cas).
+            // Le libellé a été capturé avant dégâts (purge silencieuse sinon).
+            bool channelInterrupted = false;
+            string interruptedChannelLabel = null;
+            if (!isThomasSymbioticImmune && defenderWasChanneling)
+            {
+                if (ChannelingState.IsChanneling(defender))
+                {
+                    if (!defender.IsAlive || exceededEncaissement)
+                    {
+                        if (ChannelingState.NotifyDamage(defender, finalDamage, out interruptedChannelLabel))
+                            channelInterrupted = true;
+                    }
+                }
+                else
+                {
+                    // Rompue par le coup lui-même (K.O., étourdi infligé...) : tracer quand même.
+                    channelInterrupted = true;
+                    interruptedChannelLabel = defenderChannelLabel;
+                    ChannelingState.Cancel(defender);
+                }
+            }
+
             string headerTag = duel.IsStealthAttack
                 ? "🥷 <b>EMBUSCADE DEPUIS LE STEALTH</b>"
                 : (!effectiveDefenderWantsToDefend
@@ -1841,6 +2441,11 @@ namespace Killtime.Core.Combat
             if (exceededEncaissement)
             {
                 log += $" | ⚡ <b>CHOC TRAUMATIQUE</b> (&gt; Encaissement {defender.EncaissementThreshold}) ➔ [{inflictedStatus}]";
+            }
+
+            if (channelInterrupted)
+            {
+                log += $" | ⏳ <b>CANALISATION INTERROMPUE</b> ({finalDamage} dégâts nets &gt; encaissement {defender.EncaissementThreshold}) : « {interruptedChannelLabel} » perdue !";
             }
 
             if (failleExploitee)
@@ -1933,7 +2538,9 @@ namespace Killtime.Core.Combat
                 CoverAttackPenalty = duel.CoverAttackPenalty,
                 BlockedByCover = false,
                 CombatLog = log,
-                MoraleResult = moraleRes
+                MoraleResult = moraleRes,
+                ChannelInterrupted = channelInterrupted,
+                InterruptedChannelLabel = interruptedChannelLabel
             };
         }
 

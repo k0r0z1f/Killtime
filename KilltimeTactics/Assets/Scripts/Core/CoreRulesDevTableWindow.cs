@@ -139,6 +139,9 @@ namespace Killtime.UI
             GUILayout.BeginVertical(GUI.skin.box);
             cfg.BaseMovementAPCost = DrawIntSlider("Coût PA Déplacement Standard / Case", cfg.BaseMovementAPCost, 1, 4);
             cfg.RalentiAPMultiplier = DrawIntSlider("Multiplicateur de Coût d'Action si Ralenti", cfg.RalentiAPMultiplier, 1, 4);
+            cfg.SouffrantMajorCareMultiplier = DrawIntSlider("Seuil Soins Majeurs : CON × N (RD-083, Codex ×2)", cfg.SouffrantMajorCareMultiplier, 1, 4);
+            cfg.ResurrectionSequelaeBaseDays = DrawIntSlider("Base convalescence résurrection : N - CON jours (RD-083, Codex 10)", cfg.ResurrectionSequelaeBaseDays, 1, 15);
+            cfg.ResurrectionSequelaePenalty = DrawIntSlider("Malus Poids du Trépas en ec (RD-083, Codex -1)", cfg.ResurrectionSequelaePenalty, -3, -1);
             GUILayout.EndVertical();
         }
 

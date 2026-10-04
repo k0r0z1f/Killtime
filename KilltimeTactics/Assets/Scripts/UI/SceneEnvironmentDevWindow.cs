@@ -80,14 +80,29 @@ namespace Killtime.UI
         private void FindSceneLighting()
         {
             var lights = FindObjectsByType<Light>();
+            Light candidate = null;
+
             for (int i = 0; i < lights.Length; i++)
             {
-                if (lights[i] != null && lights[i].type == LightType.Directional)
+                var l = lights[i];
+                if (l == null || l.type != LightType.Directional) continue;
+
+                string lName = l.name.ToLowerInvariant();
+                bool isInterior = l.transform.parent != null && l.transform.parent.name.IndexOf("Interior", StringComparison.OrdinalIgnoreCase) >= 0;
+
+                if (!isInterior && (lName.Contains("sun") || lName.Contains("soleil") || lName.Contains("celestial") || lName.Contains("space")))
                 {
-                    _directionalLight = lights[i];
-                    break;
+                    _directionalLight = l;
+                    return;
+                }
+
+                if (candidate == null && !isInterior)
+                {
+                    candidate = l;
                 }
             }
+
+            _directionalLight = candidate ?? (lights.Length > 0 ? Array.Find(lights, x => x != null && x.type == LightType.Directional) : null);
         }
 
         protected override void OnUpdate()
@@ -767,7 +782,8 @@ namespace Killtime.UI
             FindSceneLighting();
             var lighting = _activeData.Lighting;
 
-            GUILayout.Label("<b>1. Directional Light // Source Principale :</b>");
+            string lightName = _directionalLight != null ? _directionalLight.name : "<color=red>Aucune</color>";
+            GUILayout.Label($"<b>1. Directional Light // Source Principale (<color=#00E5FF>{lightName}</color>) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             lighting.OverrideLighting = GUILayout.Toggle(lighting.OverrideLighting, "<b>Activer le pilotage temps réel de la lumière</b>");
@@ -821,6 +837,15 @@ namespace Killtime.UI
                 if (GUILayout.Button("🔄 Inverser (180°)", GUILayout.Height(24)))
                 {
                     InvertSunDirection();
+                }
+                if (GUILayout.Button("📐 Terminatrice Verticale (Pitch 0°)", GUILayout.Height(24)))
+                {
+                    Vector3 r = lighting.SunEulerAngles;
+                    r.x = 0f;
+                    lighting.SunEulerAngles = r;
+                    lighting.OverrideLighting = true;
+                    if (_directionalLight != null) _directionalLight.transform.rotation = Quaternion.Euler(r);
+                    _statusMessage = "Faisceau aligné à Pitch 0° (terminatrice verticale méridienne).";
                 }
                 GUILayout.EndHorizontal();
 

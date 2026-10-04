@@ -57,6 +57,10 @@ namespace Killtime.Core.Combat
         public string DeflectionMedicalConsequence;
         public bool WasDisintegrated;
 
+        // RD-048 : Canalisation interrompue (dégât net > encaissement pendant la progression)
+        public bool ChannelInterrupted;
+        public string InterruptedChannelLabel;
+
         public override string ToString() => CombatLog;
     }
 }

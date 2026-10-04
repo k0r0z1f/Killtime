@@ -74,6 +74,116 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
+    /// Spécialisations des PNJ & Automates militaires (Livre XI §44 & §47 - RD-088).
+    /// </summary>
+    public static class LivreXISpecializations
+    {
+        public const string TirPrepareInterruption = "Tir Préparé en Interruption";
+        public const string PriseOtage = "Prise d'Otage";
+        public const string CombustionSpontanee = "Combustion Spontanée";
+        public const string FouleeCendres = "Foulée de Cendres";
+        public const string MorsureHydraulique = "Morsure Hydraulique";
+        public const string FlashAveuglant = "Flash Aveuglant";
+        public const string BaliseAppelReseau = "Balise d'Appel Réseau";
+    }
+
+    /// <summary>
+    /// Registre d'états tactiques pour les manœuvres avancées PNJ & Automates (Livre XI - RD-088).
+    /// </summary>
+    public static class LivreXIPNJState
+    {
+        private static readonly Dictionary<CharacterStats, CharacterStats> _hostages = new();
+        private static readonly Dictionary<CharacterStats, CharacterStats> _hydraulicBites = new();
+        private static readonly HashSet<CharacterStats> _preparedSnipers = new();
+        private static readonly HashSet<CharacterStats> _activatedBeacons = new();
+
+        public static void RegisterHostage(CharacterStats captor, CharacterStats hostage)
+        {
+            if (captor == null || hostage == null) return;
+            _hostages[captor] = hostage;
+        }
+
+        public static bool IsHostage(CharacterStats stats)
+        {
+            if (stats == null) return false;
+            foreach (var kv in _hostages)
+            {
+                if (kv.Value == stats) return true;
+            }
+            return false;
+        }
+
+        public static CharacterStats GetHostageOf(CharacterStats captor)
+        {
+            return (captor != null && _hostages.TryGetValue(captor, out var h)) ? h : null;
+        }
+
+        public static void ReleaseHostage(CharacterStats captor)
+        {
+            if (captor != null) _hostages.Remove(captor);
+        }
+
+        public static void RegisterHydraulicBite(CharacterStats dog, CharacterStats victim)
+        {
+            if (dog == null || victim == null) return;
+            _hydraulicBites[dog] = victim;
+        }
+
+        public static bool IsBittenByHydraulicJaw(CharacterStats victim)
+        {
+            if (victim == null) return false;
+            foreach (var kv in _hydraulicBites)
+            {
+                if (kv.Value == victim) return true;
+            }
+            return false;
+        }
+
+        public static CharacterStats GetVictimOf(CharacterStats dog)
+        {
+            return (dog != null && _hydraulicBites.TryGetValue(dog, out var v)) ? v : null;
+        }
+
+        public static void ReleaseHydraulicBite(CharacterStats dog)
+        {
+            if (dog != null) _hydraulicBites.Remove(dog);
+        }
+
+        public static void RegisterPreparedInterruption(CharacterStats sniper)
+        {
+            if (sniper != null) _preparedSnipers.Add(sniper);
+        }
+
+        public static bool HasPreparedInterruption(CharacterStats sniper)
+        {
+            return sniper != null && _preparedSnipers.Contains(sniper);
+        }
+
+        public static void ClearPreparedInterruption(CharacterStats sniper)
+        {
+            if (sniper != null) _preparedSnipers.Remove(sniper);
+        }
+
+        public static bool HasBeaconTriggered(CharacterStats drone)
+        {
+            return drone != null && _activatedBeacons.Contains(drone);
+        }
+
+        public static void SetBeaconTriggered(CharacterStats drone)
+        {
+            if (drone != null) _activatedBeacons.Add(drone);
+        }
+
+        public static void ClearCombatState()
+        {
+            _hostages.Clear();
+            _hydraulicBites.Clear();
+            _preparedSnipers.Clear();
+            _activatedBeacons.Clear();
+        }
+    }
+
+    /// <summary>
     /// Chargeur + convertisseur du bestiaire JSON vers CharacterSheet / CharacterStats.
     /// Pur C# testable (seul Resources.Load / persistentDataPath touchent à Unity).
     /// </summary>
@@ -124,6 +234,7 @@ namespace Killtime.Core.Character
                     if (data != null && data.entries != null)
                     {
                         _cached = data.entries;
+                        EnsureLivreXIArchetypes(_cached);
                         _loadedFrom = "resources:" + ResourcesPath;
                         return _cached;
                     }
@@ -132,8 +243,120 @@ namespace Killtime.Core.Character
             }
             catch (Exception e) { Debug.LogWarning($"[Bestiary] Resources illisible : {e.Message}"); }
 
-            _loadedFrom = "vide";
+            EnsureLivreXIArchetypes(_cached);
+            _loadedFrom = "defaults:livreXI";
             return _cached;
+        }
+
+        public static void EnsureLivreXIArchetypes(List<BestiaryEntry> list)
+        {
+            if (list == null) return;
+
+            if (!list.Exists(x => x != null && (x.id == "bandit_3" || (x.name != null && x.name.IndexOf("Bandit #3", StringComparison.OrdinalIgnoreCase) >= 0))))
+            {
+                list.Add(new BestiaryEntry
+                {
+                    id = "bandit_3",
+                    name = "Bandit #3 (Tireur d'Élite)",
+                    category = "Bandit",
+                    rank = "Rang II",
+                    profile = "PnjNormal",
+                    species = "Humain",
+                    footprint = "Single",
+                    description = "Tireur embusqué cruel et calculateur. Maître du tir préparé en interruption et de la prise d'otage.",
+                    tactics = "Réserve 4 PA pour un tir réflexe dès rupture de couvert adverse ; prend en otage toute cible adjacente à terre ou essoufflée.",
+                    attributes = new BestiaryAttributes { FOR = 2, AGI = 4, CON = 3, RAP = 4, INT = 3, ERU = 2, CHA = 2, INS = 3, MAG = 0, Vision = 4, Ouie = 4, Miracle = 0 },
+                    armor = 2,
+                    skills = new List<BestiarySkillEntry>
+                    {
+                        new BestiarySkillEntry { skill = "Ballistique", level = 2 },
+                        new BestiarySkillEntry { skill = "Esquive", level = 1 },
+                        new BestiarySkillEntry { skill = "Intuition", level = 1 }
+                    },
+                    specializations = new List<string> { LivreXISpecializations.TirPrepareInterruption, LivreXISpecializations.PriseOtage },
+                    equipment = new List<string> { "Fusil de Précision", "Couteau de Combat" },
+                    equippedIndex = 0
+                });
+            }
+
+            if (!list.Exists(x => x != null && (x.id == "illumo_pyro" || (x.name != null && x.name.IndexOf("Illumo", StringComparison.OrdinalIgnoreCase) >= 0))))
+            {
+                list.Add(new BestiaryEntry
+                {
+                    id = "illumo_pyro",
+                    name = "Illumo (Adepte Pyromancien)",
+                    category = "Elite",
+                    rank = "Rang II",
+                    profile = "PnjNormal",
+                    species = "Humain",
+                    footprint = "Single",
+                    description = "Fanatique exalté canalisant l'arcanotech du feu. Ignore les trajectoires balistiques pour consumer la cible de l'intérieur.",
+                    tactics = "Combustion spontanée à 18m sans projectile, puis foulée de cendres pour s'évanouir en aveuglant les poursuivants.",
+                    attributes = new BestiaryAttributes { FOR = 2, AGI = 3, CON = 3, RAP = 3, INT = 4, ERU = 2, CHA = 3, INS = 3, MAG = 4, Vision = 3, Ouie = 3, Miracle = 0 },
+                    armor = 1,
+                    skills = new List<BestiarySkillEntry>
+                    {
+                        new BestiarySkillEntry { skill = "MainsNues", level = 2 },
+                        new BestiarySkillEntry { skill = "Esquive", level = 2 },
+                        new BestiarySkillEntry { skill = "Arcanes", level = 2 }
+                    },
+                    specializations = new List<string> { LivreXISpecializations.CombustionSpontanee, LivreXISpecializations.FouleeCendres },
+                    equipment = new List<string> { "Dague Sacrificielle" },
+                    equippedIndex = 0
+                });
+            }
+
+            if (!list.Exists(x => x != null && (x.id == "molosse_combat" || (x.name != null && x.name.IndexOf("Molosse", StringComparison.OrdinalIgnoreCase) >= 0))))
+            {
+                list.Add(new BestiaryEntry
+                {
+                    id = "molosse_combat",
+                    name = "Molosse Mécanisé",
+                    category = "Automate",
+                    rank = "Rang I",
+                    profile = "PnjSbire",
+                    species = "Humain",
+                    footprint = "Single",
+                    description = "Quadrupède cybernétique militaire équipé d'une mâchoire à serrage hydraulique verrouillable.",
+                    tactics = "Fonce au contact, verrouille sa mâchoire pour clouer la cible au sol et broyer les os à chaque tour.",
+                    attributes = new BestiaryAttributes { FOR = 4, AGI = 3, CON = 4, RAP = 4, INT = 1, ERU = 1, CHA = 1, INS = 3, MAG = 0, Vision = 4, Ouie = 4, Miracle = 0 },
+                    armor = 3,
+                    skills = new List<BestiarySkillEntry>
+                    {
+                        new BestiarySkillEntry { skill = "MainsNues", level = 2 },
+                        new BestiarySkillEntry { skill = "Athletisme", level = 2 }
+                    },
+                    specializations = new List<string> { LivreXISpecializations.MorsureHydraulique },
+                    equipment = new List<string>(),
+                    equippedIndex = -1
+                });
+            }
+
+            if (!list.Exists(x => x != null && (x.id == "drone_reco" || (x.name != null && x.name.IndexOf("Drone", StringComparison.OrdinalIgnoreCase) >= 0))))
+            {
+                list.Add(new BestiaryEntry
+                {
+                    id = "drone_reco",
+                    name = "Drone de Reconnaissance",
+                    category = "Automate",
+                    rank = "Rang I",
+                    profile = "PnjSbire",
+                    species = "Humain",
+                    footprint = "Single",
+                    description = "Unité aéroportée autonome équipée d'un projecteur stroboscopique aveuglant et d'un relais de liaison réseau.",
+                    tactics = "Aveugle les tireurs adverses à courte distance et transmet les données de tir à toute l'escouade via sa balise.",
+                    attributes = new BestiaryAttributes { FOR = 1, AGI = 4, CON = 2, RAP = 5, INT = 3, ERU = 1, CHA = 1, INS = 3, MAG = 0, Vision = 5, Ouie = 3, Miracle = 0 },
+                    armor = 1,
+                    skills = new List<BestiarySkillEntry>
+                    {
+                        new BestiarySkillEntry { skill = "Esquive", level = 2 },
+                        new BestiarySkillEntry { skill = "Observation", level = 2 }
+                    },
+                    specializations = new List<string> { LivreXISpecializations.FlashAveuglant, LivreXISpecializations.BaliseAppelReseau },
+                    equipment = new List<string>(),
+                    equippedIndex = -1
+                });
+            }
         }
 
         public static BestiaryEntry GetById(string id)

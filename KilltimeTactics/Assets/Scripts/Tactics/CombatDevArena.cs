@@ -1544,6 +1544,7 @@ namespace Killtime.Tactics
             attacker.Stats.RegisterAttack();
 
             Log($"🪝 <b>HARPON</b> : {attacker.Stats.Name} harponne {defender.Stats.Name} ({dist} cases, -2 PA)\n   {result.CombatLog}");
+            HandleChannelInterruptionFx(defender, result.ChannelInterrupted);
             var defVis = defender.GetComponent<TacticalUnitVisual>();
             if (result.IsHit) defVis?.TriggerHitFlash();
             if (result.IsHit && result.Differential >= 2)
@@ -2156,6 +2157,7 @@ namespace Killtime.Tactics
                 var moverVis = mover.GetComponent<TacticalUnitVisual>();
                 watchVis?.SpawnFloatingText("👁️ TIR DE RÉACTION", new Color(0.2f, 0.9f, 1.0f));
                 Log(result.Value.CombatLog);
+                HandleChannelInterruptionFx(mover, result.Value.ChannelInterrupted);
                 if (result.Value.IsHit)
                 {
                     moverVis?.TriggerHitFlash();
@@ -2396,6 +2398,7 @@ namespace Killtime.Tactics
             if (result == null) return;
 
             Log(result.Value.CombatLog);
+            HandleChannelInterruptionFx(mover, result.Value.ChannelInterrupted);
             var moverVis = mover.GetComponent<TacticalUnitVisual>();
             reactor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
                 trip ? "🦵 BALAYAGE !" : "⚔️ OPPORTUNITÉ !", new Color(1.0f, 0.55f, 0.15f));
@@ -2444,6 +2447,121 @@ namespace Killtime.Tactics
             Log(message);
             RecordChronoSnapshot($"Décrochage : {unit.Stats.Name}");
             return true;
+        }
+
+        // =====================================================================
+        // RD-048 : RETARDER / TENIR / CANALISATION (Livre VI — Tours).
+        // =====================================================================
+
+        /// <summary>
+        /// RD-048 Tenir : l'unité active passe son tour en conservant ses PA et
+        /// se déclare en attente (0 PA). Interruption ultérieure via le
+        /// TurnManager (TryResumeHeldUnit, rejouée juste après l'unité active).
+        /// </summary>
+        public bool TryHoldAction(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (_turnManager == null) return false;
+            if (unit != _turnManager.ActiveUnit)
+            {
+                message = $"⚠️ Seule l'unité active ({_turnManager.ActiveUnit?.Stats?.Name ?? "—"}) peut tenir son action.";
+                Log(message);
+                return false;
+            }
+            if (!_turnManager.TryHoldActiveUnit(out message))
+            {
+                Log(message);
+                return false;
+            }
+            unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏸️ EN ATTENTE", Color.cyan);
+            Log(message);
+            RecordChronoSnapshot($"Tient l'action : {unit.Stats.Name}");
+            BroadcastOpportunityState();
+            return true;
+        }
+
+        /// <summary>
+        /// RD-048 Retarder : l'unité active repousse son tour (initiative
+        /// -pénalité, 1/round), réinsérée plus tard dans le round en cours.
+        /// </summary>
+        public bool TryDelayTurn(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (_turnManager == null) return false;
+            if (unit != _turnManager.ActiveUnit)
+            {
+                message = $"⚠️ Seule l'unité active ({_turnManager.ActiveUnit?.Stats?.Name ?? "—"}) peut retarder son tour.";
+                Log(message);
+                return false;
+            }
+            if (!_turnManager.TryDelayActiveUnit(out message))
+            {
+                Log(message);
+                return false;
+            }
+            unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏳ RETARDÉ", new Color(1.0f, 0.8f, 0.3f));
+            Log(message);
+            RecordChronoSnapshot($"Retarde : {unit.Stats.Name}");
+            BroadcastOpportunityState();
+            return true;
+        }
+
+        /// <summary>
+        /// RD-048 Canalisation / Action en Progression : étale l'effort sur
+        /// plusieurs temps (coût 1 PA, +2 au jet à l'attaque, -1 en défense,
+        /// interrompue si dégât net &gt; encaissement).
+        /// </summary>
+        public bool TryBeginChanneling(TacticalUnit unit, string label, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (!unit.Stats.IsAlive)
+            {
+                message = $"{unit.Stats.Name} est hors de combat : canalisation impossible.";
+                Log(message);
+                return false;
+            }
+            if (!_combatCalculator.TryBeginChanneling(unit.Stats, label, out string error))
+            {
+                message = $"⚠️ {error}";
+                Log(message);
+                return false;
+            }
+            unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"⏳ CANALISE : {label}", new Color(0.7f, 0.5f, 1.0f));
+            message = $"⏳ <b>{unit.Stats.Name}</b> canalise <b>« {label} »</b> (-{CoreRulesConfig.Instance.ChannelStartAPCost} PA) : +{CoreRulesConfig.Instance.ChannelAttackBonus} au jet à l'attaque, {CoreRulesConfig.Instance.ChannelDefensePenalty} en défense, interrompue si dégât &gt; encaissement.";
+            Log(message);
+            RecordChronoSnapshot($"Canalisation : {unit.Stats.Name} (« {label} »)");
+            BroadcastOpportunityState();
+            return true;
+        }
+
+        /// <summary>
+        /// RD-048 : notifie une canalisation rompue par des dégâts hors duel
+        /// (grenades, zone, DoT) et affiche le retour visuel. Les duels directs
+        /// tracent déjà l'interruption dans leur propre journal de combat.
+        /// </summary>
+        public void NotifyChannelDamage(TacticalUnit defender, int finalDamageApplied)
+        {
+            if (defender == null || defender.Stats == null) return;
+            if (ChannelingState.NotifyDamage(defender.Stats, finalDamageApplied, out string label))
+            {
+                defender.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏳ CANALISATION ROMPUE", new Color(1.0f, 0.4f, 0.2f));
+                Log($"⏳ <b>CANALISATION INTERROMPUE</b> : {defender.Stats.Name} subit {finalDamageApplied} dégâts nets (&gt; encaissement {defender.Stats.EncaissementThreshold}) — « {label} » perdue !");
+                RecordChronoSnapshot($"Canalisation rompue : {defender.Stats.Name}");
+            }
+        }
+
+        /// <summary>
+        /// RD-048 : retour visuel d'une interruption tracée par le duel
+        /// (direct, guet, opportunité, assaut groupé). Le journal contient déjà
+        /// la ligne « CANALISATION INTERROMPUE ».
+        /// </summary>
+        private void HandleChannelInterruptionFx(TacticalUnit defender, bool interrupted)
+        {
+            if (!interrupted || defender == null) return;
+            defender.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏳ CANALISATION ROMPUE", new Color(1.0f, 0.4f, 0.2f));
         }
 
         /// <summary>
@@ -2948,6 +3066,7 @@ namespace Killtime.Tactics
                 }
 
                 Log(result.CombatLog);
+                HandleChannelInterruptionFx(defender, result.ChannelInterrupted);
 
                 // Dégâts collatéraux sur l'obstacle si l'attaque est absorbée par le couvert ou neutralisée
                 if (result.IsBlocked && freshCover != CoverType.None && _grid != null)
@@ -3366,6 +3485,7 @@ namespace Killtime.Tactics
 
             attacker.Stats.RegisterAttack();
             Log(result.CombatLog);
+            HandleChannelInterruptionFx(defender, result.ChannelInterrupted);
 
             // Dégâts collatéraux sur l'obstacle si l'attaque est absorbée par le couvert ou neutralisée
             if (result.IsBlocked && defenseCover != CoverType.None && _grid != null)
@@ -4153,6 +4273,7 @@ namespace Killtime.Tactics
             attacker.Stats.RegisterAttack();
 
             Log($"🗡️ <b>LANCER</b> : {attacker.Stats.Name} lance <b>{weaponName}</b> sur {defender.Stats.Name} ({dist} cases, -{WeaponThrowAPCost} PA)\n   {result.CombatLog}");
+            HandleChannelInterruptionFx(defender, result.ChannelInterrupted);
 
             // L'arme quitte la main dans tous les cas (touché ou manqué) et tombe à la case cible.
             try
@@ -4864,6 +4985,284 @@ namespace Killtime.Tactics
             }
         }
 
+        // =========================================================================
+        // RD-084 : ATTAQUES COMBINÉES DE GROUPE (§25.2) & POURSUITE (§25.1)
+        // =========================================================================
+
+        /// <summary>
+        /// RD-084 : Collecte les participants d'un assaut groupé : alliés de
+        /// l'acteur (même camp) vivants, avec assez de PA, à portée de la cible
+        /// pour la compétence partagée (contact ≤ 1 en mêlée, portée d'arme au tir).
+        /// </summary>
+        public List<TacticalUnit> CollectCombinedAttackers(TacticalUnit actor, TacticalUnit target, SkillType attackSkill)
+        {
+            var members = new List<TacticalUnit>();
+            if (actor == null || target == null) return members;
+            if (_turnManager == null) return members;
+
+            int cost = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.CombinedAttackAPCost : 2;
+            bool isRanged = (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir);
+
+            var order = _turnManager.TurnOrder;
+            for (int i = 0; i < order.Count; i++)
+            {
+                var u = order[i];
+                if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
+                if (u == target) continue;
+                if (u.IsPlayerControlled != actor.IsPlayerControlled) continue;
+                if (u.Stats.CurrentActionPoints < cost) continue;
+
+                int dist = TitanFootprint.MinDistanceBetweenUnits(u.CurrentCoords, u.FootprintType, target.CurrentCoords, target.FootprintType);
+                if (isRanged)
+                {
+                    var w = u.Sheet?.GetEquippedWeapon();
+                    int maxRange = (w != null && w.RangeInTiles > 1) ? w.RangeInTiles : 1;
+                    if (dist > maxRange) continue;
+                    if (!ChargeState.CanFireRanged(u.Stats)) continue;
+                }
+                else
+                {
+                    if (dist > 1) continue;
+                }
+                members.Add(u);
+            }
+
+            // L'acteur en tête s'il est éligible (pour l'ordre du log).
+            if (members.Contains(actor))
+            {
+                members.Remove(actor);
+                members.Insert(0, actor);
+            }
+            return members;
+        }
+
+        /// <summary>
+        /// RD-084 : Résout la compétence partagée de l'assaut (mêlée au contact,
+        /// Ballistique à distance si l'acteur a une arme à distance).
+        /// </summary>
+        public bool TryResolveCombinedSkill(TacticalUnit actor, TacticalUnit target, out SkillType attackSkill)
+        {
+            attackSkill = SkillType.MainsNues;
+            if (actor == null || target == null) return false;
+            int dist = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, target.CurrentCoords, target.FootprintType);
+            if (dist <= 1)
+            {
+                var weapon = actor.Sheet?.GetEquippedWeapon();
+                attackSkill = weapon != null
+                    ? SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill)
+                    : SkillType.MainsNues;
+                // Arme à distance au contact : coup de crosse d'urgence à mains nues.
+                if (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir)
+                    attackSkill = SkillType.MainsNues;
+                return true;
+            }
+            var ranged = actor.Sheet?.GetEquippedWeapon();
+            if (ranged != null && ranged.RangeInTiles > 1)
+            {
+                attackSkill = SkillType.Ballistique;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// RD-084 : Exécute un assaut groupé (Livre VI §25.2). Les participants
+        /// sont synchronisés sur l'initiative du membre le plus lent, leurs
+        /// résultats offensifs sommés face à l'unique défense de la cible.
+        /// </summary>
+        public void ExecuteCombinedAttack(TacticalUnit actor, TacticalUnit target, BodyPart targetedPart = BodyPart.Torse)
+        {
+            if (actor == null || target == null || actor.Stats == null || target.Stats == null) return;
+            if (!actor.Stats.IsAlive || !target.Stats.IsAlive) return;
+            if (actor == target) return;
+
+            if (!TryResolveCombinedSkill(actor, target, out SkillType attackSkill))
+            {
+                Log($"⚠️ <b>Assaut groupé impossible</b> : {actor.Stats.Name} hors de portée de {target.Stats.Name} (ni contact ni arme à distance).");
+                return;
+            }
+
+            var members = CollectCombinedAttackers(actor, target, attackSkill);
+            int minMembers = CoreRulesConfig.Instance != null ? Math.Max(2, CoreRulesConfig.Instance.CombinedAttackMinMembers) : 2;
+            if (members.Count < minMembers)
+            {
+                Log($"⚠️ <b>Assaut groupé impossible</b> : {members.Count} assaillant(s) à portée, {minMembers} minimum requis (Livre VI §25.2).");
+                return;
+            }
+
+            int slowest = _turnManager != null ? _turnManager.GetSlowestInitiativeFor(members) : GroupAssaultState.GetSlowestInitiative(ToStatsList(members));
+
+            // Dégâts d'arme par participant (arme équipée ou 5 à mains nues).
+            var weapons = new List<int>(members.Count);
+            for (int i = 0; i < members.Count; i++)
+            {
+                var w = members[i].Sheet?.GetEquippedWeapon();
+                weapons.Add((w != null && w.BaseDamage > 0) ? w.BaseDamage : 5);
+            }
+
+            // Mise injectée du menu (attribuée à l'acteur, tête de colonne).
+            var bonusAP = new List<int>(members.Count);
+            var bonusPE = new List<int>(members.Count);
+            for (int i = 0; i < members.Count; i++) { bonusAP.Add(0); bonusPE.Add(0); }
+            int injectedAP = CombatUI.CombatContextMenuUI.CurrentInjectedAP;
+            int injectedPE = CombatUI.CombatContextMenuUI.CurrentInjectedPE;
+            if (members[0] == actor)
+            {
+                bonusAP[0] = Math.Max(0, injectedAP);
+                bonusPE[0] = Math.Max(0, injectedPE);
+            }
+
+            var stats = ToStatsList(members);
+            var combined = _combatCalculator.ResolveCombinedAttack(
+                stats, target.Stats, targetedPart,
+                attackSkill, SkillType.Esquive,
+                weaponBaseDamages: weapons,
+                attackerBonusAP: bonusAP, attackerPE: bonusPE,
+                defenderAutoStakes: true);
+
+            var actVis = actor.GetComponent<TacticalUnitVisual>();
+            var tgtVis = target.GetComponent<TacticalUnitVisual>();
+
+            if (!combined.IsValid && !combined.IsHit)
+            {
+                Log($"⚔️ <b>{actor.Stats.Name}</b> appelle l'assaut groupé sur <b>{target.Stats.Name}</b> :\n   {combined.CombatLog}");
+                return;
+            }
+
+            if (combined.IsHit)
+            {
+                actVis?.SpawnFloatingText($"⚔️ ASSAUT GROUPÉ x{members.Count} (ini {slowest})", Color.cyan);
+                tgtVis?.TriggerHitFlash();
+                tgtVis?.SpawnFloatingText($"-{combined.FinalDamageApplied} PV (sommation)", new Color(1.0f, 0.25f, 0.25f));
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Attack_Whoosh, target.transform.position, 0.9f);
+
+                if (combined.FatalResolution == FatalBlowResolution.InstantDeath || combined.FatalResolution == FatalBlowResolution.ForcedUnconscious)
+                {
+                    tgtVis?.TriggerFallingBackDeath();
+                }
+                else if (combined.FatalResolution == FatalBlowResolution.EligibleForLastBreath)
+                {
+                    if (!target.IsPlayerControlled)
+                    {
+                        target.Stats.ChooseSombrer();
+                        tgtVis?.SpawnFloatingText("[SYNCOPE] CHUTE HORS COMBAT (0 PV)", Color.cyan);
+                        tgtVis?.TriggerFallingBackDeath();
+                    }
+                    else
+                    {
+                        target.Stats.ChooseLastBreath();
+                        tgtVis?.SpawnFloatingText("[SURVIE] DERNIER SOUFFLE (0 PV)", new Color(1.0f, 0.5f, 0.1f));
+                    }
+                }
+
+                if (!target.Stats.IsAlive) AutoTargetNextAlive();
+            }
+            else
+            {
+                actVis?.SpawnFloatingText($"Assaut groupé paré x{members.Count}", Color.gray);
+                tgtVis?.SpawnFloatingText("PARÉ", Color.cyan);
+            }
+
+            Log($"⚔️ <b>{actor.Stats.Name}</b> déclenche un <b>ASSAUT GROUPÉ x{members.Count}</b> sur <b>{target.Stats.Name}</b> (synchro initiative la plus lente : {slowest}) :\n   {combined.CombatLog}");
+            HandleChannelInterruptionFx(target, combined.ChannelInterrupted);
+            RecordChronoSnapshot($"Assaut groupé x{members.Count} : {actor.Stats.Name} -> {target.Stats.Name}");
+            UpdateAdaptiveMusic();
+            _turnManager?.CheckCombatOver();
+        }
+
+        private static List<CharacterStats> ToStatsList(List<TacticalUnit> units)
+        {
+            var stats = new List<CharacterStats>(units != null ? units.Count : 0);
+            if (units == null) return stats;
+            for (int i = 0; i < units.Count; i++)
+            {
+                if (units[i] != null && units[i].Stats != null) stats.Add(units[i].Stats);
+            }
+            return stats;
+        }
+
+        /// <summary>
+        /// RD-084 : Exécute un round de course-poursuite (Livre VI §25.1) :
+        /// concours d'Athlétisme proie vs poursuivants. Succès proie = distance
+        /// maintenue (≥ 1 case), faillite = terrain gagné. À 4 faillites cumulées :
+        /// arrêt et capture immédiate (Immobilisé).
+        /// </summary>
+        public void ExecutePursuitRound(TacticalUnit prey, List<TacticalUnit> pursuers)
+        {
+            if (prey == null || prey.Stats == null || !prey.Stats.IsAlive) return;
+            if (pursuers == null || pursuers.Count == 0) return;
+
+            var alivePursuers = new List<TacticalUnit>();
+            for (int i = 0; i < pursuers.Count; i++)
+            {
+                var p = pursuers[i];
+                if (p != null && p.Stats != null && p.Stats.IsAlive && p != prey) alivePursuers.Add(p);
+            }
+            if (alivePursuers.Count == 0)
+            {
+                Log($"⚠️ <b>Poursuite impossible</b> : aucun poursuivant valide pour {prey.Stats.Name}.");
+                return;
+            }
+
+            int cost = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.PursuitAPCost : 1;
+            if (!InfiniteAP)
+            {
+                if (prey.Stats.CurrentActionPoints < cost)
+                {
+                    Log($"⚠️ PA insuffisants : la fuite exige {cost} PA (reste {prey.Stats.CurrentActionPoints}).");
+                    return;
+                }
+                for (int i = 0; i < alivePursuers.Count; i++)
+                {
+                    if (alivePursuers[i].Stats.CurrentActionPoints < cost)
+                    {
+                        Log($"⚠️ PA insuffisants : {alivePursuers[i].Stats.Name} ne peut poursuivre ({alivePursuers[i].Stats.CurrentActionPoints}/{cost} PA).");
+                        return;
+                    }
+                }
+                prey.Stats.ConsumeActionPoints(cost);
+                for (int i = 0; i < alivePursuers.Count; i++) alivePursuers[i].Stats.ConsumeActionPoints(cost);
+            }
+
+            int injectedAP = CombatUI.CombatContextMenuUI.CurrentInjectedAP;
+            int injectedPE = CombatUI.CombatContextMenuUI.CurrentInjectedPE;
+
+            var pursuerStats = new List<CharacterStats>(alivePursuers.Count);
+            for (int i = 0; i < alivePursuers.Count; i++) pursuerStats.Add(alivePursuers[i].Stats);
+
+            var round = _combatCalculator.ResolvePursuitRound(
+                prey.Stats, pursuerStats,
+                preyBonusAP: Math.Max(0, injectedAP), preyPE: Math.Max(0, injectedPE),
+                pursuersAutoStakes: true);
+
+            var preyVis = prey.GetComponent<TacticalUnitVisual>();
+            if (round.Caught)
+            {
+                preyVis?.SpawnFloatingText("🛑 RATTRAPÉ ET ACCULÉ !", Color.red);
+                preyVis?.TriggerHitFlash();
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayAt(SoundId.Trauma_Shock, prey.transform.position, 0.9f);
+            }
+            else if (round.FailuresAdded > 0)
+            {
+                preyVis?.SpawnFloatingText($"🏃 Poursuivi ! ({round.TotalFailures}/{round.FailuresToCapture})", new Color(1.0f, 0.6f, 0.1f));
+            }
+            else
+            {
+                preyVis?.SpawnFloatingText("🏃 DISTANCE MAINTENUE", Color.green);
+            }
+
+            string pursuerNames = "";
+            for (int i = 0; i < alivePursuers.Count; i++)
+            {
+                pursuerNames += (i > 0 ? ", " : "") + alivePursuers[i].Stats.Name;
+            }
+            Log($"🏃 <b>Course-poursuite</b> : {prey.Stats.Name} vs {pursuerNames} (-{cost} PA chacun) :\n   {round.CombatLog}");
+            RecordChronoSnapshot($"Poursuite : {prey.Stats.Name} ({round.TotalFailures}/{round.FailuresToCapture})");
+            _turnManager?.CheckCombatOver();
+        }
+
         public void RecordChronoSnapshot(string description)
         {
             var snap = new TacticalTimeSnapshot(_turnManager.CurrentRound, 0.0f, description);
@@ -5251,12 +5650,38 @@ namespace Killtime.Tactics
             return SpawnCustomCharacter(sheet, coords, isPlayer);
         }
 
+        public TacticalUnit SpawnJohn(HexCoordinates coords, bool isPlayer = true)
+        {
+            var sheet = JohnCharacter.BuildHeroicSheet();
+            return SpawnCustomCharacter(sheet, coords, isPlayer);
+        }
+
+        public TacticalUnit SpawnErika(HexCoordinates coords, bool isPlayer = true)
+        {
+            var sheet = ErikaCharacter.BuildHeroicSheet();
+            return SpawnCustomCharacter(sheet, coords, isPlayer);
+        }
+
         public void SpawnHeroicTrio(HexCoordinates centerCoords)
         {
             SpawnCustomCharacter(ThomasCharacter.BuildHeroicSheet(), centerCoords, true);
             SpawnCustomCharacter(MinaCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(0), true);
             SpawnCustomCharacter(LucasCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(3), true);
             Log("⚡ <b>Trio Tri-Fusion déployé</b> : Thomas-0, Mina-0 et Lucas-0 sur la grille.");
+        }
+
+        public void SpawnHeroicQuatuor(HexCoordinates centerCoords)
+        {
+            SpawnHeroicTrio(centerCoords);
+            SpawnCustomCharacter(JohnCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(1), true);
+            Log("🛰️ <b>Quatuor déployé</b> : Trio Tri-Fusion + John (Passeur) sur la grille.");
+        }
+
+        public void SpawnHeroicQuintet(HexCoordinates centerCoords)
+        {
+            SpawnHeroicQuatuor(centerCoords);
+            SpawnCustomCharacter(ErikaCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(2), true);
+            Log("🔥 <b>Quintette déployé</b> : Quatuor + Erika de Cleya (Flamme Cleyane) sur la grille.");
         }
 
         public void Log(string message)

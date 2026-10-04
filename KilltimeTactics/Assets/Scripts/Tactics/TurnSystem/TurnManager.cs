@@ -5,7 +5,9 @@ using Killtime.Tactics.Units;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.Objectives;
 using Killtime.Core.Character;
+using Killtime.Core.Combat;
 using Killtime.Core.Dice;
+using Killtime.Core.Rules;
 
 namespace Killtime.Tactics.TurnSystem
 {
@@ -107,6 +109,27 @@ namespace Killtime.Tactics.TurnSystem
             return unit.Stats.InitiativeRollTotal != int.MinValue
                 ? unit.Stats.InitiativeDie
                 : unit.Stats.GetInitiativeDie();
+        }
+
+        /// <summary>
+        /// RD-084 (Livre VI §25.2) : initiative de synchronisation d'un assaut
+        /// groupé = celle du membre le plus lent (minimum des totaux roulés).
+        /// Les unités sans jet enregistré sont ignorées ; int.MinValue si aucune.
+        /// </summary>
+        public int GetSlowestInitiativeFor(System.Collections.Generic.IReadOnlyList<TacticalUnit> units)
+        {
+            if (units == null || units.Count == 0) return int.MinValue;
+            int slowest = int.MaxValue;
+            bool found = false;
+            for (int i = 0; i < units.Count; i++)
+            {
+                var u = units[i];
+                if (u == null || u.Stats == null) continue;
+                if (u.Stats.InitiativeRollTotal == int.MinValue) continue;
+                found = true;
+                if (u.Stats.InitiativeRollTotal < slowest) slowest = u.Stats.InitiativeRollTotal;
+            }
+            return found ? slowest : int.MinValue;
         }
 
         public static bool IsMultiplayerPlayerClient()
@@ -380,8 +403,8 @@ namespace Killtime.Tactics.TurnSystem
             var sheetA = a.GetOrBuildSheet();
             var sheetB = b.GetOrBuildSheet();
 
-            bool isHeroicTrioA = MinaCharacter.IsMina(sheetA) || LucasCharacter.IsLucas(sheetA) || ThomasCharacter.IsThomas(sheetA);
-            bool isHeroicTrioB = MinaCharacter.IsMina(sheetB) || LucasCharacter.IsLucas(sheetB) || ThomasCharacter.IsThomas(sheetB);
+            bool isHeroicTrioA = MinaCharacter.IsMina(sheetA) || LucasCharacter.IsLucas(sheetA) || ThomasCharacter.IsThomas(sheetA) || JohnCharacter.IsJohn(sheetA) || ErikaCharacter.IsErika(sheetA);
+            bool isHeroicTrioB = MinaCharacter.IsMina(sheetB) || LucasCharacter.IsLucas(sheetB) || ThomasCharacter.IsThomas(sheetB) || JohnCharacter.IsJohn(sheetB) || ErikaCharacter.IsErika(sheetB);
 
             if (isHeroicTrioA && isHeroicTrioB)
             {
@@ -455,12 +478,18 @@ namespace Killtime.Tactics.TurnSystem
             if (unit.Stats != null) Killtime.Core.Combat.OverwatchState.Cancel(unit.Stats);
             // RD-031 : ... et sa posture/réaction/décrochage d'opportunité.
             if (unit.Stats != null) Killtime.Core.Combat.OpportunityState.RemoveUnit(unit.Stats);
+            // RD-048 : ... et son attente/retard (tenir/retarder) + sa canalisation.
+            if (unit.Stats != null) Killtime.Core.Combat.DelayedTurnState.RemoveUnit(unit.Stats);
+            if (unit.Stats != null) Killtime.Core.Combat.ChannelingState.RemoveUnit(unit.Stats);
             // RD-039 : ... et toute prise de lutte active.
             if (unit.Stats != null) Killtime.Core.Combat.GrappleState.ReleaseGrapple(unit.Stats);
             // RD-038 : ... et ses états de charge et de sprint.
             if (unit.Stats != null) Killtime.Core.Combat.ChargeState.Cancel(unit.Stats);
             // RD-049 : ... et son état de furtivité.
             if (unit.Stats != null) Killtime.Core.Combat.StealthState.Cancel(unit.Stats);
+            // RD-084 : ... et toute poursuite / assaut groupé le concernant.
+            if (unit.Stats != null) Killtime.Core.Combat.PursuitState.RemoveUnit(unit.Stats);
+            if (unit.Stats != null) Killtime.Core.Combat.GroupAssaultState.RemoveUnit(unit.Stats);
 
             bool wasActive = (ActiveUnit == unit);
             int idx = _allUnits.IndexOf(unit);
@@ -514,12 +543,18 @@ namespace Killtime.Tactics.TurnSystem
             Killtime.Core.Combat.OverwatchState.ClearAll();
             // RD-031 : aucune posture/réaction/décrochage ne survit non plus.
             Killtime.Core.Combat.OpportunityState.ClearAll();
+            // RD-048 : aucune attente/retard ni canalisation ne survit non plus.
+            Killtime.Core.Combat.DelayedTurnState.ClearAll();
+            Killtime.Core.Combat.ChannelingState.ClearAll();
             // RD-039 : aucune prise de lutte ne survit à un reset de combat.
             Killtime.Core.Combat.GrappleState.ClearAll();
             // RD-038 : purge des états de charge et de sprint.
             Killtime.Core.Combat.ChargeState.ClearAll();
             // RD-049 : purge des états de furtivité au reset de combat.
             Killtime.Core.Combat.StealthState.ClearAll();
+            // RD-084 : purge des poursuites cumulatives et des assauts synchronisés.
+            Killtime.Core.Combat.PursuitState.ClearAll();
+            Killtime.Core.Combat.GroupAssaultState.ClearAll();
             // Nouveau combat (ré)initialisé : aucun objet au sol (gourdin...) ne survit.
             try { DroppedWeaponPickup.ClearAllDropped(); } catch { }
         }
@@ -983,6 +1018,185 @@ namespace Killtime.Tactics.TurnSystem
             }
         }
 
+        // =====================================================================
+        // RD-048 : RETARDER / TENIR / INTERROMPRE (Livre VI — Tours).
+        // - Retarder : l'unité active repousse son tour plus tard dans le round
+        //   (initiative -pénalité, 1/round), réinsérée après celles qui la
+        //   devancent encore. Passe la main à l'unité suivante.
+        // - Tenir : l'unité active passe son tour en conservant ses PA et se
+        //   déclare en attente (0 PA). Elle pourra intervenir juste après
+        //   l'unité active du moment via TryResumeHeldUnit, ou rejouer
+        //   normalement au round suivant (reliquat expiré).
+        // =====================================================================
+
+        /// <summary>
+        /// Retarde le tour de l'unité active (RD-048) : initiative réduite de
+        /// la pénalité configurée (-2), réinsertion plus tard dans le round en
+        /// cours, puis passage à l'unité suivante. Faux si hors combat, sans
+        /// unité active, déjà retardé ce round ou déjà dernière.
+        /// </summary>
+        public bool TryDelayActiveUnit(out string message)
+        {
+            message = "";
+            if (IsInExploration) { message = "⚠️ Retarder impossible en exploration."; return false; }
+            if (IsCombatOver) { message = "⚠️ Combat terminé : retarder impossible."; return false; }
+            var unit = ActiveUnit;
+            if (unit == null || unit.Stats == null || !_allUnits.Contains(unit))
+            { message = "⚠️ Aucune unité active à retarder."; return false; }
+
+            int penalty = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.DelayInitiativePenalty : 2;
+            int oldTotal = GetInitiativeTotal(unit);
+            int oldIdx = _allUnits.IndexOf(unit);
+            bool hasLaterAlive = false;
+            for (int k = oldIdx + 1; k < _allUnits.Count; k++)
+            {
+                var o = _allUnits[k];
+                if (o != null && o.Stats != null && o.Stats.IsAlive) { hasLaterAlive = true; break; }
+            }
+            if (!hasLaterAlive)
+            {
+                message = $"⚠️ {unit.Stats.Name} est déjà dernier à jouer : retarder impossible.";
+                return false;
+            }
+            if (!DelayedTurnState.TryDelay(unit.Stats, penalty, out int newTotal, out string error))
+            {
+                message = $"⚠️ {error}";
+                return false;
+            }
+
+            _allUnits.RemoveAt(oldIdx);
+
+            // Cherche la première position restante où l'unité retardée devance
+            // encore (initiative, puis RAP/AGI/INT, puis nom — même tie-break
+            // que le jet général). À égalité stricte, l'occupant garde sa place
+            // (le retardé passe après les égalités déjà installées).
+            int insertIdx = _allUnits.Count;
+            for (int j = oldIdx; j < _allUnits.Count; j++)
+            {
+                var other = _allUnits[j];
+                if (other == null || other.Stats == null) continue;
+                if (DelayOutranks(unit, other)) { insertIdx = j; break; }
+            }
+            // Garantie de mouvement : retarder recule d'au moins un cran même
+            // si le nouveau total devance encore le suivant immédiat.
+            if (insertIdx == oldIdx && oldIdx < _allUnits.Count) insertIdx = oldIdx + 1;
+            if (insertIdx > _allUnits.Count) insertIdx = _allUnits.Count;
+            _allUnits.Insert(insertIdx, unit);
+
+            // La main passe à l'unité suivante (celle qui occupait le cran).
+            _activeUnitIndex = oldIdx;
+            while (_activeUnitIndex < _allUnits.Count
+                && (_allUnits[_activeUnitIndex] == null
+                    || _allUnits[_activeUnitIndex].Stats == null
+                    || !_allUnits[_activeUnitIndex].Stats.IsAlive))
+            {
+                _activeUnitIndex++;
+            }
+
+            string oldStr = oldTotal == int.MinValue ? "?" : oldTotal.ToString();
+            message = $"⏳ <b>{unit.Stats.Name}</b> retarde son tour (initiative {oldStr} → {newTotal}, -{penalty}) : réinséré en position {insertIdx + 1}/{_allUnits.Count}.";
+
+            if (_activeUnitIndex >= _allUnits.Count)
+            {
+                if (CheckCombatOver()) return true;
+                CurrentRound++;
+                StartNewRound();
+            }
+            else
+            {
+                StartUnitTurn();
+            }
+            BroadcastRoundStartIfGM();
+            return true;
+        }
+
+        /// <summary>
+        /// Compare deux unités pour la réinsertion d'un retard : vrai si
+        /// <paramref name="candidate"/> doit passer AVANT <paramref name="other"/>
+        /// (initiative supérieure, puis RAP, AGI, INT, puis nom — même ordre que
+        /// le jet général, sans le passe-droit Titan qui reste figé au round 1).
+        /// </summary>
+        private bool DelayOutranks(TacticalUnit candidate, TacticalUnit other)
+        {
+            int initC = GetInitiativeTotal(candidate);
+            int initO = GetInitiativeTotal(other);
+            if (initC != initO) return initC > initO;
+            int rapC = (candidate != null && candidate.Stats != null) ? candidate.Stats.Attributes.Rapidite : 0;
+            int rapO = (other != null && other.Stats != null) ? other.Stats.Attributes.Rapidite : 0;
+            if (rapC != rapO) return rapC > rapO;
+            int agiC = (candidate != null && candidate.Stats != null) ? candidate.Stats.Attributes.Agilite : 0;
+            int agiO = (other != null && other.Stats != null) ? other.Stats.Attributes.Agilite : 0;
+            if (agiC != agiO) return agiC > agiO;
+            int intC = (candidate != null && candidate.Stats != null) ? candidate.Stats.Attributes.Intelligence : 0;
+            int intO = (other != null && other.Stats != null) ? other.Stats.Attributes.Intelligence : 0;
+            if (intC != intO) return intC > intO;
+            string nameC = candidate != null && candidate.Stats != null ? candidate.Stats.Name ?? "" : "";
+            string nameO = other != null && other.Stats != null ? other.Stats.Name ?? "" : "";
+            return string.Compare(nameC, nameO, StringComparison.Ordinal) < 0;
+        }
+
+        /// <summary>
+        /// Tient l'action de l'unité active (RD-048) : passe son tour en
+        /// conservant ses PA restants et se déclare en attente d'interruption.
+        /// </summary>
+        public bool TryHoldActiveUnit(out string message)
+        {
+            message = "";
+            if (IsInExploration) { message = "⚠️ Tenir impossible en exploration."; return false; }
+            if (IsCombatOver) { message = "⚠️ Combat terminé : tenir impossible."; return false; }
+            var unit = ActiveUnit;
+            if (unit == null || unit.Stats == null || !_allUnits.Contains(unit))
+            { message = "⚠️ Aucune unité active à mettre en attente."; return false; }
+
+            int cost = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.HoldAPCost : 0;
+            if (!DelayedTurnState.TryHold(unit.Stats, cost, out string error))
+            {
+                message = $"⚠️ {error}";
+                return false;
+            }
+
+            message = $"⏸️ <b>{unit.Stats.Name}</b> tient son action (en attente, {unit.Stats.CurrentActionPoints} PA conservés) : interviendra via interruption ou au prochain tour.";
+            EndCurrentTurn();
+            return true;
+        }
+
+        /// <summary>
+        /// Fait intervenir une unité en attente juste après l'unité active du
+        /// moment (RD-048, interruption). L'attente est consommée et l'unité
+        /// est réinsérée en position suivante avec ses PA conservés (sans
+        /// recharge : elle rejoue quand son nouveau cran arrive). Faux si
+        /// l'unité ne tenait pas son action ou est neutralisée.
+        /// </summary>
+        public bool TryResumeHeldUnit(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (IsInExploration) { message = "⚠️ Interruption impossible en exploration."; return false; }
+            if (IsCombatOver) { message = "⚠️ Combat terminé : interruption impossible."; return false; }
+            if (unit == null || unit.Stats == null || !_allUnits.Contains(unit))
+            { message = "⚠️ Unité inconnue : interruption impossible."; return false; }
+            if (unit == ActiveUnit)
+            { message = $"⚠️ {unit.Stats.Name} est déjà l'unité active : interruption inutile."; return false; }
+            if (!DelayedTurnState.IsHolding(unit.Stats))
+            { message = $"⚠️ {unit.Stats.Name} ne tient aucune action (pas en attente)."; return false; }
+            if (DelayedTurnState.IsCancelledByStatus(unit.Stats))
+            { message = $"⚠️ {unit.Stats.Name} est neutralisé : interruption impossible."; return false; }
+
+            DelayedTurnState.ConsumeHoldToAct(unit.Stats);
+            _allUnits.Remove(unit);
+
+            int currentIdx = ActiveUnit != null ? _allUnits.IndexOf(ActiveUnit) : -1;
+            int insertIdx = currentIdx >= 0 ? currentIdx + 1 : _allUnits.Count;
+            if (insertIdx < 0) insertIdx = 0;
+            if (insertIdx > _allUnits.Count) insertIdx = _allUnits.Count;
+            _allUnits.Insert(insertIdx, unit);
+            if (ActiveUnit != null)
+                _activeUnitIndex = _allUnits.IndexOf(ActiveUnit);
+
+            message = $"⚡ <b>{unit.Stats.Name}</b> interrompt ({unit.Stats.CurrentActionPoints} PA conservés) : rejouera en position {insertIdx + 1}/{_allUnits.Count}, juste après {(ActiveUnit != null ? ActiveUnit.Stats.Name : "—")}.";
+            BroadcastRoundStartIfGM();
+            return true;
+        }
+
         private void StartUnitTurn()
         {
             if (_activeUnitIndex < 0 || _activeUnitIndex >= _allUnits.Count) return;
@@ -1102,11 +1316,24 @@ namespace Killtime.Tactics.TurnSystem
             // personnel (1/round) ; le décrochage armé non consommé expire.
             Killtime.Core.Combat.OpportunityState.OnUnitTurnStart(unit.Stats);
 
+            // RD-048 Retarder / Tenir : l'attente non consommée expire quand
+            // l'unité rejoue (tour normal) ; le retard se recharge (1/round).
+            Killtime.Core.Combat.DelayedTurnState.OnUnitTurnStart(unit.Stats);
+
+            // RD-048 Canalisation : purge uniquement les canalisations
+            // invalidées (mort/neutralisé) ; une canalisation valide survit
+            // au nouveau tour (effort étalé multi-tours).
+            Killtime.Core.Combat.ChannelingState.OnUnitTurnStart(unit.Stats);
+
             // RD-039 Lutte / Grapple : vérification et maintien des prises au contact.
             Killtime.Core.Combat.GrappleState.OnUnitTurnStart(unit.Stats);
 
             // RD-038 Charge & Sprint : expiration du malus défensif (-1 défense) et levée du blocage tir.
             Killtime.Core.Combat.ChargeState.OnUnitTurnStart(unit.Stats);
+
+            // RD-084 Poursuite : purge les concours caducs (proie/poursuivants morts) ;
+            // les faillites cumulées survivent jusqu'aux 4 = capture.
+            Killtime.Core.Combat.PursuitState.OnUnitTurnStart(unit.Stats);
 
             int newAP = unit.Stats.CurrentActionPoints;
             int deltaAP = newAP - prevAP;

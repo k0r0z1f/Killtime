@@ -270,7 +270,7 @@ Camera:
   m_Enabled: 1
   serializedVersion: 2
   m_ClearFlags: 2
-  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 1}
+  m_BackGroundColor: {r: 0, g: 0, b: 0, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
   m_FOVAxisMode: 0
@@ -292,11 +292,11 @@ Camera:
     width: 1
     height: 1
   near clip plane: 0.3
-  far clip plane: 10000
-  field of view: 45
+  far clip plane: 1000
+  field of view: 60
   orthographic: 0
   orthographic size: 5
-  m_Depth: -1
+  m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -347,6 +347,8 @@ MonoBehaviour:
   _zoomSmoothTime: 0.05
   _pitchAngle: 45
   _currentYaw: 45
+  _nearClipPlane: 0.3
+  _farClipPlane: 500000
   _panSpeed: 16
   _keyboardRotateSpeed: 90
   _mouseOrbitSpeed: 2.5
@@ -367,8 +369,10 @@ MonoBehaviour:
   _mainCamera: {fileID: 1900725048}
   _freeLookSensitivity: 2.5
   _freeLookSpeed: 12
+  _freeLookFastMultiplier: 2.5
   _cinematicFOV: 40
   _normalFOV: 60
+  _cinematicFarClip: 150000
   _letterboxEnterDuration: 0.35
   _letterboxExitDuration: 0.45
 --- !u!114 &1900725052
@@ -635,6 +639,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _grid: {fileID: 2000000003}
   _allUnits: []
+  _objectives: []
+  _allowAnnihilationFallback: 1
 --- !u!114 &2000000006
 MonoBehaviour:
   m_ObjectHideFlags: 0

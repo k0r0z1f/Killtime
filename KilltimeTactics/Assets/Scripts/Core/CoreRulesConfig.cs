@@ -109,6 +109,32 @@ namespace Killtime.Core.Rules
         [Tooltip("Si vrai, le sprint (3+ cases) bloque tout tir à distance pour le reste du tour (RD-038).")]
         public bool SprintBlocksRanged = true;
 
+        // --- RD-084 : Attaques combinées & Poursuite (Livre VI §25.1 & §25.2) ---
+        [Header("Assaut groupé & Poursuite (RD-084, Livre VI §25.1-25.2)")]
+        [Tooltip("Attaquants minimum pour frapper à l'unisson (2 par défaut, Livre VI §25.2).")]
+        public int CombinedAttackMinMembers = 2;
+        [Tooltip("Coût en PA par participant pour l'attaque combinée (2 par défaut).")]
+        public int CombinedAttackAPCost = 2;
+        [Tooltip("Faillites cumulées avant capture immédiate de la proie (4 par défaut, Livre VI §25.1).")]
+        public int PursuitFailuresToCapture = 4;
+        [Tooltip("Distance minimale maintenue sur réussite de la proie (1 case par défaut).")]
+        public int PursuitMinDistance = 1;
+        [Tooltip("Coût en PA d'un round de course-poursuite par participant (1 par défaut).")]
+        public int PursuitAPCost = 1;
+
+        // --- RD-048 : Retarder / Tenir / Canalisation (Livre VI — Tours) ---
+        [Header("Retarder / Tenir / Canalisation (RD-048)")]
+        [Tooltip("Pénalité d'initiative appliquée quand un combattant retarde son tour (-2 par défaut).")]
+        public int DelayInitiativePenalty = 2;
+        [Tooltip("Coût en PA pour tenir son action / se déclarer en attente (0 par défaut).")]
+        public int HoldAPCost = 0;
+        [Tooltip("Coût en PA pour entrer en canalisation / action en progression (1 par défaut).")]
+        public int ChannelStartAPCost = 1;
+        [Tooltip("Bonus au jet conféré par la canalisation consommée à l'attaque (+2 par défaut, comme la Préparation).")]
+        public int ChannelAttackBonus = 2;
+        [Tooltip("Malus en défense tant que le combattant canalise (-1 par défaut, Livre VI §24.3).")]
+        public int ChannelDefensePenalty = -1;
+
         // --- Livre VI, Chap. 26 : VATS Anatomique ---
         [Header("Anatomie Chirurgicale (Livre VI, Chap. 26)")]
         public List<BodyPartRuleEntry> BodyPartRules = new();
@@ -130,6 +156,15 @@ namespace Killtime.Core.Rules
         [Header("Déplacement & Statuts")]
         public int BaseMovementAPCost = 1;
         public int RalentiAPMultiplier = 2;
+
+        // --- RD-083 : Souffrant & Soins Majeurs (Livre VII §28.3, §29.1, §29.3) ---
+        [Header("Souffrant & Soins Majeurs (Livre VII §28.3/29.1/29.3)")]
+        [Tooltip("Multiplicateur du seuil de Soins Majeurs : soin unique Premiers Soins/Chirurgie >= CON x Multiplicateur pour lever Souffrant.")]
+        public int SouffrantMajorCareMultiplier = 2;
+        [Tooltip("Base de jours réels de convalescence post-résurrection : Durée = Base - CON (Livre VII §29.3).")]
+        public int ResurrectionSequelaeBaseDays = 10;
+        [Tooltip("Malus en ec sur tous les jets pendant la convalescence post-résurrection (-1 par défaut).")]
+        public int ResurrectionSequelaePenalty = -1;
 
         public static event Action OnRulesChanged;
 
@@ -182,6 +217,10 @@ namespace Killtime.Core.Rules
             BaseMovementAPCost = 1;
             RalentiAPMultiplier = 2;
 
+            SouffrantMajorCareMultiplier = 2;
+            ResurrectionSequelaeBaseDays = 10;
+            ResurrectionSequelaePenalty = -1;
+
             OverwatchAPCost = 2;
             OverwatchShotsPerWatch = 1;
 
@@ -196,6 +235,18 @@ namespace Killtime.Core.Rules
             ChargeDefensePenalty = -1;
             ChargeManeuverExtraAPCost = 1;
             SprintBlocksRanged = true;
+
+            CombinedAttackMinMembers = 2;
+            CombinedAttackAPCost = 2;
+            PursuitFailuresToCapture = 4;
+            PursuitMinDistance = 1;
+            PursuitAPCost = 1;
+
+            DelayInitiativePenalty = 2;
+            HoldAPCost = 0;
+            ChannelStartAPCost = 1;
+            ChannelAttackBonus = 2;
+            ChannelDefensePenalty = -1;
 
             BodyPartRules.Clear();
             BodyPartRules.Add(new BodyPartRuleEntry { Part = BodyPart.Tete, DifficultyModifier = -2, CriticalDamageMultiplier = 3 });

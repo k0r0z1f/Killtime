@@ -2569,6 +2569,7 @@ namespace Killtime.Tactics.Units
                 StatusEffect.Empoisonne => new StatusVisualInfo { Status = status, Tag = "TOX", Name = "EMPOISONNÉ", Description = "Dégâts toxiques récurrents par tour", PrimaryColor = new Color(0.35f, 0.95f, 0.25f) },
                 StatusEffect.EnFeu => new StatusVisualInfo { Status = status, Tag = "BRN", Name = "EN FEU", Description = "Dégâts thermiques continus", PrimaryColor = new Color(1f, 0.35f, 0.1f) },
                 StatusEffect.Saignement => new StatusVisualInfo { Status = status, Tag = "BLD", Name = "SAIGNEMENT", Description = "Hémorragie active, perte continue de PV", PrimaryColor = new Color(1f, 0.2f, 0.25f) },
+                StatusEffect.Souffrant => new StatusVisualInfo { Status = status, Tag = "SFR", Name = "SOUFFRANT", Description = "Blessure critique ouverte (Soins Majeurs CON×2 requis)", PrimaryColor = new Color(0.9f, 0.1f, 0.2f) },
                 _ => new StatusVisualInfo { Status = status, Tag = "ALT", Name = "ALTÉRATION", Description = "Statut actif", PrimaryColor = Color.yellow }
             };
         }

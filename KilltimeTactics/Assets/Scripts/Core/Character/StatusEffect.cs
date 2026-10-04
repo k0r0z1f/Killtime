@@ -25,6 +25,10 @@ namespace Killtime.Core.Character
         Empoisonne = 1 << 12,  // Dégâts toxiques par tour
         EnFeu = 1 << 13,       // Dégâts thermiques continus
         Saignement = 1 << 14,  // Hémorragie (perte de PV par tour sans compression)
+        // RD-083 (Livre VII §28.3 & §29.1) : blessure critique ouverte. Statut
+        // persistant — seuls des Soins Majeurs (CON×2 en un seul soin
+        // Premiers Soins / Chirurgie) le lèvent. Soins ordinaires inefficaces.
+        Souffrant = 1 << 22,   // Blessure grave ouverte (Soins Majeurs requis)
 
         // États & Bénédictions Arcaniques Modulaires (Livre IV §19)
         Debalance = 1 << 15,   // Débalancé pour 1 tour (perte d'équilibre)

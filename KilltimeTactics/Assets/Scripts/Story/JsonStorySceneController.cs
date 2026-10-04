@@ -516,6 +516,48 @@ namespace Killtime.Story.Scenes
             SeparateStackedUnits();
         }
 
+        /// <summary>
+        /// Détecte l'acteur John (Passeur du Creuset) sans fichier disque :
+        /// couvre "john.json", DisplayName "John" et modèles "John" / "Operative_John".
+        /// </summary>
+        private static bool IsJohnActor(SceneActorSpawnData actorData)
+        {
+            if (actorData == null) return false;
+            if (!string.IsNullOrEmpty(actorData.CharacterSheetFileName)
+                && actorData.CharacterSheetFileName.IndexOf("john", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(actorData.DisplayName)
+                && actorData.DisplayName.IndexOf("john", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(actorData.ModelPrefabName)
+                && actorData.ModelPrefabName.IndexOf("john", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (actorData.EmbeddedSheet != null && JohnCharacter.IsJohn(actorData.EmbeddedSheet))
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Détecte l'actrice Erika de Cleya sans fichier disque :
+        /// couvre "erika.json", DisplayName "Erika" et modèles "Erika" / "Cleyan_Erika".
+        /// </summary>
+        private static bool IsErikaActor(SceneActorSpawnData actorData)
+        {
+            if (actorData == null) return false;
+            if (!string.IsNullOrEmpty(actorData.CharacterSheetFileName)
+                && actorData.CharacterSheetFileName.IndexOf("erika", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(actorData.DisplayName)
+                && actorData.DisplayName.IndexOf("erika", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(actorData.ModelPrefabName)
+                && actorData.ModelPrefabName.IndexOf("erika", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (actorData.EmbeddedSheet != null && ErikaCharacter.IsErika(actorData.EmbeddedSheet))
+                return true;
+            return false;
+        }
+
         public TacticalUnit SpawnSingleActor(SceneActorSpawnData actorData)
         {
             if (actorData == null) return null;
@@ -537,6 +579,22 @@ namespace Killtime.Story.Scenes
             if (sheet == null && actorData.EmbeddedSheet != null && !string.IsNullOrEmpty(actorData.EmbeddedSheet.Name))
             {
                 sheet = JsonUtility.FromJson<CharacterSheet>(JsonUtility.ToJson(actorData.EmbeddedSheet));
+            }
+
+            // Fallback héroïque (sans JSON) : les scènes 01/02 référencent "john.json" /
+            // "Operative_John" sans fichier disque — on résout la fiche héroïque intégrée
+            // (voir JohnCharacter, même pattern que Mina/Lucas/Thomas dans le dev-spawn).
+            // Aucun john.json à générer : le code reconnaît John directement.
+            if (sheet == null && IsJohnActor(actorData))
+            {
+                sheet = JohnCharacter.BuildHeroicSheet();
+            }
+
+            // Fallback héroïque (sans JSON) : même pattern pour Erika de Cleya
+            // ("erika.json" / "Cleyan_Erika" sans fichier disque).
+            if (sheet == null && IsErikaActor(actorData))
+            {
+                sheet = ErikaCharacter.BuildHeroicSheet();
             }
 
             if (sheet == null)

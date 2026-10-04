@@ -230,5 +230,88 @@ namespace Killtime.Core.Combat
             if (lead <= PerfectLeadMax) return WeaveSyncGrade.Perfect;
             return WeaveSyncGrade.Late;
         }
+
+        // =====================================================================
+        // RD-085 — VALIDATIONS LIVRE VI §25.5 (pures, sans Unity)
+        // =====================================================================
+
+        /// <summary>
+        /// Parallaxe : partenaires opposés à 180° autour de la cible.
+        /// Produit scalaire des vecteurs normalisés cible→a et cible→b :
+        /// -1 = opposition parfaite. minDot = -0.8 ≈ 143°+ (tolérance grille hexa).
+        /// </summary>
+        public static bool AreOpposed180(WeaveVec2 a, WeaveVec2 b, WeaveVec2 target, float minDot = -0.8f)
+        {
+            float ax = a.X - target.X;
+            float ay = a.Y - target.Y;
+            float bx = b.X - target.X;
+            float by = b.Y - target.Y;
+            float la = (float)Math.Sqrt(ax * ax + ay * ay);
+            float lb = (float)Math.Sqrt(bx * bx + by * by);
+            if (la < 1e-5f || lb < 1e-5f) return false;
+            float dot = (ax * bx + ay * by) / (la * lb);
+            return dot <= minDot;
+        }
+
+        /// <summary>
+        /// Point de croisement T1/T2 (Cisaille X) : milieu de la paire
+        /// d'échantillons la plus proche. Faux si écart min &gt; maxGap.
+        /// </summary>
+        public static bool TryFindCrossingPoint(
+            IList<WeaveVec2> t1, IList<WeaveVec2> t2, float maxGap,
+            out WeaveVec2 point)
+        {
+            point = new WeaveVec2(0f, 0f);
+            if (!TryFindCrossing(t1, t2, maxGap, out float arcT1, out _)) return false;
+            point = PointAtArcLength(t1, arcT1);
+            return true;
+        }
+
+        private static float DistPointToSegment(WeaveVec2 p, WeaveVec2 a, WeaveVec2 b)
+        {
+            float abx = b.X - a.X;
+            float aby = b.Y - a.Y;
+            float lenSq = abx * abx + aby * aby;
+            if (lenSq < 1e-8f) return WeaveVec2.Distance(a, p);
+            float t = ((p.X - a.X) * abx + (p.Y - a.Y) * aby) / lenSq;
+            t = Math.Max(0f, Math.Min(1f, t));
+            float cx = a.X + abx * t;
+            float cy = a.Y + aby * t;
+            float dx = p.X - cx;
+            float dy = p.Y - cy;
+            return (float)Math.Sqrt(dx * dx + dy * dy);
+        }
+
+        /// <summary>
+        /// Railgun : couloir droit de minLength+ entre start et end, aucun
+        /// obstacle à moins de widthTol du segment (la cible au bout exceptée
+        /// via excludeIndex &lt; 0 = aucun exclu). Distances en unités monde.
+        /// </summary>
+        public static bool IsStraightCorridor(
+            WeaveVec2 start, WeaveVec2 end, float minLength, float widthTol,
+            IList<WeaveVec2> obstacles, int excludeIndex = -1)
+        {
+            if (WeaveVec2.Distance(start, end) < minLength) return false;
+            if (obstacles == null) return true;
+            for (int i = 0; i < obstacles.Count; i++)
+            {
+                if (i == excludeIndex) continue;
+                if (DistPointToSegment(obstacles[i], start, end) <= widthTol) return false;
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Trempe (monde) : toutes les positions à moins de radiusWorld du
+        /// centroïde (1 case ≈ 1.7 unité monde). Version monde de AreGrouped.
+        /// </summary>
+        public static bool AreGroupedWorld(
+            IList<WeaveVec2> positions, WeaveVec2 centroid, float radiusWorld)
+        {
+            if (positions == null || positions.Count < 2) return false;
+            for (int i = 0; i < positions.Count; i++)
+                if (WeaveVec2.Distance(positions[i], centroid) > radiusWorld) return false;
+            return true;
+        }
     }
 }

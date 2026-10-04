@@ -57,6 +57,27 @@ namespace Killtime.Core.Character
         // par personnage par round. Remis à 0 à chaque nouveau combat.
         public int LastDuoTechRound { get; set; } = 0;
 
+        // RD-085 (Livre VI §25.5) : Mirage à Deux Temps — réactions défensives
+        // gratuites (0 PA) gagnées sur Parfaite, valables jusqu'au prochain tour
+        // personnel de Mina. Décrémenté par ConsumeFreeDefensiveReaction lors de
+        // la prochaine défense active ; expiration du reliquat au MJ / TurnManager.
+        public int FreeDefensiveReactions { get; set; } = 0;
+
+        public void GrantFreeDefensiveReaction(int count = 1)
+        {
+            if (count <= 0 || !IsAlive) return;
+            FreeDefensiveReactions += count;
+        }
+
+        public bool HasFreeDefensiveReaction => FreeDefensiveReactions > 0 && IsAlive;
+
+        public bool ConsumeFreeDefensiveReaction()
+        {
+            if (!HasFreeDefensiveReaction) return false;
+            FreeDefensiveReactions--;
+            return true;
+        }
+
         public bool IsDead { get; set; }
         public bool IsInLastBreath { get; set; }
         public FatalBlowResolution LastFatalBlowResolution { get; set; } = FatalBlowResolution.None;
@@ -130,7 +151,9 @@ namespace Killtime.Core.Character
 
         public int GetStatusModifier(SkillType skill, bool isOffensive = true)
         {
-            if (ActiveStatus == StatusEffect.None) return 0;
+            // RD-083 : la séquelle de résurrection n'est pas un flag — elle s'applique
+            // même sans aucun statut actif.
+            if (ActiveStatus == StatusEffect.None && !HasResurrectionSequelae()) return 0;
 
             int mod = 0;
 
@@ -166,6 +189,10 @@ namespace Killtime.Core.Character
             // Livre VII : Agonisant (-2 détresse vitale / panique)
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) mod -= 2;
 
+            // RD-083 (Livre VII §29.3) : Poids du Trépas — ressuscité affaibli :
+            // malus sur TOUS les jets pendant (10 - CON) jours réels.
+            mod += GetResurrectionSequelaeModifier();
+
             // Livre IV §19 : bénédictions arcanotech offensives (+EC au jet).
             // Survolte +1 EC, EnTranse +2 EC — offensif uniquement, cumulables.
             if (isOffensive)
@@ -179,7 +206,8 @@ namespace Killtime.Core.Character
 
         public string GetStatusBreakdownString(SkillType skill, bool isOffensive = true)
         {
-            if (ActiveStatus == StatusEffect.None) return string.Empty;
+            // RD-083 : afficher le Poids du Trépas même sans flag de statut actif.
+            if (ActiveStatus == StatusEffect.None && !HasResurrectionSequelae()) return string.Empty;
 
             var parts = new System.Collections.Generic.List<string>();
             if (ActiveStatus.HasFlag(StatusEffect.Destabilise))
@@ -202,6 +230,7 @@ namespace Killtime.Core.Character
                 parts.Add("Immobilisé -2");
             }
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) parts.Add("Agonisant -2");
+            if (HasResurrectionSequelae()) parts.Add($"Poids du Trépas {GetResurrectionSequelaeModifier()}ec ({GetResurrectionSequelaeRemainingDays()}j restants)");
             if (isOffensive)
             {
                 if (ActiveStatus.HasFlag(StatusEffect.Survolte)) parts.Add("Survolte +1ec");
@@ -330,7 +359,10 @@ namespace Killtime.Core.Character
                 || effect == StatusEffect.Saignement
                 || effect == StatusEffect.Empoisonne
                 || effect == StatusEffect.EnFeu
-                || effect == StatusEffect.Asphyxie;
+                || effect == StatusEffect.Asphyxie
+                // RD-083 (Livre VII §28.3) : Souffrant ne s'efface jamais au tick —
+                // seuls des Soins Majeurs (CON×2 en un coup) le lèvent.
+                || effect == StatusEffect.Souffrant;
         }
 
         /// <summary>
@@ -702,7 +734,11 @@ namespace Killtime.Core.Character
                 if (HasSpecialization("Homéostasie Accélérée : Pulsion Phénix"))
                 {
                     CurrentHealth = Math.Min(MaxHealth, CurrentHealth + 4);
+                    // RD-083 : régénération arcanique ≠ Premiers Soins/Chirurgie —
+                    // la blessure critique reste ouverte (Souffrant préservé).
+                    bool keepSouffrant = IsSouffrant;
                     ClearAllStatus();
+                    if (keepSouffrant) ApplyStatus(StatusEffect.Souffrant);
                 }
                 else if (HasSpecialization("Homéostasie Accélérée : Coagulation Flash"))
                 {
@@ -842,6 +878,9 @@ namespace Killtime.Core.Character
         /// reste à la Défibrillation. Plafonné à MaxHealth. Retourne le soin réel.
         /// RD-045 : tout soin stoppe le Saignement (compression + cautérisation).
         /// Empoisonne/EnFeu/Asphyxie exigent un traitement dédié (kit, eau, airway).
+        /// RD-083 (Livre VII §28.3) : SOIN ORDINAIRE — ne lève JAMAIS Souffrant,
+        /// même si le montant dépasse CON×2. Seul ApplyMajorCare (Premiers Soins /
+        /// Chirurgie en un seul coup >= CON×2) referme la blessure critique.
         /// </summary>
         public int Heal(int amount)
         {
@@ -867,6 +906,174 @@ namespace Killtime.Core.Character
         {
             if (amount == 0) return;
             EncaissementThreshold = Math.Max(0, EncaissementThreshold + amount);
+        }
+
+        // =====================================================================
+        // RD-083 : SOUFFRANT & SOINS MAJEURS (Livre VII §28.3, §29.1)
+        // =====================================================================
+
+        /// <summary>
+        /// Seuil des Soins Majeurs (Livre VII §29.1) : soin unique >= CON × 2
+        /// via Premiers Soins / Chirurgie pour refermer la blessure critique.
+        /// Paramétrable via CoreRulesConfig.SouffrantMajorCareMultiplier.
+        /// </summary>
+        public int GetMajorCareThreshold()
+        {
+            int mult = 2;
+            try { mult = Rules.CoreRulesConfig.Instance.SouffrantMajorCareMultiplier; }
+            catch { mult = 2; }
+            // Migration : 0 = ancienne sauvegarde sans le champ → défaut Codex (×2).
+            if (mult < 1) mult = 2;
+            return Math.Max(1, Attributes.Constitution * mult);
+        }
+
+        public bool IsSouffrant => ActiveStatus.HasFlag(StatusEffect.Souffrant);
+
+        /// <summary>
+        /// Soin ordinaire bloqué par Souffrant ? Vrai si Souffrant actif : les
+        /// seringues / bandages / repos restaurent des PV (Heal) mais ne lèvent
+        /// jamais le statut. Sert aux logs UI.
+        /// </summary>
+        public bool IsOrdinaryCareBlockedBySouffrant() => IsSouffrant;
+
+        /// <summary>
+        /// Soins Majeurs (Livre VII §29.1) : épreuve de Premiers Soins / Chirurgie
+        /// au chevet du blessé soignant D'UN SEUL COUP >= CON×2 dégâts.
+        /// Soigne les PV (plafond MaxHealth, ne réanime pas) + stoppe le
+        /// Saignement comme un soin ordinaire. Si le seuil est atteint et que
+        /// Souffrant est actif, le statut est levé. Sous le seuil : PV rendus
+        /// mais Souffrant persiste (blessure toujours ouverte).
+        /// Retourne le détail pour logs d'arène et tests.
+        /// </summary>
+        public MajorCareResult ApplyMajorCare(int healAmount)
+        {
+            var result = new MajorCareResult
+            {
+                RequestedAmount = Math.Max(0, healAmount),
+                Threshold = GetMajorCareThreshold(),
+                HadSouffrant = IsSouffrant,
+                Log = string.Empty
+            };
+            if (IsDead || healAmount <= 0) return result;
+            if (ActiveStatus.HasFlag(StatusEffect.Inconscient)) return result;
+            if (!IsAlive && CurrentHealth <= 0) return result;
+
+            int before = CurrentHealth;
+            CurrentHealth = Math.Min(MaxHealth, CurrentHealth + healAmount);
+            result.Healed = Math.Max(0, CurrentHealth - before);
+
+            if (ActiveStatus.HasFlag(StatusEffect.Saignement))
+                RemoveStatus(StatusEffect.Saignement);
+            if (CurrentHealth > (int)Math.Ceiling(MaxHealth * 0.28f))
+                HasTestedMorale = false;
+
+            result.MeetsThreshold = result.RequestedAmount >= result.Threshold;
+            if (result.HadSouffrant && result.MeetsThreshold)
+            {
+                RemoveStatus(StatusEffect.Souffrant);
+                result.SouffrantLifted = true;
+                result.Log = $"🩹 <b>SOINS MAJEURS</b> : {Name} referme sa blessure critique (+{result.Healed} PV, seuil CON×2 = {result.Threshold}) ➔ <b>Souffrant LEVÉ</b>.";
+            }
+            else if (result.HadSouffrant)
+            {
+                result.SouffrantLifted = false;
+                result.Log = $"🩹 <b>SOINS MAJEURS INSUFFISANTS</b> : {Name} (+{result.Healed} PV, {result.RequestedAmount}/{result.Threshold} requis) ➔ <b>Souffrant PERSISTE</b> (blessure toujours ouverte).";
+            }
+            else
+            {
+                result.Log = $"🩹 <b>Soins Majeurs</b> : {Name} (+{result.Healed} PV).";
+            }
+            return result;
+        }
+
+        // =====================================================================
+        // RD-083 : SÉQUELLE POST-MORTEM (Livre VII §29.3 — Poids du Trépas)
+        // =====================================================================
+
+        /// <summary>
+        /// Instant réel (UTC) de la dernière résurrection réussie. Null = jamais
+        /// ressuscité (aucune séquelle). Base du malus -1 ec pendant (10-CON)j.
+        /// </summary>
+        public DateTime? LastResurrectionUtc { get; set; } = null;
+
+        /// <summary>
+        /// Durée de convalescence post-résurrection en jours réels : 10 - CON
+        /// (plancher 0 : CON 10+ = âme réancrée immédiatement). Paramétrable.
+        /// </summary>
+        public int GetResurrectionSequelaeDurationDays()
+        {
+            int baseDays = 10;
+            try { baseDays = Rules.CoreRulesConfig.Instance.ResurrectionSequelaeBaseDays; }
+            catch { baseDays = 10; }
+            // Migration : 0 = ancienne sauvegarde sans le champ → défaut Codex (10).
+            if (baseDays < 1) baseDays = 10;
+            return Math.Max(0, baseDays - Attributes.Constitution);
+        }
+
+        /// <summary>
+        /// Vrai si le Poids du Trépas s'applique encore à l'instant donné
+        /// (défaut : maintenant UTC). Faux si jamais ressuscité ou convalescence
+        /// purgée, ou durée nulle (CON élevée).
+        /// </summary>
+        public bool HasResurrectionSequelae(DateTime? nowUtc = null)
+        {
+            if (!LastResurrectionUtc.HasValue) return false;
+            int duration = GetResurrectionSequelaeDurationDays();
+            if (duration <= 0) return false;
+            DateTime now = nowUtc ?? DateTime.UtcNow;
+            double elapsedDays = (now - LastResurrectionUtc.Value).TotalDays;
+            if (elapsedDays < 0) return true;
+            return elapsedDays < duration;
+        }
+
+        /// <summary>Jours réels restants de convalescence (arrondi supérieur, 0 si purgée).</summary>
+        public int GetResurrectionSequelaeRemainingDays(DateTime? nowUtc = null)
+        {
+            if (!HasResurrectionSequelae(nowUtc)) return 0;
+            int duration = GetResurrectionSequelaeDurationDays();
+            DateTime now = nowUtc ?? DateTime.UtcNow;
+            double elapsed = (now - LastResurrectionUtc.Value).TotalDays;
+            return Math.Max(0, (int)Math.Ceiling(duration - Math.Max(0, elapsed)));
+        }
+
+        /// <summary>
+        /// Malus du Poids du Trépas sur tous les jets (Livre VII §29.3 : -1 ec).
+        /// 0 si aucune séquelle active. Paramétrable via CoreRulesConfig.
+        /// </summary>
+        public int GetResurrectionSequelaeModifier(DateTime? nowUtc = null)
+        {
+            if (!HasResurrectionSequelae(nowUtc)) return 0;
+            try
+            {
+                int penalty = Rules.CoreRulesConfig.Instance.ResurrectionSequelaePenalty;
+                // Migration : 0 = ancienne sauvegarde sans le champ → défaut Codex (-1).
+                // (La fenêtre de règles ne propose que -3..-1, 0 n'est pas exprimable.)
+                return penalty == 0 ? -1 : penalty;
+            }
+            catch { return -1; }
+        }
+
+        /// <summary>
+        /// Résurrection (Livre VII §29.3) : rappelle l'âme dans la chair.
+        /// Lève la mort (IsDead=false, Dernier Souffle purgé), restaure les PV
+        /// (défaut 1, défibrillation ; 50% pour Transfusion Symbiotique via
+        /// paramètre), dissipe Inconscient/Agonisant, et HORODATE le retour
+        /// pour la séquelle -1 ec pendant (10-CON) jours réels.
+        /// Ne lève PAS Souffrant (blessure toujours ouverte : Soins Majeurs requis).
+        /// Retourne la durée de convalescence pour logs.
+        /// </summary>
+        public int ApplyResurrection(int healthAfter = 1, DateTime? nowUtc = null)
+        {
+            DateTime now = nowUtc ?? DateTime.UtcNow;
+            IsDead = false;
+            IsInLastBreath = false;
+            LastFatalBlowResolution = FatalBlowResolution.None;
+            CurrentHealth = Math.Clamp(healthAfter <= 0 ? 1 : healthAfter, 1, Math.Max(1, MaxHealth));
+            RemoveStatus(StatusEffect.Inconscient);
+            RemoveStatus(StatusEffect.Agonisant);
+            HasTestedMorale = false;
+            LastResurrectionUtc = now;
+            return GetResurrectionSequelaeDurationDays();
         }
 
         /// <summary>Blindage porté : somme des protections des armures équipées (Livre VIII §32.1).</summary>
@@ -1121,6 +1328,22 @@ namespace Killtime.Core.Character
         public bool Surrendered;
         public bool Routed;
         [NonSerialized] public DiceRollResult Roll;
+        public string Log;
+    }
+
+    /// <summary>
+    /// RD-083 : résultat des Soins Majeurs (Livre VII §29.1).
+    /// Pur (aucune dépendance Unity) pour tests et logs d'arène.
+    /// </summary>
+    [Serializable]
+    public struct MajorCareResult
+    {
+        public int RequestedAmount;
+        public int Threshold;
+        public int Healed;
+        public bool HadSouffrant;
+        public bool MeetsThreshold;
+        public bool SouffrantLifted;
         public string Log;
     }
 

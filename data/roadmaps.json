@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-02",
+  "updated": "2026-10-04",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -319,7 +319,7 @@
           "id": "RD-048",
           "title": "Retarder / tenir / interrompre sort",
           "epic": "Tours/Surprise",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 18,
           "scene": "",
@@ -328,7 +328,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "TurnManager",
-          "details": "Hold action, delay init -2, interruption canalisation si dégât > encaissement."
+          "details": "FAIT : Retarder / Tenir / Canalisation (RD-048, Livre VI Tours). 1) DelayedTurnState (Core) : Tenir l'action (0 PA, passe en attente PA conservés, interruption juste après l'unité active via TryResumeHeldUnit, expire au prochain tour) ; Retarder (0 PA, initiative -2 config, réinsertion plus tard 1/round, min un cran, refusé si dernier). 2) ChannelingState (Core) : canalisation / action en progression (1 PA, +2 au jet consommé à l'attaque, -1 en défense, persiste multi-tours, interrompue si dégât net > encaissement ou K.O./neutralisé, log tracé). 3) CombatCalculator : TryHold/TryDelay/TryBeginChanneling/CheckChannelInterruption + malus défense et bonus attaque branchés (duels, interception, assaut groupé) + DamageResult.ChannelInterrupted. 4) TurnManager : TryDelayActiveUnit/TryHoldActiveUnit/TryResumeHeldUnit + purge cycle de vie (Unregister/Reset/OnUnitTurnStart) + resync VTT. 5) CombatDevArena (TryHold/TryDelay/TryBeginChanneling + FX interruption duels + NotifyChannelDamage hors-duels) + registre d'actions ⏸️/⏳/🔮 + CoreRulesConfig paramétrable + tests DelayedTurnChannelTests."
         },
         {
           "id": "RD-049",
@@ -544,7 +544,7 @@
           "id": "RD-083",
           "title": "Statut « Souffrant » & Règle des Soins Majeurs (Livre VII §28.3, 29.1)",
           "epic": "États/DoT",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 33,
           "scene": "",
@@ -553,13 +553,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CharacterStats + StatusEffect",
-          "details": "Mécanique du statut Souffrant (Livre VII §28.3 & §29.1) : blessure critique ouverte impossible à guérir par des soins ordinaires (seringues, repos standard, pansements légers). Levée du statut conditionnée à une épreuve de Premiers Soins / Chirurgie soignant d'un seul coup au moins CON × 2 dégâts. Séquelle post-mortem de résurrection (Livre VII §29.3) : malus de -1 ec sur tous les jets pendant (10 - CON) jours réels."
+          "details": "FAIT : Statut Souffrant persistant (StatusEffect 1<<22, IsPersistentStatus, pas de tick) + Soins Majeurs CON×2 en un seul coup via CharacterStats.ApplyMajorCare (Premiers Soins/Chirurgie, lève Souffrant + stoppe Saignement) ; Heal ordinaire (seringues/bandages/repos/regen ResetTurn/Pulsion Phénix/Cœur d'Éclosion) restaure des PV mais ne lève jamais Souffrant. Séquelle post-mortem §29.3 : CharacterStats.ApplyResurrection horodate le retour (LastResurrectionUtc), malus -1 ec sur tous les jets pendant (10-CON)j réels (Has/GetResurrectionSequelae, intégré à GetStatusModifier/Breakdown). CoreRulesConfig paramétrable (SouffrantMajorCareMultiplier, ResurrectionSequelaeBaseDays, ResurrectionSequelaePenalty). Branché sur CombatActionRegistry (premiers soins CON×2/×3, seringues, défibrillation), TacticalAIController (suture + réanimation) et tests SouffrantMajorCareTests."
         },
         {
           "id": "RD-084",
           "title": "Attaques Combinées de Groupe & Poursuite (Livre VI §25.1 & §25.2)",
           "epic": "Tours/Surprise",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 34,
           "scene": "",
@@ -568,13 +568,13 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CombatCalculator + TurnManager",
-          "details": "1) Attaques combinées de groupe (Livre VI §25.2) : synchronisation sur l'initiative du membre le plus lent, sommation des résultats offensifs de chaque attaquant face à l'unique défense de la cible pour pulvériser l'armure et l'encaissement par dépassement massif. 2) Concours d'Athlétisme de poursuite (Livre VI §25.1) : épreuve opposée Proie vs Poursuivants (Athlétisme vs Athlétisme) ; réussite de la proie = distance maintenue à 1 case min ; faillite = poursuivant gagne du terrain ; arrêt et capture immédiate aux 4 faillites cumulées."
+          "details": "FAIT : Assaut groupé (Livre VI §25.2) synchronisé sur l'initiative du membre le plus lent (GroupAssaultState + TurnManager.GetSlowestInitiativeFor), sommation des résultats offensifs face à l'unique défense (CombatCalculator.ResolveCombinedAttack, armure/bouclier 1×, dépassement massif) ; course-poursuite (Livre VI §25.1) en concours Athlétisme proie vs poursuivants (ResolvePursuitRound + PursuitState : maintien ≥1 case, +1 faillite/échec, capture + Immobilisé aux 4 cumulées). Intégration CombatDevArena (ExecuteCombinedAttack/ExecutePursuitRound + Collect/TryResolve), registre d'actions, IA (assaut si blindé + poursuite des fuyards), CoreRulesConfig paramétrable, tests GroupAssaultPursuitTests."
         },
         {
           "id": "RD-085",
           "title": "Extension des 6 Duo-Techs Manquantes du Codex (Livre VI §25.5)",
           "epic": "Duo-Tech",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 35,
           "scene": "",
@@ -619,7 +619,7 @@
           "id": "RD-088",
           "title": "Manœuvres Avancées des PNJ & Automates (Livre XI §44 & §47)",
           "epic": "PNJ",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 38,
           "scene": "",
@@ -628,7 +628,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "TacticalAIController + BestiaryCatalog",
-          "details": "Intégration tactique des PNJ spécialisés Livre XI : 1) Bandit #3 : Tir préparé en interruption (réserve 4 PA au tour N pour tir réflexe dès sortie de couvert ou canalisation), Prise d'otage (6 PA, arme sur tempe de cible adjacente à terre/essoufflée). 2) Illumo : Combustion spontanée sans jet projectile (4 PA, 18m, 5 bruts + EnFeu), Foulée de cendres (2 PA, téléport 6 cases + Aveuglé). 3) Drones & Molosses : Morsure hydraulique du molosse (verrouillage mâchoire : Immobilisé + 2 dégâts auto/tour), Flash aveuglant et balise d'appel de renforts réseau du drone."
+          "details": "FAIT : Intégration tactique des PNJ spécialisés Livre XI. 1) Bandit #3 : Tir préparé en interruption (Overwatch 4 PA réservés pour tir réflexe dès rupture de couvert ou canalisation) + Prise d'otage (6 PA, arme sur tempe de cible adjacente à terre ou essoufflée, Immobilisé + Déstabilisé + registre LivreXIPNJState). 2) Illumo : Combustion spontanée sans jet projectile (4 PA, portée 18m / 9 hex, 5 bruts absorbés par bouclier puis chair + statut EnFeu 2 tours) + Foulée de cendres (2 PA, téléportation 6 cases via TeleportTo, aveuglement StatusEffect.Aveugle des ennemis adjacents au départ). 3) Drones & Molosses : Morsure hydraulique du molosse (contact, Immobilisé + 2 dégâts auto/tour résolus en début de tour personnel) + Flash aveuglant (2 PA, rayon 3 hex, statut Aveugle) + Balise d'appel réseau (3 PA, coordination télémétrique +1 PA escouade + alerte patrouille). Intégration complète BestiaryCatalog (spécialisations, registre d'état, 4 archétypes par défaut garantis) et TacticalAIController (IA militaire opérationnelle)."
         }
       ]
     },
@@ -1381,6 +1381,36 @@
           "scale": null,
           "suggestedAsset": "Bestiary.json",
           "details": "FAIT : Bestiaire 22 entrées Livre XI sérialisé (2 Sbires, 1 Civil, 1 Garde, 3 Bandits, 1 Élite, 1 Faune, 2 Automates, 3 Boss Titans, 8 Builds PNJ). Double-source JSON BestiaryCatalog (override persistentDataPath > Resources/Data/Bestiary.json). Fenêtre runtime BestiaryDevWindow (raccourcis B et F6) avec édition live (attributs, compétences, spés, équipement), validation des budgets Livre I, sauvegarde override disque et export éditeur. Spawn live direct (allié/ennemi) et instanciation de carte CombatDevArena avec validation d'empreinte multi-hex Rosette7 et anti-collision."
+        },
+        {
+          "id": "RD-092",
+          "title": "John personnage de base (Passeur du Creuset)",
+          "epic": "Fiches héroïques",
+          "status": "done",
+          "priority": "high",
+          "order": 6,
+          "scene": "volume_1_scene_01, volume_1_scene_02",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "JohnCharacter.cs + John.prefab (Resources/Characters)",
+          "details": "FAIT : John comme 4e fiche héroïque de base (miroir Mina/Lucas/Thomas). JohnCharacter (SheetId e8f2a419, HérosPJ MAG 0, innée Revenir Vivant + 12 spés Passeur), IsJohnExclusive dans ProgressionManager, ligne F1, constellation Voûte, lien héroïque TurnManager, SpawnJohn + Quatuor, fallback scènes IsJohnActor, fix data Operative_John -> John (scènes 01/02, backups .bak_johnfix)."
+        },
+        {
+          "id": "RD-093",
+          "title": "Erika personnage de base (Flamme Cleyane)",
+          "epic": "Fiches héroïques",
+          "status": "done",
+          "priority": "high",
+          "order": 7,
+          "scene": "volume_1_scene_01, volume_1_scene_02",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ErikaCharacter.cs + Erika.prefab (Resources/Characters)",
+          "details": "FAIT : Erika comme 5e fiche héroïque de base (miroir Mina/Lucas, MAG 5). ErikaCharacter (SheetId 4b9e2d7f, Cleienne, innée Flamme Cleyane + 12 spés feu/lame/sang-chaud, restrictions Primale+Esprit), IsErikaExclusive dans ProgressionManager (+ sorts modulaires), ligne F1, constellation Voûte, lien héroïque TurnManager, SpawnErika + Quintette, fallback scènes IsErikaActor, fix data Cleyan_Erika -> Erika (scènes 01/02, backups .bak_erikafix)."
         }
       ]
     },
@@ -1523,6 +1553,43 @@
           "scale": null,
           "suggestedAsset": "VTTProtocol + VTTTableSync",
           "details": "Extension du protocole réseau VTT pour la parité plateau complète : 1) Synchronisation des armes et objets au sol (DroppedWeaponPickup) via nouvelles opérations VTTProtocol (drop_weapon, pickup_weapon, kick_weapon) exécutées autoritairement par le GM et répliquées chez les clients. 2) Diffusion de la liste active des SmokeZone (nuages de gaz, feu au sol, fumigènes, durée restante en rounds) dans le paquet state_sync pour réconciliation immédiate des clients connectés ou reconnectés."
+        }
+      ]
+    },
+    {
+      "id": "board-scene-manager",
+      "name": "05 Manager de Scène",
+      "desc": "Outillage et pipeline de scènes : éditeur nodal (Shift+F2), environnement 3D (Shift+F3), timeline cinématique (Shift+F4) et orchestration runtime StorySceneManager.",
+      "tasks": [
+        {
+          "id": "RD-090",
+          "title": "LOD & Performance Graphe Nodal Shift+F2",
+          "epic": "Graphe Nodal",
+          "status": "done",
+          "priority": "high",
+          "order": 0,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow",
+          "details": "FAIT : Optimisation majeure et ergonomie de l'Éditeur de Scènes Narratives Shift+F2. 1) Scission de la barre supérieure en deux rangées dédiées (ligne 1 métadonnées/titre/layout, ligne 2 création de cartes/outils) résolvant la compression verticale du texte. 2) Système de LOD dynamique sur l'ensemble des cartes (Dialogues, Événements, Conséquences, Déclencheurs, Interactables, Acteurs, Cinématiques) sous le seuil de zoom 0.42f : neutralisation de plus de 2000 contrôles IMGUI par frame et remplacement par des silhouettes vectorielles ultra-légères sans altération de dimensionnement ni de repères. 3) Préservation intégrale de l'interactivité dézoomée : drag d'en-tête, resize, suppression, infobulles au survol et gestionnaire de ports/fils Bézier actifs. 4) Échantillonnage adaptatif des courbes de liaison et espacement dynamique de la grille (128 px sous 35% de zoom) divisant par 3 les draw calls de fond."
+        },
+        {
+          "id": "RD-091",
+          "title": "Fix fuite Directional Light intérieure & terminatrice planète Shift+F3",
+          "epic": "Environnement 3D",
+          "status": "done",
+          "priority": "high",
+          "order": 1,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "IntroEnvironmentBuilder + SceneEnvironmentDevWindow",
+          "details": "FAIT : Résolution de la contamination de l'éclairage cosmique et du basculement horizontal du terminateur planétaire. 1) IntroEnvironmentBuilder : conversion de Key_Light (Interior_Lighting) de Directional à PointLight locale (portée 25m, intensité 2.2) confinant l'éclairage au pont intérieur et supprimant l'écrasement lumineux spatial à Pitch 50°. 2) SceneEnvironmentDevWindow : filtrage robuste dans FindSceneLighting excluant les lumières intérieures pour cibler prioritairement le soleil cosmique (Sun/Soleil/Celestial/Space), affichage en direct du nom de la source active dans l'en-tête de l'onglet Lumières et ajout du raccourci d'alignement « Terminatrice Verticale (Pitch 0°) »."
         }
       ]
     }
