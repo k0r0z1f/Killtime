@@ -171,6 +171,10 @@ namespace Killtime.Core.Character
                     var loaded = CharacterStorageService.LoadCharacter(filePath);
                     if (loaded != null)
                     {
+                        // Migration : remplace les objets hors-catalogue des saves
+                        // antérieures par leurs équivalents Armurerie/Marché.
+                        if (ArmoryCatalog.MigrateLegacyScene01Items(loaded) > 0)
+                            CharacterStorageService.SaveCharacter(loaded);
                         return loaded;
                     }
                 }
@@ -217,20 +221,25 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Sang-Chaud Cleyan");
             sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
 
-            // Équipement officiel
-            sheet.Inventory.Add(new InventoryItem
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
+            // lame courte d'escorte (bâtarde / katana traditionnel, standard des milices).
+            if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Épée Métal Standard", false))
             {
-                Name = "Lame d'Escorte Cleyane",
-                Type = ItemType.Weapon,
-                EquipSlot = ItemEquipSlot.MainHand,
-                IsEquipped = true,
-                BaseDamage = 6,
-                RangeInTiles = 1,
-                AssociatedSkill = SkillType.ManiementArmes,
-                WeightKg = 1.4f,
-                Description = "Lame courte Cleyane au fil constellé de braise, portée par Erika depuis les guerres clandestines.",
-                PriceCE = 400
-            });
+                // Repli si catalogue indisponible (ne devrait jamais arriver).
+                sheet.Inventory.Add(new InventoryItem
+                {
+                    Name = "Lame d'Escorte Cleyane",
+                    Type = ItemType.Weapon,
+                    EquipSlot = ItemEquipSlot.MainHand,
+                    IsEquipped = false,
+                    BaseDamage = 6,
+                    RangeInTiles = 1,
+                    AssociatedSkill = SkillType.ManiementArmes,
+                    WeightKg = 1.4f,
+                    Description = "Lame courte Cleyane au fil constellé de braise, portée par Erika depuis les guerres clandestines.",
+                    PriceCE = 400
+                });
+            }
 
             return sheet;
         }

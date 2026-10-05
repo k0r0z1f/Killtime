@@ -184,6 +184,154 @@ namespace Killtime.Core.Inventory
         }
 
         /// <summary>
+        /// Dotation initiale : clone un article du catalogue pour l'inventaire d'une fiche.
+        /// Contrairement à <see cref="BuyForSheet"/>, sans paiement (budget scène 01).
+        /// Les réserves de munitions suivent la règle RD-033 (1 charge laser = 10 tirs).
+        /// Retourne false si l'article est introuvable (appelant : prévoir un repli).
+        /// </summary>
+        public static bool GiveLoadoutItem(CharacterSheet sheet, string itemName, bool equipped)
+        {
+            if (sheet == null || sheet.Inventory == null) return false;
+            var def = GetByName(itemName);
+            if (def == null) return false;
+            var copy = def.Clone();
+            copy.IsEquipped = equipped;
+            if (copy.Type == ItemType.Ammunition)
+            {
+                if (copy.Name.Contains("Charge Laser")) copy.Quantity = 10;
+                else if (copy.Name.Contains("Carquois")) copy.Quantity = 20;
+            }
+            sheet.Inventory.Add(copy);
+            return true;
+        }
+
+        /// <summary>
+        /// Anciens équipements de la scène 01 hors-catalogue -&gt; équivalent officiel.
+        /// Tout item dont le nom N'EXISTE PAS au catalogue Armurerie/Marché et qui figure
+        /// ici est remplacé par son clone catalogue (état équipé + ItemId conservés).
+        /// Les objets inconnus non listés (créations du joueur, quêtes) sont préservés.
+        /// </summary>
+        private static readonly Dictionary<string, string> LegacyScene01Replacements =
+            new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase)
+            {
+                { "Pistolet Balistique Lourd", "Pistolet Léger Ivoire" },
+                { "Pistolet Lourd du Passeur", "Pistolet Léger Ivoire" },
+                { "Pistolet Balistique Léger", "Pistolet Léger Ivoire" },
+                { "Pistolet à Impulsion Ionique", "Pistolet Léger Irradié" },
+                { "SciFiGunLight_Rad", "Pistolet Léger Irradié" },
+                { "Fusil Balistique Résistance", "Fusil d'Assaut Laser" },
+                { "Épée d'Acier de Kingston", "Épée Métal Courte" },
+                { "Épée Bâtarde des Marches", "Épée Métal Supérieure" },
+                { "Pavois d'Acier de Brum'korath", "Armure Légère 1" },
+                { "Lame d'Escorte Cleyane", "Épée Métal Standard" },
+                { "Focalisateur Nytharite", "Épée Métal Standard" },
+                { "Carabine d'Assaut Résistance", "Fusil d'Assaut Laser" },
+            };
+
+        /// <summary>
+        /// Répare les inventaires des sauvegardes scène 01 antérieures : remplace chaque
+        /// objet hors-catalogue connu par son équivalent officiel et ajoute une réserve
+        /// de charge laser si un tireur laser n'en possède aucune. Retourne le nombre
+        /// d'ajouts/remplacements effectués (0 = inventaire déjà conforme).
+        /// </summary>
+        public static int MigrateLegacyScene01Items(CharacterSheet sheet)
+        {
+            if (sheet == null || sheet.Inventory == null) return 0;
+            int fixedCount = 0;
+            for (int i = 0; i < sheet.Inventory.Count; i++)
+            {
+                var it = sheet.Inventory[i];
+                if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                if (GetByName(it.Name) != null) continue; // déjà au catalogue : rien à faire.
+                string key = it.Name.Trim();
+                if (!LegacyScene01Replacements.TryGetValue(key, out string replacement)) continue;
+                var def = GetByName(replacement);
+                if (def == null) continue;
+                var copy = def.Clone();
+                copy.IsEquipped = it.IsEquipped;
+                copy.ItemId = it.ItemId; // conserve l'identité (marché, UI, sauvegardes).
+                sheet.Inventory[i] = copy;
+                fixedCount++;
+            }
+            // L'état équipé est préservé tel quel (jamais d'équipement automatique ici).
+            // Réserve de munitions pour les tireurs laser dotés sans charge.
+            bool needsCharge = false;
+            bool hasCharge = false;
+            for (int i = 0; i < sheet.Inventory.Count; i++)
+            {
+                var it = sheet.Inventory[i];
+                if (it == null) continue;
+                if (!string.IsNullOrEmpty(it.AmmoType) && it.AmmoType.Contains("Charge Laser"))
+                    needsCharge = true;
+                if (!string.IsNullOrEmpty(it.Name) && it.Name.Contains("Charge Laser"))
+                    hasCharge = true;
+            }
+            if (needsCharge && !hasCharge)
+            {
+                if (GiveLoadoutItem(sheet, "Charge Laser Standard (x10)", false))
+                    fixedCount++;
+            }
+            return fixedCount;
+        }
+
+        /// <summary>
+        /// Vrai si la fiche possède au moins une arme en poche (équipée ou non).
+        /// </summary>
+        public static bool SheetHasWeapon(CharacterSheet sheet)
+        {
+            if (sheet == null || sheet.Inventory == null) return false;
+            for (int i = 0; i < sheet.Inventory.Count; i++)
+            {
+                var it = sheet.Inventory[i];
+                if (it != null && it.Type == ItemType.Weapon) return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// Résolution d'arme pour les acteurs des scènes JSON (scènes 01/02...) :
+        /// 1) nom exact au catalogue -&gt; clone (vraie catégorie, prix, poids, munitions) ;
+        /// 2) ancien nom hors-catalogue connu -&gt; clone de l'équivalent officiel ;
+        /// 3) repli -&gt; placeholder Divers synthétisé (comportement historique, inchangé).
+        /// L'arme est rendue équipée ou non selon <paramref name="equipped"/>
+        /// (les dotations de scène arrivent déséquipées : au joueur de s'équiper).
+        /// Garantit qu'une scène ne produit plus d'objet "non défini" au Marché/Armurerie.
+        /// </summary>
+        public static InventoryItem ResolveSceneWeapon(string weaponName, string actorId, bool equipped = true)
+        {
+            if (!string.IsNullOrEmpty(weaponName))
+            {
+                var def = GetByName(weaponName);
+                if (def == null && LegacyScene01Replacements.TryGetValue(weaponName.Trim(), out string replacement))
+                    def = GetByName(replacement);
+                if (def != null)
+                {
+                    var copy = def.Clone();
+                    copy.IsEquipped = equipped;
+                    if (!string.IsNullOrEmpty(actorId))
+                        copy.ItemId = $"weapon_{actorId}";
+                    if (copy.AmmoCapacity > 0)
+                        copy.AmmoRemaining = copy.AmmoCapacity;
+                    return copy;
+                }
+            }
+            // Repli historique : nom de scène inconnu au catalogue.
+            string lw = (weaponName ?? "").ToLowerInvariant();
+            bool isRanged = lw.Contains("laser") || lw.Contains("pistolet") || lw.Contains("fusil")
+                         || lw.Contains("blaster") || lw.Contains("carabine");
+            return new InventoryItem
+            {
+                ItemId = string.IsNullOrEmpty(actorId) ? Guid.NewGuid().ToString("N") : $"weapon_{actorId}",
+                Name = string.IsNullOrEmpty(weaponName) ? "Arme Tactique" : weaponName,
+                Type = ItemType.Weapon,
+                AssociatedSkill = isRanged ? SkillType.Ballistique : SkillType.ManiementArmes,
+                RangeInTiles = isRanged ? 8 : 1,
+                BaseDamage = isRanged ? 5 : 4,
+                IsEquipped = equipped
+            };
+        }
+
+        /// <summary>
         /// Déduit l'ère technologique d'un item si absente du JSON sauvegardé.
         /// </summary>
         public static string DeduceEra(InventoryItem it)

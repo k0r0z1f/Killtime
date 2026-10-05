@@ -192,6 +192,10 @@ namespace Killtime.Core.Character
                     var loaded = CharacterStorageService.LoadCharacter(filePath);
                     if (loaded != null)
                     {
+                        // Migration : remplace les objets hors-catalogue des saves
+                        // antérieures par leurs équivalents Armurerie/Marché.
+                        if (ArmoryCatalog.MigrateLegacyScene01Items(loaded) > 0)
+                            CharacterStorageService.SaveCharacter(loaded);
                         return loaded;
                     }
                 }
@@ -239,34 +243,43 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Bloquer : Mur de Bouclier");
             sheet.UnlockedSpecializations.Add("Mener (Commandement)");
 
-            // Équipement officiel
-            sheet.Inventory.Add(new InventoryItem
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
+            // acier replié de maître au poing, fibres balistiques souples sur le dos
+            // (le catalogue ne propose aucun pavois : l'armure légère le remplace, sans malus PA).
+            if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Épée Métal Supérieure", false))
             {
-                Name = "Épée Bâtarde des Marches",
-                Type = ItemType.Weapon,
-                EquipSlot = ItemEquipSlot.MainHand,
-                IsEquipped = true,
-                BaseDamage = 8,
-                RangeInTiles = 1,
-                AssociatedSkill = SkillType.ManiementArmes,
-                WeightKg = 2.6f,
-                Description = "Lame d'acier lourd forgée pour fendre les armures et briser les gardes.",
-                PriceCE = 450
-            });
-
-            sheet.Inventory.Add(new InventoryItem
+                // Repli si catalogue indisponible (ne devrait jamais arriver).
+                sheet.Inventory.Add(new InventoryItem
+                {
+                    Name = "Épée Bâtarde des Marches",
+                    Type = ItemType.Weapon,
+                    EquipSlot = ItemEquipSlot.MainHand,
+                    IsEquipped = false,
+                    BaseDamage = 8,
+                    RangeInTiles = 1,
+                    AssociatedSkill = SkillType.ManiementArmes,
+                    WeightKg = 2.6f,
+                    Description = "Lame d'acier lourd forgée pour fendre les armures et briser les gardes.",
+                    PriceCE = 450
+                });
+            }
+            if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Armure Légère 1", false))
             {
-                Name = "Pavois d'Acier de Brum'korath",
-                Type = ItemType.Weapon,
-                EquipSlot = ItemEquipSlot.OffHand,
-                IsEquipped = true,
-                BaseDamage = 3,
-                RangeInTiles = 1,
-                AssociatedSkill = SkillType.DefenseCorporelle,
-                WeightKg = 5.2f,
-                Description = "Bouclier lourd capable d'absorber les chocs tectoniques et d'ériger un couvert pour l'escouade.",
-                PriceCE = 500
-            });
+                // Repli si catalogue indisponible (ne devrait jamais arriver).
+                sheet.Inventory.Add(new InventoryItem
+                {
+                    Name = "Pavois d'Acier de Brum'korath",
+                    Type = ItemType.Weapon,
+                    EquipSlot = ItemEquipSlot.OffHand,
+                    IsEquipped = false,
+                    BaseDamage = 3,
+                    RangeInTiles = 1,
+                    AssociatedSkill = SkillType.DefenseCorporelle,
+                    WeightKg = 5.2f,
+                    Description = "Bouclier lourd capable d'absorber les chocs tectoniques et d'ériger un couvert pour l'escouade.",
+                    PriceCE = 500
+                });
+            }
 
             return sheet;
         }

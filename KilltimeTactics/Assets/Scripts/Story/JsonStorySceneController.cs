@@ -558,6 +558,32 @@ namespace Killtime.Story.Scenes
             return false;
         }
 
+        /// <summary>
+        /// Détecte le Commandant Vance sans fichier disque :
+        /// couvre "vance.json", DisplayName exact "Vance"/"Commandant Vance"
+        /// ("Adjudant de Vance" n'est PAS Vance) et modèles exacts
+        /// "Vance" / "Rebel_Commander" / "Commander_Vance".
+        /// </summary>
+        private static bool IsVanceActor(SceneActorSpawnData actorData)
+        {
+            if (actorData == null) return false;
+            if (!string.IsNullOrEmpty(actorData.CharacterSheetFileName)
+                && actorData.CharacterSheetFileName.IndexOf("vance", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(actorData.DisplayName)
+                && (actorData.DisplayName.Equals("Vance", StringComparison.OrdinalIgnoreCase)
+                    || actorData.DisplayName.Equals("Commandant Vance", StringComparison.OrdinalIgnoreCase)))
+                return true;
+            if (!string.IsNullOrEmpty(actorData.ModelPrefabName)
+                && (actorData.ModelPrefabName.Equals("vance", StringComparison.OrdinalIgnoreCase)
+                    || actorData.ModelPrefabName.Equals("rebel_commander", StringComparison.OrdinalIgnoreCase)
+                    || actorData.ModelPrefabName.Equals("commander_vance", StringComparison.OrdinalIgnoreCase)))
+                return true;
+            if (actorData.EmbeddedSheet != null && VanceCharacter.IsVance(actorData.EmbeddedSheet))
+                return true;
+            return false;
+        }
+
         public TacticalUnit SpawnSingleActor(SceneActorSpawnData actorData)
         {
             if (actorData == null) return null;
@@ -573,6 +599,10 @@ namespace Killtime.Story.Scenes
                 if (File.Exists(sheetPath))
                 {
                     sheet = CharacterStorageService.LoadCharacter(sheetPath);
+                    // Répare les objets hors-catalogue des fiches disque (ex. scène 01 :
+                    // "Carabine d'Assaut Résistance") vers leurs équivalents Armurerie/Marché.
+                    if (sheet != null && ArmoryCatalog.MigrateLegacyScene01Items(sheet) > 0)
+                        CharacterStorageService.SaveCharacter(sheet);
                 }
             }
 
@@ -597,6 +627,13 @@ namespace Killtime.Story.Scenes
                 sheet = ErikaCharacter.BuildHeroicSheet();
             }
 
+            // Fallback héroïque (sans JSON) : même pattern pour le Commandant Vance
+            // ("vance.json" / "Vance" / "Rebel_Commander" / "Commander_Vance" sans fichier disque).
+            if (sheet == null && IsVanceActor(actorData))
+            {
+                sheet = VanceCharacter.BuildHeroicSheet();
+            }
+
             if (sheet == null)
             {
                 sheet = new CharacterSheet
@@ -609,23 +646,13 @@ namespace Killtime.Story.Scenes
                 };
             }
 
-            if (!string.IsNullOrEmpty(actorData.EquippedWeaponName) && sheet.GetEquippedWeapon() == null)
+            // Arme de la carte : clone catalogue si le nom existe (catégorie/prix/poids
+            // réels), équivalent officiel si ancien nom hors-catalogue, sinon placeholder.
+            // Dotation déséquipée (au joueur de s'équiper) ; ajoutée seulement si la fiche
+            // n'a aucune arme en poche — jamais de doublon avec l'inventaire existant.
+            if (!string.IsNullOrEmpty(actorData.EquippedWeaponName) && !ArmoryCatalog.SheetHasWeapon(sheet))
             {
-                bool isRanged = actorData.EquippedWeaponName.ToLowerInvariant().Contains("laser")
-                             || actorData.EquippedWeaponName.ToLowerInvariant().Contains("pistolet")
-                             || actorData.EquippedWeaponName.ToLowerInvariant().Contains("fusil")
-                             || actorData.EquippedWeaponName.ToLowerInvariant().Contains("blaster");
-
-                var weapon = new InventoryItem
-                {
-                    ItemId = $"weapon_{actorData.ActorId}",
-                    Name = actorData.EquippedWeaponName,
-                    Type = ItemType.Weapon,
-                    AssociatedSkill = isRanged ? SkillType.Ballistique : SkillType.ManiementArmes,
-                    RangeInTiles = isRanged ? 8 : 1,
-                    BaseDamage = isRanged ? 5 : 4,
-                    IsEquipped = true
-                };
+                var weapon = ArmoryCatalog.ResolveSceneWeapon(actorData.EquippedWeaponName, actorData.ActorId, equipped: false);
                 sheet.AddItem(weapon);
                 if (sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel == 0)
                     sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel = 1;

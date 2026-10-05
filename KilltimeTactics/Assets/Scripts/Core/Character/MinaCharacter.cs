@@ -234,6 +234,10 @@ namespace Killtime.Core.Character
                     var loaded = CharacterStorageService.LoadCharacter(filePath);
                     if (loaded != null)
                     {
+                        // Migration : remplace les objets hors-catalogue des saves
+                        // antérieures par leurs équivalents Armurerie/Marché.
+                        if (ArmoryCatalog.MigrateLegacyScene01Items(loaded) > 0)
+                            CharacterStorageService.SaveCharacter(loaded);
                         return loaded;
                     }
                 }
@@ -271,20 +275,30 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Fibres Résilientes");
             sheet.UnlockedSpecializations.Add("Régénération Métabolique");
 
-            sheet.Inventory.Add(new InventoryItem
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
+            // variante irradiée (même aspect que l'ancien dotation, prefab réel).
+            if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Pistolet Léger Irradié", false))
             {
-                Name = "SciFiGunLight_Rad",
-                PrefabPath = "SciFiGunLight_Rad",
-                Type = ItemType.Weapon,
-                EquipSlot = ItemEquipSlot.MainHand,
-                IsEquipped = true,
-                BaseDamage = 7,
-                RangeInTiles = 10,
-                AssociatedSkill = SkillType.Ballistique,
-                WeightKg = 2.4f,
-                Description = "Arme balistique importée depuis Resources/Guns/SciFiGunLight_Rad.",
-                PriceCE = 500
-            });
+                // Repli si catalogue indisponible (ne devrait jamais arriver).
+                sheet.Inventory.Add(new InventoryItem
+                {
+                    Name = "SciFiGunLight_Rad",
+                    PrefabPath = "SciFiGunLight_Rad",
+                    Type = ItemType.Weapon,
+                    EquipSlot = ItemEquipSlot.MainHand,
+                    IsEquipped = false,
+                    BaseDamage = 7,
+                    RangeInTiles = 10,
+                    AssociatedSkill = SkillType.Ballistique,
+                    WeightKg = 2.4f,
+                    Description = "Arme balistique importée depuis Resources/Guns/SciFiGunLight_Rad.",
+                    PriceCE = 500
+                });
+            }
+            else
+            {
+                ArmoryCatalog.GiveLoadoutItem(sheet, "Charge Laser Standard (x10)", false);
+            }
 
             return sheet;
         }

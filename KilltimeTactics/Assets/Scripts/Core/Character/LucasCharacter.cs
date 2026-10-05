@@ -201,20 +201,25 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Pare-feu Psychologique");
             sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
 
-            // Arme équipée (fiche disque, champs essentiels).
-            sheet.Inventory.Add(new InventoryItem
+            // Arme équipée — dotation catalogue Armurerie/Marché (Livre VIII) :
+            // lame d'entraînement de la garde (entrée de gamme fiable).
+            if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Épée Métal Courte", false))
             {
-                Name = "Épée d'Acier de Kingston",
-                Type = ItemType.Weapon,
-                EquipSlot = ItemEquipSlot.MainHand,
-                IsEquipped = true,
-                BaseDamage = 6,
-                RangeInTiles = 1,
-                AssociatedSkill = SkillType.ManiementArmes,
-                WeightKg = 1.8f,
-                Description = "Lame d'entraînement de Lucas, héritage de la garde de Lucas-0. Placeholder procédural en attendant le prefab.",
-                PriceCE = 350
-            });
+                // Repli si catalogue indisponible (ne devrait jamais arriver).
+                sheet.Inventory.Add(new InventoryItem
+                {
+                    Name = "Épée d'Acier de Kingston",
+                    Type = ItemType.Weapon,
+                    EquipSlot = ItemEquipSlot.MainHand,
+                    IsEquipped = false,
+                    BaseDamage = 6,
+                    RangeInTiles = 1,
+                    AssociatedSkill = SkillType.ManiementArmes,
+                    WeightKg = 1.8f,
+                    Description = "Lame d'entraînement de Lucas, héritage de la garde de Lucas-0. Placeholder procédural en attendant le prefab.",
+                    PriceCE = 350
+                });
+            }
 
             return sheet;
         }

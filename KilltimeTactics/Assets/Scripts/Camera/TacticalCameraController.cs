@@ -34,7 +34,7 @@ namespace Killtime.CameraSystem
 
         [Header("Plans de Découpe (Clipping)")]
         [SerializeField] private float _nearClipPlane = 0.3f;
-        [SerializeField] private float _farClipPlane = 500000.0f;
+        [SerializeField] private float _farClipPlane = 1000000.0f;
 
         [Header("Déplacement Clavier")]
         [SerializeField] private float _panSpeed = 16.0f;
@@ -55,7 +55,7 @@ namespace Killtime.CameraSystem
             // Corrige automatiquement les valeurs de l'Inspecteur Unity
             if (_minDistance > 0.8f) _minDistance = 0.5f;
             if (_pitchAngle < 30f || _pitchAngle > 60f) _pitchAngle = 45.0f;
-            if (_farClipPlane < 500000f) _farClipPlane = 500000f;
+            if (_farClipPlane < 1000000f) _farClipPlane = 1000000f;
         }
 
         private void Start()
@@ -92,12 +92,12 @@ namespace Killtime.CameraSystem
 
             _panPosition.y = 0f; // Sécurité absolue : le point focal est TOUJOURS au niveau du sol
 
-            // Ajuster les plans de découpe (0.3m au sol, 500 000m pour le cosmos lointain).
+            // Ajuster les plans de découpe (0.3m au sol, 1 000 000m pour le cosmos lointain).
             var cam = GetComponent<UnityEngine.Camera>() ?? UnityEngine.Camera.main;
             if (cam != null)
             {
                 cam.nearClipPlane = _nearClipPlane;
-                float targetFar = Mathf.Max(_farClipPlane, 500000f);
+                float targetFar = Mathf.Max(_farClipPlane, 1000000f);
                 if (cam.farClipPlane < targetFar)
                 {
                     cam.farClipPlane = targetFar;

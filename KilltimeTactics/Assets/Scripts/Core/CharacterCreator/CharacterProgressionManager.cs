@@ -525,6 +525,7 @@ namespace Killtime.Core.Character
                     if (ThomasCharacter.IsInnateUnlocked(spec, sheet)) continue;
                     if (JohnCharacter.IsInnateUnlocked(spec, sheet)) continue;
                     if (ErikaCharacter.IsInnateUnlocked(spec, sheet)) continue;
+                    if (VanceCharacter.IsInnateUnlocked(spec, sheet)) continue;
                     if (IsPresetStartingSpec(sheet, spec)) continue;
 
                     paidSpecs++;
@@ -583,7 +584,7 @@ namespace Killtime.Core.Character
                 {
                     string spec = sheet.UnlockedSpecializations[i];
                     if (string.IsNullOrWhiteSpace(spec)) continue;
-                    if (MinaCharacter.IsInnateUnlocked(spec, sheet) || LucasCharacter.IsInnateUnlocked(spec, sheet) || ThomasCharacter.IsInnateUnlocked(spec, sheet) || JohnCharacter.IsInnateUnlocked(spec, sheet) || ErikaCharacter.IsInnateUnlocked(spec, sheet) || IsPresetStartingSpec(sheet, spec))
+                    if (MinaCharacter.IsInnateUnlocked(spec, sheet) || LucasCharacter.IsInnateUnlocked(spec, sheet) || ThomasCharacter.IsInnateUnlocked(spec, sheet) || JohnCharacter.IsInnateUnlocked(spec, sheet) || ErikaCharacter.IsInnateUnlocked(spec, sheet) || VanceCharacter.IsInnateUnlocked(spec, sheet) || IsPresetStartingSpec(sheet, spec))
                     {
                         innateSpecs++;
                         continue;
@@ -765,6 +766,7 @@ namespace Killtime.Core.Character
             public bool IsThomasExclusive;
             public bool IsJohnExclusive;
             public bool IsErikaExclusive;
+            public bool IsVanceExclusive;
             public string Description;
             public string MechanicalEffect;
         }
@@ -780,6 +782,7 @@ namespace Killtime.Core.Character
         public static readonly HashSet<string> ThomasExclusiveSpecializations = new(StringComparer.OrdinalIgnoreCase);
         public static readonly HashSet<string> JohnExclusiveSpecializations = new(StringComparer.OrdinalIgnoreCase);
         public static readonly HashSet<string> ErikaExclusiveSpecializations = new(StringComparer.OrdinalIgnoreCase);
+        public static readonly HashSet<string> VanceExclusiveSpecializations = new(StringComparer.OrdinalIgnoreCase);
 
         public static bool IsMina(CharacterSheet sheet)
         {
@@ -811,9 +814,15 @@ namespace Killtime.Core.Character
             return ErikaCharacter.IsErika(sheet);
         }
 
+        public static bool IsVance(CharacterSheet sheet)
+        {
+            // Délégation propre : logique héroïque dans VanceCharacter.
+            return VanceCharacter.IsVance(sheet);
+        }
+
         public static bool IsSkillAccessible(CharacterSheet sheet, SkillType skill)
         {
-            // Délégation propre : restrictions d'âme dans MinaCharacter / LucasCharacter / ThomasCharacter / JohnCharacter.
+            // Délégation propre : restrictions d'âme dans MinaCharacter / LucasCharacter / ThomasCharacter / JohnCharacter / ErikaCharacter / VanceCharacter.
             if (sheet != null && MinaCharacter.IsMina(sheet))
             {
                 if (MinaCharacter.IsSkillForbidden(skill))
@@ -837,6 +846,11 @@ namespace Killtime.Core.Character
             if (sheet != null && ErikaCharacter.IsErika(sheet))
             {
                 if (ErikaCharacter.IsSkillForbidden(skill))
+                    return false;
+            }
+            if (sheet != null && VanceCharacter.IsVance(sheet))
+            {
+                if (VanceCharacter.IsSkillForbidden(skill))
                     return false;
             }
             return true;
@@ -875,6 +889,13 @@ namespace Killtime.Core.Character
             EnsureRegistryBuilt();
             if (string.IsNullOrWhiteSpace(name)) return false;
             return ErikaExclusiveSpecializations.Contains(name.Trim());
+        }
+
+        public static bool IsVanceExclusiveSpecialization(string name)
+        {
+            EnsureRegistryBuilt();
+            if (string.IsNullOrWhiteSpace(name)) return false;
+            return VanceExclusiveSpecializations.Contains(name.Trim());
         }
 
         static CharacterProgressionManager()
@@ -1706,15 +1727,16 @@ namespace Killtime.Core.Character
                 "Dépense 3 PA : tous les alliés à 2 cases gagnent +2 en Esquive pendant 1 tour.");
 
             // --- FICHES HÉROÏQUES EXTRAITES (DÉLÉGATION PROPRE) ---
-            // Tout le contenu vit dans LucasCharacter / MinaCharacter / ThomasCharacter / JohnCharacter / ErikaCharacter.
+            // Tout le contenu vit dans LucasCharacter / MinaCharacter / ThomasCharacter / JohnCharacter / ErikaCharacter / VanceCharacter.
             MinaCharacter.RegisterSpecializations();
             LucasCharacter.RegisterSpecializations();
             ThomasCharacter.RegisterSpecializations();
             JohnCharacter.RegisterSpecializations();
             ErikaCharacter.RegisterSpecializations();
+            VanceCharacter.RegisterSpecializations();
         }
 
-        public static void RegisterSpec(SkillType skill, string name, string parent, bool isHidden, bool isVol2, string desc, string mechanic, bool isMinaExclusive = false, bool isLucasExclusive = false, bool isThomasExclusive = false, bool isJohnExclusive = false, bool isErikaExclusive = false)
+        public static void RegisterSpec(SkillType skill, string name, string parent, bool isHidden, bool isVol2, string desc, string mechanic, bool isMinaExclusive = false, bool isLucasExclusive = false, bool isThomasExclusive = false, bool isJohnExclusive = false, bool isErikaExclusive = false, bool isVanceExclusive = false)
         {
             var detail = new SpecializationDetail
             {
@@ -1729,6 +1751,7 @@ namespace Killtime.Core.Character
                 IsThomasExclusive = isThomasExclusive,
                 IsJohnExclusive = isJohnExclusive,
                 IsErikaExclusive = isErikaExclusive,
+                IsVanceExclusive = isVanceExclusive,
                 Description = desc,
                 MechanicalEffect = mechanic
             };
@@ -1770,6 +1793,11 @@ namespace Killtime.Core.Character
             {
                 ErikaExclusiveSpecializations.Add(name);
             }
+
+            if (isVanceExclusive)
+            {
+                VanceExclusiveSpecializations.Add(name);
+            }
         }
 
         public static SpecializationDetail GetSpecializationDetail(string name)
@@ -1787,38 +1815,44 @@ namespace Killtime.Core.Character
             bool forThomas = sheet != null && IsThomas(sheet);
             bool forJohn = sheet != null && IsJohn(sheet);
             bool forErika = sheet != null && IsErika(sheet);
+            bool forVance = sheet != null && IsVance(sheet);
 
             foreach (var detail in _registry.Values)
             {
                 if (forMina)
                 {
                     if (MinaCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
-                    if (detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive) continue;
+                    if (detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive || detail.IsVanceExclusive) continue;
                 }
                 else if (forLucas)
                 {
                     if (LucasCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
-                    if (detail.IsMinaExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive) continue;
+                    if (detail.IsMinaExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive || detail.IsVanceExclusive) continue;
                 }
                 else if (forThomas)
                 {
                     if (ThomasCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
-                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive) continue;
+                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive || detail.IsVanceExclusive) continue;
                 }
                 else if (forJohn)
                 {
                     if (JohnCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
-                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsErikaExclusive) continue;
+                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsErikaExclusive || detail.IsVanceExclusive) continue;
                 }
                 else if (forErika)
                 {
                     if (ErikaCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
-                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive) continue;
+                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsVanceExclusive) continue;
+                }
+                else if (forVance)
+                {
+                    if (VanceCharacter.IsSkillForbidden(detail.SourceSkill)) continue;
+                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive) continue;
                 }
                 else
                 {
                     // Les personnages réguliers n'ont pas accès aux voies exclusives des héros
-                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive)
+                    if (detail.IsMinaExclusive || detail.IsLucasExclusive || detail.IsThomasExclusive || detail.IsJohnExclusive || detail.IsErikaExclusive || detail.IsVanceExclusive)
                         continue;
                 }
 
@@ -1950,6 +1984,12 @@ namespace Killtime.Core.Character
                 return false;
             }
 
+            if (IsVance(sheet) && VanceCharacter.IsSkillForbidden(target))
+            {
+                message = VanceCharacter.ForbiddenSkillMessage(target);
+                return false;
+            }
+
             if (!IsMina(sheet) && IsMinaExclusiveSpecialization(specializationName))
             {
                 message = MinaCharacter.ExclusiveSpecializationMessage(specializationName);
@@ -1977,6 +2017,12 @@ namespace Killtime.Core.Character
             if (!IsErika(sheet) && IsErikaExclusiveSpecialization(specializationName))
             {
                 message = ErikaCharacter.ExclusiveSpecializationMessage(specializationName);
+                return false;
+            }
+
+            if (!IsVance(sheet) && IsVanceExclusiveSpecialization(specializationName))
+            {
+                message = VanceCharacter.ExclusiveSpecializationMessage(specializationName);
                 return false;
             }
 
@@ -2014,6 +2060,13 @@ namespace Killtime.Core.Character
             {
                 sheet.UnlockedSpecializations.Add(specializationName);
                 message = $"★ Maîtrise innée [{ErikaCharacter.InnateSpecialization}] synchronisée sans dépense d'XP !";
+                return true;
+            }
+
+            if (forceFree || VanceCharacter.IsInnateUnlocked(specializationName, sheet))
+            {
+                sheet.UnlockedSpecializations.Add(specializationName);
+                message = $"★ Maîtrise innée [{VanceCharacter.InnateSpecialization}] synchronisée sans dépense d'XP !";
                 return true;
             }
 
@@ -2184,7 +2237,7 @@ namespace Killtime.Core.Character
                 {
                     string s = sheet.UnlockedSpecializations[i];
                     if (string.IsNullOrWhiteSpace(s)) continue;
-                    if (MinaCharacter.IsInnateUnlocked(s, sheet) || LucasCharacter.IsInnateUnlocked(s, sheet) || ThomasCharacter.IsInnateUnlocked(s, sheet) || JohnCharacter.IsInnateUnlocked(s, sheet) || ErikaCharacter.IsInnateUnlocked(s, sheet))
+                    if (MinaCharacter.IsInnateUnlocked(s, sheet) || LucasCharacter.IsInnateUnlocked(s, sheet) || ThomasCharacter.IsInnateUnlocked(s, sheet) || JohnCharacter.IsInnateUnlocked(s, sheet) || ErikaCharacter.IsInnateUnlocked(s, sheet) || VanceCharacter.IsInnateUnlocked(s, sheet))
                         freeSpecs++;
                 }
             }
@@ -2200,6 +2253,7 @@ namespace Killtime.Core.Character
                 if (IsThomas(sheet)) sheet.UnlockedSpecializations.Add(ThomasCharacter.InnateSpecialization);
                 if (IsJohn(sheet)) sheet.UnlockedSpecializations.Add(JohnCharacter.InnateSpecialization);
                 if (IsErika(sheet)) sheet.UnlockedSpecializations.Add(ErikaCharacter.InnateSpecialization);
+                if (IsVance(sheet)) sheet.UnlockedSpecializations.Add(VanceCharacter.InnateSpecialization);
             }
 
             int refundedSpells = 0;

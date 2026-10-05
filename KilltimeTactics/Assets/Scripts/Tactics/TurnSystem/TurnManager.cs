@@ -403,8 +403,8 @@ namespace Killtime.Tactics.TurnSystem
             var sheetA = a.GetOrBuildSheet();
             var sheetB = b.GetOrBuildSheet();
 
-            bool isHeroicTrioA = MinaCharacter.IsMina(sheetA) || LucasCharacter.IsLucas(sheetA) || ThomasCharacter.IsThomas(sheetA) || JohnCharacter.IsJohn(sheetA) || ErikaCharacter.IsErika(sheetA);
-            bool isHeroicTrioB = MinaCharacter.IsMina(sheetB) || LucasCharacter.IsLucas(sheetB) || ThomasCharacter.IsThomas(sheetB) || JohnCharacter.IsJohn(sheetB) || ErikaCharacter.IsErika(sheetB);
+            bool isHeroicTrioA = MinaCharacter.IsMina(sheetA) || LucasCharacter.IsLucas(sheetA) || ThomasCharacter.IsThomas(sheetA) || JohnCharacter.IsJohn(sheetA) || ErikaCharacter.IsErika(sheetA) || VanceCharacter.IsVance(sheetA);
+            bool isHeroicTrioB = MinaCharacter.IsMina(sheetB) || LucasCharacter.IsLucas(sheetB) || ThomasCharacter.IsThomas(sheetB) || JohnCharacter.IsJohn(sheetB) || ErikaCharacter.IsErika(sheetB) || VanceCharacter.IsVance(sheetB);
 
             if (isHeroicTrioA && isHeroicTrioB)
             {

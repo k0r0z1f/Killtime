@@ -1919,7 +1919,7 @@ namespace Killtime.UI
                     GUILayout.BeginHorizontal(GUI.skin.box);
                     GUILayout.Label($"<b>{SkillDefinitions.GetDisplayName(entry.Skill)}</b>", GUILayout.Width(200));
                     GUI.color = new Color(0.95f, 0.4f, 0.4f);
-                    // Libellé héroïque délégué (voir MinaCharacter / LucasCharacter / ThomasCharacter / JohnCharacter / ErikaCharacter).
+                    // Libellé héroïque délégué (voir MinaCharacter / LucasCharacter / ThomasCharacter / JohnCharacter / ErikaCharacter / VanceCharacter).
                     string lockLabel = MinaCharacter.IsMina(_currentSheet)
                         ? MinaCharacter.RestrictionLabel
                         : (LucasCharacter.IsLucas(_currentSheet) 
@@ -1930,7 +1930,9 @@ namespace Killtime.UI
                                     ? JohnCharacter.RestrictionLabel
                                     : (ErikaCharacter.IsErika(_currentSheet)
                                         ? ErikaCharacter.RestrictionLabel
-                                        : "🔒 Inaccessible (Affinité héroïque)"))));
+                                        : (VanceCharacter.IsVance(_currentSheet)
+                                            ? VanceCharacter.RestrictionLabel
+                                        : "🔒 Inaccessible (Affinité héroïque)")))));
                     GUILayout.Label(lockLabel, GUILayout.ExpandWidth(true));
                     GUI.color = Color.white;
                     GUILayout.EndHorizontal();
@@ -2486,13 +2488,14 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(12);
-            GUILayout.Label("<b>Fiches Héroïques Intégrées (tableau à part — voir MinaCharacter / LucasCharacter / ThomasCharacter / JohnCharacter / ErikaCharacter) :</b>");
+            GUILayout.Label("<b>Fiches Héroïques Intégrées (tableau à part — voir MinaCharacter / LucasCharacter / ThomasCharacter / JohnCharacter / ErikaCharacter / VanceCharacter) :</b>");
 
             DrawHeroicSheetRow("Mina", MinaCharacter.DisplayTag, () => MinaCharacter.BuildHeroicSheet());
             DrawHeroicSheetRow("Lucas", LucasCharacter.DisplayTag, () => LucasCharacter.BuildHeroicSheet());
             DrawHeroicSheetRow("Thomas", ThomasCharacter.DisplayTag, () => ThomasCharacter.BuildHeroicSheet());
             DrawHeroicSheetRow("John", JohnCharacter.DisplayTag, () => JohnCharacter.BuildHeroicSheet());
             DrawHeroicSheetRow("Erika", ErikaCharacter.DisplayTag, () => ErikaCharacter.BuildHeroicSheet());
+            DrawHeroicSheetRow("Vance", VanceCharacter.DisplayTag, () => VanceCharacter.BuildHeroicSheet());
 
             GUILayout.Space(12);
             GUILayout.Label("<b>Boss Titans du Livre XI (Gabarit Rosette7 / 7 Hexagones) :</b>");

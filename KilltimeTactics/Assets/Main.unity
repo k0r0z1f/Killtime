@@ -348,7 +348,7 @@ MonoBehaviour:
   _pitchAngle: 45
   _currentYaw: 45
   _nearClipPlane: 0.3
-  _farClipPlane: 500000
+  _farClipPlane: 1000000
   _panSpeed: 16
   _keyboardRotateSpeed: 90
   _mouseOrbitSpeed: 2.5
@@ -372,7 +372,7 @@ MonoBehaviour:
   _freeLookFastMultiplier: 2.5
   _cinematicFOV: 40
   _normalFOV: 60
-  _cinematicFarClip: 150000
+  _cinematicFarClip: 1000000
   _letterboxEnterDuration: 0.35
   _letterboxExitDuration: 0.45
 --- !u!114 &1900725052

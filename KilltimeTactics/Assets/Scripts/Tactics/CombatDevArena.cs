@@ -750,6 +750,10 @@ namespace Killtime.Tactics
         {
             if (sheet == null || _grid == null) return null;
 
+            // Scène 01 : aucun objet hors-catalogue — migre les vieilles dotations
+            // (ex. Pistolet Balistique Lourd) vers leurs équivalents Armurerie/Marché.
+            ArmoryCatalog.MigrateLegacyScene01Items(sheet);
+
             var spawnNode = _grid.GetNode(coords);
             if (spawnNode == null || !spawnNode.IsWalkable)
             {
@@ -5662,6 +5666,12 @@ namespace Killtime.Tactics
             return SpawnCustomCharacter(sheet, coords, isPlayer);
         }
 
+        public TacticalUnit SpawnVance(HexCoordinates coords, bool isPlayer = true)
+        {
+            var sheet = VanceCharacter.BuildHeroicSheet();
+            return SpawnCustomCharacter(sheet, coords, isPlayer);
+        }
+
         public void SpawnHeroicTrio(HexCoordinates centerCoords)
         {
             SpawnCustomCharacter(ThomasCharacter.BuildHeroicSheet(), centerCoords, true);
@@ -5682,6 +5692,13 @@ namespace Killtime.Tactics
             SpawnHeroicQuatuor(centerCoords);
             SpawnCustomCharacter(ErikaCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(2), true);
             Log("🔥 <b>Quintette déployé</b> : Quatuor + Erika de Cleya (Flamme Cleyane) sur la grille.");
+        }
+
+        public void SpawnHeroicSextet(HexCoordinates centerCoords)
+        {
+            SpawnHeroicQuintet(centerCoords);
+            SpawnCustomCharacter(VanceCharacter.BuildHeroicSheet(), centerCoords.GetNeighbor(4), true);
+            Log("🛡️ <b>Sextette déployé</b> : Quintette + Commandant Vance (Autorité du Commandant) sur la grille.");
         }
 
         public void Log(string message)

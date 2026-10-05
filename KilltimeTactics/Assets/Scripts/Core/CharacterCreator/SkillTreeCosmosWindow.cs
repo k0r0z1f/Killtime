@@ -50,6 +50,7 @@ namespace Killtime.UI
         private bool IsCurrentLucas => LucasCharacter.IsLucas(_sheet);
         private bool IsCurrentJohn => JohnCharacter.IsJohn(_sheet);
         private bool IsCurrentErika => ErikaCharacter.IsErika(_sheet);
+        private bool IsCurrentVance => VanceCharacter.IsVance(_sheet);
 
         private class CosmosSector
         {
@@ -162,7 +163,7 @@ namespace Killtime.UI
             _selectedNode = null;
             BuildProceduralCosmology();
             _statusFeedback = sheet != null
-                ? $"Constellation synchronisée : {sheet.Name} {(MinaCharacter.IsMina(sheet) ? MinaCharacter.DisplayTag : "")}{(LucasCharacter.IsLucas(sheet) ? LucasCharacter.DisplayTag : "")}{(JohnCharacter.IsJohn(sheet) ? JohnCharacter.DisplayTag : "")}{(ErikaCharacter.IsErika(sheet) ? ErikaCharacter.DisplayTag : "")} | Réserve : {sheet.AvailableXP} XP."
+                ? $"Constellation synchronisée : {sheet.Name} {(MinaCharacter.IsMina(sheet) ? MinaCharacter.DisplayTag : "")}{(LucasCharacter.IsLucas(sheet) ? LucasCharacter.DisplayTag : "")}{(JohnCharacter.IsJohn(sheet) ? JohnCharacter.DisplayTag : "")}{(ErikaCharacter.IsErika(sheet) ? ErikaCharacter.DisplayTag : "")}{(VanceCharacter.IsVance(sheet) ? VanceCharacter.DisplayTag : "")} | Réserve : {sheet.AvailableXP} XP."
                 : "Aucune fiche active.";
         }
 
@@ -196,6 +197,7 @@ namespace Killtime.UI
             bool isLucas = IsCurrentLucas;
             bool isJohn = IsCurrentJohn;
             bool isErika = IsCurrentErika;
+            bool isVance = IsCurrentVance;
 
             // =========================================================================
             // LES 7 PILIERS UNIVERSELS DU CODEX (GÉOMÉTRIE ESPACÉE ANTI-COLLISION)
@@ -761,6 +763,29 @@ namespace Killtime.UI
                     var scA1 = AddImprovementNode(spSang, "Sang-Chaud Cleyan : Fièvre Combative", sCon.Position + new Vector2(170f, 180f), colErika);
                     AddImprovementNode(scA1, "Sang-Chaud Cleyan : Cœur de Fournaise", sCon.Position + new Vector2(260f, 240f), colErika);
                 }
+
+                // Constellation du Commandant (voir VanceCharacter.RegisterSpecializations) :
+                // autorité sur le pilier du commandement, œil sur le prisme cognitif,
+                // tir d'ordre sur le vecteur, bras cybernétique sur le bastion.
+                if (isVance)
+                {
+                    var colVance = new Color(0.55f, 0.85f, 0.35f);
+                    var spVanceLead = AddSpecNode(nLEA, "Autorité du Commandant", sCha.Position + new Vector2(120f, -250f), colVance);
+                    var vaA1 = AddImprovementNode(spVanceLead, "Autorité du Commandant : Ordre de Feu Coordonné", sCha.Position + new Vector2(230f, -310f), colVance);
+                    AddImprovementNode(vaA1, "Autorité du Commandant : Tenir la Ligne de Nefris", sCha.Position + new Vector2(320f, -370f), colVance);
+
+                    var spVanceTac = AddSpecNode(nTAC, "Œil du Champ de Bataille", sInt.Position + new Vector2(140f, 250f), colVance);
+                    var vtA1 = AddImprovementNode(spVanceTac, "Œil du Champ de Bataille : Redéploiement Éclair", sInt.Position + new Vector2(140f, 340f), colVance);
+                    AddImprovementNode(vtA1, "Œil du Champ de Bataille : Enveloppement du Quadra-plen", sInt.Position + new Vector2(140f, 430f), colVance);
+
+                    var spVanceTir = AddSpecNode(nBAL, "Tir d'Ordre", sAgi.Position + new Vector2(140f, -160f), colVance);
+                    var vtrA1 = AddImprovementNode(spVanceTir, "Tir d'Ordre : Salve de Suppression", sAgi.Position + new Vector2(240f, -200f), colVance);
+                    AddImprovementNode(vtrA1, "Tir d'Ordre : Sentence du Commandement", sAgi.Position + new Vector2(340f, -230f), colVance);
+
+                    var spVanceBras = AddSpecNode(nEND, "Bras Cybernétique Renforcé", sCon.Position + new Vector2(-80f, 120f), colVance);
+                    var vbA1 = AddImprovementNode(spVanceBras, "Bras Cybernétique Renforcé : Plaque Sous-cutanée de Nefris", sCon.Position + new Vector2(-170f, 180f), colVance);
+                    AddImprovementNode(vbA1, "Bras Cybernétique Renforcé : Protocole Dernier Rempart", sCon.Position + new Vector2(-260f, 240f), colVance);
+                }
             }
         }
 
@@ -897,6 +922,7 @@ namespace Killtime.UI
             bool isLucas = IsCurrentLucas;
             bool isJohn = IsCurrentJohn;
             bool isErika = IsCurrentErika;
+            bool isVance = IsCurrentVance;
             string charName = _sheet != null ? _sheet.Name : "Sans Alter-Ego";
             int xp = _sheet != null ? _sheet.AvailableXP : 0;
 
@@ -928,6 +954,10 @@ namespace Killtime.UI
             if (isErika)
             {
                 if (GUI.Button(new Rect(btnX, 5, 125, 22), "🔥 Flamme")) FocusSector(-60f, -110f); btnX += 128f;
+            }
+            if (isVance)
+            {
+                if (GUI.Button(new Rect(btnX, 5, 125, 22), "🛡 Commandant")) FocusSector(120f, 630f); btnX += 128f;
             }
 
             // Bouton DEV CHEAT
@@ -1557,7 +1587,7 @@ namespace Killtime.UI
             if (_sheet == null || node == null) return false;
             if (node.IsSpecialization || node.IsImprovement)
             {
-                // Maîtrises innées des fiches héroïques (voir MinaCharacter / LucasCharacter / JohnCharacter / ErikaCharacter).
+                // Maîtrises innées des fiches héroïques (voir MinaCharacter / LucasCharacter / JohnCharacter / ErikaCharacter / VanceCharacter).
                 if (MinaCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
                     return true;
                 if (LucasCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
@@ -1565,6 +1595,8 @@ namespace Killtime.UI
                 if (JohnCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
                     return true;
                 if (ErikaCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
+                    return true;
+                if (VanceCharacter.IsInnateUnlocked(node.SpecializationName, _sheet))
                     return true;
 
                 return _sheet.UnlockedSpecializations != null &&

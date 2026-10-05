@@ -36,7 +36,15 @@ namespace Killtime.CameraSystem
         [Header("Configuration Cinématique")]
         [SerializeField] private float _cinematicFOV = 48.0f;
         [SerializeField] private float _normalFOV = 60.0f;
-        [SerializeField] private float _cinematicFarClip = 500000.0f;
+        [SerializeField] private float _cinematicFarClip = 1000000.0f;
+
+        [Header("Clipping adaptatif (espace lointain)")]
+        [Tooltip("Si coché, le near clip suit la distance caméra (évite le z-fighting à 1M).")]
+        [SerializeField] private bool _adaptiveNearEnabled = true;
+        [Tooltip("near = distance * ratio, borné par min/max. 0.005 = même règle que l'inspecteur d'environnement.")]
+        [SerializeField] private float _adaptiveNearRatio = 0.005f;
+        [SerializeField] private float _adaptiveNearMin = 0.3f;
+        [SerializeField] private float _adaptiveNearMax = 5000f;
 
         public CameraMode CurrentMode { get; private set; } = CameraMode.TacticalIsometric;
 
@@ -134,6 +142,7 @@ namespace Killtime.CameraSystem
             {
                 _mainCamera.fieldOfView = _normalFOV;
             }
+            ResetAdaptiveNear();
 
             CurrentMode = CameraMode.TacticalIsometric;
         }
@@ -147,12 +156,51 @@ namespace Killtime.CameraSystem
             if (_mainCamera != null)
             {
                 if (_normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
-                float targetFar = Mathf.Max(_cinematicFarClip, 500000f);
+                float targetFar = Mathf.Max(_cinematicFarClip, 1000000f);
                 if (_mainCamera.farClipPlane < targetFar) _mainCamera.farClipPlane = targetFar;
                 if (_mainCamera.nearClipPlane < 0.3f) _mainCamera.nearClipPlane = 0.3f;
             }
             ResolveTacticalCam();
             _skipNoiseSeed = UnityEngine.Random.Range(0f, 100f);
+        }
+
+        /// <summary>
+        /// Near adaptatif pour les plans spatiaux : le ratio far/near explose à
+        /// 1M/0.3 = 3.3M (z-fighting surface/nuages). On remonte le near avec la
+        /// distance caméra (même règle x0.005 que l'inspecteur d'environnement) :
+        /// à 600km → near ~3000m (ratio ~333), au sol → 0.3m.
+        /// Basé sur la distance à l'origine (centre tactique), proxy continu qui
+        /// suit le travel sans pop (camPos interpolée → near interpolé).
+        /// </summary>
+        private void UpdateAdaptiveNear(Vector3 camPos)
+        {
+            if (!_adaptiveNearEnabled || _mainCamera == null) return;
+            try
+            {
+                float dist = camPos.magnitude;
+                float ratio = _adaptiveNearRatio > 0.0001f ? _adaptiveNearRatio : 0.005f;
+                float min = Mathf.Max(0.05f, _adaptiveNearMin);
+                float max = Mathf.Max(min, _adaptiveNearMax);
+                float targetNear = Mathf.Clamp(dist * ratio, min, max);
+                // Garantit far >> near (au moins 10x) pour éviter une pyramide inversée.
+                float far = Mathf.Max(_mainCamera.farClipPlane, 1000000f);
+                targetNear = Mathf.Min(targetNear, far * 0.1f);
+                _mainCamera.nearClipPlane = targetNear;
+            }
+            catch { /* ignore */ }
+        }
+
+        private void ResetAdaptiveNear()
+        {
+            try
+            {
+                if (_mainCamera != null)
+                {
+                    float fallback = Mathf.Max(0.3f, _adaptiveNearMin);
+                    _mainCamera.nearClipPlane = fallback;
+                }
+            }
+            catch { /* ignore */ }
         }
 
         // Sécurité : si _tacticalCam n'est pas câblé dans l'inspecteur, le retrouver
@@ -369,6 +417,7 @@ namespace Killtime.CameraSystem
             if (IsPlayingSceneCinematic) StopSceneCinematic(false);
             if (_tacticalCam != null) _tacticalCam.enabled = true;
             if (_mainCamera != null && _normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
+            ResetAdaptiveNear();
             if (CurrentMode == CameraMode.FreeLook) CurrentMode = CameraMode.TacticalIsometric;
             _letterboxActive = false;
         }
@@ -380,6 +429,7 @@ namespace Killtime.CameraSystem
                 KilltimeAudioManager.Instance.ExitCinematicMode();
             if (_tacticalCam != null) _tacticalCam.enabled = true;
             if (_mainCamera != null && _normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
+            ResetAdaptiveNear();
             _letterboxActive = false;
         }
 
@@ -661,6 +711,7 @@ namespace Killtime.CameraSystem
                     transform.position = Vector3.Lerp(livePrePos, targetStartPos, se);
                     transform.rotation = Quaternion.Slerp(livePreRot, Quaternion.Euler(targetStartEuler), se);
                     if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(livePreFov, targetStartFov, se);
+                    if (driveCamera) UpdateAdaptiveNear(transform.position);
                     if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape))
                     {
                         skipped = true;
@@ -909,6 +960,7 @@ namespace Killtime.CameraSystem
                             transform.position = waitPos;
                             transform.rotation = Quaternion.Euler(waitEuler);
                             if (_mainCamera != null) _mainCamera.fieldOfView = waitFov;
+                            UpdateAdaptiveNear(waitPos);
                         }
                         if (cine.Skippable && !pausedNow && !wasPaused && Input.GetKeyDown(KeyCode.Escape))
                         {
@@ -960,6 +1012,7 @@ namespace Killtime.CameraSystem
                         camTrans.position = camPos;
                         camTrans.rotation = Quaternion.Euler(camEuler);
                         if (_mainCamera != null) _mainCamera.fieldOfView = fov;
+                        UpdateAdaptiveNear(camPos);
                     }
 
                     for (int t2 = 0; t2 < tracks.Count; t2++)
@@ -1119,6 +1172,7 @@ namespace Killtime.CameraSystem
                         transform.position = Vector3.Lerp(endFromPos, targetTacticalPos, ee);
                         transform.rotation = Quaternion.Slerp(endFromRot, livePreRot, ee);
                         if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(endFromFov, _normalFOV, ee);
+                        UpdateAdaptiveNear(transform.position);
                         if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape)) break;
                         yield return null;
                     }
@@ -1137,6 +1191,8 @@ namespace Killtime.CameraSystem
                     KilltimeAudioManager.Instance.ExitCinematicMode();
                 Time.timeScale = DevTimeScale();
                 CurrentMode = CameraMode.TacticalIsometric;
+                // Retour au sol : near fixe 0.3 (le tactique travaille à 0.5-35m).
+                ResetAdaptiveNear();
             }
 
             _activeSceneCinematicRoutine = null;
@@ -1288,6 +1344,7 @@ namespace Killtime.CameraSystem
                     _tacticalCam.AdoptWorldPose(transform.position, transform.rotation.eulerAngles);
                     _tacticalCam.enabled = true;
                 }
+                ResetAdaptiveNear();
                 Cursor.lockState = CursorLockMode.None;
             }
         }
@@ -1312,6 +1369,7 @@ namespace Killtime.CameraSystem
             float speedMultiplier = (Input.GetKey(KeyCode.LeftShift) || Input.GetKey(KeyCode.RightShift)) ? _freeLookFastMultiplier : 1.0f;
             Vector3 move = (transform.forward * v + transform.right * h + Vector3.up * upDown) * (_freeLookSpeed * speedMultiplier * Time.deltaTime);
             transform.position += move;
+            UpdateAdaptiveNear(transform.position);
         }
 
         /// <summary>

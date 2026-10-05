@@ -17,6 +17,7 @@ namespace Killtime.Story.Scenes
         public static bool Build(string environmentId, Transform parent, TacticalHexGrid grid, List<ScenePlaceholderData> placeholders = null, SceneLightingData lighting = null)
         {
             ApplySceneLighting(lighting);
+            ApplySpaceSkybox(environmentId, parent, placeholders);
 
             string cleanId = !string.IsNullOrWhiteSpace(environmentId) ? environmentId.Trim() : "";
 
@@ -125,6 +126,9 @@ namespace Killtime.Story.Scenes
                 var p = placeholders[i];
                 if (p == null || string.IsNullOrWhiteSpace(p.Id)) continue;
 
+                // Config "Starfield" : déjà consommée par ApplySpaceSkybox, jamais de primitive.
+                if (IsStarfieldPlaceholderId(p.Id)) continue;
+
                 // Si un objet portant cet identifiant existe déjà en scène (ex: chargé par PlacedProps), ne pas dupliquer
                 if (IsObjectAlreadyInScene(p.Id))
                 {
@@ -203,6 +207,9 @@ namespace Killtime.Story.Scenes
             {
                 var p = placeholders[i];
                 if (p == null || string.IsNullOrWhiteSpace(p.Id)) continue;
+
+                // Config "Starfield" : déjà consommée par ApplySpaceSkybox, jamais de primitive.
+                if (IsStarfieldPlaceholderId(p.Id)) continue;
 
                 // Ignorer formellement tout objet local à la base (< 100m du centre)
                 if (p.Position.magnitude < 100f) continue;
@@ -489,6 +496,72 @@ namespace Killtime.Story.Scenes
             {
                 UnityEngine.Object.DestroyImmediate(strayRoot);
             }
+        }
+
+        /// <summary>
+        /// Skybox spatiale : TOUJOURS active (même en intérieur — la sphère à 90% du
+        /// far est occultée par les murs et ne coûte qu'un fond ; elle n'apparaît que
+        /// dans le vide : plans spatiaux, hublots). Cas scène 01 : décor Asteroid_Base
+        /// mais cine_1 Plan 1 à 1000km — le gate sur EnvironmentId la tuait.
+        /// Opt-out explicite : placeholder "NoStarfield" (ou "NoSpace"/"SansEtoiles").
+        /// Config optionnelle "Starfield" : Scale.x=densité (1), Scale.y=exposition (1),
+        /// Scale.z=taille (1). Exposition 1 = nuit profonde, ~0.25 = jour spatial.
+        /// </summary>
+        public static void ApplySpaceSkybox(string environmentId, Transform parent, List<ScenePlaceholderData> placeholders)
+        {
+            if (HasStarfieldOptOut(placeholders))
+            {
+                SpaceEnvironment.Clear();
+                return;
+            }
+
+            float density = 1f, exposure = 1f, size = 1f;
+            TryParseStarfieldPlaceholder(placeholders, ref density, ref exposure, ref size);
+
+            density = Mathf.Clamp(density, 0f, 2f);
+            exposure = Mathf.Clamp01(exposure);
+            size = Mathf.Clamp(size, 0.5f, 3f);
+            SpaceEnvironment.Ensure(parent, density, exposure, size);
+            Debug.Log($"[SceneEnvironmentLibrary] 🌌 Starfield spatial actif (densité {density:0.##}, exposition {exposure:0.##}, taille {size:0.##}).");
+        }
+
+        private static bool HasStarfieldOptOut(List<ScenePlaceholderData> placeholders)
+        {
+            if (placeholders == null) return false;
+            for (int i = 0; i < placeholders.Count; i++)
+            {
+                var p = placeholders[i];
+                if (p == null || string.IsNullOrWhiteSpace(p.Id)) continue;
+                string id = p.Id.Trim().ToLowerInvariant().Replace(" ", "").Replace("-", "").Replace("_", "");
+                if (id == "nostarfield" || id == "nospace" || id == "sansetoiles" || id == "sansétoiles")
+                    return true;
+            }
+            return false;
+        }
+
+        private static bool IsStarfieldPlaceholderId(string rawId)
+        {
+            if (string.IsNullOrWhiteSpace(rawId)) return false;
+            string id = rawId.Trim().ToLowerInvariant().Replace(" ", "").Replace("-", "").Replace("_", "");
+            return id == "starfield" || id == "spaceskybox" || id == "skyboxespace" || id == "cielespace" || id == "cielspatial";
+        }
+
+        private static bool TryParseStarfieldPlaceholder(List<ScenePlaceholderData> placeholders, ref float density, ref float exposure, ref float size)
+        {
+            if (placeholders == null) return false;
+            for (int i = 0; i < placeholders.Count; i++)
+            {
+                var p = placeholders[i];
+                if (p == null || string.IsNullOrWhiteSpace(p.Id)) continue;
+                if (IsStarfieldPlaceholderId(p.Id))
+                {
+                    density = p.Scale.x != 0f ? p.Scale.x : 1f;
+                    exposure = p.Scale.y != 0f ? p.Scale.y : 1f;
+                    size = p.Scale.z != 0f ? p.Scale.z : 1f;
+                    return true;
+                }
+            }
+            return false;
         }
 
         public static void ApplySceneLighting(SceneLightingData lighting)

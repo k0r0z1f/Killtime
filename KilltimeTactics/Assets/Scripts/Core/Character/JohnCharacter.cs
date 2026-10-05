@@ -171,6 +171,10 @@ namespace Killtime.Core.Character
                     var loaded = CharacterStorageService.LoadCharacter(filePath);
                     if (loaded != null)
                     {
+                        // Migration : remplace les objets hors-catalogue des saves
+                        // antérieures par leurs équivalents Armurerie/Marché.
+                        if (ArmoryCatalog.MigrateLegacyScene01Items(loaded) > 0)
+                            CharacterStorageService.SaveCharacter(loaded);
                         return loaded;
                     }
                 }
@@ -217,20 +221,29 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Plan de Vol du Starlight");
             sheet.UnlockedSpecializations.Add("Pistolet & Tir Rapide");
 
-            // Équipement officiel
-            sheet.Inventory.Add(new InventoryItem
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
+            // le Passeur tire au pistolet laser (Tir de Couverture, hangars du Creuset).
+            if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Pistolet Léger Ivoire", false))
             {
-                Name = "Pistolet Lourd du Passeur",
-                Type = ItemType.Weapon,
-                EquipSlot = ItemEquipSlot.MainHand,
-                IsEquipped = true,
-                BaseDamage = 7,
-                RangeInTiles = 8,
-                AssociatedSkill = SkillType.Ballistique,
-                WeightKg = 1.6f,
-                Description = "Pistolet lourd de convoyeur, réglé pour le tir de couverture dans les hangars et coursives du Creuset.",
-                PriceCE = 450
-            });
+                // Repli si catalogue indisponible (ne devrait jamais arriver).
+                sheet.Inventory.Add(new InventoryItem
+                {
+                    Name = "Pistolet Lourd du Passeur",
+                    Type = ItemType.Weapon,
+                    EquipSlot = ItemEquipSlot.MainHand,
+                    IsEquipped = false,
+                    BaseDamage = 7,
+                    RangeInTiles = 8,
+                    AssociatedSkill = SkillType.Ballistique,
+                    WeightKg = 1.6f,
+                    Description = "Pistolet lourd de convoyeur, réglé pour le tir de couverture dans les hangars et coursives du Creuset.",
+                    PriceCE = 450
+                });
+            }
+            else
+            {
+                ArmoryCatalog.GiveLoadoutItem(sheet, "Charge Laser Standard (x10)", false);
+            }
 
             return sheet;
         }

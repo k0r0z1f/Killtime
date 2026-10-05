@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-05",
+  "updated": "2026-10-04",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -1411,21 +1411,6 @@
           "scale": null,
           "suggestedAsset": "ErikaCharacter.cs + Erika.prefab (Resources/Characters)",
           "details": "FAIT : Erika comme 5e fiche héroïque de base (miroir Mina/Lucas, MAG 5). ErikaCharacter (SheetId 4b9e2d7f, Cleienne, innée Flamme Cleyane + 12 spés feu/lame/sang-chaud, restrictions Primale+Esprit), IsErikaExclusive dans ProgressionManager (+ sorts modulaires), ligne F1, constellation Voûte, lien héroïque TurnManager, SpawnErika + Quintette, fallback scènes IsErikaActor, fix data Cleyan_Erika -> Erika (scènes 01/02, backups .bak_erikafix)."
-        },
-        {
-          "id": "RD-094",
-          "title": "Vance personnage de base (Autorité du Commandant)",
-          "epic": "Fiches héroïques",
-          "status": "done",
-          "priority": "high",
-          "order": 8,
-          "scene": "volume_1_scene_01",
-          "placeholderId": "",
-          "primitive": "",
-          "pos": null,
-          "scale": null,
-          "suggestedAsset": "VanceCharacter.cs + Vance.prefab (Resources/Characters)",
-          "details": "FAIT : Vance comme 6e fiche héroïque de base (miroir John/Thomas, MAG 0). VanceCharacter (SheetId beef5a1c, Humain HérosPJ MAG 0, innée Autorité du Commandant + 12 spés commandement/tactique/tir/cyber, sans restriction d'âme), IsVanceExclusive dans ProgressionManager, ligne F1, constellation Voûte, lien héroïque TurnManager, SpawnVance + Sextette, fallback scènes IsVanceActor, fix data Rebel_Commander -> Vance + Vance_beef5a1c.json (scène 01, backup .bak_vancefix)."
         }
       ]
     },
@@ -1568,36 +1553,6 @@
           "scale": null,
           "suggestedAsset": "VTTProtocol + VTTTableSync",
           "details": "Extension du protocole réseau VTT pour la parité plateau complète : 1) Synchronisation des armes et objets au sol (DroppedWeaponPickup) via nouvelles opérations VTTProtocol (drop_weapon, pickup_weapon, kick_weapon) exécutées autoritairement par le GM et répliquées chez les clients. 2) Diffusion de la liste active des SmokeZone (nuages de gaz, feu au sol, fumigènes, durée restante en rounds) dans le paquet state_sync pour réconciliation immédiate des clients connectés ou reconnectés."
-        },
-        {
-          "id": "RD-095",
-          "title": "Planète lointaine 1M + near adaptatif (cinématiques)",
-          "epic": "Caméra",
-          "status": "done",
-          "priority": "high",
-          "order": 9,
-          "scene": "volume_1_scene_01",
-          "placeholderId": "Planet_Nefris",
-          "primitive": "",
-          "pos": null,
-          "scale": null,
-          "suggestedAsset": "CinematicDirector + TacticalCameraController",
-          "details": "FAIT : far clip 500000 -> 1000000 (CinematicDirector, TacticalCameraController, Main.unity). Near adaptatif en cinématique/FreeLook : near = clamp(dist*0.005, 0.3, 5000), reset à 0.3 au retour tactique. Cine_1 Plan 1 (600km) déclipsé, support planète à 1M."
-        },
-        {
-          "id": "RD-096",
-          "title": "Skybox étoilé spatial (voyage planète)",
-          "epic": "Caméra",
-          "status": "done",
-          "priority": "high",
-          "order": 10,
-          "scene": "",
-          "placeholderId": "Starfield",
-          "primitive": "",
-          "pos": null,
-          "scale": null,
-          "suggestedAsset": "SpaceStarfield.shader + SpaceEnvironment.cs",
-          "details": "FAIT : fond étoilé procédural URP sans texture (SpaceStarfield.shader : 3 couches magnitudes + Voie lactée, sans scintillement). Sphère suiveuse caméra [Space_Skybox] rayon 90% far (compatible 1M + near adaptatif RD-095). Auto via EnvironmentId spatial (planet/nefris/orbit/space...) ou placeholder Starfield (Scale=densité/exposition/taille). Exposition réaliste œil/capteur (1=nuit, ~0.25=jour). Nettoyage auto hors-espace. Correctifs : anti-wipe CleanStray, anti-doublon BuildSphere, skip primitive Starfield. Correctif 05/10 : activation UNIVERSELLE (la scène 01 a env Asteroid_Base intérieur mais cine_1 Plan 1 à 1000km — le gate EnvironmentId tuait les étoiles). Opt-out via placeholder NoStarfield. Correctif 2 (05/10) : cause racine = shader strippé du build (Shader.Find null -> ArgumentNullException dans BuildSphere). Fix : material asset Resources/Materials/Space_Starfield.mat (inclusion garantie) + BuildSphere sans-throw. Correctif 3 (05/10) : plaques grises à 1000km = singularité projection (dir.x+0.35) + smoothstep inversé (UB AMD/OpenGL). Réécriture v2 : grille 3D sans division, smoothstep croissants, hash petites constantes. Correctif 4 (05/10) : rectangles = granulation Voie lactée en blocs floor() durs -> bruit de valeur 3D lissé (trilinear)."
         }
       ]
     },

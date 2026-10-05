@@ -7985,6 +7985,9 @@ namespace Killtime.Story
                         var loaded = CharacterStorageService.LoadCharacter(sheetPath);
                         if (loaded != null)
                         {
+                            // Preview : migre en mémoire les objets hors-catalogue
+                            // (sans écrire sur le disque — la sauvegarde reste explicite).
+                            ArmoryCatalog.MigrateLegacyScene01Items(loaded);
                             sourceLabel = $"Fichier '{a.CharacterSheetFileName}'";
                             return loaded;
                         }
@@ -8030,6 +8033,14 @@ namespace Killtime.Story
                 return ErikaCharacter.BuildHeroicSheet();
             }
 
+            // Fallback héroïque (sans JSON, miroir du runtime) :
+            // "vance.json" / "Vance" / "Rebel_Commander" / "Commander_Vance" sans fichier disque → fiche héroïque intégrée.
+            if (IsVanceActor(a))
+            {
+                sourceLabel = "Fiche héroïque intégrée [Vance : Autorité du Commandant]";
+                return VanceCharacter.BuildHeroicSheet();
+            }
+
             var sheet = new CharacterSheet
             {
                 Name = string.IsNullOrEmpty(a.DisplayName) ? a.ActorId : a.DisplayName,
@@ -8039,21 +8050,12 @@ namespace Killtime.Story
                 ModelPrefabName = a.ModelPrefabName ?? ""
             };
 
-            if (!string.IsNullOrEmpty(a.EquippedWeaponName) && sheet.GetEquippedWeapon() == null)
+            // Arme de la carte : clone catalogue si le nom existe, équivalent officiel
+            // si ancien nom hors-catalogue, sinon placeholder (miroir du runtime).
+            // Dotation déséquipée ; ajoutée seulement si aucune arme en poche (anti-doublon).
+            if (!string.IsNullOrEmpty(a.EquippedWeaponName) && !ArmoryCatalog.SheetHasWeapon(sheet))
             {
-                string lw = a.EquippedWeaponName.ToLowerInvariant();
-                bool isRanged = lw.Contains("laser") || lw.Contains("pistolet")
-                    || lw.Contains("fusil") || lw.Contains("blaster") || lw.Contains("carabine");
-                var weapon = new InventoryItem
-                {
-                    ItemId = $"weapon_{a.ActorId}",
-                    Name = a.EquippedWeaponName,
-                    Type = ItemType.Weapon,
-                    AssociatedSkill = isRanged ? SkillType.Ballistique : SkillType.ManiementArmes,
-                    RangeInTiles = isRanged ? 8 : 1,
-                    BaseDamage = isRanged ? 5 : 4,
-                    IsEquipped = true
-                };
+                var weapon = ArmoryCatalog.ResolveSceneWeapon(a.EquippedWeaponName, a.ActorId, equipped: false);
                 sheet.AddItem(weapon);
                 if (sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel == 0)
                     sheet.GetSkill(weapon.AssociatedSkill).TrainingLevel = 1;
@@ -8097,6 +8099,31 @@ namespace Killtime.Story
                 && a.ModelPrefabName.IndexOf("erika", StringComparison.OrdinalIgnoreCase) >= 0)
                 return true;
             if (a.EmbeddedSheet != null && ErikaCharacter.IsErika(a.EmbeddedSheet))
+                return true;
+            return false;
+        }
+
+        /// <summary>
+        /// Détecte le Commandant Vance (miroir du runtime) : "vance.json", nom exact
+        /// "Vance"/"Commandant Vance" ("Adjudant de Vance" exclu),
+        /// ou modèles exacts "Vance" / "Rebel_Commander" / "Commander_Vance".
+        /// </summary>
+        private static bool IsVanceActor(SceneActorSpawnData a)
+        {
+            if (a == null) return false;
+            if (!string.IsNullOrEmpty(a.CharacterSheetFileName)
+                && a.CharacterSheetFileName.IndexOf("vance", StringComparison.OrdinalIgnoreCase) >= 0)
+                return true;
+            if (!string.IsNullOrEmpty(a.DisplayName)
+                && (a.DisplayName.Equals("Vance", StringComparison.OrdinalIgnoreCase)
+                    || a.DisplayName.Equals("Commandant Vance", StringComparison.OrdinalIgnoreCase)))
+                return true;
+            if (!string.IsNullOrEmpty(a.ModelPrefabName)
+                && (a.ModelPrefabName.Equals("vance", StringComparison.OrdinalIgnoreCase)
+                    || a.ModelPrefabName.Equals("rebel_commander", StringComparison.OrdinalIgnoreCase)
+                    || a.ModelPrefabName.Equals("commander_vance", StringComparison.OrdinalIgnoreCase)))
+                return true;
+            if (a.EmbeddedSheet != null && VanceCharacter.IsVance(a.EmbeddedSheet))
                 return true;
             return false;
         }
