@@ -7,6 +7,8 @@ Shader "Killtime/Space/SpaceStarfield"
         _StarSize ("Taille etoiles", Range(0.5, 3.0)) = 1.0
         _MilkyWayIntensity ("Intensite Voie lactee", Range(0.0, 1.0)) = 0.35
         _BackgroundColor ("Fond espace", Color) = (0.005, 0.008, 0.02, 1.0)
+        _WarpAmount ("Effet supraluminique (0=normal, 1=vitesse lumiere)", Range(0.0, 1.0)) = 0.0
+        _WarpCenter ("Direction centre warp (auto camera forward)", Vector) = (0, 0, 1, 0)
     }
 
     SubShader
@@ -50,6 +52,8 @@ Shader "Killtime/Space/SpaceStarfield"
                 float _StarSize;
                 float _MilkyWayIntensity;
                 float4 _BackgroundColor;
+                float _WarpAmount;
+                float3 _WarpCenter;
             CBUFFER_END
 
             Varyings vert(Attributes input)
@@ -145,22 +149,104 @@ Shader "Killtime/Space/SpaceStarfield"
             float4 frag(Varyings input) : SV_Target
             {
                 float3 dir = normalize(input.dirWS);
+                float warp = clamp(_WarpAmount, 0.0, 1.0);
                 float3 col = _BackgroundColor.rgb;
 
-                // 3 couches = parallaxe de magnitudes, sans vrai déplacement.
                 float density = clamp(_StarDensity, 0.0, 2.0);
-                col += starLayer(dir, 300.0, 0.060 * density, 0.8 * _StarSize);
-                col += starLayer(dir, 140.0, 0.040 * density, 1.6 * _StarSize) * 1.4;
-                col += starLayer(dir, 620.0, 0.090 * density, 0.55 * _StarSize) * 0.55;
 
-                // Voie lactée : fond diffus, jamais noir pur côté nuit.
-                col += float3(0.35, 0.45, 0.62) * milkyWay(dir) * _MilkyWayIntensity * 0.35;
+                if (warp < 0.001)
+                {
+                    // 3 couches = parallaxe de magnitudes, sans vrai déplacement.
+                    col += starLayer(dir, 300.0, 0.060 * density, 0.8 * _StarSize);
+                    col += starLayer(dir, 140.0, 0.040 * density, 1.6 * _StarSize) * 1.4;
+                    col += starLayer(dir, 620.0, 0.090 * density, 0.55 * _StarSize) * 0.55;
+
+                    // Voie lactée : fond diffus, jamais noir pur côté nuit.
+                    col += float3(0.35, 0.45, 0.62) * milkyWay(dir) * _MilkyWayIntensity * 0.35;
+                }
+                else
+                {
+                    // Effet supraluminique en 3 temps (v3 : pixel qui grossit d'abord) :
+                    // Phase 1 (warp~1) : écran noir + pixel 1px net, SANS halo.
+                    // Phase 2 (warp 0.95→0.82) : le pixel LUI-MÊME grossit
+                    //   (1px → ~5px, toujours net, toujours sans halo).
+                    // Phase 3 (warp 0.88→0.68) : le pixel devient halo de lumière
+                    //   + stries de ralentissement, puis voûte normale (warp→0).
+                    // Sous warp<=0.6 le rendu est identique à la v1 (pas de régression).
+                    float3 wc = _WarpCenter;
+                    float wlen = length(wc);
+                    wc = wlen > 0.0001 ? wc / wlen : dir;
+                    float cosA = clamp(dot(dir, wc), -1.0, 1.0);
+
+                    float blackGate = smoothstep(0.70, 0.95, warp);
+                    float starVis = 1.0 - smoothstep(0.60, 0.97, warp);
+                    float3 baseBg = lerp(_BackgroundColor.rgb, float3(0.0, 0.0, 0.0), blackGate);
+                    col = baseBg;
+
+                    float pull1 = warp * 0.04;
+                    float pull2 = warp * 0.08;
+                    float pull3 = warp * 0.12;
+                    float3 d0 = dir;
+                    float3 d1 = normalize(lerp(dir, wc, pull1));
+                    float3 d2 = normalize(lerp(dir, wc, pull2));
+                    float3 d3 = normalize(lerp(dir, wc, pull3));
+                    float boost = 1.0 + warp * 1.2;
+
+                    float3 acc0 = (starLayer(d0, 300.0, 0.060 * density, 0.8 * _StarSize)
+                                 + starLayer(d1, 300.0, 0.060 * density, 0.8 * _StarSize)
+                                 + starLayer(d2, 300.0, 0.060 * density, 0.8 * _StarSize)
+                                 + starLayer(d3, 300.0, 0.060 * density, 0.8 * _StarSize)) * 0.25;
+                    float3 acc1 = (starLayer(d0, 140.0, 0.040 * density, 1.6 * _StarSize)
+                                 + starLayer(d1, 140.0, 0.040 * density, 1.6 * _StarSize)
+                                 + starLayer(d2, 140.0, 0.040 * density, 1.6 * _StarSize)
+                                 + starLayer(d3, 140.0, 0.040 * density, 1.6 * _StarSize)) * 0.25;
+                    float3 acc2 = (starLayer(d0, 620.0, 0.090 * density, 0.55 * _StarSize)
+                                 + starLayer(d1, 620.0, 0.090 * density, 0.55 * _StarSize)
+                                 + starLayer(d2, 620.0, 0.090 * density, 0.55 * _StarSize)
+                                 + starLayer(d3, 620.0, 0.090 * density, 0.55 * _StarSize)) * 0.25;
+                    col += acc0 * (boost * starVis);
+                    col += acc1 * (1.4 * boost * starVis);
+                    col += acc2 * (0.55 * boost * starVis);
+
+                    // Voie lactee : effacée tant que le pixel/halo domine
+                    // (gate retardé : intact sous 0.70, nul au-delà de 0.88 —
+                    // pas de fond diffus pendant la croissance du pixel).
+                    float oldGate = 1.0 - smoothstep(0.70, 0.88, warp);
+                    col += float3(0.35, 0.45, 0.62) * milkyWay(dir) * _MilkyWayIntensity * 0.35 * (1.0 - warp * 0.9) * oldGate;
+
+                    // Halo de ralentissement (v1) : RETARDÉ — nul pendant la
+                    // croissance du pixel (warp>=0.88), il naît quand le pixel
+                    // est déjà grossi et le remplace (le pixel devient halo).
+                    float centerCore = pow(saturate(cosA), 800.0) * warp * 4.0 * oldGate;
+                    float centerHalo = pow(saturate(cosA), 60.0) * warp * 0.8 * oldGate;
+                    col += float3(1.0, 0.96, 0.90) * (centerCore + centerHalo);
+
+                    // Pixel singulier : 1px net SANS halo au départ, qui GROSSIT
+                    // lui-même (1px → ~5px, toujours net) AVANT de devenir halo.
+                    // Netteté pilotée par warp : 1.5M (1px) à warp=1 → 125k (~6px)
+                    // dès warp<=0.82 ; présence jusqu'à 0.68 puis relais au halo.
+                    float grow = 1.0 - smoothstep(0.82, 1.0, warp);
+                    float singK = 1500000.0 / (1.0 + grow * 11.0);
+                    float singPresence = smoothstep(0.68, 0.98, warp);
+                    float ang2 = max(0.0, 2.0 * (1.0 - cosA));
+                    float singPoint = exp(-ang2 * singK) * singPresence * 1.0;
+                    col += float3(1.0, 1.0, 1.0) * singPoint;
+                }
 
                 // Exposition réaliste : côté jour (planète/soleil dans le champ),
                 // le script baisse _StarExposure -> les faibles s'effacent d'abord.
                 // On garde ~4% des plus brillantes même à 0 pour éviter le vide total.
+                // En singularité le fond est déjà noir (baseBg) : la formule le préserve.
                 float keep = 0.04 + 0.96 * _StarExposure;
                 float3 bg = _BackgroundColor.rgb;
+                if (warp >= 0.001)
+                {
+                    // Pendant le warp, le noir de singularité ne doit pas être
+                    // relevé par l'exposition : on blend vers le fond warpé
+                    // (même gate que baseBg).
+                    float blackGateExp = smoothstep(0.70, 0.95, warp);
+                    bg = lerp(_BackgroundColor.rgb, float3(0.0, 0.0, 0.0), blackGateExp);
+                }
                 col = bg + (col - bg) * keep;
 
                 return float4(col, 1.0);

@@ -474,9 +474,24 @@ namespace Killtime.Tactics.AI
                     continue;
                 }
 
+                // 1b. SOUTIEN TACTIQUE (corde, entraves, traînée, radio,
+                // maintenance, garde du corps) — registre joueur, côté alliés.
+                if (TryExecuteAllySupport(unit, visual))
+                {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
                 var target = EvaluateBestTarget(unit);
                 if (target == null)
                 {
+                    // RD-IA01 : face au vide (furtifs non révélés), tentative
+                    // d'Observation active (1 PA) avant d'abandonner le tour.
+                    if (TryActiveObservationAI(unit, visual))
+                    {
+                        yield return new WaitForSeconds(_actionDelay);
+                        continue;
+                    }
                     // RD-053 : Patrouille alertée — bruit / lampe attire l'IA vers la dernière position suspecte
                     if (HasAlertedPatrolTarget(unit, out HexCoordinates suspiciousTarget, out string patrolReason))
                     {
@@ -495,8 +510,8 @@ namespace Killtime.Tactics.AI
                 {
                     isRanged = false; // RD-038 : Le sprint bloque le tir ce tour
                 }
-                bool hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType);
-                CoverType targetCover = GetCoverLevel(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType);
+                bool hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
+                CoverType targetCover = GetCoverLevel(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
                 bool inAttackRange = isRanged ? (dist <= maxRange && hasLOS) : (dist <= 1);
 
                 // 2. RETRAITE TACTIQUE SOUS COUVERT (Livre VI §25)
@@ -505,7 +520,38 @@ namespace Killtime.Tactics.AI
                     visual?.SpawnFloatingText("🛡️ [REPLI] Rupture sous Couvert", new Color(1.0f, 0.35f, 0.35f));
                     yield return StartCoroutine(ExecuteCoveredRetreat(unit, target));
                     yield return new WaitForSeconds(_actionDelay);
+                    // RD-IA02 : après repli, verrouille la position en guet si le
+                    // surplus le permet (au lieu de finir le tour inactif).
+                    if (isRanged && _arena != null
+                        && !OverwatchState.IsWatching(unit.Stats)
+                        && unit.Stats.CurrentActionPoints >= CoreRulesConfig.Instance.OverwatchAPCost + GetRequiredDefensiveReserve(unit, posture))
+                    {
+                        if (_arena.TryEnterOverwatch(unit, out _))
+                            yield return new WaitForSeconds(_actionDelay);
+                    }
                     break;
+                }
+
+                // 2a. SOUTIEN : rejoindre l'allié blessé (la posture
+                // SupportAndHeal ne servait à rien au-delà du contact).
+                if (posture == TacticalPosture.SupportAndHeal)
+                {
+                    var allyPath = GetWoundedAllyPath(unit);
+                    if (allyPath != null && allyPath.Count > 1)
+                    {
+                        int rawAllyCost = 0;
+                        for (int pi = 1; pi < allyPath.Count; pi++)
+                        {
+                            var anode = _grid != null ? _grid.GetNode(allyPath[pi]) : null;
+                            rawAllyCost += anode != null ? anode.ActionPointCost : 1;
+                        }
+                        int allyApCost = unit.ComputeMovementAPCost(rawAllyCost);
+                        visual?.SpawnFloatingText("🩹 Soutien allié", Color.green);
+                        EnsureSafeDisengageForMove(unit, allyPath.Count - 1);
+                        yield return StartCoroutine(unit.MoveAlongPath(allyPath, _grid, allyApCost));
+                        yield return new WaitForSeconds(_actionDelay);
+                        continue;
+                    }
                 }
 
                 // 2b. TECHNIQUES DE SPÉCIALISATION (Livre III) — même registre
@@ -540,8 +586,8 @@ namespace Killtime.Tactics.AI
                         yield return StartCoroutine(ExecuteTacticalAttack(unit, target, posture, isRanged: false, SkillType.MainsNues));
                         yield return new WaitForSeconds(_actionDelay);
 
-                        dist = unit.CurrentCoords.DistanceTo(target.CurrentCoords);
-                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords);
+                        dist = TitanFootprint.MinDistanceBetweenUnits(unit.CurrentCoords, unit.FootprintType, target.CurrentCoords, target.FootprintType);
+                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
                         inAttackRange = (dist <= maxRange && hasLOS);
 
                         if (inAttackRange && dist > 1 && unit.Stats.CurrentActionPoints >= 2)
@@ -555,8 +601,8 @@ namespace Killtime.Tactics.AI
                         yield return StartCoroutine(ExecuteDisengageStep(unit, target));
                         yield return new WaitForSeconds(_actionDelay);
 
-                        dist = unit.CurrentCoords.DistanceTo(target.CurrentCoords);
-                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords);
+                        dist = TitanFootprint.MinDistanceBetweenUnits(unit.CurrentCoords, unit.FootprintType, target.CurrentCoords, target.FootprintType);
+                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
                         inAttackRange = (dist <= maxRange && hasLOS);
                     }
                 }
@@ -574,8 +620,9 @@ namespace Killtime.Tactics.AI
                     continue;
                 }
 
-                // 5. SORTS ARCANOTECH (Livre IV)
-                if (!isRanged && dist > 1 && TryCastBestSpell(unit, target))
+                // 5. SORTS ARCANOTECH (Livre IV) — rentables à distance comme au
+                // contact (la sélection du sort gère portée, taxe focus et CdV).
+                if (TryCastBestSpell(unit, target, dist, hasLOS))
                 {
                     yield return new WaitForSeconds(_actionDelay);
                     continue;
@@ -584,6 +631,67 @@ namespace Killtime.Tactics.AI
                 // 6. INTIMIDATION & PROVOCATION (Livre III)
                 if (TryExecuteIntimidation(unit, target, dist, visual))
                 {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
+                // 6b. ENTRETIEN & BUFFS PERSONNELS (bouclier, soins, dopants,
+                // ramassage d'arme, canalisation, furtivité) — même registre
+                // que le menu joueur, joués avant de frapper.
+                if (TryExecuteSelfUpkeep(unit, posture, dist, inAttackRange, visual))
+                {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
+                // 6c. BALISE LASER (Lampe + Batterie, 1 PA) : expose la faille
+                // des cibles blindées avant la frappe (encaissement ignoré).
+                if (TryExecuteLaserDesignation(unit, target, dist, visual))
+                {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
+                // 6d. CHARGE AU CONTACT (RD-038, Livre VI) : 3+ cases + frappe
+                // d'assaut (+2 dégâts) au lieu d'approche + attaque séparées.
+                if (!isRanged && dist > 1 && TryExecuteChargeAttack(unit, target, visual))
+                {
+                    float waitElapsed = 0f;
+                    while (_arena != null && _arena.IsResolving && waitElapsed < 8f)
+                    {
+                        yield return null;
+                        waitElapsed += Time.deltaTime;
+                    }
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
+                // 6e. FRAPPE TITANESQUE (RD-052) : les colosses écrasent en zone
+                // (Souffle / Piétinement) ou saisissent au contact.
+                if (TryExecuteTitanSlam(unit, target, posture, dist, visual))
+                {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
+                // 6f. BOUSCULADE / COUP DE BOUCLIER (2 PA, contact) : contrôle
+                // de position quand la frappe classique est peu rentable.
+                if (dist <= 1 && TryExecuteShove(unit, target, targetCover, visual))
+                {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
+                // 6g. LANCER D'ARME (2 PA, 2-4 cases) : ultime recours quand le
+                // tir est impossible (chargeur vide sans réserve, enrayage sec).
+                if (dist >= 2 && TryExecuteWeaponThrow(unit, target, dist, visual))
+                {
+                    float waitElapsed2 = 0f;
+                    while (_arena != null && _arena.IsResolving && waitElapsed2 < 6f)
+                    {
+                        yield return null;
+                        waitElapsed2 += Time.deltaTime;
+                    }
                     yield return new WaitForSeconds(_actionDelay);
                     continue;
                 }
@@ -601,6 +709,7 @@ namespace Killtime.Tactics.AI
                         if (path != null && path.Count > 1)
                         {
                             visual?.SpawnFloatingText(isRanged ? $"🎯 Débordement (-{cost} PA)" : $"⚡ Percée (-{cost} PA)", new Color(0.2f, 0.85f, 1.0f));
+                            EnsureSafeDisengageForMove(unit, path.Count - 1);
                             yield return StartCoroutine(unit.MoveAlongPath(path, _grid, cost));
                             yield return new WaitForSeconds(_actionDelay);
                             continue;
@@ -655,6 +764,7 @@ namespace Killtime.Tactics.AI
                         int steps = pathToFiringPos.Count - 1;
                         string moveMsg = isRanged ? $"Position de tir (-{steps} PA)" : $"Avance tactique (-{steps} PA)";
                         visual?.SpawnFloatingText(moveMsg, new Color(0.2f, 0.85f, 1.0f));
+                        EnsureSafeDisengageForMove(unit, steps);
                         yield return StartCoroutine(unit.MoveAlongPath(pathToFiringPos, _grid, steps));
                         yield return new WaitForSeconds(_actionDelay);
                         continue;
@@ -730,7 +840,7 @@ namespace Killtime.Tactics.AI
                 return TacticalPosture.HitAndRun;
             }
 
-            CoverType targetCover = GetCoverLevel(actor.CurrentCoords, target.CurrentCoords, TitanFootprintType.Single, TitanFootprintType.Single, actor);
+            CoverType targetCover = GetCoverLevel(actor.CurrentCoords, target.CurrentCoords, target.FootprintType, actor.FootprintType, actor);
             if (targetCover == CoverType.ThreeQuarters || targetCover == CoverType.Full)
             {
                 return TacticalPosture.FlankAndSuppress;
@@ -744,7 +854,8 @@ namespace Killtime.Tactics.AI
             if (posture == TacticalPosture.AllInLethal) return 0;
             if (_defaultPersonality == AIPersonality.Aggressive) return 0;
             if (posture == TacticalPosture.AlertedPatrol) return 1;
-            return Mathf.Clamp(_baseDefensiveAPReserve, 0, 1);
+            // RD-IA03 : respecte le réglage 0-2 (avant : écrasé à 1 max).
+            return Mathf.Clamp(_baseDefensiveAPReserve, 0, 2);
         }
 
         private bool CanKillTargetThisTurn(TacticalUnit actor, TacticalUnit target)
@@ -752,13 +863,14 @@ namespace Killtime.Tactics.AI
             int maxPotentialAP = actor.Stats.CurrentActionPoints;
             if (CanTakeBreathSafely(actor)) maxPotentialAP += 2;
 
-            int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            // RD-IA04 : distance d'empreinte (les Titans faussaient l'estimation).
+            int dist = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, target.CurrentCoords, target.FootprintType);
             bool isRanged = HasRangedWeapon(actor, out int maxRange, out _, out _);
 
             int apToReach = 0;
             if (isRanged)
             {
-                apToReach = (dist <= maxRange && HasLineOfSight(actor.CurrentCoords, target.CurrentCoords)) ? 0 : Mathf.Max(0, dist - maxRange);
+                apToReach = (dist <= maxRange && HasLineOfSight(actor.CurrentCoords, target.CurrentCoords, target.FootprintType, actor.FootprintType, actor)) ? 0 : Mathf.Max(0, dist - maxRange);
             }
             else
             {
@@ -1371,7 +1483,11 @@ namespace Killtime.Tactics.AI
                 }
 
                 bool isGrapplerProfile = actor.Stats.Attributes.Force >= 5 || actor.Stats.Attributes.Constitution >= 5;
-                if (isGrapplerProfile && !target.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise) && pa >= 4)
+                // RD-IA05 : règle de gabarit (menu joueur) : l'attaquant doit
+                // être au moins aussi massif que sa victime.
+                bool sizeOk = TitanFootprint.GetHexCount(actor.FootprintType) >= TitanFootprint.GetHexCount(target.FootprintType);
+                if (isGrapplerProfile && sizeOk && !target.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise) && pa >= 4
+                    && !actor.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise))
                 {
                     _arena.ExecuteGrapple(actor, target);
                     return true;
@@ -1414,7 +1530,755 @@ namespace Killtime.Tactics.AI
                 }
             }
 
+            // 9. TECHNIQUES HÉROÏQUES (RD-063 : Thomas-0 & Lucas-0) — même
+            // registre que le menu joueur, ignorées jusque-là par l'IA.
+            if (_arena != null)
+            {
+                // Arrêt Vectoriel (1 PA, ≤4) : figement prioritaire des menaces.
+                if (pa >= 1 && dist <= 4
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CanUseArretVectoriel(actor, target)
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteArretVectoriel(actor, target, _arena)) return true;
+                // Chute de Pression (2 PA, ≤4) : 4 absolus + Déstabilisé.
+                if (pa >= 2 && dist <= 4
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CanUseChuteDePression(actor, target)
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteChuteDePression(actor, target, _arena)) return true;
+                // Suggestions Brèves (2 PA, ≤4) : draine 1 PA adverse.
+                if (pa >= 2 && dist <= 4 && target.Stats.CurrentActionPoints >= 2
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CanUseSuggestionsBreves(actor, target)
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteSuggestionsBreves(actor, target, _arena)) return true;
+                // Commandement Tectonique (2 PA) : +1 PA de manœuvre aux alliés.
+                if (pa >= 2
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CanUseCommandementTectonique(actor)
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteCommandementTectonique(actor, _arena)) return true;
+                // Pas de Retraite ! (2 PA) : purge panique/étourdi des alliés.
+                if (pa >= 2 && HasPanickedAllyInRange(actor, Killtime.Tactics.CombatUI.CombatTechniqueRegistry.AuraRange)
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CanUsePasDeRetraite(actor)
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecutePasDeRetraite(actor, _arena)) return true;
+            }
+
             return false;
+        }
+
+        // =========================================================================
+        // RD-IA : MANŒUVRES COMPLÉMENTAIRES (même registre que le menu joueur)
+        // Charge, bousculade, frappe titanesque, lancer d'arme, balise laser,
+        // entretien personnel, soutien allié, observation active.
+        // =========================================================================
+
+        /// <summary>RD-IA01 : Observation active quand aucune cible visible.</summary>
+        private bool TryActiveObservationAI(TacticalUnit actor, TacticalUnitVisual visual)
+        {
+            var fog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+            if (fog == null || actor?.Stats == null || actor.Stats.CurrentActionPoints < 1) return false;
+
+            TacticalUnit nearestHidden = null;
+            int nearestDist = int.MaxValue;
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var u = _cachedUnits[i];
+                if (u == null || u == actor || u.Stats == null || !u.Stats.IsAlive || u.Stats.IsSurrendered) continue;
+                bool hostile = actor.IsPlayerControlled ? !u.IsPlayerControlled : u.IsPlayerControlled;
+                if (_mode == CombatAIMode.FullAuto && u.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
+                if (!hostile) continue;
+                int d = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, u.CurrentCoords, u.FootprintType);
+                if (d < nearestDist)
+                {
+                    nearestDist = d;
+                    nearestHidden = u;
+                }
+            }
+            if (nearestHidden == null) return false;
+
+            if (fog.TryActiveObservation(actor, nearestHidden, out string log))
+            {
+                visual?.SpawnFloatingText("👁️ Menace repérée !", Color.cyan);
+            }
+            else
+            {
+                visual?.SpawnFloatingText("👁️ Observation (1 PA)", Color.gray);
+            }
+            _arena?.Log(log);
+            return true;
+        }
+
+        /// <summary>RD-IA02 : chemin vers l'allié à soigner quand la posture
+        /// SupportAndHeal est active mais personne n'est au contact.</summary>
+        private List<HexCoordinates> GetWoundedAllyPath(TacticalUnit actor)
+        {
+            TacticalUnit bestAlly = null;
+            int bestDist = int.MaxValue;
+            bool bestDead = false;
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var ally = _cachedUnits[i];
+                if (ally == null || ally == actor || ally.Stats == null) continue;
+                if (ally.IsPlayerControlled != actor.IsPlayerControlled) continue;
+                int d = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, ally.CurrentCoords, ally.FootprintType);
+                if (d <= 1) continue;
+
+                bool dead = !ally.Stats.IsAlive;
+                bool wounded = ally.Stats.IsAlive
+                    && ((float)ally.Stats.CurrentHealth / Mathf.Max(1, ally.Stats.MaxHealth) <= 0.35f
+                        || (ally.Stats.ActiveStatus & (StatusEffect.Saignement | StatusEffect.Souffrant)) != 0);
+                if (!dead && !wounded) continue;
+                if (dead && (ally.Stats.LastFatalBlowResolution == FatalBlowResolution.InstantDeath || actor.Stats.CurrentActionPoints < 4)) continue;
+                if (d < bestDist)
+                {
+                    bestDist = d;
+                    bestAlly = ally;
+                    bestDead = dead;
+                }
+            }
+            if (bestAlly == null || _pathfinder == null || _grid == null) return null;
+
+            int careCost = bestDead ? 4 : 3;
+            int moveBudget = Mathf.Max(0, actor.Stats.CurrentActionPoints - careCost - GetRequiredDefensiveReserve(actor, TacticalPosture.SupportAndHeal));
+            if (moveBudget <= 0) return null;
+
+            return FindPathTowardsTarget(actor, bestAlly, moveBudget);
+        }
+
+        private bool HasPanickedAllyInRange(TacticalUnit actor, int range)
+        {
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var ally = _cachedUnits[i];
+                if (ally == null || ally == actor || ally.Stats == null || !ally.Stats.IsAlive) continue;
+                if (ally.IsPlayerControlled != actor.IsPlayerControlled) continue;
+                if (actor.CurrentCoords.DistanceTo(ally.CurrentCoords) > range) continue;
+                var fx = ally.Stats.ActiveStatus;
+                if (fx.HasFlag(StatusEffect.Destabilise) || fx.HasFlag(StatusEffect.Etourdi) || fx.HasFlag(StatusEffect.Agonisant))
+                    return true;
+            }
+            return false;
+        }
+
+        /// <summary>RD-031 : sécurise les longs déplacements qui rompent le
+        // contact (Décrochage payé) au lieu de subir les réactions.</summary>
+        private void EnsureSafeDisengageForMove(TacticalUnit actor, int steps)
+        {
+            if (actor?.Stats == null || steps <= 0) return;
+            if (OpportunityState.IsExemptFromProvoking(actor.Stats)) return;
+            if (OpportunityState.HasSafeDisengage(actor.Stats)) return;
+            if (OpportunityState.IsCancelledByStatus(actor.Stats)) return;
+
+            bool inContact = false;
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var u = _cachedUnits[i];
+                if (u == null || u == actor || u.Stats == null || !u.Stats.IsAlive) continue;
+                bool hostile = actor.IsPlayerControlled ? !u.IsPlayerControlled : u.IsPlayerControlled;
+                if (_mode == CombatAIMode.FullAuto && u.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
+                if (!hostile) continue;
+                if (TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, u.CurrentCoords, u.FootprintType) <= 1)
+                {
+                    inContact = true;
+                    break;
+                }
+            }
+            if (!inContact) return;
+
+            int disCost = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.DisengageAPCost : 1;
+            if (actor.Stats.CurrentActionPoints >= disCost + 1
+                && OpportunityState.RequestSafeDisengage(actor.Stats, disCost, out _))
+            {
+                actor.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("💨 Décrochage IA", new Color(0.4f, 0.9f, 1.0f));
+            }
+        }
+
+        private static bool AIHasShield(TacticalUnit actor)
+        {
+            var inv = actor?.Sheet?.Inventory;
+            if (inv == null) return false;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || !it.IsEquipped) continue;
+                if (!string.IsNullOrEmpty(it.Name) && it.Name.IndexOf("Bouclier", StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+                if (!string.IsNullOrEmpty(it.Category) && it.Category.IndexOf("Bouclier", StringComparison.OrdinalIgnoreCase) >= 0)
+                    return true;
+            }
+            return false;
+        }
+
+        private static InventoryItem AIFindByName(TacticalUnit actor, string fragment)
+        {
+            var inv = actor?.Sheet?.Inventory;
+            if (inv == null || string.IsNullOrEmpty(fragment)) return null;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || string.IsNullOrEmpty(it.Name)) continue;
+                if (it.Name.IndexOf(fragment, StringComparison.OrdinalIgnoreCase) >= 0) return it;
+            }
+            return null;
+        }
+
+        private static InventoryItem AIFindBestHeal(TacticalUnit actor)
+        {
+            var inv = actor?.Sheet?.Inventory;
+            if (inv == null) return null;
+            InventoryItem best = null;
+            for (int i = 0; i < inv.Count; i++)
+            {
+                var it = inv[i];
+                if (it == null || it.Type != ItemType.Consumable || it.HealingAmount <= 0) continue;
+                if (best == null || it.HealingAmount > best.HealingAmount) best = it;
+            }
+            return best;
+        }
+
+        private bool CanShootNow(TacticalUnit actor)
+        {
+            if (actor?.Stats == null) return false;
+            if (!HasRangedWeapon(actor, out _, out _, out _)) return false;
+            var mag = actor.Sheet?.GetEquippedWeapon();
+            if (mag != null && mag.AmmoCapacity > 0)
+                return !mag.Jammed && mag.AmmoRemaining > 0;
+            return ChargeState.CanFireRanged(actor.Stats);
+        }
+
+        // =========================================================================
+        // SOUTIEN TACTIQUE ALLIÉ (corde, entraves, traînée, radio, maintenance,
+        // consommables, garde du corps) — registre joueur, sans la partie soins.
+        // =========================================================================
+        private bool TryExecuteAllySupport(TacticalUnit actor, TacticalUnitVisual visual)
+        {
+            if (actor?.Stats == null || !actor.Stats.IsAlive) return false;
+            if (_defaultPersonality == AIPersonality.Aggressive) return false;
+
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var ally = _cachedUnits[i];
+                if (ally == null || ally == actor || ally.Stats == null) continue;
+                if (ally.IsPlayerControlled != actor.IsPlayerControlled) continue;
+
+                int d = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, ally.CurrentCoords, ally.FootprintType);
+                int pa = actor.Stats.CurrentActionPoints;
+                var tgtVis = ally.GetComponent<TacticalUnitVisual>();
+
+                // Corde : Relever un allié À Terre (1 PA, contact).
+                if (d <= 1 && pa >= 1 && ally.Stats.IsAlive
+                    && ally.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre)
+                    && SmokeScreen.HasItemByName(actor.Stats, "Corde"))
+                {
+                    if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                    ally.Stats.RemoveStatus(StatusEffect.ATerre);
+                    visual?.SpawnFloatingText("🪢 Allié relevé (-1 PA)", Color.green);
+                    tgtVis?.SpawnFloatingText("🪢 RELEVÉ", Color.green);
+                    _arena?.Log($"🪢 <b>{actor.Stats.Name}</b> relève <b>{ally.Stats.Name}</b> à la corde.");
+                    return true;
+                }
+
+                // Clé / Crochetage : Libérer un allié entravé (1 PA, contact).
+                if (d <= 1 && pa >= 1 && ally.Stats.IsAlive
+                    && ally.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise)
+                    && (SmokeScreen.HasItemByName(actor.Stats, "Clé Magnétique") || SmokeScreen.HasItemByName(actor.Stats, "Crochetage")))
+                {
+                    if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                    ally.Stats.RemoveStatus(StatusEffect.Immobilise);
+                    visual?.SpawnFloatingText("🔓 Allié libéré (-1 PA)", Color.green);
+                    tgtVis?.SpawnFloatingText("🔓 LIBÉRÉ", Color.green);
+                    _arena?.Log($"🔓 <b>{actor.Stats.Name}</b> libère <b>{ally.Stats.Name}</b> de ses entraves.");
+                    return true;
+                }
+
+                // Traînée d'évacuation (2 PA, contact : immobilisé / à terre / inconscient).
+                if (d <= 1 && pa >= 2 && _arena != null
+                    && (ally.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise)
+                        || ally.Stats.ActiveStatus.HasFlag(StatusEffect.Inconscient)
+                        || ally.Stats.ActiveStatus.HasFlag(StatusEffect.ATerre))
+                    && _arena.CanDragBody(actor, ally))
+                {
+                    _arena.ExecuteDragBody(actor, ally);
+                    return true;
+                }
+
+                // Consommable de soin sur allié au contact (1 PA).
+                if (d <= 1 && pa >= 1 && ally.Stats.IsAlive
+                    && (float)ally.Stats.CurrentHealth / Mathf.Max(1, ally.Stats.MaxHealth) <= 0.5f)
+                {
+                    var dose = AIFindBestHeal(actor);
+                    if (dose != null)
+                    {
+                        if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                        string usedName = dose.Name;
+                        int usedHeal = dose.HealingAmount;
+                        bool usedBandage = usedName.IndexOf("Bandage", StringComparison.OrdinalIgnoreCase) >= 0;
+                        actor.Sheet?.ConsumeOne(dose.ItemId);
+                        actor.NotifyInventoryChanged(true);
+                        int healed = ally.Stats.Heal(usedHeal);
+                        if (usedBandage) ally.Stats.RemoveStatus(StatusEffect.Saignement);
+                        visual?.SpawnFloatingText($"💉 {usedName} (-1 PA)", Color.green);
+                        tgtVis?.SpawnFloatingText($"+{healed} PV", Color.green);
+                        _arena?.Log($"💉 <b>{actor.Stats.Name}</b> utilise <b>{usedName}</b> sur <b>{ally.Stats.Name}</b> (+{healed} PV).");
+                        return true;
+                    }
+                }
+
+                // Radio : Ralliement à distance (1 PA, ≤12, Déstabilisé/Étourdi).
+                if (d <= 12 && pa >= 1 && ally.Stats.IsAlive
+                    && (ally.Stats.ActiveStatus.HasFlag(StatusEffect.Destabilise) || ally.Stats.ActiveStatus.HasFlag(StatusEffect.Etourdi))
+                    && SmokeScreen.HasItemByName(actor.Stats, "Radio"))
+                {
+                    if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                    ally.Stats.RemoveStatus(StatusEffect.Destabilise);
+                    ally.Stats.RemoveStatus(StatusEffect.Etourdi);
+                    visual?.SpawnFloatingText("📻 Ralliement (-1 PA)", Color.cyan);
+                    tgtVis?.SpawnFloatingText("📻 RALLIÉ", Color.cyan);
+                    _arena?.Log($"📻 <b>{actor.Stats.Name}</b> rallie <b>{ally.Stats.Name}</b> par radio.");
+                    return true;
+                }
+
+                // Boîte à Outils : maintenance sur allié (1 PA, contact).
+                if (d <= 1 && pa >= 1 && ally.Stats.IsAlive && _arena != null
+                    && SmokeScreen.HasItemByName(actor.Stats, "Boîte à Outils")
+                    && (ally.Sheet?.GetEquippedWeapon()?.Jammed == true
+                        || (ally.Stats.MaxShieldHP > 0 && ally.Stats.CurrentShieldHP < ally.Stats.MaxShieldHP)))
+                {
+                    if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                    var tgtWeapon = ally.Sheet?.GetEquippedWeapon();
+                    if (tgtWeapon != null && tgtWeapon.Jammed)
+                    {
+                        tgtWeapon.Jammed = false;
+                        ally.NotifyInventoryChanged(true);
+                        tgtVis?.SpawnFloatingText("🔧 DÉSENRAYÉE", Color.cyan);
+                        _arena.Log($"🔧 <b>{actor.Stats.Name}</b> désenraye <b>{tgtWeapon.Name}</b> de <b>{ally.Stats.Name}</b> (-1 PA).");
+                    }
+                    else
+                    {
+                        int before = ally.Stats.CurrentShieldHP;
+                        ally.Stats.CurrentShieldHP = Mathf.Min(ally.Stats.MaxShieldHP, ally.Stats.CurrentShieldHP + 10);
+                        tgtVis?.SpawnFloatingText($"🔧 +{ally.Stats.CurrentShieldHP - before} Bouclier", Color.cyan);
+                        _arena.Log($"🔧 <b>{actor.Stats.Name}</b> répare le champ de <b>{ally.Stats.Name}</b> (-1 PA).");
+                    }
+                    return true;
+                }
+
+                // Garde du corps (0 PA, contact) sur allié fragile.
+                if (d <= 1 && ally.Stats.IsAlive
+                    && !SkillTechniqueState.IsGuardedBy(ally.Stats, actor.Stats)
+                    && ((float)ally.Stats.CurrentHealth / Mathf.Max(1, ally.Stats.MaxHealth) <= 0.4f
+                        || ally.Stats.ActiveStatus.HasFlag(StatusEffect.Destabilise))
+                    && Killtime.Tactics.CombatUI.CombatTechniqueRegistry.CanSetBodyguard(actor, ally))
+                {
+                    if (Killtime.Tactics.CombatUI.CombatTechniqueRegistry.ExecuteSetBodyguard(actor, ally, _arena))
+                        return true;
+                }
+            }
+
+            return false;
+        }
+
+        // =========================================================================
+        // ENTRETIEN PERSONNEL (bouclier, soins, dopants, arme, canalisation,
+        // furtivité, souffle) — registre joueur, une action par itération.
+        // =========================================================================
+        private bool TryExecuteSelfUpkeep(TacticalUnit actor, TacticalPosture posture, int dist, bool inAttackRange, TacticalUnitVisual visual)
+        {
+            if (actor?.Stats == null || !actor.Stats.IsAlive) return false;
+            int pa = actor.Stats.CurrentActionPoints;
+            int reserve = GetRequiredDefensiveReserve(actor, posture);
+
+            // 0 PA : Seconde Respiration (1x/combat, -2 ESS).
+            if (actor.Stats.Essoufflement > 0 && !actor.Stats.HasUsedSecondeRespiration
+                && actor.Stats.HasSpecialization("Seconde Respiration"))
+            {
+                actor.Stats.HasUsedSecondeRespiration = true;
+                actor.Stats.RecoverBreath(2);
+                visual?.SpawnFloatingText("Seconde Respiration (-2 ESS)", Color.cyan);
+                _arena?.Log($"🌬️ <b>{actor.Stats.Name}</b> déclenche sa <b>Seconde Respiration</b> (-2 ESS, 0 PA) !");
+                return true;
+            }
+
+            // Garde du corps (0 PA) : traitée côté alliés, rappelée ici pour les
+            // tours où aucun soin n'est dû mais un allié reste exposé.
+            if (TryExecuteAllySupport(actor, visual)) return true;
+
+            // Arme : ramasser au sol ou équiper un remplaçant si désarmé.
+            var equipped = actor.Sheet?.GetEquippedWeapon();
+            if (equipped == null && pa >= DroppedWeaponPickup.PickupCostPA())
+            {
+                if (DroppedWeaponPickup.TryPickupNearest(actor, out string pickupMsg))
+                {
+                    _arena?.Log($"⚔ <b>{actor.Stats.Name}</b> : {pickupMsg}");
+                    return true;
+                }
+                if (actor.Sheet?.Inventory != null)
+                {
+                    for (int i = 0; i < actor.Sheet.Inventory.Count; i++)
+                    {
+                        var cand = actor.Sheet.Inventory[i];
+                        if (cand == null || cand.Type != ItemType.Weapon || cand.IsEquipped) continue;
+                        if (cand.IsThrowableGrenade() || cand.IsLauncher) continue;
+                        int cost = DroppedWeaponPickup.PickupCostPA();
+                        if (cost > 0 && !actor.Stats.ConsumeActionPoints(cost)) return false;
+                        if (actor.Sheet.EquipItem(cand.ItemId))
+                        {
+                            actor.NotifyInventoryChanged(true);
+                            visual?.SpawnFloatingText($"🔄 {cand.Name} équipée", Color.cyan);
+                            _arena?.Log($"🔄 <b>{actor.Stats.Name}</b> équipe <b>{cand.Name}</b>.");
+                            return true;
+                        }
+                    }
+                }
+            }
+
+            if (pa < 1) return false;
+
+            // Bouclier : cellule nytharite via l'arène, sinon boîte/moteur.
+            if (actor.Stats.MaxShieldHP > 0 && actor.Stats.CurrentShieldHP < actor.Stats.MaxShieldHP && _arena != null)
+            {
+                if (SmokeScreen.HasItemByName(actor.Stats, "Cellule Nytharite Standard"))
+                {
+                    if (_arena.TryRechargeShieldWithCell(actor, false, out string msg)) { _arena.Log(msg); return true; }
+                }
+                else if (SmokeScreen.HasItemByName(actor.Stats, "Cellule Nytharite Pure"))
+                {
+                    if (_arena.TryRechargeShieldWithCell(actor, true, out string msg)) { _arena.Log(msg); return true; }
+                }
+                else if (SmokeScreen.HasItemByName(actor.Stats, "Boîte à Outils"))
+                {
+                    if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                    int before = actor.Stats.CurrentShieldHP;
+                    actor.Stats.CurrentShieldHP = Mathf.Min(actor.Stats.MaxShieldHP, actor.Stats.CurrentShieldHP + 10);
+                    visual?.SpawnFloatingText($"🔧 +{actor.Stats.CurrentShieldHP - before} Bouclier", Color.cyan);
+                    _arena.Log($"🔧 <b>{actor.Stats.Name}</b> répare son champ (-1 PA).");
+                    return true;
+                }
+                else if (SmokeScreen.HasItemByName(actor.Stats, "Moteur"))
+                {
+                    if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                    int before = actor.Stats.CurrentShieldHP;
+                    actor.Stats.CurrentShieldHP = Mathf.Min(actor.Stats.MaxShieldHP, actor.Stats.CurrentShieldHP + 10);
+                    visual?.SpawnFloatingText($"⚙️ +{actor.Stats.CurrentShieldHP - before} Bouclier", Color.cyan);
+                    _arena.Log($"⚙️ <b>{actor.Stats.Name}</b> suralimente son champ (-1 PA).");
+                    return true;
+                }
+            }
+
+            // Soin personnel par consommable (≤50% PV).
+            if ((float)actor.Stats.CurrentHealth / Mathf.Max(1, actor.Stats.MaxHealth) <= 0.5f)
+            {
+                var dose = AIFindBestHeal(actor);
+                if (dose != null)
+                {
+                    if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                    string usedName = dose.Name;
+                    int usedHeal = dose.HealingAmount;
+                    bool usedBandage = usedName.IndexOf("Bandage", StringComparison.OrdinalIgnoreCase) >= 0;
+                    actor.Sheet?.ConsumeOne(dose.ItemId);
+                    actor.NotifyInventoryChanged(true);
+                    int healed = actor.Stats.Heal(usedHeal);
+                    if (usedBandage) actor.Stats.RemoveStatus(StatusEffect.Saignement);
+                    visual?.SpawnFloatingText($"💉 {usedName} (+{healed} PV)", Color.green);
+                    _arena?.Log($"💉 <b>{actor.Stats.Name}</b> utilise <b>{usedName}</b> (+{healed} PV).");
+                    return true;
+                }
+            }
+
+            // Attelle : retire Ralenti (fracture immobilisée).
+            if (actor.Stats.ActiveStatus.HasFlag(StatusEffect.Ralenti) && AIFindByName(actor, "Attelle") != null)
+            {
+                var dose = AIFindByName(actor, "Attelle");
+                if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                actor.Sheet?.ConsumeOne(dose.ItemId);
+                actor.NotifyInventoryChanged(true);
+                actor.Stats.RemoveStatus(StatusEffect.Ralenti);
+                visual?.SpawnFloatingText("🦴 Fracture immobilisée", Color.green);
+                _arena?.Log($"🦴 <b>{actor.Stats.Name}</b> pose une attelle (Ralenti retiré).");
+                return true;
+            }
+
+            // Antidouleurs : +2 Encaissement, purge Étourdi/Déstabilisé.
+            if ((actor.Stats.ActiveStatus.HasFlag(StatusEffect.Etourdi) || actor.Stats.ActiveStatus.HasFlag(StatusEffect.Destabilise))
+                && AIFindByName(actor, "Antidouleur") != null)
+            {
+                var dose = AIFindByName(actor, "Antidouleur");
+                if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                actor.Sheet?.ConsumeOne(dose.ItemId);
+                actor.NotifyInventoryChanged(true);
+                actor.Stats.AddEncaissementBonus(2);
+                actor.Stats.RemoveStatus(StatusEffect.Etourdi);
+                actor.Stats.RemoveStatus(StatusEffect.Destabilise);
+                visual?.SpawnFloatingText("💊 Dopé (+2 Encaissement)", new Color(1f, 0.6f, 0.2f));
+                _arena?.Log($"💊 <b>{actor.Stats.Name}</b> prend <b>{dose.Name}</b> (+2 Encaissement).");
+                return true;
+            }
+
+            // Speed : 1 PA → +3 PA quand la réserve est basse.
+            if (pa >= 1 && pa < 3 && AIFindByName(actor, "Speed") != null)
+            {
+                var dose = AIFindByName(actor, "Speed");
+                if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                actor.Sheet?.ConsumeOne(dose.ItemId);
+                actor.NotifyInventoryChanged(true);
+                actor.Stats.CurrentActionPoints += 3;
+                actor.Stats.ApplyStatus(StatusEffect.Rapide, 3);
+                visual?.SpawnFloatingText("💨 SPEED (+3 PA)", Color.yellow);
+                _arena?.Log($"💨 <b>{actor.Stats.Name}</b> prend <b>{dose.Name}</b> (+3 PA, Rapide).");
+                return true;
+            }
+
+            // Harmonisation psi (Résonateur → Survolté +1 EC) avant sort ou tir EC.
+            if (!actor.Stats.ActiveStatus.HasFlag(StatusEffect.Survolte)
+                && SmokeScreen.HasItemByName(actor.Stats, "Résonateur")
+                && (actor.Sheet?.LearnedSpells.Count > 0 || (actor.Sheet?.GetEquippedWeapon()?.AttackBonusEc ?? 0) > 0))
+            {
+                if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                actor.Stats.ApplyStatus(StatusEffect.Survolte, 1);
+                visual?.SpawnFloatingText("🔮 SURVOLTÉ (+1 EC)", Color.magenta);
+                _arena?.Log($"🔮 <b>{actor.Stats.Name}</b> s'harmonise avec son <b>Résonateur Nytharite</b> (+1 EC).");
+                return true;
+            }
+
+            // Canaliser le coup (+2 au jet) quand la frappe suit derrière.
+            if (inAttackRange && (_defaultPersonality == AIPersonality.Tactician || _defaultPersonality == AIPersonality.Balanced)
+                && !ChannelingState.IsChanneling(actor.Stats)
+                && !ChannelingState.IsCancelledByStatus(actor.Stats)
+                && pa >= CoreRulesConfig.Instance.ChannelStartAPCost + 2 + reserve
+                && _arena != null && _arena.TryBeginChanneling(actor, "Coup en progression", out _))
+            {
+                return true;
+            }
+
+            // Furtivité (2 PA, +2 embuscade) pour les doctrines prudentes à distance.
+            if (!StealthState.IsStealthed(actor.Stats) && dist > 2
+                && (_defaultPersonality == AIPersonality.Survivor || _defaultPersonality == AIPersonality.Tactician)
+                && pa >= StealthState.EnterStealthAPCost + 2 + reserve
+                && _arena != null && _arena.TryEnterStealth(actor, out _))
+            {
+                return true;
+            }
+
+            // Reprendre son souffle : 1 PA → -1 ESS (Second Souffle : -2).
+            int ess = actor.Stats.Essoufflement;
+            if (ess > 0 && ess >= Mathf.Max(1, actor.Stats.Attributes.Constitution / 2) && pa >= 2 + reserve)
+            {
+                if (!actor.Stats.ConsumeActionPoints(1)) return false;
+                int recovered = actor.Stats.HasSpecialization("Course d'Endurance : Second Souffle") ? 2 : 1;
+                actor.Stats.RecoverBreath(recovered);
+                visual?.SpawnFloatingText($"Souffle repris (-{recovered} ESS)", Color.green);
+                return true;
+            }
+
+            return false;
+        }
+
+        // =========================================================================
+        // BALISE LASER, CHARGE, FRAPPE TITANESQUE, BOUSCULADE, LANCER D'ARME
+        // =========================================================================
+        private bool TryExecuteLaserDesignation(TacticalUnit actor, TacticalUnit target, int dist, TacticalUnitVisual visual)
+        {
+            if (actor?.Stats == null || target?.Stats == null || !target.Stats.IsAlive) return false;
+            if (dist < 1 || dist > 12) return false;
+            if (!SmokeScreen.HasItemByName(actor.Stats, "Lampe") || !SmokeScreen.HasItemByName(actor.Stats, "Batterie")) return false;
+            if (SkillTechniqueState.IsFlawExposed(target.Stats)) return false;
+            if (!HasLineOfSight(actor.CurrentCoords, target.CurrentCoords, target.FootprintType, actor.FootprintType, actor)) return false;
+            if (target.Stats.EncaissementThreshold < 3 && target.Stats.CurrentHealth < 8) return false;
+            if (actor.Stats.CurrentActionPoints < 1 + 2 + GetRequiredDefensiveReserve(actor, TacticalPosture.CalculatedStrike)) return false;
+            if (!actor.Stats.ConsumeActionPoints(1)) return false;
+
+            SkillTechniqueState.ApplyExposedFlaw(actor.Stats, target.Stats);
+            visual?.SpawnFloatingText("🔦 Faille désignée (-1 PA)", Color.yellow);
+            target.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🔦 DÉSIGNÉ", Color.yellow);
+            _arena?.Log($"🔦 <b>{actor.Stats.Name}</b> désigne <b>{target.Stats.Name}</b> à la balise (faille exposée).");
+            _arena?.RecordChronoSnapshot($"Balise : {actor.Stats.Name} -> {target.Stats.Name}");
+            return true;
+        }
+
+        private bool TryExecuteChargeAttack(TacticalUnit actor, TacticalUnit target, TacticalUnitVisual visual)
+        {
+            if (_arena == null || _arena.IsResolving || _pathfinder == null) return false;
+            if (actor?.Stats == null || target?.Stats == null || !target.Stats.IsAlive) return false;
+            if (_defaultPersonality == AIPersonality.Survivor) return false;
+            if (GrappleState.IsGrappled(actor.Stats)) return false;
+            if (!_pathfinder.CanChargeTarget(actor, target, 3, 2)) return false;
+
+            visual?.SpawnFloatingText("⚡ Charge d'assaut !", new Color(1f, 0.85f, 0.2f));
+            _arena.ExecuteChargeAttack(actor, target, BodyPart.Torse, 0, 0);
+            return true;
+        }
+
+        private bool TryExecuteTitanSlam(TacticalUnit actor, TacticalUnit target, TacticalPosture posture, int dist, TacticalUnitVisual visual)
+        {
+            if (_arena != null && _arena.IsResolving) return false;
+            if (actor?.Stats == null || !actor.Stats.IsAlive) return false;
+            if (target?.Stats == null || !target.Stats.IsAlive) return false;
+            if (!TitanFootprint.IsTitan(actor.FootprintType)) return false;
+            int pa = actor.Stats.CurrentActionPoints;
+            bool allIn = (posture == TacticalPosture.AllInLethal) || _defaultPersonality == AIPersonality.Aggressive;
+
+            // Saisie colossale au contact (2 PA) : broyage + Immobilisé.
+            if (dist <= 1 && pa >= 2
+                && !actor.Stats.ActiveStatus.HasFlag(StatusEffect.Immobilise)
+                && TitanFootprint.CanTitanGrab(actor.FootprintType, target.FootprintType, dist)
+                && (target.Stats.CurrentActionPoints >= 3 || target.Stats.CurrentHealth <= Mathf.Max(3, actor.Stats.Attributes.Force) || allIn))
+            {
+                if (!actor.Stats.ConsumeActionPoints(2)) return false;
+                int grabDmg = Mathf.Max(3, actor.Stats.Attributes.Force);
+                if (target.Stats.CurrentHealth - grabDmg <= 0) target.Stats.EvaluateFatalBlow(BodyPart.Torse, grabDmg);
+                else target.Stats.CurrentHealth -= grabDmg;
+
+                var tgtVis = target.GetComponent<TacticalUnitVisual>();
+                tgtVis?.TriggerHitFlash();
+                if (target.Stats.IsAlive)
+                {
+                    GrappleState.SetGrapple(actor.Stats, target.Stats);
+                    target.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+                    tgtVis?.SpawnFloatingText($"-{grabDmg} SAISIE [IMMOBILISÉ]", Color.yellow);
+                }
+                else
+                {
+                    tgtVis?.TriggerFallingBackDeath();
+                    _arena?.AutoTargetNextAlive();
+                }
+                visual?.SpawnFloatingText("✊ SAISIE TITANESQUE", Color.cyan);
+                _arena?.Log($"✊ <b>{actor.Stats.Name}</b> saisit <b>{target.Stats.Name}</b> (-2 PA) : {grabDmg} dégâts de broyage !");
+                _arena?.RecordChronoSnapshot($"Saisie Titanesque : {actor.Stats.Name} -> {target.Stats.Name}");
+                return true;
+            }
+
+            // Piétinement / Souffle : zones multi-cibles (jamais d'alliés dedans).
+            if (pa >= 3)
+            {
+                // Piétinement (cible à ≤2 cases).
+                if (dist <= 2)
+                {
+                    var zone = TitanFootprint.GetStompZone(target.CurrentCoords, actor.FootprintType);
+                    if (CountZoneTargets(actor, zone, out int foes, out int allies) && foes >= (allIn ? 1 : 2) && allies == 0)
+                    {
+                        ExecuteTitanZoneHit(actor, target, zone, Mathf.Max(4, actor.Stats.Attributes.Force + 2), 3, StatusEffect.ATerre, 1, "💥 PIÉTINEMENT", "Piétinement de Zone", visual);
+                        return true;
+                    }
+                }
+                // Souffle (cible à ≤8 cases).
+                if (dist <= 8)
+                {
+                    var zone = TitanFootprint.GetBreathZone(target.CurrentCoords, actor.FootprintType);
+                    int breathDmg = Mathf.Max(5, (actor.Stats.Attributes.Magie > 0 ? actor.Stats.Attributes.Magie : actor.Stats.Attributes.Constitution) + 2);
+                    if (CountZoneTargets(actor, zone, out int foes, out int allies)
+                        && (foes >= 2 || (foes >= 1 && (allIn || target.Stats.CurrentHealth <= breathDmg))) && allies == 0)
+                    {
+                        ExecuteTitanZoneHit(actor, target, zone, breathDmg, 3, StatusEffect.EnFeu, 2, "🔥 SOUFFLE", "Souffle Titanesque", visual);
+                        return true;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        private bool CountZoneTargets(TacticalUnit actor, List<HexCoordinates> zone, out int foes, out int allies)
+        {
+            foes = 0;
+            allies = 0;
+            if (zone == null || zone.Count == 0) return false;
+            var zoneSet = new HashSet<HexCoordinates>(zone);
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var u = _cachedUnits[i];
+                if (u == null || u == actor || u.Stats == null || !u.Stats.IsAlive) continue;
+                var cells = u.OccupiedCoords;
+                bool inZone = false;
+                for (int c = 0; c < cells.Count; c++)
+                {
+                    if (zoneSet.Contains(cells[c]))
+                    {
+                        inZone = true;
+                        break;
+                    }
+                }
+                if (!inZone) continue;
+                bool hostile = actor.IsPlayerControlled ? !u.IsPlayerControlled : u.IsPlayerControlled;
+                if (_mode == CombatAIMode.FullAuto && u.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
+                if (hostile) foes++;
+                else allies++;
+            }
+            return foes > 0;
+        }
+
+        private void ExecuteTitanZoneHit(TacticalUnit actor, TacticalUnit target, List<HexCoordinates> zone, int dmg, int apCost, StatusEffect zoneStatus, int statusTurns, string icon, string label, TacticalUnitVisual visual)
+        {
+            if (!actor.Stats.ConsumeActionPoints(apCost)) return;
+            var zoneSet = new HashSet<HexCoordinates>(zone);
+            int hitCount = 0;
+            for (int i = 0; i < _cachedUnits.Count; i++)
+            {
+                var u = _cachedUnits[i];
+                if (u == null || u == actor || u.Stats == null || !u.Stats.IsAlive) continue;
+                bool inZone = false;
+                var cells = u.OccupiedCoords;
+                for (int c = 0; c < cells.Count; c++)
+                {
+                    if (zoneSet.Contains(cells[c]))
+                    {
+                        inZone = true;
+                        break;
+                    }
+                }
+                if (!inZone) continue;
+
+                hitCount++;
+                if (u.Stats.CurrentHealth - dmg <= 0) u.Stats.EvaluateFatalBlow(BodyPart.Torse, dmg);
+                else u.Stats.CurrentHealth -= dmg;
+                u.Stats.ApplyStatus(zoneStatus, statusTurns);
+                u.Stats.ApplyStatus(StatusEffect.Destabilise, 1);
+                var uVis = u.GetComponent<TacticalUnitVisual>();
+                uVis?.TriggerHitFlash();
+                uVis?.SpawnFloatingText($"-{dmg} {icon}", Color.red);
+                if (!u.Stats.IsAlive)
+                {
+                    uVis?.TriggerFallingBackDeath();
+                    if (u == target) _arena?.AutoTargetNextAlive();
+                }
+            }
+            visual?.SpawnFloatingText($"{icon} {label} ({hitCount})", new Color(1f, 0.45f, 0.1f));
+            _arena?.Log($"{icon} <b>{actor.Stats.Name}</b> : <b>{label} ({zone.Count} hex)</b> (-{apCost} PA) — {hitCount} unité(s) ({dmg} dégâts) !");
+            _arena?.RecordChronoSnapshot($"{label} : {actor.Stats.Name} ({zone.Count} hex)");
+        }
+
+        private bool TryExecuteShove(TacticalUnit actor, TacticalUnit target, CoverType targetCover, TacticalUnitVisual visual)
+        {
+            if (_arena == null || _arena.IsResolving) return false;
+            if (actor?.Stats == null || target?.Stats == null || !target.Stats.IsAlive) return false;
+            if (actor.Stats.CurrentActionPoints < 2) return false;
+            if (GrappleState.IsGrappled(actor.Stats)) return false;
+            if ((target.Stats.ActiveStatus & StatusEffect.ATerre) != 0) return false;
+            if (TitanFootprint.GetHexCount(target.FootprintType) > TitanFootprint.GetHexCount(actor.FootprintType) + 6) return false;
+
+            bool wantShove = (targetCover == CoverType.ThreeQuarters)
+                || _defaultPersonality == AIPersonality.Survivor;
+            if (!wantShove && _defaultPersonality == AIPersonality.Tactician
+                && target.Stats.BaseArmorAbsorption + target.Stats.GetWornArmorBonus() >= 5)
+            {
+                wantShove = true;
+            }
+            if (!wantShove) return false;
+
+            bool shieldBash = AIHasShield(actor);
+            SkillType checkSkill = shieldBash ? SkillType.DefenseCorporelle : SkillType.Athletisme;
+            if (!actor.Stats.CanAttack(actor.Stats.GetSkillDie(checkSkill, true))) return false;
+
+            visual?.SpawnFloatingText(shieldBash ? "🛡️ Coup de bouclier !" : "💨 Bousculade !", Color.cyan);
+            _arena.ExecuteShove(actor, target, shieldBash, 0, 0);
+            return true;
+        }
+
+        private bool TryExecuteWeaponThrow(TacticalUnit actor, TacticalUnit target, int dist, TacticalUnitVisual visual)
+        {
+            if (_arena == null || _arena.IsResolving) return false;
+            if (actor?.Stats == null || actor.Sheet == null) return false;
+            if (dist < 2 || dist > 4 || actor.Stats.CurrentActionPoints < 2) return false;
+            var w = actor.Sheet.GetEquippedWeapon();
+            if (w == null || w.IsThrowableGrenade() || w.IsLauncher) return false;
+            // Le tir direct reste meilleur quand il est disponible.
+            if (CanShootNow(actor)) return false;
+
+            visual?.SpawnFloatingText($"🗡️ Lancer : {w.Name} !", Color.cyan);
+            _arena.ExecuteWeaponThrow(actor, target);
+            return true;
         }
 
         // =========================================================================
@@ -1436,9 +2300,9 @@ namespace Killtime.Tactics.AI
                     var ally = _cachedUnits[i];
                     if (ally == null || ally == actor || ally.Stats == null || !ally.Stats.IsAlive) continue;
                     if (ally.IsPlayerControlled != actor.IsPlayerControlled) continue;
-                    int allyDist = ally.CurrentCoords.DistanceTo(target.CurrentCoords);
+                    int allyDist = TitanFootprint.MinDistanceBetweenUnits(ally.CurrentCoords, ally.FootprintType, target.CurrentCoords, target.FootprintType);
                     if (allyDist < 2 || allyDist > 10) continue;
-                    if (CoverSystem.EvaluateCover(ally.CurrentCoords, target.CurrentCoords, _grid) == CoverType.Full) continue;
+                    if (GetCoverLevel(ally.CurrentCoords, target.CurrentCoords, target.FootprintType, ally.FootprintType, ally) == CoverType.Full) continue;
 
                     firingAllies ??= new List<TacticalUnit>();
                     firingAllies.Add(ally);
@@ -1453,11 +2317,14 @@ namespace Killtime.Tactics.AI
                 var node = _grid.GetNode(hex);
                 if (node == null || !node.IsWalkable || (node.IsOccupied && !hex.Equals(actor.CurrentCoords))) continue;
 
-                int dist = hex.DistanceTo(target.CurrentCoords);
+                // RD-IA09 : distance d'empreinte (les Titans faussaient le filtre).
+                int dist = TitanFootprint.MinDistanceBetweenUnits(hex, actor.FootprintType, target.CurrentCoords, target.FootprintType);
                 if (isRanged && (dist < 2 || dist > maxRange)) continue;
                 if (!isRanged && dist != 1) continue;
 
-                CoverType targetCoverFromHex = CoverSystem.EvaluateCover(hex, target.CurrentCoords, _grid);
+                // RD-IA09 : couvert + fumée réels d'empreinte (avant : centre à
+                // centre sans fumée, incohérent avec HasLineOfSight).
+                CoverType targetCoverFromHex = GetCoverLevel(hex, target.CurrentCoords, target.FootprintType, actor.FootprintType, actor);
                 if (targetCoverFromHex == CoverType.Full) continue;
 
                 float score = 50f;
@@ -1467,7 +2334,7 @@ namespace Killtime.Tactics.AI
                 else if (targetCoverFromHex == CoverType.Half) score += 20f;
 
                 // Couvert défensif : protection contre la riposte
-                CoverType defCoverAgainstTarget = CoverSystem.EvaluateCover(target.CurrentCoords, hex, _grid);
+                CoverType defCoverAgainstTarget = GetCoverLevel(target.CurrentCoords, hex, actor.FootprintType, target.FootprintType, actor);
                 if (defCoverAgainstTarget == CoverType.ThreeQuarters) score += 40f;
                 else if (defCoverAgainstTarget == CoverType.Half) score += 25f;
 
@@ -1943,7 +2810,8 @@ namespace Killtime.Tactics.AI
             int attStatusMod = actor.Stats.GetStatusModifier(attackSkill, true);
             int defStatusMod = target.Stats.GetStatusModifier(defenseSkill, false);
 
-            CoverType targetCover = isRanged ? GetCoverLevel(actor.CurrentCoords, target.CurrentCoords, TitanFootprintType.Single, TitanFootprintType.Single, actor) : CoverType.None;
+            // RD-IA07 : couvert réel d'empreinte + fumée (avant : Single/single).
+            CoverType targetCover = isRanged ? GetCoverLevel(actor.CurrentCoords, target.CurrentCoords, target.FootprintType, actor.FootprintType, actor) : CoverType.None;
             int coverPen = CoverSystem.AttackPenalty(targetCover);
 
             int nightPen = 0;
@@ -1952,6 +2820,32 @@ namespace Killtime.Tactics.AI
             {
                 nightPen = -1;
             }
+
+            // RD-IA07 : modificateurs de duel aveugle ignorés par l'estimation :
+            // furtivité (+2, sans réaction), canalisation (+2), bonus arme EC,
+            // hauteur RD-036 et canon entravé au contact (-2).
+            int stealthBonus = StealthState.IsStealthed(actor.Stats) ? StealthState.StealthAttackBonus : 0;
+            int channelBonus = ChannelingState.IsChanneling(actor.Stats) ? ChannelingState.PeekAttackBonus(actor.Stats) : 0;
+            int weaponEcBonus = 0;
+            int elevationMod = 0;
+            var equippedForRuling = actor.Sheet?.GetEquippedWeapon();
+            if (equippedForRuling != null) weaponEcBonus = Mathf.Max(0, equippedForRuling.AttackBonusEc);
+            try
+            {
+                if (_arena != null)
+                {
+                    var ruling = _arena.GetElevationRuling(actor, target, attackSkill, equippedForRuling, !isRanged);
+                    elevationMod = ruling.AttackMod;
+                }
+            }
+            catch { /* estimation optionnelle */ }
+            int entravePen = 0;
+            try
+            {
+                if (actor.IsCanonEntrave() && (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir))
+                    entravePen = -2;
+            }
+            catch { /* ignore */ }
 
             int weaponDmg = 5;
             var equippedWeapon = actor.Sheet?.GetEquippedWeapon();
@@ -1965,7 +2859,8 @@ namespace Killtime.Tactics.AI
             int reserveNeeded = GetRequiredDefensiveReserve(actor, posture);
             int spendablePE = actor.Stats.GetSpendablePE();
 
-            double baseAttExpected = CombatCalculator.DieAverage(attackDie) + attStatusMod + coverPen + nightPen;
+            double baseAttExpected = CombatCalculator.DieAverage(attackDie) + attStatusMod + coverPen + nightPen
+                + stealthBonus + channelBonus + weaponEcBonus + elevationMod + entravePen;
             double baseDefExpected = target.Stats.CanDefendActively()
                 ? CombatCalculator.DieAverage(defenseDie) + defStatusMod
                 : 0.0;
@@ -2016,17 +2911,19 @@ namespace Killtime.Tactics.AI
                         }
                     }
 
-                    // Injection de PE si létalité accessible ou provocation de choc
+                    // Injection de PE si létalité accessible ou provocation de choc.
+                    // RD-IA07 : 1 PE vaut DuelPEBonusPerPoint (config), pas +1 fixe.
                     if (spendablePE > 0 && posture == TacticalPosture.AllInLethal)
                     {
-                        double testDiff = (currentAttRoll + chosenBonusAP + 1) - baseDefExpected;
+                        int peValue = CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.DuelPEBonusPerPoint : 1;
+                        double testDiff = (currentAttRoll + chosenBonusAP + peValue) - baseDefExpected;
                         if (testDiff > 0 && (weaponDmg + testDiff - targetArmor) >= targetHp)
                         {
                             chosenBonusPE = 1;
                         }
                     }
 
-                    double finalDiff = (currentAttRoll + chosenBonusAP + chosenBonusPE) - baseDefExpected;
+                    double finalDiff = (currentAttRoll + chosenBonusAP + chosenBonusPE * (CoreRulesConfig.Instance != null ? CoreRulesConfig.Instance.DuelPEBonusPerPoint : 1)) - baseDefExpected;
                     double finalRaw = finalDiff > 0 ? (weaponDmg + finalDiff) : 0;
                     double finalNet = Math.Max(0, finalRaw - targetArmor);
 
@@ -2078,36 +2975,45 @@ namespace Killtime.Tactics.AI
         // =========================================================================
         // SORTS ARCANOTECH (LIVRE IV)
         // =========================================================================
-        private bool TryCastBestSpell(TacticalUnit actor, TacticalUnit target)
+        private bool TryCastBestSpell(TacticalUnit actor, TacticalUnit target, int dist, bool hasLOS)
         {
             if (actor.Sheet == null || actor.Sheet.LearnedSpells == null || actor.Sheet.LearnedSpells.Count == 0) return false;
-            int dist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
+            if (target == null || target.Stats == null || !target.Stats.IsAlive) return false;
+            // RD-IA06 : sans ligne de vue, aucun sort ciblé (avant : cast à
+            // l'aveugle à travers les murs).
+            if (!hasLOS) return false;
 
+            // RD-IA06 : coût réel = PA du sort + taxe focus (+2 sans focus).
+            int focusTax = Killtime.Core.Arcanotech.ArcanotechWorkshop.FocusTax(actor.Sheet);
             NythariteSpell bestSpell = null;
-            int highestDmg = -1;
+            int bestNetScore = int.MinValue;
 
             for (int i = 0; i < actor.Sheet.LearnedSpells.Count; i++)
             {
                 var spell = actor.Sheet.LearnedSpells[i];
                 if (spell == null) continue;
-                if (spell.RangeInTiles >= dist && actor.Stats.CurrentActionPoints >= spell.ActionPointCost)
+                int realCost = spell.ActionPointCost + focusTax;
+                if (spell.RangeInTiles < dist || actor.Stats.CurrentActionPoints < realCost) continue;
+                // Score : dégâts nets estimés après armure, au prorata du coût.
+                int targetArmor = target.Stats.BaseArmorAbsorption + target.Stats.GetWornArmorBonus();
+                int net = spell.BaseArcaneDamage - targetArmor;
+                int score = net * 10 - realCost * 3;
+                if (target.Stats.CurrentHealth <= System.Math.Max(1, net)) score += 60;
+                if (score > bestNetScore)
                 {
-                    if (spell.BaseArcaneDamage > highestDmg)
-                    {
-                        highestDmg = spell.BaseArcaneDamage;
-                        bestSpell = spell;
-                    }
+                    bestNetScore = score;
+                    bestSpell = spell;
                 }
             }
 
-            if (bestSpell != null)
+            if (bestSpell != null && bestNetScore > 0)
             {
                 var dice = new DiceRoller();
                 var vis = target.GetComponent<TacticalUnitVisual>();
                 var actorVis = actor.GetComponent<TacticalUnitVisual>();
-                actorVis?.SpawnFloatingText($"🔮 {bestSpell.Name} (-{bestSpell.ActionPointCost} PA)", Color.cyan);
+                actorVis?.SpawnFloatingText($"🔮 {bestSpell.Name} (-{bestSpell.ActionPointCost + focusTax} PA)", Color.cyan);
 
-                if (bestSpell.Cast(actor.Stats, target.Stats, dice, out _))
+                if (bestSpell.Cast(actor.Stats, target.Stats, dice, out _, dist))
                 {
                     vis?.TriggerHitFlash();
                     vis?.SpawnFloatingText($"-{bestSpell.BaseArcaneDamage} Arcanique", Color.magenta);
@@ -2238,12 +3144,20 @@ namespace Killtime.Tactics.AI
         {
             if (_pathfinder == null || _grid == null || apBudget <= 0) return null;
 
+            // RD-IA10 : anneau d'approche autour de TOUTE l'empreinte (les
+            // voisins du centre d'un Titan sont à l'intérieur de son corps).
             HexCoordinates bestNeighbor = target.CurrentCoords;
             int minDistance = int.MaxValue;
-
-            for (int dir = 0; dir < 6; dir++)
+            var targetCells = target.OccupiedCoords;
+            var candidates = new HashSet<HexCoordinates>();
+            for (int c = 0; c < targetCells.Count; c++)
             {
-                var n = target.CurrentCoords.GetNeighbor(dir);
+                for (int dir = 0; dir < 6; dir++)
+                    candidates.Add(targetCells[c].GetNeighbor(dir));
+            }
+            foreach (var n in candidates)
+            {
+                if (target.Occupies(n)) continue;
                 var nNode = _grid.GetNode(n);
                 if (nNode != null && nNode.IsWalkable && (!nNode.IsOccupied || n.Equals(actor.CurrentCoords)))
                 {
@@ -2256,7 +3170,7 @@ namespace Killtime.Tactics.AI
                 }
             }
 
-            if (actor.CurrentCoords.DistanceTo(target.CurrentCoords) <= 1) return null;
+            if (TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, target.CurrentCoords, target.FootprintType) <= 1) return null;
 
             var fullPath = _pathfinder.FindPath(actor.CurrentCoords, bestNeighbor, 50, out _);
             if (fullPath == null || fullPath.Count <= 1) return null;
@@ -2284,15 +3198,22 @@ namespace Killtime.Tactics.AI
         {
             if (_pathfinder == null || _grid == null || apBudget <= 0) return null;
 
-            int curDist = actor.CurrentCoords.DistanceTo(target.CurrentCoords);
-            if (curDist <= maxRange && HasLineOfSight(actor.CurrentCoords, target.CurrentCoords)) return null;
+            int curDist = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, target.CurrentCoords, target.FootprintType);
+            if (curDist <= maxRange && HasLineOfSight(actor.CurrentCoords, target.CurrentCoords, target.FootprintType, actor.FootprintType, actor)) return null;
 
+            // RD-IA10 : anneau d'approche autour de toute l'empreinte cible.
             HexCoordinates bestNeighbor = target.CurrentCoords;
             int minDistance = int.MaxValue;
-
-            for (int dir = 0; dir < 6; dir++)
+            var targetCells = target.OccupiedCoords;
+            var candidates = new HashSet<HexCoordinates>();
+            for (int c = 0; c < targetCells.Count; c++)
             {
-                var n = target.CurrentCoords.GetNeighbor(dir);
+                for (int dir = 0; dir < 6; dir++)
+                    candidates.Add(targetCells[c].GetNeighbor(dir));
+            }
+            foreach (var n in candidates)
+            {
+                if (target.Occupies(n)) continue;
                 var nNode = _grid.GetNode(n);
                 if (nNode != null && nNode.IsWalkable && (!nNode.IsOccupied || n.Equals(actor.CurrentCoords)))
                 {
@@ -2311,8 +3232,8 @@ namespace Killtime.Tactics.AI
             int targetStepIndex = fullPath.Count - 1;
             for (int i = 1; i < fullPath.Count; i++)
             {
-                int d = fullPath[i].DistanceTo(target.CurrentCoords);
-                if (d <= maxRange && HasLineOfSight(fullPath[i], target.CurrentCoords))
+                int d = TitanFootprint.MinDistanceBetweenUnits(fullPath[i], actor.FootprintType, target.CurrentCoords, target.FootprintType);
+                if (d <= maxRange && HasLineOfSight(fullPath[i], target.CurrentCoords, target.FootprintType, actor.FootprintType, actor))
                 {
                     targetStepIndex = i;
                     break;
@@ -2369,23 +3290,20 @@ namespace Killtime.Tactics.AI
                 return true;
             }
 
-            int balRank = unit.Stats.GetSkillRank(SkillType.Ballistique, true);
-            int meleeRank = unit.Stats.GetSkillRank(attackSkill, true);
-            if (balRank > meleeRank + 2)
-            {
-                maxRange = 8;
-                minRange = 1;
-                attackSkill = SkillType.Ballistique;
-                return true;
-            }
-
+            // RD-IA08 : suppression du repli "rang Balistique > mêlée +2 ⇒ tir
+            // à 8 cases" : sans arme à distance équipée, l'unité ne tire pas
+            // (l'ancien code faisait "tirer" des PNJ désarmés en duel
+            // Ballistique fantôme). Le contact / les sorts prennent le relais.
             return false;
         }
 
-        private bool HasLineOfSight(HexCoordinates from, HexCoordinates to, TitanFootprintType toFootprint = TitanFootprintType.Single, TitanFootprintType fromFootprint = TitanFootprintType.Single)
+        private bool HasLineOfSight(HexCoordinates from, HexCoordinates to, TitanFootprintType toFootprint = TitanFootprintType.Single, TitanFootprintType fromFootprint = TitanFootprintType.Single, TacticalUnit viewer = null)
         {
             if (_grid == null) return true;
-            return CoverSystem.EvaluateCover(from, to, _grid, toFootprint, fromFootprint) != CoverType.Full;
+            // RD-IA08 : CdV unifiée avec le couvert (inclut la fumée RD-041).
+            // Avant : EvaluateCover direct ⇒ l'IA "voyait" à travers la fumée
+            // pour attaquer mais pas pour évaluer le couvert (incohérent).
+            return GetCoverLevel(from, to, toFootprint, fromFootprint, viewer) != CoverType.Full;
         }
 
         private CoverType GetCoverLevel(HexCoordinates from, HexCoordinates to, TitanFootprintType toFootprint = TitanFootprintType.Single, TitanFootprintType fromFootprint = TitanFootprintType.Single, TacticalUnit viewer = null)
@@ -2472,13 +3390,14 @@ namespace Killtime.Tactics.AI
                         c => _grid.GetNode(c), vp, _grid.HexRadius);
 
                     // RD-053 : Lampe dans la nuit — la lumière trahit la position même au-delà de la portée nocturne
-                    if (!seen && isNight && potential.HasFlashlight && HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords))
+                    if (!seen && isNight && potential.HasFlashlight && HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords, potential.FootprintType, actor.FootprintType, actor))
                     {
                         seen = true;
                     }
 
                     bool stealthed = Killtime.Core.Combat.StealthState.IsStealthed(potential.Stats);
-                    int targetDist = actor.CurrentCoords.DistanceTo(potential.CurrentCoords);
+                    // RD-IA09 : distance d'empreinte (contact Titan = 1, pas 3).
+                    int targetDist = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, potential.CurrentCoords, potential.FootprintType);
                     if (!seen || (stealthed && targetDist > 1 && !vp.Thermal))
                     {
                         bool revealed = fog != null
@@ -2496,13 +3415,13 @@ namespace Killtime.Tactics.AI
                 if (isRanged)
                 {
                     bool inRangedZone = (dist <= maxRange);
-                    bool hasLOS = HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords);
+                    bool hasLOS = HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords, potential.FootprintType, actor.FootprintType, actor);
 
                     if (inRangedZone && hasLOS)
                     {
                         score += 50f;
                         if (dist >= 2 && dist <= maxRange) score += 15f;
-                        CoverType targetCover = GetCoverLevel(actor.CurrentCoords, potential.CurrentCoords, TitanFootprintType.Single, TitanFootprintType.Single, actor);
+                        CoverType targetCover = GetCoverLevel(actor.CurrentCoords, potential.CurrentCoords, potential.FootprintType, actor.FootprintType, actor);
                         if (targetCover == CoverType.Half) score -= 10f;
                         else if (targetCover == CoverType.ThreeQuarters) score -= 25f;
                     }

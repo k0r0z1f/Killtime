@@ -165,6 +165,41 @@ namespace Killtime.Tests
             Assert.IsFalse(shot.TrackFocusActor);
             Assert.AreEqual(7f, shot.TrackDistance, 0.001f);
             Assert.AreEqual(45f, shot.TrackYaw, 0.001f);
+            // Effet supraluminique : désactivé par défaut (voûte normale).
+            Assert.IsFalse(shot.SuperluminalWarp);
+        }
+
+        [Test]
+        public void CinematicShot_WarpSummaryAndRoundtrip()
+        {
+            var shot = new SceneCinematicShotData { ShotId = "shot_warp", Duration = 20f };
+            StringAssert.DoesNotContain("warp", shot.GetSummary());
+            shot.SuperluminalWarp = true;
+            StringAssert.Contains("warp", shot.GetSummary());
+
+            var data = new StorySceneData { SceneId = "cine_warp" };
+            var cine = new SceneCinematicData { CinematicId = "cine_warp_1" };
+            cine.Shots.Add(shot);
+            data.Cinematics.Add(cine);
+
+            var loaded = JsonUtility.FromJson<StorySceneData>(JsonUtility.ToJson(data, true));
+            StorySceneData.EnsureDeepDefaults(loaded);
+
+            var back = loaded.FindCinematic("cine_warp_1");
+            Assert.IsNotNull(back);
+            Assert.IsTrue(back.Shots[0].SuperluminalWarp);
+        }
+
+        [Test]
+        public void CinematicShot_LegacyJsonWithoutWarpDefaultsOff()
+        {
+            // Vieux JSON sans le champ (ex : scène 01 avant l'effet) : pas de crash,
+            // warp désactivé (comportement identique à avant).
+            string legacy = "{\"SceneId\":\"legacy_warp\",\"Cinematics\":[{\"CinematicId\":\"cine_1\",\"Shots\":[{\"ShotId\":\"shot_1\",\"Duration\":20.0}]}]}";
+            var loaded = JsonUtility.FromJson<StorySceneData>(legacy);
+            StorySceneData.EnsureDeepDefaults(loaded);
+            Assert.IsNotNull(loaded.FindCinematic("cine_1"));
+            Assert.IsFalse(loaded.FindCinematic("cine_1").Shots[0].SuperluminalWarp);
         }
 
         [Test]
@@ -235,6 +270,118 @@ namespace Killtime.Tests
             {
                 Object.DestroyImmediate(go);
             }
+        }
+
+        [Test]
+        public void CinematicChainHead_ReturnsEarliestUpstream()
+        {
+            // cine_11 ─fin→ cine_1 ─fin→ line : la tête de cine_1 est cine_11
+            // (c'est elle qui doit démarrer, le reste suit via Fin→).
+            var data = new StorySceneData { SceneId = "cine_head" };
+            data.Cinematics.Add(new SceneCinematicData { CinematicId = "cine_1", NextTargetId = "line_vance_01" });
+            data.Cinematics.Add(new SceneCinematicData { CinematicId = "cine_11", NextTargetId = "cine_1" });
+
+            Assert.AreEqual("cine_11", data.FindCinematicChainHead("cine_1"));
+            Assert.AreEqual("cine_11", data.FindCinematicChainHead("cine_11"));
+            Assert.AreEqual("CINE_11", data.FindCinematicChainHead("CINE_1").ToUpperInvariant());
+        }
+
+        [Test]
+        public void CinematicChainHead_NoUpstreamOrAmbiguousKeepsDirect()
+        {
+            var data = new StorySceneData { SceneId = "cine_head_direct" };
+            data.Cinematics.Add(new SceneCinematicData { CinematicId = "cine_1", NextTargetId = "line_x" });
+            // Sans amont : soi-même (comportement inchangé).
+            Assert.AreEqual("cine_1", data.FindCinematicChainHead("cine_1"));
+            // Inconnu / vide : toléré, renvoyé tel quel.
+            Assert.AreEqual("cine_missing", data.FindCinematicChainHead("cine_missing"));
+            Assert.AreEqual("", data.FindCinematicChainHead(""));
+            // Embranchement ambigu (2 amonts) : garde le direct (ancien comportement).
+            data.Cinematics.Add(new SceneCinematicData { CinematicId = "cine_a", NextTargetId = "cine_1" });
+            data.Cinematics.Add(new SceneCinematicData { CinematicId = "cine_b", NextTargetId = "cine_1" });
+            Assert.AreEqual("cine_1", data.FindCinematicChainHead("cine_1"));
+        }
+
+        [Test]
+        public void CinematicChainHead_CycleTerminates()
+        {
+            // Boucle A→B→A : termine sans tourner en rond.
+            var data = new StorySceneData { SceneId = "cine_head_cycle" };
+            data.Cinematics.Add(new SceneCinematicData { CinematicId = "cine_a", NextTargetId = "cine_b" });
+            data.Cinematics.Add(new SceneCinematicData { CinematicId = "cine_b", NextTargetId = "cine_a" });
+            Assert.DoesNotThrow(() => data.FindCinematicChainHead("cine_a"));
+            Assert.DoesNotThrow(() => data.FindCinematicChainHead("cine_b"));
+        }
+
+        [Test]
+        public void SoundCard_DefaultsAndSummary()
+        {
+            var snd = new SceneSoundData();
+            Assert.AreEqual("snd_1", snd.SoundId);
+            Assert.AreEqual(0f, snd.DelaySeconds, 0.001f);
+            Assert.AreEqual(SoundTriggerPoint.AtLinkedStart, snd.TriggerPoint);
+            Assert.AreEqual(0.8f, snd.VolumeScale, 0.001f);
+            Assert.AreEqual("", snd.SourceCardId);
+            StringAssert.Contains("non liée", snd.GetSummary());
+
+            snd.SoundCueId = "UI_Click";
+            snd.TriggerPoint = SoundTriggerPoint.AtLinkedEnd;
+            snd.DelaySeconds = 1.5f;
+            snd.SourceCardId = "line_1";
+            StringAssert.Contains("fin", snd.GetSummary());
+            StringAssert.Contains("line_1", snd.GetSummary());
+        }
+
+        [Test]
+        public void SoundCard_JsonRoundtripsAndFindsBySource()
+        {
+            var data = new StorySceneData { SceneId = "snd_json" };
+            data.Sounds.Add(new SceneSoundData
+            {
+                SoundId = "snd_1",
+                Title = "Stinger",
+                SoundCueId = "Victory_Stinger",
+                DelaySeconds = 0.5f,
+                TriggerPoint = SoundTriggerPoint.AtLinkedEnd,
+                VolumeScale = 1.2f,
+                SourceCardId = "line_1"
+            });
+            data.Sounds.Add(new SceneSoundData { SoundId = "snd_2", SourceCardId = "line_1" });
+            data.Sounds.Add(new SceneSoundData { SoundId = "snd_3", SourceCardId = "evt_9" });
+
+            var loaded = JsonUtility.FromJson<StorySceneData>(JsonUtility.ToJson(data, true));
+            StorySceneData.EnsureDeepDefaults(loaded);
+
+            var back = loaded.FindSound("SND_1");
+            Assert.IsNotNull(back);
+            Assert.AreEqual("Victory_Stinger", back.SoundCueId);
+            Assert.AreEqual(0.5f, back.DelaySeconds, 0.001f);
+            Assert.AreEqual(SoundTriggerPoint.AtLinkedEnd, back.TriggerPoint);
+            Assert.AreEqual(1.2f, back.VolumeScale, 0.001f);
+
+            var fromLine = loaded.FindSoundsFrom("line_1");
+            Assert.AreEqual(2, fromLine.Count);
+            Assert.AreEqual(0, loaded.FindSoundsFrom("evt_missing").Count);
+            Assert.AreEqual(0, loaded.FindSoundsFrom("").Count);
+        }
+
+        [Test]
+        public void SoundCard_LegacyJsonWithoutSoundsDefaultsEmpty()
+        {
+            // Vieux JSON sans "Sounds" : liste vide, pas de crash, clamps appliqués.
+            string legacy = "{\"SceneId\":\"legacy_snd\",\"Sounds\":[{\"SoundId\":\"\",\"DelaySeconds\":-3.0,\"VolumeScale\":9.0}]}";
+            var loaded = JsonUtility.FromJson<StorySceneData>(legacy);
+            StorySceneData.EnsureDeepDefaults(loaded);
+            Assert.IsNotNull(loaded.Sounds);
+            Assert.AreEqual("snd_1", loaded.Sounds[0].SoundId);
+            Assert.AreEqual(0f, loaded.Sounds[0].DelaySeconds, 0.001f);
+            Assert.AreEqual(2f, loaded.Sounds[0].VolumeScale, 0.001f);
+
+            string legacy2 = "{\"SceneId\":\"legacy_snd2\"}";
+            var loaded2 = JsonUtility.FromJson<StorySceneData>(legacy2);
+            StorySceneData.EnsureDeepDefaults(loaded2);
+            Assert.IsNotNull(loaded2.Sounds);
+            Assert.AreEqual(0, loaded2.Sounds.Count);
         }
 
         [Test]

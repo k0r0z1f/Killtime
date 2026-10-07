@@ -9,6 +9,10 @@ namespace Killtime.Story.Scenes
     /// - Shader sans texture, sans scintillement (physique : pas d'atmosphère).
     /// - _StarExposure simule l'adaptation œil/caméra : 1 = nuit profonde,
     ///   ~0.25 = planète/soleil brillant dans le champ (seules les brillantes restent).
+    /// - _WarpAmount (effet supraluminique) : 1 = singularité (écran noir
+    ///   + 1px central, temps dilaté), 0 = voûte normale. Piloté par les plans
+    ///   cinématiques cochés « warp » (palier noir puis point qui grossit →
+    ///   stries de ralentissement → voûte reformée).
     /// Usage JSON : placeholder Id "Starfield" (Scale.x=densité, Scale.y=exposition, Scale.z=taille).
     /// </summary>
     [DisallowMultipleComponent]
@@ -27,6 +31,10 @@ namespace Killtime.Story.Scenes
         [Range(0f, 1f)] public float milkyWay = 0.35f;
         public Color backgroundColor = new Color(0.005f, 0.008f, 0.02f, 1f);
 
+        [Header("Effet supraluminique (warp)")]
+        [Tooltip("0 = voûte normale, 1 = singularité (noir + 1px, temps dilaté). Piloté par les cinématiques (case « warp ») : palier noir puis point qui grossit → stries → voûte normale.")]
+        [Range(0f, 1f)] public float warpAmount = 0f;
+
         [Header("Suivi caméra")]
         [Tooltip("Si coché, le fond caméra est forcé au noir spatial.")]
         public bool forceBlackBackground = true;
@@ -38,6 +46,8 @@ namespace Killtime.Story.Scenes
         private static readonly int P_Size = Shader.PropertyToID("_StarSize");
         private static readonly int P_Milky = Shader.PropertyToID("_MilkyWayIntensity");
         private static readonly int P_Bg = Shader.PropertyToID("_BackgroundColor");
+        private static readonly int P_Warp = Shader.PropertyToID("_WarpAmount");
+        private static readonly int P_WarpCenter = Shader.PropertyToID("_WarpCenter");
 
         public static SpaceEnvironment Ensure(Transform parent, float density = 1f, float exposure = 1f, float size = 1f)
         {
@@ -47,6 +57,7 @@ namespace Killtime.Story.Scenes
                 existing.starDensity = density;
                 existing.starExposure = exposure;
                 existing.starSize = size;
+                existing.warpAmount = 0f;
                 existing.ApplyProperties();
                 return existing;
             }
@@ -57,6 +68,7 @@ namespace Killtime.Story.Scenes
             env.starDensity = density;
             env.starExposure = exposure;
             env.starSize = size;
+            env.warpAmount = 0f;
             env.BuildSphere();
             env.ApplyProperties();
             return env;
@@ -81,6 +93,34 @@ namespace Killtime.Story.Scenes
                 all[i].starExposure = Mathf.Clamp01(exposure);
                 all[i].ApplyProperties();
             }
+        }
+
+        /// <summary>
+        /// Effet supraluminique global (0 = voûte normale, 1 = point central).
+        /// Appelé chaque frame par CinematicDirector pendant les plans cochés
+        /// « warp », remis à 0 en fin/abort/stop (la voûte se reforme normale).
+        /// </summary>
+        public static void SetWarpForAll(float warp)
+        {
+            float w = Mathf.Clamp01(warp);
+            var all = FindObjectsByType<SpaceEnvironment>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i] == null) continue;
+                if (Mathf.Approximately(all[i].warpAmount, w)) continue;
+                all[i].warpAmount = w;
+                all[i].ApplyProperties();
+            }
+        }
+
+        public static float GetWarpForAll()
+        {
+            var all = FindObjectsByType<SpaceEnvironment>();
+            for (int i = 0; i < all.Length; i++)
+            {
+                if (all[i] != null) return Mathf.Clamp01(all[i].warpAmount);
+            }
+            return 0f;
         }
 
         private void Awake()
@@ -153,6 +193,20 @@ namespace Killtime.Story.Scenes
             radius = Mathf.Max(radius, 50f);
             transform.localScale = Vector3.one * radius;
 
+            // Centre du warp = forward caméra (point central de l'écran).
+            // Mis à jour chaque frame : le point reste centré même si la
+            // caméra voyage pendant le plan (ex : scène 01, 1000km → base).
+            if (_mat != null && warpAmount > 0.001f && _mat.HasProperty(P_WarpCenter))
+            {
+                try
+                {
+                    Vector3 fwd = cam.transform.forward;
+                    if (fwd.sqrMagnitude < 1e-8f) fwd = Vector3.forward;
+                    _mat.SetVector(P_WarpCenter, new Vector4(fwd.x, fwd.y, fwd.z, 0f));
+                }
+                catch { /* ignore */ }
+            }
+
             if (forceBlackBackground)
             {
                 // URP : SolidColor + noir spatial (la sphère fait le reste).
@@ -170,6 +224,21 @@ namespace Killtime.Story.Scenes
             if (_mat.HasProperty(P_Size)) _mat.SetFloat(P_Size, starSize);
             if (_mat.HasProperty(P_Milky)) _mat.SetFloat(P_Milky, milkyWay);
             if (_mat.HasProperty(P_Bg)) _mat.SetColor(P_Bg, backgroundColor);
+            if (_mat.HasProperty(P_Warp)) _mat.SetFloat(P_Warp, Mathf.Clamp01(warpAmount));
+            // Centre initial : forward actuel si dispo, sinon +Z (le LateUpdate
+            // le recale chaque frame dès que warp > 0).
+            if (_mat.HasProperty(P_WarpCenter))
+            {
+                try
+                {
+                    Camera cam = Camera.main;
+                    if (cam == null) cam = FindAnyObjectByType<Camera>();
+                    Vector3 fwd = (cam != null && cam.transform.forward.sqrMagnitude > 1e-8f)
+                        ? cam.transform.forward.normalized : Vector3.forward;
+                    _mat.SetVector(P_WarpCenter, new Vector4(fwd.x, fwd.y, fwd.z, 0f));
+                }
+                catch { /* ignore */ }
+            }
         }
 
         private static Mesh BuildUnitSphere(int lonSegs, int latSegs)

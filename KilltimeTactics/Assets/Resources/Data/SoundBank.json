@@ -1,0 +1,31 @@
+{
+    "entries": [
+        {
+            "bloom": true,
+            "brass": true,
+            "brassGain": 0.22,
+            "category": "Cinématique",
+            "details": "Noir + 1px, le pixel grossit, halo, stries, planète. 5 s de warp + 15 s d'approche en un seul flux (aucune jointure avec cine_1).",
+            "duration": 20.0,
+            "id": "Cinematic_OpeningSwell",
+            "kind": "swell",
+            "label": "HBO — Montée warp vers planète",
+            "releaseEnd": false,
+            "seed": 51501,
+            "shepardGain": 0.2,
+            "shepardOctaves": 2.0,
+            "startHot": false,
+            "volume": 0.9
+        },
+        {
+            "category": "Cinématique",
+            "details": "Stinger de victoire procédural existant, rejouable depuis une carte son.",
+            "id": "Victory_Stinger",
+            "kind": "ref",
+            "label": "Stinger — Victoire",
+            "refSoundId": "Victory_Stinger"
+        }
+    ],
+    "source": "Banque sons/fx — presets procéduraux (recettes). Ajoutez vos entrées ici (UTF-8) : kind 'swell' (recette complète) ou kind 'ref' (alias vers un SoundId procédural existant). Un override persistentDataPath/SoundBank.json prend le pas.",
+    "version": 1
+}

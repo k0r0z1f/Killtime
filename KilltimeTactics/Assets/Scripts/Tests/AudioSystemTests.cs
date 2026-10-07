@@ -39,6 +39,131 @@ namespace Killtime.Tests
         }
 
         [Test]
+        public void PlanetSwells_CrescendoAndResolve()
+        {
+            // Montée statique (cine_11 warp 5s, cine_1 approche 10s), paire soudée :
+            // le warp part du silence et SOUTIENT jusqu'au bout (crescendo), puis
+            // l'approche démarre à chaud au même niveau (pas de redémarrage) et ne
+            // se relâche qu'à la fin (fin de cine_1 → dialogue). Déterministe.
+            var warp = ProceduralAudioFactory.GetClip(SoundId.Cinematic_WarpSwell);
+            Assert.IsNotNull(warp, "Pas de clip pour Cinematic_WarpSwell");
+            float[] w = new float[warp.samples];
+            Assert.IsTrue(warp.GetData(w, 0));
+            int half = w.Length / 2;
+            double wFirst = 0, wSecond = 0;
+            for (int i = 0; i < half; i++) wFirst += w[i] * w[i];
+            for (int i = half; i < w.Length; i++) wSecond += w[i] * w[i];
+            Assert.Greater(wSecond, wFirst * 1.5, "WarpSwell n'amplifie pas (crescendo attendu)");
+
+            var appr = ProceduralAudioFactory.GetClip(SoundId.Cinematic_ApproachSwell);
+            Assert.IsNotNull(appr, "Pas de clip pour Cinematic_ApproachSwell");
+            float[] a = new float[appr.samples];
+            Assert.IsTrue(appr.GetData(a, 0));
+            double aHead = 0, aMid = 0, aTail = 0;
+            int n10 = a.Length / 10, n3 = a.Length * 3 / 100;
+            for (int i = 0; i < n10; i++) aHead += a[i] * a[i];
+            for (int i = a.Length * 4 / 10; i < a.Length * 6 / 10; i++) aMid += a[i] * a[i];
+            for (int i = a.Length - n3; i < a.Length; i++) aTail += a[i] * a[i];
+            aHead /= n10; aMid /= (a.Length / 5); aTail /= n3;
+            Assert.Greater(aHead, aMid * 0.3, "ApproachSwell redémarre du silence (départ à chaud attendu)");
+            Assert.Less(aTail, aMid * 0.3, "ApproachSwell ne se relâche pas en fin");
+
+            // Déterminisme : régénération identique (cache vidé).
+            ProceduralAudioFactory.ClearCache();
+            var warp2 = ProceduralAudioFactory.GetClip(SoundId.Cinematic_WarpSwell);
+            float[] w2 = new float[warp2.samples];
+            Assert.IsTrue(warp2.GetData(w2, 0));
+            Assert.AreEqual(w.Length, w2.Length);
+            for (int i = 0; i < w.Length; i += 997)
+                Assert.AreEqual(w[i], w2[i], 1e-6f, $"WarpSwell non déterministe @ {i}");
+
+            // Durées : warp 5s, approche 10s (22050 Hz).
+            Assert.AreEqual(5 * ProceduralAudioFactory.SampleRate, warp.samples);
+            Assert.AreEqual(10 * ProceduralAudioFactory.SampleRate, appr.samples);
+        }
+
+        [Test]
+        public void SoundBank_ParseSample_PreservesRecipe()
+        {
+            // Recette HBO minimale (même forme que Resources/Data/SoundBank.json).
+            const string sample = @"{""version"":1,""entries"":[{""id"":""Cinematic_OpeningSwell"",""label"":""HBO"",""category"":""Cinématique"",""kind"":""swell"",""duration"":15.0,""volume"":0.9,""seed"":51501,""startHot"":false,""bloom"":true,""releaseEnd"":true,""shepardOctaves"":2.0,""shepardGain"":0.2,""brass"":true,""brassGain"":0.22,""details"":""x""}]}";
+            Assert.IsTrue(SoundBankCatalog.TryParseBankJson(sample, out var entries, out string err), err);
+            Assert.AreEqual(1, entries.Count);
+            var hbo = entries[0];
+            Assert.AreEqual("Cinematic_OpeningSwell", hbo.id);
+            Assert.AreEqual(15f, hbo.duration, 0.001f);
+            Assert.IsFalse(hbo.startHot);
+            Assert.IsTrue(hbo.bloom && hbo.releaseEnd && hbo.brass);
+            Assert.IsFalse(SoundBankCatalog.TryParseBankJson("", out _, out _));
+            Assert.IsFalse(SoundBankCatalog.TryParseBankJson("{pas du json", out _, out _));
+        }
+
+        [Test]
+        public void SoundBank_OpeningSwellClipIsContinuous()
+        {
+            // Le HBO (ex-hardcodé, désormais recette) : 15 s non-nulles,
+            // crescendo global (pas de trou médian), déterministe.
+            const string sample = @"{""version"":1,""entries"":[{""id"":""Cinematic_OpeningSwell"",""kind"":""swell"",""duration"":15.0,""volume"":0.9,""seed"":51501,""startHot"":false,""bloom"":true,""releaseEnd"":true,""shepardOctaves"":2.0,""shepardGain"":0.2,""brass"":true,""brassGain"":0.22}]}";
+            Assert.IsTrue(SoundBankCatalog.TryParseBankJson(sample, out var entries, out string err), err);
+            var clip = ProceduralAudioFactory.GetBankClip(entries[0]);
+            Assert.IsNotNull(clip);
+            Assert.AreEqual(15 * ProceduralAudioFactory.SampleRate, clip.samples);
+            float[] s = new float[clip.samples];
+            Assert.IsTrue(clip.GetData(s, 0));
+            double first = 0, second = 0;
+            for (int i = 0; i < s.Length / 2; i++) first += s[i] * s[i];
+            for (int i = s.Length / 2; i < s.Length; i++) second += s[i] * s[i];
+            Assert.Greater(second, first * 1.5, "OpeningSwell banque n'amplifie pas");
+            // Déterminisme : régénération identique (cache vidé).
+            ProceduralAudioFactory.ClearCache();
+            var clip2 = ProceduralAudioFactory.GetBankClip(entries[0]);
+            float[] s2 = new float[clip2.samples];
+            Assert.IsTrue(clip2.GetData(s2, 0));
+            for (int i = 0; i < s.Length; i += 4999)
+                Assert.AreEqual(s[i], s2[i], 1e-6f, $"non déterministe @ {i}");
+        }
+
+        [Test]
+        public void SoundBank_RefKindAliasesProcedural()
+        {
+            const string sample = @"{""version"":1,""entries"":[{""id"":""sting"",""kind"":""ref"",""refSoundId"":""Victory_Stinger""}]}";
+            Assert.IsTrue(SoundBankCatalog.TryParseBankJson(sample, out var entries, out string err), err);
+            var clip = ProceduralAudioFactory.GetBankClip(entries[0]);
+            Assert.IsNotNull(clip);
+            Assert.Greater(clip.samples, 0);
+            Assert.IsNull(ProceduralAudioFactory.GetBankClip(null));
+        }
+
+        [Test]
+        public void SceneSoundData_DefaultsAndLookupWork()
+        {
+            var data = new Killtime.Story.Data.StorySceneData();
+            data.Sounds.Add(new Killtime.Story.Data.SceneSoundData
+            {
+                SoundId = "snd_intro",
+                SourceCardId = "line_01",
+                SoundCueId = "Cinematic_OpeningSwell",
+                TriggerPoint = Killtime.Story.Data.SoundTriggerPoint.AtLinkedStart
+            });
+            data.Sounds.Add(new Killtime.Story.Data.SceneSoundData
+            {
+                SoundId = "snd_outro",
+                SourceCardId = "line_01",
+                SoundCueId = "Victory_Stinger",
+                TriggerPoint = Killtime.Story.Data.SoundTriggerPoint.AtLinkedEnd
+            });
+
+            Killtime.Story.Data.StorySceneData.EnsureDeepDefaults(data);
+            Assert.AreEqual(2, data.Sounds.Count);
+            Assert.AreEqual("snd_intro", data.FindSound("snd_intro").SoundId);
+
+            var lineSounds = data.FindSoundsFrom("line_01");
+            Assert.AreEqual(2, lineSounds.Count);
+            Assert.AreEqual(Killtime.Story.Data.SoundTriggerPoint.AtLinkedStart, lineSounds[0].TriggerPoint);
+            Assert.AreEqual(Killtime.Story.Data.SoundTriggerPoint.AtLinkedEnd, lineSounds[1].TriggerPoint);
+        }
+
+        [Test]
         public void MusicIntensityVariants_ExistAndAreLoopable()
         {
             foreach (MusicMood mood in System.Enum.GetValues(typeof(MusicMood)))

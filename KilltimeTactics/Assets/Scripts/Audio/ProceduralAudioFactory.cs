@@ -32,6 +32,42 @@ namespace Killtime.Audio
             return clip;
         }
 
+        private static readonly Dictionary<string, AudioClip> _bankCache = new(StringComparer.OrdinalIgnoreCase);
+
+        /// <summary>
+        /// Clip d'une entrée de banque (recette JSON) : kind "swell" = synthèse
+        /// via le moteur générique (avec durée optionnellement surchargée), kind "ref" = alias vers un SoundId existant.
+        /// </summary>
+        public static AudioClip GetBankClip(SoundBankEntry entry, float durationOverride = 0f)
+        {
+            if (entry == null || string.IsNullOrWhiteSpace(entry.id)) return null;
+            float dur = durationOverride > 0.1f ? durationOverride : entry.duration;
+            string key = entry.id.Trim() + (durationOverride > 0.1f ? "_" + dur.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture) + "s" : "");
+            if (_bankCache.TryGetValue(key, out var cached) && IsClipUsable(cached)) return cached;
+            AudioClip clip = null;
+            try
+            {
+                if (string.Equals(entry.kind, "ref", StringComparison.OrdinalIgnoreCase)
+                    && !string.IsNullOrWhiteSpace(entry.refSoundId)
+                    && Enum.TryParse<SoundId>(entry.refSoundId.Trim(), out var refId))
+                {
+                    clip = GetClip(refId);
+                }
+                else
+                {
+                    clip = PlanetSwell("Bank_" + key, dur, entry.volume, entry.seed,
+                        entry.startHot, entry.bloom, entry.releaseEnd,
+                        entry.shepardOctaves, entry.shepardGain, entry.brass, entry.brassGain);
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[ProceduralAudioFactory] Recette banque '{key}' illisible : {ex.Message}");
+            }
+            if (clip != null) _bankCache[key] = clip;
+            return clip;
+        }
+
         public static int GetTrackCount(MusicMood mood)
         {
             return mood switch
@@ -102,6 +138,7 @@ namespace Killtime.Audio
         public static void ClearCache()
         {
             _sfxCache.Clear();
+            _bankCache.Clear();
             _musicCache.Clear();
             _stingerCache.Clear();
             _generativeCache.Clear();
@@ -218,6 +255,8 @@ namespace Killtime.Audio
                 case SoundId.SlowMo_Enter: return Sweep("SlowIn", 800f, 120f, 0.5f, 0.65f);
                 case SoundId.SlowMo_Exit: return Sweep("SlowOut", 120f, 900f, 0.35f, 0.6f);
                 case SoundId.Impact_DeepBoom: return BoomSound();
+                case SoundId.Cinematic_WarpSwell: return PlanetSwell("WarpSwell", 5f, 0.8f, 90211, startHot: false, bloom: false, releaseEnd: false, shepardOctaves: -1f, shepardGain: 0.20f, brass: true, brassGain: 0.22f);
+                case SoundId.Cinematic_ApproachSwell: return PlanetSwell("ApproachSwell", 10f, 0.85f, 90211, startHot: true, bloom: true, releaseEnd: true, shepardOctaves: -1f, shepardGain: 0.20f, brass: true, brassGain: 0.22f);
 
                 case SoundId.Spawn_Deploy: return Sweep("Spawn", 200f, 700f, 0.3f, 0.55f, true);
                 case SoundId.Arena_Reset: return Sweep("Reset", 700f, 200f, 0.35f, 0.5f, true);
@@ -1246,6 +1285,103 @@ namespace Killtime.Audio
                 float t = (float)i / n;
                 s[i] = (float)(rng.NextDouble() * 2.0 - 1.0) * Mathf.Exp(-4f * t) * vol;
             }
+            return MakeClip(name, s);
+        }
+
+        /// <summary>
+        /// Montée statique façon logo (HBO) : souffle d'air qui s'amplifie pendant
+        /// que la caméra s'approche, scintillement montant, puis bloom d'accord
+        /// résolu et relâche douce. 100% déterministe (seed fixe).
+        /// Paire soudée sans redémarrage : le warp part du silence et SOUTIENT
+        /// jusqu'au bout (pas de relâche), l'approche démarre à chaud au même
+        /// niveau et ne se relâche qu'à la fin (fin de cine_1 → dialogue).
+        /// Moteur générique : les presets de la banque JSON (SoundBankCatalog)
+        /// passent par ici via GetBankClip — aucun son nommé n'est hardcodé.
+        /// </summary>
+        private static AudioClip PlanetSwell(string name, float dur, float vol, int seed, bool startHot, bool bloom, bool releaseEnd,
+            float shepardOctaves, float shepardGain, bool brass, float brassGain)
+        {
+            int n = (int)(SampleRate * dur);
+            float[] s = new float[n];
+            var rng = new System.Random(seed);
+            float lpAir = 0f;
+            float lpBrass = 0f;
+            float phaseLow = 0f;
+            float phaseShim = 0f;
+            float phaseBrassRoot = 0f;
+            float phaseBrassFifth = 0f;
+            // Illusion de Shepard : 5 partiels en octaves qui glissent sans fin
+            // (la fréquence semble monter toujours). Fenêtre gaussienne autour de 620 Hz.
+            float octaves = shepardOctaves > 0f ? shepardOctaves : dur / 7.5f;
+            float[] shepPhase = new float[5];
+            // Micro-fondus anti-clic (15 ms), inaudibles comme "redémarrage".
+            int edge = Mathf.Max(1, (int)(SampleRate * 0.015f));
+            for (int i = 0; i < n; i++)
+            {
+                float t = (float)i / n;
+                // Enveloppe : crescendo depuis silence OU arche chaude qui ne
+                // retombe qu'en fin de plan (jamais de trou à la jointure).
+                float rise = t * t * (3f - 2f * t);
+                float env;
+                if (!startHot)
+                {
+                    env = Mathf.Pow(rise, 1.5f);
+                }
+                else
+                {
+                    float arch = 1f + 0.12f * Mathf.Sin(Mathf.PI * t);
+                    env = releaseEnd ? arch * (1f - Mathf.SmoothStep(0.88f, 1f, t) * 0.95f) : arch;
+                }
+                float edgeFade = startHot
+                    ? Mathf.Clamp01((float)(n - 1 - i) / edge)
+                    : Mathf.Clamp01(Mathf.Min((float)i / edge, (float)(n - 1 - i) / edge));
+                env *= edgeFade;
+                // 1) Air/statique : passe-bas qui s'ouvre avec l'approche.
+                float noise = (float)(rng.NextDouble() * 2.0 - 1.0);
+                float cutoff = Mathf.Lerp(0.03f, 0.35f, startHot ? Mathf.Max(rise, 0.55f) : rise);
+                lpAir += cutoff * (noise - lpAir);
+                // 2) Rumble grave qui monte légèrement (55 → 82 Hz).
+                float fLow = Mathf.Lerp(55f, 82f, startHot ? 1f : rise);
+                phaseLow += 2f * Mathf.PI * fLow / SampleRate;
+                float rumble = Mathf.Sin(phaseLow) * 0.55f + Mathf.Sin(phaseLow * 0.5f) * 0.3f;
+                // 3) Scintillement : émerge avec le swell, déjà présent à chaud.
+                float fShim = Mathf.Lerp(880f, 1320f, startHot ? 1f : rise);
+                phaseShim += 2f * Mathf.PI * fShim / SampleRate;
+                float shimGain = startHot ? Mathf.Lerp(0.8f, 1f, rise) : rise * rise;
+                float shimmer = (Mathf.Sin(phaseShim) + 0.4f * Mathf.Sin(phaseShim * 2.02f)) * shimGain;
+                // 4) Bloom résolu (quinte + octave), seulement côté approche.
+                float bloomGate = bloom ? Mathf.SmoothStep(0.62f, 0.88f, t) : 0f;
+                float bloomV = (Mathf.Sin(phaseLow * 4f) * 0.5f + Mathf.Sin(phaseLow * 6f) * 0.3f) * bloomGate;
+                // 5) Shepard : raccordement exact de la fréquence atteinte en fin de warp
+                float shep = 0f;
+                float shepOctaveOffset = startHot ? (5.0f / 7.5f) : 0f;
+                for (int k = 0; k < 5; k++)
+                {
+                    float f = 110f * Mathf.Pow(2f, (k - 2) + shepOctaveOffset + t * octaves);
+                    shepPhase[k] += 2f * Mathf.PI * f / SampleRate;
+                    float logDist = Mathf.Log(f / 620f) / Mathf.Log(2f);
+                    float w = Mathf.Exp(-logDist * logDist / 2.42f);
+                    shep += Mathf.Sin(shepPhase[k]) * w;
+                }
+                shep *= shepardGain * Mathf.Clamp01(startHot ? 1.0f : (0.25f + rise));
+                // 6) Cuivres : sous départ à chaud, maintenir les cuivres au niveau plein atteint
+                float brassGate = startHot ? 1.0f : Mathf.SmoothStep(0.35f, 0.8f, t);
+                float vib = 1f + 0.006f * Mathf.Sin(2f * Mathf.PI * 5.2f * i / SampleRate);
+                phaseBrassRoot += 2f * Mathf.PI * fLow * 2f * vib / SampleRate;
+                phaseBrassFifth += 2f * Mathf.PI * fLow * 3f * vib / SampleRate;
+                float saw = 0f;
+                if (brass)
+                {
+                    for (int h = 1; h <= 8; h++)
+                        saw += (Mathf.Sin(phaseBrassRoot * h) + 0.6f * Mathf.Sin(phaseBrassFifth * h)) / h;
+                    saw *= brassGain;
+                }
+                float brassCut = Mathf.Lerp(0.04f, 0.5f, Mathf.Clamp01(env * 1.2f));
+                lpBrass += brassCut * (saw - lpBrass);
+                float brassSignal = lpBrass * brassGate;
+                s[i] = (lpAir * 1.1f + rumble * 0.5f + shimmer * 0.35f + bloomV * 0.5f + shep + brassSignal) * env * vol;
+            }
+            Normalize(s, 0.8f);
             return MakeClip(name, s);
         }
 

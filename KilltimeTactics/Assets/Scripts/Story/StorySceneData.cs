@@ -575,7 +575,17 @@ namespace Killtime.Story.Data
         public string SpeakerId = "";
         public string Speech = "";
         public string SoundCueId = "";
+        public float SoundDuration = 0f;
+        public bool PersistSound = false;
         public bool Letterbox = true;
+        // Effet supraluminique sur la voûte céleste (skybox) : coché dans
+        // l'éditeur de cinématiques. Quand vrai, le plan démarre en singularité
+        // (écran noir + 1px, temps dilaté, palier 20%) puis le pixel grossit
+        // lui-même avant de devenir halo + stries jusqu'à la voûte normale.
+        // SANS déplacement caméra requis : piloté par le temps du plan uniquement
+        // (fonctionne sur plan fixe, START=END, sur place ou free-look).
+        // Piloté au runtime par CinematicDirector → SpaceEnvironment.
+        public bool SuperluminalWarp = false;
         // Trajectoires des pions : positions de départ et d'arrivée du plan.
         // Éditées dans le mode éditeur cinématique (capture depuis la carte de combat).
         public List<SceneCinematicActorPose> StartPoses = new();
@@ -590,8 +600,10 @@ namespace Killtime.Story.Data
             if (EndPoses != null) moves += EndPoses.Count;
             string sub = string.IsNullOrWhiteSpace(Speech) ? "" : " 💬";
             string fx = MoveEffect == CinematicCameraEffect.None ? "" : $" ✦{MoveEffect}";
+            string warp = SuperluminalWarp ? " ☄warp" : "";
             string delay = StartDelay > 0.01f ? $"[attente {StartDelay:0.0}s] " : "";
-            return $"{delay}{Duration:0.0}s {Ease}{fx} · {moves} poses{sub}";
+            string snd = string.IsNullOrWhiteSpace(SoundCueId) ? "" : $" 🔊{SoundCueId}{(SoundDuration > 0.01f ? $"({SoundDuration:0.#}s)" : "")}{(PersistSound ? " [persistant]" : "")}";
+            return $"{delay}{Duration:0.0}s {Ease}{fx}{warp} · {moves} poses{sub}{snd}";
         }
     }
 
@@ -599,6 +611,83 @@ namespace Killtime.Story.Data
     {
         Teleport = 0,
         Smooth = 1
+    }
+
+    /// <summary>
+    /// Point de déclenchement d'une carte son par rapport à sa carte liée :
+    /// au début (entrée/mise en scène) ou à la fin (sortie/chaînage).
+    /// </summary>
+    public enum SoundTriggerPoint
+    {
+        AtLinkedStart = 0,
+        AtLinkedEnd = 1
+    }
+
+    /// <summary>
+    /// Carte son/fx 🔊 : branchée depuis le bas d'une carte source (fil orange),
+    /// elle démarre un son (SoundCueId → SoundId) avec délai et volume réglables,
+    /// au début OU à la fin de la carte liée. Lecture non-bloquante (fire-and-forget).
+    /// Le lien vit sur la carte son (SourceCardId) : les cartes sources ne changent pas.
+    /// </summary>
+    [Serializable]
+    public class SceneSoundData
+    {
+        public string SoundId = "snd_1";
+        public string Title = "Nouveau son";
+        public string SoundCueId = "";
+        public float DelaySeconds = 0f;
+        public float DurationSeconds = 0f;
+        public SoundTriggerPoint TriggerPoint = SoundTriggerPoint.AtLinkedStart;
+        public float VolumeScale = 0.8f;
+        public string SourceCardId = "";
+        public float GraphPosX = 0f;
+        public float GraphPosY = 0f;
+        public float CardWidth = 300f;
+        public float CardHeight = 195f;
+
+        public string GetSummary()
+        {
+            string when = TriggerPoint == SoundTriggerPoint.AtLinkedEnd ? "fin" : "début";
+            string delay = DelaySeconds > 0.01f ? $" +{DelaySeconds:0.0}s" : "";
+            string dur = DurationSeconds > 0.01f ? $" dur:{DurationSeconds:0.0}s" : "";
+            string cue = string.IsNullOrWhiteSpace(SoundCueId) ? "(aucun son)" : SoundCueId;
+            string src = string.IsNullOrWhiteSpace(SourceCardId) ? "(non liée)" : $"← {SourceCardId}";
+            return $"{cue} [{when}{delay}{dur}] {src}";
+        }
+    }
+
+    /// <summary>
+    /// Carte d'ambiance 🌌 : branchée depuis le bas d'une carte source (entrée en haut),
+    /// et branchée depuis son bas vers une autre carte pour l'arrêt.
+    /// Gère volume, rayon spatial 3D ou boucle 2D, et presets sauvegardés en JSON.
+    /// </summary>
+    [Serializable]
+    public class SceneAmbienceTrackData
+    {
+        public string AmbienceId = "amb_1";
+        public string Title = "Nouvelle ambiance";
+        public string PresetId = "amb_asteroid_base";
+        public float VolumeScale = 0.65f;
+        public float FadeInDuration = 1.5f;
+        public float FadeOutDuration = 1.5f;
+        public bool Spatialized = false;
+        public int Q = 0;
+        public int R = 0;
+        public float Radius = 15f;
+        public string StartSourceCardId = "";
+        public string StopSourceCardId = "";
+        public float GraphPosX = 0f;
+        public float GraphPosY = 0f;
+        public float CardWidth = 320f;
+        public float CardHeight = 240f;
+
+        public string GetSummary()
+        {
+            string spat = Spatialized ? $"Spatial ({Q},{R}) r:{Radius:0.#}m" : "Global 2D";
+            string start = string.IsNullOrWhiteSpace(StartSourceCardId) ? "aucun" : StartSourceCardId;
+            string stop = string.IsNullOrWhiteSpace(StopSourceCardId) ? "fin" : StopSourceCardId;
+            return $"{PresetId} [{spat}] ➔ In:{start} | Out:{stop}";
+        }
     }
 
     public enum ScenePrimitiveKind
@@ -758,6 +847,12 @@ namespace Killtime.Story.Data
         // Cartes cinématiques globales 🎬 : entrée seule, aucune sortie, lecture non-bloquante.
         // Sérialisées dans le JSON de la scène comme tout le reste.
         public List<SceneCinematicData> Cinematics = new();
+        // Cartes son/fx 🔊 : branchées depuis le bas des cartes (sauf frames de nœuds),
+        // elles déclenchent un son au début/fin de leur carte liée. Voir SceneSoundData.
+        public List<SceneSoundData> Sounds = new();
+        // Cartes d'ambiance 🌌 : configurées depuis le catalogue JSON d'ambiances,
+        // déclenchées par l'entrée supérieure et coupées par la sortie inférieure.
+        public List<SceneAmbienceTrackData> Ambiences = new();
 
         public SceneNodeData FindNode(string nodeId)
         {
@@ -768,6 +863,107 @@ namespace Killtime.Story.Data
         {
             if (string.IsNullOrEmpty(cinematicId) || Cinematics == null) return null;
             return Cinematics.Find(c => c != null && string.Equals(c.CinematicId, cinematicId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public SceneSoundData FindSound(string soundId)
+        {
+            if (string.IsNullOrEmpty(soundId) || Sounds == null) return null;
+            return Sounds.Find(s => s != null && string.Equals(s.SoundId, soundId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        public SceneAmbienceTrackData FindAmbience(string ambienceId)
+        {
+            if (string.IsNullOrEmpty(ambienceId) || Ambiences == null) return null;
+            return Ambiences.Find(a => a != null && string.Equals(a.AmbienceId, ambienceId, StringComparison.OrdinalIgnoreCase));
+        }
+
+        /// <summary>
+        /// Ambiances qui démarrent depuis une carte source (fil bas → entrée haute ambiance).
+        /// </summary>
+        public List<SceneAmbienceTrackData> FindAmbiencesStartingFrom(string sourceCardId)
+        {
+            var result = new List<SceneAmbienceTrackData>();
+            if (string.IsNullOrWhiteSpace(sourceCardId) || Ambiences == null) return result;
+            for (int i = 0; i < Ambiences.Count; i++)
+            {
+                var a = Ambiences[i];
+                if (a == null || string.IsNullOrWhiteSpace(a.StartSourceCardId)) continue;
+                if (string.Equals(a.StartSourceCardId.Trim(), sourceCardId.Trim(), StringComparison.OrdinalIgnoreCase))
+                    result.Add(a);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Ambiances qui s'arrêtent lorsqu'une carte cible est atteinte (fil bas ambiance → bas carte).
+        /// </summary>
+        public List<SceneAmbienceTrackData> FindAmbiencesStoppingFrom(string sourceCardId)
+        {
+            var result = new List<SceneAmbienceTrackData>();
+            if (string.IsNullOrWhiteSpace(sourceCardId) || Ambiences == null) return result;
+            for (int i = 0; i < Ambiences.Count; i++)
+            {
+                var a = Ambiences[i];
+                if (a == null || string.IsNullOrWhiteSpace(a.StopSourceCardId)) continue;
+                if (string.Equals(a.StopSourceCardId.Trim(), sourceCardId.Trim(), StringComparison.OrdinalIgnoreCase))
+                    result.Add(a);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Sons liés depuis une carte source (fil bas → carte 🔊) : le lien vit sur
+        /// les cartes sons (SourceCardId), dans l'ordre du graphe.
+        /// </summary>
+        public List<SceneSoundData> FindSoundsFrom(string sourceCardId)
+        {
+            var result = new List<SceneSoundData>();
+            if (string.IsNullOrWhiteSpace(sourceCardId) || Sounds == null) return result;
+            for (int i = 0; i < Sounds.Count; i++)
+            {
+                var s = Sounds[i];
+                if (s == null || string.IsNullOrWhiteSpace(s.SourceCardId)) continue;
+                if (string.Equals(s.SourceCardId.Trim(), sourceCardId.Trim(), StringComparison.OrdinalIgnoreCase))
+                    result.Add(s);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Tête d'une chaîne cinématique (amorçage automatique) : remonte les
+        /// liens "fin →" entre cinématiques jusqu'à la première carte de la chaîne.
+        /// Ex : cine_11 ─fin→ cine_1 ─fin→ line_vance_01 : la tête de cine_1 est
+        /// cine_11, c'est elle qui doit démarrer (le reste suit via Fin→).
+        /// Règles de repli (aucun changement de comportement) : aucun amont → soi-même ;
+        /// plusieurs amonts (embranchement ambigu) → le prédécesseur direct ;
+        /// boucle → arrêt sans tourner en rond. Insensible à la casse, tolère les espaces.
+        /// </summary>
+        public string FindCinematicChainHead(string cinematicId)
+        {
+            if (string.IsNullOrWhiteSpace(cinematicId) || Cinematics == null) return cinematicId;
+            string cur = cinematicId.Trim();
+            var seen = new HashSet<string>(StringComparer.OrdinalIgnoreCase) { cur };
+            while (true)
+            {
+                string upstream = null;
+                int count = 0;
+                for (int i = 0; i < Cinematics.Count; i++)
+                {
+                    var c = Cinematics[i];
+                    if (c == null || string.IsNullOrWhiteSpace(c.CinematicId)) continue;
+                    string cid = c.CinematicId.Trim();
+                    if (string.Equals(cid, cur, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (string.IsNullOrWhiteSpace(c.NextTargetId)) continue;
+                    if (!string.Equals(c.NextTargetId.Trim(), cur, StringComparison.OrdinalIgnoreCase)) continue;
+                    if (seen.Contains(cid)) continue;
+                    count++;
+                    if (count == 1) upstream = c.CinematicId;
+                    else break;
+                }
+                if (count != 1) return cur;
+                seen.Add(upstream.Trim());
+                cur = upstream;
+            }
         }
 
         // --- Helpers sorties cinématiques (listes partagées par tous les types de cartes) ---
@@ -833,6 +1029,8 @@ namespace Killtime.Story.Data
             data.Nodes ??= new List<SceneNodeData>();
             data.Triggers ??= new List<SceneTriggerData>();
             data.Cinematics ??= new List<SceneCinematicData>();
+            data.Sounds ??= new List<SceneSoundData>();
+            data.Ambiences ??= new List<SceneAmbienceTrackData>();
             data.Lighting ??= new SceneLightingData();
             data.EnvironmentPlaceholders ??= new List<ScenePlaceholderData>();
             for (int ci = 0; ci < data.Cinematics.Count; ci++)
@@ -849,6 +1047,7 @@ namespace Killtime.Story.Data
                     if (string.IsNullOrWhiteSpace(shot.ShotId)) shot.ShotId = $"shot_{s + 1}";
                     if (shot.Duration < 0.1f) shot.Duration = 0.1f;
                     if (shot.StartDelay < 0f) shot.StartDelay = 0f;
+                    if (shot.SoundDuration < 0f) shot.SoundDuration = 0f;
                     if (shot.TrackDistance < 0.5f) shot.TrackDistance = 0.5f;
                     else if (shot.TrackDistance > 35f) shot.TrackDistance = 35f;
                     shot.StartPoses ??= new List<SceneCinematicActorPose>();
@@ -856,6 +1055,36 @@ namespace Killtime.Story.Data
                     shot.StartProps ??= new List<SceneCinematicPropPose>();
                     shot.EndProps ??= new List<SceneCinematicPropPose>();
                 }
+            }
+            for (int i = 0; i < data.Sounds.Count; i++)
+            {
+                var snd = data.Sounds[i];
+                if (snd == null) continue;
+                if (string.IsNullOrWhiteSpace(snd.SoundId)) snd.SoundId = $"snd_{i + 1}";
+                if (snd.DelaySeconds < 0f) snd.DelaySeconds = 0f;
+                if (snd.DurationSeconds < 0f) snd.DurationSeconds = 0f;
+                if (snd.VolumeScale < 0f) snd.VolumeScale = 0f;
+                else if (snd.VolumeScale > 2f) snd.VolumeScale = 2f;
+                // Hors-limites (JSON édité à la main) : GUI.Toolbar planterait
+                // tout le graphe — repli silencieux sur le début.
+                if (!System.Enum.IsDefined(typeof(SoundTriggerPoint), snd.TriggerPoint))
+                    snd.TriggerPoint = SoundTriggerPoint.AtLinkedStart;
+                if (snd.CardWidth < 100f) snd.CardWidth = 300f;
+                if (snd.CardHeight < 80f) snd.CardHeight = 195f;
+            }
+            for (int i = 0; i < data.Ambiences.Count; i++)
+            {
+                var amb = data.Ambiences[i];
+                if (amb == null) continue;
+                if (string.IsNullOrWhiteSpace(amb.AmbienceId)) amb.AmbienceId = $"amb_{i + 1}";
+                if (string.IsNullOrWhiteSpace(amb.PresetId)) amb.PresetId = "amb_asteroid_base";
+                if (amb.VolumeScale < 0f) amb.VolumeScale = 0f;
+                else if (amb.VolumeScale > 2f) amb.VolumeScale = 2f;
+                if (amb.FadeInDuration < 0f) amb.FadeInDuration = 0f;
+                if (amb.FadeOutDuration < 0f) amb.FadeOutDuration = 0f;
+                if (amb.Radius < 1f) amb.Radius = 15f;
+                if (amb.CardWidth < 100f) amb.CardWidth = 320f;
+                if (amb.CardHeight < 80f) amb.CardHeight = 240f;
             }
             for (int t = 0; t < data.Triggers.Count; t++)
             {

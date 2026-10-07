@@ -9,6 +9,7 @@ using Killtime.Core.Inventory;
 using Killtime.Tactics;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.TurnSystem;
+using Killtime.Audio;
 
 namespace Killtime.Story
 {
@@ -63,6 +64,13 @@ namespace Killtime.Story
             // Sortie "fin →" d'une carte 🎬 vers n'importe quelle carte (chaînage explicite).
             public bool IsCinematicOut;
             public SceneCinematicData SourceCinematic;
+            // Branchement son 🔊 : depuis le BAS d'une carte (sauf frames de nœuds)
+            // vers une carte son. Le lien vit sur la carte son (SourceCardId).
+            public bool IsSoundLink;
+            public string SourceSoundLinkCardId;
+            // Branchement arrêt ambiance 🌌 : depuis le BAS d'une carte ambiance vers le bas d'une carte cible.
+            public bool IsAmbienceStopLink;
+            public SceneAmbienceTrackData SourceAmbienceTrack;
             // Sortie "Parler à" d'une carte 👥 Acteur vers une réplique (LineId)
             // ou un nœud (NodeId) — TalkEntries[SourceTalkIndex].TargetId.
             public bool IsActorTalk;
@@ -87,6 +95,14 @@ namespace Killtime.Story
         private readonly Dictionary<string, Vector2> _cachedActorTalkOutSockets = new(StringComparer.OrdinalIgnoreCase);
         // Entrées des cartes cinématiques 🎬 (input seul, jamais de sortie).
         private readonly Dictionary<string, Vector2> _cachedCinematicInputSockets = new(StringComparer.OrdinalIgnoreCase);
+        // Cartes son 🔊 : entrées (haut, reçoivent le fil du bas des cartes).
+        // Les sorties (bas des cartes sources) sont résolues à la volée par
+        // TryGetSoundSourceBottom (positions monde, pas de cache à invalider).
+        private readonly Dictionary<string, Vector2> _cachedSoundInputSockets = new(StringComparer.OrdinalIgnoreCase);
+        // Cartes ambiance 🌌 : entrées supérieures et sorties d'arrêt inférieures.
+        private readonly Dictionary<string, Vector2> _cachedAmbienceInputSockets = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, Vector2> _cachedAmbienceStopSockets = new(StringComparer.OrdinalIgnoreCase);
+        private readonly Dictionary<string, (string text, float lastVal)> _floatInputBuffers = new();
         private bool _hasInitializedLayout = false;
 
         // --- Quick-create : drop d'un lien dans le vide → menu contextuel (style Blueprint) ---
@@ -130,6 +146,12 @@ namespace Killtime.Story
         private static readonly Color TalkPortCol = new Color(0f, 0.85f, 1f);
         // Position verticale (relative frame) du port 🎬 du nœud (sous NextNodeId, au-dessus des choix).
         private const float NodeCinePortTop = 50f;
+        // Couleur unique des ports/fils son 🔊 + hauteur standard de la rangée 🔊.
+        // Le port de sortie est au BAS des cartes (jamais sur les frames de nœuds).
+        private static readonly Color SoundPortCol = new Color(1f, 0.6f, 0.1f);
+        private const float SoundRowH = 20f;
+        // Couleur unique des ports/fils ambiance 🌌.
+        private static readonly Color AmbiencePortCol = new Color(0.18f, 0.88f, 0.72f);
 
         // --- API publique pour le mode éditeur cinématique (CinematicEditorDevWindow) ---
         public StorySceneData ActiveSceneData => _data;
@@ -179,6 +201,37 @@ namespace Killtime.Story
             if (_data.Actors != null)
                 for (int a = 0; a < _data.Actors.Count; a++)
                     if (_data.Actors[a] != null) Purge(_data.Actors[a].CinematicIds);
+        }
+
+        /// <summary>
+        /// Supprime les branchements son 🔊 pointant vers une carte supprimée
+        /// (SourceCardId) : évite les déclenchements fantômes en cas de réutilisation d'id.
+        /// </summary>
+        public void PurgeSoundReferences(string cardId)
+        {
+            if (string.IsNullOrWhiteSpace(cardId) || _data == null || _data.Sounds == null) return;
+            for (int i = 0; i < _data.Sounds.Count; i++)
+            {
+                var snd = _data.Sounds[i];
+                if (snd == null || string.IsNullOrWhiteSpace(snd.SourceCardId)) continue;
+                if (string.Equals(snd.SourceCardId.Trim(), cardId.Trim(), System.StringComparison.OrdinalIgnoreCase))
+                    snd.SourceCardId = "";
+            }
+        }
+
+        public void PurgeAmbienceReferences(string cardId)
+        {
+            if (string.IsNullOrWhiteSpace(cardId) || _data == null || _data.Ambiences == null) return;
+            string target = cardId.Trim();
+            for (int i = 0; i < _data.Ambiences.Count; i++)
+            {
+                var a = _data.Ambiences[i];
+                if (a == null) continue;
+                if (string.Equals(a.StartSourceCardId?.Trim(), target, StringComparison.OrdinalIgnoreCase))
+                    a.StartSourceCardId = "";
+                if (string.Equals(a.StopSourceCardId?.Trim(), target, StringComparison.OrdinalIgnoreCase))
+                    a.StopSourceCardId = "";
+            }
         }
 
         // Vue : suivi du dernier cadrage pour recadrer quand la fenêtre est redimensionnée.
@@ -822,8 +875,9 @@ namespace Killtime.Story
             int interCount = _data.Interactables != null ? _data.Interactables.Count : 0;
             int actorCount = _data.Actors != null ? _data.Actors.Count : 0;
             int cineCount = _data.Cinematics != null ? _data.Cinematics.Count : 0;
+            int ambCount = _data.Ambiences != null ? _data.Ambiences.Count : 0;
             var headerTitleStyle = new GUIStyle(GUI.skin.label) { wordWrap = false, richText = true, alignment = TextAnchor.MiddleLeft };
-            GUILayout.Label($"<b>■ SCÈNE {sceneNumPrefix}: {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color> + <color=#FFD75E>{trigCount} ▼</color> + <color=#33E6CC>{interCount} 🔧</color> + <color=#7CB3FF>{actorCount} 👥</color> + <color=#FF59D9>{cineCount} 🎬</color>)", headerTitleStyle, GUILayout.Height(22));
+            GUILayout.Label($"<b>■ SCÈNE {sceneNumPrefix}: {_data.Title}</b> (<color=#00E5FF>{_data.Nodes.Count} Nœuds</color> + <color=#FFD75E>{trigCount} ▼</color> + <color=#33E6CC>{interCount} 🔧</color> + <color=#7CB3FF>{actorCount} 👥</color> + <color=#FF59D9>{cineCount} 🎬</color> + <color=#26E0BF>{ambCount} 🌌</color>)", headerTitleStyle, GUILayout.Height(22));
 
             GUILayout.FlexibleSpace();
 
@@ -947,6 +1001,37 @@ namespace Killtime.Story
                 };
                 cine.Shots.Add(new SceneCinematicShotData { ShotId = "shot_1", Label = "Plan 1" });
                 _data.Cinematics.Add(cine);
+            }
+            GUI.backgroundColor = new Color(1f, 0.6f, 0.1f);
+            if (GUILayout.Button("+ Son 🔊", GUILayout.Width(75), GUILayout.Height(22)))
+            {
+                if (_data.Sounds == null) _data.Sounds = new System.Collections.Generic.List<SceneSoundData>();
+                Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
+                Vector2 worldCenter = (viewCenter - _graphPan) / Mathf.Max(0.01f, _zoom);
+                int sndIdx = _data.Sounds.Count + 1;
+                _data.Sounds.Add(new SceneSoundData
+                {
+                    SoundId = $"snd_{sndIdx}",
+                    Title = $"Son {sndIdx}",
+                    GraphPosX = worldCenter.x - 150f,
+                    GraphPosY = worldCenter.y + 100f
+                });
+            }
+            GUI.backgroundColor = new Color(0.18f, 0.88f, 0.72f);
+            if (GUILayout.Button("+ Ambiance 🌌", GUILayout.Width(105), GUILayout.Height(22)))
+            {
+                if (_data.Ambiences == null) _data.Ambiences = new System.Collections.Generic.List<SceneAmbienceTrackData>();
+                Vector2 viewCenter = new Vector2(_lastCanvasSize.x * 0.5f, _lastCanvasSize.y * 0.5f);
+                Vector2 worldCenter = (viewCenter - _graphPan) / Mathf.Max(0.01f, _zoom);
+                int ambIdx = _data.Ambiences.Count + 1;
+                _data.Ambiences.Add(new SceneAmbienceTrackData
+                {
+                    AmbienceId = $"amb_{ambIdx}",
+                    Title = $"Ambiance {ambIdx}",
+                    PresetId = "amb_asteroid_base",
+                    GraphPosX = worldCenter.x - 160f,
+                    GraphPosY = worldCenter.y + 150f
+                });
             }
             GUI.backgroundColor = new Color(0.2f, 0.8f, 1f);
             if (GUILayout.Button("🪐 Décor (Shift+F3)", GUILayout.Width(130), GUILayout.Height(22)))
@@ -1085,6 +1170,24 @@ namespace Killtime.Story
                     var c = data.Cinematics[i];
                     if (c == null) continue;
                     if (c.GraphPosX <= 0f && c.GraphPosY <= 0f) return true;
+                }
+            }
+            if (data.Sounds != null)
+            {
+                for (int i = 0; i < data.Sounds.Count; i++)
+                {
+                    var snd = data.Sounds[i];
+                    if (snd == null) continue;
+                    if (snd.GraphPosX <= 0f && snd.GraphPosY <= 0f) return true;
+                }
+            }
+            if (data.Ambiences != null)
+            {
+                for (int i = 0; i < data.Ambiences.Count; i++)
+                {
+                    var amb = data.Ambiences[i];
+                    if (amb == null) continue;
+                    if (amb.GraphPosX <= 0f && amb.GraphPosY <= 0f) return true;
                 }
             }
             return false;
@@ -1451,6 +1554,102 @@ namespace Killtime.Story
                 }
                 Event.current.Use();
             }
+        }
+
+        // ------------------------------------------------------------------
+        // Cartes son 🔊 : rangée + port bas + carte + fils (miroir du système 🎬).
+        // Le lien vit sur la carte son (SourceCardId) : les cartes sources gardent
+        // leurs données intactes. Les frames de nœuds (rectangles groupes) sont
+        // exclues : aucune rangée ni port son sur DrawNodeFrame/DrawNodeSection.
+        // ------------------------------------------------------------------
+
+        // Rangée 🔊 d'une carte source : résumé des sons branchés depuis son bas
+        // + effacement global. Hauteur fixe SoundRowH : à comptabiliser dans
+        // chaque mesure de taille de carte (comme CineRowH).
+        private void DrawSoundLinkRow(ref float y, float x, float w, string cardId)
+        {
+            var linked = _data != null ? _data.FindSoundsFrom(cardId) : null;
+            bool has = linked != null && linked.Count > 0;
+            GraphLabel(new Rect(x, y, 26f, 18f), "🔊");
+            GUI.color = has ? Color.white : new Color(1f, 1f, 1f, 0.45f);
+            string summary = "(drag port ↓ → 🔊)";
+            if (has)
+            {
+                var names = new System.Collections.Generic.List<string>(linked.Count);
+                for (int i = 0; i < linked.Count && names.Count < 3; i++)
+                    if (linked[i] != null && !string.IsNullOrWhiteSpace(linked[i].SoundId)) names.Add(linked[i].SoundId);
+                summary = "🔊→ " + string.Join(", ", names);
+                if (linked.Count > names.Count) summary += $" (+{linked.Count - names.Count})";
+            }
+            GraphLabel(new Rect(x + 28f, y, Mathf.Max(40f, w - 28f - 26f), 18f), summary);
+            GUI.color = Color.white;
+            if (has && GraphButton(new Rect(x + w - 22f, y, 22f, 18f), "⊘"))
+            {
+                for (int i = 0; i < linked.Count; i++)
+                    if (linked[i] != null) linked[i].SourceCardId = "";
+            }
+            y += SoundRowH;
+        }
+
+        // Port de sortie 🔊 : au BAS des cartes (jamais sur les frames de nœuds).
+        // Drag vers une carte son = brancher (SourceCardId) ; drop dans le vide
+        // = créer une carte son branchée ici.
+        private void DrawSoundOutPort(Vector2 centerWorld, string sourceCardId, Vector2 mouseWorld)
+        {
+            if (string.IsNullOrWhiteSpace(sourceCardId)) return;
+            var linked = _data != null ? _data.FindSoundsFrom(sourceCardId) : null;
+            bool has = linked != null && linked.Count > 0;
+            Color col = has ? SoundPortCol : new Color(SoundPortCol.r, SoundPortCol.g, SoundPortCol.b, 0.35f);
+            Rect port = new Rect(centerWorld.x - 7f, centerWorld.y - 7f, 14f, 14f);
+            DrawGraphSolidRect(port, col);
+            if (GraphPrimaryDown(mouseWorld, port))
+            {
+                _wireDraft = new WireConnectionDraft
+                {
+                    IsActive = true,
+                    IsSoundLink = true,
+                    SourceSoundLinkCardId = sourceCardId,
+                    StartPos = centerWorld
+                };
+                Event.current.Use();
+            }
+        }
+
+        private static Vector2 GetSoundCardSize(SceneSoundData snd)
+        {
+            if (snd == null) return new Vector2(SndCardDefaultW, SndCardDefaultH);
+            float w = snd.CardWidth > 100f ? snd.CardWidth : SndCardDefaultW;
+            float h = snd.CardHeight > 80f ? snd.CardHeight : SndCardDefaultH;
+            float needed = 30f + 22f + 20f + 20f + 20f + 20f + 22f + 20f + 10f;
+            if (h < needed) h = needed;
+            return new Vector2(w, h);
+        }
+
+        // Centre du port d'entrée d'une carte son (haut, reçoit le fil du bas).
+        private static Vector2 GetSoundInCenter(SceneSoundData snd)
+        {
+            return new Vector2(snd.GraphPosX + GetSoundCardSize(snd).x * 0.5f, snd.GraphPosY);
+        }
+
+        private static Vector2 GetAmbienceCardSize(SceneAmbienceTrackData amb)
+        {
+            if (amb == null) return new Vector2(320f, 240f);
+            float w = amb.CardWidth > 120f ? amb.CardWidth : 320f;
+            float h = amb.CardHeight > 100f ? amb.CardHeight : 240f;
+            float needed = 250f;
+            if (h < needed) h = needed;
+            return new Vector2(w, h);
+        }
+
+        private static Vector2 GetAmbienceInCenter(SceneAmbienceTrackData amb)
+        {
+            return new Vector2(amb.GraphPosX + GetAmbienceCardSize(amb).x * 0.5f, amb.GraphPosY);
+        }
+
+        private static Vector2 GetAmbienceStopCenter(SceneAmbienceTrackData amb)
+        {
+            var size = GetAmbienceCardSize(amb);
+            return new Vector2(amb.GraphPosX + size.x * 0.5f, amb.GraphPosY + size.y);
         }
 
         // Input : normal 14px couleur d'origine, entrée = carré vert 20px,
@@ -1894,6 +2093,26 @@ namespace Killtime.Story
                     if (new Rect(c.GraphPosX, c.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
                 }
             }
+            if (_data.Sounds != null)
+            {
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                {
+                    var snd = _data.Sounds[i];
+                    if (snd == null) continue;
+                    Vector2 s = GetSoundCardSize(snd);
+                    if (new Rect(snd.GraphPosX, snd.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
+                }
+            }
+            if (_data.Ambiences != null)
+            {
+                for (int i = 0; i < _data.Ambiences.Count; i++)
+                {
+                    var amb = _data.Ambiences[i];
+                    if (amb == null) continue;
+                    Vector2 s = GetAmbienceCardSize(amb);
+                    if (new Rect(amb.GraphPosX, amb.GraphPosY, s.x, s.y).Contains(mouseWorld)) return true;
+                }
+            }
             return false;
         }
 
@@ -2110,6 +2329,38 @@ namespace Killtime.Story
                 }
             }
 
+            if (_data.Sounds != null && _data.Sounds.Count > 0)
+            {
+                GetSceneContentBounds(out float _, out float _, out float _, out float placedMaxYSnd);
+                float sndX = startX;
+                float sndY = placedMaxYSnd + 30f;
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                {
+                    var snd = _data.Sounds[i];
+                    if (snd == null) continue;
+                    snd.GraphPosX = sndX;
+                    snd.GraphPosY = sndY;
+                    Vector2 s = GetSoundCardSize(snd);
+                    sndX += s.x + 20f;
+                }
+            }
+
+            if (_data.Ambiences != null && _data.Ambiences.Count > 0)
+            {
+                GetSceneContentBounds(out float _, out float _, out float _, out float placedMaxYAmb);
+                float ambX = startX;
+                float ambY = placedMaxYAmb + 30f;
+                for (int i = 0; i < _data.Ambiences.Count; i++)
+                {
+                    var amb = _data.Ambiences[i];
+                    if (amb == null) continue;
+                    amb.GraphPosX = ambX;
+                    amb.GraphPosY = ambY;
+                    Vector2 s = GetAmbienceCardSize(amb);
+                    ambX += s.x + 20f;
+                }
+            }
+
             _focusedNodeIndex = 0;
             FocusAllNodes(canvasRect);
         }
@@ -2246,6 +2497,22 @@ namespace Killtime.Story
                 }
             }
 
+            if (_data.Sounds != null && _data.Sounds.Count > 0)
+            {
+                GetSceneContentBounds(out float _, out float _, out float _, out float maxY5);
+                float sndX = startX;
+                float sndY = maxY5 + 50f;
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                {
+                    var snd = _data.Sounds[i];
+                    if (snd == null) continue;
+                    snd.GraphPosX = sndX;
+                    snd.GraphPosY = sndY;
+                    Vector2 s = GetSoundCardSize(snd);
+                    sndX += s.x + 30f;
+                }
+            }
+
             _focusedNodeIndex = 0;
             FocusAllNodes(canvasRect);
         }
@@ -2265,6 +2532,8 @@ namespace Killtime.Story
         private const float ActorCardDefaultH = 268f;
         private const float CineCardDefaultW = 360f;
         private const float CineCardDefaultH = 190f;
+        private const float SndCardDefaultW = 300f;
+        private const float SndCardDefaultH = 195f;
         private static float DlgCardDefaultH(int choiceCount) => 215f + choiceCount * 28f;
 
         // Nombre de lignes de config d'un défi (sans les lignes-liens).
@@ -2324,6 +2593,7 @@ namespace Killtime.Story
             }
             needed += 20f; // strip détails 🔒🔊🎲
             needed += CineRowH; // rangée sortie 🎬 (DrawCineLinkRow)
+            needed += SoundRowH; // rangée sortie 🔊 (DrawSoundLinkRow)
             if (line != null)
             {
                 needed += MeasurePrereqDetail(line.Prerequisite, SectionOpen(_expandedSections, line, "pre")) * 20f;
@@ -2357,8 +2627,8 @@ namespace Killtime.Story
 
         private float GetEventCardNeededHeight(SceneEventData ev)
         {
-            // ID 20 + Kind 22 + strip 20 + détails + rangée 🎬 20 + Tester 20 + marges.
-            float needed = 124f + CineRowH;
+            // ID 20 + Kind 22 + strip 20 + détails + rangée 🎬 20 + rangée 🔊 20 + Tester 20 + marges.
+            float needed = 124f + CineRowH + SoundRowH;
             if (ev != null)
             {
                 needed += MeasurePrereqDetail(ev.Prerequisite, SectionOpen(_expandedSections, ev, "pre")) * 20f;
@@ -2384,7 +2654,7 @@ namespace Killtime.Story
         // + 22 (liens) + 22 (+XP/+CE) + 20 × (1 + N items) + 10 (marge).
         private float GetConsequenceCardNeededHeight(SceneConsequenceData cons)
         {
-            float needed = 30f + 22f + 20f + 22f + 22f + 20f + CineRowH + 10f;
+            float needed = 30f + 22f + 20f + 22f + 22f + 20f + CineRowH + SoundRowH + 10f;
             if (cons != null)
             {
                 if (cons.HasDialogue) needed += 22f + 44f;
@@ -2419,7 +2689,7 @@ namespace Killtime.Story
             if (trg == null) return new Vector2(TrigCardDefaultW, TrigCardDefaultH);
             float w = trg.CardWidth > 100f ? trg.CardWidth : TrigCardDefaultW;
             float h = trg.CardHeight > 80f ? trg.CardHeight : TrigCardDefaultH;
-            float needed = (trg.Kind == SceneTriggerKind.ActorCondition ? 238f : 196f) + CineRowH;
+            float needed = (trg.Kind == SceneTriggerKind.ActorCondition ? 238f : 196f) + CineRowH + SoundRowH;
             if (h < needed) h = needed;
             return new Vector2(w, h);
         }
@@ -2432,7 +2702,7 @@ namespace Killtime.Story
             float w = cine.CardWidth > 100f ? cine.CardWidth : CineCardDefaultW;
             float h = cine.CardHeight > 80f ? cine.CardHeight : CineCardDefaultH;
             int n = cine.Shots != null ? cine.Shots.Count : 0;
-            float needed = 30f + 22f + 20f + 20f + 20f + 20f * n + CineRowH + 22f + 10f;
+            float needed = 30f + 22f + 20f + 20f + 20f + 20f * n + CineRowH + SoundRowH + 22f + 10f;
             if (h < needed) h = needed;
             return new Vector2(w, h);
         }
@@ -2444,12 +2714,94 @@ namespace Killtime.Story
             return new Vector2(cine.GraphPosX + s.x, cine.GraphPosY + CinePortTopCards);
         }
 
+        // Origine du wire de sortie 🔊 d'une carte source : BAS centré de la carte.
+        // Balaye tous les types porteurs (sauf frames de nœuds) : les doublons d'id
+        // inter-types suivent la même convention que le reste du graphe (id unique attendu).
+        private bool TryGetSoundSourceBottom(string cardId, out Vector2 center)
+        {
+            center = Vector2.zero;
+            if (string.IsNullOrWhiteSpace(cardId) || _data == null) return false;
+            string want = cardId.Trim();
+            if (_data.Nodes != null)
+                for (int n = 0; n < _data.Nodes.Count; n++)
+                {
+                    var node = _data.Nodes[n];
+                    if (node == null) continue;
+                    if (node.Dialogues != null)
+                    {
+                        for (int d = 0; d < node.Dialogues.Count; d++)
+                        {
+                            var line = node.Dialogues[d];
+                            if (line == null || !string.Equals(line.LineId, want, System.StringComparison.OrdinalIgnoreCase)) continue;
+                            Vector2 s = GetDialogueCardSize(line);
+                            center = new Vector2(line.GraphPosX + s.x * 0.5f, line.GraphPosY + s.y);
+                            return true;
+                        }
+                    }
+                    if (node.Events != null)
+                        for (int e = 0; e < node.Events.Count; e++)
+                        {
+                            var ev = node.Events[e];
+                            if (ev == null || !string.Equals(ev.EventId, want, System.StringComparison.OrdinalIgnoreCase)) continue;
+                            Vector2 s = GetEventCardSize(ev);
+                            center = new Vector2(ev.GraphPosX + s.x * 0.5f, ev.GraphPosY + s.y);
+                            return true;
+                        }
+                    if (node.Consequences != null)
+                        for (int k = 0; k < node.Consequences.Count; k++)
+                        {
+                            var cons = node.Consequences[k];
+                            if (cons == null || !string.Equals(cons.ConsequenceId, want, System.StringComparison.OrdinalIgnoreCase)) continue;
+                            Vector2 s = GetConsequenceCardSize(cons);
+                            center = new Vector2(cons.GraphPosX + s.x * 0.5f, cons.GraphPosY + s.y);
+                            return true;
+                        }
+                }
+            if (_data.Triggers != null)
+                for (int t = 0; t < _data.Triggers.Count; t++)
+                {
+                    var trg = _data.Triggers[t];
+                    if (trg == null || !string.Equals(trg.TriggerId, want, System.StringComparison.OrdinalIgnoreCase)) continue;
+                    Vector2 s = GetTriggerCardSize(trg);
+                    center = new Vector2(trg.GraphPosX + s.x * 0.5f, trg.GraphPosY + s.y);
+                    return true;
+                }
+            if (_data.Interactables != null)
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                {
+                    var it = _data.Interactables[i];
+                    if (it == null || !string.Equals(it.InteractableId, want, System.StringComparison.OrdinalIgnoreCase)) continue;
+                    Vector2 s = GetInteractableCardSize(it);
+                    center = new Vector2(it.GraphPosX + s.x * 0.5f, it.GraphPosY + s.y);
+                    return true;
+                }
+            if (_data.Actors != null)
+                for (int a = 0; a < _data.Actors.Count; a++)
+                {
+                    var ac = _data.Actors[a];
+                    if (ac == null || !string.Equals(ac.ActorId, want, System.StringComparison.OrdinalIgnoreCase)) continue;
+                    Vector2 s = GetActorCardSize(ac);
+                    center = new Vector2(ac.GraphPosX + s.x * 0.5f, ac.GraphPosY + s.y);
+                    return true;
+                }
+            if (_data.Cinematics != null)
+                for (int c = 0; c < _data.Cinematics.Count; c++)
+                {
+                    var cine = _data.Cinematics[c];
+                    if (cine == null || !string.Equals(cine.CinematicId, want, System.StringComparison.OrdinalIgnoreCase)) continue;
+                    Vector2 s = GetCinematicCardSize(cine);
+                    center = new Vector2(cine.GraphPosX + s.x * 0.5f, cine.GraphPosY + s.y);
+                    return true;
+                }
+            return false;
+        }
+
         private static Vector2 GetInteractableCardSize(SceneInteractableSpawnData it)
         {
             if (it == null) return new Vector2(InterCardDefaultW, InterCardDefaultH);
             float w = it.CardWidth > 100f ? it.CardWidth : InterCardDefaultW;
             float h = it.CardHeight > 80f ? it.CardHeight : InterCardDefaultH;
-            if (h < InterCardDefaultH) h = InterCardDefaultH;
+            if (h < InterCardDefaultH + SoundRowH) h = InterCardDefaultH + SoundRowH;
             return new Vector2(w, h);
         }
 
@@ -2461,7 +2813,7 @@ namespace Killtime.Story
             int n = a.TalkEntries != null ? a.TalkEntries.Count : 0;
             // En-tête 💬 + une rangée par sortie : la carte grandit avec le
             // nombre d'interlocuteurs (défaut = place pour 1 sortie).
-            float needed = ActorCardDefaultH + ActorTalkRowH * Mathf.Max(0, n - 1);
+            float needed = ActorCardDefaultH + SoundRowH + ActorTalkRowH * Mathf.Max(0, n - 1);
             if (h < needed) h = needed;
             return new Vector2(w, h);
         }
@@ -2520,7 +2872,9 @@ namespace Killtime.Story
             bool hasInters = _data != null && _data.Interactables != null && _data.Interactables.Count > 0;
             bool hasActors = _data != null && _data.Actors != null && _data.Actors.Count > 0;
             bool hasCines = _data != null && _data.Cinematics != null && _data.Cinematics.Count > 0;
-            if (!hasNodes && !hasTriggers && !hasInters && !hasActors && !hasCines) return false;
+            bool hasSounds = _data != null && _data.Sounds != null && _data.Sounds.Count > 0;
+            bool hasAmbiences = _data != null && _data.Ambiences != null && _data.Ambiences.Count > 0;
+            if (!hasNodes && !hasTriggers && !hasInters && !hasActors && !hasCines && !hasSounds && !hasAmbiences) return false;
             for (int i = 0; i < _data.Nodes.Count; i++)
             {
                 Rect b = ComputeNodeBoundingBox(_data.Nodes[i]);
@@ -2579,6 +2933,32 @@ namespace Killtime.Story
                     minY = Mathf.Min(minY, c.GraphPosY);
                     maxX = Mathf.Max(maxX, c.GraphPosX + csize.x);
                     maxY = Mathf.Max(maxY, c.GraphPosY + csize.y);
+                }
+            }
+            if (_data.Sounds != null)
+            {
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                {
+                    var snd = _data.Sounds[i];
+                    if (snd == null) continue;
+                    Vector2 ssize = GetSoundCardSize(snd);
+                    minX = Mathf.Min(minX, snd.GraphPosX);
+                    minY = Mathf.Min(minY, snd.GraphPosY);
+                    maxX = Mathf.Max(maxX, snd.GraphPosX + ssize.x);
+                    maxY = Mathf.Max(maxY, snd.GraphPosY + ssize.y);
+                }
+            }
+            if (_data.Ambiences != null)
+            {
+                for (int i = 0; i < _data.Ambiences.Count; i++)
+                {
+                    var amb = _data.Ambiences[i];
+                    if (amb == null) continue;
+                    Vector2 asize = GetAmbienceCardSize(amb);
+                    minX = Mathf.Min(minX, amb.GraphPosX);
+                    minY = Mathf.Min(minY, amb.GraphPosY);
+                    maxX = Mathf.Max(maxX, amb.GraphPosX + asize.x);
+                    maxY = Mathf.Max(maxY, amb.GraphPosY + asize.y);
                 }
             }
             return (maxX > minX) && (maxY > minY);
@@ -2909,6 +3289,30 @@ namespace Killtime.Story
             DrawSolidRect(GraphRect(worldRect), color);
         }
 
+        private float DrawFloatInput(Rect worldRect, string key, float value, float min, float max)
+        {
+            if (!_floatInputBuffers.TryGetValue(key, out var state)
+                || (Mathf.Abs(state.lastVal - value) > 0.0001f && !state.text.EndsWith(".") && !state.text.EndsWith(",")))
+            {
+                state = (value.ToString("0.##", System.Globalization.CultureInfo.InvariantCulture), value);
+                _floatInputBuffers[key] = state;
+            }
+
+            string newText = GraphTextField(worldRect, state.text);
+            if (newText != state.text)
+            {
+                float parsedVal = value;
+                if (float.TryParse(newText.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float parsed))
+                {
+                    parsedVal = Mathf.Clamp(parsed, min, max);
+                }
+                _floatInputBuffers[key] = (newText, parsedVal);
+                return parsedVal;
+            }
+
+            return value;
+        }
+
         private readonly Dictionary<string, Vector2> _cachedNodeInputSockets = new();
 
         private void DrawNodeGraphCanvas(Rect canvasRect)
@@ -3008,6 +3412,9 @@ namespace Killtime.Story
             _cachedActorInSockets.Clear();
             _cachedActorTalkOutSockets.Clear();
             _cachedCinematicInputSockets.Clear();
+            _cachedSoundInputSockets.Clear();
+            _cachedAmbienceInputSockets.Clear();
+            _cachedAmbienceStopSockets.Clear();
 
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
@@ -3161,6 +3568,42 @@ namespace Killtime.Story
                 }
             }
 
+            if (_data.Sounds == null) _data.Sounds = new System.Collections.Generic.List<SceneSoundData>();
+            {
+                var seenSndIds = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                {
+                    var snd = _data.Sounds[i];
+                    if (snd == null) continue;
+                    snd.GraphPosX = SanitizeCoord(snd.GraphPosX, 60f + i * 340f);
+                    snd.GraphPosY = SanitizeCoord(snd.GraphPosY, 2300f);
+                    if (snd.GraphPosX <= 1f && snd.GraphPosY <= 1f)
+                    {
+                        snd.GraphPosX = 60f + i * 340f;
+                        snd.GraphPosY = 2300f;
+                    }
+                    if (string.IsNullOrEmpty(snd.SoundId)) snd.SoundId = $"snd_{i + 1}";
+                    if (!seenSndIds.Add(snd.SoundId)) snd.SoundId = $"{snd.SoundId}_{i + 1}";
+                    _cachedSoundInputSockets[snd.SoundId] = GetSoundInCenter(snd);
+                }
+            }
+
+            if (_data.Ambiences == null) _data.Ambiences = new System.Collections.Generic.List<SceneAmbienceTrackData>();
+            {
+                var seenAmbIds = new System.Collections.Generic.HashSet<string>(System.StringComparer.OrdinalIgnoreCase);
+                for (int i = 0; i < _data.Ambiences.Count; i++)
+                {
+                    var amb = _data.Ambiences[i];
+                    if (amb == null) continue;
+                    amb.GraphPosX = SanitizeCoord(amb.GraphPosX, 60f + i * 350f);
+                    amb.GraphPosY = SanitizeCoord(amb.GraphPosY, 2600f);
+                    if (string.IsNullOrEmpty(amb.AmbienceId)) amb.AmbienceId = $"amb_{i + 1}";
+                    if (!seenAmbIds.Add(amb.AmbienceId)) amb.AmbienceId = $"{amb.AmbienceId}_{i + 1}";
+                    _cachedAmbienceInputSockets[amb.AmbienceId] = GetAmbienceInCenter(amb);
+                    _cachedAmbienceStopSockets[amb.AmbienceId] = GetAmbienceStopCenter(amb);
+                }
+            }
+
             Rect visibleWorld = GetVisibleWorldRect(canvasRect);
 
             // Passe 1 : frames et connexions globales.
@@ -3175,7 +3618,7 @@ namespace Killtime.Story
 
             if (_wireDraft.IsActive)
             {
-                DrawBezierWire(_wireDraft.StartPos, mouseWorld, Color.yellow, 3.5f);
+                DrawBezierWire(_wireDraft.StartPos, mouseWorld, Color.yellow, 3.5f, _wireDraft.IsSoundLink);
                 if (evt.type == EventType.MouseUp && evt.button == 0 && !_pickerCapturesMouse)
                 {
                     // NOTE : _graphMouseScreenPos est en coordonnées zone (capturé avant
@@ -3266,6 +3709,30 @@ namespace Killtime.Story
                     Vector2 csize = GetCinematicCardSize(c);
                     if (visibleWorld.Overlaps(new Rect(c.GraphPosX, c.GraphPosY, csize.x, csize.y)))
                         DrawCinematicCard(c, i, mouseWorld);
+                }
+            }
+
+            if (_data.Sounds != null)
+            {
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                {
+                    var snd = _data.Sounds[i];
+                    if (snd == null) continue;
+                    Vector2 ssize = GetSoundCardSize(snd);
+                    if (visibleWorld.Overlaps(new Rect(snd.GraphPosX, snd.GraphPosY, ssize.x, ssize.y)))
+                        DrawSoundCard(snd, i, mouseWorld);
+                }
+            }
+
+            if (_data.Ambiences != null)
+            {
+                for (int i = 0; i < _data.Ambiences.Count; i++)
+                {
+                    var amb = _data.Ambiences[i];
+                    if (amb == null) continue;
+                    Vector2 asize = GetAmbienceCardSize(amb);
+                    if (visibleWorld.Overlaps(new Rect(amb.GraphPosX, amb.GraphPosY, asize.x, asize.y)))
+                        DrawAmbienceCard(amb, i, mouseWorld);
                 }
             }
 
@@ -4149,6 +4616,44 @@ namespace Killtime.Story
                         DrawBezierWire(from, nodeIn, new Color(1f, 0.35f, 0.85f, 0.95f), 3f);
                 }
             }
+
+            // Wires son 🔊 : du BAS des cartes sources vers l'entrée (haut) des
+            // cartes son. Ambre. Les liens pendants (source introuvable) sont ignorés.
+            if (_data.Sounds != null)
+            {
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                {
+                    var snd = _data.Sounds[i];
+                    if (snd == null || string.IsNullOrWhiteSpace(snd.SourceCardId)) continue;
+                    if (!TryGetSoundSourceBottom(snd.SourceCardId, out var from)) continue;
+                    if (!_cachedSoundInputSockets.TryGetValue(snd.SoundId, out var sndIn)) continue;
+                    DrawBezierWire(from, sndIn, new Color(1f, 0.6f, 0.1f, 0.95f), 3f, true);
+                }
+            }
+
+            // Wires ambiance 🌌 :
+            // 1. Démarrage : du BAS de la carte source vers le HAUT de la carte ambiance.
+            // 2. Arrêt : du BAS de la carte ambiance vers le BAS de la carte d'extinction.
+            if (_data.Ambiences != null)
+            {
+                for (int i = 0; i < _data.Ambiences.Count; i++)
+                {
+                    var amb = _data.Ambiences[i];
+                    if (amb == null) continue;
+                    if (!string.IsNullOrWhiteSpace(amb.StartSourceCardId)
+                        && TryGetSoundSourceBottom(amb.StartSourceCardId, out var startFrom)
+                        && _cachedAmbienceInputSockets.TryGetValue(amb.AmbienceId, out var ambIn))
+                    {
+                        DrawBezierWire(startFrom, ambIn, new Color(0.18f, 0.88f, 0.72f, 0.95f), 3.2f, true);
+                    }
+                    if (!string.IsNullOrWhiteSpace(amb.StopSourceCardId)
+                        && TryGetSoundSourceBottom(amb.StopSourceCardId, out var stopTarget)
+                        && _cachedAmbienceStopSockets.TryGetValue(amb.AmbienceId, out var ambStopOut))
+                    {
+                        DrawBezierWire(ambStopOut, stopTarget, new Color(0.95f, 0.35f, 0.55f, 0.95f), 3.2f, true);
+                    }
+                }
+            }
         }
 
         private bool SceneContainsLine(string id)
@@ -4260,6 +4765,131 @@ namespace Killtime.Story
                 else
                 {
                     OpenMenuForVoid();
+                }
+                return;
+            }
+
+            // Branchement son 🔊 : drop sur l'entrée d'une carte son (ou sur son corps) = la lier à la
+            // carte source (SourceCardId) ; drop dans le vide = créer une carte son
+            // branchée ici (position du drop). On n'efface jamais d'un simple raté.
+            if (_wireDraft.IsSoundLink && !string.IsNullOrWhiteSpace(_wireDraft.SourceSoundLinkCardId))
+            {
+                if (IsClickWithoutDrag()) return;
+                string srcId = _wireDraft.SourceSoundLinkCardId;
+                float bestSnd = 34f;
+                string pickedSnd = null;
+                foreach (var kvp in _cachedSoundInputSockets)
+                {
+                    float dist = Vector2.Distance(kvp.Value, mousePos);
+                    if (dist < bestSnd)
+                    {
+                        bestSnd = dist;
+                        pickedSnd = kvp.Key;
+                    }
+                }
+                if (string.IsNullOrEmpty(pickedSnd) && _data != null && _data.Sounds != null)
+                {
+                    for (int s = 0; s < _data.Sounds.Count; s++)
+                    {
+                        var sc = _data.Sounds[s];
+                        if (sc == null) continue;
+                        Vector2 sz = GetSoundCardSize(sc);
+                        if (new Rect(sc.GraphPosX, sc.GraphPosY, sz.x, sz.y).Contains(mousePos))
+                        {
+                            pickedSnd = sc.SoundId;
+                            break;
+                        }
+                    }
+                }
+                if (!string.IsNullOrEmpty(pickedSnd))
+                {
+                    var snd = _data != null ? _data.FindSound(pickedSnd) : null;
+                    if (snd != null) snd.SourceCardId = srcId;
+                    PlayWireSoundLocal();
+                }
+                else
+                {
+                    // Possibilité de brancher l'entrée d'une carte ambiance depuis le bas d'une carte source
+                    float bestAmb = 34f;
+                    string pickedAmb = null;
+                    foreach (var kvp in _cachedAmbienceInputSockets)
+                    {
+                        float dist = Vector2.Distance(kvp.Value, mousePos);
+                        if (dist < bestAmb)
+                        {
+                            bestAmb = dist;
+                            pickedAmb = kvp.Key;
+                        }
+                    }
+                    if (!string.IsNullOrEmpty(pickedAmb))
+                    {
+                        var amb = _data != null ? _data.FindAmbience(pickedAmb) : null;
+                        if (amb != null) amb.StartSourceCardId = srcId;
+                        PlayWireSoundLocal();
+                        return;
+                    }
+
+                    if (_data != null)
+                    {
+                        _data.Sounds ??= new System.Collections.Generic.List<SceneSoundData>();
+                        int sndIdx = _data.Sounds.Count + 1;
+                        var created = new SceneSoundData
+                        {
+                            SoundId = $"snd_{sndIdx}",
+                            Title = $"Son {sndIdx}",
+                            SourceCardId = srcId,
+                            GraphPosX = mousePos.x - SndCardDefaultW * 0.5f,
+                            GraphPosY = mousePos.y - 30f
+                        };
+                        _data.Sounds.Add(created);
+                        PlayWireSoundLocal();
+                    }
+                }
+                return;
+            }
+
+            // Liaison arrêt ambiance 🌌 : depuis le bas de la carte ambiance vers le bas d'une carte cible
+            if (_wireDraft.IsAmbienceStopLink && _wireDraft.SourceAmbienceTrack != null)
+            {
+                if (IsClickWithoutDrag()) return;
+                var amb = _wireDraft.SourceAmbienceTrack;
+                string pickedTarget = null;
+                float bestStopDist = 36f;
+
+                if (_data.Nodes != null)
+                {
+                    for (int n = 0; n < _data.Nodes.Count; n++)
+                    {
+                        var nd = _data.Nodes[n];
+                        if (nd == null) continue;
+                        if (nd.Dialogues != null)
+                            for (int d = 0; d < nd.Dialogues.Count; d++)
+                            {
+                                var l = nd.Dialogues[d];
+                                if (l != null && TryGetSoundSourceBottom(l.LineId, out var b) && Vector2.Distance(b, mousePos) < bestStopDist)
+                                { bestStopDist = Vector2.Distance(b, mousePos); pickedTarget = l.LineId; }
+                            }
+                        if (nd.Events != null)
+                            for (int e = 0; e < nd.Events.Count; e++)
+                            {
+                                var ev = nd.Events[e];
+                                if (ev != null && TryGetSoundSourceBottom(ev.EventId, out var b) && Vector2.Distance(b, mousePos) < bestStopDist)
+                                { bestStopDist = Vector2.Distance(b, mousePos); pickedTarget = ev.EventId; }
+                            }
+                        if (nd.Consequences != null)
+                            for (int k = 0; k < nd.Consequences.Count; k++)
+                            {
+                                var cs = nd.Consequences[k];
+                                if (cs != null && TryGetSoundSourceBottom(cs.ConsequenceId, out var b) && Vector2.Distance(b, mousePos) < bestStopDist)
+                                { bestStopDist = Vector2.Distance(b, mousePos); pickedTarget = cs.ConsequenceId; }
+                            }
+                    }
+                }
+
+                if (!string.IsNullOrEmpty(pickedTarget))
+                {
+                    amb.StopSourceCardId = pickedTarget;
+                    PlayWireSoundLocal();
                 }
                 return;
             }
@@ -5709,6 +6339,18 @@ namespace Killtime.Story
 
             if (deleteNode)
             {
+                if (node != null)
+                {
+                    if (node.Dialogues != null)
+                        for (int d = 0; d < node.Dialogues.Count; d++)
+                            if (node.Dialogues[d] != null) PurgeSoundReferences(node.Dialogues[d].LineId);
+                    if (node.Events != null)
+                        for (int e = 0; e < node.Events.Count; e++)
+                            if (node.Events[e] != null) PurgeSoundReferences(node.Events[e].EventId);
+                    if (node.Consequences != null)
+                        for (int k = 0; k < node.Consequences.Count; k++)
+                            if (node.Consequences[k] != null) PurgeSoundReferences(node.Consequences[k].ConsequenceId);
+                }
                 _data.Nodes.RemoveAt(nodeIndex);
                 return;
             }
@@ -6151,6 +6793,7 @@ namespace Killtime.Story
             if (GraphButton(closeRect, "✕"))
             {
                 node.Dialogues.RemoveAt(index);
+                PurgeSoundReferences(line != null ? line.LineId : "");
                 if (_draggingCardKey == dragKey)
                 {
                     _draggingCardKey = null;
@@ -6527,6 +7170,7 @@ namespace Killtime.Story
 
                 // Sortie cinématique 🎬 : fire-and-forget, ne bloque pas la carte suivante.
                 DrawCineLinkRow(ref y, innerX, innerW, line.CinematicIds);
+                DrawSoundLinkRow(ref y, innerX, innerW, line.LineId);
 
                 // Rangée basse : +Choix / toggles (protégée du débordement par CardHeight auto).
                 if (y + 20f <= cardRect.yMax - 4f)
@@ -6565,6 +7209,7 @@ namespace Killtime.Story
 
             // Port de sortie cinématique 🎬 : flanc droit, rangée dédiée (magenta).
             DrawCineOutPort(new Vector2(cardRect.xMax, cardRect.y + CinePortTopCards), line.CinematicIds, mouseWorld);
+            DrawSoundOutPort(new Vector2(cardRect.x + cardRect.width * 0.5f, cardRect.yMax), line.LineId, mouseWorld);
 
             // Ports de Sortie des Choix (alignés sur les rangées GUI : offsets réels avec défis).
             GetDialogueChoiceRowOffsets(line, cardChoiceOffsets);
@@ -6716,6 +7361,7 @@ namespace Killtime.Story
             if (GraphButton(closeRect, "✕"))
             {
                 node.Events.RemoveAt(index);
+                PurgeSoundReferences(ev != null ? ev.EventId : "");
                 if (_draggingCardKey == dragKey)
                 {
                     _draggingCardKey = null;
@@ -6800,6 +7446,7 @@ namespace Killtime.Story
 
                 // Sortie cinématique 🎬 : fire-and-forget.
                 DrawCineLinkRow(ref y, innerX, innerW, ev.CinematicIds);
+                DrawSoundLinkRow(ref y, innerX, innerW, ev.EventId);
 
                 Color prevBg = GUI.backgroundColor;
                 GUI.backgroundColor = new Color(1f, 0.7f, 0.2f);
@@ -6831,6 +7478,7 @@ namespace Killtime.Story
 
             // Port de sortie cinématique 🎬 : flanc droit, rangée dédiée (magenta).
             DrawCineOutPort(new Vector2(cardRect.xMax, cardRect.y + CinePortTopCards), ev.CinematicIds, mouseWorld);
+            DrawSoundOutPort(new Vector2(cardRect.x + cardRect.width * 0.5f, cardRect.yMax), ev.EventId, mouseWorld);
         }
 
         private void DrawConsequenceCard(SceneConsequenceData cons, int index, SceneNodeData node, Vector2 mouseWorld)
@@ -6919,6 +7567,7 @@ namespace Killtime.Story
             if (GraphButton(closeRect, "✕"))
             {
                 node.Consequences.RemoveAt(index);
+                PurgeSoundReferences(cons != null ? cons.ConsequenceId : "");
                 if (_draggingCardKey == dragKey)
                 {
                     _draggingCardKey = null;
@@ -7080,6 +7729,7 @@ namespace Killtime.Story
 
                 // Sortie cinématique 🎬 : fire-and-forget.
                 DrawCineLinkRow(ref y, innerX, innerW, cons.CinematicIds);
+                DrawSoundLinkRow(ref y, innerX, innerW, cons.ConsequenceId);
             }
 
             // Ports de sortie : → réplique (cyan, rouge + gros si sortie) et → conséquence (vert).
@@ -7118,6 +7768,7 @@ namespace Killtime.Story
 
             // Port de sortie cinématique 🎬 : flanc droit, rangée dédiée (magenta).
             DrawCineOutPort(new Vector2(cardRect.xMax, cardRect.y + CinePortTopCards), cons.CinematicIds, mouseWorld);
+            DrawSoundOutPort(new Vector2(cardRect.x + cardRect.width * 0.5f, cardRect.yMax), cons.ConsequenceId, mouseWorld);
         }
 
         private void DrawTriggerCard(SceneTriggerData trg, int index, Vector2 mouseWorld)
@@ -7202,6 +7853,7 @@ namespace Killtime.Story
             if (GraphButton(closeRect, "✕"))
             {
                 if (_data.Triggers != null) _data.Triggers.RemoveAt(index);
+                PurgeSoundReferences(trg != null ? trg.TriggerId : "");
                 if (_draggingCardKey == dragKey)
                 {
                     _draggingCardKey = null;
@@ -7316,6 +7968,7 @@ namespace Killtime.Story
 
                 // Sortie cinématique 🎬 : fire-and-forget.
                 DrawCineLinkRow(ref y, innerX, innerW, trg.CinematicIds);
+                DrawSoundLinkRow(ref y, innerX, innerW, trg.TriggerId);
 
                 if (y + 4f <= cardRect.yMax)
                 {
@@ -7343,6 +7996,7 @@ namespace Killtime.Story
 
             // Port de sortie cinématique 🎬 : flanc droit, sous la sortie principale (magenta).
             DrawCineOutPort(new Vector2(cardRect.xMax, cardRect.y + CinePortTopCards), trg.CinematicIds, mouseWorld);
+            DrawSoundOutPort(new Vector2(cardRect.x + cardRect.width * 0.5f, cardRect.yMax), trg.TriggerId, mouseWorld);
         }
 
         // ------------------------------------------------------------------
@@ -7436,6 +8090,7 @@ namespace Killtime.Story
             if (GraphButton(closeRect, "✕"))
             {
                 if (_data.Interactables != null) _data.Interactables.RemoveAt(index);
+                PurgeSoundReferences(it != null ? it.InteractableId : "");
                 if (_draggingCardKey == dragKey)
                 {
                     _draggingCardKey = null;
@@ -7533,6 +8188,7 @@ namespace Killtime.Story
 
                 // Sortie cinématique 🎬 : fire-and-forget.
                 DrawCineLinkRow(ref y, innerX, innerW, it.CinematicIds);
+                DrawSoundLinkRow(ref y, innerX, innerW, it.InteractableId);
 
                 if (y + 4f <= cardRect.yMax)
                 {
@@ -7560,6 +8216,7 @@ namespace Killtime.Story
 
             // Port de sortie cinématique 🎬 : flanc droit, sous la sortie principale (magenta).
             DrawCineOutPort(new Vector2(cardRect.xMax, cardRect.y + CinePortTopCards), it.CinematicIds, mouseWorld);
+            DrawSoundOutPort(new Vector2(cardRect.x + cardRect.width * 0.5f, cardRect.yMax), it.InteractableId, mouseWorld);
         }
 
         // Nombre de références à un acteur dans la scène (locuteur, cible, déclencheur).
@@ -7716,7 +8373,9 @@ namespace Killtime.Story
             GUI.color = Color.white;
             if (GraphButton(closeRect, "✕"))
             {
+                string doomedActorId = a != null ? a.ActorId : "";
                 if (_data.Actors != null) _data.Actors.RemoveAt(index);
+                PurgeSoundReferences(doomedActorId);
                 if (_draggingCardKey == dragKey)
                 {
                     _draggingCardKey = null;
@@ -7931,6 +8590,7 @@ namespace Killtime.Story
 
                 // Sortie cinématique 🎬 : jouée au spawn différé (fire-and-forget).
                 DrawCineLinkRow(ref y, innerX, innerW, a.CinematicIds);
+                DrawSoundLinkRow(ref y, innerX, innerW, a.ActorId);
 
                 if (y + 4f <= cardRect.yMax)
                 {
@@ -7957,6 +8617,7 @@ namespace Killtime.Story
             // Port de sortie cinématique 🎬 : flanc droit (magenta). La carte acteur
             // garde son port d'entrée (spawn) à gauche : input + output 🎬 coexistent.
             DrawCineOutPort(new Vector2(cardRect.xMax, cardRect.y + ActorCinePortTop), a.CinematicIds, mouseWorld);
+            DrawSoundOutPort(new Vector2(cardRect.x + cardRect.width * 0.5f, cardRect.yMax), a.ActorId, mouseWorld);
         }
 
         // ------------------------------------------------------------------
@@ -8228,6 +8889,7 @@ namespace Killtime.Story
                 string doomedId = cine.CinematicId;
                 if (_data.Cinematics != null) _data.Cinematics.RemoveAt(index);
                 PurgeCinematicReferences(doomedId);
+                PurgeSoundReferences(doomedId);
                 if (_draggingCardKey == dragKey)
                 {
                     _draggingCardKey = null;
@@ -8359,6 +9021,7 @@ namespace Killtime.Story
                 cine.NextTargetId = GraphTextField(new Rect(innerX + 64f, y, Mathf.Max(40f, innerW - 64f - 26f), 18f), cine.NextTargetId ?? "");
                 if (!string.IsNullOrEmpty(cine.NextTargetId) && GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "⊘")) cine.NextTargetId = "";
                 y += CineRowH;
+                DrawSoundLinkRow(ref y, innerX, innerW, cine.CinematicId);
 
                 float halfBtn = (innerW - 6f) * 0.5f;
                 float btnY = Mathf.Min(y, cardRect.yMax - 22f);
@@ -8381,6 +9044,389 @@ namespace Killtime.Story
             // Port de sortie "fin →" : flanc droit, rangée dédiée (magenta).
             // La carte garde son port d'entrée à gauche : input + output coexistent.
             DrawCineOutPort(GetCinematicOutCenter(cine), null, mouseWorld, cine);
+            DrawSoundOutPort(new Vector2(cardRect.x + cardRect.width * 0.5f, cardRect.yMax), cine.CinematicId, mouseWorld);
+        }
+
+        // ------------------------------------------------------------------
+        // Carte son 🔊 : feuille du graphe (entrée seule en haut, jamais de sortie).
+        // Branchée depuis le BAS d'une carte source (fil orange) : démarre un son
+        // avec délai et volume, au début OU à la fin de la carte liée.
+        // ------------------------------------------------------------------
+        private void DrawSoundCard(SceneSoundData snd, int index, Vector2 mouseWorld)
+        {
+            if (snd == null) return;
+            if (string.IsNullOrEmpty(snd.SoundId)) snd.SoundId = $"snd_{index + 1}";
+
+            Vector2 size = GetSoundCardSize(snd);
+            float cardW = size.x;
+            float cardH = size.y;
+
+            Rect cardRect = new Rect(snd.GraphPosX, snd.GraphPosY, cardW, cardH);
+            Rect headerRect = new Rect(cardRect.x, cardRect.y, cardW, 26f);
+            Rect closeRect = new Rect(headerRect.xMax - 22f, headerRect.y + 3f, 18f, 18f);
+            Rect dragHeaderRect = new Rect(headerRect.x, headerRect.y, headerRect.width - 26f, headerRect.height);
+            Rect resizeGripRect = new Rect(cardRect.xMax - 14f, cardRect.yMax - 14f, 14f, 14f);
+
+            Event evt = Event.current;
+            string dragKey = $"sound_{index}_{snd.SoundId}";
+            string resizeKey = $"resize_{dragKey}";
+            int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
+            int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
+
+            bool lateResizeSnd = IsLateResizeFor(snd);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeSnd)
+            {
+                GUIUtility.hotControl = resizeControlId;
+                _resizingCardKey = resizeKey;
+                if (lateResizeSnd) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
+            {
+                snd.CardWidth = Mathf.Clamp(mouseWorld.x - cardRect.x, 240f, 750f);
+                snd.CardHeight = Mathf.Clamp(mouseWorld.y - cardRect.y, 130f, 500f);
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == resizeControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _resizingCardKey = null;
+                evt.Use();
+            }
+
+            bool lateDragSnd = IsLateDragFor(snd);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragSnd)
+            {
+                GUIUtility.hotControl = dragControlId;
+                _draggingCardKey = dragKey;
+                _dragOffset = (lateDragSnd ? _lateDownWorld : mouseWorld) - new Vector2(snd.GraphPosX, snd.GraphPosY);
+                if (lateDragSnd) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
+            {
+                snd.GraphPosX = mouseWorld.x - _dragOffset.x;
+                snd.GraphPosY = mouseWorld.y - _dragOffset.y;
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == dragControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _draggingCardKey = null;
+                evt.Use();
+            }
+
+            DrawGraphSolidRect(cardRect, new Color(0.14f, 0.09f, 0.03f, 0.95f));
+            DrawGraphSolidRect(headerRect, new Color(0.55f, 0.35f, 0.08f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1f), new Color(1f, 0.75f, 0.25f, 0.8f));
+
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>🔊 {snd.Title}</b> [{snd.SoundId}]");
+
+            GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
+            GUI.color = Color.white;
+            if (GraphButton(closeRect, "✕"))
+            {
+                if (_data.Sounds != null) _data.Sounds.RemoveAt(index);
+                if (_draggingCardKey == dragKey)
+                {
+                    _draggingCardKey = null;
+                    GUIUtility.hotControl = 0;
+                }
+                GUI.backgroundColor = Color.white;
+                evt.Use();
+                return;
+            }
+            GUI.backgroundColor = Color.white;
+
+            GUI.color = new Color(1f, 1f, 1f, 0.4f);
+            GraphLabel(resizeGripRect, "◢");
+            GUI.color = Color.white;
+
+            if (_zoom < CardLodThreshold)
+            {
+                DrawGraphSolidRect(new Rect(cardRect.x + 8f, cardRect.y + 32f, (cardW - 16f) * 0.8f, 8f), new Color(1f, 0.6f, 0.1f, 0.14f));
+            }
+            else
+            {
+                float innerX = cardRect.x + 8f;
+                float innerW = cardW - 16f;
+                float y = cardRect.y + 30f;
+
+                GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+                snd.SoundId = GraphTextField(new Rect(innerX + 26f, y, 100f, 18f), snd.SoundId ?? "");
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 36f, 18f), "Son :");
+                snd.SoundCueId = GraphTextField(new Rect(innerX + 38f, y, Mathf.Max(40f, innerW - 38f - 46f), 18f), snd.SoundCueId ?? "");
+                // Sélecteur banque sons/fx 🔊 : parcourt les presets (id + label).
+                var bankList = Killtime.Audio.SoundBankCatalog.GetAll();
+                if (bankList != null && bankList.Count > 0)
+                {
+                    int curBank = -1;
+                    for (int bi = 0; bi < bankList.Count; bi++)
+                    {
+                        var be = bankList[bi];
+                        if (be == null || string.IsNullOrWhiteSpace(be.id)) continue;
+                        if (string.Equals(be.id.Trim(), (snd.SoundCueId ?? "").Trim(), System.StringComparison.OrdinalIgnoreCase)) { curBank = bi; break; }
+                    }
+                    if (GraphButton(new Rect(innerX + innerW - 42f, y, 20f, 18f), "◀"))
+                    {
+                        curBank = curBank < 0 ? bankList.Count - 1 : (curBank - 1 + bankList.Count) % bankList.Count;
+                        snd.SoundCueId = bankList[curBank] != null ? bankList[curBank].id : snd.SoundCueId;
+                    }
+                    if (GraphButton(new Rect(innerX + innerW - 20f, y, 20f, 18f), "▶"))
+                    {
+                        curBank = curBank < 0 ? 0 : (curBank + 1) % bankList.Count;
+                        snd.SoundCueId = bankList[curBank] != null ? bankList[curBank].id : snd.SoundCueId;
+                    }
+                }
+                y += 20f;
+
+                GraphLabel(new Rect(innerX, y, 42f, 18f), "Durée:");
+                string durTxt = GraphTextField(new Rect(innerX + 44f, y, 40f, 18f), snd.DurationSeconds > 0.001f ? snd.DurationSeconds.ToString("0.0") : "0");
+                if (float.TryParse(durTxt.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float parsedDur))
+                    snd.DurationSeconds = Mathf.Clamp(parsedDur, 0f, 60f);
+
+                GraphLabel(new Rect(innerX + 90f, y, 22f, 18f), "+d:");
+                string delTxt = GraphTextField(new Rect(innerX + 114f, y, 36f, 18f), snd.DelaySeconds.ToString("0.0"));
+                if (float.TryParse(delTxt.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float parsedDel))
+                    snd.DelaySeconds = Mathf.Clamp(parsedDel, 0f, 60f);
+
+                GraphLabel(new Rect(innerX + 156f, y, 28f, 18f), "Vol:");
+                if (snd.VolumeScale <= 0.001f) snd.VolumeScale = 1.0f;
+                string volTxt = GraphTextField(new Rect(innerX + 186f, y, 38f, 18f), snd.VolumeScale.ToString("0.0"));
+                if (float.TryParse(volTxt.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float parsedVol))
+                    snd.VolumeScale = Mathf.Clamp(parsedVol, 0f, 2f);
+                y += 20f;
+
+                snd.TriggerPoint = (SoundTriggerPoint)GraphToolbar(new Rect(innerX, y, innerW, 18f), (int)snd.TriggerPoint, new[] { "▶ Début carte", "■ Fin carte" });
+                y += 22f;
+
+                bool linked = !string.IsNullOrWhiteSpace(snd.SourceCardId);
+                GUI.color = linked ? Color.white : new Color(1f, 1f, 1f, 0.45f);
+                GraphLabel(new Rect(innerX, y, Mathf.Max(40f, innerW - 26f), 18f),
+                    linked ? $"← {snd.SourceCardId}" : "(drag carte ↓ → ici)");
+                GUI.color = Color.white;
+                if (linked && GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "⊘")) snd.SourceCardId = "";
+            }
+
+            // Port d'entrée (haut) : reçoit le fil du bas des cartes sources.
+            Vector2 inCenter = GetSoundInCenter(snd);
+            _cachedSoundInputSockets[snd.SoundId] = inCenter;
+            DrawGraphSolidRect(new Rect(inCenter.x - 7f, inCenter.y - 7f, 14f, 14f),
+                !string.IsNullOrWhiteSpace(snd.SourceCardId) ? SoundPortCol : new Color(SoundPortCol.r, SoundPortCol.g, SoundPortCol.b, 0.35f));
+        }
+
+        private void DrawAmbienceCard(SceneAmbienceTrackData amb, int index, Vector2 mouseWorld)
+        {
+            if (amb == null) return;
+            if (string.IsNullOrEmpty(amb.AmbienceId)) amb.AmbienceId = $"amb_{index + 1}";
+
+            Vector2 size = GetAmbienceCardSize(amb);
+            float cardW = size.x;
+            float cardH = size.y;
+
+            Rect cardRect = new Rect(amb.GraphPosX, amb.GraphPosY, cardW, cardH);
+            Rect headerRect = new Rect(cardRect.x, cardRect.y, cardW, 26f);
+            Rect closeRect = new Rect(headerRect.xMax - 22f, headerRect.y + 3f, 18f, 18f);
+            Rect dragHeaderRect = new Rect(headerRect.x, headerRect.y, headerRect.width - 26f, headerRect.height);
+            Rect resizeGripRect = new Rect(cardRect.xMax - 14f, cardRect.yMax - 14f, 14f, 14f);
+
+            Event evt = Event.current;
+            string dragKey = $"amb_{index}_{amb.AmbienceId}";
+            string resizeKey = $"resize_{dragKey}";
+            int dragControlId = GUIUtility.GetControlID(FocusType.Passive);
+            int resizeControlId = GUIUtility.GetControlID(FocusType.Passive);
+
+            bool lateResizeAmb = IsLateResizeFor(amb);
+            if (GraphPrimaryDown(mouseWorld, resizeGripRect) || lateResizeAmb)
+            {
+                GUIUtility.hotControl = resizeControlId;
+                _resizingCardKey = resizeKey;
+                if (lateResizeAmb) { _lateResizeTarget = null; GUIUtility.keyboardControl = 0; }
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == resizeControlId && _resizingCardKey == resizeKey)
+            {
+                amb.CardWidth = Mathf.Clamp(mouseWorld.x - cardRect.x, 260f, 750f);
+                amb.CardHeight = Mathf.Clamp(mouseWorld.y - cardRect.y, 160f, 500f);
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == resizeControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _resizingCardKey = null;
+                evt.Use();
+            }
+
+            bool lateDragAmb = IsLateDragFor(amb);
+            if (GraphPrimaryDown(mouseWorld, dragHeaderRect) || lateDragAmb)
+            {
+                GUIUtility.hotControl = dragControlId;
+                _draggingCardKey = dragKey;
+                _dragOffset = (lateDragAmb ? _lateDownWorld : mouseWorld) - new Vector2(amb.GraphPosX, amb.GraphPosY);
+                if (lateDragAmb) { _lateDragTarget = null; GUIUtility.keyboardControl = 0; }
+                evt.Use();
+            }
+            else if ((evt.type == EventType.MouseDrag || evt.type == EventType.MouseMove) && GUIUtility.hotControl == dragControlId && _draggingCardKey == dragKey)
+            {
+                amb.GraphPosX = mouseWorld.x - _dragOffset.x;
+                amb.GraphPosY = mouseWorld.y - _dragOffset.y;
+                evt.Use();
+            }
+            else if (evt.type == EventType.MouseUp && GUIUtility.hotControl == dragControlId)
+            {
+                GUIUtility.hotControl = 0;
+                _draggingCardKey = null;
+                evt.Use();
+            }
+
+            DrawGraphSolidRect(cardRect, new Color(0.04f, 0.12f, 0.11f, 0.95f));
+            DrawGraphSolidRect(headerRect, new Color(0.08f, 0.45f, 0.38f));
+            DrawGraphSolidRect(new Rect(cardRect.x, cardRect.y, cardRect.width, 1.5f), AmbiencePortCol);
+
+            GraphLabel(new Rect(headerRect.x + 8f, headerRect.y + 3f, cardW - 35f, 20f), $"<b>🌌 {amb.Title}</b> [{amb.AmbienceId}]");
+
+            GUI.backgroundColor = new Color(0.85f, 0.22f, 0.22f, 1f);
+            GUI.color = Color.white;
+            if (GraphButton(closeRect, "✕"))
+            {
+                string doomed = amb.AmbienceId;
+                if (_data.Ambiences != null) _data.Ambiences.RemoveAt(index);
+                PurgeAmbienceReferences(doomed);
+                if (_draggingCardKey == dragKey)
+                {
+                    _draggingCardKey = null;
+                    GUIUtility.hotControl = 0;
+                }
+                GUI.backgroundColor = Color.white;
+                evt.Use();
+                return;
+            }
+            GUI.backgroundColor = Color.white;
+
+            GUI.color = new Color(1f, 1f, 1f, 0.4f);
+            GraphLabel(resizeGripRect, "◢");
+            GUI.color = Color.white;
+
+            float innerX = cardRect.x + 8f;
+            float innerW = cardW - 16f;
+            float y = cardRect.y + 30f;
+
+            GraphLabel(new Rect(innerX, y, 24f, 18f), "ID:");
+            amb.AmbienceId = GraphTextField(new Rect(innerX + 26f, y, 90f, 18f), amb.AmbienceId ?? "");
+            GraphLabel(new Rect(innerX + 120f, y, 36f, 18f), "Titre:");
+            amb.Title = GraphTextField(new Rect(innerX + 158f, y, Mathf.Max(40f, innerW - 158f), 18f), amb.Title ?? "");
+            y += 20f;
+
+            var presets = AmbienceCatalog.GetAll();
+            int currentIdx = presets.FindIndex(p => string.Equals(p.id, amb.PresetId, StringComparison.OrdinalIgnoreCase));
+            if (currentIdx < 0 && presets.Count > 0) currentIdx = 0;
+
+            GraphLabel(new Rect(innerX, y, 50f, 18f), "Preset :");
+            if (GraphButton(new Rect(innerX + 52f, y, 20f, 18f), "◀"))
+            {
+                currentIdx = (currentIdx - 1 + presets.Count) % presets.Count;
+                amb.PresetId = presets[currentIdx].id;
+                amb.VolumeScale = presets[currentIdx].defaultVolume;
+                amb.Spatialized = presets[currentIdx].spatial;
+                amb.Radius = presets[currentIdx].defaultRadius;
+            }
+            string curName = currentIdx >= 0 && currentIdx < presets.Count ? presets[currentIdx].displayName : (amb.PresetId ?? "(aucun)");
+            GraphLabel(new Rect(innerX + 74f, y, Mathf.Max(60f, innerW - 74f - 24f), 18f), $"<b>{curName}</b>");
+            if (GraphButton(new Rect(innerX + innerW - 22f, y, 20f, 18f), "▶"))
+            {
+                currentIdx = (currentIdx + 1) % presets.Count;
+                amb.PresetId = presets[currentIdx].id;
+                amb.VolumeScale = presets[currentIdx].defaultVolume;
+                amb.Spatialized = presets[currentIdx].spatial;
+                amb.Radius = presets[currentIdx].defaultRadius;
+            }
+            y += 22f;
+
+            GraphLabel(new Rect(innerX, y, 32f, 18f), "Vol:");
+            string volTxt = GraphTextField(new Rect(innerX + 34f, y, 38f, 18f), amb.VolumeScale.ToString("0.00"));
+            if (float.TryParse(volTxt.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float pVol))
+                amb.VolumeScale = Mathf.Clamp(pVol, 0f, 2f);
+
+            GraphLabel(new Rect(innerX + 80f, y, 42f, 18f), "FadeIn:");
+            string inTxt = GraphTextField(new Rect(innerX + 124f, y, 34f, 18f), amb.FadeInDuration.ToString("0.0"));
+            if (float.TryParse(inTxt.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float pIn))
+                amb.FadeInDuration = Mathf.Clamp(pIn, 0f, 20f);
+
+            GraphLabel(new Rect(innerX + 166f, y, 48f, 18f), "FadeOut:");
+            string outTxt = GraphTextField(new Rect(innerX + 216f, y, 34f, 18f), amb.FadeOutDuration.ToString("0.0"));
+            if (float.TryParse(outTxt.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float pOut))
+                amb.FadeOutDuration = Mathf.Clamp(pOut, 0f, 20f);
+            y += 22f;
+
+            amb.Spatialized = GraphToggle(new Rect(innerX, y, 95f, 18f), amb.Spatialized, "Spatial 3D");
+            if (amb.Spatialized)
+            {
+                GraphLabel(new Rect(innerX + 100f, y, 16f, 18f), "Q:");
+                int.TryParse(GraphTextField(new Rect(innerX + 118f, y, 30f, 18f), amb.Q.ToString()), out amb.Q);
+                GraphLabel(new Rect(innerX + 152f, y, 16f, 18f), "R:");
+                int.TryParse(GraphTextField(new Rect(innerX + 170f, y, 30f, 18f), amb.R.ToString()), out amb.R);
+                GraphLabel(new Rect(innerX + 204f, y, 42f, 18f), "Rayon:");
+                string rTxt = GraphTextField(new Rect(innerX + 248f, y, 36f, 18f), amb.Radius.ToString("0.#"));
+                if (float.TryParse(rTxt.Replace(',', '.'), System.Globalization.NumberStyles.Float, System.Globalization.CultureInfo.InvariantCulture, out float pRad))
+                    amb.Radius = Mathf.Clamp(pRad, 1f, 120f);
+            }
+            y += 22f;
+
+            bool hasStart = !string.IsNullOrWhiteSpace(amb.StartSourceCardId);
+            GUI.color = hasStart ? Color.white : new Color(1f, 1f, 1f, 0.45f);
+            GraphLabel(new Rect(innerX, y, Mathf.Max(40f, innerW - 26f), 18f),
+                hasStart ? $"▶ In: ← {amb.StartSourceCardId}" : "(drag bas carte → entrée haut)");
+            GUI.color = Color.white;
+            if (hasStart && GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "⊘")) amb.StartSourceCardId = "";
+            y += 20f;
+
+            bool hasStop = !string.IsNullOrWhiteSpace(amb.StopSourceCardId);
+            GUI.color = hasStop ? Color.white : new Color(1f, 1f, 1f, 0.45f);
+            GraphLabel(new Rect(innerX, y, Mathf.Max(40f, innerW - 26f), 18f),
+                hasStop ? $"■ Out: ➔ {amb.StopSourceCardId}" : "(drag sortie bas → bas carte cible)");
+            GUI.color = Color.white;
+            if (hasStop && GraphButton(new Rect(innerX + innerW - 22f, y, 22f, 18f), "⊘")) amb.StopSourceCardId = "";
+            y += 22f;
+
+            float halfBtn = (innerW - 6f) * 0.5f;
+            GUI.backgroundColor = new Color(0.2f, 0.85f, 0.65f);
+            if (GraphButton(new Rect(innerX, y, halfBtn, 20f), "▶ Tester"))
+            {
+                KilltimeAudioManager.Instance?.PlaySceneAmbience(amb.AmbienceId, amb.PresetId, amb.VolumeScale, amb.FadeInDuration, false, Vector3.zero, amb.Radius);
+            }
+            GUI.backgroundColor = new Color(0.85f, 0.35f, 0.35f);
+            if (GraphButton(new Rect(innerX + halfBtn + 6f, y, halfBtn, 20f), "■ Stopper"))
+            {
+                KilltimeAudioManager.Instance?.StopSceneAmbience(amb.AmbienceId, amb.FadeOutDuration);
+            }
+            GUI.backgroundColor = Color.white;
+
+            // Port d'entrée (haut) : reçoit la connexion de départ (fil du bas d'une carte source).
+            Vector2 inCenter = GetAmbienceInCenter(amb);
+            _cachedAmbienceInputSockets[amb.AmbienceId] = inCenter;
+            DrawGraphSolidRect(new Rect(inCenter.x - 7f, inCenter.y - 7f, 14f, 14f),
+                hasStart ? AmbiencePortCol : new Color(AmbiencePortCol.r, AmbiencePortCol.g, AmbiencePortCol.b, 0.35f));
+
+            // Port de sortie (bas) : tire un fil vers le bas d'une carte cible pour arrêter l'ambiance.
+            Vector2 stopCenter = GetAmbienceStopCenter(amb);
+            _cachedAmbienceStopSockets[amb.AmbienceId] = stopCenter;
+            Rect stopPort = new Rect(stopCenter.x - 7f, stopCenter.y - 7f, 14f, 14f);
+            Color stopCol = hasStop ? new Color(0.95f, 0.35f, 0.55f) : new Color(0.95f, 0.35f, 0.55f, 0.35f);
+            DrawGraphSolidRect(stopPort, stopCol);
+
+            if (GraphPrimaryDown(mouseWorld, stopPort))
+            {
+                _wireDraft = new WireConnectionDraft
+                {
+                    IsActive = true,
+                    IsAmbienceStopLink = true,
+                    SourceAmbienceTrack = amb,
+                    StartPos = stopCenter
+                };
+                evt.Use();
+            }
         }
 
         private static Texture2D _pureWhiteTex;
@@ -8416,15 +9462,27 @@ namespace Killtime.Story
             }
         }
 
-        private void DrawBezierWire(Vector2 start, Vector2 end, Color color, float width = 3.5f)
+        private void DrawBezierWire(Vector2 start, Vector2 end, Color color, float width = 3.5f, bool vertical = false)
         {
             // Wires sont également en espace monde; conversion unique au rendu.
             start = GraphPoint(start);
             end = GraphPoint(end);
-            float dx = end.x - start.x;
-            float tangentDist = Mathf.Clamp(Mathf.Abs(dx) * 0.5f, 40f, 220f);
-            Vector2 startTan = start + new Vector2(tangentDist, 0f);
-            Vector2 endTan = end - new Vector2(tangentDist, 0f);
+            Vector2 startTan;
+            Vector2 endTan;
+            if (vertical)
+            {
+                float dy = end.y - start.y;
+                float tangentDist = Mathf.Clamp(Mathf.Abs(dy) * 0.5f, 40f, 220f);
+                startTan = start + new Vector2(0f, tangentDist);
+                endTan = end - new Vector2(0f, -tangentDist);
+            }
+            else
+            {
+                float dx = end.x - start.x;
+                float tangentDist = Mathf.Clamp(Mathf.Abs(dx) * 0.5f, 40f, 220f);
+                startTan = start + new Vector2(tangentDist, 0f);
+                endTan = end - new Vector2(tangentDist, 0f);
+            }
 
             float approxLength = Vector2.Distance(start, startTan) + Vector2.Distance(startTan, endTan) + Vector2.Distance(endTan, end);
             float stepDist = _zoom < CardLodThreshold ? 5.5f : 2.0f;
@@ -8541,6 +9599,13 @@ namespace Killtime.Story
 
         private void DeployCurrentSceneToRuntime()
         {
+            // Déploiement live : repart d'un état cinématique propre (sinon la
+            // routine / caméra / warp skybox / letterbox en cours survit au
+            // redeploy et l'enchaînement de début paraît "brisé" — seul un
+            // restart remettait tout en place). Sans danger si absent.
+            try { FindAnyObjectByType<CameraSystem.CinematicDirector>()?.ResetCinematicState(); }
+            catch { /* ignore */ }
+
             var sceneMgr = StorySceneManager.EnsureInstance();
             var grid = FindAnyObjectByType<TacticalHexGrid>();
             var turnManager = FindAnyObjectByType<TurnManager>();

@@ -50,6 +50,10 @@ namespace Killtime.Story.Scenes
         private bool _isSceneInitialized = false;
         private int _currentDialogueIndex = 0;
         private string _lastNodeId = "";
+        // Suivi des cartes son 🔊 : fin de réplique (changement de mise en scène)
+        // et fin de nœud (transition). Vide = rien à clore.
+        private string _stagedSoundLineId = "";
+        private string _activeSoundNodeId = "";
         private float _chatAnimProgress = 0f;
         private ScenarioNode _lastActiveNode = null;
         private SceneDialogueChoiceData _activeReactionChoice = null;
@@ -169,8 +173,156 @@ namespace Killtime.Story.Scenes
                 bool preempt = !firedOnce;
                 firedOnce = true;
                 director.PlaySceneCinematic(captured, () => ExecuteCinematicChain(captured, visited), preempt);
+                // Sons branchés au début de la cinématique (fil bas → carte 🔊).
+                FireLinkedSounds(id, SoundTriggerPoint.AtLinkedStart);
+                EvaluateLinkedAmbiences(id);
                 _warnedMissingCinematicDirector = false;
                 CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>Cinématique :</b> {cine.Title} [{cine.CinematicId}]", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
+            }
+        }
+
+        /// <summary>
+        /// Déclenche les cartes son 🔊 liées depuis une carte (fil bas du graphe) :
+        /// celles configurées sur `point` (début/fin) démarrent avec leur délai,
+        /// en fire-and-forget (n'attend jamais). Idéal pour nappes, stingers,
+        /// ponctuations de répliques et transitions de nœuds.
+        /// </summary>
+        public void FireLinkedSounds(string sourceCardId, SoundTriggerPoint point)
+        {
+            if (string.IsNullOrWhiteSpace(sourceCardId) || _sceneData == null || _sceneData.Sounds == null) return;
+            for (int i = 0; i < _sceneData.Sounds.Count; i++)
+            {
+                var snd = _sceneData.Sounds[i];
+                if (snd == null || snd.TriggerPoint != point) continue;
+                if (string.IsNullOrWhiteSpace(snd.SourceCardId) || string.IsNullOrWhiteSpace(snd.SoundCueId)) continue;
+                if (!string.Equals(snd.SourceCardId.Trim(), sourceCardId.Trim(), StringComparison.OrdinalIgnoreCase)) continue;
+                float volume = Mathf.Clamp(snd.VolumeScale, 0f, 2f);
+                float delay = Mathf.Max(0f, snd.DelaySeconds);
+                float duration = Mathf.Max(0f, snd.DurationSeconds);
+                try { StartCoroutine(PlaySoundDelayed(snd.SoundCueId, volume, delay, duration)); }
+                catch (System.Exception ex)
+                {
+                    Debug.LogWarning($"[JsonStorySceneController] Son '{snd.SoundId}' non démarré : {ex.Message}");
+                }
+            }
+        }
+
+        private System.Collections.IEnumerator PlaySoundDelayed(string cueId, float volume, float delay, float duration = 0f)
+        {
+            float waited = 0f;
+            while (waited < delay)
+            {
+                while (CombatHUD.IsPaused) yield return null;
+                waited += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                yield return null;
+            }
+            while (CombatHUD.IsPaused) yield return null;
+            if (string.IsNullOrWhiteSpace(cueId)) yield break;
+
+            string cue = cueId.Trim();
+            bool isSwell = CinematicDirector.IsSwellCue(cue);
+            if (isSwell && CinematicDirector.IsSwellPlaying())
+            {
+                yield break;
+            }
+
+            AudioSource src = null;
+            try
+            {
+                // 1) Banque sons/fx (recettes JSON) prioritaire : id insensible à la casse.
+                var bankEntry = SoundBankCatalog.Find(cue);
+                if (bankEntry != null)
+                {
+                    float targetDur = duration > 0.05f ? duration : bankEntry.duration;
+                    var bankClip = ProceduralAudioFactory.GetBankClip(bankEntry, targetDur);
+                    if (bankClip != null)
+                    {
+                        if (KilltimeAudioManager.Instance != null)
+                            src = KilltimeAudioManager.Instance.PlayBankUI(bankEntry.id, bankClip, volume * bankEntry.volume);
+                        if (isSwell && src != null)
+                        {
+                            CinematicDirector.RegisterActiveSwell(src, bankEntry.id);
+                        }
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"[JsonStorySceneController] Recette banque '{cue}' sans clip.");
+                    }
+                }
+                // 2) Repli : SoundId procédural historique.
+                else if (System.Enum.TryParse<SoundId>(cue, out var soundEnum))
+                {
+                    if (KilltimeAudioManager.Instance != null)
+                        src = KilltimeAudioManager.Instance.PlayUI(soundEnum, volume);
+                    if (isSwell && src != null)
+                    {
+                        CinematicDirector.RegisterActiveSwell(src, cue);
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"[JsonStorySceneController] SoundCueId inconnu : '{cueId}'.");
+                }
+            }
+            catch (System.Exception ex)
+            {
+                Debug.LogWarning($"[JsonStorySceneController] Échec lecture son '{cueId}' : {ex.Message}");
+            }
+
+            if (src != null && duration > 0.05f)
+            {
+                float playTimer = 0f;
+                while (playTimer < duration && src != null && src.isPlaying)
+                {
+                    if (CombatHUD.IsPaused)
+                    {
+                        src.Pause();
+                        while (CombatHUD.IsPaused) yield return null;
+                        src.UnPause();
+                    }
+                    playTimer += Time.unscaledDeltaTime;
+                    yield return null;
+                }
+                if (src != null && (!isSwell || playTimer >= duration)) src.Stop();
+            }
+        }
+
+        /// <summary>
+        /// Évalue les cartes d'ambiance 🌌 liées : démarre celles branchées en StartSourceCardId
+        /// et stoppe celles branchées en StopSourceCardId.
+        /// </summary>
+        public void EvaluateLinkedAmbiences(string cardId)
+        {
+            if (string.IsNullOrWhiteSpace(cardId) || _sceneData == null || KilltimeAudioManager.Instance == null) return;
+
+            var toStop = _sceneData.FindAmbiencesStoppingFrom(cardId);
+            for (int i = 0; i < toStop.Count; i++)
+            {
+                var amb = toStop[i];
+                if (amb == null) continue;
+                KilltimeAudioManager.Instance.StopSceneAmbience(amb.AmbienceId, amb.FadeOutDuration);
+            }
+
+            var toStart = _sceneData.FindAmbiencesStartingFrom(cardId);
+            for (int i = 0; i < toStart.Count; i++)
+            {
+                var amb = toStart[i];
+                if (amb == null) continue;
+                Vector3 worldPos = Vector3.zero;
+                if (amb.Spatialized && _grid != null)
+                {
+                    var node = _grid.GetNode(new HexCoordinates(amb.Q, amb.R));
+                    if (node != null) worldPos = node.WorldPosition;
+                }
+                KilltimeAudioManager.Instance.PlaySceneAmbience(
+                    amb.AmbienceId,
+                    amb.PresetId,
+                    amb.VolumeScale,
+                    amb.FadeInDuration,
+                    amb.Spatialized,
+                    worldPos,
+                    amb.Radius
+                );
             }
         }
 
@@ -184,6 +336,9 @@ namespace Killtime.Story.Scenes
         private void ExecuteCinematicChain(SceneCinematicData cine, HashSet<string> visited)
         {
             if (cine == null || _sceneData == null) return;
+            // Sons branchés à la fin de la cinématique (fil bas → carte 🔊).
+            // Jamais en cas d'abort (Stop n'invoque pas ce callback).
+            FireLinkedSounds(cine.CinematicId, SoundTriggerPoint.AtLinkedEnd);
             string targetId = (cine.NextTargetId ?? "").Trim();
             if (string.IsNullOrEmpty(targetId)) return;
 
@@ -430,6 +585,8 @@ namespace Killtime.Story.Scenes
 
             if (KilltimeAudioManager.Instance != null)
             {
+                KilltimeAudioManager.Instance.StopAmbience();
+                KilltimeAudioManager.Instance.StopAllSceneAmbiences(0f);
                 StorySceneManager.ResolveInitialSceneMusic(_sceneData, out var targetMood, out var targetIntensity);
                 if (KilltimeAudioManager.Instance.CurrentMood != targetMood || KilltimeAudioManager.Instance.CurrentIntensityLevel != targetIntensity)
                 {
@@ -714,6 +871,10 @@ namespace Killtime.Story.Scenes
                 {
                     // Cinématiques liées à l'acteur (spawn différé) : non-bloquantes.
                     FireLinkedCinematics(actorData.CinematicIds);
+                    // Cartes son 🔊 : carte instantanée → début et fin ensemble.
+                    FireLinkedSounds(actorData.ActorId, SoundTriggerPoint.AtLinkedStart);
+                    FireLinkedSounds(actorData.ActorId, SoundTriggerPoint.AtLinkedEnd);
+                    EvaluateLinkedAmbiences(actorData.ActorId);
                     _turnManager?.RegisterUnit(unit);
                     if (!actorData.IsPlayer && isCombatNode)
                     {
@@ -1080,6 +1241,10 @@ namespace Killtime.Story.Scenes
             }
             // Cinématiques liées à l'interactable : non-bloquantes.
             FireLinkedCinematics(data.CinematicIds);
+            // Cartes son 🔊 : carte instantanée → début et fin ensemble.
+            FireLinkedSounds(data.InteractableId, SoundTriggerPoint.AtLinkedStart);
+            FireLinkedSounds(data.InteractableId, SoundTriggerPoint.AtLinkedEnd);
+            EvaluateLinkedAmbiences(data.InteractableId);
             if (!string.IsNullOrEmpty(data.CompletionObjectiveId))
             {
                 _director?.SetObjectiveComplete(data.CompletionObjectiveId, true);
@@ -1589,6 +1754,10 @@ namespace Killtime.Story.Scenes
 
                 // Cinématiques liées au déclencheur : non-bloquantes (le saut a déjà eu lieu).
                 FireLinkedCinematics(trg.CinematicIds);
+                // Cartes son 🔊 : carte instantanée → début et fin ensemble.
+                FireLinkedSounds(trg.TriggerId, SoundTriggerPoint.AtLinkedStart);
+                FireLinkedSounds(trg.TriggerId, SoundTriggerPoint.AtLinkedEnd);
+                EvaluateLinkedAmbiences(trg.TriggerId);
 
                 if (trg.OneShot) _firedTriggerIds.Add(trg.TriggerId);
                 var target = _sceneData.FindNode(trg.TargetNodeId);
@@ -1607,6 +1776,12 @@ namespace Killtime.Story.Scenes
             if (_lastNodeId != node.Id)
             {
                 _lastNodeId = node.Id;
+                // Cartes son 🔊 : fin du nœud précédent + clôture de sa réplique
+                // en cours (elle appartenait à l'ancien nœud), avant d'entrer.
+                FireLinkedSounds(_activeSoundNodeId, SoundTriggerPoint.AtLinkedEnd);
+                FireLinkedSounds(_stagedSoundLineId, SoundTriggerPoint.AtLinkedEnd);
+                _stagedSoundLineId = "";
+                _activeSoundNodeId = node.Id;
                 _activeReactionChoice = null;
                 _activeReactionPromptLine = null;
                 _activeChallengeSummary = "";
@@ -1650,6 +1825,9 @@ namespace Killtime.Story.Scenes
                     {
                         SpawnActorsForNode(node.Id, dataNode.TriggerCombatOnEnter);
                         FireLinkedCinematics(dataNode.CinematicIds);
+                        // Cartes son 🔊 : début du nœud (la fin part à la transition suivante).
+                        FireLinkedSounds(node.Id, SoundTriggerPoint.AtLinkedStart);
+                        EvaluateLinkedAmbiences(node.Id);
                         ExecuteNodeEvents(dataNode);
 
                         if (dataNode.TriggerCombatOnEnter && _turnManager != null && _turnManager.IsInExploration)
@@ -1714,6 +1892,17 @@ namespace Killtime.Story.Scenes
 
             // Cinématiques liées à la réplique : non-bloquantes (le dialogue continue aussitôt).
             FireLinkedCinematics(line.CinematicIds);
+
+            // Cartes son 🔊 : fin de la réplique précédente (changement de mise en
+            // scène), puis début de celle-ci. La réplique recalée au préréquis ne
+            // devient jamais "staged" : aucune fin parasite.
+            if (!string.Equals(_stagedSoundLineId, line.LineId, StringComparison.OrdinalIgnoreCase))
+            {
+                FireLinkedSounds(_stagedSoundLineId, SoundTriggerPoint.AtLinkedEnd);
+                _stagedSoundLineId = line.LineId;
+            }
+            FireLinkedSounds(line.LineId, SoundTriggerPoint.AtLinkedStart);
+            EvaluateLinkedAmbiences(line.LineId);
 
             // Gestion de l'ambiance et des cues audio
             ApplyAmbienceSettings(line.Ambience, line.SoundCueId);
@@ -1866,6 +2055,12 @@ namespace Killtime.Story.Scenes
 
             // Cinématiques liées à l'événement : non-bloquantes.
             FireLinkedCinematics(evt.CinematicIds);
+
+            // Cartes son 🔊 : carte instantanée → début et fin ensemble
+            // (le délai de chaque son les sépare dans le temps).
+            FireLinkedSounds(evt.EventId, SoundTriggerPoint.AtLinkedStart);
+            FireLinkedSounds(evt.EventId, SoundTriggerPoint.AtLinkedEnd);
+            EvaluateLinkedAmbiences(evt.EventId);
 
             // Ambiance & Audio
             ApplyAmbienceSettings(evt.Ambience, "");
@@ -2059,6 +2254,10 @@ namespace Killtime.Story.Scenes
         /// Cinématiques placées EN AMONT d'une carte (leur sortie "fin →" pointe vers
         /// cardId) : jouées fire-and-forget quand la carte est atteinte. L'auto-lien
         /// est exclu (l'éditeur l'interdit déjà). Les doublons sont dédupliqués.
+        /// Amorçage automatique : si une autre cinématique pointe vers un prédécesseur
+        /// (chaîne cine_11 ─fin→ cine_1 ─fin→ ligne), c'est la TÊTE de chaîne qui
+        /// démarre (voir FindCinematicChainHead) — la première carte de la chaîne,
+        /// le reste suit via Fin→. Sans amont, comportement inchangé.
         /// </summary>
         private bool FirePredecessorCinematics(string cardId)
         {
@@ -2070,11 +2269,15 @@ namespace Killtime.Story.Scenes
                 if (c == null || string.IsNullOrWhiteSpace(c.NextTargetId)) continue;
                 if (!string.Equals(c.NextTargetId.Trim(), cardId.Trim(), StringComparison.OrdinalIgnoreCase)) continue;
                 if (string.Equals(c.CinematicId, cardId, StringComparison.OrdinalIgnoreCase)) continue;
+                // Remonte la chaîne : la tête démarre, le reste suit via Fin→.
+                string head = c.CinematicId;
+                try { head = _sceneData.FindCinematicChainHead(c.CinematicId) ?? c.CinematicId; }
+                catch { head = c.CinematicId; }
                 ids ??= new List<string>();
                 bool dup = false;
                 for (int k = 0; k < ids.Count; k++)
-                    if (string.Equals(ids[k], c.CinematicId, StringComparison.OrdinalIgnoreCase)) { dup = true; break; }
-                if (!dup) ids.Add(c.CinematicId);
+                    if (string.Equals(ids[k], head, StringComparison.OrdinalIgnoreCase)) { dup = true; break; }
+                if (!dup) ids.Add(head);
             }
             if (ids != null && ids.Count > 0)
             {
@@ -2211,6 +2414,10 @@ namespace Killtime.Story.Scenes
         {
             if (first == null) return false;
             visited ??= new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            // Cartes son 🔊 : chaîne instantanée → début et fin ensemble.
+            FireLinkedSounds(first.ConsequenceId, SoundTriggerPoint.AtLinkedStart);
+            FireLinkedSounds(first.ConsequenceId, SoundTriggerPoint.AtLinkedEnd);
+            EvaluateLinkedAmbiences(first.ConsequenceId);
             var dataNode = _sceneData.FindNode(_director.CurrentNode?.Id);
             if (dataNode == null) return false;
 
@@ -3037,6 +3244,8 @@ namespace Killtime.Story.Scenes
             _turnManager?.ClearUnits();
             _activePopups.Clear();
             ClearPendingNodeJump();
+            KilltimeAudioManager.Instance?.StopAmbience();
+            KilltimeAudioManager.Instance?.StopAllSceneAmbiences(0.2f);
             if (_overheadHudOverridden)
             {
                 _overheadHudOverridden = false;

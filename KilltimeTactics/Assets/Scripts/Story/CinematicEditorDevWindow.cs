@@ -427,6 +427,16 @@ namespace Killtime.Story
                 GUILayout.EndHorizontal();
             }
 
+            GUILayout.Space(4);
+            GUILayout.BeginVertical(GUI.skin.box);
+            GUILayout.Label("<b>☄ Voûte céleste :</b>");
+            shot.SuperluminalWarp = GUILayout.Toggle(shot.SuperluminalWarp, "Effet supraluminique (noir+1px → pixel grossi → halo → voûte normale)", GUILayout.ExpandWidth(true));
+            if (shot.SuperluminalWarp)
+                GUILayout.Label("<color=grey>Actif sur ce plan, SANS déplacement caméra requis (fonctionne sur plan fixe / sur place : START=END accepté). Noir + 1px (20% début) puis pixel grossi → halo + stries → voûte reformée. Idéal : plan d'approche lointaine (ex : scène 01, 1000 km → base).</color>");
+            else
+                GUILayout.Label("<color=grey>Coché = noir + point central en début de plan, voûte normale en fin. Aucun voyage caméra requis.</color>");
+            GUILayout.EndVertical();
+
             GUILayout.BeginHorizontal();
             GUILayout.Label("Focus acteur :", GUILayout.Width(90));
             shot.FocusActorId = GUILayout.TextField(shot.FocusActorId ?? "", GUILayout.Width(130));

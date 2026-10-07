@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Audio;
 using Killtime.Story.Data;
+using Killtime.Story.Scenes;
 using Killtime.Tactics;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.Units;
@@ -106,9 +107,84 @@ namespace Killtime.CameraSystem
         [SerializeField] private float _letterboxEnterDuration = 0.35f;
         [SerializeField] private float _letterboxExitDuration = 0.45f;
         private float _skipNoiseSeed;
+        private AudioSource _activeShotAudioSource;
+        private string _activeShotSoundCueId = "";
+        private bool _isAudioPausedByDirector;
+        private bool _swellSequenceConsumed;
+        private Coroutine _activeAudioLimitRoutine;
+
+        private static AudioSource _activeSwellAudioSource;
+        private static string _activeSwellCueId = "";
+
+        public static bool IsSwellCue(string cue)
+        {
+            if (string.IsNullOrWhiteSpace(cue)) return false;
+            string c = cue.Trim();
+            if (string.Equals(c, "Cinematic_OpeningSwell", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(c, "HBO", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(c, "Cinematic_WarpSwell", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(c, "Cinematic_ApproachSwell", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(c, "WarpSwell", StringComparison.OrdinalIgnoreCase)
+                || string.Equals(c, "ApproachSwell", StringComparison.OrdinalIgnoreCase))
+                return true;
+            var entry = SoundBankCatalog.Find(c);
+            return entry != null && string.Equals(entry.kind, "swell", StringComparison.OrdinalIgnoreCase);
+        }
+
+        public static bool IsSwellPlaying()
+        {
+            if (_activeSwellAudioSource == null) return false;
+            try
+            {
+                return _activeSwellAudioSource.isPlaying || CombatHUD.IsPaused;
+            }
+            catch { return false; }
+        }
+
+        public static void RegisterActiveSwell(AudioSource src, string cueId)
+        {
+            if (src == null) return;
+            _activeSwellAudioSource = src;
+            _activeSwellCueId = cueId ?? "";
+        }
 
         public bool IsPlayingSceneCinematic => _activeSceneCinematicRoutine != null;
         public SceneCinematicData CurrentPlayingSceneCinematic { get; private set; }
+
+        /// <summary>
+        /// Effet supraluminique sur la voûte céleste : 1 = point central
+        /// (vitesse lumière), 0 = voûte normale. Piloté par les plans cochés
+        /// « warp » (1→0 sur la durée du plan = ralenti qui reforme la voûte).
+        /// Reset systématique à 0 (fin/skip/abort/stop) pour ne jamais laisser
+        /// la skybox compressée.
+        /// </summary>
+        private static void SetSkyboxWarp(float warp)
+        {
+            try { SpaceEnvironment.SetWarpForAll(warp); }
+            catch { /* HUD/skybox optionnels */ }
+        }
+
+        private static void ResetSkyboxWarp()
+        {
+            try { SpaceEnvironment.SetWarpForAll(0f); }
+            catch { /* ignore */ }
+        }
+
+        /// <summary>
+        /// Courbe warp avec palier de singularité (v2) :
+        /// - t &lt; SingularityFraction : warp=1 (écran noir + 1px, temps dilaté).
+        /// - ensuite : warp 1→0 easé (le pixel grossit → halo + stries → voûte normale).
+        /// Le voyage caméra garde son ease d'origine (il avance pendant le noir).
+        /// SANS déplacement requis : le warp est piloté par le temps du plan seul
+        /// (plan fixe / START=END / sur place / free-look : l'effet joue pareil).
+        private static float WarpAmountForShotProgress(float t, CinematicEase ease)
+        {
+            const float SingularityFraction = 0.20f;
+            t = Mathf.Clamp01(t);
+            if (t < SingularityFraction) return 1f;
+            float tt = (t - SingularityFraction) / (1f - SingularityFraction);
+            return 1f - ApplyCinematicEase(ease, Mathf.Clamp01(tt));
+        }
 
         public void ResetCinematicState()
         {
@@ -127,7 +203,17 @@ namespace Killtime.CameraSystem
             _handoverSmoothRequested = false;
             _letterboxActive = false;
             _letterboxProgress = 0f;
+            if (_activeAudioLimitRoutine != null)
+            {
+                StopCoroutine(_activeAudioLimitRoutine);
+                _activeAudioLimitRoutine = null;
+            }
+            _activeShotAudioSource = null;
+            _activeShotSoundCueId = "";
+            _isAudioPausedByDirector = false;
+            _swellSequenceConsumed = false;
             ClearAllCinematicLocks();
+            ResetSkyboxWarp();
 
             Time.timeScale = DevTimeScale();
             if (KilltimeAudioManager.Instance != null)
@@ -293,15 +379,6 @@ namespace Killtime.CameraSystem
                     string who = string.IsNullOrWhiteSpace(shot.SpeakerId) ? cine.Title : shot.SpeakerId;
                     CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>[{who}]</b> « {shot.Speech} »", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
                 }
-                if (!string.IsNullOrWhiteSpace(shot.SoundCueId) && KilltimeAudioManager.Instance != null)
-                {
-                    try
-                    {
-                        if (Enum.TryParse<SoundId>(shot.SoundCueId, out var cue))
-                            KilltimeAudioManager.Instance.PlayUI(cue, 0.6f);
-                    }
-                    catch { /* ignore */ }
-                }
 
                 if (startDelay > 0.001f)
                 {
@@ -310,19 +387,45 @@ namespace Killtime.CameraSystem
                     {
                         while (CombatHUD.IsPaused) yield return null;
                         delayElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                        // Warp tenu à 1 pendant l'attente (toujours vitesse lumière).
+                        if (shot.SuperluminalWarp) SetSkyboxWarp(1f);
                         if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape)) { skipped = true; break; }
                         yield return null;
                     }
                 }
                 if (skipped) break;
 
+                while (CombatHUD.IsPaused) yield return null;
+
+                if (!string.IsNullOrWhiteSpace(shot.SoundCueId))
+                {
+                    PlayShotAudio(shot);
+                }
+
                 float elapsed = 0f;
                 while (elapsed < duration)
                 {
-                    while (CombatHUD.IsPaused) yield return null;
+                    if (CombatHUD.IsPaused)
+                    {
+                        if (_activeShotAudioSource != null && _activeShotAudioSource.isPlaying)
+                        {
+                            _activeShotAudioSource.Pause();
+                            _isAudioPausedByDirector = true;
+                        }
+                        while (CombatHUD.IsPaused) yield return null;
+                        if (_activeShotAudioSource != null && _isAudioPausedByDirector)
+                        {
+                            _activeShotAudioSource.UnPause();
+                            _isAudioPausedByDirector = false;
+                        }
+                    }
                     elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
                     float t = Mathf.Clamp01(elapsed / duration);
                     float e = ApplyCinematicEase(shot.Ease, t);
+
+                    // Warp v2 : palier singularité (noir + 1px) puis
+                    // point qui grossit → stries → voûte reformée.
+                    if (shot.SuperluminalWarp) SetSkyboxWarp(WarpAmountForShotProgress(t, shot.Ease));
 
                     // Génération de l'offset additif dans la passe normale (avant rendu)
                     Vector3 sPos = Vector3.zero;
@@ -347,12 +450,14 @@ namespace Killtime.CameraSystem
                 _shakeOffsetEuler = Vector3.zero;
                 _shakeOffsetFov = 0f;
 
+                if (shot.SuperluminalWarp) ResetSkyboxWarp();
                 if (skipped) break;
             }
 
             _shakeOffsetPos = Vector3.zero;
             _shakeOffsetEuler = Vector3.zero;
             _shakeOffsetFov = 0f;
+            ResetSkyboxWarp();
 
             try { onComplete?.Invoke(); } catch { /* ignore */ }
         }
@@ -374,7 +479,17 @@ namespace Killtime.CameraSystem
             _handoverSmoothRequested = false;
             _letterboxActive = false;
             _letterboxProgress = 0f;
+            if (_activeAudioLimitRoutine != null)
+            {
+                StopCoroutine(_activeAudioLimitRoutine);
+                _activeAudioLimitRoutine = null;
+            }
+            _activeShotAudioSource = null;
+            _activeShotSoundCueId = "";
+            _isAudioPausedByDirector = false;
+            _swellSequenceConsumed = false;
             ClearAllCinematicLocks();
+            ResetSkyboxWarp();
             if (restoreCamera) RestoreTacticalCamera();
             else if (_tacticalCam != null) _tacticalCam.enabled = true;
             if (CurrentMode == CameraMode.CinematicAction) CurrentMode = CameraMode.TacticalIsometric;
@@ -418,6 +533,7 @@ namespace Killtime.CameraSystem
             if (_tacticalCam != null) _tacticalCam.enabled = true;
             if (_mainCamera != null && _normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
             ResetAdaptiveNear();
+            ResetSkyboxWarp();
             if (CurrentMode == CameraMode.FreeLook) CurrentMode = CameraMode.TacticalIsometric;
             _letterboxActive = false;
         }
@@ -430,6 +546,7 @@ namespace Killtime.CameraSystem
             if (_tacticalCam != null) _tacticalCam.enabled = true;
             if (_mainCamera != null && _normalFOV > 0) _mainCamera.fieldOfView = _normalFOV;
             ResetAdaptiveNear();
+            ResetSkyboxWarp();
             _letterboxActive = false;
         }
 
@@ -615,6 +732,7 @@ namespace Killtime.CameraSystem
                     if (_tacticalCam != null) _tacticalCam.enabled = true;
                     if (CurrentMode == CameraMode.CinematicAction) CurrentMode = CameraMode.TacticalIsometric;
                     _letterboxActive = false;
+                    ResetSkyboxWarp();
                     _activeSceneCinematicRoutine = null;
                     _sceneCinematicOnComplete = null;
                     yield break;
@@ -844,7 +962,7 @@ namespace Killtime.CameraSystem
                     }
                 }
 
-                // Focus + sous-titre + son du plan.
+                // Focus + sous-titre du plan.
                 if (!string.IsNullOrWhiteSpace(shot.FocusActorId))
                 {
                     var focus = FindSceneUnit(shot.FocusActorId);
@@ -857,17 +975,15 @@ namespace Killtime.CameraSystem
                     string who = string.IsNullOrWhiteSpace(shot.SpeakerId) ? cine.Title : shot.SpeakerId;
                     CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>[{who}]</b> « {shot.Speech} »", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
                 }
-                if (!string.IsNullOrWhiteSpace(shot.SoundCueId) && KilltimeAudioManager.Instance != null)
-                {
-                    try
-                    {
-                        if (Enum.TryParse<SoundId>(shot.SoundCueId, out var cue))
-                            KilltimeAudioManager.Instance.PlayUI(cue, 0.6f);
-                    }
-                    catch { /* ignore */ }
-                }
 
-                bool isFinalShot = (s == shots.Count - 1) && (_sceneCinematicQueue.Count == 0);
+                // Plan final : retrait anticipé des bandes SAUF si une suite Fin→
+                // est déclarée — elle part dans le callback de fin (chaîne), pas
+                // dans la file : sans ce garde, les bandes sortent à la fin de
+                // chaque chaînée puis re-rentrent au début de la suivante (blink),
+                // même si les deux les veulent. Si la cible est invalide/absente,
+                // la sortie différée de fin s'en charge (aucun blink : rien ne suit).
+                bool hasDeclaredSuccessor = cine != null && !string.IsNullOrWhiteSpace(cine.NextTargetId);
+                bool isFinalShot = (s == shots.Count - 1) && (_sceneCinematicQueue.Count == 0) && !hasDeclaredSuccessor;
                 bool shotLetterbox = (cine == null || cine.Letterbox) && shot.Letterbox;
                 _letterboxActive = shotLetterbox;
 
@@ -943,6 +1059,9 @@ namespace Killtime.CameraSystem
                 float startDelay = Mathf.Max(0f, shot.StartDelay / speed);
                 bool wasPaused = CombatHUD.IsPaused;
 
+                // Warp supraluminique : le plan démarre à vitesse lumière (point central).
+                if (shot.SuperluminalWarp) SetSkyboxWarp(1f);
+
                 if (startDelay > 0.001f)
                 {
                     float delayElapsed = 0f;
@@ -951,6 +1070,7 @@ namespace Killtime.CameraSystem
                         while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
                         bool pausedNow = CombatHUD.IsPaused;
                         delayElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
+                        if (shot.SuperluminalWarp) SetSkyboxWarp(1f);
                         if (driveCamera)
                         {
                             Vector3 waitPos = effStartPos;
@@ -973,10 +1093,31 @@ namespace Killtime.CameraSystem
                     }
                 }
 
+                while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
+
+                if (!string.IsNullOrWhiteSpace(shot.SoundCueId))
+                {
+                    PlayShotAudio(shot);
+                }
+
                 float elapsed = 0f;
                 while (!skipped && elapsed < duration)
                 {
-                    while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
+                    if (CombatHUD.IsPaused)
+                    {
+                        wasPaused = true;
+                        if (_activeShotAudioSource != null && _activeShotAudioSource.isPlaying)
+                        {
+                            _activeShotAudioSource.Pause();
+                            _isAudioPausedByDirector = true;
+                        }
+                        while (CombatHUD.IsPaused) yield return null;
+                        if (_activeShotAudioSource != null && _isAudioPausedByDirector)
+                        {
+                            _activeShotAudioSource.UnPause();
+                            _isAudioPausedByDirector = false;
+                        }
+                    }
                     bool pausedNow = CombatHUD.IsPaused;
                     // Temps borné : un hitch (surtout à l'entrée de scène / Deploy :
                     // construction d'environnement, compilation shaders) fait bondir
@@ -986,6 +1127,10 @@ namespace Killtime.CameraSystem
                     elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
                     float t = Mathf.Clamp01(elapsed / duration);
                     float e = ApplyCinematicEase(shot.Ease, t);
+
+                    // Warp v2 : palier noir+1px (temps dilaté) puis le point
+                    // grossit → stries de ralentissement → voûte normale.
+                    if (shot.SuperluminalWarp) SetSkyboxWarp(WarpAmountForShotProgress(t, shot.Ease));
 
                     if (!exitRetractTriggered && elapsed >= retractStartTime)
                     {
@@ -1119,17 +1264,45 @@ namespace Killtime.CameraSystem
                     catch { /* ignore */ }
                 }
 
+                // Fin du plan : voûte reformée (warp retombe à 0, même si skip).
+                if (shot.SuperluminalWarp) ResetSkyboxWarp();
+
                 if (skipped) break;
             }
 
-            bool chainMore = _sceneCinematicQueue.Count > 0;
+            // Sortie DIFFÉRÉE (whiplash inter-cinématiques) : la teardown de fin
+            // (retrait letterbox + transition de sortie + retour tactique) ne doit
+            // jouer que si RIEN ne suit. Or la suite Fin→ part dans le callback
+            // ci-dessous — l'ancienne variable file-seule ne la voyait pas. On décide
+            // donc APRÈS le callback : si une suite a démarré (chaîne ou file), on garde
+            // tout tel quel, la suivante prend le relais depuis la pose live.
+            ClearAllCinematicLocks();
+
+            ResetSkyboxWarp();
+            _activeSceneCinematicRoutine = null;
+            CurrentPlayingSceneCinematic = null;
+            var cb = _sceneCinematicOnComplete;
+            _sceneCinematicOnComplete = null;
+            try { cb?.Invoke(); } catch { /* ignore */ }
+
+            if (_sceneCinematicQueue.Count > 0) PlayNextQueuedCinematic();
+
+            // Une suite a démarré dans le callback (chaîne Fin→) ou attend en file :
+            // PAS de teardown (sinon : glide vers la pose tactique/nœud puis
+            // re-swoosh + letterbox qui clignote entre les deux chaînées).
+            bool followed = IsPlayingSceneCinematic || _sceneCinematicQueue.Count > 0;
 
             if (skipped)
             {
-                _letterboxActive = false;
-                _letterboxProgress = 0f;
+                // Skip + suite chaînée : on garde les bandes si la suivante les
+                // veut aussi (pas de blink) ; sinon la suivante les rétracte seule.
+                if (!followed)
+                {
+                    _letterboxActive = false;
+                    _letterboxProgress = 0f;
+                }
             }
-            else if (!chainMore)
+            else if (!followed)
             {
                 _letterboxActive = false;
                 while (_letterboxProgress > 0.001f)
@@ -1139,9 +1312,32 @@ namespace Killtime.CameraSystem
                 _letterboxProgress = 0f;
             }
 
-            ClearAllCinematicLocks();
-            // Si une autre cinématique suit, on enchaîne DIRECTEMENT (évite un double pop).
-            if (driveCamera && !chainMore)
+            // Si RIEN ne suit, on rend la main (évite un double pop quand ça enchaîne).
+            if (!followed)
+            {
+                if (!IsSwellPlaying())
+                {
+                    _swellSequenceConsumed = false;
+                }
+                if (_activeAudioLimitRoutine != null)
+                {
+                    StopCoroutine(_activeAudioLimitRoutine);
+                    _activeAudioLimitRoutine = null;
+                }
+                if (_activeShotAudioSource != null)
+                {
+                    // Ne jamais couper un swell dont la durée n'est pas achevée
+                    if (!IsSwellCue(_activeShotSoundCueId))
+                    {
+                        _activeShotAudioSource.Stop();
+                    }
+                    _activeShotAudioSource = null;
+                    _activeShotSoundCueId = "";
+                }
+            }
+
+            // Si RIEN ne suit, on rend la main (évite un double pop quand ça enchaîne).
+            if (driveCamera && !followed)
             {
                 if (cine.InPlace)
                 {
@@ -1194,14 +1390,186 @@ namespace Killtime.CameraSystem
                 // Retour au sol : near fixe 0.3 (le tactique travaille à 0.5-35m).
                 ResetAdaptiveNear();
             }
+        }
 
-            _activeSceneCinematicRoutine = null;
-            CurrentPlayingSceneCinematic = null;
-            var cb = _sceneCinematicOnComplete;
-            _sceneCinematicOnComplete = null;
-            try { cb?.Invoke(); } catch { /* ignore */ }
+        private float GetSequenceTotalDuration(SceneCinematicData cine)
+        {
+            if (cine == null || cine.Shots == null) return 0f;
+            float total = 0f;
+            for (int i = 0; i < cine.Shots.Count; i++)
+                if (cine.Shots[i] != null) total += Mathf.Max(0.1f, cine.Shots[i].Duration);
 
-            if (chainMore) PlayNextQueuedCinematic();
+            if (!string.IsNullOrWhiteSpace(cine.NextTargetId))
+            {
+                var controller = FindAnyObjectByType<JsonStorySceneController>();
+                var nextCine = controller != null && controller.SceneData != null ? controller.SceneData.FindCinematic(cine.NextTargetId) : null;
+                if (nextCine != null && nextCine.Shots != null)
+                {
+                    for (int j = 0; j < nextCine.Shots.Count; j++)
+                        if (nextCine.Shots[j] != null) total += Mathf.Max(0.1f, nextCine.Shots[j].Duration);
+                }
+            }
+            return total;
+        }
+
+        private static bool IsSameSwellSequence(string currentId, string nextId)
+        {
+            if (string.IsNullOrWhiteSpace(currentId) || string.IsNullOrWhiteSpace(nextId)) return false;
+            string a = currentId.Trim();
+            string b = nextId.Trim();
+            if (string.Equals(a, b, StringComparison.OrdinalIgnoreCase)) return true;
+
+            bool isSwellA = string.Equals(a, "Cinematic_OpeningSwell", StringComparison.OrdinalIgnoreCase)
+                         || string.Equals(a, "HBO", StringComparison.OrdinalIgnoreCase)
+                         || string.Equals(a, "Cinematic_WarpSwell", StringComparison.OrdinalIgnoreCase)
+                         || string.Equals(a, "Cinematic_ApproachSwell", StringComparison.OrdinalIgnoreCase);
+
+            bool isSwellB = string.Equals(b, "Cinematic_OpeningSwell", StringComparison.OrdinalIgnoreCase)
+                         || string.Equals(b, "HBO", StringComparison.OrdinalIgnoreCase)
+                         || string.Equals(b, "Cinematic_WarpSwell", StringComparison.OrdinalIgnoreCase)
+                         || string.Equals(b, "Cinematic_ApproachSwell", StringComparison.OrdinalIgnoreCase);
+
+            return isSwellA && isSwellB;
+        }
+
+        private void PlayShotAudio(SceneCinematicShotData shot)
+        {
+            if (shot == null || string.IsNullOrWhiteSpace(shot.SoundCueId) || KilltimeAudioManager.Instance == null) return;
+            string cue = shot.SoundCueId.Trim();
+            var bankEntry = SoundBankCatalog.Find(cue);
+            string canonicalId = bankEntry != null ? bankEntry.id : cue;
+
+            bool isSwell = IsSwellCue(canonicalId);
+            if (isSwell)
+            {
+                if (IsSwellPlaying())
+                {
+                    // Swell déjà en cours (lancé par carte son ou plan précédent) : ne jamais recommencer
+                    return;
+                }
+            }
+
+            float targetDur = shot.SoundDuration > 0.05f ? shot.SoundDuration : 0f;
+
+            // 1. Recherche prioritaire de la durée éditée sur une carte son liée
+            if (targetDur <= 0.05f && CurrentPlayingSceneCinematic != null)
+            {
+                var controller = FindAnyObjectByType<JsonStorySceneController>();
+                if (controller != null && controller.SceneData != null && controller.SceneData.Sounds != null)
+                {
+                    for (int si = 0; si < controller.SceneData.Sounds.Count; si++)
+                    {
+                        var snd = controller.SceneData.Sounds[si];
+                        if (snd != null && string.Equals(snd.SourceCardId, CurrentPlayingSceneCinematic.CinematicId, StringComparison.OrdinalIgnoreCase)
+                            && IsSwellCue(snd.SoundCueId) && snd.DurationSeconds > 0.05f)
+                        {
+                            targetDur = snd.DurationSeconds;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            // 2. Durée configurée dans la banque sonore
+            if (targetDur <= 0.05f && bankEntry != null && bankEntry.duration > 0.05f)
+            {
+                targetDur = bankEntry.duration;
+            }
+
+            // 3. Durée calculée de la séquence en dernier recours pour les swells sans durée
+            if (targetDur <= 0.05f && isSwell && CurrentPlayingSceneCinematic != null)
+            {
+                targetDur = GetSequenceTotalDuration(CurrentPlayingSceneCinematic);
+            }
+
+            if (isSwell && _swellSequenceConsumed)
+            {
+                return;
+            }
+
+            bool isAudioActive = _activeShotAudioSource != null && (_activeShotAudioSource.isPlaying || _isAudioPausedByDirector || _activeShotAudioSource.time > 0.01f);
+
+            if (isAudioActive && !string.IsNullOrEmpty(_activeShotSoundCueId))
+            {
+                if (IsSameSwellSequence(_activeShotSoundCueId, canonicalId))
+                {
+                    if (shot.PersistSound && _activeAudioLimitRoutine != null)
+                    {
+                        StopCoroutine(_activeAudioLimitRoutine);
+                        _activeAudioLimitRoutine = null;
+                    }
+                    else if (!shot.PersistSound && targetDur > 0.05f && _activeAudioLimitRoutine == null)
+                    {
+                        float remaining = Mathf.Max(0.1f, targetDur - _activeShotAudioSource.time);
+                        _activeAudioLimitRoutine = StartCoroutine(LimitAudioSourceDuration(_activeShotAudioSource, remaining));
+                    }
+                    return;
+                }
+                else
+                {
+                    _activeShotAudioSource.Stop();
+                    _activeShotAudioSource = null;
+                    _activeShotSoundCueId = "";
+                }
+            }
+
+            try
+            {
+                if (bankEntry != null)
+                {
+                    var bankClip = ProceduralAudioFactory.GetBankClip(bankEntry, targetDur);
+                    if (bankClip != null)
+                    {
+                        var src = KilltimeAudioManager.Instance.PlayBankUI(bankEntry.id, bankClip, bankEntry.volume);
+                        _activeShotAudioSource = src;
+                        _activeShotSoundCueId = canonicalId;
+                        if (isSwell)
+                        {
+                            _swellSequenceConsumed = true;
+                            RegisterActiveSwell(src, canonicalId);
+                        }
+                        if (src != null && targetDur > 0.05f && !shot.PersistSound)
+                        {
+                            if (_activeAudioLimitRoutine != null) StopCoroutine(_activeAudioLimitRoutine);
+                            _activeAudioLimitRoutine = StartCoroutine(LimitAudioSourceDuration(src, targetDur));
+                        }
+                    }
+                    return;
+                }
+
+                if (Enum.TryParse<SoundId>(cue, out var soundEnum))
+                {
+                    var src = KilltimeAudioManager.Instance.PlayUI(soundEnum, 0.7f);
+                    _activeShotAudioSource = src;
+                    _activeShotSoundCueId = canonicalId;
+                    if (isSwell)
+                    {
+                        _swellSequenceConsumed = true;
+                        RegisterActiveSwell(src, canonicalId);
+                    }
+                    if (src != null && targetDur > 0.05f && !shot.PersistSound)
+                    {
+                        if (_activeAudioLimitRoutine != null) StopCoroutine(_activeAudioLimitRoutine);
+                        _activeAudioLimitRoutine = StartCoroutine(LimitAudioSourceDuration(src, targetDur));
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.LogWarning($"[CinematicDirector] Échec lecture audio plan '{cue}' : {ex.Message}");
+            }
+        }
+
+        private static IEnumerator LimitAudioSourceDuration(AudioSource src, float duration)
+        {
+            if (src == null || duration <= 0.05f) yield break;
+            float playTimer = 0f;
+            while (playTimer < duration && src != null && src.isPlaying)
+            {
+                playTimer += Time.unscaledDeltaTime;
+                yield return null;
+            }
+            if (src != null) src.Stop();
         }
 
         private void PlayNextQueuedCinematic()

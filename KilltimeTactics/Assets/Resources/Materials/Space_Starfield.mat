@@ -29,6 +29,9 @@ Material:
     - _StarDensity: 1
     - _StarExposure: 1
     - _StarSize: 1
+    - _WarpAmount: 0
+    m_Vectors:
+    - _WarpCenter: {x: 0, y: 0, z: 1, w: 0}
     m_Colors:
     - _BackgroundColor: {r: 0.005, g: 0.008, b: 0.02, a: 1}
     m_BuildTextureStacks: []

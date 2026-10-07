@@ -81,6 +81,12 @@ namespace Killtime.Audio
         SlowMo_Enter = 362,
         SlowMo_Exit = 363,
         Impact_DeepBoom = 364,
+        // Montée statique façon logo (noir + 1px → approche planète) :
+        // souffle qui s'amplifie puis bloom résolu. (Le trajet complet 15 s
+        // "HBO" vit désormais dans la banque JSON : voir SoundBank.json,
+        // id Cinematic_OpeningSwell — plus rien de hardcodé pour lui.)
+        Cinematic_WarpSwell = 365,
+        Cinematic_ApproachSwell = 366,
 
         // --- Spawns / Arène ---
         Spawn_Deploy = 380,
