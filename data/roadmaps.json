@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-06",
+  "updated": "2026-10-09",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -1830,6 +1830,28 @@
           "scale": null,
           "suggestedAsset": "SceneSoundData + JsonStorySceneController.FireLinkedSounds",
           "details": "FAIT & AUDITÉ : cartes son/fx branchées depuis le BAS de chaque carte (sauf frames) vers cartes orange. Carte son : SoundCueId, délai, début/fin de carte liée, volume, lien SourceCardId. Éditeur : rangée + port bas, bouton + Son 🔊 en barre d'outils, fils ambre à tangentes verticales, drop sur corps de carte sonore toléré, purge des références sur suppression (acteurs + nœuds et leur contenu), auto-disposition & mosaïque intégrant la rangée sonore, survol IsMouseOverAnyNodeOrCard et anti-vol SwallowOverlappedHeaderPress branchés. Runtime : début/fin répliques (suivi staged), nœuds, cinés, instantanées. Banque sons/fx (SoundBank.json + override disque), HBO dé-hardcodé 15s via PlayBankUI sans distorsion bullet-time. Compilation et tests NUnit vérifiés sans bogue (CS0841/CS0136 résolus)."
+        }
+      ]
+    },
+    {
+      "id": "board-scene-polish",
+      "name": "06 Scene Polish",
+      "desc": "Polish visuel et narratif des scènes : intros cinématiques, warp, transitions, lumière, son.",
+      "tasks": [
+        {
+          "id": "RD-110",
+          "title": "Modifier intro scène 01 – warp vitesse lumière → ralenti (réf vidéo)",
+          "epic": "Intro Scène 01",
+          "status": "todo",
+          "priority": "high",
+          "order": 0,
+          "scene": "v1_scene_01",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "CinematicDirector + SpaceStarfield",
+          "details": "Revoir l'intro cinématique scène 01 cine_1 Plan 1 (20s, 1000km→base, warp → voûte reformée) en s'appuyant sur cette référence qui explique extrêmement bien ce qui arrive quand on voyage à la vitesse de la lumière puis qu'on ralentit : https://www.youtube.com/watch?v=cEkozf-zCkY — Reprendre : étirement/aberration à c, point central, puis reformation progressive de la voûte étoilée au ralenti. Suite de RD-107. Cohérence avec RD-095/RD-096 (far 1M + skybox procédurale)."
         }
       ]
     }
