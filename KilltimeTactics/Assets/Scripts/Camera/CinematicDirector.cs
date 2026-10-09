@@ -171,19 +171,22 @@ namespace Killtime.CameraSystem
         }
 
         /// <summary>
-        /// Courbe warp avec palier de singularité (v2) :
-        /// - t &lt; SingularityFraction : warp=1 (écran noir + 1px, temps dilaté).
-        /// - ensuite : warp 1→0 easé (le pixel grossit → halo + stries → voûte normale).
-        /// Le voyage caméra garde son ease d'origine (il avance pendant le noir).
-        /// SANS déplacement requis : le warp est piloté par le temps du plan seul
-        /// (plan fixe / START=END / sur place / free-look : l'effet joue pareil).
+        /// Courbe relativiste de vitesse supraluminique et décélération (RD-110, réf vidéo) :
+        /// - t &lt;= CruiseFraction (~3s sur 15s) : plein régime supraluminique (warp = 1).
+        ///   Aberration maximale : cône central lumineux, Doppler blueshift intense, fond noir.
+        /// - ensuite (~12s sur 15s) : grande décélération continue et progressive.
+        ///   L'aberration se relâche de façon fluide : les étoiles jaillissent en éventail radial
+        ///   du centre vers la périphérie de l'écran avec étirement continu (1 - u)^1.35.
+        /// </summary>
         private static float WarpAmountForShotProgress(float t, CinematicEase ease)
         {
-            const float SingularityFraction = 0.20f;
             t = Mathf.Clamp01(t);
-            if (t < SingularityFraction) return 1f;
-            float tt = (t - SingularityFraction) / (1f - SingularityFraction);
-            return 1f - ApplyCinematicEase(ease, Mathf.Clamp01(tt));
+            const float CruiseFraction = 0.20f;
+            if (t <= CruiseFraction) return 1f;
+
+            float u = (t - CruiseFraction) / (1f - CruiseFraction);
+            float decel = 1f - u;
+            return Mathf.Pow(Mathf.Clamp01(decel), 1.35f);
         }
 
         public void ResetCinematicState()
@@ -316,6 +319,7 @@ namespace Killtime.CameraSystem
             // et ne s'empile pas : elle s'exécute immédiatement en superposition additive.
             if (cine.InPlace)
             {
+                if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) SetSkyboxWarp(1f);
                 StartCoroutine(InPlaceCinematicRoutine(cine, onComplete));
                 return;
             }
@@ -346,10 +350,12 @@ namespace Killtime.CameraSystem
                 catch { /* ignore */ }
                 _sceneCinematicOnComplete = onComplete;
                 CurrentPlayingSceneCinematic = cine;
+                if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) SetSkyboxWarp(1f);
                 _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
                 return;
             }
             _sceneCinematicOnComplete = onComplete;
+            if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) SetSkyboxWarp(1f);
             _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
         }
 
@@ -357,6 +363,9 @@ namespace Killtime.CameraSystem
         {
             float speed = cine.PlaybackSpeed > 0.01f ? cine.PlaybackSpeed : 1f;
             var shots = cine.Shots != null ? new List<SceneCinematicShotData>(cine.Shots) : new List<SceneCinematicShotData>();
+            Debug.Log("[CINE] v14 routine sur-place " + (cine != null ? cine.CinematicId : "?") + " : " + shots.Count + " plans");
+            try { CombatHUD.Instance?.AddAdvancedLog("<color=grey>[CINE] v14 sur-place " + (cine != null ? cine.CinematicId : "?") + " : " + shots.Count + " plans</color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray); }
+            catch { /* ignore */ }
 
             bool skipped = false;
 
@@ -771,6 +780,9 @@ namespace Killtime.CameraSystem
             // raccord Smooth même si elle est réglée en Téléportation (sinon snap).
             bool handover = _handoverSmoothRequested;
             _handoverSmoothRequested = false;
+            Debug.Log("[CINE] v14 routine scène " + (cine != null ? cine.CinematicId : "?") + " : " + shots.Count + " plans, warp1er=" + (shots.Count > 0 && shots[0] != null && shots[0].SuperluminalWarp) + ", transi=" + (cine != null ? cine.StartTransition.ToString() : "?") + ", drive=" + driveCamera + ", handover=" + handover);
+            try { CombatHUD.Instance?.AddAdvancedLog("<color=grey>[CINE] v14 " + (cine != null ? cine.CinematicId : "?") + " : " + shots.Count + " plans, warp1er=" + (shots.Count > 0 && shots[0] != null && shots[0].SuperluminalWarp) + ", transi=" + (cine != null ? cine.StartTransition.ToString() : "?") + "</color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray); }
+            catch { /* ignore */ }
             Vector3 preFocusPos = Vector3.zero;
             bool hasPreFocus = false;
             if (shots.Count > 0 && !string.IsNullOrWhiteSpace(shots[0]?.FocusActorId))
@@ -820,12 +832,23 @@ namespace Killtime.CameraSystem
                     baseDur = Mathf.Clamp(baseDur, 0.35f, 0.6f);
                 float startTransDur = Mathf.Max(0.05f, baseDur / speed);
                 float startTransElapsed = 0f;
+                // Warp : si le premier plan part à vitesse lumière, la voûte est DÉJÀ contractée
+                // pendant le raccord (on ouvre sur le point, pas de phase "les étoiles se contractent").
+                bool firstIsWarp = firstShot != null && firstShot.SuperluminalWarp;
+                if (firstIsWarp)
+                {
+                    SetSkyboxWarp(1f);
+                    Debug.Log("[CinematicDirector] Warp pré-roll v10 : voûte déjà contractée pour " + (cine != null ? cine.CinematicId : "?"));
+                    try { CombatHUD.Instance?.AddAdvancedLog("<color=grey>[WARP] pré-roll : ouverture déjà contractée.</color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray); }
+                    catch { /* ignore */ }
+                }
                 while (startTransElapsed < startTransDur)
                 {
                     while (CombatHUD.IsPaused) yield return null;
                     startTransElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
                     float st = Mathf.Clamp01(startTransElapsed / startTransDur);
                     float se = ApplyCinematicEase(CinematicEase.Smooth, st);
+                    if (firstIsWarp) SetSkyboxWarp(1f);
                     transform.position = Vector3.Lerp(livePrePos, targetStartPos, se);
                     transform.rotation = Quaternion.Slerp(livePreRot, Quaternion.Euler(targetStartEuler), se);
                     if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(livePreFov, targetStartFov, se);
@@ -1060,7 +1083,11 @@ namespace Killtime.CameraSystem
                 bool wasPaused = CombatHUD.IsPaused;
 
                 // Warp supraluminique : le plan démarre à vitesse lumière (point central).
-                if (shot.SuperluminalWarp) SetSkyboxWarp(1f);
+                if (shot.SuperluminalWarp)
+                {
+                    SetSkyboxWarp(1f);
+                    Debug.Log("[CINE] v14 warp=1 plan " + shot.ShotId + " (déjà contracté)");
+                }
 
                 if (startDelay > 0.001f)
                 {
@@ -1590,7 +1617,23 @@ namespace Killtime.CameraSystem
 
         private void ApplyShotEffect(SceneCinematicShotData shot, float t, float e, ref Vector3 pos, ref Vector3 euler, ref float fov)
         {
-            if (shot == null || shot.MoveEffect == CinematicCameraEffect.None) return;
+            if (shot == null) return;
+
+            // Micro-vibrations physiques pendant le vol supraluminique et le freinage (réf vidéo RD-110)
+            if (shot.SuperluminalWarp)
+            {
+                float warpVal = WarpAmountForShotProgress(t, shot.Ease);
+                if (warpVal > 0.005f)
+                {
+                    float fastTime = (Time.unscaledTime + _skipNoiseSeed) * 38f;
+                    float decelRumble = warpVal * (1.15f - warpVal * 0.35f) * 0.04f;
+                    pos.x += Mathf.Sin(fastTime * 1.15f) * decelRumble;
+                    pos.y += Mathf.Cos(fastTime * 1.35f) * decelRumble * 0.7f;
+                    euler.z += Mathf.Sin(fastTime * 0.95f) * decelRumble * 1.8f;
+                }
+            }
+
+            if (shot.MoveEffect == CinematicCameraEffect.None) return;
             float intensity = Mathf.Max(0.05f, shot.ShakeIntensity);
             float time = Time.unscaledTime + _skipNoiseSeed;
             switch (shot.MoveEffect)

@@ -966,6 +966,28 @@ namespace Killtime.Story.Data
             }
         }
 
+        /// <summary>
+        /// Détecte si la cinématique d'ouverture de la scène démarre par un plan supraluminique (warp).
+        /// Si oui, le ciel spatial est initialisé au warp maximal (100% contracté au centre)
+        /// dès le premier frame pour qu'aucun flash de voûte normale n'apparaisse avant l'étirement.
+        /// </summary>
+        public bool HasOpeningSuperluminalWarp()
+        {
+            if (Cinematics == null || Cinematics.Count == 0) return false;
+            for (int i = 0; i < Cinematics.Count; i++)
+            {
+                var c = Cinematics[i];
+                if (c == null || c.Shots == null || c.Shots.Count == 0) continue;
+                string headId = FindCinematicChainHead(c.CinematicId);
+                var headCine = FindCinematic(headId);
+                if (headCine != null && headCine.Shots != null && headCine.Shots.Count > 0 && headCine.Shots[0] != null && headCine.Shots[0].SuperluminalWarp)
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         // --- Helpers sorties cinématiques (listes partagées par tous les types de cartes) ---
         public static List<string> EnsureCineList(List<string> list)
         {

@@ -49,15 +49,16 @@ namespace Killtime.Story.Scenes
         private static readonly int P_Warp = Shader.PropertyToID("_WarpAmount");
         private static readonly int P_WarpCenter = Shader.PropertyToID("_WarpCenter");
 
-        public static SpaceEnvironment Ensure(Transform parent, float density = 1f, float exposure = 1f, float size = 1f)
+        public static SpaceEnvironment Ensure(Transform parent, float density = 1f, float exposure = 1f, float size = 1f, float initialWarp = 0f)
         {
+            float initW = Mathf.Clamp01(initialWarp);
             SpaceEnvironment existing = FindAnyObjectByType<SpaceEnvironment>();
             if (existing != null)
             {
                 existing.starDensity = density;
                 existing.starExposure = exposure;
                 existing.starSize = size;
-                existing.warpAmount = 0f;
+                existing.warpAmount = initW;
                 existing.ApplyProperties();
                 return existing;
             }
@@ -68,7 +69,7 @@ namespace Killtime.Story.Scenes
             env.starDensity = density;
             env.starExposure = exposure;
             env.starSize = size;
-            env.warpAmount = 0f;
+            env.warpAmount = initW;
             env.BuildSphere();
             env.ApplyProperties();
             return env;
@@ -176,6 +177,10 @@ namespace Killtime.Story.Scenes
                 return;
             }
             _renderer.sharedMaterial = _mat;
+            if (_mat != null && warpAmount > 0.001f && _mat.HasProperty(P_Warp))
+            {
+                _mat.SetFloat(P_Warp, warpAmount);
+            }
         }
 
         private void LateUpdate()

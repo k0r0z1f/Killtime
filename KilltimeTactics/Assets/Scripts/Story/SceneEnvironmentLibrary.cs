@@ -14,10 +14,10 @@ namespace Killtime.Story.Scenes
     /// </summary>
     public static class SceneEnvironmentLibrary
     {
-        public static bool Build(string environmentId, Transform parent, TacticalHexGrid grid, List<ScenePlaceholderData> placeholders = null, SceneLightingData lighting = null)
+        public static bool Build(string environmentId, Transform parent, TacticalHexGrid grid, List<ScenePlaceholderData> placeholders = null, SceneLightingData lighting = null, float initialWarp = 0f)
         {
             ApplySceneLighting(lighting);
-            ApplySpaceSkybox(environmentId, parent, placeholders);
+            ApplySpaceSkybox(environmentId, parent, placeholders, initialWarp);
 
             string cleanId = !string.IsNullOrWhiteSpace(environmentId) ? environmentId.Trim() : "";
 
@@ -507,7 +507,7 @@ namespace Killtime.Story.Scenes
         /// Config optionnelle "Starfield" : Scale.x=densité (1), Scale.y=exposition (1),
         /// Scale.z=taille (1). Exposition 1 = nuit profonde, ~0.25 = jour spatial.
         /// </summary>
-        public static void ApplySpaceSkybox(string environmentId, Transform parent, List<ScenePlaceholderData> placeholders)
+        public static void ApplySpaceSkybox(string environmentId, Transform parent, List<ScenePlaceholderData> placeholders, float initialWarp = 0f)
         {
             if (HasStarfieldOptOut(placeholders))
             {
@@ -521,8 +521,8 @@ namespace Killtime.Story.Scenes
             density = Mathf.Clamp(density, 0f, 2f);
             exposure = Mathf.Clamp01(exposure);
             size = Mathf.Clamp(size, 0.5f, 3f);
-            SpaceEnvironment.Ensure(parent, density, exposure, size);
-            Debug.Log($"[SceneEnvironmentLibrary] 🌌 Starfield spatial actif (densité {density:0.##}, exposition {exposure:0.##}, taille {size:0.##}).");
+            SpaceEnvironment.Ensure(parent, density, exposure, size, initialWarp);
+            Debug.Log($"[SceneEnvironmentLibrary] 🌌 Starfield spatial actif (densité {density:0.##}, exposition {exposure:0.##}, taille {size:0.##}, warp initial {initialWarp:0.##}).");
         }
 
         private static bool HasStarfieldOptOut(List<ScenePlaceholderData> placeholders)

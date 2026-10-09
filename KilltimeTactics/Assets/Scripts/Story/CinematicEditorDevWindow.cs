@@ -7,6 +7,7 @@ using Killtime.Tactics;
 using Killtime.Tactics.Grid;
 using Killtime.Tactics.Units;
 using Killtime.CameraSystem;
+using Killtime.Story.Scenes;
 
 namespace Killtime.Story
 {
@@ -691,7 +692,13 @@ namespace Killtime.Story
             GUI.backgroundColor = new Color(1f, 0.35f, 0.85f);
             GUI.enabled = !playing;
             if (GUILayout.Button(playing ? "▶ Lecture en cours…" : "▶ Prévisualiser la cinématique", GUILayout.Height(28)))
+            {
+                if (cine != null && cine.Shots != null && cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp)
+                {
+                    SpaceEnvironment.SetWarpForAll(1f);
+                }
                 cd?.PlaySceneCinematic(cine);
+            }
             GUI.enabled = true;
             GUI.backgroundColor = Color.white;
             if (GUILayout.Button("⏹ Stop", GUILayout.Width(80), GUILayout.Height(28)))

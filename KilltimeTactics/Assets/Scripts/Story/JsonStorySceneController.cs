@@ -548,6 +548,11 @@ namespace Killtime.Story.Scenes
             _activeChallengeSummary = "";
             _activeChallengeRewards = "";
 
+            if (_sceneData != null && _sceneData.HasOpeningSuperluminalWarp())
+            {
+                SpaceEnvironment.SetWarpForAll(1f);
+            }
+
             if (_arena != null)
             {
                 _arena.ClearAllUnits();
@@ -650,7 +655,8 @@ namespace Killtime.Story.Scenes
 
             if (hasEnvironment || hasPlaceholders)
             {
-                if (SceneEnvironmentLibrary.Build(_sceneData.EnvironmentId, transform, _grid, _sceneData.EnvironmentPlaceholders, _sceneData.Lighting))
+                float initialWarp = (_sceneData != null && _sceneData.HasOpeningSuperluminalWarp()) ? 1f : 0f;
+                if (SceneEnvironmentLibrary.Build(_sceneData.EnvironmentId, transform, _grid, _sceneData.EnvironmentPlaceholders, _sceneData.Lighting, initialWarp))
                 {
                     yield return null;
                 }

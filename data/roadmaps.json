@@ -1830,6 +1830,21 @@
           "scale": null,
           "suggestedAsset": "SceneSoundData + JsonStorySceneController.FireLinkedSounds",
           "details": "FAIT & AUDITÉ : cartes son/fx branchées depuis le BAS de chaque carte (sauf frames) vers cartes orange. Carte son : SoundCueId, délai, début/fin de carte liée, volume, lien SourceCardId. Éditeur : rangée + port bas, bouton + Son 🔊 en barre d'outils, fils ambre à tangentes verticales, drop sur corps de carte sonore toléré, purge des références sur suppression (acteurs + nœuds et leur contenu), auto-disposition & mosaïque intégrant la rangée sonore, survol IsMouseOverAnyNodeOrCard et anti-vol SwallowOverlappedHeaderPress branchés. Runtime : début/fin répliques (suivi staged), nœuds, cinés, instantanées. Banque sons/fx (SoundBank.json + override disque), HBO dé-hardcodé 15s via PlayBankUI sans distorsion bullet-time. Compilation et tests NUnit vérifiés sans bogue (CS0841/CS0136 résolus)."
+        },
+        {
+          "id": "RD-111",
+          "title": "Unifier les 2 lecteurs cinématiques en un lecteur à états ? (INDÉCIS)",
+          "epic": "Réflexion",
+          "status": "todo",
+          "priority": "low",
+          "order": 3,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "CinematicDirector",
+          "details": "IDÉE PAS SÛRE — ne pas implémenter sans feu vert. SceneCinematicRoutine (exclusif, caméra+letterbox+raccord) et InPlaceCinematicRoutine (overlay sans caméra) dupliquent la machinerie delay/frames/pause/skip/warp/audio. Piste : lecteur unique à états (Idle→Raccord→Delay→Lecture→Sortie, mode exclusif vs overlay empilable). Pour : une seule logique warp/audio/pause (fini les divergences silencieuses). Contre : méthode géante pleine de if, risque de régression sur du code qui marche. Chemin proposé : extraire d'abord des helpers partagés, fusionner ensuite."
         }
       ]
     },
@@ -1842,7 +1857,7 @@
           "id": "RD-110",
           "title": "Modifier intro scène 01 – warp vitesse lumière → ralenti (réf vidéo)",
           "epic": "Intro Scène 01",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 0,
           "scene": "v1_scene_01",
@@ -1850,8 +1865,7 @@
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "CinematicDirector + SpaceStarfield",
-          "details": "Revoir l'intro cinématique scène 01 cine_1 Plan 1 (20s, 1000km→base, warp → voûte reformée) en s'appuyant sur cette référence qui explique extrêmement bien ce qui arrive quand on voyage à la vitesse de la lumière puis qu'on ralentit : https://www.youtube.com/watch?v=cEkozf-zCkY — Reprendre : étirement/aberration à c, point central, puis reformation progressive de la voûte étoilée au ralenti. Suite de RD-107. Cohérence avec RD-095/RD-096 (far 1M + skybox procédurale)."
+          "details": "FAIT (2026-10-09, RD-110 v21) : Ajustements optiques fins. 1) Disparition rapide du point focal central : atténuation quadratique (coreFade = smoothstep(0.82, 0.99, warp)^2) dès que l'expansion s'enclenche, s'éteignant totalement dès warp <= 0.82 pour laisser la place au flux stellaire. 2) Atténuation adaptative des étoiles contractées : étoiles assombries et douces (~20% d'éclat) au centre lors de la phase contractée, montant progressivement vers 100% de leur luminosité naturelle au fur et à mesure que la voûte s'étend et se normalise (warp -> 0)."
         }
       ]
     }

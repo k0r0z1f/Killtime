@@ -88,8 +88,10 @@ Shader "Killtime/Space/SpaceStarfield"
             }
 
             // Une couche d'étoiles sur grille 3D de la direction : aucune projection,
-            // aucune singularité. Distance en corde (chord) dir↔centre étoile.
-            float3 starLayer(float3 dir, float scale, float threshold, float sizeMul)
+            // aucune singularité. Distance en corde (chord) dir↔centre étoile, optionnellement
+            // étirée le long d'un axe (streakAxis, facteur streakElong ≥ 1) : UNE étoile = UN segment
+            // continu (pas de taps multiples → jamais d'étoile en double/quadruple).
+            float3 starLayer(float3 dir, float scale, float threshold, float sizeMul, float3 streakAxis, float streakElong)
             {
                 float3 g = dir * scale;
                 float3 cell = floor(g);
@@ -103,7 +105,13 @@ Shader "Killtime/Space/SpaceStarfield"
                 // |cell| >> 0 loin de l'origine (dir unitaire × scale ≥ 100) : pas de NaN.
                 float3 jitter = float3(hash31(cell + 7.13), hash31(cell + 3.71), hash31(cell + 5.37)) - 0.5;
                 float3 starDir = normalize(cell + 0.5 + jitter * 0.85);
-                float d = length(dir - starDir);
+                // Étirement : la composante le long de l'axe est compressée d'un facteur elong,
+                // donc l'étoile s'allonge en segment continu le long de l'axe. elong=1 → rond parfait
+                // (bit-identique à avant aux arrondis près). Division par elong ≥ 1 : sans danger.
+                float3 off = dir - starDir;
+                float par = dot(off, streakAxis);
+                float3 perp = off - par * streakAxis;
+                float d = length(perp + (par / max(streakElong, 1.0)) * streakAxis);
 
                 // Taille angulaire en unités de corde (~8e-4 ≈ 1px à 1080p/48°).
                 // smoothstep TOUJOURS croissant (edge0 < edge1) : pas de UB driver.
@@ -150,102 +158,151 @@ Shader "Killtime/Space/SpaceStarfield"
             {
                 float3 dir = normalize(input.dirWS);
                 float warp = clamp(_WarpAmount, 0.0, 1.0);
-                float3 col = _BackgroundColor.rgb;
-
                 float density = clamp(_StarDensity, 0.0, 2.0);
+                float3 col = float3(0.0, 0.0, 0.0);
+                float vaultMask = 1.0;
 
                 if (warp < 0.001)
                 {
+                    col = _BackgroundColor.rgb;
+
                     // 3 couches = parallaxe de magnitudes, sans vrai déplacement.
-                    col += starLayer(dir, 300.0, 0.060 * density, 0.8 * _StarSize);
-                    col += starLayer(dir, 140.0, 0.040 * density, 1.6 * _StarSize) * 1.4;
-                    col += starLayer(dir, 620.0, 0.090 * density, 0.55 * _StarSize) * 0.55;
+                    col += starLayer(dir, 300.0, 0.060 * density, 0.8 * _StarSize, float3(0.0, 0.0, 1.0), 1.0);
+                    col += starLayer(dir, 140.0, 0.040 * density, 1.6 * _StarSize, float3(0.0, 0.0, 1.0), 1.0) * 1.4;
+                    col += starLayer(dir, 620.0, 0.090 * density, 0.55 * _StarSize, float3(0.0, 0.0, 1.0), 1.0) * 0.55;
 
                     // Voie lactée : fond diffus, jamais noir pur côté nuit.
                     col += float3(0.35, 0.45, 0.62) * milkyWay(dir) * _MilkyWayIntensity * 0.35;
                 }
                 else
                 {
-                    // Effet supraluminique en 3 temps (v3 : pixel qui grossit d'abord) :
-                    // Phase 1 (warp~1) : écran noir + pixel 1px net, SANS halo.
-                    // Phase 2 (warp 0.95→0.82) : le pixel LUI-MÊME grossit
-                    //   (1px → ~5px, toujours net, toujours sans halo).
-                    // Phase 3 (warp 0.88→0.68) : le pixel devient halo de lumière
-                    //   + stries de ralentissement, puis voûte normale (warp→0).
-                    // Sous warp<=0.6 le rendu est identique à la v1 (pas de régression).
+                    // CONTRACTION RELATIVISTE INTÉGRALE & ÉTIREMENT RADIAL DEPUIS LE POINT CENTRAL
+                    // Réf vidéo RD-110 : The Entire Trip to the Nearest Star in Real Time (cEkozf-zCkY)
+                    //
+                    // AU DÉPART (warp = 1, vitesse supraluminique de croisière) :
+                    // Toute la voûte céleste entière (360° x 180°) est 100% contractée dans un
+                    // minuscule point/cœur central (rayon theta0 ~ 0.012 rad = 0.7°). Le reste entier du ciel
+                    // est noir absolu (0, 0, 0) : AUCUNE étoile n'est visible sur les côtés avant que
+                    // l'étirement ne s'amorce depuis le centre !
+                    //
+                    // DÉCÉLÉRATION (15s, warp 1 -> 0) :
+                    // La voûte s'étire et jaillit depuis le centre. Chaque étoile part du point central
+                    // et s'étire en faisceau radial le long de r_perp vers sa coordonnée céleste normale.
+                    // Les traînées s'allongent puissamment lors du déploiement puis se rétractent en
+                    // points parfaits lorsque warp atteint 0, formant exactement la voûte normale.
                     float3 wc = _WarpCenter;
                     float wlen = length(wc);
-                    wc = wlen > 0.0001 ? wc / wlen : dir;
+                    wc = wlen > 0.0001 ? wc / wlen : float3(0.0, 0.0, 1.0);
                     float cosA = clamp(dot(dir, wc), -1.0, 1.0);
 
-                    float blackGate = smoothstep(0.70, 0.95, warp);
-                    float starVis = 1.0 - smoothstep(0.60, 0.97, warp);
-                    float3 baseBg = lerp(_BackgroundColor.rgb, float3(0.0, 0.0, 0.0), blackGate);
-                    col = baseBg;
+                    // Angle de vue depuis le centre (0 au centre, PI à l'opposé)
+                    float thetaObs = acos(cosA);
 
-                    float pull1 = warp * 0.04;
-                    float pull2 = warp * 0.08;
-                    float pull3 = warp * 0.12;
-                    float3 d0 = dir;
-                    float3 d1 = normalize(lerp(dir, wc, pull1));
-                    float3 d2 = normalize(lerp(dir, wc, pull2));
-                    float3 d3 = normalize(lerp(dir, wc, pull3));
-                    float boost = 1.0 + warp * 1.2;
+                    // Front d'expansion radiale : à warp = 1, confiné au point central theta0 (0.012 rad = 0.7°).
+                    // Dès que la décélération s'enclenche (warp < 1), thetaFront s'ouvre continûment jusqu'à PI (180°).
+                    float u = 1.0 - warp; // 0 à vitesse lumière -> 1 à l'arrêt
+                    float theta0 = 0.012; // Rayon du point contracté au centre
+                    float thetaFront = theta0 + (3.14159265 - theta0) * pow(u, 1.30);
 
-                    float3 acc0 = (starLayer(d0, 300.0, 0.060 * density, 0.8 * _StarSize)
-                                 + starLayer(d1, 300.0, 0.060 * density, 0.8 * _StarSize)
-                                 + starLayer(d2, 300.0, 0.060 * density, 0.8 * _StarSize)
-                                 + starLayer(d3, 300.0, 0.060 * density, 0.8 * _StarSize)) * 0.25;
-                    float3 acc1 = (starLayer(d0, 140.0, 0.040 * density, 1.6 * _StarSize)
-                                 + starLayer(d1, 140.0, 0.040 * density, 1.6 * _StarSize)
-                                 + starLayer(d2, 140.0, 0.040 * density, 1.6 * _StarSize)
-                                 + starLayer(d3, 140.0, 0.040 * density, 1.6 * _StarSize)) * 0.25;
-                    float3 acc2 = (starLayer(d0, 620.0, 0.090 * density, 0.55 * _StarSize)
-                                 + starLayer(d1, 620.0, 0.090 * density, 0.55 * _StarSize)
-                                 + starLayer(d2, 620.0, 0.090 * density, 0.55 * _StarSize)
-                                 + starLayer(d3, 620.0, 0.090 * density, 0.55 * _StarSize)) * 0.25;
-                    col += acc0 * (boost * starVis);
-                    col += acc1 * (1.4 * boost * starVis);
-                    col += acc2 * (0.55 * boost * starVis);
+                    // Masque de confinement strict : en dehors de thetaFront, le ciel est STRICTEMENT NOIR.
+                    float delta = 0.12 * thetaFront + 0.006;
+                    float rawMask = 1.0 - smoothstep(thetaFront - delta, thetaFront, thetaObs);
+                    // Quand warp touche à 0 (< 0.08), ouverture globale à 100% sur toute la sphère
+                    vaultMask = lerp(rawMask, 1.0, 1.0 - smoothstep(0.0, 0.08, warp));
 
-                    // Voie lactee : effacée tant que le pixel/halo domine
-                    // (gate retardé : intact sous 0.70, nul au-delà de 0.88 —
-                    // pas de fond diffus pendant la croissance du pixel).
-                    float oldGate = 1.0 - smoothstep(0.70, 0.88, warp);
-                    col += float3(0.35, 0.45, 0.62) * milkyWay(dir) * _MilkyWayIntensity * 0.35 * (1.0 - warp * 0.9) * oldGate;
+                    // VECTEUR TRANSVERSE ET DIRECTION RADIALE 3D
+                    float3 rvec = dir - cosA * wc;
+                    float rlen = length(rvec);
+                    float3 rperp = rlen > 0.0001 ? rvec / rlen : float3(1.0, 0.0, 0.0);
 
-                    // Halo de ralentissement (v1) : RETARDÉ — nul pendant la
-                    // croissance du pixel (warp>=0.88), il naît quand le pixel
-                    // est déjà grossi et le remplace (le pixel devient halo).
-                    float centerCore = pow(saturate(cosA), 800.0) * warp * 4.0 * oldGate;
-                    float centerHalo = pow(saturate(cosA), 60.0) * warp * 0.8 * oldGate;
-                    col += float3(1.0, 0.96, 0.90) * (centerCore + centerHalo);
+                    // Position relative dans le front d'expansion (0 au centre -> 1 au bord du front)
+                    float xi = thetaObs / max(0.0001, thetaFront);
 
-                    // Pixel singulier : 1px net SANS halo au départ, qui GROSSIT
-                    // lui-même (1px → ~5px, toujours net) AVANT de devenir halo.
-                    // Netteté pilotée par warp : 1.5M (1px) à warp=1 → 125k (~6px)
-                    // dès warp<=0.82 ; présence jusqu'à 0.68 puis relais au halo.
-                    float grow = 1.0 - smoothstep(0.82, 1.0, warp);
-                    float singK = 1500000.0 / (1.0 + grow * 11.0);
-                    float singPresence = smoothstep(0.68, 0.98, warp);
-                    float ang2 = max(0.0, 2.0 * (1.0 - cosA));
-                    float singPoint = exp(-ang2 * singK) * singPresence * 1.0;
-                    col += float3(1.0, 1.0, 1.0) * singPoint;
+                    // =========================================================================
+                    // PROFONDEUR VOLUMÉTRIQUE 3D & PARALLAXE DIFFÉRENTIELLE MULTI-COUCHES
+                    // Dans un univers 3D, les étoiles ne sont pas sur un plan 2D qui s'étire :
+                    // elles sont réparties en profondeur et réagissent avec des vitesses de parallaxe
+                    // et des vecteurs de fuite 3D distincts selon leur distance à l'observateur.
+                    // =========================================================================
+
+                    // COUCHE 1 : ÉTOILES PROCHES / AVANT-PLAN (échelle 140, brillantes et massives)
+                    // - Parallaxe forte : jaillissent en premier, dépassent l'angle moyen (exposant 0.70)
+                    // - Vecteur de traînée 3D : composante radiale + fuite vers la caméra en profondeur (-wc)
+                    // - Étirement prononcé : traînées longues et dynamiques qui rasent le champ de vision
+                    float xi1 = pow(xi, 0.70);
+                    float thetaRest1 = clamp(lerp(thetaObs, xi1 * 3.14159265, warp), 0.0, 3.14159265);
+                    float3 S1 = cos(thetaRest1) * wc + sin(thetaRest1) * rperp;
+                    float3 vStreak1 = normalize(rperp * 0.88 - wc * 0.48 * saturate(xi * 1.5));
+                    float elong1 = 1.0 + warp * 75.0 * saturate(xi * 2.5);
+                    float blue1 = saturate((1.0 - xi * 0.55) * warp);
+                    float3 tint1 = lerp(float3(1.0, 1.0, 1.0), float3(0.55, 0.82, 1.55), blue1);
+                    float3 lay1 = starLayer(S1, 140.0, 0.040 * density, 1.6 * _StarSize, vStreak1, elong1) * (1.4 * tint1);
+
+                    // COUCHE 0 : ÉTOILES DU PLAN INTERMÉDIAIRE (échelle 300, étoiles moyennes)
+                    // - Parallaxe intermédiaire : expansion équilibrée au cœur du flux stellaire
+                    // - Vecteur de traînée 3D : équilibre radial et profondeur modérée
+                    float xi0 = xi;
+                    float thetaRest0 = clamp(lerp(thetaObs, xi0 * 3.14159265, warp), 0.0, 3.14159265);
+                    float3 S0 = cos(thetaRest0) * wc + sin(thetaRest0) * rperp;
+                    float3 vStreak0 = normalize(rperp * 0.94 - wc * 0.22 * saturate(xi * 1.2));
+                    float elong0 = 1.0 + warp * 45.0 * saturate(xi * 2.0);
+                    float blue0 = saturate((1.0 - xi * 0.75) * warp);
+                    float3 tint0 = lerp(float3(1.0, 1.0, 1.0), float3(0.68, 0.86, 1.35), blue0);
+                    float3 lay0 = starLayer(S0, 300.0, 0.060 * density, 0.8 * _StarSize, vStreak0, elong0) * tint0;
+
+                    // COUCHE 2 : COSMOS PROFOND / ARRIÈRE-PLAN (échelle 620, poussières d'étoiles lointaines)
+                    // - Parallaxe lente : restent groupées plus longtemps au centre (entonnoir de profondeur)
+                    // - Traînées courtes et fines : ancrent l'infini et la profondeur abyssale de l'espace
+                    float xi2 = pow(xi, 1.42);
+                    float thetaRest2 = clamp(lerp(thetaObs, xi2 * 3.14159265, warp), 0.0, 3.14159265);
+                    float3 S2 = cos(thetaRest2) * wc + sin(thetaRest2) * rperp;
+                    float3 vStreak2 = rperp;
+                    float elong2 = 1.0 + warp * 18.0 * saturate(xi * 1.6);
+                    float blue2 = saturate((1.0 - xi * 0.90) * warp);
+                    float3 tint2 = lerp(float3(1.0, 1.0, 1.0), float3(0.80, 0.90, 1.20), blue2);
+                    float3 lay2 = starLayer(S2, 620.0, 0.090 * density, 0.55 * _StarSize, vStreak2, elong2) * (0.55 * tint2);
+
+                    // ATTÉNUATION DE LUMINOSITÉ QUAND CONTRACTÉES AU CENTRE (retour utilisateur) :
+                    // Les étoiles sont assombries/plus douces quand elles sont contractées près du centre,
+                    // et montent progressivement vers leur luminosité normale (100%) au fur et à mesure
+                    // que la voûte s'étend et redevient normale (warp -> 0).
+                    float starBright = lerp(1.0, lerp(0.20, 0.85, saturate(xi * 1.3)), warp);
+
+                    // Somme des 3 couches volumétriques (confinées au front et atténuées au centre)
+                    col = (lay0 + lay1 + lay2) * (vaultMask * starBright);
+
+                    // DISPARITION RAPIDE DU POINT CENTRAL DÈS LE DÉBUT DE L'EXPANSION (retour utilisateur) :
+                    // Au départ (warp = 1, croisière), le point central brille intensément.
+                    // Dès que la voûte commence à s'étendre (warp < 0.99), le point central s'estompe
+                    // rapidement et disparaît complètement (éteint dès warp <= 0.82) pour laisser place aux étoiles.
+                    float coreFade = smoothstep(0.82, 0.99, warp);
+                    coreFade *= coreFade; // Chute rapide et nette dès l'ouverture
+
+                    float angDist = max(0.0, 1.0 - cosA);
+                    float focalStar = exp(-angDist * 35000.0) * 5.0 * coreFade;
+                    float coreCone = saturate(1.0 - thetaObs / 0.10);
+                    float corona = exp(-angDist * 1800.0) * 1.20 * coreFade * coreCone;
+                    float bloom = exp(-angDist * 220.0) * 0.45 * coreFade * coreCone;
+                    col += float3(0.98, 0.99, 1.0) * focalStar;
+                    col += float3(0.40, 0.75, 1.45) * (corona + bloom);
+
+                    // Voie lactée : ancrée sur la coordonnée du cosmos profond S2 (structure galactique en arrière-plan)
+                    float mwGate = (1.0 - warp * 0.85) * vaultMask;
+                    col += float3(0.35, 0.45, 0.62) * milkyWay(S2) * _MilkyWayIntensity * 0.35 * mwGate;
+
+                    // Fond spatial noir profond : noir pur tant que le front n'a pas atteint la zone
+                    float bgGate = (1.0 - warp * 0.98) * vaultMask;
+                    col += _BackgroundColor.rgb * bgGate;
                 }
 
-                // Exposition réaliste : côté jour (planète/soleil dans le champ),
-                // le script baisse _StarExposure -> les faibles s'effacent d'abord.
-                // On garde ~4% des plus brillantes même à 0 pour éviter le vide total.
-                // En singularité le fond est déjà noir (baseBg) : la formule le préserve.
+                // Exposition réaliste (adaptation optique)
                 float keep = 0.04 + 0.96 * _StarExposure;
                 float3 bg = _BackgroundColor.rgb;
                 if (warp >= 0.001)
                 {
-                    // Pendant le warp, le noir de singularité ne doit pas être
-                    // relevé par l'exposition : on blend vers le fond warpé
-                    // (même gate que baseBg).
-                    float blackGateExp = smoothstep(0.70, 0.95, warp);
-                    bg = lerp(_BackgroundColor.rgb, float3(0.0, 0.0, 0.0), blackGateExp);
+                    // Pendant le warp, le fond hors du front d'expansion reste noir pur
+                    float bgGateExp = (1.0 - warp * 0.98) * vaultMask;
+                    bg = _BackgroundColor.rgb * bgGateExp;
                 }
                 col = bg + (col - bg) * keep;
 
