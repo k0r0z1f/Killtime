@@ -752,8 +752,7 @@ namespace Killtime.Tactics.CombatUI
 
         private static List<TacticalUnit> GetAllUnits()
         {
-            return new List<TacticalUnit>(
-                UnityEngine.Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude));
+            return new List<TacticalUnit>(TacticalUnitRegistry.AllUnits);
         }
 
         private static TacticalUnit FindPartner(TacticalUnit actor)

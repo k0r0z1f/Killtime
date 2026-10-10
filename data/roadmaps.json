@@ -779,6 +779,36 @@
           "status": "todo",
           "suggestedAsset": "GrenadeSystem (SmokeScreen)",
           "title": "IA : grenades utilitaires offensives (fumigènes, flash, gaz)"
+        },
+        {
+          "id": "RD-112",
+          "title": "TacticalUnitRegistry : remplacer FindObjectsByType<TacticalUnit> (core + chemins chauds)",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 49,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "TacticalUnitRegistry",
+          "details": "FAIT : static registry thread-safe avec snapshot immutable (AllUnits, Register/Unregister/Clear, GetAliveUnits/GetPlayerUnits/GetEnemyUnits/GetUnitsAt, événements OnUnitRegistered/OnUnitUnregistered). TacticalUnit branché sur OnEnable/OnDestroy. Chemins chauds migrés : HexPathfinder, TacticalHexGrid, TacticalAIController, TacticalUnitVisual. Systèmes réactifs migrés : FogOfWarManager, DuoTechWeaveController, CombatDevArena (8 appels). Clear() branché dans CombatDevArena.ClearAllUnits(). Tests NUnit TacticalUnitRegistryTests créés. Bug corrigé : capture du snapshot avant Clear() dans ClearAllUnits."
+        },
+        {
+          "id": "RD-113",
+          "title": "TacticalUnitRegistry : migration des appels restants",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "medium",
+          "order": 50,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "TacticalUnitRegistry",
+          "details": "FAIT : migration des ~30 appels restants dans UI (CombatHUD, WeaponGripEditorDevWindow, BestiaryDevWindow, CinematicEditorDevWindow, InventoryDevWindow, CharacterDevWindow, MapEditorDevWindow), Camera (CinematicDirector, TacticalCameraController), Multi (VTTTableSync), Core (CoreRulesConfig, TacticalSelectionManager, DuoTechRegistry, CombatTechniqueRegistry, CombatActionRegistry). Aucun FindObjectsByType<TacticalUnit>() ne reste dans le codebase. Reste à valider runtime : suite NUnit + profiler combat dev."
         }
       ]
     },

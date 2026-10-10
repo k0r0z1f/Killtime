@@ -268,8 +268,8 @@ namespace Killtime.Tactics.Units
                                                     || weapon.EquipSlot == Killtime.Core.Inventory.ItemEquipSlot.TwoHands);
             if (!hasLongWeapon) return false;
 
-            var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
-            for (int i = 0; i < allUnits.Length; i++)
+            var allUnits = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < allUnits.Count; i++)
             {
                 var other = allUnits[i];
                 if (other == null || other == this || other.Stats == null || !other.Stats.CanDefendActively()) continue;
@@ -338,8 +338,15 @@ namespace Killtime.Tactics.Units
             }
         }
 
+        private void OnEnable()
+        {
+            TacticalUnitRegistry.Register(this);
+        }
+
         private void OnDestroy()
         {
+            TacticalUnitRegistry.Unregister(this);
+
             if (_grid != null)
             {
                 var list = OccupiedCoords;
@@ -611,17 +618,15 @@ namespace Killtime.Tactics.Units
 
         private bool IsAnyOtherUnitAt(HexCoordinates coords)
         {
-            var all = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < all.Length; i++)
+            var units = TacticalUnitRegistry.GetUnitsAt(coords);
+            foreach (var u in units)
             {
-                var u = all[i];
                 if (u == null || u == this) continue;
-                if (u.gameObject == null) continue;
                 if (u.Stats != null && !u.Stats.IsAlive) continue;
-                if (u._hasPosition && u.Occupies(coords)) return true;
+                return true;
             }
             return false;
-        }   
+        }
 
         public bool TeleportTo(HexCoordinates coords, TacticalHexGrid grid)
         {

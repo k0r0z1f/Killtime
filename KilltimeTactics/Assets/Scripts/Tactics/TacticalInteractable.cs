@@ -11,6 +11,7 @@ namespace Killtime.Tactics
     {
         [SerializeField] private string _objectName = "Objet Interactif";
         [SerializeField] private string _actionLabel = "Examiner";
+        [SerializeField] private string _interactableId = "";
         [SerializeField] private int _interactionRadius = 1;
         [SerializeField] private HexCoordinates _gridCoords;
         [SerializeField] private SkillType _requiredSkill = SkillType.IngenierieArcanotech;
@@ -23,15 +24,28 @@ namespace Killtime.Tactics
 
         public HexCoordinates Coordinates => _gridCoords;
         public string ObjectName => _objectName;
+        public string InteractableId => _interactableId;
         public string ActionLabel => _actionLabel;
         public bool HasInteracted => _hasInteracted;
 
-        public void Configure(string objectName, string actionLabel, HexCoordinates coords, int radius = 1)
+        public void Configure(string objectName, string actionLabel, HexCoordinates coords, int radius = 1,
+            SkillType requiredSkill = SkillType.IngenierieArcanotech, int skillThreshold = 0, bool isOneShot = false,
+            string interactableId = "")
         {
             _objectName = objectName;
             _actionLabel = actionLabel;
             _gridCoords = coords;
             _interactionRadius = radius;
+            _requiredSkill = requiredSkill;
+            _skillDifficultyThreshold = skillThreshold;
+            _isOneShot = isOneShot;
+            _interactableId = string.IsNullOrWhiteSpace(interactableId) ? objectName : interactableId;
+        }
+
+        /// <summary>Réinitialise l'état d'interaction (éditeur / tests / respawn).</summary>
+        public void ResetInteractionState()
+        {
+            _hasInteracted = false;
         }
 
         /// <summary>

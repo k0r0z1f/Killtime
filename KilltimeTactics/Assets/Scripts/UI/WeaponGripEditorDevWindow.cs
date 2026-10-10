@@ -533,8 +533,8 @@ namespace Killtime.UI
 
         private void ApplyToActiveUnitsInScene()
         {
-            var units = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < units.Length; i++)
+            var units = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < units.Count; i++)
             {
                 var u = units[i];
                 if (u != null)

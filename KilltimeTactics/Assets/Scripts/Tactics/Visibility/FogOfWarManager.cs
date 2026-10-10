@@ -424,13 +424,13 @@ namespace Killtime.Tactics.Visibility
         }
 
         /// <summary>Observateurs locaux : escouade solo ou avatars revendiqués en VTT.
-        /// PERF : tableau pré-récupéré optionnel (un seul FindObjectsByType par refresh).</summary>
-        public List<TacticalUnit> GetLocalObservers(TacticalUnit[] all = null)
+        /// PERF : utilise le registre global (snapshot immutable).</summary>
+        public List<TacticalUnit> GetLocalObservers()
         {
             var list = new List<TacticalUnit>();
-            all ??= FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+            var all = TacticalUnitRegistry.AllUnits;
             bool useClaims = LocalClaimedUnitIds.Count > 0;
-            for (int i = 0; i < all.Length; i++)
+            for (int i = 0; i < all.Count; i++)
             {
                 var u = all[i];
                 if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
@@ -446,7 +446,7 @@ namespace Killtime.Tactics.Visibility
             // Garde-fou : jamais d'escouade vide => repli solo (tout IsPlayer).
             if (useClaims && list.Count == 0)
             {
-                for (int i = 0; i < all.Length; i++)
+                for (int i = 0; i < all.Count; i++)
                 {
                     var u = all[i];
                     if (u != null && u.Stats != null && u.Stats.IsAlive && u.IsPlayerControlled)
@@ -460,12 +460,12 @@ namespace Killtime.Tactics.Visibility
         /// Ennemis pour le client local : toute unité vivante qui n'est pas un
         /// observateur local (en solo : IsPlayerControlled == false).
         /// </summary>
-        public List<TacticalUnit> GetLocalEnemies(TacticalUnit[] all = null, HashSet<TacticalUnit> observerSet = null)
+        public List<TacticalUnit> GetLocalEnemies(HashSet<TacticalUnit> observerSet = null)
         {
-            observerSet ??= new HashSet<TacticalUnit>(GetLocalObservers(all));
+            observerSet ??= new HashSet<TacticalUnit>(GetLocalObservers());
             var list = new List<TacticalUnit>();
-            all ??= FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
-            for (int i = 0; i < all.Length; i++)
+            var all = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < all.Count; i++)
             {
                 var u = all[i];
                 if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
@@ -658,10 +658,10 @@ namespace Killtime.Tactics.Visibility
                 return;
             }
 
-            // PERF : un seul balayage d'unités par refresh, observateurs partagés.
-            var all = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+            // PERF : snapshot immutable depuis le registre global.
+            var all = TacticalUnitRegistry.AllUnits;
             RebuildVisualCacheIfNeeded(all);
-            var observers = GetLocalObservers(all);
+            var observers = GetLocalObservers();
             var specs = new List<(HexCoordinates coords, float yawDeg, FogVisionParams vision)>(observers.Count);
             for (int i = 0; i < observers.Count; i++)
             {
@@ -684,7 +684,7 @@ namespace Killtime.Tactics.Visibility
 
             // Mémorise la dernière position connue des détectés encore visibles.
             var observerSet = new HashSet<TacticalUnit>(observers);
-            var enemies = GetLocalEnemies(all, observerSet);
+            var enemies = GetLocalEnemies(observerSet);
             for (int i = 0; i < enemies.Count; i++)
             {
                 var e = enemies[i];
@@ -714,9 +714,9 @@ namespace Killtime.Tactics.Visibility
         {
             try
             {
-                var all = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                var all = TacticalUnitRegistry.AllUnits;
                 RebuildVisualCacheIfNeeded(all);
-                for (int i = 0; i < all.Length; i++)
+                for (int i = 0; i < all.Count; i++)
                 {
                     var u = all[i];
                     if (u == null) continue;
@@ -734,18 +734,18 @@ namespace Killtime.Tactics.Visibility
         /// <summary>
         /// Invalide le cache visuels quand la liste d'unités change (spawn/destroy).
         /// </summary>
-        private void RebuildVisualCacheIfNeeded(TacticalUnit[] all = null)
+        private void RebuildVisualCacheIfNeeded(IReadOnlyList<TacticalUnit> all = null)
         {
-            all ??= FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
-            if (all.Length == _visualCacheUnitCount && _visualCache.Count > 0) return;
+            all ??= TacticalUnitRegistry.AllUnits;
+            if (all.Count == _visualCacheUnitCount && _visualCache.Count > 0) return;
             _visualCache.Clear();
-            for (int i = 0; i < all.Length; i++)
+            for (int i = 0; i < all.Count; i++)
             {
                 var u = all[i];
                 if (u == null || _visualCache.ContainsKey(u)) continue;
                 _visualCache[u] = u.GetComponent<TacticalUnitVisual>();
             }
-            _visualCacheUnitCount = all.Length;
+            _visualCacheUnitCount = all.Count;
         }
 
         /// <summary>Dernière position connue d'un ennemi (fantôme HUD), null si jamais vu.</summary>

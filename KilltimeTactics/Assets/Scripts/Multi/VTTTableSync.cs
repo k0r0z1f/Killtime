@@ -134,8 +134,8 @@ namespace Killtime.Multi
         public void RebuildRegistry()
         {
             _units.Clear();
-            var all = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
-            for (int i = 0; i < all.Length; i++)
+            var all = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < all.Count; i++)
             {
                 var u = all[i];
                 if (u == null || !u.gameObject.activeInHierarchy) continue;
@@ -520,8 +520,8 @@ namespace Killtime.Multi
                     : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange,
             };
 
-            var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
-            for (int i = 0; i < allUnits.Length; i++)
+            var allUnits = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < allUnits.Count; i++)
             {
                 var u = allUnits[i];
                 if (u == null || u.Stats == null) continue;
@@ -693,13 +693,13 @@ namespace Killtime.Multi
         private void CaptureLiveUnitsIntoMap(TacticalMapSaveData map)
         {
             if (map == null) return;
-            var liveUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
-            if (liveUnits.Length == 0) return;
+            var liveUnits = TacticalUnitRegistry.AllUnits;
+            if (liveUnits.Count == 0) return;
 
             map.PlacedUnits ??= new List<MapUnitData>();
             map.PlacedUnits.Clear();
 
-            for (int i = 0; i < liveUnits.Length; i++)
+            for (int i = 0; i < liveUnits.Count; i++)
             {
                 var u = liveUnits[i];
                 if (u == null || u.Stats == null) continue;

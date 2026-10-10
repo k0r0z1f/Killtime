@@ -2275,9 +2275,9 @@ namespace Killtime.UI
             GUI.Label(new Rect(rect.x + 20, rect.y + 36, width - 40, 16), subtitle, _hudSubStyle);
             GUI.color = Color.white;
 
-            var allUnits = FindObjectsByType<TacticalUnit>();
+            var allUnits = TacticalUnitRegistry.AllUnits;
             int liveAllies = 0, deadAllies = 0, deadEnemies = 0;
-            for (int i = 0; i < allUnits.Length; i++)
+            for (int i = 0; i < allUnits.Count; i++)
             {
                 var u = allUnits[i];
                 if (u == null || u.Stats == null) continue;

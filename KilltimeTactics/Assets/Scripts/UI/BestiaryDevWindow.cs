@@ -438,7 +438,7 @@ namespace Killtime.UI
 
             var coords = new HexCoordinates(_spawnQ, _spawnR);
             var occupiedCoords = TitanFootprint.GetOccupiedCoordinates(coords, sheet.Footprint);
-            var existingUnits = FindObjectsByType<TacticalUnit>();
+            var existingUnits = TacticalUnitRegistry.AllUnits;
 
             for (int i = 0; i < occupiedCoords.Count; i++)
             {
@@ -456,7 +456,7 @@ namespace Killtime.UI
                     return null;
                 }
 
-                for (int u = 0; u < existingUnits.Length; u++)
+                for (int u = 0; u < existingUnits.Count; u++)
                 {
                     if (existingUnits[u] != null && existingUnits[u].Stats != null && existingUnits[u].Stats.IsAlive && existingUnits[u].CurrentCoords.Equals(c))
                     {

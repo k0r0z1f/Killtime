@@ -335,6 +335,7 @@ namespace Killtime.Story.Scenes
                 InteractableId = InteractableId,
                 DisplayName = InteractableLabel,
                 ActionLabel = "Interagir",
+                Description = "Un terminal standard. Une action legacy-compatible est préremplie.",
                 Q = InteractableQ,
                 R = InteractableR,
                 Radius = 1,
@@ -342,7 +343,20 @@ namespace Killtime.Story.Scenes
                 SkillThreshold = Mathf.Max(0, InteractableThreshold),
                 CompletionObjectiveId = ObjectiveId,
                 IsOneShot = true,
-                TriggerNodeId = ActionNodeId
+                TriggerNodeId = ActionNodeId,
+                Actions = new System.Collections.Generic.List<SceneInteractableAction>
+                {
+                    new SceneInteractableAction
+                    {
+                        ActionId = "action_1",
+                        Label = "Interagir",
+                        RequiredSkill = (int)InteractableSkill,
+                        SkillThreshold = Mathf.Max(0, InteractableThreshold),
+                        CompletionObjectiveId = ObjectiveId,
+                        TriggerNodeId = ActionNodeId,
+                        IsOneShot = true
+                    }
+                }
             });
 
             data.Nodes.Add(new SceneNodeData

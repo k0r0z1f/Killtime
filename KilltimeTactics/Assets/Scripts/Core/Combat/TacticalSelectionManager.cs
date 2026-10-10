@@ -211,9 +211,11 @@ namespace Killtime.Tactics.CombatUI
 
         private void ApplySelectionVisuals()
         {
-            var allUnits = FindObjectsByType<TacticalUnit>();
-            foreach (var u in allUnits)
+            var allUnits = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < allUnits.Count; i++)
             {
+                var u = allUnits[i];
+                if (u == null) continue;
                 var vis = u.GetComponent<TacticalUnitVisual>();
                 if (vis != null)
                 {
@@ -241,10 +243,11 @@ namespace Killtime.Tactics.CombatUI
 
         public TacticalUnit GetUnitAtCoordinates(HexCoordinates coords)
         {
-            var allUnits = FindObjectsByType<TacticalUnit>();
-            foreach (var u in allUnits)
+            var allUnits = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < allUnits.Count; i++)
             {
-                if (u.CurrentCoords.Equals(coords)) return u;
+                var u = allUnits[i];
+                if (u != null && u.CurrentCoords.Equals(coords)) return u;
             }
             return null;
         }

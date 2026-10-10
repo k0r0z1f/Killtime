@@ -75,7 +75,7 @@ namespace Killtime.Tactics.CombatUI
 
         private static List<TacticalUnit> GetAllUnits()
         {
-            return new List<TacticalUnit>(Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude));
+            return new List<TacticalUnit>(TacticalUnitRegistry.AllUnits);
         }
 
         private static bool IsEnemyOf(TacticalUnit actor, TacticalUnit other)

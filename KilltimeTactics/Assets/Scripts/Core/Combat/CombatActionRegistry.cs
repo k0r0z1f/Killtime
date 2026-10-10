@@ -597,11 +597,11 @@ namespace Killtime.Tactics.CombatUI
                             if (!act.Stats.ConsumeActionPoints(3)) return;
                             var zone = TitanFootprint.GetStompZone(tgt.CurrentCoords, act.FootprintType);
                             var zoneSet = new HashSet<HexCoordinates>(zone);
-                            var all = Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                            var all = TacticalUnitRegistry.AllUnits;
                             int hitCount = 0;
                             int stompDmg = Mathf.Max(4, act.Stats.Attributes.Force + 2);
 
-                            for (int i = 0; i < all.Length; i++)
+                            for (int i = 0; i < all.Count; i++)
                             {
                                 var u = all[i];
                                 if (u == null || u.Stats == null || !u.Stats.IsAlive || u == act) continue;
@@ -658,11 +658,11 @@ namespace Killtime.Tactics.CombatUI
                             if (!act.Stats.ConsumeActionPoints(3)) return;
                             var zone = TitanFootprint.GetBreathZone(tgt.CurrentCoords, act.FootprintType);
                             var zoneSet = new HashSet<HexCoordinates>(zone);
-                            var all = Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                            var all = TacticalUnitRegistry.AllUnits;
                             int hitCount = 0;
                             int breathDmg = Mathf.Max(5, (act.Stats.Attributes.Magie > 0 ? act.Stats.Attributes.Magie : act.Stats.Attributes.Constitution) + 2);
 
-                            for (int i = 0; i < all.Length; i++)
+                            for (int i = 0; i < all.Count; i++)
                             {
                                 var u = all[i];
                                 if (u == null || u.Stats == null || !u.Stats.IsAlive || u == act) continue;
@@ -900,11 +900,11 @@ namespace Killtime.Tactics.CombatUI
                             if (!act.Stats.ConsumeActionPoints(3)) return;
                             var perimeter = TitanFootprint.GetPerimeterCoordinates(act.CurrentCoords, act.FootprintType);
                             var pSet = new HashSet<HexCoordinates>(perimeter);
-                            var all = Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                            var all = TacticalUnitRegistry.AllUnits;
                             int hitCount = 0;
                             int stompDmg = Mathf.Max(4, act.Stats.Attributes.Force + 2);
 
-                            for (int i = 0; i < all.Length; i++)
+                            for (int i = 0; i < all.Count; i++)
                             {
                                 var u = all[i];
                                 if (u == null || u.Stats == null || !u.Stats.IsAlive || u == act) continue;

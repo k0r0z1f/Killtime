@@ -904,14 +904,11 @@ namespace Killtime.Tactics.DuoTech
 
         private List<TacticalUnit> EnemiesAlive()
         {
-            var all = new List<TacticalUnit>(
-                UnityEngine.Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude));
             var r = new List<TacticalUnit>();
             bool playerInitiator = _initiator != null ? _initiator.IsPlayerControlled : true;
-            for (int i = 0; i < all.Count; i++)
+            foreach (var u in TacticalUnitRegistry.GetAliveUnits())
             {
-                var u = all[i];
-                if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
+                if (u == null) continue;
                 if (u.IsPlayerControlled == playerInitiator) continue;
                 r.Add(u);
             }
@@ -1378,16 +1375,13 @@ namespace Killtime.Tactics.DuoTech
                 return;
             }
             // Couloir vide : personne d'autre dans la bande (alliés + ennemis sauf cible).
-            var all = new List<TacticalUnit>(
-                UnityEngine.Object.FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude));
             var wStart = new WeaveVec2(_t1[0].x, _t1[0].z);
             var wEnd = new WeaveVec2(end.x, end.z);
             var obstacles = new List<WeaveVec2>();
             int targetIdx = -1;
-            for (int i = 0; i < all.Count; i++)
+            foreach (var u in TacticalUnitRegistry.GetAliveUnits())
             {
-                var u = all[i];
-                if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
+                if (u == null) continue;
                 if (u == _mina || u == _lucas) continue;
                 var p = new WeaveVec2(u.transform.position.x, u.transform.position.z);
                 if (u == best) { targetIdx = obstacles.Count; }

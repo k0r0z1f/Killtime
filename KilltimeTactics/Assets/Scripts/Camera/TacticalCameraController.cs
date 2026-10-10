@@ -107,17 +107,18 @@ namespace Killtime.CameraSystem
 
         private void AutoFindPlayerTarget()
         {
-            var units = FindObjectsByType<TacticalUnit>();
-            foreach (var u in units)
+            var units = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < units.Count; i++)
             {
-                if (u.IsPlayerControlled)
+                var u = units[i];
+                if (u != null && u.IsPlayerControlled)
                 {
                     FocusOn(u.transform);
                     return;
                 }
             }
 
-            if (units.Length > 0)
+            if (units.Count > 0 && units[0] != null)
             {
                 FocusOn(units[0].transform);
             }

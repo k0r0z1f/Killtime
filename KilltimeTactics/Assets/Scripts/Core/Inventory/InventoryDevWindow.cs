@@ -451,8 +451,8 @@ namespace Killtime.UI
             if (_selectedUnit != null) _selectedUnit.NotifyInventoryChanged(saveToDisk: false);
             try
             {
-                var allUnits = FindObjectsByType<TacticalUnit>();
-                for (int i = 0; i < allUnits.Length; i++)
+                var allUnits = TacticalUnitRegistry.AllUnits;
+                for (int i = 0; i < allUnits.Count; i++)
                 {
                     var u = allUnits[i];
                     if (u == null || u == _selectedUnit || u.Sheet == null) continue;
@@ -466,8 +466,8 @@ namespace Killtime.UI
         private void RefreshSceneUnits()
         {
             _sceneUnits.Clear();
-            var all = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < all.Length; i++)
+            var all = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < all.Count; i++)
                 if (all[i] != null && all[i].Stats != null) _sceneUnits.Add(all[i]);
             if (_selectedUnitIndex >= _sceneUnits.Count) _selectedUnitIndex = 0;
             // En mode brouillon on ne touche pas à _selectedUnit : la fiche active

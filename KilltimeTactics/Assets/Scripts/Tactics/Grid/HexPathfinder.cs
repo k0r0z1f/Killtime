@@ -36,11 +36,9 @@ namespace Killtime.Tactics.Grid
             }
 
             var occupiedCoords = new HashSet<HexCoordinates>();
-            var allUnits = Object.FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < allUnits.Length; i++)
+            foreach (var u in TacticalUnitRegistry.GetAliveUnits())
             {
-                var u = allUnits[i];
-                if (u != null && u.Stats != null && u.Stats.IsAlive && !u.Occupies(start))
+                if (u != null && !u.Occupies(start))
                 {
                     var uCoords = u.OccupiedCoords;
                     for (int c = 0; c < uCoords.Count; c++)
@@ -168,11 +166,9 @@ namespace Killtime.Tactics.Grid
             frontier.Enqueue(center);
 
             var occupiedCoords = new HashSet<HexCoordinates>();
-            var allUnits = Object.FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < allUnits.Length; i++)
+            foreach (var u in TacticalUnitRegistry.GetAliveUnits())
             {
-                var u = allUnits[i];
-                if (u != null && u.Stats != null && u.Stats.IsAlive && !u.CurrentCoords.Equals(center))
+                if (u != null && !u.CurrentCoords.Equals(center))
                 {
                     occupiedCoords.Add(u.CurrentCoords);
                 }

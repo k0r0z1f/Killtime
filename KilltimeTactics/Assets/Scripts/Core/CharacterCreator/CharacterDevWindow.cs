@@ -342,8 +342,8 @@ namespace Killtime.UI
             if (sheet == null) return;
             CharacterStorageService.SaveCharacter(sheet);
 
-            var allUnits = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < allUnits.Length; i++)
+            var allUnits = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < allUnits.Count; i++)
             {
                 var u = allUnits[i];
                 if (u != null && u.Sheet != null)
@@ -2793,8 +2793,8 @@ namespace Killtime.UI
             }
 
             bool isOccupiedByUnit = false;
-            var existingUnits = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < existingUnits.Length; i++)
+            var existingUnits = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < existingUnits.Count; i++)
             {
                 if (existingUnits[i] != null && existingUnits[i].Stats != null && existingUnits[i].Stats.IsAlive && existingUnits[i].CurrentCoords.Equals(coords))
                 {

@@ -633,8 +633,8 @@ namespace Killtime.CameraSystem
         {
             try
             {
-                var units = FindObjectsByType<TacticalUnit>();
-                for (int i = 0; i < units.Length; i++)
+                var units = TacticalUnitRegistry.AllUnits;
+                for (int i = 0; i < units.Count; i++)
                     if (units[i] != null) units[i].CinematicDriveActive = false;
             }
             catch { /* ignore */ }
@@ -676,8 +676,8 @@ namespace Killtime.CameraSystem
             if (string.IsNullOrWhiteSpace(actorIdOrName)) return null;
             try
             {
-                var units = FindObjectsByType<TacticalUnit>();
-                for (int i = 0; i < units.Length; i++)
+                var units = TacticalUnitRegistry.AllUnits;
+                for (int i = 0; i < units.Count; i++)
                 {
                     var u = units[i];
                     if (u == null) continue;

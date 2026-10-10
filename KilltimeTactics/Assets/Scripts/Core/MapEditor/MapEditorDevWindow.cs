@@ -1468,10 +1468,10 @@ namespace Killtime.UI
             }
 
             data.PlacedUnits.Clear();
-            var sceneUnits = FindObjectsByType<TacticalUnit>();
-            Array.Sort(sceneUnits, (a, b) => b.IsPlayerControlled.CompareTo(a.IsPlayerControlled));
+            var sceneUnits = new List<TacticalUnit>(TacticalUnitRegistry.AllUnits);
+            sceneUnits.Sort((a, b) => b.IsPlayerControlled.CompareTo(a.IsPlayerControlled));
 
-            for (int i = 0; i < sceneUnits.Length; i++)
+            for (int i = 0; i < sceneUnits.Count; i++)
             {
                 var u = sceneUnits[i];
                 if (u == null || u.Stats == null) continue;
@@ -1542,8 +1542,8 @@ namespace Killtime.UI
             else
             {
                 Killtime.Tactics.Units.DroppedWeaponPickup.ClearAllDropped();
-                var existingUnits = FindObjectsByType<TacticalUnit>();
-                for (int i = 0; i < existingUnits.Length; i++)
+                var existingUnits = TacticalUnitRegistry.AllUnits;
+                for (int i = 0; i < existingUnits.Count; i++)
                 {
                     if (existingUnits[i] != null)
                     {

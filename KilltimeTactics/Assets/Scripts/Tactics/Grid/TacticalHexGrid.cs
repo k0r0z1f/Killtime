@@ -126,11 +126,9 @@ namespace Killtime.Tactics.Grid
             if (!_nodes.TryGetValue(coords, out var node)) return false;
             if (!node.IsWalkable || node.IsOccupied) return false;
 
-            var all = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < all.Length; i++)
+            foreach (var u in TacticalUnitRegistry.GetAliveUnits())
             {
-                var u = all[i];
-                if (u != null && u.Stats != null && u.Stats.IsAlive && u.Occupies(coords))
+                if (u != null && u.Occupies(coords))
                 {
                     node.IsOccupied = true;
                     return false;
@@ -149,12 +147,9 @@ namespace Killtime.Tactics.Grid
                 if (!_nodes.TryGetValue(c, out var node)) return false;
                 if (!node.IsWalkable) return false;
 
-                var all = FindObjectsByType<TacticalUnit>();
-                for (int u = 0; u < all.Length; u++)
+                foreach (var unit in TacticalUnitRegistry.GetAliveUnits())
                 {
-                    var unit = all[u];
                     if (unit == null || unit == ignoreUnit) continue;
-                    if (unit.Stats != null && !unit.Stats.IsAlive) continue;
                     if (unit.Occupies(c)) return false;
                 }
 

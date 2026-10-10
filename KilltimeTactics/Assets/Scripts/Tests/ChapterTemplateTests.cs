@@ -170,6 +170,21 @@ namespace Killtime.Tests
                 UnityEngine.Object.DestroyImmediate(go);
             }
         }
+
+        [Test]
+        public void ToStorySceneData_Interactable_HasDescriptionAndLegacyCompatibleAction()
+        {
+            var config = ChapterTemplateLibrary.CreateDefault("ch_07_test");
+            var data = config.ToStorySceneData();
+
+            Assert.AreEqual(1, data.Interactables.Count);
+            var it = data.Interactables[0];
+            Assert.IsFalse(string.IsNullOrWhiteSpace(it.Description));
+            Assert.IsNotNull(it.Actions);
+            Assert.AreEqual(1, it.Actions.Count);
+            Assert.AreEqual("node_action", it.Actions[0].TriggerNodeId);
+            Assert.AreEqual("node_action", it.TriggerNodeId);
+        }
     }
 }
 #endif

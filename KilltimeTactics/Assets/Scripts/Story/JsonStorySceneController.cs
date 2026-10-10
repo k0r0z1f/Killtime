@@ -30,6 +30,8 @@ namespace Killtime.Story.Scenes
         private readonly List<TacticalInteractable> _interactables = new();
         private readonly HashSet<string> _firedTriggerIds = new(StringComparer.OrdinalIgnoreCase);
         private readonly HashSet<string> _activatedInteractableIds = new(StringComparer.OrdinalIgnoreCase);
+        // Consommation one-shot au niveau action (persiste à la session, pas de save disque en V1).
+        private readonly HashSet<string> _consumedActionKeys = new(StringComparer.OrdinalIgnoreCase);
         // Cartes à payload (événements, conséquences) déjà exécutées depuis l'entrée du
         // nœud courant. Évite les doubles payloads quand une chaîne "fin →" revient sur
         // une carte déjà résolue (ex : event rejoué à la fin de sa propre cinématique amont).
@@ -524,6 +526,7 @@ namespace Killtime.Story.Scenes
 
             _firedTriggerIds.Clear();
             _activatedInteractableIds.Clear();
+            _consumedActionKeys.Clear();
             _activationNodeIds.Clear();
             _nodeEnterCoords.Clear();
             _pendingMiddleChat.Clear();
@@ -1222,11 +1225,14 @@ namespace Killtime.Story.Scenes
 
                 var go = new GameObject($"Interactable_{data.InteractableId}");
                 var interactable = go.AddComponent<TacticalInteractable>();
-                interactable.Configure(data.DisplayName, data.ActionLabel, new HexCoordinates(data.Q, data.R), data.Radius);
+                interactable.Configure(data.DisplayName, data.ActionLabel, new HexCoordinates(data.Q, data.R), data.Radius,
+                    data.RequiredSkill, data.SkillThreshold, data.IsOneShot, data.InteractableId);
 
+                // Legacy : l'interaction directe reste disponible pour les tests et
+                // les appels non-routés par la fenêtre flottante générique.
                 interactable.OnInteractionTriggered += (unit) =>
                 {
-                    HandleInteractableResolved(unit, data);
+                    HandleInteractableResolvedLegacy(unit, data);
                 };
 
                 _interactables.Add(interactable);
@@ -1234,59 +1240,155 @@ namespace Killtime.Story.Scenes
         }
 
         /// <summary>
-        /// Point central de résolution d'un interactable (touche E ou bouton [E]).
-        /// Ne coupe jamais la conversation : log latéral + popup monde, et saut
-        /// différé si TriggerNodeId pendant un dialogue (voir _pendingNodeJump).
+        /// Résolution d'une action d'interactable depuis la fenêtre flottante 887.
+        /// Gère les tests de compétence, la consommation one-shot, les objectifs,
+        /// les logs et le saut différé si conversation en cours.
         /// </summary>
-        private void HandleInteractableResolved(TacticalUnit unit, SceneInteractableSpawnData data)
+        private void AttemptInteractableAction(TacticalUnit unit, SceneInteractableSpawnData data, SceneInteractableAction action)
         {
-            if (data == null) return;
+            if (data == null || action == null) return;
+
+            var prop = TryGetSpawnedInteractable(data.InteractableId, out var p) ? p : null;
+            if (prop != null && !prop.CanInteract(unit))
+            {
+                string actorName = unit?.Stats?.Name ?? "Escouade";
+                string msg = $"{actorName} est trop éloigné de {data.DisplayName}.";
+                CombatHUD.Instance?.AddAdvancedLog(msg, LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                InteractableWindow.Instance?.SetResult(false, msg, "");
+                return;
+            }
+
+            bool success = true;
+            string resultLog = action.SuccessLog;
+            if (action.RequiredSkill >= 0 && action.SkillThreshold > 0 && unit != null && unit.Stats != null)
+            {
+                var skill = (SkillType)action.RequiredSkill;
+                var die = unit.Stats.GetSkillDie(skill, isOffensive: true);
+                int mod = unit.Stats.GetSkillModifier(skill, isOffensive: true);
+                var roller = new DiceRoller();
+                var roll = roller.Roll(die, mod);
+
+                if (roll.Total < action.SkillThreshold)
+                {
+                    success = false;
+                    resultLog = !string.IsNullOrWhiteSpace(action.FailureLog)
+                        ? action.FailureLog
+                        : $"Échec du test {SkillDefinitions.GetDisplayName(skill)} ({roll.Total} vs SD {action.SkillThreshold}).";
+                    if (KilltimeAudioManager.Instance != null)
+                        KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.7f);
+                }
+                else
+                {
+                    resultLog = !string.IsNullOrWhiteSpace(action.SuccessLog)
+                        ? action.SuccessLog
+                        : $"Succès {SkillDefinitions.GetDisplayName(skill)} validé ({roll.Total} vs SD {action.SkillThreshold}) !";
+                }
+            }
+
+            if (success)
+            {
+                HandleInteractableResolved(unit, data, action, true, resultLog);
+            }
+            else
+            {
+                string actorName = unit != null && unit.Stats != null && !string.IsNullOrEmpty(unit.Stats.Name)
+                    ? unit.Stats.Name
+                    : (!string.IsNullOrEmpty(data.DisplayName) ? data.DisplayName : "Escouade");
+                CombatHUD.Instance?.AddAdvancedLog($"❌ {actorName} : {resultLog}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                InteractableWindow.Instance?.SetResult(false, resultLog, "");
+            }
+        }
+
+        /// <summary>
+        /// Point central de résolution d'une action d'interactable (succès).
+        /// Conserve les cinématiques/sons/objectifs et le saut différé.
+        /// </summary>
+        private void HandleInteractableResolved(TacticalUnit unit, SceneInteractableSpawnData data,
+            SceneInteractableAction action, bool success, string resultLog)
+        {
+            if (data == null || action == null) return;
+
             if (!string.IsNullOrEmpty(data.InteractableId))
             {
                 MarkInteractableActivated(data.InteractableId);
             }
+
             // Cinématiques liées à l'interactable : non-bloquantes.
             FireLinkedCinematics(data.CinematicIds);
             // Cartes son 🔊 : carte instantanée → début et fin ensemble.
             FireLinkedSounds(data.InteractableId, SoundTriggerPoint.AtLinkedStart);
             FireLinkedSounds(data.InteractableId, SoundTriggerPoint.AtLinkedEnd);
             EvaluateLinkedAmbiences(data.InteractableId);
-            if (!string.IsNullOrEmpty(data.CompletionObjectiveId))
+
+            if (!string.IsNullOrEmpty(action.CompletionObjectiveId))
             {
-                _director?.SetObjectiveComplete(data.CompletionObjectiveId, true);
+                _director?.SetObjectiveComplete(action.CompletionObjectiveId, true);
             }
+
             string actorName = unit != null && unit.Stats != null && !string.IsNullOrEmpty(unit.Stats.Name)
                 ? unit.Stats.Name
                 : (!string.IsNullOrEmpty(data.DisplayName) ? data.DisplayName : "Escouade");
-            if (!string.IsNullOrWhiteSpace(data.SuccessLog))
+            if (!string.IsNullOrWhiteSpace(resultLog))
             {
-                CombatHUD.Instance?.AddAdvancedLog($"✔ {actorName} : {data.SuccessLog}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                CombatHUD.Instance?.AddAdvancedLog($"✔ {actorName} : {resultLog}", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
             }
-            bool hasJump = !string.IsNullOrWhiteSpace(data.TriggerNodeId);
-            if (!string.IsNullOrWhiteSpace(data.SuccessLog) || hasJump)
+
+            // Consommation one-shot au niveau action.
+            if (action.IsOneShot && !string.IsNullOrWhiteSpace(data.InteractableId) && !string.IsNullOrWhiteSpace(action.ActionId))
             {
-                ShowInteractablePopup(data, hasJump);
+                _consumedActionKeys.Add($"{data.InteractableId}/{action.ActionId}");
             }
+
+            // Pour les interactables legacy (Actions vide), on garde le popup monde.
+            bool isLegacy = data.Actions == null || data.Actions.Count == 0;
+            bool hasJump = !string.IsNullOrWhiteSpace(action.TriggerNodeId);
+            if (isLegacy && (!string.IsNullOrWhiteSpace(resultLog) || hasJump))
+            {
+                ShowInteractablePopup(data, hasJump, action.TriggerNodeId);
+            }
+
             if (hasJump)
             {
                 if (IsConversationBusy())
                 {
-                    // Conversation en cours : on diffère, on propose, on ne coupe pas.
-                    _pendingNodeJump = data.TriggerNodeId.Trim();
+                    _pendingNodeJump = action.TriggerNodeId.Trim();
                     _pendingNodeJumpSource = data.InteractableId ?? "";
-                    CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>Suite disponible :</b> {data.DisplayName} ➔ {data.TriggerNodeId} (finissez la conversation, puis [Suivre]).", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                    CombatHUD.Instance?.AddAdvancedLog($"⚡ <b>Suite disponible :</b> {data.DisplayName} ➔ {action.TriggerNodeId} (finissez la conversation, puis [Suivre]).", LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
                 }
-                else if (!ExecuteInteractableNodeJump(data.TriggerNodeId))
+                else if (!ExecuteInteractableNodeJump(action.TriggerNodeId))
                 {
-                    // Cible inconnue : déjà signalé dans Execute, le popup reste
-                    // en mode info (sans saut effectif).
                     RemoveInteractableJumpOffer(data.InteractableId);
                 }
             }
+
+            InteractableWindow.Instance?.SetResult(true, resultLog, action.TriggerNodeId);
+
             if (unit != null)
             {
-                unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"✔ {data.ActionLabel}", Color.green);
+                unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"✔ {action.Label}", Color.green);
             }
+        }
+
+        /// <summary>
+        /// Compatibilité legacy : l'interaction directe (OnInteractionTriggered)
+        /// reste disponible pour les tests et les objets sans Actions explicites.
+        /// </summary>
+        private void HandleInteractableResolvedLegacy(TacticalUnit unit, SceneInteractableSpawnData data)
+        {
+            if (data == null) return;
+            var legacy = new SceneInteractableAction
+            {
+                ActionId = "legacy",
+                Label = data.ActionLabel,
+                RequiredSkill = (int)data.RequiredSkill,
+                SkillThreshold = data.SkillThreshold,
+                SuccessLog = data.SuccessLog,
+                FailureLog = data.FailureLog,
+                CompletionObjectiveId = data.CompletionObjectiveId,
+                TriggerNodeId = data.TriggerNodeId,
+                IsOneShot = data.IsOneShot
+            };
+            HandleInteractableResolved(unit, data, legacy, true, data.SuccessLog);
         }
 
         /// <summary>
@@ -1303,9 +1405,10 @@ namespace Killtime.Story.Scenes
             return _currentDialogueIndex >= 0 && _currentDialogueIndex < dataNode.Dialogues.Count;
         }
 
-        private void ShowInteractablePopup(SceneInteractableSpawnData data, bool hasJump)
+        private void ShowInteractablePopup(SceneInteractableSpawnData data, bool hasJump, string triggerNodeId = null)
         {
             if (data == null) return;
+            string targetNode = (triggerNodeId ?? data.TriggerNodeId ?? "").Trim();
             for (int i = _activePopups.Count - 1; i >= 0; i--)
             {
                 var p = _activePopups[i];
@@ -1317,8 +1420,8 @@ namespace Killtime.Story.Scenes
                 InteractableId = data.InteractableId ?? "",
                 DisplayName = data.DisplayName ?? "",
                 Message = data.SuccessLog ?? "",
-                TargetNodeId = hasJump ? (data.TriggerNodeId ?? "").Trim() : "",
-                HasJump = hasJump && !string.IsNullOrWhiteSpace(data.TriggerNodeId),
+                TargetNodeId = hasJump ? targetNode : "",
+                HasJump = hasJump && !string.IsNullOrWhiteSpace(targetNode),
                 CreatedUnscaledTime = Time.unscaledTime
             });
         }
@@ -1526,16 +1629,41 @@ namespace Killtime.Story.Scenes
             for (int i = 0; i < _interactables.Count; i++)
             {
                 var target = _interactables[i];
-                if (target != null && target.CanInteract(unit))
+                if (target == null) continue;
+                var data = FindInteractableData(target);
+                if (data == null) continue;
+                if (target.CanInteract(unit))
                 {
-                    target.TryInteract(unit, out string log);
-                    if (!string.IsNullOrEmpty(log))
-                    {
-                        CombatHUD.Instance?.AddAdvancedLog(log, LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
-                    }
+                    OpenInteractableWindow(unit, data);
                     return;
                 }
             }
+        }
+
+        private SceneInteractableSpawnData FindInteractableData(TacticalInteractable prop)
+        {
+            if (prop == null) return null;
+            return FindInteractableDataById(prop.InteractableId);
+        }
+
+        private SceneInteractableSpawnData FindInteractableDataById(string interactableId)
+        {
+            if (_sceneData == null || _sceneData.Interactables == null || string.IsNullOrWhiteSpace(interactableId)) return null;
+            for (int i = 0; i < _sceneData.Interactables.Count; i++)
+            {
+                var data = _sceneData.Interactables[i];
+                if (data != null && string.Equals(data.InteractableId, interactableId, StringComparison.OrdinalIgnoreCase))
+                    return data;
+            }
+            return null;
+        }
+
+        private void OpenInteractableWindow(TacticalUnit unit, SceneInteractableSpawnData data)
+        {
+            InteractableWindow.Open(data, unit,
+                onAttemptAction: (u, d, a) => AttemptInteractableAction(u, d, a),
+                onJump: (nodeId) => ExecuteInteractableNodeJump(nodeId),
+                isActionConsumed: (key) => _consumedActionKeys.Contains(key));
         }
 
         private void HandleDialoguesInput()
@@ -2824,11 +2952,10 @@ namespace Killtime.Story.Scenes
                     Rect r = new Rect(screenPos.x - 90f, y - 24f, 180f, 26f);
                     _interactButtonRects.Add(r);
                     GUI.backgroundColor = new Color(0.2f, 0.9f, 0.5f);
-                    if (GUI.Button(r, $"[E] {it.ActionLabel}"))
+                    var data = FindInteractableData(it);
+                    if (GUI.Button(r, $"[E] {it.ActionLabel}") && data != null)
                     {
-                        it.TryInteract(activeUnit, out string log);
-                        if (!string.IsNullOrEmpty(log))
-                            CombatHUD.Instance?.AddAdvancedLog(log, LogCategory.MovementAndTurns, "[ACTION]", Color.yellow);
+                        OpenInteractableWindow(activeUnit, data);
                     }
                     GUI.backgroundColor = Color.white;
                 }
@@ -2848,6 +2975,10 @@ namespace Killtime.Story.Scenes
             {
                 var popup = snapshot[s];
                 if (popup == null || !_activePopups.Contains(popup)) continue;
+                // Les interactables avec Actions explicites utilisent la fenêtre 887 ;
+                // on ne dessine plus de popup monde résultat pour eux.
+                var popupData = FindInteractableDataById(popup.InteractableId);
+                if (popupData != null && popupData.Actions != null && popupData.Actions.Count > 0) continue;
                 if (!TryGetSpawnedInteractable(popup.InteractableId, out var prop) || prop == null) continue;
 
                 var hexNode = _grid?.GetNode(prop.Coordinates);

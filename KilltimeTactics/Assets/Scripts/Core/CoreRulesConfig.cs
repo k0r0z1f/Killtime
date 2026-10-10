@@ -273,12 +273,13 @@ namespace Killtime.Core.Rules
 
         public void PropagateLiveChanges()
         {
-            var units = UnityEngine.Object.FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < units.Length; i++)
+            var units = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < units.Count; i++)
             {
-                if (units[i] != null && units[i].Stats != null)
+                var u = units[i];
+                if (u != null && u.Stats != null)
                 {
-                    units[i].Stats.RecalculateDerivedStats();
+                    u.Stats.RecalculateDerivedStats();
                 }
             }
             OnRulesChanged?.Invoke();

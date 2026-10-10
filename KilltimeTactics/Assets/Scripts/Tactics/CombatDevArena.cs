@@ -193,10 +193,10 @@ namespace Killtime.Tactics
             Killtime.Core.Arcanotech.ArcanotechWorkshop.DistanceToHeroProvider = (stats, heroName) =>
             {
                 if (stats == null || string.IsNullOrEmpty(heroName)) return -1;
-                var allUnits = FindObjectsByType<TacticalUnit>();
                 TacticalUnit origin = null;
                 TacticalUnit hero = null;
-                for (int i = 0; i < allUnits.Length; i++)
+                var allUnits = TacticalUnitRegistry.AllUnits;
+                for (int i = 0; i < allUnits.Count; i++)
                 {
                     var u = allUnits[i];
                     if (u != null && u.Stats == stats) origin = u;
@@ -890,8 +890,11 @@ namespace Killtime.Tactics
             _gridVisualizer?.UpdatePersistentZones(_smokeZones);
             CombatUI.TacticalSelectionManager.Instance?.ClearSelection();
 
-            var allUnits = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < allUnits.Length; i++)
+            // Capture le snapshot avant de vider le registre, sinon la boucle
+            // de destruction itérerait sur une liste vide.
+            var allUnits = TacticalUnitRegistry.AllUnits;
+            TacticalUnitRegistry.Clear();
+            for (int i = 0; i < allUnits.Count; i++)
             {
                 var u = allUnits[i];
                 if (u != null)
@@ -1181,13 +1184,14 @@ namespace Killtime.Tactics
 
         private void HandleCombatEnded(CombatOutcome outcome)
         {
-            var units = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < units.Length; i++)
+            var units = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < units.Count; i++)
             {
-                var vis = units[i].GetComponent<TacticalUnitVisual>();
+                var u = units[i];
+                var vis = u.GetComponent<TacticalUnitVisual>();
                 vis?.SetCombatStance(false);
                 // Champs rechargés hors combat (Livre VIII §32.2).
-                if (units[i] != null && units[i].Stats != null) units[i].Stats.RefillShield();
+                if (u != null && u.Stats != null) u.Stats.RefillShield();
             }
 
             if (KilltimeAudioManager.Instance != null)
@@ -1824,8 +1828,8 @@ namespace Killtime.Tactics
         /// </summary>
         private bool IsAnotherPlayerUnitMoving(TacticalUnit activeUnit)
         {
-            var all = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < all.Length; i++)
+            var all = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < all.Count; i++)
             {
                 var u = all[i];
                 if (u == null || u == activeUnit || !u.IsPlayerControlled || !u.IsMoving) continue;
@@ -1848,8 +1852,8 @@ namespace Killtime.Tactics
                 if (d != null && d.Stats != null && d.Stats.IsAlive && d.CurrentCoords.Equals(coords)) return d;
             }
 
-            var all = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < all.Length; i++)
+            var all = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < all.Count; i++)
             {
                 var u = all[i];
                 if (u != null && u.Stats != null && u.Stats.IsAlive && u.CurrentCoords.Equals(coords))
@@ -3949,11 +3953,11 @@ namespace Killtime.Tactics
             int blastR = Mathf.Max(0, grenadeDef.BlastRadius);
             bool isMortar = launcher != null && (launcher.Name ?? "").Contains("Mortier");
 
-            var allUnits = FindObjectsByType<TacticalUnit>();
+            var allUnits = TacticalUnitRegistry.AllUnits;
             var hits = new List<GrenadeHitResult>();
             int totalDealt = 0;
 
-            for (int i = 0; i < allUnits.Length; i++)
+            for (int i = 0; i < allUnits.Count; i++)
             {
                 var u = allUnits[i];
                 if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
@@ -4862,8 +4866,8 @@ namespace Killtime.Tactics
             for (int i = 0; i < SparringDummies.Count; i++)
                 if (SparringDummies[i] != null && SparringDummies[i].Stats != null && SparringDummies[i].Stats.Name == unitName)
                     return SparringDummies[i];
-            var all = FindObjectsByType<TacticalUnit>();
-            for (int i = 0; i < all.Length; i++)
+            var all = TacticalUnitRegistry.AllUnits;
+            for (int i = 0; i < all.Count; i++)
                 if (all[i] != null && all[i].Stats != null && all[i].Stats.Name == unitName)
                     return all[i];
             return null;
@@ -5548,10 +5552,9 @@ namespace Killtime.Tactics
             if (mgr == null) return;
             try
             {
-                var units = FindObjectsByType<TacticalUnit>();
                 int alliesAlive = 0, enemiesAlive = 0;
                 float hpSum = 0f, maxSum = 0f;
-                foreach (var u in units)
+                foreach (var u in TacticalUnitRegistry.AllUnits)
                 {
                     if (u == null || u.Stats == null) continue;
                     bool alive = u.Stats.IsAlive && !u.Stats.IsSurrendered;

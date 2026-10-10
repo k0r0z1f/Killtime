@@ -2027,7 +2027,7 @@ namespace Killtime.Tactics.Units
                 float uiY = Screen.height - screenPos.y;
 
                 // Liste des unités mise en cache pour un seul appel : sert à tous les tests de profondeur.
-                var allUnits = FindObjectsByType<TacticalUnit>(FindObjectsInactive.Exclude);
+                var allUnits = TacticalUnitRegistry.AllUnits;
                 float hudAlpha = ComputeVisionAlpha(cam, hudBoxPos, allUnits);
 
                 if (ShowOverheadHUD)
@@ -2055,7 +2055,7 @@ namespace Killtime.Tactics.Units
         /// Combine occlusion décor (raycast) + test écran/profondeur inter-avatars
         /// (les avatars procéduraux n'ont pas de colliders, d'où le test manuel).
         /// </summary>
-        private float ComputeVisionAlpha(UnityEngine.Camera cam, Vector3 worldPos, TacticalUnit[] allUnits)
+        private float ComputeVisionAlpha(UnityEngine.Camera cam, Vector3 worldPos, IReadOnlyList<TacticalUnit> allUnits)
         {
             if (cam == null) return 1f;
             float myDist = Vector3.Distance(cam.transform.position, worldPos);
@@ -2084,9 +2084,9 @@ namespace Killtime.Tactics.Units
             Vector3 myScreen = cam.WorldToScreenPoint(worldPos);
             if (myScreen.z < 0.1f) return 1f;
 
-            if (allUnits == null || allUnits.Length == 0) return 1f;
+            if (allUnits == null || allUnits.Count == 0) return 1f;
 
-            for (int i = 0; i < allUnits.Length; i++)
+            for (int i = 0; i < allUnits.Count; i++)
             {
                 var other = allUnits[i];
                 if (other == null || other == _unit || other.Stats == null) continue;
@@ -2245,7 +2245,7 @@ namespace Killtime.Tactics.Units
             GUI.Label(new Rect(rect.x + 4, rect.y + 16, rect.width - 8, 15), $"PV: {stats.CurrentHealth}/{stats.MaxHealth} | PA: {stats.CurrentActionPoints}/{stats.MaxActionPoints}", statStyle);
         }
 
-        private void DrawCircularStatusHalo(UnityEngine.Camera cam, TacticalUnit[] allUnits = null)
+        private void DrawCircularStatusHalo(UnityEngine.Camera cam, IReadOnlyList<TacticalUnit> allUnits = null)
         {
             if (_unit == null || _unit.Stats == null) return;
 
@@ -2574,7 +2574,7 @@ namespace Killtime.Tactics.Units
             };
         }
 
-        private void DrawFloatingCombatTexts(UnityEngine.Camera cam, TacticalUnit[] allUnits = null)
+        private void DrawFloatingCombatTexts(UnityEngine.Camera cam, IReadOnlyList<TacticalUnit> allUnits = null)
         {
             if (_hiddenByFog) return;
             for (int i = 0; i < _floatingTexts.Count; i++)

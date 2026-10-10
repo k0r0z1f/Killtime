@@ -3490,7 +3490,7 @@ namespace Killtime.Tactics.AI
         private void UpdateUnitCache()
         {
             _cachedUnits.Clear();
-            _cachedUnits.AddRange(FindObjectsByType<TacticalUnit>());
+            _cachedUnits.AddRange(TacticalUnitRegistry.AllUnits);
         }
 
         private TacticalUnit GetSquadMarkedTarget(TacticalUnit actor)
