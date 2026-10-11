@@ -1721,7 +1721,7 @@
         },
         {
           "id": "RD-071",
-          "title": "NUnit vert : 13 suites",
+          "title": "NUnit vert : 14 suites",
           "epic": "Tests",
           "status": "todo",
           "priority": "high",
@@ -1732,7 +1732,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Assets/Scripts/Tests",
-          "details": "Core, Cover, Fog, Grenade, Duo, Audio, WorldMap, VTT x3, SceneCine, StoryChain, Dice."
+          "details": "Core, Cover, Fog, Grenade, Duo, Audio, WorldMap, VTT x3, SceneCine, StoryChain, Dice. + SoundCtrl."
         },
         {
           "id": "RD-072",
@@ -1905,6 +1905,81 @@
           "scale": null,
           "suggestedAsset": "CinematicDirector",
           "details": "IDÉE PAS SÛRE — ne pas implémenter sans feu vert. SceneCinematicRoutine (exclusif, caméra+letterbox+raccord) et InPlaceCinematicRoutine (overlay sans caméra) dupliquent la machinerie delay/frames/pause/skip/warp/audio. Piste : lecteur unique à états (Idle→Raccord→Delay→Lecture→Sortie, mode exclusif vs overlay empilable). Pour : une seule logique warp/audio/pause (fini les divergences silencieuses). Contre : méthode géante pleine de if, risque de régression sur du code qui marche. Chemin proposé : extraire d'abord des helpers partagés, fusionner ensuite."
+        },
+        {
+          "id": "RD-116",
+          "title": "Contrôle total des sons/fx dans le graphe nodal",
+          "epic": "Éditeur nodal",
+          "status": "done",
+          "priority": "high",
+          "order": 4,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow + KilltimeAudioManager",
+          "details": "FAIT (implémenté 2026-10-11, suite de RD-109 — À VÉRIFIER EN JEU : pas de compilateur Unity dispo, relecture diff intégrale faite, 3 bogues trouvés+corrigés en revue). 1) Données StorySceneData : SceneSoundData étendue (StopSourceCardId, Loop, FadeIn/Out, PitchScale, Priority, CooldownSeconds, Muted, Spatialized Q/R/Radius) + SceneAudioSettings par scène (MasterVolumeScale, Muted, kill inter-nœuds opt-in, kill sortie scène opt-out, PreferCardsOverLegacy défaut vrai), finders FindSoundsStoppingFrom/HasLinkedSounds, clamps EnsureDeepDefaults rétro-compatibles. 2) Runtime : KilltimeAudioManager.PlayBankSound (pitch/loop/fades/priorité/spatial au rayon carte, suivi d'instance, StopSceneSound/StopAllSceneSounds/GetActiveSceneSoundKeys, purge fossiles) ; JsonStorySceneController FireLinkedSounds (master/mute/cooldown/spatial/génération anti-fantôme), EvaluateLinkedSoundStops propagé via EvaluateLinkedAmbiences + fin de chaîne ciné, arbitrage legacy. 3) Éditeur Shift+F2 : carte son totale (Titre, ♪ pré-écoute, Pitch/Loop/Prio/Cooldown, Fades, Spatial 3D, ← source, ■ Stop → cible, ▶ Tester/■ Stopper, 🔇), port d'arrêt bas fil rouge + drop tous types de cartes, purge stops, quick-create 🔊/🌌, ids uniques, test ambiance en spatial réel. 4) Panneaux : barre 🔊 Audio (master+mute), 🎵 Banque (filtre+pré-écoute), 🔍 Audit (liens morts, cues/presets inconnus, orphelines, doublons, loops infinies, conflits legacy + Réparer auto), 🎛 Monitor (kill-switches, sources suivies + stop). 5) Tests : SceneSoundControlTests (6 tests EditMode). RESTE : compiler Unity, NUnit vert 14 suites, rejouer une scène existante (non-régression), tester stop/loop/kill/audit en jeu."
+        },
+        {
+          "id": "RD-117",
+          "title": "Découper ScenarioEditorDevWindow.cs en 8 partials (10 540 l.)",
+          "epic": "Éditeur nodal",
+          "status": "done",
+          "priority": "high",
+          "order": 5,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow.*.cs",
+          "details": "FAIT (2026-10-11, handoff scenario-editor-split) : monolithe 10 540 l./~220 méthodes découpé verbatim en shell (499 l. : état, consts, API) + 8 partials (Persistence 20 blocs, SceneTab 4, Layout 40, GraphCanvas 31, Wires 29, Cards.Dialogue 19, Cards.World 11, Panels.Media 67). Vérifié sans compilateur Unity (indisponible) : conservation exacte des lignes (10696 = 10540 + 8x19 entêtes + 4 commentaires), 0 méthode perdue/dupliquée, accolades équilibrées, tous les _champs résolus (shell ou base FloatingWindow). BONUS revue : 4 créations Count+1 -> MakeUnique* (void-drop son Wires, 2x noeud + cinéma SceneTab). RESTE : compilation éditeur + ouverture Shift+F2 + chargement scène + NUnit (RD-071)."
+        },
+        {
+          "id": "RD-118",
+          "title": "Unicité IDs déclencheur/interactable/acteur + backfills",
+          "epic": "Éditeur nodal",
+          "status": "todo",
+          "priority": "medium",
+          "order": 6,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow.SceneTab.cs",
+          "details": "Reste de la revue RD-117 : boutons + Déclencheur (trig_Count+1), + Interactable (obj_Count+1), + Acteur (actor_Count+1) sans helper MakeUnique* (à créer sur le modèle MakeUniqueNodeId/CineId/SoundId), et backfills snd_/evt_/cons_/cine_{i+1} dans les passes de dessin à durcir (mitigé par RepairAudioLinks)."
+        },
+        {
+          "id": "RD-119",
+          "title": "Parité picker arrêt ambiance vs arrêt son",
+          "epic": "Éditeur nodal",
+          "status": "todo",
+          "priority": "low",
+          "order": 7,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow.Wires.cs",
+          "details": "Revue RD-117 : le picker inline arrêt ambiance ne propose que dialogues/events/conséquences, TryPickSoundStopTarget propose tous types (triggers, interactables, acteurs, cinématiques) ; ni l un ni l autre ne propose les noeuds (pourtant évalués au runtime). Unifier vers le picker partagé et trancher le cas noeud."
+        },
+        {
+          "id": "RD-120",
+          "title": "Vérification éditeur post-split (compile + non-régression)",
+          "epic": "Éditeur nodal",
+          "status": "todo",
+          "priority": "high",
+          "order": 8,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Scenario Editor Shift+F2",
+          "details": "Exiger Unity : compilation scripts éditeur, ouverture fenêtre, chargement/sauvegarde scène, NUnit vert 14 suites (RD-071), rejouer une scène (stop/loop/kill/audit RD-116). Bloque la clôture définitive de RD-117."
         }
       ]
     },

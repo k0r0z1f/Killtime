@@ -674,10 +674,31 @@ namespace Killtime.Story.Data
     }
 
     /// <summary>
+    /// Réglages audio globaux de la scène (contrôle total) : trim master appliqué
+    /// à toutes les cartes 🔊/🌌 de la scène, mute global, kill-switch à la
+    /// transition de nœud / sortie de scène, et arbitrage legacy vs cartes.
+    /// Rétro-compatible : valeurs par défaut = comportement historique.
+    /// </summary>
+    [Serializable]
+    public class SceneAudioSettings
+    {
+        public float MasterVolumeScale = 1f;
+        public bool Muted = false;
+        public bool StopAllSoundsOnNodeChange = false;
+        public bool StopAllSoundsOnSceneExit = true;
+        // Vrai (défaut) : si une carte 🔊 est liée à une réplique/event, le cue
+        // legacy (Line.SoundCueId / ApplyAmbienceSettings) est ignoré pour éviter
+        // le double déclenchement. Faux = comportement historique (les deux jouent).
+        public bool PreferCardsOverLegacy = true;
+    }
+
+    /// <summary>
     /// Carte son/fx 🔊 : branchée depuis le bas d'une carte source (fil orange),
     /// elle démarre un son (SoundCueId → SoundId) avec délai et volume réglables,
     /// au début OU à la fin de la carte liée. Lecture non-bloquante (fire-and-forget).
     /// Le lien vit sur la carte son (SourceCardId) : les cartes sources ne changent pas.
+    /// Contrôle total : stop explicite (StopSourceCardId), loop + fades, pitch,
+    /// priorité, cooldown anti-spam, mute unitaire, spatialisation 3D.
     /// </summary>
     [Serializable]
     public class SceneSoundData
@@ -690,19 +711,36 @@ namespace Killtime.Story.Data
         public SoundTriggerPoint TriggerPoint = SoundTriggerPoint.AtLinkedStart;
         public float VolumeScale = 0.8f;
         public string SourceCardId = "";
+        // Stop explicite : le son (y compris loop / durée 0 = infini) est coupé
+        // avec FadeOutDuration quand la carte cible est atteinte (miroir de
+        // l'arrêt d'ambiance). Vide = aucun arrêt (seule DurationSeconds auto-stoppe).
+        public string StopSourceCardId = "";
+        public bool Loop = false;
+        public float FadeInDuration = 0f;
+        public float FadeOutDuration = 0.3f;
+        public float PitchScale = 1f;
+        public int Priority = 128;
+        public float CooldownSeconds = 0f;
+        public bool Muted = false;
+        public bool Spatialized = false;
+        public int Q = 0;
+        public int R = 0;
+        public float Radius = 15f;
         public float GraphPosX = 0f;
         public float GraphPosY = 0f;
         public float CardWidth = 300f;
-        public float CardHeight = 195f;
+        public float CardHeight = 340f;
 
         public string GetSummary()
         {
             string when = TriggerPoint == SoundTriggerPoint.AtLinkedEnd ? "fin" : "début";
             string delay = DelaySeconds > 0.01f ? $" +{DelaySeconds:0.0}s" : "";
-            string dur = DurationSeconds > 0.01f ? $" dur:{DurationSeconds:0.0}s" : "";
+            string dur = DurationSeconds > 0.01f ? $" dur:{DurationSeconds:0.0}s" : (Loop ? " ∞" : "");
             string cue = string.IsNullOrWhiteSpace(SoundCueId) ? "(aucun son)" : SoundCueId;
             string src = string.IsNullOrWhiteSpace(SourceCardId) ? "(non liée)" : $"← {SourceCardId}";
-            return $"{cue} [{when}{delay}{dur}] {src}";
+            string stop = string.IsNullOrWhiteSpace(StopSourceCardId) ? "" : $" ■→{StopSourceCardId}";
+            string flags = $"{(Muted ? " 🔇" : "")}{(Loop ? " ∞" : "")}{(Spatialized ? " 3D" : "")}";
+            return $"{cue} [{when}{delay}{dur}]{flags} {src}{stop}";
         }
     }
 
@@ -903,6 +941,8 @@ namespace Killtime.Story.Data
         // Cartes d'ambiance 🌌 : configurées depuis le catalogue JSON d'ambiances,
         // déclenchées par l'entrée supérieure et coupées par la sortie inférieure.
         public List<SceneAmbienceTrackData> Ambiences = new();
+        // Réglages audio globaux de la scène (master, mute, kill-switches).
+        public SceneAudioSettings AudioSettings = new();
 
         public SceneNodeData FindNode(string nodeId)
         {
@@ -979,6 +1019,40 @@ namespace Killtime.Story.Data
             return result;
         }
 
+        /// <summary>
+        /// Sons dont l'ARRÊT explicite est branché sur une carte cible
+        /// (fil bas du son → bas de la carte). Miroir de FindAmbiencesStoppingFrom.
+        /// </summary>
+        public List<SceneSoundData> FindSoundsStoppingFrom(string sourceCardId)
+        {
+            var result = new List<SceneSoundData>();
+            if (string.IsNullOrWhiteSpace(sourceCardId) || Sounds == null) return result;
+            for (int i = 0; i < Sounds.Count; i++)
+            {
+                var s = Sounds[i];
+                if (s == null || string.IsNullOrWhiteSpace(s.StopSourceCardId)) continue;
+                if (string.Equals(s.StopSourceCardId.Trim(), sourceCardId.Trim(), StringComparison.OrdinalIgnoreCase))
+                    result.Add(s);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// Vrai si au moins une carte son démarre depuis cette carte (arbitrage legacy).
+        /// </summary>
+        public bool HasLinkedSounds(string sourceCardId)
+        {
+            if (string.IsNullOrWhiteSpace(sourceCardId) || Sounds == null) return false;
+            for (int i = 0; i < Sounds.Count; i++)
+            {
+                var s = Sounds[i];
+                if (s == null || s.Muted) continue;
+                if (string.IsNullOrWhiteSpace(s.SourceCardId) || string.IsNullOrWhiteSpace(s.SoundCueId)) continue;
+                if (string.Equals(s.SourceCardId.Trim(), sourceCardId.Trim(), StringComparison.OrdinalIgnoreCase))
+                    return true;
+            }
+            return false;
+        }
         /// <summary>
         /// Tête d'une chaîne cinématique (amorçage automatique) : remonte les
         /// liens "fin →" entre cinématiques jusqu'à la première carte de la chaîne.
@@ -1105,6 +1179,9 @@ namespace Killtime.Story.Data
             data.Ambiences ??= new List<SceneAmbienceTrackData>();
             data.Lighting ??= new SceneLightingData();
             data.EnvironmentPlaceholders ??= new List<ScenePlaceholderData>();
+            data.AudioSettings ??= new SceneAudioSettings();
+            if (data.AudioSettings.MasterVolumeScale < 0f) data.AudioSettings.MasterVolumeScale = 0f;
+            else if (data.AudioSettings.MasterVolumeScale > 2f) data.AudioSettings.MasterVolumeScale = 2f;
             for (int ci = 0; ci < data.Cinematics.Count; ci++)
             {
                 var cine = data.Cinematics[ci];
@@ -1137,12 +1214,24 @@ namespace Killtime.Story.Data
                 if (snd.DurationSeconds < 0f) snd.DurationSeconds = 0f;
                 if (snd.VolumeScale < 0f) snd.VolumeScale = 0f;
                 else if (snd.VolumeScale > 2f) snd.VolumeScale = 2f;
+                if (snd.FadeInDuration < 0f) snd.FadeInDuration = 0f;
+                else if (snd.FadeInDuration > 20f) snd.FadeInDuration = 20f;
+                if (snd.FadeOutDuration < 0f) snd.FadeOutDuration = 0f;
+                else if (snd.FadeOutDuration > 20f) snd.FadeOutDuration = 20f;
+                if (snd.PitchScale < 0.25f) snd.PitchScale = 1f;
+                else if (snd.PitchScale > 3f) snd.PitchScale = 3f;
+                if (snd.Priority < 0) snd.Priority = 0;
+                else if (snd.Priority > 255) snd.Priority = 255;
+                if (snd.CooldownSeconds < 0f) snd.CooldownSeconds = 0f;
+                else if (snd.CooldownSeconds > 30f) snd.CooldownSeconds = 30f;
+                if (snd.Radius < 1f) snd.Radius = 15f;
+                else if (snd.Radius > 120f) snd.Radius = 120f;
                 // Hors-limites (JSON édité à la main) : GUI.Toolbar planterait
                 // tout le graphe — repli silencieux sur le début.
                 if (!System.Enum.IsDefined(typeof(SoundTriggerPoint), snd.TriggerPoint))
                     snd.TriggerPoint = SoundTriggerPoint.AtLinkedStart;
                 if (snd.CardWidth < 100f) snd.CardWidth = 300f;
-                if (snd.CardHeight < 80f) snd.CardHeight = 195f;
+                if (snd.CardHeight < 80f) snd.CardHeight = 340f;
             }
             for (int i = 0; i < data.Ambiences.Count; i++)
             {

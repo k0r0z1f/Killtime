@@ -126,6 +126,10 @@ namespace Killtime.Audio
         private AudioSource _ambienceSource;
         private readonly Dictionary<string, AudioSource> _activeSceneAmbienceSources = new();
         private readonly Dictionary<string, Coroutine> _activeSceneAmbienceFades = new();
+        // Sons de scène 🔊 pilotés par cartes (contrôle total) : instance suivie par
+        // clé "SoundId de carte" pour stop explicite, monitor éditeur et kill-switch.
+        private readonly Dictionary<string, AudioSource> _activeSceneSoundSources = new();
+        private readonly Dictionary<string, Coroutine> _activeSceneSoundFades = new();
 
         private readonly Dictionary<SoundId, float> _lastPlayTime = new();
         private float _slowMoWeight;           // 0 normal -> 1 bullet-time
@@ -619,6 +623,168 @@ namespace Killtime.Audio
             var src = Next2D(isUI: true);
             ConfigureAndPlay(src, def, clip, volumeScale, 1f, Vector3.zero, false, forceCategory: SoundCategory.UI);
             return src;
+        }
+
+        /// <summary>
+        /// Lecture d'un son de carte scène 🔊 (contrôle total) : pitch, loop, fades,
+        /// priorité, spatialisation 3D optionnelle. Sans jitter de pitch (les swells
+        /// longs ne doivent pas varier). Si instanceId est fourni, la source est
+        /// suivie (stop explicite, monitor, kill-switch) et rejeuée par-dessus
+        /// l'instance précédente (stop immédiat de l'ancienne, sans fade).
+        /// Le volume de la recette est déjà combiné par l'appelant.
+        /// </summary>
+        public AudioSource PlayBankSound(string bankId, AudioClip clip, float volumeScale = 1f,
+            float pitchScale = 1f, bool loop = false, float fadeInDuration = 0f, int priority = 128,
+            bool spatial = false, Vector3 worldPos = default, float radius = 15f, string instanceId = null)
+        {
+            if (clip == null || string.IsNullOrWhiteSpace(bankId)) return null;
+            pitchScale = Mathf.Clamp(pitchScale <= 0f ? 1f : pitchScale, 0.25f, 3f);
+            priority = Mathf.Clamp(priority, 0, 255);
+            var def = new SoundDefinition
+            {
+                Category = SoundCategory.Cinematic,
+                Volume = 1f,
+                PitchMin = 1f,
+                PitchMax = 1f,
+                Priority = priority,
+                Loop = loop,
+                SpatialBlend = spatial ? 1f : 0f,
+                MaxDistance = Mathf.Max(radius, 4f)
+            };
+            AudioSource src;
+            if (spatial)
+            {
+                src = Next3D();
+                src.transform.position = worldPos;
+            }
+            else
+            {
+                src = Next2D(isUI: true);
+            }
+            ConfigureAndPlay(src, def, clip, volumeScale, pitchScale, worldPos, spatial, forceCategory: SoundCategory.UI);
+            if (spatial && src != null)
+            {
+                // Distances utiles aux cartes scène (le pool 3D standard vise
+                // 18m/85m, trop large pour un rayon de carte de 15m par défaut).
+                src.rolloffMode = AudioRolloffMode.Linear;
+                src.minDistance = Mathf.Max(1.5f, radius * 0.25f);
+                src.maxDistance = Mathf.Max(radius, 4f);
+                src.transform.position = worldPos;
+            }
+            if (!string.IsNullOrWhiteSpace(instanceId))
+            {
+                string key = instanceId.Trim();
+                StopTrackedSceneSound(key, immediate: true);
+                _activeSceneSoundSources[key] = src;
+                if (fadeInDuration > 0.05f && !Mathf.Approximately(src.volume, 0f))
+                {
+                    float target = src.volume;
+                    src.volume = 0f;
+                    _activeSceneSoundFades[key] = StartCoroutine(FadeSceneSoundRoutine(key, src, target, fadeInDuration, destroyOnComplete: false));
+                }
+            }
+            else if (fadeInDuration > 0.05f)
+            {
+                // Sans suivi : fade-in simple sur la source du pool (pas de stop possible).
+                var captured = src;
+                float target = src.volume;
+                src.volume = 0f;
+                StartCoroutine(FadePoolSourceRoutine(captured, target, fadeInDuration));
+            }
+            return src;
+        }
+
+        /// <summary>Stoppe une instance de son de scène suivie (fade-out, puis stop).</summary>
+        public void StopSceneSound(string instanceId, float fadeOutDuration = 0.3f)
+        {
+            if (string.IsNullOrWhiteSpace(instanceId)) return;
+            string key = instanceId.Trim();
+            if (!_activeSceneSoundSources.TryGetValue(key, out var src) || src == null)
+            {
+                _activeSceneSoundSources.Remove(key);
+                return;
+            }
+            // Entrée fossile (one-shot terminé naturellement, sans timer) : purger
+            // sans toucher la source (déjà réutilisable par les pools).
+            if (!src.isPlaying && !_activeSceneSoundFades.ContainsKey(key))
+            {
+                _activeSceneSoundSources.Remove(key);
+                return;
+            }
+            if (_activeSceneSoundFades.TryGetValue(key, out var activeRoutine) && activeRoutine != null)
+                StopCoroutine(activeRoutine);
+            if (fadeOutDuration <= 0.05f)
+            {
+                StopTrackedSceneSound(key, immediate: true);
+                return;
+            }
+            _activeSceneSoundFades[key] = StartCoroutine(FadeSceneSoundRoutine(key, src, 0f, fadeOutDuration, destroyOnComplete: true));
+        }
+
+        /// <summary>Stoppe tous les sons de scène suivis (kill-switch transitions).</summary>
+        public void StopAllSceneSounds(float fadeOutDuration = 0.3f)
+        {
+            var keys = new List<string>(_activeSceneSoundSources.Keys);
+            for (int i = 0; i < keys.Count; i++)
+                StopSceneSound(keys[i], fadeOutDuration);
+        }
+
+        /// <summary>Clés des sons de scène suivis (monitor éditeur).</summary>
+        public List<string> GetActiveSceneSoundKeys() => new List<string>(_activeSceneSoundSources.Keys);
+
+        /// <summary>Clés des ambiances suivies (monitor éditeur).</summary>
+        public List<string> GetActiveSceneAmbienceKeys() => new List<string>(_activeSceneAmbienceSources.Keys);
+
+        private void StopTrackedSceneSound(string key, bool immediate)
+        {
+            if (_activeSceneSoundFades.TryGetValue(key, out var routine) && routine != null)
+            {
+                try { StopCoroutine(routine); } catch { /* ignore */ }
+                _activeSceneSoundFades.Remove(key);
+            }
+            if (_activeSceneSoundSources.TryGetValue(key, out var src) && src != null && immediate)
+            {
+                try { src.Stop(); } catch { /* ignore */ }
+            }
+            if (immediate) _activeSceneSoundSources.Remove(key);
+        }
+
+        private IEnumerator FadeSceneSoundRoutine(string key, AudioSource src, float targetVol, float duration, bool destroyOnComplete)
+        {
+            if (src == null) yield break;
+            float startVol = src.volume;
+            float elapsed = 0f;
+            duration = Mathf.Max(0.05f, duration);
+            while (elapsed < duration && src != null)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                src.volume = Mathf.Lerp(startVol, targetVol, Mathf.Clamp01(elapsed / duration));
+                yield return null;
+            }
+            if (src != null)
+            {
+                src.volume = targetVol;
+                if (destroyOnComplete)
+                {
+                    try { src.Stop(); } catch { /* ignore */ }
+                    _activeSceneSoundSources.Remove(key);
+                }
+            }
+            _activeSceneSoundFades.Remove(key);
+        }
+
+        private static IEnumerator FadePoolSourceRoutine(AudioSource src, float targetVol, float duration)
+        {
+            if (src == null) yield break;
+            float elapsed = 0f;
+            duration = Mathf.Max(0.05f, duration);
+            while (elapsed < duration && src != null)
+            {
+                elapsed += Time.unscaledDeltaTime;
+                src.volume = Mathf.Lerp(0f, targetVol, Mathf.Clamp01(elapsed / duration));
+                yield return null;
+            }
+            if (src != null) src.volume = targetVol;
         }
 
         public void PlayAt(SoundId id, Vector3 worldPos, float volumeScale = 1f, float pitchScale = 1f)
