@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-09",
+  "updated": "2026-10-11",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -809,6 +809,36 @@
           "scale": null,
           "suggestedAsset": "TacticalUnitRegistry",
           "details": "FAIT : migration des ~30 appels restants dans UI (CombatHUD, WeaponGripEditorDevWindow, BestiaryDevWindow, CinematicEditorDevWindow, InventoryDevWindow, CharacterDevWindow, MapEditorDevWindow), Camera (CinematicDirector, TacticalCameraController), Multi (VTTTableSync), Core (CoreRulesConfig, TacticalSelectionManager, DuoTechRegistry, CombatTechniqueRegistry, CombatActionRegistry). Aucun FindObjectsByType<TacticalUnit>() ne reste dans le codebase. Reste à valider runtime : suite NUnit + profiler combat dev."
+        },
+        {
+          "id": "RD-114",
+          "title": "IA : refactor TacticalAIController — purs testables + split partials",
+          "epic": "IA",
+          "status": "done",
+          "priority": "high",
+          "order": 51,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Tactics/AI",
+          "details": "FAIT (2026-10-11, Tactics/AI uniquement) : 1) 5 classes pures extraites à comportement identique — AIPersonalityProfile (réserve RD-IA03, stance RD-031), TacticalPostureEvaluator, TargetScorer, AIMovementSolver (hexes + crossfire, jitter injecté), AttackPlanEvaluator (optimisation parties/visée/injection, difficulté injectée) ; contrôleur réduit à des délégations. 2) Split byte-identique du god-class 3386 → 881 lignes en 6 partials (Support 867, Maneuvers 562, Attack 396, Movement 393, Targeting 392) via script, prouvé : 72/72 méthodes même ordre, équilibrage accolades au lexer, aucune ligne retapée. 3) 27 tests NUnit TacticalAIDecisionTests (postures, réserve, scoring, hexes, crossfire, stance, plans). 2 défauts trouvés/corrigés en cours de route : scan cover avant filtre portée (perf), param maxRange mort. Reste à valider : compilation Unity + suite NUnit + Dev Arena Tab Normal/FullAuto."
+        },
+        {
+          "id": "RD-115",
+          "title": "IA : phase 2 — AITurnPlanner à intents + IAIPerception + déduplication pathing",
+          "epic": "IA",
+          "status": "todo",
+          "priority": "medium",
+          "order": 52,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Tactics/AI",
+          "details": "À FAIRE : la complexité a déménagé, pas baissé (~4380 lignes dossier). 1) AITurnPlanner : transformer la chaîne if/continue d'ExecuteAITurn (379 lignes) en priorités retournant des AIIntent, le contrôleur n'exécutant que les coroutines. 2) IAIPerception : abstraire HasAlertedPatrolTarget + gating fog d'EvaluateBestTarget derrière une interface (fakes en tests). 3) Dédupliquer la troncature par budget des 3 FindPathTowards* dans un helper pur. Ne pas toucher aux corps TryExecute* (effets arène/visuals) sauf via prédicats de préconditions."
         }
       ]
     },
