@@ -1,0 +1,17 @@
+{
+    "name": "Killtime.Game",
+    "rootNamespace": "",
+    "references": [
+        "Unity.InferenceEngine",
+        "Unity.RenderPipelines.Universal.Runtime"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

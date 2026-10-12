@@ -7,224 +7,48 @@ using Killtime.Tactics.Visibility;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Duel aveugle officiel (Livres II §7 + VI §24.1) :
-    /// 1. L'attaquant DÉCLARE sa cible, son action (compétence + zone visée) et sa mise
-    ///    (coût de base + PA bonus + PE), débités aussitôt. Résultat CACHÉ.
-    /// 2. La cible DÉCLARE à l'aveugle son action opposée (compétence défensive ou
-    ///    encaissement passif) et sa mise (base réaction + PA bonus + PE), sans avoir vu
-    ///    ni le jet ni la mise de l'attaquant.
-    /// 3. RÉSOLUTION : les deux dés sont lancés simultanément et révélés ensemble
-    ///    (différentiel, dégâts, armure, états).
-    /// Les dés découlent uniquement du niveau de compétence (paliers carac + entraînements
-    /// depuis d2). Ex : Mains Nues +2 entr., FOR 5 (+2) = 4 niveaux -> d10 ;
-    /// Esquive 1 entr., réf. 5 (+2) = 3 niveaux -> d8.
-    /// 1 PA engagé = +1 au total, 1 PE (Essoufflement, plafond Constitution) = +1 au total.
-    /// </summary>
-    public sealed class AttackDuel
-    {
-        public CharacterStats Attacker;
-        public CharacterStats Defender;
-        public BodyPart TargetedPart;
-        public SkillType AttackSkill;
-        public SkillType DefenseSkill;
-        public DiceType AttackDie;
-        public DiceType DefenseDie;
-        public int AttackStatusMod;
-        public int DefenseStatusMod;
-        public int WeaponBaseDamage;
-        public int DefenderArmor;
-        public bool CancelPenaltyWithAP;
-        public bool DefenderWantsToDefend;
-
-        // Coûts de base (attaquant débité au Begin, défenseur à sa déclaration)
-        public int BaseAttackCost;
-        public int BaseDefenseCost;
-        public bool CanDefenderReact;
-        public bool IsDefenderIncapacitated;
-        public bool DefenderBasePaid;
-
-        // Mises déclarées à l'aveugle (débitées à la déclaration, avant tout jet)
-        public bool AttackerStakesDeclared;
-        public int AttackerBonusPAApplied;
-        public int AttackerPEApplied;
-        public bool DefenderStakesDeclared;
-        public int DefenderBonusPAApplied;
-        public int DefenderPEApplied;
-
-        // Modificateurs situationnels (hors mises déclarées)
-        public int AttackBaseMod;
-        public int DefenseBaseMod;
-        public bool IsRangedAttack;
-        public bool IsMartialArtsStrike;
-        public bool AppliedCanonEntrave;
-        // RD-049 : Furtivité / Embuscade (+2 attaque, pas de réaction adverse)
-        public bool IsStealthAttack;
-        public int StealthAttackBonus;
-        // RD-048 : Canalisation / Action en Progression (+2 au jet, -1 en défense)
-        public bool IsChannelAttack;
-        public int ChannelAttackBonus;
-        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §31.2).
-        // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
-        public int WeaponBonusEc;
-        // RD-036 Hauteur / contrebas (palier 1.5 m) : bonus/malus vertical
-        // calculé par ElevationAdvantage, additionné à AttackBaseMod.
-        public int ElevationAttackMod;
-        public string ElevationLabel;
-        // Couvert & visibilité (Livre VI §25.3) : Half -1, ThreeQuarters -2,
-        // Full = cible non visible => attaque impossible (BeginDuel refuse).
-        public CoverType Cover;
-        public int CoverAttackPenalty;
-        public bool BlockedByCover;
-
-        // RD-053 : Nuit / Obscurité (-1 tir sans lampe ni thermique)
-        public bool IsNightAttack;
-        public int NightAttackMod;
-
-        // Jets uniques, lancés simultanément à la résolution avec les mises déclarées
-        public DiceRollResult AttackFinalRoll;
-        public DiceRollResult DefenseFinalRoll;
-        public bool HasResolved;
-        public int DefenderUnreactivePenalty;
-    }
-
-    /// <summary>
-    /// Résultat générique d'un défi opposé aveugle (hors combat : Intimidation, story).
-    /// </summary>
-    public sealed class OpposedCheckResult
-    {
-        public CharacterStats Attacker;
-        public CharacterStats Defender;
-        public SkillType AttackSkill;
-        public SkillType DefenseSkill;
-        public DiceRollResult AttackRoll;
-        public DiceRollResult DefenseRoll;
-        public int AttackerBonusPAApplied;
-        public int AttackerPEApplied;
-        public int DefenderBonusPAApplied;
-        public int DefenderPEApplied;
-        public int Differential;
-        public bool AttackerWins;
-        public string CombatLog;
-    }
-
-    /// <summary>
-    /// Résultat d'une attaque combinée de groupe (RD-084, Livre VI §25.2) :
-    /// sommation des résultats offensifs face à l'unique défense de la cible.
-    /// </summary>
-    public sealed class CombinedAttackResult
-    {
-        public bool IsValid;
-        public string Error;
-        public System.Collections.Generic.List<CharacterStats> Attackers = new();
-        public CharacterStats Defender;
-        public BodyPart TargetedPart;
-        public SkillType AttackSkill;
-        public SkillType DefenseSkill;
-        public System.Collections.Generic.List<DiceRollResult> AttackRolls = new();
-        public int SummedAttackTotal;
-        public int SummedWeaponBase;
-        public DiceRollResult DefenseRoll;
-        public int UniqueDefenseTotal;
-        public bool DefenderDefended;
-        public int Differential;
-        public int RawDamage;
-        public int ArmorAbsorbed;
-        public int ShieldAbsorbed;
-        public int FinalDamageApplied;
-        public bool ExceededEncaissement;
-        public StatusEffect InflictedStatus;
-        public FatalBlowResolution FatalResolution;
-        public MoraleCheckResult MoraleResult;
-        public bool IsHit;
-        public int SlowestInitiative;
-        public CharacterStats SlowestMember;
-        // RD-048 : canalisation interrompue par la sommation (dégât net > encaissement).
-        public bool ChannelInterrupted;
-        public string InterruptedChannelLabel;
-        public string CombatLog;
-    }
-
-    /// <summary>
-    /// Entrée individuelle d'un poursuivant dans un round de course-poursuite.
-    /// </summary>
-    public sealed class PursuitDuelEntry
-    {
-        public CharacterStats Pursuer;
-        public DiceRollResult PursuerRoll;
-        public int Differential;
-        public bool PreyWins;
-    }
-
-    /// <summary>
-    /// Résultat d'un round de course-poursuite (RD-084, Livre VI §25.1) :
-    /// un unique jet de la proie opposé à chaque poursuivant.
-    /// </summary>
-    public sealed class PursuitRoundResult
-    {
-        public CharacterStats Prey;
-        public DiceRollResult PreyRoll;
-        public System.Collections.Generic.List<PursuitDuelEntry> Entries = new();
-        public int FailuresAdded;
-        public int TotalFailures;
-        public int FailuresToCapture;
-        public bool Caught;
-        public string CombatLog;
-    }
-
-    /// <summary>
     /// Résolution mathématique intégrale des passes d'armes et tirs ciblés (Livre VI).
     /// Conforme à l'Axiome Fondateur : Tout jet découle d'une compétence.
     /// L'attaque est opposée par une compétence défensive, sauf décision de non-défense.
     /// Séquence impérative : déclaration attaquant (mise cachée) -> déclaration défenseur
     /// à l'aveugle -> révélation simultanée -> résolution normale. Aucun résultat n'est
     /// révélé avant que les deux mises soient engagées.
+    ///
+    /// FAÇADE (refactor services composés) : l'API publique est inchangée, chaque appel
+    /// est délégué au service propriétaire. Ordre : DuelSetupService (mises) ->
+    /// DuelResolutionService (jets) -> DamageEngineService (dégâts),
+    /// SpecialManeuverService (guet / opportunité / lutte / groupe),
+    /// CombatProgressionService (progressions, tables anatomiques RD-082).
     /// </summary>
     public class CombatCalculator
     {
-        private readonly DiceRoller _diceRoller;
-        private readonly Random _random;
-        private bool _currentCombatIsAtContactDistance = false;
+        private readonly CombatDuelContext _ctx;
+        private readonly CombatProgressionService _progression;
+        private readonly DamageEngineService _damage;
+        private readonly DuelSetupService _setup;
+        private readonly DuelResolutionService _resolution;
+        private readonly SpecialManeuverService _maneuvers;
 
         public CombatCalculator(DiceRoller diceRoller = null)
         {
-            _diceRoller = diceRoller ?? new DiceRoller();
-            _random = new Random();
+            _ctx = new CombatDuelContext(diceRoller);
+            _progression = new CombatProgressionService(_ctx);
+            _damage = new DamageEngineService(_ctx, _progression);
+            _setup = new DuelSetupService(_ctx);
+            _resolution = new DuelResolutionService(_ctx, _setup, _damage, _progression);
+            _maneuvers = new SpecialManeuverService(_ctx, _setup, _resolution, _progression);
         }
 
         public void SetContactDistanceState(bool isAtContact)
         {
-            _currentCombatIsAtContactDistance = isAtContact;
+            _ctx.IsAtContactDistance = isAtContact;
         }
 
         /// <summary>
         /// RD-053 : Vérifie si un combattant dispose d'une source lumineuse (lampe/torche)
         /// ou d'une vision thermique (spécialisation ou lunettes).
         /// </summary>
-        public static bool HasLampOrThermal(CharacterStats stats)
-        {
-            if (stats == null) return false;
-            if (stats.HasSpecialization(FogOfWarSystem.SpecThermal)) return true;
-            if (SmokeScreen.HasGoggles(stats)) return true;
-
-            var inv = stats.Sheet?.Inventory;
-            if (inv != null)
-            {
-                for (int i = 0; i < inv.Count; i++)
-                {
-                    var it = inv[i];
-                    if (it == null || string.IsNullOrEmpty(it.Name)) continue;
-                    if (it.Name.IndexOf("Lampe", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        it.Name.IndexOf("Torche", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        it.Name.IndexOf("Flashlight", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        it.Name.IndexOf("Thermique", StringComparison.OrdinalIgnoreCase) >= 0 ||
-                        it.Name.IndexOf("Vision Nocturne", StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
+        public static bool HasLampOrThermal(CharacterStats stats) => DuelSetupService.HasLampOrThermal(stats);
 
         /// <summary>
         /// Résolution officielle du Livre VI en duel aveugle.
@@ -249,54 +73,11 @@ namespace Killtime.Core.Combat
             int defenderPE = 0,
             CoverType cover = CoverType.None,
             int weaponBonusEc = 0,
-            bool isNight = false)
-        {
-            // RÈGLE CODEX : aucun mod de caractéristique ajouté. Malus d'états uniquement.
-            // Le dé offensif applique le Corps Augmenté (Mains Nues : MAG substituable à FOR).
-            DiceType attackDie = attacker.GetSkillDie(attackSkill, true);
-            int attackModifier = attacker.GetStatusModifier(attackSkill, isOffensive: true);
-
-            DiceType defenseDie = defender.GetSkillDie(defenseSkill);
-            int defenseModifier = defender.GetStatusModifier(defenseSkill, isOffensive: false);
-
-            // Règle de Défense Non-Exclusive (Livre III) :
-            // Parer avec une arme ou mains nues sans la spé dédiée fait chuter le dé d'un niveau.
-            // La spécialisation annule ce malus (aucun +1 flat, conforme au Codex).
-            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
-            {
-                bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && defender.HasSpecialization(defenderSpecialization))
-                                || SkillDefinitions.HasDefensiveSpecialization(defender.Sheet, defenseSkill);
-
-                if (!hasDefSpec)
-                {
-                    defenseDie = SkillDefinitions.StepDownDie(defenseDie);
-                }
-            }
-
-            return ResolveTargetedAttackInternal(
-                attacker: attacker,
-                defender: defender,
-                targetedPart: targetedPart,
-                attackDie: attackDie,
-                attackModifier: attackModifier,
-                defenseDie: defenseDie,
-                defenseModifier: defenseModifier,
-                weaponBaseDamage: weaponBaseDamage,
-                cancelPenaltyWithAP: cancelPenaltyWithAP,
-                defenderWantsToDefend: defenderWantsToDefend,
-                defenderArmor: defenderArmor,
-                attackerBonusAP: attackerBonusAP,
-                defenderBonusAP: defenderBonusAP,
-                attackerPE: attackerPE,
-                defenderPE: defenderPE,
-                attackSkill: attackSkill,
-                defenseSkill: defenseSkill,
-                defenderSpecialization: defenderSpecialization,
-                cover: cover,
-                weaponBonusEc: weaponBonusEc,
-                isNight: isNight
-            );
-        }
+            bool isNight = false) =>
+            _resolution.ResolveTargetedAttack(attacker, defender, targetedPart, attackSkill, defenseSkill,
+                weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend, attackerSpecialization,
+                defenderSpecialization, defenderArmor, attackerBonusAP, defenderBonusAP, attackerPE,
+                defenderPE, cover, weaponBonusEc, isNight);
 
         /// <summary>
         /// Surcharge de compatibilité descendante avec injection directe de dés.
@@ -322,37 +103,11 @@ namespace Killtime.Core.Combat
             int defenderPE = 0,
             CoverType cover = CoverType.None,
             int weaponBonusEc = 0,
-            bool isNight = false)
-        {
-            return ResolveTargetedAttackInternal(
-                attacker: attacker,
-                defender: defender,
-                targetedPart: targetedPart,
-                attackDie: attackDie,
-                attackModifier: attackModifier,
-                defenseDie: defenseDie,
-                defenseModifier: defenseModifier,
-                weaponBaseDamage: weaponBaseDamage,
-                cancelPenaltyWithAP: cancelPenaltyWithAP,
-                defenderWantsToDefend: defenderWantsToDefend,
-                defenderArmor: defenderArmor,
-                attackerBonusAP: attackerBonusAP,
-                defenderBonusAP: defenderBonusAP,
-                attackerPE: attackerPE,
-                defenderPE: defenderPE,
-                attackSkill: attackSkill,
-                defenseSkill: defenseSkill,
-                defenderSpecialization: null,
-                cover: cover,
-                weaponBonusEc: weaponBonusEc,
-                isNight: isNight
-            );
-        }
-
-        // =====================================================================
-        // API DUEL AVEUGLE PAS-À-PAS (pour UI interactive / IA / tests)
-        // Déclaration attaquant -> déclaration défenseur -> résolution simultanée.
-        // =====================================================================
+            bool isNight = false) =>
+            _resolution.ResolveTargetedAttack(attacker, defender, targetedPart, attackDie, attackModifier,
+                defenseDie, defenseModifier, weaponBaseDamage, cancelPenaltyWithAP, defenderArmor,
+                attackerBonusAP, defenderBonusAP, defenderWantsToDefend, attackSkill, defenseSkill,
+                attackerPE, defenderPE, cover, weaponBonusEc, isNight);
 
         /// <summary>
         /// Étape 0 : prépare le duel aveugle. Paie le coût de base d'attaque uniquement.
@@ -380,151 +135,11 @@ namespace Killtime.Core.Combat
             bool skipAttackerCost = false,
             int elevationAttackMod = 0,
             string elevationLabel = null,
-            bool isNight = false)
-        {
-            error = null;
-            var targetInfo = BodyPartInfo.GetInfo(targetedPart);
-            var cfg = Rules.CoreRulesConfig.Instance;
-
-            // Livre VI §25.3 : cible totalement à couvert / non visible => attaque impossible.
-            // Au contact, les combattants se voient : le couvert est ignoré.
-            CoverType effectiveCover = cover;
-            if (_currentCombatIsAtContactDistance && cfg.CoverIgnoredAtContactDistance)
-                effectiveCover = CoverType.None;
-            if (effectiveCover == CoverType.Full && cfg.FullCoverBlocksAttack)
-            {
-                error = $"{attacker.Name} ne voit pas {defender.Name} (couvert total) — attaque impossible ! Déplacez-vous pour retrouver une ligne de mire.";
-                return null;
-            }
-
-            bool isStealthAttack = StealthState.IsStealthed(attacker);
-            int stealthBonus = isStealthAttack ? StealthState.StealthAttackBonus : 0;
-            // RD-048 : attaque en canalisant = +2 au jet (consommé à la résolution).
-            bool isChannelAttack = ChannelingState.IsChanneling(attacker);
-            int channelBonus = isChannelAttack ? ChannelingState.PeekAttackBonus(attacker) : 0;
-
-            bool isRangedShot = (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir);
-            bool effectiveNight = isNight;
-            if (!effectiveNight)
-            {
-                try
-                {
-                    var fow = FogOfWarManager.Instance;
-                    if (fow != null && fow.IsNight) effectiveNight = true;
-                }
-                catch { /* ignore */ }
-            }
-
-            int nightMod = (isRangedShot && effectiveNight && !HasLampOrThermal(attacker)) ? -1 : 0;
-
-            var duel = new AttackDuel
-            {
-                Attacker = attacker,
-                Defender = defender,
-                TargetedPart = targetedPart,
-                AttackSkill = attackSkill,
-                DefenseSkill = defenseSkill,
-                AttackDie = attackDie,
-                DefenseDie = defenseDie,
-                AttackStatusMod = attackModifier,
-                DefenseStatusMod = defenseModifier,
-                WeaponBaseDamage = weaponBaseDamage,
-                DefenderArmor = defenderArmor,
-                CancelPenaltyWithAP = cancelPenaltyWithAP,
-                DefenderWantsToDefend = isStealthAttack ? false : defenderWantsToDefend,
-                IsRangedAttack = isRangedShot,
-                IsMartialArtsStrike = (attackSkill == SkillType.MainsNues) && attacker.HasSpecialization("Arts Martiaux"),
-                DefenderUnreactivePenalty = cfg.UnreactiveDefensePenalty,
-                Cover = effectiveCover,
-                CoverAttackPenalty = effectiveCover == CoverType.Half ? cfg.HalfCoverAttackPenalty
-                    : effectiveCover == CoverType.ThreeQuarters ? cfg.ThreeQuartersCoverAttackPenalty : 0,
-                BlockedByCover = false,
-                IsStealthAttack = isStealthAttack,
-                StealthAttackBonus = stealthBonus,
-                IsChannelAttack = isChannelAttack,
-                ChannelAttackBonus = channelBonus,
-                IsNightAttack = effectiveNight,
-                NightAttackMod = nightMod
-            };
-
-            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC + hauteur RD-036 + stealth RD-049 + nuit RD-053 + canalisation RD-048.
-            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc) + elevationAttackMod + stealthBonus + nightMod + channelBonus;
-            duel.WeaponBonusEc = Math.Max(0, weaponBonusEc);
-            duel.ElevationAttackMod = elevationAttackMod;
-            duel.ElevationLabel = elevationLabel ?? "";
-            if (duel.IsRangedAttack && !cancelPenaltyWithAP)
-            {
-                baseAtt += targetInfo.DifficultyModifier;
-            }
-            if (_currentCombatIsAtContactDistance && duel.IsRangedAttack)
-            {
-                duel.AppliedCanonEntrave = true;
-                if (!cancelPenaltyWithAP)
-                {
-                    baseAtt -= 2;
-                }
-            }
-            duel.AttackBaseMod = baseAtt;
-
-            // Déclaration implicite du coût de base d'attaque (sans mise bonus).
-            duel.BaseAttackCost = cfg.BaseAttackAPCost + (cancelPenaltyWithAP ? cfg.CancelAimPenaltyAPCost : 0);
-
-            // Arts Martiaux : Enchaînement Fluide (Livre III) — la seconde attaque
-            // de mêlée à mains nues du tour coûte 1 PA de moins (minimum 1).
-            if (attackSkill == SkillType.MainsNues
-                && attacker.AttacksThisTurn >= 1
-                && attacker.HasSpecialization("Arts Martiaux : Enchaînement Fluide"))
-            {
-                duel.BaseAttackCost = Math.Max(1, duel.BaseAttackCost - 1);
-            }
-
-            if (!skipAttackerCost && !attacker.ConsumeActionPoints(duel.BaseAttackCost))
-            {
-                error = $"{attacker.Name} n'a pas assez de PA ({attacker.CurrentActionPoints}/{duel.BaseAttackCost}) pour attaquer !";
-                return null;
-            }
-
-            // RD-038 : Le sprint bloque tout tir à distance ce tour
-            if (isRangedShot && !ChargeState.CanFireRanged(attacker))
-            {
-                error = $"{attacker.Name} a sprinté ce tour : tir impossible (RD-038).";
-                return null;
-            }
-
-            // Éligibilité du Défenseur SANS prélèvement ni révélation.
-            // Sa mise sera engagée à sa déclaration aveugle (DeclareDefenderStakes).
-            duel.BaseDefenseCost = cfg.BaseReactionAPCost;
-            duel.IsDefenderIncapacitated = !defender.CanDefendActively();
-            bool effectiveWants = !isStealthAttack && defenderWantsToDefend && !duel.IsDefenderIncapacitated;
-            duel.CanDefenderReact = false;
-            duel.DefenderBasePaid = false;
-            if (effectiveWants)
-            {
-                // Éligible si assez de PA pour la réaction de base (Ralenti x2 inclus).
-                int required = duel.BaseDefenseCost;
-                if (defender.ActiveStatus.HasFlag(StatusEffect.Ralenti))
-                    required *= cfg.RalentiAPMultiplier;
-                if (defender.CurrentActionPoints >= required)
-                {
-                    duel.CanDefenderReact = true;
-                }
-            }
-
-            int defBase = defenseModifier;
-            if (effectiveWants && !duel.CanDefenderReact)
-            {
-                defBase += cfg.UnreactiveDefensePenalty;
-            }
-            if (ChargeState.HasDefensePenalty(defender))
-            {
-                defBase += cfg.ChargeDefensePenalty;
-            }
-            // RD-048 : punition de progression (-1 en défense tant qu'on canalise).
-            defBase += ChannelingState.GetDefenseModifier(defender);
-            duel.DefenseBaseMod = defBase;
-
-            return duel;
-        }
+            bool isNight = false) =>
+            _setup.BeginDuel(attacker, defender, targetedPart, attackDie, attackModifier, defenseDie,
+                defenseModifier, weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend, defenderArmor,
+                attackSkill, defenseSkill, out error, cover, weaponBonusEc, skipAttackerCost,
+                elevationAttackMod, elevationLabel, isNight);
 
         /// <summary>
         /// Étape 0 (variante compétences) : calcule les dés via GetSkillDie + règle non-exclusive,
@@ -548,38 +163,19 @@ namespace Killtime.Core.Combat
             bool skipAttackerCost = false,
             int elevationAttackMod = 0,
             string elevationLabel = null,
-            bool isNight = false)
-        {
-            DiceType attackDie = attacker.GetSkillDie(attackSkill, true);
-            int attackModifier = attacker.GetStatusModifier(attackSkill, isOffensive: true);
-            DiceType defenseDie = defender.GetSkillDie(defenseSkill);
-            int defenseModifier = defender.GetStatusModifier(defenseSkill, isOffensive: false);
-            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
-            {
-                bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && defender.HasSpecialization(defenderSpecialization))
-                                || SkillDefinitions.HasDefensiveSpecialization(defender.Sheet, defenseSkill);
-                if (!hasDefSpec) defenseDie = SkillDefinitions.StepDownDie(defenseDie);
-            }
-            return BeginDuel(attacker, defender, targetedPart, attackDie, attackModifier,
-                defenseDie, defenseModifier, weaponBaseDamage, cancelPenaltyWithAP,
-                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover, weaponBonusEc, skipAttackerCost, elevationAttackMod, elevationLabel, isNight);
-        }
+            bool isNight = false) =>
+            _setup.BeginSkillDuel(attacker, defender, targetedPart, attackSkill, defenseSkill, weaponBaseDamage,
+                cancelPenaltyWithAP, defenderWantsToDefend, attackerSpecialization, defenderSpecialization,
+                defenderArmor, out error, cover, weaponBonusEc, skipAttackerCost, elevationAttackMod,
+                elevationLabel, isNight);
 
         /// <summary>
         /// Étape 1 : DÉCLARATION de l'attaquant. Engage la mise bonus (PA + PE) AVANT tout jet.
         /// 1 PA = +1, 1 PE = +DuelPEBonusPerPoint (plafond Constitution). Mise cachée.
         /// Retourne le bonus total engagé (PA appliqués + PE appliqués x valeur).
         /// </summary>
-        public int DeclareAttackerStakes(AttackDuel duel, int bonusPA, int pePoints)
-        {
-            if (duel == null) throw new ArgumentNullException(nameof(duel));
-            if (duel.AttackerStakesDeclared) return CommittedAttackBonus(duel);
-            var cfg = Rules.CoreRulesConfig.Instance;
-            duel.AttackerBonusPAApplied = SpendBonusPA(duel.Attacker, Math.Max(0, bonusPA));
-            duel.AttackerPEApplied = duel.Attacker.SpendDuelPE(Math.Max(0, pePoints));
-            duel.AttackerStakesDeclared = true;
-            return duel.AttackerBonusPAApplied + duel.AttackerPEApplied * cfg.DuelPEBonusPerPoint;
-        }
+        public int DeclareAttackerStakes(AttackDuel duel, int bonusPA, int pePoints) =>
+            _setup.DeclareAttackerStakes(duel, bonusPA, pePoints);
 
         /// <summary>
         /// Étape 2 : DÉCLARATION AVEUGLE du défenseur. Choisit sa compétence (ou le passif)
@@ -594,64 +190,8 @@ namespace Killtime.Core.Combat
             bool wantsToDefend,
             int bonusPA,
             int pePoints,
-            string defenderSpecialization = null)
-        {
-            if (duel == null) throw new ArgumentNullException(nameof(duel));
-            if (duel.DefenderStakesDeclared) return CommittedDefenseBonus(duel);
-            var cfg = Rules.CoreRulesConfig.Instance;
-
-            duel.DefenseSkill = defenseSkill;
-            duel.DefenderWantsToDefend = !duel.IsStealthAttack && wantsToDefend && !duel.IsDefenderIncapacitated;
-            duel.DefenderStakesDeclared = true;
-            duel.DefenderBonusPAApplied = 0;
-            duel.DefenderPEApplied = 0;
-
-            if (duel.IsStealthAttack || !duel.DefenderWantsToDefend)
-            {
-                // Encaissement passif : 0 PA, 0 PE, aucun jet à la résolution.
-                duel.DefenderWantsToDefend = false;
-                duel.CanDefenderReact = false;
-                return 0;
-            }
-
-            // Recalcule le dé de la compétence déclarée (règle non-exclusive).
-            duel.DefenseDie = duel.Defender.GetSkillDie(defenseSkill);
-            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill))
-            {
-                bool hasDefSpec = (!string.IsNullOrEmpty(defenderSpecialization) && duel.Defender.HasSpecialization(defenderSpecialization))
-                                || SkillDefinitions.HasDefensiveSpecialization(duel.Defender.Sheet, defenseSkill);
-                if (!hasDefSpec) duel.DefenseDie = SkillDefinitions.StepDownDie(duel.DefenseDie);
-            }
-            int statusMod = duel.Defender.GetStatusModifier(defenseSkill, isOffensive: false);
-            if (ChargeState.HasDefensePenalty(duel.Defender))
-            {
-                statusMod += cfg.ChargeDefensePenalty;
-            }
-            // RD-048 : punition de progression en canalisation.
-            statusMod += ChannelingState.GetDefenseModifier(duel.Defender);
-            duel.DefenseStatusMod = statusMod;
-            duel.DefenseBaseMod = statusMod;
-            duel.CanDefenderReact = true;
-
-            // Base réaction : débitée à la déclaration (sauf si déjà acquittée, ex: interception RD-032) ; échec -> réflexe à -2.
-            if (!duel.DefenderBasePaid)
-            {
-                if (duel.Defender.ConsumeActionPoints(duel.BaseDefenseCost))
-                {
-                    duel.DefenderBasePaid = true;
-                }
-                else
-                {
-                    duel.DefenseBaseMod += cfg.UnreactiveDefensePenalty;
-                    duel.CanDefenderReact = false;
-                    return 0;
-                }
-            }
-
-            duel.DefenderBonusPAApplied = SpendBonusPA(duel.Defender, Math.Max(0, bonusPA));
-            duel.DefenderPEApplied = duel.Defender.SpendDuelPE(Math.Max(0, pePoints));
-            return CommittedDefenseBonus(duel);
-        }
+            string defenderSpecialization = null) =>
+            _setup.DeclareDefenderStakes(duel, defenseSkill, wantsToDefend, bonusPA, pePoints, defenderSpecialization);
 
         /// <summary>
         /// Déclaration aveugle automatique (IA / défense réactive sans fenêtre).
@@ -659,37 +199,14 @@ namespace Killtime.Core.Combat
         /// (moyenne + modificateurs + mises attaquant inconnues = 0) et engage le
         /// complément dans la limite des PA restants après la base. Jamais de PE auto.
         /// </summary>
-        public int AutoDeclareDefenderStakes(AttackDuel duel, string defenderSpecialization = null)
-        {
-            if (duel == null) throw new ArgumentNullException(nameof(duel));
-            if (!duel.DefenderWantsToDefend || duel.IsDefenderIncapacitated || !duel.CanDefenderReact)
-            {
-                return DeclareDefenderStakes(duel, duel.DefenseSkill, false, 0, 0, defenderSpecialization);
-            }
-            int expectedAttack = (int)Math.Round(DieAverage(duel.AttackDie)) + duel.AttackBaseMod;
-            // La mise adverse est cachée : l'estimation l'ignore (0).
-            int expectedDefense = (int)Math.Round(DieAverage(duel.DefenseDie)) + duel.DefenseBaseMod;
-            int need = expectedAttack - expectedDefense + 1;
-            if (need < 0) need = 0;
-            int affordable = Math.Max(0, duel.Defender.CurrentActionPoints - duel.BaseDefenseCost);
-            int committed = Math.Min(need, affordable);
-            return DeclareDefenderStakes(duel, duel.DefenseSkill, true, committed, 0, defenderSpecialization);
-        }
-
-        // =====================================================================
-        // RD-030 : GUET / OVERWATCH — tir de réaction en duel aveugle auto.
-        // Le coût d'entrée (2 PA) est payé à la pose : le tir est GRATUIT
-        // (skipAttackerCost). Mise attaquant 0/0 (tir réflexe), défense auto.
-        // =====================================================================
+        public int AutoDeclareDefenderStakes(AttackDuel duel, string defenderSpecialization = null) =>
+            _setup.AutoDeclareDefenderStakes(duel, defenderSpecialization);
 
         /// <summary>
         /// Entre en guet : réserve un tir de réaction (coût config, rayon figé).
         /// </summary>
-        public bool TryEnterOverwatch(CharacterStats watcher, int range, out string error)
-        {
-            var cfg = Rules.CoreRulesConfig.Instance;
-            return OverwatchState.TryEnter(watcher, range, cfg.OverwatchAPCost, out error, cfg.OverwatchShotsPerWatch);
-        }
+        public bool TryEnterOverwatch(CharacterStats watcher, int range, out string error) =>
+            _maneuvers.TryEnterOverwatch(watcher, range, out error);
 
         /// <summary>
         /// Tir de réaction du guetteur sur une cible dans son rayon : duel aveugle
@@ -705,54 +222,16 @@ namespace Killtime.Core.Combat
             BodyPart targetedPart = BodyPart.Torse,
             SkillType attackSkill = SkillType.Ballistique,
             int elevationAttackMod = 0,
-            string elevationLabel = null)
-        {
-            if (watcher == null || target == null) return null;
-            if (!OverwatchState.IsWatching(watcher)) return null;
-            if (!target.IsAlive) return null;
-            if (attackSkill != SkillType.Ballistique && attackSkill != SkillType.ProjectilesTir)
-                attackSkill = SkillType.Ballistique;
-
-            var duel = BeginSkillDuel(
-                watcher, target, targetedPart,
-                attackSkill, SkillType.Esquive,
-                weaponBaseDamage, false, true,
-                null, null, target.BaseArmorAbsorption,
-                out _, cover, weaponBonusEc, true, elevationAttackMod, elevationLabel);
-            if (duel == null) return null;
-
-            DeclareAttackerStakes(duel, 0, 0);
-            AutoDeclareDefenderStakes(duel);
-            var result = ResolveBlindDuel(duel);
-            OverwatchState.ConsumeShot(watcher);
-            result.CombatLog = $"👁️ <b>GUET — tir de réaction</b> : {watcher.Name} ➔ {target.Name} (rayon réservé, duel aveugle auto)\n" + result.CombatLog;
-            return result;
-        }
-
-        // =====================================================================
-        // RD-031 : OPPORTUNITÉ / DÉSENGAGEMENT — réactions au contact rompu.
-        // La frappe et le balayage sont GRATUITS (skipAttackerCost, réaction seule
-        // consommée par l'appelant via OpportunityState). Mise attaquant 0/0
-        // (coup réflexe), défense auto. Le blocage est un défi opposé Athlétisme
-        // vs Athlétisme (Livre VI §25.1, course-poursuite) : à l'attaquant (bloqueur).
-        // =====================================================================
+            string elevationLabel = null) =>
+            _maneuvers.ResolveOverwatchFire(watcher, target, weaponBaseDamage, cover, weaponBonusEc,
+                targetedPart, attackSkill, elevationAttackMod, elevationLabel);
 
         /// <summary>
         /// Choisit la compétence de mêlée du frappeur : arme de contact équipée
         /// (compétence associée rabattue) ou Mains Nues à défaut.
         /// </summary>
-        public static SkillType ResolveOpportunitySkill(CharacterStats reactor)
-        {
-            if (reactor != null && reactor.Sheet != null)
-            {
-                var weapon = reactor.Sheet.GetEquippedWeapon();
-                // Arme de contact : compétence associée. Arme longue / à distance :
-                // coup de crosse d'urgence résolu à Mains Nues (V1).
-                if (weapon != null && weapon.RangeInTiles <= 1 && weapon.RangeInTiles > 0)
-                    return SkillDefinitions.ResolveBaseSkill(weapon.AssociatedSkill);
-            }
-            return SkillType.MainsNues;
-        }
+        public static SkillType ResolveOpportunitySkill(CharacterStats reactor) =>
+            SpecialManeuverService.ResolveOpportunitySkill(reactor);
 
         /// <summary>
         /// Frappe d'opportunité : quitte le contact ⇒ 1 frappe gratuite de mêlée
@@ -766,27 +245,9 @@ namespace Killtime.Core.Combat
             SkillType attackSkill,
             BodyPart targetedPart = BodyPart.Torse,
             int elevationAttackMod = 0,
-            string elevationLabel = null)
-        {
-            if (reactor == null || target == null) return null;
-            if (!reactor.IsAlive || !target.IsAlive) return null;
-            if (!SkillDefinitions.IsMeleeAttackSkill(SkillDefinitions.ResolveBaseSkill(attackSkill)))
-                attackSkill = SkillType.MainsNues;
-
-            var duel = BeginSkillDuel(
-                reactor, target, targetedPart,
-                attackSkill, SkillType.Esquive,
-                weaponBaseDamage, false, true,
-                null, null, target.BaseArmorAbsorption,
-                out _, CoverType.None, 0, true, elevationAttackMod, elevationLabel);
-            if (duel == null) return null;
-
-            DeclareAttackerStakes(duel, 0, 0);
-            AutoDeclareDefenderStakes(duel);
-            var result = ResolveBlindDuel(duel);
-            result.CombatLog = $"⚔️ <b>OPPORTUNITÉ — frappe</b> : {reactor.Name} ➔ {target.Name} (contact rompu, duel aveugle auto, gratuit)\n" + result.CombatLog;
-            return result;
-        }
+            string elevationLabel = null) =>
+            _maneuvers.ResolveOpportunityStrike(reactor, target, weaponBaseDamage, attackSkill,
+                targetedPart, elevationAttackMod, elevationLabel);
 
         /// <summary>
         /// Balayage d'opportunité (variante) : frappe gratuite visant les Jambes
@@ -798,19 +259,9 @@ namespace Killtime.Core.Combat
             int weaponBaseDamage,
             SkillType attackSkill,
             int elevationAttackMod = 0,
-            string elevationLabel = null)
-        {
-            var result = ResolveOpportunityStrike(reactor, target, weaponBaseDamage, attackSkill, BodyPart.Jambes, elevationAttackMod, elevationLabel);
-            if (result.HasValue)
-            {
-                var r = result.Value;
-                r.CombatLog = r.CombatLog.Replace(
-                    "⚔️ <b>OPPORTUNITÉ — frappe</b>",
-                    "🦵 <b>OPPORTUNITÉ — balayage</b>");
-                return r;
-            }
-            return result;
-        }
+            string elevationLabel = null) =>
+            _maneuvers.ResolveOpportunityTrip(reactor, target, weaponBaseDamage, attackSkill,
+                elevationAttackMod, elevationLabel);
 
         /// <summary>
         /// Blocage d'opportunité : duel opposé aveugle Athlétisme (bloqueur) vs
@@ -821,69 +272,34 @@ namespace Killtime.Core.Combat
         /// </summary>
         public OpposedCheckResult ResolveOpportunityBlock(
             CharacterStats blocker,
-            CharacterStats mover)
-        {
-            var opposed = ResolveOpposedCheck(
-                blocker, SkillType.Athletisme,
-                mover, SkillType.Athletisme,
-                attackerBonusAP: 0, attackerPE: 0,
-                defenderAutoStakes: true);
-            opposed.CombatLog = $"🛡️ <b>OPPORTUNITÉ — blocage</b> : {blocker.Name} retient {mover.Name} (Athlétisme vs Athlétisme, aveugle) — "
-                + (opposed.AttackerWins ? "<b>BLOQUÉ</b>, le pas est annulé." : "<b>ESQUIVÉ</b>, le fuyard passe.")
-                + "\n" + opposed.CombatLog;
-            return opposed;
-        }
-
-        // =====================================================================
-        // RD-048 : RETARDER / TENIR / CANALISATION (Livre VI — Tours).
-        // - Tenir : 0 PA, passe en attente (interruption ultérieure).
-        // - Retarder : 0 PA, initiative -pénalité (réinsertion par TurnManager).
-        // - Canalisation : coût config, +2 au jet à l'attaque, -1 en défense,
-        //   interrompue si dégât net > encaissement.
-        // =====================================================================
+            CharacterStats mover) =>
+            _maneuvers.ResolveOpportunityBlock(blocker, mover);
 
         /// <summary>
         /// Tient son action : passe en attente (coût config, 0 PA par défaut).
         /// </summary>
-        public bool TryHoldAction(CharacterStats unit, out string error)
-        {
-            var cfg = Rules.CoreRulesConfig.Instance;
-            return DelayedTurnState.TryHold(unit, cfg != null ? cfg.HoldAPCost : 0, out error);
-        }
+        public bool TryHoldAction(CharacterStats unit, out string error) =>
+            _maneuvers.TryHoldAction(unit, out error);
 
         /// <summary>
         /// Retarde son tour : initiative réduite de la pénalité (config, -2).
         /// La réinsertion dans l'ordre est effectuée par le TurnManager.
         /// </summary>
-        public bool TryDelayInitiative(CharacterStats unit, out int newTotal, out string error)
-        {
-            var cfg = Rules.CoreRulesConfig.Instance;
-            return DelayedTurnState.TryDelay(unit, cfg != null ? cfg.DelayInitiativePenalty : 2, out newTotal, out error);
-        }
+        public bool TryDelayInitiative(CharacterStats unit, out int newTotal, out string error) =>
+            _maneuvers.TryDelayInitiative(unit, out newTotal, out error);
 
         /// <summary>
         /// Entre en canalisation / action en progression (coût config, 1 PA).
         /// </summary>
-        public bool TryBeginChanneling(CharacterStats unit, string label, out string error)
-        {
-            var cfg = Rules.CoreRulesConfig.Instance;
-            return ChannelingState.TryBeginChannel(unit, label, cfg != null ? cfg.ChannelStartAPCost : 1, out error);
-        }
+        public bool TryBeginChanneling(CharacterStats unit, string label, out string error) =>
+            _maneuvers.TryBeginChanneling(unit, label, out error);
 
         /// <summary>
         /// Vérifie l'interruption de canalisation après des dégâts nets
         /// (après armure/bouclier) : vrai si la canalisation est rompue.
         /// </summary>
-        public bool CheckChannelInterruption(CharacterStats defender, int finalDamageApplied, out string interruptedLabel)
-        {
-            return ChannelingState.NotifyDamage(defender, finalDamageApplied, out interruptedLabel);
-        }
-
-        // =====================================================================
-        // RD-032 : GARDE DU CORPS / INTERCEPTION ALLIÉ (Livre VI §24.5)
-        // Coût 1 PA réaction : le protecteur au contact (distance <= 1) prend
-        // le coup à la place de l'allié ciblé. Le duel est réorienté vers lui.
-        // =====================================================================
+        public bool CheckChannelInterruption(CharacterStats defender, int finalDamageApplied, out string interruptedLabel) =>
+            _maneuvers.CheckChannelInterruption(defender, finalDamageApplied, out interruptedLabel);
 
         /// <summary>
         /// Réoriente un duel d'attaque vers un protecteur qui s'interpose pour
@@ -894,40 +310,8 @@ namespace Killtime.Core.Combat
             AttackDuel duel,
             CharacterStats protector,
             SkillType? defenseSkill = null,
-            string protectorSpecialization = null)
-        {
-            if (duel == null || protector == null) return duel;
-
-            duel.Defender = protector;
-            duel.DefenderArmor = protector.BaseArmorAbsorption;
-            duel.IsDefenderIncapacitated = OpportunityState.IsCancelledByStatus(protector);
-            duel.CanDefenderReact = !duel.IsDefenderIncapacitated;
-            // La base de réaction (1 PA) a déjà été payée lors de l'interception.
-            duel.DefenderBasePaid = true;
-
-            SkillType defSkill = defenseSkill ?? (protector.Attributes.Agilite >= protector.Attributes.Force
-                ? SkillType.Esquive
-                : SkillType.DefenseCorporelle);
-            duel.DefenseSkill = defSkill;
-            duel.DefenseDie = protector.GetSkillDie(defSkill);
-            if (!SkillDefinitions.IsExclusivelyDefensive(defSkill))
-            {
-                bool hasDefSpec = (!string.IsNullOrEmpty(protectorSpecialization) && protector.HasSpecialization(protectorSpecialization))
-                                || SkillDefinitions.HasDefensiveSpecialization(protector.Sheet, defSkill);
-                if (!hasDefSpec) duel.DefenseDie = SkillDefinitions.StepDownDie(duel.DefenseDie);
-            }
-            int statusMod = protector.GetStatusModifier(defSkill, isOffensive: false);
-            if (ChargeState.HasDefensePenalty(protector))
-            {
-                statusMod += Rules.CoreRulesConfig.Instance.ChargeDefensePenalty;
-            }
-            // RD-048 : punition de progression en canalisation.
-            statusMod += ChannelingState.GetDefenseModifier(protector);
-            duel.DefenseStatusMod = statusMod;
-            duel.DefenseBaseMod = statusMod;
-
-            return duel;
-        }
+            string protectorSpecialization = null) =>
+            _resolution.RedirectDuelToProtector(duel, protector, defenseSkill, protectorSpecialization);
 
         /// <summary>
         /// Résout une attaque interceptée en duel aveugle : le protecteur prend le coup
@@ -942,87 +326,17 @@ namespace Killtime.Core.Combat
             int attackerBonusAP = 0,
             int attackerPE = 0,
             CoverType cover = CoverType.None,
-            int weaponBonusEc = 0)
-        {
-            var duel = BeginSkillDuel(
-                attacker, protector, targetedPart,
-                attackSkill, SkillType.Esquive,
-                weaponBaseDamage, false, true,
-                null, null, protector.BaseArmorAbsorption,
-                out _, cover, weaponBonusEc, skipAttackerCost: false);
-
-            if (duel == null)
-            {
-                return new DamageResult { CombatLog = "⚠️ Attaque interceptée impossible." };
-            }
-
-            duel.DefenderBasePaid = true;
-            DeclareAttackerStakes(duel, attackerBonusAP, attackerPE);
-            AutoDeclareDefenderStakes(duel);
-            var result = ResolveBlindDuel(duel);
-            result.CombatLog = $"🛡️ <b>[INTERCEPTION] {protector.Name}</b> prend le coup à la place !\n" + result.CombatLog;
-            return result;
-        }
+            int weaponBonusEc = 0) =>
+            _resolution.ResolveInterceptedAttack(attacker, protector, targetedPart, attackSkill,
+                weaponBaseDamage, attackerBonusAP, attackerPE, cover, weaponBonusEc);
 
         /// <summary>
         /// Étape 3 : RÉSOLUTION. Les deux dés sont lancés SIMULTANÉMENT avec les mises
         /// déclarées, puis révélés ensemble (différentiel, dégâts, états).
         /// La déclaration du défenseur defaults au passif si elle n'a pas eu lieu.
         /// </summary>
-        public DamageResult ResolveBlindDuel(AttackDuel duel)
-        {
-            if (duel == null) throw new ArgumentNullException(nameof(duel));
-            if (duel.BlockedByCover || duel.Cover == CoverType.Full)
-            {
-                return new DamageResult
-                {
-                    IsHit = false,
-                    IsBlocked = true,
-                    BlockedByCover = true,
-                    Cover = duel.Cover,
-                    CoverAttackPenalty = duel.CoverAttackPenalty,
-                    CombatLog = $"🛡️ <b>COUVERT TOTAL</b> : {duel.Attacker.Name} ne voit pas {duel.Defender.Name} — attaque impossible ! Déplacez-vous pour retrouver une ligne de mire."
-                };
-            }
-            if (!duel.AttackerStakesDeclared)
-                throw new InvalidOperationException("DeclareAttackerStakes doit précéder ResolveBlindDuel.");
-            if (!duel.DefenderStakesDeclared)
-            {
-                DeclareDefenderStakes(duel, duel.DefenseSkill, false, 0, 0);
-            }
-
-            var cfg = Rules.CoreRulesConfig.Instance;
-            int attCommitted = CommittedAttackBonus(duel);
-            int defCommitted = (duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated && duel.CanDefenderReact && duel.DefenderBasePaid)
-                ? CommittedDefenseBonus(duel)
-                : 0;
-
-            duel.AttackFinalRoll = _diceRoller.Roll(duel.AttackDie, duel.AttackBaseMod + attCommitted, cfg.StandardTargetDC);
-
-            bool effectiveDefend = duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated;
-            if (!effectiveDefend)
-            {
-                duel.DefenseFinalRoll = new DiceRollResult
-                {
-                    DieType = duel.DefenseDie,
-                    RawRoll = 0,
-                    Modifier = 0,
-                    Total = 0,
-                    TargetDC = cfg.StandardTargetDC,
-                    Differential = -cfg.StandardTargetDC,
-                    IsSuccess = false,
-                    IsCriticalSuccess = false,
-                    IsCriticalFailure = false
-                };
-            }
-            else
-            {
-                duel.DefenseFinalRoll = _diceRoller.Roll(duel.DefenseDie, duel.DefenseBaseMod + defCommitted, cfg.StandardTargetDC);
-            }
-
-            duel.HasResolved = true;
-            return ResolveDuelDamage(duel);
-        }
+        public DamageResult ResolveBlindDuel(AttackDuel duel) =>
+            _resolution.ResolveBlindDuel(duel);
 
         /// <summary>
         /// Défi opposé aveugle générique (Intimidation, story, etc.) : chaque camp déclare
@@ -1038,87 +352,9 @@ namespace Killtime.Core.Combat
             int attackerPE = 0,
             int defenderBonusAP = 0,
             int defenderPE = 0,
-            bool defenderAutoStakes = false)
-        {
-            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
-            if (defender == null) throw new ArgumentNullException(nameof(defender));
-            var cfg = Rules.CoreRulesConfig.Instance;
-
-            DiceType attDie = attacker.GetSkillDie(attackSkill, true);
-            DiceType defDie = defender.GetSkillDie(defenseSkill, false);
-            int attStatus = attacker.GetStatusModifier(attackSkill, isOffensive: true);
-            int defStatus = defender.GetStatusModifier(defenseSkill, isOffensive: false);
-            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill)
-                && !SkillDefinitions.HasDefensiveSpecialization(defender.Sheet, defenseSkill))
-            {
-                defDie = SkillDefinitions.StepDownDie(defDie);
-            }
-
-            // Déclarations aveugles : débits immédiats, montants cachés jusqu'au jet.
-            int attPA = SpendBonusPA(attacker, Math.Max(0, attackerBonusAP));
-            int attPE = attacker.SpendDuelPE(Math.Max(0, attackerPE));
-            int defPA = 0;
-            int defPE = 0;
-            bool defenderPlays = defender.IsAlive && defender.CanDefendActively();
-            if (defenderPlays)
-            {
-                if (defenderAutoStakes)
-                {
-                    // Estimation aveugle (mise adverse inconnue = 0) : complément au besoin
-                    // estimé, dans la limite des PA disponibles. Jamais de PE auto.
-                    int expectedAtt = (int)Math.Round(DieAverage(attDie)) + attStatus;
-                    int expectedDef = (int)Math.Round(DieAverage(defDie)) + defStatus;
-                    int need = Math.Max(0, expectedAtt - expectedDef + 1);
-                    defPA = SpendBonusPA(defender, Math.Min(need, Math.Max(0, defender.CurrentActionPoints)));
-                }
-                else
-                {
-                    defPA = SpendBonusPA(defender, Math.Max(0, defenderBonusAP));
-                    defPE = defender.SpendDuelPE(Math.Max(0, defenderPE));
-                }
-            }
-
-            int attTotal = attStatus + attPA + attPE * cfg.DuelPEBonusPerPoint;
-            int defTotal = defStatus + defPA + defPE * cfg.DuelPEBonusPerPoint;
-
-            var attRoll = _diceRoller.Roll(attDie, attTotal, cfg.StandardTargetDC);
-            DiceRollResult defRoll = defenderPlays
-                ? _diceRoller.Roll(defDie, defTotal, cfg.StandardTargetDC)
-                : new DiceRollResult
-                {
-                    DieType = defDie, RawRoll = 0, Modifier = 0, Total = 0,
-                    TargetDC = cfg.StandardTargetDC, Differential = -cfg.StandardTargetDC,
-                    IsSuccess = false, IsCriticalSuccess = false, IsCriticalFailure = false
-                };
-
-            int differential = attRoll.Total - defRoll.Total;
-            string log = $"⚔️ <b>DÉFI OPPOSÉ AVEUGLE</b> : {attacker.Name} [{SkillDefinitions.GetDisplayName(attackSkill)}, mise cachée {attPA} PA + {attPE} PE] vs {defender.Name} [{SkillDefinitions.GetDisplayName(defenseSkill)}, mise cachée {(defenderPlays ? $"{defPA} PA + {defPE} PE" : "passif")}]\n"
-                + $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> {attRoll.Total} vs {defRoll.Total} ➔ <b>Différentiel {(differential >= 0 ? "+" : "")}{differential}</b> — <b>{(differential >= 0 ? "L'INITIATIVE L'EMPORTE" : "L'OPPOSITION L'EMPORTE")}</b>";
-
-            // Livre I §5 : le gagnant du différentiel coche 1 case de progression.
-            log += ApplyOpposedProgression(attacker, attackSkill, true, defender, defenseSkill, defenderPlays, differential);
-
-            return new OpposedCheckResult
-            {
-                Attacker = attacker,
-                Defender = defender,
-                AttackSkill = attackSkill,
-                DefenseSkill = defenseSkill,
-                AttackRoll = attRoll,
-                DefenseRoll = defRoll,
-                AttackerBonusPAApplied = attPA,
-                AttackerPEApplied = attPE,
-                DefenderBonusPAApplied = defPA,
-                DefenderPEApplied = defPE,
-                Differential = differential,
-                AttackerWins = differential >= 0,
-                CombatLog = log
-            };
-        }
-
-        // =====================================================================
-        // RD-039 : LUTTE, GRAPPLE & ÉTRANGLEMENT (Livre VI — Corps-à-corps)
-        // =====================================================================
+            bool defenderAutoStakes = false) =>
+            _resolution.ResolveOpposedCheck(attacker, attackSkill, defender, defenseSkill, attackerBonusAP,
+                attackerPE, defenderBonusAP, defenderPE, defenderAutoStakes);
 
         /// <summary>
         /// RD-039 : Tentative de prise au corps-à-corps (Lutte / Grapple).
@@ -1132,38 +368,9 @@ namespace Killtime.Core.Combat
             int attackerPE = 0,
             int defenderBonusAP = 0,
             int defenderPE = 0,
-            bool defenderAutoStakes = false)
-        {
-            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
-            if (defender == null) throw new ArgumentNullException(nameof(defender));
-
-            SkillType atkSkill = attacker.GetSkillDie(SkillType.Athletisme, true) >= attacker.GetSkillDie(SkillType.MainsNues, true)
-                ? SkillType.Athletisme
-                : SkillType.MainsNues;
-
-            SkillType defSkill = defender.GetSkillDie(SkillType.Athletisme, false) >= defender.GetSkillDie(SkillType.DefenseCorporelle, false)
-                ? SkillType.Athletisme
-                : SkillType.DefenseCorporelle;
-
-            var opposed = ResolveOpposedCheck(
-                attacker, atkSkill,
-                defender, defSkill,
-                attackerBonusAP, attackerPE,
-                defenderBonusAP, defenderPE,
-                defenderAutoStakes);
-
-            if (opposed.AttackerWins)
-            {
-                GrappleState.SetGrapple(attacker, defender);
-                opposed.CombatLog = $"🥋 <b>LUTTE — PRISE RÉUSSIE</b> : {attacker.Name} ceinture et verrouille {defender.Name} (Diff {opposed.Differential:+0;-0;0}) — Cible <b>IMMOBILISÉE</b> !\n" + opposed.CombatLog;
-            }
-            else
-            {
-                opposed.CombatLog = $"🥋 <b>LUTTE — ÉCHEC</b> : {defender.Name} repousse la saisie de {attacker.Name} (Diff {opposed.Differential:+0;-0;0}).\n" + opposed.CombatLog;
-            }
-
-            return opposed;
-        }
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolveGrappleDuel(attacker, defender, attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE, defenderAutoStakes);
 
         /// <summary>
         /// RD-039 : Se libérer d'une étreinte de lutte (Lutte — Dégagement).
@@ -1177,37 +384,9 @@ namespace Killtime.Core.Combat
             int victimPE = 0,
             int grapplerBonusAP = 0,
             int grapplerPE = 0,
-            bool grapplerAutoStakes = false)
-        {
-            if (victim == null) throw new ArgumentNullException(nameof(victim));
-            if (grappler == null) throw new ArgumentNullException(nameof(grappler));
-
-            SkillType escaperSkill = SkillType.Athletisme;
-            var bestDie = victim.GetSkillDie(SkillType.Athletisme, true);
-            var mnDie = victim.GetSkillDie(SkillType.MainsNues, true);
-            if (mnDie > bestDie) { bestDie = mnDie; escaperSkill = SkillType.MainsNues; }
-            var acroDie = victim.GetSkillDie(SkillType.Acrobatie, true);
-            if (acroDie > bestDie) { escaperSkill = SkillType.Acrobatie; }
-
-            var opposed = ResolveOpposedCheck(
-                victim, escaperSkill,
-                grappler, SkillType.Athletisme,
-                victimBonusAP, victimPE,
-                grapplerBonusAP, grapplerPE,
-                grapplerAutoStakes);
-
-            if (opposed.AttackerWins)
-            {
-                GrappleState.ReleaseGrapple(victim);
-                opposed.CombatLog = $"🔓 <b>LUTTE — PRISE BRISÉE</b> : {victim.Name} se dégage de l'étreinte de {grappler.Name} (Diff {opposed.Differential:+0;-0;0}) — Statut Immobilisé dissipé !\n" + opposed.CombatLog;
-            }
-            else
-            {
-                opposed.CombatLog = $"🔒 <b>LUTTE — ÉCHEC DU DÉGAGEMENT</b> : {grappler.Name} maintient fermement {victim.Name} en lutte (Diff {opposed.Differential:+0;-0;0}).\n" + opposed.CombatLog;
-            }
-
-            return opposed;
-        }
+            bool grapplerAutoStakes = false) =>
+            _maneuvers.ResolveGrappleEscapeDuel(victim, grappler, victimBonusAP, victimPE,
+                grapplerBonusAP, grapplerPE, grapplerAutoStakes);
 
         /// <summary>
         /// RD-039 : Étranglement au corps-à-corps sur cible saisie ou immobilisée.
@@ -1221,55 +400,9 @@ namespace Killtime.Core.Combat
             int attackerPE = 0,
             int defenderBonusAP = 0,
             int defenderPE = 0,
-            bool defenderAutoStakes = false)
-        {
-            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
-            if (defender == null) throw new ArgumentNullException(nameof(defender));
-
-            SkillType atkSkill = attacker.GetSkillDie(SkillType.Athletisme, true) >= attacker.GetSkillDie(SkillType.MainsNues, true)
-                ? SkillType.Athletisme
-                : SkillType.MainsNues;
-
-            SkillType defSkill = defender.GetSkillDie(SkillType.EndurancePhysique, false) >= defender.GetSkillDie(SkillType.Athletisme, false)
-                ? SkillType.EndurancePhysique
-                : SkillType.Athletisme;
-
-            var opposed = ResolveOpposedCheck(
-                attacker, atkSkill,
-                defender, defSkill,
-                attackerBonusAP, attackerPE,
-                defenderBonusAP, defenderPE,
-                defenderAutoStakes);
-
-            if (opposed.AttackerWins)
-            {
-                int rawDmg = Math.Max(2, 1 + opposed.Differential / 2);
-                int remaining = defender.CurrentHealth - rawDmg;
-                if (remaining <= 0)
-                {
-                    defender.EvaluateFatalBlow(BodyPart.CouTrachee, rawDmg);
-                }
-                else
-                {
-                    defender.CurrentHealth = remaining;
-                }
-
-                defender.ApplyStatus(StatusEffect.Asphyxie, 2);
-                defender.ApplyResidualDamage(StatusEffect.Asphyxie, 2);
-
-                opposed.CombatLog = $"🫁 <b>ÉTRANGLEMENT — SUFFOCATION</b> : {attacker.Name} compresse la trachée de {defender.Name} (Diff {opposed.Differential:+0;-0;0}) — {rawDmg} dégâts bruts au cou + <b>ASPHYXIE</b> (2 tours, pool 2 résiduels, -1 PA/tour) !\n" + opposed.CombatLog;
-            }
-            else
-            {
-                opposed.CombatLog = $"🫁 <b>ÉTRANGLEMENT — RÉSISTÉ</b> : {defender.Name} résiste à l'étranglement de {attacker.Name} (Diff {opposed.Differential:+0;-0;0}).\n" + opposed.CombatLog;
-            }
-
-            return opposed;
-        }
-
-        // =====================================================================
-        // RD-040 : BOUSCULADE GÉNÉRIQUE & COUP DE BOUCLIER (Livre VI — Corps-à-corps)
-        // =====================================================================
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolveStrangulationDuel(attacker, defender, attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE, defenderAutoStakes);
 
         /// <summary>
         /// RD-040 : Résolution de la Bousculade générique ou du Coup de bouclier (2 PA).
@@ -1285,91 +418,9 @@ namespace Killtime.Core.Combat
             int attackerPE = 0,
             int defenderBonusAP = 0,
             int defenderPE = 0,
-            bool defenderAutoStakes = false)
-        {
-            if (attacker == null) throw new ArgumentNullException(nameof(attacker));
-            if (defender == null) throw new ArgumentNullException(nameof(defender));
-
-            SkillType atkSkill;
-            if (isShieldBash)
-            {
-                atkSkill = attacker.GetSkillDie(SkillType.DefenseCorporelle, true) >= attacker.GetSkillDie(SkillType.Athletisme, true)
-                    ? SkillType.DefenseCorporelle
-                    : SkillType.Athletisme;
-            }
-            else
-            {
-                atkSkill = attacker.GetSkillDie(SkillType.Athletisme, true) >= attacker.GetSkillDie(SkillType.MainsNues, true)
-                    ? SkillType.Athletisme
-                    : SkillType.MainsNues;
-            }
-
-            SkillType defSkill = defender.GetSkillDie(SkillType.DefenseCorporelle, false) >= defender.GetSkillDie(SkillType.Athletisme, false)
-                ? SkillType.DefenseCorporelle
-                : SkillType.Athletisme;
-
-            var opposed = ResolveOpposedCheck(
-                attacker, atkSkill,
-                defender, defSkill,
-                attackerBonusAP, attackerPE,
-                defenderBonusAP, defenderPE,
-                defenderAutoStakes);
-
-            bool success = opposed.AttackerWins;
-            int diff = opposed.Differential;
-
-            int rawDmg = 0;
-            int absorbed = 0;
-            int finalDmg = 0;
-
-            if (success && isShieldBash)
-            {
-                rawDmg = 3 + Math.Max(0, diff / 2);
-                int totalArmor = defender.BaseArmorAbsorption + defender.GetWornArmorBonus();
-                absorbed = Math.Min(totalArmor, rawDmg);
-                int postArmor = Math.Max(0, rawDmg - absorbed);
-                int shieldRem = defender.AbsorbShield(postArmor);
-                finalDmg = Math.Max(0, shieldRem);
-
-                if (defender.CurrentHealth - finalDmg <= 0)
-                {
-                    defender.EvaluateFatalBlow(BodyPart.Torse, finalDmg);
-                }
-                else
-                {
-                    defender.CurrentHealth -= finalDmg;
-                }
-            }
-
-            string actionLabel = isShieldBash ? "COUP DE BOUCLIER" : "BOUSCULADE";
-            string log = success
-                ? $"💨 <b>{actionLabel} — RÉUSSIE</b> : {attacker.Name} repousse violemment {defender.Name} (Diff {diff:+0;-0;0}) ➔ <b>Recul forcé d'1 case (Knockback) !</b>"
-                    + (isShieldBash && finalDmg > 0 ? $"\n   ⚔️ Impact : {rawDmg} bruts &minus; {absorbed} armure = <color=#FF3B5C>{finalDmg} Dégâts Nets</color> ({defender.CurrentHealth}/{defender.MaxHealth} PV)." : "")
-                : $"🛡️ <b>{actionLabel} — ÉCHEC</b> : {defender.Name} résiste et absorbe la poussée de {attacker.Name} (Diff {diff:+0;-0;0}).";
-
-            log += $"\n{opposed.CombatLog}";
-
-            return new DamageResult
-            {
-                IsHit = success,
-                IsBlocked = !success,
-                Differential = diff,
-                AttackRoll = opposed.AttackRoll,
-                DefenseRoll = opposed.DefenseRoll,
-                TargetPart = BodyPart.Torse,
-                ActualHitPart = BodyPart.Torse,
-                RawDamage = rawDmg,
-                ArmorAbsorbed = absorbed,
-                FinalDamageApplied = finalDmg,
-                FatalResolution = (success && isShieldBash && defender.CurrentHealth <= 0) ? defender.EvaluateFatalBlow(BodyPart.Torse, finalDmg) : FatalBlowResolution.None,
-                CausedKnockback = success,
-                CombatLog = log
-            };
-        }
-
-        // =====================================================================
-        // RD-084 : ATTAQUES COMBINÉES DE GROUPE (Livre VI §25.2) & POURSUITE (§25.1)
-        // =====================================================================
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolveShoveDuel(attacker, defender, isShieldBash, attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE, defenderAutoStakes);
 
         /// <summary>
         /// RD-084 : Attaque combinée de groupe (Livre VI §25.2). Les participants
@@ -1393,18 +444,10 @@ namespace Killtime.Core.Combat
             int defenderBonusAP = 0,
             int defenderPE = 0,
             bool defenderWantsToDefend = true,
-            bool defenderAutoStakes = false)
-        {
-            System.Collections.Generic.List<int> uniform = null;
-            if (attackers != null)
-            {
-                uniform = new System.Collections.Generic.List<int>(attackers.Count);
-                for (int i = 0; i < attackers.Count; i++) uniform.Add(weaponBaseDamagePerAttacker);
-            }
-            return ResolveCombinedAttack(attackers, defender, targetedPart, attackSkill, defenseSkill,
-                uniform, attackerBonusAP, attackerPE, defenderBonusAP, defenderPE,
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolveCombinedAttack(attackers, defender, targetedPart, attackSkill, defenseSkill,
+                weaponBaseDamagePerAttacker, attackerBonusAP, attackerPE, defenderBonusAP, defenderPE,
                 defenderWantsToDefend, defenderAutoStakes);
-        }
 
         /// <summary>
         /// RD-084 : Variante à dégâts d'arme différenciés par participant
@@ -1423,264 +466,10 @@ namespace Killtime.Core.Combat
             int defenderBonusAP = 0,
             int defenderPE = 0,
             bool defenderWantsToDefend = true,
-            bool defenderAutoStakes = false)
-        {
-            var result = new CombinedAttackResult
-            {
-                IsValid = false,
-                Defender = defender,
-                TargetedPart = targetedPart,
-                AttackSkill = attackSkill,
-                DefenseSkill = defenseSkill
-            };
-            var cfg = Rules.CoreRulesConfig.Instance;
-            // Livre VI §25.2 : « Deux combattants ou plus » — plancher à 2
-            // même si la config est abaissée (évite les groupes vides/dégénérés).
-            int minMembers = cfg != null ? Math.Max(2, cfg.CombinedAttackMinMembers) : 2;
-            int baseCost = cfg != null ? cfg.CombinedAttackAPCost : 2;
-
-            if (attackers == null || attackers.Count < minMembers)
-            {
-                result.Error = $"Attaque combinée impossible : {minMembers} attaquants minimum requis.";
-                result.CombatLog = $"⚠️ {result.Error}";
-                return result;
-            }
-            if (defender == null || !defender.IsAlive)
-            {
-                result.Error = "Attaque combinée impossible : cible hors de combat.";
-                result.CombatLog = $"⚠️ {result.Error}";
-                return result;
-            }
-
-            var members = new System.Collections.Generic.List<CharacterStats>(attackers.Count);
-            for (int i = 0; i < attackers.Count; i++)
-            {
-                var a = attackers[i];
-                if (a == null || !a.IsAlive || a == defender)
-                {
-                    result.Error = $"Attaque combinée impossible : participant invalide ({(a == null ? "null" : a.Name)}).";
-                    result.CombatLog = $"⚠️ {result.Error}";
-                    return result;
-                }
-                members.Add(a);
-            }
-
-            if (!GroupAssaultState.TryValidateGroup(members, baseCost, minMembers, out string groupError))
-            {
-                result.Error = groupError;
-                result.CombatLog = $"⚠️ {groupError}";
-                return result;
-            }
-
-            // Synchronisation sur le membre le plus lent (traçabilité TurnManager).
-            result.SlowestInitiative = GroupAssaultState.RegisterSynchronizedGroup(members);
-            result.SlowestMember = GroupAssaultState.GetSlowestMember(members);
-            result.Attackers.AddRange(members);
-
-            // Coûts de base débités aussitôt (un par participant).
-            for (int i = 0; i < members.Count; i++)
-            {
-                if (!members[i].ConsumeActionPoints(baseCost))
-                {
-                    result.Error = $"{members[i].Name} n'a plus assez de PA pour frapper à l'unisson !";
-                    result.CombatLog = $"⚠️ {result.Error}";
-                    return result;
-                }
-            }
-
-            // Épreuves offensives individuelles (mises aveugles par participant).
-            int summedAttack = 0;
-            int summedBase = 0;
-            for (int i = 0; i < members.Count; i++)
-            {
-                var a = members[i];
-                DiceType die = a.GetSkillDie(attackSkill, true);
-                int status = a.GetStatusModifier(attackSkill, isOffensive: true);
-                int bAP = (attackerBonusAP != null && i < attackerBonusAP.Count) ? Math.Max(0, attackerBonusAP[i]) : 0;
-                int bPE = (attackerPE != null && i < attackerPE.Count) ? Math.Max(0, attackerPE[i]) : 0;
-                int paidPA = SpendBonusPA(a, bAP);
-                int paidPE = a.SpendDuelPE(bPE);
-                int committed = paidPA + paidPE * cfg.DuelPEBonusPerPoint;
-                var roll = _diceRoller.Roll(die, status + committed, cfg.StandardTargetDC);
-                result.AttackRolls.Add(roll);
-                summedAttack += roll.Total;
-                int wBase = (weaponBaseDamages != null && i < weaponBaseDamages.Count) ? weaponBaseDamages[i] : 5;
-                summedBase += Math.Max(0, wBase);
-            }
-            result.SummedAttackTotal = summedAttack;
-            result.SummedWeaponBase = summedBase;
-
-            // Unique défense de la cible (réaction de base + mises, ou passif à 0).
-            bool wants = defenderWantsToDefend && defender.CanDefendActively();
-            bool basePaid = false;
-            int defCommitted = 0;
-            DiceType defDie = defender.GetSkillDie(defenseSkill);
-            int defStatus = defender.GetStatusModifier(defenseSkill, isOffensive: false);
-            if (!SkillDefinitions.IsExclusivelyDefensive(defenseSkill)
-                && !SkillDefinitions.HasDefensiveSpecialization(defender.Sheet, defenseSkill))
-            {
-                defDie = SkillDefinitions.StepDownDie(defDie);
-            }
-            if (wants)
-            {
-                if (defender.ConsumeActionPoints(cfg.BaseReactionAPCost))
-                {
-                    basePaid = true;
-                    if (defenderAutoStakes)
-                    {
-                        int expectedDef = (int)Math.Round(DieAverage(defDie)) + defStatus;
-                        int need = Math.Max(0, summedAttack - expectedDef + 1);
-                        int affordable = Math.Max(0, defender.CurrentActionPoints);
-                        defCommitted = SpendBonusPA(defender, Math.Min(need, affordable));
-                    }
-                    else
-                    {
-                        int paidPA = SpendBonusPA(defender, Math.Max(0, defenderBonusAP));
-                        int paidPE = defender.SpendDuelPE(Math.Max(0, defenderPE));
-                        defCommitted = paidPA + paidPE * cfg.DuelPEBonusPerPoint;
-                    }
-                }
-                else
-                {
-                    wants = false;
-                }
-            }
-
-            DiceRollResult defRoll;
-            if (wants && basePaid)
-            {
-                int penalty = 0;
-                if (ChargeState.HasDefensePenalty(defender)) penalty += cfg.ChargeDefensePenalty;
-                // RD-048 : punition de progression en canalisation.
-                penalty += ChannelingState.GetDefenseModifier(defender);
-                defRoll = _diceRoller.Roll(defDie, defStatus + penalty + defCommitted, cfg.StandardTargetDC);
-                result.DefenderDefended = true;
-            }
-            else
-            {
-                defRoll = new DiceRollResult
-                {
-                    DieType = defDie, RawRoll = 0, Modifier = 0, Total = 0,
-                    TargetDC = cfg.StandardTargetDC, Differential = -cfg.StandardTargetDC,
-                    IsSuccess = false, IsCriticalSuccess = false, IsCriticalFailure = false
-                };
-                result.DefenderDefended = false;
-            }
-            result.DefenseRoll = defRoll;
-            result.UniqueDefenseTotal = result.DefenderDefended ? defRoll.Total : 0;
-
-            int differential = result.DefenderDefended
-                ? summedAttack - defRoll.Total
-                : summedAttack;
-            result.Differential = differential;
-            result.IsHit = differential >= 0;
-
-            if (!result.IsHit)
-            {
-                string blockLog = $"🛡️ <b>ASSAUT GROUPÉ PARÉ</b> : {members.Count} assaillants synchronisés (lenteur : {(result.SlowestMember != null ? result.SlowestMember.Name : "?")}, ini {result.SlowestInitiative}) mais {defender.Name} neutralise la sommation !\n";
-                blockLog += $"   ⚔️ Sommation : {summedAttack} vs Défense unique {defRoll.Total} ➔ <b>Différentiel {differential}</b> — <b>0 dégât</b>.";
-                blockLog += ApplySkillProgression(defender, defenseSkill, false);
-                for (int i = 0; i < members.Count; i++) StealthState.BreakStealth(members[i]);
-                result.CombatLog = blockLog;
-                result.FatalResolution = FatalBlowResolution.None;
-                result.IsValid = true;
-                return result;
-            }
-
-            // Dépassement massif : armure + bouclier appliqués UNE SEULE FOIS.
-            int rawDamage = summedBase + Math.Max(0, differential);
-            int totalArmor = defender.BaseArmorAbsorption + defender.GetWornArmorBonus();
-            int absorbed = Math.Min(totalArmor, rawDamage);
-            int shieldRemainder = defender.AbsorbShield(Math.Max(0, rawDamage - absorbed));
-            int shieldAbsorbed = Math.Max(0, Math.Max(0, rawDamage - absorbed) - shieldRemainder);
-            int finalDamage = Math.Max(0, shieldRemainder);
-            result.RawDamage = rawDamage;
-            result.ArmorAbsorbed = absorbed;
-            result.ShieldAbsorbed = shieldAbsorbed;
-            result.FinalDamageApplied = finalDamage;
-
-            bool exceeded = finalDamage > defender.EncaissementThreshold;
-            result.ExceededEncaissement = exceeded;
-            StatusEffect inflicted = StatusEffect.None;
-            // RD-048 : capture avant statuts (purge silencieuse par K.O. sinon).
-            bool combinedWasChanneling = ChannelingState.IsChanneling(defender);
-            string combinedPriorLabel = null;
-            if (combinedWasChanneling) ChannelingState.TryGetLabel(defender, out combinedPriorLabel);
-            if (exceeded)
-            {
-                inflicted = DetermineInflictedStatus(targetedPart);
-                defender.ActiveStatus |= inflicted;
-            }
-            result.InflictedStatus = inflicted;
-
-            FatalBlowResolution fatalRes = FatalBlowResolution.None;
-            if (defender.CurrentHealth - finalDamage <= 0)
-            {
-                fatalRes = defender.EvaluateFatalBlow(targetedPart, finalDamage);
-            }
-            else
-            {
-                defender.CurrentHealth -= finalDamage;
-            }
-            result.FatalResolution = fatalRes;
-
-            MoraleCheckResult moraleRes = default;
-            if (defender.IsAlive && !defender.HasTestedMorale && defender.CurrentHealth > 0)
-            {
-                moraleRes = defender.CheckMoraleAtThreshold(_diceRoller, cfg.StandardTargetDC);
-            }
-            result.MoraleResult = moraleRes;
-
-            // RD-048 : la sommation interrompt aussi la canalisation (dégât net > encaissement).
-            bool combinedChannelInterrupted = false;
-            string combinedChannelLabel = null;
-            if (combinedWasChanneling)
-            {
-                if (ChannelingState.IsChanneling(defender))
-                {
-                    if (!defender.IsAlive || exceeded)
-                    {
-                        if (ChannelingState.NotifyDamage(defender, finalDamage, out combinedChannelLabel))
-                            combinedChannelInterrupted = true;
-                    }
-                }
-                else
-                {
-                    combinedChannelInterrupted = true;
-                    combinedChannelLabel = combinedPriorLabel;
-                    ChannelingState.Cancel(defender);
-                }
-            }
-            result.ChannelInterrupted = combinedChannelInterrupted;
-            result.InterruptedChannelLabel = combinedChannelLabel;
-
-            var info = BodyPartInfo.GetInfo(targetedPart);
-            string log = $"⚔️ <b>ASSAUT GROUPÉ ({members.Count})</b> : synchronisés sur {(result.SlowestMember != null ? result.SlowestMember.Name : "?")} (initiative la plus lente : {result.SlowestInitiative}) ➔ {defender.Name} ({info.DisplayName})\n";
-            for (int i = 0; i < members.Count; i++)
-            {
-                var r = result.AttackRolls[i];
-                log += $"   🗡️ {members[i].Name} : {attackSkill} [{r.DieType} tirage {r.RawRoll} + mod {r.Modifier} = <b>{r.Total}</b>]\n";
-            }
-            log += $"   ➕ <b>SOMMATION OFFENSIVE : {summedAttack}</b> vs <b>DÉFENSE UNIQUE : {(result.DefenderDefended ? defRoll.Total.ToString() : "0 (passif)")}</b> ➔ <b>Différentiel +{differential}</b>\n";
-            log += $"   ⚔️ Dégâts : [{summedBase} (armes cumulées) + {Math.Max(0, differential)} (dépassement) = {rawDamage} bruts] − [Armure {totalArmor} (1×, absorbé {absorbed})]";
-            if (shieldAbsorbed > 0) log += $" − [🔮Bouclier {shieldAbsorbed}]";
-            log += $" ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
-            log += $"   ❤️ Vitalité {defender.Name} : ➔ <b>{defender.CurrentHealth}/{defender.MaxHealth} PV</b>";
-            if (exceeded) log += $" | ⚡ <b>CHOC TRAUMATIQUE</b> (> Encaissement {defender.EncaissementThreshold}) ➔ [{inflicted}]";
-            if (combinedChannelInterrupted) log += $" | ⏳ <b>CANALISATION INTERROMPUE</b> ({finalDamage} dégâts nets &gt; encaissement {defender.EncaissementThreshold}) : « {combinedChannelLabel} » perdue !";
-            if (fatalRes == FatalBlowResolution.InstantDeath) log += " | 💀 <b>MORT INSTANTANÉE</b>";
-            else if (fatalRes == FatalBlowResolution.ForcedUnconscious) log += " | 💥 <b>SYNCOPE TRAUMATIQUE (K.O.)</b>";
-            else if (fatalRes == FatalBlowResolution.EligibleForLastBreath) log += " | ⚡ <b>0 PV (Sombrer ou Dernier Souffle)</b>";
-            if (moraleRes.Triggered) log += "\n   " + moraleRes.Log;
-            for (int i = 0; i < members.Count; i++)
-            {
-                log += ApplySkillProgression(members[i], attackSkill, true);
-                StealthState.BreakStealth(members[i]);
-            }
-            result.CombatLog = log;
-            result.IsValid = true;
-            return result;
-        }
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolveCombinedAttack(attackers, defender, targetedPart, attackSkill, defenseSkill,
+                weaponBaseDamages, attackerBonusAP, attackerPE, defenderBonusAP, defenderPE,
+                defenderWantsToDefend, defenderAutoStakes);
 
         /// <summary>
         /// RD-084 : Round de course-poursuite (Livre VI §25.1). La proie effectue
@@ -1697,991 +486,20 @@ namespace Killtime.Core.Combat
             int preyPE = 0,
             bool pursuersAutoStakes = true,
             System.Collections.Generic.IList<int> pursuerBonusAP = null,
-            System.Collections.Generic.IList<int> pursuerPE = null)
-        {
-            var result = new PursuitRoundResult { Prey = prey };
-            var cfg = Rules.CoreRulesConfig.Instance;
-            PursuitState.FailuresToCapture = cfg != null ? cfg.PursuitFailuresToCapture : 4;
-            PursuitState.MinKeptDistance = cfg != null ? cfg.PursuitMinDistance : 1;
-            result.FailuresToCapture = PursuitState.FailuresToCapture;
-
-            var alive = new System.Collections.Generic.List<CharacterStats>();
-            if (pursuers != null)
-            {
-                for (int i = 0; i < pursuers.Count; i++)
-                {
-                    var p = pursuers[i];
-                    if (p != null && p != prey && p.IsAlive) alive.Add(p);
-                }
-            }
-
-            if (prey == null || !prey.IsAlive)
-            {
-                result.CombatLog = "⚠️ Poursuite impossible : proie hors de combat.";
-                result.TotalFailures = 0;
-                return result;
-            }
-            if (alive.Count == 0)
-            {
-                result.CombatLog = $"⚠️ Poursuite impossible : aucun poursuivant valide pour {prey.Name}.";
-                result.TotalFailures = PursuitState.GetFailures(prey);
-                return result;
-            }
-
-            // Unique épreuve de la proie (notée puis opposée à chacun).
-            DiceType preyDie = prey.GetSkillDie(SkillType.Athletisme, true);
-            int preyStatus = prey.GetStatusModifier(SkillType.Athletisme, isOffensive: true);
-            int preyPA = SpendBonusPA(prey, Math.Max(0, preyBonusAP));
-            int preyPEPaid = prey.SpendDuelPE(Math.Max(0, preyPE));
-            int preyCommitted = preyPA + preyPEPaid * cfg.DuelPEBonusPerPoint;
-            var preyRoll = _diceRoller.Roll(preyDie, preyStatus + preyCommitted, cfg.StandardTargetDC);
-            result.PreyRoll = preyRoll;
-
-            PursuitState.TrackPursuers(prey, alive);
-            int added = 0;
-            string log = $"🏃 <b>COURSE-POURSUITE</b> : {prey.Name} fuit ({alive.Count} poursuivant(s)) — Athlétisme vs Athlétisme\n";
-            log += $"   🦌 Proie {prey.Name} : [d{preyDie} tirage {preyRoll.RawRoll} + mod {preyRoll.Modifier} = <b>{preyRoll.Total}</b>]\n";
-
-            for (int i = 0; i < alive.Count; i++)
-            {
-                var p = alive[i];
-                DiceType pDie = p.GetSkillDie(SkillType.Athletisme, true);
-                int pStatus = p.GetStatusModifier(SkillType.Athletisme, isOffensive: true);
-                int paidPA = 0;
-                int paidPE = 0;
-                if (pursuersAutoStakes)
-                {
-                    int expectedPrey = preyRoll.Total;
-                    int expectedSelf = (int)Math.Round(DieAverage(pDie)) + pStatus;
-                    int need = Math.Max(0, expectedPrey - expectedSelf + 1);
-                    paidPA = SpendBonusPA(p, Math.Min(need, Math.Max(0, p.CurrentActionPoints)));
-                }
-                else
-                {
-                    int wantPA = (pursuerBonusAP != null && i < pursuerBonusAP.Count) ? Math.Max(0, pursuerBonusAP[i]) : 0;
-                    int wantPE = (pursuerPE != null && i < pursuerPE.Count) ? Math.Max(0, pursuerPE[i]) : 0;
-                    paidPA = SpendBonusPA(p, wantPA);
-                    paidPE = p.SpendDuelPE(wantPE);
-                }
-                int committed = paidPA + paidPE * cfg.DuelPEBonusPerPoint;
-                var pRoll = _diceRoller.Roll(pDie, pStatus + committed, cfg.StandardTargetDC);
-                int diff = preyRoll.Total - pRoll.Total;
-                bool preyWins = diff >= 0;
-
-                var entry = new PursuitDuelEntry
-                {
-                    Pursuer = p,
-                    PursuerRoll = pRoll,
-                    Differential = diff,
-                    PreyWins = preyWins
-                };
-                result.Entries.Add(entry);
-
-                if (preyWins)
-                {
-                    PursuitState.RegisterSuccess(prey, p);
-                    log += $"   ✅ vs {p.Name} [{pRoll.Total}] : Diff {diff:+0;-0;0} — <b>DISTANCE MAINTENUE</b> (bloqué à ≥ {PursuitState.MinKeptDistance} case).\n";
-                }
-                else
-                {
-                    PursuitState.RegisterFailure(prey, p);
-                    added++;
-                    log += $"   ❌ vs {p.Name} [{pRoll.Total}] : Diff {diff:+0;-0;0} — <b>TERRAIN GAGNÉ</b> par le poursuivant ! (faillites : {PursuitState.GetFailures(prey)}/{PursuitState.FailuresToCapture})\n";
-                }
-                log += ApplyOpposedProgression(prey, SkillType.Athletisme, true, p, SkillType.Athletisme, true, diff);
-            }
-
-            result.FailuresAdded = added;
-            result.TotalFailures = PursuitState.GetFailures(prey);
-            result.Caught = PursuitState.IsCaught(prey);
-            if (result.Caught)
-            {
-                log += $"   🛑 <b>RÈGLE D'ARRÊT AUX {PursuitState.FailuresToCapture} FAILLITES</b> : {prey.Name} est <b>DÉFINITIVEMENT RATTRAPÉ(E) ET ACCULÉ(E)</b> — arrêt et capture immédiate ! [Immobilisé]";
-            }
-            result.CombatLog = log;
-            return result;
-        }
+            System.Collections.Generic.IList<int> pursuerPE = null) =>
+            _maneuvers.ResolvePursuitRound(prey, pursuers, preyBonusAP, preyPE, pursuersAutoStakes,
+                pursuerBonusAP, pursuerPE);
 
         /// <summary>Espérance d'un dé (pour l'estimation aveugle de l'IA, mise adverse inconnue).</summary>
-        public static double DieAverage(DiceType die)
-        {
-            return die switch
-            {
-                DiceType.D2 => 1.5,
-                DiceType.D3 => 2.0,
-                DiceType.D4 => 2.5,
-                DiceType.D6 => 3.5,
-                DiceType.D8 => 4.5,
-                DiceType.D10 => 5.5,
-                DiceType.D12 => 6.5,
-                DiceType.D20 => 10.5,
-                DiceType.TwoD6 => 7.0,
-                DiceType.TwoD8 => 9.0,
-                DiceType.TwoD10 => 11.0,
-                DiceType.TwoD12 => 13.0,
-                DiceType.TwoD12Plus10 => 23.0,
-                _ => 3.5,
-            };
-        }
-
-        private int CommittedAttackBonus(AttackDuel duel)
-        {
-            var cfg = Rules.CoreRulesConfig.Instance;
-            return duel.AttackerBonusPAApplied + duel.AttackerPEApplied * cfg.DuelPEBonusPerPoint;
-        }
-
-        private int CommittedDefenseBonus(AttackDuel duel)
-        {
-            var cfg = Rules.CoreRulesConfig.Instance;
-            return duel.DefenderBonusPAApplied + duel.DefenderPEApplied * cfg.DuelPEBonusPerPoint;
-        }
-
-        private static int SpendBonusPA(CharacterStats stats, int requested)
-        {
-            int applied = 0;
-            for (int i = 0; i < requested; i++)
-            {
-                // 1 PA bonus = +1 au jet ; Ralenti / Dernier Souffle gérés dans ConsumeActionPoints.
-                // Mises exemptées du malus armures (ce sont des modificateurs, pas des actions).
-                if (stats.ConsumeActionPoints(1, true)) applied++;
-                else break;
-            }
-            return applied;
-        }
-
-        private DamageResult ResolveTargetedAttackInternal(
-            CharacterStats attacker,
-            CharacterStats defender,
-            BodyPart targetedPart,
-            DiceType attackDie,
-            int attackModifier,
-            DiceType defenseDie,
-            int defenseModifier,
-            int weaponBaseDamage,
-            bool cancelPenaltyWithAP,
-            bool defenderWantsToDefend,
-            int defenderArmor,
-            int attackerBonusAP,
-            int defenderBonusAP,
-            int attackerPE,
-            int defenderPE,
-            SkillType attackSkill,
-            SkillType defenseSkill,
-            string defenderSpecialization = null,
-            CoverType cover = CoverType.None,
-            int weaponBonusEc = 0,
-            bool isNight = false)
-        {
-            // --- Duel aveugle : base attaque -> mise attaquant (cachée) ->
-            // --- mise défenseur à l'aveugle -> révélation simultanée -> résolution normale.
-            var duel = BeginDuel(
-                attacker, defender, targetedPart,
-                attackDie, attackModifier, defenseDie, defenseModifier,
-                weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend,
-                defenderArmor, attackSkill, defenseSkill, out string error, cover, weaponBonusEc, isNight: isNight);
-            if (duel == null)
-            {
-                var cfg0 = Rules.CoreRulesConfig.Instance;
-                bool coverBlocked = cover == CoverType.Full && cfg0.FullCoverBlocksAttack;
-                return new DamageResult
-                {
-                    IsHit = false,
-                    IsBlocked = coverBlocked,
-                    Cover = cover,
-                    CoverAttackPenalty = 0,
-                    BlockedByCover = coverBlocked,
-                    CombatLog = error
-                };
-            }
-
-            DeclareAttackerStakes(duel, attackerBonusAP, attackerPE);
-            if (duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated && duel.CanDefenderReact)
-            {
-                DeclareDefenderStakes(duel, defenseSkill, true, defenderBonusAP, defenderPE, defenderSpecialization);
-            }
-            else
-            {
-                DeclareDefenderStakes(duel, defenseSkill, false, 0, 0, defenderSpecialization);
-            }
-
-            return ResolveBlindDuel(duel);
-        }
-
-        private DamageResult ResolveDuelDamage(AttackDuel duel)
-        {
-            var attacker = duel.Attacker;
-            var defender = duel.Defender;
-            var targetedPart = duel.TargetedPart;
-            var attackSkill = duel.AttackSkill;
-            var defenseSkill = duel.DefenseSkill;
-            var targetInfo = BodyPartInfo.GetInfo(targetedPart);
-            var cfg = Rules.CoreRulesConfig.Instance;
-            // RD-038 Charge 3+ cases : consommation de l'élan cinétique sur cette frappe de contact
-            bool isMeleeAttackForCharge = SkillDefinitions.IsMeleeAttackSkill(duel.AttackSkill) || duel.AttackSkill == SkillType.MainsNues;
-            bool chargeApplied = isMeleeAttackForCharge && ChargeState.ConsumeChargeBonus(attacker);
-            // RD-048 Canalisation : consommée à l'attaque (bonus déjà inclus dans
-            // AttackBaseMod au BeginDuel). Consommée même si parée (effort dépensé).
-            bool channelApplied = duel.IsChannelAttack && ChannelingState.ConsumeChannelBonus(attacker);
-
-            var attackRoll = duel.AttackFinalRoll;
-            int attCommittedPA = duel.AttackerBonusPAApplied;
-            int attCommittedPE = duel.AttackerPEApplied;
-            int defCommittedPA = duel.DefenderBonusPAApplied;
-            int defCommittedPE = duel.DefenderPEApplied;
-
-            DiceRollResult defenseRoll;
-            int differential;
-            string defRollStr;
-
-            bool effectiveDefenderWantsToDefend = duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated;
-
-            if (!effectiveDefenderWantsToDefend)
-            {
-                defenseRoll = duel.DefenseFinalRoll;
-                differential = attackRoll.Total;
-                string inCapReason = duel.IsStealthAttack
-                    ? "<b>EMBUSCADE DEPUIS LE STEALTH (Cible surprise : 0 PA, aucune réaction adverse)</b>"
-                    : (duel.IsDefenderIncapacitated
-                        ? $"<b>CIBLE HORS D'ÉTAT ({defender.ActiveStatus}) ➔ Parade impossible (0 PA)</b>"
-                        : "<b>ENCAISSEMENT PASSIF AVEUGLE (0 PA engagé, aucune parade, jet adverse jamais vu)</b>");
-                defRollStr = inCapReason;
-            }
-            else
-            {
-                defenseRoll = duel.DefenseFinalRoll;
-                differential = attackRoll.Total - defenseRoll.Total;
-
-                string statusDefInfo = defender.GetStatusBreakdownString(defenseSkill, isOffensive: false);
-
-                string defPaText;
-                if (duel.CanDefenderReact && duel.DefenderBasePaid)
-                {
-                    defPaText = $" + Mise {defCommittedPA} PA + {defCommittedPE} PE (aveugle)";
-                }
-                else
-                {
-                    defPaText = $" {cfg.UnreactiveDefensePenalty} (0 PA)";
-                }
-                string critDefText = defenseRoll.IsCriticalSuccess ? " <color=#00E5FF>[CRITIQUE !]</color>" : "";
-                string defStatusDetail = !string.IsNullOrEmpty(statusDefInfo) ? $" {statusDefInfo}" : " 0";
-                if (ChargeState.HasDefensePenalty(defender))
-                {
-                    defStatusDetail += $" [Malus Charge : {cfg.ChargeDefensePenalty} Déf]";
-                }
-                if (ChannelingState.IsChanneling(defender))
-                {
-                    defStatusDetail += $" [Canalisation : {ChannelingState.GetDefenseModifier(defender)} Déf]";
-                }
-                // Les deux jets sont révélés ensemble : aucune injection après tirage.
-                defRollStr = $"{SkillDefinitions.GetDisplayName(defenseSkill)} : {duel.DefenseDie} [Tirage {defenseRoll.RawRoll} + États {duel.DefenseStatusMod} ({defStatusDetail}){defPaText} = Total {defenseRoll.Total}]{critDefText}";
-            }
-
-            string statusAttInfo = attacker.GetStatusBreakdownString(attackSkill, isOffensive: true);
-            string statusAttDetail = !string.IsNullOrEmpty(statusAttInfo) ? statusAttInfo : "0";
-            string aimText = duel.CancelPenaltyWithAP ? "Visée compensée (+1 PA base)" : $"Malus Visée {targetInfo.DifficultyModifier}";
-            string paAttText = (attCommittedPA > 0 || attCommittedPE > 0) ? $" + Mise {attCommittedPA} PA + {attCommittedPE} PE (aveugle)" : " + Mise 0 (aveugle)";
-            string critAttText = attackRoll.IsCriticalSuccess ? " <color=#FFE600>[CRITIQUE !]</color>" : "";
-            string entraveText = duel.AppliedCanonEntrave
-                ? (duel.CancelPenaltyWithAP ? " [Canon Entravé : Annulé (+1 PA)]" : " [Canon Entravé : -2 Tir]")
-                : (duel.IsMartialArtsStrike ? " [Arts Martiaux : Exemption Totale]" : "");
-            string coverText = duel.Cover == CoverType.Half
-                ? $" [Couvert : moitié visible {duel.CoverAttackPenalty}]"
-                : duel.Cover == CoverType.ThreeQuarters
-                    ? $" [Couvert : 3/4 couvert {duel.CoverAttackPenalty}]"
-                    : "";
-            string ecText = duel.WeaponBonusEc > 0 ? $" [+{duel.WeaponBonusEc}ec arme]" : "";
-            string elevationText = duel.ElevationAttackMod != 0 ? $" [Hauteur {duel.ElevationAttackMod:+0;-0} {duel.ElevationLabel}]" : "";
-            string stealthText = duel.IsStealthAttack ? $" [🥷 Embuscade/Stealth : +{duel.StealthAttackBonus}]" : "";
-            string channelText = duel.IsChannelAttack ? $" [⏳ Canalisation : +{duel.ChannelAttackBonus}]" : "";
-            string nightText = duel.NightAttackMod != 0 ? $" [Nuit : {duel.NightAttackMod} Tir (sans lampe/thermique)]" : "";
-
-            int normalRef = (attacker.Attributes.Force + attacker.Attributes.Agilite + 1) / 2;
-            string augText = (attacker.IsMagicAugmented(attackSkill, true)
-                    && attacker.Attributes.Magie > normalRef)
-                ? $" [Corps Augmenté : MAG {attacker.Attributes.Magie} (+{SkillDefinitions.CharacteristicSteps(attacker.Attributes.Magie)} paliers)]"
-                : "";
-            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{channelText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
-
-            // Traçabilité Livre VI §24.1 (duel aveugle) : déclarations masquées puis révélation.
-            // RD-048 : la canalisation consommée à l'attaque est tracée, la punition
-            // de progression du défenseur aussi.
-            string channelDefTag = ChannelingState.IsChanneling(defender) ? " [Canalisation -1]" : "";
-            string channelAttTag = channelApplied ? $" [⏳ Canalisation « +{duel.ChannelAttackBonus} » consommée]" : (duel.IsChannelAttack ? " [⏳ Canalisation déjà rompue]" : "");
-            string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.{channelAttTag}";
-            string phaseDef = duel.IsStealthAttack
-                ? $"Phase 2 — Déclaration défenseur (surpris) : {defender.Name} subit l'embuscade depuis le stealth (aucune réaction adverse possible)."
-                : (!effectiveDefenderWantsToDefend
-                    ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} encaisse (0 PA, 0 PE), sans voir le jet adverse."
-                    : ((duel.CanDefenderReact && duel.DefenderBasePaid)
-                        ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}."
-                        : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}."));
-
-            // 4. Résolution du Différentiel
-            if (effectiveDefenderWantsToDefend && differential < 0)
-            {
-                string blockLog = $"🛡️ <b>PARADE / ESQUIVE</b> : {attacker.Name} attaque, mais {defender.Name} neutralise l'assaut !\n";
-                blockLog += $"   {phaseAtt}\n";
-                blockLog += $"   {phaseDef}\n";
-                blockLog += $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> Attaque {attackRollStr} vs Défense {defRollStr}\n";
-                blockLog += $"   ⚖️ <b>Différentiel Net :</b> <color=#00E5FF>{differential}</color> ➔ <b>0 dégât infligé</b> (Attaque neutralisée).";
-
-                bool defHasCrit = defenseRoll.IsCriticalSuccess;
-                CriticalConsequence defCrit = default;
-                if (defHasCrit)
-                {
-                    defCrit = _diceRoller.RollCriticalConsequence(duel.DefenseDie, CriticalEffectCategory.Defensive);
-                    blockLog += $"\n   ✨ <b>[CONSÉQUENCE CRITIQUE DÉFENSIVE §8.2]</b> Relance {duel.DefenseDie} ➔ <b>{defCrit.RawRoll}</b> (Palier {defCrit.Threshold} : <i>{defCrit.Title}</i>) — {defCrit.Description}";
-                    ApplyDefensiveCriticalEffect(defCrit, defender, attacker);
-                }
-
-                // Livre I §5 : le défenseur a RÉUSSI sa compétence → +1 case de progression.
-                blockLog += ApplySkillProgression(defender, defenseSkill, false);
-
-                // RD-049 : toute attaque rompt la furtivité
-                StealthState.BreakStealth(attacker);
-
-                return new DamageResult
-                {
-                    IsHit = false,
-                    IsBlocked = true,
-                    IsCritical = defHasCrit,
-                    HasCriticalConsequence = defHasCrit,
-                    CriticalConsequence = defCrit,
-                    AttackRoll = attackRoll,
-                    DefenseRoll = defenseRoll,
-                    Differential = differential,
-                    Cover = duel.Cover,
-                    CoverAttackPenalty = duel.CoverAttackPenalty,
-                    BlockedByCover = false,
-                    CombatLog = blockLog
-                };
-            }
-
-            bool wasDeflected = effectiveDefenderWantsToDefend && (differential == 0);
-            int deflectionRoll = 0;
-            string deflectionMedical = null;
-            BodyPart actualHitPart = targetedPart;
-            if (wasDeflected)
-            {
-                actualHitPart = ResolveAnatomicalDeflection(targetedPart, out deflectionRoll, out deflectionMedical);
-            }
-            var actualInfo = BodyPartInfo.GetInfo(actualHitPart);
-
-            int rawDamage = duel.WeaponBaseDamage;
-            string dmgFormula = $"{duel.WeaponBaseDamage} (Arme)";
-
-            if (differential > 0)
-            {
-                rawDamage += differential;
-                dmgFormula += $" + {differential} (Diff &Delta;)";
-            }
-
-            CriticalConsequence attCrit = default;
-            bool attHasCrit = attackRoll.IsCriticalSuccess;
-            if (attHasCrit)
-            {
-                rawDamage *= actualInfo.CriticalDamageMultiplier;
-                dmgFormula += $" x{actualInfo.CriticalDamageMultiplier} (Critique {actualInfo.DisplayName})";
-                attCrit = _diceRoller.RollCriticalConsequence(duel.AttackDie, CriticalEffectCategory.Offensive);
-                if (attCrit.Threshold == 3 || attCrit.Threshold == 4)
-                {
-                    rawDamage += 1;
-                    dmgFormula += $" + 1 ({attCrit.Title} §8.2)";
-                }
-                else if (attCrit.Threshold == 5)
-                {
-                    rawDamage += 2;
-                    dmgFormula += $" + 2 ({attCrit.Title} §8.2)";
-                }
-            }
-
-            int totalArmor = duel.DefenderArmor + defender.BaseArmorAbsorption + defender.GetWornArmorBonus();
-            if (attacker.HasSpecialization("Leviers Densifiés : Pointe Cristalline") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                totalArmor = Math.Max(0, totalArmor - 3);
-            }
-            else if (attacker.HasSpecialization("Leviers Densifiés : Perforation Osseuse") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                totalArmor = Math.Max(0, totalArmor - 2);
-            }
-            else if (attacker.HasSpecialization("Leviers Densifiés") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                totalArmor = Math.Max(0, totalArmor - 1);
-            }
-
-            if (attacker.HasSpecialization("Perforation de Silicate : Cœur d'Adamas") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                totalArmor = Math.Max(0, totalArmor - 4);
-            }
-            else if (attacker.HasSpecialization("Perforation de Silicate : Fracture Sismique") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                totalArmor = Math.Max(0, totalArmor - 3);
-            }
-            else if (attacker.HasSpecialization("Perforation de Silicate") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                totalArmor = Math.Max(0, totalArmor - 2);
-            }
-
-            // Arts Martiaux : Brise-Blindage (Livre III) — impact focalisé
-            // destructeur d'alliages : les attaques à mains nues ignorent 2 armure.
-            if (attacker.HasSpecialization("Arts Martiaux : Brise-Blindage") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                totalArmor = Math.Max(0, totalArmor - 2);
-            }
-
-            if (attacker.HasSpecialization("Fente de Rupture : Transpercement Traversant") && duel.AttackSkill == SkillType.ManiementArmes)
-            {
-                totalArmor = Math.Max(0, totalArmor - 4);
-            }
-            else if (attacker.HasSpecialization("Fente de Rupture : Pointe Chirurgicale") && duel.AttackSkill == SkillType.ManiementArmes)
-            {
-                totalArmor = Math.Max(0, totalArmor - 3);
-            }
-            else if (attacker.HasSpecialization("Fente de Rupture") && duel.AttackSkill == SkillType.ManiementArmes)
-            {
-                totalArmor = Math.Max(0, totalArmor - 2);
-            }
-
-            // Arme de Hast : perforation à l'estoc (Armes Perçantes).
-            if (attacker.HasSpecialization("Arme de Hast : Phalange d'Acier") && duel.AttackSkill == SkillType.ArmesPercantes)
-            {
-                totalArmor = Math.Max(0, totalArmor - 4);
-            }
-            else if (attacker.HasSpecialization("Arme de Hast : Mur de Piques") && duel.AttackSkill == SkillType.ArmesPercantes)
-            {
-                totalArmor = Math.Max(0, totalArmor - 3);
-            }
-            else if (attacker.HasSpecialization("Arme de Hast : Arrêt de Charge") && duel.AttackSkill == SkillType.ArmesPercantes)
-            {
-                totalArmor = Math.Max(0, totalArmor - 2);
-            }
-
-            // Fiche héroïque : Avatar (voir MinaCharacter.GetAvatarDamageBonus).
-            rawDamage += MinaCharacter.GetAvatarDamageBonus(attacker, duel.AttackSkill);
-
-            // Marteau de Guerre et Hache de Guerre : branches du Maniement d'Arme.
-            // La valeur legacy ArmesContondantes est rabattue sur ManiementArmes.
-            SkillType meleeSkill = SkillDefinitions.ResolveBaseSkill(duel.AttackSkill);
-
-            if (attacker.HasSpecialization("Corps Augmenté : Résonance Cinétique Pure") && duel.AttackSkill == SkillType.MainsNues)
-            {
-                rawDamage += 2;
-                dmgFormula += " + 2 (Résonance Cinétique)";
-            }
-
-            if (attacker.HasSpecialization("Impact de Bedrock : Enclume Mortelle") && meleeSkill == SkillType.ManiementArmes)
-            {
-                totalArmor = 0;
-                rawDamage += 6;
-                dmgFormula += " + 6 (Enclume Mortelle, Armure Ignorée)";
-            }
-
-            if (attacker.HasSpecialization("Marteau de Guerre : Cataclysme de Fer") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 5;
-            }
-            else if (attacker.HasSpecialization("Marteau de Guerre : Brise-Crâne") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 4;
-            }
-            else if (attacker.HasSpecialization("Marteau de Guerre : Écrasement Osseux") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 3;
-            }
-            else if (attacker.HasSpecialization("Marteau de Guerre") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 2;
-            }
-
-            if (attacker.HasSpecialization("Hache de Guerre : Exécution du Bourreau") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 5;
-            }
-            else if (attacker.HasSpecialization("Hache de Guerre : Brise-Garde") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 4;
-            }
-            else if (attacker.HasSpecialization("Hache de Guerre : Fente du Bûcheron") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 3;
-            }
-            else if (attacker.HasSpecialization("Hache de Guerre") && meleeSkill == SkillType.ManiementArmes)
-            {
-                rawDamage += 2;
-            }
-
-            // RD-038 Charge 3+ cases : +2 dégâts sur la frappe de contact (mêlée / mains nues)
-            if (chargeApplied)
-            {
-                int chargeBonus = cfg.ChargeDamageBonus;
-                rawDamage += chargeBonus;
-                dmgFormula += $" + {chargeBonus} (⚡ Charge)";
-            }
-
-            bool isThomasSymbioticImmune = ThomasCharacter.IsImmuneToCasterMagic(defender.Sheet, attacker.Sheet);
-            if (isThomasSymbioticImmune)
-            {
-                rawDamage = 0;
-                totalArmor = 0;
-            }
-
-            int absorbed = Math.Min(totalArmor, rawDamage);
-            int finalDamage = isThomasSymbioticImmune ? 0 : Math.Max(0, rawDamage - absorbed);
-            // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
-            // chair — aucun choc traumatique tant qu'elle encaisse tout.
-            int shieldRemainder = defender.AbsorbShield(finalDamage);
-            int shieldAbsorbed = Math.Max(0, finalDamage - shieldRemainder);
-            finalDamage = Math.Max(0, shieldRemainder);
-            int prevHp = defender.CurrentHealth;
-
-            bool exceededEncaissement = finalDamage > defender.EncaissementThreshold;
-            StatusEffect inflictedStatus = StatusEffect.None;
-            bool failleExploitee = false;
-
-            // RD-048 : capture de la canalisation AVANT dégâts/statuts (l'IsChanneling
-            // d'après-coup purgerait silencieusement une canalisation rompue par K.O.).
-            bool defenderWasChanneling = ChannelingState.IsChanneling(defender);
-            string defenderChannelLabel = null;
-            if (defenderWasChanneling) ChannelingState.TryGetLabel(defender, out defenderChannelLabel);
-
-            // Arts Martiaux : Rupture Ligamentaire (Livre III) — la cible doit être
-            // Déstabilisée AVANT ce coup (le statut infligé par ce même coup ne compte pas).
-            bool wasDestabilisedBefore = (defender.ActiveStatus & StatusEffect.Destabilise) != 0;
-
-            if (!isThomasSymbioticImmune && (exceededEncaissement || attackRoll.IsCriticalSuccess))
-            {
-                inflictedStatus = DetermineInflictedStatus(actualHitPart);
-                defender.ActiveStatus |= inflictedStatus;
-            }
-
-            bool critCausedKnockback = false;
-            FatalBlowResolution critFatalOverride = FatalBlowResolution.None;
-            if (!isThomasSymbioticImmune && attHasCrit)
-            {
-                ApplyOffensiveCriticalEffect(attCrit, attacker, defender, ref inflictedStatus, ref critCausedKnockback, ref critFatalOverride);
-            }
-
-            // Analyse de Faille (Livre III) : la faille exposée est consommée à la
-            // touche — la prochaine attaque ignore le seuil d'encaissement adverse.
-            if (!isThomasSymbioticImmune && !exceededEncaissement && SkillTechniqueState.ConsumeExposedFlaw(defender))
-            {
-                exceededEncaissement = true;
-                inflictedStatus |= DetermineInflictedStatus(actualHitPart);
-                defender.ActiveStatus |= inflictedStatus;
-                failleExploitee = true;
-            }
-
-            // Arts Martiaux : Balayage Rotatif (Livre III) — sur différentiel net
-            // Delta >= 2 à mains nues, la cible chute À Terre (même sans choc).
-            if (!isThomasSymbioticImmune && duel.AttackSkill == SkillType.MainsNues && differential >= 2
-                && attacker.HasSpecialization("Arts Martiaux : Balayage Rotatif"))
-            {
-                inflictedStatus |= StatusEffect.ATerre;
-                defender.ActiveStatus |= StatusEffect.ATerre;
-            }
-
-            // Thomas-0 : Impact de Bedrock — fracture d'armure de -2 et Sonné sur Delta >= 2
-            if (differential >= 2 && attacker.HasSpecialization("Impact de Bedrock") && meleeSkill == SkillType.ManiementArmes)
-            {
-                defender.BaseArmorAbsorption = Math.Max(0, defender.BaseArmorAbsorption - 2);
-                inflictedStatus |= StatusEffect.Sonne;
-                defender.ApplyStatus(StatusEffect.Sonne, 1);
-            }
-
-            // Mina-0 : Floraison Cinétique — ronces réflexes sur engagement d'essoufflement au contact
-            if (defender.HasSpecialization("Éveil Chlorophyllien : Floraison Cinétique") && defCommittedPE > 0 && _currentCombatIsAtContactDistance)
-            {
-                int thorns = defCommittedPE * 3;
-                attacker.CurrentHealth = Math.Max(0, attacker.CurrentHealth - thorns);
-            }
-
-            // Arts Martiaux : Rupture Ligamentaire (Livre III) — cible Déstabilisée
-            // avant le coup → torsion destructrice : Paralysé pendant 1 tour.
-            if (!isThomasSymbioticImmune && duel.AttackSkill == SkillType.MainsNues && wasDestabilisedBefore
-                && attacker.HasSpecialization("Arts Martiaux : Rupture Ligamentaire"))
-            {
-                inflictedStatus |= StatusEffect.Paralyse;
-                defender.ApplyStatus(StatusEffect.Paralyse, 1);
-            }
-
-            FatalBlowResolution fatalRes = FatalBlowResolution.None;
-            bool wasDisintegrated = false;
-
-            if (defender.CurrentHealth - finalDamage <= 0)
-            {
-                fatalRes = defender.EvaluateFatalBlow(actualHitPart, finalDamage);
-            }
-            else
-            {
-                defender.CurrentHealth -= finalDamage;
-            }
-
-            // Palier 24 (Cible Inconsciente) : K.O. immédiat si le coup n'est pas déjà mortel ou miraculé
-            if (critFatalOverride == FatalBlowResolution.ForcedUnconscious && fatalRes == FatalBlowResolution.None)
-            {
-                fatalRes = FatalBlowResolution.ForcedUnconscious;
-                defender.CurrentHealth = 0;
-            }
-
-            // =====================================================================
-            // RD-082 (Livre VII §28.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
-            // =====================================================================
-            bool bleedApplied = false;
-            int bleedDoT = 0;
-            bool fireApplied = false;
-            int fireTurns = 0;
-            bool stunApplied = false;
-
-            if (!isThomasSymbioticImmune && differential > 0)
-            {
-                // 4) Désintégrer sur Diff >= 20 et Spé Destruction 6 (pulvérisation totale prioritaire)
-                if (differential >= 20 && HasDestructionTier6(attacker))
-                {
-                    defender.CurrentHealth = 0;
-                    defender.IsDead = true;
-                    defender.ActiveStatus |= StatusEffect.Inconscient;
-                    fatalRes = FatalBlowResolution.InstantDeath;
-                    wasDisintegrated = true;
-                }
-                else if (!defender.IsDead)
-                {
-                    var equippedWep = attacker.Sheet?.GetEquippedWeapon();
-
-                    // 1) Saigner sur Diff >= 5 avec arme tranchante / perçante (DoT résiduel = rang d'entraînement)
-                    if (differential >= 5 && IsSlashingOrPiercingAttack(duel.AttackSkill, equippedWep, attacker))
-                    {
-                        int trainingRank = attacker.Sheet != null ? attacker.Sheet.GetSkill(duel.AttackSkill).TrainingLevel : 0;
-                        bleedDoT = Math.Max(1, trainingRank);
-                        defender.ApplyResidualDamage(StatusEffect.Saignement, bleedDoT);
-                        inflictedStatus |= StatusEffect.Saignement;
-                        bleedApplied = true;
-                    }
-
-                    // 2) Brûler sur Diff >= 5 avec feu / plasma (EnFeu 1-3 tours)
-                    if (differential >= 5 && IsFireOrPlasmaAttack(duel.AttackSkill, equippedWep, attacker))
-                    {
-                        fireTurns = Math.Clamp(1 + (differential - 5) / 3, 1, 3);
-                        defender.ApplyStatus(StatusEffect.EnFeu, fireTurns, residualDamage: 2 * fireTurns);
-                        inflictedStatus |= StatusEffect.EnFeu;
-                        fireApplied = true;
-                    }
-
-                    // 3) Assommer sur Diff >= 10 et visée crânienne (Inconscient 1 tour direct)
-                    bool isCranialTarget = (targetedPart == BodyPart.Tete || targetedPart == BodyPart.YeuxVisage
-                        || actualHitPart == BodyPart.Tete || actualHitPart == BodyPart.YeuxVisage);
-                    if (differential >= 10 && isCranialTarget)
-                    {
-                        defender.ApplyStatus(StatusEffect.Inconscient, 1);
-                        inflictedStatus |= StatusEffect.Inconscient;
-                        if (fatalRes == FatalBlowResolution.None)
-                        {
-                            fatalRes = FatalBlowResolution.ForcedUnconscious;
-                        }
-                        stunApplied = true;
-                    }
-                }
-            }
-
-            // RD-047 : Test de moral au seuil critique de 28% PV
-            MoraleCheckResult moraleRes = default;
-            if (!wasDisintegrated && defender.IsAlive && !defender.HasTestedMorale && defender.CurrentHealth > 0)
-            {
-                moraleRes = defender.CheckMoraleAtThreshold(_diceRoller, cfg.StandardTargetDC);
-            }
-
-            // RD-048 : interruption de canalisation si dégât net > encaissement
-            // (ou mort/neutralisation : la progression est perdue dans tous les cas).
-            // Le libellé a été capturé avant dégâts (purge silencieuse sinon).
-            bool channelInterrupted = false;
-            string interruptedChannelLabel = null;
-            if (!isThomasSymbioticImmune && defenderWasChanneling)
-            {
-                if (ChannelingState.IsChanneling(defender))
-                {
-                    if (!defender.IsAlive || exceededEncaissement)
-                    {
-                        if (ChannelingState.NotifyDamage(defender, finalDamage, out interruptedChannelLabel))
-                            channelInterrupted = true;
-                    }
-                }
-                else
-                {
-                    // Rompue par le coup lui-même (K.O., étourdi infligé...) : tracer quand même.
-                    channelInterrupted = true;
-                    interruptedChannelLabel = defenderChannelLabel;
-                    ChannelingState.Cancel(defender);
-                }
-            }
-
-            string headerTag = duel.IsStealthAttack
-                ? "🥷 <b>EMBUSCADE DEPUIS LE STEALTH</b>"
-                : (!effectiveDefenderWantsToDefend
-                    ? (duel.IsDefenderIncapacitated ? "💥 <b>FRAPPE SUR CIBLE NEUTRALISÉE</b>" : "🎯 <b>TOUCHÉ SUR CIBLE SANS DÉFENSE</b>")
-                    : (wasDeflected
-                        ? "⚠️ <b>DÉVIATION BALISTIQUE</b>"
-                        : (attackRoll.IsCriticalSuccess ? "💥 <b>COUP CRITIQUE CHIRURGICAL</b>" : "🎯 <b>TOUCHÉ CHIRURGICAL</b>")));
-
-            string hitPartStr = wasDeflected
-                ? $"Visait <b>{targetInfo.DisplayName}</b> ➔ Dévie au d6 [Tirage {deflectionRoll} : {deflectionMedical}] sur <b>{actualInfo.DisplayName}</b> (Diff 0)"
-                : $"Frappe sur <b>{actualInfo.DisplayName}</b>";
-
-            string log = $"{headerTag} : {attacker.Name} ➔ {defender.Name} ({hitPartStr})\n";
-            log += $"   {phaseAtt}\n";
-            log += $"   {phaseDef}\n";
-            log += $"   🎲 <b>RÉVÉLATION SIMULTANÉE :</b> Attaque {attackRollStr} vs Défense {defRollStr} ➔ <b>Différentiel Net : <color=#00E5FF>{(differential > 0 ? $"+{differential}" : "0")}</color></b>\n";
-            if (attHasCrit)
-            {
-                log += $"   💥 <b>[CONSÉQUENCE CRITIQUE §8.2]</b> Relance {duel.AttackDie} ➔ <b>{attCrit.RawRoll}</b> (Palier {attCrit.Threshold} : <i>{attCrit.Title}</i>) — {attCrit.Description}\n";
-            }
-            log += $"   ⚔️ <b>Dégâts :</b> [{dmgFormula} = {rawDamage} Bruts] &minus; [Armure {totalArmor} (Absorbé: {absorbed})]"
-                + (shieldAbsorbed > 0 ? $" &minus; [🔮Bouclier {shieldAbsorbed}]" : "")
-                + $" ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";
-            log += $"   ❤️ <b>Vitalité {defender.Name} :</b> {prevHp} ➔ <b>{defender.CurrentHealth}/{defender.MaxHealth} PV</b>";
-
-            if (exceededEncaissement)
-            {
-                log += $" | ⚡ <b>CHOC TRAUMATIQUE</b> (&gt; Encaissement {defender.EncaissementThreshold}) ➔ [{inflictedStatus}]";
-            }
-
-            if (channelInterrupted)
-            {
-                log += $" | ⏳ <b>CANALISATION INTERROMPUE</b> ({finalDamage} dégâts nets &gt; encaissement {defender.EncaissementThreshold}) : « {interruptedChannelLabel} » perdue !";
-            }
-
-            if (failleExploitee)
-            {
-                log += " | 📡 <b>FAILLE EXPOSÉE EXPLOITÉE</b> (Analyse de Faille : encaissement ignoré)";
-            }
-
-            if (isThomasSymbioticImmune)
-            {
-                log += " | 🛡️ <b>ANCRE SYMBIOTIQUE</b> (0 dégât : neutralité de fréquence face aux alliés)";
-            }
-
-            if (bleedApplied)
-            {
-                log += $" | 🩸 <b>HÉMORRAGIE (Livre VII §28.4)</b> : Saignement (DoT résiduel {bleedDoT})";
-            }
-
-            if (fireApplied)
-            {
-                log += $" | 🔥 <b>COMBUSTION (Livre VII §28.4)</b> : En Feu pendant {fireTurns} tour(s)";
-            }
-
-            if (stunApplied)
-            {
-                log += " | 😵 <b>ASSOMMEMENT NET (Livre VII §28.4)</b> : Inconscient 1 tour direct";
-            }
-
-            if (wasDisintegrated)
-            {
-                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VII §28.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
-            }
-            else if (fatalRes == FatalBlowResolution.InstantDeath)
-            {
-                log += " | 💀 <b>MORT INSTANTANÉE (Tête détruite)</b>";
-            }
-            else if (fatalRes == FatalBlowResolution.MiracleSaved)
-            {
-                log += " | 🔮 <b>POINT DE MIRACLE DÉPENSÉ (Survie à 1 PV)</b>";
-            }
-            else if (fatalRes == FatalBlowResolution.ForcedUnconscious)
-            {
-                log += " | 💥 <b>SYNCOPE TRAUMATIQUE (K.O.)</b>";
-            }
-            else if (fatalRes == FatalBlowResolution.EligibleForLastBreath)
-            {
-                log += " | ⚡ <b>0 PV (Choix Sombrer ou Dernier Souffle)</b>";
-            }
-
-            if (moraleRes.Triggered)
-            {
-                log += "\n   " + moraleRes.Log;
-            }
-
-            bool causedKnockback = !isThomasSymbioticImmune && (critCausedKnockback
-                || (duel.IsMartialArtsStrike && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4))
-                || (attacker.HasSpecialization("Teep de Rupture") && duel.AttackSkill == SkillType.MainsNues && differential >= 0));
-
-            // Livre I §5 : l'attaquant a RÉUSSI (touché, même dévié diff 0) → +1 case de progression.
-            log += ApplySkillProgression(attacker, attackSkill, true);
-
-            // RD-049 : toute attaque rompt la furtivité
-            StealthState.BreakStealth(attacker);
-
-            return new DamageResult
-            {
-                IsHit = true,
-                IsBlocked = false,
-                IsCritical = attHasCrit,
-                HasCriticalConsequence = attHasCrit,
-                CriticalConsequence = attCrit,
-                AttackRoll = attackRoll,
-                DefenseRoll = defenseRoll,
-                TargetPart = targetedPart,
-                ActualHitPart = actualHitPart,
-                WasDeflected = wasDeflected,
-                DeflectionRoll = deflectionRoll,
-                DeflectionMedicalConsequence = deflectionMedical,
-                WasDisintegrated = wasDisintegrated,
-                Differential = differential,
-                RawDamage = rawDamage,
-                ArmorAbsorbed = absorbed,
-                ShieldAbsorbed = shieldAbsorbed,
-                FinalDamageApplied = finalDamage,
-                ExceededEncaissement = exceededEncaissement,
-                InflictedStatus = inflictedStatus,
-                FatalResolution = fatalRes,
-                CausedKnockback = causedKnockback,
-                IsCanonEntrave = duel.AppliedCanonEntrave,
-                Cover = duel.Cover,
-                CoverAttackPenalty = duel.CoverAttackPenalty,
-                BlockedByCover = false,
-                CombatLog = log,
-                MoraleResult = moraleRes,
-                ChannelInterrupted = channelInterrupted,
-                InterruptedChannelLabel = interruptedChannelLabel
-            };
-        }
-
-        private static void ApplyOffensiveCriticalEffect(
-            CriticalConsequence crit,
-            CharacterStats attacker,
-            CharacterStats defender,
-            ref StatusEffect inflictedStatus,
-            ref bool causedKnockback,
-            ref FatalBlowResolution fatalRes)
-        {
-            switch (crit.Threshold)
-            {
-                case 1:
-                    inflictedStatus |= StatusEffect.ATerre;
-                    defender.ActiveStatus |= StatusEffect.ATerre;
-                    break;
-                case 2:
-                    causedKnockback = true;
-                    break;
-                case 6:
-                    inflictedStatus |= StatusEffect.Etourdi;
-                    defender.ApplyStatus(StatusEffect.Etourdi, 1);
-                    break;
-                case 8:
-                    ClearOneNegativeStatus(attacker);
-                    break;
-                case 9:
-                    attacker.Essoufflement = Math.Max(0, attacker.Essoufflement - 1);
-                    break;
-                case 10:
-                    inflictedStatus |= StatusEffect.Ralenti;
-                    defender.ApplyStatus(StatusEffect.Ralenti, 1);
-                    break;
-                case 12:
-                    inflictedStatus |= StatusEffect.Destabilise;
-                    defender.ApplyStatus(StatusEffect.Destabilise, 1);
-                    break;
-                case 16:
-                    attacker.CurrentActionPoints = Math.Min(attacker.MaxActionPoints, attacker.CurrentActionPoints + 2);
-                    break;
-                case 20:
-                    defender.ApplyResidualDamage(StatusEffect.Saignement, 3);
-                    inflictedStatus |= StatusEffect.Saignement;
-                    defender.ActiveStatus |= StatusEffect.Saignement;
-                    break;
-                case 24:
-                    if (Enum.TryParse<StatusEffect>("Inconscient", out var inc) || Enum.TryParse<StatusEffect>("Inconscience", out inc))
-                    {
-                        inflictedStatus |= inc;
-                        defender.ActiveStatus |= inc;
-                    }
-                    fatalRes = FatalBlowResolution.ForcedUnconscious;
-                    break;
-            }
-        }
-
-        private static void ApplyDefensiveCriticalEffect(
-            CriticalConsequence crit,
-            CharacterStats defender,
-            CharacterStats attacker)
-        {
-            switch (crit.Threshold)
-            {
-                case 1:
-                case 24:
-                    attacker.ActiveStatus |= StatusEffect.ATerre;
-                    break;
-                case 6:
-                    attacker.ApplyStatus(StatusEffect.Etourdi, 1);
-                    break;
-                case 8:
-                    ClearOneNegativeStatus(defender);
-                    break;
-                case 9:
-                    defender.Essoufflement = Math.Max(0, defender.Essoufflement - 1);
-                    break;
-                case 10:
-                    attacker.ApplyStatus(StatusEffect.Ralenti, 1);
-                    break;
-                case 12:
-                    attacker.ApplyStatus(StatusEffect.Destabilise, 1);
-                    break;
-                case 16:
-                    defender.CurrentActionPoints = Math.Min(defender.MaxActionPoints, defender.CurrentActionPoints + 2);
-                    break;
-                case 20:
-                    // Contre-attaque automatique : riposte réflexe infligeant 3 dégâts bruts à l'assaillant
-                    attacker.CurrentHealth = Math.Max(0, attacker.CurrentHealth - 3);
-                    break;
-            }
-        }
-
-        private static void ClearOneNegativeStatus(CharacterStats target)
-        {
-            if (target == null) return;
-            if ((target.ActiveStatus & StatusEffect.Destabilise) != 0) target.ActiveStatus &= ~StatusEffect.Destabilise;
-            else if ((target.ActiveStatus & StatusEffect.Etourdi) != 0) target.ActiveStatus &= ~StatusEffect.Etourdi;
-            else if ((target.ActiveStatus & StatusEffect.Ralenti) != 0) target.ActiveStatus &= ~StatusEffect.Ralenti;
-            else if ((target.ActiveStatus & StatusEffect.ATerre) != 0) target.ActiveStatus &= ~StatusEffect.ATerre;
-            else if ((target.ActiveStatus & StatusEffect.Sonne) != 0) target.ActiveStatus &= ~StatusEffect.Sonne;
-        }
-
-        /// <summary>
-        /// Progression organique (Livre I §5) : sur réussite, coche +1 case dans la
-        /// compétence utilisée. Retourne le suffixe de log (vide si rien / échec / sans fiche).
-        /// </summary>
-        private static string ApplySkillProgression(CharacterStats user, SkillType skill, bool isOffensive)
-        {
-            if (user == null || user.Sheet == null) return string.Empty;
-            if (!CharacterProgressionManager.RegisterSuccessfulSkillUse(user.Sheet, skill, out string prog, out _, isOffensive))
-                return string.Empty;
-            if (string.IsNullOrEmpty(prog)) return string.Empty;
-            return $"\n   {prog}";
-        }
-
-        private static string ApplyOpposedProgression(CharacterStats attacker, SkillType attackSkill, bool attOffensive, CharacterStats defender, SkillType defenseSkill, bool defenderPlays, int differential)
-        {
-            if (differential >= 0)
-                return ApplySkillProgression(attacker, attackSkill, attOffensive);
-            if (defenderPlays)
-                return ApplySkillProgression(defender, defenseSkill, false);
-            return string.Empty;
-        }
+        public static double DieAverage(DiceType die) => CombatDuelShared.DieAverage(die);
 
         /// <summary>
         /// Épreuve simple hors duel (Livre II §7) : jet de compétence vs DC, avec
         /// progression organique automatique sur réussite (Livre I §5).
         /// 1 réussite = 1 case dans CETTE compétence ; piste pleine (cases = base) = +1 XP lié.
         /// </summary>
-        public DiceRollResult ResolveSkillCheck(CharacterStats user, SkillType skill, int targetDC, bool isOffensive = false, int extraModifier = 0)
-        {
-            if (user == null) throw new ArgumentNullException(nameof(user));
-            var cfg = Rules.CoreRulesConfig.Instance;
-            DiceType die = user.GetSkillDie(skill, isOffensive);
-            int mod = user.GetStatusModifier(skill, isOffensive) + extraModifier;
-            var roll = _diceRoller.Roll(die, mod, targetDC);
-            if (roll.IsSuccess && !roll.IsCriticalFailure && user.Sheet != null)
-                CharacterProgressionManager.RegisterSuccessfulSkillUse(user.Sheet, skill, out _, out _, isOffensive);
-            return roll;
-        }
+        public DiceRollResult ResolveSkillCheck(CharacterStats user, SkillType skill, int targetDC, bool isOffensive = false, int extraModifier = 0) =>
+            _resolution.ResolveSkillCheck(user, skill, targetDC, isOffensive, extraModifier);
 
         /// <summary>
         /// RD-034 : Résout un tir de cône, rafale ou suppression balistique avec dispersion,
@@ -2695,198 +513,34 @@ namespace Killtime.Core.Combat
             System.Collections.Generic.IReadOnlyList<(CharacterStats stats, HexCoordinates pos, bool isAlly)> combatantsOnField,
             int attackerBonusAP = 0,
             int attackerPE = 0,
-            CoverType fieldCover = CoverType.None)
-        {
-            var calc = new AreaFireCalculator(_diceRoller);
-            return calc.ResolveAreaFire(attacker, attackerPos, targetPos, profile, combatantsOnField, attackerBonusAP, attackerPE, fieldCover);
-        }
+            CoverType fieldCover = CoverType.None) =>
+            _resolution.ResolveAreaFireShot(attacker, attackerPos, targetPos, profile, combatantsOnField,
+                attackerBonusAP, attackerPE, fieldCover);
 
-        /// <summary>
-        /// Rétro-compatibilité : redirige vers la table d6 exacte du Livre VI §26.1.
-        /// </summary>
-        private BodyPart GetAdjacentBodyPart(BodyPart targeted)
-        {
-            return ResolveAnatomicalDeflection(targeted, out _, out _);
-        }
-
-        public static bool IsUpperBodyPart(BodyPart part)
-        {
-            return part == BodyPart.Tete
-                || part == BodyPart.YeuxVisage
-                || part == BodyPart.CouTrachee
-                || part == BodyPart.CoeurPoumons
-                || part == BodyPart.Torse;
-        }
+        public static bool IsUpperBodyPart(BodyPart part) => CombatProgressionService.IsUpperBodyPart(part);
 
         /// <summary>
         /// Table de déviation d4/d6 chirurgicale officielle (Livre VI §26.1).
         /// </summary>
-        public BodyPart ResolveAnatomicalDeflection(BodyPart targeted, out int rollDie, out string medicalConsequence)
-        {
-            rollDie = _diceRoller != null ? _diceRoller.Roll(DiceType.D6, 0, 0).RawRoll : _random.Next(1, 7);
-            if (rollDie < 1 || rollDie > 6) rollDie = _random.Next(1, 7);
-
-            bool isUpper = IsUpperBodyPart(targeted);
-
-            if (isUpper)
-            {
-                switch (rollDie)
-                {
-                    case 1:
-                        medicalConsequence = "Cécité partielle, hémorragie faciale, désorientation";
-                        return BodyPart.YeuxVisage;
-                    case 2:
-                        medicalConsequence = "Risque d'asphyxie, perte d'essoufflement immédiate";
-                        return BodyPart.CouTrachee;
-                    case 3:
-                        medicalConsequence = "Commotion, épreuve de Constitution pour rester conscient";
-                        return BodyPart.Tete;
-                    case 4:
-                        medicalConsequence = "Dégâts massifs, perforation, incapacité respiratoire";
-                        return BodyPart.CoeurPoumons;
-                    case 5:
-                    case 6:
-                    default:
-                        medicalConsequence = "Encaissement standard";
-                        return BodyPart.Torse;
-                }
-            }
-            else
-            {
-                switch (rollDie)
-                {
-                    case 1:
-                        medicalConsequence = "Impact claviculaire / épaule, désorientation";
-                        return targeted == BodyPart.BrasGauche ? BodyPart.BrasGauche : (targeted == BodyPart.BrasDroit ? BodyPart.BrasDroit : BodyPart.Torse);
-                    case 2:
-                        medicalConsequence = "Impact bras droit (porteur d'arme)";
-                        return BodyPart.BrasDroit;
-                    case 3:
-                        medicalConsequence = "Impact bras gauche (bouclier / parade)";
-                        return BodyPart.BrasGauche;
-                    case 4:
-                        medicalConsequence = "Abdomen et côtes heurtés, incapacité respiratoire";
-                        return BodyPart.Torse;
-                    case 5:
-                    case 6:
-                    default:
-                        medicalConsequence = "Encaissement standard, perte de motricité si jambe brisée";
-                        return BodyPart.Jambes;
-                }
-            }
-        }
+        public BodyPart ResolveAnatomicalDeflection(BodyPart targeted, out int rollDie, out string medicalConsequence) =>
+            _progression.ResolveAnatomicalDeflection(targeted, out rollDie, out medicalConsequence);
 
         /// <summary>
         /// RD-082 (Livre VII §28.4) : Vérifie si l'attaque utilise une arme tranchante ou perçante.
         /// </summary>
-        public static bool IsSlashingOrPiercingAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker)
-        {
-            SkillType baseSkill = SkillDefinitions.ResolveBaseSkill(skill);
-            if (baseSkill == SkillType.ArmesPercantes) return true;
-
-            if (weapon != null)
-            {
-                string desc = $"{weapon.Name} {weapon.Description} {weapon.Category}".ToLowerInvariant();
-                if (desc.Contains("marteau") || desc.Contains("masse") || desc.Contains("gourdin") || desc.Contains("matraque") || desc.Contains("bâton") || desc.Contains("baton"))
-                {
-                    return false;
-                }
-
-                if (desc.Contains("tranchant") || desc.Contains("perçant") || desc.Contains("percant") ||
-                    desc.Contains("épée") || desc.Contains("epee") || desc.Contains("lame") ||
-                    desc.Contains("dague") || desc.Contains("hache") || desc.Contains("lance") ||
-                    desc.Contains("pique") || desc.Contains("couteau") || desc.Contains("rapière") ||
-                    desc.Contains("rapiere") || desc.Contains("baïonnette") || desc.Contains("baionnette") ||
-                    desc.Contains("flèche") || desc.Contains("fleche") || desc.Contains("carreau"))
-                {
-                    return true;
-                }
-            }
-
-            if (baseSkill == SkillType.ManiementArmes)
-            {
-                if (attacker != null && (attacker.HasSpecialization("Armes Contondantes") || attacker.HasSpecialization("Marteau de Guerre")))
-                {
-                    return false;
-                }
-                return true;
-            }
-
-            return false;
-        }
+        public static bool IsSlashingOrPiercingAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker) =>
+            CombatProgressionService.IsSlashingOrPiercingAttack(skill, weapon, attacker);
 
         /// <summary>
         /// RD-082 (Livre VII §28.4) : Vérifie si l'attaque utilise une énergie thermique, feu ou plasma.
         /// </summary>
-        public static bool IsFireOrPlasmaAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker)
-        {
-            if (skill == SkillType.MagieElementale || skill == SkillType.MagiePrimale)
-            {
-                if (attacker != null && (attacker.HasSpecialization("Feu") || attacker.HasSpecialization("Flamme") || attacker.HasSpecialization("Pyromancie") || attacker.HasSpecialization("Thermique")))
-                    return true;
-            }
-
-            if (weapon != null)
-            {
-                string desc = $"{weapon.Name} {weapon.Description} {weapon.Category} {weapon.AmmoType} {weapon.GrenadeKind}".ToLowerInvariant();
-                if (desc.Contains("feu") || desc.Contains("flamme") || desc.Contains("plasma") ||
-                    desc.Contains("incendiaire") || desc.Contains("thermique") || desc.Contains("pyro") ||
-                    desc.Contains("laser") || desc.Contains("brûl") || desc.Contains("brul") ||
-                    desc.Contains("thermobarique"))
-                {
-                    return true;
-                }
-            }
-
-            return false;
-        }
+        public static bool IsFireOrPlasmaAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker) =>
+            CombatProgressionService.IsFireOrPlasmaAttack(skill, weapon, attacker);
 
         /// <summary>
         /// RD-082 (Livre VII §28.4) : Vérifie si l'assaillant possède la spécialisation Destruction de Rang 6.
         /// </summary>
-        public static bool HasDestructionTier6(CharacterStats attacker)
-        {
-            if (attacker == null) return false;
-            if (attacker.HasSpecialization("Destruction 6")
-                || attacker.HasSpecialization("Destruction : Rang 6")
-                || attacker.HasSpecialization("Destruction : Stade 6")
-                || attacker.HasSpecialization("Voie de la Destruction : Rang 6")
-                || attacker.HasSpecialization("Voie de la Destruction 6")
-                || attacker.HasSpecialization("Destruction"))
-            {
-                return true;
-            }
-
-            if (attacker.Sheet?.UnlockedSpecializations != null)
-            {
-                for (int i = 0; i < attacker.Sheet.UnlockedSpecializations.Count; i++)
-                {
-                    string spec = attacker.Sheet.UnlockedSpecializations[i];
-                    if (string.IsNullOrEmpty(spec)) continue;
-                    if (spec.IndexOf("Destruction", StringComparison.OrdinalIgnoreCase) >= 0)
-                    {
-                        if (spec.Contains("6") || spec.IndexOf("VI", StringComparison.OrdinalIgnoreCase) >= 0 || spec.Equals("Destruction", StringComparison.OrdinalIgnoreCase))
-                            return true;
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        private StatusEffect DetermineInflictedStatus(BodyPart hitPart)
-        {
-            return hitPart switch
-            {
-                BodyPart.Tete => StatusEffect.Sonne | StatusEffect.Etourdi,
-                BodyPart.YeuxVisage => StatusEffect.Aveugle | StatusEffect.Saignement,
-                BodyPart.CouTrachee => StatusEffect.Asphyxie,
-                BodyPart.CoeurPoumons => StatusEffect.Agonisant | StatusEffect.Saignement,
-                BodyPart.Torse => StatusEffect.Destabilise,
-                BodyPart.BrasDroit or BodyPart.BrasGauche => StatusEffect.Destabilise,
-                BodyPart.Jambes => StatusEffect.ATerre | StatusEffect.Ralenti,
-                _ => StatusEffect.Destabilise
-            };
-        }
+        public static bool HasDestructionTier6(CharacterStats attacker) =>
+            CombatProgressionService.HasDestructionTier6(attacker);
     }
 }
