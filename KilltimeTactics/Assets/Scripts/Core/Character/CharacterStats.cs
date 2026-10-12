@@ -382,8 +382,9 @@ namespace Killtime.Core.Character
         private readonly System.Collections.Generic.Dictionary<StatusEffect, int> _residualDamages = new();
         public System.Collections.Generic.IReadOnlyDictionary<StatusEffect, int> ResidualDamages => _residualDamages;
 
-        // RD-045 : aggravation (ex : Hémorragie Profonde) : au lieu de décroître
-        // de 1/tour, le pool augmente de +1/tour jusqu'au soin.
+        // RD-045 : aggravation (ex : Hémorragie Profonde) : au lieu de décroître,
+        // les dégâts résiduels DOUBLENT chaque tour jusqu'au soin
+        // (spé « saignement doublé », test TestDot_RD045_Aggravation).
         private readonly System.Collections.Generic.HashSet<StatusEffect> _aggravatingDots = new();
 
         /// <summary>
@@ -541,8 +542,9 @@ namespace Killtime.Core.Character
         /// RD-045 : tick DoT en DÉBUT de tour personnel (Livre VII §27.1).
         /// Pour chaque Saignement/Empoisonne/EnFeu/Asphyxie actif : inflige le pool
         /// résiduel (ou le tick minimal si aucun pool), puis décrémente de 1
-        /// (0 = disparition) sauf aggravation (+1). Ignore l'armure ; EnFeu passe
-        /// par le bouclier d'abord ; Asphyxie draine aussi 1 PA. Soin = RemoveStatus.
+        /// (0 = disparition) sauf aggravation (pool doublé, spé Hémorragie Profonde).
+        /// Ignore l'armure ; EnFeu passe par le bouclier d'abord ; Asphyxie draine
+        /// aussi 1 PA. Soin = RemoveStatus.
         /// </summary>
         public DotTickResult TickTurnStatus()
         {
@@ -569,7 +571,19 @@ namespace Killtime.Core.Character
                     _residualDamages[dot] = pool;
                 }
                 bool aggravating = _aggravatingDots.Contains(dot);
-                int dmg = Math.Max(1, pool);
+                // Aggravation (Hémorragie Profonde : « saignement doublé ») : le pool
+                // double AVANT le tick, et la valeur doublée est infligée puis conservée.
+                int dmg;
+                if (aggravating)
+                {
+                    int grown = Math.Min(10, Math.Max(2, pool * 2));
+                    _residualDamages[dot] = grown;
+                    dmg = Math.Max(1, grown);
+                }
+                else
+                {
+                    dmg = Math.Max(1, pool);
+                }
 
                 int shieldAbs = 0;
                 int finalDmg = dmg;
@@ -607,25 +621,18 @@ namespace Killtime.Core.Character
                 result.DamageByStatus[dot] = finalDmg;
 
                 // Décrément dégressif : 3 → 2 → 1 → 0 (disparition).
-                if (pool > 0)
+                // Aggravation : déjà doublé ci-dessus, le pool reste tel quel.
+                if (pool > 0 && !aggravating)
                 {
-                    if (aggravating)
+                    int left = pool - 1;
+                    if (left <= 0)
                     {
-                        int grown = Math.Min(10, pool + 1);
-                        _residualDamages[dot] = grown;
+                        RemoveStatus(dot);
+                        result.ClearedStatuses.Add(dot);
                     }
                     else
                     {
-                        int left = pool - 1;
-                        if (left <= 0)
-                        {
-                            RemoveStatus(dot);
-                            result.ClearedStatuses.Add(dot);
-                        }
-                        else
-                        {
-                            _residualDamages[dot] = left;
-                        }
+                        _residualDamages[dot] = left;
                     }
                 }
                 // Pool à 0 (statut legacy sans valeur) : tick minimal permanent,

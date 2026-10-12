@@ -87,9 +87,12 @@ namespace Killtime.Tests
             Assert.AreEqual(15, res.SummedAttackTotal);
             Assert.AreEqual(3, res.UniqueDefenseTotal);
             Assert.AreEqual(12, res.Differential);
-            // 5+5 armes + 12 dépassement = 22 bruts, armure 0 → 22 nets.
-            Assert.AreEqual(22, res.FinalDamageApplied);
-            Assert.AreEqual(78, target.CurrentHealth);
+            // 5+5 armes + 12 dépassement = 22 bruts, armure 1 (BaseArmor par défaut
+            // de la fiche) appliquée une fois → 21 nets.
+            Assert.AreEqual(22, res.RawDamage);
+            Assert.AreEqual(1, res.ArmorAbsorbed);
+            Assert.AreEqual(21, res.FinalDamageApplied);
+            Assert.AreEqual(79, target.CurrentHealth);
             StringAssert.Contains("SOMMATION", res.CombatLog);
         }
 

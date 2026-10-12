@@ -87,7 +87,10 @@ namespace Killtime.Tests
         {
             var reactor = MakeStats("Faucheur");
             var target = MakeStats("Fuyard");
-            var calc = new CombatCalculator(new DiceRoller(7));
+            // Déterministe : frappe nette (10) face à une défense basse (2).
+            // Avec un seed partagé, un duel paré retourne TargetPart = Tete
+            // (branche PARADE sans localisation) et le test devient fautif.
+            var calc = new CombatCalculator(new MockDeterministicDiceRoller(attackerRoll: 10, defenderRoll: 2));
 
             var result = calc.ResolveOpportunityTrip(
                 reactor, target, 5,
@@ -157,6 +160,42 @@ namespace Killtime.Tests
 
             OpportunityState.OnUnitTurnStart(mover);
             Assert.IsFalse(OpportunityState.HasSafeDisengage(mover));
+        }
+
+        /// <summary>
+        /// Mock séquentiel : premier appel = jet attaquant, suivants = défense.
+        /// Garantit une frappe nette sans dépendre d'un seed partagé.
+        /// </summary>
+        private class MockDeterministicDiceRoller : DiceRoller
+        {
+            private readonly int _att;
+            private readonly int _def;
+            private bool _isFirstCall = true;
+
+            public MockDeterministicDiceRoller(int attackerRoll, int defenderRoll) : base(0)
+            {
+                _att = attackerRoll;
+                _def = defenderRoll;
+            }
+
+            public override DiceRollResult Roll(DiceType dieType, int modifier = 0, int targetDC = 10)
+            {
+                int val = _isFirstCall ? _att : _def;
+                _isFirstCall = false;
+
+                return new DiceRollResult
+                {
+                    DieType = dieType,
+                    RawRoll = val,
+                    Modifier = modifier,
+                    Total = val + modifier,
+                    TargetDC = targetDC,
+                    Differential = (val + modifier) - targetDC,
+                    IsSuccess = (val + modifier) >= targetDC,
+                    IsCriticalSuccess = false,
+                    IsCriticalFailure = false
+                };
+            }
         }
     }
 }
