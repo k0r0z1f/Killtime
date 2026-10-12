@@ -1995,6 +1995,36 @@
           "scale": null,
           "suggestedAsset": "Scenario Editor Shift+F2",
           "details": "Exiger Unity : compilation scripts éditeur, ouverture fenêtre, chargement/sauvegarde scène, NUnit vert 14 suites (RD-071), rejouer une scène (stop/loop/kill/audit RD-116). Bloque la clôture définitive de RD-117."
+        },
+        {
+          "id": "RD-121",
+          "title": "Découper JsonStorySceneController.cs (3521 l.) en partiels + SceneState",
+          "epic": "Runtime scène",
+          "status": "done",
+          "priority": "high",
+          "order": 9,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "JsonStorySceneController.*.cs + SceneState.cs",
+          "details": "FAIT (2026-10-12, refactor runtime) : monolithe 3521 l./~80 méthodes découpé move-only en façade (349 l.) + 12 partiels (CineAudio, Spawn, Talk, InteractablesActions/Popups, DialogueCore/Events/Choice/Consequence, GuiInput/Draw/Dialogue, 140-455 l.) + SceneState.cs (44 champs d'instance, source unique via State._x, 611 refs réécrites, preuve conservation vs HEAD : 613 = 611 + 2 paramétrées) + 3 services purs (SceneActor/Dialogue/Talk + 6 forwarders). Compile Unity verte (CS0246 corrigée : PendingMiddleChatMessage/InteractablePopup remontés au namespace). Non commité."
+        },
+        {
+          "id": "RD-122",
+          "title": "Vérification runtime post-split (test en jeu + commit)",
+          "epic": "Runtime scène",
+          "status": "todo",
+          "priority": "high",
+          "order": 10,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "SceneCinematicTests + InteractableWindowTests",
+          "details": "Exiger Unity : build, rejouer une scène complète (spawn, parler/retour, interactables, triggers proximité, dialogue/choix/skill-checks, events combat, ciné fin→, son début/fin, barre party, popups), NUnit vert (SceneCinematicTests, InteractableWindowTests, StorySceneChainingTests), puis commit du split RD-121. Bloque la clôture définitive de RD-121."
         }
       ]
     },
