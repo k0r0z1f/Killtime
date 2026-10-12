@@ -508,6 +508,12 @@ namespace Killtime.Tactics.Units
             Stats = new CharacterStats(unitName, attributes, baseArmor, Sheet);
             Stats.IsPlayerControlled = isPlayer;
             Stats.IsSurvivor = (_aiPersonality == AI.AIPersonality.Survivor);
+
+            // Backstop EditMode/tests : OnEnable ne se déclenche pas sur les objets
+            // créés par AddComponent hors Play (vérifié par sonde LifecycleProbe) —
+            // l'enregistrement explicite ici garantit que toute unité configurée
+            // est visible du registre. Doublon sans effet en Play (Register ignore).
+            TacticalUnitRegistry.Register(this);
         }
 
         public CharacterSheet GetOrBuildSheet()
