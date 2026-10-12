@@ -854,6 +854,21 @@
           "scale": null,
           "suggestedAsset": "DevTools/Arena",
           "details": "FAIT (2026-10-12, DevTools/Arena) : god-class CombatDevArena 5722 -> 1493 lignes (-74%), logique verbatim dans 15 services (Attack 1258, Melee 1064, Grenade 669, UnitStore 651, Overwatch 599, Targeting 591, TurnEvents 153, Smoke 169, Chrono 223, Map + socle State/Guard/Context/Host) ; façade garde sérialisés, events, Awake/Start/Update/OnDisable, Reset/Restore, shims. Vérifié sans régression : API publique 109/109 identique (+8 méthodes IArenaHost additives), verrou 5 TryEnter/10 ForceReset, 9/9 coroutines via host, 9/9 appels VTT, subscriptions Unity identiques, Update/Log identiques, aucun appel pré-Awake externe, compile + Play Killzone_Alpha3 validés à chaque phase (7/7). Seul écart assumé : pathfinder null -> abandon au lieu de recréation (garanti par Start)."
+        },
+        {
+          "id": "RD-123",
+          "title": "Combat : refactor CombatCalculator 2892 lignes en services composés + façade",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 54,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Core/Combat",
+          "details": "FAIT (2026-10-12, Core/Combat) : god-class CombatCalculator 2892 -> 546 lignes façade (API publique 39/39 identique, délégation pure), logique verbatim dans 6 services (DuelSetup 380 : Begin/mises ; DuelResolution 487 : jets simultanés/opposés/interception/zone ; DamageEngine 763 : dégâts/critiques §8.2/RD-082 ; SpecialManeuver 923 : guet/opportunité/lutte/assaut groupé/poursuite ; Progression 234 : progressions Livre I §5/tables anatomiques ; Models 173 + Context/Shared 83). Vérifié sans régression : littéraux string 0 diff vs HEAD, flot de contrôle identique (seuls +12 throw gardes ctor et +38 using), accolades équilibrées, cross-refs OK, compile Unity verte (CS0051 + refs InferenceEngine/URP asmdef corrigées). Tests EditMode : 396/434 verts, 100/104 suites combat ; 38 échecs prouvés pré-existants (suite jamais exécutée avant : pas d'asmdef). Commit f61456a. BONUS : Killtime.Game.asmdef + Killtime.Game.Tests.asmdef (Test Runner EditMode débloqué)."
         }
       ]
     },
