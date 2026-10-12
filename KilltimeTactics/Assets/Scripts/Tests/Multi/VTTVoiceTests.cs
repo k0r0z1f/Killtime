@@ -111,8 +111,10 @@ namespace Killtime.Multi.Tests
             float[] silence = new float[count];
             float[] output = new float[count];
 
-            // 1. Silence -> Gate doit se fermer
-            for (int i = 0; i < 5; i++)
+            // 1. Silence -> Gate doit se fermer. Le fondu de fermeture (release
+            // 0.10 s) part d'un gain initial de 1 : il faut ~1 s de silence pour
+            // que l'enveloppe converge vers 0 (5 blocs = 0.15 s insuffisant).
+            for (int i = 0; i < 40; i++)
             {
                 dsp.Process(silence, output, count, 0.03f);
             }

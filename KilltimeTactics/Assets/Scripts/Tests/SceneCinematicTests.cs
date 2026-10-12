@@ -459,8 +459,13 @@ namespace Killtime.Tests
         public void CinematicData_HasLetterboxAndHideSceneChatFlags()
         {
             var cine = new SceneCinematicData { CinematicId = "cine_flags" };
-            // Par défaut, cinématiques immersives = bandes noires et masquer chat
+            // Par défaut : bandes noires (immersion), mais chat de scène conservé
+            // (HideSceneChat = false depuis l'introduction du champ).
             Assert.IsTrue(cine.Letterbox);
+            Assert.IsFalse(cine.HideSceneChat);
+
+            // Activation explicite pour les cinématiques plein écran.
+            cine.HideSceneChat = true;
             Assert.IsTrue(cine.HideSceneChat);
 
             // Désactivation pour les cinématiques de focus/dialogue en direct

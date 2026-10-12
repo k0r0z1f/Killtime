@@ -4,6 +4,7 @@ using NUnit.Framework;
 using Killtime.Core.Arcanotech;
 using Killtime.Core.Character;
 using Killtime.Core.Dice;
+using Killtime.Core.Inventory;
 
 namespace Killtime.Tests
 {
@@ -175,6 +176,9 @@ namespace Killtime.Tests
         {
             var attr = new Attributes(@for: 3, agi: 3, con: 4, rap: 3, @int: 4, eru: 2, cha: 1, ins: 2, mag: 5);
             var sheet = new CharacterSheet { BaseAttributes = attr };
+            // Focus stable (sinon taxe +2 PA « sans focus », FocusTax) : le coût
+            // dépensé doit égaler exactement le coût du sort.
+            sheet.Inventory.Add(new InventoryItem { Name = "Résonateur Nytharite" });
             var caster = sheet.ToCombatStats();
             caster.CurrentActionPoints = 8;
 
@@ -228,6 +232,9 @@ namespace Killtime.Tests
                 BaseAttributes = new Attributes(@for: 3, agi: 3, con: 3, rap: 3, @int: 2, eru: 1, cha: 1, ins: 2, mag: 0)
             }.ToCombatStats();
             target.CurrentActionPoints = 6;
+            // PA de cast suffisants (coût modules + taxe focus éventuelle) : sans
+            // cela le cast échoue (PA insuffisants) et aucun effet n'est appliqué.
+            caster.CurrentActionPoints = 10;
 
             var spell = new NythariteSpell(
                 name: "Vortex de Gravité",
