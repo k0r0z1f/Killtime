@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-11",
+  "updated": "2026-10-12",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -839,6 +839,21 @@
           "scale": null,
           "suggestedAsset": "Tactics/AI",
           "details": "À FAIRE : la complexité a déménagé, pas baissé (~4380 lignes dossier). 1) AITurnPlanner : transformer la chaîne if/continue d'ExecuteAITurn (379 lignes) en priorités retournant des AIIntent, le contrôleur n'exécutant que les coroutines. 2) IAIPerception : abstraire HasAlertedPatrolTarget + gating fog d'EvaluateBestTarget derrière une interface (fakes en tests). 3) Dédupliquer la troncature par budget des 3 FindPathTowards* dans un helper pur. Ne pas toucher aux corps TryExecute* (effets arène/visuals) sauf via prédicats de préconditions."
+        },
+        {
+          "id": "RD-116",
+          "title": "Arène : refactor CombatDevArena 5722 lignes en services + façade",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 53,
+          "scene": "Killzone_Alpha3",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "DevTools/Arena",
+          "details": "FAIT (2026-10-12, DevTools/Arena) : god-class CombatDevArena 5722 -> 1493 lignes (-74%), logique verbatim dans 15 services (Attack 1258, Melee 1064, Grenade 669, UnitStore 651, Overwatch 599, Targeting 591, TurnEvents 153, Smoke 169, Chrono 223, Map + socle State/Guard/Context/Host) ; façade garde sérialisés, events, Awake/Start/Update/OnDisable, Reset/Restore, shims. Vérifié sans régression : API publique 109/109 identique (+8 méthodes IArenaHost additives), verrou 5 TryEnter/10 ForceReset, 9/9 coroutines via host, 9/9 appels VTT, subscriptions Unity identiques, Update/Log identiques, aucun appel pré-Awake externe, compile + Play Killzone_Alpha3 validés à chaque phase (7/7). Seul écart assumé : pathfinder null -> abandon au lieu de recréation (garanti par Start)."
         }
       ]
     },
