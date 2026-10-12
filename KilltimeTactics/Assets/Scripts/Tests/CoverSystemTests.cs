@@ -86,8 +86,11 @@ namespace Killtime.Tests
         [Test]
         public void SingleLowWall_GivesHalfCover()
         {
-            // Muret 0.7 sur l'axe : bloque le bas du corps, laisse passer le haut.
-            var getNode = MakeField(MakeNode(2, 0, CoverType.Half));
+            // Muret 0.7 adjacent à la cible : les rayons convergent vers le corps,
+            // le bas du corps passe sous 0.7 au droit du mur, le haut passe dessus.
+            // (Un muret à mi-distance ne masque rien avec un œil à 1.5 m : pure
+            // géométrie du cône, vérifiée par portage analytique.)
+            var getNode = MakeField(MakeNode(3, 0, CoverType.Half));
             var res = CoverSystem.ScanCover(
                 new HexCoordinates(0, 0), new HexCoordinates(4, 0), getNode, Params());
             Assert.AreEqual(CoverType.Half, res.Cover);
@@ -109,8 +112,14 @@ namespace Killtime.Tests
         [Test]
         public void HighRidge_BlocksLowRays_TerrainCountsAsCover()
         {
-            // Crête à +2 m sans aucun obstacle posé : le relief seul masque la cible.
-            var getNode = MakeField(MakeNode(2, 0, CoverType.None, baseY: 2f));
+            // Crête à +2 m barrant tout l'axe (3 hexagones, sans aucun obstacle
+            // posé) : le relief seul masque la cible — aucun contournement par
+            // les coins ne passe sous la crête. Une seule case laisserait filtrer
+            // les rayons rasants par les coins (routage meilleur coin).
+            var getNode = MakeField(
+                MakeNode(2, -1, CoverType.None, baseY: 2f),
+                MakeNode(2, 0, CoverType.None, baseY: 2f),
+                MakeNode(2, 1, CoverType.None, baseY: 2f));
             var res = CoverSystem.ScanCover(
                 new HexCoordinates(0, 0), new HexCoordinates(4, 0), getNode, Params());
             Assert.AreEqual(CoverType.Full, res.Cover);
@@ -131,8 +140,10 @@ namespace Killtime.Tests
         [Test]
         public void PropCrate_BlocksOnlyLowRays()
         {
-            // Caisse 0.5 m : ne masque que le bas du corps (fraction haute).
-            PropObstacleRegistry.SetForTests(new HexCoordinates(2, 0), PillarAt(2, 0, 0f, 0.5f, 0.8f));
+            // Caisse 0.5 m près de la cible : ne masque que le bas du corps
+            // (fraction haute). Collée à la cible pour que les rayons bas y
+            // plongent sous 0.5 (à mi-distance l'œil à 1.5 m passe au-dessus).
+            PropObstacleRegistry.SetForTests(new HexCoordinates(3, 0), PillarAt(3, 0, 0f, 0.5f, 0.8f));
             var res = CoverSystem.ScanCover(
                 new HexCoordinates(0, 0), new HexCoordinates(4, 0), MakeField(), Params());
             Assert.AreEqual(CoverType.Half, res.Cover);

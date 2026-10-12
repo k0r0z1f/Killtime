@@ -388,10 +388,14 @@ namespace Killtime.Tactics.Grid
                 CoverType cover = node != null ? node.Cover : CoverType.None;
 
                 // 1) Obstacle posé sur la case (muret, barricade, mur).
+                // tEnter ≈ 0 = l'origine est sur la frontière du prisme (coin
+                // attaquant posé exactement sur un sommet de mur adjacent) : ce
+                // n'est pas un impact (frôlement, cf. EpsilonT) — on continue le
+                // balayage au lieu de figer le point d'impact sur l'origine.
                 if (cover != CoverType.None)
                 {
                     float top = baseY + CoverObstacleHeight(cover, p);
-                    if (SegmentHitsPrism(origin, target, center, p.HexRadius, baseY, top, out float tHit))
+                    if (SegmentHitsPrism(origin, target, center, p.HexRadius, baseY, top, out float tHit) && tHit > EpsilonT)
                     {
                         blockingCell = stepped;
                         hitPoint = origin + (target - origin) * tHit;
@@ -400,7 +404,7 @@ namespace Killtime.Tactics.Grid
                 }
 
                 // 2) Relief : le rayon ne passe jamais sous le terrain.
-                if (SegmentHitsPrism(origin, target, center, p.HexRadius, baseY - 1000f, baseY, out float tGround))
+                if (SegmentHitsPrism(origin, target, center, p.HexRadius, baseY - 1000f, baseY, out float tGround) && tGround > EpsilonT)
                 {
                     blockingCell = stepped;
                     hitPoint = origin + (target - origin) * tGround;
@@ -415,14 +419,14 @@ namespace Killtime.Tactics.Grid
                 {
                     if (prop.HasMeshBounds)
                     {
-                        if (SegmentHitsBounds(origin, target, prop.MeshBounds, out float tMesh))
+                        if (SegmentHitsBounds(origin, target, prop.MeshBounds, out float tMesh) && tMesh > EpsilonT)
                         {
                             blockingCell = stepped;
                             hitPoint = origin + (target - origin) * tMesh;
                             return true;
                         }
                     }
-                    else if (SegmentHitsPrism(origin, target, prop.CenterXZ, prop.Radius, prop.MinY, prop.MaxY, out float tProp))
+                    else if (SegmentHitsPrism(origin, target, prop.CenterXZ, prop.Radius, prop.MinY, prop.MaxY, out float tProp) && tProp > EpsilonT)
                     {
                         blockingCell = stepped;
                         hitPoint = origin + (target - origin) * tProp;
@@ -458,7 +462,7 @@ namespace Killtime.Tactics.Grid
             float dx = p1.x - p0.x;
             float dz = p1.z - p0.z;
             float wx = p0.x - center.x;
-            float wz = p0.y - center.y;
+            float wz = p0.z - center.y;
 
             float t0 = 0f, t1 = 1f;
             for (int k = 0; k < 6; k++)
