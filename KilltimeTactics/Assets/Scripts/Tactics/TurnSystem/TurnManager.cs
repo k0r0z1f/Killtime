@@ -922,6 +922,12 @@ namespace Killtime.Tactics.TurnSystem
             if (IsInExploration) return;
             _allUnits.RemoveAll(u => u == null);
 
+            // Garde EditMode/tests : aucun combattant enregistré (ex : passage en
+            // mode combat avant tout RegisterUnit) — rien à ordonner, et sans ce
+            // retour CheckCombatOver() renvoie false (liste vide) puis la branche
+            // « aucune unité active » récursionne à l'infini (StackOverflow).
+            if (_allUnits.Count == 0) return;
+
             if (CheckCombatOver()) return;
 
             if (_needsInitiativeRoll || CurrentRound <= 1)
