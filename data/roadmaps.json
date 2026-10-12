@@ -1681,6 +1681,21 @@
           "scale": null,
           "suggestedAsset": "VanceCharacter.cs + Vance.prefab (Resources/Characters)",
           "details": "FAIT : Vance comme 6e fiche héroïque de base (miroir John/Thomas, MAG 0). VanceCharacter (SheetId beef5a1c, Humain HérosPJ MAG 0, innée Autorité du Commandant + 12 spés commandement/tactique/tir/cyber, sans restriction d'âme), IsVanceExclusive dans ProgressionManager, ligne F1, constellation Voûte, lien héroïque TurnManager, SpawnVance + Sextette, fallback scènes IsVanceActor, fix data Rebel_Commander -> Vance + Vance_beef5a1c.json (scène 01, backup .bak_vancefix)."
+        },
+        {
+          "id": "RD-125",
+          "title": "CharacterDevWindow : refactor services + partials sans régression",
+          "epic": "Outillage",
+          "status": "done",
+          "priority": "high",
+          "order": 9,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "DevTools/CharacterDevWindow*.cs + DevTools/Character/*.cs",
+          "details": "FAIT : monolithe 2839 l. découpé sans changement de règles. 7 services (AttributeRulesService, AnimationClipResolver, SpellForgeSession, PreviewStudioService, SheetSessionService, SpawnService, SocialGraphSession) + 12 partials (7 onglets + sections Progression/Création/Inventaire + cartes). Fichier principal 2839 → 472 l. Vérifié : 465 appels GUI conservés à l'identique, logique services comparée au monolithe d'origine (seules différences : signatures + gardes null), compile OK, testé en jeu (F1 + 7 onglets)."
         }
       ]
     },
