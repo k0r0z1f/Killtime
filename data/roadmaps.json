@@ -869,6 +869,21 @@
           "scale": null,
           "suggestedAsset": "Core/Combat",
           "details": "FAIT (2026-10-12, Core/Combat) : god-class CombatCalculator 2892 -> 546 lignes façade (API publique 39/39 identique, délégation pure), logique verbatim dans 6 services (DuelSetup 380 : Begin/mises ; DuelResolution 487 : jets simultanés/opposés/interception/zone ; DamageEngine 763 : dégâts/critiques §8.2/RD-082 ; SpecialManeuver 923 : guet/opportunité/lutte/assaut groupé/poursuite ; Progression 234 : progressions Livre I §5/tables anatomiques ; Models 173 + Context/Shared 83). Vérifié sans régression : littéraux string 0 diff vs HEAD, flot de contrôle identique (seuls +12 throw gardes ctor et +38 using), accolades équilibrées, cross-refs OK, compile Unity verte (CS0051 + refs InferenceEngine/URP asmdef corrigées). Tests EditMode : 396/434 verts, 100/104 suites combat ; 38 échecs prouvés pré-existants (suite jamais exécutée avant : pas d'asmdef). Commit f61456a. BONUS : Killtime.Game.asmdef + Killtime.Game.Tests.asmdef (Test Runner EditMode débloqué)."
+        },
+        {
+          "id": "RD-124",
+          "title": "Tests : stabilisation suite EditMode 38 échecs -> 434/434 verts",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 55,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Tests",
+          "details": "FAIT (2026-10-12, Tests) : 396/434 -> 434/434 verts, 0 régression (run headless batchmode sur clone projet, exit 0). P0 TurnManager : garde liste vide dans StartNewRound (12 StackOverflow). P1 : Trip déterministe (Mock 10/2), CombinedAttack 22->21 (BaseArmor défaut 1), Grapple réanimation avant prise, DoT aggravation doublée (spec Hémorragie Profonde). P2 : Cover coquille wz p0.y->p0.z + garde t≈0 + 3 scénarios (muret/caisse près cible, crête 3 hex) ; Registre backstop ConfigureStats + prune (OnEnable/OnDestroy inactifs hors Play, prouvé par sonde). P3 : Arcanotech focus/PA, Voice release 40 blocs, Interactable reflection SceneState, Cinematic défaut false, StoryScene lien explicite + ReloadFromDisk, WorldMap 14 liens + reset/kingston ; titre hack défaut = nom terminal ; composite CheckCombatOver explicite."
         }
       ]
     },
