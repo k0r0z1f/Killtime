@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-12",
+  "updated": "2026-10-13",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -884,6 +884,66 @@
           "scale": null,
           "suggestedAsset": "Tests",
           "details": "FAIT (2026-10-12, Tests) : 396/434 -> 434/434 verts, 0 régression (run headless batchmode sur clone projet, exit 0). P0 TurnManager : garde liste vide dans StartNewRound (12 StackOverflow). P1 : Trip déterministe (Mock 10/2), CombinedAttack 22->21 (BaseArmor défaut 1), Grapple réanimation avant prise, DoT aggravation doublée (spec Hémorragie Profonde). P2 : Cover coquille wz p0.y->p0.z + garde t≈0 + 3 scénarios (muret/caisse près cible, crête 3 hex) ; Registre backstop ConfigureStats + prune (OnEnable/OnDestroy inactifs hors Play, prouvé par sonde). P3 : Arcanotech focus/PA, Voice release 40 blocs, Interactable reflection SceneState, Cinematic défaut false, StoryScene lien explicite + ReloadFromDisk, WorldMap 14 liens + reset/kingston ; titre hack défaut = nom terminal ; composite CheckCombatOver explicite."
+        },
+        {
+          "id": "RD-128",
+          "title": "UI : refactor CombatContextMenuUI 1977 lignes en 4 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 56,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "UI/CombatContextMenuUI",
+          "details": "FAIT (2026-10-13, UI) : radial CombatContextMenuUI 1977 -> facade 536 lignes (API publique identique : Instance, CurrentInjectedAP/PE, IsDefenseOpen, OpenMenu/OpenDefenseMenu/CloseMenu, EnsureInstance, GetActiveActor), rendu attaque 584 (OnGUI dispatch + hub + orbites), defense 486 (#region tel quel + glyphes defense), glyphs 419 (styles + textures procedurales). Pattern CombatHUD.* existant, classe en partial, champs centralises dans la facade. Verifie sans regression : 58/58 methodes + champs conserves, 0 doublon, accolades equilibrees, contenu ligne-a-ligne identique (1 ligne blanche d'ecart), tokens critiques identiques (e.Use x11, ArmInputBlocker x10, Register/Unregister symetriques, reset statics en finally, Confirm/CloseMenu), appelants intacts (TacticalSelectionManager, CombatActionRegistry, Arena*, TacticalAIController, DroppedWeaponContextMenuUI). Test en jeu OK par l'utilisateur. Branche refactor/combat-context-menu-partial."
+        },
+        {
+          "id": "RD-129",
+          "title": "UI : refactor CombatActionRegistry 1898 lignes en 10 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 57,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "UI/CombatActionRegistry",
+          "details": "FAIT (2026-10-13, UI) : registre CombatActionRegistry 1898 -> dispatcher 42 lignes + 9 partials (Attack 570, Self 587, Tactics 281, Care 163, Core 153, Inventory 110, Dev 104, Spells 52, Techniques 39). Pattern CombatHUD.* existant, static partial, ordre de concatenation = ordre d'affichage du menu. Verifie sans regression par script vs HEAD : seule ligne absente = 'public static class' devenue partial, 68/68 actions new CombatAction conservees, 0 ligne logique modifiee, 0 doublon de definition, accolades/parentheses equilibrees, signatures publiques inchangees (GetAvailableActions, GetAttackMaxRange...), appelants intacts (CombatContextMenuUI). Test en jeu OK par l'utilisateur."
+        },
+        {
+          "id": "RD-130",
+          "title": "DevTools : refactor MapEditorDevWindow 1987 lignes en 7 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 58,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "DevTools/MapEditorDevWindow",
+          "details": "FAIT (2026-10-13, DevTools) : editeur MapEditorDevWindow 1987 -> facade 251 lignes (etat + lifecycle + prefs DevUI) + 6 partials (UI 662 : DrawContent + 6 onglets, Storage 356 : Save/ApplyLoadedMap/Load/Delete/Regen, Brushes 334 : Update/peinture terrain 13 cas/presets, Props 286 : catalogue + pose 3D, Types 104 : 2 enums + 6 DTO, Grounds 77). Pattern ScenarioEditor.* existant, heritage FloatingWindow declare 1x. Verifie sans regression par script vs HEAD : 41/41 signatures methodes + 37/37 champs identiques, 1739/1739 lignes deplacees retrouvees (0 manquante), 0 doublon (sauf surcharge GetPropKey x2), accolades equilibrees, API publique inchangee (ApplyLoadedMap, RefreshAvailableProps/GroundTextures), appelants intacts (CombatDevArena, JsonStorySceneController, CombatDevToolbar, Arena*, StorySceneData). Test en jeu OK par l'utilisateur."
+        },
+        {
+          "id": "RD-131",
+          "title": "Caméra : refactor CinematicDirector 1941 lignes en 7 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 59,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Camera/CinematicDirector",
+          "details": "FAIT (2026-10-13, Camera) : directeur CinematicDirector 1941 -> facade 196 lignes (champs + CameraMode + Awake + ResetCinematicState + ResolveTacticalCam) + 6 partials (SceneRoutine 754 : SceneCinematicRoutine intacte, ScenePlayback 275 : Play/Stop + InPlace + ReleaseToTactical, Effects 253 : ApplyShotEffect + warp + easings + Update/LateUpdate + letterbox + OnGUI + adaptive near, KillshotFreeLook 223, ShotAudio 206 : swell + PlayShotAudio + file, SceneLookup 142 : FindSceneUnit/Prop + locks). Pattern ScenarioEditor./MapEditor.* existant, classe en partial, usings dupliques a l'identique. Verifie sans regression par script vs backup : 1306/1306 lignes significatives retrouvees (0 perdue, 0 ajoutee hors mot-cle partial), 47/47 methodes a 1 definition, 21/21 champs meme ordre, API publique identique, accolades equilibrees, LF/UTF-8, appelants intacts (JsonStorySceneController, CombatEncounterController, VTTTableSync, SceneCinematicTests). Test en jeu OK par l'utilisateur."
         }
       ]
     },
