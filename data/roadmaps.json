@@ -990,6 +990,22 @@
           "suggestedAsset": "Multi/VTTRoomWindow",
           "details": "FAIT (2026-10-13, Multi) : VTTRoomWindow 1518 -> noyau 347 lignes (champs partages + lifecycle + EnsureMultiStack + Subscribe/Unsubscribe + DrawContent routeur + TruncateStr) + 9 partials (Connection 59, Room 131, Directory 104, Members 59, Chat 80, Events 76, Voice 65, VoiceConfig 522 : DrawVoiceSection garde entier car methode insecable, Video 192). Classe en partial, usings dupliques a l'identique, .meta principal conserve + 9 GUID uniques. Audit anti-bogue post-split : corps des 9 partials + head/tail noyau byte-identiques a HEAD (seul diff = mot-cle partial), 1355/1355 lignes presentes, 40/40 methodes 1 definition, 29/29 champs noyau, API publique identique (9 membres, 3 appelants intacts), 10/10 GUID uniques sans collision repo, 0 erreur VTTRoomWindow dans les logs editeur (seules erreurs = SkillTreeCosmosWindow etat transitoire pre-existant, disque propre + build OK). unity test batch impossible (editeur user ouvert, verrou projet). Test en jeu OK par l'utilisateur.",
           "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-141",
+          "title": "Tactics : refactor HexGridVisualizer 1633 lignes en 7 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 63,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Tactics/Grid/HexGridVisualizer",
+          "details": "FAIT (2026-10-13, Tactics) : HexGridVisualizer 1633 -> noyau 273 lignes (enum + tous les champs + props + Awake/Start/LoadVisualPrefs/EnsureCameraAntiAliasing + BuildVisualGrid) + 6 partials (Search 314 : 3 generateurs mesh statiques, Materials 306 : init materiaux + sols + editor-only, Ceiling 183 : plafond + selecteur + hover 2-args, Obstacles 135 : RefreshObstacles + couverts + bounds, Highlight 179 : fog + reachable/hover/target/path + RefreshAllTileColors, Overlays 312 : LOS + zones persistantes). Classe en partial, usings dupliques a l'identique, .meta principal conserve + 6 GUID uniques. Audit anti-bogue post-split 10/10 : multiset lignes identique a HEAD (seul diff = mot-cle partial), accolades equilibrees 7/7, #if/#endif equilibres, 0 membre duplique (seul doublon = overload SetHoveredCoord voulu), 7/7 GUID uniques, API publique identique (diff auto), tous les [SerializeField] dans le noyau (pas de casse prefab/scene), Main.unity ne reference pas le composant. Verifie 2026-10-13 : compile batchmode exit 0 zero erreur, suite EditMode 434/434 passed, session editeur live 0 error CS. Test visuel en jeu OK par l'utilisateur.",
+          "updated": "2026-10-13"
         }
       ]
     },
