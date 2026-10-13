@@ -1696,6 +1696,36 @@
           "scale": null,
           "suggestedAsset": "DevTools/CharacterDevWindow*.cs + DevTools/Character/*.cs",
           "details": "FAIT : monolithe 2839 l. découpé sans changement de règles. 7 services (AttributeRulesService, AnimationClipResolver, SpellForgeSession, PreviewStudioService, SheetSessionService, SpawnService, SocialGraphSession) + 12 partials (7 onglets + sections Progression/Création/Inventaire + cartes). Fichier principal 2839 → 472 l. Vérifié : 465 appels GUI conservés à l'identique, logique services comparée au monolithe d'origine (seules différences : signatures + gardes null), compile OK, testé en jeu (F1 + 7 onglets)."
+        },
+        {
+          "id": "RD-126",
+          "title": "TacticalUnitVisual : refactor 2655 l. en 5 partials sans régression",
+          "epic": "Outillage",
+          "status": "done",
+          "priority": "high",
+          "order": 10,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Tactics/Units/TacticalUnitVisual*.cs",
+          "details": "FAIT : monolithe 2655 l. découpé en verbatim sans changement d'API. Façade TacticalUnitVisual.cs 215 l. (enum, RequireComponent, SerializeFields, champs, Awake/Start/Update/OnDestroy) + 4 partials : .Weapon.cs 868 l. (sockets, grips, normalisation, drop physique), .Animator.cs 540 l. (paramètres, triggers, clips genrés), .Avatar.cs 387 l. (matériaux, custom model, hit-flash, DuoTech, KO), .Hud.cs 721 l. (floating texts, OnGUI, halo statuts, fog). Vérifié : 84/84 méthodes et 156/156 membres identiques au monolithe, 0 doublon de champ, #if équilibrés, 5 GUID .meta uniques, compile OK, testé en jeu."
+        },
+        {
+          "id": "RD-127",
+          "title": "CharacterProgressionManager : refactor 2301 l. en 5 partials sans régression",
+          "epic": "Outillage",
+          "status": "done",
+          "priority": "high",
+          "order": 11,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Core/CharacterCreator/CharacterProgressionManager*.cs",
+          "details": "FAIT (2026-10-12, Core/CharacterCreator) : monolithe 2301 l. découpé move-only byte-exact, zéro changement d'API ni de logique (classe 100% statique, pas de MonoBehaviour). Shim CharacterProgressionManager.cs 26 l. (doc Livre I §5) + 5 partials : .Funding.cs 155 l. (coûts, FundingPlan, SpendForSkill), .OrganicTicks.cs 236 l. (GrantXP, coches, challenges, TrainSkill/Free), .AttributesSync.cs 529 l. (attributs, SynchronizeProgression, breakdown, ResetProgressionTree), .HeroAccess.cs 163 l. (SpecializationDetail, _registry, ctor statique, accès 6 héros), .Specializations.cs 1260 l. (table EnsureRegistryBuilt, requêtes, UnlockSpecialization, LearnModularSpell). Vérifié par script : 2272/2272 lignes reprises à l'octet près, 49/49 méthodes identiques (seule surcharge légitime RegisterSuccessfulSkillUse x2), 0 définition dupliquée, 30/30 membres appelés définis, 21 fichiers appelants intacts, accolades équilibrées, .meta générés à l'import Unity. Validé en jeu par l'utilisateur. RESTE : relancer CoreRulesTests (couvre unlock/prérequis/Volume II/Mina)."
         }
       ]
     },
