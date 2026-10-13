@@ -2442,6 +2442,22 @@
           "suggestedAsset": "Story/JsonStorySceneController.CineAudio.cs",
           "updated": "2026-10-13",
           "details": "FAIT 2026-10-13 : FireLinkedCinematics(ids,chainVisited,logWarnings:true) — les 2 LogWarning (directeur introuvable, id introuvable) + log HUD 1x/session conditionnés. 9 appelants runtime inchangés (défaut true). SceneCinematicTests : logWarnings:false sur les 2 call sites (ExecuteCinematicChain_UnknownTargetIsTolerated, FireLinkedCinematics_EmptyListIsNoOp). Balance tokens OK. Reste : recompile + run SceneCinematicTests."
+        },
+        {
+          "id": "RD-149",
+          "title": "Decouper Layout.cs (1694 l.) en 5 partials sans regression",
+          "epic": "Editeur nodal",
+          "status": "done",
+          "priority": "medium",
+          "order": 14,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow.*.cs",
+          "details": "FAIT (2026-10-13, DevTools) : partial Layout.cs (1694 l., 40 methodes) decoupe move-only en 5 partials meme namespace/classe/assembly : Layout.Cards 199 (LayoutCardsInsideNode, ComputeFreeSpotForNewCard, AutoLayoutNodeGraph), Layout.Sizes 216 (16 mesures Get*CardSize/NeededHeight), Layout.Graph 560 (topologie entrees/sorties, ComputeNodeDepths, bounds, hit-test), Layout.Auto 348 (AutoLayoutGlobalScene, AutoLayoutMosaic), Layout.NodeFrame 460 (section details + DrawNodeFrame). Layout.cs d'origine supprime. 5 .meta generes (GUID uniques). Verifie : 40/40 methodes uniques, slices verbatim, accolades equilibrees, EditMode 434/434 verts, ProjectSettings.asset restaure (effet de bord du run). Reste : build player + test en jeu par l'utilisateur (RD-120/RD-122).",
+          "updated": "2026-10-13"
         }
       ]
     },
