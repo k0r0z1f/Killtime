@@ -461,18 +461,19 @@ namespace Killtime.Story.Scenes
         /// <summary>
         /// Applique grille (rayon régénéré) + plafond + lumière sur la scène live.
         /// Retourne faux si config invalide ou grille absente (rien n'est appliqué).
+        /// logWarnings=false : mode silencieux pour les tests (aucun warning console).
         /// </summary>
-        public static bool ApplyGridAndLighting(ChapterTemplateConfig config, TacticalHexGrid grid)
+        public static bool ApplyGridAndLighting(ChapterTemplateConfig config, TacticalHexGrid grid, bool logWarnings = true)
         {
             var errors = new List<string>();
             if (!ValidateConfig(config, errors))
             {
-                Debug.LogWarning($"[ChapterTemplate] Config invalide : {string.Join(" | ", errors)}");
+                if (logWarnings) Debug.LogWarning($"[ChapterTemplate] Config invalide : {string.Join(" | ", errors)}");
                 return false;
             }
             if (grid == null)
             {
-                Debug.LogWarning("[ChapterTemplate] Pas de TacticalHexGrid en scène.");
+                if (logWarnings) Debug.LogWarning("[ChapterTemplate] Pas de TacticalHexGrid en scène.");
                 return false;
             }
             try
@@ -491,7 +492,7 @@ namespace Killtime.Story.Scenes
             }
             catch (Exception ex)
             {
-                Debug.LogWarning($"[ChapterTemplate] Application impossible : {ex.Message}");
+                if (logWarnings) Debug.LogWarning($"[ChapterTemplate] Application impossible : {ex.Message}");
                 return false;
             }
         }

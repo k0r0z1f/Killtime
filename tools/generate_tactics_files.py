@@ -10,6 +10,12 @@ Perimetre : Scripts/**/*.cs, Shaders, scenes maison, JSON Resources, asmdefs
 import json
 import os
 import re
+import subprocess
+import tempfile
+
+# Fichiers ScenarioEditor en cours d'edition : jamais lus depuis le disque
+# (mi-redaction). Les suivis sont analyses depuis HEAD, les non-suivis sautes.
+PIN_INFIX = "ScenarioEditorDevWindow.Cards."
 
 CLASS_RE = re.compile(r"^\s*(?:public|internal|private|protected)?\s*(?:sealed|abstract|static)?\s*(?:partial\s+)?(class|struct|interface|enum)\s+(\w+)", re.M)
 NS_RE = re.compile(r"^\s*namespace\s+([\w.]+)", re.M)
@@ -59,7 +65,29 @@ def analyze_text(path):
 
 def collect():
     assets = "KilltimeTactics/Assets"
+    try:
+        tracked = set(subprocess.run(["git", "ls-files"], capture_output=True,
+                                     text=True).stdout.splitlines())
+    except OSError:
+        tracked = set()
     files = []
+
+    def analyze_pinned(repo_path):
+        """Analyse le blob HEAD (ou None si absent de HEAD)."""
+        p = subprocess.run(["git", "show", f"HEAD:{repo_path}"], capture_output=True,
+                           text=True)
+        if p.returncode != 0:
+            return None, 0
+        with tempfile.NamedTemporaryFile("w", suffix=".cs", delete=False,
+                                         encoding="utf-8") as t:
+            t.write(p.stdout)
+            tmp = t.name
+        try:
+            st = analyze_text(tmp)
+        finally:
+            os.unlink(tmp)
+        return st, len(p.stdout.encode("utf-8", "replace"))
+
     for root, _d, fns in os.walk(os.path.join(assets, "Scripts")):
         for fn in fns:
             if not fn.endswith(".cs"):
@@ -69,15 +97,25 @@ def collect():
             parts = rel.split(os.sep)
             module = parts[0] if len(parts) > 1 else "racine"
             subdir = parts[1] if len(parts) > 2 else ""
-            st = analyze_text(full)
-            if st is None:
-                continue
+            repo_path = "KilltimeTactics/Assets/Scripts/" + rel.replace(os.sep, "/")
+            if PIN_INFIX in repo_path:
+                if repo_path not in tracked:
+                    continue
+                st, size = analyze_pinned(repo_path)
+                if st is None:
+                    continue
+            else:
+                st = analyze_text(full)
+                if st is None:
+                    continue
+                size = os.path.getsize(full)
             base = fn[:-3]
             group = base.split(".")[0] if "." in base else None
             files.append({
                 "name": fn, "dir": os.path.dirname(rel).replace(os.sep, "/"),
                 "module": module, "subdir": subdir, "type": "csharp",
-                "size": os.path.getsize(full), "partial_group": group, **st,
+                "repo_path": repo_path,
+                "size": size, "partial_group": group, **st,
             })
     for root, _d, fns in os.walk(os.path.join(assets, "Shaders")):
         for fn in fns:
@@ -86,7 +124,9 @@ def collect():
             full = os.path.join(root, fn)
             st = analyze_text(full)
             files.append({"name": fn, "dir": "Shaders", "module": "Shaders",
-                          "subdir": "", "type": "shader", "size": os.path.getsize(full),
+                          "subdir": "", "type": "shader",
+                          "repo_path": "KilltimeTactics/Assets/Shaders/" + fn,
+                          "size": os.path.getsize(full),
                           "partial_group": None, **st})
     for rel in ["Main.unity", "Scenes/CombatDevArena.unity"]:
         full = os.path.join(assets, rel)
@@ -94,6 +134,7 @@ def collect():
             st = analyze_text(full)
             files.append({"name": os.path.basename(rel), "dir": os.path.dirname(rel) or "racine",
                           "module": "Scenes", "subdir": "", "type": "scene",
+                          "repo_path": "KilltimeTactics/Assets/" + rel,
                           "size": os.path.getsize(full), "partial_group": None, **st})
     for root, _d, fns in os.walk(os.path.join(assets, "Resources")):
         for fn in fns:
@@ -111,6 +152,7 @@ def collect():
             sub = os.path.relpath(root, os.path.join(assets, "Resources")).replace(os.sep, "/").strip("./")
             files.append({"name": fn, "dir": ("Resources/" + sub) if sub else "Resources",
                           "module": "Data", "subdir": "", "type": "json",
+                          "repo_path": "KilltimeTactics/Assets/Resources/" + (sub + "/" if sub else "") + fn,
                           "size": os.path.getsize(full), "loc": loc,
                           "blank": 0, "comment": 0, "code": loc,
                           "classes": [], "n_classes": 0, "namespace": None,
@@ -124,6 +166,7 @@ def collect():
             st = analyze_text(full)
             files.append({"name": fn, "dir": os.path.dirname(os.path.relpath(full, os.path.join(assets, "Scripts"))).replace(os.sep, "/"),
                           "module": "Core", "subdir": "", "type": "asmdef",
+                          "repo_path": "KilltimeTactics/Assets/Scripts/" + os.path.relpath(full, os.path.join(assets, "Scripts")).replace(os.sep, "/"),
                           "size": os.path.getsize(full), "partial_group": None, **st})
     return files
 
@@ -133,6 +176,16 @@ def scan():
     files.sort(key=lambda f: f["loc"], reverse=True)
     for i, f in enumerate(files):
         f["id"] = i + 1
+    # Liens GitHub figes : sha + etat worktree depuis l'historique fleur (si present)
+    try:
+        with open("data/tactics_files_history.json", encoding="utf-8") as fh:
+            hmap = {n["repo_path"]: n for n in json.load(fh)["nodes"]}
+    except (OSError, ValueError, KeyError):
+        hmap = {}
+    for f in files:
+        hn = hmap.get(f.get("repo_path", ""))
+        f["github_sha"] = hn["last_hash"] if hn else None
+        f["worktree"] = hn["worktree"] if hn else "unknown"
     modules = {}
     for f in files:
         m = modules.setdefault(f["module"], {"id": f["module"], "files": 0, "loc": 0,
@@ -419,6 +472,7 @@ def build_html(data):
                 <div><div class="sec-title" style="margin-bottom:6px">Espace de noms</div><div class="chip" id="iNs">—</div></div>
                 <div><div class="sec-title" style="margin-bottom:6px">Classes / structs / enums</div><div class="class-chips" id="iClasses2"></div></div>
                 <div id="iSibWrap" style="display:none"><div class="sec-title" style="margin-bottom:6px">Fichiers du même groupe partiel</div><div id="iSibs"></div></div>
+                <a href="#" target="_blank" rel="noopener" id="iGithub" class="btn-ghost" style="justify-content:center;display:none">Voir le fichier sur GitHub ↗</a>
             </aside>
         </section>
     </div>
@@ -432,7 +486,7 @@ def build_html(data):
             <div>🔍 <strong>Recherche :</strong> surligne en doré les fichiers, classes et dossiers correspondants.</div>
             <div>🏷️ <strong>Pastilles & légende :</strong> cliquez pour masquer / réafficher un module.</div>
             <div>🔎 <strong>Zoom :</strong> cliquez l'en-tête d'un module pour n'afficher que lui.</div>
-            <div>📄 <strong>Inspecteur :</strong> cliquez un fichier — composition code/commentaires/vides, classes, namespace, frères partiels.</div>
+            <div>📄 <strong>Inspecteur :</strong> cliquez un fichier — composition code/commentaires/vides, classes, namespace, frères partiels, lien GitHub figé au commit.</div>
             <div>🧩 <strong>Monolithes découpés :</strong> les 12 groupes <span style="font-family:var(--font-mono)">partial</span> issus des refactors, avec la part de chaque fichier.</div>
         </div>
         <button class="btn-ghost" id="helpClose" style="align-self:flex-end;color:#fff;border-color:#fbbf24">Compris, explorer !</button>
@@ -776,6 +830,19 @@ function selectFile(id) {{
             `<button class="sib-btn" data-id="${{s.id}}">${{s.id===id?'▸ ':'&nbsp;&nbsp;'}}${{s.name}} — ${{fmt(s.loc)}} l.</button>`).join('');
         document.querySelectorAll('.sib-btn').forEach(b => b.addEventListener('click', () => selectFile(+b.dataset.id)));
     }} else sibWrap.style.display = 'none';
+    const gh = document.getElementById('iGithub');
+    if (f.github_sha && f.repo_path) {{
+        gh.style.display = '';
+        gh.href = `https://github.com/k0r0z1f/Killtime/blob/${{f.github_sha}}/${{f.repo_path}}`;
+        gh.textContent = f.worktree === 'modified'
+            ? `Voir la version commitée sur GitHub ↗ (${{f.github_sha.slice(0, 7)}})`
+            : 'Voir le fichier sur GitHub ↗';
+        gh.title = f.worktree === 'modified'
+            ? 'Le disque contient des modifs non commitées ; GitHub montre la version commitée'
+            : `Ouvrir ${{f.repo_path}} au commit ${{f.github_sha.slice(0, 7)}}`;
+    }} else {{
+        gh.style.display = 'none';
+    }}
     insp.classList.add('open');
     draw();
 }}

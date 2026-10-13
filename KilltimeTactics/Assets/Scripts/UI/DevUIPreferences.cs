@@ -218,6 +218,12 @@ namespace Killtime.UI
         private static void EnsureSaver()
         {
             if (Instance != null) return;
+            // Hors play-mode (tests EditMode, fenêtres d'éditeur) : pas de GameObject saver.
+            // MonoBehaviour.Update ne tourne de toute façon pas en EditMode (pas d'ExecuteAlways) :
+            // créer le GO "[Dev] DevUIPreferences" (HideFlags.DontSave) ne flusherait jamais
+            // et fuirait 1 allocation persistante à chaque session ("Leak Detected : Persistent allocates").
+            // Load/Save restent appelables explicitement (SaveNow sur fermeture de fenêtre).
+            if (!Application.isPlaying) return;
             var existing = FindAnyObjectByType<DevUIPreferences>();
             if (existing != null)
             {
@@ -233,7 +239,7 @@ namespace Killtime.UI
             }
             catch
             {
-                // Hors play-mode (tests) : pas de saver, Load/Save restent appelables.
+                // Ne devrait plus arriver (garde isPlaying ci-dessus), conservé par sécurité.
             }
         }
 

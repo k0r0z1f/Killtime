@@ -27,17 +27,18 @@ namespace Killtime.Story.Scenes
         /// À la FIN de chaque cinématique, sa sortie "fin →" (NextTargetId) est
         /// résolue via ExecuteCinematicChain (chaînage explicite : cine, nœud,
         /// réplique, conséquence ou événement). chainVisited casse les boucles A→B→A.
+        /// logWarnings=false : mode silencieux pour les tests (aucun warning console).
         /// </summary>
-        public void FireLinkedCinematics(List<string> cinematicIds, HashSet<string> chainVisited = null)
+        public void FireLinkedCinematics(List<string> cinematicIds, HashSet<string> chainVisited = null, bool logWarnings = true)
         {
             if (cinematicIds == null || cinematicIds.Count == 0 || State._sceneData == null) return;
             var director = FindAnyObjectByType<CinematicDirector>();
             if (director == null)
             {
-                Debug.LogWarning("[JsonStorySceneController] CinematicDirector introuvable : cinématiques ignorées (ajoutez CinematicDirector sur la caméra).");
+                if (logWarnings) Debug.LogWarning("[JsonStorySceneController] CinematicDirector introuvable : cinématiques ignorées (ajoutez CinematicDirector sur la caméra).");
                 // Erreur VISIBLE en jeu (1x par session) : sinon la cinématique "ne joue
                 // pas" sans aucune explication (symptôme trompeur).
-                if (!_warnedMissingCinematicDirector)
+                if (logWarnings && !_warnedMissingCinematicDirector)
                 {
                     _warnedMissingCinematicDirector = true;
                     CombatHUD.Instance?.AddAdvancedLog("<color=red><b>[CINÉMATIQUE] Aucun CinematicDirector dans la scène : cinématique ignorée (ajoutez CinematicDirector sur la caméra).</b></color>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.red);
@@ -52,7 +53,7 @@ namespace Killtime.Story.Scenes
                 var cine = State._sceneData.FindCinematic(id);
                 if (cine == null)
                 {
-                    Debug.LogWarning($"[JsonStorySceneController] Cinématique introuvable : '{id}'.");
+                    if (logWarnings) Debug.LogWarning($"[JsonStorySceneController] Cinématique introuvable : '{id}'.");
                     continue;
                 }
                 var captured = cine;

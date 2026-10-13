@@ -1129,6 +1129,10 @@ def build_html():
                 ⚠️ HOTSPOT
             </div>
 
+            <div id="drawerWorktree" style="display:none;font-size:12px;font-weight:700;color:#fcd34d;background:rgba(251,191,36,.10);border:1px solid rgba(251,191,36,.45);padding:8px 12px;border-radius:10px;">
+                WORKTREE
+            </div>
+
             <div id="drawerTestsWrap" style="display:none;">
                 <div class="drawer-section-title">Couverture de tests</div>
                 <div class="causal-links-group" id="drawerTestsList"></div>
@@ -1848,8 +1852,28 @@ def build_html():
             drawerCausalList.innerHTML = '<div style="font-size:12px; color:var(--text-muted);">Aucune relation marquée — fichier indépendant.</div>';
         }}
 
-        drawerGithubBtn.href = `https://github.com/k0r0z1f/Killtime/blob/main/${{node.repo_path || ''}}`;
+        // Lien GitHub figé sur le hash du dernier commit (jamais de 404) ;
+        // les fichiers non commités n'ont pas de lien (bouton masqué).
+        if (node.last_hash && node.repo_path) {{
+            drawerGithubBtn.style.display = '';
+            drawerGithubBtn.href = `https://github.com/k0r0z1f/Killtime/blob/${{node.last_hash}}/${{node.repo_path}}`;
+            drawerGithubBtn.querySelector('span').textContent = `Voir le fichier @ ${{node.last_short || node.last_hash.slice(0, 7)}} sur GitHub ↗`;
+        }} else {{
+            drawerGithubBtn.style.display = 'none';
+        }}
         refreshSizeNow();
+
+        // Bannière état worktree (modifié / non commité)
+        const wtEl = document.getElementById('drawerWorktree');
+        if (node.worktree === 'modified') {{
+            wtEl.style.display = '';
+            wtEl.innerHTML = `✎ <strong>MODIFIÉ hors commit</strong> — GitHub montre la version ${{node.last_short || 'commitée'}} ; les chiffres reflètent le disque.`;
+        }} else if (node.worktree === 'untracked') {{
+            wtEl.style.display = '';
+            wtEl.innerHTML = `🆕 <strong>NON COMMITÉ</strong> — absent de GitHub pour l'instant ; sera lié après commit.`;
+        }} else {{
+            wtEl.style.display = 'none';
+        }}
 
         // Bannière hotspot (gros x instable)
         const hsEl = document.getElementById('drawerHotspot');

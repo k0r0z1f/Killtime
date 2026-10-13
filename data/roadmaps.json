@@ -1006,6 +1006,22 @@
           "suggestedAsset": "Tactics/Grid/HexGridVisualizer",
           "details": "FAIT (2026-10-13, Tactics) : HexGridVisualizer 1633 -> noyau 273 lignes (enum + tous les champs + props + Awake/Start/LoadVisualPrefs/EnsureCameraAntiAliasing + BuildVisualGrid) + 6 partials (Search 314 : 3 generateurs mesh statiques, Materials 306 : init materiaux + sols + editor-only, Ceiling 183 : plafond + selecteur + hover 2-args, Obstacles 135 : RefreshObstacles + couverts + bounds, Highlight 179 : fog + reachable/hover/target/path + RefreshAllTileColors, Overlays 312 : LOS + zones persistantes). Classe en partial, usings dupliques a l'identique, .meta principal conserve + 6 GUID uniques. Audit anti-bogue post-split 10/10 : multiset lignes identique a HEAD (seul diff = mot-cle partial), accolades equilibrees 7/7, #if/#endif equilibres, 0 membre duplique (seul doublon = overload SetHoveredCoord voulu), 7/7 GUID uniques, API publique identique (diff auto), tous les [SerializeField] dans le noyau (pas de casse prefab/scene), Main.unity ne reference pas le composant. Verifie 2026-10-13 : compile batchmode exit 0 zero erreur, suite EditMode 434/434 passed, session editeur live 0 error CS. Test visuel en jeu OK par l'utilisateur.",
           "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-144",
+          "title": "Multi : refactor VTTTableSync 1508 lignes en 8 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 64,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Multi/VTTTableSync",
+          "details": "FAIT (2026-10-13, Multi) : VTTTableSync 1508 -> noyau 202 lignes (doc + Instance + 8 SerializeField + options + 8 events + props + champs _units/_actionQueue/flags + Awake/OnDestroy/OnEnable/OnDisable/EnsureDependencies + dispatcher HandleTableOp) + 7 partials (Registry 154 : annuaire unites + NotifyLocalMove + PublishUnitClaims, Requests 337 : Broadcast*/Request* + HandleActionRequestFromPlayer + FullCombatState + Chat/Dice/Scene, Map 154 : RoomJoined + Publish/Capture/ApplyRemoteMap, RemoteQueue 187 : FIFO Enqueue/Process + rejou Move/CombatAction, RemoteExecute 330 : Execute Attack/Grenade/Spell/Breath, TurnControl 245 : Apply TurnControl/StateSync/RoomSettings/SceneControl, Helpers 47 : Extract*). Classe en partial, usings dupliques a l'identique, 7 .meta generes par l'editeur live (7/7 GUID uniques, 0 collision repo). Preuve move-only : reassemblage des 8 fichiers == HEAD byte-identique 1508/1508 (seul diff = mot-cle partial), 0 membre duplique, tous les [SerializeField] dans le noyau. Compile batchmode impossible (editeur user ouvert, verrou projet) ; 0 erreur CS liee a VTTTableSync dans Editor.log. VERIF 2026-10-13 (post-split, jeu fonctionnel confirme par l'utilisateur) : reassemblage == HEAD byte-identique 1508/1508 (seul diff = partial), 54/54 signatures de methodes identiques, API publique 25/25 identique, 0 membre duplique (71 declares), 7/7 GUID uniques 0 collision, Editor.log 04:10 compile sans erreur CS.",
+          "updated": "2026-10-13"
         }
       ]
     },
@@ -1042,7 +1058,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Main.unity + CombatDevArena",
-          "details": "GridRadius variable, CeilingHeight, lighting preset, spawns, triggers F7. New Chapter = duplicate."
+          "details": "GridRadius variable, CeilingHeight, lighting preset, spawns, triggers F7. New Chapter = duplicate. Suivi 2026-10-13 : ApplyGridAndLighting(config,grid,logWarnings:true) — flag optionnel, warnings conditionnés ; ChapterTemplateTests passe logWarnings:false sur les 3 cas négatifs (console test silencieuse, runtime inchangé). Reste : recompile éditeur + run ChapterTemplateTests.",
+          "updated": "2026-10-13"
         },
         {
           "id": "RD-056",
@@ -1848,6 +1865,22 @@
           "scale": null,
           "suggestedAsset": "Core/CharacterCreator/CharacterProgressionManager*.cs",
           "details": "FAIT (2026-10-12, Core/CharacterCreator) : monolithe 2301 l. découpé move-only byte-exact, zéro changement d'API ni de logique (classe 100% statique, pas de MonoBehaviour). Shim CharacterProgressionManager.cs 26 l. (doc Livre I §5) + 5 partials : .Funding.cs 155 l. (coûts, FundingPlan, SpendForSkill), .OrganicTicks.cs 236 l. (GrantXP, coches, challenges, TrainSkill/Free), .AttributesSync.cs 529 l. (attributs, SynchronizeProgression, breakdown, ResetProgressionTree), .HeroAccess.cs 163 l. (SpecializationDetail, _registry, ctor statique, accès 6 héros), .Specializations.cs 1260 l. (table EnsureRegistryBuilt, requêtes, UnlockSpecialization, LearnModularSpell). Vérifié par script : 2272/2272 lignes reprises à l'octet près, 49/49 méthodes identiques (seule surcharge légitime RegisterSuccessfulSkillUse x2), 0 définition dupliquée, 30/30 membres appelés définis, 21 fichiers appelants intacts, accolades équilibrées, .meta générés à l'import Unity. Validé en jeu par l'utilisateur. RESTE : relancer CoreRulesTests (couvre unlock/prérequis/Volume II/Mina)."
+        },
+        {
+          "id": "RD-140",
+          "title": "Specializations 1260 l. : redecoupage en 6 partials + shim sans regression",
+          "epic": "Outillage",
+          "status": "done",
+          "priority": "high",
+          "order": 12,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Core/CharacterCreator/CharacterProgressionManager.Specializations*.cs",
+          "updated": "2026-10-13",
+          "details": "FAIT (2026-10-13, Core/CharacterCreator) : .Specializations.cs 1260 l. rede coupe move-only byte-exact en shim 22 l. (orchestrateur EnsureRegistryBuilt -> 4 catalogues) + 6 partials : .CatalogMelee.cs 305 l. (MainsNues, ManiementArmes, ArmesPercantes, Ballistique), .CatalogMobility.cs 214 l. (Pas Invisibles, Esquive, Athletisme, encaissement, immunite), .CatalogSupport.cs 177 l. (medecine, arcanotech, tactique, social, intuition, artisanat), .CatalogMagic.cs 191 l. (magie generique + Volume II + delegation 6 heros), .Queries.cs 210 l. (RegisterSpec + 8 requetes), .Unlock.cs 229 l. (UnlockSpecialization + LearnModularSpell). Verifie par script : 247/247 RegisterSpec verbatim dans l ordre, 12/12 methodes publiques identiques, 0 definition dupliquee, tokens (){}[] equilibres hors strings/comments, usings homogenes, 6 .meta GUID uniques. Shim CharacterProgressionManager.cs : commentaire partials MAJ. Non verifie : compile editeur (editeur ouvert, unity recompile sans Pipeline package, pas de dotnet/mono dispo) + CoreRulesTests (unity test bloque : projet ouvert PID 114462). RESTE : confirmer 0 erreur Console a la reouverture/focus editeur + lancer CoreRulesTests."
         }
       ]
     },
@@ -1944,7 +1977,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Assets/Scripts/Tests",
-          "details": "Core, Cover, Fog, Grenade, Duo, Audio, WorldMap, VTT x3, SceneCine, StoryChain, Dice. + SoundCtrl."
+          "details": "Core, Cover, Fog, Grenade, Duo, Audio, WorldMap, VTT x3, SceneCine, StoryChain, Dice. + SoundCtrl. Prog 2026-10-13 (hygiène suites) : warnings volontaires rendus silencieux en test via flags optionnels (ApplyGridAndLighting, FireLinkedCinematics) + fix fuite persistante DevUIPreferences hors play-mode (voir RD-147/RD-148). Reste : run NUnit complet vert.",
+          "updated": "2026-10-13"
         },
         {
           "id": "RD-072",
@@ -2127,6 +2161,69 @@
           "suggestedAsset": "SkillTreeCosmosWindow F4",
           "details": "Perf zoom-out (200 labels rich-text + strings/frame + lookups x3/noeud, zero culling). Fix: _frameGuide (1 lookup/frame), LOD zoom<0.5 (forme seule, halo/labels sauf selection/survol/guide-next), culling viewport (noeuds 170px, titres, conduits via Liang-Barsky), starfield pre-calcule, unlocked 1x/noeud. VERIF 2026-10-13 : 40/40 defs uniques, 24/24 champs uniques, accolades 8/8, API publique inchangee (2 appelants), aucun test existant ne couvre la fenetre, Liang-Barsky 7/7 cas, LOD identique a zoom>=0.5. Bogue trouve+corrige en audit : culling conduits par endpoints -> segment qui traverse l'ecran. Teste en jeu OK par user.",
           "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-142",
+          "title": "Refactor CharacterStats 1373l -> 8 partials",
+          "epic": "Refactor",
+          "status": "doing",
+          "priority": "medium",
+          "order": 18,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "CharacterStats.*.cs",
+          "details": "Move-only (2026-10-13) : CharacterStats.cs monolithe (1373 l.) decoupe en 8 partials meme namespace/classe/assembly : Core (243 l., champs+ctor+RecalculateDerivedStats+ResetTurn), Skills (242 l., jets/modifieurs/initiative/spes/Can*), Status (150 l., statuts/durees/synchro), Dots (179 l., pools residuels+tick RD-045), Actions (148 l., PA/souffle/redline/PE duel), Care (215 l., Heal/Soins Majeurs/resurrection RD-083), Fate (215 l., equipement/bouclier/destin/moral RD-047), Results (59 l., 3 structs). 73 signatures conservees (69 public verifiees git HEAD), accolades equilibrees, zero API change. Reste : compile+build+tests dans l'editeur ouvert (PID 62093 bloque le batchmode). FIX (2026-10-13) : Results.cs corrige — les 3 structs restaient top-level namespace (le wrapper partial les avait niches par erreur : CS0246 MoraleCheckResult/DotTickResult). Aucun usage qualifie CharacterStats.X en repo. VERIF (2026-10-13) : 1158/1158 lignes membres identiques a HEAD, 3 structs identiques, 69 methodes publiques, 7x partial sans doublon, usings/namespace identiques, diff coeur = suppressions + mot-cle partial uniquement. Compile OK editeur (erreurs CS0246 resolues), jeu lance. Tests EditMode a lancer : CoreRulesTests, SouffrantMajorCareTests, DuoTechTests.",
+          "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-143",
+          "title": "Refactor FloatingWindowChrome 1432l -> 5 partials",
+          "epic": "Refactor",
+          "status": "done",
+          "priority": "medium",
+          "order": 19,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "FloatingWindowChrome.*.cs",
+          "details": "Move-only (2026-10-13) : FloatingWindowChrome.cs monolithe (1432 l., static class, 0 dep Killtime) decoupe en 5 partials meme namespace/classe : Core (242 l., consts+champs+registre+helpers partages), DockLifecycle (202 l., repli/restauration/anims), DockLayout (287 l., colonnes+anti-chevauchement), DockRender (280 l., voile/blocage/frames dockes), Chrome (475 l., titlebar/resize/placement). Signatures publiques inchangees (FloatingWindow.cs + ~15 appelants intacts), accolades equilibrees 5/5, batchmode Unity 6000.6.0f1 : 0 erreur, 4 .meta generes (format 2-lignes conforme projet), aucun artefact (ProjectSettings intact).",
+          "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-146",
+          "title": "Visualisateurs code : fleur/treemap/evolution regenerees 429 fichiers + liens GitHub hashes figes",
+          "epic": "Docs",
+          "status": "done",
+          "priority": "medium",
+          "order": 20,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "tactics_fleur_fichiers.html",
+          "details": "Collecteurs tools/collect_tactics_{evolution,files_history}.py (pipeline manquante). 77 commits evo, coupling149/heritage64/partials135/tests200. PIN ScenarioEditorDevWindow.Cards.* ignore (edition en cours)."
+        },
+        {
+          "id": "RD-148",
+          "title": "Fix fuite persistante DevUIPreferences hors play-mode (Leak Detected)",
+          "epic": "Outillage",
+          "status": "done",
+          "priority": "high",
+          "order": 21,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "UI/DevUIPreferences.cs",
+          "updated": "2026-10-13",
+          "details": "FAIT 2026-10-13 : EnsureSaver() retourne si !Application.isPlaying. Cause : MarkDirty (ex. setter CeilingHeight via TacticalHexGrid en test) + Bootstrap créaient le GO [Dev] DevUIPreferences (DontSave) même en EditMode, jamais détruit (teardown test) → 1 allocation persistante. Sans ExecuteAlways, Update ne flushait de toute façon jamais en EditMode : aucun comportement perdu. Play-mode inchangé ; Instance jamais lu hors classe (vérifié). Reste : run tests avec Leak Detection Enabled With Stack Trace pour confirmer disparition."
         }
       ]
     },
@@ -2314,6 +2411,37 @@
           "scale": null,
           "suggestedAsset": "ScenarioEditorDevWindow.*.cs",
           "details": "FAIT (2026-10-13, DevTools) : partial Panels.Media.cs (2258 l., 66 methodes, nom trompeur : 6 responsabilites) decoupe move-only en 7 partials meme namespace/classe/assembly : ItemPicker 308 (catalogue recompenses), ActorDropdown 194 (locuteurs), HoverTooltip 51, QuickCreate 280 (menu/draft/rect/dessin), QuickCreateFactory 439 (FindParent x6, MakeUnique x7, CreateQuickCreateCard), DragGuards 201 (anti-vol drag), Panels.Audio 902 (toolbar, banque, audit, monitor, cartes son/ambiance). Etat partage inchange dans la facade. git mv du rename (GUID .meta preserve), 6 .meta generes (GUID uniques). Verifie par scripts vs HEAD : 66/66 signatures + struct QuickCreateOption conserves, ordre ligne-a-ligne identique par fichier, 0 doublon (methodes et champs : declarations uniques en facade), accolades equilibrees, 14/14 methodes appelees depuis GraphCanvas/SceneTab presentes, 0 reference restante a Panels.Media. Test en jeu OK par l'utilisateur."
+        },
+        {
+          "id": "RD-145",
+          "title": "Découper Cards.Dialogue.cs (1663 l.) en 5 partials sans régression",
+          "epic": "Éditeur nodal",
+          "status": "done",
+          "priority": "medium",
+          "order": 12,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow.Cards.*.cs",
+          "details": "FAIT (2026-10-13, DevTools) : Cards.Dialogue.cs (1663 l.) decoupe move-only en 5 partials meme namespace/classe/assembly : Common 347 (SKey/SectionOpen/FoldoutButton + Measure/Draw Effects/Prereq/Ambience/Rewards/Auto/Challenge), Dialogue 607 (DrawDialogueCard seul), Event 227, Consequence 308, Trigger 246. Tous < 800 l. Dialogue.cs garde son .meta, 4 .meta generes (GUID uniques). Verifie par scripts vs HEAD : corps reassembles byte-identiques (92543 chars), 19/19 signatures identiques, 0 doublon, usings identiques, diff Dialogue.cs = 982 suppressions / 0 ajouts, accolades equilibrees 5/5, appelants GraphCanvas/Layout inchanges, ProjectSettings.asset inchange. Compile : batchmode impossible (editeur user ouvert, verrou projet) mais build player live post-split reussi (04:16, ProducePlayerScriptAssemblies + Build scripts DLLs OK), 0 error CS / 0 warning CS dans Editor.log (seul bruit pre-existant : warnings Cecil System.Numerics du package codecoverage). Test en jeu OK par l'utilisateur."
+        },
+        {
+          "id": "RD-147",
+          "title": "FireLinkedCinematics : mode silencieux pour tests (warning CinematicDirector)",
+          "epic": "Runtime scène",
+          "status": "done",
+          "priority": "medium",
+          "order": 13,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Story/JsonStorySceneController.CineAudio.cs",
+          "updated": "2026-10-13",
+          "details": "FAIT 2026-10-13 : FireLinkedCinematics(ids,chainVisited,logWarnings:true) — les 2 LogWarning (directeur introuvable, id introuvable) + log HUD 1x/session conditionnés. 9 appelants runtime inchangés (défaut true). SceneCinematicTests : logWarnings:false sur les 2 call sites (ExecuteCinematicChain_UnknownTargetIsTolerated, FireLinkedCinematics_EmptyListIsNoOp). Balance tokens OK. Reste : recompile + run SceneCinematicTests."
         }
       ]
     },

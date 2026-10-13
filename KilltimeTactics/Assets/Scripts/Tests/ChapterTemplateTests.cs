@@ -159,11 +159,11 @@ namespace Killtime.Tests
                 Assert.AreEqual(6, grid.GridRadius);
                 Assert.AreEqual(4.2f, grid.CeilingHeight, 0.001f);
 
-                Assert.IsFalse(ChapterTemplateLibrary.ApplyGridAndLighting(null, grid));
-                Assert.IsFalse(ChapterTemplateLibrary.ApplyGridAndLighting(config, null));
+                Assert.IsFalse(ChapterTemplateLibrary.ApplyGridAndLighting(null, grid, logWarnings: false));
+                Assert.IsFalse(ChapterTemplateLibrary.ApplyGridAndLighting(config, null, logWarnings: false));
                 var bad = ChapterTemplateLibrary.CreateDefault("bad test id with spaces");
                 bad.GridRadius = 4;
-                Assert.IsFalse(ChapterTemplateLibrary.ApplyGridAndLighting(bad, grid));
+                Assert.IsFalse(ChapterTemplateLibrary.ApplyGridAndLighting(bad, grid, logWarnings: false));
             }
             finally
             {

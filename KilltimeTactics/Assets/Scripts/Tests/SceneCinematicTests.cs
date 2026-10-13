@@ -264,7 +264,7 @@ namespace Killtime.Tests
                 data.Nodes.Add(new SceneNodeData { NodeId = "node_1" });
                 controller.SetSceneData(data);
                 // Pas de directeur actif : la chaîne ne doit rien faire mais ne pas lever.
-                Assert.DoesNotThrow(() => controller.FireLinkedCinematics(new List<string> { "cine_missing" }));
+                Assert.DoesNotThrow(() => controller.FireLinkedCinematics(new List<string> { "cine_missing" }, logWarnings: false));
             }
             finally
             {
@@ -447,7 +447,7 @@ namespace Killtime.Tests
                 Assert.DoesNotThrow(() => controller.FireLinkedCinematics(null));
                 Assert.DoesNotThrow(() => controller.FireLinkedCinematics(new List<string>()));
                 // Id inconnu : avertissement, pas d'exception (non-bloquant).
-                Assert.DoesNotThrow(() => controller.FireLinkedCinematics(new List<string> { "cine_missing" }));
+                Assert.DoesNotThrow(() => controller.FireLinkedCinematics(new List<string> { "cine_missing" }, logWarnings: false));
             }
             finally
             {

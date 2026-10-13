@@ -4,7 +4,13 @@
 // - CharacterProgressionManager.OrganicTicks.cs     : GrantXP, coches, RegisterChallengeTicks, TrainSkill(+Free)
 // - CharacterProgressionManager.AttributesSync.cs  : attributs, SynchronizeProgression, breakdown, ResetProgressionTree
 // - CharacterProgressionManager.HeroAccess.cs       : SpecializationDetail, _registry, acces Mina/Lucas/Thomas/John/Erika/Vance
-// - CharacterProgressionManager.Specializations.cs  : EnsureRegistryBuilt (table), requetes, UnlockSpecialization, LearnModularSpell
+// - CharacterProgressionManager.Specializations.cs  : orchestrateur EnsureRegistryBuilt (delegue aux 4 catalogues)
+// - CharacterProgressionManager.Specializations.CatalogMelee.cs    : catalogue melee (MainsNues, ManiementArmes, ArmesPercantes, Ballistique)
+// - CharacterProgressionManager.Specializations.CatalogMobility.cs : catalogue mobilite/survie (Pas Invisibles, Esquive, Athletisme, encaissement, immunite)
+// - CharacterProgressionManager.Specializations.CatalogSupport.cs  : catalogue soutien/social (medecine, arcanotech, tactique, communication, intuition, artisanat)
+// - CharacterProgressionManager.Specializations.CatalogMagic.cs    : catalogue magie (generique + Volume II) + delegation 6 fiches heroiques
+// - CharacterProgressionManager.Specializations.Queries.cs        : RegisterSpec, requetes (detail, listes, parents, Volume II, sources)
+// - CharacterProgressionManager.Specializations.Unlock.cs         : UnlockSpecialization, LearnModularSpell
 namespace Killtime.Core.Character
 {
     /// <summary>
