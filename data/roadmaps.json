@@ -2018,6 +2018,21 @@
           "scale": null,
           "suggestedAsset": "KilltimeAudioManager.*.cs",
           "details": "FAIT (2026-10-13) : KilltimeAudioManager.cs monolithe (1882 l., hub audio ~30 appelants) découpé move-only en 7 partials même namespace/classe/assembly : Core (245 l., singleton+champs+cycle de vie), Sfx (410 l., Play/grenades+pools), Music (403 l., PlayMusic/crossfades/stinger/battle), Generative (490 l., stems+overrides+variations), Ambience (142 l.), Mix (138 l., ciné/pause/volumes), Resolve (133 l., RMS/cache/cooldowns). Vérifié : 1358/1358 lignes de code préservées verbatim (seul le commentaire d'en-tête désaccentué), 60/60 membres présents, 0 définition en double, accolades équilibrées, [DisallowMultipleComponent] unique, #pragma CS0414 + #if UNITY_EDITOR intacts, .meta d'origine restauré (GUID scènes/prefabs), API publique inchangée. Testé en jeu OK."
+        },
+        {
+          "id": "RD-134",
+          "title": "Refactor ProceduralAudioFactory : 1 fichier 1827 l. → 6 partials",
+          "epic": "Audio",
+          "status": "done",
+          "priority": "medium",
+          "order": 14,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ProceduralAudioFactory.*.cs",
+          "details": "FAIT (2026-10-13) : ProceduralAudioFactory.cs monolithe (1827 l., usine synthèse 100% runtime déterministe 22050 Hz) découpé move-only en 6 partials même namespace/classe/assembly : Core (135 l., consts+caches+GetClip/GetBankClip+helpers partagés), Sfx (721 l., Generate+30 primitives), Music (296 l., GetMusicLoop x4+GenerateMusic+GetProgression), MusicLayers (558 l., 15x Add*+mastering), StingerAmbience (122 l.), Generative (47 l., LRU 3 entrées). Vérifié : 70/70 membres présents, 0 définition en double, 87/87 string literals + 1677/1677 numeric literals identiques (seeds/durées/déterminisme intacts), accents intacts, tous appels/champs résolus, accolades équilibrées, 5 .meta générés (GUID uniques), API publique inchangée, aucun appelant modifié. Testé en jeu OK."
         }
       ]
     },
@@ -2190,6 +2205,21 @@
           "scale": null,
           "suggestedAsset": "SceneCinematicTests + InteractableWindowTests",
           "details": "Exiger Unity : build, rejouer une scène complète (spawn, parler/retour, interactables, triggers proximité, dialogue/choix/skill-checks, events combat, ciné fin→, son début/fin, barre party, popups), NUnit vert (SceneCinematicTests, InteractableWindowTests, StorySceneChainingTests), puis commit du split RD-121. Bloque la clôture définitive de RD-121."
+        },
+        {
+          "id": "RD-135",
+          "title": "Découper Panels.Media.cs (2258 l.) en 7 partials sans régression",
+          "epic": "Éditeur nodal",
+          "status": "done",
+          "priority": "medium",
+          "order": 11,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "ScenarioEditorDevWindow.*.cs",
+          "details": "FAIT (2026-10-13, DevTools) : partial Panels.Media.cs (2258 l., 66 methodes, nom trompeur : 6 responsabilites) decoupe move-only en 7 partials meme namespace/classe/assembly : ItemPicker 308 (catalogue recompenses), ActorDropdown 194 (locuteurs), HoverTooltip 51, QuickCreate 280 (menu/draft/rect/dessin), QuickCreateFactory 439 (FindParent x6, MakeUnique x7, CreateQuickCreateCard), DragGuards 201 (anti-vol drag), Panels.Audio 902 (toolbar, banque, audit, monitor, cartes son/ambiance). Etat partage inchange dans la facade. git mv du rename (GUID .meta preserve), 6 .meta generes (GUID uniques). Verifie par scripts vs HEAD : 66/66 signatures + struct QuickCreateOption conserves, ordre ligne-a-ligne identique par fichier, 0 doublon (methodes et champs : declarations uniques en facade), accolades equilibrees, 14/14 methodes appelees depuis GraphCanvas/SceneTab presentes, 0 reference restante a Panels.Media. Test en jeu OK par l'utilisateur."
         }
       ]
     },
