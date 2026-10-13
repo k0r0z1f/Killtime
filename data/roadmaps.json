@@ -2003,6 +2003,21 @@
           "scale": null,
           "suggestedAsset": "ProceduralAudioFactory.PlanetSwell",
           "details": "FAIT : montée statique façon logo HBO, 100% procédurale (22050 Hz mono) — air/statique qui s ouvre + rumble 55→82 Hz + scintillement montant + bloom quinte/octave, crescendo vérifié (~19x). Cinematic_WarpSwell (365, 5s, 1er plan cine_11) + Cinematic_ApproachSwell (366, 10s, 1er plan cine_1) via SoundCueId (joués en PlayUI au début des plans). V2 sans redémarrage : warp SOUTIENT jusqu au bout (pas de relâche), approche démarre à chaud au même niveau (arche + relâche finale seulement) — continu jusqu à fin cine_1. V3 : UN seul clip de 15s (Cinematic_OpeningSwell, zéro jointure) + Shepard à octaves (montée perpétuelle) + cuivres (scies 8 harmoniques, brillance suit enveloppe, vibrato). Fix intrus : EnterCinematicMode ne rejoue plus le whoosh si déjà en ciné (duck>0.5) — la jointure chaînée reste pure swell. Test PlanetSwells_CrescendoAndResolve (crescendo + déterminisme + durées)."
+        },
+        {
+          "id": "RD-133",
+          "title": "Refactor KilltimeAudioManager : 1 fichier 1882 l. → 7 partials",
+          "epic": "Audio",
+          "status": "done",
+          "priority": "medium",
+          "order": 13,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "KilltimeAudioManager.*.cs",
+          "details": "FAIT (2026-10-13) : KilltimeAudioManager.cs monolithe (1882 l., hub audio ~30 appelants) découpé move-only en 7 partials même namespace/classe/assembly : Core (245 l., singleton+champs+cycle de vie), Sfx (410 l., Play/grenades+pools), Music (403 l., PlayMusic/crossfades/stinger/battle), Generative (490 l., stems+overrides+variations), Ambience (142 l.), Mix (138 l., ciné/pause/volumes), Resolve (133 l., RMS/cache/cooldowns). Vérifié : 1358/1358 lignes de code préservées verbatim (seul le commentaire d'en-tête désaccentué), 60/60 membres présents, 0 définition en double, accolades équilibrées, [DisallowMultipleComponent] unique, #pragma CS0414 + #if UNITY_EDITOR intacts, .meta d'origine restauré (GUID scènes/prefabs), API publique inchangée. Testé en jeu OK."
         }
       ]
     },

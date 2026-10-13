@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Killtime Tactics — L'Arbre Causal & Fleur Neuronale</title>
-    <meta name="description" content="Animation organique et réseau de neurones de l'évolution du jeu Killtime Tactics : 53 commits, branches florales, synapses causales et chronologie dynamique.">
+    <meta name="description" content="Animation organique et réseau de neurones de l'évolution du jeu Killtime Tactics : 69 commits, branches florales, synapses causales et chronologie dynamique.">
 
     <!-- Typographies Killtime -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -904,12 +904,12 @@
             <div class="metrics-hud">
                 <div class="metric-item">
                     <span>Commits:</span>
-                    <span class="metric-val" id="metric-commits">53</span>
+                    <span class="metric-val" id="metric-commits">69</span>
                 </div>
                 <span>•</span>
                 <div class="metric-item">
                     <span>Scripts C#:</span>
-                    <span class="metric-val" id="metric-scripts">215</span>
+                    <span class="metric-val" id="metric-scripts">336</span>
                 </div>
                 <span>•</span>
                 <div class="metric-item">
@@ -919,7 +919,7 @@
                 <span>•</span>
                 <div class="metric-item">
                     <span>Période:</span>
-                    <span class="metric-val" style="color:#fbbf24">8 Sep - 9 Oct 2026</span>
+                    <span class="metric-val" style="color:#fbbf24">8 Sep - 12 Oct 2026</span>
                 </div>
             </div>
         </div>
@@ -933,6 +933,14 @@
                 <span>ℹ️</span>
                 <span>Guide</span>
             </button>
+            <a href="tactics_fleur_fichiers.html" class="btn-ghost" title="Voir la fleur des fichiers avec historique complet">
+                <span>🌸</span>
+                <span>Fleur Fichiers</span>
+            </a>
+            <a href="tactics_files.html" class="btn-ghost" title="Explorer la cartographie des fichiers">
+                <span>🗂️</span>
+                <span>Fichiers</span>
+            </a>
             <a href="atlas_3d.html" class="btn-ghost" title="Explorer l'Atlas 3D">
                 <span>🌐</span>
                 <span>Atlas 3D</span>
@@ -1081,7 +1089,7 @@
                         <span>Époque I : Fondation & Arène</span>
                     </div>
                     <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
-                        <span id="hudActiveCommitIndex" style="color:#fff; font-weight:700;">1</span> / 53 commits
+                        <span id="hudActiveCommitIndex" style="color:#fff; font-weight:700;">1</span> / 69 commits
                     </div>
                 </div>
 
@@ -1093,7 +1101,7 @@
 
             <!-- Scrubber Track -->
             <div class="slider-wrapper">
-                <input type="range" class="chrono-slider" id="timelineSlider" min="1" max="53" value="1" step="1">
+                <input type="range" class="chrono-slider" id="timelineSlider" min="1" max="69" value="1" step="1">
             </div>
 
             <div class="epoch-markers-bar" id="epochMarkersBar">
@@ -1111,7 +1119,7 @@
             <span>La Fleur Neuronale de Killtime Tactics</span>
         </h2>
         <p style="font-size: 13px; line-height: 1.6; color: #cbd5e1;">
-            Cette visualisation organique modélise la genèse et la floraison technologique du jeu <strong>Killtime Tactics</strong> dans Unity du <strong>8 Septembre 2026</strong> au <strong>9 Octobre 2026</strong> (53 commits).
+            Cette visualisation organique modélise la genèse et la floraison technologique du jeu <strong>Killtime Tactics</strong> dans Unity du <strong>8 Septembre 2026 au 12 Octobre 2026</strong> (69 commits).
         </p>
         <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px; border: 1px solid var(--border-subtle); font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
             <div>🌸 <strong>Branches & Pétales :</strong> 7 domaines spécialisés (Story, Combat, Héros, Shaders, Multijoueur, Audio, Outils).</div>
@@ -1132,10 +1140,10 @@
   "project": "Killtime Tactics",
   "repository": "https://github.com/k0r0z1f/Killtime",
   "path": "KilltimeTactics",
-  "total_commits": 53,
+  "total_commits": 69,
   "date_range": {
     "start": "2026-09-08",
-    "end": "2026-10-09"
+    "end": "2026-10-12"
   },
   "branches": {
     "story": {
@@ -1223,6 +1231,13 @@
       "start": "2026-09-30",
       "end": "2026-10-09",
       "desc": "Moteur audio génératif, calculateur de dégâts et statuts, Erika, cinématiques et JsonStorySceneController."
+    },
+    {
+      "id": "ep6",
+      "title": "Époque VI : Refactor des Monolithes & Stabilisation",
+      "start": "2026-10-10",
+      "end": "2026-10-12",
+      "desc": "Découpage des monolithes en services (IA, Arena, Story, CombatCalculator RD-123, Character, MapEditor, TurnManager), correctifs P0/P1/P2 et kanban RD-123/RD-124."
     }
   ],
   "nodes": [
@@ -7421,6 +7436,1906 @@
           "type": "shader"
         }
       ]
+    },
+    {
+      "id": 54,
+      "hash": "d60e8fb6827308307d2e56a422392914678b8287",
+      "short": "d60e8fb",
+      "date": "2026-10-10 05:14:40 -0400",
+      "date_display": "2026-10-10",
+      "author": "Alexis Lacasse",
+      "raw_msg": "update",
+      "title": "Registre d'Unités Tactiques & Fenêtre d'Interaction",
+      "summary": "Création de TacticalUnitRegistry (+tests dédiés) et d'InteractableWindow (226 lignes), refonte de JsonStorySceneController et ScenarioEditor, ajustements du brouillard de guerre.",
+      "branch": "story",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 1186,
+      "deletions": 173,
+      "files_count": 37,
+      "files": [
+        {
+          "status": "M",
+          "name": "CinematicDirector.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "TacticalCameraController.cs",
+          "path": "Assets/Scripts/Camera/TacticalCameraController.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CharacterDevWindow.cs",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CombatActionRegistry.cs",
+          "path": "Assets/Scripts/Core/Combat/CombatActionRegistry.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CombatTechniqueRegistry.cs",
+          "path": "Assets/Scripts/Core/Combat/CombatTechniqueRegistry.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "DuoTechRegistry.cs",
+          "path": "Assets/Scripts/Core/Combat/DuoTechRegistry.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "TacticalSelectionManager.cs",
+          "path": "Assets/Scripts/Core/Combat/TacticalSelectionManager.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CoreRulesConfig.cs",
+          "path": "Assets/Scripts/Core/CoreRulesConfig.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "InventoryDevWindow.cs",
+          "path": "Assets/Scripts/Core/Inventory/InventoryDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "MapEditorDevWindow.cs",
+          "path": "Assets/Scripts/Core/MapEditor/MapEditorDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "VTTTableSync.cs",
+          "path": "Assets/Scripts/Multi/VTTTableSync.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "ChapterTemplate.cs",
+          "path": "Assets/Scripts/Story/ChapterTemplate.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CinematicEditorDevWindow.cs",
+          "path": "Assets/Scripts/Story/CinematicEditorDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "JsonStorySceneController.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "ScenarioEditorDevWindow.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "StorySceneData.cs",
+          "path": "Assets/Scripts/Story/StorySceneData.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "TacticalAIController.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CombatDevArena.cs",
+          "path": "Assets/Scripts/Tactics/CombatDevArena.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "DuoTechWeaveController.cs",
+          "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "HexPathfinder.cs",
+          "path": "Assets/Scripts/Tactics/Grid/HexPathfinder.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "TacticalHexGrid.cs",
+          "path": "Assets/Scripts/Tactics/Grid/TacticalHexGrid.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "TacticalInteractable.cs",
+          "path": "Assets/Scripts/Tactics/TacticalInteractable.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "TacticalUnit.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnit.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitRegistry.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitRegistry.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitRegistry.cs.meta",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitRegistry.cs.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 55,
+      "hash": "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871",
+      "short": "0b87c3e",
+      "date": "2026-10-11 03:39:29 -0400",
+      "date_display": "2026-10-11",
+      "author": "Alexis Lacasse",
+      "raw_msg": "update",
+      "title": "IA Tactique Découpée en Services Spécialisés",
+      "summary": "Éclatement du monolithe TacticalAIController (2709 lignes) en partiels ciblés : mouvement, attaque, manœuvres, soutien, ciblage et scoring, avec tests de décision.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 3534,
+      "deletions": 2695,
+      "files_count": 23,
+      "files": [
+        {
+          "status": "A",
+          "name": "AIMovementSolver.cs",
+          "path": "Assets/Scripts/Tactics/AI/AIMovementSolver.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "AIMovementSolver.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/AIMovementSolver.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "AIPersonalityProfile.cs",
+          "path": "Assets/Scripts/Tactics/AI/AIPersonalityProfile.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "AIPersonalityProfile.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/AIPersonalityProfile.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "AttackPlanEvaluator.cs",
+          "path": "Assets/Scripts/Tactics/AI/AttackPlanEvaluator.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "AttackPlanEvaluator.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/AttackPlanEvaluator.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Attack.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Attack.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Attack.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Attack.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Maneuvers.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Maneuvers.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Maneuvers.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Maneuvers.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Movement.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Movement.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Movement.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Movement.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Support.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Support.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Support.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Support.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Targeting.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Targeting.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIController.Targeting.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Targeting.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "M",
+          "name": "TacticalAIController.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIController.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIDecisionTests.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIDecisionTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalAIDecisionTests.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TacticalAIDecisionTests.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalPostureEvaluator.cs",
+          "path": "Assets/Scripts/Tactics/AI/TacticalPostureEvaluator.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalPostureEvaluator.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TacticalPostureEvaluator.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TargetScorer.cs",
+          "path": "Assets/Scripts/Tactics/AI/TargetScorer.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TargetScorer.cs.meta",
+          "path": "Assets/Scripts/Tactics/AI/TargetScorer.cs.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 56,
+      "hash": "61883e0ec56eb9bf5819e02de0120b064e40d172",
+      "short": "61883e0",
+      "date": "2026-10-11 06:12:40 -0400",
+      "date_display": "2026-10-11",
+      "author": "Alexis Lacasse",
+      "raw_msg": "update",
+      "title": "Éditeur de Scénario en 8 Modules & Audio de Scène",
+      "summary": "Découpage de ScenarioEditorDevWindow (9799 lignes) en 8 partiels (cartes, graphe, layout, médias, persistance), KilltimeAudioManager et tests de contrôle sonore.",
+      "branch": "story",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 10974,
+      "deletions": 9598,
+      "files_count": 22,
+      "files": [
+        {
+          "status": "M",
+          "name": "KilltimeAudioManager.cs",
+          "path": "Assets/Scripts/Audio/KilltimeAudioManager.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "JsonStorySceneController.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Cards.Dialogue.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Cards.Dialogue.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Cards.World.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.World.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Cards.World.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.World.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.GraphCanvas.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.GraphCanvas.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.GraphCanvas.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.GraphCanvas.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Layout.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Layout.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Layout.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Layout.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Panels.Media.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Panels.Media.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Panels.Media.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Panels.Media.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Persistence.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Persistence.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Persistence.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Persistence.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.SceneTab.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.SceneTab.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.SceneTab.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.SceneTab.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Wires.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Wires.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ScenarioEditorDevWindow.Wires.cs.meta",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Wires.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "M",
+          "name": "ScenarioEditorDevWindow.cs",
+          "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "StorySceneData.cs",
+          "path": "Assets/Scripts/Story/StorySceneData.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "SceneSoundControlTests.cs",
+          "path": "Assets/Scripts/Tests/SceneSoundControlTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "SceneSoundControlTests.cs.meta",
+          "path": "Assets/Scripts/Tests/SceneSoundControlTests.cs.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 57,
+      "hash": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
+      "short": "10cad6e",
+      "date": "2026-10-11 06:25:51 -0400",
+      "date_display": "2026-10-11",
+      "author": "Alexis Lacasse",
+      "raw_msg": "assets/scripts reorganized",
+      "title": "Réorganisation des Scripts : Pôle DevTools",
+      "summary": "Déplacement des fenêtres d'édition (armurerie, bestiaire, personnage, arène, règles, inventaire, carte) vers Scripts/DevTools, sans changement fonctionnel.",
+      "branch": "tools",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 48,
+      "deletions": 0,
+      "files_count": 96,
+      "files": [
+        {
+          "status": "A",
+          "name": "DevTools.meta",
+          "path": "Assets/Scripts/DevTools.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "ArmoryDevWindow.cs",
+          "path": "Assets/Scripts/DevTools/ArmoryDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "ArmoryDevWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/ArmoryDevWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "BestiaryDevWindow.cs",
+          "path": "Assets/Scripts/DevTools/BestiaryDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "BestiaryDevWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/BestiaryDevWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "CharacterDevWindow.cs",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "CharacterDevWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "CombatDevArena.cs",
+          "path": "Assets/Scripts/DevTools/CombatDevArena.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "CombatDevArena.cs.meta",
+          "path": "Assets/Scripts/DevTools/CombatDevArena.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "CombatDevToolbar.cs",
+          "path": "Assets/Scripts/DevTools/CombatDevToolbar.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "CombatDevToolbar.cs.meta",
+          "path": "Assets/Scripts/DevTools/CombatDevToolbar.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "CoreRulesDevTableWindow.cs",
+          "path": "Assets/Scripts/DevTools/CoreRulesDevTableWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "CoreRulesDevTableWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/CoreRulesDevTableWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "InventoryDevWindow.cs",
+          "path": "Assets/Scripts/DevTools/InventoryDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "InventoryDevWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/InventoryDevWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "MapEditorDevWindow.cs",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "MapEditorDevWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "PlayerAnimatorLinker.cs",
+          "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "PlayerAnimatorLinker.cs.meta",
+          "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "RiverOfTimeDevWindow.cs",
+          "path": "Assets/Scripts/DevTools/RiverOfTimeDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "RiverOfTimeDevWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/RiverOfTimeDevWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "SceneEnvironmentDevWindow.cs",
+          "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "SceneEnvironmentDevWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "R",
+          "name": "SkillTreeCosmosWindow.cs",
+          "path": "Assets/Scripts/DevTools/SkillTreeCosmosWindow.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "R",
+          "name": "SkillTreeCosmosWindow.cs.meta",
+          "path": "Assets/Scripts/DevTools/SkillTreeCosmosWindow.cs.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 58,
+      "hash": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
+      "short": "e11e7af",
+      "date": "2026-10-12 04:34:05 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "update",
+      "title": "Arène de Dev en 13 Services d'Armes & Résolution",
+      "summary": "Découpage de CombatDevArena (4863 lignes) en services Arena : attaques, mêlée, grenades, overwatch, fumée, ciblage, tours, contexte et garde de résolution.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 5892,
+      "deletions": 4546,
+      "files_count": 30,
+      "files": [
+        {
+          "status": "A",
+          "name": "Arena.meta",
+          "path": "Assets/Scripts/DevTools/Arena.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaAttackService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaAttackService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaChronoDebugService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaChronoDebugService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaChronoDebugService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaChronoDebugService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaContext.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaContext.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaContext.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaContext.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaGrenadeService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaGrenadeService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaMapStore.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaMapStore.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaMapStore.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaMapStore.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaMeleeService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaMeleeService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaOverwatchService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaOverwatchService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaOverwatchService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaOverwatchService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaResolutionGuard.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaResolutionGuard.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaResolutionGuard.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaResolutionGuard.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaSmokeService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaSmokeService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaSmokeService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaSmokeService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaState.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaState.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaState.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaState.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaTargetingService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaTargetingService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaTargetingService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaTargetingService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "ArenaTurnEventsService.cs",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaTurnEventsService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "ArenaTurnEventsService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Arena/ArenaTurnEventsService.cs.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 59,
+      "hash": "2e0be4d3fe3d7336799933937c2f84522d443c43",
+      "short": "2e0be4d",
+      "date": "2026-10-12 05:27:11 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "update",
+      "title": "Contrôleur Narratif en 12 Partiels & Services de Scène",
+      "summary": "Découpage de JsonStorySceneController (3401 lignes) en 12 partiels (dialogues, cinématiques audio, interactables, spawn) plus SceneActor/Dialogue/Talk/State.",
+      "branch": "story",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 3751,
+      "deletions": 3287,
+      "files_count": 33,
+      "files": [
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.CineAudio.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.CineAudio.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.CineAudio.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.CineAudio.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueChoice.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueChoice.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueChoice.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueChoice.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueConsequence.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueConsequence.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueConsequence.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueConsequence.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueCore.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueCore.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueCore.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueCore.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueEvents.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueEvents.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.DialogueEvents.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueEvents.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.GuiDialogue.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDialogue.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.GuiDialogue.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDialogue.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.GuiDraw.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDraw.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.GuiDraw.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDraw.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.GuiInput.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.GuiInput.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.GuiInput.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.GuiInput.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.InteractablesActions.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesActions.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.InteractablesActions.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesActions.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.InteractablesPopups.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesPopups.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.InteractablesPopups.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesPopups.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.Spawn.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.Spawn.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.Spawn.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.Spawn.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.Talk.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.Talk.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "JsonStorySceneController.Talk.cs.meta",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.Talk.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "M",
+          "name": "JsonStorySceneController.cs",
+          "path": "Assets/Scripts/Story/JsonStorySceneController.cs",
+          "type": "csharp"
+        }
+      ]
+    },
+    {
+      "id": 60,
+      "hash": "f61456a53acb426cca3dd749803ce14fa53dba06",
+      "short": "f61456a",
+      "date": "2026-10-12 16:58:42 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "refactor(unity): CombatCalculator monolithe (2892l) en 7 services composes + asmdefs",
+      "title": "CombatCalculator en 7 Services Composés + Asmdefs",
+      "summary": "Refactor RD-123 : le monolithe de 2892 lignes devient DuelSetup, DamageEngine, DuelResolution, SpecialManeuver, Progression, contextes et modèles, avec asmdefs jeu/tests.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": "🛠️ RD-123 : CombatCalculator en services (done)",
+      "insertions": 3226,
+      "deletions": 2462,
+      "files_count": 19,
+      "files": [
+        {
+          "status": "M",
+          "name": "CombatCalculator.cs",
+          "path": "Assets/Scripts/Core/Combat/CombatCalculator.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CombatDuelContext.cs",
+          "path": "Assets/Scripts/Core/Combat/CombatDuelContext.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CombatDuelContext.cs.meta",
+          "path": "Assets/Scripts/Core/Combat/CombatDuelContext.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CombatDuelModels.cs",
+          "path": "Assets/Scripts/Core/Combat/CombatDuelModels.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CombatDuelModels.cs.meta",
+          "path": "Assets/Scripts/Core/Combat/CombatDuelModels.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CombatProgressionService.cs",
+          "path": "Assets/Scripts/Core/Combat/CombatProgressionService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CombatProgressionService.cs.meta",
+          "path": "Assets/Scripts/Core/Combat/CombatProgressionService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "DamageEngineService.cs",
+          "path": "Assets/Scripts/Core/Combat/DamageEngineService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "DamageEngineService.cs.meta",
+          "path": "Assets/Scripts/Core/Combat/DamageEngineService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "DuelResolutionService.cs",
+          "path": "Assets/Scripts/Core/Combat/DuelResolutionService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "DuelResolutionService.cs.meta",
+          "path": "Assets/Scripts/Core/Combat/DuelResolutionService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "DuelSetupService.cs",
+          "path": "Assets/Scripts/Core/Combat/DuelSetupService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "DuelSetupService.cs.meta",
+          "path": "Assets/Scripts/Core/Combat/DuelSetupService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "SpecialManeuverService.cs",
+          "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "SpecialManeuverService.cs.meta",
+          "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "Killtime.Game.asmdef",
+          "path": "Assets/Scripts/Killtime.Game.asmdef",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "Killtime.Game.asmdef.meta",
+          "path": "Assets/Scripts/Killtime.Game.asmdef.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "Killtime.Game.Tests.asmdef",
+          "path": "Assets/Scripts/Tests/Killtime.Game.Tests.asmdef",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "Killtime.Game.Tests.asmdef.meta",
+          "path": "Assets/Scripts/Tests/Killtime.Game.Tests.asmdef.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 61,
+      "hash": "fa15c1f98f28669e4e76adf16e8a748e0afe227a",
+      "short": "fa15c1f",
+      "date": "2026-10-12 17:33:19 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "fix(unity): TurnManager garde liste vide, stop recursion infinie StartNewRound (P0, 12 tests)",
+      "title": "TurnManager : Garde Anti-Récursion Infinie (P0)",
+      "summary": "Correctif P0 avec 12 tests : garde sur liste vide et arrêt de la récursion infinie de StartNewRound.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 6,
+      "deletions": 0,
+      "files_count": 1,
+      "files": [
+        {
+          "status": "M",
+          "name": "TurnManager.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.cs",
+          "type": "csharp"
+        }
+      ]
+    },
+    {
+      "id": 62,
+      "hash": "e35b35b9e687c92f1a350abeb6fe34843f620f0a",
+      "short": "e35b35b",
+      "date": "2026-10-12 17:33:19 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "fix(unity): CoverSystem coquille Y/Z prisme + ignore impacts t≈0, 3 scenarios tests geometriquement sains (P2, 6 tests)",
+      "title": "CoverSystem : Coquille Y/Z & Impacts à t≈0 (P2)",
+      "summary": "Correctif P2 avec 6 tests et 3 scénarios géométriquement sains : prisme Y/Z et ignorance des impacts à t≈0.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 26,
+      "deletions": 11,
+      "files_count": 2,
+      "files": [
+        {
+          "status": "M",
+          "name": "CoverSystem.cs",
+          "path": "Assets/Scripts/Tactics/Grid/CoverSystem.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CoverSystemTests.cs",
+          "path": "Assets/Scripts/Tests/CoverSystemTests.cs",
+          "type": "csharp"
+        }
+      ]
+    },
+    {
+      "id": 63,
+      "hash": "f58352c201736fcf23404b82d8a772272c10eaa4",
+      "short": "f58352c",
+      "date": "2026-10-12 17:33:24 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "fix(unity): P1 combat — Trip deterministe, armure test 21, revive grapple, DoT aggravation doublee (4 tests)",
+      "title": "Combat P1 : Trip, Armure, Revive & DoT (4 tests)",
+      "summary": "Correctif P1 : Trip déterministe, test d'armure 21, revive par grapple et doublement de l'aggravation des dégâts sur la durée.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 78,
+      "deletions": 23,
+      "files_count": 4,
+      "files": [
+        {
+          "status": "M",
+          "name": "CharacterStats.cs",
+          "path": "Assets/Scripts/Core/Character/CharacterStats.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "GrappleTests.cs",
+          "path": "Assets/Scripts/Tests/GrappleTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "GroupAssaultPursuitTests.cs",
+          "path": "Assets/Scripts/Tests/GroupAssaultPursuitTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "OpportunityTests.cs",
+          "path": "Assets/Scripts/Tests/OpportunityTests.cs",
+          "type": "csharp"
+        }
+      ]
+    },
+    {
+      "id": 64,
+      "hash": "50e243d0cffd475560d03c83abd4c2d19ec0b169",
+      "short": "50e243d",
+      "date": "2026-10-12 17:33:24 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "fix(unity): registre backstop ConfigureStats + prune husks, OnEnable inactif hors Play (P2, 8 tests)",
+      "title": "Registre Backstop & Hygiène des Unités (P2, 8 tests)",
+      "summary": "Correctif P2 : backstop ConfigureStats dans le registre, élagage des husks et OnEnable inactif hors Play.",
+      "branch": "core",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 10,
+      "deletions": 0,
+      "files_count": 2,
+      "files": [
+        {
+          "status": "M",
+          "name": "TacticalUnit.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnit.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "TacticalUnitRegistry.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitRegistry.cs",
+          "type": "csharp"
+        }
+      ]
+    },
+    {
+      "id": 65,
+      "hash": "00db4a6687b8967c1bf308a01647ad2322ce1819",
+      "short": "00db4a6",
+      "date": "2026-10-12 17:33:29 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "fix(unity): hack titre defaut nom terminal + P3 (Arcanotech focus/PA, Voice release, Interactable SceneState, Cinematic defaut, StoryScene explicite, WorldMap 14/kingston)",
+      "title": "Stabilisation P3 : Arcanotech, Voix, Cinématiques",
+      "summary": "Correctif P3 : focus/PA Arcanotech, release voix, SceneState des interactables, défauts cinématiques, StoryScene explicite, WorldMap 14/kingston et titre de terminal.",
+      "branch": "core",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 89,
+      "deletions": 18,
+      "files_count": 8,
+      "files": [
+        {
+          "status": "M",
+          "name": "CombatObjective.cs",
+          "path": "Assets/Scripts/Tactics/Objectives/CombatObjective.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "CombatObjectiveTests.cs",
+          "path": "Assets/Scripts/Tests/CombatObjectiveTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "ArcanotechWorkshopTests.cs",
+          "path": "Assets/Scripts/Tests/Core/ArcanotechWorkshopTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "InteractableWindowTests.cs",
+          "path": "Assets/Scripts/Tests/InteractableWindowTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "VTTVoiceTests.cs",
+          "path": "Assets/Scripts/Tests/Multi/VTTVoiceTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "SceneCinematicTests.cs",
+          "path": "Assets/Scripts/Tests/SceneCinematicTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "StorySceneChainingTests.cs",
+          "path": "Assets/Scripts/Tests/StorySceneChainingTests.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "M",
+          "name": "WorldMapTests.cs",
+          "path": "Assets/Scripts/Tests/WorldMapTests.cs",
+          "type": "csharp"
+        }
+      ]
+    },
+    {
+      "id": 66,
+      "hash": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
+      "short": "57b3d32",
+      "date": "2026-10-12 18:14:16 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "refactor",
+      "title": "CharacterDevWindow & CombatHUD en Modules",
+      "summary": "Découpage des monolithes d'édition de personnage (2652 lignes) et du HUD de combat (2077 lignes) en partiels : création, inventaire, progression, logs, overlays, ciblage.",
+      "branch": "core",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 5687,
+      "deletions": 4582,
+      "files_count": 55,
+      "files": [
+        {
+          "status": "A",
+          "name": "Character.meta",
+          "path": "Assets/Scripts/DevTools/Character.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "AnimationClipResolver.cs",
+          "path": "Assets/Scripts/DevTools/Character/AnimationClipResolver.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "AnimationClipResolver.cs.meta",
+          "path": "Assets/Scripts/DevTools/Character/AnimationClipResolver.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "AttributeRulesService.cs",
+          "path": "Assets/Scripts/DevTools/Character/AttributeRulesService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "AttributeRulesService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Character/AttributeRulesService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "PreviewStudioService.cs",
+          "path": "Assets/Scripts/DevTools/Character/PreviewStudioService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "PreviewStudioService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Character/PreviewStudioService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "SheetSessionService.cs",
+          "path": "Assets/Scripts/DevTools/Character/SheetSessionService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "SheetSessionService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Character/SheetSessionService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "SocialGraphSession.cs",
+          "path": "Assets/Scripts/DevTools/Character/SocialGraphSession.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "SocialGraphSession.cs.meta",
+          "path": "Assets/Scripts/DevTools/Character/SocialGraphSession.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "SpawnService.cs",
+          "path": "Assets/Scripts/DevTools/Character/SpawnService.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "SpawnService.cs.meta",
+          "path": "Assets/Scripts/DevTools/Character/SpawnService.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "SpellForgeSession.cs",
+          "path": "Assets/Scripts/DevTools/Character/SpellForgeSession.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "SpellForgeSession.cs.meta",
+          "path": "Assets/Scripts/DevTools/Character/SpellForgeSession.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Creation.Sections.cs",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.Sections.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Creation.Sections.cs.meta",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.Sections.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Creation.cs",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Creation.cs.meta",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Inventory.Sections.cs",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.Sections.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Inventory.Sections.cs.meta",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.Sections.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Inventory.cs",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Inventory.cs.meta",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Progression.Header.cs",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Header.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterDevWindow.Progression.Header.cs.meta",
+          "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Header.cs.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 67,
+      "hash": "0184ad2bcf94079a8e95d967aa7d86b134f0a144",
+      "short": "0184ad2",
+      "date": "2026-10-12 20:31:40 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "updates",
+      "title": "Progression Héros & Visuels d'Unités en Partiels",
+      "summary": "Découpage de CharacterProgressionManager (2311 lignes : attributs, financement, héros, ticks, spécialisations) et TacticalUnitVisual (2494 lignes : animator, avatar, HUD, armes).",
+      "branch": "core",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 4922,
+      "deletions": 4760,
+      "files_count": 20,
+      "files": [
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.AttributesSync.cs",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.AttributesSync.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.AttributesSync.cs.meta",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.AttributesSync.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.Funding.cs",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Funding.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.Funding.cs.meta",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Funding.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.HeroAccess.cs",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.HeroAccess.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.HeroAccess.cs.meta",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.HeroAccess.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.OrganicTicks.cs",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.OrganicTicks.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.OrganicTicks.cs.meta",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.OrganicTicks.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.Specializations.cs",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CharacterProgressionManager.Specializations.cs.meta",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "M",
+          "name": "CharacterProgressionManager.cs",
+          "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Animator.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Animator.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Animator.cs.meta",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Animator.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Avatar.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Avatar.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Avatar.cs.meta",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Avatar.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Hud.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Hud.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Hud.cs.meta",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Hud.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Weapon.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Weapon.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TacticalUnitVisual.Weapon.cs.meta",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Weapon.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "M",
+          "name": "TacticalUnitVisual.cs",
+          "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.cs",
+          "type": "csharp"
+        }
+      ]
+    },
+    {
+      "id": 68,
+      "hash": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
+      "short": "ef6162e",
+      "date": "2026-10-12 21:05:50 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "refactor",
+      "title": "Registres d'Actions & Menus Contextuels en Partiels",
+      "summary": "Découpage de CombatActionRegistry (1878 lignes), CombatContextMenuUI (1448 lignes), CinematicDirector et MapEditor en partiels, avec suivi kanban.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": null,
+      "insertions": 7287,
+      "deletions": 6796,
+      "files_count": 52,
+      "files": [
+        {
+          "status": "A",
+          "name": "CinematicDirector.Effects.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.Effects.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.Effects.cs.meta",
+          "path": "Assets/Scripts/Camera/CinematicDirector.Effects.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.KillshotFreeLook.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.KillshotFreeLook.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.KillshotFreeLook.cs.meta",
+          "path": "Assets/Scripts/Camera/CinematicDirector.KillshotFreeLook.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.SceneLookup.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.SceneLookup.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.SceneLookup.cs.meta",
+          "path": "Assets/Scripts/Camera/CinematicDirector.SceneLookup.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.ScenePlayback.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.ScenePlayback.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.ScenePlayback.cs.meta",
+          "path": "Assets/Scripts/Camera/CinematicDirector.ScenePlayback.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.SceneRoutine.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.SceneRoutine.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.SceneRoutine.cs.meta",
+          "path": "Assets/Scripts/Camera/CinematicDirector.SceneRoutine.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.ShotAudio.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.ShotAudio.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "CinematicDirector.ShotAudio.cs.meta",
+          "path": "Assets/Scripts/Camera/CinematicDirector.ShotAudio.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "M",
+          "name": "CinematicDirector.cs",
+          "path": "Assets/Scripts/Camera/CinematicDirector.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Brushes.cs",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Brushes.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Brushes.cs.meta",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Brushes.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Grounds.cs",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Grounds.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Grounds.cs.meta",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Grounds.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Props.cs",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Props.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Props.cs.meta",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Props.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Storage.cs",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Storage.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Storage.cs.meta",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Storage.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Types.cs",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Types.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.Types.cs.meta",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Types.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.UI.cs",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.UI.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "MapEditorDevWindow.UI.cs.meta",
+          "path": "Assets/Scripts/DevTools/MapEditorDevWindow.UI.cs.meta",
+          "type": "other"
+        }
+      ]
+    },
+    {
+      "id": 69,
+      "hash": "201f1418176d694c3c19b386c331c2649011cab0",
+      "short": "201f141",
+      "date": "2026-10-12 21:13:26 -0400",
+      "date_display": "2026-10-12",
+      "author": "Alexis Lacasse",
+      "raw_msg": "refactor",
+      "title": "TurnManager en 7 Partiels : Rounds & Objectifs",
+      "summary": "Dernier monolithe découpé (1437 lignes) : cœur, initiative, rounds, délais, multi, objectifs et types du gestionnaire de tours.",
+      "branch": "tactics",
+      "epoch": "ep6",
+      "milestone": "🌸 Floraison complète : 69 commits",
+      "insertions": 1559,
+      "deletions": 1430,
+      "files_count": 15,
+      "files": [
+        {
+          "status": "A",
+          "name": "TurnManager.Core.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Core.cs.meta",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Delayed.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Delayed.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Delayed.cs.meta",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Delayed.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Initiative.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Initiative.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Initiative.cs.meta",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Initiative.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Multi.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Multi.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Multi.cs.meta",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Multi.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Objectives.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Objectives.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Objectives.cs.meta",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Objectives.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Rounds.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Rounds.cs.meta",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Types.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Types.cs",
+          "type": "csharp"
+        },
+        {
+          "status": "A",
+          "name": "TurnManager.Types.cs.meta",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Types.cs.meta",
+          "type": "other"
+        },
+        {
+          "status": "M",
+          "name": "TurnManager.cs",
+          "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.cs",
+          "type": "csharp"
+        }
+      ]
     }
   ],
   "links": [
@@ -7735,6 +9650,102 @@
       "target": 53,
       "type": "chronological",
       "label": "Chronologie Git"
+    },
+    {
+      "source": 53,
+      "target": 54,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 54,
+      "target": 55,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 55,
+      "target": 56,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 56,
+      "target": 57,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 57,
+      "target": 58,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 58,
+      "target": 59,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 59,
+      "target": 60,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 60,
+      "target": 61,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 61,
+      "target": 62,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 62,
+      "target": 63,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 63,
+      "target": 64,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 64,
+      "target": 65,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 65,
+      "target": 66,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 66,
+      "target": 67,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 67,
+      "target": 68,
+      "type": "chronological",
+      "label": "Chronologie Git"
+    },
+    {
+      "source": 68,
+      "target": 69,
+      "type": "chronological",
+      "label": "Chronologie Git"
     }
   ],
   "cross_links": [
@@ -7923,6 +9934,66 @@
       "target": 31,
       "type": "causal",
       "reason": "Scène Principale vers Éditeur de Carte d'Hybris"
+    },
+    {
+      "source": 53,
+      "target": 54,
+      "type": "causal",
+      "reason": "Scènes JSON vers Registre d'Unités"
+    },
+    {
+      "source": 54,
+      "target": 64,
+      "type": "causal",
+      "reason": "Registre d'Unités vers Backstop ConfigureStats"
+    },
+    {
+      "source": 2,
+      "target": 58,
+      "type": "causal",
+      "reason": "Arène de test vers Services Arena"
+    },
+    {
+      "source": 19,
+      "target": 59,
+      "type": "causal",
+      "reason": "Moteur Narratif vers 12 Partiels"
+    },
+    {
+      "source": 46,
+      "target": 60,
+      "type": "causal",
+      "reason": "Calculateur de Combat vers 7 Services (RD-123)"
+    },
+    {
+      "source": 60,
+      "target": 63,
+      "type": "causal",
+      "reason": "Services de Combat vers Correctifs P1"
+    },
+    {
+      "source": 61,
+      "target": 69,
+      "type": "causal",
+      "reason": "Fix Anti-Récursion vers TurnManager en 7 Partiels"
+    },
+    {
+      "source": 4,
+      "target": 68,
+      "type": "causal",
+      "reason": "Registre d'Actions vers Menus Contextuels"
+    },
+    {
+      "source": 55,
+      "target": 58,
+      "type": "causal",
+      "reason": "IA Tactique vers Arène de Résolution"
+    },
+    {
+      "source": 7,
+      "target": 67,
+      "type": "causal",
+      "reason": "Progression vers Manager en 5 Partiels"
     }
   ]
 }
@@ -7946,10 +10017,11 @@
     }
 
     const { nodes, links, cross_links, branches, epochs } = rawData;
+    const TOTAL_COMMITS = 69;
 
     // 2. ÉTAT GLOBAL DE L'APPLICATION
     const state = {
-        currentCommitIndex: 1, // 1 à 53
+        currentCommitIndex: 1, // 1 à 69
         targetCommitIndex: 1,
         progressFloat: 1.0,    // Interpolation fluide
         isPlaying: false,
@@ -8211,7 +10283,7 @@
 
             const jitterX = Math.sin(node.id * 1.7) * 80;
             const jitterY = Math.cos(node.id * 2.3) * 80;
-            const progressionRatio = node.id / 53;
+            const progressionRatio = node.id / TOTAL_COMMITS;
 
             layoutCoords.neural[node.id] = {
                 x: branchOffset.x + jitterX + (hemisphere * progressionRatio * 160),
@@ -8224,7 +10296,7 @@
         const totalHeight = 850;
         const startY = 380;
         nodes.forEach(node => {
-            const t = (node.id - 1) / 52;
+            const t = (node.id - 1) / (TOTAL_COMMITS - 1);
             const y = startY - (t * totalHeight);
             
             // Écartement horizontal selon la branche
@@ -8247,8 +10319,8 @@
 
         // --- MODE 4: RHIZOME LIBRE (Force Initial Spacing) ---
         nodes.forEach(node => {
-            const ang = (node.id / 53) * Math.PI * 2 + Math.random() * 0.4;
-            const dist = 100 + (node.id / 53) * 450;
+            const ang = (node.id / TOTAL_COMMITS) * Math.PI * 2 + Math.random() * 0.4;
+            const dist = 100 + (node.id / TOTAL_COMMITS) * 450;
             layoutCoords.force[node.id] = {
                 x: Math.cos(ang) * dist,
                 y: Math.sin(ang) * dist,
@@ -8529,7 +10601,7 @@
         playIcon.textContent = state.isPlaying ? '❚❚' : '▶';
         if (state.isPlaying) {
             AudioEngine.resume();
-            if (state.currentCommitIndex >= 53) {
+            if (state.currentCommitIndex >= TOTAL_COMMITS) {
                 updateTimelineUI(1);
             }
         }
@@ -8537,7 +10609,7 @@
     playPauseBtn.addEventListener('click', togglePlay);
 
     document.getElementById('btnStepForward').addEventListener('click', () => {
-        if (state.currentCommitIndex < 53) updateTimelineUI(state.currentCommitIndex + 1);
+            if (state.currentCommitIndex < TOTAL_COMMITS) updateTimelineUI(state.currentCommitIndex + 1);
     });
     document.getElementById('btnStepBack').addEventListener('click', () => {
         if (state.currentCommitIndex > 1) updateTimelineUI(state.currentCommitIndex - 1);
@@ -8550,7 +10622,7 @@
     document.getElementById('btnFullBloom').addEventListener('click', () => {
         state.isPlaying = false;
         playIcon.textContent = '▶';
-        updateTimelineUI(53);
+        updateTimelineUI(TOTAL_COMMITS);
     });
 
     // Sélecteur de vitesse
@@ -8638,7 +10710,7 @@
         state.cam.targetZoom = 1.0;
     });
     document.getElementById('btnToggleBloomAll').addEventListener('click', () => {
-        updateTimelineUI(53);
+        updateTimelineUI(TOTAL_COMMITS);
     });
 
     // Audio Toggle
@@ -8667,7 +10739,7 @@
             togglePlay();
         } else if (e.code === 'ArrowRight') {
             e.preventDefault();
-            if (state.currentCommitIndex < 53) updateTimelineUI(state.currentCommitIndex + 1);
+        if (state.currentCommitIndex < TOTAL_COMMITS) updateTimelineUI(state.currentCommitIndex + 1);
         } else if (e.code === 'ArrowLeft') {
             e.preventDefault();
             if (state.currentCommitIndex > 1) updateTimelineUI(state.currentCommitIndex - 1);
@@ -8687,7 +10759,7 @@
             playAccumulator += dt * state.playbackSpeed;
             if (playAccumulator >= 0.35) { // un commit toutes les 0.35s à vitesse 1x
                 playAccumulator = 0;
-                if (state.currentCommitIndex < 53) {
+                if (state.currentCommitIndex < TOTAL_COMMITS) {
                     updateTimelineUI(state.currentCommitIndex + 1);
                 } else {
                     state.isPlaying = false;
@@ -8946,7 +11018,7 @@
     requestAnimationFrame(renderLoop);
 
     // Initialisation : afficher le dernier commit par défaut si souhaité, ou démarrer la graine
-    updateTimelineUI(53); // Montre l'arbre complet au chargement pour un effet WOW immédiat !
+    updateTimelineUI(TOTAL_COMMITS); // Montre l'arbre complet au chargement pour un effet WOW immédiat !
 
 })();
 </script>

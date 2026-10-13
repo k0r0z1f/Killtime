@@ -7678,5 +7678,1937 @@
         "path": "Assets/Shaders/SpaceStarfield.shader"
       }
     ]
+  },
+  {
+    "index": 54,
+    "hash": "d60e8fb6827308307d2e56a422392914678b8287",
+    "short": "d60e8fb",
+    "date": "2026-10-10 05:14:40 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "update",
+    "parents": [
+      "a93645cabea195261dc2bc36d4a00ce4ea1cbc86"
+    ],
+    "insertions": 1186,
+    "deletions": 173,
+    "files_count": 37,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Camera/CinematicDirector.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Camera/TacticalCameraController.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterDevWindow.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/Combat/CombatActionRegistry.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/Combat/CombatTechniqueRegistry.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/Combat/DuoTechRegistry.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/Combat/TacticalSelectionManager.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/CoreRulesConfig.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/Inventory/InventoryDevWindow.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/MapEditor/MapEditorDevWindow.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Multi/VTTTableSync.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/ChapterTemplate.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/CinematicEditorDevWindow.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/StorySceneData.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/CombatDevArena.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Grid/HexPathfinder.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Grid/TacticalHexGrid.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/TacticalInteractable.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnit.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitRegistry.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitRegistry.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Visibility/FogOfWarManager.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/ChapterTemplateTests.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/InteractableWindowTests.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/InteractableWindowTests.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/TacticalUnitRegistryTests.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/TacticalUnitRegistryTests.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/UI/BestiaryDevWindow.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/UI/CombatHUD.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/InteractableWindow.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/InteractableWindow.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/UI/WeaponGripEditorDevWindow.cs"
+      }
+    ]
+  },
+  {
+    "index": 55,
+    "hash": "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871",
+    "short": "0b87c3e",
+    "date": "2026-10-11 03:39:29 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "update",
+    "parents": [
+      "d60e8fb6827308307d2e56a422392914678b8287"
+    ],
+    "insertions": 3534,
+    "deletions": 2695,
+    "files_count": 23,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/AIMovementSolver.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/AIMovementSolver.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/AIPersonalityProfile.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/AIPersonalityProfile.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/AttackPlanEvaluator.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/AttackPlanEvaluator.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Attack.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Attack.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Maneuvers.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Maneuvers.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Movement.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Movement.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Support.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Support.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Targeting.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Targeting.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIController.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIDecisionTests.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalAIDecisionTests.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalPostureEvaluator.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TacticalPostureEvaluator.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TargetScorer.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/AI/TargetScorer.cs.meta"
+      }
+    ]
+  },
+  {
+    "index": 56,
+    "hash": "61883e0ec56eb9bf5819e02de0120b064e40d172",
+    "short": "61883e0",
+    "date": "2026-10-11 06:12:40 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "update",
+    "parents": [
+      "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871"
+    ],
+    "insertions": 10974,
+    "deletions": 9598,
+    "files_count": 22,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Audio/KilltimeAudioManager.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.World.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Cards.World.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.GraphCanvas.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.GraphCanvas.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Layout.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Layout.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Panels.Media.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Panels.Media.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Persistence.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Persistence.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.SceneTab.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.SceneTab.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Wires.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.Wires.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/ScenarioEditorDevWindow.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/StorySceneData.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/SceneSoundControlTests.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/SceneSoundControlTests.cs.meta"
+      }
+    ]
+  },
+  {
+    "index": 57,
+    "hash": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
+    "short": "10cad6e",
+    "date": "2026-10-11 06:25:51 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "assets/scripts reorganized",
+    "parents": [
+      "61883e0ec56eb9bf5819e02de0120b064e40d172"
+    ],
+    "insertions": 48,
+    "deletions": 0,
+    "files_count": 96,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/ArmoryDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/ArmoryDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/BestiaryDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/BestiaryDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CombatDevArena.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CombatDevArena.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CombatDevToolbar.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CombatDevToolbar.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CoreRulesDevTableWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/CoreRulesDevTableWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/InventoryDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/InventoryDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/RiverOfTimeDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/RiverOfTimeDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/SkillTreeCosmosWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/SkillTreeCosmosWindow.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Story.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/HybrisWorldMapDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/HybrisWorldMapDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/HybrisWorldMapEditorWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/HybrisWorldMapEditorWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.GraphCanvas.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.GraphCanvas.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Panels.Media.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Panels.Media.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Persistence.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Persistence.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.SceneTab.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.SceneTab.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/TimeScaleDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/TimeScaleDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/WeaponGripEditorDevWindow.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/DevTools/WeaponGripEditorDevWindow.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Story/PlanetOrbitalController.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Story/PlanetOrbitalController.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Story/PlanetSimpleSpin.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Story/PlanetSimpleSpin.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Lighting.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tactics/Lighting/TacticalPixieLight.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tactics/Lighting/TacticalPixieLight.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/Core.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Core/ArcanotechWorkshopTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Core/ArcanotechWorkshopTests.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Core/InventorySystemTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Core/InventorySystemTests.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/Multi.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTCombatSyncTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTCombatSyncTests.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTProtocolTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTProtocolTests.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTVideoRoomTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTVideoRoomTests.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTVisibilityFilterTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTVisibilityFilterTests.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTVoiceTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Multi/VTTVoiceTests.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/Tactics.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Tactics/TacticalAIDecisionTests.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/Tests/Tactics/TacticalAIDecisionTests.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatTechniqueRegistry.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatTechniqueRegistry.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatUI.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/CombatUI.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/DroppedWeaponContextMenuUI.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/DroppedWeaponContextMenuUI.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/DuoTechRegistry.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/DuoTechRegistry.cs.meta"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/TacticalSelectionManager.cs"
+      },
+      {
+        "status": "R",
+        "path": "Assets/Scripts/UI/TacticalSelectionManager.cs.meta"
+      }
+    ]
+  },
+  {
+    "index": 58,
+    "hash": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
+    "short": "e11e7af",
+    "date": "2026-10-12 04:34:05 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "update",
+    "parents": [
+      "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03"
+    ],
+    "insertions": 5892,
+    "deletions": 4546,
+    "files_count": 30,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaChronoDebugService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaChronoDebugService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaContext.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaContext.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaMapStore.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaMapStore.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaOverwatchService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaOverwatchService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaResolutionGuard.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaResolutionGuard.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaSmokeService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaSmokeService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaState.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaState.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaTargetingService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaTargetingService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaTurnEventsService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaTurnEventsService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaUnitStore.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/ArenaUnitStore.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/IArenaHost.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Arena/IArenaHost.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/DevTools/CombatDevArena.cs"
+      }
+    ]
+  },
+  {
+    "index": 59,
+    "hash": "2e0be4d3fe3d7336799933937c2f84522d443c43",
+    "short": "2e0be4d",
+    "date": "2026-10-12 05:27:11 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "update",
+    "parents": [
+      "e11e7af6490b89f8dd03e334f0d99fd1253ab859"
+    ],
+    "insertions": 3751,
+    "deletions": 3287,
+    "files_count": 33,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.CineAudio.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.CineAudio.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueChoice.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueChoice.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueConsequence.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueConsequence.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueCore.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueCore.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueEvents.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.DialogueEvents.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDialogue.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDialogue.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDraw.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.GuiDraw.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.GuiInput.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.GuiInput.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesActions.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesActions.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesPopups.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.InteractablesPopups.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.Spawn.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.Spawn.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.Talk.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.Talk.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Story/JsonStorySceneController.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneActorService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneActorService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneDialogueService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneDialogueService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneState.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneState.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneTalkService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Story/SceneTalkService.cs.meta"
+      }
+    ]
+  },
+  {
+    "index": 60,
+    "hash": "f61456a53acb426cca3dd749803ce14fa53dba06",
+    "short": "f61456a",
+    "date": "2026-10-12 16:58:42 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "refactor(unity): CombatCalculator monolithe (2892l) en 7 services composes + asmdefs",
+    "parents": [
+      "2e0be4d3fe3d7336799933937c2f84522d443c43"
+    ],
+    "insertions": 3226,
+    "deletions": 2462,
+    "files_count": 19,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/Combat/CombatCalculator.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/CombatDuelContext.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/CombatDuelContext.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/CombatDuelModels.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/CombatDuelModels.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/CombatProgressionService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/CombatProgressionService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/DamageEngineService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/DamageEngineService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/DuelResolutionService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/DuelResolutionService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/DuelSetupService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/DuelSetupService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Killtime.Game.asmdef"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Killtime.Game.asmdef.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/Killtime.Game.Tests.asmdef"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tests/Killtime.Game.Tests.asmdef.meta"
+      }
+    ]
+  },
+  {
+    "index": 61,
+    "hash": "fa15c1f98f28669e4e76adf16e8a748e0afe227a",
+    "short": "fa15c1f",
+    "date": "2026-10-12 17:33:19 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "fix(unity): TurnManager garde liste vide, stop recursion infinie StartNewRound (P0, 12 tests)",
+    "parents": [
+      "967bbb4072844534b1f6d9234a0f4470f3e8672f"
+    ],
+    "insertions": 6,
+    "deletions": 0,
+    "files_count": 1,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.cs"
+      }
+    ]
+  },
+  {
+    "index": 62,
+    "hash": "e35b35b9e687c92f1a350abeb6fe34843f620f0a",
+    "short": "e35b35b",
+    "date": "2026-10-12 17:33:19 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "fix(unity): CoverSystem coquille Y/Z prisme + ignore impacts t≈0, 3 scenarios tests geometriquement sains (P2, 6 tests)",
+    "parents": [
+      "fa15c1f98f28669e4e76adf16e8a748e0afe227a"
+    ],
+    "insertions": 26,
+    "deletions": 11,
+    "files_count": 2,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Grid/CoverSystem.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/CoverSystemTests.cs"
+      }
+    ]
+  },
+  {
+    "index": 63,
+    "hash": "f58352c201736fcf23404b82d8a772272c10eaa4",
+    "short": "f58352c",
+    "date": "2026-10-12 17:33:24 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "fix(unity): P1 combat — Trip deterministe, armure test 21, revive grapple, DoT aggravation doublee (4 tests)",
+    "parents": [
+      "e35b35b9e687c92f1a350abeb6fe34843f620f0a"
+    ],
+    "insertions": 78,
+    "deletions": 23,
+    "files_count": 4,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/Character/CharacterStats.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/GrappleTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/GroupAssaultPursuitTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/OpportunityTests.cs"
+      }
+    ]
+  },
+  {
+    "index": 64,
+    "hash": "50e243d0cffd475560d03c83abd4c2d19ec0b169",
+    "short": "50e243d",
+    "date": "2026-10-12 17:33:24 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "fix(unity): registre backstop ConfigureStats + prune husks, OnEnable inactif hors Play (P2, 8 tests)",
+    "parents": [
+      "f58352c201736fcf23404b82d8a772272c10eaa4"
+    ],
+    "insertions": 10,
+    "deletions": 0,
+    "files_count": 2,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnit.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitRegistry.cs"
+      }
+    ]
+  },
+  {
+    "index": 65,
+    "hash": "00db4a6687b8967c1bf308a01647ad2322ce1819",
+    "short": "00db4a6",
+    "date": "2026-10-12 17:33:29 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "fix(unity): hack titre defaut nom terminal + P3 (Arcanotech focus/PA, Voice release, Interactable SceneState, Cinematic defaut, StoryScene explicite, WorldMap 14/kingston)",
+    "parents": [
+      "50e243d0cffd475560d03c83abd4c2d19ec0b169"
+    ],
+    "insertions": 89,
+    "deletions": 18,
+    "files_count": 8,
+    "files": [
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Objectives/CombatObjective.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/CombatObjectiveTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/Core/ArcanotechWorkshopTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/InteractableWindowTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/Multi/VTTVoiceTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/SceneCinematicTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/StorySceneChainingTests.cs"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tests/WorldMapTests.cs"
+      }
+    ]
+  },
+  {
+    "index": 66,
+    "hash": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
+    "short": "57b3d32",
+    "date": "2026-10-12 18:14:16 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "refactor",
+    "parents": [
+      "c270e711ad5d33cd6a057788f9b6e77f4a5839ff"
+    ],
+    "insertions": 5687,
+    "deletions": 4582,
+    "files_count": 55,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/AnimationClipResolver.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/AnimationClipResolver.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/AttributeRulesService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/AttributeRulesService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/PreviewStudioService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/PreviewStudioService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SheetSessionService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SheetSessionService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SocialGraphSession.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SocialGraphSession.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SpawnService.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SpawnService.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SpellForgeSession.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/Character/SpellForgeSession.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.Sections.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.Sections.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Creation.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.Sections.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.Sections.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Inventory.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Header.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Header.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Skills.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Skills.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Specs.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.Specs.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Progression.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.SpawnerRelations.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.SpawnerRelations.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.SpellForge.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.SpellForge.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Storage.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.Storage.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/DevTools/CharacterDevWindow.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Cards.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Cards.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Dice.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Dice.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Log.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Log.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Overlays.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Overlays.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Styles.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Styles.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Targeting.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatHUD.Targeting.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/UI/CombatHUD.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatLogEntry.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatLogEntry.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatTelemetry.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatTelemetry.cs.meta"
+      }
+    ]
+  },
+  {
+    "index": 67,
+    "hash": "0184ad2bcf94079a8e95d967aa7d86b134f0a144",
+    "short": "0184ad2",
+    "date": "2026-10-12 20:31:40 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "updates",
+    "parents": [
+      "57b3d325ba9fb936294cf220cd0d0d9b69b7a701"
+    ],
+    "insertions": 4922,
+    "deletions": 4760,
+    "files_count": 20,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.AttributesSync.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.AttributesSync.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Funding.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Funding.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.HeroAccess.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.HeroAccess.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.OrganicTicks.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.OrganicTicks.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Animator.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Animator.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Avatar.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Avatar.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Hud.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Hud.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Weapon.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Weapon.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.cs"
+      }
+    ]
+  },
+  {
+    "index": 68,
+    "hash": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
+    "short": "ef6162e",
+    "date": "2026-10-12 21:05:50 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "refactor",
+    "parents": [
+      "0184ad2bcf94079a8e95d967aa7d86b134f0a144"
+    ],
+    "insertions": 7287,
+    "deletions": 6796,
+    "files_count": 52,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.Effects.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.Effects.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.KillshotFreeLook.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.KillshotFreeLook.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.SceneLookup.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.SceneLookup.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.ScenePlayback.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.ScenePlayback.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.SceneRoutine.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.SceneRoutine.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.ShotAudio.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Camera/CinematicDirector.ShotAudio.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Camera/CinematicDirector.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Brushes.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Brushes.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Grounds.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Grounds.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Props.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Props.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Storage.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Storage.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Types.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.Types.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.UI.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.UI.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/DevTools/MapEditorDevWindow.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Attack.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Attack.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Care.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Care.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Core.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Core.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Dev.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Dev.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Inventory.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Inventory.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Self.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Self.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Spells.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Spells.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Tactics.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Tactics.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Techniques.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.Techniques.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/UI/CombatActionRegistry.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.Attack.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.Attack.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.Defense.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.Defense.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.Glyphs.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.Glyphs.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/UI/CombatContextMenuUI.cs"
+      }
+    ]
+  },
+  {
+    "index": 69,
+    "hash": "201f1418176d694c3c19b386c331c2649011cab0",
+    "short": "201f141",
+    "date": "2026-10-12 21:13:26 -0400",
+    "author": "Alexis Lacasse",
+    "msg": "refactor",
+    "parents": [
+      "ef6162eb724bc4edb6c88dc1f4650f6e59379768"
+    ],
+    "insertions": 1559,
+    "deletions": 1430,
+    "files_count": 15,
+    "files": [
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Delayed.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Delayed.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Initiative.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Initiative.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Multi.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Multi.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Objectives.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Objectives.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs.meta"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Types.cs"
+      },
+      {
+        "status": "A",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Types.cs.meta"
+      },
+      {
+        "status": "M",
+        "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.cs"
+      }
+    ]
   }
 ]
