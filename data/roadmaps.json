@@ -959,6 +959,21 @@
           "scale": null,
           "suggestedAsset": "Tactics/TurnSystem/TurnManager",
           "details": "FAIT (2026-10-13, Tactics) : TurnManager 1511 -> facade 88 lignes (4 champs SerializeField + props + 9 events + OnEnable/Disable + Start) + 7 partials (Core 410 : registre/modes explo-combat/relations/reset, Objectives 294 : RD-050 fin de combat + 5 presets, Rounds 282 : StartNewRound/EndCurrentTurn/StartUnitTurn + refresh DoT RD-045, Delayed 195 : RD-048 retarder/tenir/interrompre, Multi 174 : sync VTT GM/client, Initiative 148 : des/tri Titan/renforts, Types 35 : 2 enums + struct InitiativeRollResult). Pattern ScenarioEditor./MapEditor.* existant, classe en partial, usings dupliques a l'identique, .meta GUID uniques. Verifie sans regression par script vs HEAD : 0 ligne perdue (6 ajoutees = doc facade), 55/55 methodes a 1 definition, 7/7 champs 1x, 9/9 events en facade, API publique identique (66 membres, diff limite a partial), accolades equilibrees, appelants intacts (~20 fichiers : CombatHUD, StorySceneManager, TacticalSelectionManager, DuoTechRegistry), membres utilises par les tests presents (CombatObjectiveTests, GrappleTests, DelayedTurnChannelTests). Test en jeu OK par l'utilisateur."
+        },
+        {
+          "id": "RD-137",
+          "title": "DevTools : refactor HybrisWorldMapEditorWindow 1945 lignes en 6 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 61,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "DevTools/Story/HybrisWorldMapEditorWindow",
+          "details": "FAIT (2026-10-13, DevTools) : editeur HybrisWorldMapEditorWindow 1945 -> facade 193 lignes (config + tous les champs + OnOpened/ResetView/DrawContent/Header/Status) + 5 partials (Canvas 311 : canevas/zoom/regle/dessin nodes-links/quick inspector, Input 381 : input canvas/raccourcis/hit-tests, Tabs 434 : secteurs/liaisons/fichier/validation/persistance, Crud 258 : load/undo-redo/Codex/CRUD/rename/helpers, Overlays 371 : modale rename/menu contextuel). Pattern ScenarioEditor.* existant, classe en partial, usings dupliques a l'identique, struct ContextMenuItem en facade. Verifie sans regression par script vs HEAD : 58/58 methodes a 1 definition et corps byte-identiques, bloc champs identique, 0 champ duplique, accolades equilibrees, API publique inchangee (FitToView, ZoomToNode, Open/Instance herites), appelants intacts (HybrisWorldMapDevWindow, CombatDevToolbar x2), .meta principal conserve + 5 GUID uniques, UTF-8 sans BOM. Test en jeu OK par l'utilisateur."
         }
       ]
     },
@@ -2033,6 +2048,21 @@
           "scale": null,
           "suggestedAsset": "ProceduralAudioFactory.*.cs",
           "details": "FAIT (2026-10-13) : ProceduralAudioFactory.cs monolithe (1827 l., usine synthèse 100% runtime déterministe 22050 Hz) découpé move-only en 6 partials même namespace/classe/assembly : Core (135 l., consts+caches+GetClip/GetBankClip+helpers partagés), Sfx (721 l., Generate+30 primitives), Music (296 l., GetMusicLoop x4+GenerateMusic+GetProgression), MusicLayers (558 l., 15x Add*+mastering), StingerAmbience (122 l.), Generative (47 l., LRU 3 entrées). Vérifié : 70/70 membres présents, 0 définition en double, 87/87 string literals + 1677/1677 numeric literals identiques (seeds/durées/déterminisme intacts), accents intacts, tous appels/champs résolus, accolades équilibrées, 5 .meta générés (GUID uniques), API publique inchangée, aucun appelant modifié. Testé en jeu OK."
+        },
+        {
+          "id": "RD-136",
+          "title": "Refactor SystemAudioChameleon : 1 fichier 2105 l. → 8 partials",
+          "epic": "Audio",
+          "status": "done",
+          "priority": "medium",
+          "order": 15,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "SystemAudioChameleon.*.cs",
+          "details": "FAIT (2026-10-13) : SystemAudioChameleon.cs monolithe (2105 l., caméléon audio auto-calibré : capture micro/AGC, pitch NSDF grave+aigu, 4 styles basse, lead, choir 3 voix, vocal glottal, drums DSP, mix stéréo, PipeWire Linux) découpé move-only en 8 partials même namespace/classe/assembly : Core (435 l., enums+Inspector+buffers+télémétrie+états DSP+lifecycle), Capture (170 l.), Analysis (259 l.), Pitch (306 l.), Drums (129 l.), Bass (144 l., RenderBassStereo extrait à l'identique), Voices (466 l., OnAudioFilterRead), Linux (285 l.). Vérifié : 35/35 membres présents, 0 définition en double, 8/8 volatile conservés, 0 alloc thread audio, accolades équilibrées, 7 .meta générés, API publique inchangée (KilltimeAudioManager/SettingsUI/Tests), aucun appelant modifié. Suite EditMode 434/434 verte dont AudioSystem 20/20. Testé en jeu OK (F11)."
         }
       ]
     },
