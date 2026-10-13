@@ -944,6 +944,21 @@
           "scale": null,
           "suggestedAsset": "Camera/CinematicDirector",
           "details": "FAIT (2026-10-13, Camera) : directeur CinematicDirector 1941 -> facade 196 lignes (champs + CameraMode + Awake + ResetCinematicState + ResolveTacticalCam) + 6 partials (SceneRoutine 754 : SceneCinematicRoutine intacte, ScenePlayback 275 : Play/Stop + InPlace + ReleaseToTactical, Effects 253 : ApplyShotEffect + warp + easings + Update/LateUpdate + letterbox + OnGUI + adaptive near, KillshotFreeLook 223, ShotAudio 206 : swell + PlayShotAudio + file, SceneLookup 142 : FindSceneUnit/Prop + locks). Pattern ScenarioEditor./MapEditor.* existant, classe en partial, usings dupliques a l'identique. Verifie sans regression par script vs backup : 1306/1306 lignes significatives retrouvees (0 perdue, 0 ajoutee hors mot-cle partial), 47/47 methodes a 1 definition, 21/21 champs meme ordre, API publique identique, accolades equilibrees, LF/UTF-8, appelants intacts (JsonStorySceneController, CombatEncounterController, VTTTableSync, SceneCinematicTests). Test en jeu OK par l'utilisateur."
+        },
+        {
+          "id": "RD-132",
+          "title": "Combat : refactor TurnManager 1511 lignes en 8 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 60,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Tactics/TurnSystem/TurnManager",
+          "details": "FAIT (2026-10-13, Tactics) : TurnManager 1511 -> facade 88 lignes (4 champs SerializeField + props + 9 events + OnEnable/Disable + Start) + 7 partials (Core 410 : registre/modes explo-combat/relations/reset, Objectives 294 : RD-050 fin de combat + 5 presets, Rounds 282 : StartNewRound/EndCurrentTurn/StartUnitTurn + refresh DoT RD-045, Delayed 195 : RD-048 retarder/tenir/interrompre, Multi 174 : sync VTT GM/client, Initiative 148 : des/tri Titan/renforts, Types 35 : 2 enums + struct InitiativeRollResult). Pattern ScenarioEditor./MapEditor.* existant, classe en partial, usings dupliques a l'identique, .meta GUID uniques. Verifie sans regression par script vs HEAD : 0 ligne perdue (6 ajoutees = doc facade), 55/55 methodes a 1 definition, 7/7 champs 1x, 9/9 events en facade, API publique identique (66 membres, diff limite a partial), accolades equilibrees, appelants intacts (~20 fichiers : CombatHUD, StorySceneManager, TacticalSelectionManager, DuoTechRegistry), membres utilises par les tests presents (CombatObjectiveTests, GrappleTests, DelayedTurnChannelTests). Test en jeu OK par l'utilisateur."
         }
       ]
     },
