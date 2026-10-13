@@ -2093,7 +2093,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "SkillTreeCosmosWindow F4",
-          "details": "Lag zoom-out (200 labels rich-text + strings/frame + lookups x3/noeud, zero culling). Fix: _frameGuide (1 lookup/frame), LOD zoom<0.5 (forme seule, halo/labels sauf selection/survol/guide-next), culling viewport noeuds+conduits+titres, starfield pre-calcule, unlocked calcule 1x/noeud. Visuel identique a zoom >= 0.5.",
+          "details": "Perf zoom-out (200 labels rich-text + strings/frame + lookups x3/noeud, zero culling). Fix: _frameGuide (1 lookup/frame), LOD zoom<0.5 (forme seule, halo/labels sauf selection/survol/guide-next), culling viewport (noeuds 170px, titres, conduits via Liang-Barsky), starfield pre-calcule, unlocked 1x/noeud. VERIF 2026-10-13 : 40/40 defs uniques, 24/24 champs uniques, accolades 8/8, API publique inchangee (2 appelants), aucun test existant ne couvre la fenetre, Liang-Barsky 7/7 cas, LOD identique a zoom>=0.5. Bogue trouve+corrige en audit : culling conduits par endpoints -> segment qui traverse l'ecran. Teste en jeu OK par user.",
           "updated": "2026-10-13"
         }
       ]

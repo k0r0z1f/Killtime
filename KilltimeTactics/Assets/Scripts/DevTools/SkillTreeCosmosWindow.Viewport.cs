@@ -30,7 +30,7 @@ namespace Killtime.UI
 
                 Vector2 p1 = WorldToScreen(c.From.Position, viewCenter);
                 Vector2 p2 = WorldToScreen(c.To.Position, viewCenter);
-                if (IsOffscreen(p1, viewport, cullMargin) && IsOffscreen(p2, viewport, cullMargin)) continue;
+                if (!SegmentIntersectsViewport(p1, p2, viewport, cullMargin)) continue;
 
                 bool isUnlocked = IsNodeUnlocked(c.To);
                 Color lineCol = isUnlocked ? c.ConduitColor : new Color(c.ConduitColor.r, c.ConduitColor.g, c.ConduitColor.b, 0.18f);
@@ -73,7 +73,7 @@ namespace Killtime.UI
                 if (!IsNodeVisible(node)) continue;
 
                 Vector2 screenPos = WorldToScreen(node.Position, viewCenter);
-                if (IsOffscreen(screenPos, viewport, cullMargin)) continue;
+                if (IsOffscreen(screenPos, viewport, 170f)) continue;
 
                 float baseRadius = node.IsSpecialization ? 12f : 18f;
                 float drawRadius = baseRadius * _canvasZoom;
@@ -102,6 +102,37 @@ namespace Killtime.UI
         private static bool IsOffscreen(Vector2 p, Rect viewport, float margin)
         {
             return p.x < -margin || p.y < -margin || p.x > viewport.width + margin || p.y > viewport.height + margin;
+        }
+
+        /// <summary>Vrai si le segment touche le viewport (+marge). Évite de culler
+        /// un conduit qui traverse l'écran avec ses deux extrémités hors-champ.</summary>
+        private static bool SegmentIntersectsViewport(Vector2 a, Vector2 b, Rect viewport, float margin)
+        {
+            float x0 = -margin, y0 = -margin;
+            float x1 = viewport.width + margin, y1 = viewport.height + margin;
+            bool aIn = a.x >= x0 && a.y >= y0 && a.x <= x1 && a.y <= y1;
+            bool bIn = b.x >= x0 && b.y >= y0 && b.x <= x1 && b.y <= y1;
+            if (aIn || bIn) return true;
+            // Les deux dehors : clipping paramétrique (Liang-Barsky).
+            float t0 = 0f, t1 = 1f;
+            float dx = b.x - a.x, dy = b.y - a.y;
+            float[] p = { -dx, dx, -dy, dy };
+            float[] q = { a.x - x0, x1 - a.x, a.y - y0, y1 - a.y };
+            for (int i = 0; i < 4; i++)
+            {
+                if (Mathf.Approximately(p[i], 0f))
+                {
+                    if (q[i] < 0f) return false;
+                }
+                else
+                {
+                    float r = q[i] / p[i];
+                    if (p[i] < 0f) t0 = Mathf.Max(t0, r);
+                    else t1 = Mathf.Min(t1, r);
+                    if (t0 > t1) return false;
+                }
+            }
+            return true;
         }
 
         private void DrawBackdropStarfield(Vector2 viewCenter, Vector2 size)
