@@ -974,6 +974,22 @@
           "scale": null,
           "suggestedAsset": "DevTools/Story/HybrisWorldMapEditorWindow",
           "details": "FAIT (2026-10-13, DevTools) : editeur HybrisWorldMapEditorWindow 1945 -> facade 193 lignes (config + tous les champs + OnOpened/ResetView/DrawContent/Header/Status) + 5 partials (Canvas 311 : canevas/zoom/regle/dessin nodes-links/quick inspector, Input 381 : input canvas/raccourcis/hit-tests, Tabs 434 : secteurs/liaisons/fichier/validation/persistance, Crud 258 : load/undo-redo/Codex/CRUD/rename/helpers, Overlays 371 : modale rename/menu contextuel). Pattern ScenarioEditor.* existant, classe en partial, usings dupliques a l'identique, struct ContextMenuItem en facade. Verifie sans regression par script vs HEAD : 58/58 methodes a 1 definition et corps byte-identiques, bloc champs identique, 0 champ duplique, accolades equilibrees, API publique inchangee (FitToView, ZoomToNode, Open/Instance herites), appelants intacts (HybrisWorldMapDevWindow, CombatDevToolbar x2), .meta principal conserve + 5 GUID uniques, UTF-8 sans BOM. Test en jeu OK par l'utilisateur."
+        },
+        {
+          "id": "RD-140",
+          "title": "Multi : refactor VTTRoomWindow 1518 lignes en 10 partials sans régression",
+          "epic": "Optimisation",
+          "status": "done",
+          "priority": "high",
+          "order": 62,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "Multi/VTTRoomWindow",
+          "details": "FAIT (2026-10-13, Multi) : VTTRoomWindow 1518 -> noyau 347 lignes (champs partages + lifecycle + EnsureMultiStack + Subscribe/Unsubscribe + DrawContent routeur + TruncateStr) + 9 partials (Connection 59, Room 131, Directory 104, Members 59, Chat 80, Events 76, Voice 65, VoiceConfig 522 : DrawVoiceSection garde entier car methode insecable, Video 192). Classe en partial, usings dupliques a l'identique, .meta principal conserve + 9 GUID uniques. Audit anti-bogue post-split : corps des 9 partials + head/tail noyau byte-identiques a HEAD (seul diff = mot-cle partial), 1355/1355 lignes presentes, 40/40 methodes 1 definition, 29/29 champs noyau, API publique identique (9 membres, 3 appelants intacts), 10/10 GUID uniques sans collision repo, 0 erreur VTTRoomWindow dans les logs editeur (seules erreurs = SkillTreeCosmosWindow etat transitoire pre-existant, disque propre + build OK). unity test batch impossible (editeur user ouvert, verrou projet). Test en jeu OK par l'utilisateur.",
+          "updated": "2026-10-13"
         }
       ]
     },
