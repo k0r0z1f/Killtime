@@ -2063,6 +2063,22 @@
           "scale": null,
           "suggestedAsset": "SystemAudioChameleon.*.cs",
           "details": "FAIT (2026-10-13) : SystemAudioChameleon.cs monolithe (2105 l., caméléon audio auto-calibré : capture micro/AGC, pitch NSDF grave+aigu, 4 styles basse, lead, choir 3 voix, vocal glottal, drums DSP, mix stéréo, PipeWire Linux) découpé move-only en 8 partials même namespace/classe/assembly : Core (435 l., enums+Inspector+buffers+télémétrie+états DSP+lifecycle), Capture (170 l.), Analysis (259 l.), Pitch (306 l.), Drums (129 l.), Bass (144 l., RenderBassStereo extrait à l'identique), Voices (466 l., OnAudioFilterRead), Linux (285 l.). Vérifié : 35/35 membres présents, 0 définition en double, 8/8 volatile conservés, 0 alloc thread audio, accolades équilibrées, 7 .meta générés, API publique inchangée (KilltimeAudioManager/SettingsUI/Tests), aucun appelant modifié. Suite EditMode 434/434 verte dont AudioSystem 20/20. Testé en jeu OK (F11)."
+        },
+        {
+          "id": "RD-138",
+          "title": "Refactor SkillTreeCosmosWindow 1752l -> 8 partials",
+          "epic": "UI",
+          "status": "done",
+          "priority": "medium",
+          "order": 16,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "SkillTreeCosmosWindow F4",
+          "details": "Move-only: facade 97l + Data 737l + Chrome 308l + Viewport 267l + Navigation 151l + Graphics 129l + Guide 90l + Rules 67l. 1504 lignes non-vides verifiees identiques, zero comportement change. .meta generes.",
+          "updated": "2026-10-13"
         }
       ]
     },
