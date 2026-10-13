@@ -2079,6 +2079,22 @@
           "suggestedAsset": "SkillTreeCosmosWindow F4",
           "details": "Move-only: facade 97l + Data 737l + Chrome 308l + Viewport 267l + Navigation 151l + Graphics 129l + Guide 90l + Rules 67l. 1504 lignes non-vides verifiees identiques, zero comportement change. .meta generes.",
           "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-139",
+          "title": "Perf voûte céleste : LOD zoom-out + culling + cache guide",
+          "epic": "UI",
+          "status": "done",
+          "priority": "high",
+          "order": 17,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "SkillTreeCosmosWindow F4",
+          "details": "Lag zoom-out (200 labels rich-text + strings/frame + lookups x3/noeud, zero culling). Fix: _frameGuide (1 lookup/frame), LOD zoom<0.5 (forme seule, halo/labels sauf selection/survol/guide-next), culling viewport noeuds+conduits+titres, starfield pre-calcule, unlocked calcule 1x/noeud. Visuel identique a zoom >= 0.5.",
+          "updated": "2026-10-13"
         }
       ]
     },

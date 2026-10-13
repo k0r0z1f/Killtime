@@ -15,6 +15,7 @@ namespace Killtime.UI
             EnsureStyles();
 
             var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            _frameGuide = guide;
             float guideH = guide != null ? 30f : 0f;
             float topBarH = 34f;
             float footerH = 105f;

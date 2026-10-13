@@ -31,6 +31,11 @@ namespace Killtime.UI
         private CosmosNode _hoveredNode;
         private string _statusFeedback = "Explorez la voûte céleste (Glisser Clic-Gauche pour déplacer, Molette pour zoomer).";
 
+        // Cache par frame (assigné dans DrawContent) : évite ~600 lookups catalogue par frame.
+        private CharacterClassDefinition _frameGuide;
+        // Positions starfield pré-calculées (déterministes) : évite 120 Sin/Cos par frame.
+        private static Vector2[] _starfieldPos;
+
         private static Texture2D _pixelTex;
         private static Texture2D _starCircleTex;
         private static Texture2D _starGlowTex;

@@ -21,7 +21,8 @@ namespace Killtime.UI
             DrawBackdropStarfield(viewCenter, viewport.size);
 
             // 1. Conduits
-            var activeGuideForLines = CharacterClassCatalog.GetActiveGuide(_sheet);
+            var activeGuideForLines = _frameGuide ?? CharacterClassCatalog.GetActiveGuide(_sheet);
+            float cullMargin = 120f;
             for (int i = 0; i < _conduits.Count; i++)
             {
                 var c = _conduits[i];
@@ -29,6 +30,7 @@ namespace Killtime.UI
 
                 Vector2 p1 = WorldToScreen(c.From.Position, viewCenter);
                 Vector2 p2 = WorldToScreen(c.To.Position, viewCenter);
+                if (IsOffscreen(p1, viewport, cullMargin) && IsOffscreen(p2, viewport, cullMargin)) continue;
 
                 bool isUnlocked = IsNodeUnlocked(c.To);
                 Color lineCol = isUnlocked ? c.ConduitColor : new Color(c.ConduitColor.r, c.ConduitColor.g, c.ConduitColor.b, 0.18f);
@@ -53,15 +55,17 @@ namespace Killtime.UI
             {
                 var sec = _sectors[i];
                 Vector2 p = WorldToScreen(sec.Position + new Vector2(0f, -160f), viewCenter);
+                if (IsOffscreen(p, viewport, 240f)) continue;
                 Color c = sec.SectorColor;
                 c.a = 0.65f;
                 _constellationTitleStyle.normal.textColor = c;
                 GUI.Label(new Rect(p.x - 220f, p.y, 440f, 22f), sec.Name, _constellationTitleStyle);
             }
 
-            // 3. Étoiles
+            // 3. Étoiles (LOD : zoom < 0.5 = forme seule, halo/labels réservés aux nœuds d'intérêt)
             Vector2 localMouse = Event.current.mousePosition;
             _hoveredNode = null;
+            bool lowDetail = _canvasZoom < 0.5f;
 
             for (int i = 0; i < _allNodes.Count; i++)
             {
@@ -69,6 +73,7 @@ namespace Killtime.UI
                 if (!IsNodeVisible(node)) continue;
 
                 Vector2 screenPos = WorldToScreen(node.Position, viewCenter);
+                if (IsOffscreen(screenPos, viewport, cullMargin)) continue;
 
                 float baseRadius = node.IsSpecialization ? 12f : 18f;
                 float drawRadius = baseRadius * _canvasZoom;
@@ -76,8 +81,9 @@ namespace Killtime.UI
                 bool isHover = Vector2.Distance(localMouse, screenPos) <= drawRadius * 1.3f;
                 if (isHover) _hoveredNode = node;
                 bool isSelected = (_selectedNode == node);
+                bool unlocked = IsNodeUnlocked(node);
 
-                DrawCosmicStar(node, screenPos, drawRadius, isSelected, isHover);
+                DrawCosmicStar(node, screenPos, drawRadius, isSelected, isHover, unlocked, lowDetail);
             }
 
             // 4. Légende
@@ -93,13 +99,17 @@ namespace Killtime.UI
             return viewCenter + (worldPos + _canvasPan) * _canvasZoom;
         }
 
+        private static bool IsOffscreen(Vector2 p, Rect viewport, float margin)
+        {
+            return p.x < -margin || p.y < -margin || p.x > viewport.width + margin || p.y > viewport.height + margin;
+        }
+
         private void DrawBackdropStarfield(Vector2 viewCenter, Vector2 size)
         {
-            for (int i = 0; i < 60; i++)
+            if (_starfieldPos == null) InitProceduralTextures();
+            for (int i = 0; i < _starfieldPos.Length; i++)
             {
-                float sx = Mathf.Sin(i * 123.7f) * 1600f;
-                float sy = Mathf.Cos(i * 61.9f) * 1600f;
-                Vector2 p = WorldToScreen(new Vector2(sx, sy), viewCenter);
+                Vector2 p = WorldToScreen(_starfieldPos[i], viewCenter);
                 if (p.x >= 0 && p.x <= size.x && p.y >= 0 && p.y <= size.y)
                 {
                     float starSize = (i % 3 == 0) ? 2.5f : 1.5f;
@@ -108,11 +118,8 @@ namespace Killtime.UI
             }
         }
 
-        private void DrawCosmicStar(CosmosNode node, Vector2 center, float radius, bool isSelected, bool isHover)
+        private void DrawCosmicStar(CosmosNode node, Vector2 center, float radius, bool isSelected, bool isHover, bool unlocked, bool lowDetail)
         {
-            if (!IsNodeVisible(node)) return;
-
-            bool unlocked = IsNodeUnlocked(node);
             bool isSecret = CharacterProgressionManager.IsHiddenSpecialization(node.SpecializationName);
             bool isVol2 = CharacterProgressionManager.IsVolume2Specialization(node.SpecializationName);
             bool isVol2Locked = isVol2 && !CharacterProgressionManager.IsVolume2Unlocked();
@@ -123,7 +130,8 @@ namespace Killtime.UI
             bool isNext = guideState == CharacterClassDefinition.GuideStepState.Next || isGuideNextSkill;
             bool isFuture = guideState == CharacterClassDefinition.GuideStepState.Future;
 
-            int training = GetSkillTrainingLevel(node);
+            // En zoom-out, seuls les nœuds d'intérêt gardent halo + labels.
+            bool showExtras = !lowDetail || isSelected || isHover || isNext;
 
             float pulse = 0.85f + 0.15f * Mathf.Sin(Time.realtimeSinceStartup * 4f + node.Position.x);
             Color starCol = isSecret ? new Color(1f, 0.35f, 0.85f) : node.NodeColor;
@@ -140,37 +148,43 @@ namespace Killtime.UI
 
             if (isSelected) starCol = Color.white;
 
-            float haloR = radius * (isSelected ? 3.4f : (isHover ? 2.8f : 2.0f));
-            Color haloCol = isSecret ? new Color(1f, 0.2f, 0.75f) : node.NodeColor;
-            haloCol.a = (isSelected ? 0.75f : 0.35f) * (unlocked ? 1f : 0.30f);
-
-            Color prevCol = GUI.color;
-            GUI.color = haloCol;
-            GUI.DrawTexture(new Rect(center.x - haloR, center.y - haloR, haloR * 2f, haloR * 2f), _starGlowTex);
-
-            // Halo or du guide : NEXT = pulsant fort, FUTURE = discret.
-            if (!unlocked && (isNext || isFuture))
+            if (showExtras)
             {
-                float goldPulse = isNext
-                    ? 0.65f + 0.35f * Mathf.Sin(Time.realtimeSinceStartup * 5f)
-                    : 0.25f;
-                Color gold = new Color(1f, 0.82f, 0.35f, isNext ? (0.55f + goldPulse * 0.4f) : 0.28f);
-                GUI.color = gold;
-                float goldR = radius * (isNext ? 2.6f : 2.1f);
-                GUI.DrawTexture(new Rect(center.x - goldR, center.y - goldR, goldR * 2f, goldR * 2f), _starGlowTex);
+                float haloR = radius * (isSelected ? 3.4f : (isHover ? 2.8f : 2.0f));
+                Color haloCol = isSecret ? new Color(1f, 0.2f, 0.75f) : node.NodeColor;
+                haloCol.a = (isSelected ? 0.75f : 0.35f) * (unlocked ? 1f : 0.30f);
+
+                Color prevCol = GUI.color;
+                GUI.color = haloCol;
+                GUI.DrawTexture(new Rect(center.x - haloR, center.y - haloR, haloR * 2f, haloR * 2f), _starGlowTex);
+
+                // Halo or du guide : NEXT = pulsant fort, FUTURE = discret.
+                if (!unlocked && (isNext || isFuture))
+                {
+                    float goldPulse = isNext
+                        ? 0.65f + 0.35f * Mathf.Sin(Time.realtimeSinceStartup * 5f)
+                        : 0.25f;
+                    Color gold = new Color(1f, 0.82f, 0.35f, isNext ? (0.55f + goldPulse * 0.4f) : 0.28f);
+                    GUI.color = gold;
+                    float goldR = radius * (isNext ? 2.6f : 2.1f);
+                    GUI.DrawTexture(new Rect(center.x - goldR, center.y - goldR, goldR * 2f, goldR * 2f), _starGlowTex);
+                }
+                GUI.color = prevCol;
             }
+
+            Color prevCol2 = GUI.color;
 
             GUI.color = starCol;
             Texture2D shapeTex = (node.IsSpecialization || node.IsImprovement) ? _starDiamondTex : _starCircleTex;
             GUI.DrawTexture(new Rect(center.x - radius, center.y - radius, radius * 2f, radius * 2f), shapeTex);
-            GUI.color = prevCol;
+            GUI.color = prevCol2;
 
             if (isSelected)
             {
                 GUI.color = isSecret ? new Color(1f, 0.4f, 0.9f, 0.95f) : new Color(0f, 0.95f, 1f, 0.9f);
                 float reticleR = radius * 1.45f;
                 DrawWireSquare(new Rect(center.x - reticleR, center.y - reticleR, reticleR * 2f, reticleR * 2f));
-                GUI.color = prevCol;
+                GUI.color = prevCol2;
             }
 
             // Réticule or pour la prochaine étape du build (visible même sans sélection).
@@ -179,11 +193,12 @@ namespace Killtime.UI
                 GUI.color = new Color(1f, 0.82f, 0.3f, 0.65f + 0.3f * Mathf.Sin(Time.realtimeSinceStartup * 5f));
                 float reticleR = radius * 1.7f;
                 DrawWireSquare(new Rect(center.x - reticleR, center.y - reticleR, reticleR * 2f, reticleR * 2f));
-                GUI.color = prevCol;
+                GUI.color = prevCol2;
             }
 
-            if (_canvasZoom >= 0.28f)
+            if (_canvasZoom >= 0.28f && showExtras)
             {
+                int training = GetSkillTrainingLevel(node);
                 string tag;
                 string guideTag = isNext ? "\n<color=#FFD166><b>◆ SUIVANT BUILD</b></color>"
                     : (isFuture ? "\n<color=#8A6D2B>◇ build</color>" : "");
@@ -219,7 +234,7 @@ namespace Killtime.UI
                     tag = $"<b>{node.DisplayName}</b>\n<color=#00E5FF>[{dieTag}]</color> {pips}\n<color=#FFD27F>{caracs}</color>";
                     if (isGuideNextSkill)
                     {
-                        var g = CharacterClassCatalog.GetActiveGuide(_sheet);
+                        var g = _frameGuide ?? CharacterClassCatalog.GetActiveGuide(_sheet);
                         int tgt = g != null ? g.GetTargetTraining(node.Skill) : 0;
                         tag += $"\n<color=#FFD166><b>◆ BUILD +{tgt}</b></color>";
                     }

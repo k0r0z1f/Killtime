@@ -14,7 +14,7 @@ namespace Killtime.UI
         private CharacterClassDefinition.GuideStepState GetGuideSpecState(CosmosNode node)
         {
             if (node == null || (!node.IsSpecialization && !node.IsImprovement)) return CharacterClassDefinition.GuideStepState.NotInBuild;
-            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            var guide = _frameGuide ?? CharacterClassCatalog.GetActiveGuide(_sheet);
             if (guide == null) return CharacterClassDefinition.GuideStepState.NotInBuild;
             return guide.GetSpecState(_sheet, node.SpecializationName);
         }
@@ -23,7 +23,7 @@ namespace Killtime.UI
         private bool IsGuideNextSkill(CosmosNode node)
         {
             if (node == null || node.IsSpecialization || node.IsImprovement) return false;
-            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            var guide = _frameGuide ?? CharacterClassCatalog.GetActiveGuide(_sheet);
             if (guide == null) return false;
             return guide.IsSkillNext(_sheet, node.Skill);
         }
@@ -32,7 +32,7 @@ namespace Killtime.UI
         private string GetGuideFooterSuffix(CosmosNode node)
         {
             if (node == null || _sheet == null) return "";
-            var guide = CharacterClassCatalog.GetActiveGuide(_sheet);
+            var guide = _frameGuide ?? CharacterClassCatalog.GetActiveGuide(_sheet);
             if (guide == null) return "";
             if (node.IsSpecialization || node.IsImprovement)
             {

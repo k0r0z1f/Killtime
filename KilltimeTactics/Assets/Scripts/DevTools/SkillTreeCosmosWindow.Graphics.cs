@@ -12,6 +12,13 @@ namespace Killtime.UI
     {
         private static void InitProceduralTextures()
         {
+            if (_starfieldPos == null)
+            {
+                _starfieldPos = new Vector2[60];
+                for (int i = 0; i < 60; i++)
+                    _starfieldPos[i] = new Vector2(Mathf.Sin(i * 123.7f) * 1600f, Mathf.Cos(i * 61.9f) * 1600f);
+            }
+
             if (_pixelTex == null)
             {
                 _pixelTex = new Texture2D(1, 1);
