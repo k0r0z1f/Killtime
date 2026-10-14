@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-13",
+  "updated": "2026-10-14",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -1150,6 +1150,54 @@
           "suggestedAsset": "UI/CombatContextMenuUI.*.cs",
           "details": "Demande user 2026-10-13 : de chaque côté d'un élément à mise variable, pastille PA à gauche / PE à droite en transparence, molette dessus = ajuster. FAIT : helper DrawStakeChip (.Glyphs, fond translucide + pleine au survol, ambre PA / violet PE), .Attack (pastilles par nœud à mise variable — PE seulement si attaque non-💣 — molette par nœud clampée PA payable / PE dépensable, repli molette-orbite = PA de l'avant, pastilles exclues du retour-clic-droit), .Defense (pastilles sur l'avant-skill = mise globale, repli conservé, bug latent corrigé : enabled[front] positionnel → enabled[visIdx[front]]). Fix : accolade orpheline du vieux bloc molette défense retirée. Vérif : accolades OK, fichiers <800 l. (max 612). Reste : rebuild + test en jeu (pastilles visibles côté avant, molette PA/PE, repli).",
           "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-162",
+          "title": "Menu radial : texte du nœud avant coupé (plaque auto-size)",
+          "epic": "UI",
+          "status": "done",
+          "priority": "high",
+          "order": 73,
+          "scene": "Killzone_Alpha3",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "UI/CombatContextMenuUI.Attack.cs",
+          "details": "Retour user 2026-10-14 sur capture (texte sous le nœud avant coupé). Cause : plaque fixe 140x18, titres longs wrappés sur 2 lignes tronqués. FAIT : .Attack plaque auto-size (200px large, hauteur CalcHeight 18-32 1-2 lignes, wordWrap, clamp écran) + .Defense tooltip idem (150px, 14-28, plaque opaque + matrice identité). Vérif : accolades OK, fichiers <800 l. (Attack 604, Defense 626). Reste : rebuild + contrôle visuel en jeu.",
+          "updated": "2026-10-14"
+        },
+        {
+          "id": "RD-163",
+          "title": "Menu radial : rotation auto adoucie (zone morte + progressive)",
+          "epic": "UI",
+          "status": "done",
+          "priority": "high",
+          "order": 74,
+          "scene": "Killzone_Alpha3",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "UI/CombatContextMenuUI.Glyphs.cs",
+          "details": "Retour user 2026-10-14 : radial trop sensible (rotation tout ou rien 130°/s dès rx*0.45). FAIT : zone morte élargie (seuil rx*0.65), vitesse progressive quadratique (0 au seuil, max 85°/s au bord vs 130 avant), hysteresis <2%, snap 480 et pause-clic inchangés. Vérif : accolades OK, fichiers <800 l. Reste : rebuild + test en jeu (stabilité au centre, montée douce vers les bords).",
+          "updated": "2026-10-14"
+        },
+        {
+          "id": "RD-164",
+          "title": "Menu radial : navigation avancée (dwell, rampe, snap ease-out, molette ±1, hitbox)",
+          "epic": "UI",
+          "status": "done",
+          "priority": "high",
+          "order": 75,
+          "scene": "Killzone_Alpha3",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "UI/CombatContextMenuUI.Glyphs.cs",
+          "details": "Demande user 2026-10-14 : une seule constante ne suffit pas, rotation gardée comme mécanique principale mais facile + bien animée. FAIT : moteur ease-out cubic 250ms (fini le linéaire 480°/s), rampe vélocité 180ms, hystérésis entrée 0.65/sortie 0.55, dwell (pause au survol nœud/pastille via état frame précédent), snap magnétique à la sortie de bande, molette fond = pas discret ±1 (mise PA/PE sur pastilles/corps avant/clic droit), hitbox 30px + rayon fond 11→14, OrbitTuning mutable + fenêtre dev OrbitTuningWindow (id 900, sliders + reset) pour calibration en jeu puis figeage. Vérif : accolades OK, 0 réf stale, fichiers <800 l. Reste : rebuild + calibration en jeu (3-4 itérations) + test protocole. Correctifs vérif 2026-10-14 : snap magnétique systématique à la sortie de bande (la condition vitesse le sautait à pleine vitesse), plaque défense limitée à l avant (5 plaques opaques empilées), teinte label explicite (héritage noir du badge), fenêtre tuning ouvrable via Maj+F9 (aucune touche F libre). Revue complète : 0 réf stale, identifiants neufs tous définis/utilisés, accolades OK.",
+          "updated": "2026-10-14"
         }
       ]
     },

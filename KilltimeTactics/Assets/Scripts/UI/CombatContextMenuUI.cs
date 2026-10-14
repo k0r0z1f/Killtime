@@ -47,8 +47,20 @@ namespace Killtime.Tactics.CombatUI
         // Orbite inclinée RD-156 : ellipse monde, choix à l'avant, rotation aux bords.
         private const float OrbitTilt = 0.42f;
         private const float OrbitRadiusX = 170f;
-        private const float OrbitSpinSpeed = 130f;
-        private const float OrbitSnapSpeed = 480f;
+
+        // Navigation orbitale RD-164 (mutable : sliders dev en jeu via
+        // OrbitTuningWindow, figés en constantes après calibration).
+        internal static class OrbitTuning
+        {
+            public static float EdgeInnerFactor = 0.65f; // seuil entrée bande (× rx)
+            public static float ReleaseFactor = 0.55f;   // seuil sortie (hystérésis)
+            public static float EdgeOuterExtra = 60f;    // sortie externe (rx + px)
+            public static float MaxSpeed = 85f;          // °/s au bord externe
+            public static float RampMs = 180f;           // attaque/relâche vitesse
+            public static float SnapMs = 250f;           // snap ease-out (ms)
+            public static float MinHit = 30f;            // hitbox mini nœuds (px)
+            public static bool DwellPause = true;        // pause au survol nœud
+        }
 
         // Ardoise vide RD-158 : seul l'anneau des éléments est dessiné en attaque.
         // Le hub central + halos sont masqués mais le code est conservé tel quel
@@ -115,17 +127,45 @@ namespace Killtime.Tactics.CombatUI
         // clic/fermeture le prennent en compte en plus du hub.
         private Vector2 _orbitCenterGui;
 
-        // Moteur d'orbite inclinée RD-156 : angle courant, snap animé vers la
-        // cible, afford du nœud avant (attaque + défense ont chacun leur état).
+        // Moteur d'orbite inclinée RD-156/164 : angle courant, snap ease-out
+        // vers la cible, rampe de vélocité, hystérésis de bande, dwell au
+        // survol (attaque + défense ont chacun leur état).
         private float _orbitAngle;
         private float _orbitTargetAngle;
         private bool _orbitHasTarget;
+        private float _orbitSnapFrom;
+        private float _orbitSnapT;
+        private float _orbitVel;
+        private bool _orbitWasInBand;
+        private bool _orbitHoverHold;
         private bool _frontCanAfford;
         private bool _frontIsEndTurn;
         private bool _frontCanEndTurn;
         private float _defOrbitAngle;
         private float _defOrbitTargetAngle;
         private bool _defOrbitHasTarget;
+        private float _defSnapFrom;
+        private float _defSnapT;
+        private float _defVel;
+        private bool _defWasInBand;
+        private bool _defHoverHold;
+
+        // Snap ease-out RD-164 : mémorise le départ pour interpoler.
+        private void SnapAttackTo(int index, int count)
+        {
+            _orbitTargetAngle = OrbitSnapTarget(_orbitAngle, count, index);
+            _orbitSnapFrom = _orbitAngle;
+            _orbitSnapT = 0f;
+            _orbitHasTarget = true;
+        }
+
+        private void SnapDefenseTo(int index, int count)
+        {
+            _defOrbitTargetAngle = OrbitSnapTarget(_defOrbitAngle, count, index);
+            _defSnapFrom = _defOrbitAngle;
+            _defSnapT = 0f;
+            _defOrbitHasTarget = true;
+        }
 
         private static Texture2D _circleTex;
         private static Texture2D _ringTex;
@@ -304,6 +344,10 @@ namespace Killtime.Tactics.CombatUI
             _blockUntilMouseUp = false;
             _orbitAngle = 0f;
             _orbitHasTarget = false;
+            _orbitSnapT = 0f;
+            _orbitVel = 0f;
+            _orbitWasInBand = false;
+            _orbitHoverHold = false;
             _frontCanAfford = false;
             _frontIsEndTurn = false;
             _frontCanEndTurn = false;
@@ -321,7 +365,13 @@ namespace Killtime.Tactics.CombatUI
             _defenseHasAnchor = false;
             _attackHasAnchor = false;
             _orbitHasTarget = false;
+            _orbitVel = 0f;
+            _orbitWasInBand = false;
+            _orbitHoverHold = false;
             _defOrbitHasTarget = false;
+            _defVel = 0f;
+            _defWasInBand = false;
+            _defHoverHold = false;
             _frontCanAfford = false;
             _frontIsEndTurn = false;
             _frontCanEndTurn = false;
@@ -393,6 +443,10 @@ namespace Killtime.Tactics.CombatUI
             _blockUntilMouseUp = false;
             _defOrbitAngle = 0f;
             _defOrbitHasTarget = false;
+            _defSnapT = 0f;
+            _defVel = 0f;
+            _defWasInBand = false;
+            _defHoverHold = false;
 
             if (Killtime.Audio.KilltimeAudioManager.Instance != null)
                 Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.Trauma_Shock, 0.75f);

@@ -178,7 +178,7 @@ namespace Killtime.Tactics.CombatUI
                 GUILayout.EndHorizontal();
 
                 GUI.color = new Color(0.72f, 0.82f, 0.94f, 1f);
-                GUILayout.Label("◀ ▶ bords = tourner • clic = choisir • molette = +PA • droit vide/Bksp = retour", descStyle);
+                GUILayout.Label("◀ ▶ bords = tourner • clic = choisir • molette fond = item ±1 • molette pastille = +PA/PE • droit vide/Bksp = retour", descStyle);
 
                 GUI.color = new Color(0.92f, 0.96f, 1f, 1f);
                 GUILayout.Label(_hoveredAction.Description, descStyle);

@@ -161,8 +161,7 @@ namespace Killtime.Tactics.CombatUI
             int count = BuildAttackNodes(GetActiveActor(), turnUnit, out _).Count;
             if (count <= 0) return;
             int next = (OrbitFrontIndex(_orbitAngle, count) + dir + count) % count;
-            _orbitTargetAngle = OrbitSnapTarget(_orbitAngle, count, next);
-            _orbitHasTarget = true;
+            SnapAttackTo(next, count);
         }
 
         // Exécute le nœud avant (clic avant, bouton EXÉCUTER, Entrée).
@@ -238,6 +237,8 @@ namespace Killtime.Tactics.CombatUI
             _showOrbitCategories = false;
             _orbitAngle = 0f;
             _orbitHasTarget = false;
+            _orbitVel = 0f;
+            _orbitWasInBand = false;
             _hoveredAction = null;
             ArmInputBlocker();
         }
@@ -250,6 +251,8 @@ namespace Killtime.Tactics.CombatUI
             _showOrbitCategories = true;
             _orbitAngle = 0f;
             _orbitHasTarget = false;
+            _orbitVel = 0f;
+            _orbitWasInBand = false;
             _hoveredAction = null;
         }
 
@@ -294,6 +297,7 @@ namespace Killtime.Tactics.CombatUI
             if (nodeCount == 0)
             {
                 _hoveredAction = null;
+                _orbitHoverHold = false;
                 _frontCanAfford = false;
                 _frontIsEndTurn = false;
                 _frontCanEndTurn = false;
@@ -309,7 +313,7 @@ namespace Killtime.Tactics.CombatUI
             float step = 360f / nodeCount;
             float dt = Mathf.Max(Time.deltaTime, 0.0001f);
 
-            UpdateOrbitAngle(ref _orbitAngle, _orbitTargetAngle, ref _orbitHasTarget, nodeCount, mousePos, orbitCenter, rx, ry, dt);
+            UpdateOrbitAngle(ref _orbitAngle, ref _orbitTargetAngle, ref _orbitHasTarget, ref _orbitSnapFrom, ref _orbitSnapT, ref _orbitVel, ref _orbitWasInBand, nodeCount, mousePos, orbitCenter, rx, ry, dt, _orbitHoverHold);
             int front = OrbitFrontIndex(_orbitAngle, nodeCount);
             var frontNode = nodes[front];
             bool frontIsEnd = frontNode.Kind == 2;
@@ -358,10 +362,12 @@ namespace Killtime.Tactics.CombatUI
                 float ang = _orbitAngle + i * step;
                 float depth = OrbitDepth(ang);
                 Vector2 nodePos = OrbitNodePos(orbitCenter, rx, ry, ang);
-                float r = Mathf.Lerp(11f, ActionNodeRadius, depth);
+                float r = Mathf.Lerp(14f, ActionNodeRadius, depth);
                 Rect nodeRect = new Rect(nodePos.x - r, nodePos.y - r, r * 2f, r * 2f);
                 bool isFront = (i == front);
-                bool mouseOn = nodeRect.Contains(mousePos);
+                // Hitbox élargie RD-164 (visuel inchangé) : visable en mouvement.
+                float hitR = Mathf.Max(r, OrbitTuning.MinHit * 0.5f);
+                bool mouseOn = new Rect(nodePos.x - hitR, nodePos.y - hitR, hitR * 2f, hitR * 2f).Contains(mousePos);
                 if (mouseOn) mouseOnAny = true;
 
                 int bonusAP = 0;
@@ -497,18 +503,28 @@ namespace Killtime.Tactics.CombatUI
                     {
                         fontSize = 10,
                         fontStyle = FontStyle.Bold,
-                        alignment = TextAnchor.MiddleCenter
+                        alignment = TextAnchor.MiddleCenter,
+                        wordWrap = true,
+                        clipping = TextClipping.Clip
                     };
                     frontStyle.normal.textColor = canAfford ? Color.white : new Color(1f, 0.55f, 0.55f);
                     string frontTitle = isCat ? GetCategoryDisplayName(node.Category) : (isEnd ? "Terminer le tour" : action.Title);
                     Color tintPrev = GUI.color;
                     Matrix4x4 matPrev = GUI.matrix;
                     GUI.matrix = Matrix4x4.identity;
-                    Rect plateRect = new Rect(nodePos.x - 70f, nodePos.y + r + 4f, 140f, 18f);
+                    // Plaque auto-size : 140x18 fixe coupait les titres longs
+                    // ("Techniques & Spécialisations", actions à rallonge) des
+                    // qu'ils wrappaient sur 2 lignes. Largeur 200, hauteur
+                    // mesurée (1-2 lignes), clampée à l'écran.
+                    const float plateW = 200f;
+                    float plateH = Mathf.Clamp(frontStyle.CalcHeight(new GUIContent(frontTitle), plateW - 8f), 18f, 32f);
+                    float plateX = Mathf.Clamp(nodePos.x - plateW * 0.5f, 2f, Mathf.Max(2f, Screen.width - plateW - 2f));
+                    float plateY = Mathf.Min(nodePos.y + r + 4f, Mathf.Max(2f, Screen.height - plateH - 2f));
+                    Rect plateRect = new Rect(plateX, plateY, plateW, plateH);
                     GUI.color = new Color(0.02f, 0.03f, 0.06f, 0.92f);
                     GUI.DrawTexture(plateRect, _pixelTex);
                     GUI.color = Color.white;
-                    GUI.Label(plateRect, frontTitle, frontStyle);
+                    GUI.Label(new Rect(plateRect.x + 4f, plateRect.y + 1f, plateRect.width - 8f, plateRect.height - 2f), frontTitle, frontStyle);
                     GUI.matrix = matPrev;
                     GUI.color = tintPrev;
                 }
@@ -545,11 +561,20 @@ namespace Killtime.Tactics.CombatUI
                     }
                     else
                     {
-                        _orbitTargetAngle = OrbitSnapTarget(_orbitAngle, nodeCount, i);
-                        _orbitHasTarget = true;
+                        SnapAttackTo(i, nodeCount);
                     }
                     e.Use();
                     return;
+                }
+
+                // Molette sur le corps du nœud avant à mise variable : +PA précis.
+                if (isFront && !isCat && !isEnd && !wheelUsed && mouseOn && e.type == EventType.ScrollWheel && ActionAllowsVariableAP(action))
+                {
+                    int maxAffordable = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - action.ActionPointCost);
+                    if (e.delta.y < 0f && bonusAP < maxAffordable) _bonusAPMap[action] = bonusAP + 1;
+                    else if (e.delta.y > 0f && bonusAP > 0) _bonusAPMap[action] = bonusAP - 1;
+                    e.Use();
+                    wheelUsed = true;
                 }
 
                 // Clic droit sur l'avant-action : modulation immédiate de la mise PA (conservé).
@@ -563,16 +588,19 @@ namespace Killtime.Tactics.CombatUI
                 }
             }
 
-            // Molette hors pastilles : repli historique = mise PA de l'avant.
-            if (!wheelUsed && e.type == EventType.ScrollWheel && frontAction != null && ActionAllowsVariableAP(frontAction))
+            // Dwell RD-164 : le moteur du prochain frame sait si un nœud est tenu.
+            _orbitHoverHold = mouseOnAny;
+
+            // Molette sur le fond de l'orbite : pas discret ±1 item (RD-164).
+            // La mise PA reste sur les pastilles, le corps de l'avant et le clic droit.
+            if (!wheelUsed && e.type == EventType.ScrollWheel && nodeCount > 1)
             {
                 Vector2 rel = mousePos - orbitCenter;
                 float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
                 if (norm < 1.7f)
                 {
-                    int maxAffordable = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - frontAction.ActionPointCost);
-                    if (e.delta.y < 0f && frontBonusAP < maxAffordable) _bonusAPMap[frontAction] = frontBonusAP + 1;
-                    else if (e.delta.y > 0f && frontBonusAP > 0) _bonusAPMap[frontAction] = frontBonusAP - 1;
+                    int dir = e.delta.y > 0f ? 1 : -1;
+                    SnapAttackTo((front + dir + nodeCount) % nodeCount, nodeCount);
                     e.Use();
                 }
             }

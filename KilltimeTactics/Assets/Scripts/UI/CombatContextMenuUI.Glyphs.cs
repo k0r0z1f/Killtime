@@ -170,31 +170,80 @@ namespace Killtime.Tactics.CombatUI
             return t;
         }
 
-        private static float MoveAngle(float from, float to, float maxDelta)
-        {
-            float d = WrapAngle(to - from);
-            if (Mathf.Abs(d) <= maxDelta) return to;
-            return from + Mathf.Sign(d) * maxDelta;
-        }
-
-        // Snap animé prioritaire, sinon rotation continue quand la souris est
-        // dans les bandes latérales de l'anneau. Pause si un bouton est pressé
-        // (pour cliquer un nœud en mouvement).
-        private static void UpdateOrbitAngle(ref float angle, float target, ref bool hasTarget, int count, Vector2 mouse, Vector2 center, float rx, float ry, float dt)
+        // Moteur d'orbite RD-156/164 (partagé attaque/défense) : l'angle 90°
+        // (bas de l'ellipse, proche caméra) est l'avant = choix courant.
+        // RD-164 : snap ease-out cubic (250 ms) au lieu du linéaire, rampe de
+        // vélocité (180 ms), hystérésis entrée/sortie de bande, dwell (pause
+        // quand le curseur tient un nœud) et snap magnétique à la sortie de
+        // bande vers l'item le plus proche de l'avant. Hors bande + hors snap
+        // l'angle est strictement fixe : aucun mouvement sans cause.
+        private static void UpdateOrbitAngle(ref float angle, ref float target, ref bool hasTarget, ref float snapFrom, ref float snapT, ref float vel, ref bool wasInBand, int count, Vector2 mouse, Vector2 center, float rx, float ry, float dt, bool hoverHold)
         {
             if (count <= 0) return;
+            float snapDur = Mathf.Max(0.05f, OrbitTuning.SnapMs / 1000f);
+            float rampRate = OrbitTuning.MaxSpeed / Mathf.Max(0.05f, OrbitTuning.RampMs / 1000f);
+
+            // Snap explicite (clic, clavier, molette, magnétique) : ease-out.
             if (hasTarget)
             {
-                float na = MoveAngle(angle, target, OrbitSnapSpeed * dt);
-                if (Mathf.Approximately(WrapAngle(na - target), 0f)) hasTarget = false;
-                angle = na;
+                snapT += dt;
+                float k = Mathf.Clamp01(snapT / snapDur);
+                float e = 1f - Mathf.Pow(1f - k, 3f);
+                angle = snapFrom + WrapAngle(target - snapFrom) * e;
+                if (k >= 1f)
+                {
+                    angle = target;
+                    hasTarget = false;
+                }
+                vel = 0f;
+                wasInBand = false;
                 return;
             }
-            if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) return;
+
+            // Clic en cours : l'anneau ne bouge pas sous le curseur pressé.
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1))
+            {
+                vel = 0f;
+                return;
+            }
+
             float dx = mouse.x - center.x;
             float dy = mouse.y - center.y;
-            bool inBand = Mathf.Abs(dx) > rx * 0.45f && Mathf.Abs(dx) < rx + 60f && Mathf.Abs(dy) < ry + 70f;
-            if (inBand) angle += Mathf.Sign(dx) * OrbitSpinSpeed * dt;
+            float adx = Mathf.Abs(dx);
+            float inner = rx * (wasInBand ? OrbitTuning.ReleaseFactor : OrbitTuning.EdgeInnerFactor);
+            float outer = rx + OrbitTuning.EdgeOuterExtra;
+            bool inBand = adx > inner && adx < outer && Mathf.Abs(dy) < ry + 70f;
+
+            if (!inBand)
+            {
+                // Sortie de bande : snap magnétique systématique vers l'item
+                // le plus proche de l'avant (ease-out 250 ms, position
+                // continue : aucune coupure visible même à pleine vitesse).
+                if (wasInBand)
+                {
+                    wasInBand = false;
+                    int front = OrbitFrontIndex(angle, count);
+                    target = OrbitSnapTarget(angle, count, front);
+                    snapFrom = angle;
+                    snapT = 0f;
+                    hasTarget = true;
+                    vel = 0f;
+                }
+                return;
+            }
+
+            wasInBand = true;
+
+            // Dwell : curseur sur un nœud = freinage, l'item devient visable.
+            float desired = 0f;
+            if (!(hoverHold && OrbitTuning.DwellPause))
+            {
+                float t = Mathf.Clamp01((adx - inner) / Mathf.Max(1f, outer - inner));
+                float eased = t * t;
+                if (eased >= 0.02f) desired = Mathf.Sign(dx) * OrbitTuning.MaxSpeed * eased;
+            }
+            vel = Mathf.MoveTowards(vel, desired, rampRate * dt);
+            angle += vel * dt;
         }
 
         // Pips PA diégétiques (calibrage visuel) : le chiffré reste affiché à côté.

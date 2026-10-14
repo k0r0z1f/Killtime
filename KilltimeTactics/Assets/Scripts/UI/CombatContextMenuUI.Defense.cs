@@ -347,8 +347,7 @@ namespace Killtime.Tactics.CombatUI
         {
             if (!_isDefenseMode) return;
             int next = (OrbitFrontIndex(_defOrbitAngle, 5) + dir + 5) % 5;
-            _defOrbitTargetAngle = OrbitSnapTarget(_defOrbitAngle, 5, next);
-            _defOrbitHasTarget = true;
+            SnapDefenseTo(next, 5);
         }
 
         /// <summary>Orbite inclinée RD-156 : 5 skills défensifs + confirmer, l'avant paramètre. Molette/clic droit sur l'avant = +PA.</summary>
@@ -368,7 +367,11 @@ namespace Killtime.Tactics.CombatUI
             for (int v = 0; v < totalNodes; v++)
                 if (enabled[v] || v == 4) visIdx.Add(v);
             int count = visIdx.Count;
-            if (count == 0) return;
+            if (count == 0)
+            {
+                _defHoverHold = false;
+                return;
+            }
 
             Vector2 orbitCenter = DefenseGroundGui() + new Vector2(0f, -30f);
             float rx = OrbitRadiusX;
@@ -376,7 +379,7 @@ namespace Killtime.Tactics.CombatUI
             float step = 360f / count;
             float dt = Mathf.Max(Time.deltaTime, 0.0001f);
 
-            UpdateOrbitAngle(ref _defOrbitAngle, _defOrbitTargetAngle, ref _defOrbitHasTarget, count, mousePos, orbitCenter, rx, ry, dt);
+            UpdateOrbitAngle(ref _defOrbitAngle, ref _defOrbitTargetAngle, ref _defOrbitHasTarget, ref _defSnapFrom, ref _defSnapT, ref _defVel, ref _defWasInBand, count, mousePos, orbitCenter, rx, ry, dt, _defHoverHold);
             int front = OrbitFrontIndex(_defOrbitAngle, count);
             // Le hub prévisualise l'avant : le paramétrage suit l'anneau.
             _hoveredDefenseNode = visIdx[front];
@@ -397,17 +400,21 @@ namespace Killtime.Tactics.CombatUI
             for (int i = 0; i < count; i++) order.Add(i);
             order.Sort((a, b) => OrbitDepth(_defOrbitAngle + a * step).CompareTo(OrbitDepth(_defOrbitAngle + b * step)));
 
+            bool defHoverNow = false;
             foreach (int i in order)
             {
                 int li = visIdx[i]; // index logique du nœud (RD-160)
                 float ang = _defOrbitAngle + i * step;
                 float depth = OrbitDepth(ang);
                 Vector2 nodePos = OrbitNodePos(orbitCenter, rx, ry, ang);
-                float r = Mathf.Lerp(11f, ActionNodeRadius, depth);
+                float r = Mathf.Lerp(14f, ActionNodeRadius, depth);
                 Rect nodeRect = new Rect(nodePos.x - r, nodePos.y - r, r * 2f, r * 2f);
 
                 bool isFront = (i == front);
-                bool mouseOn = nodeRect.Contains(mousePos);
+                // Hitbox élargie RD-164 (visuel inchangé) : visable en mouvement.
+                float hitR = Mathf.Max(r, OrbitTuning.MinHit * 0.5f);
+                bool mouseOn = new Rect(nodePos.x - hitR, nodePos.y - hitR, hitR * 2f, hitR * 2f).Contains(mousePos);
+                if (mouseOn) defHoverNow = true;
                 bool isSelected = (li == selectedIdx);
                 bool isConfirm = (li == 4);
                 float alpha = Mathf.Lerp(0.45f, 1f, depth);
@@ -462,6 +469,7 @@ namespace Killtime.Tactics.CombatUI
                     Rect peRect = new Rect(nodeRect.xMax + 2f, nodePos.y - chipH * 0.5f, chipW, chipH);
                     bool paHover = paRect.Contains(mousePos);
                     bool peHover = peRect.Contains(mousePos);
+                    if (paHover || peHover) defHoverNow = true;
                     DrawStakeChip(paRect, $"+{_defenseBonusAP} PA", ColorArcaneAmber, paHover);
                     DrawStakeChip(peRect, $"+{_defenseBonusPE} PE", ColorArcaneViolet, peHover);
                     if ((paHover || peHover) && e.type == EventType.ScrollWheel)
@@ -487,13 +495,41 @@ namespace Killtime.Tactics.CombatUI
                 {
                     fontSize = 9,
                     fontStyle = FontStyle.Bold,
-                    alignment = TextAnchor.MiddleCenter
+                    alignment = TextAnchor.MiddleCenter,
+                    wordWrap = true,
+                    clipping = TextClipping.Clip
                 };
                 tipStyle.normal.textColor = enabled[li] ? Color.white : new Color(0.6f, 0.6f, 0.6f);
-                Rect tipRect = new Rect(nodePos.x - 50f, nodePos.y + r + 1f, 100f, 14f);
-                GUI.Label(tipRect, nodeNames[li], tipStyle);
-
+                // Plaque opaque RD-162 sur l'avant seul : une plaque par nœud
+                // empilait 150 px opaques sur l'anneau. Les autres gardent un
+                // label nu (même largeur/hauteur, sans fond).
+                const float tipW = 150f;
+                float tipH = Mathf.Clamp(tipStyle.CalcHeight(new GUIContent(nodeNames[li]), tipW - 8f), 14f, 28f);
+                float tipX = Mathf.Clamp(nodePos.x - tipW * 0.5f, 2f, Mathf.Max(2f, Screen.width - tipW - 2f));
+                float tipY = Mathf.Min(nodePos.y + r + 1f, Mathf.Max(2f, Screen.height - tipH - 2f));
+                Rect tipRect = new Rect(tipX, tipY, tipW, tipH);
+                Rect tipInner = new Rect(tipRect.x + 4f, tipRect.y + 1f, tipRect.width - 8f, tipRect.height - 2f);
+                Matrix4x4 tipMatPrev = GUI.matrix;
+                GUI.matrix = Matrix4x4.identity;
+                if (isFront)
+                {
+                    GUI.color = new Color(0.02f, 0.03f, 0.06f, 0.92f);
+                    GUI.DrawTexture(tipRect, _pixelTex);
+                }
+                GUI.color = Color.white;
+                GUI.Label(tipInner, nodeNames[li], tipStyle);
+                GUI.matrix = tipMatPrev;
                 GUI.color = prevCol;
+
+                // Molette sur le corps du nœud avant : mise PA aveugle (précis).
+                if (isFront && !isConfirm && !defWheelUsed && mouseOn && e.type == EventType.ScrollWheel && enabled[li] && _defenseWants)
+                {
+                    int maxBonus = DefenseMaxBonusAP();
+                    if (e.delta.y < 0f && _defenseBonusAP < maxBonus) _defenseBonusAP++;
+                    else if (e.delta.y > 0f && _defenseBonusAP > 0) _defenseBonusAP--;
+                    e.Use();
+                    defWheelUsed = true;
+                }
 
                 // Clic droit sur l'avant : +PA aveugle (mise cachée).
                 if (isFront && !isConfirm && mouseOn && e.type == EventType.MouseDown && e.button == 1 && enabled[li] && _defenseWants)
@@ -516,8 +552,7 @@ namespace Killtime.Tactics.CombatUI
                     {
                         // Amener devant ; un skill cliqué est sélectionné aussitôt
                         // (Confirmer exige un second clic une fois à l'avant).
-                        _defOrbitTargetAngle = OrbitSnapTarget(_defOrbitAngle, count, i);
-                        _defOrbitHasTarget = true;
+                        SnapDefenseTo(i, count);
                         if (!isConfirm && enabled[li])
                         {
                             ApplyDefenseNodeClick(li, true);
@@ -533,16 +568,19 @@ namespace Killtime.Tactics.CombatUI
                 }
             }
 
-            // Molette hors pastilles : repli = +PA aveugle sur l'avant (skill actif).
-            if (!defWheelUsed && e.type == EventType.ScrollWheel && visIdx[front] != 4 && enabled[visIdx[front]] && _defenseWants)
+            // Dwell RD-164 : le moteur du prochain frame sait si un nœud est tenu.
+            _defHoverHold = defHoverNow;
+
+            // Molette sur le fond : pas discret ±1 (RD-164). Mise PA/PE :
+            // pastilles, corps de l'avant, clic droit.
+            if (!defWheelUsed && e.type == EventType.ScrollWheel && count > 1)
             {
                 Vector2 rel = mousePos - orbitCenter;
                 float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
                 if (norm < 1.7f)
                 {
-                    int maxBonus = DefenseMaxBonusAP();
-                    if (e.delta.y < 0f && _defenseBonusAP < maxBonus) _defenseBonusAP++;
-                    else if (e.delta.y > 0f && _defenseBonusAP > 0) _defenseBonusAP--;
+                    int dir = e.delta.y > 0f ? 1 : -1;
+                    SnapDefenseTo((front + dir + count) % count, count);
                     e.Use();
                 }
             }
