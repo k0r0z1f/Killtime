@@ -381,19 +381,9 @@ namespace Killtime.Tactics.CombatUI
             // Le hub prévisualise l'avant : le paramétrage suit l'anneau.
             _hoveredDefenseNode = visIdx[front];
 
-            // Molette sur l'orbite = +PA aveugle sur le choix avant (skill actif).
-            if (e.type == EventType.ScrollWheel && visIdx[front] != 4 && enabled[visIdx[front]] && _defenseWants)
-            {
-                Vector2 rel = mousePos - orbitCenter;
-                float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
-                if (norm < 1.7f)
-                {
-                    int maxBonus = DefenseMaxBonusAP();
-                    if (e.delta.y < 0f && _defenseBonusAP < maxBonus) _defenseBonusAP++;
-                    else if (e.delta.y > 0f && _defenseBonusAP > 0) _defenseBonusAP--;
-                    e.Use();
-                }
-            }
+            // La molette est gérée dans la boucle : pastilles PA/PE de l'avant,
+            // sinon repli sur la mise PA de l'avant (voir après boucle).
+            bool defWheelUsed = false;
 
             // Guide elliptique : même langage que l'orbite d'attaque.
             Color prevGuide = GUI.color;
@@ -463,6 +453,36 @@ namespace Killtime.Tactics.CombatUI
                     GUI.Label(badgeRect, li == 3 ? "0" : DefenseRequiredBase().ToString(), badgeStyle);
                 }
 
+                // Pastilles latérales RD-161 (avant-skills) : PA à gauche, PE à
+                // droite, en transparence. Molette dessus = ajuster la mise globale.
+                if (isFront && !isConfirm && enabled[li] && _defenseWants && depth >= 0.4f)
+                {
+                    float chipW = 30f, chipH = 13f;
+                    Rect paRect = new Rect(nodeRect.x - chipW - 2f, nodePos.y - chipH * 0.5f, chipW, chipH);
+                    Rect peRect = new Rect(nodeRect.xMax + 2f, nodePos.y - chipH * 0.5f, chipW, chipH);
+                    bool paHover = paRect.Contains(mousePos);
+                    bool peHover = peRect.Contains(mousePos);
+                    DrawStakeChip(paRect, $"+{_defenseBonusAP} PA", ColorArcaneAmber, paHover);
+                    DrawStakeChip(peRect, $"+{_defenseBonusPE} PE", ColorArcaneViolet, peHover);
+                    if ((paHover || peHover) && e.type == EventType.ScrollWheel)
+                    {
+                        if (paHover)
+                        {
+                            int maxBonus = DefenseMaxBonusAP();
+                            if (e.delta.y < 0f && _defenseBonusAP < maxBonus) _defenseBonusAP++;
+                            else if (e.delta.y > 0f && _defenseBonusAP > 0) _defenseBonusAP--;
+                        }
+                        else
+                        {
+                            int maxPe = DefenseMaxPE();
+                            if (e.delta.y < 0f && _defenseBonusPE < maxPe) _defenseBonusPE++;
+                            else if (e.delta.y > 0f && _defenseBonusPE > 0) _defenseBonusPE--;
+                        }
+                        e.Use();
+                        defWheelUsed = true;
+                    }
+                }
+
                 var tipStyle = new GUIStyle(GUI.skin.label)
                 {
                     fontSize = 9,
@@ -510,6 +530,20 @@ namespace Killtime.Tactics.CombatUI
                     }
                     e.Use();
                     return;
+                }
+            }
+
+            // Molette hors pastilles : repli = +PA aveugle sur l'avant (skill actif).
+            if (!defWheelUsed && e.type == EventType.ScrollWheel && visIdx[front] != 4 && enabled[visIdx[front]] && _defenseWants)
+            {
+                Vector2 rel = mousePos - orbitCenter;
+                float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
+                if (norm < 1.7f)
+                {
+                    int maxBonus = DefenseMaxBonusAP();
+                    if (e.delta.y < 0f && _defenseBonusAP < maxBonus) _defenseBonusAP++;
+                    else if (e.delta.y > 0f && _defenseBonusAP > 0) _defenseBonusAP--;
+                    e.Use();
                 }
             }
         }

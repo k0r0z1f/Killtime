@@ -215,6 +215,23 @@ namespace Killtime.Tactics.CombatUI
             GUILayout.Label(new string('●', filled) + new string('○', total - filled), pipStyle);
         }
 
+        // Pastille latérale de mise RD-161 : fond translucide, pleine au survol.
+        private static void DrawStakeChip(Rect rect, string text, Color accent, bool hovered)
+        {
+            Color prev = GUI.color;
+            GUI.color = new Color(accent.r, accent.g, accent.b, hovered ? 0.38f : 0.15f);
+            GUI.DrawTexture(rect, _circleTex);
+            GUI.color = new Color(1f, 1f, 1f, hovered ? 1f : 0.60f);
+            var chipStyle = new GUIStyle(GUI.skin.label)
+            {
+                fontSize = 8,
+                fontStyle = FontStyle.Bold,
+                alignment = TextAnchor.MiddleCenter
+            };
+            GUI.Label(rect, text, chipStyle);
+            GUI.color = prev;
+        }
+
         private static Texture2D GenerateCircleTexture(int size, bool hollow, float strokeWidth = 3f)
         {
             var tex = new Texture2D(size, size, TextureFormat.RGBA32, false)

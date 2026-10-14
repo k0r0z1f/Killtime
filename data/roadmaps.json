@@ -1134,6 +1134,22 @@
           "suggestedAsset": "UI/CombatContextMenuUI.*.cs",
           "details": "Règle user 2026-10-13 : une option non valide dans le moment ne s'affiche pas. FAIT : .Attack (BuildAttackNodes partagé dessin + clavier : items filtrés sur coût de base payable + CanExecute, sablier ajouté seulement si canEndTurn, ex. fin de tour hors tour masquée), .Defense (visIdx : nœuds invalides masqués — ex. Parade sans arme, skills à 0 PA — Confirmer et Passif toujours visibles, index logiques conservés pour hub/clic), Hub.cs créé (hub move-only, .meta à générer par l'éditeur). Filtrage au coût de base : la mise bonus +PA/+PE reste modulable une fois l'option affichée. Vérif : 0 API publique touchée, accolades OK, tous fichiers <800 l. (max 603). Reste : rebuild + test en jeu (sablier absent hors tour, orbites réduites, défense à 0 PA = Passif + Confirmer).",
           "updated": "2026-10-13"
+        },
+        {
+          "id": "RD-161",
+          "title": "Menu radial : pastilles latérales PA/PE + molette",
+          "epic": "UI",
+          "status": "done",
+          "priority": "high",
+          "order": 72,
+          "scene": "Killzone_Alpha3",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "UI/CombatContextMenuUI.*.cs",
+          "details": "Demande user 2026-10-13 : de chaque côté d'un élément à mise variable, pastille PA à gauche / PE à droite en transparence, molette dessus = ajuster. FAIT : helper DrawStakeChip (.Glyphs, fond translucide + pleine au survol, ambre PA / violet PE), .Attack (pastilles par nœud à mise variable — PE seulement si attaque non-💣 — molette par nœud clampée PA payable / PE dépensable, repli molette-orbite = PA de l'avant, pastilles exclues du retour-clic-droit), .Defense (pastilles sur l'avant-skill = mise globale, repli conservé, bug latent corrigé : enabled[front] positionnel → enabled[visIdx[front]]). Fix : accolade orpheline du vieux bloc molette défense retirée. Vérif : accolades OK, fichiers <800 l. (max 612). Reste : rebuild + test en jeu (pastilles visibles côté avant, molette PA/PE, repli).",
+          "updated": "2026-10-13"
         }
       ]
     },

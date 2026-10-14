@@ -331,19 +331,8 @@ namespace Killtime.Tactics.CombatUI
                 _frontCanAfford = activeActor.Stats.CurrentActionPoints >= frontCost && frontAction.CanExecute(activeActor, _contextTarget);
             }
 
-            // Molette sur l'orbite = mise PA aveugle sur le choix avant (inchangé).
-            if (e.type == EventType.ScrollWheel && frontAction != null && ActionAllowsVariableAP(frontAction))
-            {
-                Vector2 rel = mousePos - orbitCenter;
-                float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
-                if (norm < 1.7f)
-                {
-                    int maxAffordable = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - frontAction.ActionPointCost);
-                    if (e.delta.y < 0f && frontBonusAP < maxAffordable) _bonusAPMap[frontAction] = frontBonusAP + 1;
-                    else if (e.delta.y > 0f && frontBonusAP > 0) _bonusAPMap[frontAction] = frontBonusAP - 1;
-                    e.Use();
-                }
-            }
+            // La molette est gérée dans la boucle : pastilles PA/PE du nœud
+            // survolé, sinon repli sur la mise PA de l'avant (voir après boucle).
 
             // Guide elliptique : l'orbite appartient au sol de la scène.
             Color prevGuide = GUI.color;
@@ -359,6 +348,7 @@ namespace Killtime.Tactics.CombatUI
             order.Sort((a, b) => OrbitDepth(_orbitAngle + a * step).CompareTo(OrbitDepth(_orbitAngle + b * step)));
 
             bool mouseOnAny = false;
+            bool wheelUsed = false;
             foreach (int i in order)
             {
                 var node = nodes[i];
@@ -459,6 +449,45 @@ namespace Killtime.Tactics.CombatUI
                     GUI.Label(badgeRect, badgeText, badgeStyle);
                 }
 
+                // Pastilles latérales RD-161 : PA à gauche, PE à droite, en
+                // transparence. Molette dessus = ajuster cette mise du nœud.
+                bool paCapable = !isCat && !isEnd && ActionAllowsVariableAP(action);
+                bool peCapable = paCapable && action.Category == ActionCategory.AttaqueEtPassesDarmes
+                    && !action.Title.StartsWith("💣");
+                if ((paCapable || peCapable) && depth >= 0.4f)
+                {
+                    float chipW = 30f, chipH = 13f;
+                    Rect paRect = new Rect(nodeRect.x - chipW - 2f, nodePos.y - chipH * 0.5f, chipW, chipH);
+                    Rect peRect = new Rect(nodeRect.xMax + 2f, nodePos.y - chipH * 0.5f, chipW, chipH);
+                    bool paHover = paCapable && paRect.Contains(mousePos);
+                    bool peHover = peCapable && peRect.Contains(mousePos);
+                    if (paHover || peHover) mouseOnAny = true;
+                    if (paCapable)
+                    {
+                        DrawStakeChip(paRect, $"+{bonusAP} PA", ColorArcaneAmber, paHover);
+                        if (paHover && e.type == EventType.ScrollWheel)
+                        {
+                            int maxAff = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - action.ActionPointCost);
+                            if (e.delta.y < 0f && bonusAP < maxAff) _bonusAPMap[action] = bonusAP + 1;
+                            else if (e.delta.y > 0f && bonusAP > 0) _bonusAPMap[action] = bonusAP - 1;
+                            e.Use();
+                            wheelUsed = true;
+                        }
+                    }
+                    if (peCapable)
+                    {
+                        DrawStakeChip(peRect, $"+{bonusPE} PE", ColorArcaneViolet, peHover);
+                        if (peHover && e.type == EventType.ScrollWheel)
+                        {
+                            int maxPe = activeActor.Stats.GetSpendablePE();
+                            if (e.delta.y < 0f && bonusPE < maxPe) _bonusPEMap[action] = bonusPE + 1;
+                            else if (e.delta.y > 0f && bonusPE > 0) _bonusPEMap[action] = bonusPE - 1;
+                            e.Use();
+                            wheelUsed = true;
+                        }
+                    }
+                }
+
                 // Titre du choix avant, sous le nœud, sur plaque opaque.
                 // Matrice identité forcée : un autre composant IMGUI peut laisser
                 // une rotation active, ce qui rendait le texte en miroir.
@@ -531,6 +560,20 @@ namespace Killtime.Tactics.CombatUI
                     ArmInputBlocker();
                     e.Use();
                     return;
+                }
+            }
+
+            // Molette hors pastilles : repli historique = mise PA de l'avant.
+            if (!wheelUsed && e.type == EventType.ScrollWheel && frontAction != null && ActionAllowsVariableAP(frontAction))
+            {
+                Vector2 rel = mousePos - orbitCenter;
+                float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
+                if (norm < 1.7f)
+                {
+                    int maxAffordable = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - frontAction.ActionPointCost);
+                    if (e.delta.y < 0f && frontBonusAP < maxAffordable) _bonusAPMap[frontAction] = frontBonusAP + 1;
+                    else if (e.delta.y > 0f && frontBonusAP > 0) _bonusAPMap[frontAction] = frontBonusAP - 1;
+                    e.Use();
                 }
             }
 
