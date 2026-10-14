@@ -133,8 +133,12 @@ namespace Killtime.Tactics.CombatUI
             GUI.DrawTexture(new Rect(_defenseTargetGui.x - glowSize * 0.5f, _defenseTargetGui.y - glowSize * 0.5f, glowSize, glowSize), _glowTex);
 
             float ringSize = DefenseSpotlightHalfSize * 1.5f * pulse;
+            Rect defRingRect = new Rect(_defenseTargetGui.x - ringSize * 0.5f, _defenseTargetGui.y - ringSize * 0.5f, ringSize, ringSize);
             GUI.color = new Color(1f, 0.75f, 0.1f, 0.95f);
-            GUI.DrawTexture(new Rect(_defenseTargetGui.x - ringSize * 0.5f, _defenseTargetGui.y - ringSize * 0.5f, ringSize, ringSize), _ringTex);
+            GUI.DrawTexture(defRingRect, _ringTex);
+            DrawRuneTickRing(defRingRect, new Color(1f, 0.75f, 0.1f, 0.6f), -Time.time * 12f);
+            // Thereline : même langage que le radial d'attaque (RD-155).
+            DrawTetherLine(_defenseTargetGui, _centerPos, new Color(1f, 0.75f, 0.1f, 0.35f), 2f);
 
             GUI.color = Color.white;
             var tagStyle = new GUIStyle(GUI.skin.label)
@@ -219,7 +223,8 @@ namespace Killtime.Tactics.CombatUI
 
             titleStyle.normal.textColor = Color.white;
             GUI.color = Color.white;
-            GUILayout.Label($"🛡️ {_defenseDefender.Stats.Name}", titleStyle);
+            GUILayout.Label($"◈ 🛡️ {_defenseDefender.Stats.Name}", titleStyle);
+            DrawPAPips(availPA, totalCost);
 
             string partName = BodyPartInfo.GetInfo(_defenseDuel.TargetedPart).DisplayName;
             GUI.color = new Color(0.92f, 0.96f, 1f, 1f);
@@ -327,76 +332,126 @@ namespace Killtime.Tactics.CombatUI
             GUI.color = prevColor;
         }
 
-        /// <summary>Anneau : 4 skills défensifs + confirmer. Molette/clic droit = +PA.</summary>
+        // Projection au sol du défenseur : centre de l'orbite inclinée.
+        private Vector2 DefenseGroundGui()
+        {
+            var cam = Camera.main;
+            if (cam == null || _defenseDefender == null) return _centerPos + new Vector2(0f, 120f);
+            Vector3 scr = cam.WorldToScreenPoint(_defenseDefender.transform.position);
+            if (scr.z < 0f) return _centerPos + new Vector2(0f, 120f);
+            return new Vector2(scr.x, Screen.height - scr.y);
+        }
+
+        // Clavier RD-156 : amène le voisin de l'avant au premier plan.
+        private void DefOrbitStepKeyboard(int dir)
+        {
+            if (!_isDefenseMode) return;
+            int next = (OrbitFrontIndex(_defOrbitAngle, 5) + dir + 5) % 5;
+            _defOrbitTargetAngle = OrbitSnapTarget(_defOrbitAngle, 5, next);
+            _defOrbitHasTarget = true;
+        }
+
+        /// <summary>Orbite inclinée RD-156 : 5 skills défensifs + confirmer, l'avant paramètre. Molette/clic droit sur l'avant = +PA.</summary>
         private void DrawDefenseRing(Vector2 mousePos, Event e)
         {
             bool canActive = DefenseCanUseActive();
             bool canParry = canActive && DefenseCanParry();
             string[] nodeNames = { "Esquive", _defenseParryLabel, "Blocage", "Passif", "Confirmer" };
             string[] glyphKeys = { "DEF_ESQUIVE", "DEF_PARADE", "DEF_BLOCAGE", "DEF_PASSIF", "DEF_CONFIRM" };
-            float[] anglesDeg = { -90f, 0f, 90f, 180f, 45f };
+            const int totalNodes = 5;
             bool[] enabled = { canActive, canParry, canActive, true, true };
             int selectedIdx = DefenseSelectedIndex();
 
-            _hoveredDefenseNode = -1;
+            // RD-160 : seules les options valides dans le moment s'affichent
+            // (Confirmer toujours). visIdx[position] = index logique 0..4.
+            var visIdx = new List<int>(totalNodes);
+            for (int v = 0; v < totalNodes; v++)
+                if (enabled[v] || v == 4) visIdx.Add(v);
+            int count = visIdx.Count;
+            if (count == 0) return;
 
-            for (int i = 0; i < 5; i++)
+            Vector2 orbitCenter = DefenseGroundGui() + new Vector2(0f, -30f);
+            float rx = OrbitRadiusX;
+            float ry = OrbitRadiusX * OrbitTilt;
+            float step = 360f / count;
+            float dt = Mathf.Max(Time.deltaTime, 0.0001f);
+
+            UpdateOrbitAngle(ref _defOrbitAngle, _defOrbitTargetAngle, ref _defOrbitHasTarget, count, mousePos, orbitCenter, rx, ry, dt);
+            int front = OrbitFrontIndex(_defOrbitAngle, count);
+            // Le hub prévisualise l'avant : le paramétrage suit l'anneau.
+            _hoveredDefenseNode = visIdx[front];
+
+            // Molette sur l'orbite = +PA aveugle sur le choix avant (skill actif).
+            if (e.type == EventType.ScrollWheel && visIdx[front] != 4 && enabled[visIdx[front]] && _defenseWants)
             {
-                float rad = anglesDeg[i] * Mathf.Deg2Rad;
-                Vector2 nodePos = _centerPos + new Vector2(Mathf.Cos(rad), Mathf.Sin(rad)) * OuterRadius;
-                Rect nodeRect = new Rect(nodePos.x - ActionNodeRadius, nodePos.y - ActionNodeRadius, ActionNodeRadius * 2f, ActionNodeRadius * 2f);
-
-                bool isHovered = nodeRect.Contains(mousePos);
-                if (isHovered) _hoveredDefenseNode = i;
-                bool isSelected = (i == selectedIdx);
-                bool isConfirm = (i == 4);
-
-                int maxBonus = DefenseMaxBonusAP();
-                if (isHovered && !isConfirm && enabled[i] && _defenseWants)
+                Vector2 rel = mousePos - orbitCenter;
+                float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
+                if (norm < 1.7f)
                 {
-                    if (e.type == EventType.ScrollWheel)
-                    {
-                        if (e.delta.y < 0f && _defenseBonusAP < maxBonus) _defenseBonusAP++;
-                        else if (e.delta.y > 0f && _defenseBonusAP > 0) _defenseBonusAP--;
-                        e.Use();
-                    }
-                    else if (e.type == EventType.MouseDown && e.button == 1)
-                    {
-                        _defenseBonusAP = (_defenseBonusAP < maxBonus) ? _defenseBonusAP + 1 : 0;
-                        ArmInputBlocker();
-                        e.Use();
-                    }
+                    int maxBonus = DefenseMaxBonusAP();
+                    if (e.delta.y < 0f && _defenseBonusAP < maxBonus) _defenseBonusAP++;
+                    else if (e.delta.y > 0f && _defenseBonusAP > 0) _defenseBonusAP--;
+                    e.Use();
                 }
+            }
+
+            // Guide elliptique : même langage que l'orbite d'attaque.
+            Color prevGuide = GUI.color;
+            Rect orbitRect = new Rect(orbitCenter.x - rx, orbitCenter.y - ry, rx * 2f, ry * 2f);
+            GUI.color = new Color(1f, 0.75f, 0.1f, 0.16f);
+            GUI.DrawTexture(orbitRect, _ringTex);
+            DrawRuneTickRing(orbitRect, new Color(1f, 0.75f, 0.1f, 0.30f), _defOrbitAngle);
+            GUI.color = prevGuide;
+
+            var order = new List<int>(count);
+            for (int i = 0; i < count; i++) order.Add(i);
+            order.Sort((a, b) => OrbitDepth(_defOrbitAngle + a * step).CompareTo(OrbitDepth(_defOrbitAngle + b * step)));
+
+            foreach (int i in order)
+            {
+                int li = visIdx[i]; // index logique du nœud (RD-160)
+                float ang = _defOrbitAngle + i * step;
+                float depth = OrbitDepth(ang);
+                Vector2 nodePos = OrbitNodePos(orbitCenter, rx, ry, ang);
+                float r = Mathf.Lerp(11f, ActionNodeRadius, depth);
+                Rect nodeRect = new Rect(nodePos.x - r, nodePos.y - r, r * 2f, r * 2f);
+
+                bool isFront = (i == front);
+                bool mouseOn = nodeRect.Contains(mousePos);
+                bool isSelected = (li == selectedIdx);
+                bool isConfirm = (li == 4);
+                float alpha = Mathf.Lerp(0.45f, 1f, depth);
 
                 bool hasStakes = isSelected && (_defenseBonusAP > 0 || _defenseBonusPE > 0);
                 Color prevCol = GUI.color;
 
-                if (isHovered || (isSelected && !isConfirm))
+                if (isFront || (isSelected && !isConfirm))
                 {
                     Color haloCol = hasStakes ? ColorArcaneAmber : (isConfirm ? ColorArcaneEmerald : ColorArcaneCyan);
-                    GUI.color = new Color(haloCol.r, haloCol.g, haloCol.b, hasStakes ? 0.5f : 0.35f);
-                    float haloSize = ActionNodeRadius * (hasStakes ? 3.1f : 2.8f);
+                    GUI.color = new Color(haloCol.r, haloCol.g, haloCol.b, (hasStakes ? 0.5f : 0.35f) * alpha);
+                    float haloSize = r * (hasStakes ? 3.1f : 2.8f);
                     GUI.DrawTexture(new Rect(nodePos.x - haloSize * 0.5f, nodePos.y - haloSize * 0.5f, haloSize, haloSize), _glowTex);
+                    DrawRuneTickRing(nodeRect, new Color(haloCol.r, haloCol.g, haloCol.b, 0.6f * alpha), Time.time * 20f);
                 }
 
-                GUI.color = enabled[i] ? new Color(0.03f, 0.06f, 0.1f, 0.95f) : new Color(0.14f, 0.04f, 0.04f, 0.85f);
+                GUI.color = enabled[li] ? new Color(0.03f, 0.06f, 0.1f, 0.95f * alpha) : new Color(0.14f, 0.04f, 0.04f, 0.85f * alpha);
                 GUI.DrawTexture(nodeRect, _circleTex);
 
-                Color borderCol = !enabled[i]
+                Color borderCol = !enabled[li]
                     ? ColorArcaneCrimson
-                    : (isConfirm ? ColorArcaneEmerald : (isSelected ? Color.white : (isHovered ? ColorArcaneAmber : ColorArcaneCyan)));
-                GUI.color = borderCol;
+                    : (isConfirm ? ColorArcaneEmerald : (isFront ? Color.white : (isSelected ? Color.white : ColorArcaneCyan)));
+                GUI.color = new Color(borderCol.r, borderCol.g, borderCol.b, alpha);
                 GUI.DrawTexture(nodeRect, _ringTex);
 
-                Texture2D glyph = GetDefenseGlyph(glyphKeys[i]);
-                GUI.color = enabled[i] ? (isHovered ? Color.white : new Color(0.9f, 0.95f, 1f, 0.9f)) : new Color(0.6f, 0.6f, 0.6f, 0.4f);
+                Texture2D glyph = GetDefenseGlyph(glyphKeys[li]);
+                GUI.color = enabled[li] ? (mouseOn ? Color.white : new Color(0.9f, 0.95f, 1f, 0.9f * alpha)) : new Color(0.6f, 0.6f, 0.6f, 0.4f * alpha);
                 Rect glyphRect = new Rect(nodeRect.x + 5f, nodeRect.y + 5f, nodeRect.width - 10f, nodeRect.height - 10f);
                 GUI.DrawTexture(glyphRect, glyph);
 
                 if (!isConfirm)
                 {
                     Rect badgeRect = new Rect(nodePos.x + 4f, nodePos.y + 5f, 15f, 12f);
-                    GUI.color = enabled[i] ? ColorArcaneCyan : ColorArcaneCrimson;
+                    GUI.color = enabled[li] ? ColorArcaneCyan : ColorArcaneCrimson;
                     GUI.DrawTexture(badgeRect, _circleTex);
                     GUI.color = Color.black;
                     var badgeStyle = new GUIStyle(GUI.skin.label)
@@ -405,7 +460,7 @@ namespace Killtime.Tactics.CombatUI
                         fontStyle = FontStyle.Bold,
                         alignment = TextAnchor.MiddleCenter
                     };
-                    GUI.Label(badgeRect, i == 3 ? "0" : DefenseRequiredBase().ToString(), badgeStyle);
+                    GUI.Label(badgeRect, li == 3 ? "0" : DefenseRequiredBase().ToString(), badgeStyle);
                 }
 
                 var tipStyle = new GUIStyle(GUI.skin.label)
@@ -414,38 +469,75 @@ namespace Killtime.Tactics.CombatUI
                     fontStyle = FontStyle.Bold,
                     alignment = TextAnchor.MiddleCenter
                 };
-                tipStyle.normal.textColor = enabled[i] ? Color.white : new Color(0.6f, 0.6f, 0.6f);
-                Rect tipRect = new Rect(nodePos.x - 50f, nodePos.y + ActionNodeRadius + 1f, 100f, 14f);
-                GUI.Label(tipRect, nodeNames[i], tipStyle);
+                tipStyle.normal.textColor = enabled[li] ? Color.white : new Color(0.6f, 0.6f, 0.6f);
+                Rect tipRect = new Rect(nodePos.x - 50f, nodePos.y + r + 1f, 100f, 14f);
+                GUI.Label(tipRect, nodeNames[li], tipStyle);
 
                 GUI.color = prevCol;
 
-                if (isHovered && e.type == EventType.MouseDown && e.button == 0)
+                // Clic droit sur l'avant : +PA aveugle (mise cachée).
+                if (isFront && !isConfirm && mouseOn && e.type == EventType.MouseDown && e.button == 1 && enabled[li] && _defenseWants)
+                {
+                    int maxBonus = DefenseMaxBonusAP();
+                    _defenseBonusAP = (_defenseBonusAP < maxBonus) ? _defenseBonusAP + 1 : 0;
+                    ArmInputBlocker();
+                    e.Use();
+                    return;
+                }
+
+                if (mouseOn && e.type == EventType.MouseDown && e.button == 0)
                 {
                     ArmInputBlocker();
-                    if (isConfirm)
+                    if (isFront)
                     {
-                        ConfirmDefense();
-                    }
-                    else if (!enabled[i])
-                    {
-                        if (Killtime.Audio.KilltimeAudioManager.Instance != null)
-                            Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.UI_Denied, 0.6f);
-                    }
-                    else if (i == 3)
-                    {
-                        _defenseWants = false;
-                        _defenseBonusAP = 0;
-                        _defenseBonusPE = 0;
+                        ApplyDefenseNodeClick(li, enabled[li]);
                     }
                     else
                     {
-                        _defenseWants = true;
-                        _defenseSkill = i == 0 ? SkillType.Esquive : (i == 2 ? SkillType.DefenseCorporelle : _defenseParrySkill);
+                        // Amener devant ; un skill cliqué est sélectionné aussitôt
+                        // (Confirmer exige un second clic une fois à l'avant).
+                        _defOrbitTargetAngle = OrbitSnapTarget(_defOrbitAngle, count, i);
+                        _defOrbitHasTarget = true;
+                        if (!isConfirm && enabled[li])
+                        {
+                            ApplyDefenseNodeClick(li, true);
+                        }
+                        else if (!enabled[li])
+                        {
+                            if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                                Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.UI_Denied, 0.6f);
+                        }
                     }
                     e.Use();
                     return;
                 }
+            }
+        }
+
+        // Applique le choix d'un nœud défense (sélection ou confirmation).
+        private void ApplyDefenseNodeClick(int i, bool nodeEnabled)
+        {
+            if (i == 4)
+            {
+                ConfirmDefense();
+                return;
+            }
+            if (!nodeEnabled)
+            {
+                if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                    Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.UI_Denied, 0.6f);
+                return;
+            }
+            if (i == 3)
+            {
+                _defenseWants = false;
+                _defenseBonusAP = 0;
+                _defenseBonusPE = 0;
+            }
+            else
+            {
+                _defenseWants = true;
+                _defenseSkill = i == 0 ? SkillType.Esquive : (i == 2 ? SkillType.DefenseCorporelle : _defenseParrySkill);
             }
         }
 

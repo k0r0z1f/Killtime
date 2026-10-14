@@ -40,6 +40,21 @@ namespace Killtime.Tactics.CombatUI
         private const float CategoryNodeRadius = 14f;
         private const float DefenseSpotlightHalfSize = 78f;
 
+        // Style diégétique RD-155 (rendu seul) : anneau runique + pips PA.
+        private const int RuneTickCount = 24;
+        private const int MaxPAPips = 12;
+
+        // Orbite inclinée RD-156 : ellipse monde, choix à l'avant, rotation aux bords.
+        private const float OrbitTilt = 0.42f;
+        private const float OrbitRadiusX = 170f;
+        private const float OrbitSpinSpeed = 130f;
+        private const float OrbitSnapSpeed = 480f;
+
+        // Ardoise vide RD-158 : seul l'anneau des éléments est dessiné en attaque.
+        // Le hub central + halos sont masqués mais le code est conservé tel quel
+        // (hub/PA/PE réutilisés plus tard) — passer à true pour les revoir.
+        private static readonly bool ShowCenterHub = false;
+
         /// <summary>
         /// Vrai tant que le radial est ouvert en mode paramétrage de défense
         /// (déclaration aveugle du défenseur, sans modal séparé).
@@ -57,8 +72,9 @@ namespace Killtime.Tactics.CombatUI
         private List<CombatAction> _cachedActions = new();
         private ActionCategory _selectedCategory = ActionCategory.AttaqueEtPassesDarmes;
         private CombatAction _hoveredAction;
-        private ActionCategory? _hoveredCategory;
-        private Vector2 _hoveredCategoryPos;
+        // Navigation orbitale RD-157 : vrai = l'anneau montre les catégories,
+        // faux = il montre les items de _selectedCategory (+ sablier).
+        private bool _showOrbitCategories = true;
         private int _openFrame;
 
         // Barrière anti-propagation
@@ -90,10 +106,32 @@ namespace Killtime.Tactics.CombatUI
         private Vector2 _defenseTargetGui;
         private bool _defenseHasAnchor;
 
+        // Ancrage diégétique du radial d'attaque (RD-155) : projection écran de
+        // la cible (anneau au sol + thereline vers le hub), miroir de l'ancre défense.
+        private Vector2 _attackTargetGui;
+        private Vector2 _attackGroundGui;
+        private bool _attackHasAnchor;
+        // Centre courant de l'orbite (mis à jour chaque frame) : les zones de
+        // clic/fermeture le prennent en compte en plus du hub.
+        private Vector2 _orbitCenterGui;
+
+        // Moteur d'orbite inclinée RD-156 : angle courant, snap animé vers la
+        // cible, afford du nœud avant (attaque + défense ont chacun leur état).
+        private float _orbitAngle;
+        private float _orbitTargetAngle;
+        private bool _orbitHasTarget;
+        private bool _frontCanAfford;
+        private bool _frontIsEndTurn;
+        private bool _frontCanEndTurn;
+        private float _defOrbitAngle;
+        private float _defOrbitTargetAngle;
+        private bool _defOrbitHasTarget;
+
         private static Texture2D _circleTex;
         private static Texture2D _ringTex;
         private static Texture2D _glowTex;
         private static Texture2D _pixelTex;
+        private static Texture2D _runeTickTex;
         private static readonly Dictionary<string, Texture2D> _glyphCache = new();
 
         private static readonly Color ColorArcaneCyan = new Color(0f, 0.92f, 1f, 1f);
@@ -173,12 +211,27 @@ namespace Killtime.Tactics.CombatUI
                     ConfirmDefense();
                     return;
                 }
+                // Orbite inclinée RD-156 : ←/→ fait tourner l'anneau de défense.
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Q)) DefOrbitStepKeyboard(-1);
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) DefOrbitStepKeyboard(1);
             }
             else if (Input.GetKeyDown(KeyCode.Escape))
             {
                 ArmInputBlocker();
                 CloseMenu();
                 return;
+            }
+            else
+            {
+                // Orbite inclinée RD-156 : ←/→ tourne l'anneau, Entrée exécute l'avant.
+                if (Input.GetKeyDown(KeyCode.LeftArrow) || Input.GetKeyDown(KeyCode.Q) || Input.GetKeyDown(KeyCode.A)) OrbitStepKeyboard(-1);
+                else if (Input.GetKeyDown(KeyCode.RightArrow) || Input.GetKeyDown(KeyCode.D)) OrbitStepKeyboard(1);
+                // Navigation RD-157 : Backspace remonte aux catégories.
+                if (Input.GetKeyDown(KeyCode.Backspace)) BackToCategories();
+                if (Input.GetKeyDown(KeyCode.Return) || Input.GetKeyDown(KeyCode.KeypadEnter))
+                {
+                    ExecuteFrontAction();
+                }
             }
 
             if (Time.frameCount > _openFrame && (Input.GetMouseButtonDown(0) || Input.GetMouseButtonDown(1)))
@@ -190,7 +243,8 @@ namespace Killtime.Tactics.CombatUI
                 if (_isDefenseMode) return;
                 Vector2 mouseGui = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
                 float distFromCenter = Vector2.Distance(mouseGui, _centerPos);
-                if (distFromCenter > OuterRadius + 45f)
+                float distFromOrbit = Vector2.Distance(mouseGui, _orbitCenterGui);
+                if (distFromCenter > OuterRadius + 45f && distFromOrbit > OrbitRadiusX + 60f)
                 {
                     ArmInputBlocker();
                     CloseMenu();
@@ -241,12 +295,18 @@ namespace Killtime.Tactics.CombatUI
             float clampedX = Mathf.Clamp(screenPos.x, safeMargin, Screen.width - safeMargin);
             float clampedY = Mathf.Clamp(screenPos.y, safeMargin, Screen.height - safeMargin);
             _centerPos = new Vector2(clampedX, clampedY);
+            _orbitCenterGui = _centerPos;
 
             _isOpen = true;
             _hoveredAction = null;
-            _hoveredCategory = null;
+            _showOrbitCategories = true;
             _openFrame = Time.frameCount;
             _blockUntilMouseUp = false;
+            _orbitAngle = 0f;
+            _orbitHasTarget = false;
+            _frontCanAfford = false;
+            _frontIsEndTurn = false;
+            _frontCanEndTurn = false;
         }
 
         public void CloseMenu()
@@ -259,11 +319,17 @@ namespace Killtime.Tactics.CombatUI
             _defenseCallback = null;
             _hoveredDefenseNode = -1;
             _defenseHasAnchor = false;
+            _attackHasAnchor = false;
+            _orbitHasTarget = false;
+            _defOrbitHasTarget = false;
+            _frontCanAfford = false;
+            _frontIsEndTurn = false;
+            _frontCanEndTurn = false;
             _eligibleProtectors.Clear();
             _interceptedBy = null;
             _contextTarget = null;
             _hoveredAction = null;
-            _hoveredCategory = null;
+            _showOrbitCategories = true;
             _bonusAPMap.Clear();
             _bonusPEMap.Clear();
         }
@@ -323,9 +389,10 @@ namespace Killtime.Tactics.CombatUI
             _isDefenseMode = true;
             _isOpen = true;
             _hoveredAction = null;
-            _hoveredCategory = null;
             _openFrame = Time.frameCount;
             _blockUntilMouseUp = false;
+            _defOrbitAngle = 0f;
+            _defOrbitHasTarget = false;
 
             if (Killtime.Audio.KilltimeAudioManager.Instance != null)
                 Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.Trauma_Shock, 0.75f);

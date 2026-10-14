@@ -51,6 +51,168 @@ namespace Killtime.Tactics.CombatUI
                 _pixelTex.SetPixel(0, 0, Color.white);
                 _pixelTex.Apply();
             }
+            if (_runeTickTex == null) _runeTickTex = GenerateRuneTickTexture(128, RuneTickCount);
+        }
+
+        // Calibration PA partagée attaque/défense (RD-155) : cyan → ambre → crimson.
+        private static Color GetPAFractionColor(float frac)
+        {
+            if (frac > 0.5f) return ColorArcaneCyan;
+            if (frac > 0.25f) return ColorArcaneAmber;
+            return ColorArcaneCrimson;
+        }
+
+        // Anneau runique (RD-155) : ticks procéduraux, teinté via GUI.color par l'appelant.
+        private static Texture2D GenerateRuneTickTexture(int size, int ticks)
+        {
+            var tex = new Texture2D(size, size, TextureFormat.RGBA32, false)
+            {
+                filterMode = FilterMode.Bilinear,
+                wrapMode = TextureWrapMode.Clamp
+            };
+            Color32[] clear = new Color32[size * size];
+            for (int i = 0; i < clear.Length; i++) clear[i] = new Color32(0, 0, 0, 0);
+            tex.SetPixels32(clear);
+            float center = (size - 1) * 0.5f;
+            float outerR = center - 1f;
+            for (int i = 0; i < ticks; i++)
+            {
+                float ang = (Mathf.PI * 2f * i) / ticks;
+                bool major = (i % 6 == 0);
+                float len = major ? 14f : 8f;
+                int x0 = Mathf.RoundToInt(center + Mathf.Cos(ang) * outerR);
+                int y0 = Mathf.RoundToInt(center + Mathf.Sin(ang) * outerR);
+                int x1 = Mathf.RoundToInt(center + Mathf.Cos(ang) * (outerR - len));
+                int y1 = Mathf.RoundToInt(center + Mathf.Sin(ang) * (outerR - len));
+                DrawLine(tex, x0, y0, x1, y1, Color.white);
+                if (major) DrawDot(tex, x1, y1, 1, Color.white);
+            }
+            tex.Apply();
+            return tex;
+        }
+
+        private static void DrawRuneTickRing(Rect r, Color col, float rotDeg)
+        {
+            if (_runeTickTex == null) return;
+            Color prev = GUI.color;
+            Matrix4x4 old = GUI.matrix;
+            GUIUtility.RotateAroundPivot(rotDeg, r.center);
+            GUI.color = col;
+            GUI.DrawTexture(r, _runeTickTex);
+            GUI.matrix = old;
+            GUI.color = prev;
+        }
+
+        // Thereline pointillée arcanotech entre deux points écran.
+        private static void DrawTetherLine(Vector2 a, Vector2 b, Color col, float width)
+        {
+            Vector2 d = b - a;
+            float len = d.magnitude;
+            if (len < 4f) return;
+            Color prev = GUI.color;
+            Matrix4x4 old = GUI.matrix;
+            Vector2 mid = (a + b) * 0.5f;
+            float ang = Mathf.Atan2(d.y, d.x) * Mathf.Rad2Deg;
+            GUIUtility.RotateAroundPivot(ang, mid);
+            GUI.color = col;
+            int dashes = 10;
+            for (int i = 0; i < dashes; i += 2)
+            {
+                float x0 = mid.x - len * 0.5f + len * i / dashes;
+                float w = len / dashes;
+                GUI.DrawTexture(new Rect(x0, mid.y - width * 0.5f, w, width), _pixelTex);
+            }
+            GUI.matrix = old;
+            GUI.color = prev;
+        }
+
+        // Moteur d'orbite inclinée RD-156 (partagé attaque/défense) : l'angle 90°
+        // (bas de l'ellipse, proche caméra) est l'avant = choix courant.
+        private static float WrapAngle(float a)
+        {
+            while (a > 180f) a -= 360f;
+            while (a < -180f) a += 360f;
+            return a;
+        }
+
+        private static Vector2 OrbitNodePos(Vector2 center, float rx, float ry, float angleDeg)
+        {
+            float r = angleDeg * Mathf.Deg2Rad;
+            return center + new Vector2(Mathf.Cos(r) * rx, Mathf.Sin(r) * ry);
+        }
+
+        // Profondeur 0 (fond, haut) → 1 (avant, bas) : taille et opacité des nœuds.
+        private static float OrbitDepth(float angleDeg)
+        {
+            return Mathf.Clamp01((Mathf.Sin(angleDeg * Mathf.Deg2Rad) + 1f) * 0.5f);
+        }
+
+        private static int OrbitFrontIndex(float angle, int count)
+        {
+            if (count <= 0) return -1;
+            float step = 360f / count;
+            int best = 0;
+            float bestD = 9999f;
+            for (int i = 0; i < count; i++)
+            {
+                float d = Mathf.Abs(WrapAngle(angle + i * step - 90f));
+                if (d < bestD) { bestD = d; best = i; }
+            }
+            return best;
+        }
+
+        private static float OrbitSnapTarget(float angle, int count, int index)
+        {
+            if (count <= 0) return angle;
+            float step = 360f / count;
+            float t = 90f - index * step;
+            t += 360f * Mathf.Round((angle - t) / 360f);
+            return t;
+        }
+
+        private static float MoveAngle(float from, float to, float maxDelta)
+        {
+            float d = WrapAngle(to - from);
+            if (Mathf.Abs(d) <= maxDelta) return to;
+            return from + Mathf.Sign(d) * maxDelta;
+        }
+
+        // Snap animé prioritaire, sinon rotation continue quand la souris est
+        // dans les bandes latérales de l'anneau. Pause si un bouton est pressé
+        // (pour cliquer un nœud en mouvement).
+        private static void UpdateOrbitAngle(ref float angle, float target, ref bool hasTarget, int count, Vector2 mouse, Vector2 center, float rx, float ry, float dt)
+        {
+            if (count <= 0) return;
+            if (hasTarget)
+            {
+                float na = MoveAngle(angle, target, OrbitSnapSpeed * dt);
+                if (Mathf.Approximately(WrapAngle(na - target), 0f)) hasTarget = false;
+                angle = na;
+                return;
+            }
+            if (Input.GetMouseButton(0) || Input.GetMouseButton(1)) return;
+            float dx = mouse.x - center.x;
+            float dy = mouse.y - center.y;
+            bool inBand = Mathf.Abs(dx) > rx * 0.45f && Mathf.Abs(dx) < rx + 60f && Mathf.Abs(dy) < ry + 70f;
+            if (inBand) angle += Mathf.Sign(dx) * OrbitSpinSpeed * dt;
+        }
+
+        // Pips PA diégétiques (calibrage visuel) : le chiffré reste affiché à côté.
+        // Doit être appelé dans un bloc GUILayout (hubs attaque/défense).
+        private void DrawPAPips(int currentPA, int cost)
+        {
+            int total = Mathf.Clamp(currentPA, 0, MaxPAPips);
+            int filled = Mathf.Clamp(currentPA - cost, 0, total);
+            if (total <= 0) return;
+            float frac = currentPA > 0 ? Mathf.Clamp01((float)(currentPA - cost) / currentPA) : 0f;
+            var pipStyle = new GUIStyle(GUI.skin.label)
+            {
+                alignment = TextAnchor.MiddleCenter,
+                fontSize = 10
+            };
+            pipStyle.normal.textColor = GetPAFractionColor(frac);
+            GUI.color = Color.white;
+            GUILayout.Label(new string('●', filled) + new string('○', total - filled), pipStyle);
         }
 
         private static Texture2D GenerateCircleTexture(int size, bool hollow, float strokeWidth = 3f)

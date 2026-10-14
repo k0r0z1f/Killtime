@@ -17,7 +17,8 @@ namespace Killtime.Tactics.CombatUI
             Event e = Event.current;
             Vector2 mousePos = e.mousePosition;
             float distFromCenter = Vector2.Distance(mousePos, _centerPos);
-            bool isInsideMenu = distFromCenter <= (OuterRadius + 45f);
+            bool isInsideMenu = distFromCenter <= (OuterRadius + 45f)
+                || Vector2.Distance(mousePos, _orbitCenterGui) <= (OrbitRadiusX + 60f);
 
             // Phase de blocage après fermeture : consomme les événements résiduels
             if (!_isOpen)
@@ -61,21 +62,27 @@ namespace Killtime.Tactics.CombatUI
             var activeActor = GetActiveActor();
             if (activeActor == null) return;
 
+            // Ancrage diégétique (RD-155) : la cible est projetée à l'écran à
+            // chaque frame (anneau au sol + thereline), le hub suit la souris comme avant.
+            UpdateAttackAnchor();
+            // Orbite inclinée RD-156 : le hub flotte au-dessus de l'unité, plus à la souris.
+            _centerPos = AttackHubAnchor();
+
             bool isCurrentTurnUnit = _turnManager != null
                 && !_turnManager.IsInExploration
                 && !_turnManager.IsCombatOver
                 && _turnManager.ActiveUnit == _contextTarget
                 && _contextTarget.IsPlayerControlled;
 
-            DrawHoloBackdrop();
-            DrawCenterHub(activeActor);
-            DrawCategoryOrbit(mousePos, e, isCurrentTurnUnit);
-            DrawActionOrbit(activeActor, mousePos, e, isCurrentTurnUnit);
-
-            if (_hoveredCategory.HasValue)
+            DrawDiegeticAnchor();
+            // RD-158 : seul l'anneau des éléments reste visible (hub + halos
+            // centraux masqués via ShowCenterHub, code conservé pour la suite).
+            if (ShowCenterHub)
             {
-                DrawCategoryTooltip(_hoveredCategory.Value, _hoveredCategoryPos);
+                DrawHoloBackdrop(activeActor);
+                DrawCenterHub(activeActor);
             }
+            DrawActionOrbit(activeActor, mousePos, e, isCurrentTurnUnit);
 
             // Consommation systématique de tout clic résiduel dans l'anneau pour interdire la propagation
             if (isInsideMenu && (e.type == EventType.MouseDown || e.type == EventType.MouseUp || e.type == EventType.ContextClick))
@@ -84,424 +91,356 @@ namespace Killtime.Tactics.CombatUI
             }
         }
 
-        private void DrawHoloBackdrop()
+        // Fond holographique allégé (RD-155) : halos réduits pour laisser la
+        // scène respirer ; la teinte suit la fraction de PA (cyan → ambre → crimson).
+        private void DrawHoloBackdrop(TacticalUnit activeActor)
         {
             Color prevColor = GUI.color;
 
-            GUI.color = new Color(0f, 0.7f, 1f, 0.12f);
+            float paFrac = 1f;
+            if (activeActor != null && activeActor.Stats != null)
+            {
+                int maxPA = Mathf.Max(1, activeActor.Stats.MaxActionPoints);
+                paFrac = Mathf.Clamp01((float)activeActor.Stats.CurrentActionPoints / maxPA);
+            }
+            Color tint = GetPAFractionColor(paFrac);
+
+            GUI.color = new Color(tint.r, tint.g, tint.b, 0.05f);
             float glowSize = (OuterRadius + 40f) * 2f;
             GUI.DrawTexture(new Rect(_centerPos.x - glowSize * 0.5f, _centerPos.y - glowSize * 0.5f, glowSize, glowSize), _glowTex);
 
-            GUI.color = new Color(0f, 0.85f, 1f, 0.30f);
             float ringOuterSize = OuterRadius * 2f;
-            GUI.DrawTexture(new Rect(_centerPos.x - OuterRadius, _centerPos.y - OuterRadius, ringOuterSize, ringOuterSize), _ringTex);
+            Rect outerRect = new Rect(_centerPos.x - OuterRadius, _centerPos.y - OuterRadius, ringOuterSize, ringOuterSize);
+            GUI.color = new Color(tint.r, tint.g, tint.b, 0.20f);
+            GUI.DrawTexture(outerRect, _ringTex);
+            // Anneau runique en rotation lente : l'interface respire avec la scène.
+            DrawRuneTickRing(outerRect, new Color(tint.r, tint.g, tint.b, 0.35f), Time.time * 6f);
 
-            GUI.color = new Color(0f, 0.85f, 1f, 0.18f);
+            GUI.color = new Color(tint.r, tint.g, tint.b, 0.14f);
             float ringInnerSize = InnerRadius * 2f;
             GUI.DrawTexture(new Rect(_centerPos.x - InnerRadius, _centerPos.y - InnerRadius, ringInnerSize, ringInnerSize), _ringTex);
 
             GUI.color = prevColor;
         }
 
-        private void DrawCenterHub(TacticalUnit activeActor)
+        // Projette la cible à l'écran (miroir de l'ancre défense).
+        private void UpdateAttackAnchor()
         {
-            Color prevColor = GUI.color;
-
-            int hoveredBonusAP = (_hoveredAction != null && _bonusAPMap.TryGetValue(_hoveredAction, out int b)) ? b : 0;
-            bool hoveredCanAfford = false;
-            if (_hoveredAction != null)
-            {
-                int totalCost = _hoveredAction.ActionPointCost + hoveredBonusAP;
-                hoveredCanAfford = activeActor.Stats.CurrentActionPoints >= totalCost && _hoveredAction.CanExecute(activeActor, _contextTarget);
-            }
-
-            Color hubBorderCol = _hoveredAction != null
-                ? (!hoveredCanAfford ? ColorArcaneCrimson : (hoveredBonusAP > 0 ? ColorArcaneAmber : ColorArcaneCyan))
-                : ColorArcaneCyan;
-
-            // Halo de surbrillance doux pour détacher le hub du décor 3D
-            Color glowCol = _hoveredAction != null
-                ? (!hoveredCanAfford ? new Color(1f, 0.25f, 0.35f, 0.16f) : (hoveredBonusAP > 0 ? new Color(1f, 0.75f, 0.1f, 0.20f) : new Color(0f, 0.92f, 1f, 0.16f)))
-                : new Color(0f, 0.92f, 1f, 0.12f);
-            GUI.color = glowCol;
-            float hubGlowSize = HubRadius * 2.3f;
-            GUI.DrawTexture(new Rect(_centerPos.x - hubGlowSize * 0.5f, _centerPos.y - hubGlowSize * 0.5f, hubGlowSize, hubGlowSize), _glowTex);
-
-            // Fond sombre opaque pour un contraste maximal
-            GUI.color = ColorHubBackground;
-            GUI.DrawTexture(new Rect(_centerPos.x - HubRadius, _centerPos.y - HubRadius, HubRadius * 2f, HubRadius * 2f), _circleTex);
-
-            // Bordure lumineuse
-            GUI.color = new Color(hubBorderCol.r, hubBorderCol.g, hubBorderCol.b, 0.90f);
-            GUI.DrawTexture(new Rect(_centerPos.x - HubRadius, _centerPos.y - HubRadius, HubRadius * 2f, HubRadius * 2f), _ringTex);
-
-            // Zone intérieure réservée au texte
-            float usableWidth = HubRadius * 1.54f;
-            float usableHeight = HubRadius * 1.54f;
-            Rect hubRect = new Rect(_centerPos.x - usableWidth * 0.5f, _centerPos.y - usableHeight * 0.5f, usableWidth, usableHeight);
-
-            // IMPORTANT: Réinitialiser GUI.color à blanc pour éviter que la teinte de bordure ne s'applique aux textes
-            GUI.color = Color.white;
-
-            GUILayout.BeginArea(hubRect);
-            GUILayout.BeginVertical();
-            GUILayout.FlexibleSpace();
-
-            var titleStyle = new GUIStyle(GUI.skin.label)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = 11,
-                fontStyle = FontStyle.Bold,
-                wordWrap = true,
-                richText = true,
-                clipping = TextClipping.Clip
-            };
-            var statusStyle = new GUIStyle(GUI.skin.label)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = 10,
-                fontStyle = FontStyle.Bold,
-                wordWrap = true,
-                richText = true
-            };
-            var bodyStyle = new GUIStyle(GUI.skin.label)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = 10,
-                wordWrap = true,
-                richText = true
-            };
-            var descStyle = new GUIStyle(GUI.skin.label)
-            {
-                alignment = TextAnchor.MiddleCenter,
-                fontSize = (_hoveredAction != null && _hoveredAction.Description.Length > 115) ? 9 : 10,
-                wordWrap = true,
-                richText = true
-            };
-
-            if (_hoveredAction != null)
-            {
-                int currentAP = activeActor.Stats.CurrentActionPoints;
-                int totalCost = _hoveredAction.ActionPointCost + hoveredBonusAP;
-                int remainingAP = currentAP - totalCost;
-                bool hasEnoughAP = remainingAP >= 0;
-                bool isExecutable = _hoveredAction.CanExecute(activeActor, _contextTarget);
-                bool canAfford = hasEnoughAP && isExecutable;
-                bool allowsVar = ActionAllowsVariableAP(_hoveredAction);
-
-                // Titre toujours blanc éclatant pour une lisibilité parfaite
-                titleStyle.normal.textColor = Color.white;
-                GUI.color = Color.white;
-                GUILayout.Label(_hoveredAction.Title, titleStyle);
-
-                int dist = activeActor.CurrentCoords.DistanceTo(_contextTarget.CurrentCoords);
-                int maxRange = CombatActionRegistry.GetAttackMaxRange(activeActor);
-
-                if (!isExecutable && dist > maxRange)
-                {
-                    GUI.color = new Color(1f, 0.45f, 0.45f, 1f); // Rouge corail vif très lisible sur fond noir
-                    GUILayout.Label($"⚠️ <b>HORS DE PORTÉE</b> ({dist} / max {maxRange} cases)", statusStyle);
-                }
-                else if (!hasEnoughAP)
-                {
-                    GUI.color = new Color(1f, 0.45f, 0.45f, 1f);
-                    GUILayout.Label($"⚠️ <b>PA INSUFFISANTS</b> ({totalCost} req. | {currentAP} dispo)", statusStyle);
-                }
-                else if (hoveredBonusAP > 0)
-                {
-                    GUI.color = ColorArcaneAmber;
-                    GUILayout.Label($"⚡ <b>{totalCost} PA</b> ({_hoveredAction.ActionPointCost} + {hoveredBonusAP} bonus) [{currentAP} ➔ {Mathf.Max(0, remainingAP)}]", statusStyle);
-
-                    GUI.color = new Color(1f, 0.90f, 0.50f, 1f);
-                    GUILayout.Label($"<b>Duel aveugle :</b> mise cachée +{hoveredBonusAP} PA", descStyle);
-                }
-                else
-                {
-                    GUI.color = canAfford ? ColorArcaneEmerald : new Color(1f, 0.45f, 0.45f, 1f);
-                    string hint = allowsVar ? " (Molette: +PA)" : "";
-                    GUILayout.Label($"⚡ <b>{_hoveredAction.ActionPointCost} PA</b>{hint} [{currentAP} ➔ {Mathf.Max(0, remainingAP)}]", statusStyle);
-                }
-
-                // Déclaration aveugle : mise PE (Essoufflement) pour les attaques.
-                if (allowsVar && _hoveredAction.Category == ActionCategory.AttaqueEtPassesDarmes
-                    && !_hoveredAction.Title.StartsWith("💣"))
-                {
-                    int hoveredPE = 0;
-                    _bonusPEMap.TryGetValue(_hoveredAction, out hoveredPE);
-                    int maxPE = activeActor.Stats.GetSpendablePE();
-                    if (hoveredPE > maxPE) { hoveredPE = maxPE; _bonusPEMap[_hoveredAction] = hoveredPE; }
-
-                    GUI.color = Color.white;
-                    GUILayout.BeginHorizontal();
-                    GUILayout.FlexibleSpace();
-                    GUI.enabled = hoveredPE > 0;
-                    if (GUILayout.Button("- PE", GUILayout.Width(44), GUILayout.Height(18)))
-                    {
-                        hoveredPE = Mathf.Max(0, hoveredPE - 1);
-                        _bonusPEMap[_hoveredAction] = hoveredPE;
-                    }
-                    GUI.enabled = hoveredPE < maxPE;
-                    if (GUILayout.Button("+ PE", GUILayout.Width(44), GUILayout.Height(18)))
-                    {
-                        hoveredPE = Mathf.Min(maxPE, hoveredPE + 1);
-                        _bonusPEMap[_hoveredAction] = hoveredPE;
-                    }
-                    GUI.enabled = true;
-                    GUILayout.FlexibleSpace();
-                    GUILayout.EndHorizontal();
-
-                    GUI.color = hoveredPE > 0 ? ColorArcaneAmber : new Color(0.72f, 0.82f, 0.94f, 1f);
-                    GUILayout.Label($"<b>PE : +{hoveredPE}</b> (ESS {activeActor.Stats.Essoufflement}/{activeActor.Stats.Attributes.Constitution})", descStyle);
-                }
-
-                GUI.color = new Color(0.92f, 0.96f, 1f, 1f);
-                GUILayout.Label(_hoveredAction.Description, descStyle);
-            }
-            else
-            {
-                Color nameCol = _contextTarget.IsPlayerControlled
-                    ? new Color(0.35f, 0.92f, 1f, 1f)
-                    : new Color(1f, 0.45f, 0.55f, 1f);
-                titleStyle.normal.textColor = nameCol;
-                GUI.color = Color.white;
-                GUILayout.Label(_contextTarget.Stats.Name, titleStyle);
-
-                GUI.color = ColorArcaneEmerald;
-                GUILayout.Label($"❤️ <b>{_contextTarget.Stats.CurrentHealth} / {_contextTarget.Stats.MaxHealth} PV</b>", bodyStyle);
-
-                GUI.color = new Color(0.45f, 0.88f, 1f, 1f);
-                GUILayout.Label($"⚡ PA : {_contextTarget.Stats.CurrentActionPoints}   🛡️ {_contextTarget.Stats.EncaissementThreshold}", bodyStyle);
-
-                if (_contextTarget.Stats.ActiveStatus != StatusEffect.None)
-                {
-                    GUI.color = new Color(0.85f, 0.65f, 1f, 1f);
-                    GUILayout.Label($"<b>[{_contextTarget.Stats.ActiveStatus}]</b>", bodyStyle);
-                }
-
-                // Marques de techniques de spécialisation (Livre III) : faille
-                // exposée, provocation et bonus de ligne — visibles d'un coup d'œil.
-                if (SkillTechniqueState.IsFlawExposed(_contextTarget.Stats))
-                {
-                    GUI.color = ColorArcaneAmber;
-                    GUILayout.Label("📡 <b>FAILLE EXPOSÉE</b> (armure 0)", descStyle);
-                }
-
-                if (SkillTechniqueState.TryGetTaunter(_contextTarget.Stats, out var taunter) && taunter != null)
-                {
-                    GUI.color = ColorArcaneAmber;
-                    GUILayout.Label($"👁️ <b>PROVOQUÉ</b> par {taunter.Name}", descStyle);
-                }
-
-                if (SkillTechniqueState.HasLineBonus(_contextTarget.Stats))
-                {
-                    GUI.color = ColorArcaneEmerald;
-                    GUILayout.Label("🛡️ <b>LIGNE TENUE</b> (+armure)", descStyle);
-                }
-
-                // RD-039 : Étreintes de lutte actives (Livre VI)
-                if (Killtime.Core.Combat.GrappleState.TryGetGrappledVictim(_contextTarget.Stats, out var heldVictim) && heldVictim != null)
-                {
-                    GUI.color = ColorArcaneCyan;
-                    GUILayout.Label($"🥋 <b>LUTTE : Maintient {heldVictim.Name}</b>", descStyle);
-                }
-                else if (Killtime.Core.Combat.GrappleState.TryGetGrappler(_contextTarget.Stats, out var grappler) && grappler != null)
-                {
-                    GUI.color = ColorArcaneAmber;
-                    GUILayout.Label($"🥋 <b>LUTTE : Saisi par {grappler.Name}</b>", descStyle);
-                }
-            }
-
-            GUILayout.FlexibleSpace();
-            GUILayout.EndVertical();
-            GUILayout.EndArea();
-
-            GUI.color = prevColor;
+            _attackHasAnchor = false;
+            var cam = Camera.main;
+            if (cam == null || _contextTarget == null) return;
+            Vector3 scrTop = cam.WorldToScreenPoint(_contextTarget.transform.position + Vector3.up * 0.9f);
+            Vector3 scrFeet = cam.WorldToScreenPoint(_contextTarget.transform.position);
+            if (scrTop.z < 0f || scrFeet.z < 0f) return;
+            _attackTargetGui = new Vector2(scrTop.x, Screen.height - scrTop.y);
+            _attackGroundGui = new Vector2(scrFeet.x, Screen.height - scrFeet.y);
+            _attackHasAnchor = true;
         }
 
-        private void DrawCategoryOrbit(Vector2 mousePos, Event e, bool isCurrentTurnUnit)
+        // Orbite RD-156 : hub flottant au-dessus de l'unité (clampé à l'écran).
+        private Vector2 AttackHubAnchor()
         {
-            var categories = GetAvailableCategories(isCurrentTurnUnit);
-            int count = categories.Count;
-            if (count == 0) return;
-
-            _hoveredCategory = null;
-
-            float step = count > 1 ? Mathf.Min(0.38f, (Mathf.PI * 0.65f) / (count - 1)) : 0f;
-            float totalArc = step * (count - 1);
-            float startAngle = -Mathf.PI * 0.5f - totalArc * 0.5f;
-
-            for (int i = 0; i < count; i++)
-            {
-                ActionCategory cat = categories[i];
-                float angle = count == 1 ? -Mathf.PI * 0.5f : startAngle + step * i;
-                Vector2 nodePos = _centerPos + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * InnerRadius;
-                Rect nodeRect = new Rect(nodePos.x - CategoryNodeRadius, nodePos.y - CategoryNodeRadius, CategoryNodeRadius * 2f, CategoryNodeRadius * 2f);
-
-                bool isHovered = nodeRect.Contains(mousePos);
-                bool isSelected = (_selectedCategory == cat);
-                Color catColor = GetCategoryColor(cat);
-
-                if (isHovered)
-                {
-                    _hoveredCategory = cat;
-                    _hoveredCategoryPos = nodePos;
-                }
-
-                Color prevCol = GUI.color;
-                GUI.color = isSelected ? new Color(catColor.r, catColor.g, catColor.b, 0.90f) : new Color(0.04f, 0.08f, 0.12f, 0.90f);
-                GUI.DrawTexture(nodeRect, _circleTex);
-
-                GUI.color = isSelected ? Color.white : (isHovered ? catColor : new Color(catColor.r, catColor.g, catColor.b, 0.5f));
-                GUI.DrawTexture(nodeRect, _ringTex);
-
-                Texture2D icon = GetCategoryPlaceholderIcon(cat);
-                GUI.color = isSelected ? Color.black : Color.white;
-                Rect iconRect = new Rect(nodeRect.x + 3f, nodeRect.y + 3f, nodeRect.width - 6f, nodeRect.height - 6f);
-                GUI.DrawTexture(iconRect, icon);
-
-                GUI.color = prevCol;
-
-                if (isHovered && e.type == EventType.MouseDown && e.button == 0)
-                {
-                    _selectedCategory = cat;
-                    _hoveredAction = null;
-                    ArmInputBlocker();
-                    e.Use();
-                }
-            }
+            if (!_attackHasAnchor) return _centerPos;
+            Vector2 hub = _attackTargetGui + new Vector2(0f, -(HubRadius + 26f));
+            float m = HubRadius + 20f;
+            hub.x = Mathf.Clamp(hub.x, m, Mathf.Max(m, Screen.width - m));
+            hub.y = Mathf.Clamp(hub.y, m, Mathf.Max(m, Screen.height - m));
+            return hub;
         }
 
-        private void DrawCategoryTooltip(ActionCategory cat, Vector2 tabPos)
+        // Clavier RD-156/157 : amène le voisin de l'avant au premier plan (niveau courant).
+        private void OrbitStepKeyboard(int dir)
         {
-            string label = GetCategoryDisplayName(cat);
-            Color catColor = GetCategoryColor(cat);
+            if (!_isOpen || _isDefenseMode || _contextTarget == null) return;
+            bool turnUnit = _turnManager != null
+                && !_turnManager.IsInExploration
+                && !_turnManager.IsCombatOver
+                && _turnManager.ActiveUnit == _contextTarget
+                && _contextTarget.IsPlayerControlled;
+            // RD-160 : le clavier parcourt exactement les nœuds affichés.
+            int count = BuildAttackNodes(GetActiveActor(), turnUnit, out _).Count;
+            if (count <= 0) return;
+            int next = (OrbitFrontIndex(_orbitAngle, count) + dir + count) % count;
+            _orbitTargetAngle = OrbitSnapTarget(_orbitAngle, count, next);
+            _orbitHasTarget = true;
+        }
 
-            var style = new GUIStyle(GUI.skin.label)
+        // Exécute le nœud avant (clic avant, bouton EXÉCUTER, Entrée).
+        private void ExecuteFrontAction()
+        {
+            if (!_isOpen || _isDefenseMode) return;
+            var activeActor = GetActiveActor();
+            if (activeActor == null) return;
+            if (_hoveredAction == null)
             {
-                fontSize = 10,
-                fontStyle = FontStyle.Bold,
-                alignment = TextAnchor.MiddleCenter
-            };
+                if (_frontIsEndTurn)
+                {
+                    if (_frontCanEndTurn)
+                    {
+                        ArmInputBlocker();
+                        EndActiveUnitTurn();
+                        CloseMenu();
+                    }
+                    else
+                    {
+                        _arena?.Log(EndTurnBlockedHint());
+                    }
+                }
+                return;
+            }
+            if (!_frontCanAfford)
+            {
+                if (Killtime.Audio.KilltimeAudioManager.Instance != null)
+                    Killtime.Audio.KilltimeAudioManager.Instance.PlayUI(Killtime.Audio.SoundId.UI_Denied, 0.6f);
+                return;
+            }
+            int bonusAP = _bonusAPMap.TryGetValue(_hoveredAction, out int b) ? b : 0;
+            int bonusPE = _bonusPEMap.TryGetValue(_hoveredAction, out int bpe) ? bpe : 0;
+            ArmInputBlocker();
+            ExecuteActionWithInjectedAP(_hoveredAction, activeActor, _contextTarget, bonusAP, bonusPE);
+            CloseMenu();
+        }
 
-            Vector2 size = style.CalcSize(new GUIContent(label));
-            size.x += 16f;
-            size.y += 8f;
-
-            float tipX = tabPos.x - size.x * 0.5f;
-            float tipY = tabPos.y - CategoryNodeRadius - size.y - 6f;
-
-            tipX = Mathf.Clamp(tipX, 6f, Screen.width - size.x - 6f);
-            tipY = Mathf.Clamp(tipY, 6f, Screen.height - size.y - 6f);
-
-            Rect tipRect = new Rect(tipX, tipY, size.x, size.y);
-
+        // Ancrage diégétique : anneau runique au sol sous la cible + thereline
+        // pointillée vers le hub. Pur rendu : aucune logique d'interaction.
+        private void DrawDiegeticAnchor()
+        {
+            if (!_attackHasAnchor || _contextTarget == null) return;
             Color prev = GUI.color;
 
-            GUI.color = new Color(0.02f, 0.04f, 0.08f, 0.96f);
-            GUI.DrawTexture(tipRect, _pixelTex);
-
-            GUI.color = new Color(catColor.r, catColor.g, catColor.b, 0.85f);
-            DrawHollowRect(tipRect, 1f);
-
-            GUI.color = Color.white;
-            GUI.Label(tipRect, label, style);
+            float pulse = 1f + Mathf.Sin(Time.time * 3f) * 0.06f;
+            float groundW = 120f * pulse;
+            float groundH = 34f * pulse;
+            Rect groundRect = new Rect(_attackGroundGui.x - groundW * 0.5f, _attackGroundGui.y - groundH * 0.5f, groundW, groundH);
+            bool isFoe = !_contextTarget.IsPlayerControlled;
+            Color baseCol = isFoe ? ColorArcaneCrimson : ColorArcaneCyan;
+            GUI.color = new Color(baseCol.r, baseCol.g, baseCol.b, 0.55f);
+            GUI.DrawTexture(groundRect, _ringTex);
+            DrawRuneTickRing(groundRect, new Color(baseCol.r, baseCol.g, baseCol.b, 0.5f), -Time.time * 10f);
+            // RD-158 : thereline vers le hub supprimée avec lui (DrawTetherLine
+            // conservée : la défense l'utilise encore).
 
             GUI.color = prev;
         }
 
+        // Nœud générique de l'orbite unifiée RD-157 : catégorie, action ou fin de tour.
+        private struct OrbitNode
+        {
+            public int Kind; // 0 = catégorie, 1 = action, 2 = fin de tour
+            public ActionCategory Category;
+            public CombatAction Action;
+        }
+
+        // Forage RD-157 : la catégorie cliquée remplace les catégories sur l'anneau.
+        private void DrillIntoCategory(ActionCategory cat)
+        {
+            _selectedCategory = cat;
+            _showOrbitCategories = false;
+            _orbitAngle = 0f;
+            _orbitHasTarget = false;
+            _hoveredAction = null;
+            ArmInputBlocker();
+        }
+
+        // Retour RD-157 : l'anneau remontre les catégories.
+        // Tout le code PA/PE/exécution est conservé tel quel pour la suite.
+        private void BackToCategories()
+        {
+            if (!_isOpen || _isDefenseMode || _showOrbitCategories) return;
+            _showOrbitCategories = true;
+            _orbitAngle = 0f;
+            _orbitHasTarget = false;
+            _hoveredAction = null;
+        }
+
+        // Orbite unifiée RD-157 : niveau 1 = catégories sur l'anneau, clic sur une
+        // catégorie = ses items remplacent les catégories. L'avant reste le choix
+        // du hub ; tout le code PA/PE/exécution est conservé tel quel pour la suite.
+        // Construit les nœuds affichables RD-160 (commun dessin + clavier) :
+        // catégories, ou items valides de la catégorie forée. Seules les options
+        // valides dans le moment s'affichent : coût de base payable + CanExecute
+        // pour les actions, fin de tour seulement si c'est le tour de l'unité.
+        private List<OrbitNode> BuildAttackNodes(TacticalUnit activeActor, bool isCurrentTurnUnit, out bool canEndTurn)
+        {
+            bool showEndTurn = _contextTarget != null && _contextTarget.IsPlayerControlled;
+            canEndTurn = showEndTurn && isCurrentTurnUnit;
+            var nodes = new List<OrbitNode>();
+            if (_showOrbitCategories)
+            {
+                var categories = GetAvailableCategories(isCurrentTurnUnit);
+                for (int c = 0; c < categories.Count; c++)
+                    nodes.Add(new OrbitNode { Kind = 0, Category = categories[c] });
+            }
+            else if (activeActor != null)
+            {
+                var actions = _cachedActions.FindAll(a => a.Category == _selectedCategory);
+                for (int a = 0; a < actions.Count; a++)
+                {
+                    var act = actions[a];
+                    if (activeActor.Stats.CurrentActionPoints >= act.ActionPointCost
+                        && act.CanExecute(activeActor, _contextTarget))
+                        nodes.Add(new OrbitNode { Kind = 1, Action = act });
+                }
+            }
+            if (canEndTurn) nodes.Add(new OrbitNode { Kind = 2 });
+            return nodes;
+        }
+
         private void DrawActionOrbit(TacticalUnit activeActor, Vector2 mousePos, Event e, bool isCurrentTurnUnit)
         {
-            var actions = _cachedActions.FindAll(a => a.Category == _selectedCategory);
-            // Fin de tour TOUJOURS visible sur le menu d'une unité alliée (comme
-            // l'ancien panneau « Terminer le tour ») : active seulement quand c'est
-            // réellement son tour en combat, grisée + explicative sinon.
-            bool showEndTurn = _contextTarget != null && _contextTarget.IsPlayerControlled;
-            bool canEndTurn = showEndTurn && isCurrentTurnUnit;
+            var nodes = BuildAttackNodes(activeActor, isCurrentTurnUnit, out bool canEndTurn);
 
-            int actionCount = actions.Count + (showEndTurn ? 1 : 0);
-            if (actionCount == 0) return;
-
-            float angleStep = (Mathf.PI * 2f) / actionCount;
-            float initialAngle = -Mathf.PI * 0.5f;
-
-            _hoveredAction = null;
-
-            for (int i = 0; i < actions.Count; i++)
+            int nodeCount = nodes.Count;
+            if (nodeCount == 0)
             {
-                var action = actions[i];
-                float angle = initialAngle + angleStep * i;
-                Vector2 nodePos = _centerPos + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * OuterRadius;
-                Rect nodeRect = new Rect(nodePos.x - ActionNodeRadius, nodePos.y - ActionNodeRadius, ActionNodeRadius * 2f, ActionNodeRadius * 2f);
+                _hoveredAction = null;
+                _frontCanAfford = false;
+                _frontIsEndTurn = false;
+                _frontCanEndTurn = false;
+                return;
+            }
 
-                bool isHovered = nodeRect.Contains(mousePos);
-                if (isHovered) _hoveredAction = action;
+            Vector2 orbitCenter = _attackHasAnchor
+                ? _attackGroundGui + new Vector2(0f, -30f)
+                : _centerPos + new Vector2(0f, 120f);
+            _orbitCenterGui = orbitCenter;
+            float rx = OrbitRadiusX;
+            float ry = OrbitRadiusX * OrbitTilt;
+            float step = 360f / nodeCount;
+            float dt = Mathf.Max(Time.deltaTime, 0.0001f);
 
-                bool allowsVarAP = ActionAllowsVariableAP(action);
-                int bonusAP = _bonusAPMap.TryGetValue(action, out int b) ? b : 0;
-                int bonusPE = _bonusPEMap.TryGetValue(action, out int bpe) ? bpe : 0;
-                int maxAffordableBonus = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - action.ActionPointCost);
-                if (bonusPE > activeActor.Stats.GetSpendablePE()) { bonusPE = activeActor.Stats.GetSpendablePE(); _bonusPEMap[action] = bonusPE; }
+            UpdateOrbitAngle(ref _orbitAngle, _orbitTargetAngle, ref _orbitHasTarget, nodeCount, mousePos, orbitCenter, rx, ry, dt);
+            int front = OrbitFrontIndex(_orbitAngle, nodeCount);
+            var frontNode = nodes[front];
+            bool frontIsEnd = frontNode.Kind == 2;
+            var frontAction = frontNode.Kind == 1 ? frontNode.Action : null;
 
-                // Modulation immédiate par molette ou clic droit
-                if (isHovered && allowsVarAP)
+            // Le hub suit l'avant : le choix courant y est détaillé (code hub inchangé).
+            _hoveredAction = frontAction;
+            _frontIsEndTurn = frontIsEnd;
+            _frontCanEndTurn = canEndTurn;
+            _frontCanAfford = false;
+            int frontBonusAP = 0;
+            int frontBonusPE = 0;
+            if (frontAction != null)
+            {
+                frontBonusAP = _bonusAPMap.TryGetValue(frontAction, out int b) ? b : 0;
+                frontBonusPE = _bonusPEMap.TryGetValue(frontAction, out int bpe) ? bpe : 0;
+                if (frontBonusPE > activeActor.Stats.GetSpendablePE()) { frontBonusPE = activeActor.Stats.GetSpendablePE(); _bonusPEMap[frontAction] = frontBonusPE; }
+                int frontCost = frontAction.ActionPointCost + frontBonusAP;
+                _frontCanAfford = activeActor.Stats.CurrentActionPoints >= frontCost && frontAction.CanExecute(activeActor, _contextTarget);
+            }
+
+            // Molette sur l'orbite = mise PA aveugle sur le choix avant (inchangé).
+            if (e.type == EventType.ScrollWheel && frontAction != null && ActionAllowsVariableAP(frontAction))
+            {
+                Vector2 rel = mousePos - orbitCenter;
+                float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
+                if (norm < 1.7f)
                 {
-                    if (e.type == EventType.ScrollWheel)
+                    int maxAffordable = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - frontAction.ActionPointCost);
+                    if (e.delta.y < 0f && frontBonusAP < maxAffordable) _bonusAPMap[frontAction] = frontBonusAP + 1;
+                    else if (e.delta.y > 0f && frontBonusAP > 0) _bonusAPMap[frontAction] = frontBonusAP - 1;
+                    e.Use();
+                }
+            }
+
+            // Guide elliptique : l'orbite appartient au sol de la scène.
+            Color prevGuide = GUI.color;
+            Rect orbitRect = new Rect(orbitCenter.x - rx, orbitCenter.y - ry, rx * 2f, ry * 2f);
+            GUI.color = new Color(0f, 0.85f, 1f, 0.16f);
+            GUI.DrawTexture(orbitRect, _ringTex);
+            DrawRuneTickRing(orbitRect, new Color(0f, 0.85f, 1f, 0.30f), _orbitAngle);
+            GUI.color = prevGuide;
+
+            // Nœuds du fond vers l'avant (occlusion = faux 3D), taille/profondeur liées.
+            var order = new List<int>(nodeCount);
+            for (int i = 0; i < nodeCount; i++) order.Add(i);
+            order.Sort((a, b) => OrbitDepth(_orbitAngle + a * step).CompareTo(OrbitDepth(_orbitAngle + b * step)));
+
+            bool mouseOnAny = false;
+            foreach (int i in order)
+            {
+                var node = nodes[i];
+                bool isCat = node.Kind == 0;
+                bool isEnd = node.Kind == 2;
+                var action = node.Action;
+                float ang = _orbitAngle + i * step;
+                float depth = OrbitDepth(ang);
+                Vector2 nodePos = OrbitNodePos(orbitCenter, rx, ry, ang);
+                float r = Mathf.Lerp(11f, ActionNodeRadius, depth);
+                Rect nodeRect = new Rect(nodePos.x - r, nodePos.y - r, r * 2f, r * 2f);
+                bool isFront = (i == front);
+                bool mouseOn = nodeRect.Contains(mousePos);
+                if (mouseOn) mouseOnAny = true;
+
+                int bonusAP = 0;
+                int bonusPE = 0;
+                bool canAfford = false;
+                Color accent = ColorArcaneCyan;
+                Texture2D glyph;
+                string badgeText = null;
+                if (isCat)
+                {
+                    accent = GetCategoryColor(node.Category);
+                    glyph = GetCategoryPlaceholderIcon(node.Category);
+                    canAfford = true;
+                }
+                else if (isEnd)
+                {
+                    accent = ColorArcaneAmber;
+                    glyph = GetGlyphTexture("GLYPH_ENDTURN");
+                    canAfford = canEndTurn;
+                }
+                else
+                {
+                    bonusAP = _bonusAPMap.TryGetValue(action, out int ab) ? ab : 0;
+                    bonusPE = _bonusPEMap.TryGetValue(action, out int pb) ? pb : 0;
+                    int totalCost = action.ActionPointCost + bonusAP;
+                    canAfford = activeActor.Stats.CurrentActionPoints >= totalCost && action.CanExecute(activeActor, _contextTarget);
+                    bool stakes = bonusAP > 0 || bonusPE > 0;
+                    accent = !canAfford ? ColorArcaneCrimson : (stakes ? ColorArcaneAmber : ColorArcaneCyan);
+                    glyph = GetActionPlaceholderIcon(action.Title, action.Category);
+                    if (totalCost > 0)
                     {
-                        if (e.delta.y < 0f && bonusAP < maxAffordableBonus)
-                        {
-                            bonusAP++;
-                            _bonusAPMap[action] = bonusAP;
-                        }
-                        else if (e.delta.y > 0f && bonusAP > 0)
-                        {
-                            bonusAP--;
-                            _bonusAPMap[action] = bonusAP;
-                        }
-                        e.Use();
-                    }
-                    else if (e.type == EventType.MouseDown && e.button == 1)
-                    {
-                        bonusAP = (bonusAP < maxAffordableBonus) ? bonusAP + 1 : 0;
-                        _bonusAPMap[action] = bonusAP;
-                        ArmInputBlocker();
-                        e.Use();
+                        badgeText = bonusAP > 0 ? $"{totalCost}⚡" : totalCost.ToString();
+                        if (bonusPE > 0) badgeText += $"+{bonusPE}";
                     }
                 }
-
-                int totalCost = action.ActionPointCost + bonusAP;
-                bool canAfford = activeActor.Stats.CurrentActionPoints >= totalCost && action.CanExecute(activeActor, _contextTarget);
                 bool hasStakes = bonusAP > 0 || bonusPE > 0;
+                float alpha = Mathf.Lerp(0.45f, 1f, depth);
 
                 Color prevCol = GUI.color;
 
-                // Halo de survol ou de surtension énergétique
-                if (isHovered || hasStakes)
+                // Halo d'avant ou de surtension énergétique.
+                if (isFront || hasStakes)
                 {
-                    Color haloCol = hasStakes ? ColorArcaneAmber : (canAfford ? ColorArcaneCyan : ColorArcaneCrimson);
-                    GUI.color = new Color(haloCol.r, haloCol.g, haloCol.b, hasStakes ? 0.50f : 0.35f);
-                    float haloSize = ActionNodeRadius * (hasStakes ? 3.1f : 2.8f);
+                    Color haloCol = hasStakes ? ColorArcaneAmber : (!canAfford ? ColorArcaneCrimson : (isCat || isEnd ? accent : ColorArcaneCyan));
+                    GUI.color = new Color(haloCol.r, haloCol.g, haloCol.b, (hasStakes ? 0.50f : 0.35f) * alpha);
+                    float haloSize = r * (hasStakes ? 3.1f : 2.8f);
                     GUI.DrawTexture(new Rect(nodePos.x - haloSize * 0.5f, nodePos.y - haloSize * 0.5f, haloSize, haloSize), _glowTex);
                 }
 
                 // Fond
-                GUI.color = canAfford ? new Color(0.03f, 0.06f, 0.1f, 0.95f) : new Color(0.14f, 0.04f, 0.04f, 0.85f);
+                GUI.color = canAfford ? new Color(0.03f, 0.06f, 0.1f, 0.95f * alpha) : new Color(0.14f, 0.04f, 0.04f, 0.85f * alpha);
                 GUI.DrawTexture(nodeRect, _circleTex);
 
-                // Bordure : Cyan si disponible, Ambre si surtension, Blanc si survol, Rouge UNIQUEMENT si indisponible
-                Color borderCol = !canAfford 
-                    ? ColorArcaneCrimson 
-                    : (hasStakes ? ColorArcaneAmber : (isHovered ? Color.white : ColorArcaneCyan));
-                GUI.color = borderCol;
+                // Bordure : blanc à l'avant, couleur de catégorie/domaine sinon, rouge si indisponible.
+                Color borderCol = !canAfford
+                    ? ColorArcaneCrimson
+                    : (isFront ? Color.white : (hasStakes ? ColorArcaneAmber : accent));
+                GUI.color = new Color(borderCol.r, borderCol.g, borderCol.b, alpha);
                 GUI.DrawTexture(nodeRect, _ringTex);
 
-                // Icône
-                Texture2D glyph = GetActionPlaceholderIcon(action.Title, action.Category);
-                GUI.color = canAfford ? (isHovered ? Color.white : new Color(0.9f, 0.95f, 1f, 0.9f)) : new Color(0.6f, 0.6f, 0.6f, 0.4f);
+                // Icône (catégorie, action ou sablier de fin de tour)
+                GUI.color = canAfford
+                    ? (isFront ? Color.white : new Color(0.9f, 0.95f, 1f, 0.9f * alpha))
+                    : new Color(0.6f, 0.6f, 0.6f, 0.4f * alpha);
                 Rect glyphRect = new Rect(nodeRect.x + 5f, nodeRect.y + 5f, nodeRect.width - 10f, nodeRect.height - 10f);
                 GUI.DrawTexture(glyphRect, glyph);
 
-                // Badge PA (+ PE déclarés en aveugle)
-                if (totalCost > 0)
+                // Badge PA (+ PE déclarés en aveugle) pour les actions chiffrées (conservé).
+                if (badgeText != null)
                 {
                     float badgeWidth = hasStakes ? 30f : 15f;
                     Rect badgeRect = new Rect(nodePos.x + 4f, nodePos.y + 5f, badgeWidth, 12f);
@@ -517,66 +456,94 @@ namespace Killtime.Tactics.CombatUI
                         alignment = TextAnchor.MiddleCenter
                     };
 
-                    string badgeLabel = bonusAP > 0 ? $"{totalCost}⚡" : totalCost.ToString();
-                    if (bonusPE > 0) badgeLabel += $"+{bonusPE}";
-                    GUI.Label(badgeRect, badgeLabel, badgeStyle);
+                    GUI.Label(badgeRect, badgeText, badgeStyle);
+                }
+
+                // Titre du choix avant, sous le nœud, sur plaque opaque.
+                // Matrice identité forcée : un autre composant IMGUI peut laisser
+                // une rotation active, ce qui rendait le texte en miroir.
+                if (isFront)
+                {
+                    var frontStyle = new GUIStyle(GUI.skin.label)
+                    {
+                        fontSize = 10,
+                        fontStyle = FontStyle.Bold,
+                        alignment = TextAnchor.MiddleCenter
+                    };
+                    frontStyle.normal.textColor = canAfford ? Color.white : new Color(1f, 0.55f, 0.55f);
+                    string frontTitle = isCat ? GetCategoryDisplayName(node.Category) : (isEnd ? "Terminer le tour" : action.Title);
+                    Color tintPrev = GUI.color;
+                    Matrix4x4 matPrev = GUI.matrix;
+                    GUI.matrix = Matrix4x4.identity;
+                    Rect plateRect = new Rect(nodePos.x - 70f, nodePos.y + r + 4f, 140f, 18f);
+                    GUI.color = new Color(0.02f, 0.03f, 0.06f, 0.92f);
+                    GUI.DrawTexture(plateRect, _pixelTex);
+                    GUI.color = Color.white;
+                    GUI.Label(plateRect, frontTitle, frontStyle);
+                    GUI.matrix = matPrev;
+                    GUI.color = tintPrev;
                 }
 
                 GUI.color = prevCol;
 
-                // Clic gauche : exécution immédiate avec blocage absolu du click-through
-                if (isHovered && e.type == EventType.MouseDown && e.button == 0)
+                // Clic gauche : l'avant agit (forer / exécuter / fin de tour),
+                // les autres nœuds viennent devant.
+                if (mouseOn && e.type == EventType.MouseDown && e.button == 0)
                 {
                     ArmInputBlocker();
-                    if (canAfford)
+                    if (isFront)
                     {
-                        ExecuteActionWithInjectedAP(action, activeActor, _contextTarget, bonusAP, bonusPE);
-                        CloseMenu();
+                        if (isCat)
+                        {
+                            DrillIntoCategory(node.Category);
+                        }
+                        else if (isEnd)
+                        {
+                            if (canEndTurn)
+                            {
+                                EndActiveUnitTurn();
+                                CloseMenu();
+                            }
+                            else
+                            {
+                                _arena?.Log(EndTurnBlockedHint());
+                            }
+                        }
+                        else if (canAfford)
+                        {
+                            ExecuteFrontAction();
+                        }
                     }
+                    else
+                    {
+                        _orbitTargetAngle = OrbitSnapTarget(_orbitAngle, nodeCount, i);
+                        _orbitHasTarget = true;
+                    }
+                    e.Use();
+                    return;
+                }
+
+                // Clic droit sur l'avant-action : modulation immédiate de la mise PA (conservé).
+                if (isFront && !isCat && !isEnd && mouseOn && e.type == EventType.MouseDown && e.button == 1 && ActionAllowsVariableAP(action))
+                {
+                    int maxAffordableBonus = Mathf.Max(0, activeActor.Stats.CurrentActionPoints - action.ActionPointCost);
+                    _bonusAPMap[action] = (bonusAP < maxAffordableBonus) ? bonusAP + 1 : 0;
+                    ArmInputBlocker();
                     e.Use();
                     return;
                 }
             }
 
-            if (showEndTurn)
+            // Clic droit dans le vide de l'orbite (niveau items) = retour aux catégories.
+            if (!_showOrbitCategories && e.type == EventType.MouseDown && e.button == 1 && !mouseOnAny)
             {
-                float angle = initialAngle + angleStep * actions.Count;
-                Vector2 nodePos = _centerPos + new Vector2(Mathf.Cos(angle), Mathf.Sin(angle)) * OuterRadius;
-                Rect nodeRect = new Rect(nodePos.x - ActionNodeRadius, nodePos.y - ActionNodeRadius, ActionNodeRadius * 2f, ActionNodeRadius * 2f);
-                bool isHovered = nodeRect.Contains(mousePos);
-
-                Color prevCol = GUI.color;
-                GUI.color = !canEndTurn
-                    ? new Color(0.12f, 0.12f, 0.12f, 0.85f)
-                    : (isHovered ? ColorArcaneAmber : new Color(0.2f, 0.15f, 0.05f, 0.95f));
-                GUI.DrawTexture(nodeRect, _circleTex);
-                GUI.color = !canEndTurn
-                    ? new Color(0.45f, 0.45f, 0.45f, 0.7f)
-                    : (isHovered ? Color.white : ColorArcaneAmber);
-                GUI.DrawTexture(nodeRect, _ringTex);
-
-                Texture2D hourglassGlyph = GetGlyphTexture("GLYPH_ENDTURN");
-                GUI.color = !canEndTurn
-                    ? new Color(0.5f, 0.5f, 0.5f, 0.6f)
-                    : (isHovered ? Color.white : ColorArcaneAmber);
-                Rect glyphRect = new Rect(nodeRect.x + 5f, nodeRect.y + 5f, nodeRect.width - 10f, nodeRect.height - 10f);
-                GUI.DrawTexture(glyphRect, hourglassGlyph);
-
-                GUI.color = prevCol;
-
-                if (isHovered && e.type == EventType.MouseDown && e.button == 0)
+                Vector2 rel = mousePos - orbitCenter;
+                float norm = (rel.x * rel.x) / (rx * rx) + (rel.y * rel.y) / (ry * ry);
+                if (norm < 1.9f)
                 {
-                    ArmInputBlocker();
-                    if (canEndTurn)
-                    {
-                        EndActiveUnitTurn();
-                        CloseMenu();
-                    }
-                    else
-                    {
-                        _arena?.Log(EndTurnBlockedHint());
-                    }
+                    BackToCategories();
                     e.Use();
+                    return;
                 }
             }
         }
