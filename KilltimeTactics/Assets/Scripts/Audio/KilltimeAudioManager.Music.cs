@@ -145,9 +145,10 @@ namespace Killtime.Audio
             if (_generativeCombat && IsGenerativeMood(mood))
             {
                 bool moodChange = mood != _targetMood;
+                bool isBoss = (mood == MusicMood.CombatBoss);
                 var genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                     allyHpRatio01, alliesAlive, enemiesAlive, turnIndex,
-                    _generativeSeed, _genGeneration, 0f, _generativeBrightness, _generativeChaos, _generativePreset);
+                    _generativeSeed, _genGeneration, 0f, _generativeBrightness, _generativeChaos, _generativePreset, isBoss);
                 bool bigShift = Mathf.Abs(genParams.intensity01 - _targetIntensity01) >= _adaptiveHysteresis
                     || Mathf.Abs(genParams.tension01 - (_genParamsValid ? _genParams.tension01 : 0.5f)) >= 0.25f;
                 if (!moodChange && !bigShift && _genParamsValid) return false;
@@ -281,7 +282,7 @@ namespace Killtime.Audio
                     float gIn = Mathf.Sin(k * Mathf.PI * 0.5f);
                     float gOut = Mathf.Cos(k * Mathf.PI * 0.5f);
                     float targetVol = _musicVolume * _masterVolume;
-                    float duck = Mathf.Max(0f, 1f - 0.5f * _pauseDuck);
+                    float duck = Mathf.Clamp01((1f - 0.5f * _pauseDuck) * (1f - 0.35f * _cinematicDuck));
                     float mute = _muted ? 0f : 1f;
                     fadeIn.volume = mute * targetVol * gIn * duck;
                     if (fadeOut != null) fadeOut.volume = mute * targetVol * gOut * duck;
@@ -303,9 +304,10 @@ namespace Killtime.Audio
 
         /// <summary>
         /// Crossfade vers un clip déjà généré (voie générative ∞).
-        /// Même courbe que la voie legacy, sans re-résolution SoundBank.
+        /// Si syncPhase est actif (changement de stem ou variation à BPM identique en milieu de boucle),
+        /// cale la tête de lecture sur la phase exacte de la source sortante pour ne jamais perdre le beat.
         /// </summary>
-        private IEnumerator CrossfadeClipRoutine(AudioClip clip, MusicMood mood, int generation, float intensity01)
+        private IEnumerator CrossfadeClipRoutine(AudioClip clip, MusicMood mood, int generation, float intensity01, bool syncPhase = false)
         {
             if (clip == null)
             {
@@ -333,8 +335,31 @@ namespace Killtime.Audio
                 fadeIn.pitch = 1f;
                 fadeIn.volume = 0f;
                 fadeIn.Play();
-                try { fadeIn.time = 0f; }
-                catch (System.Exception) { }
+                if (syncPhase && fadeOut != null && fadeOut.isPlaying && fadeOut.clip != null && fadeOut.time > 0.05f && clip.length > 0.5f)
+                {
+                    try
+                    {
+                        float targetTime = fadeOut.time % clip.length;
+                        // Si la source sortante est déjà dans la dernière seconde avant la fin,
+                        // mieux vaut repartir proprement au temps 0 que de wrapper pendant le fondu.
+                        if (targetTime < clip.length - Mathf.Max(1.2f, _generativeCrossfade + 0.2f))
+                        {
+                            fadeIn.time = targetTime;
+                            _genLoopTimer = targetTime;
+                        }
+                        else
+                        {
+                            fadeIn.time = 0f;
+                            _genLoopTimer = 0f;
+                        }
+                    }
+                    catch (System.Exception) { }
+                }
+                else
+                {
+                    try { fadeIn.time = 0f; }
+                    catch (System.Exception) { }
+                }
                 _activeMusic = fadeIn;
             }
             catch (System.Exception ex)
@@ -350,12 +375,14 @@ namespace Killtime.Audio
             {
                 while (t < dur)
                 {
-                    t += Time.unscaledDeltaTime;
+                    float dt = Time.unscaledDeltaTime;
+                    t += dt;
+                    _genLoopTimer += dt;
                     float k = Mathf.SmoothStep(0f, 1f, Mathf.Clamp01(t / dur));
                     float gIn = Mathf.Sin(k * Mathf.PI * 0.5f);
                     float gOut = Mathf.Cos(k * Mathf.PI * 0.5f);
                     float targetVol = _musicVolume * _masterVolume;
-                    float duck = Mathf.Max(0f, 1f - 0.5f * _pauseDuck);
+                    float duck = Mathf.Clamp01((1f - 0.5f * _pauseDuck) * (1f - 0.35f * _cinematicDuck));
                     float mute = _muted ? 0f : 1f;
                     fadeIn.volume = mute * targetVol * gIn * duck;
                     if (fadeOut != null) fadeOut.volume = mute * targetVol * gOut * duck;

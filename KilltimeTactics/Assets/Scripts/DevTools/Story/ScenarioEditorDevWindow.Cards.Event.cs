@@ -17,7 +17,7 @@ namespace Killtime.Story
     {
         private void DrawEventCard(SceneEventData ev, int index, SceneNodeData node, Vector2 mouseWorld)
         {
-            if (string.IsNullOrEmpty(ev.EventId)) ev.EventId = $"evt_{index + 1}";
+            if (string.IsNullOrEmpty(ev.EventId)) ev.EventId = MakeUniqueEventId(node);
 
             Vector2 size = GetEventCardSize(ev);
             float cardW = size.x;

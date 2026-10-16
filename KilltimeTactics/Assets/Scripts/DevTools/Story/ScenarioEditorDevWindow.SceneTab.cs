@@ -451,7 +451,7 @@ namespace Killtime.Story
             {
                 if (GUILayout.Button("+ Créer le premier Nœud de Scène", GUILayout.Height(36)))
                 {
-                    _data.Nodes.Add(new SceneNodeData { NodeId = "node_1", Title = "Départ", GraphPosX = 60f, GraphPosY = 60f });
+                    _data.Nodes.Add(new SceneNodeData { NodeId = MakeUniqueNodeId(), Title = "Départ", GraphPosX = 60f, GraphPosY = 60f });
                 }
                 return;
             }
@@ -561,7 +561,7 @@ namespace Killtime.Story
                 Vector2 worldCenter = (viewCenter - _graphPan) / Mathf.Max(0.01f, _zoom);
                 _data.Triggers.Add(new SceneTriggerData
                 {
-                    TriggerId = $"trig_{_data.Triggers.Count + 1}",
+                    TriggerId = MakeUniqueTriggerId(),
                     Label = "Nouveau déclencheur",
                     GraphPosX = worldCenter.x - 170f,
                     GraphPosY = worldCenter.y - 100f
@@ -575,7 +575,7 @@ namespace Killtime.Story
                 Vector2 worldCenter = (viewCenter - _graphPan) / Mathf.Max(0.01f, _zoom);
                 _data.Interactables.Add(new SceneInteractableSpawnData
                 {
-                    InteractableId = $"obj_{_data.Interactables.Count + 1}",
+                    InteractableId = MakeUniqueInteractableId(),
                     DisplayName = "Nouvel interactable",
                     ActionLabel = "Interagir",
                     Q = 0,
@@ -592,7 +592,7 @@ namespace Killtime.Story
                 Vector2 worldCenter = (viewCenter - _graphPan) / Mathf.Max(0.01f, _zoom);
                 _data.Actors.Add(new SceneActorSpawnData
                 {
-                    ActorId = $"actor_{_data.Actors.Count + 1}",
+                    ActorId = MakeUniqueActorId(),
                     DisplayName = "Nouvel Acteur",
                     Q = 0,
                     R = 0,
@@ -738,78 +738,6 @@ namespace Killtime.Story
             }
 
             DrawNodeGraphCanvas(canvasRect);
-        }
-
-        private static bool CheckIfSceneNeedsInitialLayout(StorySceneData data)
-        {
-            if (data == null) return false;
-            if (data.Nodes != null)
-            {
-                for (int i = 0; i < data.Nodes.Count; i++)
-                {
-                    var n = data.Nodes[i];
-                    if (n == null) continue;
-                    if (n.GraphPosX <= 0f && n.GraphPosY <= 0f) return true;
-                }
-            }
-            if (data.Triggers != null)
-            {
-                for (int t = 0; t < data.Triggers.Count; t++)
-                {
-                    var trg = data.Triggers[t];
-                    if (trg == null) continue;
-                    if (trg.GraphPosX <= 0f && trg.GraphPosY <= 0f) return true;
-                }
-            }
-            // Interactables historiques sans position graphe (0,0) → auto-dispose.
-            if (data.Interactables != null)
-            {
-                for (int i = 0; i < data.Interactables.Count; i++)
-                {
-                    var it = data.Interactables[i];
-                    if (it == null) continue;
-                    if (it.GraphPosX <= 0f && it.GraphPosY <= 0f) return true;
-                }
-            }
-            // Acteurs historiques sans position graphe (0,0) → auto-dispose.
-            if (data.Actors != null)
-            {
-                for (int i = 0; i < data.Actors.Count; i++)
-                {
-                    var a = data.Actors[i];
-                    if (a == null) continue;
-                    if (a.GraphPosX <= 0f && a.GraphPosY <= 0f) return true;
-                }
-            }
-            // Cinématiques historiques sans position graphe (0,0) → auto-dispose.
-            if (data.Cinematics != null)
-            {
-                for (int i = 0; i < data.Cinematics.Count; i++)
-                {
-                    var c = data.Cinematics[i];
-                    if (c == null) continue;
-                    if (c.GraphPosX <= 0f && c.GraphPosY <= 0f) return true;
-                }
-            }
-            if (data.Sounds != null)
-            {
-                for (int i = 0; i < data.Sounds.Count; i++)
-                {
-                    var snd = data.Sounds[i];
-                    if (snd == null) continue;
-                    if (snd.GraphPosX <= 0f && snd.GraphPosY <= 0f) return true;
-                }
-            }
-            if (data.Ambiences != null)
-            {
-                for (int i = 0; i < data.Ambiences.Count; i++)
-                {
-                    var amb = data.Ambiences[i];
-                    if (amb == null) continue;
-                    if (amb.GraphPosX <= 0f && amb.GraphPosY <= 0f) return true;
-                }
-            }
-            return false;
         }
     }
 }

@@ -18,7 +18,7 @@ namespace Killtime.Story
         private void DrawTriggerCard(SceneTriggerData trg, int index, Vector2 mouseWorld)
         {
             if (trg == null) return;
-            if (string.IsNullOrEmpty(trg.TriggerId)) trg.TriggerId = $"trig_{index + 1}";
+            if (string.IsNullOrEmpty(trg.TriggerId)) trg.TriggerId = MakeUniqueTriggerId();
             string targetDisplay = string.IsNullOrEmpty(trg.TargetNodeId) ? "(sans cible)" : trg.TargetNodeId;
 
             Vector2 size = GetTriggerCardSize(trg);

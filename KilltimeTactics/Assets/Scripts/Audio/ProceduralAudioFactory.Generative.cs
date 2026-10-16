@@ -32,6 +32,19 @@ namespace Killtime.Audio
             return clip;
         }
 
+        private static readonly Dictionary<string, AudioClip> _generativeStrikeCache = new();
+
+        public static AudioClip GetGenerativeStrikeClip(int rootMidi, GenerativeScale scale, float strike01)
+        {
+            int sQ = Mathf.Clamp(Mathf.RoundToInt(strike01 * 4f), 1, 4);
+            string key = $"STRIKE_{rootMidi}_{(int)scale}_{sQ}";
+            if (_generativeStrikeCache.TryGetValue(key, out var cached) && IsClipUsable(cached)) return cached;
+            float[] samples = GenerativeMusicEngine.RenderReactiveStrike(rootMidi, scale, sQ * 0.25f);
+            var clip = MakeClip(key, samples);
+            _generativeStrikeCache[key] = clip;
+            return clip;
+        }
+
         private static string GenerativeKey(GenerativeMusicParams p)
         {
             // Quantifie les continus pour éviter de régénérer à chaque micro-glissé

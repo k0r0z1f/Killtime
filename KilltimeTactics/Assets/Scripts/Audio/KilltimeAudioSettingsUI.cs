@@ -155,7 +155,8 @@ namespace Killtime.Audio
             if (mgr.GenerativeCombatEnabled)
             {
                 var gp = mgr.CurrentGenerativeParams;
-                string genInfo = $"<color=#00E5FF>G{mgr.GenerativeGeneration}</color> {gp.bpm:0} BPM {gp.drumStyle}/{gp.scale} "
+                var role = GenerativeMusicEngine.GetSectionRole(gp);
+                string genInfo = $"<color=#00E5FF>G{mgr.GenerativeGeneration} [{role}]</color> {gp.bpm:0} BPM {gp.drumStyle}/{gp.scale} "
                     + $"E:{Mathf.RoundToInt(gp.intensity01 * 100)}% T:{Mathf.RoundToInt(gp.tension01 * 100)}% "
                     + $"▶ {Mathf.RoundToInt(mgr.GenerativeLoopProgress * 100)}%";
                 GUILayout.Label(genInfo, RichLabel());

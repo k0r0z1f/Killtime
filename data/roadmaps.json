@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-14",
+  "updated": "2026-10-16",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -766,7 +766,7 @@
           "title": "IA : Duo-Tech automatique Lucas + Mina (sans tracé souris)"
         },
         {
-          "details": "À FAIRE : TryThrowGrenadeAI pénalise les grenades utilitaires (-6) et ne les joue presque jamais. Pistes : fumigène de couverture avant repli/avance à découvert (SegmentSmoked), flash avant assaut (Aveuglé → -4 tir), gaz persistant sur couloir (ZoneDamagePerTurn, avec masque à gaz allié vérifié).",
+          "details": "EN COURS (2026-10-16) : pénalité -6 supprimée. Nouveau AIGrenadeScorer pur (Tactics/AI) : fumée 3 poses (ennemi/soi/milieu, alliés = pénalité douce), flash +6 avant assaut (Aveugle -4 tir), gaz persistant DoT×tours avec alliés masqués ignorés (conventionnel). Seuil utilitaire 12, létal 18 inchangé (formule verbatim). Tests EditMode AIGrenadeScorerTests (12 cas) à faire tourner (éditeur ouvert, batchmode impossible). Pistes d'origine : fumigène de couverture avant repli/avance à découvert (SegmentSmoked), flash avant assaut (Aveuglé → -4 tir), gaz persistant sur couloir (ZoneDamagePerTurn, avec masque à gaz allié vérifié).",
           "epic": "IA",
           "id": "RD-106",
           "order": 48,
@@ -776,7 +776,7 @@
           "priority": "low",
           "scale": null,
           "scene": "",
-          "status": "todo",
+          "status": "doing",
           "suggestedAsset": "GrenadeSystem (SmokeScreen)",
           "title": "IA : grenades utilitaires offensives (fumigènes, flash, gaz)"
         },
@@ -1027,7 +1027,7 @@
           "id": "RD-150",
           "title": "Registry : migrer le dernier FindObjectsByType<TacticalUnit> (TacticalPixieLight)",
           "epic": "Optimisation",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 65,
           "scene": "",
@@ -1036,8 +1036,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Tactics/Lighting/TacticalPixieLight.cs",
-          "details": "Suivi RD-113 (2026-10-13) : 1 appel résiduel FindObjectsByType<TacticalUnit>() en TacticalPixieLight.cs:489. Migrer vers TacticalUnitRegistry (snapshot AllUnits ou GetAliveUnits selon usage), vérifier chemin chaud vs occasionnel, NUnit + profiler combat dev.",
-          "updated": "2026-10-13"
+          "details": "FAIT (2026-10-15) : suivi RD-113 — dernier appel résiduel FindObjectsByType<TacticalUnit>() dans TacticalPixieLight.SpawnPixie (l. 489) migré vers TacticalUnitRegistry.AllUnits (snapshot sans allocation, parcours indexé .Count). Vérifié par grep : 0 occurrence restante de FindObjectsByType<TacticalUnit> / FindObjectOfType<TacticalUnit> dans Assets/Scripts.",
+          "updated": "2026-10-15"
         },
         {
           "id": "RD-155",
@@ -1225,7 +1225,7 @@
           "id": "RD-055",
           "title": "Template scène unique clonable",
           "epic": "Template",
-          "status": "doing",
+          "status": "done",
           "priority": "high",
           "order": 1,
           "scene": "",
@@ -1234,8 +1234,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Main.unity + CombatDevArena",
-          "details": "GridRadius variable, CeilingHeight, lighting preset, spawns, triggers F7. New Chapter = duplicate. Suivi 2026-10-13 : ApplyGridAndLighting(config,grid,logWarnings:true) — flag optionnel, warnings conditionnés ; ChapterTemplateTests passe logWarnings:false sur les 3 cas négatifs (console test silencieuse, runtime inchangé). Reste : recompile éditeur + run ChapterTemplateTests (bloque le passage en done).",
-          "updated": "2026-10-13"
+          "details": "GridRadius variable, CeilingHeight, lighting preset, spawns, triggers F7. New Chapter = duplicate. Suivi 2026-10-13 : ApplyGridAndLighting(config,grid,logWarnings:true) — flag optionnel, warnings conditionnés ; ChapterTemplateTests passe logWarnings:false sur les 3 cas négatifs (console test silencieuse, runtime inchangé). Reste : recompile éditeur + run ChapterTemplateTests (bloque le passage en done). FAIT (2026-10-16) : recompile éditeur verte (0 error CS, build player Succeeded 04:34 sur l'arbre courant) + ChapterTemplateTests 8/8 verts en batchmode EditMode filtré (exit 0). Hygiène batchmode : ProjectSettings.asset restauré (define SENTIS réécrit par le headless), résultats sous /tmp/opencode.",
+          "updated": "2026-10-16"
         },
         {
           "id": "RD-056",
@@ -1836,7 +1836,7 @@
           "id": "RD-022",
           "title": "Remplacer JunctionBox_Light_West par voyant final",
           "epic": "Couloirs / Murs",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 21,
           "scene": "volume_1_scene_01",
@@ -1853,7 +1853,8 @@
             0.06
           ],
           "suggestedAsset": "Voyant orange clignotant (émissif)",
-          "details": "Petit cube orange émissif. Remplacer par LED + light intermittente."
+          "details": "FAIT (2026-10-16) : JunctionBox_Light_West n'existe plus (ni scène ni volume_1_scene_01.json, 59 placeholders actuels). Intent repris sur l'équivalent réel Sas_Voyant_Rouge (sphère émissive + Point rouge, ParentToEnvironment) : nouveau SasVoyantBlink.cs (onde carrée 1.2 Hz, pulse Light + _EmissionColor, matériau instancié) branché par convention Id contient 'Voyant' aux 4 sites de création SceneEnvironmentLibrary.cs. Reste : vérif en jeu (scène 01, voyant sas clignote).",
+          "updated": "2026-10-16"
         }
       ]
     },
@@ -2430,8 +2431,24 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Story/StorySceneData.cs + DevTools/Story + DevTools/Arena",
-          "details": "Créé 2026-10-13 (règle dev.md §2 <~800 lignes) : restent >800 lignes après les splits — StorySceneData 1368, ScenarioEditorDevWindow.Wires 1285, ArenaAttackService 1258, Cards.World 1132, GrenadeSystem 1081, ArenaMelee 1064, KilltimeAudioSettingsUI 1062, CinematicEditorDevWindow 1034, GenerativeMusicEngine 1014, DuoTechRegistry 972, CombatTechniqueRegistry 955, SpecialManeuverService 923, Panels.Audio 902, GraphCanvas 878, SceneTab 815. Trancher par fichier : split ciblé (services/partials) ou exception documentée (service métier indissociable). Ne pas laisser croire que tout est <800.",
-          "updated": "2026-10-13"
+          "details": "Créé 2026-10-13 (règle dev.md §2 <~800 lignes) : restent >800 lignes après les splits — StorySceneData 1368, ScenarioEditorDevWindow.Wires 1267, ArenaAttackService 1258, Cards.World 1132, GrenadeSystem 1081, ArenaMelee 1064, KilltimeAudioSettingsUI 1062, CinematicEditorDevWindow 1034, DuoTechRegistry 972, CombatTechniqueRegistry 955, SpecialManeuverService 923, Panels.Audio 902, GraphCanvas 879 (SceneTab ramené à 743 l. lors de RD-118 ; GenerativeMusicEngine 1014 l. découpé en 4 partials 333/369/336/626 l. lors de RD-165). Trancher par fichier : split ciblé (services/partials) ou exception documentée (service métier indissociable). Ne pas laisser croire que tout est <800.",
+          "updated": "2026-10-16"
+        },
+        {
+          "id": "RD-165",
+          "title": "Refonte musicale & DSP du moteur génératif infini + split 4 partials (<800 l.)",
+          "epic": "Audio",
+          "status": "done",
+          "priority": "high",
+          "order": 24,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "GenerativeMusicEngine.*.cs + AdaptiveMusicDirector",
+          "details": "FAIT (2026-10-16) : 1) Architecture & dev.md §2 : GenerativeMusicEngine (1014 l.) découpé en 4 partials <800 l. (Core 333 l., Theory 369 l., Drums 336 l., Synths 626 l.). 2) Mémoire thématique & forme : double RNG (themeRng par seed gardant le thème et la grille d'ancrage reconnaissables sur tout le combat + varRng par generation) et cycle narratif en 5 rôles (ThemeA, ThemeAVar, BridgeB, Climax, Breakdown) + conduction des voix fluide (VoiceLeadChord sans sauts d'octave boueux) + contre-chant harmonisé à la tierce/sixte en Climax. 3) Synthèse & DSP : oscillateurs anti-aliasés PolyBLEP (saw/square), filtres résonants Cytomic SVF 2-pôles (lowpass/bandpass), chœur arcanotech à 3 formants vocaliques (morphing Ah/Oh), lead legato avec portamento/vibrato progressif et delays tempo-sync rebouclés circulairement sans coupure, kick accordé sur la fondamentale et charlestons métalliques FM. 4) Transitions & réactivité : BPM quantifié par pas de 4, seed stable inter-tours, profil CombatBoss distinct, crossfade synchronisé en phase (syncPhase) sur refresh de stems/variations à même BPM, horloge bouclée sur _activeMusic.time, ducking cinématique réellement appliqué au mix et stinger harmonique immédiat accordé sur la tonique dans NotifyCombatStrike.",
+          "updated": "2026-10-16"
         }
       ]
     },
@@ -2534,7 +2551,7 @@
           "id": "RD-118",
           "title": "Unicité IDs déclencheur/interactable/acteur + backfills",
           "epic": "Éditeur nodal",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 6,
           "scene": "",
@@ -2543,13 +2560,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "DevTools/Story/ScenarioEditorDevWindow.SceneTab.cs",
-          "details": "Reste de la revue RD-117 : boutons + Déclencheur (trig_Count+1), + Interactable (obj_Count+1), + Acteur (actor_Count+1) sans helper MakeUnique* (à créer sur le modèle MakeUniqueNodeId/CineId/SoundId), et backfills snd_/evt_/cons_/cine_{i+1} dans les passes de dessin à durcir (mitigé par RepairAudioLinks)."
+          "details": "FAIT (2026-10-16) : 1) QuickCreateFactory.cs : ajout de MakeUniqueTriggerId, MakeUniqueInteractableId, MakeUniqueActorId et MakeUniqueObjectiveId + durcissement de tous les MakeUnique* (comptage des IDs non vides pour fonctionner à la fois en pré-ajout et en backfill sur élément déjà en liste). 2) SceneTab.cs + Layout.NodeFrame.cs : remplacement des créations Count+1 (+ Déclencheur, + Interactable, + Acteur, + Premier Nœud, + Objectif, + Dialogue, + Événement, + Conséq.) par MakeUnique*. 3) GraphCanvas.cs + Cards.*.cs + Panels.Audio.cs + Persistence.cs : remplacement des backfills naïfs {i+1}/{index+1} et déduplication dans EnsureDialogueGraphIntegrity. Bonus dev.md §2 : CheckIfSceneNeedsInitialLayout déplacé vers Layout.Auto.cs (SceneTab 815 -> 743 l., <800).",
+          "updated": "2026-10-16"
         },
         {
           "id": "RD-119",
           "title": "Parité picker arrêt ambiance vs arrêt son",
           "epic": "Éditeur nodal",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 7,
           "scene": "",
@@ -2558,7 +2576,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "DevTools/Story/ScenarioEditorDevWindow.Wires.cs",
-          "details": "Revue RD-117 : le picker inline arrêt ambiance ne propose que dialogues/events/conséquences, TryPickSoundStopTarget propose tous types (triggers, interactables, acteurs, cinématiques) ; ni l un ni l autre ne propose les noeuds (pourtant évalués au runtime). Unifier vers le picker partagé et trancher le cas noeud."
+          "details": "FAIT (2026-10-16, ScenarioEditorDevWindow.Wires.cs) : 1) Bloc arrêt ambiance inline (~35 lignes, dialogues/events/conséquences uniquement) remplacé par le picker partagé TryPickSoundStopTarget — parité totale avec l'arrêt son + garde _data.Ambiences.Contains(amb) ajoutée (miroir du guard son). 2) Cas nœud tranché côté support : TryGetSoundSourceBottom résout désormais les NodeId (bas du cadre ComputeNodeBoundingBox) et TryPickSoundStopTarget propose les nœuds via Consider(nd.NodeId) — cohérent avec le runtime qui évalue déjà les stops/starts sur node.Id (EvaluateLinkedAmbiences + FireLinkedSounds, DialogueCore.cs:174-175). Effet de bord assumé et cohérent : audit/réparation/wires (AudioCardIdExists) acceptent aussi les NodeId en start. Vérif : accolades/parens/crochets équilibrés, NodeId vérifié (StorySceneData.cs:863), fichier 1285→1267 l. Reste : compile éditeur + test en jeu (drop arrêt ambiance sur trigger/acteur/nœud, wire dessiné, audit sans faux lien mort).",
+          "updated": "2026-10-16"
         },
         {
           "id": "RD-120",

@@ -330,7 +330,6 @@ namespace Killtime.Story
             for (int n = 0; n < _data.Nodes.Count; n++)
             {
                 var node = _data.Nodes[n];
-                EnsureDialogueGraphIntegrity(node);
                 StorySceneData.EnsureNodeLists(node);
 
                 node.GraphPosX = SanitizeCoord(node.GraphPosX, 60f + n * 500f);
@@ -340,10 +339,12 @@ namespace Killtime.Story
                 {
                     var dl = node.Dialogues[d];
                     if (dl == null) continue;
+                    if (string.IsNullOrEmpty(dl.LineId)) dl.LineId = MakeUniqueLineId(node);
                     dl.GraphPosX = SanitizeCoord(dl.GraphPosX, node.GraphPosX + 20f);
                     dl.GraphPosY = SanitizeCoord(dl.GraphPosY, node.GraphPosY + 50f);
                     dl.CinematicIds = StorySceneData.EnsureCineList(dl.CinematicIds);
                 }
+                EnsureDialogueGraphIntegrity(node);
                 for (int e = 0; e < node.Events.Count; e++)
                 {
                     var ev0 = node.Events[e];
@@ -368,14 +369,14 @@ namespace Killtime.Story
                 for (int d = 0; d < node.Dialogues.Count; d++)
                 {
                     var line = node.Dialogues[d];
-                    if (string.IsNullOrEmpty(line.LineId)) line.LineId = $"line_{d + 1}";
+                    if (string.IsNullOrEmpty(line.LineId)) line.LineId = MakeUniqueLineId(node);
                     _cachedInputSockets[line.LineId] = new Vector2(line.GraphPosX, line.GraphPosY + 26f);
                 }
 
                 for (int e = 0; e < node.Events.Count; e++)
                 {
                     var ev = node.Events[e];
-                    if (string.IsNullOrEmpty(ev.EventId)) ev.EventId = $"evt_{e + 1}";
+                    if (string.IsNullOrEmpty(ev.EventId)) ev.EventId = MakeUniqueEventId(node);
                     _cachedInputSockets[ev.EventId] = new Vector2(ev.GraphPosX, ev.GraphPosY + 26f);
                 }
 
@@ -384,7 +385,7 @@ namespace Killtime.Story
                 {
                     var cons = node.Consequences[k];
                     if (cons == null) continue;
-                    if (string.IsNullOrEmpty(cons.ConsequenceId)) cons.ConsequenceId = $"cons_{k + 1}";
+                    if (string.IsNullOrEmpty(cons.ConsequenceId)) cons.ConsequenceId = MakeUniqueConsId(node);
                     _cachedInputSockets[cons.ConsequenceId] = new Vector2(cons.GraphPosX, cons.GraphPosY + 26f);
                 }
             }
@@ -399,8 +400,8 @@ namespace Killtime.Story
                     trg.GraphPosX = SanitizeCoord(trg.GraphPosX, 60f + t * 380f);
                     trg.GraphPosY = SanitizeCoord(trg.GraphPosY, 900f);
                     trg.CinematicIds = StorySceneData.EnsureCineList(trg.CinematicIds);
-                    if (string.IsNullOrEmpty(trg.TriggerId)) trg.TriggerId = $"trig_{t + 1}";
-                    if (!seenTriggerIds.Add(trg.TriggerId)) trg.TriggerId = $"{trg.TriggerId}_{t + 1}";
+                    if (string.IsNullOrEmpty(trg.TriggerId)) trg.TriggerId = MakeUniqueTriggerId();
+                    if (!seenTriggerIds.Add(trg.TriggerId)) { trg.TriggerId = MakeUniqueTriggerId(); seenTriggerIds.Add(trg.TriggerId); }
                     Vector2 tsize = GetTriggerCardSize(trg);
                     _cachedTriggerOutSockets[trg.TriggerId] = new Vector2(trg.GraphPosX + tsize.x, trg.GraphPosY + 26f);
                 }
@@ -423,8 +424,8 @@ namespace Killtime.Story
                         it.GraphPosX = 60f + i * 380f;
                         it.GraphPosY = 1250f;
                     }
-                    if (string.IsNullOrEmpty(it.InteractableId)) it.InteractableId = $"obj_{i + 1}";
-                    if (!seenInterIds.Add(it.InteractableId)) it.InteractableId = $"{it.InteractableId}_{i + 1}";
+                    if (string.IsNullOrEmpty(it.InteractableId)) it.InteractableId = MakeUniqueInteractableId();
+                    if (!seenInterIds.Add(it.InteractableId)) { it.InteractableId = MakeUniqueInteractableId(); seenInterIds.Add(it.InteractableId); }
                     Vector2 isize = GetInteractableCardSize(it);
                     _cachedInteractableOutSockets[it.InteractableId] = new Vector2(it.GraphPosX + isize.x, it.GraphPosY + 26f);
                 }
@@ -446,8 +447,8 @@ namespace Killtime.Story
                         a.GraphPosX = 60f + i * 380f;
                         a.GraphPosY = 1600f;
                     }
-                    if (string.IsNullOrEmpty(a.ActorId)) a.ActorId = $"actor_{i + 1}";
-                    if (!seenActorIds.Add(a.ActorId)) a.ActorId = $"{a.ActorId}_{i + 1}";
+                    if (string.IsNullOrEmpty(a.ActorId)) a.ActorId = MakeUniqueActorId();
+                    if (!seenActorIds.Add(a.ActorId)) { a.ActorId = MakeUniqueActorId(); seenActorIds.Add(a.ActorId); }
                     Vector2 asize = GetActorCardSize(a);
                     _cachedActorInSockets[a.ActorId] = new Vector2(a.GraphPosX, a.GraphPosY + 26f);
                     if (a.TalkEntries != null)
@@ -472,8 +473,8 @@ namespace Killtime.Story
                         c.GraphPosX = 60f + i * 400f;
                         c.GraphPosY = 1950f;
                     }
-                    if (string.IsNullOrEmpty(c.CinematicId)) c.CinematicId = $"cine_{i + 1}";
-                    if (!seenCineIds.Add(c.CinematicId)) c.CinematicId = $"{c.CinematicId}_{i + 1}";
+                    if (string.IsNullOrEmpty(c.CinematicId)) c.CinematicId = MakeUniqueCineId();
+                    if (!seenCineIds.Add(c.CinematicId)) { c.CinematicId = MakeUniqueCineId(); seenCineIds.Add(c.CinematicId); }
                     c.Shots ??= new System.Collections.Generic.List<SceneCinematicShotData>();
                     _cachedCinematicInputSockets[c.CinematicId] = new Vector2(c.GraphPosX, c.GraphPosY + 26f);
                 }
@@ -493,8 +494,8 @@ namespace Killtime.Story
                         snd.GraphPosX = 60f + i * 340f;
                         snd.GraphPosY = 2300f;
                     }
-                    if (string.IsNullOrEmpty(snd.SoundId)) snd.SoundId = $"snd_{i + 1}";
-                    if (!seenSndIds.Add(snd.SoundId)) snd.SoundId = $"{snd.SoundId}_{i + 1}";
+                    if (string.IsNullOrEmpty(snd.SoundId)) snd.SoundId = MakeUniqueSoundId();
+                    if (!seenSndIds.Add(snd.SoundId)) { snd.SoundId = MakeUniqueSoundId(); seenSndIds.Add(snd.SoundId); }
                     _cachedSoundInputSockets[snd.SoundId] = GetSoundInCenter(snd);
                     _cachedSoundStopSockets[snd.SoundId] = GetSoundStopCenter(snd);
                 }
@@ -509,8 +510,8 @@ namespace Killtime.Story
                     if (amb == null) continue;
                     amb.GraphPosX = SanitizeCoord(amb.GraphPosX, 60f + i * 350f);
                     amb.GraphPosY = SanitizeCoord(amb.GraphPosY, 2600f);
-                    if (string.IsNullOrEmpty(amb.AmbienceId)) amb.AmbienceId = $"amb_{i + 1}";
-                    if (!seenAmbIds.Add(amb.AmbienceId)) amb.AmbienceId = $"{amb.AmbienceId}_{i + 1}";
+                    if (string.IsNullOrEmpty(amb.AmbienceId)) amb.AmbienceId = MakeUniqueAmbienceId();
+                    if (!seenAmbIds.Add(amb.AmbienceId)) { amb.AmbienceId = MakeUniqueAmbienceId(); seenAmbIds.Add(amb.AmbienceId); }
                     _cachedAmbienceInputSockets[amb.AmbienceId] = GetAmbienceInCenter(amb);
                     _cachedAmbienceStopSockets[amb.AmbienceId] = GetAmbienceStopCenter(amb);
                 }

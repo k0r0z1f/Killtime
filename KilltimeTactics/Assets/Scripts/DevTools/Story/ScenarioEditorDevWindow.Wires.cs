@@ -150,6 +150,15 @@ namespace Killtime.Story
                 {
                     var node = _data.Nodes[n];
                     if (node == null) continue;
+                    // Cas nœud (RD-119) : le runtime évalue les stops/starts sur
+                    // node.Id (EvaluateLinkedAmbiences + FireLinkedSounds), le bas
+                    // du cadre nœud est donc une cible d'arrêt/démarrage valide.
+                    if (string.Equals(node.NodeId, want, System.StringComparison.OrdinalIgnoreCase))
+                    {
+                        Rect nodeBox = ComputeNodeBoundingBox(node);
+                        center = new Vector2(nodeBox.xMin + nodeBox.width * 0.5f, nodeBox.yMax);
+                        return true;
+                    }
                     if (node.Dialogues != null)
                     {
                         for (int d = 0; d < node.Dialogues.Count; d++)
@@ -221,7 +230,9 @@ namespace Killtime.Story
 
         /// <summary>
         /// Cible d'arrêt (bas de carte) la plus proche du point de drop, tous types
-        /// de cartes confondus. Utilisé par les liens d'arrêt son 🔊 (et extensible).
+        /// de cartes confondus (nœuds inclus, cf. RD-119 : le runtime évalue les
+        /// stops sur les ids de nœuds). Utilisé par les liens d'arrêt son 🔊
+        /// et d'arrêt ambiance 🌌 (parité).
         /// </summary>
         private bool TryPickSoundStopTarget(Vector2 mousePos, out string pickedId)
         {
@@ -245,6 +256,7 @@ namespace Killtime.Story
                 {
                     var nd = _data.Nodes[n];
                     if (nd == null) continue;
+                    Consider(nd.NodeId);
                     if (nd.Dialogues != null)
                         for (int d = 0; d < nd.Dialogues.Count; d++)
                             if (nd.Dialogues[d] != null) Consider(nd.Dialogues[d].LineId);
@@ -836,45 +848,15 @@ namespace Killtime.Story
                 return;
             }
 
-            // Liaison arrêt ambiance 🌌 : depuis le bas de la carte ambiance vers le bas d'une carte cible
+            // Liaison arrêt ambiance 🌌 : depuis le bas de la carte ambiance vers le bas d'une carte cible.
+            // Parité avec l'arrêt son (RD-119) : même picker partagé TryPickSoundStopTarget
+            // (répliques, events, conséquences, déclencheurs, interactables, acteurs, cinématiques, nœuds).
             if (_wireDraft.IsAmbienceStopLink && _wireDraft.SourceAmbienceTrack != null)
             {
                 if (IsClickWithoutDrag()) return;
                 var amb = _wireDraft.SourceAmbienceTrack;
-                string pickedTarget = null;
-                float bestStopDist = 36f;
-
-                if (_data.Nodes != null)
-                {
-                    for (int n = 0; n < _data.Nodes.Count; n++)
-                    {
-                        var nd = _data.Nodes[n];
-                        if (nd == null) continue;
-                        if (nd.Dialogues != null)
-                            for (int d = 0; d < nd.Dialogues.Count; d++)
-                            {
-                                var l = nd.Dialogues[d];
-                                if (l != null && TryGetSoundSourceBottom(l.LineId, out var b) && Vector2.Distance(b, mousePos) < bestStopDist)
-                                { bestStopDist = Vector2.Distance(b, mousePos); pickedTarget = l.LineId; }
-                            }
-                        if (nd.Events != null)
-                            for (int e = 0; e < nd.Events.Count; e++)
-                            {
-                                var ev = nd.Events[e];
-                                if (ev != null && TryGetSoundSourceBottom(ev.EventId, out var b) && Vector2.Distance(b, mousePos) < bestStopDist)
-                                { bestStopDist = Vector2.Distance(b, mousePos); pickedTarget = ev.EventId; }
-                            }
-                        if (nd.Consequences != null)
-                            for (int k = 0; k < nd.Consequences.Count; k++)
-                            {
-                                var cs = nd.Consequences[k];
-                                if (cs != null && TryGetSoundSourceBottom(cs.ConsequenceId, out var b) && Vector2.Distance(b, mousePos) < bestStopDist)
-                                { bestStopDist = Vector2.Distance(b, mousePos); pickedTarget = cs.ConsequenceId; }
-                            }
-                    }
-                }
-
-                if (!string.IsNullOrEmpty(pickedTarget))
+                if (_data.Ambiences == null || !_data.Ambiences.Contains(amb)) return;
+                if (TryPickSoundStopTarget(mousePos, out string pickedTarget))
                 {
                     amb.StopSourceCardId = pickedTarget;
                     PlayWireSoundLocal();
@@ -883,7 +865,7 @@ namespace Killtime.Story
             }
 
             // Liaison arrêt son 🔊 : depuis le bas de la carte son vers le bas d'une
-            // carte cible (tous types : réplique, event, conséquence, déclencheur,
+            // carte cible (tous types : nœud, réplique, event, conséquence, déclencheur,
             // interactable, acteur, cinématique). Miroir de l'arrêt d'ambiance.
             if (_wireDraft.IsSoundStopLink && _wireDraft.SourceSoundStop != null)
             {

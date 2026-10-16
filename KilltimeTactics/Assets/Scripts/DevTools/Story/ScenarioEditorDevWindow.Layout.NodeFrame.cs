@@ -153,7 +153,7 @@ namespace Killtime.Story
             }
             GUI.backgroundColor = new Color(0.2f, 0.92f, 0.45f);
             if (GraphButton(new Rect(secX + secW - 100f, y, 100f, 20f), "+ Objectif"))
-                node.Objectives.Add(new ScenarioObjective { Id = $"obj_{node.Objectives.Count + 1}", Label = "Nouvel objectif...", Optional = false });
+                node.Objectives.Add(new ScenarioObjective { Id = MakeUniqueObjectiveId(node), Label = "Nouvel objectif...", Optional = false });
             GUI.backgroundColor = Color.white;
             GraphLabel(new Rect(secX, y, Mathf.Max(80f, secW - 104f), 20f), $"<b>Objectifs ({node.Objectives.Count})</b>");
             y += 22f;
@@ -324,11 +324,10 @@ namespace Killtime.Story
 
             if (addDlg)
             {
-                int nextIdx = node.Dialogues.Count + 1;
                 ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
                 node.Dialogues.Add(new SceneDialogueLineData
                 {
-                    LineId = $"line_{nodeIndex + 1}_{nextIdx}",
+                    LineId = MakeUniqueLineId(node),
                     SpeakerId = "",
                     Speech = "Nouvelle réplique...",
                     GraphPosX = freeX,
@@ -338,11 +337,10 @@ namespace Killtime.Story
 
             if (addEvt)
             {
-                int nextIdx = node.Events.Count + 1;
                 ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
                 node.Events.Add(new SceneEventData
                 {
-                    EventId = $"evt_{nodeIndex + 1}_{nextIdx}",
+                    EventId = MakeUniqueEventId(node),
                     Title = "Action Scénique",
                     GraphPosX = freeX,
                     GraphPosY = freeY
@@ -352,11 +350,10 @@ namespace Killtime.Story
             if (addCons)
             {
                 if (node.Consequences == null) node.Consequences = new System.Collections.Generic.List<SceneConsequenceData>();
-                int nextIdx = node.Consequences.Count + 1;
                 ComputeFreeSpotForNewCard(node, out float freeX, out float freeY);
                 node.Consequences.Add(new SceneConsequenceData
                 {
-                    ConsequenceId = $"cons_{nodeIndex + 1}_{nextIdx}",
+                    ConsequenceId = MakeUniqueConsId(node),
                     Title = "Récompense",
                     GraphPosX = freeX,
                     GraphPosY = freeY

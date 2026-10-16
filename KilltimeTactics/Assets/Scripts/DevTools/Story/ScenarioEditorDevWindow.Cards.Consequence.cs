@@ -17,7 +17,7 @@ namespace Killtime.Story
     {
         private void DrawConsequenceCard(SceneConsequenceData cons, int index, SceneNodeData node, Vector2 mouseWorld)
         {
-            if (string.IsNullOrEmpty(cons.ConsequenceId)) cons.ConsequenceId = $"cons_{index + 1}";
+            if (string.IsNullOrEmpty(cons.ConsequenceId)) cons.ConsequenceId = MakeUniqueConsId(node);
             cons.Rewards ??= new SceneDialogueRewardData();
             StorySceneData.EnsureRewardDefaults(cons.Rewards);
             cons.Effects ??= new System.Collections.Generic.List<ScenarioEffect>();

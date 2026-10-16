@@ -94,6 +94,7 @@ namespace Killtime.Audio
             _stingerCache.Clear();
             _generativeCache.Clear();
             _generativeLru.Clear();
+            _generativeStrikeCache.Clear();
             _ambienceCache = null;
         }
 

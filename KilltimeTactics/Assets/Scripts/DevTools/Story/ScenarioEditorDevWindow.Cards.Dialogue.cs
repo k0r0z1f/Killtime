@@ -17,7 +17,7 @@ namespace Killtime.Story
     {
         private void DrawDialogueCard(SceneDialogueLineData line, int index, SceneNodeData node, Vector2 mouseWorld)
         {
-            if (string.IsNullOrEmpty(line.LineId)) line.LineId = $"line_{index + 1}";
+            if (string.IsNullOrEmpty(line.LineId)) line.LineId = MakeUniqueLineId(node);
             if (line.Choices == null) line.Choices = new System.Collections.Generic.List<SceneDialogueChoiceData>();
             if (line.Ambience == null) line.Ambience = new SceneAmbienceData();
             if (line.Prerequisite == null) line.Prerequisite = new ScenePrerequisiteData();

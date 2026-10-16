@@ -230,12 +230,24 @@ namespace Killtime.Story
         {
             if (node == null || node.Dialogues == null) return;
 
+            var used = new HashSet<string>(StringComparer.OrdinalIgnoreCase);
+            for (int i = 0; i < node.Dialogues.Count; i++)
+            {
+                var d = node.Dialogues[i];
+                if (d != null && !string.IsNullOrEmpty(d.LineId))
+                    used.Add(d.LineId);
+            }
+
             for (int i = 0; i < node.Dialogues.Count; i++)
             {
                 var line = node.Dialogues[i];
+                if (line == null) continue;
                 if (string.IsNullOrEmpty(line.LineId))
                 {
-                    line.LineId = $"line_{i + 1}";
+                    int idx = i + 1;
+                    string cand = $"line_{idx}";
+                    while (!used.Add(cand)) cand = $"line_{++idx}";
+                    line.LineId = cand;
                 }
 
                 // Pas de remplissage auto de NextLineId : vide = ordre séquentiel

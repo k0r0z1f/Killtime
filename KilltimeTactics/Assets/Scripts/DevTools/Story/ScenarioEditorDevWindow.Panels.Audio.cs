@@ -241,7 +241,7 @@ namespace Killtime.Story
                         snd.SourceCardId = "";
                     if (!string.IsNullOrWhiteSpace(snd.StopSourceCardId) && !AudioCardIdExists(snd.StopSourceCardId))
                         snd.StopSourceCardId = "";
-                    if (string.IsNullOrWhiteSpace(snd.SoundId)) snd.SoundId = $"snd_{i + 1}";
+                    if (string.IsNullOrWhiteSpace(snd.SoundId)) snd.SoundId = MakeUniqueSoundId();
                     string baseId = snd.SoundId;
                     int suffix = 2;
                     while (!usedSnd.Add(snd.SoundId)) snd.SoundId = $"{baseId}_{suffix++}";
@@ -258,7 +258,7 @@ namespace Killtime.Story
                         amb.StartSourceCardId = "";
                     if (!string.IsNullOrWhiteSpace(amb.StopSourceCardId) && !AudioCardIdExists(amb.StopSourceCardId))
                         amb.StopSourceCardId = "";
-                    if (string.IsNullOrWhiteSpace(amb.AmbienceId)) amb.AmbienceId = $"amb_{i + 1}";
+                    if (string.IsNullOrWhiteSpace(amb.AmbienceId)) amb.AmbienceId = MakeUniqueAmbienceId();
                     string baseId = amb.AmbienceId;
                     int suffix = 2;
                     while (!usedAmb.Add(amb.AmbienceId)) amb.AmbienceId = $"{baseId}_{suffix++}";
@@ -337,7 +337,7 @@ namespace Killtime.Story
         private void DrawSoundCard(SceneSoundData snd, int index, Vector2 mouseWorld)
         {
             if (snd == null) return;
-            if (string.IsNullOrEmpty(snd.SoundId)) snd.SoundId = $"snd_{index + 1}";
+            if (string.IsNullOrEmpty(snd.SoundId)) snd.SoundId = MakeUniqueSoundId();
 
             Vector2 size = GetSoundCardSize(snd);
             float cardW = size.x;
@@ -674,7 +674,7 @@ namespace Killtime.Story
         private void DrawAmbienceCard(SceneAmbienceTrackData amb, int index, Vector2 mouseWorld)
         {
             if (amb == null) return;
-            if (string.IsNullOrEmpty(amb.AmbienceId)) amb.AmbienceId = $"amb_{index + 1}";
+            if (string.IsNullOrEmpty(amb.AmbienceId)) amb.AmbienceId = MakeUniqueAmbienceId();
 
             Vector2 size = GetAmbienceCardSize(amb);
             float cardW = size.x;

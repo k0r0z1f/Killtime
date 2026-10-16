@@ -70,13 +70,19 @@ namespace Killtime.Audio
             float allyHpRatio01, int alliesAlive, int enemiesAlive, int turnIndex,
             int baseSeed, int generation, float strike01 = 0f,
             float brightness01 = 0.55f, float chaos01 = 0.35f,
-            GenerativeStylePreset preset = GenerativeStylePreset.Auto)
+            GenerativeStylePreset preset = GenerativeStylePreset.Auto,
+            bool isBoss = false)
         {
             allyHpRatio01 = Mathf.Clamp01(allyHpRatio01);
             float intensity = ComputeIntensity(allyHpRatio01, alliesAlive, enemiesAlive, turnIndex);
             float tension = Mathf.Clamp01(1f - allyHpRatio01 * 0.85f - Mathf.Clamp01(alliesAlive / 4f) * 0.15f);
             if (alliesAlive == 1 && enemiesAlive >= 2) tension = Mathf.Max(tension, 0.8f);
             if (allyHpRatio01 < 0.25f) tension = Mathf.Max(tension, 0.75f);
+            if (isBoss)
+            {
+                intensity = Mathf.Max(intensity, 0.68f);
+                tension = Mathf.Max(tension, 0.62f);
+            }
 
             float bpm, bright = brightness01, chaos = chaos01 + tension * 0.15f;
             GenerativeDrumStyle style;
@@ -116,16 +122,20 @@ namespace Killtime.Audio
                     if (intensity < 0.3f) style = GenerativeDrumStyle.WarEnsemble;
                     else if (intensity > 0.85f && tension > 0.6f) style = GenerativeDrumStyle.Blast;
                     scale = GenerativeScale.NaturalMinor;
-                    if (tension > 0.72f) scale = GenerativeScale.Phrygian;
+                    if (isBoss) scale = tension > 0.72f ? GenerativeScale.Phrygian : GenerativeScale.HarmonicMinor;
+                    else if (tension > 0.72f) scale = GenerativeScale.Phrygian;
                     else if (intensity > 0.6f && allyHpRatio01 > 0.6f) scale = GenerativeScale.Dorian;
                     else if (tension > 0.55f) scale = GenerativeScale.HarmonicMinor;
                     break;
             }
-            bpm = Mathf.Clamp(bpm, 96f, 180f);
+            // Quantifie le BPM par paliers de 4 pour éviter les micro-dérives de tempo
+            // entre deux boucles et permettre des fondus verrouillés en phase.
+            bpm = Mathf.Clamp(Mathf.Round(bpm / 4f) * 4f, 96f, 180f);
 
-            // Seed stable par combat (baseSeed) + léger hash du tour pour colorer
-            // sans casser la famille motivique (generation porte la variation).
-            int seed = unchecked(baseSeed * 31 + turnIndex / 4);
+            // Seed stable sur toute la bataille : le thème principal (themeRng) reste
+            // reconnaissable d'un tour à l'autre tandis que generation développe A/A'/B/Climax.
+            int seed = isBoss ? unchecked(baseSeed ^ 0x4B544253) : baseSeed;
+            int rootMidi = isBoss ? 30 : (tension > 0.7f ? 31 : 33); // F#1 en Boss, G1 en danger, A1 sinon
 
             return new GenerativeMusicParams
             {
@@ -135,7 +145,7 @@ namespace Killtime.Audio
                 tension01 = tension,
                 brightness01 = Mathf.Clamp01(bright),
                 chaos01 = Mathf.Clamp01(chaos),
-                rootMidi = tension > 0.7f ? 31 : 33, // G1 si danger (plus grave), A1 sinon
+                rootMidi = rootMidi,
                 scale = scale,
                 drumStyle = style,
                 preset = preset,

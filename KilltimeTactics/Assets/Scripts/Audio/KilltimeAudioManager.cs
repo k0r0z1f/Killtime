@@ -218,7 +218,7 @@ namespace Killtime.Audio
                 // Scheduler infini : on pré-génère la variation suivante juste
                 // avant la fin de la boucle pour un enchaînement sans blanc.
                 _genLoopTimer += Time.unscaledDeltaTime;
-                float lookahead = Mathf.Max(0.6f, _generativeCrossfade + 0.4f);
+                float lookahead = Mathf.Max(0.6f, _generativeCrossfade + 0.15f);
                 if (_genLoopTimer >= _genLoopDur - lookahead)
                     AdvanceGenerativeVariation();
             }

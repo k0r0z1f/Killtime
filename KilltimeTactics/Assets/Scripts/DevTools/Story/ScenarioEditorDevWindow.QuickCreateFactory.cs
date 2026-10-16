@@ -123,8 +123,12 @@ namespace Killtime.Story
 
         private string MakeUniqueLineId(SceneNodeData parent)
         {
-            int nodeIdx = parent != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
-            int baseCount = parent?.Dialogues != null ? parent.Dialogues.Count : 0;
+            int nodeIdx = parent != null && _data?.Nodes != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
+            int baseCount = 0;
+            if (parent?.Dialogues != null)
+                for (int i = 0; i < parent.Dialogues.Count; i++)
+                    if (parent.Dialogues[i] != null && !string.IsNullOrEmpty(parent.Dialogues[i].LineId))
+                        baseCount++;
             for (int attempt = 1; attempt < 500; attempt++)
             {
                 string cand = $"line_{nodeIdx + 1}_{baseCount + attempt}";
@@ -135,8 +139,12 @@ namespace Killtime.Story
 
         private string MakeUniqueEventId(SceneNodeData parent)
         {
-            int nodeIdx = parent != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
-            int baseCount = parent?.Events != null ? parent.Events.Count : 0;
+            int nodeIdx = parent != null && _data?.Nodes != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
+            int baseCount = 0;
+            if (parent?.Events != null)
+                for (int i = 0; i < parent.Events.Count; i++)
+                    if (parent.Events[i] != null && !string.IsNullOrEmpty(parent.Events[i].EventId))
+                        baseCount++;
             for (int attempt = 1; attempt < 500; attempt++)
             {
                 string cand = $"evt_{nodeIdx + 1}_{baseCount + attempt}";
@@ -156,8 +164,12 @@ namespace Killtime.Story
 
         private string MakeUniqueConsId(SceneNodeData parent)
         {
-            int nodeIdx = parent != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
-            int baseCount = parent?.Consequences != null ? parent.Consequences.Count : 0;
+            int nodeIdx = parent != null && _data?.Nodes != null ? Mathf.Max(0, _data.Nodes.IndexOf(parent)) : 0;
+            int baseCount = 0;
+            if (parent?.Consequences != null)
+                for (int i = 0; i < parent.Consequences.Count; i++)
+                    if (parent.Consequences[i] != null && !string.IsNullOrEmpty(parent.Consequences[i].ConsequenceId))
+                        baseCount++;
             for (int attempt = 1; attempt < 500; attempt++)
             {
                 string cand = $"cons_{nodeIdx + 1}_{baseCount + attempt}";
@@ -168,7 +180,11 @@ namespace Killtime.Story
 
         private string MakeUniqueNodeId()
         {
-            int baseCount = _data.Nodes != null ? _data.Nodes.Count : 0;
+            int baseCount = 0;
+            if (_data?.Nodes != null)
+                for (int i = 0; i < _data.Nodes.Count; i++)
+                    if (_data.Nodes[i] != null && !string.IsNullOrEmpty(_data.Nodes[i].NodeId))
+                        baseCount++;
             for (int attempt = 1; attempt < 1000; attempt++)
             {
                 string cand = $"node_{baseCount + attempt}";
@@ -179,7 +195,11 @@ namespace Killtime.Story
 
         private string MakeUniqueCineId()
         {
-            int baseCount = _data.Cinematics != null ? _data.Cinematics.Count : 0;
+            int baseCount = 0;
+            if (_data?.Cinematics != null)
+                for (int i = 0; i < _data.Cinematics.Count; i++)
+                    if (_data.Cinematics[i] != null && !string.IsNullOrEmpty(_data.Cinematics[i].CinematicId))
+                        baseCount++;
             for (int attempt = 1; attempt < 1000; attempt++)
             {
                 string cand = $"cine_{baseCount + attempt}";
@@ -190,7 +210,11 @@ namespace Killtime.Story
 
         private string MakeUniqueSoundId()
         {
-            int baseCount = _data.Sounds != null ? _data.Sounds.Count : 0;
+            int baseCount = 0;
+            if (_data?.Sounds != null)
+                for (int i = 0; i < _data.Sounds.Count; i++)
+                    if (_data.Sounds[i] != null && !string.IsNullOrWhiteSpace(_data.Sounds[i].SoundId))
+                        baseCount++;
             for (int attempt = 1; attempt < 1000; attempt++)
             {
                 string cand = $"snd_{baseCount + attempt}";
@@ -201,13 +225,89 @@ namespace Killtime.Story
 
         private string MakeUniqueAmbienceId()
         {
-            int baseCount = _data.Ambiences != null ? _data.Ambiences.Count : 0;
+            int baseCount = 0;
+            if (_data?.Ambiences != null)
+                for (int i = 0; i < _data.Ambiences.Count; i++)
+                    if (_data.Ambiences[i] != null && !string.IsNullOrWhiteSpace(_data.Ambiences[i].AmbienceId))
+                        baseCount++;
             for (int attempt = 1; attempt < 1000; attempt++)
             {
                 string cand = $"amb_{baseCount + attempt}";
                 if (_data.FindAmbience(cand) == null && !_cachedAmbienceInputSockets.ContainsKey(cand)) return cand;
             }
             return $"amb_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueTriggerId()
+        {
+            int baseCount = 0;
+            if (_data?.Triggers != null)
+                for (int i = 0; i < _data.Triggers.Count; i++)
+                    if (_data.Triggers[i] != null && !string.IsNullOrEmpty(_data.Triggers[i].TriggerId))
+                        baseCount++;
+            for (int attempt = 1; attempt < 1000; attempt++)
+            {
+                string cand = $"trig_{baseCount + attempt}";
+                bool exists = false;
+                if (_data?.Triggers != null)
+                    for (int t = 0; t < _data.Triggers.Count; t++)
+                        if (_data.Triggers[t] != null && string.Equals(_data.Triggers[t].TriggerId, cand, StringComparison.OrdinalIgnoreCase)) { exists = true; break; }
+                if (!exists && !_cachedTriggerOutSockets.ContainsKey(cand)) return cand;
+            }
+            return $"trig_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueInteractableId()
+        {
+            int baseCount = 0;
+            if (_data?.Interactables != null)
+                for (int i = 0; i < _data.Interactables.Count; i++)
+                    if (_data.Interactables[i] != null && !string.IsNullOrEmpty(_data.Interactables[i].InteractableId))
+                        baseCount++;
+            for (int attempt = 1; attempt < 1000; attempt++)
+            {
+                string cand = $"obj_{baseCount + attempt}";
+                bool exists = false;
+                if (_data?.Interactables != null)
+                    for (int i = 0; i < _data.Interactables.Count; i++)
+                        if (_data.Interactables[i] != null && string.Equals(_data.Interactables[i].InteractableId, cand, StringComparison.OrdinalIgnoreCase)) { exists = true; break; }
+                if (!exists && !_cachedInteractableOutSockets.ContainsKey(cand)) return cand;
+            }
+            return $"obj_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueActorId()
+        {
+            int baseCount = 0;
+            if (_data?.Actors != null)
+                for (int i = 0; i < _data.Actors.Count; i++)
+                    if (_data.Actors[i] != null && !string.IsNullOrEmpty(_data.Actors[i].ActorId))
+                        baseCount++;
+            for (int attempt = 1; attempt < 1000; attempt++)
+            {
+                string cand = $"actor_{baseCount + attempt}";
+                if (_data.FindActor(cand) == null && !_cachedActorInSockets.ContainsKey(cand)) return cand;
+            }
+            return $"actor_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
+        }
+
+        private string MakeUniqueObjectiveId(SceneNodeData parent)
+        {
+            int baseCount = 0;
+            if (parent?.Objectives != null)
+                for (int i = 0; i < parent.Objectives.Count; i++)
+                    if (parent.Objectives[i] != null && !string.IsNullOrEmpty(parent.Objectives[i].Id))
+                        baseCount++;
+            for (int attempt = 1; attempt < 500; attempt++)
+            {
+                string cand = $"obj_{baseCount + attempt}";
+                bool exists = false;
+                if (parent?.Objectives != null)
+                    for (int i = 0; i < parent.Objectives.Count; i++)
+                        if (parent.Objectives[i] != null && string.Equals(parent.Objectives[i].Id, cand, StringComparison.OrdinalIgnoreCase)) { exists = true; break; }
+                if (!exists) return cand;
+            }
+            return $"obj_{baseCount + 1}_{UnityEngine.Random.Range(1000, 9999)}";
         }
 
         private SceneNodeData FindBestHostNodeForCinematicCard(Vector2 dropWorld)

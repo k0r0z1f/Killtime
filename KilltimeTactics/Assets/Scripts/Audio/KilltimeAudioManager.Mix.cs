@@ -17,6 +17,7 @@ namespace Killtime.Audio
             // il coupe la continuité (ex : swell warp → approche).
             bool already = _cinematicDuck > 0.5f;
             _cinematicDuck = 1f;
+            ApplyAllVolumes();
             if (already) return;
             // Uniquement le whoosh d'air : le sweep SlowMo_Enter (800->120 Hz)
             // joué pendant le zoom-in sonnait comme un doppler/compression.
@@ -26,6 +27,7 @@ namespace Killtime.Audio
         public void ExitCinematicMode()
         {
             _cinematicDuck = 0f;
+            ApplyAllVolumes();
             // Idem en sortie : WhooshOut seul, sans sweep SlowMo_Exit.
             Play(SoundId.Cinematic_WhooshOut, 0.7f);
         }
@@ -99,8 +101,9 @@ namespace Killtime.Audio
             if (_mixer != null)
             {
                 // Paramètres exposés en dB : 0dB = 1.0, -40dB = quasi muet.
+                float musicDuck = Mathf.Clamp01((1f - 0.5f * _pauseDuck) * (1f - 0.35f * _cinematicDuck));
                 SetMixerDb(_masterParam, _masterVolume);
-                SetMixerDb(_musicParam, _musicVolume * (1f - 0.5f * _pauseDuck));
+                SetMixerDb(_musicParam, _musicVolume * musicDuck);
                 SetMixerDb(_sfxParam, _sfxVolume);
                 SetMixerDb(_uiParam, _uiVolume);
                 SetMixerDb(_ambienceParam, _ambienceVolume);
@@ -111,7 +114,7 @@ namespace Killtime.Audio
             // où la coroutine pilote déjà les volumes chaque frame).
             if (_activeMusic != null && !_isFading)
             {
-                float duck = Mathf.Max(0f, 1f - 0.5f * _pauseDuck);
+                float duck = Mathf.Clamp01((1f - 0.5f * _pauseDuck) * (1f - 0.35f * _cinematicDuck));
                 _activeMusic.volume = (_muted ? 0f : 1f) * _musicVolume * _masterVolume * duck;
             }
         }

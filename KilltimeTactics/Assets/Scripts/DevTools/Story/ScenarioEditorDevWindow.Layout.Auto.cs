@@ -344,5 +344,77 @@ namespace Killtime.Story
             _focusedNodeIndex = 0;
             FocusAllNodes(canvasRect);
         }
+
+        private static bool CheckIfSceneNeedsInitialLayout(StorySceneData data)
+        {
+            if (data == null) return false;
+            if (data.Nodes != null)
+            {
+                for (int i = 0; i < data.Nodes.Count; i++)
+                {
+                    var n = data.Nodes[i];
+                    if (n == null) continue;
+                    if (n.GraphPosX <= 0f && n.GraphPosY <= 0f) return true;
+                }
+            }
+            if (data.Triggers != null)
+            {
+                for (int t = 0; t < data.Triggers.Count; t++)
+                {
+                    var trg = data.Triggers[t];
+                    if (trg == null) continue;
+                    if (trg.GraphPosX <= 0f && trg.GraphPosY <= 0f) return true;
+                }
+            }
+            // Interactables historiques sans position graphe (0,0) → auto-dispose.
+            if (data.Interactables != null)
+            {
+                for (int i = 0; i < data.Interactables.Count; i++)
+                {
+                    var it = data.Interactables[i];
+                    if (it == null) continue;
+                    if (it.GraphPosX <= 0f && it.GraphPosY <= 0f) return true;
+                }
+            }
+            // Acteurs historiques sans position graphe (0,0) → auto-dispose.
+            if (data.Actors != null)
+            {
+                for (int i = 0; i < data.Actors.Count; i++)
+                {
+                    var a = data.Actors[i];
+                    if (a == null) continue;
+                    if (a.GraphPosX <= 0f && a.GraphPosY <= 0f) return true;
+                }
+            }
+            // Cinématiques historiques sans position graphe (0,0) → auto-dispose.
+            if (data.Cinematics != null)
+            {
+                for (int i = 0; i < data.Cinematics.Count; i++)
+                {
+                    var c = data.Cinematics[i];
+                    if (c == null) continue;
+                    if (c.GraphPosX <= 0f && c.GraphPosY <= 0f) return true;
+                }
+            }
+            if (data.Sounds != null)
+            {
+                for (int i = 0; i < data.Sounds.Count; i++)
+                {
+                    var snd = data.Sounds[i];
+                    if (snd == null) continue;
+                    if (snd.GraphPosX <= 0f && snd.GraphPosY <= 0f) return true;
+                }
+            }
+            if (data.Ambiences != null)
+            {
+                for (int i = 0; i < data.Ambiences.Count; i++)
+                {
+                    var amb = data.Ambiences[i];
+                    if (amb == null) continue;
+                    if (amb.GraphPosX <= 0f && amb.GraphPosY <= 0f) return true;
+                }
+            }
+            return false;
+        }
     }
 }

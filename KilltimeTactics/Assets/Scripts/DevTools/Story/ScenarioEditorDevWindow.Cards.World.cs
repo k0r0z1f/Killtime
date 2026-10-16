@@ -18,7 +18,7 @@ namespace Killtime.Story
         private void DrawInteractableCard(SceneInteractableSpawnData it, int index, Vector2 mouseWorld)
         {
             if (it == null) return;
-            if (string.IsNullOrEmpty(it.InteractableId)) it.InteractableId = $"obj_{index + 1}";
+            if (string.IsNullOrEmpty(it.InteractableId)) it.InteractableId = MakeUniqueInteractableId();
             string targetDisplay = string.IsNullOrEmpty(it.TriggerNodeId) ? "(sans cible)" : it.TriggerNodeId;
 
             Vector2 size = GetInteractableCardSize(it);
@@ -386,7 +386,7 @@ namespace Killtime.Story
         private void DrawActorCard(SceneActorSpawnData a, int index, Vector2 mouseWorld)
         {
             if (a == null) return;
-            if (string.IsNullOrEmpty(a.ActorId)) a.ActorId = $"actor_{index + 1}";
+            if (string.IsNullOrEmpty(a.ActorId)) a.ActorId = MakeUniqueActorId();
             string spawnDisplay = a.SpawnInitially
                 ? "● INIT"
                 : (string.IsNullOrEmpty(a.SpawnOnNodeId) ? "○ (jamais spawné)" : $"○ si {a.SpawnOnNodeId}");
@@ -889,7 +889,7 @@ namespace Killtime.Story
         private void DrawCinematicCard(SceneCinematicData cine, int index, Vector2 mouseWorld)
         {
             if (cine == null) return;
-            if (string.IsNullOrEmpty(cine.CinematicId)) cine.CinematicId = $"cine_{index + 1}";
+            if (string.IsNullOrEmpty(cine.CinematicId)) cine.CinematicId = MakeUniqueCineId();
             cine.Shots ??= new System.Collections.Generic.List<SceneCinematicShotData>();
 
             Vector2 size = GetCinematicCardSize(cine);
