@@ -285,13 +285,19 @@ namespace Killtime.Audio
         private float _genLoopDur = 16f;
         private float _pendingStrike = 0f;
         private float _lastAllyHp = 1f;
+        private float _lastEnemyHp = -1f;
+        private bool _lastIsPlayerTurn = true;
         private int _lastAllies = 3;
         private int _lastEnemies = 2;
         private int _lastTurn = 0;
         private int _stemOverrides = 0;
+        private int _generativeMeterOverride = 0; // 0 = Auto (4/4 standard, 5/4 boss), 3 = 3/4, 4 = 4/4, 5 = 5/4, 7 = 7/8
+        private bool _nextGenPrewarmed = false;
         private float _lastStrikeAccentTime = -99f;
 
         public int StemOverridesMask => _stemOverrides;
+        public int GenerativeMeterOverride => _generativeMeterOverride;
+        public bool LastIsPlayerTurn => _lastIsPlayerTurn;
 
         public StemOverrideState GetStemOverride(ProceduralStemType stem)
         {
@@ -302,6 +308,7 @@ namespace Killtime.Audio
         {
             int shift = (int)stem * 2;
             _stemOverrides = (_stemOverrides & ~(0x3 << shift)) | (((int)state & 0x3) << shift);
+            _nextGenPrewarmed = false;
             ApplyStemOverridesAndRefresh();
         }
 
@@ -309,6 +316,7 @@ namespace Killtime.Audio
         {
             if (_stemOverrides == 0) return;
             _stemOverrides = 0;
+            _nextGenPrewarmed = false;
             ApplyStemOverridesAndRefresh();
         }
 
@@ -365,6 +373,7 @@ namespace Killtime.Audio
                 _genParamsValid = false;
                 _genLoopTimer = 0f;
                 _pendingStrike = 0f;
+                _nextGenPrewarmed = false;
                 // Rebranche immédiatement le mood courant en génératif s'il s'y prête.
                 if (IsGenerativeMood(_targetMood))
                     StartGenerativeLoop(_targetMood, _targetIntensity01, forceRestart: true);
@@ -374,6 +383,7 @@ namespace Killtime.Audio
                 _genParamsValid = false;
                 _genLoopTimer = 0f;
                 _pendingStrike = 0f;
+                _nextGenPrewarmed = false;
                 // Retour aux chansons préfaites sur le mood courant.
                 if (IsGenerativeMood(_targetMood))
                     PlayMusic(_targetMood, _currentTrackIndex, _targetIntensity01, forceRestart: true);
@@ -384,6 +394,7 @@ namespace Killtime.Audio
         {
             _generativeBrightness = Mathf.Clamp01(brightness01);
             _generativeChaos = Mathf.Clamp01(chaos01);
+            _nextGenPrewarmed = false;
         }
 
         /// <summary>Impose un style au moteur génératif (Auto = défaut actuel).
@@ -392,8 +403,37 @@ namespace Killtime.Audio
         {
             if (_generativePreset == preset) return;
             _generativePreset = preset;
+            _nextGenPrewarmed = false;
             if (_generativeCombat && IsGenerativeMood(_targetMood))
                 RequestGenerativeVariation();
+        }
+
+        public void SetGenerativeMeterOverride(int beatsPerBar)
+        {
+            int clean = (beatsPerBar == 3 || beatsPerBar == 4 || beatsPerBar == 5 || beatsPerBar == 7) ? beatsPerBar : 0;
+            if (_generativeMeterOverride == clean) return;
+            _generativeMeterOverride = clean;
+            _nextGenPrewarmed = false;
+            if (_generativeCombat && IsGenerativeMood(_targetMood))
+                RequestGenerativeVariation();
+        }
+
+        /// <summary>
+        /// Pré-calcule la variation suivante (G+1) sur un thread de fond dès que la boucle
+        /// courante dépasse 55% de sa durée, pour un crossfade à 0 ms de hitch sur le Main Thread.
+        /// </summary>
+        private void PrewarmNextGenerativeVariation()
+        {
+            if (_nextGenPrewarmed || !_genParamsValid || !IsGenerativeMood(_targetMood)) return;
+            _nextGenPrewarmed = true;
+            bool isBoss = (_targetMood == MusicMood.CombatBoss);
+            var nextParams = AdaptiveMusicDirector.ComputeGenerativeParams(
+                _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
+                _generativeSeed, _genGeneration + 1, _pendingStrike,
+                _generativeBrightness, _generativeChaos, _generativePreset,
+                isBoss, _lastEnemyHp, _lastIsPlayerTurn, _generativeMeterOverride);
+            nextParams.stemOverrides = _stemOverrides;
+            ProceduralAudioFactory.PrewarmGenerativeLoopAsync(nextParams);
         }
 
         /// <summary>
@@ -404,7 +444,11 @@ namespace Killtime.Audio
         public void NotifyCombatStrike(bool critical, bool kill, float amount01 = -1f)
         {
             float s = amount01 >= 0f ? Mathf.Clamp01(amount01) : (kill ? 1f : (critical ? 0.75f : 0.4f));
-            _pendingStrike = Mathf.Max(_pendingStrike, s);
+            if (s > _pendingStrike)
+            {
+                _pendingStrike = s;
+                _nextGenPrewarmed = false;
+            }
 
             if (_generativeCombat && IsGenerativeMood(_targetMood) && _genParamsValid
                 && Time.unscaledTime - _lastStrikeAccentTime >= 0.35f)
@@ -444,10 +488,12 @@ namespace Killtime.Audio
             _genGeneration++;
             float strike = _pendingStrike;
             _pendingStrike = 0f;
+            _nextGenPrewarmed = false;
             bool isBoss = (_targetMood == MusicMood.CombatBoss);
             _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                 _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
-                _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset, isBoss);
+                _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset,
+                isBoss, _lastEnemyHp, _lastIsPlayerTurn, _generativeMeterOverride);
             _genParams.stemOverrides = _stemOverrides;
             _genParamsValid = true;
             _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
@@ -464,13 +510,14 @@ namespace Killtime.Audio
             if (_musicRoutine != null) StopCoroutine(_musicRoutine);
             _musicRoutine = StartCoroutine(CrossfadeClipRoutine(clip, _targetMood, _genGeneration, _genParams.intensity01, syncPhase: false));
             var role = GenerativeMusicEngine.GetSectionRole(_genParams);
-            Debug.Log($"[Audio] ∞ Génératif {_targetMood} G{_genGeneration} [{role}] : {clip.samples} spl ({clip.length:F1}s) bpm={_genParams.bpm:0} sty={_genParams.drumStyle} gam={_genParams.scale} int={_genParams.intensity01:F2} ten={_genParams.tension01:F2} strike={strike:F2}");
+            Debug.Log($"[Audio] ∞ Génératif {_targetMood} G{_genGeneration} [{role} {GenerativeMusicEngine.FormatMeterLabel(_genParams.beatsPerBar)}] : {clip.samples} spl ({clip.length:F1}s) bpm={_genParams.bpm:0} sty={_genParams.drumStyle} gam={_genParams.scale} int={_genParams.intensity01:F2} ten={_genParams.tension01:F2} strike={strike:F2}");
         }
 
         private void StartGenerativeLoop(MusicMood mood, float intensity01, bool forceRestart)
         {
             bool sameMood = (mood == _targetMood);
             float prevBpm = _genParamsValid ? _genParams.bpm : -1f;
+            int prevMeter = _genParamsValid ? GenerativeMusicEngine.GetStepsPerBar(_genParams.beatsPerBar) : 16;
             float prevTimer = _genLoopTimer;
             float prevDur = _genLoopDur;
             _targetMood = mood;
@@ -480,10 +527,12 @@ namespace Killtime.Audio
                 if (!sameMood || forceRestart) { _genGeneration = forceRestart && sameMood ? _genGeneration + 1 : 0; }
                 float strike = _pendingStrike;
                 _pendingStrike = 0f;
+                _nextGenPrewarmed = false;
                 bool isBoss = (mood == MusicMood.CombatBoss);
                 _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                     _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
-                    _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset, isBoss);
+                    _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset,
+                    isBoss, _lastEnemyHp, _lastIsPlayerTurn, _generativeMeterOverride);
                 _genParams.stemOverrides = _stemOverrides;
                 _genParamsValid = true;
                 _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
@@ -498,14 +547,13 @@ namespace Killtime.Audio
                     Debug.LogError($"[Audio] Génératif {mood} G{_genGeneration} impossible : {ex.GetType().Name}: {ex.Message}");
                     return;
                 }
-                // Si la transition adaptative survient en milieu de boucle au même BPM et loin de la fin,
-                // on synchronise la phase pour ne pas casser le beat.
-                bool syncPhase = sameMood && prevBpm > 0f && Mathf.Approximately(prevBpm, _genParams.bpm)
+                int newMeter = GenerativeMusicEngine.GetStepsPerBar(_genParams.beatsPerBar);
+                bool syncPhase = sameMood && prevBpm > 0f && Mathf.Approximately(prevBpm, _genParams.bpm) && prevMeter == newMeter
                     && prevTimer > 0.2f && prevTimer < prevDur - Mathf.Max(2.8f, _generativeCrossfade * 2.2f);
                 if (_musicRoutine != null) StopCoroutine(_musicRoutine);
                 _musicRoutine = StartCoroutine(CrossfadeClipRoutine(clip, mood, _genGeneration, _genParams.intensity01, syncPhase));
                 var role = GenerativeMusicEngine.GetSectionRole(_genParams);
-                Debug.Log($"[Audio] ∞ Génératif {mood} G{_genGeneration} [{role}] : {clip.samples} spl ({clip.length:F1}s) bpm={_genParams.bpm:0} sty={_genParams.drumStyle} gam={_genParams.scale}");
+                Debug.Log($"[Audio] ∞ Génératif {mood} G{_genGeneration} [{role} {GenerativeMusicEngine.FormatMeterLabel(_genParams.beatsPerBar)}] : {clip.samples} spl ({clip.length:F1}s) bpm={_genParams.bpm:0} sty={_genParams.drumStyle} gam={_genParams.scale}");
             }
             else
             {
@@ -520,10 +568,12 @@ namespace Killtime.Audio
             _genGeneration++;
             float strike = _pendingStrike;
             _pendingStrike = 0f;
+            _nextGenPrewarmed = false;
             bool isBoss = (_targetMood == MusicMood.CombatBoss);
             _genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                 _lastAllyHp, _lastAllies, _lastEnemies, _lastTurn,
-                _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset, isBoss);
+                _generativeSeed, _genGeneration, strike, _generativeBrightness, _generativeChaos, _generativePreset,
+                isBoss, _lastEnemyHp, _lastIsPlayerTurn, _generativeMeterOverride);
             _genParams.stemOverrides = _stemOverrides;
             _genLoopDur = ProceduralAudioFactory.EstimateGenerativeDuration(_genParams);
             _genLoopTimer = 0f;

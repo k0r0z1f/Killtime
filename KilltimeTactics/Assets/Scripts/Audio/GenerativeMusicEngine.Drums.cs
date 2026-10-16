@@ -13,6 +13,8 @@ namespace Killtime.Audio
         {
             if (vol < 0.03f) return;
             int bars = p.bars;
+            int stepsPerBar = GetStepsPerBar(p.beatsPerBar);
+            int fullBeats = Mathf.Max(3, stepsPerBar / 4);
             float sixteenth = beatSec / 4f;
             float kickBaseFreq = Mathf.Clamp(MidiFreq(keyRoot), 41f, 55f); // accorde le sub du kick sur la tonique
 
@@ -22,6 +24,32 @@ namespace Killtime.Audio
                 bool isFillBar = (bar == bars - 1) || (bar == bars / 2 - 1 && role == GenerativeSectionRole.Climax);
                 bool halfDropped = (role == GenerativeSectionRole.Breakdown && bar < 2);
 
+                // Signatures impaires (5/4 = 3+2 temps, 7/8 = 2+2+3 croches) : ostinato asymétrique dédié
+                if (!halfDropped && (stepsPerBar == 20 || stepsPerBar == 14))
+                {
+                    if (stepsPerBar == 20) // 5/4 (12 + 8 doubles-croches)
+                    {
+                        KickHit(s, sc, rng, barT, vol, kickBaseFreq);
+                        SnareHit(s, rng, barT + beatSec * 1.5f, vol * 0.88f);
+                        KickHit(s, sc, rng, barT + beatSec * 3.0f, vol * 0.92f, kickBaseFreq); // appui du groupe de 2
+                        SnareHit(s, rng, barT + beatSec * 4.0f, vol * 0.94f);
+                        if (p.intensity01 > 0.55f)
+                            TaikoHit(s, rng, barT + beatSec * 2.5f, vol * 0.50f);
+                    }
+                    else // 7/8 (4 + 4 + 6 doubles-croches)
+                    {
+                        KickHit(s, sc, rng, barT, vol, kickBaseFreq);
+                        SnareHit(s, rng, barT + sixteenth * 4f, vol * 0.88f);
+                        KickHit(s, sc, rng, barT + sixteenth * 8f, vol * 0.92f, kickBaseFreq);
+                        SnareHit(s, rng, barT + sixteenth * 11f, vol * 0.92f);
+                    }
+                    if (isFillBar) SnareRoll(s, rng, barT + barSec * 0.72f, barSec * 0.28f, vol * 0.88f);
+                    SixteenthHats(s, rng, barT, sixteenth, stepsPerBar, vol * 0.31f, p);
+                    if (bar == 0 || (bar == bars / 2 && role == GenerativeSectionRole.Climax))
+                        CrashHit(s, rng, barT, vol * 0.52f);
+                    continue;
+                }
+
                 switch (style)
                 {
                     case GenerativeDrumStyle.WarEnsemble:
@@ -30,12 +58,12 @@ namespace Killtime.Audio
                             TaikoHit(s, rng, barT, vol * 1.0f);
                             if (bar % 2 == 1 || role == GenerativeSectionRole.Climax)
                                 TaikoHit(s, rng, barT + beatSec * 2f, vol * 0.78f);
-                            if (p.intensity01 > 0.3f)
+                            if (p.intensity01 > 0.3f && fullBeats >= 4)
                                 TaikoHit(s, rng, barT + beatSec * 3.5f, vol * 0.52f);
                             if (p.intensity01 > 0.52f)
                                 TaikoHit(s, rng, barT + beatSec * 1.5f, vol * 0.44f);
                         }
-                        ShakerRun(s, rng, barT, barSec, sixteenth, vol * 0.30f, p);
+                        ShakerRun(s, rng, barT, barSec, sixteenth, stepsPerBar, vol * 0.30f, p);
                         if (isFillBar) TomDescent(s, rng, barT + barSec * 0.75f, vol * 0.85f);
                         break;
 
@@ -45,15 +73,14 @@ namespace Killtime.Audio
                             KickHit(s, sc, rng, barT, vol, kickBaseFreq);
                             if (p.intensity01 > 0.45f)
                                 KickHit(s, sc, rng, barT + beatSec * 1.75f, vol * 0.78f, kickBaseFreq);
-                            if (rng.NextDouble() < 0.45 + p.chaos01 * 0.35)
+                            if (fullBeats >= 4 && rng.NextDouble() < 0.45 + p.chaos01 * 0.35)
                                 KickHit(s, sc, rng, barT + beatSec * 2.75f, vol * 0.82f, kickBaseFreq);
                             SnareHit(s, rng, barT + beatSec * 2f, vol * 0.96f);
-                            // Ghost snare syncopée en fin de mesure
-                            if (bar % 2 == 1)
+                            if (bar % 2 == 1 && fullBeats >= 4)
                                 SnareHit(s, rng, barT + beatSec * 3.75f, vol * 0.42f);
                             if (isFillBar) SnareRoll(s, rng, barT + barSec * 0.5f, barSec * 0.5f, vol * 0.82f);
                         }
-                        TripletHats(s, rng, barT, beatSec, vol * 0.35f, p);
+                        TripletHats(s, rng, barT, beatSec, fullBeats, vol * 0.35f, p);
                         if (bar == 0 || (bar == bars / 2 && role == GenerativeSectionRole.Climax))
                             CrashHit(s, rng, barT, vol * 0.50f);
                         break;
@@ -63,21 +90,23 @@ namespace Killtime.Audio
                         {
                             KickHit(s, sc, rng, barT, vol, kickBaseFreq);
                             KickHit(s, sc, rng, barT + beatSec * 1.5f, vol * 0.82f, kickBaseFreq);
-                            if (p.intensity01 > 0.55f)
-                                KickHit(s, sc, rng, barT + beatSec * 2.5f, vol * 0.88f, kickBaseFreq);
-                            else
-                                KickHit(s, sc, rng, barT + beatSec * 2f, vol * 0.88f, kickBaseFreq);
-                            if (role == GenerativeSectionRole.Climax && bar % 2 == 1)
-                                KickHit(s, sc, rng, barT + beatSec * 3.5f, vol * 0.76f, kickBaseFreq);
+                            if (fullBeats >= 4)
+                            {
+                                if (p.intensity01 > 0.55f)
+                                    KickHit(s, sc, rng, barT + beatSec * 2.5f, vol * 0.88f, kickBaseFreq);
+                                else
+                                    KickHit(s, sc, rng, barT + beatSec * 2f, vol * 0.88f, kickBaseFreq);
+                                if (role == GenerativeSectionRole.Climax && bar % 2 == 1)
+                                    KickHit(s, sc, rng, barT + beatSec * 3.5f, vol * 0.76f, kickBaseFreq);
+                                SnareHit(s, rng, barT + beatSec * 3f, vol * 0.94f);
+                                SnareHit(s, rng, barT + beatSec * 2.25f, vol * 0.34f);
+                                if (p.chaos01 > 0.3f)
+                                    SnareHit(s, rng, barT + beatSec * 3.75f, vol * 0.38f);
+                            }
                             SnareHit(s, rng, barT + beatSec, vol * 0.92f);
-                            SnareHit(s, rng, barT + beatSec * 3f, vol * 0.94f);
-                            // Ghost notes de caisse claire façon breakbeat/DnB
-                            SnareHit(s, rng, barT + beatSec * 2.25f, vol * 0.34f);
-                            if (p.chaos01 > 0.3f)
-                                SnareHit(s, rng, barT + beatSec * 3.75f, vol * 0.38f);
                             if (isFillBar) SnareRoll(s, rng, barT + barSec * 0.75f, barSec * 0.25f, vol);
                         }
-                        SixteenthHats(s, rng, barT, sixteenth, vol * 0.32f, p);
+                        SixteenthHats(s, rng, barT, sixteenth, stepsPerBar, vol * 0.32f, p);
                         if (bar == 0 || (bar == bars / 2 && role == GenerativeSectionRole.Climax))
                             CrashHit(s, rng, barT, vol * 0.55f);
                         break;
@@ -85,7 +114,7 @@ namespace Killtime.Audio
                     case GenerativeDrumStyle.Blast:
                         if (!halfDropped)
                         {
-                            for (int b = 0; b < 4; b++)
+                            for (int b = 0; b < fullBeats; b++)
                             {
                                 KickHit(s, sc, rng, barT + b * beatSec, vol * (b == 0 ? 1f : 0.82f), kickBaseFreq);
                                 if (b % 2 == 1 && p.intensity01 > 0.75f)
@@ -98,27 +127,30 @@ namespace Killtime.Audio
                                 TomDescent(s, rng, barT + barSec * 0.75f, vol * 0.70f);
                             }
                         }
-                        SixteenthHats(s, rng, barT, sixteenth, vol * 0.28f, p);
+                        SixteenthHats(s, rng, barT, sixteenth, stepsPerBar, vol * 0.28f, p);
                         if (bar % 2 == 0) CrashHit(s, rng, barT, vol * 0.42f);
                         break;
 
                     default: // TribalTechno
                         if (!halfDropped)
                         {
-                            for (int b = 0; b < 4; b++)
+                            for (int b = 0; b < fullBeats; b++)
                                 KickHit(s, sc, rng, barT + b * beatSec, vol * (b == 0 ? 1f : 0.86f), kickBaseFreq);
                             SnareHit(s, rng, barT + beatSec, vol * 0.86f);
-                            SnareHit(s, rng, barT + beatSec * 3f, vol * 0.88f);
-                            TaikoHit(s, rng, barT + beatSec * 2.5f, vol * 0.42f);
-                            if (p.chaos01 > 0.35f && bar % 2 == 1)
-                                TaikoHit(s, rng, barT + beatSec * 3.75f, vol * 0.48f);
+                            if (fullBeats >= 4)
+                            {
+                                SnareHit(s, rng, barT + beatSec * 3f, vol * 0.88f);
+                                TaikoHit(s, rng, barT + beatSec * 2.5f, vol * 0.42f);
+                                if (p.chaos01 > 0.35f && bar % 2 == 1)
+                                    TaikoHit(s, rng, barT + beatSec * 3.75f, vol * 0.48f);
+                            }
                             if (isFillBar) SnareRoll(s, rng, barT + barSec * 0.75f, barSec * 0.25f, vol * 0.90f);
                         }
                         else
                         {
-                            ShakerRun(s, rng, barT, barSec, sixteenth, vol * 0.36f, p);
+                            ShakerRun(s, rng, barT, barSec, sixteenth, stepsPerBar, vol * 0.36f, p);
                         }
-                        OffbeatHats(s, rng, barT, beatSec, vol * 0.34f, p);
+                        OffbeatHats(s, rng, barT, beatSec, fullBeats, vol * 0.34f, p);
                         if (bar == 0 || (bar == bars / 2 && role == GenerativeSectionRole.Climax))
                             CrashHit(s, rng, barT, vol * 0.54f);
                         break;
@@ -188,23 +220,23 @@ namespace Killtime.Audio
             }
         }
 
-        private static void SixteenthHats(float[] s, System.Random rng, float barT, float sixteenth, float vol, GenerativeMusicParams p)
+        private static void SixteenthHats(float[] s, System.Random rng, float barT, float sixteenth, int stepsPerBar, float vol, GenerativeMusicParams p)
         {
             float swing = (p.preset == GenerativeStylePreset.Electronic || p.preset == GenerativeStylePreset.DrumAndBass)
                 ? 0.03f : 0.09f;
-            for (int h = 0; h < 16; h++)
+            for (int h = 0; h < stepsPerBar; h++)
             {
                 if (p.intensity01 < 0.5f && h % 2 == 1 && rng.NextDouble() < 0.55) continue;
                 float swingOffset = (h % 2 == 1) ? sixteenth * swing : 0f;
-                bool openHat = (h == 2 || h == 10 || h == 14) && p.intensity01 > 0.48f;
+                bool openHat = (h == 2 || h == 10 || h == stepsPerBar - 2) && p.intensity01 > 0.48f;
                 float gain = (h % 4 == 0) ? 0.95f : (h % 2 == 0 ? 0.72f : 0.44f);
                 HatTick(s, rng, barT + h * sixteenth + swingOffset, vol * gain, openHat);
             }
         }
 
-        private static void OffbeatHats(float[] s, System.Random rng, float barT, float beatSec, float vol, GenerativeMusicParams p)
+        private static void OffbeatHats(float[] s, System.Random rng, float barT, float beatSec, int fullBeats, float vol, GenerativeMusicParams p)
         {
-            for (int b = 0; b < 4; b++)
+            for (int b = 0; b < fullBeats; b++)
             {
                 // Contre-temps ouvert caractéristique techno/electro
                 HatTick(s, rng, barT + b * beatSec + beatSec * 0.5f, vol * 0.95f, open: true);
@@ -217,15 +249,15 @@ namespace Killtime.Audio
             }
         }
 
-        private static void TripletHats(float[] s, System.Random rng, float barT, float beatSec, float vol, GenerativeMusicParams p)
+        private static void TripletHats(float[] s, System.Random rng, float barT, float beatSec, int fullBeats, float vol, GenerativeMusicParams p)
         {
             float trip = beatSec / 3f;
-            for (int b = 0; b < 4; b++)
+            for (int b = 0; b < fullBeats; b++)
             {
                 for (int k = 0; k < 3; k++)
                 {
                     if (k == 1 && rng.NextDouble() < 0.35 - p.chaos01 * 0.2) continue;
-                    bool open = (b == 1 || b == 3) && k == 2;
+                    bool open = (b == 1 || b == fullBeats - 1) && k == 2;
                     HatTick(s, rng, barT + b * beatSec + k * trip, vol * (k == 0 ? 0.92f : 0.56f), open);
                 }
             }
@@ -255,9 +287,10 @@ namespace Killtime.Audio
             }
         }
 
-        private static void ShakerRun(float[] s, System.Random rng, float barT, float barSec, float sixteenth, float vol, GenerativeMusicParams p)
+        private static void ShakerRun(float[] s, System.Random rng, float barT, float barSec, float sixteenth, int stepsPerBar, float vol, GenerativeMusicParams p)
         {
-            for (int h = 0; h < 8; h++)
+            int eighthSteps = stepsPerBar / 2;
+            for (int h = 0; h < eighthSteps; h++)
             {
                 float tt = barT + h * sixteenth * 2f;
                 int start = (int)(tt * SampleRate);

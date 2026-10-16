@@ -1402,6 +1402,7 @@ namespace Killtime.Tactics
             {
                 int alliesAlive = 0, enemiesAlive = 0;
                 float hpSum = 0f, maxSum = 0f;
+                float eHpSum = 0f, eMaxSum = 0f;
                 foreach (var u in TacticalUnitRegistry.AllUnits)
                 {
                     if (u == null || u.Stats == null) continue;
@@ -1412,10 +1413,17 @@ namespace Killtime.Tactics
                         hpSum += Mathf.Max(0, u.Stats.CurrentHealth);
                         maxSum += Mathf.Max(1, u.Stats.MaxHealth);
                     }
-                    else if (alive) enemiesAlive++;
+                    else
+                    {
+                        if (alive) enemiesAlive++;
+                        eHpSum += Mathf.Max(0, u.Stats.CurrentHealth);
+                        eMaxSum += Mathf.Max(1, u.Stats.MaxHealth);
+                    }
                 }
                 float ratio = maxSum > 0f ? Mathf.Clamp01(hpSum / maxSum) : 1f;
-                mgr.NotifyBattleState(ratio, alliesAlive, enemiesAlive, _adaptiveTurnCount);
+                float enemyRatio = eMaxSum > 0f ? Mathf.Clamp01(eHpSum / eMaxSum) : -1f;
+                bool isPlayerTurn = _turnManager == null || _turnManager.ActiveUnit == null || _turnManager.ActiveUnit.IsPlayerControlled;
+                mgr.NotifyBattleState(ratio, alliesAlive, enemiesAlive, _adaptiveTurnCount, enemyRatio, isPlayerTurn);
             }
             catch (System.Exception) { /* audio jamais bloquant */ }
         }

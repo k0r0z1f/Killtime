@@ -442,6 +442,34 @@ namespace Killtime.Tests
             Assert.AreEqual(0f, normal.bpm % 4f, 0.001f, "BPM quantifié par pas de 4 attendu");
             Assert.Greater(boss.tension01, normal.tension01, "Profil Boss doit imposer une tension supérieure");
             Assert.Less(boss.rootMidi, normal.rootMidi, "Profil Boss doit avoir une fondamentale plus grave");
+            Assert.AreEqual(5, boss.beatsPerBar, "Profil Boss doit basculer en 5/4 par défaut");
+        }
+
+        [Test]
+        public void GenerativeEngine_OddMetersAndTacticalMomentum_Work()
+        {
+            var p3 = GenerativeMusicParams.DefaultCombat(1337); p3.beatsPerBar = 3;
+            var p4 = GenerativeMusicParams.DefaultCombat(1337); p4.beatsPerBar = 4;
+            var p5 = GenerativeMusicParams.DefaultCombat(1337); p5.beatsPerBar = 5;
+            var p7 = GenerativeMusicParams.DefaultCombat(1337); p7.beatsPerBar = 7;
+
+            Assert.Less(GenerativeMusicEngine.EstimateDuration(p3), GenerativeMusicEngine.EstimateDuration(p4));
+            Assert.Less(GenerativeMusicEngine.EstimateDuration(p7), GenerativeMusicEngine.EstimateDuration(p4));
+            Assert.Greater(GenerativeMusicEngine.EstimateDuration(p5), GenerativeMusicEngine.EstimateDuration(p4));
+
+            float[] s5 = GenerativeMusicEngine.Render(p5);
+            float[] s7 = GenerativeMusicEngine.Render(p7);
+            Assert.Greater(s5.Length, s7.Length);
+
+            var playerTurn = AdaptiveMusicDirector.ComputeGenerativeParams(0.75f, 3, 2, 2, 1337, 0, isBoss: false, enemyHpRatio01: 0.2f, isPlayerTurn: true);
+            var enemyTurn = AdaptiveMusicDirector.ComputeGenerativeParams(0.75f, 3, 2, 2, 1337, 0, isBoss: false, enemyHpRatio01: 0.8f, isPlayerTurn: false);
+            Assert.AreEqual(GenerativeScale.Dorian, playerTurn.scale, "Domination (ennemis bas PV) doit favoriser le mode Dorian héroïque");
+            Assert.Greater(enemyTurn.tension01, playerTurn.tension01, "Tour ennemi doit accroître la tension musicale");
+
+            ProceduralAudioFactory.PrewarmGenerativeLoopAsync(p5);
+            var clip5 = ProceduralAudioFactory.GetGenerativeLoop(p5);
+            Assert.IsNotNull(clip5);
+            Assert.AreEqual(s5.Length, clip5.samples);
         }
     }
 }

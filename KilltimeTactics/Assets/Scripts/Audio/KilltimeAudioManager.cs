@@ -215,9 +215,11 @@ namespace Killtime.Audio
 
             if (_generativeCombat && IsGenerativeMood(_targetMood) && !_isFading && _genParamsValid)
             {
-                // Scheduler infini : on pré-génère la variation suivante juste
-                // avant la fin de la boucle pour un enchaînement sans blanc.
+                // Scheduler infini : on pré-génère la variation suivante sur un thread de fond
+                // dès 55% de la boucle, puis on déclenche le crossfade juste avant la fin.
                 _genLoopTimer += Time.unscaledDeltaTime;
+                if (!_nextGenPrewarmed && _genLoopTimer >= _genLoopDur * 0.55f)
+                    PrewarmNextGenerativeVariation();
                 float lookahead = Mathf.Max(0.6f, _generativeCrossfade + 0.15f);
                 if (_genLoopTimer >= _genLoopDur - lookahead)
                     AdvanceGenerativeVariation();

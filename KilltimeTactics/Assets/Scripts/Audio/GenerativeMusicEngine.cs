@@ -93,6 +93,7 @@ namespace Killtime.Audio
         public int bars;            // 4..16, 8 par défaut
         public float strike01;      // accent réactif ponctuel (coup critique / kill)
         public int stemOverrides;   // Masque 16-bit des 8 stems (2 bits par stem : 0=Auto, 1=ForceActive, 2=Muted)
+        public int beatsPerBar;     // Signature rythmique : 0 ou 4 = 4/4, 3 = 3/4, 5 = 5/4 (3+2), 7 = 7/8 (2+2+3)
 
         public static GenerativeMusicParams DefaultCombat(int seed = 1337)
         {
@@ -110,7 +111,8 @@ namespace Killtime.Audio
                 preset = GenerativeStylePreset.Auto,
                 bpm = 128f,
                 bars = 8,
-                strike01 = 0f
+                strike01 = 0f,
+                beatsPerBar = 4
             };
         }
 
@@ -135,11 +137,41 @@ namespace Killtime.Audio
     {
         public const int SampleRate = 22050;
 
+        /// <summary>Nombre de doubles-croches par mesure selon la signature (4/4 -> 16, 3/4 -> 12, 5/4 -> 20, 7/8 -> 14).</summary>
+        public static int GetStepsPerBar(int beatsPerBar)
+        {
+            return beatsPerBar switch
+            {
+                3 => 12,
+                5 => 20,
+                7 => 14, // 7/8 = 7 croches = 14 doubles-croches
+                _ => 16
+            };
+        }
+
+        /// <summary>Durée d'une mesure en équivalent noires (4/4 -> 4.0, 3/4 -> 3.0, 5/4 -> 5.0, 7/8 -> 3.5).</summary>
+        public static float GetBarBeats(int beatsPerBar)
+        {
+            return GetStepsPerBar(beatsPerBar) * 0.25f;
+        }
+
+        public static string FormatMeterLabel(int beatsPerBar)
+        {
+            return beatsPerBar switch
+            {
+                3 => "3/4",
+                5 => "5/4",
+                7 => "7/8",
+                _ => "4/4"
+            };
+        }
+
         public static float EstimateDuration(GenerativeMusicParams p)
         {
             int bars = Mathf.Clamp(p.bars, 4, 16);
             float bpm = Mathf.Clamp(p.bpm, 90f, 180f);
-            return bars * 4f * 60f / bpm;
+            float barBeats = GetBarBeats(p.beatsPerBar);
+            return bars * barBeats * 60f / bpm;
         }
 
         public static float[] Render(GenerativeMusicParams p)
@@ -151,6 +183,8 @@ namespace Killtime.Audio
             p.bpm = Mathf.Clamp(p.bpm, 90f, 180f);
             p.bars = Mathf.Clamp(p.bars, 4, 16);
             p.rootMidi = Mathf.Clamp(p.rootMidi, 24, 48);
+            int stepsPerBar = GetStepsPerBar(p.beatsPerBar);
+            float barBeats = stepsPerBar * 0.25f;
             bool chip = (p.preset == GenerativeStylePreset.Retro16Bit);
 
             // Double RNG :
@@ -166,7 +200,7 @@ namespace Killtime.Audio
 
             float bpm = p.bpm;
             float beatSec = 60f / bpm;
-            float barSec = beatSec * 4f;
+            float barSec = beatSec * barBeats;
             float totalSec = barSec * p.bars;
             int n = (int)(SampleRate * totalSec);
             float[] s = new float[n];
@@ -189,7 +223,8 @@ namespace Killtime.Audio
             float chordDur = totalSec / chordsPerLoop;
 
             // --- 3. Thème mélodique ancré sur les notes d'accord + développement A / B / Contre-chant ---
-            int[] coreMotif = BuildThemeMotif(themeRng, p, keyRoot, scaleSteps, chords, 16);
+            int motifLen = stepsPerBar; // 2 mesures de croches (16 en 4/4, 12 en 3/4, 20 en 5/4, 14 en 7/8)
+            int[] coreMotif = BuildThemeMotif(themeRng, p, keyRoot, scaleSteps, chords, motifLen);
             int[] motifA = DevelopMotif(varRng, coreMotif, scaleSteps, keyRoot, role, p.chaos01, isSecondHalf: false);
             int[] motifB = DevelopMotif(varRng, coreMotif, scaleSteps, keyRoot, role, p.chaos01, isSecondHalf: true);
             int[] counterMotif = BuildCounterMotif(varRng, motifA, motifB, scaleSteps, keyRoot, role);

@@ -95,6 +95,11 @@ namespace Killtime.Audio
             _generativeCache.Clear();
             _generativeLru.Clear();
             _generativeStrikeCache.Clear();
+            lock (_genTaskLock)
+            {
+                _generativePendingTasks.Clear();
+                _generativeTaskLru.Clear();
+            }
             _ambienceCache = null;
         }
 

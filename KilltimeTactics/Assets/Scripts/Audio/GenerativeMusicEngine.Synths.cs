@@ -12,6 +12,7 @@ namespace Killtime.Audio
             float chordDur, float beatSec, float vol)
         {
             float sixteenth = beatSec / 4f;
+            int stepsPerBar = GetStepsPerBar(p.beatsPerBar);
             int total16 = (int)((chordDur * bassRoots.Length) / sixteenth);
             bool chip = (p.preset == GenerativeStylePreset.Retro16Bit);
             bool growl = (p.intensity01 > 0.58f || role == GenerativeSectionRole.Climax) && !chip;
@@ -19,19 +20,27 @@ namespace Killtime.Audio
             for (int step = 0; step < total16; step++)
             {
                 float stepT = step * sixteenth;
-                int m16 = step % 16;
+                int mBar = step % stepsPerBar;
                 bool play;
-                if (role == GenerativeSectionRole.Breakdown)
-                    play = (m16 == 0) || (m16 == 10 && p.intensity01 > 0.4f);
+                if (stepsPerBar == 20) // 5/4 (3+2 = 12 + 8 doubles-croches)
+                    play = (role == GenerativeSectionRole.Breakdown)
+                        ? (mBar == 0 || mBar == 12)
+                        : (mBar == 0 || mBar == 3 || mBar == 6 || mBar == 10 || mBar == 12 || mBar == 16 || (p.intensity01 > 0.65f && mBar % 2 == 0));
+                else if (stepsPerBar == 14) // 7/8 (4 + 4 + 6 doubles-croches)
+                    play = (role == GenerativeSectionRole.Breakdown)
+                        ? (mBar == 0 || mBar == 8)
+                        : (mBar == 0 || mBar == 4 || mBar == 8 || mBar == 11 || (p.intensity01 > 0.65f && mBar % 2 == 0));
+                else if (role == GenerativeSectionRole.Breakdown)
+                    play = (mBar == 0) || (mBar == 10 && p.intensity01 > 0.4f);
                 else if (p.intensity01 > 0.72f || role == GenerativeSectionRole.Climax)
-                    play = (m16 % 2 == 0) || m16 == 3 || m16 == 6 || m16 == 11 || m16 == 14;
+                    play = (mBar % 2 == 0) || mBar == 3 || mBar == 6 || mBar == 11 || mBar == 14;
                 else if (p.intensity01 > 0.42f)
-                    play = (m16 % 4 == 0) || m16 == 6 || m16 == 10 || m16 == 14;
+                    play = (mBar % 4 == 0) || mBar == 6 || mBar == 10 || mBar == 14;
                 else
-                    play = (m16 == 0) || m16 == 6 || m16 == 10;
+                    play = (mBar == 0) || mBar == 6 || mBar == 10;
 
                 if (!play) continue;
-                if (m16 != 0 && rng.NextDouble() < p.chaos01 * 0.10) continue;
+                if (mBar != 0 && rng.NextDouble() < p.chaos01 * 0.10) continue;
 
                 int chordIdx = Math.Min(bassRoots.Length - 1, (int)(stepT / chordDur));
                 int root = bassRoots[chordIdx];
@@ -39,8 +48,8 @@ namespace Killtime.Audio
                 while (root > 43) root -= 12;
 
                 int intervalJump = 0;
-                if ((m16 == 6 || m16 == 14) && rng.NextDouble() < 0.65) intervalJump = 12; // octave
-                else if (m16 == 11 && chords != null && chordIdx < chords.Length && chords[chordIdx].Length > 2)
+                if ((mBar == 6 || mBar == stepsPerBar - 2) && rng.NextDouble() < 0.65) intervalJump = 12; // octave
+                else if (mBar == 11 && chords != null && chordIdx < chords.Length && chords[chordIdx].Length > 2)
                     intervalJump = 7; // quinte d'appui
                 float f = MidiFreq(root + intervalJump);
                 float dt = f / SampleRate;
@@ -143,27 +152,32 @@ namespace Killtime.Audio
         {
             if (role == GenerativeSectionRole.Breakdown) return;
             float sixteenth = beatSec / 4f;
+            int stepsPerBar = GetStepsPerBar(p.beatsPerBar);
             int total = (int)((chordDur * chords.Length) / sixteenth);
 
             for (int step = 0; step < total; step++)
             {
-                int m4 = step % 4;
-                if (m4 == 1 && rng.NextDouble() < 0.55) continue;
-                if (m4 == 3 && p.intensity01 < 0.6f && rng.NextDouble() < 0.5) continue;
+                int mBar = step % stepsPerBar;
+                bool isAccent = (stepsPerBar == 14)
+                    ? (mBar == 0 || mBar == 4 || mBar == 8 || mBar == 11)
+                    : ((stepsPerBar == 20) ? (mBar == 0 || mBar == 4 || mBar == 8 || mBar == 12 || mBar == 16) : (mBar % 4 == 0));
+                int m4 = mBar % 4;
+                if (!isAccent && mBar % 2 == 1 && rng.NextDouble() < 0.55) continue;
+                if (!isAccent && m4 == 3 && p.intensity01 < 0.6f && rng.NextDouble() < 0.5) continue;
 
                 float stepT = step * sixteenth;
                 int ci = Math.Min(chords.Length - 1, (int)(stepT / chordDur));
                 var chord = chords[ci];
                 // Alterne basse d'accord et notes supérieures façon ostinato cordes spiccato
-                int voiceIdx = (m4 == 0) ? 0 : (step % chord.Length);
-                int note = chord[voiceIdx] + (m4 == 0 ? 0 : 12);
+                int voiceIdx = isAccent ? 0 : (step % chord.Length);
+                int note = chord[voiceIdx] + (isAccent ? 0 : 12);
                 float f = MidiFreq(note);
                 float dt = f / SampleRate;
 
                 int start = (int)(stepT * SampleRate);
                 if (start < 0 || start >= s.Length) continue;
                 int len = Math.Min((int)(sixteenth * 1.15f * SampleRate), s.Length - start);
-                float acc = (m4 == 0) ? 1.0f : (m4 == 2 ? 0.78f : 0.56f);
+                float acc = isAccent ? 1.0f : (mBar % 2 == 0 ? 0.78f : 0.56f);
                 float ph = 0f, ic1 = 0f, ic2 = 0f;
 
                 for (int i = 0; i < len; i++)
@@ -187,11 +201,13 @@ namespace Killtime.Audio
             GenerativeSectionRole role, int[][] chords, float chordDur, float beatSec, float vol, int[] motif)
         {
             float sixteenth = beatSec / 4f;
+            int stepsPerBar = GetStepsPerBar(p.beatsPerBar);
             int total = (int)((chordDur * chords.Length) / sixteenth);
             int chipBonus = (p.preset == GenerativeStylePreset.Retro16Bit) ? 2 : 0;
-            int pulses = Mathf.Clamp(Mathf.RoundToInt(5 + p.intensity01 * 7 + p.chaos01 * 2) + chipBonus, 4, 14);
+            int maxPulses = Mathf.Max(6, stepsPerBar - 2);
+            int pulses = Mathf.Clamp(Mathf.RoundToInt((4 + p.intensity01 * 7 + p.chaos01 * 2) * (stepsPerBar / 16f)) + chipBonus, 3, maxPulses);
             if (role == GenerativeSectionRole.Breakdown) pulses = Mathf.Min(pulses, 6);
-            int rotation = ((p.generation * 3) % 16 + 16) % 16;
+            int rotation = ((p.generation * 3) % stepsPerBar + stepsPerBar) % stepsPerBar;
 
             // Delay croche pointée (3 doubles-croches) avec écriture circulaire dans le buffer de boucle
             int delaySpl = Math.Max(1, (int)(SampleRate * sixteenth * 3f));
@@ -199,16 +215,18 @@ namespace Killtime.Audio
 
             for (int step = 0; step < total; step++)
             {
-                if (!EuclidHit(step + rotation, 16, pulses)) continue;
+                if (!EuclidHit(step + rotation, stepsPerBar, pulses)) continue;
                 float stepT = step * sixteenth;
                 int ci = Math.Min(chords.Length - 1, (int)(stepT / chordDur));
                 var chord = chords[ci];
 
                 // Arpège ordonné (montant/descendant) enrichi par le motif principal
+                int mBar = step % stepsPerBar;
+                bool isStrongStep = (stepsPerBar == 14) ? (mBar == 0 || mBar == 4 || mBar == 8) : (mBar % 4 == 0);
                 int patternIdx = (step % 6 < 4) ? (step % chord.Length) : (chord.Length - 1 - (step % chord.Length));
                 int note = chord[Mathf.Clamp(patternIdx, 0, chord.Length - 1)] + 12;
-                if (motif != null && motif.Length > 0 && step % 4 == 0 && motif[step % motif.Length] > 0)
-                    note = motif[step % motif.Length];
+                if (motif != null && motif.Length > 0 && isStrongStep && motif[mBar % motif.Length] > 0)
+                    note = motif[mBar % motif.Length];
 
                 float f = MidiFreq(note);
                 float dt = f / SampleRate;
@@ -248,6 +266,7 @@ namespace Killtime.Audio
             int[][] chords, float chordDur, float barSec, float beatSec, float vol)
         {
             float eighth = beatSec / 2f;
+            int eighthsPerBar = GetStepsPerBar(p.beatsPerBar) / 2;
             int bars = p.bars;
             bool chip = (p.preset == GenerativeStylePreset.Retro16Bit);
             bool useHarmony = (role == GenerativeSectionRole.Climax || p.intensity01 > 0.72f);
@@ -261,9 +280,9 @@ namespace Killtime.Audio
                 int[] motif = secondHalf ? motifB : motifA;
                 float barT = bar * barSec;
 
-                for (int st = 0; st < 8; st++)
+                for (int st = 0; st < eighthsPerBar; st++)
                 {
-                    int mIdx = (st + (bar % 2) * 8) % motif.Length;
+                    int mIdx = (st + (bar % 2) * eighthsPerBar) % motif.Length;
                     int note = motif[mIdx];
                     if (note < 0)
                     {

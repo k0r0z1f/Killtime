@@ -191,9 +191,12 @@ namespace Killtime.Audio
 
             for (int i = 0; i < len; i++)
             {
-                bool strongBeat = (i % 4 == 0);
+                bool strongBeat = (i == 0 || i == len / 2)
+                    || (len == 20 && (i == 6 || i == 16))
+                    || (len == 14 && (i == 4 || i == 11))
+                    || (len != 14 && len != 20 && i % 4 == 0);
                 bool cadenceStep = (i == len - 2);
-                bool phraseBreath = (i == 7 || i == len - 1);
+                bool phraseBreath = (i == len / 2 - 1 || i == len - 1);
 
                 // Respiration naturelle en fin de sous-phrase (pas 7 et pas 15)
                 if (phraseBreath && themeRng.NextDouble() < 0.65)

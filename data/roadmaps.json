@@ -2431,7 +2431,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Story/StorySceneData.cs + DevTools/Story + DevTools/Arena",
-          "details": "Créé 2026-10-13 (règle dev.md §2 <~800 lignes) : restent >800 lignes après les splits — StorySceneData 1368, ScenarioEditorDevWindow.Wires 1267, ArenaAttackService 1258, Cards.World 1132, GrenadeSystem 1081, ArenaMelee 1064, KilltimeAudioSettingsUI 1062, CinematicEditorDevWindow 1034, DuoTechRegistry 972, CombatTechniqueRegistry 955, SpecialManeuverService 923, Panels.Audio 902, GraphCanvas 879 (SceneTab ramené à 743 l. lors de RD-118 ; GenerativeMusicEngine 1014 l. découpé en 4 partials 333/369/336/626 l. lors de RD-165). Trancher par fichier : split ciblé (services/partials) ou exception documentée (service métier indissociable). Ne pas laisser croire que tout est <800.",
+          "details": "Créé 2026-10-13 (règle dev.md §2 <~800 lignes) : restent >800 lignes après les splits — StorySceneData 1368, ScenarioEditorDevWindow.Wires 1267, ArenaAttackService 1258, Cards.World 1132, GrenadeSystem 1081, ArenaMelee 1064, CinematicEditorDevWindow 1034, DuoTechRegistry 972, CombatTechniqueRegistry 955, SpecialManeuverService 923, Panels.Audio 902, GraphCanvas 879 (SceneTab ramené à 743 l. lors de RD-118 ; GenerativeMusicEngine 1014 l. découpé en 4 partials lors de RD-165 ; KilltimeAudioSettingsUI 1062 l. découpé en 2 partials 527/539 l. lors de RD-166). Trancher par fichier : split ciblé (services/partials) ou exception documentée (service métier indissociable). Ne pas laisser croire que tout est <800.",
           "updated": "2026-10-16"
         },
         {
@@ -2447,7 +2447,23 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "GenerativeMusicEngine.*.cs + AdaptiveMusicDirector",
-          "details": "FAIT (2026-10-16) : 1) Architecture & dev.md §2 : GenerativeMusicEngine (1014 l.) découpé en 4 partials <800 l. (Core 333 l., Theory 369 l., Drums 336 l., Synths 626 l.). 2) Mémoire thématique & forme : double RNG (themeRng par seed gardant le thème et la grille d'ancrage reconnaissables sur tout le combat + varRng par generation) et cycle narratif en 5 rôles (ThemeA, ThemeAVar, BridgeB, Climax, Breakdown) + conduction des voix fluide (VoiceLeadChord sans sauts d'octave boueux) + contre-chant harmonisé à la tierce/sixte en Climax. 3) Synthèse & DSP : oscillateurs anti-aliasés PolyBLEP (saw/square), filtres résonants Cytomic SVF 2-pôles (lowpass/bandpass), chœur arcanotech à 3 formants vocaliques (morphing Ah/Oh), lead legato avec portamento/vibrato progressif et delays tempo-sync rebouclés circulairement sans coupure, kick accordé sur la fondamentale et charlestons métalliques FM. 4) Transitions & réactivité : BPM quantifié par pas de 4, seed stable inter-tours, profil CombatBoss distinct, crossfade synchronisé en phase (syncPhase) sur refresh de stems/variations à même BPM, horloge bouclée sur _activeMusic.time, ducking cinématique réellement appliqué au mix et stinger harmonique immédiat accordé sur la tonique dans NotifyCombatStrike.",
+          "details": "FAIT (2026-10-16) : 1) Architecture & dev.md §2 : GenerativeMusicEngine (1014 l.) découpé en 4 partials <800 l. (Core 366 l., Theory 369 l., Drums 366 l., Synths 639 l.). 2) Mémoire thématique & forme : double RNG (themeRng par seed gardant le thème et la grille d'ancrage reconnaissables sur tout le combat + varRng par generation) et cycle narratif en 5 rôles (ThemeA, ThemeAVar, BridgeB, Climax, Breakdown) + conduction des voix fluide (VoiceLeadChord sans sauts d'octave boueux) + contre-chant harmonisé à la tierce/sixte en Climax. 3) Synthèse & DSP : oscillateurs anti-aliasés PolyBLEP (saw/square), filtres résonants Cytomic SVF 2-pôles (lowpass/bandpass), chœur arcanotech à 3 formants vocaliques (morphing Ah/Oh), lead legato avec portamento/vibrato progressif et delays tempo-sync rebouclés circulairement sans coupure, kick accordé sur la fondamentale et charlestons métalliques FM. 4) Transitions & réactivité : BPM quantifié par pas de 4, seed stable inter-tours, profil CombatBoss distinct, crossfade synchronisé en phase (syncPhase) sur refresh de stems/variations à même BPM, ducking cinématique réellement appliqué au mix et stinger harmonique immédiat accordé sur la tonique dans NotifyCombatStrike.",
+          "updated": "2026-10-16"
+        },
+        {
+          "id": "RD-166",
+          "title": "Dramaturgie tactique (Tour/Momentum), signatures impaires (3/4, 5/4, 7/8), pré-rendu async & split UI F11",
+          "epic": "Audio",
+          "status": "done",
+          "priority": "high",
+          "order": 25,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "AdaptiveMusicDirector + ProceduralAudioFactory.Generative + KilltimeAudioSettingsUI",
+          "details": "FAIT (2026-10-16) : 1) Dramaturgie tactique temps réel : TurnManager.Objectives et CombatDevArena transmettent désormais enemyHpRatio01 et isPlayerTurn à NotifyBattleState ; AdaptiveMusicDirector module l'intensité/mode en Domination/Finisher (mode Dorian héroïque, brillance accrue quand l'escouade achève les derniers ennemis), en Bain de sang mutuel (intensité >= 0.80), et différencie Tour Joueur (focus tactique) vs Tour Ennemi (hausse de tension et d'ornementation chaotique). 2) Signatures rythmiques asymétriques (beatsPerBar) : support de 4/4 (16 pas), 3/4 (12 pas), 5/4 (20 pas, ostinato 3+2 automatique sur Boss) et 7/8 (14 pas, ostinato 2+2+3) dans la batterie, la basse, l'arpège euclidien et le lead, avec sélecteur live Auto/4/4/3/4/5/4/7/8 dans F11. 3) Zéro-Hitch CPU : PrewarmGenerativeLoopAsync lance GenerativeMusicEngine.Render(G+1) via Task.Run dès 55% de la boucle courante pour ne laisser que AudioClip.Create (<0.2 ms) sur le Main Thread. 4) Règle dev.md §2 : KilltimeAudioSettingsUI (1062 l.) découpé en 2 partials (KilltimeAudioSettingsUI.cs 527 l. + KilltimeAudioSettingsUI.Chameleon.cs 539 l.).",
           "updated": "2026-10-16"
         }
       ]

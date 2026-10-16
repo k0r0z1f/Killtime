@@ -98,6 +98,7 @@ namespace Killtime.Audio
             _genLoopTimer = 0f;
             _genParamsValid = false;
             _pendingStrike = 0f;
+            _nextGenPrewarmed = false;
             _currentLevel = 1;
             _targetIntensity01 = 0.5f;
             _currentIntensity01 = 0.5f;
@@ -133,12 +134,16 @@ namespace Killtime.Audio
         /// Hystérésis + cooldown anti-yoyo ; les changements de mood restent immédiats.
         /// Retourne true si une transition a démarré.
         /// </summary>
-        public bool NotifyBattleState(float allyHpRatio01, int alliesAlive, int enemiesAlive, int turnIndex)
+        public bool NotifyBattleState(float allyHpRatio01, int alliesAlive, int enemiesAlive, int turnIndex,
+            float enemyHpRatio01 = -1f, bool isPlayerTurn = true)
         {
             _lastAllyHp = Mathf.Clamp01(allyHpRatio01);
+            _lastEnemyHp = enemyHpRatio01 >= 0f ? Mathf.Clamp01(enemyHpRatio01) : -1f;
+            _lastIsPlayerTurn = isPlayerTurn;
             _lastAllies = alliesAlive;
             _lastEnemies = enemiesAlive;
             _lastTurn = turnIndex;
+            _nextGenPrewarmed = false;
             var (mood, intensity) = AdaptiveMusicDirector.ComputeTarget(
                 allyHpRatio01, alliesAlive, enemiesAlive, turnIndex, _targetMood, _targetIntensity01);
             // Mode génératif : le mood Combat/Boss/Tension part en composition live.
@@ -148,7 +153,8 @@ namespace Killtime.Audio
                 bool isBoss = (mood == MusicMood.CombatBoss);
                 var genParams = AdaptiveMusicDirector.ComputeGenerativeParams(
                     allyHpRatio01, alliesAlive, enemiesAlive, turnIndex,
-                    _generativeSeed, _genGeneration, 0f, _generativeBrightness, _generativeChaos, _generativePreset, isBoss);
+                    _generativeSeed, _genGeneration, 0f, _generativeBrightness, _generativeChaos, _generativePreset,
+                    isBoss, _lastEnemyHp, _lastIsPlayerTurn, _generativeMeterOverride);
                 bool bigShift = Mathf.Abs(genParams.intensity01 - _targetIntensity01) >= _adaptiveHysteresis
                     || Mathf.Abs(genParams.tension01 - (_genParamsValid ? _genParams.tension01 : 0.5f)) >= 0.25f;
                 if (!moodChange && !bigShift && _genParamsValid) return false;

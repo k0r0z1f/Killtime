@@ -147,6 +147,8 @@ namespace Killtime.Tactics.TurnSystem
             int enemiesAlive = 0;
             int totalMaxHp = 0;
             int totalCurrentHp = 0;
+            int totalEnemyMaxHp = 0;
+            int totalEnemyCurrentHp = 0;
 
             for (int i = 0; i < _allUnits.Count; i++)
             {
@@ -162,14 +164,21 @@ namespace Killtime.Tactics.TurnSystem
                         totalCurrentHp += Mathf.Max(0, u.Stats.CurrentHealth);
                     }
                 }
-                else if (u.Stats.IsAlive)
+                else
                 {
-                    enemiesAlive++;
+                    totalEnemyMaxHp += u.Stats.MaxHealth;
+                    if (u.Stats.IsAlive)
+                    {
+                        enemiesAlive++;
+                        totalEnemyCurrentHp += Mathf.Max(0, u.Stats.CurrentHealth);
+                    }
                 }
             }
 
             float allyHpRatio = totalMaxHp > 0 ? (float)totalCurrentHp / totalMaxHp : 0f;
-            audioMgr.NotifyBattleState(allyHpRatio, alliesAlive, enemiesAlive, CurrentRound);
+            float enemyHpRatio = totalEnemyMaxHp > 0 ? (float)totalEnemyCurrentHp / totalEnemyMaxHp : -1f;
+            bool isPlayerTurn = ActiveUnit == null || ActiveUnit.IsPlayerControlled;
+            audioMgr.NotifyBattleState(allyHpRatio, alliesAlive, enemiesAlive, CurrentRound, enemyHpRatio, isPlayerTurn);
         }
 
         public void EndCombatWithOutcome(CombatOutcome outcome, string reason)
