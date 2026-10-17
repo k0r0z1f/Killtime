@@ -21,6 +21,9 @@ namespace Killtime.Tactics.Units
         [Tooltip("Nom du porteur qui a lâché l'arme (log / fluff).")]
         public string FormerOwnerName = "";
 
+        [Tooltip("Identifiant stable inter-clients (GUID) : suivi VTT pickup/kick + réconciliation state_sync (RD-089).")]
+        public string DropId = "";
+
         [Header("Ramassage")]
         [Tooltip("Distance max (m) pour ramasser l'arme au sol.")]
         public float PickupRadius = 1.2f;
@@ -46,6 +49,17 @@ namespace Killtime.Tactics.Units
         private bool _settled;
         private float _nextProximityScan;
         private static readonly List<DroppedWeaponPickup> _all = new();
+
+        // --- Événements VTT (RD-089) -------------------------------------------------
+        // Le GM s'y abonne pour diffuser drop/pickup/kick ; les clients les ignorent
+        // (ils appliquent via VTTTableSync sous SuppressEvents). Tirés depuis
+        // Initialize (couvre SpawnAt + lâcher K.O.), TryPickup et TryKickFurther.
+        public static event System.Action<DroppedWeaponPickup> OnWeaponDropped;
+        public static event System.Action<DroppedWeaponPickup, TacticalUnit> OnWeaponPickedUp;
+        public static event System.Action<DroppedWeaponPickup, Vector3, float> OnWeaponKicked;
+        public static event System.Action<DroppedWeaponPickup, TacticalUnit> OnWeaponDestroyed;
+        /// <summary>Vrai pendant l'application distante : aucun événement émis.</summary>
+        public static bool SuppressEvents { get; set; }
 
         private void OnEnable() { if (!_all.Contains(this)) _all.Add(this); }
         private void OnDisable() { _all.Remove(this); }
@@ -92,11 +106,18 @@ namespace Killtime.Tactics.Units
         {
             DroppedItem = item;
             FormerOwnerName = formerOwner ?? "";
+            if (string.IsNullOrEmpty(DropId))
+                DropId = System.Guid.NewGuid().ToString("N");
             EnsureRealPhysics();
             if (_rb != null)
             {
                 _rb.linearVelocity = initialVelocity;
                 _rb.angularVelocity = initialAngularVelocity;
+            }
+            if (!SuppressEvents)
+            {
+                try { OnWeaponDropped?.Invoke(this); }
+                catch { /* diffusion VTT jamais bloquante */ }
             }
         }
 
@@ -284,6 +305,11 @@ namespace Killtime.Tactics.Units
             var visual = unit.GetComponent<TacticalUnitVisual>();
             if (visual != null) visual.SpawnFloatingText(charged ? $"⚔ {pickedName} ramassée (-1 PA)" : $"⚔ {pickedName} ramassée", Color.green);
 
+            if (!SuppressEvents)
+            {
+                try { OnWeaponPickedUp?.Invoke(this, unit); }
+                catch { /* diffusion VTT jamais bloquante */ }
+            }
             Destroy(gameObject);
             return true;
         }
@@ -339,6 +365,26 @@ namespace Killtime.Tactics.Units
         }
 
         /// <summary>
+        /// Plus proche arme au sol ramassable par l'unité (sans la ramasser).
+        /// Sert au routage VTT client->GM (le client transmet le dropId).
+        /// </summary>
+        public static bool TryGetNearest(TacticalUnit unit, out DroppedWeaponPickup nearest)
+        {
+            nearest = null;
+            if (unit == null) return false;
+            float bestD = float.MaxValue;
+            for (int i = 0; i < _all.Count; i++)
+            {
+                var d = _all[i];
+                if (d == null || d.DroppedItem == null) continue;
+                if (!d.CanBePickedUpBy(unit)) continue;
+                float dist = Vector3.Distance(unit.transform.position, d.transform.position);
+                if (dist < bestD) { bestD = dist; nearest = d; }
+            }
+            return nearest != null;
+        }
+
+        /// <summary>
         /// Ramassage de la plus proche arme au sol à portée (appel UI / touche d'interaction).
         /// Coût 1 PA en combat via TryPickup.
         /// </summary>
@@ -389,18 +435,39 @@ namespace Killtime.Tactics.Units
             // Tolérance un peu plus large que le ramassage (coup de pied allonge la jambe).
             if (d > PickupRadius + 1.0f) return false;
 
+            ApplyKickImpulse(kicker.transform.position, kickForce, kicker.transform.forward);
+            if (_rb == null) return false;
+
+            var visual = kicker.GetComponent<TacticalUnitVisual>();
+            if (visual != null) visual.SpawnFloatingText($"🦵 {DroppedItem.Name} shooté !", Color.yellow);
+            if (!SuppressEvents)
+            {
+                try { OnWeaponKicked?.Invoke(this, kicker.transform.position, kickForce); }
+                catch { /* diffusion VTT jamais bloquante */ }
+            }
+            return true;
+        }
+
+        /// <summary>
+        /// Impulsion physique depuis une origine monde (botteur local ou position
+        /// miroir du botteur GM en VTT). Ne valide rien : le garde (distance,
+        /// état) appartient à TryKickFurther côté émetteur.
+        /// </summary>
+        public void ApplyKickImpulse(Vector3 fromPos, float kickForce = 4.5f, Vector3 fallbackDir = default)
+        {
+            if (DroppedItem == null) return;
             // S'assure que la physique est active (l'objet figé est kinematic).
             EnsureRealPhysics();
             if (_rb == null) _rb = GetComponent<Rigidbody>();
-            if (_rb == null) return false;
+            if (_rb == null) return;
             _rb.isKinematic = false;
             _settled = false;
             _lowSpeedTimer = 0f;
             _rb.WakeUp();
 
-            Vector3 dir = transform.position - kicker.transform.position;
+            Vector3 dir = transform.position - fromPos;
             dir.y = 0f;
-            if (dir.sqrMagnitude < 1e-6f) dir = kicker.transform.forward;
+            if (dir.sqrMagnitude < 1e-6f) dir = fallbackDir.sqrMagnitude > 1e-6f ? fallbackDir : Vector3.forward;
             dir.Normalize();
             float massRef = Mathf.Clamp(_rb.mass, 0.3f, 10f);
             float force = kickForce * Mathf.Clamp(1.6f / massRef, 0.6f, 1.4f);
@@ -417,9 +484,35 @@ namespace Killtime.Tactics.Units
                     audio.PlayAt(Killtime.Audio.SoundId.Grenade_Bounce, transform.position + Vector3.up * 0.4f, 0.6f);
             }
             catch { }
-            var visual = kicker.GetComponent<TacticalUnitVisual>();
-            if (visual != null) visual.SpawnFloatingText($"🦵 {DroppedItem.Name} shooté !", Color.yellow);
-            return true;
+        }
+
+        /// <summary>
+        /// Pose exacte sans re-simuler la chute (application VTT distante, RD-089) :
+        /// téléporte à la pose d'autorité GM et fige (kinematic).
+        /// </summary>
+        public void SnapToRest(Vector3 worldPos)
+        {
+            bool prevSuppress = SuppressEvents;
+            SuppressEvents = true;
+            try
+            {
+                EnsureRealPhysics();
+                transform.position = worldPos;
+                if (_rb == null) _rb = GetComponent<Rigidbody>();
+                if (_rb != null)
+                {
+                    _rb.linearVelocity = Vector3.zero;
+                    _rb.angularVelocity = Vector3.zero;
+                    _rb.isKinematic = true;
+                    try { _rb.Sleep(); } catch { }
+                }
+                _settled = true;
+                _lowSpeedTimer = 0f;
+            }
+            finally
+            {
+                SuppressEvents = prevSuppress;
+            }
         }
 
         /// <summary>
@@ -433,6 +526,11 @@ namespace Killtime.Tactics.Units
             {
                 var visual = actor.GetComponent<TacticalUnitVisual>();
                 if (visual != null) visual.SpawnFloatingText($"🗑 {name} détruit", Color.red);
+            }
+            if (!SuppressEvents)
+            {
+                try { OnWeaponDestroyed?.Invoke(this, actor); }
+                catch { /* diffusion VTT jamais bloquante */ }
             }
             try { Destroy(gameObject); }
             catch { }

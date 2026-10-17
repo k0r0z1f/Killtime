@@ -146,6 +146,47 @@ namespace Killtime.Multi
             _room.SendTableOp(VTTProtocol.OpActionRequest, JsonUtility.ToJson(req));
         }
 
+        /// <summary>
+        /// RD-089 : un client joueur ne touche jamais au plateau directement —
+        /// il demande au GM (autorité) le ramassage / shoot / destruction d'un
+        /// objet au sol. Le GM résout puis diffuse (drop/pickup/kick + sync).
+        /// </summary>
+        public void RequestPickup(TacticalUnit actor, string dropId)
+        {
+            if (_room == null || !_room.InRoom || actor == null || string.IsNullOrEmpty(dropId)) return;
+            var req = new VTTActionRequestPayload
+            {
+                action = "pickup",
+                actorId = UnitIdOf(actor),
+                dropId = dropId
+            };
+            _room.SendTableOp(VTTProtocol.OpActionRequest, JsonUtility.ToJson(req));
+        }
+
+        public void RequestKick(TacticalUnit actor, string dropId)
+        {
+            if (_room == null || !_room.InRoom || actor == null || string.IsNullOrEmpty(dropId)) return;
+            var req = new VTTActionRequestPayload
+            {
+                action = "kick",
+                actorId = UnitIdOf(actor),
+                dropId = dropId
+            };
+            _room.SendTableOp(VTTProtocol.OpActionRequest, JsonUtility.ToJson(req));
+        }
+
+        public void RequestDestroyPickup(TacticalUnit actor, string dropId)
+        {
+            if (_room == null || !_room.InRoom || string.IsNullOrEmpty(dropId)) return;
+            var req = new VTTActionRequestPayload
+            {
+                action = "destroy_pickup",
+                actorId = actor != null ? UnitIdOf(actor) : "",
+                dropId = dropId
+            };
+            _room.SendTableOp(VTTProtocol.OpActionRequest, JsonUtility.ToJson(req));
+        }
+
         private void HandleActionRequestFromPlayer(VTTOpEnvelope op, string payloadJson)
         {
             VTTActionRequestPayload req;
@@ -229,6 +270,42 @@ namespace Killtime.Multi
                         _arena.SelectTarget(tgt);
                     }
                     break;
+
+                case "pickup":
+                    // RD-089 : ramassage autoritaire GM (le client a demandé).
+                    var pickup = FindPickup(req.dropId);
+                    if (pickup != null && actor != null && pickup.TryPickup(actor))
+                    {
+                        BroadcastFullCombatState();
+                    }
+                    break;
+
+                case "kick":
+                    // RD-089 : shoot autoritaire GM (1 PA en combat, comme le menu local).
+                    var kickTarget = FindPickup(req.dropId);
+                    if (kickTarget != null && actor != null && actor.Stats != null)
+                    {
+                        bool kickInCombat = _turnManager != null && !_turnManager.IsInExploration && !_turnManager.IsCombatOver;
+                        bool kickInfinite = _arena != null && _arena.InfiniteAP;
+                        if (!kickInCombat || kickInfinite || actor.Stats.ConsumeActionPoints(1))
+                        {
+                            if (kickTarget.TryKickFurther(actor))
+                            {
+                                BroadcastFullCombatState();
+                            }
+                        }
+                    }
+                    break;
+
+                case "destroy_pickup":
+                    // RD-089 : destruction autoritaire GM (diffusée comme retrait).
+                    var doomed = FindPickup(req.dropId);
+                    if (doomed != null)
+                    {
+                        doomed.DestroyPickup(actor);
+                        BroadcastFullCombatState();
+                    }
+                    break;
             }
         }
 
@@ -276,6 +353,13 @@ namespace Killtime.Multi
                 sightRange = Killtime.Tactics.Visibility.FogOfWarManager.Instance != null
                     ? Killtime.Tactics.Visibility.FogOfWarManager.Instance.CurrentSightRange
                     : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange,
+                // RD-089 : parité plateau — zones persistantes + objets au sol.
+                groundSync = 1,
+                smokeZones = _arena != null
+                    ? VTTGroundSyncCodec.ToEntries(_arena.SmokeZones)
+                    : new List<VTTSmokeZoneEntry>(),
+                droppedWeapons = VTTGroundSyncCodec.ToPayloads(
+                    Killtime.Tactics.Units.DroppedWeaponPickup.AllDropped),
             };
 
             var allUnits = TacticalUnitRegistry.AllUnits;

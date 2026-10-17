@@ -54,6 +54,9 @@ namespace Killtime.Multi
         public const string OpRoomSettings = "room_settings"; // GM uniquement { isAIEnabled, mode... }
         public const string OpMapLoad = "map_load";           // GM uniquement { map: TacticalMapSaveData }
         public const string OpMapRequest = "map_request";     // { } -> le GM renvoie OpMapLoad
+        public const string OpDropWeapon = "drop_weapon";     // GM uniquement : objet au sol (RD-089)
+        public const string OpPickupWeapon = "pickup_weapon"; // GM uniquement : ramassage au sol (RD-089)
+        public const string OpKickWeapon = "kick_weapon";     // GM uniquement : shoot dans un objet au sol (RD-089)
         public const string OpActionRequest = "action_request"; // Joueur -> GM : intention d'action (attaque, grenade, souffle, fin de tour)
         public const string OpUnitClaim = "unit_claim";       // Joueur -> hub : avatars possédés { unitIds[] } (brouillard asymétrique)
         public const string OpWorldMap = "worldmap";          // GM uniquement { action: state|ping_sector|focus_sector }
@@ -298,6 +301,26 @@ namespace Killtime.Multi
             return BuildOp(OpWorldMap, payload != null ? JsonUtility.ToJson(payload) : "{}");
         }
 
+        /// <summary>
+        /// Objet au sol synchronisé (RD-089, GM uniquement) : apparition (drop),
+        /// ramassage (pickup) ou shoot (kick). Le GM est l'autorité : les clients
+        /// appliquent sans re-simuler la physique (pose exacte / impulsion miroir).
+        /// </summary>
+        public static string BuildDropWeaponOp(VTTDroppedWeaponPayload payload)
+        {
+            return BuildOp(OpDropWeapon, payload != null ? JsonUtility.ToJson(payload) : "{}");
+        }
+
+        public static string BuildPickupWeaponOp(VTTDroppedWeaponPayload payload)
+        {
+            return BuildOp(OpPickupWeapon, payload != null ? JsonUtility.ToJson(payload) : "{}");
+        }
+
+        public static string BuildKickWeaponOp(VTTDroppedWeaponPayload payload)
+        {
+            return BuildOp(OpKickWeapon, payload != null ? JsonUtility.ToJson(payload) : "{}");
+        }
+
         /// <summary>État compact de campagne overworld : carte, révision, position, dévoilé.</summary>
         public static string BuildWorldMapStateOp(string mapName, int revision, string partyNodeId,
             List<string> unlocked, List<string> visited, int jours)
@@ -340,7 +363,8 @@ namespace Killtime.Multi
         /// <summary>Indique si l'opération requiert le rôle GM sur le hub (users/server.js).</summary>
         public static bool IsGMOp(string op)
         {
-            return op == OpTurnControl || op == OpCombatAction || op == OpSceneControl || op == OpRoomSettings || op == OpMapLoad || op == OpWorldMap;
+            return op == OpTurnControl || op == OpCombatAction || op == OpSceneControl || op == OpRoomSettings || op == OpMapLoad || op == OpWorldMap
+                || op == OpDropWeapon || op == OpPickupWeapon || op == OpKickWeapon;
         }
 
         /// <summary>Normalise un code de room côté client (même règle que le serveur).</summary>

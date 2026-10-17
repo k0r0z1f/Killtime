@@ -104,13 +104,13 @@
       "category": "Course",
       "animatorState": "Walking (BlendTree 1D Locomotion : Walking 1.35 / Medium Run 5.75 / Fast Run 8.0, param Speed)",
       "clipFile": "Animations/Female/Medium Run.fbx + Animations/Female/Fast Run.fbx (+ variantes Male/)",
-      "genderVariants": "Female unisexe (variantes Male présentes mais takes non renommées : toutes s'appellent 'mixamo.com', pas d'override genré résolvable — suivi RD-024)",
+      "genderVariants": "Female unisexe (takes renommees RD-024 : 'Medium Run'/'Fast Run' Female + Male, override genre par nom resolvable, swap runtime suivi RD-025)",
       "status": "present",
       "priority": "high",
       "gameDesignRef": "Livre VI : charge 3+ cases RD-038, sprint bloque le tir ; Élans Sans Drag (MoveSpeed 5.5→8.5 m/s) ; Duo-Tech Sillage Igné (dash Mina).",
       "codeRef": "TacticalUnit.MoveSpeed / RD-038 Charge/sprint ; TacticalUnitVisual.GetLocomotionBand + Speed ; PlayerAnimatorLinker.EnsureLocomotionBlendTree",
       "fallback": "—",
-      "action": "RD-025 : câblé (2026-10-17)."
+      "action": "RD-025 : cable (2026-10-17). RD-024 : takes renommees (2026-10-17)."
     },
     {
       "id": "ANM-008",

@@ -201,6 +201,25 @@ namespace Killtime.Tactics
         private List<SmokeZone> _smokeZones => ArenaState.SmokeZones;
         public IReadOnlyList<SmokeZone> SmokeZones => _smokeZones;
 
+        /// <summary>
+        /// Remplace les zones persistantes par le snapshot d'autorité GM (VTT RD-089)
+        /// et rafraîchit l'overlay au sol. Appelé uniquement depuis l'application
+        /// distante (jamais en émission locale).
+        /// </summary>
+        public void ApplyRemoteSmokeZones(List<SmokeZone> zones)
+        {
+            _smokeZones.Clear();
+            if (zones != null)
+            {
+                for (int i = 0; i < zones.Count; i++)
+                {
+                    if (zones[i].TurnsLeft > 0) _smokeZones.Add(zones[i]);
+                }
+            }
+            if (_gridVisualizer == null) _gridVisualizer = GetComponent<HexGridVisualizer>() ?? FindAnyObjectByType<HexGridVisualizer>();
+            _gridVisualizer?.UpdatePersistentZones(_smokeZones);
+        }
+
         private void Awake()
         {
             _diceRoller = new DiceRoller();

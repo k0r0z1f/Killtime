@@ -406,6 +406,49 @@
             flex-shrink: 0;
         }
 
+        /* Archives : tâches écartées, restaurables, exclues des stats */
+        .rm-archives {
+            margin-top: 20px;
+            border: 1px dashed var(--border-subtle);
+            border-radius: 12px;
+            padding: 12px 14px;
+        }
+
+        .rm-arch-head {
+            display: flex;
+            align-items: baseline;
+            gap: 10px;
+            margin-bottom: 10px;
+        }
+
+        .rm-arch-head h3 {
+            font-family: var(--font-title);
+            font-size: 13px;
+            letter-spacing: .06em;
+            margin: 0;
+            color: var(--text-secondary);
+        }
+
+        .rm-arch-hint {
+            font-size: 12px;
+            color: var(--text-secondary);
+            opacity: .8;
+        }
+
+        #rmArchList {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .rm-card.is-archived {
+            opacity: .72;
+        }
+
+        .rm-btn.on {
+            outline: 2px solid var(--arcane-cyan);
+        }
+
         /* sans ça, les cartes s'écrasent en fines lamelles */
         /* Cards */
         .rm-card {
@@ -1163,6 +1206,7 @@
                         <button class="rm-btn" id="rmImportBtn">Importer</button>
                         <input type="file" id="rmImport" accept="application/json,.json" style="display:none">
                         <button class="rm-btn danger" id="rmReset">Réinitialiser</button>
+                        <button class="rm-btn" id="rmArchToggle" title="Afficher/masquer les tâches archivées">Archives (<span id="rmArchCount">0</span>)</button>
                         <span id="rmSaveState"><span class="dot"></span><span id="rmSaveLabel">Prêt</span></span>
                     </div>
                     <div class="rm-count-line" id="rmCountLine"></div>
@@ -1208,6 +1252,13 @@
                         </div>
                     </div>
 
+                    <div class="rm-archives" id="rmArchSection" style="display:none">
+                        <div class="rm-arch-head">
+                            <h3>ARCHIVES</h3><span class="rm-arch-hint">Tâches écartées (obsolètes, doublons) — exclues des colonnes et des stats, restaurables.</span>
+                        </div>
+                        <div id="rmArchList"></div>
+                    </div>
+
                     <div class="callout temporal" style="margin-top:22px;">
                         <div class="callout-header">Autosave solo</div>
                         <div class="callout-body">Chaque action (drag, édition, création) est sauvegardée aussitôt : en
@@ -1227,6 +1278,7 @@
                         <li><a href="#rmCol-todo">À faire</a></li>
                         <li><a href="#rmCol-in_progress">En cours</a></li>
                         <li><a href="#rmCol-done">Terminées</a></li>
+                        <li><a href="#rmArchSection">Archives</a></li>
                     </ul>
                 </div>
                 <div class="inspector-section">
@@ -1280,6 +1332,7 @@
                         <option value="todo">À faire</option>
                         <option value="in_progress">En cours</option>
                         <option value="done">Terminé</option>
+                        <option value="archived">Archivé</option>
                     </select></div>
                 <div class="rm-field"><label>Placeholder / ID objet</label><input id="fPlaceholder"
                         placeholder="Ex : Debris_0"></div>

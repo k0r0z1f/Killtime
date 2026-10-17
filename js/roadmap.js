@@ -9,7 +9,8 @@
   const JSON_URL = 'data/roadmaps.json';
   const LEGACY_URL = 'data/roadmap.json';
   const STATUSES = ['todo', 'in_progress', 'done'];
-  const STATUS_LABEL = { todo: 'À faire', in_progress: 'En cours', done: 'Terminé' };
+  const ARCHIVED = 'archived'; // hors-colonnes : exclu des colonnes, du drag et des stats ; listé dans la section Archives.
+  const STATUS_LABEL = { todo: 'À faire', in_progress: 'En cours', done: 'Terminé', archived: 'Archivé' };
   const PRIO_LABEL = { high: 'Haute', medium: 'Moyenne', low: 'Basse' };
   const PRIO_W = { high: 0, medium: 1, low: 2 };
   const WIP_LIMIT = 6;
@@ -54,7 +55,8 @@
   const els = {};
   function cacheEls() {
     ['rmTabs', 'rmBoardDesc', 'rmSearch', 'rmEpicFilter', 'rmPrioFilter', 'rmSort', 'rmAdd', 'rmExport',
-      'rmImport', 'rmImportBtn', 'rmReset', 'rmBoard', 'col-todo', 'col-in_progress', 'col-done',
+      'rmImport', 'rmImportBtn', 'rmReset', 'rmArchToggle', 'rmArchCount', 'rmArchSection', 'rmArchList',
+      'rmBoard', 'col-todo', 'col-in_progress', 'col-done',
       'cTodo', 'cProg', 'cDone', 'rmCountLine', 'stTotal', 'stTodo', 'stProg', 'stDone', 'stPct', 'rmBar',
       'rmBoardName', 'rmEpics', 'inspTotal', 'inspDirty', 'rmSaveState', 'rmSaveLabel', 'rmBackdrop',
       'rmModalTitle', 'rmLive', 'fTitle', 'fDetails', 'fEpic', 'fPrioSeg', 'fStatus', 'fPlaceholder',
@@ -67,8 +69,8 @@
   function tasks() { const b = board(); return b ? b.tasks : []; }
   function view() {
     const b = board();
-    if (!b) return { search: '', epic: '', prio: '', sort: 'manual', collapsed: {} };
-    if (!views[b.id]) views[b.id] = { search: '', epic: '', prio: '', sort: 'manual', collapsed: {} };
+    if (!b) return { search: '', epic: '', prio: '', sort: 'manual', collapsed: {}, showArchived: false };
+    if (!views[b.id]) views[b.id] = { search: '', epic: '', prio: '', sort: 'manual', collapsed: {}, showArchived: false };
     return views[b.id];
   }
 
@@ -185,12 +187,18 @@
   function renumber(status) {
     siblings(status).forEach((t, i) => { t.order = i; });
   }
+  // 'archived' conservé tel quel ; 'doing' (anciens JSON) = 'in_progress' (sinon retombait en 'todo' et perdait l'état).
+  function normStatus(s) {
+    if (s === ARCHIVED) return ARCHIVED;
+    if (s === 'doing') return 'in_progress';
+    return STATUSES.includes(s) ? s : 'todo';
+  }
   function cleanTask(t, i) {
     return {
       id: t.id || ('RD-' + String(i + 1).padStart(3, '0')),
       title: t.title || '(sans titre)',
       epic: t.epic || 'Divers',
-      status: STATUSES.includes(t.status) ? t.status : 'todo',
+      status: normStatus(t.status),
       priority: ['high', 'medium', 'low'].includes(t.priority) ? t.priority : 'medium',
       order: Number.isFinite(t.order) ? t.order : i,
       scene: t.scene || '',
@@ -402,6 +410,7 @@
     const v = view();
     const q = (v.search || '').toLowerCase().trim();
     return tasks().filter((t) => {
+      if (t.status === ARCHIVED) return false; // archivées : section dédiée, jamais dans les colonnes.
       if (v.epic && t.epic !== v.epic) return false;
       if (v.prio && t.priority !== v.prio) return false;
       if (!q) return true;
@@ -424,7 +433,7 @@
 
   /* ---------- onglets ---------- */
   function openCount(b) {
-    return b.tasks.filter((t) => t.status !== 'done').length;
+    return b.tasks.filter((t) => t.status !== 'done' && t.status !== ARCHIVED).length;
   }
   function renderTabs() {
     els.rmTabs.innerHTML = '';
@@ -536,9 +545,9 @@
   }
 
   /* ---------- cartes ---------- */
-  function cardEl(t) {
+  function cardEl(t, archived) {
     const d = document.createElement('div');
-    d.className = 'rm-card pr-' + t.priority;
+    d.className = 'rm-card pr-' + t.priority + (archived ? ' is-archived' : '');
     d.dataset.id = t.id;
     if (flashId === t.id) { d.classList.add('flash'); }
     const meta = [t.placeholderId ? ('⛶ ' + t.placeholderId) : '', t.primitive || '', t.suggestedAsset ? ('→ ' + t.suggestedAsset) : '']
@@ -549,9 +558,12 @@
       (t.details ? '<p></p>' : '') +
       (meta ? '<div class="rm-card-meta"></div>' : '') +
       '<div class="rm-card-actions">' +
-      '<button class="rm-mini" data-act="left" title="Vers la gauche">←</button>' +
-      '<button class="rm-mini" data-act="right" title="Vers la droite">→</button>' +
-      '<button class="rm-mini" data-act="edit">Éditer</button>' +
+      (archived
+        ? '<button class="rm-mini" data-act="unarch" title="Restaurer vers À faire">Restaurer</button>'
+        : '<button class="rm-mini" data-act="left" title="Vers la gauche">←</button>' +
+          '<button class="rm-mini" data-act="right" title="Vers la droite">→</button>' +
+          '<button class="rm-mini" data-act="edit">Éditer</button>' +
+          '<button class="rm-mini" data-act="arch" title="Archiver (retire des colonnes, restaurable)">Archiver</button>') +
       '<button class="rm-mini del" data-act="del">Suppr.</button>' +
       '</div>';
     d.querySelector('.rm-id').textContent = t.id;
@@ -570,6 +582,8 @@
         else if (act === 'del') delTask(t.id);
         else if (act === 'left') moveTask(t.id, -1);
         else if (act === 'right') moveTask(t.id, +1);
+        else if (act === 'arch') archiveTask(t.id);
+        else if (act === 'unarch') unarchiveTask(t.id);
       });
     });
     return d;
@@ -724,18 +738,43 @@
       colBox.classList.toggle('wip-warn', s === 'in_progress' && by[s].length > WIP_LIMIT);
     });
 
-    const total = b.tasks.length;
-    const ndone = b.tasks.filter((t) => t.status === 'done').length;
-    const ntodo = b.tasks.filter((t) => t.status === 'todo').length;
-    const nprog = b.tasks.filter((t) => t.status === 'in_progress').length;
+    const actives = b.tasks.filter((t) => t.status !== ARCHIVED);
+    const total = actives.length;
+    const narch = b.tasks.length - total;
+    const ndone = actives.filter((t) => t.status === 'done').length;
+    const ntodo = actives.filter((t) => t.status === 'todo').length;
+    const nprog = actives.filter((t) => t.status === 'in_progress').length;
     const pct = total ? Math.round((ndone / total) * 100) : 0;
     els.cTodo.textContent = by.todo.length; els.cProg.textContent = by.in_progress.length; els.cDone.textContent = by.done.length;
     els.stTotal.textContent = total; els.stTodo.textContent = ntodo;
     els.stProg.textContent = nprog; els.stDone.textContent = ndone;
     els.stPct.textContent = pct + '%'; els.rmBar.style.width = pct + '%';
     els.inspTotal.textContent = total;
-    els.rmCountLine.textContent = (filtersActive() || v.sort !== 'manual')
-      ? list.length + ' / ' + total + ' affichées' : total + ' tâches';
+    els.rmCountLine.textContent = ((filtersActive() || v.sort !== 'manual')
+      ? list.length + ' / ' + total + ' affichées' : total + ' tâches')
+      + (narch ? ' · ' + narch + ' archivée(s)' : '');
+    // Section Archives : mêmes filtres que les colonnes, restauration possible.
+    const aq = (v.search || '').toLowerCase().trim();
+    const arch = sortList(b.tasks.filter((t) => {
+      if (t.status !== ARCHIVED) return false;
+      if (v.epic && t.epic !== v.epic) return false;
+      if (v.prio && t.priority !== v.prio) return false;
+      if (!aq) return true;
+      return [t.id, t.title, t.epic, t.placeholderId, t.primitive, t.suggestedAsset, t.details, t.scene]
+        .join(' ').toLowerCase().includes(aq);
+    }));
+    els.rmArchCount.textContent = arch.length;
+    els.rmArchToggle.classList.toggle('on', !!v.showArchived);
+    els.rmArchSection.style.display = (v.showArchived && arch.length) ? '' : 'none';
+    if (v.showArchived) {
+      els.rmArchList.innerHTML = '';
+      if (!arch.length) {
+        const e = document.createElement('div');
+        e.className = 'rm-empty';
+        e.textContent = 'Aucune tâche archivée.';
+        els.rmArchList.appendChild(e);
+      } else arch.forEach((t) => els.rmArchList.appendChild(cardEl(t, true)));
+    }
 
     els.rmEpics.innerHTML = '';
     epics.forEach((ep) => {
@@ -773,7 +812,7 @@
   /* ---------- actions tâche ---------- */
   function moveTask(id, dir) {
     const t = tasks().find((x) => x.id === id);
-    if (!t) return;
+    if (!t || t.status === ARCHIVED) return;
     const i = STATUSES.indexOf(t.status);
     const j = Math.min(2, Math.max(0, i + dir));
     const from = t.status;
@@ -803,6 +842,28 @@
         render();
       }
     });
+  }
+
+  // Archive : écarte sans supprimer (obsolète, doublon). Restauration vers À faire.
+  function archiveTask(id) {
+    const t = tasks().find((x) => x.id === id);
+    if (!t || t.status === ARCHIVED) return;
+    const from = t.status;
+    t.status = ARCHIVED;
+    renumber(from); renumber(ARCHIVED);
+    flashId = null;
+    commit(id + ' archivée (restaurable via Archives)');
+    render();
+  }
+  function unarchiveTask(id) {
+    const t = tasks().find((x) => x.id === id);
+    if (!t || t.status !== ARCHIVED) return;
+    t.status = 'todo';
+    t.order = siblings('todo').length;
+    renumber(ARCHIVED);
+    flashId = id;
+    commit(id + ' restaurée → À faire');
+    render();
   }
 
   function quickAdd(status, title) {
@@ -979,6 +1040,7 @@
     els.rmPrioFilter.addEventListener('change', () => { view().prio = els.rmPrioFilter.value; persistLocal(); render(); });
     els.rmSort.addEventListener('change', () => { view().sort = els.rmSort.value; persistLocal(); render(); });
     els.rmAdd.addEventListener('click', () => openModal(null));
+    els.rmArchToggle.addEventListener('click', () => { view().showArchived = !view().showArchived; persistLocal(); render(); });
     document.querySelectorAll('[data-qa]').forEach((inp) => {
       const go = () => { quickAdd(inp.dataset.qa, inp.value); inp.value = ''; inp.focus(); };
       inp.addEventListener('keydown', (e) => { if (e.key === 'Enter') go(); });

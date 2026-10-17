@@ -12,6 +12,13 @@ describe('isGMOp (parité VTTProtocol.IsGMOp Unity)', () => {
             assert.equal(policy.isGMOp(op), true, op);
         }
     });
+    it('RD-089 GM-only : drop_weapon, pickup_weapon, kick_weapon (objets au sol)', () => {
+        for (const op of ['drop_weapon', 'pickup_weapon', 'kick_weapon']) {
+            assert.equal(policy.isGMOp(op), true, op);
+        }
+        assert.equal(policy.shouldRejectOp({ gmId: 'c_gm' }, { id: 'c_p1', role: 'player' }, 'drop_weapon').reject, true);
+        assert.equal(policy.shouldRejectOp({ gmId: 'c_gm' }, { id: 'c_gm', role: 'gm' }, 'drop_weapon').reject, false);
+    });
     it('ouverts : unit_move, chat, dice, voice, video, map_request, action_request, unit_claim', () => {
         for (const op of ['unit_move', 'chat', 'dice', 'voice', 'video', 'map_request', 'action_request', 'unit_claim']) {
             assert.equal(policy.isGMOp(op), false, op);
@@ -92,6 +99,11 @@ describe('opPayloadLimit', () => {
         assert.equal(policy.opPayloadLimit('chat'), 4096);
         assert.equal(policy.opPayloadLimit('map_load'), 480 * 1024);
         assert.equal(policy.opPayloadLimit('unknown_op'), policy.DEFAULT_OP_LIMIT);
+    });
+    it('RD-089 quotas objets au sol (drop 16K, pickup/kick 4K)', () => {
+        assert.equal(policy.opPayloadLimit('drop_weapon'), 16 * 1024);
+        assert.equal(policy.opPayloadLimit('pickup_weapon'), 4 * 1024);
+        assert.equal(policy.opPayloadLimit('kick_weapon'), 4 * 1024);
     });
 });
 

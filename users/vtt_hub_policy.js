@@ -4,7 +4,8 @@
 
    Parité stricte avec KilltimeTactics/Assets/Scripts/Multi/VTTProtocol.cs :
      IsGMOp(op) <=> turn_control | combat_action | scene_control |
-                   room_settings | map_load | worldmap
+                   room_settings | map_load | worldmap |
+                   drop_weapon | pickup_weapon | kick_weapon
    Ouverts (joueurs) : unit_move | chat | dice | voice | video |
                        map_request | action_request | unit_claim
 
@@ -25,6 +26,10 @@ const GM_OPS = new Set([
   'room_settings',
   'map_load',
   'worldmap',
+  // RD-089 : objets au sol (autorité GM, parité VTTProtocol.IsGMOp).
+  'drop_weapon',
+  'pickup_weapon',
+  'kick_weapon',
 ]);
 
 const OPEN_OPS = new Set([
@@ -52,6 +57,10 @@ const OP_PAYLOAD_LIMITS = {
   action_request: 16 * 1024,
   unit_claim: 4 * 1024,
   worldmap: 16 * 1024,
+  // RD-089 : un objet au sol = item complet (stats Livre VIII), petit volume.
+  drop_weapon: 16 * 1024,
+  pickup_weapon: 4 * 1024,
+  kick_weapon: 4 * 1024,
   voice: 512 * 1024,
   video: 512 * 1024,
 };

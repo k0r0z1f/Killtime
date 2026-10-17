@@ -553,6 +553,9 @@ namespace Killtime.Tactics.Arena
                     combatLog = log
                 };
                 Killtime.Multi.VTTTableSync.Instance.BroadcastCombatAction(actionPayload);
+                // RD-089 : le state_sync embarque zones persistantes + objets au
+                // sol — les clients voient la zone dès sa création.
+                Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
             }
 
             if (_state.CurrentTarget != null && !_state.CurrentTarget.Stats.IsAlive) _host.RequestAutoTargetNextAlive();

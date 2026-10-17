@@ -352,11 +352,10 @@ namespace Killtime.Tactics.Units
             BindClipToOverride(WeaponFightIdleStateName, genderKey);
             BindClipToOverride("Fight Idle To Standing Idle", genderKey);
             BindClipToOverride("Walking", genderKey);
-            // Runs unisexes (RD-025) : les takes Mixamo s'appellent toutes "mixamo.com"
-            // (Female comme Male), donc aucun override par nom n'est résolvable pour
-            // "Medium Run"/"Fast Run" et les deux clips seraient ambigus. L'arbre utilise
-            // les clips Female pour les deux sexes (retarget humanoid OK). Les variantes
-            // Male seront activées après renommage des takes (suivi RD-024).
+            // Runs unisexes (RD-025) : l'arbre utilise les clips Female pour les deux
+            // sexes (retarget humanoid OK). Les takes sont renommees (RD-024, nom de
+            // fichier : "Medium Run"/"Fast Run" Female + Male) : l'override genre par
+            // nom est desormais resolvable — reste a brancher le swap runtime (suivi RD-025).
             BindClipToOverride("Roundkick", genderKey);
             // Attaque à l'arme de mêlée : l'état Animator s'appelle "Melee Attack"
             // mais le clip importé (Mixamo) s'appelle "Standing Melee Attack".

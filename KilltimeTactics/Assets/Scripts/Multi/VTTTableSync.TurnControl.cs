@@ -120,6 +120,7 @@ namespace Killtime.Multi
                 case VTTProtocol.TurnActionStateSync:
                     _turnManager.ApplyRemoteStateSync(payload.round, payload.activeUnitId, payload.outcome);
                     ApplyRemoteStateSync(payload);
+                    ApplyRemoteGroundState(payload);
                     break;
                 }
 

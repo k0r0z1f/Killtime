@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using Killtime.Core.Inventory;
 
 namespace Killtime.Multi
 {
@@ -204,6 +205,16 @@ namespace Killtime.Multi
         public List<VTTUnitStateSyncEntry> unitStates = new();
         // Brouillard §25.4 : portée d'ambiance imposée par le MJ (0 = inchangée).
         public int sightRange;
+        // RD-089 : parité plateau complète — zones persistantes (fumée, gaz, feu
+        // au sol, durée restante en rounds) + objets au sol, pour réconciliation
+        // immédiate des clients connectés ou reconnectés. Info publique de table
+        // (effets observables) : le hub les relaie sans filtrage par destinataire.
+        // groundSync = 1 : le snapshot sol est présent. Un GM d'ancien build
+        // envoie 0 (listes vides) et le client ignore la passe sol au lieu
+        // d'effacer ses zones/objets (compatibilité builds mixtes).
+        public int groundSync;
+        public List<VTTSmokeZoneEntry> smokeZones = new();
+        public List<VTTDroppedWeaponPayload> droppedWeapons = new();
     }
 
     /// <summary>
@@ -229,6 +240,9 @@ namespace Killtime.Multi
         public bool aimed;
 
         public int breathGainAP = 2;
+
+        // RD-089 : objet au sol visé (actions "pickup" | "kick" | "destroy_pickup").
+        public string dropId = "";
     }
 
     /// <summary>
@@ -365,6 +379,47 @@ namespace Killtime.Multi
         public string sectorId = "";
         public string colorHex = "#FFDD00";
         public string message = "";
+    }
+
+    /// <summary>
+    /// Objet au sol synchronisé (RD-089) : arme ou objet tenu tombé (K.O.,
+    /// désarmement, lancer d'arme). L'exemplaire est unique : l'item voyage
+    /// en clair (JsonUtility imbriqué) et le GM fait autorité. dropId stable
+    /// inter-clients (GUID assigné à la création) pour le suivi pickup/kick
+    /// et la réconciliation via state_sync.
+    /// </summary>
+    [Serializable]
+    public class VTTDroppedWeaponPayload
+    {
+        public string dropId = "";
+        public string formerOwner = "";
+        public InventoryItem item;
+        // Pose monde exacte (le client pose sans re-simuler la chute).
+        public float x;
+        public float y;
+        public float z;
+        // Ramassage / shoot : acteur (nom de GameObject d'unité) + origine.
+        public string actorId = "";
+        public float kx;
+        public float ky;
+        public float kz;
+        public float force;
+    }
+
+    /// <summary>
+    /// Zone persistante active (RD-089) : fumigène, gaz, feu au sol...
+    /// Version plate de SmokeZone (entiers + chaîne) pour le state_sync.
+    /// </summary>
+    [Serializable]
+    public class VTTSmokeZoneEntry
+    {
+        public int q;
+        public int r;
+        public int radius;
+        public string kind = "";
+        public int statuses;
+        public int turnsLeft;
+        public bool arcanotech;
     }
 
     /// <summary>

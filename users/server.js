@@ -1552,11 +1552,12 @@ function vttHandleMessage(conn, msg) {
         const op = String(msg.op || '');
         if (!op || op.length > 64) { vttSendError(conn, 'Champ "op" manquant ou invalide.'); return; }
         // Garde-fou GM (RD-066, parité VTTProtocol.IsGMOp) : turn_control,
-        // combat_action, scene_control, room_settings, map_load, worldmap.
+        // combat_action, scene_control, room_settings, map_load, worldmap,
+        // drop_weapon, pickup_weapon, kick_weapon (RD-089).
         if (vttPolicy) {
             const verdict = vttPolicy.shouldRejectOp(room, conn, op);
             if (verdict.reject) { vttSendError(conn, verdict.message, verdict.code); return; }
-        } else if (['turn_control', 'scene_control', 'room_settings', 'map_load'].includes(op)
+        } else if (['turn_control', 'scene_control', 'room_settings', 'map_load', 'drop_weapon', 'pickup_weapon', 'kick_weapon'].includes(op)
             && conn.role !== 'gm' && room.gmId !== conn.id) {
             vttSendError(conn, `Op "${op}" réservée au GM.`, 'forbidden');
             return;
@@ -1763,6 +1764,9 @@ function vttHandleMessage(conn, msg) {
             return;
         }
         // Pour les paquets voix, on évite d'émettre l'écho à l'expéditeur afin d'économiser sa bande passante.
+        // RD-089 : drop_weapon / pickup_weapon / kick_weapon transitent ici en
+        // relais brut (info publique de table : objets visibles, pas de filtre
+        // brouillard ; les zones persistantes voyagent dans state_sync).
         const exceptSender = (op === 'voice') ? conn.id : null;
         vttBroadcast(room, {
             type: 'op',

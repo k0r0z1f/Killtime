@@ -321,6 +321,17 @@ namespace Killtime.Tactics.CombatUI
                 : pickupCost > 0 ? $"✋ Ramasser — {actor.Stats.Name} (1 PA)" : $"✋ Ramasser — {actor.Stats.Name}";
             if (GUI.Button(new Rect(cx, btnY, cw, btnH), pickupLabel))
             {
+                // Client VTT : le GM résout (autorité), on ne touche pas au plateau.
+                if (TurnManager.IsMultiplayerPlayerClient())
+                {
+                    Killtime.Multi.VTTTableSync.Instance?.RequestPickup(actor, _target.DropId ?? "");
+                    _arena?.Log($"📡 Demande de ramassage envoyée au GM (<b>{itemName}</b>).");
+                    ArmInputBlocker();
+                    CloseMenu();
+                    GUI.enabled = prevEnabled;
+                    e.Use();
+                    return;
+                }
                 bool ok = _target.TryPickup(actor);
                 _arena?.Log(ok
                     ? $"⚔ <b>{actor.Stats.Name}</b> ramasse <b>{itemName}</b> (-{pickupCost} PA)."
@@ -347,6 +358,16 @@ namespace Killtime.Tactics.CombatUI
             string kickLabel = kickCost > 0 ? $"🦵 Shooter plus loin (1 PA)" : "🦵 Shooter plus loin";
             if (GUI.Button(new Rect(cx, btnY, cw, btnH), kickLabel))
             {
+                if (TurnManager.IsMultiplayerPlayerClient())
+                {
+                    Killtime.Multi.VTTTableSync.Instance?.RequestKick(actor, _target.DropId ?? "");
+                    _arena?.Log($"📡 Demande de shoot envoyée au GM (<b>{itemName}</b>).");
+                    ArmInputBlocker();
+                    CloseMenu();
+                    GUI.enabled = prevEnabled;
+                    e.Use();
+                    return;
+                }
                 bool paid = true;
                 if (kickCost > 0 && actor != null)
                     paid = actor.Stats.ConsumeActionPoints(kickCost);
@@ -375,6 +396,15 @@ namespace Killtime.Tactics.CombatUI
             // --- Détruire ---
             if (GUI.Button(new Rect(cx, btnY, cw, btnH), "🗑 Détruire (définitif)"))
             {
+                if (TurnManager.IsMultiplayerPlayerClient())
+                {
+                    Killtime.Multi.VTTTableSync.Instance?.RequestDestroyPickup(actor, _target.DropId ?? "");
+                    _arena?.Log($"📡 Demande de destruction envoyée au GM (<b>{itemName}</b>).");
+                    ArmInputBlocker();
+                    CloseMenu();
+                    e.Use();
+                    return;
+                }
                 _arena?.Log($"🗑 <b>{(actor != null ? actor.Stats.Name : "Quelqu'un")}</b> détruit <b>{itemName}</b> (ex-{owner}).");
                 try { _target.DestroyPickup(actor); } catch { }
                 ArmInputBlocker();

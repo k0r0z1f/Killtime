@@ -541,6 +541,20 @@ namespace Killtime.Tactics.CombatUI
                     (act, tgt) => act.Stats.CurrentActionPoints >= Killtime.Tactics.Units.DroppedWeaponPickup.PickupCostPA(),
                     (act, tgt) =>
                     {
+                        // Client VTT : le GM résout (autorité), on transmet le dropId visé.
+                        if (TurnManager.IsMultiplayerPlayerClient())
+                        {
+                            if (Killtime.Tactics.Units.DroppedWeaponPickup.TryGetNearest(act, out var nearest) && nearest != null)
+                            {
+                                Killtime.Multi.VTTTableSync.Instance?.RequestPickup(act, nearest.DropId ?? "");
+                                arena?.Log($"📡 Demande de ramassage envoyée au GM (<b>{act.Stats.Name}</b>).");
+                            }
+                            else
+                            {
+                                arena?.Log($"⚠️ <b>{act.Stats.Name}</b> : aucune arme au sol à portée.");
+                            }
+                            return;
+                        }
                         bool ok = Killtime.Tactics.Units.DroppedWeaponPickup.TryPickupNearest(act, out string msg);
                         arena?.Log((ok ? "⚔ " : "⚠️ ") + $"<b>{act.Stats.Name}</b> : {msg}");
                     }

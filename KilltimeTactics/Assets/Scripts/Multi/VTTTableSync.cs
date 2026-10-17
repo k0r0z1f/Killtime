@@ -100,6 +100,7 @@ namespace Killtime.Multi
 
             TacticalUnit.OnAnyUnitMoved += HandleAnyUnitMoved;
             TacticalUnit.OnAnyUnitTeleported += HandleAnyUnitTeleported;
+            SubscribeGroundSync();
         }
 
         private void OnDisable()
@@ -113,6 +114,7 @@ namespace Killtime.Multi
 
             TacticalUnit.OnAnyUnitMoved -= HandleAnyUnitMoved;
             TacticalUnit.OnAnyUnitTeleported -= HandleAnyUnitTeleported;
+            UnsubscribeGroundSync();
         }
 
         private void EnsureDependencies()
@@ -170,6 +172,16 @@ namespace Killtime.Multi
                     break;
                 case VTTProtocol.OpMapLoad:
                     ApplyRemoteMap(op, payloadJson);
+                    break;
+                case VTTProtocol.OpDropWeapon:
+                case VTTProtocol.OpPickupWeapon:
+                case VTTProtocol.OpKickWeapon:
+                    if (_room != null && op.fromRole != VTTProtocol.RoleGM)
+                    {
+                        Debug.LogWarning($"[VTT] {op.op} ignoré : l'émetteur n'est pas GM.");
+                        break;
+                    }
+                    EnqueueRemoteAction(HandleRemoteGroundOpRoutine(op.op, payloadJson));
                     break;
                 case VTTProtocol.OpMapRequest:
                     if (_room != null && _room.IsGM)
