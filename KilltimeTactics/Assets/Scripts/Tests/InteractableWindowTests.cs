@@ -101,7 +101,25 @@ namespace Killtime.Tests
 
                 var consumedField = typeof(JsonStorySceneController).GetField("_consumedActionKeys",
                     BindingFlags.NonPublic | BindingFlags.Instance);
-                var consumed = consumedField.GetValue(controller) as HashSet<string>;
+                HashSet<string> consumed = null;
+                if (consumedField != null)
+                {
+                    consumed = consumedField.GetValue(controller) as HashSet<string>;
+                }
+                else
+                {
+                    // Depuis la migration « move-only » vers SceneState, les clés
+                    // consommées vivent dans controller.State._consumedActionKeys.
+                    var stateField = typeof(JsonStorySceneController).GetField("State",
+                        BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                    Assert.IsNotNull(stateField, "Champ State introuvable sur JsonStorySceneController");
+                    var state = stateField.GetValue(controller);
+                    Assert.IsNotNull(state);
+                    var keysField = state.GetType().GetField("_consumedActionKeys",
+                        BindingFlags.NonPublic | BindingFlags.Public | BindingFlags.Instance);
+                    Assert.IsNotNull(keysField, "Champ _consumedActionKeys introuvable sur SceneState");
+                    consumed = keysField.GetValue(state) as HashSet<string>;
+                }
                 Assert.IsNotNull(consumed);
                 Assert.IsTrue(consumed.Contains("obj_test/legacy"));
             }

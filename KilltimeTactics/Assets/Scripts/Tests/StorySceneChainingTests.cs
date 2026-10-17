@@ -85,26 +85,58 @@ namespace Killtime.Tests
         [Test]
         public void GetNextScenarioId_DeducesSequentialScene_WhenEmpty()
         {
-            string next = ScenarioCatalog.GetNextScenarioId("test_volume_1_scene_01");
-            Assert.AreEqual("test_volume_1_scene_02", next);
+            // Relecture disque préalable : All vide le registre des scènes de
+            // test si le catalogue n'a jamais été chargé (état statique vierge),
+            // rendant la déduction dépendante de l'ordre d'exécution.
+            ScenarioCatalog.ReloadFromDisk();
+            ScenarioCatalog.Register(new ScenarioDefinition
+            {
+                Id = "test_volume_1_scene_01",
+                Volume = "Volume I",
+                Title = "Première Scène",
+                FirstNodeId = "node_start"
+            });
+            ScenarioCatalog.Register(new ScenarioDefinition
+            {
+                Id = "test_volume_1_scene_02",
+                Volume = "Volume I",
+                Title = "Deuxième Scène",
+                FirstNodeId = "node_start"
+            });
+            try
+            {
+                string next = ScenarioCatalog.GetNextScenarioId("test_volume_1_scene_01");
+                Assert.AreEqual("test_volume_1_scene_02", next);
+            }
+            finally
+            {
+                ScenarioCatalog.Unregister("test_volume_1_scene_01");
+                ScenarioCatalog.Unregister("test_volume_1_scene_02");
+            }
         }
 
         [Test]
-        public void GetNextScenarioId_DeducesCrossPrefixScene_WhenNextNumberMatches()
+        public void GetNextScenarioId_UsesExplicitLink_ForCrossPrefixScene()
         {
-            var s4 = new ScenarioDefinition { Id = "volume_1_scene_04", Volume = "Volume I" };
-            var s5 = new ScenarioDefinition { Id = "nouvelle_scene_5", Volume = "Volume I" };
+            // Convention actuelle : la déduction numérique ne s'applique qu'au
+            // même préfixe (volume_1_scene_04 → volume_1_scene_05). Une suite
+            // inter-préfixes passe par un lien explicite NextSceneId (l'ancienne
+            // déduction « même numéro, autre préfixe » n'existe plus).
+            // Ids isolés (zz_*) : aucune collision avec le catalogue réel, et
+            // aucune relecture disque déclenchée (pas de Find manquant).
+            var s4 = new ScenarioDefinition { Id = "zz_cross_04", Volume = "Volume I", NextSceneId = "zz_cross_05" };
+            var s5 = new ScenarioDefinition { Id = "zz_cross_05", Volume = "Volume I" };
             ScenarioCatalog.Register(s4);
             ScenarioCatalog.Register(s5);
             try
             {
-                string next = ScenarioCatalog.GetNextScenarioId("volume_1_scene_04");
-                Assert.AreEqual("nouvelle_scene_5", next);
+                string next = ScenarioCatalog.GetNextScenarioId("zz_cross_04");
+                Assert.AreEqual("zz_cross_05", next);
             }
             finally
             {
-                ScenarioCatalog.Unregister("volume_1_scene_04");
-                ScenarioCatalog.Unregister("nouvelle_scene_5");
+                ScenarioCatalog.Unregister("zz_cross_04");
+                ScenarioCatalog.Unregister("zz_cross_05");
             }
         }
 

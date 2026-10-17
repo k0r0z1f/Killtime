@@ -74,7 +74,7 @@ namespace Killtime.Tests
             var data = LoadFromDisk();
             // ANM-004 : clip présent mais état jamais créé dans le Linker.
             AnimationClipEntry heavy = null;
-            // ANM-007 : course manquante (bloquant ressenti).
+            // ANM-007 : course câblée depuis le 2026-10-17 (BlendTree Locomotion RD-025).
             AnimationClipEntry run = null;
             foreach (var e in data.entries)
             {
@@ -85,7 +85,7 @@ namespace Killtime.Tests
             Assert.IsNotNull(heavy, "ANM-004 (garde arme lourde) manquante du catalogue.");
             Assert.AreEqual("present_non_cable", heavy.status, "ANM-004 doit être flaggée present_non_cable (état Weapon Fight Idle absent du Linker).");
             Assert.IsNotNull(run, "ANM-007 (course) manquante du catalogue.");
-            Assert.AreEqual("missing", run.status, "ANM-007 doit être flaggée missing.");
+            Assert.AreEqual("present", run.status, "ANM-007 doit être flaggée present (BlendTree Locomotion RD-025).");
             Assert.AreEqual("high", run.priority, "ANM-007 (course) est priorité haute.");
         }
 

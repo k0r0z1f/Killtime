@@ -293,17 +293,32 @@ namespace Killtime.Tactics.AI
             var launcher = CombatDevArena.GetAnyLauncher(actor.Sheet);
 
             InventoryItem bestGrenade = null;
-            TacticalUnit bestCell = null;
+            HexCoordinates bestCoords = actor.CurrentCoords;
+            bool haveBest = false;
+            bool bestIsUtility = false;
             bool bestUseLauncher = false;
             float bestScore = float.MinValue;
             int bestCost = 99;
+            float actorHpRatio = actor.Stats.MaxHealth > 0
+                ? (float)actor.Stats.CurrentHealth / actor.Stats.MaxHealth
+                : 1f;
 
             for (int gi = 0; gi < throwables.Count; gi++)
             {
                 var g = throwables[gi];
                 if (g == null) continue;
-                bool isUtility = (g.GrenadeKind ?? "").Contains("Flash") || (g.GrenadeKind ?? "").Contains("Fumi")
-                    || (g.GrenadeKind ?? "").Contains("Gaz") && g.BaseDamage <= 2;
+                // RD-106 : fini la pénalité forfaitaire -6 sur l'utilitaire.
+                // Chaque famille est scorée selon son effet réel (AIGrenadeScorer pur).
+                bool isSmoke = AIGrenadeScorer.IsSmoke(g.GrenadeKind);
+                bool isFlash = !isSmoke && AIGrenadeScorer.IsFlashKind(g.GrenadeKind);
+                bool isPersistent = !isSmoke && !isFlash
+                    && AIGrenadeScorer.IsPersistent(g.GrenadeKind, g.ZoneDurationTurns, g.BlastRadius);
+                bool isUtility = isSmoke || isFlash || isPersistent;
+                // Masque filtrant : immunise contre les gaz conventionnels (dégâts ×0) ;
+                // l'arcanotech n'est que divisé par 2 ⇒ alliés masqués toujours exposés.
+                bool gasConventional = SmokeScreen.IsGas(g.GrenadeKind)
+                    && !SmokeScreen.IsArcanotechEra(g.Era);
+                int zoneDpt = SmokeScreen.ZoneDamagePerTurn(g.GrenadeKind);
 
                 for (int li = 0; li < 2; li++)
                 {
@@ -313,7 +328,7 @@ namespace Killtime.Tactics.AI
                     int maxRange = GrenadeRules.ComputeMaxRange(g, l);
                     int cost = GrenadeRules.ComputeAPCost(l, false);
                     if (actor.Stats.CurrentActionPoints < cost) continue;
-                    float expected = g.BaseDamage + g.DamageDiceCount * 5.5f;
+                    float expected = AIGrenadeScorer.ExpectedDirect(g.BaseDamage, g.DamageDiceCount);
 
                     for (int i = 0; i < _cachedUnits.Count; i++)
                     {
@@ -347,9 +362,32 @@ namespace Killtime.Tactics.AI
                             }
                         }
                         if (dThrow > maxRange) continue;
-                        if (actor.CurrentCoords.DistanceTo(enemy.CurrentCoords) <= Mathf.Max(0, g.BlastRadius)) continue;
+                        // La fumée ne blesse pas : on peut la poser sur soi. Le reste
+                        // (létal / flash / gaz) s'interdit le suicide de souffle.
+                        if (!isSmoke && actor.CurrentCoords.DistanceTo(enemy.CurrentCoords) <= Mathf.Max(0, g.BlastRadius)) continue;
 
-                        int foes = 0, allies = 0;
+                        if (isSmoke)
+                        {
+                            // 3 poses : sur l'ennemi (l'aveugle dedans), sur soi (écran
+                            // total avant repli/avance à découvert), au milieu (couloir).
+                            var mid = new HexCoordinates(
+                                (actor.CurrentCoords.Q + enemy.CurrentCoords.Q) / 2,
+                                (actor.CurrentCoords.R + enemy.CurrentCoords.R) / 2);
+                            TryScoreSmokeCell(actor, enemy.CurrentCoords, enemy, g.BlastRadius, posture, actorHpRatio,
+                                g, useL, cost, true, ref bestGrenade, ref bestCoords, ref haveBest,
+                                ref bestIsUtility, ref bestUseLauncher, ref bestScore, ref bestCost);
+                            TryScoreSmokeCell(actor, actor.CurrentCoords, enemy, g.BlastRadius, posture, actorHpRatio,
+                                g, useL, cost, true, ref bestGrenade, ref bestCoords, ref haveBest,
+                                ref bestIsUtility, ref bestUseLauncher, ref bestScore, ref bestCost);
+                            if (!mid.Equals(enemy.CurrentCoords) && !mid.Equals(actor.CurrentCoords)
+                                && actor.CurrentCoords.DistanceTo(mid) <= maxRange)
+                                TryScoreSmokeCell(actor, mid, enemy, g.BlastRadius, posture, actorHpRatio,
+                                    g, useL, cost, true, ref bestGrenade, ref bestCoords, ref haveBest,
+                                    ref bestIsUtility, ref bestUseLauncher, ref bestScore, ref bestCost);
+                            continue;
+                        }
+
+                        int foes = 0, allies = 0, exposed = 0;
                         for (int j = 0; j < _cachedUnits.Count; j++)
                         {
                             var u = _cachedUnits[j];
@@ -357,19 +395,48 @@ namespace Killtime.Tactics.AI
                             if (u.CurrentCoords.DistanceTo(enemy.CurrentCoords) > Mathf.Max(0, g.BlastRadius)) continue;
                             bool uHostile = actor.IsPlayerControlled ? !u.IsPlayerControlled : u.IsPlayerControlled;
                             if (_mode == CombatAIMode.FullAuto && u.IsPlayerControlled != actor.IsPlayerControlled) uHostile = true;
-                            if (u == actor || !uHostile) allies += (u == actor) ? 2 : 1;
+                            if (u == actor || !uHostile)
+                            {
+                                int w = (u == actor) ? 2 : 1;
+                                allies += w;
+                                bool masked = gasConventional && SmokeScreen.HasGasMask(u.Stats);
+                                if (!masked) exposed += w;
+                            }
                             else foes++;
                         }
 
-                        if (allies > 0 && posture != TacticalPosture.AllInLethal) continue;
-                        float score = foes * (10f + expected) - allies * 25f + (isUtility ? -6f : 0f);
-                        if (enemy.Stats.CurrentHealth <= expected) score += 10f;
+                        bool finishing = enemy.Stats.CurrentHealth <= expected;
+                        float score;
+                        if (isFlash)
+                        {
+                            // Flash aveugle aussi les alliés ⇒ blocage dur sauf AllInLethal.
+                            if (allies > 0 && posture != TacticalPosture.AllInLethal) continue;
+                            score = AIGrenadeScorer.ScoreFlash(foes, expected, posture);
+                            if (finishing) score += 10f;
+                        }
+                        else if (isPersistent)
+                        {
+                            // Gaz : les alliés masqués (conventionnel) sont déjà retirés
+                            // de `exposed` et ne bloquent plus.
+                            if (exposed > 0 && posture != TacticalPosture.AllInLethal) continue;
+                            score = AIGrenadeScorer.ScorePersistent(foes, expected, zoneDpt,
+                                g.ZoneDurationTurns, AIGrenadeScorer.HasHardControl(g.GrenadeStatuses),
+                                exposed, finishing);
+                        }
+                        else
+                        {
+                            // Létal : formule historique inchangée.
+                            if (allies > 0 && posture != TacticalPosture.AllInLethal) continue;
+                            score = AIGrenadeScorer.ScoreLethal(foes, expected, allies, finishing);
+                        }
 
                         if (score > bestScore)
                         {
                             bestScore = score;
                             bestGrenade = g;
-                            bestCell = enemy;
+                            bestCoords = enemy.CurrentCoords;
+                            haveBest = true;
+                            bestIsUtility = isUtility;
                             bestUseLauncher = useL;
                             bestCost = cost;
                         }
@@ -377,7 +444,11 @@ namespace Killtime.Tactics.AI
                 }
             }
 
-            if (bestGrenade == null || bestCell == null || bestScore < 18f) return false;
+            if (!haveBest || bestGrenade == null) return false;
+            float threshold = bestIsUtility
+                ? AIGrenadeScorer.UtilityPlayThreshold
+                : AIGrenadeScorer.LethalPlayThreshold;
+            if (bestScore < threshold) return false;
             if (actor.Stats.CurrentActionPoints < bestCost) return false;
 
             var visual = actor.GetComponent<TacticalUnitVisual>();
@@ -385,8 +456,64 @@ namespace Killtime.Tactics.AI
                 bestUseLauncher ? $"💣 [IA] Tir {bestGrenade.Name}" : $"💣 [IA] Lancer {bestGrenade.Name}",
                 new Color(1f, 0.6f, 0.15f));
             int bonus = (posture == TacticalPosture.AllInLethal) ? Mathf.Min(2, actor.Stats.CurrentActionPoints - bestCost) : 0;
-            _arena.ExecuteGrenadeThrow(bestCell.CurrentCoords, bestGrenade.ItemId, bestUseLauncher, false, Mathf.Max(0, bonus));
+            _arena.ExecuteGrenadeThrow(bestCoords, bestGrenade.ItemId, bestUseLauncher, false, Mathf.Max(0, bonus));
             return true;
+        }
+
+        /// <summary>
+        /// RD-106 : évalue une pose de fumigène et retient la meilleure (écran de
+        /// couverture avant repli/avance à découvert). La fumée ne blesse pas :
+        /// les alliés dedans ne bloquent que par pénalité douce (Aveugle local).
+        /// </summary>
+        private void TryScoreSmokeCell(TacticalUnit actor, HexCoordinates candidate, TacticalUnit anchorEnemy,
+            int blast, TacticalPosture posture, float actorHpRatio,
+            InventoryItem grenade, bool useLauncher, int cost, bool isUtility,
+            ref InventoryItem bestGrenade, ref HexCoordinates bestCoords, ref bool haveBest,
+            ref bool bestIsUtility, ref bool bestUseLauncher, ref float bestScore, ref int bestCost)
+        {
+            int foes = 0, allies = 0, blocked = 0;
+            for (int j = 0; j < _cachedUnits.Count; j++)
+            {
+                var u = _cachedUnits[j];
+                if (u == null || u.Stats == null || !u.Stats.IsAlive) continue;
+                bool uHostile = actor.IsPlayerControlled ? !u.IsPlayerControlled : u.IsPlayerControlled;
+                if (_mode == CombatAIMode.FullAuto && u.IsPlayerControlled != actor.IsPlayerControlled) uHostile = true;
+                if (uHostile)
+                {
+                    if (u.CurrentCoords.DistanceTo(candidate) <= Mathf.Max(0, blast)) foes++;
+                    // Posée sur soi : coupe toutes les vues non déjà enfumées.
+                    // Ailleurs : ne compte que l'ancre si la pose est près de son segment.
+                    if (candidate.Equals(actor.CurrentCoords))
+                    {
+                        if (!SmokeScreen.SegmentSmoked(actor.CurrentCoords, u.CurrentCoords, _arena.SmokeZones))
+                            blocked++;
+                    }
+                    else if (u == anchorEnemy
+                        && !SmokeScreen.SegmentSmoked(actor.CurrentCoords, u.CurrentCoords, _arena.SmokeZones)
+                        && NearSegment(actor.CurrentCoords, u.CurrentCoords, candidate))
+                        blocked++;
+                }
+                else if (u.CurrentCoords.DistanceTo(candidate) <= Mathf.Max(0, blast))
+                    allies++;
+            }
+
+            float score = AIGrenadeScorer.ScoreSmoke(blocked, foes, allies, posture, actorHpRatio);
+            if (score > bestScore)
+            {
+                bestScore = score;
+                bestGrenade = grenade;
+                bestCoords = candidate;
+                haveBest = true;
+                bestIsUtility = isUtility;
+                bestUseLauncher = useLauncher;
+                bestCost = cost;
+            }
+        }
+
+        /// <summary>La case est-elle sur (ou près de) le segment, à 1 case de tolérance grille ?</summary>
+        private static bool NearSegment(HexCoordinates a, HexCoordinates b, HexCoordinates c)
+        {
+            return a.DistanceTo(c) + c.DistanceTo(b) <= a.DistanceTo(b) + 1;
         }
 
         // =========================================================================

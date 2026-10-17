@@ -210,6 +210,12 @@ namespace Killtime.Tests
             stats.CurrentHealth = 0;
             stats.ActiveStatus |= StatusEffect.Inconscient;
             Assert.IsFalse(stats.CanMove());
+            // Réanimation pour la suite : la prise s tested sur une unité vivante
+            // (sinon CanMove reste faux par la mort, pas par la lutte).
+            stats.IsDead = false;
+            stats.CurrentHealth = 20;
+            stats.RemoveStatus(StatusEffect.Inconscient);
+            Assert.IsTrue(stats.CanMove());
             // RD-039 : Un combattant saisi en lutte ne peut jamais se déplacer
             var opponent = MakeStats("Opposant");
             GrappleState.SetGrapple(opponent, stats);

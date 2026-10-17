@@ -277,8 +277,11 @@ namespace Killtime.Tests
             // 2. Retourne hacker le terminal mais hors zone -> Pas de victoire
             p1.SetPositionDirect(new HexCoordinates(1, 0));
             terminal.TryInteract(p1, out _);
-            Assert.IsTrue(hackObj.IsCompleted);
+            // L'évaluation paresseuse (Evaluate) complète le piratage au prochain
+            // CheckCombatOver (la notification événementielle dépend de OnEnable,
+            // inactif hors Play — cf. sonde LifecycleProbe).
             Assert.IsFalse(_turnManager.CheckCombatOver());
+            Assert.IsTrue(hackObj.IsCompleted);
 
             // 3. Retourne en zone d'extraction -> Les deux sont complétés -> Victoire !
             p1.SetPositionDirect(new HexCoordinates(4, 4));

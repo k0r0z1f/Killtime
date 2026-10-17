@@ -102,15 +102,15 @@
       "id": "ANM-007",
       "name": "Course / sprint",
       "category": "Course",
-      "animatorState": "Running (à créer)",
-      "clipFile": "(à produire)",
-      "genderVariants": "—",
-      "status": "missing",
+      "animatorState": "Walking (BlendTree 1D Locomotion : Walking 1.35 / Medium Run 5.75 / Fast Run 8.0, param Speed)",
+      "clipFile": "Animations/Female/Medium Run.fbx + Animations/Female/Fast Run.fbx (+ variantes Male/)",
+      "genderVariants": "Female unisexe (variantes Male présentes mais takes non renommées : toutes s'appellent 'mixamo.com', pas d'override genré résolvable — suivi RD-024)",
+      "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI : charge 3+ cases RD-038, sprint bloque le tir ; Élans Sans Drag (MoveSpeed 5.5→8.5 m/s) ; Duo-Tech Sillage Igné (dash Mina). Le WalkSpeedMultiplier étire la marche : pas de cycle course distinct",
-      "codeRef": "TacticalUnit.MoveSpeed (spés Élan) / RD-038 Charge/sprint",
-      "fallback": "Marche accélérée (multiplier jusqu'à ~6x => patinage visuel)",
-      "action": "RD-024 : produire 1 cycle course bouclé (Root+Male), brancher seuil vitesse. Bloquant ressenti démo RD-027 (60s)."
+      "gameDesignRef": "Livre VI : charge 3+ cases RD-038, sprint bloque le tir ; Élans Sans Drag (MoveSpeed 5.5→8.5 m/s) ; Duo-Tech Sillage Igné (dash Mina).",
+      "codeRef": "TacticalUnit.MoveSpeed / RD-038 Charge/sprint ; TacticalUnitVisual.GetLocomotionBand + Speed ; PlayerAnimatorLinker.EnsureLocomotionBlendTree",
+      "fallback": "—",
+      "action": "RD-025 : câblé (2026-10-17)."
     },
     {
       "id": "ANM-008",

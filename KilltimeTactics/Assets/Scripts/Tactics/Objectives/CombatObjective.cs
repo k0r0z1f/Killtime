@@ -398,11 +398,11 @@ namespace Killtime.Tactics.Objectives
             return obj;
         }
 
-        public static CombatObjective CreateHackTerminal(TacticalInteractable terminal, string title = "Piratage de la Console", string desc = null, bool isOptional = false)
+        public static CombatObjective CreateHackTerminal(TacticalInteractable terminal, string title = null, string desc = null, bool isOptional = false)
         {
             return new CombatObjective
             {
-                Title = title,
+                Title = title ?? (terminal != null ? $"Piratage de {terminal.ObjectName}" : "Piratage de la Console"),
                 Description = desc ?? $"Accéder à la console {terminal?.ObjectName ?? "Terminal"} et pirater le système.",
                 Type = CombatObjectiveType.HackTerminal,
                 TargetInteractable = terminal,

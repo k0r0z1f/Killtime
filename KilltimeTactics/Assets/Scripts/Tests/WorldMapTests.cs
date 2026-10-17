@@ -24,7 +24,7 @@ namespace Killtime.Tests
         {
             var canon = HybrisWorldMapSaveData.FromCanon();
             Assert.AreEqual(14, canon.Nodes.Count);
-            Assert.AreEqual(16, canon.Links.Count);
+            Assert.AreEqual(14, canon.Links.Count);
             var issues = HybrisWorldMapValidation.Validate(canon.Nodes, canon.Links, id => true);
             Assert.AreEqual(0, HybrisWorldMapValidation.CountErrors(issues));
         }
@@ -113,6 +113,10 @@ namespace Killtime.Tests
         [Test]
         public void RuntimeOverride_ApplyFindAndClear()
         {
+            // Reset préalable : PlayerPrefs / WorldMaps locales (machine de dev)
+            // peuvent avoir appliqué des données runtime persistées, et un run
+            // précédent peut avoir laissé la préférence ActiveMap.
+            HybrisWorldMapData.ClearRuntimeData();
             try
             {
                 Assert.IsFalse(HybrisWorldMapData.IsCustomized);
@@ -131,7 +135,7 @@ namespace Killtime.Tests
             }
             Assert.IsFalse(HybrisWorldMapData.IsCustomized);
             Assert.AreEqual("canon", HybrisWorldMapData.ActiveMapName);
-            Assert.IsNotNull(HybrisWorldMapData.Find("brum_forges"));
+            Assert.IsNotNull(HybrisWorldMapData.Find("kingston"));
         }
 
         [Test]

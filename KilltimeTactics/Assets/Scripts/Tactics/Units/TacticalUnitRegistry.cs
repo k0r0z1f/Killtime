@@ -44,6 +44,10 @@ namespace Killtime.Tactics.Units
 
             lock (_lock)
             {
+                // Purge des coquilles détruites sans OnDestroy (hors Play, OnDestroy
+                // ne se déclenche pas — sonde LifecycleProbe) pour éviter les
+                // unités fantômes dans le registre entre deux rencontres/tests.
+                _units.RemoveAll(u => u == null);
                 if (_units.Contains(unit)) return;
                 _units.Add(unit);
                 PublishSnapshot();

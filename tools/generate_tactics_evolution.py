@@ -6,9 +6,27 @@ Produit tactics_evolution.html avec dataset intégré et moteur canvas interacti
 
 import json, os
 
+MOIS_FR = {"01": "Janvier", "02": "Février", "03": "Mars", "04": "Avril",
+           "05": "Mai", "06": "Juin", "07": "Juillet", "08": "Août",
+           "09": "Septembre", "10": "Octobre", "11": "Novembre", "12": "Décembre"}
+MOIS_SHORT = {"01": "Jan", "02": "Fév", "03": "Mar", "04": "Avr", "05": "Mai",
+              "06": "Juin", "07": "Juil", "08": "Août", "09": "Sep",
+              "10": "Oct", "11": "Nov", "12": "Déc"}
+
 def build_html():
     with open('data/tactics_evolution.json', 'r', encoding='utf-8') as f:
         tactics_json_str = f.read()
+    data = json.loads(tactics_json_str)
+    total_commits = data["total_commits"]
+    total_minus_one = total_commits - 1
+    start = data["date_range"]["start"]  # YYYY-MM-DD
+    end = data["date_range"]["end"]
+    sy, sm, sd = start.split("-")
+    ey, em, ed = end.split("-")
+    range_short = f"{int(sd)} {MOIS_SHORT[sm]} - {int(ed)} {MOIS_SHORT[em]} {ey}"
+    range_long = f"{int(sd)} {MOIS_FR[sm]} {sy} au {int(ed)} {MOIS_FR[em]} {ey}"
+    n_scripts = sum(1 for _root, _d, files in os.walk('KilltimeTactics/Assets/Scripts')
+                    for fn in files if fn.endswith('.cs')) or "?"
 
     html_template = f'''<!DOCTYPE html>
 <html lang="fr" data-theme="dark">
@@ -16,7 +34,7 @@ def build_html():
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Killtime Tactics — L'Arbre Causal & Fleur Neuronale</title>
-    <meta name="description" content="Animation organique et réseau de neurones de l'évolution du jeu Killtime Tactics : 53 commits, branches florales, synapses causales et chronologie dynamique.">
+    <meta name="description" content="Animation organique et réseau de neurones de l'évolution du jeu Killtime Tactics : {total_commits} commits, branches florales, synapses causales et chronologie dynamique.">
 
     <!-- Typographies Killtime -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -916,12 +934,12 @@ def build_html():
             <div class="metrics-hud">
                 <div class="metric-item">
                     <span>Commits:</span>
-                    <span class="metric-val" id="metric-commits">53</span>
+                    <span class="metric-val" id="metric-commits">{total_commits}</span>
                 </div>
                 <span>•</span>
                 <div class="metric-item">
                     <span>Scripts C#:</span>
-                    <span class="metric-val" id="metric-scripts">215</span>
+                    <span class="metric-val" id="metric-scripts">{n_scripts}</span>
                 </div>
                 <span>•</span>
                 <div class="metric-item">
@@ -931,7 +949,7 @@ def build_html():
                 <span>•</span>
                 <div class="metric-item">
                     <span>Période:</span>
-                    <span class="metric-val" style="color:#fbbf24">8 Sep - 9 Oct 2026</span>
+                    <span class="metric-val" style="color:#fbbf24">{range_short}</span>
                 </div>
             </div>
         </div>
@@ -945,6 +963,14 @@ def build_html():
                 <span>ℹ️</span>
                 <span>Guide</span>
             </button>
+            <a href="tactics_fleur_fichiers.html" class="btn-ghost" title="Voir la fleur des fichiers avec historique complet">
+                <span>🌸</span>
+                <span>Fleur Fichiers</span>
+            </a>
+            <a href="tactics_files.html" class="btn-ghost" title="Explorer la cartographie des fichiers">
+                <span>🗂️</span>
+                <span>Fichiers</span>
+            </a>
             <a href="atlas_3d.html" class="btn-ghost" title="Explorer l'Atlas 3D">
                 <span>🌐</span>
                 <span>Atlas 3D</span>
@@ -1093,7 +1119,7 @@ def build_html():
                         <span>Époque I : Fondation & Arène</span>
                     </div>
                     <div style="font-family: var(--font-mono); font-size: 12px; color: var(--text-muted);">
-                        <span id="hudActiveCommitIndex" style="color:#fff; font-weight:700;">1</span> / 53 commits
+                        <span id="hudActiveCommitIndex" style="color:#fff; font-weight:700;">1</span> / {total_commits} commits
                     </div>
                 </div>
 
@@ -1105,7 +1131,7 @@ def build_html():
 
             <!-- Scrubber Track -->
             <div class="slider-wrapper">
-                <input type="range" class="chrono-slider" id="timelineSlider" min="1" max="53" value="1" step="1">
+                <input type="range" class="chrono-slider" id="timelineSlider" min="1" max="{total_commits}" value="1" step="1">
             </div>
 
             <div class="epoch-markers-bar" id="epochMarkersBar">
@@ -1123,7 +1149,7 @@ def build_html():
             <span>La Fleur Neuronale de Killtime Tactics</span>
         </h2>
         <p style="font-size: 13px; line-height: 1.6; color: #cbd5e1;">
-            Cette visualisation organique modélise la genèse et la floraison technologique du jeu <strong>Killtime Tactics</strong> dans Unity du <strong>8 Septembre 2026</strong> au <strong>9 Octobre 2026</strong> (53 commits).
+            Cette visualisation organique modélise la genèse et la floraison technologique du jeu <strong>Killtime Tactics</strong> dans Unity du <strong>{range_long}</strong> ({total_commits} commits).
         </p>
         <div style="background: rgba(0,0,0,0.3); border-radius: 12px; padding: 14px; border: 1px solid var(--border-subtle); font-size: 12px; display: flex; flex-direction: column; gap: 8px;">
             <div>🌸 <strong>Branches & Pétales :</strong> 7 domaines spécialisés (Story, Combat, Héros, Shaders, Multijoueur, Audio, Outils).</div>
@@ -1161,10 +1187,11 @@ def build_html():
     }}
 
     const {{ nodes, links, cross_links, branches, epochs }} = rawData;
+    const TOTAL_COMMITS = {total_commits};
 
     // 2. ÉTAT GLOBAL DE L'APPLICATION
     const state = {{
-        currentCommitIndex: 1, // 1 à 53
+        currentCommitIndex: 1, // 1 à {total_commits}
         targetCommitIndex: 1,
         progressFloat: 1.0,    // Interpolation fluide
         isPlaying: false,
@@ -1426,7 +1453,7 @@ def build_html():
 
             const jitterX = Math.sin(node.id * 1.7) * 80;
             const jitterY = Math.cos(node.id * 2.3) * 80;
-            const progressionRatio = node.id / 53;
+            const progressionRatio = node.id / TOTAL_COMMITS;
 
             layoutCoords.neural[node.id] = {{
                 x: branchOffset.x + jitterX + (hemisphere * progressionRatio * 160),
@@ -1439,7 +1466,7 @@ def build_html():
         const totalHeight = 850;
         const startY = 380;
         nodes.forEach(node => {{
-            const t = (node.id - 1) / 52;
+            const t = (node.id - 1) / (TOTAL_COMMITS - 1);
             const y = startY - (t * totalHeight);
             
             // Écartement horizontal selon la branche
@@ -1462,8 +1489,8 @@ def build_html():
 
         // --- MODE 4: RHIZOME LIBRE (Force Initial Spacing) ---
         nodes.forEach(node => {{
-            const ang = (node.id / 53) * Math.PI * 2 + Math.random() * 0.4;
-            const dist = 100 + (node.id / 53) * 450;
+            const ang = (node.id / TOTAL_COMMITS) * Math.PI * 2 + Math.random() * 0.4;
+            const dist = 100 + (node.id / TOTAL_COMMITS) * 450;
             layoutCoords.force[node.id] = {{
                 x: Math.cos(ang) * dist,
                 y: Math.sin(ang) * dist,
@@ -1744,7 +1771,7 @@ def build_html():
         playIcon.textContent = state.isPlaying ? '❚❚' : '▶';
         if (state.isPlaying) {{
             AudioEngine.resume();
-            if (state.currentCommitIndex >= 53) {{
+            if (state.currentCommitIndex >= TOTAL_COMMITS) {{
                 updateTimelineUI(1);
             }}
         }}
@@ -1752,7 +1779,7 @@ def build_html():
     playPauseBtn.addEventListener('click', togglePlay);
 
     document.getElementById('btnStepForward').addEventListener('click', () => {{
-        if (state.currentCommitIndex < 53) updateTimelineUI(state.currentCommitIndex + 1);
+            if (state.currentCommitIndex < TOTAL_COMMITS) updateTimelineUI(state.currentCommitIndex + 1);
     }});
     document.getElementById('btnStepBack').addEventListener('click', () => {{
         if (state.currentCommitIndex > 1) updateTimelineUI(state.currentCommitIndex - 1);
@@ -1765,7 +1792,7 @@ def build_html():
     document.getElementById('btnFullBloom').addEventListener('click', () => {{
         state.isPlaying = false;
         playIcon.textContent = '▶';
-        updateTimelineUI(53);
+        updateTimelineUI(TOTAL_COMMITS);
     }});
 
     // Sélecteur de vitesse
@@ -1853,7 +1880,7 @@ def build_html():
         state.cam.targetZoom = 1.0;
     }});
     document.getElementById('btnToggleBloomAll').addEventListener('click', () => {{
-        updateTimelineUI(53);
+        updateTimelineUI(TOTAL_COMMITS);
     }});
 
     // Audio Toggle
@@ -1882,7 +1909,7 @@ def build_html():
             togglePlay();
         }} else if (e.code === 'ArrowRight') {{
             e.preventDefault();
-            if (state.currentCommitIndex < 53) updateTimelineUI(state.currentCommitIndex + 1);
+        if (state.currentCommitIndex < TOTAL_COMMITS) updateTimelineUI(state.currentCommitIndex + 1);
         }} else if (e.code === 'ArrowLeft') {{
             e.preventDefault();
             if (state.currentCommitIndex > 1) updateTimelineUI(state.currentCommitIndex - 1);
@@ -1902,7 +1929,7 @@ def build_html():
             playAccumulator += dt * state.playbackSpeed;
             if (playAccumulator >= 0.35) {{ // un commit toutes les 0.35s à vitesse 1x
                 playAccumulator = 0;
-                if (state.currentCommitIndex < 53) {{
+                if (state.currentCommitIndex < TOTAL_COMMITS) {{
                     updateTimelineUI(state.currentCommitIndex + 1);
                 }} else {{
                     state.isPlaying = false;
@@ -2161,7 +2188,7 @@ def build_html():
     requestAnimationFrame(renderLoop);
 
     // Initialisation : afficher le dernier commit par défaut si souhaité, ou démarrer la graine
-    updateTimelineUI(53); // Montre l'arbre complet au chargement pour un effet WOW immédiat !
+    updateTimelineUI(TOTAL_COMMITS); // Montre l'arbre complet au chargement pour un effet WOW immédiat !
 
 }})();
 </script>

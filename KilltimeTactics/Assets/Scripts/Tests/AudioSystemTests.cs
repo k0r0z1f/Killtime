@@ -391,6 +391,86 @@ namespace Killtime.Tests
 
             Object.DestroyImmediate(go);
         }
+
+        [Test]
+        public void GenerativeEngine_SectionCycleAndDeterminism_AreValid()
+        {
+            var p0 = GenerativeMusicParams.DefaultCombat(1337);
+            var p1 = p0.WithVariation(1, 0.6f, 0.4f);
+            var p2 = p0.WithVariation(2, 0.6f, 0.4f);
+            var p3 = p0.WithVariation(3, 0.75f, 0.65f);
+            var p4 = p0.WithVariation(4, 0.55f, 0.4f);
+
+            Assert.AreEqual(GenerativeSectionRole.ThemeA, GenerativeMusicEngine.GetSectionRole(p0));
+            Assert.AreEqual(GenerativeSectionRole.ThemeAVar, GenerativeMusicEngine.GetSectionRole(p1));
+            Assert.AreEqual(GenerativeSectionRole.BridgeB, GenerativeMusicEngine.GetSectionRole(p2));
+            Assert.AreEqual(GenerativeSectionRole.Climax, GenerativeMusicEngine.GetSectionRole(p3));
+            Assert.AreEqual(GenerativeSectionRole.Breakdown, GenerativeMusicEngine.GetSectionRole(p4));
+
+            float[] s0a = GenerativeMusicEngine.Render(p0);
+            float[] s0b = GenerativeMusicEngine.Render(p0);
+            float[] s2 = GenerativeMusicEngine.Render(p2);
+            Assert.AreEqual(s0a.Length, s0b.Length);
+            for (int i = 0; i < s0a.Length; i += 2047)
+                Assert.AreEqual(s0a[i], s0b[i], 1e-6f, $"Génératif non déterministe @ {i}");
+
+            double diff = 0;
+            float peak = 0f;
+            int stride = s0a.Length / 1024;
+            for (int i = 0; i < s0a.Length; i += stride)
+            {
+                diff += System.Math.Abs(s0a[i] - s2[i]);
+                peak = System.Math.Max(peak, System.Math.Abs(s0a[i]));
+            }
+            diff /= 1024.0;
+            Assert.Greater(peak, 0.1f, "Sortie générative trop faible");
+            Assert.Greater(diff, 0.01, "ThemeA et BridgeB devraient différer musicalement");
+        }
+
+        [Test]
+        public void GenerativeEngine_ReactiveStrikeAndBossProfile_AreAudible()
+        {
+            var strikeClip = ProceduralAudioFactory.GetGenerativeStrikeClip(33, GenerativeScale.Phrygian, 0.9f);
+            Assert.IsNotNull(strikeClip, "Clip strike réactif manquant");
+            Assert.Greater(strikeClip.samples, ProceduralAudioFactory.SampleRate / 2);
+
+            var normal = AdaptiveMusicDirector.ComputeGenerativeParams(0.7f, 3, 2, 1, 1337, 0);
+            var nextTurn = AdaptiveMusicDirector.ComputeGenerativeParams(0.7f, 3, 2, 5, 1337, 1);
+            var boss = AdaptiveMusicDirector.ComputeGenerativeParams(0.7f, 3, 2, 1, 1337, 0, isBoss: true);
+
+            Assert.AreEqual(normal.seed, nextTurn.seed, "Le seed thématique doit rester stable d'un tour à l'autre");
+            Assert.AreEqual(0f, normal.bpm % 4f, 0.001f, "BPM quantifié par pas de 4 attendu");
+            Assert.Greater(boss.tension01, normal.tension01, "Profil Boss doit imposer une tension supérieure");
+            Assert.Less(boss.rootMidi, normal.rootMidi, "Profil Boss doit avoir une fondamentale plus grave");
+            Assert.AreEqual(5, boss.beatsPerBar, "Profil Boss doit basculer en 5/4 par défaut");
+        }
+
+        [Test]
+        public void GenerativeEngine_OddMetersAndTacticalMomentum_Work()
+        {
+            var p3 = GenerativeMusicParams.DefaultCombat(1337); p3.beatsPerBar = 3;
+            var p4 = GenerativeMusicParams.DefaultCombat(1337); p4.beatsPerBar = 4;
+            var p5 = GenerativeMusicParams.DefaultCombat(1337); p5.beatsPerBar = 5;
+            var p7 = GenerativeMusicParams.DefaultCombat(1337); p7.beatsPerBar = 7;
+
+            Assert.Less(GenerativeMusicEngine.EstimateDuration(p3), GenerativeMusicEngine.EstimateDuration(p4));
+            Assert.Less(GenerativeMusicEngine.EstimateDuration(p7), GenerativeMusicEngine.EstimateDuration(p4));
+            Assert.Greater(GenerativeMusicEngine.EstimateDuration(p5), GenerativeMusicEngine.EstimateDuration(p4));
+
+            float[] s5 = GenerativeMusicEngine.Render(p5);
+            float[] s7 = GenerativeMusicEngine.Render(p7);
+            Assert.Greater(s5.Length, s7.Length);
+
+            var playerTurn = AdaptiveMusicDirector.ComputeGenerativeParams(0.75f, 3, 2, 2, 1337, 0, isBoss: false, enemyHpRatio01: 0.2f, isPlayerTurn: true);
+            var enemyTurn = AdaptiveMusicDirector.ComputeGenerativeParams(0.75f, 3, 2, 2, 1337, 0, isBoss: false, enemyHpRatio01: 0.8f, isPlayerTurn: false);
+            Assert.AreEqual(GenerativeScale.Dorian, playerTurn.scale, "Domination (ennemis bas PV) doit favoriser le mode Dorian héroïque");
+            Assert.Greater(enemyTurn.tension01, playerTurn.tension01, "Tour ennemi doit accroître la tension musicale");
+
+            ProceduralAudioFactory.PrewarmGenerativeLoopAsync(p5);
+            var clip5 = ProceduralAudioFactory.GetGenerativeLoop(p5);
+            Assert.IsNotNull(clip5);
+            Assert.AreEqual(s5.Length, clip5.samples);
+        }
     }
 }
 #endif

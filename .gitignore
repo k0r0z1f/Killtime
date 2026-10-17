@@ -30,3 +30,6 @@ KilltimeTactics/Killtime/
 summaries/
 
 opencode.json
+
+# Exports locaux du Test Runner (référence de session, jamais committés)
+KilltimeTactics/TestResults_*.xml

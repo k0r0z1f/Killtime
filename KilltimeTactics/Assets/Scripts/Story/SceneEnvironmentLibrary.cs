@@ -158,6 +158,7 @@ namespace Killtime.Story.Scenes
                         lightComp.intensity = p.LightIntensity;
                         lightComp.range = p.LightRange;
                     }
+                    AttachVoyantBlinkIfNeeded(instance, p);
                     continue;
                 }
 
@@ -190,6 +191,7 @@ namespace Killtime.Story.Scenes
                     lightComp.intensity = p.LightIntensity;
                     lightComp.range = p.LightRange;
                 }
+                AttachVoyantBlinkIfNeeded(go, p);
             }
         }
 
@@ -287,6 +289,7 @@ namespace Killtime.Story.Scenes
                         lightComp.intensity = p.LightIntensity;
                         lightComp.range = p.LightRange;
                     }
+                    AttachVoyantBlinkIfNeeded(instance, p);
                     built++;
                     continue;
                 }
@@ -319,6 +322,7 @@ namespace Killtime.Story.Scenes
                     lightComp.intensity = p.LightIntensity;
                     lightComp.range = p.LightRange;
                 }
+                AttachVoyantBlinkIfNeeded(go, p);
                 built++;
             }
 
@@ -614,6 +618,17 @@ namespace Killtime.Story.Scenes
                     UnityEngine.Object.DestroyImmediate(child.gameObject);
                 }
             }
+        }
+
+        /// <summary>
+        /// RD-022 : tout placeholder dont l'Id contient "Voyant" reçoit SasVoyantBlink
+        /// (LED + light intermittente). Convention sans changement de schéma JSON.
+        /// </summary>
+        private static void AttachVoyantBlinkIfNeeded(GameObject go, Killtime.Story.Data.ScenePlaceholderData p)
+        {
+            if (go == null || p == null || string.IsNullOrWhiteSpace(p.Id)) return;
+            if (p.Id.IndexOf("Voyant", StringComparison.OrdinalIgnoreCase) < 0) return;
+            if (go.GetComponent<SasVoyantBlink>() == null) go.AddComponent<SasVoyantBlink>();
         }
 
         private static Material CreateMaterial(Color albedo, float smoothness, bool isEmissive, Color emissionColor)
