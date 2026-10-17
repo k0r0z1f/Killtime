@@ -766,7 +766,7 @@
           "title": "IA : Duo-Tech automatique Lucas + Mina (sans tracé souris)"
         },
         {
-          "details": "EN COURS (2026-10-16) : pénalité -6 supprimée. Nouveau AIGrenadeScorer pur (Tactics/AI) : fumée 3 poses (ennemi/soi/milieu, alliés = pénalité douce), flash +6 avant assaut (Aveugle -4 tir), gaz persistant DoT×tours avec alliés masqués ignorés (conventionnel). Seuil utilitaire 12, létal 18 inchangé (formule verbatim). Tests EditMode AIGrenadeScorerTests (12 cas) à faire tourner (éditeur ouvert, batchmode impossible). Pistes d'origine : fumigène de couverture avant repli/avance à découvert (SegmentSmoked), flash avant assaut (Aveuglé → -4 tir), gaz persistant sur couloir (ZoneDamagePerTurn, avec masque à gaz allié vérifié).",
+          "details": "FAIT (2026-10-17) : pénalité -6 supprimée. Nouveau AIGrenadeScorer pur (Tactics/AI) : fumée 3 poses (ennemi/soi/milieu, alliés = pénalité douce), flash +6 avant assaut (Aveugle -4 tir), gaz persistant DoT×tours avec alliés masqués ignorés (conventionnel). Seuil utilitaire 12, létal 18 inchangé (formule verbatim). Preuve : batchmode EditMode filtré AIGrenadeScorerTests 13/13 verts, exit 0 (résultats sous /tmp/opencode). Hygiène : ProjectSettings.asset restauré (define SENTIS réécrit par le headless), git status identique à l'avant-run, 0 artefact test dans le repo. Pistes d'origine : fumigène de couverture avant repli/avance à découvert (SegmentSmoked), flash avant assaut (Aveuglé → -4 tir), gaz persistant sur couloir (ZoneDamagePerTurn, avec masque à gaz allié vérifié).",
           "epic": "IA",
           "id": "RD-106",
           "order": 48,
@@ -776,9 +776,10 @@
           "priority": "low",
           "scale": null,
           "scene": "",
-          "status": "doing",
+          "status": "done",
           "suggestedAsset": "GrenadeSystem (SmokeScreen)",
-          "title": "IA : grenades utilitaires offensives (fumigènes, flash, gaz)"
+          "title": "IA : grenades utilitaires offensives (fumigènes, flash, gaz)",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-112",
@@ -1814,7 +1815,7 @@
           "id": "RD-021",
           "title": "Remplacer JunctionBox_West par boîtier final",
           "epic": "Couloirs / Murs",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 20,
           "scene": "volume_1_scene_01",
@@ -1831,7 +1832,8 @@
             0.35
           ],
           "suggestedAsset": "Boîtier de jonction mural",
-          "details": "Petit coffret gris. Remplacer par boîtier avec voyants + câbles."
+          "details": "FAIT (2026-10-17) : JunctionBox_West n'existe plus (0 réf hors kanban : ni scène, ni volume_1_scene_01.json qui compte 59 placeholders actuels, aucun prefab JunctionBox dans Resources/Prefabs/Environment). Même constat que RD-022. Intent déjà couvert : câbles via Conduite_Couloir/Plafond/Principale, voyant via Sas_Voyant_Rouge + SasVoyantBlink.cs (RD-022), panneau lumineux via Panneau_Signal émissif. Aucun code ajouté (pas de visuel à inventer sans validation en jeu).",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-022",
@@ -2433,8 +2435,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Story/StorySceneData.cs + DevTools/Story + DevTools/Arena",
-          "details": "Créé 2026-10-13 (règle dev.md §2 <~800 lignes) : restent >800 lignes après les splits — StorySceneData 1368, ScenarioEditorDevWindow.Wires 1267, ArenaAttackService 1258, Cards.World 1132, GrenadeSystem 1081, ArenaMelee 1064, CinematicEditorDevWindow 1034, DuoTechRegistry 972, CombatTechniqueRegistry 955, SpecialManeuverService 923, Panels.Audio 902, GraphCanvas 879 (SceneTab ramené à 743 l. lors de RD-118 ; GenerativeMusicEngine 1014 l. découpé en 4 partials lors de RD-165 ; KilltimeAudioSettingsUI 1062 l. découpé en 2 partials 527/539 l. lors de RD-166). Trancher par fichier : split ciblé (services/partials) ou exception documentée (service métier indissociable). Ne pas laisser croire que tout est <800.",
-          "updated": "2026-10-16"
+          "details": "Créé 2026-10-13 (règle dev.md §2 <~800 lignes) : restent >800 lignes après les splits — StorySceneData 1368, ScenarioEditorDevWindow.Wires 1267, ArenaAttackService 1258, Cards.World 1132, GrenadeSystem 1081, ArenaMelee 1064, CinematicEditorDevWindow 1034, DuoTechRegistry 972, CombatTechniqueRegistry 955, SpecialManeuverService 923, Panels.Audio 902 -> split 2026-10-17 move-only en Panels.Audio 338 l. + Panels.AudioCards 584 l. (toolbar/banque/audit/monitor vs cartes son/ambiance + pre-ecoute, reassemblage == HEAD byte-identique, 16 methodes 0 doublon, GUID neuf sans collision ; preuve 2026-10-17 batchmode compile 0 error CS + EditMode 471/471 verts exit 0, ProjectSettings.asset restaure, git status identique, 0 artefact ; reste : controle visuel en jeu par l'utilisateur), GraphCanvas 879 -> split 2026-10-17 move-only en GraphCanvas 582 l. + GraphCanvas.Primitives 316 l. (vue/nav + canvas vs 22 helpers Graph*/overlays, 0 ligne perdue vs HEAD, GUID neuf sans collision ; tests 2026-10-17 batchmode EditMode 471/471 verts, 0 error CS, exit 0) (SceneTab ramené à 743 l. lors de RD-118 ; GenerativeMusicEngine 1014 l. découpé en 4 partials lors de RD-165 ; KilltimeAudioSettingsUI 1062 l. découpé en 2 partials 527/539 l. lors de RD-166). Trancher par fichier : split ciblé (services/partials) ou exception documentée (service métier indissociable). Ne pas laisser croire que tout est <800.",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-165",
