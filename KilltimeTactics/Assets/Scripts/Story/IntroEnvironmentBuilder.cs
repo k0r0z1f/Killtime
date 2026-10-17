@@ -190,8 +190,18 @@ namespace Killtime.Story.Scenes
                 float z = Random.Range(20f, 60f);
                 rock.transform.localPosition = new Vector3(x, y, z);
                 rock.transform.rotation = Random.rotation;
-                rock.transform.localScale = Vector3.one * Random.Range(0.6f, 2.8f);
-                rock.GetComponent<Renderer>().sharedMaterial = _matAsteroidRock;
+                float s = Random.Range(0.6f, 2.8f);
+                rock.transform.localScale = new Vector3(
+                    s * Random.Range(0.7f, 1.4f),
+                    s * Random.Range(0.6f, 1.1f),
+                    s * Random.Range(0.7f, 1.4f));
+                var rockRenderer = rock.GetComponent<Renderer>();
+                rockRenderer.sharedMaterial = _matAsteroidRock;
+                float tint = Random.Range(0.85f, 1.2f);
+                var mpb = new MaterialPropertyBlock();
+                mpb.SetColor("_BaseColor", new Color(0.08f * tint, 0.09f * tint, 0.11f * tint));
+                mpb.SetColor("_Color", new Color(0.08f * tint, 0.09f * tint, 0.11f * tint));
+                rockRenderer.SetPropertyBlock(mpb);
                 StripCollider(rock);
             }
         }

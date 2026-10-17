@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-16",
+  "updated": "2026-10-17",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -12,7 +12,7 @@
           "id": "RD-026",
           "title": "Figer périmètre démo Killzone_Alpha3",
           "epic": "Cadrage",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 0,
           "scene": "Killzone_Alpha3",
@@ -21,13 +21,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Maps/Killzone_Alpha3.json",
-          "details": "GridRadius 6, 1 env unique, 2 escouades test, pas de lore. Durée cible 60-90s."
+          "updated": "2026-10-17",
+          "details": "FAIT (2026-10-17) : périmètre verrouillé sur l'existant. Map Killzone_Alpha3.json : GridRadius 6, 127 tiles, 5 couverts légers + 2 lourds, 2 bloquants, 13 props LED_Light_1, 2v2 (Mina + Roger vs Tank + Duelliste). IN : 1 env unique, 2 escouades test, 60-90s, hors-lore. OUT : pas de lore Vol I, pas de nouveau biome/asset, pas de scénario. Débloque RD-027/028/029."
         },
         {
           "id": "RD-027",
           "title": "Script démo 60s : move + couvert + duel + Duo",
           "epic": "Mise en scène",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 1,
           "scene": "Killzone_Alpha3",
@@ -36,13 +37,14 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "CinematicDirector",
-          "details": "Rotation Q/E, A* hexa, tir moitié/3-4 couvert, duel aveugle, ramassage arme, Sillage Igné. Overlay télémétrie PA."
+          "updated": "2026-10-17",
+          "details": "FAIT (2026-10-17) : Demo/DemoDirectorAlpha3.cs (444 l., auto-boot AfterSceneLoad, actif uniquement sur Killzone_Alpha3). 6 beats ~60s : cadrage (Q/E, LOS forcée, PA illimités, Lucas spawné si absent via BuildHeroicSheet) -> move A* Mina -> tir couvert Ballistique -> duel aveugle (sans défense) -> ramassage arme (SpawnAt + TryPickup) -> Sillage Igné géométrique (dash + ResolveSillage Perfect). Chaque beat try/catch + timeout, restaure LOS/PA en finally. Preuve : batchmode 0 erreur CS, exit 0 (ProjectSettings.asset restauré, 0 artefact). Réserve : test en jeu par l'utilisateur (bouton ▶ DÉMO 60s + ■ Stop)."
         },
         {
           "id": "RD-028",
           "title": "Pass visuel démo : lighting + gizmos debug",
           "epic": "Map",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 2,
           "scene": "Killzone_Alpha3",
@@ -51,7 +53,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "URP + HexGridVisualizer",
-          "details": "Greybox assumé + watermark PLACEHOLDER. Lignes de mire vert/jaune/orange/rouge visibles."
+          "updated": "2026-10-17",
+          "details": "FAIT (2026-10-17, dans DemoDirectorAlpha3) : greybox assumé (aucun asset final), watermark permanent 'DÉMO HORS-LORE · Killzone_Alpha3 · PLACEHOLDER', ligne de mire forcée pendant la démo (ShowCoverLineOfSight vert/jaune/orange/rouge existant, restauré après), télémétrie live (PA x/y, PE Essoufflement, PV, cible + distance). Lighting : 13 LED_Light_1 de la map conservés, pas de preset custom (hors périmètre). Réserve : contrôle visuel + calibration en jeu par l'utilisateur."
         },
         {
           "id": "RD-029",
@@ -66,7 +69,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "OBS 1080p",
-          "details": "1 vidéo + 3 screenshots avec overlay PA. Aucun asset final requis."
+          "updated": "2026-10-17",
+          "details": "PRÊT À CAPTURER (prépa agent 2026-10-17 : démo + watermark + télémétrie + LOS OK). Protocole user : 1) build + ouvrir Killzone_Alpha3, 2) OBS 1080p, 3) cliquer ▶ DÉMO 60s, 4) 1 vidéo complète + 3 screenshots (tir+couvert, duel aveugle, Sillage Igné) avec overlay PA visible. Aucun asset final requis. Blocage agent : capture vidéo/impossible en batchmode."
         }
       ]
     },
@@ -751,7 +755,7 @@
           "title": "IA : balise laser (Lampe + Batterie, faille exposée)"
         },
         {
-          "details": "À FAIRE : l'IA n'utilise jamais le Duo-Tech (Sillage Igné, Lacet de Nytharite, Fournaise à Retardement) car l'exécution exige le tissage souris T1/T2. Piste : variante auto DuoTechRegistry pour binôme IA adjacent (résolution géométrique directe : dash Mina + frappe Lucas évaluée Perfect/Risky/Late par distance), paiement atomique conservé, limite 1/combattant/round.",
+          "details": "EN COURS (2026-10-17) : variante auto Sillage Igné implémentée — AIDuoTechSolver pur (Tactics/AI, 152 l.) : ligne de dash Mina 2-4 ennemis alignés (tol 0.6, portée 6), grade Lucas par distance au sillage (Risky <1.2 / Perfect ≤5.0 / Late au-delà), ShouldExecute (Risky seulement si AllIn). Colle TacticalAIController.DuoTech (116 l., hook 2d après techniques/LivreXI) : binôme complémentaire même faction ≤2 cases, CanDeclare puis TryDeclarePayment atomique (limite 1/round inchangée), TeleportTo Mina + glissade case libre, ResolveSillage + flash + chrono. 7 tests AIDuoTechSolverTests écrits. Preuve : build bee batchmode 0 erreur CS (tous DLLs). RESTE : run EditMode (batchmode bloqué ce jour — quitte avant fin de chargement même en ouverture simple, 8 essais ; environnemental, hors code) + contrôle visuel en jeu. Lacet/Fournaise gardent le tissage manuel (hors périmètre petite tâche). Piste d'origine : variante auto DuoTechRegistry pour binôme IA adjacent (résolution géométrique directe : dash Mina + frappe Lucas évaluée Perfect/Risky/Late par distance), paiement atomique conservé, limite 1/combattant/round.",
           "epic": "IA",
           "id": "RD-105",
           "order": 47,
@@ -761,9 +765,10 @@
           "priority": "low",
           "scale": null,
           "scene": "",
-          "status": "todo",
+          "status": "doing",
           "suggestedAsset": "DuoTechRegistry + DuoTechWeaveController",
-          "title": "IA : Duo-Tech automatique Lucas + Mina (sans tracé souris)"
+          "title": "IA : Duo-Tech automatique Lucas + Mina (sans tracé souris)",
+          "updated": "2026-10-17"
         },
         {
           "details": "FAIT (2026-10-17) : pénalité -6 supprimée. Nouveau AIGrenadeScorer pur (Tactics/AI) : fumée 3 poses (ennemi/soi/milieu, alliés = pénalité douce), flash +6 avant assaut (Aveugle -4 tir), gaz persistant DoT×tours avec alliés masqués ignorés (conventionnel). Seuil utilitaire 12, létal 18 inchangé (formule verbatim). Preuve : batchmode EditMode filtré AIGrenadeScorerTests 13/13 verts, exit 0 (résultats sous /tmp/opencode). Hygiène : ProjectSettings.asset restauré (define SENTIS réécrit par le headless), git status identique à l'avant-run, 0 artefact test dans le repo. Pistes d'origine : fumigène de couverture avant repli/avance à découvert (SegmentSmoked), flash avant assaut (Aveuglé → -4 tir), gaz persistant sur couloir (ZoneDamagePerTurn, avec masque à gaz allié vérifié).",
@@ -1401,7 +1406,7 @@
           "id": "RD-003",
           "title": "Remplacer Debris_0 par débris final",
           "epic": "Débris",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 2,
           "scene": "volume_1_scene_01",
@@ -1418,13 +1423,14 @@
             1.4
           ],
           "suggestedAsset": "Prefab débris astéroïde / épave",
-          "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+          "details": "FAIT (2026-10-17) : Debris_0 n'existe plus dans le JSON reel (59 placeholders, 0 Debris_* — meme constat que RD-006/RD-021/022). Intent couvert : placeholder Asteroid_Base du JSON -> Asteroid_Base.prefab (AsteroidBaseGenerator.BuildOrbitalDebris, 48 debris Debris_0..47 echelles non-uniformes + rotations variees + materiau roche) + champ procedural IntroEnvironmentBuilder Debris_Field (25 rochers, teinte variee). Reserve : maillage cube natif (pas de mesh rocher custom) + controle visuel en jeu par l'utilisateur.",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-004",
           "title": "Remplacer Debris_1 par débris final",
           "epic": "Débris",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 3,
           "scene": "volume_1_scene_01",
@@ -1441,13 +1447,14 @@
             1.9
           ],
           "suggestedAsset": "Prefab débris astéroïde / épave",
-          "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+          "details": "FAIT (2026-10-17) : Debris_1 n'existe plus dans le JSON reel (59 placeholders, 0 Debris_* — meme constat que RD-006/RD-021/022). Intent couvert : placeholder Asteroid_Base du JSON -> Asteroid_Base.prefab (AsteroidBaseGenerator.BuildOrbitalDebris, 48 debris Debris_0..47 echelles non-uniformes + rotations variees + materiau roche) + champ procedural IntroEnvironmentBuilder Debris_Field (25 rochers, teinte variee). Reserve : maillage cube natif (pas de mesh rocher custom) + controle visuel en jeu par l'utilisateur.",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-005",
           "title": "Remplacer Debris_2 par débris final",
           "epic": "Débris",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 4,
           "scene": "volume_1_scene_01",
@@ -1464,13 +1471,14 @@
             2.2
           ],
           "suggestedAsset": "Prefab débris astéroïde / épave",
-          "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+          "details": "FAIT (2026-10-17) : Debris_2 n'existe plus dans le JSON reel (59 placeholders, 0 Debris_* — meme constat que RD-006/RD-021/022). Intent couvert : placeholder Asteroid_Base du JSON -> Asteroid_Base.prefab (AsteroidBaseGenerator.BuildOrbitalDebris, 48 debris Debris_0..47 echelles non-uniformes + rotations variees + materiau roche) + champ procedural IntroEnvironmentBuilder Debris_Field (25 rochers, teinte variee). Reserve : maillage cube natif (pas de mesh rocher custom) + controle visuel en jeu par l'utilisateur.",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-006",
           "title": "Remplacer Debris_3 par débris final",
           "epic": "Débris",
-          "status": "todo",
+          "status": "done",
           "priority": "low",
           "order": 5,
           "scene": "volume_1_scene_01",
@@ -1487,7 +1495,8 @@
             1.1
           ],
           "suggestedAsset": "Prefab débris astéroïde / épave",
-          "details": "Cube gris sombre non-émissif. Remplacer par rocher / tôle avec variation rotation."
+          "details": "FAIT (2026-10-17) : Debris_3 n'existe plus dans le JSON reel (59 placeholders, 0 Debris_* — meme constat que RD-021/022). Intent repris sur le champ procedural qui le couvre (IntroEnvironmentBuilder Debris_Field, 25 rochers, pos d'origine dans son volume) : echelle non-uniforme par rocher (fini les cubes identiques 1.1) + teinte basalte variee x0.85-1.2 via MaterialPropertyBlock (sharedMaterial conserve, 0 fuite), rotation aleatoire deja presente. Verif : accolades/parens equilibres. Reste : controle visuel en jeu par l'utilisateur.",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-007",

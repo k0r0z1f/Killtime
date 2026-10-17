@@ -574,6 +574,15 @@ namespace Killtime.Tactics.AI
                     continue;
                 }
 
+                // 2d. DUO-TECH AUTO (RD-105) : Sillage Igné sans tissage souris
+                // (binôme Lucas + Mina adjacent, 2+ ennemis alignés). Paiement
+                // atomique + limite 1/round via le registre, comme au menu joueur.
+                if (TryExecuteDuoTechAuto(unit, posture, visual))
+                {
+                    yield return new WaitForSeconds(_actionDelay);
+                    continue;
+                }
+
                 // 3. CONTACT DIRECT (Distance == 1) : RUPTURE MARTIALE OU DÉGAGEMENT
                 if (isRanged && dist == 1)
                 {
