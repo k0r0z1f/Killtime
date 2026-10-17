@@ -838,7 +838,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Tactics/AI",
-          "details": "À FAIRE : la complexité a déménagé, pas baissé (~4380 lignes dossier). 1) AITurnPlanner : transformer la chaîne if/continue d'ExecuteAITurn (379 lignes) en priorités retournant des AIIntent, le contrôleur n'exécutant que les coroutines. 2) IAIPerception : abstraire HasAlertedPatrolTarget + gating fog d'EvaluateBestTarget derrière une interface (fakes en tests). 3) Dédupliquer la troncature par budget des 3 FindPathTowards* dans un helper pur. Ne pas toucher aux corps TryExecute* (effets arène/visuals) sauf via prédicats de préconditions."
+          "details": "À FAIRE : la complexité a déménagé, pas baissé (~4380 lignes dossier). 1) AITurnPlanner : transformer la chaîne if/continue d'ExecuteAITurn (379 lignes) en priorités retournant des AIIntent, le contrôleur n'exécutant que les coroutines. 2) IAIPerception : abstraire HasAlertedPatrolTarget + gating fog d'EvaluateBestTarget derrière une interface (fakes en tests). 3) FAIT (2026-10-17) : troncature par budget des 3 FindPathTowards* dédupliquée en helper pur AIMovementSolver.TruncatePathByBudget (coûts/blocages injectés, lastStepIndex pour le tir à distance, spentCost pour FindPathTowardsCoords) + 7 tests NUnit — TacticalAIDecisionTests 36/36 verts en batchmode EditMode, compile 0 erreur CS. Ne pas toucher aux corps TryExecute* (effets arène/visuals) sauf via prédicats de préconditions.",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-116",
@@ -1897,7 +1898,7 @@
           "id": "RD-025",
           "title": "Brancher Animator state machine & Blend Tree locomotion",
           "epic": "Intégration",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 2,
           "scene": "",
@@ -1906,7 +1907,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "Animator Controller",
-          "details": "State machine, transitions, triggers et orchestration combat déjà opérationnels (TacticalUnitVisual + CombatDevArena). Option B : remplacer l'état Walking par un véritable Blend Tree 1D de locomotion (paramètre float Speed : Idle ➔ Marche ➔ Course ➔ Sprint pour supporter la charge RD-038 et les spés de mobilité) dans PlayerAnimator.controller et synchroniser Speed dans TacticalUnitVisual."
+          "details": "FAIT (2026-10-17, Blend Tree locomotion) : état Walking = BlendTree 1D Locomotion (param Speed m/s = MoveSpeed) : Walking 1.35 / Medium Run 5.75 / Fast Run 8.0 (clips Female+Male fournis par l'utilisateur, Without Skin, humanoid, loop). Runs unisexes Female : les takes Mixamo s'appellent toutes 'mixamo.com', pas d'override genré résolvable (suivi RD-024 : renommer les takes). Runtime TacticalUnitVisual : sync Speed chaque frame (0 à l'arrêt) + paliers GetLocomotionBand (Walk <5, Run <7, Sprint >=7 : base 4.0, Élan 5.5/6.2/7.0/8.5). PlayerAnimatorLinker : param Speed, EnsureLocomotionBlendTree (repli état simple si clips absents), FindBaseClip (base Root historique, anti-dérive Male), Walk With Rifle re-bouclé. Vérifié : 15/15 états conservés (+Rifle Walk To Stop manquant créé), motions autres états byte-identiques, 5 transitions vers Walking intactes, LocomotionSpeedTests 14/14 + AnimationClipCatalogTests 5/5 verts batchmode. Reste : test visuel en jeu par l'utilisateur (transitions marche/course/sprint, boucle des cycles).",
+          "updated": "2026-10-17"
         },
         {
           "id": "RD-063",

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics.Grid;
@@ -104,6 +105,50 @@ namespace Killtime.Tactics.AI
             float score = distToThreat * 10f + jitter;
             if (cover != CoverType.None) score += 15f;
             return score;
+        }
+
+        /// <summary>
+        /// Troncature d'un chemin A* par budget PA (RD-115 sous-lot).
+        /// Factorise verbatim les 3 boucles dupliquées de
+        /// FindPathTowardsTarget / FindPathTowardsRangedPosition /
+        /// FindPathTowardsCoords : cumul des coûts, arrêt au dépassement de
+        /// budget ou à la première case bloquée. Les coûts et blocages sont
+        /// injectés (le contrôleur lit la grille, les tests passent des
+        /// lambdas) : aucune dépendance grille/pathfinder ici.
+        /// lastStepIndex borne la progression (tir à distance : on s'arrête
+        /// à la première case de tir, pas au bout du chemin).
+        /// Retourne null si moins de 2 cases conservées (verbatim).
+        /// </summary>
+        public static List<HexCoordinates> TruncatePathByBudget(
+            IList<HexCoordinates> fullPath,
+            int apBudget,
+            Func<HexCoordinates, int> stepCost,
+            Func<HexCoordinates, bool> isBlocked,
+            int lastStepIndex,
+            out int spentCost)
+        {
+            spentCost = 0;
+            if (fullPath == null || fullPath.Count <= 1) return null;
+            if (stepCost == null || isBlocked == null) return null;
+
+            var truncatedPath = new List<HexCoordinates> { fullPath[0] };
+            int accumulatedCost = 0;
+            int last = Math.Min(lastStepIndex, fullPath.Count - 1);
+
+            for (int i = 1; i <= last; i++)
+            {
+                var step = fullPath[i];
+                int cost = stepCost(step);
+
+                if (accumulatedCost + cost > apBudget) break;
+                if (isBlocked(step)) break;
+
+                accumulatedCost += cost;
+                truncatedPath.Add(step);
+            }
+
+            spentCost = accumulatedCost;
+            return truncatedPath.Count > 1 ? truncatedPath : null;
         }
 
         /// <summary>

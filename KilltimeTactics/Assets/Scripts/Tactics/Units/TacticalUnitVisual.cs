@@ -27,6 +27,20 @@ namespace Killtime.Tactics.Units
     }
 
     /// <summary>
+    /// Palier de locomotion (RD-025) : piloté par le paramètre Animator "Speed" (m/s),
+    /// blendé par le BlendTree 1D Locomotion (Walking 1.35 / Medium Run 5.75 / Fast Run 8.0).
+    /// Seuils calés sur TacticalUnit.MoveSpeed : base 4.0 = Walk, Élan 5.5/6.2 = Run,
+    /// Élan 7.0/8.5 = Sprint.
+    /// </summary>
+    public enum LocomotionBand
+    {
+        Idle,
+        Walk,
+        Run,
+        Sprint
+    }
+
+    /// <summary>
     /// Gestionnaire visuel 3D et machine d'états d'animation pour une unité tactique.
     /// Orchestre les postures de combat, les transitions de garde, les flashs d'impact et les badges de statut.
     /// </summary>
@@ -105,10 +119,12 @@ namespace Killtime.Tactics.Units
         private static readonly int AnimTriggerFallingBackDeath = Animator.StringToHash("TriggerFallingBackDeath");
         private static readonly int AnimIsKO = Animator.StringToHash("IsKO");
         private static readonly int AnimWalkSpeedMultiplier = Animator.StringToHash("WalkSpeedMultiplier");
+        private static readonly int AnimSpeed = Animator.StringToHash("Speed");
         private static readonly int AnimWeaponType = Animator.StringToHash("WeaponType");
 
         private bool _hasWalkingClip = false;
         private bool _hasWalkMultiplierParam = false;
+        private bool _hasSpeedParam = false;
         private float _naturalWalkSpeed = 1.35f;
         private bool _isUnconscious = false;
 
@@ -124,6 +140,21 @@ namespace Killtime.Tactics.Units
 
         public Animator AnimatorComponent => _animator;
         public bool IsInCombat => _isInCombat;
+
+        /// <summary>
+        /// Seuils de paliers locomotion en m/s (RD-025) : base MoveSpeed 4.0 = Walk,
+        /// Élan 5.5/6.2 = Run, Élan 7.0/8.5 = Sprint. Pur (testable hors Play).
+        /// </summary>
+        public const float LocomotionRunThreshold = 5.0f;
+        public const float LocomotionSprintThreshold = 7.0f;
+
+        public static LocomotionBand GetLocomotionBand(float speedMps)
+        {
+            if (speedMps < 0.1f) return LocomotionBand.Idle;
+            if (speedMps < LocomotionRunThreshold) return LocomotionBand.Walk;
+            if (speedMps < LocomotionSprintThreshold) return LocomotionBand.Run;
+            return LocomotionBand.Sprint;
+        }
 
         private struct StatusVisualInfo
         {

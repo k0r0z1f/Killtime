@@ -52,23 +52,13 @@ namespace Killtime.Tactics.AI
             var fullPath = _pathfinder.FindPath(actor.CurrentCoords, bestNeighbor, 50, out _);
             if (fullPath == null || fullPath.Count <= 1) return null;
 
-            var truncatedPath = new List<HexCoordinates> { fullPath[0] };
-            int accumulatedCost = 0;
-
-            for (int i = 1; i < fullPath.Count; i++)
-            {
-                var step = fullPath[i];
-                var stepNode = _grid.GetNode(step);
-                int stepCost = stepNode != null ? stepNode.ActionPointCost : 1;
-
-                if (accumulatedCost + stepCost > apBudget) break;
-                if (stepNode != null && (stepNode.IsOccupied || !stepNode.IsWalkable)) break;
-
-                accumulatedCost += stepCost;
-                truncatedPath.Add(step);
-            }
-
-            return truncatedPath.Count > 1 ? truncatedPath : null;
+            return AIMovementSolver.TruncatePathByBudget(
+                fullPath,
+                apBudget,
+                step => { var n = _grid.GetNode(step); return n != null ? n.ActionPointCost : 1; },
+                step => { var n = _grid.GetNode(step); return n != null && (n.IsOccupied || !n.IsWalkable); },
+                fullPath.Count - 1,
+                out _);
         }
 
         private List<HexCoordinates> FindPathTowardsRangedPosition(TacticalUnit actor, TacticalUnit target, int maxRange, int apBudget)
@@ -117,23 +107,14 @@ namespace Killtime.Tactics.AI
                 }
             }
 
-            var truncatedPath = new List<HexCoordinates> { fullPath[0] };
-            int accumulatedCost = 0;
-
-            for (int i = 1; i <= targetStepIndex; i++)
-            {
-                var step = fullPath[i];
-                var stepNode = _grid.GetNode(step);
-                int stepCost = stepNode != null ? stepNode.ActionPointCost : 1;
-
-                if (accumulatedCost + stepCost > apBudget) break;
-                if (stepNode != null && (stepNode.IsOccupied || !stepNode.IsWalkable)) break;
-
-                accumulatedCost += stepCost;
-                truncatedPath.Add(step);
-            }
-
-            return truncatedPath.Count > 1 ? truncatedPath : null;
+            var truncatedPath = AIMovementSolver.TruncatePathByBudget(
+                fullPath,
+                apBudget,
+                step => { var n = _grid.GetNode(step); return n != null ? n.ActionPointCost : 1; },
+                step => { var n = _grid.GetNode(step); return n != null && (n.IsOccupied || !n.IsWalkable); },
+                targetStepIndex,
+                out _);
+            return truncatedPath;
         }
 
         private bool HasRangedWeapon(TacticalUnit unit, out int maxRange, out int minRange, out SkillType attackSkill)

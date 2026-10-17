@@ -36,6 +36,14 @@ namespace Killtime.Tactics.Units
                 _animator.SetFloat(AnimWalkSpeedMultiplier, multiplier);
             }
 
+            // BlendTree locomotion 1D (RD-025) : vitesse jeu en m/s, 0 à l'arrêt.
+            // WalkSpeedMultiplier conservé pour la marche fusil (état simple).
+            if (_hasSpeedParam)
+            {
+                float locomotionSpeed = moving && _unit != null ? Mathf.Max(0f, _unit.MoveSpeed) : 0f;
+                _animator.SetFloat(AnimSpeed, locomotionSpeed);
+            }
+
             if (moving != _wasMoving)
             {
                 _wasMoving = moving;
@@ -344,6 +352,11 @@ namespace Killtime.Tactics.Units
             BindClipToOverride(WeaponFightIdleStateName, genderKey);
             BindClipToOverride("Fight Idle To Standing Idle", genderKey);
             BindClipToOverride("Walking", genderKey);
+            // Runs unisexes (RD-025) : les takes Mixamo s'appellent toutes "mixamo.com"
+            // (Female comme Male), donc aucun override par nom n'est résolvable pour
+            // "Medium Run"/"Fast Run" et les deux clips seraient ambigus. L'arbre utilise
+            // les clips Female pour les deux sexes (retarget humanoid OK). Les variantes
+            // Male seront activées après renommage des takes (suivi RD-024).
             BindClipToOverride("Roundkick", genderKey);
             // Attaque à l'arme de mêlée : l'état Animator s'appelle "Melee Attack"
             // mais le clip importé (Mixamo) s'appelle "Standing Melee Attack".
@@ -411,17 +424,16 @@ namespace Killtime.Tactics.Units
         {
             _hasWalkingClip = false;
             _hasWalkMultiplierParam = false;
+            _hasSpeedParam = false;
             _naturalWalkSpeed = 1.35f;
 
             if (_animator == null) return;
 
             for (int i = 0; i < _animator.parameterCount; i++)
             {
-                if (_animator.parameters[i].nameHash == AnimWalkSpeedMultiplier)
-                {
-                    _hasWalkMultiplierParam = true;
-                    break;
-                }
+                int nameHash = _animator.parameters[i].nameHash;
+                if (nameHash == AnimWalkSpeedMultiplier) _hasWalkMultiplierParam = true;
+                else if (nameHash == AnimSpeed) _hasSpeedParam = true;
             }
 
             AnimationClip walkingClip = null;

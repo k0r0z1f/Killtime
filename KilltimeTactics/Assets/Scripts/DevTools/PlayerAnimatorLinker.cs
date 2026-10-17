@@ -32,7 +32,7 @@ namespace Killtime.EditorTools
             EnsureRequiredParameters(controller);
 
             var sm = controller.layers[0].stateMachine;
-            EnsureRequiredStatesAndTransitions(sm);
+            EnsureRequiredStatesAndTransitions(controller, sm);
 
             int boundCount = 0;
 
@@ -41,17 +41,33 @@ namespace Killtime.EditorTools
                 var state = childState.state;
                 if (state == null) continue;
 
+                // État locomotion : arbre géré par EnsureLocomotionBlendTree (clips
+                // liés par nom de motion, pas par nom d'état). On force juste le loop.
+                if (state.motion is BlendTree tree)
+                {
+                    foreach (var child in tree.children)
+                    {
+                        if (child.motion is AnimationClip treeClip)
+                        {
+                            EnsureClipLooping(treeClip, true);
+                        }
+                    }
+                    continue;
+                }
+
                 string stateName = state.name;
-                AnimationClip clip = FindSubAnimationClip(stateName);
+                // Base historique Female (racine) : FindSubAnimationClip est ambigu
+                // quand Root + Male partagent le même nom de fichier.
+                AnimationClip clip = FindBaseClip(stateName) ?? FindSubAnimationClip(stateName);
                 // L'état "Melee Attack" utilise le clip Mixamo "Standing Melee Attack".
                 if (clip == null && stateName == "Melee Attack")
                 {
-                    clip = FindSubAnimationClip("Standing Melee Attack");
+                    clip = FindBaseClip("Standing Melee Attack") ?? FindSubAnimationClip("Standing Melee Attack");
                 }
 
                 if (clip != null)
                 {
-                    bool shouldLoop = stateName == "Fight Idle" || stateName == "Standing Idle" || stateName == "Walking" || stateName == "Rifle Idle" || stateName == "Rifle Walk To Stop";
+                    bool shouldLoop = stateName == "Fight Idle" || stateName == "Standing Idle" || stateName == "Walking" || stateName == "Rifle Idle" || stateName == "Rifle Walk To Stop" || stateName == "Walk With Rifle";
                     EnsureClipLooping(clip, shouldLoop);
 
                     state.motion = clip;
@@ -81,6 +97,7 @@ namespace Killtime.EditorTools
             EnsureParameter(controller, "TriggerFallingBackDeath", AnimatorControllerParameterType.Trigger);
             EnsureParameter(controller, "IsKO", AnimatorControllerParameterType.Bool, false);
             EnsureParameter(controller, "WalkSpeedMultiplier", AnimatorControllerParameterType.Float, 1f);
+            EnsureParameter(controller, "Speed", AnimatorControllerParameterType.Float, 0f);
             EnsureParameter(controller, "WeaponType", AnimatorControllerParameterType.Int, 0);
         }
 
@@ -110,7 +127,7 @@ namespace Killtime.EditorTools
             }
         }
 
-        private static void EnsureRequiredStatesAndTransitions(AnimatorStateMachine sm)
+        private static void EnsureRequiredStatesAndTransitions(AnimatorController controller, AnimatorStateMachine sm)
         {
             AnimatorState standingIdle = sm.states.FirstOrDefault(s => s.state.name == "Standing Idle").state;
             AnimatorState fightIdle = sm.states.FirstOrDefault(s => s.state.name == "Fight Idle").state;
@@ -126,8 +143,7 @@ namespace Killtime.EditorTools
             {
                 walkingState = sm.AddState("Walking", new Vector3(240, 220, 0));
             }
-            walkingState.speedParameterActive = true;
-            walkingState.speedParameter = "WalkSpeedMultiplier";
+            EnsureLocomotionBlendTree(controller, walkingState);
 
             var roundkickStateChild = sm.states.FirstOrDefault(s => s.state.name == "Roundkick");
             AnimatorState roundkickState = roundkickStateChild.state;
@@ -627,6 +643,119 @@ namespace Killtime.EditorTools
                     }
                 }
             }
+        }
+
+        /// <summary>
+        /// Locomotion RD-025 : état "Walking" piloté par un BlendTree 1D (param "Speed",
+        /// m/s jeu = TacticalUnit.MoveSpeed). Seuils calés sur les vitesses jeu : marche
+        /// 1.35 (cycle naturel), Medium Run 5.75 (Élan 5.5/6.2), Fast Run 8.0 (Élan 7.0/8.5,
+        /// base 4.0 = blend marche/medium). Base Female (clips unisexes : les takes Mixamo
+        /// s'appellent toutes "mixamo.com", pas d'override genré résolvable — suivi RD-024).
+        /// Sans les clips course : repli état simple + WalkSpeedMultiplier (pré-RD-024).
+        /// </summary>
+        private static void EnsureLocomotionBlendTree(AnimatorController controller, AnimatorState walkingState)
+        {
+            if (walkingState == null) return;
+
+            AnimationClip walkClip = FindBaseClip("Walking") ?? FindSubAnimationClip("Walking");
+            // Base Female explicite : FindSubAnimationClip("Medium Run") est ambigu
+            // (Female + Male portent le même nom de fichier).
+            AnimationClip mediumClip = FindGenderedClip("Medium Run", "Female")
+                ?? FindSubAnimationClip("Medium Run");
+            AnimationClip fastClip = FindGenderedClip("Fast Run", "Female")
+                ?? FindSubAnimationClip("Fast Run");
+
+            if (walkClip != null) EnsureClipLooping(walkClip, true);
+            if (mediumClip != null) EnsureClipLooping(mediumClip, true);
+            if (fastClip != null) EnsureClipLooping(fastClip, true);
+
+            if (mediumClip == null || fastClip == null)
+            {
+                walkingState.speedParameterActive = true;
+                walkingState.speedParameter = "WalkSpeedMultiplier";
+                if (walkClip != null) walkingState.motion = walkClip;
+                return;
+            }
+
+            var tree = new BlendTree
+            {
+                name = "Locomotion",
+                blendType = BlendTreeType.Simple1D,
+                blendParameter = "Speed",
+                useAutomaticThresholds = false,
+                minThreshold = 0f,
+                maxThreshold = 8.5f
+            };
+            if (walkClip == null) walkClip = walkingState.motion as AnimationClip;
+            if (walkClip == null) walkClip = mediumClip;
+            tree.AddChild(walkClip, 1.35f);
+            tree.AddChild(mediumClip, 5.75f);
+            tree.AddChild(fastClip, 8.0f);
+
+            var oldTree = walkingState.motion as BlendTree;
+            walkingState.motion = tree;
+            AssetDatabase.AddObjectToAsset(tree, controller);
+            if (oldTree != null && oldTree != tree) UnityEngine.Object.DestroyImmediate(oldTree, true);
+
+            walkingState.speedParameterActive = false;
+            walkingState.speedParameter = string.Empty;
+        }
+
+        /// <summary>
+        /// Charge un clip dans un sous-dossier genré (Animations/Female, Animations/Male).
+        /// Null si absent : le runtime replie via LoadAnimationClip (Female historique).
+        /// </summary>
+        private static AnimationClip FindGenderedClip(string clipName, string genderFolder)
+        {
+            string[] guids = AssetDatabase.FindAssets($"{clipName} t:Model", new[] { "Assets/Resources/Animations" });
+            if (guids == null) return null;
+            foreach (var guid in guids)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                if (assetPath.IndexOf($"/{genderFolder}/", StringComparison.OrdinalIgnoreCase) < 0) continue;
+                string fileName = Path.GetFileNameWithoutExtension(assetPath);
+                if (!string.Equals(fileName, clipName, StringComparison.OrdinalIgnoreCase)) continue;
+                var assets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+                foreach (var a in assets)
+                {
+                    if (a is AnimationClip c && !c.name.StartsWith("__preview__"))
+                    {
+                        return c;
+                    }
+                }
+            }
+            return null;
+        }
+
+        /// <summary>
+        /// Clip de base historique : préfère la variante non-Male (racine = Female
+        /// historique, puis dossier Female), le runtime appliquant la variante genrée
+        /// via AnimatorOverrideController.
+        /// </summary>
+        private static AnimationClip FindBaseClip(string clipName)
+        {
+            string[] guids = AssetDatabase.FindAssets($"{clipName} t:Model", new[] { "Assets/Resources/Animations" });
+            if (guids == null) return null;
+            AnimationClip fallback = null;
+            foreach (var guid in guids)
+            {
+                string assetPath = AssetDatabase.GUIDToAssetPath(guid);
+                string fileName = Path.GetFileNameWithoutExtension(assetPath);
+                if (!string.Equals(fileName, clipName, StringComparison.OrdinalIgnoreCase)) continue;
+                var assets = AssetDatabase.LoadAllAssetsAtPath(assetPath);
+                foreach (var a in assets)
+                {
+                    if (a is AnimationClip c && !c.name.StartsWith("__preview__"))
+                    {
+                        if (assetPath.IndexOf("/Male/", StringComparison.OrdinalIgnoreCase) < 0)
+                        {
+                            return c;
+                        }
+                        fallback ??= c;
+                    }
+                }
+            }
+            return fallback;
         }
 
         private static void RemoveSelfTransitions(AnimatorState state)

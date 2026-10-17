@@ -334,6 +334,90 @@ namespace Killtime.Tactics.AI.Tests
             var plan = AttackPlanEvaluator.Evaluate(in input, DefaultAim);
             Assert.IsFalse(plan.CancelPenalty);
         }
+
+        // ---- TruncatePathByBudget (RD-115 sous-lot) ----
+
+        private static List<HexCoordinates> TruncPath(
+            IList<HexCoordinates> full, int budget,
+            System.Func<HexCoordinates, int> cost,
+            System.Func<HexCoordinates, bool> blocked,
+            int last, out int spent)
+        {
+            return AIMovementSolver.TruncatePathByBudget(full, budget, cost, blocked, last, out spent);
+        }
+
+        private static List<HexCoordinates> LinePath(int n)
+        {
+            var p = new List<HexCoordinates>(n);
+            for (int i = 0; i < n; i++) p.Add(new HexCoordinates(i, 0));
+            return p;
+        }
+
+        [Test]
+        public void Truncate_FullBudget_KeepsWholePath()
+        {
+            var r = TruncPath(LinePath(5), 10, _ => 1, _ => false, int.MaxValue, out int spent);
+            Assert.IsNotNull(r);
+            Assert.AreEqual(5, r.Count);
+            Assert.AreEqual(4, spent);
+        }
+
+        [Test]
+        public void Truncate_ShortBudget_CutsAtBudget()
+        {
+            var r = TruncPath(LinePath(5), 2, _ => 1, _ => false, int.MaxValue, out int spent);
+            Assert.IsNotNull(r);
+            Assert.AreEqual(3, r.Count); // départ + 2 pas
+            Assert.AreEqual(2, spent);
+        }
+
+        [Test]
+        public void Truncate_BlockedStep_StopsBefore()
+        {
+            var path = LinePath(5);
+            var blocked = path[2];
+            var r = TruncPath(path, 10, _ => 1, c => c.Equals(blocked), int.MaxValue, out int spent);
+            Assert.IsNotNull(r);
+            Assert.AreEqual(2, r.Count);
+            Assert.AreEqual(1, spent);
+        }
+
+        [Test]
+        public void Truncate_LastStepIndex_BoundsProgress()
+        {
+            // Tir à distance : on s'arrête à la case de tir même avec du budget.
+            var r = TruncPath(LinePath(6), 10, _ => 1, _ => false, 2, out int spent);
+            Assert.IsNotNull(r);
+            Assert.AreEqual(3, r.Count);
+            Assert.AreEqual(2, spent);
+        }
+
+        [Test]
+        public void Truncate_ZeroBudget_ReturnsNull()
+        {
+            var r = TruncPath(LinePath(5), 0, _ => 1, _ => false, int.MaxValue, out int spent);
+            Assert.IsNull(r);
+            Assert.AreEqual(0, spent);
+        }
+
+        [Test]
+        public void Truncate_NullOrShortPath_ReturnsNull()
+        {
+            Assert.IsNull(TruncPath(null, 5, _ => 1, _ => false, int.MaxValue, out _));
+            Assert.IsNull(TruncPath(new List<HexCoordinates> { new HexCoordinates(0, 0) }, 5, _ => 1, _ => false, int.MaxValue, out _));
+        }
+
+        [Test]
+        public void Truncate_VariableCosts_Accumulates()
+        {
+            // Coûts 1, 2, 1, 1, budget 3 -> départ + 2 pas (1+2), spent 3.
+            int[] costs = { 0, 1, 2, 1, 1 };
+            var path = LinePath(5);
+            var r = TruncPath(path, 3, c => costs[path.IndexOf(c)], _ => false, int.MaxValue, out int spent);
+            Assert.IsNotNull(r);
+            Assert.AreEqual(3, r.Count);
+            Assert.AreEqual(3, spent);
+        }
     }
 }
 #endif
