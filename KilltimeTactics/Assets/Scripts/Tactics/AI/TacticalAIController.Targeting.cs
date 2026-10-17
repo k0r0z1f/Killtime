@@ -235,34 +235,38 @@ namespace Killtime.Tactics.AI
                 // l'acteur voit réellement à 360° (portée d'ambiance + murs
                 // Full), sauf cible révélée au bruit (tirs) ou par Observation.
                 // Le contact (dist <= 1) reste toujours visible des deux côtés.
+                // RD-115 : lectures via IAIPerception, décision dans le pur
+                // AIPerceptionDecisions.IsCandidateVisible (même gating).
                 if (_grid != null && actor.Stats != null && potential.Stats != null)
                 {
-                    var fog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
-                    bool isNight = fog != null && fog.IsNight;
-                    int range = fog != null ? fog.CurrentSightRange
-                        : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange;
-                    var vp = Killtime.Tactics.Visibility.FogOfWarSystem.ResolveObserverParams(actor.Stats, range, isNight);
+                    var perception = Perception;
+                    bool isNight = perception.IsNight;
+                    var vp = perception.ResolveObserver(actor.Stats);
                     float actorYaw = Killtime.Tactics.Visibility.FogOfWarManager.FacingYawDeg(actor);
-                    bool seen = Killtime.Tactics.Visibility.FogOfWarSystem.IsCellVisible(
+                    bool seen = perception.IsCellVisible(
                         actor.CurrentCoords, actorYaw, potential.CurrentCoords,
                         c => _grid.GetNode(c), vp, _grid.HexRadius);
 
-                    // RD-053 : Lampe dans la nuit — la lumière trahit la position même au-delà de la portée nocturne
-                    if (!seen && isNight && potential.HasFlashlight && HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords, potential.FootprintType, actor.FootprintType, actor))
-                    {
-                        seen = true;
-                    }
+                    bool lampLOS = !seen && isNight && potential.HasFlashlight
+                        && HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords, potential.FootprintType, actor.FootprintType, actor);
 
-                    bool stealthed = Killtime.Core.Combat.StealthState.IsStealthed(potential.Stats);
                     // RD-IA09 : distance d'empreinte (contact Titan = 1, pas 3).
                     int targetDist = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, potential.CurrentCoords, potential.FootprintType);
-                    if (!seen || (stealthed && targetDist > 1 && !vp.Thermal))
+
+                    string unitName = potential.gameObject != null ? potential.gameObject.name : null;
+                    var visInput = new AITargetVisibilityInput
                     {
-                        bool revealed = fog != null
-                            && (fog.IsNoiseActive(potential.gameObject.name)
-                                || fog.IsManuallyRevealed(potential.gameObject.name));
-                        if (!revealed) continue;
-                    }
+                        SeenByFog = seen,
+                        IsNight = isNight,
+                        TargetHasLamp = potential.HasFlashlight,
+                        LampLineOfSight = lampLOS,
+                        TargetStealthed = Killtime.Core.Combat.StealthState.IsStealthed(potential.Stats),
+                        FootprintDistance = targetDist,
+                        ObserverThermal = vp.Thermal,
+                        NoiseRevealed = perception.IsNoiseActive(unitName),
+                        ManuallyRevealed = perception.IsManuallyRevealed(unitName),
+                    };
+                    if (!AIPerceptionDecisions.IsCandidateVisible(in visInput)) continue;
                 }
 
                 int dist = TitanFootprint.MinDistanceBetweenUnits(actor.CurrentCoords, actor.FootprintType, potential.CurrentCoords, potential.FootprintType);
@@ -284,7 +288,9 @@ namespace Killtime.Tactics.AI
                     hasLOSForScore = HasLineOfSight(actor.CurrentCoords, potential.CurrentCoords, potential.FootprintType, actor.FootprintType, actor);
                 }
                 TacticalUnit squadTarget = GetSquadMarkedTarget(actor);
-                var fogInstance = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
+                // RD-115 : bonus nuit/bruit du scoring via IAIPerception (mêmes valeurs).
+                var scorePerception = Perception;
+                string scoreUnitName = potential.gameObject != null ? potential.gameObject.name : null;
                 var scoreInput = new TargetScoreInput
                 {
                     IsRanged = isRanged,
@@ -296,8 +302,8 @@ namespace Killtime.Tactics.AI
                     MaxHp = potential.Stats.MaxHealth,
                     Encaissement = potential.Stats.EncaissementThreshold,
                     IsSquadMarked = (squadTarget != null && squadTarget == potential),
-                    NightLampBonus = (fogInstance != null && fogInstance.IsNight && potential.HasFlashlight),
-                    NoiseBonus = (fogInstance != null && fogInstance.IsNoiseActive(potential.gameObject.name)),
+                    NightLampBonus = (scorePerception.IsNight && potential.HasFlashlight),
+                    NoiseBonus = scorePerception.IsNoiseActive(scoreUnitName),
                     HasDestabilise = ((potential.Stats.ActiveStatus & StatusEffect.Destabilise) != 0),
                     HasATerre = ((potential.Stats.ActiveStatus & StatusEffect.ATerre) != 0),
                     FlawExposed = SkillTechniqueState.IsFlawExposed(potential.Stats),

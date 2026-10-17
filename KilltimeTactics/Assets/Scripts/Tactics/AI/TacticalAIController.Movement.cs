@@ -88,6 +88,8 @@ namespace Killtime.Tactics.AI
 
         // =========================================================================
         // RD-053 : PATROUILLE ALERTÉE & CONVERGENCE VERS LE BRUIT / LUMIÈRE
+        // RD-115 : lectures via IAIPerception, décision dans le pur
+        // AIPerceptionDecisions.FindPatrolTarget (ordre et raisons inchangés).
         // =========================================================================
         private bool HasAlertedPatrolTarget(TacticalUnit actor, out HexCoordinates suspiciousTarget, out string patrolReason)
         {
@@ -98,55 +100,54 @@ namespace Killtime.Tactics.AI
             if (_grid == null || _pathfinder == null) return false;
 
             int currentRound = _turnManager != null ? _turnManager.CurrentRound : 1;
-            bool isNoiseHostile = actor.IsPlayerControlled ? !_squadNoiseFromPlayer : _squadNoiseFromPlayer;
+            var perception = Perception;
 
-            if (_squadLastHeardNoiseCoords.HasValue && isNoiseHostile && (_squadNoiseAlertRound >= currentRound - 1))
+            var enemies = new List<AIPatrolEnemy>(_cachedUnits.Count);
+            for (int i = 0; i < _cachedUnits.Count; i++)
             {
-                int noiseDist = actor.CurrentCoords.DistanceTo(_squadLastHeardNoiseCoords.Value);
-                if (noiseDist > 1)
+                var enemy = _cachedUnits[i];
+                if (enemy == null || enemy == actor || enemy.Stats == null || !enemy.Stats.IsAlive) continue;
+                string enemyName = enemy.gameObject != null ? enemy.gameObject.name : null;
+                enemies.Add(new AIPatrolEnemy
                 {
-                    suspiciousTarget = _squadLastHeardNoiseCoords.Value;
-                    patrolReason = "Tir bruyant entendu";
-                    return true;
-                }
-                else
-                {
-                    _squadLastHeardNoiseCoords = null;
-                }
+                    IsSelf = false,
+                    IsAlive = true,
+                    IsPlayerControlled = enemy.IsPlayerControlled,
+                    CenterDistance = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords),
+                    Coords = enemy.CurrentCoords,
+                    HasLamp = enemy.HasFlashlight,
+                    NoiseActive = perception.IsNoiseActive(enemyName),
+                    LastKnownCoords = perception.GetLastKnownPosition(enemyName),
+                });
             }
 
-            var fog = Killtime.Tactics.Visibility.FogOfWarManager.Instance;
-            if (fog != null)
+            var patrolInput = new AIPatrolInput
             {
-                for (int i = 0; i < _cachedUnits.Count; i++)
+                ActorAlive = true,
+                ActorActionPoints = actor.Stats.CurrentActionPoints,
+                SensorsReady = true,
+                ActorCoords = actor.CurrentCoords,
+                ActorIsPlayer = actor.IsPlayerControlled,
+                FullAutoMode = _mode == CombatAIMode.FullAuto,
+                CurrentRound = currentRound,
+                SquadNoise = new AIPatrolSquadNoise
                 {
-                    var enemy = _cachedUnits[i];
-                    if (enemy == null || enemy == actor || enemy.Stats == null || !enemy.Stats.IsAlive) continue;
-                    bool hostile = actor.IsPlayerControlled ? !enemy.IsPlayerControlled : enemy.IsPlayerControlled;
-                    if (_mode == CombatAIMode.FullAuto && enemy.IsPlayerControlled != actor.IsPlayerControlled) hostile = true;
-                    if (!hostile) continue;
-
-                    int d = actor.CurrentCoords.DistanceTo(enemy.CurrentCoords);
-                    if (d <= 1) continue;
-
-                    if (fog.IsNoiseActive(enemy.gameObject.name))
-                    {
-                        var lastPos = fog.GetLastKnownPosition(enemy.gameObject.name);
-                        suspiciousTarget = lastPos ?? enemy.CurrentCoords;
-                        patrolReason = "Tir bruyant localisé";
-                        return true;
-                    }
-
-                    if (fog.IsNight && enemy.HasFlashlight)
-                    {
-                        suspiciousTarget = enemy.CurrentCoords;
-                        patrolReason = "Faisceau lumineux repéré";
-                        return true;
-                    }
-                }
-            }
-
-            return false;
+                    HasValue = _squadLastHeardNoiseCoords.HasValue,
+                    Coords = _squadLastHeardNoiseCoords ?? default,
+                    AlertRound = _squadNoiseAlertRound,
+                    FromPlayer = _squadNoiseFromPlayer,
+                },
+                IsNight = perception.IsNight,
+                Enemies = enemies,
+            };
+            var result = AIPerceptionDecisions.FindPatrolTarget(in patrolInput);
+            if (result.ClearStaleSquadNoise)
+                _squadLastHeardNoiseCoords = null;
+            if (!result.HasTarget)
+                return false;
+            suspiciousTarget = result.Target;
+            patrolReason = result.Reason;
+            return true;
         }
 
         private IEnumerator ExecuteAlertedPatrol(TacticalUnit actor, HexCoordinates targetCoords, string reason, TacticalUnitVisual visual)

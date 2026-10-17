@@ -255,6 +255,15 @@ namespace Killtime.Tactics.AI
         private static int _squadNoiseAlertRound = -1;
         private static bool _squadNoiseFromPlayer = true;
 
+        // RD-115 : perception injectable (défaut = brouillard live). Les tests
+        // substituent un fake IAIPerception sans singleton ni scène.
+        private IAIPerception _perception;
+        public IAIPerception Perception
+        {
+            get => _perception ?? FogOfWarPerception.Default;
+            set => _perception = value;
+        }
+
         public static void AlertSquadToNoise(HexCoordinates coords, int currentRound, bool isPlayerShooter)
         {
             _squadLastHeardNoiseCoords = coords;
