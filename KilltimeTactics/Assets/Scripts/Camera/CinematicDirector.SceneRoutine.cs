@@ -136,7 +136,7 @@ namespace Killtime.CameraSystem
                 }
                 while (startTransElapsed < startTransDur)
                 {
-                    while (CombatHUD.IsPaused) yield return null;
+                    yield return WaitWhilePaused();
                     startTransElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
                     float st = Mathf.Clamp01(startTransElapsed / startTransDur);
                     float se = ApplyCinematicEase(CinematicEase.Smooth, st);
@@ -145,7 +145,7 @@ namespace Killtime.CameraSystem
                     transform.rotation = Quaternion.Slerp(livePreRot, Quaternion.Euler(targetStartEuler), se);
                     if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(livePreFov, targetStartFov, se);
                     if (driveCamera) UpdateAdaptiveNear(transform.position);
-                    if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape))
+                    if (ShouldSkipShot(cine))
                     {
                         skipped = true;
                         break;
@@ -285,11 +285,7 @@ namespace Killtime.CameraSystem
                     try { focus?.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"🎬 {shot.Label}", Color.magenta); }
                     catch { /* ignore */ }
                 }
-                if (!string.IsNullOrWhiteSpace(shot.Speech))
-                {
-                    string who = string.IsNullOrWhiteSpace(shot.SpeakerId) ? cine.Title : shot.SpeakerId;
-                    CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>[{who}]</b> « {shot.Speech} »", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
-                }
+                LogShotSpeech(shot, cine.Title);
 
                 // Plan final : retrait anticipé des bandes SAUF si une suite Fin→
                 // est déclarée — elle part dans le callback de fin (chaîne), pas
@@ -377,7 +373,7 @@ namespace Killtime.CameraSystem
                 // Warp supraluminique : le plan démarre à vitesse lumière (point central).
                 if (shot.SuperluminalWarp)
                 {
-                    SetSkyboxWarp(1f);
+                    HoldShotWarp(shot);
                     Debug.Log("[CINE] v14 warp=1 plan " + shot.ShotId + " (déjà contracté)");
                 }
 
@@ -386,10 +382,10 @@ namespace Killtime.CameraSystem
                     float delayElapsed = 0f;
                     while (delayElapsed < startDelay)
                     {
-                        while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
+                        if (CombatHUD.IsPaused) { wasPaused = true; yield return WaitWhilePaused(); }
                         bool pausedNow = CombatHUD.IsPaused;
                         delayElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
-                        if (shot.SuperluminalWarp) SetSkyboxWarp(1f);
+                        HoldShotWarp(shot);
                         if (driveCamera)
                         {
                             Vector3 waitPos = effStartPos;
@@ -401,10 +397,10 @@ namespace Killtime.CameraSystem
                             if (_mainCamera != null) _mainCamera.fieldOfView = waitFov;
                             UpdateAdaptiveNear(waitPos);
                         }
-                        if (cine.Skippable && !pausedNow && !wasPaused && Input.GetKeyDown(KeyCode.Escape))
+                        if (ShouldSkipShot(cine, pausedNow, wasPaused))
                         {
                             skipped = true;
-                            CombatHUD.Instance?.AddAdvancedLog("⏩ <b>Cinématique passée.</b>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray);
+                            LogShotSkipped();
                             break;
                         }
                         wasPaused = pausedNow;
@@ -412,12 +408,9 @@ namespace Killtime.CameraSystem
                     }
                 }
 
-                while (CombatHUD.IsPaused) { wasPaused = true; yield return null; }
+                if (CombatHUD.IsPaused) { wasPaused = true; yield return WaitWhilePaused(); }
 
-                if (!string.IsNullOrWhiteSpace(shot.SoundCueId))
-                {
-                    PlayShotAudio(shot);
-                }
+                PlayShotAudioIfCued(shot);
 
                 float elapsed = 0f;
                 while (!skipped && elapsed < duration)
@@ -425,17 +418,9 @@ namespace Killtime.CameraSystem
                     if (CombatHUD.IsPaused)
                     {
                         wasPaused = true;
-                        if (_activeShotAudioSource != null && _activeShotAudioSource.isPlaying)
-                        {
-                            _activeShotAudioSource.Pause();
-                            _isAudioPausedByDirector = true;
-                        }
-                        while (CombatHUD.IsPaused) yield return null;
-                        if (_activeShotAudioSource != null && _isAudioPausedByDirector)
-                        {
-                            _activeShotAudioSource.UnPause();
-                            _isAudioPausedByDirector = false;
-                        }
+                        PauseShotAudio();
+                        yield return WaitWhilePaused();
+                        ResumeShotAudio();
                     }
                     bool pausedNow = CombatHUD.IsPaused;
                     // Temps borné : un hitch (surtout à l'entrée de scène / Deploy :
@@ -443,13 +428,11 @@ namespace Killtime.CameraSystem
                     // unscaledDeltaTime de plusieurs secondes et AVALE la cinématique
                     // (snap + retour instantané). Borné à 0.1s : la ciné dure sa vraie
                     // durée même en cas de rame (quitte à durer plus en temps mural).
-                    elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
-                    float t = Mathf.Clamp01(elapsed / duration);
-                    float e = ApplyCinematicEase(shot.Ease, t);
+                    AdvanceShotClock(ref elapsed, duration, shot.Ease, out float t, out float e);
 
                     // Warp v2 : palier noir+1px (temps dilaté) puis le point
                     // grossit → stries de ralentissement → voûte normale.
-                    if (shot.SuperluminalWarp) SetSkyboxWarp(WarpAmountForShotProgress(t, shot.Ease));
+                    ProgressShotWarp(shot, t);
 
                     if (!exitRetractTriggered && elapsed >= retractStartTime)
                     {
@@ -511,10 +494,10 @@ namespace Killtime.CameraSystem
 
                     // Skip Escape : seulement hors pause et hors transition de pause
                     // (sinon "reprendre" = "skipper", le symptôme "ça skip tout seul").
-                    if (cine.Skippable && !pausedNow && !wasPaused && Input.GetKeyDown(KeyCode.Escape))
+                    if (ShouldSkipShot(cine, pausedNow, wasPaused))
                     {
                         skipped = true;
-                        CombatHUD.Instance?.AddAdvancedLog("⏩ <b>Cinématique passée.</b>", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", Color.gray);
+                        LogShotSkipped();
                         break;
                     }
                     wasPaused = pausedNow;
@@ -584,7 +567,7 @@ namespace Killtime.CameraSystem
                 }
 
                 // Fin du plan : voûte reformée (warp retombe à 0, même si skip).
-                if (shot.SuperluminalWarp) ResetSkyboxWarp();
+                TeardownShotWarp(shot);
 
                 if (skipped) break;
             }
@@ -680,7 +663,7 @@ namespace Killtime.CameraSystem
                     float endTransElapsed = 0f;
                     while (endTransElapsed < endTransDur)
                     {
-                        while (CombatHUD.IsPaused) yield return null;
+                        yield return WaitWhilePaused();
                         endTransElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
                         float et = Mathf.Clamp01(endTransElapsed / endTransDur);
                         float ee = ApplyCinematicEase(CinematicEase.Smooth, et);
@@ -688,7 +671,7 @@ namespace Killtime.CameraSystem
                         transform.rotation = Quaternion.Slerp(endFromRot, livePreRot, ee);
                         if (_mainCamera != null) _mainCamera.fieldOfView = Mathf.Lerp(endFromFov, _normalFOV, ee);
                         UpdateAdaptiveNear(transform.position);
-                        if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape)) break;
+                        if (ShouldSkipShot(cine)) break;
                         yield return null;
                     }
                 }

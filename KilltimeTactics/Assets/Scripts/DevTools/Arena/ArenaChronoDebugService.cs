@@ -17,14 +17,36 @@ namespace Killtime.Tactics.Arena
         private readonly ArenaContext _ctx;
         private readonly ArenaUnitStore _units;
         private readonly TimelineBranch _timeline;
+        private readonly System.Collections.Generic.Dictionary<TimelineId, TimelineBranch> _branches;
+        public TimelineId ActiveBranchId { get; private set; } = TimelineId.Timeline0_Prime;
         private ArenaState _state => _ctx.State;
         private IArenaHost _host => _ctx.Host;
+
+        /// <summary>Historique de la branche active (0/A/B/C/D).</summary>
+        public TimelineBranch ActiveTimeline => _branches != null && _branches.TryGetValue(ActiveBranchId, out var b) ? b : _timeline;
 
         public ArenaChronoDebugService(ArenaContext ctx, ArenaUnitStore units, TimelineBranch timeline)
         {
             _ctx = ctx;
             _units = units;
             _timeline = timeline;
+            _branches = new System.Collections.Generic.Dictionary<TimelineId, TimelineBranch>
+            {
+                { TimelineId.Timeline0_Prime, timeline ?? new TimelineBranch(TimelineId.Timeline0_Prime) },
+                { TimelineId.TimelineA_Alpha, new TimelineBranch(TimelineId.TimelineA_Alpha) },
+                { TimelineId.TimelineB_Beta, new TimelineBranch(TimelineId.TimelineB_Beta) },
+                { TimelineId.TimelineC_Gamma, new TimelineBranch(TimelineId.TimelineC_Gamma) },
+                { TimelineId.TimelineD_Delta, new TimelineBranch(TimelineId.TimelineD_Delta) },
+            };
+            ActiveBranchId = TimelineId.Timeline0_Prime;
+        }
+
+        public bool SwitchBranch(TimelineId id)
+        {
+            if (!_branches.ContainsKey(id)) return false;
+            ActiveBranchId = id;
+            _host.ArenaLog($"🌊 <b>Fleuve du Temps</b> : ligne causale <b>{id}</b> active ({ActiveTimeline.Count} snapshots).");
+            return true;
         }
 
         public void RecordChronoSnapshot(string description)
@@ -49,12 +71,29 @@ namespace Killtime.Tactics.Arena
                 }
             }
 
-            _timeline.PushSnapshot(snap);
+            ActiveTimeline.PushSnapshot(snap);
+        }
+
+        public void RewindToSnapshot(int index)
+        {
+            var snap = ActiveTimeline.RewindTo(index);
+            if (snap == null)
+            {
+                _host.ArenaLog("⏳ Fleuve du Temps : index de snapshot invalide.");
+                if (KilltimeAudioManager.Instance != null)
+                    KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.7f);
+                return;
+            }
+
+            RestoreSnapshot(snap);
+            if (KilltimeAudioManager.Instance != null)
+                KilltimeAudioManager.Instance.Play(SoundId.Rewind_Time, 0.9f);
+            _host.ArenaLog($"⏪ <b>Rembobinage Temporel (Livre V)</b> : Retour au snapshot #{index} '{snap.ActionDescription}' (Round {snap.RoundNumber}, ligne {ActiveBranchId})");
         }
 
         public void RewindLastSnapshot()
         {
-            var snap = _timeline.RewindLastAction();
+            var snap = ActiveTimeline.RewindLastAction();
             if (snap == null)
             {
                 _host.ArenaLog("⏳ Fleuve du Temps : Aucun snapshot antérieur disponible.");

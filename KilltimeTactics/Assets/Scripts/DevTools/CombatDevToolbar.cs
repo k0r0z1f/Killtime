@@ -6,6 +6,7 @@ using Killtime.Tactics.AI;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
 using Killtime.Tactics.Objectives;
+using Killtime.Core.Chrono;
 using Killtime.Core.Combat;
 using Killtime.Core.Dice;
 using Killtime.Core.Character;
@@ -1010,11 +1011,28 @@ namespace Killtime.UI
             GUILayout.Space(4);
 
             GUI.backgroundColor = new Color(0.2f, 0.85f, 1.0f);
-            if (GUILayout.Button("🌊 Ouvrir le Fleuve du Temps 3D (F11)", GUILayout.Height(36)))
+            if (GUILayout.Button("🌊 Ouvrir le Fleuve du Temps 3D (F7)", GUILayout.Height(36)))
             {
                 RiverOfTimeDevWindow.Open();
             }
             GUI.backgroundColor = Color.white;
+            GUILayout.Space(6);
+
+            GUILayout.Label("<b>Ligne causale (0/A/B/C/D) :</b>");
+            GUILayout.BeginHorizontal();
+            var branchIds = new[] { TimelineId.Timeline0_Prime, TimelineId.TimelineA_Alpha, TimelineId.TimelineB_Beta, TimelineId.TimelineC_Gamma, TimelineId.TimelineD_Delta };
+            var branchLabels = new[] { "0 Prime", "A Alpha", "B Beta", "C Gamma", "D Delta" };
+            for (int b = 0; b < branchIds.Length; b++)
+            {
+                bool isActive = _arena != null && _arena.ActiveChronoBranch.Equals(branchIds[b]);
+                if (isActive) GUI.backgroundColor = new Color(0.2f, 0.85f, 1.0f);
+                if (GUILayout.Button(branchLabels[b], GUILayout.Height(26)))
+                {
+                    _arena?.SwitchChronoBranch(branchIds[b]);
+                }
+                GUI.backgroundColor = Color.white;
+            }
+            GUILayout.EndHorizontal();
             GUILayout.Space(6);
 
             int snapshotCount = _arena != null && _arena.Timeline != null ? _arena.Timeline.GetFullChronology().Count : 0;
@@ -1035,14 +1053,20 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(8);
-            GUILayout.Label("Historique chronologique :");
+            GUILayout.Label("Historique chronologique (⏪ = rembobiner jusqu'ici) :");
             if (_arena != null && _arena.Timeline != null)
             {
                 var history = _arena.Timeline.GetFullChronology();
                 for (int i = history.Count - 1; i >= Mathf.Max(0, history.Count - 6); i--)
                 {
                     var s = history[i];
+                    GUILayout.BeginHorizontal();
                     GUILayout.Label($"• [Round {s.RoundNumber} / {s.SecondInRound:0.0}s] {s.ActionDescription}");
+                    if (GUILayout.Button("⏪", GUILayout.Width(36)))
+                    {
+                        _arena?.RewindToSnapshot(i);
+                    }
+                    GUILayout.EndHorizontal();
                 }
             }
         }

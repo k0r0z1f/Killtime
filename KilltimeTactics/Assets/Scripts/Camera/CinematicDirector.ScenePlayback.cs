@@ -32,7 +32,7 @@ namespace Killtime.CameraSystem
             // et ne s'empile pas : elle s'exécute immédiatement en superposition additive.
             if (cine.InPlace)
             {
-                if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) SetSkyboxWarp(1f);
+                if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) HoldShotWarp(cine.Shots[0]);
                 StartCoroutine(InPlaceCinematicRoutine(cine, onComplete));
                 return;
             }
@@ -63,12 +63,12 @@ namespace Killtime.CameraSystem
                 catch { /* ignore */ }
                 _sceneCinematicOnComplete = onComplete;
                 CurrentPlayingSceneCinematic = cine;
-                if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) SetSkyboxWarp(1f);
+                if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) HoldShotWarp(cine.Shots[0]);
                 _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
                 return;
             }
             _sceneCinematicOnComplete = onComplete;
-            if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) SetSkyboxWarp(1f);
+            if (cine.Shots.Count > 0 && cine.Shots[0] != null && cine.Shots[0].SuperluminalWarp) HoldShotWarp(cine.Shots[0]);
             _activeSceneCinematicRoutine = StartCoroutine(SceneCinematicRoutine(cine));
         }
 
@@ -96,58 +96,41 @@ namespace Killtime.CameraSystem
                     if (shot.ShakeIntensity < 0.05f) shot.ShakeIntensity = 0.25f;
                 }
 
-                if (!string.IsNullOrWhiteSpace(shot.Speech))
-                {
-                    string who = string.IsNullOrWhiteSpace(shot.SpeakerId) ? cine.Title : shot.SpeakerId;
-                    CombatHUD.Instance?.AddAdvancedLog($"🎬 <b>[{who}]</b> « {shot.Speech} »", LogCategory.MovementAndTurns, "[CINÉMATIQUE]", new Color(1f, 0.5f, 0.9f));
-                }
+                LogShotSpeech(shot, cine.Title);
 
                 if (startDelay > 0.001f)
                 {
                     float delayElapsed = 0f;
                     while (delayElapsed < startDelay)
                     {
-                        while (CombatHUD.IsPaused) yield return null;
+                        yield return WaitWhilePaused();
                         delayElapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
                         // Warp tenu à 1 pendant l'attente (toujours vitesse lumière).
-                        if (shot.SuperluminalWarp) SetSkyboxWarp(1f);
-                        if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape)) { skipped = true; break; }
+                        HoldShotWarp(shot);
+                        if (ShouldSkipShot(cine)) { skipped = true; break; }
                         yield return null;
                     }
                 }
                 if (skipped) break;
 
-                while (CombatHUD.IsPaused) yield return null;
+                yield return WaitWhilePaused();
 
-                if (!string.IsNullOrWhiteSpace(shot.SoundCueId))
-                {
-                    PlayShotAudio(shot);
-                }
+                PlayShotAudioIfCued(shot);
 
                 float elapsed = 0f;
                 while (elapsed < duration)
                 {
                     if (CombatHUD.IsPaused)
                     {
-                        if (_activeShotAudioSource != null && _activeShotAudioSource.isPlaying)
-                        {
-                            _activeShotAudioSource.Pause();
-                            _isAudioPausedByDirector = true;
-                        }
-                        while (CombatHUD.IsPaused) yield return null;
-                        if (_activeShotAudioSource != null && _isAudioPausedByDirector)
-                        {
-                            _activeShotAudioSource.UnPause();
-                            _isAudioPausedByDirector = false;
-                        }
+                        PauseShotAudio();
+                        yield return WaitWhilePaused();
+                        ResumeShotAudio();
                     }
-                    elapsed += Mathf.Min(Time.unscaledDeltaTime, 0.1f);
-                    float t = Mathf.Clamp01(elapsed / duration);
-                    float e = ApplyCinematicEase(shot.Ease, t);
+                    AdvanceShotClock(ref elapsed, duration, shot.Ease, out float t, out float e);
 
                     // Warp v2 : palier singularité (noir + 1px) puis
                     // point qui grossit → stries → voûte reformée.
-                    if (shot.SuperluminalWarp) SetSkyboxWarp(WarpAmountForShotProgress(t, shot.Ease));
+                    ProgressShotWarp(shot, t);
 
                     // Génération de l'offset additif dans la passe normale (avant rendu)
                     Vector3 sPos = Vector3.zero;
@@ -159,7 +142,7 @@ namespace Killtime.CameraSystem
                     _shakeOffsetEuler = sEuler;
                     _shakeOffsetFov = sFov;
 
-                    if (cine.Skippable && Input.GetKeyDown(KeyCode.Escape))
+                    if (ShouldSkipShot(cine))
                     {
                         skipped = true;
                         break;
@@ -172,7 +155,7 @@ namespace Killtime.CameraSystem
                 _shakeOffsetEuler = Vector3.zero;
                 _shakeOffsetFov = 0f;
 
-                if (shot.SuperluminalWarp) ResetSkyboxWarp();
+                TeardownShotWarp(shot);
                 if (skipped) break;
             }
 

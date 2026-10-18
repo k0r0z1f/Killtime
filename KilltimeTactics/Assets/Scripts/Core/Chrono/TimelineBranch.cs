@@ -30,9 +30,17 @@ namespace Killtime.Core.Chrono
             _history.Add(snapshot);
         }
 
+        public int Count => _history.Count;
+
         public TacticalTimeSnapshot GetLatestSnapshot()
         {
             return _history.Count > 0 ? _history[^1] : null;
+        }
+
+        public TacticalTimeSnapshot GetSnapshotAt(int index)
+        {
+            if (index < 0 || index >= _history.Count) return null;
+            return _history[index];
         }
 
         /// <summary>
@@ -46,6 +54,18 @@ namespace Killtime.Core.Chrono
                 return _history[^1];
             }
             return _history.Count == 1 ? _history[0] : null;
+        }
+
+        /// <summary>
+        /// Rembobine jusqu'à l'index ciblé (inclus) : tronque tout ce qui suit.
+        /// Retourne le snapshot restauré, null si index invalide.
+        /// </summary>
+        public TacticalTimeSnapshot RewindTo(int index)
+        {
+            if (index < 0 || index >= _history.Count) return null;
+            while (_history.Count > index + 1)
+                _history.RemoveAt(_history.Count - 1);
+            return _history[index];
         }
 
         public IReadOnlyList<TacticalTimeSnapshot> GetFullChronology() => _history.AsReadOnly();

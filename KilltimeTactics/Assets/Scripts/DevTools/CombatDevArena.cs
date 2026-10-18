@@ -153,7 +153,8 @@ namespace Killtime.Tactics
         }
         public CombatCalculator Calculator => _combatCalculator;
         public HexPathfinder Pathfinder => _pathfinder;
-        public TimelineBranch Timeline => _timelineBranch;
+        public TimelineBranch Timeline => _chronoService != null ? _chronoService.ActiveTimeline : _timelineBranch;
+        public TimelineId ActiveChronoBranch => _chronoService != null ? _chronoService.ActiveBranchId : TimelineId.Timeline0_Prime;
         public ArenaLayoutType CurrentLayout => _currentLayout;
 
         public event Action<string> OnCombatLogMessage;
@@ -1309,6 +1310,16 @@ namespace Killtime.Tactics
         public void RewindLastSnapshot()
         {
             _chronoService.RewindLastSnapshot();
+        }
+
+        public void RewindToSnapshot(int index)
+        {
+            _chronoService.RewindToSnapshot(index);
+        }
+
+        public bool SwitchChronoBranch(TimelineId id)
+        {
+            return _chronoService.SwitchBranch(id);
         }
 
         public void RefillAPAll()
