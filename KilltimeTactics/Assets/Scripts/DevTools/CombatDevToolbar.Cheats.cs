@@ -153,8 +153,11 @@ namespace Killtime.UI
             GUI.backgroundColor = Color.white;
 
             DrawTargetedCheatsSection();
+            DrawDotCareSection();
+            DrawMoraleSection();
             DrawNamedZonesSection();
             DrawObjectivesSection();
+            DrawVehiclesSection();
 
             GUILayout.Space(8);
             GUILayout.Label("<b>🖥️ Système & Multitâche (Alt-Tab / Multi-Écran) :</b>");

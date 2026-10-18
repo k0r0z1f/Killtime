@@ -4,6 +4,7 @@ using Killtime.Tactics.Units;
 using Killtime.Audio;
 using Killtime.Core.Character;
 using Killtime.Core.Chrono;
+using Killtime.Core.Rules;
 
 namespace Killtime.Tactics.Arena
 {
@@ -401,6 +402,139 @@ namespace Killtime.Tactics.Arena
             try { _ctx.Visualizer?.UpdatePersistentZones(_state.SmokeZones); }
             catch { /* visualiseur optionnel */ }
             _host.ArenaLog($"🌫️ <b>Zones persistantes</b> purgées ({n} zone(s) supprimée(s), cheat dev).");
+        }
+
+        // RD-191 : DoT calibrés / soins / résurrection (dev-only, 0 règle modifiée).
+        public bool ApplyDebugDot(TacticalUnit unit, StatusEffect dot, int pool, bool aggravating)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            if (!CharacterStats.IsDotStatus(dot))
+            {
+                _host.ArenaLog($"☠️ <b>DoT dev</b> : <b>{dot}</b> n'est pas un DoT (Saignement/Empoisonne/EnFeu/Asphyxie requis).");
+                return false;
+            }
+            int v = Mathf.Max(1, pool);
+            unit.Stats.ApplyResidualDamage(dot, v, aggravating);
+            _host.ArenaLog($"☠️ <b>DoT dev</b> : <b>{unit.Stats.Name}</b> ← <b>{dot}</b> pool <b>{v}</b>{(aggravating ? " (aggravé +1/tour)" : "")}.");
+            return true;
+        }
+
+        public int DebugHeal(TacticalUnit unit, int amount)
+        {
+            if (unit == null || unit.Stats == null) return 0;
+            int healed = unit.Stats.Heal(Mathf.Max(0, amount));
+            _host.ArenaLog($"💉 <b>Soin dev</b> : <b>{unit.Stats.Name}</b> +{healed} PV — <b>Souffrant persiste</b> (soin ordinaire ne lève jamais).");
+            return healed;
+        }
+
+        public MajorCareResult DebugMajorCare(TacticalUnit unit, int amount)
+        {
+            var empty = new MajorCareResult { RequestedAmount = Mathf.Max(0, amount), Log = string.Empty };
+            if (unit == null || unit.Stats == null) return empty;
+            var res = unit.Stats.ApplyMajorCare(Mathf.Max(0, amount));
+            _host.ArenaLog($"🩹 <b>Soins majeurs dev</b> : {res.Log}");
+            return res;
+        }
+
+        public int DebugResurrect(TacticalUnit unit, int healthAfter = 1)
+        {
+            if (unit == null || unit.Stats == null) return 0;
+            int duration = unit.Stats.ApplyResurrection(Mathf.Max(1, healthAfter));
+            int conval = unit.Stats.GetResurrectionSequelaeRemainingDays();
+            _host.ArenaLog($"🕊️ <b>Résurrection dev</b> : <b>{unit.Stats.Name}</b> rappelé(e) à <b>{unit.Stats.CurrentHealth} PV</b> — convalescence <b>{duration}j</b> (reste {conval}j), séquelle <b>-1 ec</b> (Poids du Trépas).");
+            return duration;
+        }
+
+        public DotTickResult DebugForceDotTick(TacticalUnit unit)
+        {
+            var empty = new DotTickResult();
+            if (unit == null || unit.Stats == null) return empty;
+            var res = unit.Stats.TickTurnStatus();
+            _host.ArenaLog($"☠️ <b>Tick DoT dev</b> : <b>{unit.Stats.Name}</b> — dégâts <b>{res.TotalDamage}</b> (bouclier {res.ShieldAbsorbed}, PA drainés {res.PaDrained}).");
+            return res;
+        }
+
+        // RD-192 : Moral / reddition / déroute à la demande (dev-only, 0 règle modifiée).
+        // Jet réel CheckMoraleAtThreshold (Max CHA/INS vs SD, seuil 28 %) — les toggles
+        // 🎲 crit/raté RD-187 pilotent l'issue ; forçages directs pour le terrain.
+        public MoraleCheckResult DebugForceMoraleCheck(TacticalUnit unit)
+        {
+            var empty = new MoraleCheckResult();
+            if (unit == null || unit.Stats == null) return empty;
+            var st = unit.Stats;
+            bool wasTested = st.HasTestedMorale;
+            st.HasTestedMorale = false;
+            var res = st.CheckMoraleAtThreshold(_ctx.Dice, CoreRulesConfig.Instance.StandardTargetDC);
+            if (!res.Triggered) st.HasTestedMorale = wasTested;
+            var vis = unit.GetComponent<TacticalUnitVisual>();
+            if (!res.Triggered)
+            {
+                int threshold = Mathf.CeilToInt(st.MaxHealth * 0.28f);
+                _host.ArenaLog($"🧠 <b>Jet moral dev</b> : <b>{st.Name}</b> non déclenché (PV {st.CurrentHealth}/{st.MaxHealth}, seuil 28 % = {threshold}) — baisser les PV (bouton 28 %) puis réessayer.");
+                return res;
+            }
+            _host.ArenaLog($"🧠 <b>Jet moral dev</b> : {res.Log}");
+            if (res.Surrendered)
+            {
+                vis?.SpawnFloatingText("🏳️ REDDITION !", Color.white);
+                vis?.DropHeldItemsWithPhysics();
+                vis?.SetCombatStance(false);
+            }
+            else if (res.Routed)
+            {
+                vis?.SpawnFloatingText("😱 DÉROUTE ! [Agonisant]", new Color(0.95f, 0.2f, 0.85f));
+            }
+            else
+            {
+                vis?.SpawnFloatingText("🧠 Sang-froid préservé", Color.cyan);
+            }
+            return res;
+        }
+
+        public bool DebugForceSurrender(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            var st = unit.Stats;
+            st.HasTestedMorale = true;
+            st.IsSurrendered = true;
+            st.RemoveStatus(StatusEffect.Agonisant);
+            var vis = unit.GetComponent<TacticalUnitVisual>();
+            vis?.SpawnFloatingText("🏳️ REDDITION !", Color.white);
+            vis?.DropHeldItemsWithPhysics();
+            vis?.SetCombatStance(false);
+            _host.ArenaLog($"🏳️ <b>Reddition forcée dev</b> : <b>{st.Name}</b> dépose les armes (exclu du ciblage offensif).");
+            return true;
+        }
+
+        public bool DebugForceRout(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            var st = unit.Stats;
+            st.HasTestedMorale = true;
+            st.IsSurrendered = false;
+            st.ApplyStatus(StatusEffect.Agonisant, -1);
+            var vis = unit.GetComponent<TacticalUnitVisual>();
+            vis?.SpawnFloatingText("😱 DÉROUTE ! [Agonisant]", new Color(0.95f, 0.2f, 0.85f));
+            _host.ArenaLog($"😱 <b>Déroute forcée dev</b> : <b>{st.Name}</b> ← [Agonisant] (fuite panique ExecutePanickedFlee).");
+            return true;
+        }
+
+        public bool DebugRearmMorale(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            var st = unit.Stats;
+            st.RearmMorale();
+            int threshold = Mathf.CeilToInt(st.MaxHealth * 0.28f);
+            _host.ArenaLog($"🔄 <b>Moral réarmé dev</b> : <b>{st.Name}</b> (PV {st.CurrentHealth}/{st.MaxHealth}, seuil 28 % = {threshold}) — prochain passage sous le seuil re-teste.");
+            return true;
+        }
+
+        public bool DebugSetSurvivor(TacticalUnit unit, bool survivor)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            unit.Stats.IsSurvivor = survivor;
+            _host.ArenaLog($"🎭 <b>Profil dev</b> : <b>{unit.Stats.Name}</b> Survivor = <b>{(survivor ? "OUI (reddition)" : "NON (déroute)")}</b>.");
+            return true;
         }
     }
 }

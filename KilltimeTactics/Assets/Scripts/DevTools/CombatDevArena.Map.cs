@@ -221,6 +221,7 @@ namespace Killtime.Tactics
 
             // Carte ré-initialisée : purge les objets au sol avant re-spawn.
             DroppedWeaponPickup.ClearAllDropped();
+            PurgeArenaVehicles();
             _smokeZones.Clear();
             _gridVisualizer?.UpdatePersistentZones(_smokeZones);
             CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();

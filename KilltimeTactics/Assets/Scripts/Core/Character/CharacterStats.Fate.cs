@@ -211,5 +211,18 @@ namespace Killtime.Core.Character
 
             return result;
         }
+
+        /// <summary>
+        /// RD-192 : Réarmement moral dev/test (aucun appelant live).
+        /// Annule un test consommé, lève reddition et déroute pour re-tester
+        /// à la demande. Les chemins live réarment via Heal/ResetTurn au-dessus
+        /// de 28 % (sans lever IsSurrendered) ; seul ce hook dev fait table rase.
+        /// </summary>
+        public void RearmMorale()
+        {
+            HasTestedMorale = false;
+            IsSurrendered = false;
+            RemoveStatus(StatusEffect.Agonisant);
+        }
     }
 }

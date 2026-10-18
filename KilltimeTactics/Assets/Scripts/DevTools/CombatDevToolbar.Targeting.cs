@@ -229,6 +229,115 @@ namespace Killtime.UI
             }
             GUI.enabled = prevEnabledAttack;
             GUI.backgroundColor = Color.white;
+
+            DrawCritMarginRigSection();
+        }
+
+        // RD-193 : rig dev critiques / marges (terrain VATS, couvre RD-179).
+        // Dev-only : positionne les flags DiceRoller (restaurés via RNG).
+        // Aucune règle modifiée — tous les flags à false/null = jets live.
+        private void DrawCritMarginRigSection()
+        {
+            GUILayout.Space(6);
+            GUILayout.Label("<b>🎲 Rig Critiques / Marges (RD-193, dev-only) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            GUILayout.BeginHorizontal();
+            bool aCrit = DiceRoller.DevForceAttackCrit;
+            bool wantACrit = GUILayout.Toggle(aCrit, "⚔️ Crit attaquant");
+            if (wantACrit != aCrit)
+            {
+                if (wantACrit) DiceRoller.DevForceAttackFumble = false;
+                DiceRoller.DevForceAttackCrit = wantACrit;
+                _arena?.Log(wantACrit ? "🎲 <b>Rig dev</b> : critique attaquant forcé." : "🎲 <b>Rig dev</b> : critique attaquant off.");
+            }
+            bool aFumb = DiceRoller.DevForceAttackFumble;
+            bool wantAFumb = GUILayout.Toggle(aFumb, "Raté attaquant");
+            if (wantAFumb != aFumb)
+            {
+                if (wantAFumb) DiceRoller.DevForceAttackCrit = false;
+                DiceRoller.DevForceAttackFumble = wantAFumb;
+                _arena?.Log(wantAFumb ? "🎲 <b>Rig dev</b> : raté attaquant forcé." : "🎲 <b>Rig dev</b> : raté attaquant off.");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            bool dCrit = DiceRoller.DevForceDefenseCrit;
+            bool wantDCrit = GUILayout.Toggle(dCrit, "🛡️ Crit défenseur");
+            if (wantDCrit != dCrit)
+            {
+                if (wantDCrit) DiceRoller.DevForceDefenseFumble = false;
+                DiceRoller.DevForceDefenseCrit = wantDCrit;
+                _arena?.Log(wantDCrit ? "🎲 <b>Rig dev</b> : critique défenseur forcé." : "🎲 <b>Rig dev</b> : critique défenseur off.");
+            }
+            bool dFumb = DiceRoller.DevForceDefenseFumble;
+            bool wantDFumb = GUILayout.Toggle(dFumb, "Raté défenseur");
+            if (wantDFumb != dFumb)
+            {
+                if (wantDFumb) DiceRoller.DevForceDefenseCrit = false;
+                DiceRoller.DevForceDefenseFumble = wantDFumb;
+                _arena?.Log(wantDFumb ? "🎲 <b>Rig dev</b> : raté défenseur forcé." : "🎲 <b>Rig dev</b> : raté défenseur off.");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Label("<i>Différentiel net forcé (attaque − défense) :</i>");
+            GUILayout.BeginHorizontal();
+            int? curDiff = DiceRoller.DevForcedDifferential;
+            int?[] diffs = { null, 0, 5, 10, 20 };
+            string[] diffLabels = { "OFF", "0 (déviation)", "+5 (saigne/brûle)", "+10 (K.O. crâne)", "+20 (désintègre)" };
+            for (int i = 0; i < diffs.Length; i++)
+            {
+                if (curDiff == diffs[i]) GUI.backgroundColor = new Color(0.2f, 0.6f, 1f);
+                if (GUILayout.Button(diffLabels[i], GUILayout.Height(24)))
+                {
+                    DiceRoller.DevForcedDifferential = diffs[i];
+                    _arena?.Log(diffs[i].HasValue ? $"🎲 <b>Rig dev</b> : différentiel forcé {diffs[i].Value:+0;-0;0}." : "🎲 <b>Rig dev</b> : différentiel live restauré.");
+                }
+                GUI.backgroundColor = Color.white;
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Label("<i>Déviation d6 forcée (Diff 0 → table Haute/Membres §26.1) :</i>");
+            GUILayout.BeginHorizontal();
+            int? curDefl = DiceRoller.DevForcedDeflectionRoll;
+            int?[] defls = { null, 1, 2, 3, 4, 5, 6 };
+            string[] deflLabels = { "OFF", "1", "2", "3", "4", "5", "6" };
+            for (int i = 0; i < defls.Length; i++)
+            {
+                if (curDefl == defls[i]) GUI.backgroundColor = new Color(0.2f, 0.6f, 1f);
+                if (GUILayout.Button(deflLabels[i], GUILayout.Height(24)))
+                {
+                    DiceRoller.DevForcedDeflectionRoll = defls[i];
+                    _arena?.Log(defls[i].HasValue ? $"🎲 <b>Rig dev</b> : déviation d6 forcée à {defls[i].Value}." : "🎲 <b>Rig dev</b> : déviation live restaurée.");
+                }
+                GUI.backgroundColor = Color.white;
+            }
+            GUILayout.EndHorizontal();
+
+            bool hasCc = DiceRoller.DevForcedCritConsequenceRaw.HasValue;
+            bool wantCc = GUILayout.Toggle(hasCc, "✨ Conséquence critique forcée (brut d2–d24, §8.2)");
+            if (wantCc != hasCc)
+            {
+                DiceRoller.DevForcedCritConsequenceRaw = wantCc ? 24 : (int?)null;
+                _arena?.Log(wantCc ? "🎲 <b>Rig dev</b> : conséquence critique forcée (brut 24)." : "🎲 <b>Rig dev</b> : conséquence live restaurée.");
+            }
+            if (DiceRoller.DevForcedCritConsequenceRaw.HasValue)
+            {
+                GUILayout.BeginHorizontal();
+                GUILayout.Label($"Brut : <b>{DiceRoller.DevForcedCritConsequenceRaw.Value}</b>", GUILayout.Width(90));
+                int wantRaw = (int)GUILayout.HorizontalSlider(DiceRoller.DevForcedCritConsequenceRaw.Value, 1f, 24f);
+                if (wantRaw != DiceRoller.DevForcedCritConsequenceRaw.Value)
+                    DiceRoller.DevForcedCritConsequenceRaw = wantRaw;
+                GUILayout.EndHorizontal();
+            }
+
+            if (GUILayout.Button("🎲 RNG : tout restaurer (ClearDevRig)"))
+            {
+                DiceRoller.ClearDevRig();
+                _arena?.Log("🎲 <b>Rig dev</b> : RNG normal restauré (critiques + marges).");
+            }
+
+            GUILayout.EndVertical();
         }
     }
 }

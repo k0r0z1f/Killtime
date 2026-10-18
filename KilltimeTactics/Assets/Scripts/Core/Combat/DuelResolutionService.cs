@@ -245,7 +245,7 @@ namespace Killtime.Core.Combat
                 ? CombatDuelShared.CommittedDefenseBonus(duel)
                 : 0;
 
-            duel.AttackFinalRoll = _ctx.DiceRoller.Roll(duel.AttackDie, duel.AttackBaseMod + attCommitted, cfg.StandardTargetDC);
+            duel.AttackFinalRoll = RollAttackDevAware(duel.AttackDie, duel.AttackBaseMod + attCommitted, cfg.StandardTargetDC);
 
             bool effectiveDefend = duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated;
             if (!effectiveDefend)
@@ -265,11 +265,56 @@ namespace Killtime.Core.Combat
             }
             else
             {
-                duel.DefenseFinalRoll = _ctx.DiceRoller.Roll(duel.DefenseDie, duel.DefenseBaseMod + defCommitted, cfg.StandardTargetDC);
+                duel.DefenseFinalRoll = RollDefenseDevAware(duel.DefenseDie, duel.DefenseBaseMod + defCommitted, cfg.StandardTargetDC);
+            }
+
+            // RD-193 (dev-only, terrain VATS) : différentiel net forcé.
+            // Null par défaut = révélation live verbatim. Quand positionné, le total
+            // adverse est réécrit (bruts/critiques affichés inchangés) puis restauré
+            // via DiceRoller.ClearDevRig() — aucune règle modifiée.
+            if (DiceRoller.DevForcedDifferential.HasValue)
+            {
+                int forced = DiceRoller.DevForcedDifferential.Value;
+                if (!effectiveDefend)
+                {
+                    var a = duel.AttackFinalRoll;
+                    a.Total = forced;
+                    a.Differential = forced - a.TargetDC;
+                    duel.AttackFinalRoll = a;
+                }
+                else
+                {
+                    var d = duel.DefenseFinalRoll;
+                    d.Total = DiceRoller.DevApplyForcedDifferential(duel.AttackFinalRoll.Total, forced);
+                    d.Differential = d.Total - d.TargetDC;
+                    duel.DefenseFinalRoll = d;
+                }
             }
 
             duel.HasResolved = true;
             return _damage.ResolveDuelDamage(duel);
+        }
+
+        /// <summary>
+        /// RD-193 (dev-only) : jet d'attaque sensible au rig par camp.
+        /// Priorité : flag de camp, puis flags globaux RD-187, puis jet live.
+        /// Tous à false par défaut = Roll() verbatim.
+        /// </summary>
+        private DiceRollResult RollAttackDevAware(DiceType die, int modifier, int targetDC)
+        {
+            if (DiceRoller.DevForceAttackCrit) return DiceRoller.DevForcedResult(die, modifier, targetDC, true);
+            if (DiceRoller.DevForceAttackFumble) return DiceRoller.DevForcedResult(die, modifier, targetDC, false);
+            return _ctx.DiceRoller.Roll(die, modifier, targetDC);
+        }
+
+        /// <summary>
+        /// RD-193 (dev-only) : jet de défense sensible au rig par camp (miroir attaque).
+        /// </summary>
+        private DiceRollResult RollDefenseDevAware(DiceType die, int modifier, int targetDC)
+        {
+            if (DiceRoller.DevForceDefenseCrit) return DiceRoller.DevForcedResult(die, modifier, targetDC, true);
+            if (DiceRoller.DevForceDefenseFumble) return DiceRoller.DevForcedResult(die, modifier, targetDC, false);
+            return _ctx.DiceRoller.Roll(die, modifier, targetDC);
         }
 
         /// <summary>

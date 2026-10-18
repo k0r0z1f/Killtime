@@ -33,6 +33,7 @@ namespace Killtime.Tactics.CombatUI
             AddCareActions(actions, actor, target, arena, isSelf, isEnemy, targetIsAlive);
             AddSelfActions(actions, actor, target, arena, isSelf, isEnemy, targetIsAlive);
             AddTacticsActions(actions, actor, target, arena, isSelf, isEnemy, targetIsAlive);
+            AddVehicleActions(actions, actor, target, arena, isSelf, isEnemy, targetIsAlive);
             AddTechniqueActions(actions, actor, target, arena, isSelf, isEnemy, targetIsAlive);
             AddDevActions(actions, actor, target, arena, isSelf, isEnemy, targetIsAlive);
 

@@ -65,8 +65,17 @@ namespace Killtime.Core.Combat
         /// </summary>
         public BodyPart ResolveAnatomicalDeflection(BodyPart targeted, out int rollDie, out string medicalConsequence)
         {
-            rollDie = _ctx.DiceRoller != null ? _ctx.DiceRoller.Roll(DiceType.D6, 0, 0).RawRoll : _ctx.Random.Next(1, 7);
-            if (rollDie < 1 || rollDie > 6) rollDie = _ctx.Random.Next(1, 7);
+            // RD-193 (dev-only) : déviation d6 forcée (terrain VATS).
+            // Null par défaut = tirage live verbatim. Clamp 1–6.
+            if (DiceRoller.DevForcedDeflectionRoll.HasValue)
+            {
+                rollDie = Math.Max(1, Math.Min(6, DiceRoller.DevForcedDeflectionRoll.Value));
+            }
+            else
+            {
+                rollDie = _ctx.DiceRoller != null ? _ctx.DiceRoller.Roll(DiceType.D6, 0, 0).RawRoll : _ctx.Random.Next(1, 7);
+                if (rollDie < 1 || rollDie > 6) rollDie = _ctx.Random.Next(1, 7);
+            }
 
             bool isUpper = IsUpperBodyPart(targeted);
 

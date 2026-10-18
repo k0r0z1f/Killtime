@@ -1284,7 +1284,7 @@
           "id": "RD-191",
           "title": "DoT calibrés, Souffrant, résurrection",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 4,
           "scene": "Killzone_Alpha3",
@@ -1294,13 +1294,13 @@
           "scale": null,
           "suggestedAsset": "CharacterStats.Care.cs + CombatActionRegistry.Care.cs + toolbar",
           "updated": "2026-10-18",
-          "details": "Calibrer les États/DoT : poser DoT dosé (type + pool + tours, aggravation +1), tester Heal simple (ne lève jamais Souffrant) vs soins majeurs CONx2 (ApplyMajorCare), bouton réanimer pour la résurrection + vérif séquelle -1ec (HasResurrectionSequelée). Chemins existants, section toolbar DoT/soins ; fichiers <800 l. Couvre RD-177."
+          "details": "FAIT (2026-10-18) : DoT calibrés / Souffrant / résurrection, dev-only, 0 règle modifiée. 1) ArenaChronoDebugService (+51 l., 457 l.) : ApplyDebugDot (refuse les non-DoT via IsDotStatus, log ☠️ DoT dev), DebugHeal (rappel Souffrant persiste), DebugMajorCare (log result.Log), DebugResurrect (log convalescence + séquelle -1ec), DebugForceDotTick (log dégâts/tick). 2) Façades CombatDevArena.DevTools.cs (+26 l., 317 l.) : ApplyDebugDot / DebugHealUnit / DebugMajorCareUnit / DebugResurrectUnit / DebugForceDotTickUnit. 3) Nouveau partial CombatDevToolbar.Dots.cs (118 l.) + 1 ligne d'appel dans .Cheats.cs (586 l., <800, pas de split requis) : sélecteur unité local, 4 types DoT, slider pool 1-10, toggle aggravation, Poser DoT / Forcer tick, slider soin + Soin simple / Soins majeurs (seuil CON×2 lu), Réanimer + readout séquelle, readouts pools + Souffrant + PV. 4) Tests/DotCareCheatsTests.cs (pur Core) : 5/5 verts batchmode EditMode + non-régression TargetedCheatsTests 6/6 + SouffrantMajorCareTests 13/13 + suite complète EditMode 643/643. Hygiène : ProjectSettings.asset restauré, 0 artefact. Reste : contrôle visuel en jeu par l'utilisateur. Couvre RD-177."
         },
         {
           "id": "RD-192",
           "title": "Moral / reddition / déroute à la demande",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 5,
           "scene": "Killzone_Alpha3",
@@ -1310,13 +1310,13 @@
           "scale": null,
           "suggestedAsset": "CharacterStats + TacticalAIController + toolbar",
           "updated": "2026-10-18",
-          "details": "Déclencher le moral à la demande : bouton forcer jet moral (CHA/INS vs SD), forcer reddition (profil Survivor : désarmement, exclusion ciblage) / déroute (Agonisant, fuite panique ExecutePanickedFlee), toggle profil Survivor sur mannequin, réarmer au-dessus de 28 %. Périmètre : CheckMoraleAtThreshold existant + petite section toolbar ; fichiers <800 l. Couvre RD-178."
+          "details": "FAIT (2026-10-18) : moral à la demande, 0 règle modifiée — ArenaChronoDebugService (DebugForceMoraleCheck : réarme + vrai jet Max CHA/INS vs SD seuil 28 %, rig 🎲 RD-187 pilote l issue, flag testé restauré si non-déclenché, floating + DropHeldItemsWithPhysics + stance si reddition ; DebugForceSurrender/Rout mutuellement exclusifs comme le live ; DebugRearmMorale via hook Core RearmMorale() ; DebugSetSurvivor) + façades CombatDevArena.DevTools + section toolbar CombatDevToolbar.Morale.cs (sélecteur, readout PV/seuil/testé/Survivor/rendu/Agonisant). Hook Core additif RearmMorale() dans CharacterStats.Fate.cs (aucun appelant live). Fichiers <800 l. Preuve : batchmode EditMode MoraleCheatsTests 10/10 + full 659/659 verts, 0 erreur CS. Revue 2nd avis : 0 bloquant, 4 mineurs corrigés (B1 restauration flag, B2/B3 exclusion mutuelle, E1 test tautologique remplacé par vrai test RearmMorale + 2 tests seuils). Hygiène : ProjectSettings.asset restauré (x3), 0 artefact, .meta générés par l éditeur. Reste : contrôle visuel en jeu par l utilisateur (onglet Outils & Cheats, Killzone_Alpha3). Couvre RD-178 (volet moral)."
         },
         {
           "id": "RD-193",
           "title": "Critiques / déviation / marges forcées",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 6,
           "scene": "Killzone_Alpha3",
@@ -1326,7 +1326,7 @@
           "scale": null,
           "suggestedAsset": "DiceRoller + CombatDevToolbar.Targeting.cs",
           "updated": "2026-10-18",
-          "details": "Valider critiques et marges sans RNG : forcer critique offensif/défensif (table d2-d24, tag [CRITIQUE]), forcer Différentiel 0 (déviation d6 Haute vs Membres), forcer Diff>=5 (Saignement/Combustion), Diff>=10 crânien (K.O.), Destruction 6 + Diff>=20 (désintégration), garde-fous Miracle/InstantDeath. Périmètre : rig dev DiceRoller derrière flag + onglet VATS existant ; fichiers <800 l. Couvre RD-179."
+          "details": "FAIT (2026-10-18) : rig dev-only critiques/marges, 0 règle modifiée (tout à false/null = jets live). 1) DiceRoller (464 l.) : DevForceAttackCrit/Fumble + DevForceDefenseCrit/Fumble, DevForcedDifferential, DevForcedCritConsequenceRaw (clampé au calibre), DevForcedDeflectionRoll (1-6), DevForcedResult() + DevApplyForcedDifferential() purs, ClearDevRig() étendu. 2) DuelResolutionService (532 l.) : jets par camp dev-aware + réécriture du total adverse pour Diff forcé. 3) CombatProgressionService (243 l.) : déviation d6 forcée. 4) Toolbar onglet VATS (343 l.) : section RD-193 (crit/raté par camp, Diff OFF/0/+5/+10/+20, d6 OFF/1-6, conséquence OFF + slider 1-24, RNG restore + logs). 5) CritMarginRigTests 15/15 (crit off/def, P24 K.O., Diff 0 déviation Haute 1→Yeux, Diff 5 Saignement, Diff 10 K.O. crânien, Diff 20 + Destruction 6 = désintégration malgré Miracle, garde-fous Miracle→sauvé / sans Miracle→InstantDeath). Preuve : batchmode EditMode CritMarginRigTests 15/15 + full 674/674 verts, exit 0, 0 erreur CS. Hygiène : ProjectSettings.asset restauré, 0 artefact, fichiers <800 l. Reste : contrôle visuel en jeu (onglet VATS, Killzone_Alpha3)."
         },
         {
           "id": "RD-194",
@@ -1348,7 +1348,7 @@
           "id": "RD-195",
           "title": "Véhicules en arène : spawn, embarquer, écraser",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 8,
           "scene": "Killzone_Alpha3",
@@ -1358,7 +1358,7 @@
           "scale": null,
           "suggestedAsset": "CombatDevArena.Vehicle.cs (nouveau) + UI/CombatActionRegistry",
           "updated": "2026-10-18",
-          "details": "Brancher les véhicules en arène (TODO RD-051 restant) : spawn figurine véhicule (gabarits Vélo→Station, PV = Max palier), embarquer 2 PA / débarquer 0 PA (TryEmbark vérifié), trajectoire d'écrasement (fixe + projection 1 case + À Terre), frapper sous-système nommé (essentiel = épave + débarquement forcé, superficiel = Disabled), bonus +100 lourde visible. Périmètre : partial sur SpecialManeuverService.Vehicle.cs + entrées registre d'actions ; fichiers <800 l. Couvre RD-181."
+          "details": "FAIT (2026-10-18) : véhicules branchés en arène, dev-only, 0 règle modifiée. 1) DevTools/CombatDevArena.Vehicles.cs (284 l.) : SpawnArenaVehicle (id veh-<gabarit>-<n>, PV=Max palier, figurine cylindre calibrée, log +100 lourde), MoveArenaVehicle, TryEmbark/DisembarkArenaVehicle (2 PA/0 PA via VehicleState), ExecuteVehicleRunOver (figurine sur la cible + dégâts fixes gabarit + projection 1 case + À Terre + fatal), ExecuteVehicleSubsystemStrike (2 PA, bruts arme + bonus lourde tracé, essentiel à 0 = épave grisée + débarquement forcé, superficiel = Disabled), PurgeArenaVehicles branchée sur ResetArena + RestoreLoadedMap, helpers purs VehicleLabelFor/FormatStrikePreview. 2) UI/CombatActionRegistry.Vehicle.cs (107 l.) + 1 ligne facade : radial Embarquer/Débarquer (contact 1 case), Écraser au volant (2 PA), Cribler Moteur/Roues du véhicule adverse (2 PA, tag +100 lourde). 3) DevTools/CombatDevToolbar.Vehicles.cs (133 l.) + 1 ligne Cheats.cs : section MJ spawn x5 gabarits au point ciblé, sélecteur, PV essentiels, embarquer/débarquer/purger, écraser cible active, sélecteur 9 sous-systèmes + frappe 2 PA. Preuve : batchmode EditMode VehicleArenaTests 6/6 + VehicleCombatTests 15/15 + suite complète 649/649 verts, 0 erreur CS (résultats /tmp/opencode/rd195-*.xml). Hygiène : ProjectSettings.asset restauré (hash identique), 0 artefact, fichiers <800 l. Reste : contrôle visuel en jeu par l utilisateur (spawner chaque gabarit, embarquer, écraser un mannequin, cribler Moteur au canon lourd). Couvre RD-181 (partiel, avec RD-196). Correctifs relecture (2026-10-18) : contact 1 case désormais appliqué à l embarquement (refus explicite si trop loin), figurine déplacée seulement si l écrasement est accepté (plus de mouvement cosmétique sur refus/immunité), Écraser radial résout le véhicule avant de débiter les 2 PA. Preuve : re-run suite complète 649/649 verts."
         },
         {
           "id": "RD-196",

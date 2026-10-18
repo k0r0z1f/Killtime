@@ -34,10 +34,30 @@ namespace Killtime.Core.Dice
         public static bool DevForceCritical = false;
         public static bool DevForceFumble = false;
 
+        // RD-193 (dev-only, VATS terrain) : rig fin critiques / marges.
+        // Tous à false/null par défaut (Livre II/VI/VII verbatim). Restaurés par ClearDevRig().
+        public static bool DevForceAttackCrit = false;
+        public static bool DevForceAttackFumble = false;
+        public static bool DevForceDefenseCrit = false;
+        public static bool DevForceDefenseFumble = false;
+        // Différentiel net forcé (attaque − défense) appliqué dans ResolveBlindDuel.
+        public static int? DevForcedDifferential = null;
+        // Relance de conséquence critique (d2–d24, §8.2) forcée à ce brut.
+        public static int? DevForcedCritConsequenceRaw = null;
+        // Tirage d6 de déviation anatomique (Livre VI §26.1) forcé (1–6).
+        public static int? DevForcedDeflectionRoll = null;
+
         public static void ClearDevRig()
         {
             DevForceCritical = false;
             DevForceFumble = false;
+            DevForceAttackCrit = false;
+            DevForceAttackFumble = false;
+            DevForceDefenseCrit = false;
+            DevForceDefenseFumble = false;
+            DevForcedDifferential = null;
+            DevForcedCritConsequenceRaw = null;
+            DevForcedDeflectionRoll = null;
         }
 
         /// <summary>Tirage brut maximal du calibre (critique forcé).</summary>
@@ -60,6 +80,56 @@ namespace Killtime.Core.Dice
                 DiceType.TwoD12Plus10 => 34,
                 _ => 6,
             };
+        }
+
+        /// <summary>
+        /// Construit un résultat forcé (RD-193, dev-only) : critique = brut maximal
+        /// du calibre, raté = brut minimal. Miroir exact des branches RD-187 de Roll().
+        /// Pur (aucun RNG) — la toolbar/arène positionne, ClearDevRig() restaure.
+        /// </summary>
+        public static DiceRollResult DevForcedResult(DiceType dieType, int modifier, int targetDC, bool forceCrit)
+        {
+            if (forceCrit)
+            {
+                int forcedMax = MaxRawFor(dieType);
+                int forcedTotal = forcedMax + modifier;
+                return new DiceRollResult
+                {
+                    DieType = dieType,
+                    RawRoll = forcedMax,
+                    Modifier = modifier,
+                    Total = forcedTotal,
+                    TargetDC = targetDC,
+                    Differential = forcedTotal - targetDC,
+                    IsSuccess = true,
+                    IsCriticalSuccess = true,
+                    IsCriticalFailure = false
+                };
+            }
+            int forcedMin = MinRawFor(dieType);
+            int fumbledTotal = forcedMin + modifier;
+            return new DiceRollResult
+            {
+                DieType = dieType,
+                RawRoll = forcedMin,
+                Modifier = modifier,
+                Total = fumbledTotal,
+                TargetDC = targetDC,
+                Differential = fumbledTotal - targetDC,
+                IsSuccess = false,
+                IsCriticalSuccess = false,
+                IsCriticalFailure = true
+            };
+        }
+
+        /// <summary>
+        /// RD-193 (dev-only) : total de défense réécrit pour obtenir le différentiel
+        /// forcé (attaque − défense = forcé). Pur — appelé par ResolveBlindDuel
+        /// uniquement quand DevForcedDifferential est positionné.
+        /// </summary>
+        public static int DevApplyForcedDifferential(int attackTotal, int forcedDifferential)
+        {
+            return attackTotal - forcedDifferential;
         }
 
         /// <summary>Tirage brut minimal du calibre (raté forcé).</summary>
@@ -232,6 +302,14 @@ namespace Killtime.Core.Dice
         /// </summary>
         public virtual CriticalConsequence RollCriticalConsequence(DiceType dieType, CriticalEffectCategory category = CriticalEffectCategory.Offensive)
         {
+            // RD-193 (dev-only) : conséquence forcée (palier §8.2 déterministe).
+            // Null par défaut = relance live verbatim. Clampé au calibre du dé.
+            if (DevForcedCritConsequenceRaw.HasValue)
+            {
+                int forced = DevForcedCritConsequenceRaw.Value;
+                forced = Math.Max(1, Math.Min(MaxRawFor(dieType), forced));
+                return LookupCriticalConsequence(forced, category);
+            }
             int rawRoll = RollRaw(dieType);
             return LookupCriticalConsequence(rawRoll, category);
         }

@@ -99,6 +99,58 @@ namespace Killtime.Tactics
             return _chronoService.ForceJam(unit, jammed);
         }
 
+        // RD-191 : DoT calibrés / soins / résurrection (dev-only, 0 règle modifiée).
+        public bool ApplyDebugDot(TacticalUnit unit, StatusEffect dot, int pool, bool aggravating)
+        {
+            return _chronoService.ApplyDebugDot(unit, dot, pool, aggravating);
+        }
+
+        public int DebugHealUnit(TacticalUnit unit, int amount)
+        {
+            return _chronoService.DebugHeal(unit, amount);
+        }
+
+        public MajorCareResult DebugMajorCareUnit(TacticalUnit unit, int amount)
+        {
+            return _chronoService.DebugMajorCare(unit, amount);
+        }
+
+        public int DebugResurrectUnit(TacticalUnit unit, int healthAfter = 1)
+        {
+            return _chronoService.DebugResurrect(unit, healthAfter);
+        }
+
+        public DotTickResult DebugForceDotTickUnit(TacticalUnit unit)
+        {
+            return _chronoService.DebugForceDotTick(unit);
+        }
+
+        // RD-192 : Moral / reddition / déroute à la demande (dev-only, 0 règle modifiée).
+        public MoraleCheckResult DebugForceMoraleCheckUnit(TacticalUnit unit)
+        {
+            return _chronoService.DebugForceMoraleCheck(unit);
+        }
+
+        public bool DebugForceSurrenderUnit(TacticalUnit unit)
+        {
+            return _chronoService.DebugForceSurrender(unit);
+        }
+
+        public bool DebugForceRoutUnit(TacticalUnit unit)
+        {
+            return _chronoService.DebugForceRout(unit);
+        }
+
+        public bool DebugRearmMoraleUnit(TacticalUnit unit)
+        {
+            return _chronoService.DebugRearmMorale(unit);
+        }
+
+        public bool DebugSetSurvivorUnit(TacticalUnit unit, bool survivor)
+        {
+            return _chronoService.DebugSetSurvivor(unit, survivor);
+        }
+
         public int GetChronoBranchCount(TimelineId id)
         {
             return _chronoService.GetBranchCount(id);
@@ -138,6 +190,7 @@ namespace Killtime.Tactics
 
             // 0. Nettoyer les armes/objets au sol (gourdins, lames...) du combat précédent.
             DroppedWeaponPickup.ClearAllDropped();
+            PurgeArenaVehicles();
             _smokeZones.Clear();
             _gridVisualizer?.UpdatePersistentZones(_smokeZones);
             CombatUI.DroppedWeaponContextMenuUI.Instance?.CloseMenu();
