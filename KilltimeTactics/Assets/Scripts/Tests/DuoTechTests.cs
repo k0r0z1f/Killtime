@@ -24,6 +24,14 @@ namespace Killtime.Tests
             return new CharacterStats("Mina", attr);
         }
 
+        private static CharacterStats MakeThomas()
+        {
+            // Fiche héroïque : FOR 5 AGI 3 CON 4 RAP 3 INT 2 ERU 1 CHA 3 INS 3.
+            // PA = Max(3,2) + 3 + Min(1) = 7.
+            var attr = new Attributes(@for: 5, agi: 3, con: 4, rap: 3, @int: 2, eru: 1, cha: 3, ins: 3, mag: 0);
+            return new CharacterStats("Thomas", attr);
+        }
+
         private static CharacterStats MakeSbire(string name = "Sbire")
         {
             var attr = new Attributes(@for: 2, agi: 2, con: 2, rap: 2, @int: 2, eru: 2, cha: 2, ins: 2);
@@ -270,8 +278,11 @@ namespace Killtime.Tests
                 (DuoTechId.Parallaxe, 6, 5, "AGI+INT"),
                 (DuoTechId.MirageDeuxTemps, 4, 4, "AGI+INT"),
                 (DuoTechId.UppercutThermobarique, 9, 6, "FOR+INT"),
+                (DuoTechId.RempartTellurique, 8, 6, "FOR+AGI"),
+                (DuoTechId.ZeroTectonique, 9, 6, "FOR+INT"),
+                (DuoTechId.TriFusion, 11, 7, "FOR+AGI+INT"),
             };
-            Assert.AreEqual(9, DuoTechRegistry.GetAllDefs().Count);
+            Assert.AreEqual(12, DuoTechRegistry.GetAllDefs().Count);
             for (int i = 0; i < expected.Length; i++)
             {
                 var def = DuoTechRegistry.GetDef(expected[i].id);
@@ -485,6 +496,210 @@ namespace Killtime.Tests
             var obstacles = new List<WeaveVec2> { new WeaveVec2(4f, 0.2f) };
             Assert.IsFalse(DuoTechGeometry.IsStraightCorridor(start, end, 6.8f, 1.0f, obstacles));
             Assert.IsTrue(DuoTechGeometry.IsStraightCorridor(start, end, 6.8f, 1.0f, obstacles, 0));
+        }
+
+        // ==================== RD-086 : SYNERGIES THOMAS ====================
+
+        [Test]
+        public void TestDuo_RD086_Identity_ThomasPairsAndTrio()
+        {
+            var lucas = MakeLucas();
+            var mina = MakeMina();
+            var thomas = MakeThomas();
+            var sbire = MakeSbire();
+
+            Assert.IsTrue(DuoTechRegistry.IsThomasMember(thomas));
+            Assert.IsFalse(DuoTechRegistry.IsThomasMember(mina));
+            Assert.IsFalse(DuoTechRegistry.IsThomasMember(lucas));
+            Assert.IsTrue(DuoTechRegistry.IsTrioMember(thomas));
+
+            Assert.IsTrue(DuoTechRegistry.AreThomasMina(thomas, mina));
+            Assert.IsTrue(DuoTechRegistry.AreThomasMina(mina, thomas));
+            Assert.IsFalse(DuoTechRegistry.AreThomasMina(lucas, mina));
+            Assert.IsFalse(DuoTechRegistry.AreThomasMina(thomas, thomas));
+            Assert.IsFalse(DuoTechRegistry.AreThomasMina(thomas, sbire));
+
+            Assert.IsTrue(DuoTechRegistry.AreThomasLucas(thomas, lucas));
+            Assert.IsTrue(DuoTechRegistry.AreThomasLucas(lucas, thomas));
+            Assert.IsFalse(DuoTechRegistry.AreThomasLucas(mina, lucas));
+            Assert.IsFalse(DuoTechRegistry.AreThomasLucas(thomas, sbire));
+
+            Assert.IsTrue(DuoTechRegistry.AreTrio(thomas, mina, lucas));
+            Assert.IsTrue(DuoTechRegistry.AreTrio(mina, lucas, thomas));
+            Assert.IsFalse(DuoTechRegistry.AreTrio(thomas, mina, mina));
+            Assert.IsFalse(DuoTechRegistry.AreTrio(thomas, mina, sbire));
+
+            // Les 9 classiques restent Lucas+Mina uniquement.
+            Assert.IsFalse(DuoTechRegistry.AreComplementary(thomas, mina));
+            Assert.IsFalse(DuoTechRegistry.AreComplementary(thomas, lucas));
+        }
+
+        [Test]
+        public void TestDuo_RD086_RempartPayment_ThomasPaysFive()
+        {
+            var thomas = MakeThomas(); // 7 PA
+            var mina = MakeMina();     // 11 PA
+            var def = DuoTechRegistry.GetDef(DuoTechId.RempartTellurique); // 1 + 3 + 4 = 8
+
+            Assert.IsTrue(DuoTechRegistry.TryDeclarePairPayment(thomas, mina, def, 1));
+            Assert.AreEqual(7 - (1 + 4), thomas.CurrentActionPoints);
+            Assert.AreEqual(11 - 3, mina.CurrentActionPoints);
+        }
+
+        [Test]
+        public void TestDuo_RD086_ZeroPayment_ThomasPaysFive()
+        {
+            var thomas = MakeThomas(); // 7 PA
+            var lucas = MakeLucas();   // 11 PA
+            var def = DuoTechRegistry.GetDef(DuoTechId.ZeroTectonique); // 1 + 4 + 4 = 9
+
+            Assert.IsTrue(DuoTechRegistry.TryDeclarePairPayment(lucas, thomas, def, 2));
+            Assert.AreEqual(11 - (1 + 4), lucas.CurrentActionPoints);
+            Assert.AreEqual(7 - 4, thomas.CurrentActionPoints);
+        }
+
+        [Test]
+        public void TestDuo_RD086_WrongPair_RefusedWithoutPayment()
+        {
+            var lucas = MakeLucas();
+            var mina = MakeMina();
+            var rempart = DuoTechRegistry.GetDef(DuoTechId.RempartTellurique);
+
+            Assert.IsFalse(DuoTechRegistry.TryDeclarePairPayment(lucas, mina, rempart, 1));
+            Assert.AreEqual(11, lucas.CurrentActionPoints);
+            Assert.AreEqual(11, mina.CurrentActionPoints);
+        }
+
+        [Test]
+        public void TestDuo_RD086_TrioPayment_AllThreeDebited()
+        {
+            var thomas = MakeThomas(); // 7 PA
+            var mina = MakeMina();     // 11 PA
+            var lucas = MakeLucas();   // 11 PA
+            var def = DuoTechRegistry.GetDef(DuoTechId.TriFusion); // 1 + 3 + 3 + 4 = 11
+
+            Assert.IsTrue(DuoTechRegistry.TryDeclareTrioPayment(thomas, mina, lucas, def, 1));
+            Assert.AreEqual(7 - (1 + 4), thomas.CurrentActionPoints);
+            Assert.AreEqual(11 - 3, mina.CurrentActionPoints);
+            Assert.AreEqual(11 - 3, lucas.CurrentActionPoints);
+        }
+
+        [Test]
+        public void TestDuo_RD086_TrioSecondDeclaration_RefusedWithoutPayment()
+        {
+            var thomas = MakeThomas();
+            var mina = MakeMina();
+            var lucas = MakeLucas();
+            var trio = DuoTechRegistry.GetDef(DuoTechId.TriFusion);
+            var rempart = DuoTechRegistry.GetDef(DuoTechId.RempartTellurique);
+
+            Assert.IsTrue(DuoTechRegistry.TryDeclareTrioPayment(thomas, mina, lucas, trio, 1));
+
+            // Même round : trio ou paire Thomas refusés (tampon 1/round).
+            Assert.IsFalse(DuoTechRegistry.TryDeclareTrioPayment(mina, lucas, thomas, trio, 1));
+            Assert.IsFalse(DuoTechRegistry.TryDeclarePairPayment(thomas, mina, rempart, 1));
+            Assert.AreEqual(2, thomas.CurrentActionPoints); // inchangé après refus
+        }
+
+        [Test]
+        public void TestDuo_RD086_TrioNextRound_AllowedAgain()
+        {
+            var thomas = MakeThomas();
+            var mina = MakeMina();
+            var lucas = MakeLucas();
+            var trio = DuoTechRegistry.GetDef(DuoTechId.TriFusion);
+
+            Assert.IsTrue(DuoTechRegistry.TryDeclareTrioPayment(thomas, mina, lucas, trio, 1));
+            thomas.ResetTurn();
+            mina.ResetTurn();
+            lucas.ResetTurn();
+            Assert.IsTrue(DuoTechRegistry.TryDeclareTrioPayment(mina, lucas, thomas, trio, 2));
+        }
+
+        [Test]
+        public void TestDuo_RD086_Rempart_PerfectDestabilises_PartialNoStatus()
+        {
+            var logs = new List<string>();
+            var e1 = MakeSbire("E1");
+            var e2 = MakeSbire("E2");
+            int hp1 = e1.CurrentHealth;
+
+            DuoTechRegistry.ResolveRempart(
+                new List<CharacterStats> { e1, e2 }, DuoTechOutcome.Perfect, logs.Add);
+            Assert.AreEqual(hp1 - 4, e1.CurrentHealth);
+            Assert.IsTrue(e1.ActiveStatus.HasFlag(StatusEffect.Destabilise));
+
+            var e3 = MakeSbire("E3");
+            int hp3 = e3.CurrentHealth;
+            DuoTechRegistry.ResolveRempart(
+                new List<CharacterStats> { e3 }, DuoTechOutcome.Partial, logs.Add);
+            Assert.AreEqual(hp3 - 2, e3.CurrentHealth);
+            Assert.IsFalse(e3.ActiveStatus.HasFlag(StatusEffect.Destabilise));
+
+            var e4 = MakeSbire("E4");
+            DuoTechRegistry.ResolveRempart(
+                new List<CharacterStats> { e4 }, DuoTechOutcome.Miss, logs.Add);
+            Assert.AreEqual(e4.MaxHealth, e4.CurrentHealth);
+            Assert.IsFalse(e4.ActiveStatus.HasFlag(StatusEffect.Destabilise));
+        }
+
+        [Test]
+        public void TestDuo_RD086_Zero_PerfectImmobilises_PartialSlows()
+        {
+            var logs = new List<string>();
+            var e1 = MakeSbire("E1");
+            int hp1 = e1.CurrentHealth;
+
+            DuoTechRegistry.ResolveZero(
+                new List<CharacterStats> { e1 }, DuoTechOutcome.Perfect, logs.Add);
+            Assert.AreEqual(hp1 - 4, e1.CurrentHealth);
+            Assert.IsTrue(e1.ActiveStatus.HasFlag(StatusEffect.Immobilise));
+
+            var e2 = MakeSbire("E2");
+            int hp2 = e2.CurrentHealth;
+            DuoTechRegistry.ResolveZero(
+                new List<CharacterStats> { e2 }, DuoTechOutcome.Partial, logs.Add);
+            Assert.AreEqual(hp2 - 2, e2.CurrentHealth);
+            Assert.IsTrue(e2.ActiveStatus.HasFlag(StatusEffect.Ralenti));
+            Assert.IsFalse(e2.ActiveStatus.HasFlag(StatusEffect.Immobilise));
+
+            var e3 = MakeSbire("E3");
+            DuoTechRegistry.ResolveZero(
+                new List<CharacterStats> { e3 }, DuoTechOutcome.Miss, logs.Add);
+            Assert.AreEqual(e3.MaxHealth, e3.CurrentHealth);
+        }
+
+        [Test]
+        public void TestDuo_RD086_TriFusion_PerfectKnocksDownAndBurns_MissPunishesTrio()
+        {
+            var mina = MakeMina();
+            var lucas = MakeLucas();
+            var thomas = MakeThomas();
+            var logs = new List<string>();
+
+            var tankyAttrs = new Attributes(@for: 2, agi: 2, con: 4, rap: 2, @int: 2, eru: 2, cha: 2, ins: 2);
+            var cible = new CharacterStats("Cible", tankyAttrs);
+            int hp = cible.CurrentHealth;
+            Assert.IsTrue(hp - 8 > 0, "Précondition test : 8 bruts non-létaux.");
+            DuoTechRegistry.ResolveTriFusion(mina, lucas, thomas,
+                new List<CharacterStats> { cible }, DuoTechOutcome.Perfect, logs.Add);
+            Assert.AreEqual(hp - 8, cible.CurrentHealth);
+            Assert.IsTrue(cible.ActiveStatus.HasFlag(StatusEffect.ATerre));
+            Assert.IsTrue(cible.ActiveStatus.HasFlag(StatusEffect.EnFeu));
+
+            var cible2 = MakeSbire("Cible2");
+            int hp2 = cible2.CurrentHealth;
+            DuoTechRegistry.ResolveTriFusion(mina, lucas, thomas,
+                new List<CharacterStats> { cible2 }, DuoTechOutcome.Partial, logs.Add);
+            Assert.AreEqual(hp2 - 5, cible2.CurrentHealth);
+            Assert.IsFalse(cible2.ActiveStatus.HasFlag(StatusEffect.ATerre));
+
+            int essM = mina.Essoufflement, essL = lucas.Essoufflement, essT = thomas.Essoufflement;
+            DuoTechRegistry.ResolveTriFusion(mina, lucas, thomas,
+                new List<CharacterStats> { cible2 }, DuoTechOutcome.Miss, logs.Add);
+            Assert.AreEqual(essM + 1, mina.Essoufflement);
+            Assert.AreEqual(essL + 1, lucas.Essoufflement);
+            Assert.AreEqual(essT + 1, thomas.Essoufflement);
         }
     }
 }

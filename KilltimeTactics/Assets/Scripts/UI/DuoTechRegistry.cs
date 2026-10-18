@@ -19,7 +19,10 @@ namespace Killtime.Tactics.CombatUI
         CisailleEntropique,
         Parallaxe,
         MirageDeuxTemps,
-        UppercutThermobarique
+        UppercutThermobarique,
+        RempartTellurique,
+        ZeroTectonique,
+        TriFusion
     }
 
     /// <summary>
@@ -44,8 +47,9 @@ namespace Killtime.Tactics.CombatUI
         public int DeclareCost = 1;
         public int MinaCost;
         public int LucasCost;
+        public int ThomasCost;
 
-        public int TotalCost => DeclareCost + MinaCost + LucasCost;
+        public int TotalCost => DeclareCost + MinaCost + LucasCost + ThomasCost;
 
         // Table Livre VI §25.5 : ND de synchro + binôme de caracs testées
         // (1er = rôle cinétique/physique Mina, 2nd = rôle calcul Lucas).

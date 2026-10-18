@@ -10,7 +10,7 @@ using Killtime.Core.Combat;
 namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
-    /// Définitions des 9 Duo-Techs officielles (Livre VI §25.5) + issues table/tissage. — extrait sans modification depuis DuoTechRegistry.cs.
+    /// Définitions des 12 Duo-Techs (Livre VI §25.5 + synergies Thomas RD-086) + issues table/tissage. — extrait sans modification depuis DuoTechRegistry.cs.
     /// </summary>
     public static partial class DuoTechRegistry
     {
@@ -129,13 +129,52 @@ namespace Killtime.Tactics.CombatUI
                         SyncAttrs = "FOR+INT",
                         Condition = "Cible entravée (étourdie, ralentie ou gelée) à ≤ 50% PV"
                     };
+                case DuoTechId.RempartTellurique:
+                    return new DuoTechDef
+                    {
+                        Id = id,
+                        Name = "🛡️ Rempart Tellurique",
+                        Description = "Thomas + Mina : onde de choc radiale + barricade rocheuse (Cover Half à poser par le MJ). Parfaite = 4 bruts + Déstabilisé. Semi = 2 bruts.",
+                        MinaCost = 3,
+                        LucasCost = 0,
+                        ThomasCost = 4,
+                        SyncND = 6,
+                        SyncAttrs = "FOR+AGI",
+                        Condition = "Thomas + Mina (ancre tellurique + onde cinétique)"
+                    };
+                case DuoTechId.ZeroTectonique:
+                    return new DuoTechDef
+                    {
+                        Id = id,
+                        Name = "🕳️ Zéro Tectonique",
+                        Description = "Thomas + Lucas : faille de vide gelant les hexagones. Parfaite = 4 bruts + Immobilisé. Semi = 2 bruts + Ralenti.",
+                        MinaCost = 0,
+                        LucasCost = 4,
+                        ThomasCost = 4,
+                        SyncND = 6,
+                        SyncAttrs = "FOR+INT",
+                        Condition = "Thomas + Lucas (ancre tellurique + calcul)"
+                    };
+                case DuoTechId.TriFusion:
+                    return new DuoTechDef
+                    {
+                        Id = id,
+                        Name = "☄️ Tri-Fusion",
+                        Description = "Ultime trio synchronisé : les trois héros consomment ensemble. Parfaite = 8 bruts + À Terre + EnFeu. Semi = 5 bruts. Ratée = +1 Essoufflement chacun.",
+                        MinaCost = 3,
+                        LucasCost = 3,
+                        ThomasCost = 4,
+                        SyncND = 7,
+                        SyncAttrs = "FOR+AGI+INT",
+                        Condition = "Trio Thomas + Mina + Lucas (1 max par round chacun)"
+                    };
                 default:
                     return null;
             }
         }
 
         /// <summary>
-        /// Les 9 définitions officielles (Livre VI §25.5) dans l'ordre de la table.
+        /// Les 12 définitions officielles (Livre VI §25.5 + synergies Thomas RD-086) dans l'ordre de la table.
         /// </summary>
         public static List<DuoTechDef> GetAllDefs()
         {
@@ -149,7 +188,10 @@ namespace Killtime.Tactics.CombatUI
                 GetDef(DuoTechId.CisailleEntropique),
                 GetDef(DuoTechId.Parallaxe),
                 GetDef(DuoTechId.MirageDeuxTemps),
-                GetDef(DuoTechId.UppercutThermobarique)
+                GetDef(DuoTechId.UppercutThermobarique),
+                GetDef(DuoTechId.RempartTellurique),
+                GetDef(DuoTechId.ZeroTectonique),
+                GetDef(DuoTechId.TriFusion)
             };
         }
 

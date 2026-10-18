@@ -430,6 +430,11 @@ namespace Killtime.Tactics.AI
 
         // =========================================================================
         // BOUCLE DÉCISIONNELLE STRATÉGIQUE (TACTICAL AI BRAIN)
+        // RD-115 : la chaîne if/continue est devenue des plans d'intentions
+        // (AITurnPlanner) ; ce contrôleur ne fait que marcher les plans et
+        // exécuter les coroutines (voir TacticalAIController.TurnPlan.cs).
+        // Ordre verbatim : pré-cible (1-4), sans cible (5), engagement
+        // (6-11), frappe sur snapshot frais post-contact (12-25).
         // =========================================================================
         private IEnumerator ExecuteAITurn(TacticalUnit unit)
         {
@@ -452,6 +457,8 @@ namespace Killtime.Tactics.AI
             // RD-088 : Maintien et résolution continue de la morsure hydraulique au début de tour
             CheckAndApplyHydraulicBite(unit, visual);
 
+            var stepState = new AIPlanStepState();
+
             while (unit.Stats.IsAlive && loopGuard++ < maxSteps && unit.Stats.CurrentActionPoints > 0)
             {
                 while (Killtime.UI.CombatHUD.IsPaused)
@@ -459,355 +466,51 @@ namespace Killtime.Tactics.AI
                     yield return null;
                 }
 
-                // RD-047 : Reddition (Unité désarmée, hors combat)
-                if (unit.Stats.IsSurrendered)
-                {
-                    visual?.SpawnFloatingText("🏳️ [REDDITION] Dépôt des armes", Color.white);
-                    _turnManager?.EndCurrentTurn();
+                // Phases 1-4 (avant EvaluateBestTarget, verbatim).
+                yield return StartCoroutine(WalkPlan(
+                    AITurnPlanner.BuildPreTargetPlan(
+                        unit.Stats.IsSurrendered,
+                        unit.Stats.ActiveStatus.HasFlag(StatusEffect.Agonisant)),
+                    unit, visual, null, stepState));
+                if (stepState.Outcome == AIPlanStepOutcome.EndTurnImmediate)
                     yield break;
-                }
-
-                // RD-047 : Déroute & Fuite Panique (StatusEffect.Agonisant)
-                if (unit.Stats.ActiveStatus.HasFlag(StatusEffect.Agonisant))
-                {
-                    visual?.SpawnFloatingText("😱 [DÉROUTE] Fuite Panique !", new Color(0.95f, 0.2f, 0.85f));
-                    yield return StartCoroutine(ExecutePanickedFlee(unit));
-                    yield return new WaitForSeconds(_actionDelay);
+                if (stepState.Outcome == AIPlanStepOutcome.EndTurn)
                     break;
-                }
-
-                // 1. SOUTIEN MÉDICAL D'URGENCE (Livre VII)
-                if (TryExecuteMedicalSupport(unit, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
+                if (stepState.Outcome == AIPlanStepOutcome.ContinueTurn)
                     continue;
-                }
 
-                // 1b. SOUTIEN TACTIQUE (corde, entraves, traînée, radio,
-                // maintenance, garde du corps) — registre joueur, côté alliés.
-                if (TryExecuteAllySupport(unit, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
+                // Phase 5 : évaluation de cible puis plan sans cible le cas échéant.
                 var target = EvaluateBestTarget(unit);
                 if (target == null)
                 {
-                    // RD-IA01 : face au vide (furtifs non révélés), tentative
-                    // d'Observation active (1 PA) avant d'abandonner le tour.
-                    if (TryActiveObservationAI(unit, visual))
-                    {
-                        yield return new WaitForSeconds(_actionDelay);
+                    yield return StartCoroutine(WalkPlan(
+                        AITurnPlanner.BuildNoTargetPlan(), unit, visual, null, stepState));
+                    if (stepState.Outcome == AIPlanStepOutcome.ContinueTurn)
                         continue;
-                    }
-                    // RD-053 : Patrouille alertée — bruit / lampe attire l'IA vers la dernière position suspecte
-                    if (HasAlertedPatrolTarget(unit, out HexCoordinates suspiciousTarget, out string patrolReason))
-                    {
-                        yield return StartCoroutine(ExecuteAlertedPatrol(unit, suspiciousTarget, patrolReason, visual));
-                        yield return new WaitForSeconds(_actionDelay);
-                        continue;
-                    }
                     break;
                 }
 
-                int dist = TitanFootprint.MinDistanceBetweenUnits(unit.CurrentCoords, unit.FootprintType, target.CurrentCoords, target.FootprintType);
-                var posture = EvaluateTacticalPosture(unit, target, dist);
-
-                bool isRanged = HasRangedWeapon(unit, out int maxRange, out int minRange, out SkillType attackSkill);
-                if (isRanged && !ChargeState.CanFireRanged(unit.Stats))
-                {
-                    isRanged = false; // RD-038 : Le sprint bloque le tir ce tour
-                }
-                bool hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
-                CoverType targetCover = GetCoverLevel(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
-                bool inAttackRange = isRanged ? (dist <= maxRange && hasLOS) : (dist <= 1);
-
-                // 2. RETRAITE TACTIQUE SOUS COUVERT (Livre VI §25)
-                if (posture == TacticalPosture.TacticalRetreat)
-                {
-                    visual?.SpawnFloatingText("🛡️ [REPLI] Rupture sous Couvert", new Color(1.0f, 0.35f, 0.35f));
-                    yield return StartCoroutine(ExecuteCoveredRetreat(unit, target));
-                    yield return new WaitForSeconds(_actionDelay);
-                    // RD-IA02 : après repli, verrouille la position en guet si le
-                    // surplus le permet (au lieu de finir le tour inactif).
-                    if (isRanged && _arena != null
-                        && !OverwatchState.IsWatching(unit.Stats)
-                        && unit.Stats.CurrentActionPoints >= CoreRulesConfig.Instance.OverwatchAPCost + GetRequiredDefensiveReserve(unit, posture))
-                    {
-                        if (_arena.TryEnterOverwatch(unit, out _))
-                            yield return new WaitForSeconds(_actionDelay);
-                    }
+                // Phases 6-11 : plan d'engagement sur snapshot pur.
+                var frame = BuildPlanFrame(unit, target, tookBreathThisTurn);
+                yield return StartCoroutine(WalkPlan(
+                    AITurnPlanner.BuildEngagementPlan(BuildPlanSnapshot(unit, frame)),
+                    unit, visual, frame, stepState));
+                tookBreathThisTurn = frame.TookBreathThisTurn;
+                if (stepState.Outcome == AIPlanStepOutcome.ContinueTurn)
+                    continue;
+                if (stepState.Outcome == AIPlanStepOutcome.EndTurn)
                     break;
-                }
 
-                // 2a. SOUTIEN : rejoindre l'allié blessé (la posture
-                // SupportAndHeal ne servait à rien au-delà du contact).
-                if (posture == TacticalPosture.SupportAndHeal)
-                {
-                    var allyPath = GetWoundedAllyPath(unit);
-                    if (allyPath != null && allyPath.Count > 1)
-                    {
-                        int rawAllyCost = 0;
-                        for (int pi = 1; pi < allyPath.Count; pi++)
-                        {
-                            var anode = _grid != null ? _grid.GetNode(allyPath[pi]) : null;
-                            rawAllyCost += anode != null ? anode.ActionPointCost : 1;
-                        }
-                        int allyApCost = unit.ComputeMovementAPCost(rawAllyCost);
-                        visual?.SpawnFloatingText("🩹 Soutien allié", Color.green);
-                        EnsureSafeDisengageForMove(unit, allyPath.Count - 1);
-                        yield return StartCoroutine(unit.MoveAlongPath(allyPath, _grid, allyApCost));
-                        yield return new WaitForSeconds(_actionDelay);
-                        continue;
-                    }
-                }
-
-                // 2b. TECHNIQUES DE SPÉCIALISATION (Livre III) — même registre
-                // que le menu contextuel joueur : Clé, Analyse, Rugissement,
-                // Regard, Commandement, Tenir la Ligne ! (priorités par doctrine).
-                if (TryExecuteCombatTechnique(unit, target, posture, dist))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
+                // Phases 12-25 : snapshot FRAIS post-contact (l'original
+                // recalcule dist/LOS/portée après TEEP/dégagement avant les
+                // seuils charge/bousculade/lancer/flanking/attaque).
+                RefreshFrameForStrike(unit, frame);
+                yield return StartCoroutine(WalkPlan(
+                    AITurnPlanner.BuildStrikePlan(BuildPlanSnapshot(unit, frame)),
+                    unit, visual, frame, stepState));
+                tookBreathThisTurn = frame.TookBreathThisTurn;
+                if (stepState.Outcome == AIPlanStepOutcome.ContinueTurn)
                     continue;
-                }
-
-                // 2c. MANŒUVRES AVANCÉES PNJ & AUTOMATES (Livre XI §44 & §47 - RD-088)
-                if (TryExecuteLivreXIManeuver(unit, target, posture, dist, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    if (OverwatchState.IsWatching(unit.Stats))
-                    {
-                        break;
-                    }
-                    continue;
-                }
-
-                // 2d. DUO-TECH AUTO (RD-105) : Sillage Igné sans tissage souris
-                // (binôme Lucas + Mina adjacent, 2+ ennemis alignés). Paiement
-                // atomique + limite 1/round via le registre, comme au menu joueur.
-                if (TryExecuteDuoTechAuto(unit, posture, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 3. CONTACT DIRECT (Distance == 1) : RUPTURE MARTIALE OU DÉGAGEMENT
-                if (isRanged && dist == 1)
-                {
-                    bool hasMartialArts = unit.Stats.HasSpecialization("Arts Martiaux");
-                    DiceType unarmedDie = unit.Stats.GetSkillDie(SkillType.MainsNues, true);
-
-                    if (hasMartialArts && unit.Stats.CanAttack(unarmedDie) && unit.Stats.CurrentActionPoints >= 2)
-                    {
-                        visual?.SpawnFloatingText("🥋 [TEEP] Rupture d'Engagement", Color.cyan);
-                        yield return StartCoroutine(ExecuteTacticalAttack(unit, target, posture, isRanged: false, SkillType.MainsNues));
-                        yield return new WaitForSeconds(_actionDelay);
-
-                        dist = TitanFootprint.MinDistanceBetweenUnits(unit.CurrentCoords, unit.FootprintType, target.CurrentCoords, target.FootprintType);
-                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
-                        inAttackRange = (dist <= maxRange && hasLOS);
-
-                        if (inAttackRange && dist > 1 && unit.Stats.CurrentActionPoints >= 2)
-                        {
-                            continue;
-                        }
-                    }
-                    else if (unit.Stats.CurrentActionPoints >= 3)
-                    {
-                        visual?.SpawnFloatingText("🔄 [DÉGAGEMENT] Recul Tactique", new Color(0.2f, 0.85f, 1.0f));
-                        yield return StartCoroutine(ExecuteDisengageStep(unit, target));
-                        yield return new WaitForSeconds(_actionDelay);
-
-                        dist = TitanFootprint.MinDistanceBetweenUnits(unit.CurrentCoords, unit.FootprintType, target.CurrentCoords, target.FootprintType);
-                        hasLOS = HasLineOfSight(unit.CurrentCoords, target.CurrentCoords, target.FootprintType, unit.FootprintType, unit);
-                        inAttackRange = (dist <= maxRange && hasLOS);
-                    }
-                }
-
-                // 4. GRENADES DE ZONE (Livre VIII §31.3)
-                if (TryThrowGrenadeAI(unit, posture))
-                {
-                    float waitElapsed = 0f;
-                    while (_arena != null && _arena.IsResolving && waitElapsed < 6f)
-                    {
-                        yield return null;
-                        waitElapsed += Time.deltaTime;
-                    }
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 5. SORTS ARCANOTECH (Livre IV) — rentables à distance comme au
-                // contact (la sélection du sort gère portée, taxe focus et CdV).
-                if (TryCastBestSpell(unit, target, dist, hasLOS))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 6. INTIMIDATION & PROVOCATION (Livre III)
-                if (TryExecuteIntimidation(unit, target, dist, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 6b. ENTRETIEN & BUFFS PERSONNELS (bouclier, soins, dopants,
-                // ramassage d'arme, canalisation, furtivité) — même registre
-                // que le menu joueur, joués avant de frapper.
-                if (TryExecuteSelfUpkeep(unit, posture, dist, inAttackRange, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 6c. BALISE LASER (Lampe + Batterie, 1 PA) : expose la faille
-                // des cibles blindées avant la frappe (encaissement ignoré).
-                if (TryExecuteLaserDesignation(unit, target, dist, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 6d. CHARGE AU CONTACT (RD-038, Livre VI) : 3+ cases + frappe
-                // d'assaut (+2 dégâts) au lieu d'approche + attaque séparées.
-                if (!isRanged && dist > 1 && TryExecuteChargeAttack(unit, target, visual))
-                {
-                    float waitElapsed = 0f;
-                    while (_arena != null && _arena.IsResolving && waitElapsed < 8f)
-                    {
-                        yield return null;
-                        waitElapsed += Time.deltaTime;
-                    }
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 6e. FRAPPE TITANESQUE (RD-052) : les colosses écrasent en zone
-                // (Souffle / Piétinement) ou saisissent au contact.
-                if (TryExecuteTitanSlam(unit, target, posture, dist, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 6f. BOUSCULADE / COUP DE BOUCLIER (2 PA, contact) : contrôle
-                // de position quand la frappe classique est peu rentable.
-                if (dist <= 1 && TryExecuteShove(unit, target, targetCover, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 6g. LANCER D'ARME (2 PA, 2-4 cases) : ultime recours quand le
-                // tir est impossible (chargeur vide sans réserve, enrayage sec).
-                if (dist >= 2 && TryExecuteWeaponThrow(unit, target, dist, visual))
-                {
-                    float waitElapsed2 = 0f;
-                    while (_arena != null && _arena.IsResolving && waitElapsed2 < 6f)
-                    {
-                        yield return null;
-                        waitElapsed2 += Time.deltaTime;
-                    }
-                    yield return new WaitForSeconds(_actionDelay);
-                    continue;
-                }
-
-                // 7. MANŒUVRE DE FLANKING & PRISE DE COUVERT AVANT ATTAQUE (Livre VI §25.3)
-                if (unit.Stats.CurrentActionPoints >= 3 && (targetCover == CoverType.ThreeQuarters || !inAttackRange))
-                {
-                    int reserve = GetRequiredDefensiveReserve(unit, posture);
-                    int moveBudget = Mathf.Max(1, unit.Stats.CurrentActionPoints - 2 - reserve);
-
-                    var optimalCombatHex = FindOptimalCombatHex(unit, target, isRanged, maxRange, moveBudget);
-                    if (optimalCombatHex.HasValue && !optimalCombatHex.Value.Equals(unit.CurrentCoords))
-                    {
-                        var path = _pathfinder.FindPath(unit.CurrentCoords, optimalCombatHex.Value, moveBudget, out int cost);
-                        if (path != null && path.Count > 1)
-                        {
-                            visual?.SpawnFloatingText(isRanged ? $"🎯 Débordement (-{cost} PA)" : $"⚡ Percée (-{cost} PA)", new Color(0.2f, 0.85f, 1.0f));
-                            EnsureSafeDisengageForMove(unit, path.Count - 1);
-                            yield return StartCoroutine(unit.MoveAlongPath(path, _grid, cost));
-                            yield return new WaitForSeconds(_actionDelay);
-                            continue;
-                        }
-                    }
-                }
-
-                // 8. ATTAQUE PRÉDICTIVE (DUEL AVEUGLE CODEX)
-                if (inAttackRange)
-                {
-                    DiceType attackDie = unit.Stats.GetSkillDie(attackSkill, true);
-
-                    if (unit.Stats.CanAttack(attackDie) && unit.Stats.CurrentActionPoints >= 2)
-                    {
-                        yield return StartCoroutine(ExecuteTacticalAttack(unit, target, posture, isRanged, attackSkill));
-
-                        if (posture == TacticalPosture.HitAndRun && unit.Stats.CurrentActionPoints >= 1)
-                        {
-                            visual?.SpawnFloatingText("💨 [RETRAIT] Décrochage", new Color(0.9f, 0.7f, 0.2f));
-                            yield return StartCoroutine(ExecuteDisengageStep(unit, target));
-                            break;
-                        }
-
-                        yield return new WaitForSeconds(_actionDelay);
-                        continue;
-                    }
-                    else if (unit.Stats.CanAttack(attackDie) && unit.Stats.CurrentActionPoints < 2 && !tookBreathThisTurn && CanTakeBreathSafely(unit))
-                    {
-                        tookBreathThisTurn = true;
-                        unit.Stats.TakeEmergencyBreath(2);
-                        visual?.SpawnFloatingText("🫁 Souffle d'Attaque (+2 PA, +1 ESS)", Color.yellow);
-                        yield return new WaitForSeconds(_actionDelay);
-                        continue;
-                    }
-
-                    break;
-                }
-
-                // 9. APPROCHE VERS LA LIGNE DE TIR OU ENGAGEMENT
-                int availableAP = unit.Stats.CurrentActionPoints;
-                if (availableAP >= 1)
-                {
-                    int reserve = GetRequiredDefensiveReserve(unit, posture);
-                    int moveBudget = Mathf.Max(1, availableAP - reserve);
-
-                    var pathToFiringPos = isRanged
-                        ? FindPathTowardsRangedPosition(unit, target, maxRange, moveBudget)
-                        : FindPathTowardsTarget(unit, target, moveBudget);
-
-                    if (pathToFiringPos != null && pathToFiringPos.Count > 1)
-                    {
-                        int steps = pathToFiringPos.Count - 1;
-                        string moveMsg = isRanged ? $"Position de tir (-{steps} PA)" : $"Avance tactique (-{steps} PA)";
-                        visual?.SpawnFloatingText(moveMsg, new Color(0.2f, 0.85f, 1.0f));
-                        EnsureSafeDisengageForMove(unit, steps);
-                        yield return StartCoroutine(unit.MoveAlongPath(pathToFiringPos, _grid, steps));
-                        yield return new WaitForSeconds(_actionDelay);
-                        continue;
-                    }
-                }
-
-                // 10. ORDRE TACTIQUE EN FIN DE TOUR (Livre III)
-                if (unit.Stats.CurrentActionPoints >= 2 && TryDelegateTacticalOrder(unit, visual))
-                {
-                    yield return new WaitForSeconds(_actionDelay);
-                }
-
-                // 10b. GUET / OVERWATCH (RD-030) : sans autre action rentable et
-                // avec du surplus au-delà de la réserve défensive, l'IA à distance
-                // réserve un tir de réaction au lieu de finir inactive.
-                if (isRanged && _arena != null
-                    && !OverwatchState.IsWatching(unit.Stats)
-                    && unit.Stats.CurrentActionPoints >= CoreRulesConfig.Instance.OverwatchAPCost + GetRequiredDefensiveReserve(unit, posture))
-                {
-                    if (_arena.TryEnterOverwatch(unit, out _))
-                    {
-                        yield return new WaitForSeconds(_actionDelay);
-                    }
-                }
-
                 break;
             }
 
