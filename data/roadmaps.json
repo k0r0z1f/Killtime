@@ -1332,7 +1332,7 @@
           "id": "RD-194",
           "title": "Duo-Tech MJ sans souris + grades forcés",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 7,
           "scene": "Killzone_Alpha3",
@@ -1342,7 +1342,7 @@
           "scale": null,
           "suggestedAsset": "UI/DuoTechRegistry.* + CombatDevArena.DuoTech.cs (nouveau)",
           "updated": "2026-10-18",
-          "details": "Jouer les 9 Duo-Techs sans souris : sélecteur MJ (paire/trio + Duo parmi 6 codex + Rempart/Zéro/Tri-Fusion vérifiés dans DuoTechRegistry.Classics/Extended/TriFusion), grade forcé (Risky/Perfect/Late), paiements atomiques + refund + tampon 1/round visibles, puis déclenchement IA auto. Périmètre : nouveau partial arène + section toolbar ; tissage souris WeaveController inchangé ; fichiers <800 l. Couvre RD-180."
+          "details": "FAIT (2026-10-18) : Duo-Tech MJ sans souris. 1) DevTools/CombatDevArena.DuoTech.cs (577 l.) : IsDuoSupported 12/12, mappings outcome/grades table->weave, ListDuoInitiators, TryExecuteDebugDuoTech (paires classiques/Thomas + trio, CanDeclare + TryDeclare* atomiques, cibles vérifiées AVANT paiement — aucun débit si 0 ennemi, Resolve* Classics/Extended/TriFusion, flash + snapshot + CheckCombatOver), TryExecuteDebugSillage (Perfect/Risky/Late/Miss), TryExecuteDebugDuoTechAuto (solver AIDuoTechSolver + dash). 2) DevTools/CombatDevToolbar.DuoTech.cs (192 l., branchée dans DrawCheatsAndToolsTab) : sélecteurs initiateur/duo/grade forcé, preview armable + PA + tampon, boutons ARMER+RÉSOUDRE et IA AUTO. 3) Tests/DuoTechArenaTests.cs (7/7). Tissage WeaveController inchangé. Correctifs relecture : (1) using Killtime.Tactics.Arena manquant (IArenaHost, CS0246 remonté par l'éditeur live) ; (2) fuite PA si 0 ennemi -> check cibles avant paiement (Sillage + générique) ; (3) doc auto corrigée (pas de repli). Preuve : batchmode EditMode DuoTechArenaTests 7/7 + DuoTechTests 35/35 verts, exit 0, 0 erreur CS. Hygiène : ProjectSettings.asset restauré, 0 artefact, fichiers <800 l. Reste : contrôle visuel en jeu par l'utilisateur (section toolbar, grades, refund, tampon, IA auto, Killzone_Alpha3)."
         },
         {
           "id": "RD-195",
@@ -1364,7 +1364,7 @@
           "id": "RD-196",
           "title": "Titans multi-cases + boss : spawn et coups 1-clic",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 9,
           "scene": "Killzone_Alpha3",
@@ -1374,13 +1374,13 @@
           "scale": null,
           "suggestedAsset": "BestiaryDevWindow + CombatDevArena + TitanBossCatalog",
           "updated": "2026-10-18",
-          "details": "Tester Titans et boss en 1 clic : spawn Rosette7/Colossus19 en arène (empreinte + périmètre TitanFootprint vérifiés), boutons piétinement 3 PA / souffle 3 PA / saisie-broyage, spawn des 3 boss (touche B existante consolidée) + recharger bossAI JSON + réactions boss loggées. Périmètre : spawn existant + boutons Titan arène ; fichiers <800 l. Couvre RD-181."
+          "details": "FAIT (2026-10-18) : Titans + boss 1-clic en arène. 1) DevTools/CombatDevArena.Titans.cs (nouveau) : BuildTitanTestSheet (Rosette7/Colossus19), SpawnTitanDummy + SpawnTitanBoss (0 Bête/1 Minulican/2 Disciple via TitanBossCatalog, log vérif empreinte+périmètre), Verify/DescribeTitanFootprint, ReloadTitanBossAI (BestiaryCatalog.InvalidateCache + log source/compte), ExecuteTitanGrab/Stomp/Breath1Click (2/3/3 PA, mêmes dégâts/effets que CombatActionRegistry + crochet réactions boss RD-087 tracé log : souffle typé Feu, choc expire fissure). 2) DevTools/CombatDevToolbar.Titans.cs (nouveau, branché dans DrawCheatsAndToolsTab) : spawn Rosette7/Colossus19 + 3 boss au point ciblé, Recharger bossAI JSON, acteur/cible + distance périmètre, 3 boutons 1-clic (saisie/piétinement/souffle). Correctif relecture : using Killtime.Tactics.Arena manquant (IArenaHost CS0246, même cause que RD-194). Preuve : batchmode EditMode TitanBossTests 33/33 + DuoTechArenaTests 7/7 + DuoTechTests 35/35 verts, exit 0, 0 erreur CS. Hygiène : ProjectSettings.asset restauré, 0 artefact, fichiers <800 l. (Titans arène ~230 l., toolbar ~90 l.). Reste : contrôle visuel en jeu par l'utilisateur (spawn, empreinte visuelle, 3 coups, réactions boss au log). Correctifs relecture 2026-10-18 : (1) spawn à empreinte libre via TryFindNearestFreeFootprint (refus loggé, plus d'unité fantôme si corps encombré) ; (2) gardes de portée piétinement ≤2 / souffle ≤8 (fidélité registre) ; (3) nettoyage param inutile. Contre-preuve : suite EditMode complète 681/681 verte, exit 0."
         },
         {
           "id": "RD-197",
           "title": "Doctrines IA + observe 3 tours",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 10,
           "scene": "Killzone_Alpha3",
@@ -1390,7 +1390,7 @@
           "scale": null,
           "suggestedAsset": "CombatDevToolbar.Cheats.cs + TacticalAIController",
           "updated": "2026-10-18",
-          "details": "Observer l'IA par doctrine : sélecteur Agressif/Support/Survivor/Tacticien + sliders réserve défensive / retreat ratio (prefs AiPersonality/AiRetreatRatio/AiDefensiveReserve vérifiées, UI manquante), mode observe 3 tours auto (FullAuto + ActionDelay bas + log tactique), vérif grenades tactiques (fumée cover, flash avant assaut, gaz + masques alliés). Périmètre : section IA toolbar, aucune logique IA changée ; fichiers <800 l. Couvre RD-183."
+          "details": "FAIT (2026-10-18) : doctrines + observe en arène, 0 règle changée. 1) DevTools/CombatDevToolbar.Cheats.cs (590->671 l., <800) : DrawAiDoctrineSection branchée dans le bloc IA (respect verrou GM) — 4 boutons doctrine (Équilibré/Agressif/Tacticien/Survivant -> DefaultPersonality + prefs), sliders repli PV 5-60 % (RetreatHealthRatio) et réserve 0-2 PA (DefensiveAPReserve), bouton Observer 3 tours (FullAuto + 0.15s + log tactique, auto-retour Normal + restore delay au round+3, stop manuel), aide-mémoire grenades tactiques (seuils utilitaire 12 / létal 18, fumée/flash/gaz+masques, log = onglet Logs). 2) Aucune logique IA touchée (AIPersonalityProfile/AIGrenadeScorer inchangés). Preuve : batchmode EditMode TacticalAIDecisionTests 36/36 verts, exit 0, 0 erreur CS. Hygiène : ProjectSettings.asset restauré, 0 artefact, git status identique à l'avant-run (+ Cheats.cs). Reste : contrôle visuel en jeu par l'utilisateur (doctrines, sliders, observe 3 tours, grenades tactiques, Killzone_Alpha3). Couvre RD-183."
         },
         {
           "id": "RD-198",

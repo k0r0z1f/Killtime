@@ -23,6 +23,11 @@ namespace Killtime.UI
         // RD-187 : index de l'unité ciblée par les cheats ciblés (sélecteur).
         private int _cheatUnitIndex = 0;
 
+        // RD-197 : état du mode observe 3 tours (dev-only, UI seule, aucune règle changée).
+        private bool _observeActive = false;
+        private int _observeStartRound = 1;
+        private float _observePrevDelay = 0.8f;
+
         private void DrawCheatsAndToolsTab()
         {
             var ai = (_arena != null ? _arena.AIController : null) ?? FindAnyObjectByType<TacticalAIController>();
@@ -114,6 +119,8 @@ namespace Killtime.UI
                 }
                 GUILayout.EndHorizontal();
 
+                DrawAiDoctrineSection(ai);
+
                 GUI.enabled = prevEnabledAI;
 
                 GUILayout.EndVertical();
@@ -158,6 +165,8 @@ namespace Killtime.UI
             DrawNamedZonesSection();
             DrawObjectivesSection();
             DrawVehiclesSection();
+            DrawTitansSection();
+            DrawDuoTechSection();
 
             GUILayout.Space(8);
             GUILayout.Label("<b>🖥️ Système & Multitâche (Alt-Tab / Multi-Écran) :</b>");
@@ -330,6 +339,80 @@ namespace Killtime.UI
             }
             GUILayout.EndHorizontal();
             GUILayout.Space(16);
+        }
+
+        // RD-197 : doctrines IA + observe 3 tours (dev-only, UI seule, 0 règle changée).
+        // Prefs AiPersonality/AiRetreatRatio/AiDefensiveReserve déjà persistées :
+        // ici seul le pilotage UI manquait. Couvre RD-183 (terrain doctrines).
+        private void DrawAiDoctrineSection(TacticalAIController ai)
+        {
+            if (ai == null) return;
+            GUILayout.Space(4);
+            GUILayout.Label("<b>🧠 Doctrines IA (RD-197) :</b>");
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label("Doctrine :", GUILayout.Width(80));
+            var doctrines = new[] { AIPersonality.Balanced, AIPersonality.Aggressive, AIPersonality.Tactician, AIPersonality.Survivor };
+            var doctrineLabels = new[] { "Équilibré", "Agressif", "Tacticien", "Survivant" };
+            for (int i = 0; i < doctrines.Length; i++)
+            {
+                bool active = ai.DefaultPersonality == doctrines[i];
+                if (active) GUI.backgroundColor = new Color(0.35f, 0.85f, 0.45f);
+                if (GUILayout.Button(doctrineLabels[i])) ai.DefaultPersonality = doctrines[i];
+                GUI.backgroundColor = Color.white;
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"Repli si PV < {(ai.RetreatHealthRatio * 100f):0}%", GUILayout.Width(150));
+            float wantRetreat = GUILayout.HorizontalSlider(ai.RetreatHealthRatio, 0.05f, 0.6f);
+            if (Mathf.Abs(wantRetreat - ai.RetreatHealthRatio) > 0.005f) ai.RetreatHealthRatio = wantRetreat;
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"Réserve défensive : {ai.DefensiveAPReserve} PA", GUILayout.Width(150));
+            int wantReserve = Mathf.RoundToInt(GUILayout.HorizontalSlider(ai.DefensiveAPReserve, 0f, 2f));
+            if (wantReserve != ai.DefensiveAPReserve) ai.DefensiveAPReserve = wantReserve;
+            GUILayout.EndHorizontal();
+
+            int curRound = _turnManager != null ? _turnManager.CurrentRound : 1;
+            if (_observeActive && _turnManager != null && curRound >= _observeStartRound + 3)
+            {
+                ai.Mode = CombatAIMode.Normal;
+                ai.ActionDelay = _observePrevDelay;
+                _observeActive = false;
+                _arena?.Log($"👁 <b>[DEV] Observe terminé</b> : round {curRound} atteint (+3 depuis {_observeStartRound}), retour Normal.");
+            }
+
+            GUILayout.BeginHorizontal();
+            if (!_observeActive)
+            {
+                if (GUILayout.Button("👁 Observer 3 tours (FullAuto + 0.15s)"))
+                {
+                    _observeStartRound = _turnManager != null ? _turnManager.CurrentRound : 1;
+                    _observePrevDelay = ai.ActionDelay;
+                    ai.IsAIEnabled = true;
+                    ai.Mode = CombatAIMode.FullAuto;
+                    ai.ActionDelay = 0.15f;
+                    _observeActive = true;
+                    _arena?.Log($"👁 <b>[DEV] Observe 3 tours</b> : doctrine {ai.DefaultPersonality}, rounds {_observeStartRound}->{_observeStartRound + 3} (log tactique onglet 📜).");
+                }
+            }
+            else
+            {
+                GUI.backgroundColor = new Color(1f, 0.4f, 0.2f);
+                if (GUILayout.Button($"⏹ Stop observe (round {curRound}/{_observeStartRound + 3})", GUILayout.Height(26)))
+                {
+                    ai.Mode = CombatAIMode.Normal;
+                    ai.ActionDelay = _observePrevDelay;
+                    _observeActive = false;
+                    _arena?.Log("👁 <b>[DEV] Observe interrompu</b> : retour Normal.");
+                }
+                GUI.backgroundColor = Color.white;
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.Label($"<i>Grenades tactiques : fumée=cut-vue, flash=Aveugle -4 tir avant assaut, gaz persistant (masque allié ignoré). Seuils IA utilitaire {Killtime.Tactics.AI.AIGrenadeScorer.UtilityPlayThreshold:0} / létal {Killtime.Tactics.AI.AIGrenadeScorer.LethalPlayThreshold:0} — log tactique = onglet 📜 Logs.</i>");
         }
 
         // RD-187 : socle cheats ciblés (dev-only). Sliders set-PV (dont seuil
