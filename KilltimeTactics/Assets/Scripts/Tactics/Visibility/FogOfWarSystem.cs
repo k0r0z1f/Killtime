@@ -67,8 +67,10 @@ namespace Killtime.Tactics.Visibility
         /// environnementale (FogOfWarManager.CurrentSightRange). Les stats ne
         /// fournissent que l'Ouïe et les sens (Thermique) ; la Vision sert aux
         /// jets d'Observation, jamais à la portée.
+        /// Nuit (RD-053/RD-190) : sans lampe ni thermique, portée bridée à
+        /// nightRange (défaut 4 = NightSightRange du manager).
         /// </summary>
-        public static FogVisionParams ResolveObserverParams(CharacterStats stats, int baseRange, bool isNight = false)
+        public static FogVisionParams ResolveObserverParams(CharacterStats stats, int baseRange, bool isNight = false, int nightRange = 4)
         {
             var p = new FogVisionParams
             {
@@ -109,7 +111,7 @@ namespace Killtime.Tactics.Visibility
 
             if (isNight && !p.HasLight && !p.Thermal)
             {
-                p.Range = Mathf.Min(p.Range, 4);
+                p.Range = Mathf.Min(p.Range, Mathf.Max(1, nightRange));
             }
 
             return p;

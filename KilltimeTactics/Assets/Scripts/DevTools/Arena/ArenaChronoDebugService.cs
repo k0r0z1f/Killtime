@@ -258,5 +258,149 @@ namespace Killtime.Tactics.Arena
             _host.ArenaLog($"🗑️ <b>{unitName}</b> a été retiré(e) du champ de bataille.");
             Object.Destroy(unit.gameObject);
         }
+
+        // =====================================================================
+        // RD-187 : SOCLE CHEATS CIBLÉS (dev-only, aucune règle modifiée).
+        // Set-PV (dont seuil moral 28 %), set-PA/PE par unité, statuts on/off,
+        // enrayement forcé, purge chrono par branche + zones persistantes.
+        // =====================================================================
+
+        /// <summary>Durée de test pour les statuts non persistants posés via cheat.</summary>
+        private const int DebugStatusTestDuration = 99;
+
+        /// <summary>Toutes les unités debuggables : joueur + alliés + mannequins.</summary>
+        public System.Collections.Generic.List<TacticalUnit> AllDebugUnits()
+        {
+            var list = new System.Collections.Generic.List<TacticalUnit>();
+            if (_state.PlayerUnit != null) list.Add(_state.PlayerUnit);
+            foreach (var p in _state.AdditionalPlayers) if (p != null && !list.Contains(p)) list.Add(p);
+            foreach (var d in _state.SparringDummies) if (d != null && !list.Contains(d)) list.Add(d);
+            return list;
+        }
+
+        public bool SetUnitHealth(TacticalUnit unit, int hp)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            int max = Mathf.Max(1, unit.Stats.MaxHealth);
+            int v = Mathf.Clamp(hp, 0, max);
+            unit.Stats.CurrentHealth = v;
+            if (v <= 0)
+            {
+                unit.Stats.IsDead = true;
+                unit.Stats.ActiveStatus |= StatusEffect.Inconscient | StatusEffect.ATerre;
+            }
+            else if (unit.Stats.IsDead)
+            {
+                unit.Stats.IsDead = false;
+                unit.Stats.RemoveStatus(StatusEffect.Inconscient);
+            }
+            _host.ArenaLog($"🎯 <b>{unit.Stats.Name}</b> : PV fixés à <b>{v}/{max}</b> (cheat dev).");
+            return true;
+        }
+
+        public bool SetUnitAP(TacticalUnit unit, int ap)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            int max = Mathf.Max(0, unit.Stats.MaxActionPoints);
+            int v = Mathf.Clamp(ap, 0, max);
+            unit.Stats.CurrentActionPoints = v;
+            _host.ArenaLog($"🎯 <b>{unit.Stats.Name}</b> : PA fixés à <b>{v}/{max}</b> (cheat dev).");
+            return true;
+        }
+
+        public static int GetMaxPEFor(CharacterStats stats)
+        {
+            if (stats == null) return 10;
+            int max = stats.Attributes.Constitution;
+            try
+            {
+                if (stats.HasSpecialization("Restructuration Neurale : Volonté d'Inflexible")) max += 2;
+            }
+            catch { /* spécialisations optionnelles */ }
+            return Mathf.Max(1, max);
+        }
+
+        public bool SetUnitPE(TacticalUnit unit, int pe)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            int max = GetMaxPEFor(unit.Stats);
+            int v = Mathf.Clamp(pe, 0, max);
+            unit.Stats.Essoufflement = v;
+            _host.ArenaLog($"🎯 <b>{unit.Stats.Name}</b> : PE (Essoufflement) fixés à <b>{v}/{max}</b> (cheat dev).");
+            return true;
+        }
+
+        public bool SetUnitStatus(TacticalUnit unit, StatusEffect effect, bool on)
+        {
+            if (unit == null || unit.Stats == null || effect == StatusEffect.None) return false;
+            if (on) unit.Stats.ApplyStatus(effect, DebugStatusTestDuration);
+            else unit.Stats.RemoveStatus(effect);
+            _host.ArenaLog($"🎯 <b>{unit.Stats.Name}</b> : statut <b>{effect}</b> {(on ? "appliqué" : "retiré")} (cheat dev).");
+            return true;
+        }
+
+        public bool ClearUnitStatuses(TacticalUnit unit)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            unit.Stats.ClearAllStatus();
+            _host.ArenaLog($"🎯 <b>{unit.Stats.Name}</b> : tous les statuts purgés (cheat dev).");
+            return true;
+        }
+
+        public bool ForceJam(TacticalUnit unit, bool jammed)
+        {
+            if (unit == null || unit.Stats == null) return false;
+            var sheet = unit.GetOrBuildSheet();
+            var weapon = sheet != null ? sheet.GetEquippedWeapon() : null;
+            if (weapon == null)
+            {
+                _host.ArenaLog($"🎯 <b>{unit.Stats.Name}</b> : aucune arme équipée à {(jammed ? "enrayer" : "désenrayer")}.");
+                return false;
+            }
+            weapon.Jammed = jammed;
+            unit.NotifyInventoryChanged(true);
+            _host.ArenaLog($"🎯 <b>{unit.Stats.Name}</b> : <b>{weapon.Name}</b> {(jammed ? "ENRAYÉE 🔧" : "désenrayée ✔")} (cheat dev).");
+            return true;
+        }
+
+        public int GetBranchCount(TimelineId id)
+        {
+            if (_branches != null && _branches.TryGetValue(id, out var b) && b != null) return b.Count;
+            return 0;
+        }
+
+        public void PurgeChronoBranch(TimelineId id)
+        {
+            if (_branches != null && _branches.TryGetValue(id, out var b) && b != null)
+            {
+                int n = b.Count;
+                b.Clear();
+                _host.ArenaLog($"🌊 <b>Fleuve du Temps</b> : branche <b>{id}</b> purgée ({n} snapshot(s) supprimé(s), cheat dev).");
+            }
+        }
+
+        public void PurgeAllChronoBranches()
+        {
+            int total = 0;
+            if (_branches != null)
+            {
+                foreach (var kv in _branches)
+                {
+                    if (kv.Value == null) continue;
+                    total += kv.Value.Count;
+                    kv.Value.Clear();
+                }
+            }
+            _host.ArenaLog($"🌊 <b>Fleuve du Temps</b> : toutes les branches purgées ({total} snapshot(s) supprimé(s), cheat dev).");
+        }
+
+        public void PurgeZones()
+        {
+            int n = _state.SmokeZones.Count;
+            _state.SmokeZones.Clear();
+            try { _ctx.Visualizer?.UpdatePersistentZones(_state.SmokeZones); }
+            catch { /* visualiseur optionnel */ }
+            _host.ArenaLog($"🌫️ <b>Zones persistantes</b> purgées ({n} zone(s) supprimée(s), cheat dev).");
+        }
     }
 }

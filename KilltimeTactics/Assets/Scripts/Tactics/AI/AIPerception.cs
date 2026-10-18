@@ -62,7 +62,8 @@ namespace Killtime.Tactics.AI
             var fog = FogOfWarManager.Instance;
             bool isNight = fog != null && fog.IsNight;
             int range = fog != null ? fog.CurrentSightRange : FogOfWarSystem.LongSightRange;
-            return FogOfWarSystem.ResolveObserverParams(observerStats, range, isNight);
+            int nightRange = fog != null ? fog.NightSightRange : 4;
+            return FogOfWarSystem.ResolveObserverParams(observerStats, range, isNight, nightRange);
         }
 
         public bool IsCellVisible(

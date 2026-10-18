@@ -69,5 +69,14 @@ namespace Killtime.Core.Chrono
         }
 
         public IReadOnlyList<TacticalTimeSnapshot> GetFullChronology() => _history.AsReadOnly();
+
+        /// <summary>
+        /// RD-187 (dev-only) : purge tous les snapshots de la branche.
+        /// Aucun effet sur les autres branches.
+        /// </summary>
+        public void Clear()
+        {
+            _history.Clear();
+        }
     }
 }

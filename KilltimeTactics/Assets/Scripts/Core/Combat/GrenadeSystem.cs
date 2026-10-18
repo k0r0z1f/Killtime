@@ -463,6 +463,7 @@ namespace Killtime.Core.Combat
                 else if (t.Contains("etourdi")) acc |= StatusEffect.Etourdi;
                 else if (t.Contains("immobil")) acc |= StatusEffect.Immobilise;
                 else if (t.Contains("paralys")) acc |= StatusEffect.Paralyse;
+                else if (t.Contains("empois")) acc |= StatusEffect.Empoisonne;
                 else if (t.Contains("sonn")) acc |= StatusEffect.Sonne;
                 else if (t.Contains("terre")) acc |= StatusEffect.ATerre;
                 else if (t.Contains("ralenti")) acc |= StatusEffect.Ralenti;
@@ -471,7 +472,6 @@ namespace Killtime.Core.Combat
                 else if (t.Contains("aveugle")) acc |= StatusEffect.Aveugle;
                 else if (t.Contains("sourd")) acc |= StatusEffect.Sourd;
                 else if (t.Contains("asphyx")) acc |= StatusEffect.Asphyxie;
-                else if (t.Contains("empois")) acc |= StatusEffect.Empoisonne;
                 else if (t.Contains("feu") || t.Contains("brul")) acc |= StatusEffect.EnFeu;
                 else if (t.Contains("saign")) acc |= StatusEffect.Saignement;
             }

@@ -504,7 +504,7 @@ namespace Killtime.Tactics.Visibility
             foreach (var obs in observers)
             {
                 if (obs == null || obs.Stats == null) continue;
-                var p = FogOfWarSystem.ResolveObserverParams(obs.Stats, CurrentSightRange, _isNight);
+                var p = FogOfWarSystem.ResolveObserverParams(obs.Stats, CurrentSightRange, _isNight, NightSightRange);
                 if (FogOfWarSystem.IsCellVisible(
                     obs.CurrentCoords, FacingYawDeg(obs), target.CurrentCoords,
                     c => _grid.GetNode(c), p, _grid.HexRadius))
@@ -599,7 +599,7 @@ namespace Killtime.Tactics.Visibility
                     if (FogOfWarSystem.HasFogLineOfSight(obs.CurrentCoords, enemy.CurrentCoords, c => _grid.GetNode(c), _grid.HexRadius, ignoreWalls: false))
                         return true;
                 }
-                var p = FogOfWarSystem.ResolveObserverParams(obs.Stats, CurrentSightRange, _isNight);
+                var p = FogOfWarSystem.ResolveObserverParams(obs.Stats, CurrentSightRange, _isNight, NightSightRange);
                 if (p.Thermal)
                 {
                     int thermalRange = Mathf.Max(1, (p.Range + 1) / 2);
@@ -667,7 +667,7 @@ namespace Killtime.Tactics.Visibility
             {
                 var o = observers[i];
                 if (o == null || o.Stats == null) continue;
-                specs.Add((o.CurrentCoords, FacingYawDeg(o), FogOfWarSystem.ResolveObserverParams(o.Stats, CurrentSightRange, _isNight)));
+                specs.Add((o.CurrentCoords, FacingYawDeg(o), FogOfWarSystem.ResolveObserverParams(o.Stats, CurrentSightRange, _isNight, NightSightRange)));
             }
             // Phase de déploiement (aucun observateur vivant) : pas de masque,
             // sinon la carte serait noire avant même le placement des unités.

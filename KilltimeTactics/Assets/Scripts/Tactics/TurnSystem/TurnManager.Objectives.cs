@@ -299,5 +299,60 @@ namespace Killtime.Tactics.TurnSystem
             else
                 AddObjective(CombatObjective.CreateHackTerminalById(terminalId ?? "Console_Terminal"));
         }
+
+        // RD-189 : surcouches paramétrées testables en arène (dev-only).
+        // Presets Setup*Preset ci-dessus inchangés. Aucune règle modifiée :
+        // les fabriques CombatObjective.* existantes sont réutilisées telles quelles.
+        public static List<HexCoordinates> BuildObjectiveDisc(HexCoordinates center, int radius)
+        {
+            radius = Mathf.Max(0, radius);
+            var zone = new List<HexCoordinates>();
+            for (int dq = -radius; dq <= radius; dq++)
+            {
+                for (int dr = -radius; dr <= radius; dr++)
+                {
+                    var cand = new HexCoordinates(center.Q + dq, center.R + dr);
+                    if (center.DistanceTo(cand) <= radius)
+                        zone.Add(cand);
+                }
+            }
+            return zone;
+        }
+
+        public void SetupExtractionCustom(HexCoordinates center, int radius, bool requireAllLiving)
+        {
+            var zone = BuildObjectiveDisc(center, radius);
+            ClearObjectives();
+            AddObjective(CombatObjective.CreateExtraction(zone, requireAllLiving));
+        }
+
+        public void SetupSurviveCustom(int rounds)
+        {
+            int n = Mathf.Max(1, rounds);
+            ClearObjectives();
+            AddObjective(CombatObjective.CreateSurvive(CurrentRound + n - 1));
+        }
+
+        public void SetupEscortCustom(TacticalUnit vip, IEnumerable<HexCoordinates> destination)
+        {
+            ClearObjectives();
+            AddObjective(CombatObjective.CreateEscort(vip, destination));
+        }
+
+        public void SetupHackTerminalCustom(string terminalId, int count, TacticalInteractable terminalRef = null)
+        {
+            int n = Mathf.Max(1, count);
+            ClearObjectives();
+            if (terminalRef != null)
+            {
+                var obj = CombatObjective.CreateHackTerminal(terminalRef);
+                obj.TerminalsRequired = n;
+                AddObjective(obj);
+            }
+            else
+            {
+                AddObjective(CombatObjective.CreateHackTerminalById(terminalId ?? "Console_Terminal", n));
+            }
+        }
     }
 }

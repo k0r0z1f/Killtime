@@ -28,6 +28,51 @@ namespace Killtime.Core.Dice
     {
         private readonly Random _random;
 
+        // RD-187 (dev-only, tests terrain) : truquage ciblé des dés derrière flag.
+        // À false (défaut), comportement Livre II inchangé. La toolbar dev positionne
+        // ces flags puis les restaure via ClearDevRig() — aucune règle modifiée.
+        public static bool DevForceCritical = false;
+        public static bool DevForceFumble = false;
+
+        public static void ClearDevRig()
+        {
+            DevForceCritical = false;
+            DevForceFumble = false;
+        }
+
+        /// <summary>Tirage brut maximal du calibre (critique forcé).</summary>
+        public static int MaxRawFor(DiceType dieType)
+        {
+            return dieType switch
+            {
+                DiceType.D2 => 2,
+                DiceType.D3 => 3,
+                DiceType.D4 => 4,
+                DiceType.D6 => 6,
+                DiceType.D8 => 8,
+                DiceType.D10 => 10,
+                DiceType.D12 => 12,
+                DiceType.D20 => 20,
+                DiceType.TwoD6 => 12,
+                DiceType.TwoD8 => 16,
+                DiceType.TwoD10 => 20,
+                DiceType.TwoD12 => 24,
+                DiceType.TwoD12Plus10 => 34,
+                _ => 6,
+            };
+        }
+
+        /// <summary>Tirage brut minimal du calibre (raté forcé).</summary>
+        public static int MinRawFor(DiceType dieType)
+        {
+            return dieType switch
+            {
+                DiceType.TwoD6 or DiceType.TwoD8 or DiceType.TwoD10 or DiceType.TwoD12 => 2,
+                DiceType.TwoD12Plus10 => 12,
+                _ => 1,
+            };
+        }
+
         public DiceRoller(int? seed = null)
         {
             _random = seed.HasValue ? new Random(seed.Value) : new Random();
@@ -38,6 +83,8 @@ namespace Killtime.Core.Dice
         /// </summary>
         public virtual int RollRaw(DiceType dieType)
         {
+            if (DevForceCritical) return MaxRawFor(dieType);
+            if (DevForceFumble) return MinRawFor(dieType);
             return dieType switch
             {
                 DiceType.D2 => _random.Next(1, 3),
@@ -191,6 +238,42 @@ namespace Killtime.Core.Dice
 
         public virtual DiceRollResult Roll(DiceType dieType, int modifier = 0, int targetDC = 10)
         {
+            // RD-187 : critique / raté forcé (dev-only, restauré via ClearDevRig).
+            if (DevForceCritical)
+            {
+                int forcedMax = MaxRawFor(dieType);
+                int forcedTotal = forcedMax + modifier;
+                return new DiceRollResult
+                {
+                    DieType = dieType,
+                    RawRoll = forcedMax,
+                    Modifier = modifier,
+                    Total = forcedTotal,
+                    TargetDC = targetDC,
+                    Differential = forcedTotal - targetDC,
+                    IsSuccess = true,
+                    IsCriticalSuccess = true,
+                    IsCriticalFailure = false
+                };
+            }
+            if (DevForceFumble)
+            {
+                int forcedMin = MinRawFor(dieType);
+                int fumbledTotal = forcedMin + modifier;
+                return new DiceRollResult
+                {
+                    DieType = dieType,
+                    RawRoll = forcedMin,
+                    Modifier = modifier,
+                    Total = fumbledTotal,
+                    TargetDC = targetDC,
+                    Differential = fumbledTotal - targetDC,
+                    IsSuccess = false,
+                    IsCriticalSuccess = false,
+                    IsCriticalFailure = true
+                };
+            }
+
             int rawRoll;
             bool isCriticalSuccess = false;
             bool isCriticalFailure = false;

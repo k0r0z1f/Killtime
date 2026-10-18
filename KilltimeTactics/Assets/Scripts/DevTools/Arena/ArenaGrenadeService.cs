@@ -565,6 +565,55 @@ namespace Killtime.Tactics.Arena
             _host.RequestCombatOverCheck();
         }
 
+        // RD-188 : zones nommées posées par nom (dev-only, sans grenade/PA).
+        // Fabrique réutilisant le même profil catalogue que la détonation
+        // (Kind/Radius/Turns/Statuses/Era) + overlay existant. Aucune règle modifiée.
+        public bool PoseNamedZone(string profileKey, HexCoordinates center)
+        {
+            if (!NamedZoneProfiles.TryGet(profileKey, out var profile))
+            {
+                _host.ArenaLog($"⚠️ Zone nommée inconnue : '{profileKey ?? "?"}' (M18/ANM14/CM6/C9/T0/KARK).");
+                return false;
+            }
+            var grid = _ctx.Grid;
+            if (grid != null && grid.GetNode(center) == null)
+            {
+                _host.ArenaLog($"⚠️ Pose impossible : case ({center.Q},{center.R}) hors carte.");
+                return false;
+            }
+            var zone = NamedZoneProfiles.BuildSmokeZone(profile, center);
+            _state.SmokeZones.Add(zone);
+            try { _ctx.Visualizer?.UpdatePersistentZones(_state.SmokeZones); }
+            catch { /* visualiseur optionnel */ }
+            int dot = SmokeScreen.ZoneDamagePerTurn(zone.Kind);
+            _host.ArenaLog($"🌫️ <b>Zone {profile.DisplayName}</b> posée en ({center.Q},{center.R}) R{zone.Radius} {zone.TurnsLeft} round(s)"
+                + (SmokeScreen.BlocksSight(zone.Kind) ? " — <b>bloque la visée</b> (sauf thermique)" : "")
+                + (dot > 0 ? $" — {dot} PV/round (ignore armure)" : " — 0 dégât (effet seul)")
+                + $" [{zone.Statuses}] (cheat dev, sans grenade).");
+            SnapshotRecorder?.Invoke($"Zone {profile.DisplayName} en ({center.Q},{center.R})");
+            try
+            {
+                if (Killtime.Multi.VTTTableSync.Instance != null
+                    && Killtime.Multi.VTTRoomManager.Instance != null
+                    && Killtime.Multi.VTTRoomManager.Instance.InRoom
+                    && Killtime.Multi.VTTRoomManager.Instance.IsGM)
+                    Killtime.Multi.VTTTableSync.Instance.BroadcastFullCombatState();
+            }
+            catch { /* VTT optionnel */ }
+            return true;
+        }
+
+        /// <summary>RD-188 : purge sélective d'une zone nommée par Kind. Retourne le nombre supprimé.</summary>
+        public int PurgeNamedZone(string kind)
+        {
+            if (string.IsNullOrEmpty(kind)) return 0;
+            int removed = NamedZoneProfiles.PurgeByKind(_state.SmokeZones, kind);
+            try { _ctx.Visualizer?.UpdatePersistentZones(_state.SmokeZones); }
+            catch { /* visualiseur optionnel */ }
+            _host.ArenaLog($"🌫️ <b>Zone {kind}</b> purgée ({removed} supprimée(s), cheat dev).");
+            return removed;
+        }
+
         /// <summary>
         /// Lancer d'arme équipée (2 PA) : Hachette de Jet et armes de fortune.
         /// Duel Ballistique à 2-4 cases, dégâts = BaseDamage + différentiel + EC,

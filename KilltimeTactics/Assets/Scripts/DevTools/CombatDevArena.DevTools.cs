@@ -63,6 +63,75 @@ namespace Killtime.Tactics
             _chronoService.RemoveUnit(unit);
         }
 
+        // RD-187 : socle cheats ciblés (dev-only, aucune règle modifiée).
+        public System.Collections.Generic.List<TacticalUnit> AllDebugUnits()
+        {
+            return _chronoService.AllDebugUnits();
+        }
+
+        public bool SetDebugHealth(TacticalUnit unit, int hp)
+        {
+            return _chronoService.SetUnitHealth(unit, hp);
+        }
+
+        public bool SetDebugAP(TacticalUnit unit, int ap)
+        {
+            return _chronoService.SetUnitAP(unit, ap);
+        }
+
+        public bool SetDebugPE(TacticalUnit unit, int pe)
+        {
+            return _chronoService.SetUnitPE(unit, pe);
+        }
+
+        public bool SetDebugStatus(TacticalUnit unit, StatusEffect effect, bool on)
+        {
+            return _chronoService.SetUnitStatus(unit, effect, on);
+        }
+
+        public bool ClearDebugStatuses(TacticalUnit unit)
+        {
+            return _chronoService.ClearUnitStatuses(unit);
+        }
+
+        public bool ForceDebugJam(TacticalUnit unit, bool jammed)
+        {
+            return _chronoService.ForceJam(unit, jammed);
+        }
+
+        public int GetChronoBranchCount(TimelineId id)
+        {
+            return _chronoService.GetBranchCount(id);
+        }
+
+        public void PurgeChronoBranch(TimelineId id)
+        {
+            _chronoService.PurgeChronoBranch(id);
+        }
+
+        public void PurgeAllChrono()
+        {
+            _chronoService.PurgeAllChronoBranches();
+        }
+
+        public void PurgeDebugZones()
+        {
+            _chronoService.PurgeZones();
+        }
+
+        // RD-188 : zones nommées posées/purgées par nom (dev-only, sans grenade).
+        public bool PoseDebugZone(string profileKey, HexCoordinates center)
+        {
+            if (_grenades == null) return false;
+            return _grenades.PoseNamedZone(profileKey, center);
+        }
+
+        public int PurgeDebugZoneByKind(string kind)
+        {
+            if (_grenades == null || string.IsNullOrEmpty(kind)) return 0;
+            return _grenades.PurgeNamedZone(kind);
+        }
+
         public void ResetArena()
         {
             CombatHUD.ResetTelemetry();

@@ -2,12 +2,12 @@
  "project": "Killtime Tactics — Cartographie des fichiers",
  "scope": "Scripts/**/*.cs, Shaders, scenes maison, JSON Resources, asmdefs (hors Packages tiers, binaires, .meta)",
  "totals": {
-  "files": 549,
-  "loc": 151374,
-  "code": 125736,
-  "size": 6727595,
-  "classes": 830,
-  "methods": 4443,
+  "files": 558,
+  "loc": 153935,
+  "code": 127686,
+  "size": 6857563,
+  "classes": 847,
+  "methods": 4587,
   "modules": 15,
   "partial_groups": 43
  },
@@ -15,9 +15,9 @@
   {
    "id": "DevTools",
    "files": 132,
-   "loc": 38025,
-   "code": 32220,
-   "size": 1778438,
+   "loc": 38074,
+   "code": 32267,
+   "size": 1782210,
    "classes": 151,
    "methods": 975,
    "color": "#f97316",
@@ -25,23 +25,23 @@
   },
   {
    "id": "Core",
-   "files": 101,
-   "loc": 21686,
-   "code": 17042,
-   "size": 1049566,
-   "classes": 185,
-   "methods": 751,
+   "files": 107,
+   "loc": 23064,
+   "code": 18005,
+   "size": 1116338,
+   "classes": 199,
+   "methods": 834,
    "color": "#38bdf8",
    "label": "Cœur & Règles"
   },
   {
    "id": "Tactics",
-   "files": 67,
-   "loc": 20412,
-   "code": 16304,
-   "size": 894994,
-   "classes": 107,
-   "methods": 603,
+   "files": 68,
+   "loc": 20639,
+   "code": 16496,
+   "size": 908967,
+   "classes": 108,
+   "methods": 606,
    "color": "#fbbf24",
    "label": "Tactique & Combat"
   },
@@ -58,12 +58,12 @@
   },
   {
    "id": "Tests",
-   "files": 49,
-   "loc": 11545,
-   "code": 9463,
-   "size": 500233,
-   "classes": 54,
-   "methods": 624,
+   "files": 51,
+   "loc": 12449,
+   "code": 10208,
+   "size": 544950,
+   "classes": 56,
+   "methods": 682,
    "color": "#94a3b8",
    "label": "Tests"
   },
@@ -103,9 +103,9 @@
   {
    "id": "Data",
    "files": 7,
-   "loc": 8318,
-   "code": 8318,
-   "size": 244749,
+   "loc": 8321,
+   "code": 8321,
+   "size": 245483,
    "classes": 0,
    "methods": 0,
    "color": "#2dd4bf",
@@ -191,147 +191,147 @@
     {
      "name": "ScenarioEditorDevWindow.Cards.Dialogue.cs",
      "loc": 607,
-     "id": 27
+     "id": 28
     },
     {
      "name": "ScenarioEditorDevWindow.Wires.cs",
      "loc": 595,
-     "id": 32
+     "id": 33
     },
     {
      "name": "ScenarioEditorDevWindow.Panels.AudioCards.cs",
      "loc": 584,
-     "id": 35
+     "id": 36
     },
     {
      "name": "ScenarioEditorDevWindow.GraphCanvas.cs",
      "loc": 583,
-     "id": 36
+     "id": 37
     },
     {
      "name": "ScenarioEditorDevWindow.Cards.World.Actors.cs",
      "loc": 577,
-     "id": 40
+     "id": 41
     },
     {
      "name": "ScenarioEditorDevWindow.Layout.Graph.cs",
      "loc": 560,
-     "id": 44
+     "id": 45
     },
     {
      "name": "ScenarioEditorDevWindow.QuickCreateFactory.cs",
      "loc": 539,
-     "id": 51
+     "id": 52
     },
     {
      "name": "ScenarioEditorDevWindow.Persistence.cs",
      "loc": 484,
-     "id": 66
+     "id": 68
     },
     {
      "name": "ScenarioEditorDevWindow.Layout.NodeFrame.cs",
      "loc": 457,
-     "id": 81
+     "id": 82
     },
     {
      "name": "ScenarioEditorDevWindow.Layout.Auto.cs",
      "loc": 420,
-     "id": 107
+     "id": 108
     },
     {
      "name": "ScenarioEditorDevWindow.Wires.Overview.cs",
      "loc": 354,
-     "id": 149
+     "id": 151
     },
     {
      "name": "ScenarioEditorDevWindow.Cards.Common.cs",
      "loc": 347,
-     "id": 156
+     "id": 158
     },
     {
      "name": "ScenarioEditorDevWindow.Panels.Audio.cs",
      "loc": 338,
-     "id": 163
+     "id": 166
     },
     {
      "name": "ScenarioEditorDevWindow.Cards.World.cs",
      "loc": 332,
-     "id": 167
+     "id": 170
     },
     {
      "name": "ScenarioEditorDevWindow.GraphCanvas.Primitives.cs",
      "loc": 317,
-     "id": 176
+     "id": 178
     },
     {
      "name": "ScenarioEditorDevWindow.Cards.Consequence.cs",
      "loc": 308,
-     "id": 193
+     "id": 195
     },
     {
      "name": "ScenarioEditorDevWindow.ItemPicker.cs",
      "loc": 308,
-     "id": 194
+     "id": 196
     },
     {
      "name": "ScenarioEditorDevWindow.QuickCreate.cs",
      "loc": 280,
-     "id": 224
+     "id": 227
     },
     {
      "name": "ScenarioEditorDevWindow.Cards.World.Cinematics.cs",
      "loc": 261,
-     "id": 236
+     "id": 239
     },
     {
      "name": "ScenarioEditorDevWindow.Cards.Trigger.cs",
      "loc": 246,
-     "id": 250
+     "id": 254
     },
     {
      "name": "ScenarioEditorDevWindow.Cards.Event.cs",
      "loc": 227,
-     "id": 277
+     "id": 281
     },
     {
      "name": "ScenarioEditorDevWindow.Wires.Sound.cs",
      "loc": 226,
-     "id": 279
+     "id": 283
     },
     {
      "name": "ScenarioEditorDevWindow.Layout.Sizes.cs",
      "loc": 216,
-     "id": 290
+     "id": 295
     },
     {
      "name": "ScenarioEditorDevWindow.DragGuards.cs",
      "loc": 201,
-     "id": 315
+     "id": 321
     },
     {
      "name": "ScenarioEditorDevWindow.Layout.Cards.cs",
      "loc": 199,
-     "id": 317
+     "id": 323
     },
     {
      "name": "ScenarioEditorDevWindow.ActorDropdown.cs",
      "loc": 194,
-     "id": 326
+     "id": 332
     },
     {
      "name": "ScenarioEditorDevWindow.Wires.Ports.cs",
      "loc": 88,
-     "id": 466
+     "id": 474
     },
     {
      "name": "ScenarioEditorDevWindow.Wires.Cine.cs",
      "loc": 80,
-     "id": 481
+     "id": 489
     },
     {
      "name": "ScenarioEditorDevWindow.HoverTooltip.cs",
      "loc": 51,
-     "id": 516
+     "id": 525
     }
    ],
    "loc": 10722,
@@ -344,45 +344,50 @@
     {
      "name": "TacticalAIController.TurnPlan.cs",
      "loc": 580,
-     "id": 37
+     "id": 38
     },
     {
      "name": "TacticalAIController.Maneuvers.cs",
      "loc": 562,
-     "id": 43
+     "id": 44
     },
     {
      "name": "TacticalAIController.Support.cs",
      "loc": 549,
-     "id": 49
+     "id": 50
     },
     {
      "name": "TacticalAIController.Attack.cs",
      "loc": 523,
-     "id": 57
+     "id": 59
     },
     {
      "name": "TacticalAIController.Movement.cs",
      "loc": 385,
-     "id": 125
+     "id": 126
     },
     {
      "name": "TacticalAIController.Targeting.cs",
      "loc": 379,
-     "id": 132
+     "id": 133
     },
     {
      "name": "TacticalAIController.SupportLivreXI.cs",
-     "loc": 339,
-     "id": 162
+     "loc": 342,
+     "id": 163
+    },
+    {
+     "name": "TacticalAIController.TitanBoss.cs",
+     "loc": 204,
+     "id": 316
     },
     {
      "name": "TacticalAIController.DuoTech.cs",
      "loc": 116,
-     "id": 434
+     "id": 442
     }
    ],
-   "loc": 3433,
+   "loc": 3640,
    "color": "#fbbf24"
   },
   {
@@ -392,62 +397,62 @@
     {
      "name": "JsonStorySceneController.CineAudio.cs",
      "loc": 422,
-     "id": 104
+     "id": 105
     },
     {
      "name": "JsonStorySceneController.DialogueEvents.cs",
      "loc": 315,
-     "id": 178
+     "id": 180
     },
     {
      "name": "JsonStorySceneController.Spawn.cs",
      "loc": 313,
-     "id": 183
+     "id": 185
     },
     {
      "name": "JsonStorySceneController.GuiDialogue.cs",
      "loc": 309,
-     "id": 191
+     "id": 193
     },
     {
      "name": "JsonStorySceneController.DialogueChoice.cs",
      "loc": 303,
-     "id": 204
+     "id": 206
     },
     {
      "name": "JsonStorySceneController.InteractablesActions.cs",
      "loc": 292,
-     "id": 212
+     "id": 216
     },
     {
      "name": "JsonStorySceneController.DialogueCore.cs",
      "loc": 272,
-     "id": 226
+     "id": 229
     },
     {
      "name": "JsonStorySceneController.Talk.cs",
      "loc": 244,
-     "id": 255
+     "id": 259
     },
     {
      "name": "JsonStorySceneController.GuiDraw.cs",
      "loc": 238,
-     "id": 264
+     "id": 268
     },
     {
      "name": "JsonStorySceneController.InteractablesPopups.cs",
      "loc": 208,
-     "id": 307
+     "id": 312
     },
     {
      "name": "JsonStorySceneController.DialogueConsequence.cs",
      "loc": 159,
-     "id": 372
+     "id": 379
     },
     {
      "name": "JsonStorySceneController.GuiInput.cs",
      "loc": 140,
-     "id": 401
+     "id": 409
     }
    ],
    "loc": 3215,
@@ -465,22 +470,22 @@
     {
      "name": "TacticalUnitVisual.Animator.cs",
      "loc": 551,
-     "id": 47
+     "id": 48
     },
     {
      "name": "TacticalUnitVisual.Weapon.cs",
      "loc": 467,
-     "id": 76
+     "id": 77
     },
     {
      "name": "TacticalUnitVisual.Weapon.Sockets.cs",
      "loc": 420,
-     "id": 108
+     "id": 109
     },
     {
      "name": "TacticalUnitVisual.Avatar.cs",
      "loc": 387,
-     "id": 123
+     "id": 124
     }
    ],
    "loc": 2546,
@@ -493,57 +498,57 @@
     {
      "name": "CharacterProgressionManager.AttributesSync.cs",
      "loc": 529,
-     "id": 54
+     "id": 56
     },
     {
      "name": "CharacterProgressionManager.Specializations.CatalogMelee.cs",
      "loc": 305,
-     "id": 200
+     "id": 202
     },
     {
      "name": "CharacterProgressionManager.OrganicTicks.cs",
      "loc": 236,
-     "id": 266
+     "id": 270
     },
     {
      "name": "CharacterProgressionManager.Specializations.Unlock.cs",
      "loc": 229,
-     "id": 272
+     "id": 276
     },
     {
      "name": "CharacterProgressionManager.Specializations.CatalogMobility.cs",
      "loc": 214,
-     "id": 296
+     "id": 301
     },
     {
      "name": "CharacterProgressionManager.Specializations.Queries.cs",
      "loc": 210,
-     "id": 304
+     "id": 309
     },
     {
      "name": "CharacterProgressionManager.Specializations.CatalogMagic.cs",
      "loc": 191,
-     "id": 329
+     "id": 335
     },
     {
      "name": "CharacterProgressionManager.Specializations.CatalogSupport.cs",
      "loc": 177,
-     "id": 345
+     "id": 352
     },
     {
      "name": "CharacterProgressionManager.HeroAccess.cs",
      "loc": 163,
-     "id": 367
+     "id": 374
     },
     {
      "name": "CharacterProgressionManager.Funding.cs",
      "loc": 155,
-     "id": 376
+     "id": 383
     },
     {
      "name": "CharacterProgressionManager.Specializations.cs",
      "loc": 22,
-     "id": 546
+     "id": 555
     }
    ],
    "loc": 2431,
@@ -556,12 +561,12 @@
     {
      "name": "CombatContextMenuUI.Defense.cs",
      "loc": 650,
-     "id": 20
+     "id": 21
     },
     {
      "name": "CombatContextMenuUI.Glyphs.cs",
      "loc": 647,
-     "id": 22
+     "id": 23
     },
     {
      "name": "CombatContextMenuUI.Attack.cs",
@@ -571,7 +576,7 @@
     {
      "name": "CombatContextMenuUI.Hub.cs",
      "loc": 266,
-     "id": 231
+     "id": 234
     }
    ],
    "loc": 2185,
@@ -584,32 +589,32 @@
     {
      "name": "CombatHUD.Overlays.cs",
      "loc": 465,
-     "id": 78
+     "id": 79
     },
     {
      "name": "CombatHUD.Targeting.cs",
      "loc": 439,
-     "id": 92
+     "id": 93
     },
     {
      "name": "CombatHUD.Dice.cs",
      "loc": 386,
-     "id": 124
+     "id": 125
     },
     {
      "name": "CombatHUD.Log.cs",
      "loc": 350,
-     "id": 151
+     "id": 153
     },
     {
      "name": "CombatHUD.Styles.cs",
      "loc": 268,
-     "id": 230
+     "id": 233
     },
     {
      "name": "CombatHUD.Cards.cs",
      "loc": 195,
-     "id": 323
+     "id": 329
     }
    ],
    "loc": 2103,
@@ -622,47 +627,47 @@
     {
      "name": "CombatActionRegistry.Self.cs",
      "loc": 601,
-     "id": 30
+     "id": 31
     },
     {
      "name": "CombatActionRegistry.Attack.cs",
      "loc": 570,
-     "id": 42
+     "id": 43
     },
     {
      "name": "CombatActionRegistry.Tactics.cs",
      "loc": 281,
-     "id": 222
+     "id": 225
     },
     {
      "name": "CombatActionRegistry.Care.cs",
      "loc": 163,
-     "id": 369
+     "id": 376
     },
     {
      "name": "CombatActionRegistry.Core.cs",
      "loc": 153,
-     "id": 380
+     "id": 387
     },
     {
      "name": "CombatActionRegistry.Inventory.cs",
      "loc": 110,
-     "id": 442
+     "id": 450
     },
     {
      "name": "CombatActionRegistry.Dev.cs",
      "loc": 104,
-     "id": 444
+     "id": 452
     },
     {
      "name": "CombatActionRegistry.Spells.cs",
      "loc": 52,
-     "id": 513
+     "id": 522
     },
     {
      "name": "CombatActionRegistry.Techniques.cs",
      "loc": 39,
-     "id": 528
+     "id": 537
     }
    ],
    "loc": 2073,
@@ -675,57 +680,57 @@
     {
      "name": "CharacterDevWindow.Creation.cs",
      "loc": 366,
-     "id": 143
+     "id": 144
     },
     {
      "name": "CharacterDevWindow.Inventory.Sections.cs",
      "loc": 299,
-     "id": 209
+     "id": 212
     },
     {
      "name": "CharacterDevWindow.SpellForge.cs",
      "loc": 257,
-     "id": 240
+     "id": 243
     },
     {
      "name": "CharacterDevWindow.Progression.Specs.cs",
      "loc": 209,
-     "id": 305
+     "id": 310
     },
     {
      "name": "CharacterDevWindow.SpawnerRelations.cs",
      "loc": 197,
-     "id": 319
+     "id": 325
     },
     {
      "name": "CharacterDevWindow.Creation.Sections.cs",
      "loc": 180,
-     "id": 339
+     "id": 345
     },
     {
      "name": "CharacterDevWindow.Storage.cs",
      "loc": 165,
-     "id": 365
+     "id": 372
     },
     {
      "name": "CharacterDevWindow.Progression.Skills.cs",
      "loc": 137,
-     "id": 406
+     "id": 414
     },
     {
      "name": "CharacterDevWindow.Progression.Header.cs",
      "loc": 57,
-     "id": 507
+     "id": 515
     },
     {
      "name": "CharacterDevWindow.Progression.cs",
      "loc": 35,
-     "id": 533
+     "id": 542
     },
     {
      "name": "CharacterDevWindow.Inventory.cs",
      "loc": 30,
-     "id": 541
+     "id": 550
     }
    ],
    "loc": 1932,
@@ -743,32 +748,32 @@
     {
      "name": "CinematicDirector.ScenePlayback.cs",
      "loc": 258,
-     "id": 238
+     "id": 241
     },
     {
      "name": "CinematicDirector.Effects.cs",
      "loc": 253,
-     "id": 242
+     "id": 245
     },
     {
      "name": "CinematicDirector.KillshotFreeLook.cs",
      "loc": 223,
-     "id": 280
+     "id": 284
     },
     {
      "name": "CinematicDirector.ShotAudio.cs",
      "loc": 206,
-     "id": 308
+     "id": 313
     },
     {
      "name": "CinematicDirector.SceneLookup.cs",
      "loc": 142,
-     "id": 395
+     "id": 403
     },
     {
      "name": "CinematicDirector.ShotFlow.cs",
      "loc": 111,
-     "id": 440
+     "id": 448
     }
    ],
    "loc": 1930,
@@ -781,32 +786,32 @@
     {
      "name": "KilltimeAudioManager.Generative.cs",
      "loc": 594,
-     "id": 33
+     "id": 34
     },
     {
      "name": "KilltimeAudioManager.Music.cs",
      "loc": 435,
-     "id": 95
+     "id": 96
     },
     {
      "name": "KilltimeAudioManager.Sfx.cs",
      "loc": 409,
-     "id": 115
+     "id": 116
     },
     {
      "name": "KilltimeAudioManager.Ambience.cs",
      "loc": 141,
-     "id": 398
+     "id": 406
     },
     {
      "name": "KilltimeAudioManager.Mix.cs",
      "loc": 140,
-     "id": 402
+     "id": 410
     },
     {
      "name": "KilltimeAudioManager.Resolve.cs",
      "loc": 132,
-     "id": 419
+     "id": 426
     }
    ],
    "loc": 1851,
@@ -824,22 +829,22 @@
     {
      "name": "ProceduralAudioFactory.MusicLayers.cs",
      "loc": 559,
-     "id": 45
+     "id": 46
     },
     {
      "name": "ProceduralAudioFactory.Music.cs",
      "loc": 297,
-     "id": 211
+     "id": 214
     },
     {
      "name": "ProceduralAudioFactory.StingerAmbience.cs",
      "loc": 123,
-     "id": 428
+     "id": 436
     },
     {
      "name": "ProceduralAudioFactory.Generative.cs",
      "loc": 118,
-     "id": 432
+     "id": 440
     }
    ],
    "loc": 1819,
@@ -852,32 +857,32 @@
     {
      "name": "MapEditorDevWindow.UI.cs",
      "loc": 662,
-     "id": 16
+     "id": 17
     },
     {
      "name": "MapEditorDevWindow.Storage.cs",
      "loc": 356,
-     "id": 148
+     "id": 150
     },
     {
      "name": "MapEditorDevWindow.Brushes.cs",
      "loc": 334,
-     "id": 164
+     "id": 167
     },
     {
      "name": "MapEditorDevWindow.Props.cs",
      "loc": 286,
-     "id": 218
+     "id": 222
     },
     {
      "name": "MapEditorDevWindow.Types.cs",
      "loc": 104,
-     "id": 445
+     "id": 453
     },
     {
      "name": "MapEditorDevWindow.Grounds.cs",
      "loc": 77,
-     "id": 486
+     "id": 494
     }
    ],
    "loc": 1819,
@@ -895,32 +900,32 @@
     {
      "name": "SkillTreeCosmosWindow.Viewport.cs",
      "loc": 313,
-     "id": 185
+     "id": 187
     },
     {
      "name": "SkillTreeCosmosWindow.Chrome.cs",
      "loc": 309,
-     "id": 192
+     "id": 194
     },
     {
      "name": "SkillTreeCosmosWindow.Navigation.cs",
      "loc": 151,
-     "id": 385
+     "id": 393
     },
     {
      "name": "SkillTreeCosmosWindow.Graphics.cs",
      "loc": 136,
-     "id": 409
+     "id": 417
     },
     {
      "name": "SkillTreeCosmosWindow.Guide.cs",
      "loc": 90,
-     "id": 463
+     "id": 471
     },
     {
      "name": "SkillTreeCosmosWindow.Rules.cs",
      "loc": 67,
-     "id": 494
+     "id": 502
     }
    ],
    "loc": 1803,
@@ -933,37 +938,37 @@
     {
      "name": "SystemAudioChameleon.Voices.cs",
      "loc": 466,
-     "id": 77
+     "id": 78
     },
     {
      "name": "SystemAudioChameleon.Pitch.cs",
      "loc": 306,
-     "id": 199
+     "id": 201
     },
     {
      "name": "SystemAudioChameleon.Linux.cs",
      "loc": 285,
-     "id": 219
+     "id": 223
     },
     {
      "name": "SystemAudioChameleon.Analysis.cs",
      "loc": 259,
-     "id": 237
+     "id": 240
     },
     {
      "name": "SystemAudioChameleon.Capture.cs",
      "loc": 170,
-     "id": 359
+     "id": 366
     },
     {
      "name": "SystemAudioChameleon.Bass.cs",
      "loc": 144,
-     "id": 394
+     "id": 402
     },
     {
      "name": "SystemAudioChameleon.Drums.cs",
      "loc": 129,
-     "id": 422
+     "id": 429
     }
    ],
    "loc": 1759,
@@ -976,27 +981,27 @@
     {
      "name": "HybrisWorldMapEditorWindow.Tabs.cs",
      "loc": 434,
-     "id": 99
+     "id": 100
     },
     {
      "name": "HybrisWorldMapEditorWindow.Input.cs",
      "loc": 381,
-     "id": 130
+     "id": 131
     },
     {
      "name": "HybrisWorldMapEditorWindow.Overlays.cs",
      "loc": 371,
-     "id": 137
+     "id": 138
     },
     {
      "name": "HybrisWorldMapEditorWindow.Canvas.cs",
      "loc": 311,
-     "id": 187
+     "id": 189
     },
     {
      "name": "HybrisWorldMapEditorWindow.Crud.cs",
      "loc": 258,
-     "id": 239
+     "id": 242
     }
    ],
    "loc": 1755,
@@ -1009,42 +1014,42 @@
     {
      "name": "VTTTableSync.Requests.cs",
      "loc": 421,
-     "id": 105
+     "id": 106
     },
     {
      "name": "VTTTableSync.RemoteExecute.cs",
      "loc": 330,
-     "id": 169
+     "id": 172
     },
     {
      "name": "VTTTableSync.TurnControl.cs",
      "loc": 246,
-     "id": 251
+     "id": 255
     },
     {
      "name": "VTTTableSync.GroundSync.cs",
      "loc": 215,
-     "id": 293
+     "id": 298
     },
     {
      "name": "VTTTableSync.RemoteQueue.cs",
      "loc": 187,
-     "id": 336
+     "id": 342
     },
     {
      "name": "VTTTableSync.Map.cs",
      "loc": 154,
-     "id": 377
+     "id": 384
     },
     {
      "name": "VTTTableSync.Registry.cs",
      "loc": 154,
-     "id": 378
+     "id": 385
     },
     {
      "name": "VTTTableSync.Helpers.cs",
      "loc": 47,
-     "id": 520
+     "id": 529
     }
    ],
    "loc": 1754,
@@ -1057,32 +1062,32 @@
     {
      "name": "DuoTechRegistry.TriFusion.cs",
      "loc": 453,
-     "id": 82
+     "id": 83
     },
     {
      "name": "DuoTechRegistry.Menu.cs",
      "loc": 393,
-     "id": 120
+     "id": 121
     },
     {
      "name": "DuoTechRegistry.Extended.cs",
      "loc": 313,
-     "id": 184
+     "id": 186
     },
     {
      "name": "DuoTechRegistry.Defs.cs",
      "loc": 222,
-     "id": 282
+     "id": 286
     },
     {
      "name": "DuoTechRegistry.Roles.cs",
      "loc": 134,
-     "id": 413
+     "id": 421
     },
     {
      "name": "DuoTechRegistry.Classics.cs",
      "loc": 114,
-     "id": 438
+     "id": 446
     }
    ],
    "loc": 1629,
@@ -1094,41 +1099,41 @@
    "files": [
     {
      "name": "TurnManager.Core.cs",
-     "loc": 410,
+     "loc": 412,
      "id": 114
     },
     {
      "name": "TurnManager.Objectives.cs",
      "loc": 303,
-     "id": 205
+     "id": 207
     },
     {
      "name": "TurnManager.Rounds.cs",
-     "loc": 282,
-     "id": 220
+     "loc": 300,
+     "id": 211
     },
     {
      "name": "TurnManager.Delayed.cs",
      "loc": 195,
-     "id": 325
+     "id": 331
     },
     {
      "name": "TurnManager.Multi.cs",
      "loc": 174,
-     "id": 348
+     "id": 355
     },
     {
      "name": "TurnManager.Initiative.cs",
      "loc": 148,
-     "id": 389
+     "id": 397
     },
     {
      "name": "TurnManager.Types.cs",
      "loc": 35,
-     "id": 534
+     "id": 543
     }
    ],
-   "loc": 1547,
+   "loc": 1567,
    "color": "#fbbf24"
   },
   {
@@ -1138,22 +1143,22 @@
     {
      "name": "DuoTechWeaveController.Highlight.cs",
      "loc": 401,
-     "id": 117
+     "id": 118
     },
     {
      "name": "DuoTechWeaveController.Resolution.cs",
      "loc": 388,
-     "id": 121
+     "id": 122
     },
     {
      "name": "DuoTechWeaveController.Visuals.cs",
      "loc": 348,
-     "id": 154
+     "id": 156
     },
     {
      "name": "DuoTechWeaveController.Extended.cs",
      "loc": 292,
-     "id": 214
+     "id": 218
     }
    ],
    "loc": 1429,
@@ -1166,32 +1171,32 @@
     {
      "name": "HexGridVisualizer.Mesh.cs",
      "loc": 314,
-     "id": 180
+     "id": 182
     },
     {
      "name": "HexGridVisualizer.Overlays.cs",
      "loc": 312,
-     "id": 186
+     "id": 188
     },
     {
      "name": "HexGridVisualizer.Materials.cs",
      "loc": 306,
-     "id": 197
+     "id": 199
     },
     {
      "name": "HexGridVisualizer.Ceiling.cs",
      "loc": 183,
-     "id": 338
+     "id": 344
     },
     {
      "name": "HexGridVisualizer.Highlight.cs",
      "loc": 179,
-     "id": 342
+     "id": 348
     },
     {
      "name": "HexGridVisualizer.Obstacles.cs",
      "loc": 135,
-     "id": 411
+     "id": 419
     }
    ],
    "loc": 1429,
@@ -1204,17 +1209,17 @@
     {
      "name": "GenerativeMusicEngine.Synths.cs",
      "loc": 650,
-     "id": 21
+     "id": 22
     },
     {
      "name": "GenerativeMusicEngine.Theory.cs",
      "loc": 372,
-     "id": 136
+     "id": 137
     },
     {
      "name": "GenerativeMusicEngine.Drums.cs",
      "loc": 369,
-     "id": 140
+     "id": 141
     }
    ],
    "loc": 1391,
@@ -1227,17 +1232,17 @@
     {
      "name": "ArenaAttackService.Duel.cs",
      "loc": 767,
-     "id": 4
+     "id": 5
     },
     {
      "name": "ArenaAttackService.Routines.cs",
      "loc": 351,
-     "id": 150
+     "id": 152
     },
     {
      "name": "ArenaAttackService.Specials.cs",
      "loc": 170,
-     "id": 356
+     "id": 363
     }
    ],
    "loc": 1288,
@@ -1250,47 +1255,47 @@
     {
      "name": "VTTRoomWindow.VoiceConfig.cs",
      "loc": 522,
-     "id": 58
+     "id": 60
     },
     {
      "name": "VTTRoomWindow.Video.cs",
      "loc": 192,
-     "id": 328
+     "id": 334
     },
     {
      "name": "VTTRoomWindow.Room.cs",
      "loc": 131,
-     "id": 421
+     "id": 428
     },
     {
      "name": "VTTRoomWindow.Directory.cs",
      "loc": 104,
-     "id": 446
+     "id": 454
     },
     {
      "name": "VTTRoomWindow.Chat.cs",
      "loc": 80,
-     "id": 482
+     "id": 490
     },
     {
      "name": "VTTRoomWindow.Events.cs",
      "loc": 76,
-     "id": 487
+     "id": 495
     },
     {
      "name": "VTTRoomWindow.Voice.cs",
      "loc": 65,
-     "id": 498
+     "id": 506
     },
     {
      "name": "VTTRoomWindow.Connection.cs",
      "loc": 59,
-     "id": 501
+     "id": 509
     },
     {
      "name": "VTTRoomWindow.Members.cs",
      "loc": 59,
-     "id": 502
+     "id": 510
     }
    ],
    "loc": 1288,
@@ -1303,22 +1308,22 @@
     {
      "name": "FloatingWindowChrome.Chrome.cs",
      "loc": 475,
-     "id": 72
+     "id": 73
     },
     {
      "name": "FloatingWindowChrome.DockLayout.cs",
      "loc": 287,
-     "id": 216
+     "id": 220
     },
     {
      "name": "FloatingWindowChrome.DockRender.cs",
      "loc": 280,
-     "id": 223
+     "id": 226
     },
     {
      "name": "FloatingWindowChrome.DockLifecycle.cs",
      "loc": 202,
-     "id": 313
+     "id": 319
     }
    ],
    "loc": 1244,
@@ -1331,37 +1336,37 @@
     {
      "name": "CharacterStats.Skills.cs",
      "loc": 242,
-     "id": 260
+     "id": 264
     },
     {
      "name": "CharacterStats.Care.cs",
      "loc": 215,
-     "id": 291
+     "id": 296
     },
     {
      "name": "CharacterStats.Fate.cs",
      "loc": 215,
-     "id": 292
+     "id": 297
     },
     {
      "name": "CharacterStats.Dots.cs",
      "loc": 179,
-     "id": 340
+     "id": 346
     },
     {
      "name": "CharacterStats.Status.cs",
      "loc": 150,
-     "id": 387
+     "id": 395
     },
     {
      "name": "CharacterStats.Actions.cs",
      "loc": 148,
-     "id": 388
+     "id": 396
     },
     {
      "name": "CharacterStats.Results.cs",
      "loc": 56,
-     "id": 509
+     "id": 517
     }
    ],
    "loc": 1205,
@@ -1374,37 +1379,37 @@
     {
      "name": "CombatDevArena.Map.cs",
      "loc": 263,
-     "id": 233
+     "id": 236
     },
     {
      "name": "CombatDevArena.DevTools.cs",
      "loc": 222,
-     "id": 283
+     "id": 287
     },
     {
      "name": "CombatDevArena.Attack.cs",
      "loc": 153,
-     "id": 381
+     "id": 388
     },
     {
      "name": "CombatDevArena.Maneuvers.cs",
      "loc": 145,
-     "id": 392
+     "id": 400
     },
     {
      "name": "CombatDevArena.CombatEvents.cs",
      "loc": 138,
-     "id": 404
+     "id": 412
     },
     {
      "name": "CombatDevArena.Reactions.cs",
      "loc": 136,
-     "id": 410
+     "id": 418
     },
     {
      "name": "CombatDevArena.Targeting.cs",
      "loc": 115,
-     "id": 435
+     "id": 443
     }
    ],
    "loc": 1172,
@@ -1417,59 +1422,26 @@
     {
      "name": "ArenaMeleeService.Grapple.cs",
      "loc": 445,
-     "id": 87
+     "id": 88
     },
     {
      "name": "ArenaMeleeService.Assault.cs",
      "loc": 382,
-     "id": 129
+     "id": 130
     },
     {
      "name": "ArenaMeleeService.Ammo.cs",
      "loc": 175,
-     "id": 347
+     "id": 354
     },
     {
      "name": "ArenaMeleeService.Charge.cs",
      "loc": 115,
-     "id": 436
+     "id": 444
     }
    ],
    "loc": 1117,
    "color": "#f97316"
-  },
-  {
-   "name": "CombatTechniqueRegistry",
-   "module": "UI",
-   "files": [
-    {
-     "name": "CombatTechniqueRegistry.Command.cs",
-     "loc": 271,
-     "id": 227
-    },
-    {
-     "name": "CombatTechniqueRegistry.Menu.cs",
-     "loc": 222,
-     "id": 281
-    },
-    {
-     "name": "CombatTechniqueRegistry.Martial.cs",
-     "loc": 206,
-     "id": 309
-    },
-    {
-     "name": "CombatTechniqueRegistry.Guard.cs",
-     "loc": 189,
-     "id": 332
-    },
-    {
-     "name": "CombatTechniqueRegistry.Core.cs",
-     "loc": 98,
-     "id": 452
-    }
-   ],
-   "loc": 986,
-   "color": "#f43f5e"
   },
   {
    "name": "SpecialManeuverService",
@@ -1478,26 +1450,64 @@
     {
      "name": "SpecialManeuverService.Assault.cs",
      "loc": 329,
-     "id": 170
+     "id": 173
     },
     {
      "name": "SpecialManeuverService.Grapple.cs",
      "loc": 265,
-     "id": 232
+     "id": 235
     },
     {
      "name": "SpecialManeuverService.Reactions.cs",
      "loc": 217,
-     "id": 287
+     "id": 291
     },
     {
      "name": "SpecialManeuverService.Pursuit.cs",
      "loc": 134,
-     "id": 412
+     "id": 420
+    },
+    {
+     "name": "SpecialManeuverService.Vehicle.cs",
+     "loc": 55,
+     "id": 520
     }
    ],
-   "loc": 945,
+   "loc": 1000,
    "color": "#38bdf8"
+  },
+  {
+   "name": "CombatTechniqueRegistry",
+   "module": "UI",
+   "files": [
+    {
+     "name": "CombatTechniqueRegistry.Command.cs",
+     "loc": 271,
+     "id": 230
+    },
+    {
+     "name": "CombatTechniqueRegistry.Menu.cs",
+     "loc": 222,
+     "id": 285
+    },
+    {
+     "name": "CombatTechniqueRegistry.Martial.cs",
+     "loc": 206,
+     "id": 314
+    },
+    {
+     "name": "CombatTechniqueRegistry.Guard.cs",
+     "loc": 189,
+     "id": 338
+    },
+    {
+     "name": "CombatTechniqueRegistry.Core.cs",
+     "loc": 98,
+     "id": 460
+    }
+   ],
+   "loc": 986,
+   "color": "#f43f5e"
   },
   {
    "name": "CinematicEditorDevWindow",
@@ -1506,22 +1516,22 @@
     {
      "name": "CinematicEditorDevWindow.Capture.cs",
      "loc": 328,
-     "id": 171
+     "id": 174
     },
     {
      "name": "CinematicEditorDevWindow.Sections.cs",
      "loc": 316,
-     "id": 177
+     "id": 179
     },
     {
      "name": "CinematicEditorDevWindow.Camera.cs",
      "loc": 160,
-     "id": 371
+     "id": 378
     },
     {
      "name": "CinematicEditorDevWindow.Poses.cs",
      "loc": 139,
-     "id": 403
+     "id": 411
     }
    ],
    "loc": 943,
@@ -1534,17 +1544,17 @@
     {
      "name": "InventoryDevWindow.Catalog.cs",
      "loc": 577,
-     "id": 38
+     "id": 39
     },
     {
      "name": "InventoryDevWindow.Studio.cs",
      "loc": 173,
-     "id": 350
+     "id": 357
     },
     {
      "name": "InventoryDevWindow.Item.cs",
      "loc": 166,
-     "id": 364
+     "id": 371
     }
    ],
    "loc": 916,
@@ -1557,32 +1567,32 @@
     {
      "name": "StorySceneData.Cinematics.cs",
      "loc": 236,
-     "id": 267
+     "id": 271
     },
     {
      "name": "StorySceneData.Triggers.cs",
      "loc": 212,
-     "id": 300
+     "id": 305
     },
     {
      "name": "StorySceneData.Dialogue.cs",
      "loc": 212,
-     "id": 301
+     "id": 306
     },
     {
      "name": "StorySceneData.Interactables.cs",
      "loc": 92,
-     "id": 462
+     "id": 470
     },
     {
      "name": "StorySceneData.Scene.cs",
      "loc": 88,
-     "id": 465
+     "id": 473
     },
     {
      "name": "StorySceneData.Actors.cs",
      "loc": 65,
-     "id": 497
+     "id": 505
     }
    ],
    "loc": 905,
@@ -1595,17 +1605,17 @@
     {
      "name": "SceneEnvironmentDevWindow.Objects.cs",
      "loc": 450,
-     "id": 84
+     "id": 85
     },
     {
      "name": "SceneEnvironmentDevWindow.Lighting.cs",
      "loc": 253,
-     "id": 243
+     "id": 246
     },
     {
      "name": "SceneEnvironmentDevWindow.Save.cs",
      "loc": 195,
-     "id": 324
+     "id": 330
     }
    ],
    "loc": 898,
@@ -1618,17 +1628,17 @@
     {
      "name": "VTTVoiceManager.Settings.cs",
      "loc": 384,
-     "id": 128
+     "id": 129
     },
     {
      "name": "VTTVoiceManager.Capture.cs",
      "loc": 369,
-     "id": 139
+     "id": 140
     },
     {
      "name": "VTTVoiceManager.Network.cs",
      "loc": 141,
-     "id": 397
+     "id": 405
     }
    ],
    "loc": 894,
@@ -1641,12 +1651,12 @@
     {
      "name": "PlayerAnimatorLinker.States.cs",
      "loc": 577,
-     "id": 39
+     "id": 40
     },
     {
      "name": "PlayerAnimatorLinker.Clips.cs",
      "loc": 239,
-     "id": 263
+     "id": 267
     }
    ],
    "loc": 816,
@@ -1659,22 +1669,22 @@
     {
      "name": "CoreRulesTests.Specializations.cs",
      "loc": 320,
-     "id": 174
+     "id": 176
     },
     {
      "name": "CoreRulesTests.Dots.cs",
      "loc": 170,
-     "id": 358
+     "id": 365
     },
     {
      "name": "CoreRulesTests.Cover.cs",
      "loc": 165,
-     "id": 366
+     "id": 373
     },
     {
      "name": "CoreRulesTests.BlindDuel.cs",
      "loc": 152,
-     "id": 384
+     "id": 391
     }
    ],
    "loc": 807,
@@ -1687,17 +1697,17 @@
     {
      "name": "CombatDevToolbar.Cheats.cs",
      "loc": 434,
-     "id": 98
+     "id": 99
     },
     {
      "name": "CombatDevToolbar.Targeting.cs",
      "loc": 234,
-     "id": 269
+     "id": 273
     },
     {
      "name": "CombatDevToolbar.Chrono.cs",
      "loc": 128,
-     "id": 423
+     "id": 431
     }
    ],
    "loc": 796,
@@ -1710,12 +1720,12 @@
     {
      "name": "WeaponGripEditorDevWindow.Studio.cs",
      "loc": 395,
-     "id": 118
+     "id": 119
     },
     {
      "name": "WeaponGripEditorDevWindow.Controls.cs",
      "loc": 384,
-     "id": 127
+     "id": 128
     }
    ],
    "loc": 779,
@@ -1728,17 +1738,17 @@
     {
      "name": "VTTVideoManager.Capture.cs",
      "loc": 334,
-     "id": 165
+     "id": 168
     },
     {
      "name": "VTTVideoManager.Bokeh.cs",
      "loc": 304,
-     "id": 202
+     "id": 204
     },
     {
      "name": "VTTVideoManager.Network.cs",
      "loc": 134,
-     "id": 415
+     "id": 423
     }
    ],
    "loc": 772,
@@ -1751,17 +1761,17 @@
     {
      "name": "AsteroidBaseGenerator.Mesh.cs",
      "loc": 356,
-     "id": 147
+     "id": 149
     },
     {
      "name": "AsteroidBaseGenerator.Layout.cs",
      "loc": 202,
-     "id": 312
+     "id": 318
     },
     {
      "name": "AsteroidBaseGenerator.Materials.cs",
      "loc": 147,
-     "id": 390
+     "id": 398
     }
    ],
    "loc": 705,
@@ -1774,12 +1784,12 @@
     {
      "name": "TacticalUnit.Movement.cs",
      "loc": 375,
-     "id": 134
+     "id": 135
     },
     {
      "name": "TacticalUnit.Lifecycle.cs",
      "loc": 299,
-     "id": 210
+     "id": 213
     }
    ],
    "loc": 674,
@@ -1792,12 +1802,12 @@
     {
      "name": "GrenadeSystem.AreaFire.cs",
      "loc": 413,
-     "id": 112
+     "id": 113
     },
     {
      "name": "GrenadeSystem.Smoke.cs",
      "loc": 216,
-     "id": 289
+     "id": 294
     }
    ],
    "loc": 629,
@@ -1852,6 +1862,34 @@
    "worktree": "clean"
   },
   {
+   "name": "DamageEngineService.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/DamageEngineService.cs",
+   "size": 42004,
+   "partial_group": null,
+   "loc": 797,
+   "blank": 77,
+   "comment": 62,
+   "code": 658,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "DamageEngineService"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Core.Combat",
+   "methods": 6,
+   "properties": 0,
+   "partial": false,
+   "id": 3,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "worktree": "clean"
+  },
+  {
    "name": "FogOfWarManager.cs",
    "dir": "Tactics/Visibility",
    "module": "Tactics",
@@ -1883,7 +1921,7 @@
    "methods": 37,
    "properties": 6,
    "partial": false,
-   "id": 3,
+   "id": 4,
    "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
    "worktree": "clean"
   },
@@ -1911,36 +1949,8 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 4,
-   "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
-   "worktree": "clean"
-  },
-  {
-   "name": "DamageEngineService.cs",
-   "dir": "Core/Combat",
-   "module": "Core",
-   "subdir": "Combat",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/DamageEngineService.cs",
-   "size": 40173,
-   "partial_group": null,
-   "loc": 763,
-   "blank": 74,
-   "comment": 53,
-   "code": 636,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "DamageEngineService"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Core.Combat",
-   "methods": 5,
-   "properties": 0,
-   "partial": false,
    "id": 5,
-   "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
+   "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
   {
@@ -2096,6 +2106,62 @@
    "worktree": "clean"
   },
   {
+   "name": "BestiaryCatalog.cs",
+   "dir": "Core/CharacterCreator/Bestiary",
+   "module": "Core",
+   "subdir": "CharacterCreator",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/CharacterCreator/Bestiary/BestiaryCatalog.cs",
+   "size": 33372,
+   "partial_group": null,
+   "loc": 714,
+   "blank": 58,
+   "comment": 65,
+   "code": 591,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "BestiaryAttributes"
+    },
+    {
+     "kind": "class",
+     "name": "BestiarySkillEntry"
+    },
+    {
+     "kind": "class",
+     "name": "TitanBossAIParams"
+    },
+    {
+     "kind": "class",
+     "name": "BestiaryEntry"
+    },
+    {
+     "kind": "class",
+     "name": "BestiaryData"
+    },
+    {
+     "kind": "class",
+     "name": "LivreXISpecializations"
+    },
+    {
+     "kind": "class",
+     "name": "LivreXIPNJState"
+    },
+    {
+     "kind": "class",
+     "name": "BestiaryCatalog"
+    }
+   ],
+   "n_classes": 8,
+   "namespace": "Killtime.Core.Character",
+   "methods": 30,
+   "properties": 0,
+   "partial": false,
+   "id": 11,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "worktree": "clean"
+  },
+  {
    "name": "River of Time.json",
    "dir": "Resources/Data",
    "module": "Data",
@@ -2114,7 +2180,7 @@
    "properties": 4,
    "partial": false,
    "partial_group": null,
-   "id": 11,
+   "id": 12,
    "github_sha": "3da57b8860d4161bc959640d9911ff36fdaf06b3",
    "worktree": "clean"
   },
@@ -2142,7 +2208,7 @@
    "methods": 39,
    "properties": 0,
    "partial": false,
-   "id": 12,
+   "id": 13,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -2170,7 +2236,7 @@
    "methods": 17,
    "properties": 2,
    "partial": false,
-   "id": 13,
+   "id": 14,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
    "worktree": "clean"
   },
@@ -2193,7 +2259,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 14,
+   "id": 15,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
    "worktree": "clean"
   },
@@ -2204,12 +2270,12 @@
    "subdir": "Arena",
    "type": "csharp",
    "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs",
-   "size": 34956,
+   "size": 35078,
    "partial_group": null,
-   "loc": 672,
+   "loc": 674,
    "blank": 56,
    "comment": 39,
-   "code": 577,
+   "code": 579,
    "classes": [
     {
      "kind": "class",
@@ -2221,8 +2287,8 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 15,
-   "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
+   "id": 16,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -2249,7 +2315,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 16,
+   "id": 17,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -2281,7 +2347,7 @@
    "methods": 20,
    "properties": 3,
    "partial": true,
-   "id": 17,
+   "id": 18,
    "github_sha": "efa637d626576daaee8cc5aadd0987e23c966a8a",
    "worktree": "clean"
   },
@@ -2309,7 +2375,7 @@
    "methods": 19,
    "properties": 0,
    "partial": false,
-   "id": 18,
+   "id": 19,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -2337,7 +2403,7 @@
    "methods": 20,
    "properties": 0,
    "partial": false,
-   "id": 19,
+   "id": 20,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -2365,7 +2431,7 @@
    "methods": 18,
    "properties": 0,
    "partial": true,
-   "id": 20,
+   "id": 21,
    "github_sha": "efa637d626576daaee8cc5aadd0987e23c966a8a",
    "worktree": "clean"
   },
@@ -2393,7 +2459,7 @@
    "methods": 23,
    "properties": 0,
    "partial": true,
-   "id": 21,
+   "id": 22,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -2421,7 +2487,7 @@
    "methods": 31,
    "properties": 0,
    "partial": true,
-   "id": 22,
+   "id": 23,
    "github_sha": "efa637d626576daaee8cc5aadd0987e23c966a8a",
    "worktree": "clean"
   },
@@ -2457,7 +2523,7 @@
    "methods": 20,
    "properties": 7,
    "partial": true,
-   "id": 23,
+   "id": 24,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -2497,60 +2563,8 @@
    "methods": 25,
    "properties": 0,
    "partial": false,
-   "id": 24,
-   "github_sha": "4538dcd82d5f0b2f58a69ebd25b97023cc982f9a",
-   "worktree": "clean"
-  },
-  {
-   "name": "BestiaryCatalog.cs",
-   "dir": "Core/CharacterCreator/Bestiary",
-   "module": "Core",
-   "subdir": "CharacterCreator",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Core/CharacterCreator/Bestiary/BestiaryCatalog.cs",
-   "size": 27048,
-   "partial_group": null,
-   "loc": 623,
-   "blank": 56,
-   "comment": 44,
-   "code": 523,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "BestiaryAttributes"
-    },
-    {
-     "kind": "class",
-     "name": "BestiarySkillEntry"
-    },
-    {
-     "kind": "class",
-     "name": "BestiaryEntry"
-    },
-    {
-     "kind": "class",
-     "name": "BestiaryData"
-    },
-    {
-     "kind": "class",
-     "name": "LivreXISpecializations"
-    },
-    {
-     "kind": "class",
-     "name": "LivreXIPNJState"
-    },
-    {
-     "kind": "class",
-     "name": "BestiaryCatalog"
-    }
-   ],
-   "n_classes": 7,
-   "namespace": "Killtime.Core.Character",
-   "methods": 29,
-   "properties": 0,
-   "partial": false,
    "id": 25,
-   "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
+   "github_sha": "4538dcd82d5f0b2f58a69ebd25b97023cc982f9a",
    "worktree": "clean"
   },
   {
@@ -2586,6 +2600,34 @@
    "worktree": "clean"
   },
   {
+   "name": "TitanBossTests.cs",
+   "dir": "Tests",
+   "module": "Tests",
+   "subdir": "",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/TitanBossTests.cs",
+   "size": 30938,
+   "partial_group": null,
+   "loc": 610,
+   "blank": 55,
+   "comment": 45,
+   "code": 510,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TitanBossTests"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tests",
+   "methods": 39,
+   "properties": 0,
+   "partial": false,
+   "id": 27,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "worktree": "clean"
+  },
+  {
    "name": "ScenarioEditorDevWindow.Cards.Dialogue.cs",
    "dir": "DevTools/Story",
    "module": "DevTools",
@@ -2609,7 +2651,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 27,
+   "id": 28,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -2637,7 +2679,7 @@
    "methods": 24,
    "properties": 1,
    "partial": false,
-   "id": 28,
+   "id": 29,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -2677,7 +2719,7 @@
    "methods": 21,
    "properties": 7,
    "partial": true,
-   "id": 29,
+   "id": 30,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -2705,7 +2747,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 30,
+   "id": 31,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -2733,7 +2775,7 @@
    "methods": 17,
    "properties": 0,
    "partial": false,
-   "id": 31,
+   "id": 32,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -2761,7 +2803,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 32,
+   "id": 33,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -2789,7 +2831,7 @@
    "methods": 15,
    "properties": 0,
    "partial": true,
-   "id": 33,
+   "id": 34,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -2817,7 +2859,7 @@
    "methods": 18,
    "properties": 0,
    "partial": false,
-   "id": 34,
+   "id": 35,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -2845,7 +2887,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 35,
+   "id": 36,
    "github_sha": "aab2f7affebf28c3c885768226e96425687d4ee3",
    "worktree": "clean"
   },
@@ -2873,7 +2915,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 36,
+   "id": 37,
    "github_sha": "aab2f7affebf28c3c885768226e96425687d4ee3",
    "worktree": "clean"
   },
@@ -2913,7 +2955,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 37,
+   "id": 38,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -2941,7 +2983,7 @@
    "methods": 12,
    "properties": 0,
    "partial": true,
-   "id": 38,
+   "id": 39,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -2969,7 +3011,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 39,
+   "id": 40,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -2997,7 +3039,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 40,
+   "id": 41,
    "github_sha": "a0c5f6352654e164ed03d260969a52ef226fae00",
    "worktree": "clean"
   },
@@ -3025,7 +3067,7 @@
    "methods": 11,
    "properties": 0,
    "partial": false,
-   "id": 41,
+   "id": 42,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -3053,7 +3095,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 42,
+   "id": 43,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -3081,7 +3123,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 43,
+   "id": 44,
    "github_sha": "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871",
    "worktree": "clean"
   },
@@ -3109,7 +3151,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 44,
+   "id": 45,
    "github_sha": "4b0a74c218ebb28b2737990eb5bcc983ec3b4a3e",
    "worktree": "clean"
   },
@@ -3137,7 +3179,7 @@
    "methods": 18,
    "properties": 0,
    "partial": true,
-   "id": 45,
+   "id": 46,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
    "worktree": "clean"
   },
@@ -3177,7 +3219,7 @@
    "methods": 20,
    "properties": 0,
    "partial": false,
-   "id": 46,
+   "id": 47,
    "github_sha": "e35b35b9e687c92f1a350abeb6fe34843f620f0a",
    "worktree": "clean"
   },
@@ -3205,7 +3247,7 @@
    "methods": 19,
    "properties": 0,
    "partial": true,
-   "id": 47,
+   "id": 48,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -3257,7 +3299,7 @@
    "methods": 20,
    "properties": 0,
    "partial": false,
-   "id": 48,
+   "id": 49,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -3285,7 +3327,7 @@
    "methods": 15,
    "properties": 0,
    "partial": true,
-   "id": 49,
+   "id": 50,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -3313,7 +3355,7 @@
    "methods": 39,
    "properties": 0,
    "partial": false,
-   "id": 50,
+   "id": 51,
    "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
    "worktree": "clean"
   },
@@ -3341,7 +3383,7 @@
    "methods": 20,
    "properties": 0,
    "partial": true,
-   "id": 51,
+   "id": 52,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -3369,7 +3411,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 52,
+   "id": 53,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -3413,8 +3455,36 @@
    "methods": 19,
    "properties": 5,
    "partial": false,
-   "id": 53,
+   "id": 54,
    "github_sha": "d6b36b3c47c9b36c7d297a315bb9e65696238fb8",
+   "worktree": "clean"
+  },
+  {
+   "name": "BestiaryDevWindow.cs",
+   "dir": "DevTools",
+   "module": "DevTools",
+   "subdir": "",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/BestiaryDevWindow.cs",
+   "size": 26426,
+   "partial_group": null,
+   "loc": 535,
+   "blank": 50,
+   "comment": 30,
+   "code": 455,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "BestiaryDevWindow"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.UI",
+   "methods": 15,
+   "properties": 0,
+   "partial": false,
+   "id": 55,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -3441,7 +3511,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 54,
+   "id": 56,
    "github_sha": "0184ad2bcf94079a8e95d967aa7d86b134f0a144",
    "worktree": "clean"
   },
@@ -3473,7 +3543,7 @@
    "methods": 18,
    "properties": 1,
    "partial": false,
-   "id": 55,
+   "id": 57,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -3501,7 +3571,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 56,
+   "id": 58,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -3529,7 +3599,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 57,
+   "id": 59,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -3557,7 +3627,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 58,
+   "id": 60,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -3593,7 +3663,7 @@
    "methods": 22,
    "properties": 0,
    "partial": false,
-   "id": 59,
+   "id": 61,
    "github_sha": "a7102303526bee2f9f723c76cb27ff4c5236fc4b",
    "worktree": "clean"
   },
@@ -3625,7 +3695,7 @@
    "methods": 23,
    "properties": 0,
    "partial": false,
-   "id": 60,
+   "id": 62,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -3653,235 +3723,8 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 61,
-   "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
-   "worktree": "clean"
-  },
-  {
-   "name": "ScenarioEditorDevWindow.cs",
-   "dir": "DevTools/Story",
-   "module": "DevTools",
-   "subdir": "Story",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.cs",
-   "size": 28978,
-   "partial_group": null,
-   "loc": 499,
-   "blank": 70,
-   "comment": 215,
-   "code": 214,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "ScenarioEditorDevWindow"
-    },
-    {
-     "kind": "struct",
-     "name": "WireConnectionDraft"
-    },
-    {
-     "kind": "enum",
-     "name": "QuickCreateKind"
-    }
-   ],
-   "n_classes": 3,
-   "namespace": "Killtime.Story",
-   "methods": 1,
-   "properties": 1,
-   "partial": true,
-   "id": 62,
-   "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
-   "worktree": "clean"
-  },
-  {
-   "name": "CombatHUD.cs",
-   "dir": "UI",
-   "module": "UI",
-   "subdir": "",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/UI/CombatHUD.cs",
-   "size": 20249,
-   "partial_group": null,
-   "loc": 496,
-   "blank": 70,
-   "comment": 26,
-   "code": 400,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "CombatHUD"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.UI",
-   "methods": 22,
-   "properties": 3,
-   "partial": true,
    "id": 63,
-   "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
-   "worktree": "clean"
-  },
-  {
-   "name": "BestiaryDevWindow.cs",
-   "dir": "DevTools",
-   "module": "DevTools",
-   "subdir": "",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/BestiaryDevWindow.cs",
-   "size": 22776,
-   "partial_group": null,
-   "loc": 488,
-   "blank": 49,
-   "comment": 29,
-   "code": 410,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "BestiaryDevWindow"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.UI",
-   "methods": 15,
-   "properties": 0,
-   "partial": false,
-   "id": 64,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
-   "worktree": "clean"
-  },
-  {
-   "name": "DuelResolutionService.cs",
-   "dir": "Core/Combat",
-   "module": "Core",
-   "subdir": "Combat",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/DuelResolutionService.cs",
-   "size": 22988,
-   "partial_group": null,
-   "loc": 487,
-   "blank": 34,
-   "comment": 61,
-   "code": 392,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "DuelResolutionService"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Core.Combat",
-   "methods": 10,
-   "properties": 0,
-   "partial": false,
-   "id": 65,
-   "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
-   "worktree": "clean"
-  },
-  {
-   "name": "ScenarioEditorDevWindow.Persistence.cs",
-   "dir": "DevTools/Story",
-   "module": "DevTools",
-   "subdir": "Story",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Persistence.cs",
-   "size": 20570,
-   "partial_group": "ScenarioEditorDevWindow",
-   "loc": 484,
-   "blank": 49,
-   "comment": 26,
-   "code": 409,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "ScenarioEditorDevWindow"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Story",
-   "methods": 20,
-   "properties": 0,
-   "partial": true,
-   "id": 66,
-   "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
-   "worktree": "clean"
-  },
-  {
-   "name": "VTTVoiceTests.cs",
-   "dir": "Tests/Multi",
-   "module": "Tests",
-   "subdir": "Multi",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/Multi/VTTVoiceTests.cs",
-   "size": 19745,
-   "partial_group": null,
-   "loc": 484,
-   "blank": 81,
-   "comment": 32,
-   "code": 371,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "VTTVoiceTests"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Multi.Tests",
-   "methods": 16,
-   "properties": 0,
-   "partial": false,
-   "id": 67,
-   "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
-   "worktree": "clean"
-  },
-  {
-   "name": "CombatDevArena.unity",
-   "dir": "Scenes",
-   "module": "Scenes",
-   "subdir": "",
-   "type": "scene",
-   "repo_path": "KilltimeTactics/Assets/Scenes/CombatDevArena.unity",
-   "size": 13037,
-   "partial_group": null,
-   "loc": 480,
-   "blank": 0,
-   "comment": 0,
-   "code": 480,
-   "classes": [],
-   "n_classes": 0,
-   "namespace": null,
-   "methods": 0,
-   "properties": 0,
-   "partial": false,
-   "id": 68,
-   "github_sha": "d763ca3349ad221684652fdf5b20bd565deff57d",
-   "worktree": "clean"
-  },
-  {
-   "name": "SceneCinematicTests.cs",
-   "dir": "Tests",
-   "module": "Tests",
-   "subdir": "",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/SceneCinematicTests.cs",
-   "size": 22800,
-   "partial_group": null,
-   "loc": 479,
-   "blank": 46,
-   "comment": 25,
-   "code": 408,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "SceneCinematicTests"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Tests",
-   "methods": 23,
-   "properties": 0,
-   "partial": false,
-   "id": 69,
-   "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
   {
@@ -3891,12 +3734,12 @@
    "subdir": "Combat",
    "type": "csharp",
    "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/GrenadeSystem.cs",
-   "size": 22601,
+   "size": 24084,
    "partial_group": null,
-   "loc": 477,
-   "blank": 35,
-   "comment": 60,
-   "code": 382,
+   "loc": 505,
+   "blank": 37,
+   "comment": 67,
+   "code": 401,
    "classes": [
     {
      "kind": "enum",
@@ -3933,11 +3776,210 @@
    ],
    "n_classes": 8,
    "namespace": "Killtime.Core.Combat",
-   "methods": 15,
+   "methods": 16,
+   "properties": 0,
+   "partial": false,
+   "id": 64,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "worktree": "clean"
+  },
+  {
+   "name": "ScenarioEditorDevWindow.cs",
+   "dir": "DevTools/Story",
+   "module": "DevTools",
+   "subdir": "Story",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.cs",
+   "size": 28978,
+   "partial_group": null,
+   "loc": 499,
+   "blank": 70,
+   "comment": 215,
+   "code": 214,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "ScenarioEditorDevWindow"
+    },
+    {
+     "kind": "struct",
+     "name": "WireConnectionDraft"
+    },
+    {
+     "kind": "enum",
+     "name": "QuickCreateKind"
+    }
+   ],
+   "n_classes": 3,
+   "namespace": "Killtime.Story",
+   "methods": 1,
+   "properties": 1,
+   "partial": true,
+   "id": 65,
+   "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
+   "worktree": "clean"
+  },
+  {
+   "name": "CombatHUD.cs",
+   "dir": "UI",
+   "module": "UI",
+   "subdir": "",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/UI/CombatHUD.cs",
+   "size": 20249,
+   "partial_group": null,
+   "loc": 496,
+   "blank": 70,
+   "comment": 26,
+   "code": 400,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "CombatHUD"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.UI",
+   "methods": 22,
+   "properties": 3,
+   "partial": true,
+   "id": 66,
+   "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
+   "worktree": "clean"
+  },
+  {
+   "name": "DuelResolutionService.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/DuelResolutionService.cs",
+   "size": 22988,
+   "partial_group": null,
+   "loc": 487,
+   "blank": 34,
+   "comment": 61,
+   "code": 392,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "DuelResolutionService"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Core.Combat",
+   "methods": 10,
+   "properties": 0,
+   "partial": false,
+   "id": 67,
+   "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
+   "worktree": "clean"
+  },
+  {
+   "name": "ScenarioEditorDevWindow.Persistence.cs",
+   "dir": "DevTools/Story",
+   "module": "DevTools",
+   "subdir": "Story",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Persistence.cs",
+   "size": 20570,
+   "partial_group": "ScenarioEditorDevWindow",
+   "loc": 484,
+   "blank": 49,
+   "comment": 26,
+   "code": 409,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "ScenarioEditorDevWindow"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Story",
+   "methods": 20,
+   "properties": 0,
+   "partial": true,
+   "id": 68,
+   "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
+   "worktree": "clean"
+  },
+  {
+   "name": "VTTVoiceTests.cs",
+   "dir": "Tests/Multi",
+   "module": "Tests",
+   "subdir": "Multi",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/Multi/VTTVoiceTests.cs",
+   "size": 19745,
+   "partial_group": null,
+   "loc": 484,
+   "blank": 81,
+   "comment": 32,
+   "code": 371,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "VTTVoiceTests"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Multi.Tests",
+   "methods": 16,
+   "properties": 0,
+   "partial": false,
+   "id": 69,
+   "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
+   "worktree": "clean"
+  },
+  {
+   "name": "CombatDevArena.unity",
+   "dir": "Scenes",
+   "module": "Scenes",
+   "subdir": "",
+   "type": "scene",
+   "repo_path": "KilltimeTactics/Assets/Scenes/CombatDevArena.unity",
+   "size": 13037,
+   "partial_group": null,
+   "loc": 480,
+   "blank": 0,
+   "comment": 0,
+   "code": 480,
+   "classes": [],
+   "n_classes": 0,
+   "namespace": null,
+   "methods": 0,
    "properties": 0,
    "partial": false,
    "id": 70,
-   "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
+   "github_sha": "d763ca3349ad221684652fdf5b20bd565deff57d",
+   "worktree": "clean"
+  },
+  {
+   "name": "SceneCinematicTests.cs",
+   "dir": "Tests",
+   "module": "Tests",
+   "subdir": "",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/SceneCinematicTests.cs",
+   "size": 22800,
+   "partial_group": null,
+   "loc": 479,
+   "blank": 46,
+   "comment": 25,
+   "code": 408,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "SceneCinematicTests"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tests",
+   "methods": 23,
+   "properties": 0,
+   "partial": false,
+   "id": 71,
+   "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
   {
@@ -3964,7 +4006,7 @@
    "methods": 23,
    "properties": 0,
    "partial": false,
-   "id": 71,
+   "id": 72,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -3992,7 +4034,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 72,
+   "id": 73,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -4020,7 +4062,7 @@
    "methods": 28,
    "properties": 0,
    "partial": true,
-   "id": 73,
+   "id": 74,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -4031,11 +4073,11 @@
    "subdir": "",
    "type": "json",
    "repo_path": "KilltimeTactics/Assets/Resources/Data/Bestiary.json",
-   "size": 23977,
-   "loc": 469,
+   "size": 24711,
+   "loc": 472,
    "blank": 0,
    "comment": 0,
-   "code": 469,
+   "code": 472,
    "classes": [],
    "n_classes": 0,
    "namespace": null,
@@ -4043,8 +4085,8 @@
    "properties": 3,
    "partial": false,
    "partial_group": null,
-   "id": 74,
-   "github_sha": "38c296ed225050ea75e03971b7551ccb1919c775",
+   "id": 75,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -4079,7 +4121,7 @@
    "methods": 14,
    "properties": 2,
    "partial": false,
-   "id": 75,
+   "id": 76,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -4107,7 +4149,7 @@
    "methods": 20,
    "properties": 0,
    "partial": true,
-   "id": 76,
+   "id": 77,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -4135,7 +4177,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 77,
+   "id": 78,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -4163,7 +4205,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 78,
+   "id": 79,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -4191,7 +4233,7 @@
    "methods": 11,
    "properties": 3,
    "partial": false,
-   "id": 79,
+   "id": 80,
    "github_sha": "53580fb9fe1b7d397445eb2ed8a6a5a15a8e8d82",
    "worktree": "clean"
   },
@@ -4235,7 +4277,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 80,
+   "id": 81,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -4263,7 +4305,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 81,
+   "id": 82,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -4291,7 +4333,7 @@
    "methods": 16,
    "properties": 0,
    "partial": true,
-   "id": 82,
+   "id": 83,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -4327,7 +4369,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 83,
+   "id": 84,
    "github_sha": "b082c7a26b27816946afe2ab3a94104c1981853f",
    "worktree": "clean"
   },
@@ -4355,7 +4397,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 84,
+   "id": 85,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -4427,7 +4469,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 85,
+   "id": 86,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -4455,7 +4497,7 @@
    "methods": 20,
    "properties": 0,
    "partial": false,
-   "id": 86,
+   "id": 87,
    "github_sha": "b082c7a26b27816946afe2ab3a94104c1981853f",
    "worktree": "clean"
   },
@@ -4483,7 +4525,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 87,
+   "id": 88,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -4511,7 +4553,7 @@
    "methods": 25,
    "properties": 0,
    "partial": false,
-   "id": 88,
+   "id": 89,
    "github_sha": "101f6dd8e6688557d55f5aae74362f750289c1d3",
    "worktree": "clean"
   },
@@ -4543,7 +4585,7 @@
    "methods": 25,
    "properties": 0,
    "partial": false,
-   "id": 89,
+   "id": 90,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -4571,7 +4613,7 @@
    "methods": 40,
    "properties": 0,
    "partial": false,
-   "id": 90,
+   "id": 91,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -4603,7 +4645,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 91,
+   "id": 92,
    "github_sha": "3e5a6cd4f0d4b8d42f512f5531da5bdcca9dbf29",
    "worktree": "clean"
   },
@@ -4631,7 +4673,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 92,
+   "id": 93,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -4671,7 +4713,7 @@
    "methods": 18,
    "properties": 0,
    "partial": false,
-   "id": 93,
+   "id": 94,
    "github_sha": "790cef011d77eba130194bcc0f63810197e9d92c",
    "worktree": "clean"
   },
@@ -4703,7 +4745,7 @@
    "methods": 20,
    "properties": 0,
    "partial": false,
-   "id": 94,
+   "id": 95,
    "github_sha": "3da57b8860d4161bc959640d9911ff36fdaf06b3",
    "worktree": "clean"
   },
@@ -4731,7 +4773,7 @@
    "methods": 12,
    "properties": 0,
    "partial": true,
-   "id": 95,
+   "id": 96,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -4779,7 +4821,7 @@
    "methods": 6,
    "properties": 64,
    "partial": true,
-   "id": 96,
+   "id": 97,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -4807,7 +4849,7 @@
    "methods": 17,
    "properties": 1,
    "partial": false,
-   "id": 97,
+   "id": 98,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -4835,7 +4877,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 98,
+   "id": 99,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -4863,7 +4905,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 99,
+   "id": 100,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -4891,7 +4933,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 100,
+   "id": 101,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -4927,7 +4969,7 @@
    "methods": 14,
    "properties": 16,
    "partial": false,
-   "id": 101,
+   "id": 102,
    "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
    "worktree": "clean"
   },
@@ -4955,7 +4997,7 @@
    "methods": 25,
    "properties": 0,
    "partial": false,
-   "id": 102,
+   "id": 103,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -4983,7 +5025,7 @@
    "methods": 41,
    "properties": 0,
    "partial": false,
-   "id": 103,
+   "id": 104,
    "github_sha": "70d6392ea64cc52943255a6dee3c1f9705bdf704",
    "worktree": "clean"
   },
@@ -5015,7 +5057,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 104,
+   "id": 105,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -5043,7 +5085,7 @@
    "methods": 18,
    "properties": 0,
    "partial": true,
-   "id": 105,
+   "id": 106,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -5071,7 +5113,7 @@
    "methods": 27,
    "properties": 0,
    "partial": false,
-   "id": 106,
+   "id": 107,
    "github_sha": "61676029ffd5ca8f438f6f14646a639d40daf803",
    "worktree": "clean"
   },
@@ -5099,7 +5141,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 107,
+   "id": 108,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -5127,7 +5169,7 @@
    "methods": 15,
    "properties": 0,
    "partial": true,
-   "id": 108,
+   "id": 109,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -5159,7 +5201,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 109,
+   "id": 110,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -5187,7 +5229,7 @@
    "methods": 15,
    "properties": 1,
    "partial": false,
-   "id": 110,
+   "id": 111,
    "github_sha": "e9cd3e6384d3aa4ef43cf2005a9d4f6ab09788d4",
    "worktree": "clean"
   },
@@ -5215,7 +5257,7 @@
    "methods": 16,
    "properties": 4,
    "partial": false,
-   "id": 111,
+   "id": 112,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -5263,8 +5305,36 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 112,
+   "id": 113,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
+   "worktree": "clean"
+  },
+  {
+   "name": "TurnManager.Core.cs",
+   "dir": "Tactics/TurnSystem",
+   "module": "Tactics",
+   "subdir": "TurnSystem",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs",
+   "size": 16395,
+   "partial_group": "TurnManager",
+   "loc": 412,
+   "blank": 52,
+   "comment": 26,
+   "code": 334,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TurnManager"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tactics.TurnSystem",
+   "methods": 13,
+   "properties": 0,
+   "partial": true,
+   "id": 114,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -5295,36 +5365,8 @@
    "methods": 11,
    "properties": 0,
    "partial": false,
-   "id": 113,
+   "id": 115,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
-   "worktree": "clean"
-  },
-  {
-   "name": "TurnManager.Core.cs",
-   "dir": "Tactics/TurnSystem",
-   "module": "Tactics",
-   "subdir": "TurnSystem",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs",
-   "size": 16248,
-   "partial_group": "TurnManager",
-   "loc": 410,
-   "blank": 52,
-   "comment": 25,
-   "code": 333,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "TurnManager"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Tactics.TurnSystem",
-   "methods": 13,
-   "properties": 0,
-   "partial": true,
-   "id": 114,
-   "github_sha": "201f1418176d694c3c19b386c331c2649011cab0",
    "worktree": "clean"
   },
   {
@@ -5351,7 +5393,7 @@
    "methods": 20,
    "properties": 0,
    "partial": true,
-   "id": 115,
+   "id": 116,
    "github_sha": "1e2677825334efe14506a27dfba0c40984c62b4a",
    "worktree": "clean"
   },
@@ -5383,7 +5425,7 @@
    "methods": 23,
    "properties": 3,
    "partial": false,
-   "id": 116,
+   "id": 117,
    "github_sha": "b082c7a26b27816946afe2ab3a94104c1981853f",
    "worktree": "clean"
   },
@@ -5411,7 +5453,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 117,
+   "id": 118,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -5439,7 +5481,7 @@
    "methods": 17,
    "properties": 0,
    "partial": true,
-   "id": 118,
+   "id": 119,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -5467,7 +5509,7 @@
    "methods": 11,
    "properties": 0,
    "partial": false,
-   "id": 119,
+   "id": 120,
    "github_sha": "101f6dd8e6688557d55f5aae74362f750289c1d3",
    "worktree": "clean"
   },
@@ -5495,7 +5537,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 120,
+   "id": 121,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -5523,7 +5565,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 121,
+   "id": 122,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -5571,7 +5613,7 @@
    "methods": 18,
    "properties": 0,
    "partial": false,
-   "id": 122,
+   "id": 123,
    "github_sha": "3da57b8860d4161bc959640d9911ff36fdaf06b3",
    "worktree": "clean"
   },
@@ -5599,7 +5641,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 123,
+   "id": 124,
    "github_sha": "0184ad2bcf94079a8e95d967aa7d86b134f0a144",
    "worktree": "clean"
   },
@@ -5639,7 +5681,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 124,
+   "id": 125,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -5667,7 +5709,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 125,
+   "id": 126,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -5695,7 +5737,7 @@
    "methods": 15,
    "properties": 0,
    "partial": true,
-   "id": 126,
+   "id": 127,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -5723,7 +5765,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 127,
+   "id": 128,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -5751,7 +5793,7 @@
    "methods": 32,
    "properties": 0,
    "partial": true,
-   "id": 128,
+   "id": 129,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -5779,7 +5821,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 129,
+   "id": 130,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -5807,7 +5849,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 130,
+   "id": 131,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -5835,7 +5877,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 131,
+   "id": 132,
    "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
    "worktree": "clean"
   },
@@ -5863,7 +5905,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 132,
+   "id": 133,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -5891,7 +5933,7 @@
    "methods": 27,
    "properties": 10,
    "partial": false,
-   "id": 133,
+   "id": 134,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -5919,7 +5961,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 134,
+   "id": 135,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -5947,7 +5989,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 135,
+   "id": 136,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -5975,7 +6017,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 136,
+   "id": 137,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -6003,7 +6045,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 137,
+   "id": 138,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -6031,7 +6073,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 138,
+   "id": 139,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -6059,7 +6101,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 139,
+   "id": 140,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -6087,7 +6129,7 @@
    "methods": 12,
    "properties": 0,
    "partial": true,
-   "id": 140,
+   "id": 141,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -6115,7 +6157,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 141,
+   "id": 142,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -6171,7 +6213,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 142,
+   "id": 143,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -6199,8 +6241,44 @@
    "methods": 12,
    "properties": 0,
    "partial": true,
-   "id": 143,
+   "id": 144,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
+   "worktree": "clean"
+  },
+  {
+   "name": "TitanBossMechanics.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/TitanBossMechanics.cs",
+   "size": 18151,
+   "partial_group": null,
+   "loc": 360,
+   "blank": 48,
+   "comment": 52,
+   "code": 260,
+   "classes": [
+    {
+     "kind": "enum",
+     "name": "TitanBossElement"
+    },
+    {
+     "kind": "struct",
+     "name": "TitanBossReaction"
+    },
+    {
+     "kind": "class",
+     "name": "TitanBossMechanics"
+    }
+   ],
+   "n_classes": 3,
+   "namespace": "Killtime.Core.Combat",
+   "methods": 26,
+   "properties": 0,
+   "partial": false,
+   "id": 145,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -6227,7 +6305,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 144,
+   "id": 146,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -6255,7 +6333,7 @@
    "methods": 25,
    "properties": 2,
    "partial": false,
-   "id": 145,
+   "id": 147,
    "github_sha": "c1603ab6f5146f0528f0667c0d980e7214bc8f8d",
    "worktree": "clean"
   },
@@ -6283,7 +6361,7 @@
    "methods": 5,
    "properties": 10,
    "partial": false,
-   "id": 146,
+   "id": 148,
    "github_sha": "53580fb9fe1b7d397445eb2ed8a6a5a15a8e8d82",
    "worktree": "clean"
   },
@@ -6311,7 +6389,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 147,
+   "id": 149,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -6339,7 +6417,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 148,
+   "id": 150,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -6367,7 +6445,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 149,
+   "id": 151,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -6395,7 +6473,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 150,
+   "id": 152,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -6423,7 +6501,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 151,
+   "id": 153,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -6451,7 +6529,7 @@
    "methods": 12,
    "properties": 0,
    "partial": true,
-   "id": 152,
+   "id": 154,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -6491,7 +6569,7 @@
    "methods": 14,
    "properties": 0,
    "partial": false,
-   "id": 153,
+   "id": 155,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -6519,7 +6597,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 154,
+   "id": 156,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -6555,7 +6633,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 155,
+   "id": 157,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -6583,7 +6661,7 @@
    "methods": 15,
    "properties": 0,
    "partial": true,
-   "id": 156,
+   "id": 158,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -6611,8 +6689,40 @@
    "methods": 17,
    "properties": 0,
    "partial": true,
-   "id": 157,
+   "id": 159,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
+   "worktree": "clean"
+  },
+  {
+   "name": "CoreRulesConfig.cs",
+   "dir": "Core",
+   "module": "Core",
+   "subdir": "",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/CoreRulesConfig.cs",
+   "size": 15380,
+   "partial_group": null,
+   "loc": 345,
+   "blank": 41,
+   "comment": 18,
+   "code": 286,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "BodyPartRuleEntry"
+    },
+    {
+     "kind": "class",
+     "name": "CoreRulesConfig"
+    }
+   ],
+   "n_classes": 2,
+   "namespace": "Killtime.Core.Rules",
+   "methods": 6,
+   "properties": 1,
+   "partial": false,
+   "id": 160,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -6639,7 +6749,7 @@
    "methods": 17,
    "properties": 0,
    "partial": false,
-   "id": 158,
+   "id": 161,
    "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
    "worktree": "clean"
   },
@@ -6667,8 +6777,36 @@
    "methods": 15,
    "properties": 1,
    "partial": false,
-   "id": 159,
+   "id": 162,
    "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
+   "worktree": "clean"
+  },
+  {
+   "name": "TacticalAIController.SupportLivreXI.cs",
+   "dir": "Tactics/AI",
+   "module": "Tactics",
+   "subdir": "AI",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/AI/TacticalAIController.SupportLivreXI.cs",
+   "size": 18286,
+   "partial_group": "TacticalAIController",
+   "loc": 342,
+   "blank": 45,
+   "comment": 13,
+   "code": 284,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TacticalAIController"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tactics.AI",
+   "methods": 3,
+   "properties": 0,
+   "partial": true,
+   "id": 163,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -6695,7 +6833,7 @@
    "methods": 14,
    "properties": 1,
    "partial": false,
-   "id": 160,
+   "id": 164,
    "github_sha": "d6b36b3c47c9b36c7d297a315bb9e65696238fb8",
    "worktree": "clean"
   },
@@ -6718,36 +6856,8 @@
    "properties": 5,
    "partial": false,
    "partial_group": null,
-   "id": 161,
+   "id": 165,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
-   "worktree": "clean"
-  },
-  {
-   "name": "TacticalAIController.SupportLivreXI.cs",
-   "dir": "Tactics/AI",
-   "module": "Tactics",
-   "subdir": "AI",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/AI/TacticalAIController.SupportLivreXI.cs",
-   "size": 18140,
-   "partial_group": "TacticalAIController",
-   "loc": 339,
-   "blank": 44,
-   "comment": 12,
-   "code": 283,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "TacticalAIController"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Tactics.AI",
-   "methods": 3,
-   "properties": 0,
-   "partial": true,
-   "id": 162,
-   "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
   {
@@ -6774,7 +6884,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 163,
+   "id": 166,
    "github_sha": "aab2f7affebf28c3c885768226e96425687d4ee3",
    "worktree": "clean"
   },
@@ -6802,7 +6912,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 164,
+   "id": 167,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -6830,7 +6940,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 165,
+   "id": 168,
    "github_sha": "b489f755842da36a4c4e00332f3022822aa19ee7",
    "worktree": "clean"
   },
@@ -6862,7 +6972,7 @@
    "methods": 14,
    "properties": 0,
    "partial": false,
-   "id": 166,
+   "id": 169,
    "github_sha": "e7853efbfcfde597a1749b1a6849251b8c8c53f7",
    "worktree": "clean"
   },
@@ -6890,7 +7000,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 167,
+   "id": 170,
    "github_sha": "a0c5f6352654e164ed03d260969a52ef226fae00",
    "worktree": "clean"
   },
@@ -6922,7 +7032,7 @@
    "methods": 14,
    "properties": 1,
    "partial": false,
-   "id": 168,
+   "id": 171,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -6950,7 +7060,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 169,
+   "id": 172,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -6978,7 +7088,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 170,
+   "id": 173,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -7006,40 +7116,8 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 171,
+   "id": 174,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
-   "worktree": "clean"
-  },
-  {
-   "name": "CoreRulesConfig.cs",
-   "dir": "Core",
-   "module": "Core",
-   "subdir": "",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Core/CoreRulesConfig.cs",
-   "size": 14186,
-   "partial_group": null,
-   "loc": 323,
-   "blank": 39,
-   "comment": 17,
-   "code": 267,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "BodyPartRuleEntry"
-    },
-    {
-     "kind": "class",
-     "name": "CoreRulesConfig"
-    }
-   ],
-   "n_classes": 2,
-   "namespace": "Killtime.Core.Rules",
-   "methods": 6,
-   "properties": 1,
-   "partial": false,
-   "id": 172,
-   "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
    "worktree": "clean"
   },
   {
@@ -7066,7 +7144,7 @@
    "methods": 17,
    "properties": 1,
    "partial": false,
-   "id": 173,
+   "id": 175,
    "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
    "worktree": "clean"
   },
@@ -7094,7 +7172,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 174,
+   "id": 176,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -7130,7 +7208,7 @@
    "methods": 18,
    "properties": 0,
    "partial": false,
-   "id": 175,
+   "id": 177,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -7158,7 +7236,7 @@
    "methods": 22,
    "properties": 0,
    "partial": true,
-   "id": 176,
+   "id": 178,
    "github_sha": "aab2f7affebf28c3c885768226e96425687d4ee3",
    "worktree": "clean"
   },
@@ -7186,7 +7264,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 177,
+   "id": 179,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -7214,7 +7292,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 178,
+   "id": 180,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -7242,7 +7320,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 179,
+   "id": 181,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -7270,7 +7348,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 180,
+   "id": 182,
    "github_sha": "edd59467e2cf08ad6ea5825d03a039422775ef13",
    "worktree": "clean"
   },
@@ -7298,7 +7376,7 @@
    "methods": 19,
    "properties": 0,
    "partial": false,
-   "id": 181,
+   "id": 183,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -7330,7 +7408,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 182,
+   "id": 184,
    "github_sha": "83f4f0286645a7b3bfc44e7a45ff640b626acd62",
    "worktree": "clean"
   },
@@ -7358,7 +7436,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 183,
+   "id": 185,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -7386,7 +7464,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 184,
+   "id": 186,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -7414,7 +7492,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 185,
+   "id": 187,
    "github_sha": "350265a6933dc4a4e61deeda286b7ce33c2bad76",
    "worktree": "clean"
   },
@@ -7442,7 +7520,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 186,
+   "id": 188,
    "github_sha": "edd59467e2cf08ad6ea5825d03a039422775ef13",
    "worktree": "clean"
   },
@@ -7470,7 +7548,7 @@
    "methods": 12,
    "properties": 0,
    "partial": true,
-   "id": 187,
+   "id": 189,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -7498,7 +7576,7 @@
    "methods": 15,
    "properties": 0,
    "partial": true,
-   "id": 188,
+   "id": 190,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -7530,7 +7608,7 @@
    "methods": 6,
    "properties": 7,
    "partial": false,
-   "id": 189,
+   "id": 191,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -7558,7 +7636,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 190,
+   "id": 192,
    "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
    "worktree": "clean"
   },
@@ -7586,7 +7664,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 191,
+   "id": 193,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -7614,7 +7692,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 192,
+   "id": 194,
    "github_sha": "07fe4155ec23a98560588ed2b642cdafdd8a6aee",
    "worktree": "clean"
   },
@@ -7642,7 +7720,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 193,
+   "id": 195,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -7670,7 +7748,7 @@
    "methods": 13,
    "properties": 0,
    "partial": true,
-   "id": 194,
+   "id": 196,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
    "worktree": "clean"
   },
@@ -7710,7 +7788,7 @@
    "methods": 16,
    "properties": 0,
    "partial": false,
-   "id": 195,
+   "id": 197,
    "github_sha": "2f824a67569bc4d572887523ca979853b5f5cfed",
    "worktree": "clean"
   },
@@ -7738,7 +7816,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 196,
+   "id": 198,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
    "worktree": "clean"
   },
@@ -7766,7 +7844,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 197,
+   "id": 199,
    "github_sha": "edd59467e2cf08ad6ea5825d03a039422775ef13",
    "worktree": "clean"
   },
@@ -7794,7 +7872,7 @@
    "methods": 19,
    "properties": 0,
    "partial": false,
-   "id": 198,
+   "id": 200,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -7822,7 +7900,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 199,
+   "id": 201,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -7850,7 +7928,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 200,
+   "id": 202,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -7882,7 +7960,7 @@
    "methods": 15,
    "properties": 0,
    "partial": false,
-   "id": 201,
+   "id": 203,
    "github_sha": "f58352c201736fcf23404b82d8a772272c10eaa4",
    "worktree": "clean"
   },
@@ -7910,7 +7988,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 202,
+   "id": 204,
    "github_sha": "b489f755842da36a4c4e00332f3022822aa19ee7",
    "worktree": "clean"
   },
@@ -7946,7 +8024,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 203,
+   "id": 205,
    "github_sha": "3e5a6cd4f0d4b8d42f512f5531da5bdcca9dbf29",
    "worktree": "clean"
   },
@@ -7974,7 +8052,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 204,
+   "id": 206,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -8002,7 +8080,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 205,
+   "id": 207,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -8030,7 +8108,7 @@
    "methods": 17,
    "properties": 0,
    "partial": false,
-   "id": 206,
+   "id": 208,
    "github_sha": "2f824a67569bc4d572887523ca979853b5f5cfed",
    "worktree": "clean"
   },
@@ -8058,7 +8136,7 @@
    "methods": 13,
    "properties": 0,
    "partial": false,
-   "id": 207,
+   "id": 209,
    "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
    "worktree": "clean"
   },
@@ -8086,8 +8164,36 @@
    "methods": 15,
    "properties": 2,
    "partial": false,
-   "id": 208,
+   "id": 210,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
+   "worktree": "clean"
+  },
+  {
+   "name": "TurnManager.Rounds.cs",
+   "dir": "Tactics/TurnSystem",
+   "module": "Tactics",
+   "subdir": "TurnSystem",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs",
+   "size": 12577,
+   "partial_group": "TurnManager",
+   "loc": 300,
+   "blank": 45,
+   "comment": 43,
+   "code": 212,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TurnManager"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tactics.TurnSystem",
+   "methods": 4,
+   "properties": 0,
+   "partial": true,
+   "id": 211,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -8114,7 +8220,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 209,
+   "id": 212,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -8142,7 +8248,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 210,
+   "id": 213,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -8170,8 +8276,36 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 211,
+   "id": 214,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
+   "worktree": "clean"
+  },
+  {
+   "name": "VehicleCombatTests.cs",
+   "dir": "Tests",
+   "module": "Tests",
+   "subdir": "",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/VehicleCombatTests.cs",
+   "size": 13779,
+   "partial_group": null,
+   "loc": 294,
+   "blank": 27,
+   "comment": 32,
+   "code": 235,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "VehicleCombatTests"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tests",
+   "methods": 19,
+   "properties": 0,
+   "partial": false,
+   "id": 215,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -8198,7 +8332,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 212,
+   "id": 216,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -8226,7 +8360,7 @@
    "methods": 10,
    "properties": 1,
    "partial": false,
-   "id": 213,
+   "id": 217,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -8254,7 +8388,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 214,
+   "id": 218,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -8282,7 +8416,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 215,
+   "id": 219,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
    "worktree": "clean"
   },
@@ -8314,7 +8448,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 216,
+   "id": 220,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -8342,7 +8476,7 @@
    "methods": 23,
    "properties": 0,
    "partial": false,
-   "id": 217,
+   "id": 221,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -8370,7 +8504,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 218,
+   "id": 222,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -8398,36 +8532,8 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 219,
+   "id": 223,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
-   "worktree": "clean"
-  },
-  {
-   "name": "TurnManager.Rounds.cs",
-   "dir": "Tactics/TurnSystem",
-   "module": "Tactics",
-   "subdir": "TurnSystem",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs",
-   "size": 11499,
-   "partial_group": "TurnManager",
-   "loc": 282,
-   "blank": 44,
-   "comment": 37,
-   "code": 201,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "TurnManager"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Tactics.TurnSystem",
-   "methods": 4,
-   "properties": 0,
-   "partial": true,
-   "id": 220,
-   "github_sha": "201f1418176d694c3c19b386c331c2649011cab0",
    "worktree": "clean"
   },
   {
@@ -8454,7 +8560,7 @@
    "methods": 11,
    "properties": 0,
    "partial": false,
-   "id": 221,
+   "id": 224,
    "github_sha": "83f4f0286645a7b3bfc44e7a45ff640b626acd62",
    "worktree": "clean"
   },
@@ -8482,7 +8588,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 222,
+   "id": 225,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -8510,7 +8616,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 223,
+   "id": 226,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -8542,7 +8648,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 224,
+   "id": 227,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
    "worktree": "clean"
   },
@@ -8574,7 +8680,7 @@
    "methods": 5,
    "properties": 5,
    "partial": true,
-   "id": 225,
+   "id": 228,
    "github_sha": "edd59467e2cf08ad6ea5825d03a039422775ef13",
    "worktree": "clean"
   },
@@ -8602,7 +8708,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 226,
+   "id": 229,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -8630,7 +8736,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 227,
+   "id": 230,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -8658,7 +8764,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 228,
+   "id": 231,
    "github_sha": "53580fb9fe1b7d397445eb2ed8a6a5a15a8e8d82",
    "worktree": "clean"
   },
@@ -8686,7 +8792,7 @@
    "methods": 18,
    "properties": 0,
    "partial": false,
-   "id": 229,
+   "id": 232,
    "github_sha": "a4f6503e49d1444dc8c90526af5e67195da11e4a",
    "worktree": "clean"
   },
@@ -8714,7 +8820,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 230,
+   "id": 233,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -8742,7 +8848,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 231,
+   "id": 234,
    "github_sha": "efa637d626576daaee8cc5aadd0987e23c966a8a",
    "worktree": "clean"
   },
@@ -8770,7 +8876,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 232,
+   "id": 235,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -8798,7 +8904,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 233,
+   "id": 236,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -8826,7 +8932,7 @@
    "methods": 11,
    "properties": 1,
    "partial": false,
-   "id": 234,
+   "id": 237,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -8854,7 +8960,7 @@
    "methods": 7,
    "properties": 9,
    "partial": true,
-   "id": 235,
+   "id": 238,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -8882,7 +8988,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 236,
+   "id": 239,
    "github_sha": "a0c5f6352654e164ed03d260969a52ef226fae00",
    "worktree": "clean"
   },
@@ -8910,7 +9016,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 237,
+   "id": 240,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -8938,7 +9044,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 238,
+   "id": 241,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -8966,7 +9072,7 @@
    "methods": 15,
    "properties": 0,
    "partial": true,
-   "id": 239,
+   "id": 242,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -8994,7 +9100,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 240,
+   "id": 243,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -9022,7 +9128,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 241,
+   "id": 244,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
    "worktree": "clean"
   },
@@ -9050,7 +9156,7 @@
    "methods": 13,
    "properties": 0,
    "partial": true,
-   "id": 242,
+   "id": 245,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -9078,7 +9184,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 243,
+   "id": 246,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -9106,7 +9212,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 244,
+   "id": 247,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -9134,7 +9240,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 245,
+   "id": 248,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
    "worktree": "clean"
   },
@@ -9166,7 +9272,7 @@
    "methods": 16,
    "properties": 0,
    "partial": false,
-   "id": 246,
+   "id": 249,
    "github_sha": "2f824a67569bc4d572887523ca979853b5f5cfed",
    "worktree": "clean"
   },
@@ -9194,7 +9300,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 247,
+   "id": 250,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -9222,7 +9328,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 248,
+   "id": 251,
    "github_sha": "c21087f863b455a4725023f3df92f3ded5e97b2b",
    "worktree": "clean"
   },
@@ -9250,8 +9356,52 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 249,
+   "id": 252,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
+   "worktree": "clean"
+  },
+  {
+   "name": "VehicleMechanics.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/VehicleMechanics.cs",
+   "size": 10891,
+   "partial_group": null,
+   "loc": 246,
+   "blank": 21,
+   "comment": 61,
+   "code": 164,
+   "classes": [
+    {
+     "kind": "enum",
+     "name": "VehicleSubsystem"
+    },
+    {
+     "kind": "enum",
+     "name": "VehicleScale"
+    },
+    {
+     "kind": "struct",
+     "name": "VehicleHpBand"
+    },
+    {
+     "kind": "struct",
+     "name": "VehicleHitResult"
+    },
+    {
+     "kind": "class",
+     "name": "VehicleMechanics"
+    }
+   ],
+   "n_classes": 5,
+   "namespace": "Killtime.Core.Combat",
+   "methods": 11,
+   "properties": 0,
+   "partial": false,
+   "id": 253,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -9278,7 +9428,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 250,
+   "id": 254,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -9306,7 +9456,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 251,
+   "id": 255,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -9334,7 +9484,7 @@
    "methods": 5,
    "properties": 4,
    "partial": false,
-   "id": 252,
+   "id": 256,
    "github_sha": "53580fb9fe1b7d397445eb2ed8a6a5a15a8e8d82",
    "worktree": "clean"
   },
@@ -9378,7 +9528,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 253,
+   "id": 257,
    "github_sha": "70d6392ea64cc52943255a6dee3c1f9705bdf704",
    "worktree": "clean"
   },
@@ -9410,7 +9560,7 @@
    "methods": 5,
    "properties": 1,
    "partial": true,
-   "id": 254,
+   "id": 258,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -9438,7 +9588,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 255,
+   "id": 259,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -9470,7 +9620,7 @@
    "methods": 6,
    "properties": 2,
    "partial": true,
-   "id": 256,
+   "id": 260,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -9498,7 +9648,7 @@
    "methods": 18,
    "properties": 0,
    "partial": false,
-   "id": 257,
+   "id": 261,
    "github_sha": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
    "worktree": "clean"
   },
@@ -9530,7 +9680,7 @@
    "methods": 14,
    "properties": 0,
    "partial": false,
-   "id": 258,
+   "id": 262,
    "github_sha": "3e5a6cd4f0d4b8d42f512f5531da5bdcca9dbf29",
    "worktree": "clean"
   },
@@ -9558,7 +9708,7 @@
    "methods": 6,
    "properties": 27,
    "partial": true,
-   "id": 259,
+   "id": 263,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -9586,7 +9736,7 @@
    "methods": 13,
    "properties": 0,
    "partial": true,
-   "id": 260,
+   "id": 264,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -9618,7 +9768,7 @@
    "methods": 17,
    "properties": 0,
    "partial": true,
-   "id": 261,
+   "id": 265,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -9650,7 +9800,7 @@
    "methods": 14,
    "properties": 0,
    "partial": false,
-   "id": 262,
+   "id": 266,
    "github_sha": "f58352c201736fcf23404b82d8a772272c10eaa4",
    "worktree": "clean"
   },
@@ -9678,7 +9828,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 263,
+   "id": 267,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -9706,7 +9856,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 264,
+   "id": 268,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -9734,7 +9884,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 265,
+   "id": 269,
    "github_sha": "e9cd3e6384d3aa4ef43cf2005a9d4f6ab09788d4",
    "worktree": "clean"
   },
@@ -9762,7 +9912,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 266,
+   "id": 270,
    "github_sha": "0184ad2bcf94079a8e95d967aa7d86b134f0a144",
    "worktree": "clean"
   },
@@ -9826,7 +9976,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 267,
+   "id": 271,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -9854,7 +10004,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 268,
+   "id": 272,
    "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
    "worktree": "clean"
   },
@@ -9882,7 +10032,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 269,
+   "id": 273,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -9910,7 +10060,7 @@
    "methods": 15,
    "properties": 0,
    "partial": false,
-   "id": 270,
+   "id": 274,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -9938,7 +10088,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 271,
+   "id": 275,
    "github_sha": "7c8b1646718108a48123418439a111b40aff2701",
    "worktree": "clean"
   },
@@ -9966,7 +10116,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 272,
+   "id": 276,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -10002,7 +10152,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 273,
+   "id": 277,
    "github_sha": "3da57b8860d4161bc959640d9911ff36fdaf06b3",
    "worktree": "clean"
   },
@@ -10030,7 +10180,7 @@
    "methods": 19,
    "properties": 0,
    "partial": false,
-   "id": 274,
+   "id": 278,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -10062,7 +10212,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 275,
+   "id": 279,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -10090,7 +10240,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 276,
+   "id": 280,
    "github_sha": "119d2d1d50f2f4cbe077aed4df6b06bd1caa15d9",
    "worktree": "clean"
   },
@@ -10118,7 +10268,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 277,
+   "id": 281,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -10146,7 +10296,7 @@
    "methods": 11,
    "properties": 0,
    "partial": false,
-   "id": 278,
+   "id": 282,
    "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
    "worktree": "clean"
   },
@@ -10174,7 +10324,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 279,
+   "id": 283,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -10202,7 +10352,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 280,
+   "id": 284,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -10230,7 +10380,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 281,
+   "id": 285,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -10258,7 +10408,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 282,
+   "id": 286,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -10286,7 +10436,7 @@
    "methods": 18,
    "properties": 0,
    "partial": true,
-   "id": 283,
+   "id": 287,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -10322,7 +10472,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 284,
+   "id": 288,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -10350,7 +10500,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 285,
+   "id": 289,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -10378,7 +10528,7 @@
    "methods": 18,
    "properties": 0,
    "partial": false,
-   "id": 286,
+   "id": 290,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -10406,7 +10556,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 287,
+   "id": 291,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -10438,8 +10588,40 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 288,
+   "id": 292,
    "github_sha": "e7853efbfcfde597a1749b1a6849251b8c8c53f7",
+   "worktree": "clean"
+  },
+  {
+   "name": "VehicleState.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/VehicleState.cs",
+   "size": 10103,
+   "partial_group": null,
+   "loc": 217,
+   "blank": 22,
+   "comment": 47,
+   "code": 148,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "VehicleRecord"
+    },
+    {
+     "kind": "class",
+     "name": "VehicleState"
+    }
+   ],
+   "n_classes": 2,
+   "namespace": "Killtime.Core.Combat",
+   "methods": 14,
+   "properties": 0,
+   "partial": false,
+   "id": 293,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -10470,7 +10652,7 @@
    "methods": 16,
    "properties": 0,
    "partial": false,
-   "id": 289,
+   "id": 294,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -10498,7 +10680,7 @@
    "methods": 18,
    "properties": 0,
    "partial": true,
-   "id": 290,
+   "id": 295,
    "github_sha": "4b0a74c218ebb28b2737990eb5bcc983ec3b4a3e",
    "worktree": "clean"
   },
@@ -10526,7 +10708,7 @@
    "methods": 10,
    "properties": 1,
    "partial": true,
-   "id": 291,
+   "id": 296,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -10554,7 +10736,7 @@
    "methods": 9,
    "properties": 1,
    "partial": true,
-   "id": 292,
+   "id": 297,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -10582,7 +10764,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 293,
+   "id": 298,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -10610,7 +10792,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 294,
+   "id": 299,
    "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
    "worktree": "clean"
   },
@@ -10650,7 +10832,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 295,
+   "id": 300,
    "github_sha": "0cdbd2fc02f4cf17f048dee2eb96babb08e2a498",
    "worktree": "clean"
   },
@@ -10678,7 +10860,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 296,
+   "id": 301,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -10710,7 +10892,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 297,
+   "id": 302,
    "github_sha": "7c8b1646718108a48123418439a111b40aff2701",
    "worktree": "clean"
   },
@@ -10746,7 +10928,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 298,
+   "id": 303,
    "github_sha": "7c8b1646718108a48123418439a111b40aff2701",
    "worktree": "clean"
   },
@@ -10774,7 +10956,7 @@
    "methods": 6,
    "properties": 3,
    "partial": true,
-   "id": 299,
+   "id": 304,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -10826,7 +11008,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 300,
+   "id": 305,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -10882,7 +11064,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 301,
+   "id": 306,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -10910,7 +11092,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 302,
+   "id": 307,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -10938,7 +11120,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 303,
+   "id": 308,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -10966,7 +11148,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 304,
+   "id": 309,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -10994,7 +11176,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 305,
+   "id": 310,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -11030,7 +11212,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 306,
+   "id": 311,
    "github_sha": "2f824a67569bc4d572887523ca979853b5f5cfed",
    "worktree": "clean"
   },
@@ -11058,7 +11240,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 307,
+   "id": 312,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -11086,7 +11268,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 308,
+   "id": 313,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -11114,7 +11296,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 309,
+   "id": 314,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -11142,8 +11324,36 @@
    "methods": 14,
    "properties": 0,
    "partial": false,
-   "id": 310,
+   "id": 315,
    "github_sha": "e35b35b9e687c92f1a350abeb6fe34843f620f0a",
+   "worktree": "clean"
+  },
+  {
+   "name": "TacticalAIController.TitanBoss.cs",
+   "dir": "Tactics/AI",
+   "module": "Tactics",
+   "subdir": "AI",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/AI/TacticalAIController.TitanBoss.cs",
+   "size": 12602,
+   "partial_group": "TacticalAIController",
+   "loc": 204,
+   "blank": 12,
+   "comment": 13,
+   "code": 179,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TacticalAIController"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tactics.AI",
+   "methods": 3,
+   "properties": 0,
+   "partial": true,
+   "id": 316,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -11170,7 +11380,7 @@
    "methods": 6,
    "properties": 1,
    "partial": false,
-   "id": 311,
+   "id": 317,
    "github_sha": "d6b36b3c47c9b36c7d297a315bb9e65696238fb8",
    "worktree": "clean"
   },
@@ -11198,7 +11408,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 312,
+   "id": 318,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -11226,7 +11436,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 313,
+   "id": 319,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -11258,7 +11468,7 @@
    "methods": 14,
    "properties": 0,
    "partial": false,
-   "id": 314,
+   "id": 320,
    "github_sha": "f58352c201736fcf23404b82d8a772272c10eaa4",
    "worktree": "clean"
   },
@@ -11286,7 +11496,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 315,
+   "id": 321,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
    "worktree": "clean"
   },
@@ -11318,7 +11528,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 316,
+   "id": 322,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -11346,7 +11556,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 317,
+   "id": 323,
    "github_sha": "4b0a74c218ebb28b2737990eb5bcc983ec3b4a3e",
    "worktree": "clean"
   },
@@ -11374,7 +11584,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 318,
+   "id": 324,
    "github_sha": "61676029ffd5ca8f438f6f14646a639d40daf803",
    "worktree": "clean"
   },
@@ -11402,7 +11612,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 319,
+   "id": 325,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -11430,7 +11640,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 320,
+   "id": 326,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -11466,7 +11676,7 @@
    "methods": 5,
    "properties": 2,
    "partial": true,
-   "id": 321,
+   "id": 327,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -11502,7 +11712,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 322,
+   "id": 328,
    "github_sha": "6d170431c735b33019de41414d1c0e140ab501a6",
    "worktree": "clean"
   },
@@ -11530,7 +11740,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 323,
+   "id": 329,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -11558,7 +11768,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 324,
+   "id": 330,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -11586,7 +11796,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 325,
+   "id": 331,
    "github_sha": "201f1418176d694c3c19b386c331c2649011cab0",
    "worktree": "clean"
   },
@@ -11614,7 +11824,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 326,
+   "id": 332,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
    "worktree": "clean"
   },
@@ -11646,7 +11856,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 327,
+   "id": 333,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -11674,7 +11884,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 328,
+   "id": 334,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -11702,7 +11912,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 329,
+   "id": 335,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -11730,7 +11940,7 @@
    "methods": 7,
    "properties": 7,
    "partial": true,
-   "id": 330,
+   "id": 336,
    "github_sha": "b489f755842da36a4c4e00332f3022822aa19ee7",
    "worktree": "clean"
   },
@@ -11758,7 +11968,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 331,
+   "id": 337,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -11786,7 +11996,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 332,
+   "id": 338,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -11814,7 +12024,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 333,
+   "id": 339,
    "github_sha": "70d6392ea64cc52943255a6dee3c1f9705bdf704",
    "worktree": "clean"
   },
@@ -11842,7 +12052,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 334,
+   "id": 340,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -11870,7 +12080,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 335,
+   "id": 341,
    "github_sha": "3f795cb0f45f9aa618c383ce5b414c3110ff2e28",
    "worktree": "clean"
   },
@@ -11898,7 +12108,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 336,
+   "id": 342,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -11934,7 +12144,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 337,
+   "id": 343,
    "github_sha": "6d170431c735b33019de41414d1c0e140ab501a6",
    "worktree": "clean"
   },
@@ -11962,7 +12172,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 338,
+   "id": 344,
    "github_sha": "edd59467e2cf08ad6ea5825d03a039422775ef13",
    "worktree": "clean"
   },
@@ -11990,7 +12200,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 339,
+   "id": 345,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -12018,7 +12228,7 @@
    "methods": 5,
    "properties": 1,
    "partial": true,
-   "id": 340,
+   "id": 346,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -12046,7 +12256,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 341,
+   "id": 347,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -12074,7 +12284,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 342,
+   "id": 348,
    "github_sha": "edd59467e2cf08ad6ea5825d03a039422775ef13",
    "worktree": "clean"
   },
@@ -12102,8 +12312,36 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 343,
+   "id": 349,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
+   "worktree": "clean"
+  },
+  {
+   "name": "TitanBossCatalog.cs",
+   "dir": "Core/CharacterCreator/Bestiary",
+   "module": "Core",
+   "subdir": "CharacterCreator",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/CharacterCreator/Bestiary/TitanBossCatalog.cs",
+   "size": 6746,
+   "partial_group": null,
+   "loc": 178,
+   "blank": 20,
+   "comment": 5,
+   "code": 153,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TitanBossCatalog"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Tactics.Units",
+   "methods": 7,
+   "properties": 0,
+   "partial": false,
+   "id": 350,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -12138,7 +12376,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 344,
+   "id": 351,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -12166,7 +12404,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 345,
+   "id": 352,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -12194,7 +12432,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 346,
+   "id": 353,
    "github_sha": "2f824a67569bc4d572887523ca979853b5f5cfed",
    "worktree": "clean"
   },
@@ -12222,7 +12460,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 347,
+   "id": 354,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -12250,7 +12488,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 348,
+   "id": 355,
    "github_sha": "201f1418176d694c3c19b386c331c2649011cab0",
    "worktree": "clean"
   },
@@ -12294,7 +12532,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 349,
+   "id": 356,
    "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
    "worktree": "clean"
   },
@@ -12322,7 +12560,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 350,
+   "id": 357,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -12370,7 +12608,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 351,
+   "id": 358,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -12406,7 +12644,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 352,
+   "id": 359,
    "github_sha": "f2f7a9c0003895297c724618b362d4bb0a3beb0e",
    "worktree": "clean"
   },
@@ -12438,7 +12676,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 353,
+   "id": 360,
    "github_sha": "a2423a4923ce27fa07df9cf648bb0dd7d82f1106",
    "worktree": "clean"
   },
@@ -12470,7 +12708,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 354,
+   "id": 361,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -12506,7 +12744,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 355,
+   "id": 362,
    "github_sha": "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871",
    "worktree": "clean"
   },
@@ -12534,7 +12772,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 356,
+   "id": 363,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -12562,7 +12800,7 @@
    "methods": 12,
    "properties": 0,
    "partial": false,
-   "id": 357,
+   "id": 364,
    "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
    "worktree": "clean"
   },
@@ -12590,7 +12828,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 358,
+   "id": 365,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -12618,7 +12856,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 359,
+   "id": 366,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -12646,7 +12884,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 360,
+   "id": 367,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -12674,7 +12912,7 @@
    "methods": 13,
    "properties": 0,
    "partial": false,
-   "id": 361,
+   "id": 368,
    "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
    "worktree": "clean"
   },
@@ -12714,7 +12952,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 362,
+   "id": 369,
    "github_sha": "b082c7a26b27816946afe2ab3a94104c1981853f",
    "worktree": "clean"
   },
@@ -12742,7 +12980,7 @@
    "methods": 10,
    "properties": 2,
    "partial": false,
-   "id": 363,
+   "id": 370,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -12770,7 +13008,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 364,
+   "id": 371,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -12798,7 +13036,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 365,
+   "id": 372,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -12826,7 +13064,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 366,
+   "id": 373,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -12858,7 +13096,7 @@
    "methods": 13,
    "properties": 0,
    "partial": true,
-   "id": 367,
+   "id": 374,
    "github_sha": "0184ad2bcf94079a8e95d967aa7d86b134f0a144",
    "worktree": "clean"
   },
@@ -12886,7 +13124,7 @@
    "methods": 11,
    "properties": 0,
    "partial": false,
-   "id": 368,
+   "id": 375,
    "github_sha": "e7853efbfcfde597a1749b1a6849251b8c8c53f7",
    "worktree": "clean"
   },
@@ -12914,7 +13152,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 369,
+   "id": 376,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -12942,7 +13180,7 @@
    "methods": 8,
    "properties": 2,
    "partial": false,
-   "id": 370,
+   "id": 377,
    "github_sha": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
    "worktree": "clean"
   },
@@ -12970,7 +13208,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 371,
+   "id": 378,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -12998,7 +13236,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 372,
+   "id": 379,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -13026,7 +13264,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 373,
+   "id": 380,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -13054,7 +13292,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 374,
+   "id": 381,
    "github_sha": "50e243d0cffd475560d03c83abd4c2d19ec0b169",
    "worktree": "clean"
   },
@@ -13082,7 +13320,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 375,
+   "id": 382,
    "github_sha": "a7102303526bee2f9f723c76cb27ff4c5236fc4b",
    "worktree": "clean"
   },
@@ -13114,7 +13352,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 376,
+   "id": 383,
    "github_sha": "0184ad2bcf94079a8e95d967aa7d86b134f0a144",
    "worktree": "clean"
   },
@@ -13142,7 +13380,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 377,
+   "id": 384,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -13170,7 +13408,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 378,
+   "id": 385,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -13198,7 +13436,7 @@
    "methods": 13,
    "properties": 0,
    "partial": false,
-   "id": 379,
+   "id": 386,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -13226,7 +13464,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 380,
+   "id": 387,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -13254,7 +13492,7 @@
    "methods": 12,
    "properties": 0,
    "partial": true,
-   "id": 381,
+   "id": 388,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -13282,7 +13520,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 382,
+   "id": 389,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -13314,7 +13552,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 383,
+   "id": 390,
    "github_sha": "101f6dd8e6688557d55f5aae74362f750289c1d3",
    "worktree": "clean"
   },
@@ -13342,8 +13580,36 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 384,
+   "id": 391,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
+   "worktree": "clean"
+  },
+  {
+   "name": "TitanBossAIConfig.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/TitanBossAIConfig.cs",
+   "size": 6669,
+   "partial_group": null,
+   "loc": 151,
+   "blank": 14,
+   "comment": 21,
+   "code": 116,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TitanBossAIConfig"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Core.Combat",
+   "methods": 9,
+   "properties": 0,
+   "partial": false,
+   "id": 392,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -13370,7 +13636,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 385,
+   "id": 393,
    "github_sha": "70ae5cd88007ac77d2395346469bf640c40ebec5",
    "worktree": "clean"
   },
@@ -13398,7 +13664,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 386,
+   "id": 394,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -13426,7 +13692,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 387,
+   "id": 395,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -13454,7 +13720,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 388,
+   "id": 396,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -13482,7 +13748,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 389,
+   "id": 397,
    "github_sha": "201f1418176d694c3c19b386c331c2649011cab0",
    "worktree": "clean"
   },
@@ -13510,7 +13776,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 390,
+   "id": 398,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -13538,7 +13804,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 391,
+   "id": 399,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -13566,7 +13832,7 @@
    "methods": 13,
    "properties": 0,
    "partial": true,
-   "id": 392,
+   "id": 400,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -13598,7 +13864,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 393,
+   "id": 401,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -13626,7 +13892,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 394,
+   "id": 402,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
    "worktree": "clean"
   },
@@ -13662,7 +13928,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 395,
+   "id": 403,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -13690,7 +13956,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 396,
+   "id": 404,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -13718,7 +13984,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 397,
+   "id": 405,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -13746,7 +14012,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 398,
+   "id": 406,
    "github_sha": "1e2677825334efe14506a27dfba0c40984c62b4a",
    "worktree": "clean"
   },
@@ -13790,7 +14056,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 399,
+   "id": 407,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -13830,7 +14096,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 400,
+   "id": 408,
    "github_sha": "790cef011d77eba130194bcc0f63810197e9d92c",
    "worktree": "clean"
   },
@@ -13858,7 +14124,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 401,
+   "id": 409,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -13886,7 +14152,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 402,
+   "id": 410,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -13914,7 +14180,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 403,
+   "id": 411,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -13942,7 +14208,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 404,
+   "id": 412,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -13970,7 +14236,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 405,
+   "id": 413,
    "github_sha": "61883e0ec56eb9bf5819e02de0120b064e40d172",
    "worktree": "clean"
   },
@@ -13998,7 +14264,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 406,
+   "id": 414,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -14026,7 +14292,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 407,
+   "id": 415,
    "github_sha": "c1603ab6f5146f0528f0667c0d980e7214bc8f8d",
    "worktree": "clean"
   },
@@ -14054,7 +14320,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 408,
+   "id": 416,
    "github_sha": "790cef011d77eba130194bcc0f63810197e9d92c",
    "worktree": "clean"
   },
@@ -14082,7 +14348,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 409,
+   "id": 417,
    "github_sha": "07fe4155ec23a98560588ed2b642cdafdd8a6aee",
    "worktree": "clean"
   },
@@ -14110,7 +14376,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 410,
+   "id": 418,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -14138,7 +14404,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 411,
+   "id": 419,
    "github_sha": "edd59467e2cf08ad6ea5825d03a039422775ef13",
    "worktree": "clean"
   },
@@ -14166,7 +14432,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 412,
+   "id": 420,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -14194,7 +14460,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 413,
+   "id": 421,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -14222,7 +14488,7 @@
    "methods": 7,
    "properties": 1,
    "partial": false,
-   "id": 414,
+   "id": 422,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -14250,7 +14516,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 415,
+   "id": 423,
    "github_sha": "b489f755842da36a4c4e00332f3022822aa19ee7",
    "worktree": "clean"
   },
@@ -14278,36 +14544,8 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 416,
+   "id": 424,
    "github_sha": "00db4a6687b8967c1bf308a01647ad2322ce1819",
-   "worktree": "clean"
-  },
-  {
-   "name": "TitanBossCatalog.cs",
-   "dir": "Core/CharacterCreator/Bestiary",
-   "module": "Core",
-   "subdir": "CharacterCreator",
-   "type": "csharp",
-   "repo_path": "KilltimeTactics/Assets/Scripts/Core/CharacterCreator/Bestiary/TitanBossCatalog.cs",
-   "size": 4764,
-   "partial_group": null,
-   "loc": 132,
-   "blank": 15,
-   "comment": 3,
-   "code": 114,
-   "classes": [
-    {
-     "kind": "class",
-     "name": "TitanBossCatalog"
-    }
-   ],
-   "n_classes": 1,
-   "namespace": "Killtime.Tactics.Units",
-   "methods": 3,
-   "properties": 0,
-   "partial": false,
-   "id": 417,
-   "github_sha": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
    "worktree": "clean"
   },
   {
@@ -14342,7 +14580,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 418,
+   "id": 425,
    "github_sha": "d6b36b3c47c9b36c7d297a315bb9e65696238fb8",
    "worktree": "clean"
   },
@@ -14370,7 +14608,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 419,
+   "id": 426,
    "github_sha": "1e2677825334efe14506a27dfba0c40984c62b4a",
    "worktree": "clean"
   },
@@ -14402,7 +14640,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 420,
+   "id": 427,
    "github_sha": "2f824a67569bc4d572887523ca979853b5f5cfed",
    "worktree": "clean"
   },
@@ -14430,7 +14668,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 421,
+   "id": 428,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -14458,8 +14696,36 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 422,
+   "id": 429,
    "github_sha": "0967219c60b97290d0187bd780f7eabbc1d29b3f",
+   "worktree": "clean"
+  },
+  {
+   "name": "TitanBossState.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/TitanBossState.cs",
+   "size": 5335,
+   "partial_group": null,
+   "loc": 128,
+   "blank": 19,
+   "comment": 26,
+   "code": 83,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "TitanBossState"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Core.Character",
+   "methods": 11,
+   "properties": 0,
+   "partial": false,
+   "id": 430,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -14486,7 +14752,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 423,
+   "id": 431,
    "github_sha": "a4f31480a2f8d70bad758ff4402744a78d246580",
    "worktree": "clean"
   },
@@ -14522,7 +14788,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 424,
+   "id": 432,
    "github_sha": "6d170431c735b33019de41414d1c0e140ab501a6",
    "worktree": "clean"
   },
@@ -14562,7 +14828,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 425,
+   "id": 433,
    "github_sha": "7475bf2deb4a8ed73968f8b76e43b3871032b424",
    "worktree": "clean"
   },
@@ -14602,7 +14868,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 426,
+   "id": 434,
    "github_sha": "7475bf2deb4a8ed73968f8b76e43b3871032b424",
    "worktree": "clean"
   },
@@ -14630,7 +14896,7 @@
    "methods": 10,
    "properties": 0,
    "partial": false,
-   "id": 427,
+   "id": 435,
    "github_sha": "2f824a67569bc4d572887523ca979853b5f5cfed",
    "worktree": "clean"
   },
@@ -14658,7 +14924,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 428,
+   "id": 436,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
    "worktree": "clean"
   },
@@ -14694,7 +14960,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 429,
+   "id": 437,
    "github_sha": "790cef011d77eba130194bcc0f63810197e9d92c",
    "worktree": "clean"
   },
@@ -14722,7 +14988,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 430,
+   "id": 438,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -14750,7 +15016,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 431,
+   "id": 439,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -14778,7 +15044,7 @@
    "methods": 6,
    "properties": 0,
    "partial": true,
-   "id": 432,
+   "id": 440,
    "github_sha": "08c471b12241a30b177d4a1865892df65a504ff5",
    "worktree": "clean"
   },
@@ -14806,7 +15072,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 433,
+   "id": 441,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -14834,7 +15100,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 434,
+   "id": 442,
    "github_sha": "101f6dd8e6688557d55f5aae74362f750289c1d3",
    "worktree": "clean"
   },
@@ -14862,7 +15128,7 @@
    "methods": 14,
    "properties": 0,
    "partial": true,
-   "id": 435,
+   "id": 443,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -14890,7 +15156,7 @@
    "methods": 2,
    "properties": 0,
    "partial": true,
-   "id": 436,
+   "id": 444,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -14926,7 +15192,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 437,
+   "id": 445,
    "github_sha": "d6b36b3c47c9b36c7d297a315bb9e65696238fb8",
    "worktree": "clean"
   },
@@ -14954,7 +15220,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 438,
+   "id": 446,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -14982,7 +15248,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 439,
+   "id": 447,
    "github_sha": "d60e8fb6827308307d2e56a422392914678b8287",
    "worktree": "clean"
   },
@@ -15010,7 +15276,7 @@
    "methods": 11,
    "properties": 0,
    "partial": true,
-   "id": 440,
+   "id": 448,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -15042,7 +15308,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 441,
+   "id": 449,
    "github_sha": "a2423a4923ce27fa07df9cf648bb0dd7d82f1106",
    "worktree": "clean"
   },
@@ -15070,7 +15336,7 @@
    "methods": 8,
    "properties": 0,
    "partial": true,
-   "id": 442,
+   "id": 450,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -15098,7 +15364,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 443,
+   "id": 451,
    "github_sha": "70d6392ea64cc52943255a6dee3c1f9705bdf704",
    "worktree": "clean"
   },
@@ -15126,7 +15392,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 444,
+   "id": 452,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -15182,7 +15448,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 445,
+   "id": 453,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -15210,7 +15476,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 446,
+   "id": 454,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -15242,7 +15508,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 447,
+   "id": 455,
    "github_sha": "a2423a4923ce27fa07df9cf648bb0dd7d82f1106",
    "worktree": "clean"
   },
@@ -15278,7 +15544,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 448,
+   "id": 456,
    "github_sha": "c1603ab6f5146f0528f0667c0d980e7214bc8f8d",
    "worktree": "clean"
   },
@@ -15306,7 +15572,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 449,
+   "id": 457,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -15334,7 +15600,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 450,
+   "id": 458,
    "github_sha": "07fe4155ec23a98560588ed2b642cdafdd8a6aee",
    "worktree": "clean"
   },
@@ -15362,7 +15628,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 451,
+   "id": 459,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -15390,7 +15656,7 @@
    "methods": 7,
    "properties": 0,
    "partial": true,
-   "id": 452,
+   "id": 460,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -15422,7 +15688,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 453,
+   "id": 461,
    "github_sha": "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871",
    "worktree": "clean"
   },
@@ -15454,7 +15720,7 @@
    "methods": 5,
    "properties": 2,
    "partial": false,
-   "id": 454,
+   "id": 462,
    "github_sha": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
    "worktree": "clean"
   },
@@ -15482,7 +15748,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 455,
+   "id": 463,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -15510,7 +15776,7 @@
    "methods": 8,
    "properties": 0,
    "partial": false,
-   "id": 456,
+   "id": 464,
    "github_sha": "101f6dd8e6688557d55f5aae74362f750289c1d3",
    "worktree": "clean"
   },
@@ -15538,7 +15804,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 457,
+   "id": 465,
    "github_sha": "0cdbd2fc02f4cf17f048dee2eb96babb08e2a498",
    "worktree": "clean"
   },
@@ -15566,7 +15832,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 458,
+   "id": 466,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -15594,7 +15860,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 459,
+   "id": 467,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -15622,7 +15888,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 460,
+   "id": 468,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -15650,7 +15916,7 @@
    "methods": 7,
    "properties": 0,
    "partial": false,
-   "id": 461,
+   "id": 469,
    "github_sha": "790cef011d77eba130194bcc0f63810197e9d92c",
    "worktree": "clean"
   },
@@ -15682,7 +15948,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 462,
+   "id": 470,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -15710,7 +15976,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 463,
+   "id": 471,
    "github_sha": "07fe4155ec23a98560588ed2b642cdafdd8a6aee",
    "worktree": "clean"
   },
@@ -15750,7 +16016,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 464,
+   "id": 472,
    "github_sha": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
    "worktree": "clean"
   },
@@ -15790,7 +16056,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 465,
+   "id": 473,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -15822,7 +16088,7 @@
    "methods": 9,
    "properties": 0,
    "partial": true,
-   "id": 466,
+   "id": 474,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -15850,7 +16116,7 @@
    "methods": 7,
    "properties": 4,
    "partial": false,
-   "id": 467,
+   "id": 475,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -15878,7 +16144,7 @@
    "methods": 3,
    "properties": 8,
    "partial": true,
-   "id": 468,
+   "id": 476,
    "github_sha": "201f1418176d694c3c19b386c331c2649011cab0",
    "worktree": "clean"
   },
@@ -15906,7 +16172,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 469,
+   "id": 477,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -15958,7 +16224,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 470,
+   "id": 478,
    "github_sha": "53580fb9fe1b7d397445eb2ed8a6a5a15a8e8d82",
    "worktree": "clean"
   },
@@ -15986,7 +16252,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 471,
+   "id": 479,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -16014,7 +16280,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 472,
+   "id": 480,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -16042,7 +16308,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 473,
+   "id": 481,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -16074,7 +16340,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 474,
+   "id": 482,
    "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
    "worktree": "clean"
   },
@@ -16102,7 +16368,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 475,
+   "id": 483,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -16130,7 +16396,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 476,
+   "id": 484,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -16158,7 +16424,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 477,
+   "id": 485,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -16186,7 +16452,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 478,
+   "id": 486,
    "github_sha": "b082c7a26b27816946afe2ab3a94104c1981853f",
    "worktree": "clean"
   },
@@ -16214,7 +16480,7 @@
    "methods": 6,
    "properties": 0,
    "partial": false,
-   "id": 479,
+   "id": 487,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -16242,7 +16508,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 480,
+   "id": 488,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -16270,7 +16536,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 481,
+   "id": 489,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -16298,7 +16564,7 @@
    "methods": 3,
    "properties": 0,
    "partial": true,
-   "id": 482,
+   "id": 490,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -16326,7 +16592,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 483,
+   "id": 491,
    "github_sha": "a4f6503e49d1444dc8c90526af5e67195da11e4a",
    "worktree": "clean"
   },
@@ -16354,7 +16620,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 484,
+   "id": 492,
    "github_sha": "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871",
    "worktree": "clean"
   },
@@ -16382,7 +16648,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 485,
+   "id": 493,
    "github_sha": "2a89ed785da8826bebf51c84c5e6335d1604246e",
    "worktree": "clean"
   },
@@ -16410,7 +16676,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 486,
+   "id": 494,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -16438,7 +16704,7 @@
    "methods": 10,
    "properties": 0,
    "partial": true,
-   "id": 487,
+   "id": 495,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -16466,7 +16732,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 488,
+   "id": 496,
    "github_sha": "4538dcd82d5f0b2f58a69ebd25b97023cc982f9a",
    "worktree": "clean"
   },
@@ -16498,7 +16764,7 @@
    "methods": 7,
    "properties": 1,
    "partial": false,
-   "id": 489,
+   "id": 497,
    "github_sha": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
    "worktree": "clean"
   },
@@ -16530,7 +16796,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 490,
+   "id": 498,
    "github_sha": "d763ca3349ad221684652fdf5b20bd565deff57d",
    "worktree": "clean"
   },
@@ -16558,7 +16824,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 491,
+   "id": 499,
    "github_sha": "61676029ffd5ca8f438f6f14646a639d40daf803",
    "worktree": "clean"
   },
@@ -16586,7 +16852,7 @@
    "methods": 5,
    "properties": 4,
    "partial": false,
-   "id": 492,
+   "id": 500,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -16618,7 +16884,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 493,
+   "id": 501,
    "github_sha": "0cdbd2fc02f4cf17f048dee2eb96babb08e2a498",
    "worktree": "clean"
   },
@@ -16646,7 +16912,7 @@
    "methods": 5,
    "properties": 0,
    "partial": true,
-   "id": 494,
+   "id": 502,
    "github_sha": "70ae5cd88007ac77d2395346469bf640c40ebec5",
    "worktree": "clean"
   },
@@ -16674,7 +16940,7 @@
    "methods": 9,
    "properties": 0,
    "partial": false,
-   "id": 495,
+   "id": 503,
    "github_sha": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
    "worktree": "clean"
   },
@@ -16706,7 +16972,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 496,
+   "id": 504,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -16738,7 +17004,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 497,
+   "id": 505,
    "github_sha": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
    "worktree": "clean"
   },
@@ -16766,7 +17032,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 498,
+   "id": 506,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -16794,7 +17060,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 499,
+   "id": 507,
    "github_sha": "efa637d626576daaee8cc5aadd0987e23c966a8a",
    "worktree": "clean"
   },
@@ -16822,7 +17088,7 @@
    "methods": 6,
    "properties": 1,
    "partial": false,
-   "id": 500,
+   "id": 508,
    "github_sha": "59a92f8ec2b93e216b0ed99772db30e3177afd24",
    "worktree": "clean"
   },
@@ -16850,7 +17116,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 501,
+   "id": 509,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -16878,7 +17144,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 502,
+   "id": 510,
    "github_sha": "a29d9b87aa0ecaef56d0cabf7278bc215a5bad80",
    "worktree": "clean"
   },
@@ -16906,7 +17172,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 503,
+   "id": 511,
    "github_sha": "0b87c3e0a47b1174b7d9c5d0e8ae74cb53cef871",
    "worktree": "clean"
   },
@@ -16934,7 +17200,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 504,
+   "id": 512,
    "github_sha": "790cef011d77eba130194bcc0f63810197e9d92c",
    "worktree": "clean"
   },
@@ -16962,7 +17228,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 505,
+   "id": 513,
    "github_sha": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
    "worktree": "clean"
   },
@@ -16990,7 +17256,7 @@
    "methods": 0,
    "properties": 0,
    "partial": true,
-   "id": 506,
+   "id": 514,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -17018,7 +17284,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 507,
+   "id": 515,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -17046,7 +17312,7 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 508,
+   "id": 516,
    "github_sha": "3da57b8860d4161bc959640d9911ff36fdaf06b3",
    "worktree": "clean"
   },
@@ -17082,7 +17348,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 509,
+   "id": 517,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -17110,7 +17376,7 @@
    "methods": 5,
    "properties": 0,
    "partial": false,
-   "id": 510,
+   "id": 518,
    "github_sha": "3e5a6cd4f0d4b8d42f512f5531da5bdcca9dbf29",
    "worktree": "clean"
   },
@@ -17138,8 +17404,36 @@
    "methods": 4,
    "properties": 0,
    "partial": false,
-   "id": 511,
+   "id": 519,
    "github_sha": "a4f6503e49d1444dc8c90526af5e67195da11e4a",
+   "worktree": "clean"
+  },
+  {
+   "name": "SpecialManeuverService.Vehicle.cs",
+   "dir": "Core/Combat",
+   "module": "Core",
+   "subdir": "Combat",
+   "type": "csharp",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/SpecialManeuverService.Vehicle.cs",
+   "size": 2809,
+   "partial_group": "SpecialManeuverService",
+   "loc": 55,
+   "blank": 5,
+   "comment": 25,
+   "code": 25,
+   "classes": [
+    {
+     "kind": "class",
+     "name": "SpecialManeuverService"
+    }
+   ],
+   "n_classes": 1,
+   "namespace": "Killtime.Core.Combat",
+   "methods": 5,
+   "properties": 0,
+   "partial": true,
+   "id": 520,
+   "github_sha": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "worktree": "clean"
   },
   {
@@ -17166,7 +17460,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 512,
+   "id": 521,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -17194,7 +17488,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 513,
+   "id": 522,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -17217,7 +17511,7 @@
    "properties": 17,
    "partial": false,
    "partial_group": null,
-   "id": 514,
+   "id": 523,
    "github_sha": "f2f7a9c0003895297c724618b362d4bb0a3beb0e",
    "worktree": "clean"
   },
@@ -17249,7 +17543,7 @@
    "methods": 2,
    "properties": 6,
    "partial": false,
-   "id": 515,
+   "id": 524,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -17277,7 +17571,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 516,
+   "id": 525,
    "github_sha": "f676fa38bb091e26bc772910159c3d80901f4b2e",
    "worktree": "clean"
   },
@@ -17313,7 +17607,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 517,
+   "id": 526,
    "github_sha": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
    "worktree": "clean"
   },
@@ -17345,7 +17639,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 518,
+   "id": 527,
    "github_sha": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
    "worktree": "clean"
   },
@@ -17377,7 +17671,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 519,
+   "id": 528,
    "github_sha": "2ee6da6b1a34e3d9d16a6c6503fd441799b55b01",
    "worktree": "clean"
   },
@@ -17405,7 +17699,7 @@
    "methods": 4,
    "properties": 0,
    "partial": true,
-   "id": 520,
+   "id": 529,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -17433,7 +17727,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 521,
+   "id": 530,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -17461,7 +17755,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 522,
+   "id": 531,
    "github_sha": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
    "worktree": "clean"
   },
@@ -17493,7 +17787,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 523,
+   "id": 532,
    "github_sha": "13b8014c0c4baf4f337c60053c653cf22289016b",
    "worktree": "clean"
   },
@@ -17521,7 +17815,7 @@
    "methods": 2,
    "properties": 0,
    "partial": false,
-   "id": 524,
+   "id": 533,
    "github_sha": "70d6392ea64cc52943255a6dee3c1f9705bdf704",
    "worktree": "clean"
   },
@@ -17549,7 +17843,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 525,
+   "id": 534,
    "github_sha": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
    "worktree": "clean"
   },
@@ -17577,7 +17871,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 526,
+   "id": 535,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -17613,7 +17907,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 527,
+   "id": 536,
    "github_sha": "0edec968799748e1ed5d884754b1924b0a59a585",
    "worktree": "clean"
   },
@@ -17641,7 +17935,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 528,
+   "id": 537,
    "github_sha": "ef6162eb724bc4edb6c88dc1f4650f6e59379768",
    "worktree": "clean"
   },
@@ -17669,7 +17963,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 529,
+   "id": 538,
    "github_sha": "4498ce0957db95db497056e2eaa8cc033306fbbf",
    "worktree": "clean"
   },
@@ -17701,7 +17995,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 530,
+   "id": 539,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -17729,7 +18023,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 531,
+   "id": 540,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -17757,7 +18051,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 532,
+   "id": 541,
    "github_sha": "2e0be4d3fe3d7336799933937c2f84522d443c43",
    "worktree": "clean"
   },
@@ -17785,7 +18079,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 533,
+   "id": 542,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -17821,7 +18115,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 534,
+   "id": 543,
    "github_sha": "201f1418176d694c3c19b386c331c2649011cab0",
    "worktree": "clean"
   },
@@ -17849,7 +18143,7 @@
    "methods": 3,
    "properties": 0,
    "partial": false,
-   "id": 535,
+   "id": 544,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -17877,7 +18171,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 536,
+   "id": 545,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -17905,7 +18199,7 @@
    "methods": 2,
    "properties": 2,
    "partial": false,
-   "id": 537,
+   "id": 546,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -17933,7 +18227,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 538,
+   "id": 547,
    "github_sha": "a4f6503e49d1444dc8c90526af5e67195da11e4a",
    "worktree": "clean"
   },
@@ -17961,7 +18255,7 @@
    "methods": 0,
    "properties": 0,
    "partial": true,
-   "id": 539,
+   "id": 548,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -17984,7 +18278,7 @@
    "properties": 3,
    "partial": false,
    "partial_group": null,
-   "id": 540,
+   "id": 549,
    "github_sha": "6d170431c735b33019de41414d1c0e140ab501a6",
    "worktree": "clean"
   },
@@ -18012,7 +18306,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 541,
+   "id": 550,
    "github_sha": "57b3d325ba9fb936294cf220cd0d0d9b69b7a701",
    "worktree": "clean"
   },
@@ -18040,7 +18334,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 542,
+   "id": 551,
    "github_sha": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
    "worktree": "clean"
   },
@@ -18072,7 +18366,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 543,
+   "id": 552,
    "github_sha": "59a92f8ec2b93e216b0ed99772db30e3177afd24",
    "worktree": "clean"
   },
@@ -18100,7 +18394,7 @@
    "methods": 1,
    "properties": 0,
    "partial": false,
-   "id": 544,
+   "id": 553,
    "github_sha": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
    "worktree": "clean"
   },
@@ -18128,7 +18422,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 545,
+   "id": 554,
    "github_sha": "e11e7af6490b89f8dd03e334f0d99fd1253ab859",
    "worktree": "clean"
   },
@@ -18156,7 +18450,7 @@
    "methods": 1,
    "properties": 0,
    "partial": true,
-   "id": 546,
+   "id": 555,
    "github_sha": "59fc506975b7d4233df1024c0a5662a6650738fc",
    "worktree": "clean"
   },
@@ -18179,7 +18473,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 547,
+   "id": 556,
    "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
    "worktree": "clean"
   },
@@ -18207,7 +18501,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 548,
+   "id": 557,
    "github_sha": "a4f6503e49d1444dc8c90526af5e67195da11e4a",
    "worktree": "clean"
   },
@@ -18230,7 +18524,7 @@
    "methods": 0,
    "properties": 0,
    "partial": false,
-   "id": 549,
+   "id": 558,
    "github_sha": "f61456a53acb426cca3dd749803ce14fa53dba06",
    "worktree": "clean"
   }

@@ -2,10 +2,10 @@
  "project": "Killtime Tactics",
  "repository": "https://github.com/k0r0z1f/Killtime",
  "path": "KilltimeTactics",
- "total_commits": 96,
+ "total_commits": 97,
  "date_range": {
   "start": "2026-09-08",
-  "end": "2026-10-17"
+  "end": "2026-10-18"
  },
  "branches": {
   "story": {
@@ -98,8 +98,15 @@
    "id": "ep6",
    "title": "Époque VI : Refactor des Monolithes & Stabilisation",
    "start": "2026-10-10",
-   "end": "2026-10-17",
+   "end": "2026-10-18",
    "desc": "Découpage des monolithes en services (IA, Arena, Story, CombatCalculator RD-123, Character, MapEditor, TurnManager), correctifs P0/P1/P2 et kanban RD-123/RD-124. Découpage audio (KilltimeAudioManager, ProceduralAudioFactory, SystemAudioChameleon), SkillTreeCosmosWindow (RD-138), VTTRoomWindow, HexGridVisualizer, voûte céleste LOD/culling (RD-139)."
+  },
+  {
+   "id": "ep7",
+   "start": "2026-10-18",
+   "end": "2026-10-18",
+   "title": "Époque VII : Tests sur le Terrain — Combat & Alignement des Livres",
+   "desc": "Tests sur le terrain, focus combat : chaque mécanique rejouée en jeu (Killzone_Alpha3/arène, RD-171 à RD-186), alignement code vs Livres VI/VII/XI + Codex II. Débogage continu."
   }
  ],
  "nodes": [
@@ -11747,7 +11754,7 @@
    "summary": "a4f3148 (2026-10-17) : CombatDevToolbar.Cheats.cs, CombatDevToolbar.Chrono.cs, CombatDevToolbar.Targeting.cs — +6008/-5033. « update »",
    "branch": "tools",
    "epoch": "ep6",
-   "milestone": "🌸 Floraison complète : 96 commits",
+   "milestone": null,
    "insertions": 6008,
    "deletions": 5033,
    "files_count": 52,
@@ -12062,6 +12069,199 @@
      "status": "M",
      "name": "ProjectSettings.asset",
      "path": "ProjectSettings/ProjectSettings.asset",
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "id": 97,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "Véhicules + Boss Titans IA JSON (RD-051/RD-087)",
+   "summary": "82b69c3 (2026-10-18) : VehicleMechanics, VehicleState, TitanBossMechanics/State/AIConfig, TitanBossTests, VehicleCombatTests — +2591/-12. « update »",
+   "branch": "core",
+   "epoch": "ep6",
+   "milestone": "🌸 Floraison complète : 97 commits",
+   "insertions": 2591,
+   "deletions": 12,
+   "files_count": 29,
+   "files": [
+    {
+     "status": "M",
+     "name": "Bestiary.json",
+     "path": "Assets/Resources/Data/Bestiary.json",
+     "type": "json"
+    },
+    {
+     "status": "M",
+     "name": "BestiaryCatalog.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/Bestiary/BestiaryCatalog.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TitanBossCatalog.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/Bestiary/TitanBossCatalog.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "DamageEngineService.cs",
+     "path": "Assets/Scripts/Core/Combat/DamageEngineService.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "GrenadeSystem.cs",
+     "path": "Assets/Scripts/Core/Combat/GrenadeSystem.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Vehicle.cs",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Vehicle.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Vehicle.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Vehicle.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossAIConfig.cs",
+     "path": "Assets/Scripts/Core/Combat/TitanBossAIConfig.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossAIConfig.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/TitanBossAIConfig.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossMechanics.cs",
+     "path": "Assets/Scripts/Core/Combat/TitanBossMechanics.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossMechanics.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/TitanBossMechanics.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossState.cs",
+     "path": "Assets/Scripts/Core/Combat/TitanBossState.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossState.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/TitanBossState.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VehicleMechanics.cs",
+     "path": "Assets/Scripts/Core/Combat/VehicleMechanics.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VehicleMechanics.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/VehicleMechanics.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VehicleState.cs",
+     "path": "Assets/Scripts/Core/Combat/VehicleState.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VehicleState.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/VehicleState.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CoreRulesConfig.cs",
+     "path": "Assets/Scripts/Core/CoreRulesConfig.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ArenaGrenadeService.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "BestiaryDevWindow.cs",
+     "path": "Assets/Scripts/DevTools/BestiaryDevWindow.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.SupportLivreXI.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.SupportLivreXI.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.TitanBoss.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.TitanBoss.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.TitanBoss.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.TitanBoss.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TurnManager.Core.cs",
+     "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TurnManager.Rounds.cs",
+     "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossTests.cs",
+     "path": "Assets/Scripts/Tests/TitanBossTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TitanBossTests.cs.meta",
+     "path": "Assets/Scripts/Tests/TitanBossTests.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VehicleCombatTests.cs",
+     "path": "Assets/Scripts/Tests/VehicleCombatTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VehicleCombatTests.cs.meta",
+     "path": "Assets/Scripts/Tests/VehicleCombatTests.cs.meta",
      "type": "other"
     }
    ]
@@ -12635,6 +12835,12 @@
   {
    "source": 95,
    "target": 96,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 96,
+   "target": 97,
    "type": "chronological",
    "label": "Chronologie Git"
   }

@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Killtime.Tactics;
+using Killtime.Tactics.Grid;
 using Killtime.Tactics.AI;
 using Killtime.Tactics.Units;
 using Killtime.Tactics.TurnSystem;
@@ -19,6 +20,9 @@ namespace Killtime.UI
 {
     public partial class CombatDevToolbar : FloatingWindow<CombatDevToolbar>
     {
+        // RD-187 : index de l'unité ciblée par les cheats ciblés (sélecteur).
+        private int _cheatUnitIndex = 0;
+
         private void DrawCheatsAndToolsTab()
         {
             var ai = (_arena != null ? _arena.AIController : null) ?? FindAnyObjectByType<TacticalAIController>();
@@ -148,6 +152,8 @@ namespace Killtime.UI
             }
             GUI.backgroundColor = Color.white;
 
+            DrawTargetedCheatsSection();
+            DrawNamedZonesSection();
             DrawObjectivesSection();
 
             GUILayout.Space(8);
@@ -220,32 +226,7 @@ namespace Killtime.UI
             GUILayout.Label("<i>Ralentit/accélère tout (anims, cinématiques, IA). Piloté par la fenêtre Vitesse du Jeu (F10), Shift+F10 = 1×.</i>");
             GUILayout.EndVertical();
 
-            GUILayout.Space(8);
-            GUILayout.Label("<b>💡 Éclairage & Atmosphère :</b>");
-
-            string fullbrightLabel = _devFullbrightActive ? "💡 Lumière Globale : ACTIVÉE (Touche L)" : "💡 Lumière Globale : ÉTEINTE (Touche L)";
-            GUI.backgroundColor = _devFullbrightActive ? new Color(1.0f, 0.85f, 0.35f) : Color.white;
-            if (GUILayout.Button(fullbrightLabel, GUILayout.Height(32)))
-            {
-                ToggleDevFullbrightLight();
-            }
-            GUI.backgroundColor = Color.white;
-            GUILayout.Space(4);
-
-            GUILayout.BeginHorizontal();
-            if (GUILayout.Button("✨ Invoquer Pixie de Test", GUILayout.Height(30)))
-            {
-                Killtime.Tactics.Lighting.TacticalPixieLight.SpawnPixie();
-            }
-            if (GUILayout.Button("🧹 Retirer Pixies", GUILayout.Height(30)))
-            {
-                var pixies = FindObjectsByType<Killtime.Tactics.Lighting.TacticalPixieLight>();
-                for (int i = 0; i < pixies.Length; i++)
-                {
-                    Destroy(pixies[i].gameObject);
-                }
-            }
-            GUILayout.EndHorizontal();
+            DrawNightSection();
 
             GUILayout.Space(8);
             GUILayout.Label("<b>👥 Personnages & Fiches :</b>");
@@ -348,6 +329,174 @@ namespace Killtime.UI
             GUILayout.Space(16);
         }
 
+        // RD-187 : socle cheats ciblés (dev-only). Sliders set-PV (dont seuil
+        // moral 28 %) / set-PA/PE par unité, rig critique/raté (restauré après),
+        // enrayement forcé, statuts on/off, purge chrono par branche + zones.
+        private void DrawTargetedCheatsSection()
+        {
+            GUILayout.Space(8);
+            GUILayout.Label("<b>🎯 Cheats Ciblés (RD-187, dev-only) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            var units = _arena != null ? _arena.AllDebugUnits() : null;
+            if (units == null || units.Count == 0)
+            {
+                GUILayout.Label("<i>Aucune unité en arène.</i>");
+                GUILayout.EndVertical();
+                return;
+            }
+            _cheatUnitIndex = Mathf.Clamp(_cheatUnitIndex, 0, units.Count - 1);
+
+            GUILayout.BeginHorizontal();
+            for (int i = 0; i < units.Count; i++)
+            {
+                var cand = units[i];
+                if (cand == null || cand.Stats == null) continue;
+                string nm = cand.Stats.Name ?? ("Unité " + i);
+                if (nm.Length > 12) nm = nm.Substring(0, 12);
+                if (i == _cheatUnitIndex) GUI.backgroundColor = new Color(0.2f, 0.6f, 1f);
+                if (GUILayout.Button(nm, GUILayout.Height(24))) _cheatUnitIndex = i;
+                GUI.backgroundColor = Color.white;
+            }
+            GUILayout.EndHorizontal();
+
+            var unit = units[_cheatUnitIndex];
+            if (unit == null || unit.Stats == null)
+            {
+                GUILayout.EndVertical();
+                return;
+            }
+            var st = unit.Stats;
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"❤️ PV : {st.CurrentHealth}/{st.MaxHealth}", GUILayout.Width(130));
+            float wantHp = GUILayout.HorizontalSlider(st.CurrentHealth, 0f, Mathf.Max(1, st.MaxHealth));
+            if (Mathf.Abs(wantHp - st.CurrentHealth) > 0.5f) _arena?.SetDebugHealth(unit, Mathf.RoundToInt(wantHp));
+            if (GUILayout.Button("28%", GUILayout.Width(44)))
+                _arena?.SetDebugHealth(unit, (int)Math.Ceiling(st.MaxHealth * 0.28f));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"⚡ PA : {st.CurrentActionPoints}/{st.MaxActionPoints}", GUILayout.Width(130));
+            float wantAp = GUILayout.HorizontalSlider(st.CurrentActionPoints, 0f, Mathf.Max(1, st.MaxActionPoints));
+            if (Mathf.Abs(wantAp - st.CurrentActionPoints) > 0.5f) _arena?.SetDebugAP(unit, Mathf.RoundToInt(wantAp));
+            GUILayout.EndHorizontal();
+
+            int maxPe = Killtime.Tactics.Arena.ArenaChronoDebugService.GetMaxPEFor(st);
+            GUILayout.BeginHorizontal();
+            GUILayout.Label($"😮‍💨 PE : {st.Essoufflement}/{maxPe}", GUILayout.Width(130));
+            float wantPe = GUILayout.HorizontalSlider(st.Essoufflement, 0f, maxPe);
+            if (Mathf.Abs(wantPe - st.Essoufflement) > 0.5f) _arena?.SetDebugPE(unit, Mathf.RoundToInt(wantPe));
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            bool fCrit = DiceRoller.DevForceCritical;
+            bool wantCrit = GUILayout.Toggle(fCrit, "🎲 Forcer critique");
+            if (wantCrit != fCrit)
+            {
+                if (wantCrit) DiceRoller.DevForceFumble = false;
+                DiceRoller.DevForceCritical = wantCrit;
+                _arena?.Log(wantCrit ? "🎲 <b>Rig dev</b> : critiques forcés (restaurer après le test)." : "🎲 <b>Rig dev</b> : critiques forcés désactivés.");
+            }
+            bool fFumb = DiceRoller.DevForceFumble;
+            bool wantFumb = GUILayout.Toggle(fFumb, "💀 Forcer raté");
+            if (wantFumb != fFumb)
+            {
+                if (wantFumb) DiceRoller.DevForceCritical = false;
+                DiceRoller.DevForceFumble = wantFumb;
+                _arena?.Log(wantFumb ? "💀 <b>Rig dev</b> : ratés forcés (restaurer après le test)." : "💀 <b>Rig dev</b> : ratés forcés désactivés.");
+            }
+            if (GUILayout.Button("🎲 RNG", GUILayout.Width(64)))
+            {
+                DiceRoller.ClearDevRig();
+                _arena?.Log("🎲 <b>Rig dev</b> : RNG normal restauré.");
+            }
+            GUILayout.EndHorizontal();
+
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🔧 Enrayer arme")) _arena?.ForceDebugJam(unit, true);
+            if (GUILayout.Button("🔧 Désenrayer")) _arena?.ForceDebugJam(unit, false);
+            GUILayout.EndHorizontal();
+
+            var flagValues = new[] { StatusEffect.ATerre, StatusEffect.Immobilise, StatusEffect.Etourdi, StatusEffect.Aveugle, StatusEffect.Souffrant };
+            var flagLabels = new[] { "À Terre", "Immobilisé", "Étourdi", "Aveugle", "Souffrant" };
+            GUILayout.BeginHorizontal();
+            for (int f = 0; f < flagValues.Length; f++)
+            {
+                bool isOn = st.ActiveStatus.HasFlag(flagValues[f]);
+                bool wantOn = GUILayout.Toggle(isOn, flagLabels[f]);
+                if (wantOn != isOn) _arena?.SetDebugStatus(unit, flagValues[f], wantOn);
+            }
+            GUILayout.EndHorizontal();
+            if (GUILayout.Button("🧹 Purger statuts cible")) _arena?.ClearDebugStatuses(unit);
+
+            GUILayout.Space(4);
+            GUILayout.Label("🌊 Purge chrono / zones :");
+            GUILayout.BeginHorizontal();
+            var branchIds = new[] { TimelineId.Timeline0_Prime, TimelineId.TimelineA_Alpha, TimelineId.TimelineB_Beta, TimelineId.TimelineC_Gamma, TimelineId.TimelineD_Delta };
+            var branchShort = new[] { "0", "A", "B", "C", "D" };
+            for (int b = 0; b < branchIds.Length; b++)
+            {
+                int n = _arena != null ? _arena.GetChronoBranchCount(branchIds[b]) : 0;
+                if (GUILayout.Button($"{branchShort[b]} ({n})", GUILayout.Height(24))) _arena?.PurgeChronoBranch(branchIds[b]);
+            }
+            GUILayout.EndHorizontal();
+            GUILayout.BeginHorizontal();
+            if (GUILayout.Button("🌊 Tout purger (chrono)")) _arena?.PurgeAllChrono();
+            if (GUILayout.Button("🌫️ Purger zones")) _arena?.PurgeDebugZones();
+            GUILayout.EndHorizontal();
+
+            GUILayout.EndVertical();
+        }
+
+        private void DrawNamedZonesSection()
+        {
+            if (_arena == null) return;
+
+            GUILayout.Space(8);
+            GUILayout.Label("<b>🌫️ Zones Nommées (RD-188, dev-only, sans grenade) :</b>");
+            GUILayout.BeginVertical(GUI.skin.box);
+
+            HexCoordinates poseAt = _arena.CurrentTarget != null
+                ? _arena.CurrentTarget.CurrentCoords
+                : (_arena.PlayerUnit != null ? _arena.PlayerUnit.CurrentCoords : new HexCoordinates(0, 0));
+            GUILayout.Label($"<i>Pose au point ciblé ({poseAt.Q},{poseAt.R}) — cible active ou joueur. Durées/overlays = catalogue.</i>");
+
+            var profiles = Killtime.Core.Combat.NamedZoneProfiles.All;
+            for (int row = 0; row < profiles.Count; row += 3)
+            {
+                GUILayout.BeginHorizontal();
+                for (int c = 0; c < 3 && row + c < profiles.Count; c++)
+                {
+                    var p = profiles[row + c];
+                    int n = 0;
+                    var zones = _arena.SmokeZones;
+                    if (zones != null)
+                        for (int z = 0; z < zones.Count; z++)
+                            if (string.Equals(zones[z].Kind ?? "", p.Kind ?? "", StringComparison.OrdinalIgnoreCase)) n++;
+                    if (GUILayout.Button($"➕ {p.DisplayName} ({n})", GUILayout.Height(26)))
+                        _arena.PoseDebugZone(p.Key, poseAt);
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.Space(4);
+            GUILayout.Label("Purge sélective par zone :");
+            for (int row = 0; row < profiles.Count; row += 3)
+            {
+                GUILayout.BeginHorizontal();
+                for (int c = 0; c < 3 && row + c < profiles.Count; c++)
+                {
+                    var p = profiles[row + c];
+                    if (GUILayout.Button($"🧹 {p.Key}", GUILayout.Height(24)))
+                        _arena.PurgeDebugZoneByKind(p.Kind);
+                }
+                GUILayout.EndHorizontal();
+            }
+
+            GUILayout.EndVertical();
+        }
+
         private void DrawObjectivesSection()
         {
             if (_turnManager == null) return;
@@ -427,6 +576,8 @@ namespace Killtime.UI
                 _turnManager.CheckCombatOver();
             }
             GUILayout.EndHorizontal();
+
+            DrawObjectiveParamsSection();
 
             GUILayout.EndVertical();
         }

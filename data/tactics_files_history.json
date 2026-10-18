@@ -1,18 +1,18 @@
 {
  "project": "Killtime Tactics — Fleur des Fichiers",
- "scope": "549 fichiers actuels, historique git complet (96 commits KilltimeTactics)",
- "total_commits": 549,
+ "scope": "558 fichiers actuels, historique git complet (97 commits KilltimeTactics)",
+ "total_commits": 558,
  "date_range": {
   "start": "2026-08-26",
-  "end": "2026-10-17"
+  "end": "2026-10-18"
  },
  "totals": {
-  "files": 549,
-  "loc": 151374,
-  "code": 125736,
-  "size": 6727595,
-  "classes": 830,
-  "methods": 4443,
+  "files": 558,
+  "loc": 153935,
+  "code": 127686,
+  "size": 6857563,
+  "classes": 847,
+  "methods": 4587,
   "modules": 13,
   "partial_groups": 43
  },
@@ -151,6 +151,13 @@
    "start": "2026-10-10",
    "end": "2026-10-17",
    "desc": "Découpage des monolithes en services (IA, Arena, Story, CombatCalculator RD-123, Character, MapEditor, TurnManager), correctifs P0/P1/P2 et kanban RD-123/RD-124."
+  },
+  {
+   "id": "ep7",
+   "start": "2026-10-18",
+   "end": "2026-10-18",
+   "title": "Époque VII : Tests sur le Terrain — Combat & Alignement des Livres",
+   "desc": "Tests sur le terrain, focus combat : chaque mécanique rejouée en jeu (Killzone_Alpha3/arène, RD-171 à RD-186), alignement code vs Livres VI/VII/XI + Codex II. Débogage continu."
   }
  ],
  "nodes": [
@@ -6907,13 +6914,13 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "CoreRulesConfig.cs",
-   "summary": "CoreRulesConfig.cs — Combat & Règles, 323 lignes, 2 classes (BodyPartRuleEntry, CoreRulesConfig). Créé le 2026-09-11 dans 0cdbd2f « update », retouché dans 7 commit(s), dernier le 2026-10-10 (d60e8fb). Évolution cumulée +327/-4.",
+   "summary": "CoreRulesConfig.cs — Combat & Règles, 345 lignes, 2 classes (BodyPartRuleEntry, CoreRulesConfig). Créé le 2026-09-11 dans 0cdbd2f « update », retouché dans 8 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +349/-4.",
    "branch": "combat",
    "epoch": "ep1",
    "milestone": null,
-   "insertions": 327,
+   "insertions": 349,
    "deletions": 4,
-   "files_count": 7,
+   "files_count": 8,
    "files": [
     {
      "status": "C",
@@ -6956,14 +6963,20 @@
      "name": "d60e8fb • 2026-10-10  +5/-4",
      "path": "update",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +22/-0",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 323,
-   "size": 14186,
-   "n_commits": 7,
+   "loc": 345,
+   "size": 15380,
+   "n_commits": 8,
    "first_short": "0cdbd2f",
-   "last_short": "d60e8fb",
-   "last_hash": "d60e8fb6827308307d2e56a422392914678b8287",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Core/CoreRulesConfig.cs",
    "namespace": "Killtime.Core.Rules",
    "class_names": [
@@ -7006,6 +7019,10 @@
     [
      "2026-10-10 05:14:40 -0400",
      323
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     345
     ]
    ],
    "worktree": "clean"
@@ -9650,13 +9667,13 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "GrenadeSystem.cs",
-   "summary": "GrenadeSystem.cs — Combat & Règles, 477 lignes, 8 classes (GrenadeEra, GrenadeEffectKind, GrenadeLauncherKind, GrenadeRules, GrenadeThrowOutcome, GrenadeHitResult). Créé le 2026-09-15 dans 790cef0 « update », retouché dans 7 commit(s), dernier le 2026-10-17 (5addb1d). Évolution cumulée +1099/-622.",
+   "summary": "GrenadeSystem.cs — Combat & Règles, 505 lignes, 8 classes (GrenadeEra, GrenadeEffectKind, GrenadeLauncherKind, GrenadeRules, GrenadeThrowOutcome, GrenadeHitResult). Créé le 2026-09-15 dans 790cef0 « update », retouché dans 8 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +1128/-623.",
    "branch": "combat",
    "epoch": "ep2",
    "milestone": null,
-   "insertions": 1099,
-   "deletions": 622,
-   "files_count": 7,
+   "insertions": 1128,
+   "deletions": 623,
+   "files_count": 8,
    "files": [
     {
      "status": "C",
@@ -9699,14 +9716,20 @@
      "name": "5addb1d • 2026-10-17  +7/-611",
      "path": "update",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +29/-1",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 477,
-   "size": 22601,
-   "n_commits": 7,
+   "loc": 505,
+   "size": 24084,
+   "n_commits": 8,
    "first_short": "790cef0",
-   "last_short": "5addb1d",
-   "last_hash": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/GrenadeSystem.cs",
    "namespace": "Killtime.Core.Combat",
    "class_names": [
@@ -9759,6 +9782,10 @@
     [
      "2026-10-17 06:48:31 -0400",
      477
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     505
     ]
    ],
    "worktree": "clean"
@@ -15310,27 +15337,33 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "TitanBossCatalog.cs",
-   "summary": "TitanBossCatalog.cs — Ateliers Dev, 132 lignes, 1 classes (TitanBossCatalog). Créé le 2026-09-23 dans dc65631 « update », retouché dans 1 commit(s), dernier le 2026-09-23 (dc65631). Évolution cumulée +132/-0.",
+   "summary": "TitanBossCatalog.cs — Ateliers Dev, 178 lignes, 1 classes (TitanBossCatalog). Créé le 2026-09-23 dans dc65631 « update », retouché dans 2 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +181/-3.",
    "branch": "ateliers",
    "epoch": "ep3",
    "milestone": null,
-   "insertions": 132,
-   "deletions": 0,
-   "files_count": 1,
+   "insertions": 181,
+   "deletions": 3,
+   "files_count": 2,
    "files": [
     {
      "status": "C",
      "name": "dc65631 • 2026-09-23  +132/-0",
      "path": "update",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +49/-3",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 132,
-   "size": 4764,
-   "n_commits": 1,
+   "loc": 178,
+   "size": 6746,
+   "n_commits": 2,
    "first_short": "dc65631",
-   "last_short": "dc65631",
-   "last_hash": "dc65631acd1a7b0ba025a07f0d1463b3155e13ee",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Core/CharacterCreator/Bestiary/TitanBossCatalog.cs",
    "namespace": "Killtime.Tactics.Units",
    "class_names": [
@@ -15343,6 +15376,10 @@
     [
      "2026-09-23 21:38:09 -0400",
      132
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     178
     ]
    ],
    "worktree": "clean"
@@ -17040,27 +17077,33 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "Bestiary.json",
-   "summary": "Bestiary.json — Données & Mondes, 469 lignes, 0 classes (). Créé le 2026-09-27 dans 38c296e « update », retouché dans 1 commit(s), dernier le 2026-09-27 (38c296e). Évolution cumulée +468/-0.",
+   "summary": "Bestiary.json — Données & Mondes, 472 lignes, 0 classes (). Créé le 2026-09-27 dans 38c296e « update », retouché dans 2 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +476/-5.",
    "branch": "donnees",
    "epoch": "ep4",
    "milestone": null,
-   "insertions": 468,
-   "deletions": 0,
-   "files_count": 1,
+   "insertions": 476,
+   "deletions": 5,
+   "files_count": 2,
    "files": [
     {
      "status": "C",
      "name": "38c296e • 2026-09-27  +468/-0",
      "path": "update",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +8/-5",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 469,
-   "size": 23977,
-   "n_commits": 1,
+   "loc": 472,
+   "size": 24711,
+   "n_commits": 2,
    "first_short": "38c296e",
-   "last_short": "38c296e",
-   "last_hash": "38c296ed225050ea75e03971b7551ccb1919c775",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Resources/Data/Bestiary.json",
    "namespace": null,
    "class_names": [],
@@ -17071,6 +17114,10 @@
     [
      "2026-09-27 05:33:02 -0400",
      468
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     471
     ]
    ],
    "worktree": "clean"
@@ -17084,13 +17131,13 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "BestiaryCatalog.cs",
-   "summary": "BestiaryCatalog.cs — Ateliers Dev, 623 lignes, 7 classes (BestiaryAttributes, BestiarySkillEntry, BestiaryEntry, BestiaryData, LivreXISpecializations, LivreXIPNJState). Créé le 2026-09-27 dans 38c296e « update », retouché dans 2 commit(s), dernier le 2026-10-04 (b6acb9d). Évolution cumulée +624/-1.",
+   "summary": "BestiaryCatalog.cs — Ateliers Dev, 714 lignes, 8 classes (BestiaryAttributes, BestiarySkillEntry, TitanBossAIParams, BestiaryEntry, BestiaryData, LivreXISpecializations). Créé le 2026-09-27 dans 38c296e « update », retouché dans 3 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +718/-4.",
    "branch": "ateliers",
    "epoch": "ep4",
    "milestone": null,
-   "insertions": 624,
-   "deletions": 1,
-   "files_count": 2,
+   "insertions": 718,
+   "deletions": 4,
+   "files_count": 3,
    "files": [
     {
      "status": "C",
@@ -17103,26 +17150,33 @@
      "name": "b6acb9d • 2026-10-04  +224/-1",
      "path": "update",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +94/-3",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 623,
-   "size": 27048,
-   "n_commits": 2,
+   "loc": 714,
+   "size": 33372,
+   "n_commits": 3,
    "first_short": "38c296e",
-   "last_short": "b6acb9d",
-   "last_hash": "b6acb9dd7165e7e578c63ed3c095118e66ef799d",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Core/CharacterCreator/Bestiary/BestiaryCatalog.cs",
    "namespace": "Killtime.Core.Character",
    "class_names": [
     "BestiaryAttributes",
     "BestiarySkillEntry",
+    "TitanBossAIParams",
     "BestiaryEntry",
     "BestiaryData",
     "LivreXISpecializations",
     "LivreXIPNJState",
     "BestiaryCatalog"
    ],
-   "n_classes": 7,
+   "n_classes": 8,
    "tests": [],
    "hotspot": false,
    "growth": [
@@ -17133,6 +17187,10 @@
     [
      "2026-10-04 05:43:36 -0400",
      623
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     714
     ]
    ],
    "worktree": "clean"
@@ -17146,13 +17204,13 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "BestiaryDevWindow.cs",
-   "summary": "BestiaryDevWindow.cs — Ateliers Dev, 488 lignes, 1 classes (BestiaryDevWindow). Créé le 2026-09-27 dans 38c296e « update », retouché dans 5 commit(s), dernier le 2026-10-11 (10cad6e). Évolution cumulée +498/-10.",
+   "summary": "BestiaryDevWindow.cs — Ateliers Dev, 535 lignes, 1 classes (BestiaryDevWindow). Créé le 2026-09-27 dans 38c296e « update », retouché dans 6 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +545/-10.",
    "branch": "ateliers",
    "epoch": "ep4",
    "milestone": null,
-   "insertions": 498,
+   "insertions": 545,
    "deletions": 10,
-   "files_count": 5,
+   "files_count": 6,
    "files": [
     {
      "status": "C",
@@ -17183,14 +17241,20 @@
      "name": "10cad6e • 2026-10-11  +0/-0",
      "path": "assets/scripts reorganized",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +47/-0",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 488,
-   "size": 22776,
-   "n_commits": 5,
+   "loc": 535,
+   "size": 26426,
+   "n_commits": 6,
    "first_short": "38c296e",
-   "last_short": "10cad6e",
-   "last_hash": "10cad6e5f15baf078fe1d5cb1c7cd1c022010f03",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/BestiaryDevWindow.cs",
    "namespace": "Killtime.UI",
    "class_names": [
@@ -17219,6 +17283,10 @@
     [
      "2026-10-11 06:25:51 -0400",
      488
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     535
     ]
    ],
    "worktree": "clean"
@@ -21604,13 +21672,13 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "ArenaGrenadeService.cs",
-   "summary": "ArenaGrenadeService.cs — Arène de test, 672 lignes, 1 classes (ArenaGrenadeService). Créé le 2026-10-12 dans e11e7af « update », retouché dans 2 commit(s), dernier le 2026-10-17 (5addb1d). Évolution cumulée +672/-0.",
+   "summary": "ArenaGrenadeService.cs — Arène de test, 674 lignes, 1 classes (ArenaGrenadeService). Créé le 2026-10-12 dans e11e7af « update », retouché dans 3 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +674/-0.",
    "branch": "arene",
    "epoch": "ep6",
    "milestone": null,
-   "insertions": 672,
+   "insertions": 674,
    "deletions": 0,
-   "files_count": 2,
+   "files_count": 3,
    "files": [
     {
      "status": "C",
@@ -21623,14 +21691,20 @@
      "name": "5addb1d • 2026-10-17  +3/-0",
      "path": "update",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +2/-0",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 672,
-   "size": 34956,
-   "n_commits": 2,
+   "loc": 674,
+   "size": 35078,
+   "n_commits": 3,
    "first_short": "e11e7af",
-   "last_short": "5addb1d",
-   "last_hash": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs",
    "namespace": "Killtime.Tactics.Arena",
    "class_names": [
@@ -21647,6 +21721,10 @@
     [
      "2026-10-17 06:48:31 -0400",
      672
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     674
     ]
    ],
    "worktree": "clean"
@@ -23022,27 +23100,33 @@
    "author": "Alexis Lacasse",
    "raw_msg": "refactor(unity): CombatCalculator monolithe (2892l) en 7 services composes + asmdefs",
    "title": "DamageEngineService.cs",
-   "summary": "DamageEngineService.cs — Combat & Règles, 763 lignes, 1 classes (DamageEngineService). Créé le 2026-10-12 dans f61456a « refactor(unity): CombatCalculator monolithe (2892l) en 7 ser », retouché dans 1 commit(s), dernier le 2026-10-12 (f61456a). Évolution cumulée +763/-0.",
+   "summary": "DamageEngineService.cs — Combat & Règles, 797 lignes, 1 classes (DamageEngineService). Créé le 2026-10-12 dans f61456a « refactor(unity): CombatCalculator monolithe (2892l) en 7 ser », retouché dans 2 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +797/-0.",
    "branch": "combat",
    "epoch": "ep6",
    "milestone": "★ Top volume du projet",
-   "insertions": 763,
+   "insertions": 797,
    "deletions": 0,
-   "files_count": 1,
+   "files_count": 2,
    "files": [
     {
      "status": "C",
      "name": "f61456a • 2026-10-12  +763/-0",
      "path": "refactor(unity): CombatCalculator monolithe (2892l) en 7 services composes + asm",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +34/-0",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 763,
-   "size": 40173,
-   "n_commits": 1,
+   "loc": 797,
+   "size": 42004,
+   "n_commits": 2,
    "first_short": "f61456a",
-   "last_short": "f61456a",
-   "last_hash": "f61456a53acb426cca3dd749803ce14fa53dba06",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/DamageEngineService.cs",
    "namespace": "Killtime.Core.Combat",
    "class_names": [
@@ -23055,6 +23139,10 @@
     [
      "2026-10-12 16:58:42 -0400",
      763
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     797
     ]
    ],
    "worktree": "clean"
@@ -26138,27 +26226,33 @@
    "author": "Alexis Lacasse",
    "raw_msg": "refactor",
    "title": "TurnManager.Core.cs",
-   "summary": "TurnManager.Core.cs — Tactique & Champs, 410 lignes, 1 classes (TurnManager). Créé le 2026-10-12 dans 201f141 « refactor », retouché dans 1 commit(s), dernier le 2026-10-12 (201f141). Évolution cumulée +410/-0.",
+   "summary": "TurnManager.Core.cs — Tactique & Champs, 412 lignes, 1 classes (TurnManager). Créé le 2026-10-12 dans 201f141 « refactor », retouché dans 2 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +412/-0.",
    "branch": "tactique",
    "epoch": "ep6",
    "milestone": "🧩 Tête de monolithe découpé",
-   "insertions": 410,
+   "insertions": 412,
    "deletions": 0,
-   "files_count": 1,
+   "files_count": 2,
    "files": [
     {
      "status": "C",
      "name": "201f141 • 2026-10-12  +410/-0",
      "path": "refactor",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +2/-0",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 410,
-   "size": 16248,
-   "n_commits": 1,
+   "loc": 412,
+   "size": 16395,
+   "n_commits": 2,
    "first_short": "201f141",
-   "last_short": "201f141",
-   "last_hash": "201f1418176d694c3c19b386c331c2649011cab0",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/TurnSystem/TurnManager.Core.cs",
    "namespace": "Killtime.Tactics.TurnSystem",
    "class_names": [
@@ -26171,6 +26265,10 @@
     [
      "2026-10-12 21:13:26 -0400",
      410
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     412
     ]
    ],
    "worktree": "clean"
@@ -26378,27 +26476,33 @@
    "author": "Alexis Lacasse",
    "raw_msg": "refactor",
    "title": "TurnManager.Rounds.cs",
-   "summary": "TurnManager.Rounds.cs — Tactique & Champs, 282 lignes, 1 classes (TurnManager). Créé le 2026-10-12 dans 201f141 « refactor », retouché dans 1 commit(s), dernier le 2026-10-12 (201f141). Évolution cumulée +282/-0.",
+   "summary": "TurnManager.Rounds.cs — Tactique & Champs, 300 lignes, 1 classes (TurnManager). Créé le 2026-10-12 dans 201f141 « refactor », retouché dans 2 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +300/-0.",
    "branch": "tactique",
    "epoch": "ep6",
    "milestone": null,
-   "insertions": 282,
+   "insertions": 300,
    "deletions": 0,
-   "files_count": 1,
+   "files_count": 2,
    "files": [
     {
      "status": "C",
      "name": "201f141 • 2026-10-12  +282/-0",
      "path": "refactor",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +18/-0",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 282,
-   "size": 11499,
-   "n_commits": 1,
+   "loc": 300,
+   "size": 12577,
+   "n_commits": 2,
    "first_short": "201f141",
-   "last_short": "201f141",
-   "last_hash": "201f1418176d694c3c19b386c331c2649011cab0",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/TurnSystem/TurnManager.Rounds.cs",
    "namespace": "Killtime.Tactics.TurnSystem",
    "class_names": [
@@ -26411,6 +26515,10 @@
     [
      "2026-10-12 21:13:26 -0400",
      282
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     300
     ]
    ],
    "worktree": "clean"
@@ -35326,27 +35434,33 @@
    "author": "Alexis Lacasse",
    "raw_msg": "update",
    "title": "TacticalAIController.SupportLivreXI.cs",
-   "summary": "TacticalAIController.SupportLivreXI.cs — Tactique & Champs, 339 lignes, 1 classes (TacticalAIController). Créé le 2026-10-17 dans a4f3148 « update », retouché dans 1 commit(s), dernier le 2026-10-17 (a4f3148). Évolution cumulée +339/-0.",
+   "summary": "TacticalAIController.SupportLivreXI.cs — Tactique & Champs, 342 lignes, 1 classes (TacticalAIController). Créé le 2026-10-17 dans a4f3148 « update », retouché dans 2 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +342/-0.",
    "branch": "tactique",
    "epoch": "ep6",
    "milestone": null,
-   "insertions": 339,
+   "insertions": 342,
    "deletions": 0,
-   "files_count": 1,
+   "files_count": 2,
    "files": [
     {
      "status": "C",
      "name": "a4f3148 • 2026-10-17  +339/-0",
      "path": "update",
      "type": "commit"
+    },
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +3/-0",
+     "path": "update",
+     "type": "commit"
     }
    ],
-   "loc": 339,
-   "size": 18140,
-   "n_commits": 1,
+   "loc": 342,
+   "size": 18286,
+   "n_commits": 2,
    "first_short": "a4f3148",
-   "last_short": "a4f3148",
-   "last_hash": "a4f31480a2f8d70bad758ff4402744a78d246580",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
    "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/AI/TacticalAIController.SupportLivreXI.cs",
    "namespace": "Killtime.Tactics.AI",
    "class_names": [
@@ -35359,6 +35473,10 @@
     [
      "2026-10-17 22:11:20 -0400",
      339
+    ],
+    [
+     "2026-10-18 00:49:17 -0400",
+     342
     ]
    ],
    "worktree": "clean"
@@ -35727,6 +35845,427 @@
     [
      "2026-10-17 22:11:20 -0400",
      356
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 550,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "SpecialManeuverService.Vehicle.cs",
+   "summary": "SpecialManeuverService.Vehicle.cs — Combat & Règles, 55 lignes, 1 classes (SpecialManeuverService). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +55/-0.",
+   "branch": "combat",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 55,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +55/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 55,
+   "size": 2809,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/SpecialManeuverService.Vehicle.cs",
+   "namespace": "Killtime.Core.Combat",
+   "class_names": [
+    "SpecialManeuverService"
+   ],
+   "n_classes": 1,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     55
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 551,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "TitanBossAIConfig.cs",
+   "summary": "TitanBossAIConfig.cs — Combat & Règles, 151 lignes, 1 classes (TitanBossAIConfig). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +151/-0.",
+   "branch": "combat",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 151,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +151/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 151,
+   "size": 6669,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/TitanBossAIConfig.cs",
+   "namespace": "Killtime.Core.Combat",
+   "class_names": [
+    "TitanBossAIConfig"
+   ],
+   "n_classes": 1,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     151
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 552,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "TitanBossMechanics.cs",
+   "summary": "TitanBossMechanics.cs — Combat & Règles, 360 lignes, 3 classes (TitanBossElement, TitanBossReaction, TitanBossMechanics). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +360/-0.",
+   "branch": "combat",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 360,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +360/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 360,
+   "size": 18151,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/TitanBossMechanics.cs",
+   "namespace": "Killtime.Core.Combat",
+   "class_names": [
+    "TitanBossElement",
+    "TitanBossReaction",
+    "TitanBossMechanics"
+   ],
+   "n_classes": 3,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     360
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 553,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "TitanBossState.cs",
+   "summary": "TitanBossState.cs — Combat & Règles, 128 lignes, 1 classes (TitanBossState). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +128/-0.",
+   "branch": "combat",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 128,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +128/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 128,
+   "size": 5335,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/TitanBossState.cs",
+   "namespace": "Killtime.Core.Character",
+   "class_names": [
+    "TitanBossState"
+   ],
+   "n_classes": 1,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     128
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 554,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "VehicleMechanics.cs",
+   "summary": "VehicleMechanics.cs — Combat & Règles, 246 lignes, 5 classes (VehicleSubsystem, VehicleScale, VehicleHpBand, VehicleHitResult, VehicleMechanics). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +246/-0.",
+   "branch": "combat",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 246,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +246/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 246,
+   "size": 10891,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/VehicleMechanics.cs",
+   "namespace": "Killtime.Core.Combat",
+   "class_names": [
+    "VehicleSubsystem",
+    "VehicleScale",
+    "VehicleHpBand",
+    "VehicleHitResult",
+    "VehicleMechanics"
+   ],
+   "n_classes": 5,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     246
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 555,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "VehicleState.cs",
+   "summary": "VehicleState.cs — Combat & Règles, 217 lignes, 2 classes (VehicleRecord, VehicleState). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +217/-0.",
+   "branch": "combat",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 217,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +217/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 217,
+   "size": 10103,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Core/Combat/VehicleState.cs",
+   "namespace": "Killtime.Core.Combat",
+   "class_names": [
+    "VehicleRecord",
+    "VehicleState"
+   ],
+   "n_classes": 2,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     217
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 556,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "TacticalAIController.TitanBoss.cs",
+   "summary": "TacticalAIController.TitanBoss.cs — Tactique & Champs, 204 lignes, 1 classes (TacticalAIController). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +204/-0.",
+   "branch": "tactique",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 204,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +204/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 204,
+   "size": 12602,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tactics/AI/TacticalAIController.TitanBoss.cs",
+   "namespace": "Killtime.Tactics.AI",
+   "class_names": [
+    "TacticalAIController"
+   ],
+   "n_classes": 1,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     204
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 557,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "TitanBossTests.cs",
+   "summary": "TitanBossTests.cs — Tests, 610 lignes, 1 classes (TitanBossTests). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +610/-0.",
+   "branch": "tests",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 610,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +610/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 610,
+   "size": 30938,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/TitanBossTests.cs",
+   "namespace": "Killtime.Tests",
+   "class_names": [
+    "TitanBossTests"
+   ],
+   "n_classes": 1,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     610
+    ]
+   ],
+   "worktree": "clean"
+  },
+  {
+   "id": 558,
+   "hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "short": "82b69c3",
+   "date": "2026-10-18 00:49:17 -0400",
+   "date_display": "2026-10-18",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "VehicleCombatTests.cs",
+   "summary": "VehicleCombatTests.cs — Tests, 294 lignes, 1 classes (VehicleCombatTests). Créé le 2026-10-18 dans 82b69c3 « update », retouché dans 1 commit(s), dernier le 2026-10-18 (82b69c3). Évolution cumulée +294/-0.",
+   "branch": "tests",
+   "epoch": "ep7",
+   "milestone": null,
+   "insertions": 294,
+   "deletions": 0,
+   "files_count": 1,
+   "files": [
+    {
+     "status": "C",
+     "name": "82b69c3 • 2026-10-18  +294/-0",
+     "path": "update",
+     "type": "commit"
+    }
+   ],
+   "loc": 294,
+   "size": 13779,
+   "n_commits": 1,
+   "first_short": "82b69c3",
+   "last_short": "82b69c3",
+   "last_hash": "82b69c360a2b54c5c3069c48d75141840d6a96fe",
+   "repo_path": "KilltimeTactics/Assets/Scripts/Tests/VehicleCombatTests.cs",
+   "namespace": "Killtime.Tests",
+   "class_names": [
+    "VehicleCombatTests"
+   ],
+   "n_classes": 1,
+   "tests": [],
+   "hotspot": false,
+   "growth": [
+    [
+     "2026-10-18 00:49:17 -0400",
+     294
     ]
    ],
    "worktree": "clean"
@@ -39020,6 +39559,60 @@
    "target": 549,
    "type": "chronological",
    "label": "Création suivante"
+  },
+  {
+   "source": 549,
+   "target": 550,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 550,
+   "target": 551,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 551,
+   "target": 552,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 552,
+   "target": 553,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 553,
+   "target": 554,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 554,
+   "target": 555,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 555,
+   "target": 556,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 556,
+   "target": 557,
+   "type": "chronological",
+   "label": "Création suivante"
+  },
+  {
+   "source": 557,
+   "target": 558,
+   "type": "chronological",
+   "label": "Création suivante"
   }
  ],
  "cross_links": [
@@ -40967,6 +41560,13 @@
    "reason": "partiel de TacticalAIController"
   },
   {
+   "source": 556,
+   "target": 238,
+   "type": "partial",
+   "label": "TacticalAIController.TitanBoss.cs → TacticalAIController.Maneuvers.cs",
+   "reason": "partiel de TacticalAIController"
+  },
+  {
    "source": 245,
    "target": 250,
    "type": "partial",
@@ -41958,6 +42558,13 @@
    "target": 457,
    "type": "partial",
    "label": "SpecialManeuverService.Pursuit.cs → SpecialManeuverService.Assault.cs",
+   "reason": "partiel de SpecialManeuverService"
+  },
+  {
+   "source": 550,
+   "target": 457,
+   "type": "partial",
+   "label": "SpecialManeuverService.Vehicle.cs → SpecialManeuverService.Assault.cs",
    "reason": "partiel de SpecialManeuverService"
   },
   {

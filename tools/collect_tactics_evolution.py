@@ -210,11 +210,12 @@ def main():
             n["milestone"] = None
     nodes[-1]["milestone"] = f"🌸 Floraison complète : {len(nodes)} commits"
 
-    # date_range + ep6 etendue au 13 Oct (RD-138/139)
+    # date_range + derniere epoque etendue a la date du dernier noeud
     data["date_range"]["end"] = nodes[-1]["date_display"]
-    ep6 = next(e for e in data["epochs"] if e["id"] == "ep6")
-    ep6["end"] = nodes[-1]["date_display"]
-    if "RD-138" not in ep6["desc"]:
+    last_ep = data["epochs"][-1]
+    last_ep["end"] = nodes[-1]["date_display"]
+    ep6 = next((e for e in data["epochs"] if e["id"] == "ep6"), None)
+    if ep6 is not None and "RD-138" not in ep6["desc"]:
         ep6["desc"] += (" Découpage audio (KilltimeAudioManager, ProceduralAudioFactory, "
                         "SystemAudioChameleon), SkillTreeCosmosWindow (RD-138), VTTRoomWindow, "
                         "HexGridVisualizer, voûte céleste LOD/culling (RD-139).")
