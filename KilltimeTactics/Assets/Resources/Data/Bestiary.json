@@ -1,6 +1,6 @@
 {
-  "version": 1,
-  "source": "Livre XI Bestiaire + 8 builds PNJ (PnjNormal 2x4+15, sbires 12pts) — PA = max(AGI,INT)+RAP+min, Encaissement = CONx2, Letal = CONx5. Fichier editable : modifier, puis recharger en jeu (touche B).",
+  "version": 2,
+  "source": "Livre XI Bestiaire + 8 builds PNJ (PnjNormal 2x4+15, sbires 12pts) — PA = max(AGI,INT)+RAP+min, Encaissement = CONx2, Letal = CONx5. Fichier editable : modifier, puis recharger en jeu (touche B). v2 : réglages IA boss (bossAI) — défauts = consts TitanBossMechanics.",
   "entries": [
     {
       "id": "minion_petite_merde",
@@ -252,7 +252,8 @@
       "skills": [ { "skill": "MainsNues", "level": 3 }, { "skill": "Athletisme", "level": 2 }, { "skill": "Observation", "level": 2 } ],
       "specializations": [ "Morsure Sabre", "Balayage de Griffes en Arc", "Mémoire des Flammes", "Charge Tellurique des Falaises" ],
       "equipment": [],
-      "equippedIndex": -1
+      "equippedIndex": -1,
+      "bossAI": { "flameReductionPerHit": 2, "sweepCostFew": 2, "sweepCostFull": 3, "sweepMaxTargets": 3, "sweepRange": 2, "sweepDamage": 4, "sweepKnockback": 1, "sweepGroundedTurns": 2, "chargeCost": 5, "chargeMinRange": 3, "chargeMaxRange": 10, "chargeCollapseDamage": 3, "chargeCollapseGroundedTurns": 1 }
     },
     {
       "id": "boss_minulican",
@@ -273,7 +274,8 @@
       "skills": [ { "skill": "MainsNues", "level": 3 }, { "skill": "Esquive", "level": 2 } ],
       "specializations": [ "Éclairs de Néant en Chaîne", "Absorption d'Énergie Thermique", "Saut Quantique Déphasé" ],
       "equipment": [],
-      "equippedIndex": -1
+      "equippedIndex": -1,
+      "bossAI": { "absorbCost": 2, "chainCost": 4, "chainMaxTargets": 3, "chainMaxRange": 15, "chainDamage": 5, "chainDestabilisedTurns": 2, "leapCost": 3, "leapMaxRange": 6, "leapRiposteBonusEC": 2 }
     },
     {
       "id": "boss_disciple_terre",
@@ -294,7 +296,8 @@
       "skills": [ { "skill": "MainsNues", "level": 3 }, { "skill": "DefenseCorporelle", "level": 2 } ],
       "specializations": [ "Poing Tectonique", "Régénération Lithosphérique", "Carapace de Magma", "Vulnérabilité Choc Thermique" ],
       "equipment": [],
-      "equippedIndex": -1
+      "equippedIndex": -1,
+      "bossAI": { "fistCost": 3, "fistDamage": 7, "regenAmount": 3, "shockWindowRounds": 2, "shockArmorLossTurns": 2, "shockDamageMultiplier": 2 }
     },
     {
       "id": "build_fighter_guerrier",

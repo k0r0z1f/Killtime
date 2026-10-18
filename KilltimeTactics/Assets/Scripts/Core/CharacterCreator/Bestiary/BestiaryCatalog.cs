@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using Killtime.Core.Combat;
 using Killtime.Core.Inventory;
 using Killtime.Tactics.Grid;
 
@@ -41,6 +42,54 @@ namespace Killtime.Core.Character
         public int level = 0;
     }
 
+    /// <summary>
+    /// Réglages IA d'un Boss Titan (Livre XI §45-46 — RD-087 suite).
+    /// Lus depuis Bestiary.json ("bossAI") ; null sur l'entrée = défauts moteur
+    /// (consts <see cref="Killtime.Core.Combat.TitanBossMechanics"/>).
+    /// Que des types simples (JsonUtility : pas de Dictionary).
+    /// </summary>
+    [Serializable]
+    public class TitanBossAIParams
+    {
+        // Bête d'Hybris — Mémoire des Flammes.
+        public int flameReductionPerHit = Killtime.Core.Combat.TitanBossMechanics.FlameMemoryReductionPerHit;
+        // Bête d'Hybris — Balayage de Griffes en Arc.
+        public int sweepCostFew = Killtime.Core.Combat.TitanBossMechanics.ClawSweepCostFew;
+        public int sweepCostFull = Killtime.Core.Combat.TitanBossMechanics.ClawSweepCostFull;
+        public int sweepMaxTargets = Killtime.Core.Combat.TitanBossMechanics.ClawSweepMaxTargets;
+        public int sweepRange = Killtime.Core.Combat.TitanBossMechanics.ClawSweepRange;
+        public int sweepDamage = Killtime.Core.Combat.TitanBossMechanics.ClawSweepDamage;
+        public int sweepKnockback = Killtime.Core.Combat.TitanBossMechanics.ClawSweepKnockback;
+        public int sweepGroundedTurns = Killtime.Core.Combat.TitanBossMechanics.ClawSweepGroundedTurns;
+        // Bête d'Hybris — Charge Tellurique des Falaises.
+        public int chargeCost = Killtime.Core.Combat.TitanBossMechanics.TelluricChargeCost;
+        public int chargeMinRange = Killtime.Core.Combat.TitanBossMechanics.TelluricChargeMinRange;
+        public int chargeMaxRange = Killtime.Core.Combat.TitanBossMechanics.TelluricChargeMaxRange;
+        public int chargeCollapseDamage = Killtime.Core.Combat.TitanBossMechanics.TelluricCollapseDamage;
+        public int chargeCollapseGroundedTurns = Killtime.Core.Combat.TitanBossMechanics.TelluricCollapseGroundedTurns;
+        // Minulican — Absorption d'Énergie Thermique.
+        public int absorbCost = Killtime.Core.Combat.TitanBossMechanics.ThermalAbsorbCost;
+        // Minulican — Éclairs de Néant en Chaîne.
+        public int chainCost = Killtime.Core.Combat.TitanBossMechanics.VoidChainCost;
+        public int chainMaxTargets = Killtime.Core.Combat.TitanBossMechanics.VoidChainMaxTargets;
+        public int chainMaxRange = Killtime.Core.Combat.TitanBossMechanics.VoidChainMaxRange;
+        public int chainDamage = Killtime.Core.Combat.TitanBossMechanics.VoidChainDamage;
+        public int chainDestabilisedTurns = Killtime.Core.Combat.TitanBossMechanics.VoidChainDestabilisedTurns;
+        // Minulican — Saut Quantique Déphasé.
+        public int leapCost = Killtime.Core.Combat.TitanBossMechanics.QuantumLeapCost;
+        public int leapMaxRange = Killtime.Core.Combat.TitanBossMechanics.QuantumLeapMaxRange;
+        public int leapRiposteBonusEC = Killtime.Core.Combat.TitanBossMechanics.QuantumRiposteBonusEC;
+        // Disciple de Terre — Poing Tectonique.
+        public int fistCost = Killtime.Core.Combat.TitanBossMechanics.TectonicFistCost;
+        public int fistDamage = Killtime.Core.Combat.TitanBossMechanics.TectonicFistDamage;
+        // Disciple de Terre — Régénération Lithosphérique.
+        public int regenAmount = Killtime.Core.Combat.TitanBossMechanics.LithoRegenAmount;
+        // Disciple de Terre — Vulnérabilité Choc Thermique.
+        public int shockWindowRounds = Killtime.Core.Combat.TitanBossMechanics.ThermalShockWindowRounds;
+        public int shockArmorLossTurns = Killtime.Core.Combat.TitanBossMechanics.ThermalShockArmorLossTurns;
+        public int shockDamageMultiplier = Killtime.Core.Combat.TitanBossMechanics.ThermalShockDamageMultiplier;
+    }
+
     [Serializable]
     public class BestiaryEntry
     {
@@ -63,6 +112,9 @@ namespace Killtime.Core.Character
         public List<string> specializations = new List<string>();
         public List<string> equipment = new List<string>();
         public int equippedIndex = -1; // -1 = rien d'équipé (poings / griffes / crocs)
+        // Réglages IA boss (RD-087 suite). null = défauts moteur (consts TitanBossMechanics).
+        // Seuls les 3 boss Titans le renseignent ; ignoré sur les autres entrées.
+        public TitanBossAIParams bossAI = null;
     }
 
     [Serializable]
@@ -180,6 +232,7 @@ namespace Killtime.Core.Character
             _hydraulicBites.Clear();
             _preparedSnipers.Clear();
             _activatedBeacons.Clear();
+            TitanBossState.ClearCombatState();
         }
     }
 
@@ -198,7 +251,7 @@ namespace Killtime.Core.Character
         public static string LoadedFrom => _loadedFrom;
         public static int Count => GetAll().Count;
 
-        public static void InvalidateCache() { _cached = null; _loadedFrom = ""; }
+        public static void InvalidateCache() { _cached = null; _loadedFrom = ""; TitanBossAIConfig.InvalidateCache(); }
 
         /// <summary>Priorité : override disque (éditions en jeu) > Resources embarqué.</summary>
         public static List<BestiaryEntry> GetAll()
@@ -523,11 +576,49 @@ namespace Killtime.Core.Character
         // VALIDATION LIVRE I (budgets de création)
         // ------------------------------------------------------------------
 
+        /// <summary>
+        /// Garde-fous des réglages IA boss (RD-087 suite) : borne chaque valeur
+        /// en place (aucune exception sur JSON édité à la main). null = ignoré.
+        /// </summary>
+        public static void ClampBossAI(TitanBossAIParams p)
+        {
+            if (p == null) return;
+            p.flameReductionPerHit = Mathf.Clamp(p.flameReductionPerHit, 0, 10);
+            p.sweepCostFew = Mathf.Clamp(p.sweepCostFew, 0, 12);
+            p.sweepCostFull = Mathf.Clamp(p.sweepCostFull, 0, 12);
+            p.sweepMaxTargets = Mathf.Clamp(p.sweepMaxTargets, 1, 6);
+            p.sweepRange = Mathf.Clamp(p.sweepRange, 0, 30);
+            p.sweepDamage = Mathf.Clamp(p.sweepDamage, 0, 30);
+            p.sweepKnockback = Mathf.Clamp(p.sweepKnockback, 0, 5);
+            p.sweepGroundedTurns = Mathf.Clamp(p.sweepGroundedTurns, 0, 5);
+            p.chargeCost = Mathf.Clamp(p.chargeCost, 0, 12);
+            p.chargeMinRange = Mathf.Clamp(p.chargeMinRange, 0, 30);
+            p.chargeMaxRange = Mathf.Clamp(p.chargeMaxRange, p.chargeMinRange, 30);
+            p.chargeCollapseDamage = Mathf.Clamp(p.chargeCollapseDamage, 0, 30);
+            p.chargeCollapseGroundedTurns = Mathf.Clamp(p.chargeCollapseGroundedTurns, 0, 5);
+            p.absorbCost = Mathf.Clamp(p.absorbCost, 0, 12);
+            p.chainCost = Mathf.Clamp(p.chainCost, 0, 12);
+            p.chainMaxTargets = Mathf.Clamp(p.chainMaxTargets, 1, 6);
+            p.chainMaxRange = Mathf.Clamp(p.chainMaxRange, 0, 30);
+            p.chainDamage = Mathf.Clamp(p.chainDamage, 0, 30);
+            p.chainDestabilisedTurns = Mathf.Clamp(p.chainDestabilisedTurns, 0, 5);
+            p.leapCost = Mathf.Clamp(p.leapCost, 0, 12);
+            p.leapMaxRange = Mathf.Clamp(p.leapMaxRange, 0, 30);
+            p.leapRiposteBonusEC = Mathf.Clamp(p.leapRiposteBonusEC, 0, 10);
+            p.fistCost = Mathf.Clamp(p.fistCost, 0, 12);
+            p.fistDamage = Mathf.Clamp(p.fistDamage, 0, 30);
+            p.regenAmount = Mathf.Clamp(p.regenAmount, 0, 10);
+            p.shockWindowRounds = Mathf.Clamp(p.shockWindowRounds, 0, 5);
+            p.shockArmorLossTurns = Mathf.Clamp(p.shockArmorLossTurns, 0, 5);
+            p.shockDamageMultiplier = Mathf.Clamp(p.shockDamageMultiplier, 1, 5);
+        }
+
         public static bool Validate(BestiaryEntry e, out string message)
         {
             message = "";
             if (e == null) { message = "Entrée nulle."; return false; }
             if (string.IsNullOrWhiteSpace(e.id)) { message = "id manquant."; return false; }
+            ClampBossAI(e.bossAI);
             var a = e.attributes ?? new BestiaryAttributes();
             int sum8 = a.FOR + a.AGI + a.CON + a.RAP + a.INT + a.ERU + a.CHA + a.INS;
             var profile = ParseProfile(e.profile);
@@ -574,7 +665,7 @@ namespace Killtime.Core.Character
             {
                 var data = new BestiaryData
                 {
-                    version = 1,
+                    version = 2,
                     source = "Édité en jeu (fenêtre Bestiaire) — " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                     entries = entries ?? new List<BestiaryEntry>()
                 };
@@ -600,7 +691,7 @@ namespace Killtime.Core.Character
             {
                 var data = new BestiaryData
                 {
-                    version = 1,
+                    version = 2,
                     source = "Export éditeur — " + DateTime.Now.ToString("yyyy-MM-dd HH:mm"),
                     entries = entries ?? new List<BestiaryEntry>()
                 };

@@ -135,6 +135,21 @@ namespace Killtime.Core.Rules
         [Tooltip("Malus en défense tant que le combattant canalise (-1 par défaut, Livre VI §24.3).")]
         public int ChannelDefensePenalty = -1;
 
+        // --- RD-051 : Véhicules & Sous-systèmes (Livre VI §26.3) ---
+        [Header("Véhicules & Sous-systèmes (Livre VI §26.3 — RD-051)")]
+        [Tooltip("Coût en PA pour embarquer à bord d'un véhicule (2 par défaut).")]
+        public int VehicleEmbarkAPCost = 2;
+        [Tooltip("Bonus de dégâts des armes lourdes contre véhicules et structures (+100 par défaut).")]
+        public int HeavyVsVehicleBonus = 100;
+        [Tooltip("PV max d'un sous-système de gabarit Vélo (palier 1-10).")]
+        public int VehicleHpVeloMax = 10;
+        [Tooltip("PV max d'un sous-système de gabarit Charrette (palier 11-50).")]
+        public int VehicleHpCharretteMax = 50;
+        [Tooltip("PV max d'un sous-système de gabarit Jet/Tank (palier 51-1000).")]
+        public int VehicleHpJetTankMax = 1000;
+        [Tooltip("PV max d'un sous-système de gabarit Croiseur (palier 1001-10000).")]
+        public int VehicleHpCroiseurMax = 10000;
+
         // --- Livre VI, Chap. 26 : VATS Anatomique ---
         [Header("Anatomie Chirurgicale (Livre VI, Chap. 26)")]
         public List<BodyPartRuleEntry> BodyPartRules = new();
@@ -247,6 +262,13 @@ namespace Killtime.Core.Rules
             ChannelStartAPCost = 1;
             ChannelAttackBonus = 2;
             ChannelDefensePenalty = -1;
+
+            VehicleEmbarkAPCost = 2;
+            HeavyVsVehicleBonus = 100;
+            VehicleHpVeloMax = 10;
+            VehicleHpCharretteMax = 50;
+            VehicleHpJetTankMax = 1000;
+            VehicleHpCroiseurMax = 10000;
 
             BodyPartRules.Clear();
             BodyPartRules.Add(new BodyPartRuleEntry { Part = BodyPart.Tete, DifficultyModifier = -2, CriticalDamageMultiplier = 3 });

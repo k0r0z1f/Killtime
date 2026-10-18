@@ -389,6 +389,8 @@ namespace Killtime.Tactics.TurnSystem
             // RD-084 : purge des poursuites cumulatives et des assauts synchronisés.
             Killtime.Core.Combat.PursuitState.ClearAll();
             Killtime.Core.Combat.GroupAssaultState.ClearAll();
+            // RD-051 : aucun véhicule ni embarquement ne survit à un reset de combat.
+            Killtime.Core.Combat.VehicleState.ClearAll();
             // Nouveau combat (ré)initialisé : aucun objet au sol (gourdin...) ne survit.
             try { DroppedWeaponPickup.ClearAllDropped(); } catch { }
         }

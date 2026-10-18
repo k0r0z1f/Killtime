@@ -2,10 +2,10 @@
  "project": "Killtime Tactics",
  "repository": "https://github.com/k0r0z1f/Killtime",
  "path": "KilltimeTactics",
- "total_commits": 77,
+ "total_commits": 96,
  "date_range": {
   "start": "2026-09-08",
-  "end": "2026-10-13"
+  "end": "2026-10-17"
  },
  "branches": {
   "story": {
@@ -98,7 +98,7 @@
    "id": "ep6",
    "title": "Époque VI : Refactor des Monolithes & Stabilisation",
    "start": "2026-10-10",
-   "end": "2026-10-13",
+   "end": "2026-10-17",
    "desc": "Découpage des monolithes en services (IA, Arena, Story, CombatCalculator RD-123, Character, MapEditor, TurnManager), correctifs P0/P1/P2 et kanban RD-123/RD-124. Découpage audio (KilltimeAudioManager, ProceduralAudioFactory, SystemAudioChameleon), SkillTreeCosmosWindow (RD-138), VTTRoomWindow, HexGridVisualizer, voûte céleste LOD/culling (RD-139)."
   }
  ],
@@ -8986,7 +8986,7 @@
    "summary": "edd5946 (2026-10-13) : HexGridVisualizer.Ceiling.cs, HexGridVisualizer.Highlight.cs, HexGridVisualizer.Materials.cs — +1443/-1362. « refactor »",
    "branch": "tactics",
    "epoch": "ep6",
-   "milestone": "🌸 Floraison complète : 77 commits",
+   "milestone": null,
    "insertions": 1443,
    "deletions": 1362,
    "files_count": 13,
@@ -9068,6 +9068,3001 @@
      "name": "HexGridVisualizer.cs",
      "path": "Assets/Scripts/Tactics/Grid/HexGridVisualizer.cs",
      "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 78,
+   "hash": "59fc506975b7d4233df1024c0a5662a6650738fc",
+   "short": "59fc506",
+   "date": "2026-10-13 04:49:04 -0400",
+   "date_display": "2026-10-13",
+   "author": "Alexis Lacasse",
+   "raw_msg": "refactor and update",
+   "title": "refactor and update",
+   "summary": "59fc506 (2026-10-13) : CharacterStats.Actions.cs, CharacterStats.Care.cs, CharacterStats.Dots.cs — +6453/-5947. « refactor and update »",
+   "branch": "core",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 6453,
+   "deletions": 5947,
+   "files_count": 67,
+   "files": [
+    {
+     "status": "A",
+     "name": "CharacterStats.Actions.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Actions.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Actions.cs.meta",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Actions.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Care.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Care.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Care.cs.meta",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Care.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Dots.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Dots.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Dots.cs.meta",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Dots.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Fate.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Fate.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Fate.cs.meta",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Fate.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Results.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Results.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Results.cs.meta",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Results.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Skills.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Skills.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Skills.cs.meta",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Skills.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Status.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Status.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterStats.Status.cs.meta",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.Status.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CharacterStats.cs",
+     "path": "Assets/Scripts/Core/Character/CharacterStats.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogMagic.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogMagic.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogMagic.cs.meta",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogMagic.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogMelee.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogMelee.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogMelee.cs.meta",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogMelee.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogMobility.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogMobility.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogMobility.cs.meta",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogMobility.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogSupport.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogSupport.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.CatalogSupport.cs.meta",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.CatalogSupport.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.Queries.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.Queries.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.Queries.cs.meta",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.Queries.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.Unlock.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.Unlock.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CharacterProgressionManager.Specializations.Unlock.cs.meta",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.Unlock.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CharacterProgressionManager.Specializations.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.Specializations.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CharacterProgressionManager.cs",
+     "path": "Assets/Scripts/Core/CharacterCreator/CharacterProgressionManager.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Common.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Common.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Common.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Common.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Consequence.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Consequence.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Consequence.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Consequence.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Cards.Dialogue.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Event.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Event.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Event.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Event.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Trigger.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Trigger.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.Trigger.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Trigger.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Helpers.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Helpers.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Helpers.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Helpers.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Map.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Map.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Map.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Map.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Registry.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Registry.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Registry.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Registry.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.RemoteExecute.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.RemoteExecute.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.RemoteExecute.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.RemoteExecute.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.RemoteQueue.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.RemoteQueue.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.RemoteQueue.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.RemoteQueue.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Requests.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Requests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.Requests.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Requests.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.TurnControl.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.TurnControl.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.TurnControl.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.TurnControl.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "VTTTableSync.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ChapterTemplate.cs",
+     "path": "Assets/Scripts/Story/ChapterTemplate.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "JsonStorySceneController.CineAudio.cs",
+     "path": "Assets/Scripts/Story/JsonStorySceneController.CineAudio.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ChapterTemplateTests.cs",
+     "path": "Assets/Scripts/Tests/ChapterTemplateTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "SceneCinematicTests.cs",
+     "path": "Assets/Scripts/Tests/SceneCinematicTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "DevUIPreferences.cs",
+     "path": "Assets/Scripts/UI/DevUIPreferences.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.Chrome.cs",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.Chrome.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.Chrome.cs.meta",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.Chrome.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.DockLayout.cs",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.DockLayout.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.DockLayout.cs.meta",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.DockLayout.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.DockLifecycle.cs",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.DockLifecycle.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.DockLifecycle.cs.meta",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.DockLifecycle.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.DockRender.cs",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.DockRender.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "FloatingWindowChrome.DockRender.cs.meta",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.DockRender.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "FloatingWindowChrome.cs",
+     "path": "Assets/Scripts/UI/FloatingWindowChrome.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 79,
+   "hash": "4b0a74c218ebb28b2737990eb5bcc983ec3b4a3e",
+   "short": "4b0a74c",
+   "date": "2026-10-13 04:57:04 -0400",
+   "date_display": "2026-10-13",
+   "author": "Alexis Lacasse",
+   "raw_msg": "refactor",
+   "title": "ScenarioEditorDevWindow en 5 Partiels : Layout",
+   "summary": "4b0a74c (2026-10-13) : ScenarioEditorDevWindow.Layout.Auto.cs, ScenarioEditorDevWindow.Layout.Cards.cs, ScenarioEditorDevWindow.Layout.Graph.cs — +1793/-1696. « refactor »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 1793,
+   "deletions": 1696,
+   "files_count": 12,
+   "files": [
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Auto.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Auto.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Auto.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Auto.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Cards.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Cards.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Cards.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Cards.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Graph.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Graph.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Graph.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Graph.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.NodeFrame.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.NodeFrame.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.NodeFrame.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.NodeFrame.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Sizes.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Sizes.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Layout.Sizes.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Sizes.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "D",
+     "name": "ScenarioEditorDevWindow.Layout.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "D",
+     "name": "ScenarioEditorDevWindow.Layout.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.cs.meta",
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "id": 80,
+   "hash": "62798207c3c90f3926d7f24bee95fcc06780bb91",
+   "short": "6279820",
+   "date": "2026-10-13 20:27:53 -0400",
+   "date_display": "2026-10-13",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "update",
+   "summary": "6279820 (2026-10-13) : CombatContextMenuUI.Attack.cs, CombatContextMenuUI.Defense.cs, CombatContextMenuUI.Glyphs.cs — +1022/-466. « update »",
+   "branch": "core",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 1022,
+   "deletions": 466,
+   "files_count": 6,
+   "files": [
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Attack.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Attack.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Defense.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Defense.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Glyphs.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Glyphs.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatContextMenuUI.Hub.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Hub.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatContextMenuUI.Hub.cs.meta",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Hub.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 81,
+   "hash": "812019405a40eb1e160f7574727a80327e2c8f5a",
+   "short": "8120194",
+   "date": "2026-10-14 04:14:36 -0400",
+   "date_display": "2026-10-14",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "update",
+   "summary": "8120194 (2026-10-14) : CombatContextMenuUI.Attack.cs, CombatContextMenuUI.Defense.cs, CombatContextMenuUI.Glyphs.cs — +120/-26. « update »",
+   "branch": "core",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 120,
+   "deletions": 26,
+   "files_count": 3,
+   "files": [
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Attack.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Attack.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Defense.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Defense.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Glyphs.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Glyphs.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 82,
+   "hash": "efa637d626576daaee8cc5aadd0987e23c966a8a",
+   "short": "efa637d",
+   "date": "2026-10-14 05:08:27 -0400",
+   "date_display": "2026-10-14",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "update",
+   "summary": "efa637d (2026-10-14) : OrbitTuningWindow.cs, CombatContextMenuUI.Attack.cs, CombatContextMenuUI.Defense.cs — +289/-54. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 289,
+   "deletions": 54,
+   "files_count": 7,
+   "files": [
+    {
+     "status": "A",
+     "name": "OrbitTuningWindow.cs",
+     "path": "Assets/Scripts/DevTools/OrbitTuningWindow.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "OrbitTuningWindow.cs.meta",
+     "path": "Assets/Scripts/DevTools/OrbitTuningWindow.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Attack.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Attack.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Defense.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Defense.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Glyphs.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Glyphs.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.Hub.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.Hub.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatContextMenuUI.cs",
+     "path": "Assets/Scripts/UI/CombatContextMenuUI.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 83,
+   "hash": "3a51c7c05855d82e000a471bb5300fa0d5cc173f",
+   "short": "3a51c7c",
+   "date": "2026-10-16 05:20:28 -0400",
+   "date_display": "2026-10-16",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "GenerativeMusicEngine en 3 Partiels : Drums & Synths",
+   "summary": "3a51c7c (2026-10-16) : AdaptiveMusicDirector.cs, GenerativeMusicEngine.Drums.cs, GenerativeMusicEngine.Synths.cs — +2423/-1030. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 2423,
+   "deletions": 1030,
+   "files_count": 38,
+   "files": [
+    {
+     "status": "M",
+     "name": "AdaptiveMusicDirector.cs",
+     "path": "Assets/Scripts/Audio/AdaptiveMusicDirector.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "GenerativeMusicEngine.Drums.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Drums.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "GenerativeMusicEngine.Drums.cs.meta",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Drums.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "GenerativeMusicEngine.Synths.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Synths.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "GenerativeMusicEngine.Synths.cs.meta",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Synths.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "GenerativeMusicEngine.Theory.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Theory.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "GenerativeMusicEngine.Theory.cs.meta",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Theory.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "GenerativeMusicEngine.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioManager.Generative.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioManager.Generative.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioManager.Mix.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioManager.Mix.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioManager.Music.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioManager.Music.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioManager.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioManager.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioSettingsUI.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioSettingsUI.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ProceduralAudioFactory.Generative.cs",
+     "path": "Assets/Scripts/Audio/ProceduralAudioFactory.Generative.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ProceduralAudioFactory.cs",
+     "path": "Assets/Scripts/Audio/ProceduralAudioFactory.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Cards.Consequence.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Consequence.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Cards.Dialogue.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Dialogue.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Cards.Event.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Event.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Cards.Trigger.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.Trigger.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Cards.World.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.GraphCanvas.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.GraphCanvas.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Layout.Auto.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.Auto.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Layout.NodeFrame.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Layout.NodeFrame.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Panels.Audio.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Panels.Audio.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Persistence.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Persistence.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.QuickCreateFactory.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.QuickCreateFactory.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.SceneTab.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.SceneTab.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Wires.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SasVoyantBlink.cs",
+     "path": "Assets/Scripts/Story/SasVoyantBlink.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SasVoyantBlink.cs.meta",
+     "path": "Assets/Scripts/Story/SasVoyantBlink.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "SceneEnvironmentLibrary.cs",
+     "path": "Assets/Scripts/Story/SceneEnvironmentLibrary.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIGrenadeScorer.cs",
+     "path": "Assets/Scripts/Tactics/AI/AIGrenadeScorer.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIGrenadeScorer.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/AIGrenadeScorer.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.Attack.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Attack.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalPixieLight.cs",
+     "path": "Assets/Scripts/Tactics/Lighting/TacticalPixieLight.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "AudioSystemTests.cs",
+     "path": "Assets/Scripts/Tests/AudioSystemTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIGrenadeScorerTests.cs",
+     "path": "Assets/Scripts/Tests/Tactics/AIGrenadeScorerTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIGrenadeScorerTests.cs.meta",
+     "path": "Assets/Scripts/Tests/Tactics/AIGrenadeScorerTests.cs.meta",
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "id": 84,
+   "hash": "08c471b12241a30b177d4a1865892df65a504ff5",
+   "short": "08c471b",
+   "date": "2026-10-16 05:46:32 -0400",
+   "date_display": "2026-10-16",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "update",
+   "summary": "08c471b (2026-10-16) : AdaptiveMusicDirector.cs, GenerativeMusicEngine.Drums.cs, GenerativeMusicEngine.Synths.cs — +947/-660. « update »",
+   "branch": "audio",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 947,
+   "deletions": 660,
+   "files_count": 16,
+   "files": [
+    {
+     "status": "M",
+     "name": "AdaptiveMusicDirector.cs",
+     "path": "Assets/Scripts/Audio/AdaptiveMusicDirector.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "GenerativeMusicEngine.Drums.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Drums.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "GenerativeMusicEngine.Synths.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Synths.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "GenerativeMusicEngine.Theory.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.Theory.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "GenerativeMusicEngine.cs",
+     "path": "Assets/Scripts/Audio/GenerativeMusicEngine.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioManager.Generative.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioManager.Generative.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioManager.Music.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioManager.Music.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioManager.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioManager.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "KilltimeAudioSettingsUI.Chameleon.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioSettingsUI.Chameleon.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "KilltimeAudioSettingsUI.Chameleon.cs.meta",
+     "path": "Assets/Scripts/Audio/KilltimeAudioSettingsUI.Chameleon.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "KilltimeAudioSettingsUI.cs",
+     "path": "Assets/Scripts/Audio/KilltimeAudioSettingsUI.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ProceduralAudioFactory.Generative.cs",
+     "path": "Assets/Scripts/Audio/ProceduralAudioFactory.Generative.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ProceduralAudioFactory.cs",
+     "path": "Assets/Scripts/Audio/ProceduralAudioFactory.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatDevArena.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TurnManager.Objectives.cs",
+     "path": "Assets/Scripts/Tactics/TurnSystem/TurnManager.Objectives.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "AudioSystemTests.cs",
+     "path": "Assets/Scripts/Tests/AudioSystemTests.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 85,
+   "hash": "70d6392ea64cc52943255a6dee3c1f9705bdf704",
+   "short": "70d6392",
+   "date": "2026-10-17 04:02:24 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "update",
+   "summary": "70d6392 (2026-10-17) : PlayerAnimatorLinker.cs, AIMovementSolver.cs, TacticalAIController.Movement.cs — +2693/-743. « update »",
+   "branch": "tactics",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 2693,
+   "deletions": 743,
+   "files_count": 24,
+   "files": [
+    {
+     "status": "A",
+     "name": "Fast Run.fbx",
+     "path": "Assets/Resources/Animations/Female/Fast Run.fbx",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "Fast Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Female/Fast Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "Medium Run.fbx",
+     "path": "Assets/Resources/Animations/Female/Medium Run.fbx",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "Medium Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Female/Medium Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "Fast Run.fbx",
+     "path": "Assets/Resources/Animations/Male/Fast Run.fbx",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "Fast Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Male/Fast Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "Medium Run.fbx",
+     "path": "Assets/Resources/Animations/Male/Medium Run.fbx",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "Medium Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Male/Medium Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "Standing Idle.fbx.meta",
+     "path": "Assets/Resources/Animations/Male/Standing Idle.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "Standing Melee Attack.fbx.meta",
+     "path": "Assets/Resources/Animations/Male/Standing Melee Attack.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "Walking.fbx.meta",
+     "path": "Assets/Resources/Animations/Male/Walking.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "Walk With Rifle.fbx.meta",
+     "path": "Assets/Resources/Animations/Walk With Rifle.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "AnimationClipCatalog.json",
+     "path": "Assets/Resources/Data/AnimationClipCatalog.json",
+     "type": "json"
+    },
+    {
+     "status": "M",
+     "name": "PlayerAnimator.controller",
+     "path": "Assets/Resources/PlayerAnimator.controller",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "PlayerAnimatorLinker.cs",
+     "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "AIMovementSolver.cs",
+     "path": "Assets/Scripts/Tactics/AI/AIMovementSolver.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.Movement.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Movement.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.Targeting.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Targeting.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalUnitVisual.Animator.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Animator.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalUnitVisual.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "AnimationClipCatalogTests.cs",
+     "path": "Assets/Scripts/Tests/AnimationClipCatalogTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "LocomotionSpeedTests.cs",
+     "path": "Assets/Scripts/Tests/LocomotionSpeedTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "LocomotionSpeedTests.cs.meta",
+     "path": "Assets/Scripts/Tests/LocomotionSpeedTests.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIDecisionTests.cs",
+     "path": "Assets/Scripts/Tests/Tactics/TacticalAIDecisionTests.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 86,
+   "hash": "aab2f7affebf28c3c885768226e96425687d4ee3",
+   "short": "aab2f7a",
+   "date": "2026-10-17 04:20:43 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "refactor(story): split GraphCanvas + Panels.Audio move-only, kanban RD-106/RD-021 done",
+   "title": "refactor(story): split GraphCanvas + Panels.Audio move-only, kanban RD-1",
+   "summary": "aab2f7a (2026-10-17) : ScenarioEditorDevWindow.GraphCanvas.Primitives.cs, ScenarioEditorDevWindow.GraphCanvas.cs, ScenarioEditorDevWindow.Panels.Audio.cs — +905/-860. « refactor(story): split GraphCanvas + Panels.Audio move-only, kanban RD-106/RD-021 done »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": "🛠️ RD-106 : refactor(story): split GraphCanvas + Panels.Audio move-only,",
+   "insertions": 905,
+   "deletions": 860,
+   "files_count": 6,
+   "files": [
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.GraphCanvas.Primitives.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.GraphCanvas.Primitives.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.GraphCanvas.Primitives.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.GraphCanvas.Primitives.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.GraphCanvas.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.GraphCanvas.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Panels.Audio.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Panels.Audio.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Panels.AudioCards.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Panels.AudioCards.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Panels.AudioCards.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Panels.AudioCards.cs.meta",
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "id": 87,
+   "hash": "101f6dd8e6688557d55f5aae74362f750289c1d3",
+   "short": "101f6dd",
+   "date": "2026-10-17 04:48:18 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "update",
+   "summary": "101f6dd (2026-10-17) : DemoDirectorAlpha3.cs, IntroEnvironmentBuilder.cs, AIDuoTechSolver.cs — +844/-2. « update »",
+   "branch": "tactics",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 844,
+   "deletions": 2,
+   "files_count": 11,
+   "files": [
+    {
+     "status": "A",
+     "name": "Demo.meta",
+     "path": "Assets/Scripts/Demo.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DemoDirectorAlpha3.cs",
+     "path": "Assets/Scripts/Demo/DemoDirectorAlpha3.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DemoDirectorAlpha3.cs.meta",
+     "path": "Assets/Scripts/Demo/DemoDirectorAlpha3.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "IntroEnvironmentBuilder.cs",
+     "path": "Assets/Scripts/Story/IntroEnvironmentBuilder.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIDuoTechSolver.cs",
+     "path": "Assets/Scripts/Tactics/AI/AIDuoTechSolver.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIDuoTechSolver.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/AIDuoTechSolver.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.DuoTech.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.DuoTech.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.DuoTech.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.DuoTech.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIDuoTechSolverTests.cs",
+     "path": "Assets/Scripts/Tests/Tactics/AIDuoTechSolverTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIDuoTechSolverTests.cs.meta",
+     "path": "Assets/Scripts/Tests/Tactics/AIDuoTechSolverTests.cs.meta",
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "id": 88,
+   "hash": "4498ce0957db95db497056e2eaa8cc033306fbbf",
+   "short": "4498ce0",
+   "date": "2026-10-17 05:12:54 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "CombatTechniqueRegistry en 5 Partiels : Command & Core",
+   "summary": "4498ce0 (2026-10-17) : SpecialManeuverService.Assault.cs, SpecialManeuverService.Grapple.cs, SpecialManeuverService.Pursuit.cs — +1957/-1792. « update »",
+   "branch": "core",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 1957,
+   "deletions": 1792,
+   "files_count": 20,
+   "files": [
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Assault.cs",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Assault.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Assault.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Assault.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Grapple.cs",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Grapple.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Grapple.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Grapple.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Pursuit.cs",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Pursuit.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Pursuit.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Pursuit.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Reactions.cs",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Reactions.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SpecialManeuverService.Reactions.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.Reactions.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "SpecialManeuverService.cs",
+     "path": "Assets/Scripts/Core/Combat/SpecialManeuverService.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Command.cs",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Command.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Command.cs.meta",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Command.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Core.cs",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Core.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Core.cs.meta",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Core.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Guard.cs",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Guard.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Guard.cs.meta",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Guard.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Martial.cs",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Martial.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Martial.cs.meta",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Martial.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Menu.cs",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Menu.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatTechniqueRegistry.Menu.cs.meta",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.Menu.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CombatTechniqueRegistry.cs",
+     "path": "Assets/Scripts/UI/CombatTechniqueRegistry.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 89,
+   "hash": "80791a2d5055c4dae6ebe817bbf9a8de88cfb15c",
+   "short": "80791a2",
+   "date": "2026-10-17 05:41:50 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "DuoTechRegistry en 5 Partiels : Classics & Defs",
+   "summary": "80791a2 (2026-10-17) : CinematicEditorDevWindow.Camera.cs, CinematicEditorDevWindow.Capture.cs, CinematicEditorDevWindow.Poses.cs — +3026/-2237. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 3026,
+   "deletions": 2237,
+   "files_count": 32,
+   "files": [
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Camera.cs",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Camera.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Camera.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Camera.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Capture.cs",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Capture.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Capture.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Capture.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Poses.cs",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Poses.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Poses.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Poses.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Sections.cs",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Sections.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CinematicEditorDevWindow.Sections.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.Sections.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CinematicEditorDevWindow.cs",
+     "path": "Assets/Scripts/DevTools/Story/CinematicEditorDevWindow.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTProtocol.Payloads.cs",
+     "path": "Assets/Scripts/Multi/VTTProtocol.Payloads.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTProtocol.Payloads.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTProtocol.Payloads.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "VTTProtocol.cs",
+     "path": "Assets/Scripts/Multi/VTTProtocol.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIPerception.cs",
+     "path": "Assets/Scripts/Tactics/AI/AIPerception.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIPerception.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/AIPerception.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "AIPerceptionDecisions.cs",
+     "path": "Assets/Scripts/Tactics/AI/AIPerceptionDecisions.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIPerceptionDecisions.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/AIPerceptionDecisions.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.Movement.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Movement.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.Targeting.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Targeting.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIPerceptionTests.cs",
+     "path": "Assets/Scripts/Tests/Tactics/AIPerceptionTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AIPerceptionTests.cs.meta",
+     "path": "Assets/Scripts/Tests/Tactics/AIPerceptionTests.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Classics.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Classics.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Classics.cs.meta",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Classics.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Defs.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Defs.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Defs.cs.meta",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Defs.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Extended.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Extended.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Extended.cs.meta",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Extended.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Menu.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Menu.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Menu.cs.meta",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Menu.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Roles.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Roles.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.Roles.cs.meta",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Roles.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "DuoTechRegistry.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 90,
+   "hash": "5addb1d54b824bf3eb25127a9af9f29fd9636be9",
+   "short": "5addb1d",
+   "date": "2026-10-17 06:48:31 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "ArenaMeleeService en 4 Partiels : Ammo & Assault",
+   "summary": "5addb1d (2026-10-17) : GrenadeSystem.AreaFire.cs, GrenadeSystem.Smoke.cs, GrenadeSystem.cs — +6693/-4298. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 6693,
+   "deletions": 4298,
+   "files_count": 55,
+   "files": [
+    {
+     "status": "M",
+     "name": "Fast Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Female/Fast Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "Medium Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Female/Medium Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "Fast Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Male/Fast Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "Medium Run.fbx.meta",
+     "path": "Assets/Resources/Animations/Male/Medium Run.fbx.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "AnimationClipCatalog.json",
+     "path": "Assets/Resources/Data/AnimationClipCatalog.json",
+     "type": "json"
+    },
+    {
+     "status": "A",
+     "name": "GrenadeSystem.AreaFire.cs",
+     "path": "Assets/Scripts/Core/Combat/GrenadeSystem.AreaFire.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "GrenadeSystem.AreaFire.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/GrenadeSystem.AreaFire.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "GrenadeSystem.Smoke.cs",
+     "path": "Assets/Scripts/Core/Combat/GrenadeSystem.Smoke.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "GrenadeSystem.Smoke.cs.meta",
+     "path": "Assets/Scripts/Core/Combat/GrenadeSystem.Smoke.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "GrenadeSystem.cs",
+     "path": "Assets/Scripts/Core/Combat/GrenadeSystem.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaAttackService.Duel.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.Duel.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaAttackService.Duel.cs.meta",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.Duel.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ArenaAttackService.Routines.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.Routines.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaAttackService.Routines.cs.meta",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.Routines.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ArenaAttackService.Specials.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.Specials.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaAttackService.Specials.cs.meta",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.Specials.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "ArenaAttackService.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaAttackService.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ArenaGrenadeService.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaGrenadeService.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Ammo.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Ammo.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Ammo.cs.meta",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Ammo.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Assault.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Assault.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Assault.cs.meta",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Assault.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Charge.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Charge.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Charge.cs.meta",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Charge.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Grapple.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Grapple.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ArenaMeleeService.Grapple.cs.meta",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.Grapple.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "ArenaMeleeService.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaMeleeService.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatDevArena.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "NormalizeAnimationTakeNames.cs",
+     "path": "Assets/Scripts/DevTools/NormalizeAnimationTakeNames.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "NormalizeAnimationTakeNames.cs.meta",
+     "path": "Assets/Scripts/DevTools/NormalizeAnimationTakeNames.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "PlayerAnimatorLinker.Clips.cs",
+     "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.Clips.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "PlayerAnimatorLinker.Clips.cs.meta",
+     "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.Clips.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "PlayerAnimatorLinker.States.cs",
+     "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.States.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "PlayerAnimatorLinker.States.cs.meta",
+     "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.States.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "PlayerAnimatorLinker.cs",
+     "path": "Assets/Scripts/DevTools/PlayerAnimatorLinker.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTGroundSyncCodec.cs",
+     "path": "Assets/Scripts/Multi/VTTGroundSyncCodec.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTGroundSyncCodec.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTGroundSyncCodec.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "VTTProtocol.Payloads.cs",
+     "path": "Assets/Scripts/Multi/VTTProtocol.Payloads.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "VTTProtocol.cs",
+     "path": "Assets/Scripts/Multi/VTTProtocol.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.GroundSync.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.GroundSync.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTTableSync.GroundSync.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTTableSync.GroundSync.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "VTTTableSync.Requests.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.Requests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "VTTTableSync.TurnControl.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.TurnControl.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "VTTTableSync.cs",
+     "path": "Assets/Scripts/Multi/VTTTableSync.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "DroppedWeaponPickup.cs",
+     "path": "Assets/Scripts/Tactics/Units/DroppedWeaponPickup.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalUnit.Lifecycle.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnit.Lifecycle.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalUnit.Lifecycle.cs.meta",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnit.Lifecycle.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "TacticalUnit.Movement.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnit.Movement.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalUnit.Movement.cs.meta",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnit.Movement.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalUnit.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnit.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "TacticalUnitVisual.Animator.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Animator.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTGroundSyncTests.cs",
+     "path": "Assets/Scripts/Tests/Multi/VTTGroundSyncTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTGroundSyncTests.cs.meta",
+     "path": "Assets/Scripts/Tests/Multi/VTTGroundSyncTests.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CombatActionRegistry.Self.cs",
+     "path": "Assets/Scripts/UI/CombatActionRegistry.Self.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "DroppedWeaponContextMenuUI.cs",
+     "path": "Assets/Scripts/UI/DroppedWeaponContextMenuUI.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 91,
+   "hash": "a0c5f6352654e164ed03d260969a52ef226fae00",
+   "short": "a0c5f63",
+   "date": "2026-10-17 06:57:42 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "update",
+   "summary": "a0c5f63 (2026-10-17) : ScenarioEditorDevWindow.Cards.World.Actors.cs, ScenarioEditorDevWindow.Cards.World.Cinematics.cs, ScenarioEditorDevWindow.Cards.World.cs — +842/-800. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 842,
+   "deletions": 800,
+   "files_count": 5,
+   "files": [
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.World.Actors.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.Actors.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.World.Actors.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.Actors.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.World.Cinematics.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.Cinematics.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Cards.World.Cinematics.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.Cinematics.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Cards.World.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Cards.World.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 92,
+   "hash": "4da99eb46cfcac8af1edac7c6d6bf0bddc65ab15",
+   "short": "4da99eb",
+   "date": "2026-10-17 20:40:33 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "ScenarioEditorDevWindow en 4 Partiels : Wires",
+   "summary": "4da99eb (2026-10-17) : CinematicDirector.ScenePlayback.cs, CinematicDirector.SceneRoutine.cs, CinematicDirector.ShotFlow.cs — +1510/-1149. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 1510,
+   "deletions": 1149,
+   "files_count": 22,
+   "files": [
+    {
+     "status": "M",
+     "name": "CinematicDirector.ScenePlayback.cs",
+     "path": "Assets/Scripts/Camera/CinematicDirector.ScenePlayback.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CinematicDirector.SceneRoutine.cs",
+     "path": "Assets/Scripts/Camera/CinematicDirector.SceneRoutine.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CinematicDirector.ShotFlow.cs",
+     "path": "Assets/Scripts/Camera/CinematicDirector.ShotFlow.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CinematicDirector.ShotFlow.cs.meta",
+     "path": "Assets/Scripts/Camera/CinematicDirector.ShotFlow.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TimelineBranch.cs",
+     "path": "Assets/Scripts/Core/Chrono/TimelineBranch.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ArenaChronoDebugService.cs",
+     "path": "Assets/Scripts/DevTools/Arena/ArenaChronoDebugService.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatDevArena.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "CombatDevToolbar.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Cine.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Cine.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Cine.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Cine.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Overview.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Overview.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Overview.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Overview.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Ports.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Ports.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Ports.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Ports.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Sound.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Sound.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "ScenarioEditorDevWindow.Wires.Sound.cs.meta",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.Sound.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "ScenarioEditorDevWindow.Wires.cs",
+     "path": "Assets/Scripts/DevTools/Story/ScenarioEditorDevWindow.Wires.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalUnitVisual.Weapon.Sockets.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Weapon.Sockets.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalUnitVisual.Weapon.Sockets.cs.meta",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Weapon.Sockets.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalUnitVisual.Weapon.cs",
+     "path": "Assets/Scripts/Tactics/Units/TacticalUnitVisual.Weapon.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TimelineBranchTests.cs",
+     "path": "Assets/Scripts/Tests/TimelineBranchTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TimelineBranchTests.cs.meta",
+     "path": "Assets/Scripts/Tests/TimelineBranchTests.cs.meta",
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "id": 93,
+   "hash": "a303c5858aa9a16109941cc156e10fa3d1ff547f",
+   "short": "a303c58",
+   "date": "2026-10-17 20:59:41 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "CombatDevArena en 7 Partiels : Attack & CombatEvents",
+   "summary": "a303c58 (2026-10-17) : CombatDevArena.Attack.cs, CombatDevArena.CombatEvents.cs, CombatDevArena.DevTools.cs — +2888/-2499. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 2888,
+   "deletions": 2499,
+   "files_count": 33,
+   "files": [
+    {
+     "status": "A",
+     "name": "CombatDevArena.Attack.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Attack.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Attack.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Attack.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.CombatEvents.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.CombatEvents.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.CombatEvents.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.CombatEvents.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.DevTools.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.DevTools.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.DevTools.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.DevTools.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Maneuvers.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Maneuvers.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Maneuvers.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Maneuvers.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Map.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Map.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Map.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Map.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Reactions.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Reactions.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Reactions.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Reactions.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Targeting.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Targeting.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevArena.Targeting.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.Targeting.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CombatDevArena.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevArena.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "WeaponGripEditorDevWindow.Controls.cs",
+     "path": "Assets/Scripts/DevTools/WeaponGripEditorDevWindow.Controls.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "WeaponGripEditorDevWindow.Controls.cs.meta",
+     "path": "Assets/Scripts/DevTools/WeaponGripEditorDevWindow.Controls.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "WeaponGripEditorDevWindow.Studio.cs",
+     "path": "Assets/Scripts/DevTools/WeaponGripEditorDevWindow.Studio.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "WeaponGripEditorDevWindow.Studio.cs.meta",
+     "path": "Assets/Scripts/DevTools/WeaponGripEditorDevWindow.Studio.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "WeaponGripEditorDevWindow.cs",
+     "path": "Assets/Scripts/DevTools/WeaponGripEditorDevWindow.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Actors.cs",
+     "path": "Assets/Scripts/Story/StorySceneData.Actors.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Actors.cs.meta",
+     "path": "Assets/Scripts/Story/StorySceneData.Actors.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Cinematics.cs",
+     "path": "Assets/Scripts/Story/StorySceneData.Cinematics.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Cinematics.cs.meta",
+     "path": "Assets/Scripts/Story/StorySceneData.Cinematics.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Dialogue.cs",
+     "path": "Assets/Scripts/Story/StorySceneData.Dialogue.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Dialogue.cs.meta",
+     "path": "Assets/Scripts/Story/StorySceneData.Dialogue.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Interactables.cs",
+     "path": "Assets/Scripts/Story/StorySceneData.Interactables.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Interactables.cs.meta",
+     "path": "Assets/Scripts/Story/StorySceneData.Interactables.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Scene.cs",
+     "path": "Assets/Scripts/Story/StorySceneData.Scene.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Scene.cs.meta",
+     "path": "Assets/Scripts/Story/StorySceneData.Scene.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Triggers.cs",
+     "path": "Assets/Scripts/Story/StorySceneData.Triggers.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneData.Triggers.cs.meta",
+     "path": "Assets/Scripts/Story/StorySceneData.Triggers.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "StorySceneData.cs",
+     "path": "Assets/Scripts/Story/StorySceneData.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 94,
+   "hash": "b489f755842da36a4c4e00332f3022822aa19ee7",
+   "short": "b489f75",
+   "date": "2026-10-17 21:12:32 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "VTTVideoManager en 3 Partiels : Bokeh & Capture",
+   "summary": "b489f75 (2026-10-17) : VTTVideoManager.Bokeh.cs, VTTVideoManager.Capture.cs, VTTVideoManager.Network.cs — +780/-738. « update »",
+   "branch": "network",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 780,
+   "deletions": 738,
+   "files_count": 7,
+   "files": [
+    {
+     "status": "A",
+     "name": "VTTVideoManager.Bokeh.cs",
+     "path": "Assets/Scripts/Multi/VTTVideoManager.Bokeh.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTVideoManager.Bokeh.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTVideoManager.Bokeh.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTVideoManager.Capture.cs",
+     "path": "Assets/Scripts/Multi/VTTVideoManager.Capture.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTVideoManager.Capture.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTVideoManager.Capture.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTVideoManager.Network.cs",
+     "path": "Assets/Scripts/Multi/VTTVideoManager.Network.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTVideoManager.Network.cs.meta",
+     "path": "Assets/Scripts/Multi/VTTVideoManager.Network.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "VTTVideoManager.cs",
+     "path": "Assets/Scripts/Multi/VTTVideoManager.cs",
+     "type": "csharp"
+    }
+   ]
+  },
+  {
+   "id": 95,
+   "hash": "a98a19686e088e587ab3d4200464f7378a7f4fcc",
+   "short": "a98a196",
+   "date": "2026-10-17 21:47:28 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "DuoTechWeaveController en 4 Partiels : Extended & Highlight",
+   "summary": "a98a196 (2026-10-17) : AITurnPlanner.cs, TacticalAIController.TurnPlan.cs, TacticalAIController.cs — +3451/-1709. « update »",
+   "branch": "tactics",
+   "epoch": "ep6",
+   "milestone": null,
+   "insertions": 3451,
+   "deletions": 1709,
+   "files_count": 23,
+   "files": [
+    {
+     "status": "A",
+     "name": "AITurnPlanner.cs",
+     "path": "Assets/Scripts/Tactics/AI/AITurnPlanner.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AITurnPlanner.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/AITurnPlanner.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.TurnPlan.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.TurnPlan.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.TurnPlan.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.TurnPlan.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Extended.cs",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Extended.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Extended.cs.meta",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Extended.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Highlight.cs",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Highlight.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Highlight.cs.meta",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Highlight.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Resolution.cs",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Resolution.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Resolution.cs.meta",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Resolution.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Visuals.cs",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Visuals.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechWeaveController.Visuals.cs.meta",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.Visuals.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "DuoTechWeaveController.cs",
+     "path": "Assets/Scripts/Tactics/DuoTech/DuoTechWeaveController.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "DuoTechTests.cs",
+     "path": "Assets/Scripts/Tests/DuoTechTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AITurnPlannerTests.cs",
+     "path": "Assets/Scripts/Tests/Tactics/AITurnPlannerTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AITurnPlannerTests.cs.meta",
+     "path": "Assets/Scripts/Tests/Tactics/AITurnPlannerTests.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "DuoTechRegistry.Defs.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Defs.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "DuoTechRegistry.Menu.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.Menu.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.TriFusion.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.TriFusion.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "DuoTechRegistry.TriFusion.cs.meta",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.TriFusion.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "DuoTechRegistry.cs",
+     "path": "Assets/Scripts/UI/DuoTechRegistry.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ProjectSettings.asset",
+     "path": "ProjectSettings/ProjectSettings.asset",
+     "type": "other"
+    }
+   ]
+  },
+  {
+   "id": 96,
+   "hash": "a4f31480a2f8d70bad758ff4402744a78d246580",
+   "short": "a4f3148",
+   "date": "2026-10-17 22:11:20 -0400",
+   "date_display": "2026-10-17",
+   "author": "Alexis Lacasse",
+   "raw_msg": "update",
+   "title": "CoreRulesTests en 4 Partiels : BlindDuel & Cover",
+   "summary": "a4f3148 (2026-10-17) : CombatDevToolbar.Cheats.cs, CombatDevToolbar.Chrono.cs, CombatDevToolbar.Targeting.cs — +6008/-5033. « update »",
+   "branch": "tools",
+   "epoch": "ep6",
+   "milestone": "🌸 Floraison complète : 96 commits",
+   "insertions": 6008,
+   "deletions": 5033,
+   "files_count": 52,
+   "files": [
+    {
+     "status": "A",
+     "name": "CombatDevToolbar.Cheats.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.Cheats.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevToolbar.Cheats.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.Cheats.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevToolbar.Chrono.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.Chrono.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevToolbar.Chrono.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.Chrono.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevToolbar.Targeting.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.Targeting.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CombatDevToolbar.Targeting.cs.meta",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.Targeting.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CombatDevToolbar.cs",
+     "path": "Assets/Scripts/DevTools/CombatDevToolbar.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "InventoryDevWindow.Catalog.cs",
+     "path": "Assets/Scripts/DevTools/InventoryDevWindow.Catalog.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "InventoryDevWindow.Catalog.cs.meta",
+     "path": "Assets/Scripts/DevTools/InventoryDevWindow.Catalog.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "InventoryDevWindow.Item.cs",
+     "path": "Assets/Scripts/DevTools/InventoryDevWindow.Item.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "InventoryDevWindow.Item.cs.meta",
+     "path": "Assets/Scripts/DevTools/InventoryDevWindow.Item.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "InventoryDevWindow.Studio.cs",
+     "path": "Assets/Scripts/DevTools/InventoryDevWindow.Studio.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "InventoryDevWindow.Studio.cs.meta",
+     "path": "Assets/Scripts/DevTools/InventoryDevWindow.Studio.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "InventoryDevWindow.cs",
+     "path": "Assets/Scripts/DevTools/InventoryDevWindow.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SceneEnvironmentDevWindow.Lighting.cs",
+     "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.Lighting.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SceneEnvironmentDevWindow.Lighting.cs.meta",
+     "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.Lighting.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "SceneEnvironmentDevWindow.Objects.cs",
+     "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.Objects.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SceneEnvironmentDevWindow.Objects.cs.meta",
+     "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.Objects.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "SceneEnvironmentDevWindow.Save.cs",
+     "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.Save.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "SceneEnvironmentDevWindow.Save.cs.meta",
+     "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.Save.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "SceneEnvironmentDevWindow.cs",
+     "path": "Assets/Scripts/DevTools/SceneEnvironmentDevWindow.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTVoiceManager.Capture.cs",
+     "path": "Assets/Scripts/Multi/Voice/VTTVoiceManager.Capture.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTVoiceManager.Capture.cs.meta",
+     "path": "Assets/Scripts/Multi/Voice/VTTVoiceManager.Capture.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTVoiceManager.Network.cs",
+     "path": "Assets/Scripts/Multi/Voice/VTTVoiceManager.Network.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTVoiceManager.Network.cs.meta",
+     "path": "Assets/Scripts/Multi/Voice/VTTVoiceManager.Network.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "VTTVoiceManager.Settings.cs",
+     "path": "Assets/Scripts/Multi/Voice/VTTVoiceManager.Settings.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "VTTVoiceManager.Settings.cs.meta",
+     "path": "Assets/Scripts/Multi/Voice/VTTVoiceManager.Settings.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "VTTVoiceManager.cs",
+     "path": "Assets/Scripts/Multi/Voice/VTTVoiceManager.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneValidator.cs",
+     "path": "Assets/Scripts/Story/StorySceneValidator.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneValidator.cs.meta",
+     "path": "Assets/Scripts/Story/StorySceneValidator.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "TacticalAIController.Support.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.Support.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.SupportLivreXI.cs",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.SupportLivreXI.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "TacticalAIController.SupportLivreXI.cs.meta",
+     "path": "Assets/Scripts/Tactics/AI/TacticalAIController.SupportLivreXI.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.BlindDuel.cs",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.BlindDuel.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.BlindDuel.cs.meta",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.BlindDuel.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.Cover.cs",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.Cover.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.Cover.cs.meta",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.Cover.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.Dots.cs",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.Dots.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.Dots.cs.meta",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.Dots.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.Specializations.cs",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.Specializations.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "CoreRulesTests.Specializations.cs.meta",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.Specializations.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "CoreRulesTests.cs",
+     "path": "Assets/Scripts/Tests/CoreRulesTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneValidatorTests.cs",
+     "path": "Assets/Scripts/Tests/StorySceneValidatorTests.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "StorySceneValidatorTests.cs.meta",
+     "path": "Assets/Scripts/Tests/StorySceneValidatorTests.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "AsteroidBaseGenerator.Layout.cs",
+     "path": "Assets/Scripts/Tools/AsteroidBaseGenerator.Layout.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AsteroidBaseGenerator.Layout.cs.meta",
+     "path": "Assets/Scripts/Tools/AsteroidBaseGenerator.Layout.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "AsteroidBaseGenerator.Materials.cs",
+     "path": "Assets/Scripts/Tools/AsteroidBaseGenerator.Materials.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AsteroidBaseGenerator.Materials.cs.meta",
+     "path": "Assets/Scripts/Tools/AsteroidBaseGenerator.Materials.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "A",
+     "name": "AsteroidBaseGenerator.Mesh.cs",
+     "path": "Assets/Scripts/Tools/AsteroidBaseGenerator.Mesh.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "A",
+     "name": "AsteroidBaseGenerator.Mesh.cs.meta",
+     "path": "Assets/Scripts/Tools/AsteroidBaseGenerator.Mesh.cs.meta",
+     "type": "other"
+    },
+    {
+     "status": "M",
+     "name": "AsteroidBaseGenerator.cs",
+     "path": "Assets/Scripts/Tools/AsteroidBaseGenerator.cs",
+     "type": "csharp"
+    },
+    {
+     "status": "M",
+     "name": "ProjectSettings.asset",
+     "path": "ProjectSettings/ProjectSettings.asset",
+     "type": "other"
     }
    ]
   }
@@ -9528,6 +12523,120 @@
    "target": 77,
    "type": "chronological",
    "label": "Chronologie Git"
+  },
+  {
+   "source": 77,
+   "target": 78,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 78,
+   "target": 79,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 79,
+   "target": 80,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 80,
+   "target": 81,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 81,
+   "target": 82,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 82,
+   "target": 83,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 83,
+   "target": 84,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 84,
+   "target": 85,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 85,
+   "target": 86,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 86,
+   "target": 87,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 87,
+   "target": 88,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 88,
+   "target": 89,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 89,
+   "target": 90,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 90,
+   "target": 91,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 91,
+   "target": 92,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 92,
+   "target": 93,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 93,
+   "target": 94,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 94,
+   "target": 95,
+   "type": "chronological",
+   "label": "Chronologie Git"
+  },
+  {
+   "source": 95,
+   "target": 96,
+   "type": "chronological",
+   "label": "Chronologie Git"
   }
  ],
  "cross_links": [
@@ -9788,6 +12897,42 @@
    "target": 75,
    "type": "causal",
    "reason": "perf: voute celeste LOD zoom-out + culli vers fix: culling conduits Liang-Barsky + mar"
+  },
+  {
+   "source": 80,
+   "target": 81,
+   "type": "causal",
+   "reason": "update vers update"
+  },
+  {
+   "source": 82,
+   "target": 83,
+   "type": "causal",
+   "reason": "update vers GenerativeMusicEngine en 3 Partiels : Dr"
+  },
+  {
+   "source": 89,
+   "target": 90,
+   "type": "causal",
+   "reason": "DuoTechRegistry en 5 Partiels : Classics vers ArenaMeleeService en 4 Partiels : Ammo &"
+  },
+  {
+   "source": 90,
+   "target": 91,
+   "type": "causal",
+   "reason": "ArenaMeleeService en 4 Partiels : Ammo & vers update"
+  },
+  {
+   "source": 91,
+   "target": 92,
+   "type": "causal",
+   "reason": "update vers ScenarioEditorDevWindow en 4 Partiels : "
+  },
+  {
+   "source": 92,
+   "target": 93,
+   "type": "causal",
+   "reason": "ScenarioEditorDevWindow en 4 Partiels :  vers CombatDevArena en 7 Partiels : Attack & "
   }
  ]
 }

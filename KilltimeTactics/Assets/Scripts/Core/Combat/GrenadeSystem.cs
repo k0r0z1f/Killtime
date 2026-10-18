@@ -212,6 +212,7 @@ namespace Killtime.Core.Combat
         public StatusEffect InflictedStatus;
         public FatalBlowResolution FatalResolution;
         public bool IsPrimaryTarget;
+        public string BossReactionLog;
     }
 
     /// <summary>Résultat complet d'une détonation (toutes cibles + log).</summary>
@@ -370,6 +371,20 @@ namespace Killtime.Core.Combat
             int absorbed = Math.Min(totalArmor, afterShield);
             int final = Math.Max(0, afterShield - absorbed);
 
+            // RD-087 (Livre XI §45-46) : réactions des Boss Titans aux dégâts
+            // typés (GrenadeEffectKind exact : Incendiaire/Plasma/Thermobarique
+            // = feu, Cryo = froid) — avant statuts/létal, tracé log.
+            string bossReactionLog = "";
+            {
+                var bossElement = TitanBossMechanics.ClassifyGrenadeKind(grenade != null ? grenade.GrenadeKind : null);
+                var bossReact = TitanBossMechanics.ResolveIncomingElementalDamage(target, bossElement, final, TitanBossState.CurrentRound);
+                if (bossReact.HasReaction)
+                {
+                    final = Math.Max(0, bossReact.AdjustedDamage);
+                    bossReactionLog = bossReact.LogFragment ?? "";
+                }
+            }
+
             StatusEffect inflicted = StatusEffect.None;
             bool exceeded = final > target.EncaissementThreshold;
             bool masked = false;
@@ -431,7 +446,8 @@ namespace Killtime.Core.Combat
                 ExceededEncaissement = exceeded,
                 InflictedStatus = inflicted,
                 FatalResolution = fatal,
-                IsPrimaryTarget = isPrimary
+                IsPrimaryTarget = isPrimary,
+                BossReactionLog = bossReactionLog
             };
         }
 
@@ -472,6 +488,18 @@ namespace Killtime.Core.Combat
                 if (fx.HasFlag(flag)) names.Add(flag.ToString());
             }
             return string.Join("+", names);
+        }
+
+        // RD-051 hook (Livre VI §26.3) : souffle vs véhicules/structures —
+        // +100 si charge lourde (ex. thermobarique, plasma lourd). L'arène
+        // applique ce bonus avant VehicleState.DamageSubsystem ; wrapper
+        // conservé ici pour traçabilité (cf. DamageEngineService jumeau).
+        public static int ApplyHeavyBonusVsVehicle(
+            int rawDamage,
+            InventoryItem grenadeOrLauncher,
+            bool targetIsVehicleOrStructure)
+        {
+            return VehicleMechanics.ApplyHeavyDamage(rawDamage, grenadeOrLauncher, targetIsVehicleOrStructure);
         }
     }
 }

@@ -422,6 +422,8 @@ namespace Killtime.Tactics.Arena
                 log += $"\n   • <b>{h.TargetName}</b>{allyTag} à {h.DistanceFromBlast} case(s) : bruts {h.RawDamage} − couv {h.CoverReduction} − armure {h.ArmorAbsorbed}{(h.ShieldAbsorbed > 0 ? $" − bouclier {h.ShieldAbsorbed}" : "")}{(h.Masked ? " 😷<i>masque</i>" : "")} ➔ <color=#FF3B5C><b>{h.FinalDamage} PV</b></color> ({hpTag})";
                 if (h.InflictedStatus != StatusEffect.None)
                     log += $" | [{GrenadeCalculator.StatusesToLabel(h.InflictedStatus)}]";
+                if (!string.IsNullOrEmpty(h.BossReactionLog))
+                    log += $"\n   • {h.BossReactionLog}";
                 if (h.ExceededEncaissement) log += " | ⚡<b>CHOC</b>";
                 if (h.FatalResolution == FatalBlowResolution.InstantDeath) log += " | 💀<b>MORT</b>";
                 else if (h.FatalResolution == FatalBlowResolution.MiracleSaved) log += " | 🔮<b>MIRACLE</b>";

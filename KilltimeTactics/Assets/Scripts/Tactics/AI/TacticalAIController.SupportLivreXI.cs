@@ -296,6 +296,9 @@ namespace Killtime.Tactics.AI
                 }
             }
 
+            // 4. BOSS TITANS (Livre XI §45-46 - RD-087)
+            if (TryExecuteTitanBossManeuver(actor, target, dist, visual)) return true;
+
             return false;
         }
 

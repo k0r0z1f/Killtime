@@ -1,3 +1,4 @@
+using UnityEngine;
 using Killtime.Core.Character;
 using Killtime.Core.Combat;
 using Killtime.Tactics.Grid;
@@ -6,10 +7,55 @@ namespace Killtime.Tactics.Units
 {
     /// <summary>
     /// Registre officiel des entités colossales et Boss du Codex (Livre XI).
+    /// Source unique : Bestiary.json (RD-087 suite) ; les constructeurs codés
+    /// ci-dessous ne servent que de repli si l'entrée est absente (log warning).
     /// </summary>
     public static class TitanBossCatalog
     {
+        public const string BeastId = "boss_bete_hybris";
+        public const string MinulicanId = "boss_minulican";
+        public const string DiscipleId = "boss_disciple_terre";
+
         public static CharacterSheet BuildTheBeastSheet()
+        {
+            var fromJson = TryBuildFromBestiary(BeastId);
+            if (fromJson != null) return fromJson;
+            Debug.LogWarning($"[TitanBossCatalog] Entrée '{BeastId}' absente du bestiaire — repli codé.");
+            return BuildTheBeastSheetFallback();
+        }
+
+        public static CharacterSheet BuildDiscipleDeTerreSheet()
+        {
+            var fromJson = TryBuildFromBestiary(DiscipleId);
+            if (fromJson != null) return fromJson;
+            Debug.LogWarning($"[TitanBossCatalog] Entrée '{DiscipleId}' absente du bestiaire — repli codé.");
+            return BuildDiscipleDeTerreSheetFallback();
+        }
+
+        public static CharacterSheet BuildMinulicanSheet()
+        {
+            var fromJson = TryBuildFromBestiary(MinulicanId);
+            if (fromJson != null) return fromJson;
+            Debug.LogWarning($"[TitanBossCatalog] Entrée '{MinulicanId}' absente du bestiaire — repli codé.");
+            return BuildMinulicanSheetFallback();
+        }
+
+        private static CharacterSheet TryBuildFromBestiary(string id)
+        {
+            try
+            {
+                var entry = BestiaryCatalog.GetById(id);
+                if (entry == null) return null;
+                return BestiaryCatalog.ToCharacterSheet(entry);
+            }
+            catch (System.Exception e)
+            {
+                Debug.LogWarning($"[TitanBossCatalog] Bestiaire '{id}' illisible ({e.Message}) — repli codé.");
+                return null;
+            }
+        }
+
+        private static CharacterSheet BuildTheBeastSheetFallback()
         {
             var attrs = new Attributes(
                 @for: 7,
@@ -50,7 +96,7 @@ namespace Killtime.Tactics.Units
             return sheet;
         }
 
-        public static CharacterSheet BuildDiscipleDeTerreSheet()
+        private static CharacterSheet BuildDiscipleDeTerreSheetFallback()
         {
             var attrs = new Attributes(
                 @for: 9,
@@ -90,7 +136,7 @@ namespace Killtime.Tactics.Units
             return sheet;
         }
 
-        public static CharacterSheet BuildMinulicanSheet()
+        private static CharacterSheet BuildMinulicanSheetFallback()
         {
             var attrs = new Attributes(
                 @for: 6,

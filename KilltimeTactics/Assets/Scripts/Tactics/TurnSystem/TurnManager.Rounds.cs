@@ -226,6 +226,24 @@ namespace Killtime.Tactics.TurnSystem
                 return;
             }
 
+            // RD-087 (Livre XI §46) : Régénération lithosphérique du Disciple
+            // de Terre (montant bossAI regenAmount, défaut 3 PV) au début de
+            // son tour personnel s'il est au contact de la pierre ou d'un
+            // couvert. Pur + testé via TitanBossMechanics (contact = voisin
+            // non praticable/couvert). Texte sans montant : le montant réel
+            // vient du JSON (bossAI), pas d'une constante d'affichage.
+            TitanBossState.CurrentRound = CurrentRound;
+            if (TitanBossMechanics.TickLithosphericRegen(unit.Stats,
+                TitanBossMechanics.IsInStoneContact(unit.OccupiedCoords, probe =>
+                {
+                    var node = _grid != null ? _grid.GetNode(probe) : null;
+                    if (node == null) return (false, false, false);
+                    return (true, node.IsWalkable, node.Cover != CoverType.None);
+                }), out _))
+            {
+                visual?.SpawnFloatingText("🪨 RÉGÉN. LITHOSPHÈRE", new Color(0.6f, 0.85f, 0.5f));
+            }
+
             // Techniques de spécialisation (Livre III) : vieillissement des marques
             // (failles exposées, provocations) et expiration des bonus de ligne
             // « Tenir la Ligne ! » du donneur qui rejoue son tour.

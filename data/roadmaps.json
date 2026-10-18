@@ -368,16 +368,17 @@
           "id": "RD-051",
           "title": "Combat de Véhicules & Sous-systèmes (Livre VI §26.3)",
           "epic": "Véhicules/Titans",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 21,
+          "updated": "2026-10-18",
           "scene": "",
           "placeholderId": "",
           "primitive": "",
           "pos": null,
           "scale": null,
-          "suggestedAsset": "Livre VI §26.3",
-          "details": "Sous-systèmes et calibres Livre VI §26.3 : zones essentielles (Cockpit, Moteur, Cadre, Rails -> destruction véhicule si 0 PV) vs zones superficielles (Guidon, Canons/Tourelles, Passagers, Queue, Roues -> perte fonctionnelle sans détruire l'engin). Échelle des paliers de PV : 1-10 (vélo), 11-50 (charrette), 51-1000 (jet, tank), 1001-10000 (croiseur stellaire Aeschylus), 10001+ (stations orbitales, forteresses). Dégâts de masse des armes lourdes : +100 dégâts contre structures et véhicules. Manœuvres d'embarquement (2 PA) et écrasement de piéton."
+          "suggestedAsset": "VehicleMechanics + VehicleState + SpecialManeuverService.Vehicle",
+          "details": "FAIT (2026-10-18) : Combat de véhicules Livre VI §26.3. 1) VehicleMechanics.cs (Core/Combat, pur) : enum VehicleSubsystem (essentiels Cockpit/Moteur/Cadre/Rails vs superficiels Guidon/CanonsTourelles/Passagers/Queue/Roues) + IsEssential(), paliers VehicleScale (Vélo 1-10, Charrette 11-50, JetTank 51-1000, Croiseur 1001-10000, Station 10001+) + ClampHp(), ComputeHeavyBonus/ApplyHeavyDamage (+100 si arme lourde vs véhicule/structure, détection HeavyAmmo/gros calibre/mots-clés), ResolveSubsystemHit() (essentiel à 0 = Destroyed, superficiel à 0 = Disabled + log), RunOverDamageFor() par gabarit. 2) VehicleState.cs : registre id → PV par sous-système + équipage + épave, TryEmbark (2 PA via ConsumeActionPoints, refus sans PA/sur épave/double), Disembark 0 PA, TryRunOver (dégâts fixes + projection 1 case + À Terre si mobile, 0 dégât à l'arrêt), ClearAll/Cancel. 3) Hooks minimes : DamageEngineService.ApplyHeavyBonusVsVehicle + GrenadeCalculator.ApplyHeavyBonusVsVehicle (wrappers sans changement de logique), SpecialManeuverService.Vehicle.cs (TryEmbark/TryRunOver/StrikeVehicleSubsystem, TODO UI CombatActionRegistry). 4) CoreRulesConfig : VehicleEmbarkAPCost=2, HeavyVsVehicleBonus=100, VehicleHp*Max configurables. Choix : PV défaut = Max du palier ; équipage survivant à la destruction (débarquement forcé) ; écrasement sans jet. Preuve : VehicleCombatTests 15/15 vert + CoreRulesTests 29/29 + GrenadeSystemTests 17/17 + TitanBossTests 33/33 verts (batchmode EditMode, 0 erreur CS, ProjectSettings restauré, 0 artefact). Correctifs relecture 2026-10-18 : (1) TryRunOver lécétal -> EvaluateFatalBlow(Torse) + test RunOver_LethalDamage (plus de limbo 0 PV) ; (2) purge VehicleState.ClearAll() au reset combat TurnManager.Core (plus de véhicules/embarquements fantômes inter-combats). Reste : branchement UI/arène (placement figurine, trajectoire écrasement)."
         },
         {
           "id": "RD-052",
@@ -609,7 +610,7 @@
           "id": "RD-087",
           "title": "Capacités Réactives & Vulnérabilités des Boss Titans (Livre XI §45-46)",
           "epic": "Véhicules/Titans",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 37,
           "scene": "",
@@ -618,7 +619,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "TitanBossCatalog + TacticalAIController",
-          "details": "Comportements réactifs et vulnérabilités élémentaires des Boss colossaux (Livre XI §45-46) : 1) La Bête d'Hybris : Mémoire des Flammes (réduction passive de 2 dégâts par attaque de feu successive dans le même combat), Balayage de griffes triple-cible (4D + projection 4m + À Terre), Charge tellurique (5 PA 10 cases sans pénalité + effondrement falaise 3D zone). 2) Le Minulican : Absorption Thermique (réaction 2 PA = convertit 50% des dégâts feu/plasma en PV), Éclairs de néant en chaîne (4 PA, 3 cibles 15 cases, 5D + Déstabilisé), Saut quantique déphasé (3 PA, téléport + revers +2 EC). 3) Disciple de Terre : Poing tectonique (3 PA, 7D pulvérise structures), Régénération lithosphérique (3 PV/tour contact pierre), Point faible Choc Thermique (alternance froid puis feu = fissuration cuirasse, perte armure 2 tours et dégâts doublés)."
+          "details": "FAIT (2026-10-18, suite demande user : IA boss sous JSON avec leurs stats). 1) Bestiary.json v2 : bloc bossAI par boss (bête 13 champs flammes/balayage/charge, minulican 9 absorb/éclairs/saut, disciple 6 poing/régén/choc), valeurs = consts (équilibrage inchangé, blocs partiels OK). 2) TitanBossAIParams (BestiaryEntry.bossAI, null=défauts) + TitanBossAIConfig pur injectable (clé spés→nom, fallback défauts) + ClampBossAI en Validate. 3) TitanBossMechanics + IA TitanBoss branchés sur GetParams (helpers For) ; TitanBossCatalog délègue au JSON avec repli codé ; fenêtre Bestiaire édite bossAI (init/suppr + 28 lignes, clamp). 4) Hooks dégâts duel (DamageEngine, après armure+bouclier) + grenades (GrenadeSystem, après armure+bouclier) + regen au tick tour (TurnManager, texte sans montant). Preuve : batchmode EditMode TitanBossTests 33/33 puis suite complète 593/593 verts, exit 0, 0 erreur CS. Hygiène : ProjectSettings.asset restauré (x2), 0 artefact, fichiers <800 l. (DamageEngine 784 à surveiller). Reste : contrôle en jeu par l'utilisateur (touche B : bossAI éditable + recharger, spawn 3 boss, combat visuel + logs réactions).",
+          "updated": "2026-10-18"
         },
         {
           "id": "RD-088",
@@ -2450,7 +2452,7 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "tactics_fleur_fichiers.html",
-          "details": "Collecteurs tools/collect_tactics_{evolution,files_history}.py (pipeline manquante). Regen 2026-10-17 : 492 fichiers, 147937 LOC, 90 commits KilltimeTactics, coupling155/heritage75/partials172/tests225, periode 26 Aou - 17 Oct 2026. PIN ScenarioEditorDevWindow.Cards.* ignore (edition en cours, 2 partiels non commites exclus, Cards.World fige sur HEAD).",
+          "details": "Collecteurs tools/collect_tactics_{evolution,files_history}.py (pipeline manquante). Regen 2026-10-17 : 492 fichiers, 147937 LOC, 90 commits KilltimeTactics, coupling155/heritage75/partials172/tests225, periode 26 Aou - 17 Oct 2026. PIN ScenarioEditorDevWindow.Cards.* ignore (edition en cours, 2 partiels non commites exclus, Cards.World fige sur HEAD). Regen 2026-10-18 (clôture Époque VI 10-17 Oct, worktree propre 0 ignoré) : 549 fichiers, 151374 LOC, 96 commits KilltimeTactics, coupling157/heritage96/partials213/tests230, évolution 77->96 noeuds, fleur + évolution + treemap regénérés.",
           "updated": "2026-10-17"
         },
         {

@@ -208,6 +208,53 @@ namespace Killtime.UI
             }
             GUILayout.EndHorizontal();
 
+            // ---- Réglages IA boss (bossAI JSON, RD-087 suite) ----
+            bool isBoss = string.Equals(e.category, "Boss", StringComparison.OrdinalIgnoreCase);
+            if (isBoss || e.bossAI != null)
+            {
+                GUILayout.Label("Réglages IA Boss (bossAI — null = défauts moteur)", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold });
+                GUILayout.BeginHorizontal();
+                if (e.bossAI == null && GUILayout.Button("Init bossAI (défauts)")) { e.bossAI = new TitanBossAIParams(); _dirty = true; }
+                if (e.bossAI != null && GUILayout.Button("Supprimer bossAI", GUILayout.Width(130))) { e.bossAI = null; _dirty = true; }
+                GUILayout.EndHorizontal();
+                if (e.bossAI != null)
+                {
+                    var p = e.bossAI;
+                    GUILayout.Label("Bête — Flammes / Balayage / Charge");
+                    p.flameReductionPerHit = IntRow("Flammes -/coup", p.flameReductionPerHit, 0, 10);
+                    p.sweepCostFew = IntRow("Balay. PA (≤2)", p.sweepCostFew, 0, 12);
+                    p.sweepCostFull = IntRow("Balay. PA (3)", p.sweepCostFull, 0, 12);
+                    p.sweepMaxTargets = IntRow("Balay. cibles", p.sweepMaxTargets, 1, 6);
+                    p.sweepRange = IntRow("Balay. portée", p.sweepRange, 0, 30);
+                    p.sweepDamage = IntRow("Balay. dégâts", p.sweepDamage, 0, 30);
+                    p.sweepKnockback = IntRow("Balay. recul", p.sweepKnockback, 0, 5);
+                    p.sweepGroundedTurns = IntRow("Balay. ÀTerre", p.sweepGroundedTurns, 0, 5);
+                    p.chargeCost = IntRow("Charge PA", p.chargeCost, 0, 12);
+                    p.chargeMinRange = IntRow("Charge min", p.chargeMinRange, 0, 30);
+                    p.chargeMaxRange = IntRow("Charge max", p.chargeMaxRange, 0, 30);
+                    p.chargeCollapseDamage = IntRow("Charge effond.", p.chargeCollapseDamage, 0, 30);
+                    p.chargeCollapseGroundedTurns = IntRow("Charge ÀTerre", p.chargeCollapseGroundedTurns, 0, 5);
+                    GUILayout.Label("Minulican — Absorption / Éclairs / Saut");
+                    p.absorbCost = IntRow("Absorb. PA", p.absorbCost, 0, 12);
+                    p.chainCost = IntRow("Éclairs PA", p.chainCost, 0, 12);
+                    p.chainMaxTargets = IntRow("Éclairs cibles", p.chainMaxTargets, 1, 6);
+                    p.chainMaxRange = IntRow("Éclairs portée", p.chainMaxRange, 0, 30);
+                    p.chainDamage = IntRow("Éclairs dégâts", p.chainDamage, 0, 30);
+                    p.chainDestabilisedTurns = IntRow("Éclairs Déstab.", p.chainDestabilisedTurns, 0, 5);
+                    p.leapCost = IntRow("Saut PA", p.leapCost, 0, 12);
+                    p.leapMaxRange = IntRow("Saut portée", p.leapMaxRange, 0, 30);
+                    p.leapRiposteBonusEC = IntRow("Saut +EC", p.leapRiposteBonusEC, 0, 10);
+                    GUILayout.Label("Disciple — Poing / Régén / Choc");
+                    p.fistCost = IntRow("Poing PA", p.fistCost, 0, 12);
+                    p.fistDamage = IntRow("Poing dégâts", p.fistDamage, 0, 30);
+                    p.regenAmount = IntRow("Régén PV", p.regenAmount, 0, 10);
+                    p.shockWindowRounds = IntRow("Choc fenêtre", p.shockWindowRounds, 0, 5);
+                    p.shockArmorLossTurns = IntRow("Choc sans arm.", p.shockArmorLossTurns, 0, 5);
+                    p.shockDamageMultiplier = IntRow("Choc x dégâts", p.shockDamageMultiplier, 1, 5);
+                    BestiaryCatalog.ClampBossAI(p);
+                }
+            }
+
             // ---- Équipement (noms catalogue Livre VIII) ----
             GUILayout.Label("Équipement (nom exact du catalogue, ex: Épée Métal Standard)", new GUIStyle(GUI.skin.label) { fontStyle = FontStyle.Bold });
             if (e.equipment == null) e.equipment = new List<string>();

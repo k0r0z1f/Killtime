@@ -348,6 +348,22 @@ namespace Killtime.Core.Combat
             int shieldRemainder = defender.AbsorbShield(finalDamage);
             int shieldAbsorbed = Math.Max(0, finalDamage - shieldRemainder);
             finalDamage = Math.Max(0, shieldRemainder);
+
+            // RD-087 (Livre XI §45-46) : réactions des Boss Titans aux dégâts
+            // élémentaires (Mémoire des Flammes, Absorption Thermique, Choc
+            // Thermique) — avant application létale, tracé log. Inerte sans
+            // spé boss ni dégât typé (simple expiration de fissure).
+            string titanBossTag = "";
+            {
+                var equippedWepForBoss = attacker.Sheet?.GetEquippedWeapon();
+                var bossElement = TitanBossMechanics.ClassifyDuelElement(duel.AttackSkill, equippedWepForBoss, attacker);
+                var bossReact = TitanBossMechanics.ResolveIncomingElementalDamage(defender, bossElement, finalDamage, TitanBossState.CurrentRound);
+                if (bossReact.HasReaction)
+                {
+                    finalDamage = Math.Max(0, bossReact.AdjustedDamage);
+                    if (!string.IsNullOrEmpty(bossReact.LogFragment)) titanBossTag = " | " + bossReact.LogFragment;
+                }
+            }
             int prevHp = defender.CurrentHealth;
 
             bool exceededEncaissement = finalDamage > defender.EncaissementThreshold;
@@ -584,6 +600,11 @@ namespace Killtime.Core.Combat
                 log += $" | 🔥 <b>COMBUSTION (Livre VII §28.4)</b> : En Feu pendant {fireTurns} tour(s)";
             }
 
+            if (!string.IsNullOrEmpty(titanBossTag))
+            {
+                log += titanBossTag;
+            }
+
             if (stunApplied)
             {
                 log += " | 😵 <b>ASSOMMEMENT NET (Livre VII §28.4)</b> : Inconscient 1 tour direct";
@@ -758,6 +779,19 @@ namespace Killtime.Core.Combat
             else if ((target.ActiveStatus & StatusEffect.Ralenti) != 0) target.ActiveStatus &= ~StatusEffect.Ralenti;
             else if ((target.ActiveStatus & StatusEffect.ATerre) != 0) target.ActiveStatus &= ~StatusEffect.ATerre;
             else if ((target.ActiveStatus & StatusEffect.Sonne) != 0) target.ActiveStatus &= ~StatusEffect.Sonne;
+        }
+
+        // RD-051 hook (Livre VI §26.3) : +100 armes lourdes vs véhicules /
+        // structures. Le duel aveugle standard ne connaît pas de cible véhicule
+        // (que des CharacterStats) : l'appelant véhicule (arène, grenades,
+        // SpecialManeuverService.StrikeVehicleSubsystem) applique ce bonus via
+        // VehicleMechanics.ApplyHeavyDamage. Wrapper conservé ici pour traçabilité.
+        public static int ApplyHeavyBonusVsVehicle(
+            int rawDamage,
+            Killtime.Core.Inventory.InventoryItem weapon,
+            bool targetIsVehicleOrStructure)
+        {
+            return VehicleMechanics.ApplyHeavyDamage(rawDamage, weapon, targetIsVehicleOrStructure);
         }
     }
 }
