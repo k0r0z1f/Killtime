@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Killtime Tactics — Base</title>
+    <meta name="description" content="Point d'entrée du site Killtime Tactics : jeu Unity, système RP, univers narratif, atlas des mondes.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="app-container">
+        <header class="topbar">
+            <div class="topbar-left">
+                <a href="tactics_index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>
+                    </div>
+                    <div class="brand-info"><h1>Killtime Tactics <span class="brand-badge">Base v0.1</span></h1></div>
+                </a>
+                <nav class="breadcrumbs"><span class="current">Index Tactics</span></nav>
+            </div>
+            <div class="topbar-right">
+                <a href="index.html" class="topbar-site-link"><span>Système RP</span></a>
+                <a href="Killtime/index.html" class="topbar-site-link"><span>Site Killtime</span></a>
+            </div>
+        </header>
+        <div class="content-wrapper">
+            <main class="main-content">
+                <header class="doc-header">
+                    <h1 class="doc-title">Killtime Tactics — site de base</h1>
+                    <p class="doc-subtitle">Le jeu Unity a désormais sa porte d'entrée : ici le terrain, là les règles, là l'histoire.</p>
+                </header>
+                <article class="prose">
+                    <div class="cards-grid-3">
+                        <div class="spec-card">
+                            <div class="spec-card-title"><span>Système RP</span><span class="pill-badge cyan">Règles</span></div>
+                            <div class="spec-card-world">11 Livres // Codex v2.4</div>
+                            <p>Dés, PA, 5e Force, combat, bestiaire, atlas. La référence mécanique.</p>
+                            <div class="spec-card-footer"><a href="index.html" class="btn-step"><span>Ouvrir le Codex</span></a></div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-card-title"><span>Univers Killtime</span><span class="pill-badge amber">Narratif</span></div>
+                            <div class="spec-card-world">Tomes I & II // Lore</div>
+                            <p>Hybris, déportés de l'An 0, Cléia, Empire. L'histoire racontée.</p>
+                            <div class="spec-card-footer"><a href="Killtime/index.html" class="btn-step"><span>Ouvrir l'Univers</span></a></div>
+                        </div>
+                        <div class="spec-card">
+                            <div class="spec-card-title"><span>Jeu Tactics</span><span class="pill-badge emerald">Unity</span></div>
+                            <div class="spec-card-world">Terrain // HexGrid</div>
+                            <p>Roadmap, fleur git, fichiers, atlas 3D. Le chantier du jeu.</p>
+                            <div class="spec-card-footer"><a href="roadmap.html" class="btn-step"><span>Ouvrir la Roadmap</span></a></div>
+                        </div>
+                    </div>
+                    <h2><span class="section-symbol">A.</span> Outils Tactics existants</h2>
+                    <ul>
+                        <li><a href="roadmap.html">Roadmap projet (Kanban)</a> — suivi <code>data/roadmaps.json</code></li>
+                        <li><a href="tactics_evolution.html">Évolution Tactique (Fleur Git)</a></li>
+                        <li><a href="tactics_files.html">Cartographie des fichiers</a> — <a href="tactics_fleur_fichiers.html">Fleur fichiers</a></li>
+                        <li><a href="atlas_3d.html">Atlas 3D des 36 Zones</a> — <a href="livre_10.html">Livre X</a> — <a href="livre_11.html">Livre XI</a></li>
+                    </ul>
+                    <h2><span class="section-symbol">B.</span> Atlas complet des mondes</h2>
+                    <div class="callout temporal">
+                        <div class="callout-header">Base posée + tableau triable en ligne</div>
+                        <div class="callout-body"><a href="atlas_mondes.html">Ouvrir l'Atlas des Mondes</a> — tableau 15 colonnes triables + sélecteur de colonnes + 4 vues dynamiques (bulles Tech × Magie, donut des souches, réseau systèmes–souches, corrélations Empire), 100 % autonome sans CDN ; filtres système, souche de vie (C/C+/C+X/S/S-C/G/X), magie, type. Socle JSON : <code>data/atlas_mondes.json</code> (10 entrées canon). &lt;1% des données — ratissage de tes notes à venir.</div>
+                    </div>
+                </article>
+            </main>
+        </div>
+    </div>
+    <script src="js/codex.js"></script>
+</body>
+</html>

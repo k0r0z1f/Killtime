@@ -1,0 +1,1563 @@
+{
+  "version": 3,
+  "updated": "2026-10-19",
+  "note": "BASE CANON DE RÉFÉRENCE : fait foi sur tout le reste du contenu (livres, lore, scripts, visuels). Socle <1% + notes auteur 2026-10-19. Statut 'canon' = Livres I/X/XI + atlas_3d ; 'auteur' = à confirmer au ratissage.",
+  "souches_ref": {
+    "C": "carbone ADN-ARN ACGT, eau",
+    "C+": "carbone dopé nytharite / 5e Force (perméable)",
+    "C+X": "carbone + 3e brin 5e Force (ex : Cléiennes)",
+    "S": "silicone double-brin BFRMD/PFRMD",
+    "S/C": "hybride silice-carbone (ex : Derek)",
+    "G": "gaz rares / plasmas confinés",
+    "X": "autres : méthane, ammoniac, 5e Force pure, Eau Sombre, artificiel"
+  },
+  "mondes": [
+    {
+      "id": "hybris",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha (naine jaune stable)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Hybris",
+      "type_corps": "planete",
+      "souche_vie": [
+        "C",
+        "C+",
+        "S/C"
+      ],
+      "especes": [
+        "Humain (plaines, déportés An 0)",
+        "Nain (montagnard ouest, exilés — corr. 2026-10-19 : non souterrain)",
+        "Taurien (Grande Forêt sud)",
+        "Derek (indigène cavernes, S/C)",
+        "Géant/Titan (Continent Est, C+ hors-trame)",
+        "Faune C+ (Bête d'Hybris, faune magique)"
+      ],
+      "gravite": "1.02 g",
+      "atmosphere": "Azote-Oxygène pure",
+      "tech_niveau": 3.5,
+      "tech_label": "Médiévale à Avancée (3-4)",
+      "magie": "Normale à Inhérente",
+      "civilisation": "planétaire fragmentée (royaumes)",
+      "affiliation": "Indépendant // Mondes Francs",
+      "statut": "documenté",
+      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Planètes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Régions",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Livre I §2 — Espèces",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Livre XI §45 — Faune",
+          "url": "livre_11.html#chap-45"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        },
+        {
+          "titre": "Lore — Prélude Hybris",
+          "url": "Killtime/Killtime/lore/hybris/Hybris%200-Prelude%20Overview.html"
+        }
+      ],
+      "_nx": 523.4661625812607,
+      "_ny": 97.9300935329805
+    },
+    {
+      "id": "hybris-alpha",
+      "systeme": "Hybris-Prime",
+      "etoile": "elle-même (primaire)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Hybris-Alpha",
+      "type_corps": "etoile",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [],
+      "gravite": "n.d.",
+      "atmosphere": "plasma (naine jaune stable)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle (astre)",
+      "magie": "Normale (fond arcanique stable)",
+      "civilisation": "aucune",
+      "affiliation": "Primaire d'Hybris-Prime",
+      "statut": "documenté",
+      "notes": "Naine jaune stable. Foyer d'Hybris et de ses deux lunes arcaniques.",
+      "source": "atlas_3d.html:625, livre_10.html:703-704",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 558.5757986977362,
+      "_ny": 151.66939219267095
+    },
+    {
+      "id": "lune-nyth1",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha",
+      "zone_eliane": "Zone 01",
+      "planete": "Lune Blanche Nyth-1",
+      "type_corps": "lune",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [
+        "Nuits Blanches (~9 jours) : 5e Force +1 palier, moteurs suralimentés, minage nytharite",
+        "Galères naines : les galeries 'chantent' et attirent les Dereks"
+      ],
+      "gravite": "n.d.",
+      "atmosphere": "poussière de nytharite (lumière blanc-lait)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle arcanique",
+      "magie": "Variable (pics aux Nuits Blanches)",
+      "civilisation": "repère calendaire Nythari (Tauriens)",
+      "affiliation": "Hybris",
+      "statut": "notes auteur 2026-10-19",
+      "notes": "Régolithe pâle de nytharite, visible même de jour. Les Nuits Blanches dopent sorts et moteurs — et l'Eau Sombre.",
+      "source": "atlas_3d.html:637-640 + notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §40.3 — Lunes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 574.3339761363006,
+      "_ny": 213.89702763289517
+    },
+    {
+      "id": "lune-storm2",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha",
+      "zone_eliane": "Zone 01",
+      "planete": "Lune Électrostatique Storm-2",
+      "type_corps": "lune",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [
+        "Conjonctions d'Orage (~3 ans) : tempêtes arcaniques, pannes arcanotech, TP instables, bêtes énervées",
+        "Prédictions disputées : ingénieurs impériaux vs Nains (paris, sabotages)"
+      ],
+      "gravite": "n.d.",
+      "atmosphere": "enveloppe chargée (décharges bleues visibles)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle arcanique",
+      "magie": "Variable (Conjonctions d'Orage)",
+      "civilisation": "présage (Tauriens) + enjeu technique",
+      "affiliation": "Hybris",
+      "statut": "notes auteur 2026-10-19",
+      "notes": "Même phénomène que les crêtes des Montagnes de l'Orage : la montagne 'répond' à la lune.",
+      "source": "atlas_3d.html:637-640 + notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §40.3 — Lunes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 569.0330518581694,
+      "_ny": 277.86966999245584
+    },
+    {
+      "id": "vardis-major",
+      "systeme": "Janus",
+      "etoile": "elle-même (binaire)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Vardis-Major",
+      "type_corps": "etoile",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [],
+      "gravite": "n.d.",
+      "atmosphere": "plasma (binaire rouge-orangée)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle (astre)",
+      "magie": "Normale (fond arcanique)",
+      "civilisation": "aucune",
+      "affiliation": "Primaire de Janus",
+      "statut": "documenté",
+      "notes": "Étoile binaire rouge-orangée. Composantes à préciser.",
+      "source": "atlas_3d.html:626, livre_10.html:709-713",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 543.247463261193,
+      "_ny": 336.6548908338732
+    },
+    {
+      "id": "vardis",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major (binaire rouge-orangée)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Vardis",
+      "type_corps": "planete",
+      "souche_vie": [
+        "C",
+        "S"
+      ],
+      "especes": [
+        "Vardien/Frontalier (C aride)",
+        "Thalun tribal (C filtrante)",
+        "Garnison impériale (multi-souches)",
+        "Corrompu Eau Sombre (X)"
+      ],
+      "gravite": "1.15 g",
+      "atmosphere": "aride, poussières industrielles",
+      "tech_niveau": 4.5,
+      "tech_label": "Avancée (4-5)",
+      "magie": "Limitée (réglementée)",
+      "civilisation": "colonisation militaire + guerre active",
+      "affiliation": "Empire (colonisation en cours)",
+      "statut": "documenté + notes auteur 2026-10-19",
+      "notes": "Phase de colonisation par l'Empire, guerre active. Garnisons, miradors biométriques, Nexus d'Aurion.",
+      "source": "livre_10.html:794-832",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Vardis",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Territoires",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        },
+        {
+          "titre": "Lore — Vardis 1771-0",
+          "url": "Killtime/Killtime/lore/locations/Vardis%201771-0%20Overview.html"
+        },
+        {
+          "titre": "Lore — Territoire impérial",
+          "url": "Killtime/Killtime/lore/vardis/Imperial%20Territory%201775-30.1%20Overview.html"
+        }
+      ],
+      "_nx": 499.77147897448526,
+      "_ny": 383.88239933229676
+    },
+    {
+      "id": "nefris",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major",
+      "zone_eliane": "Zone 02",
+      "planete": "Nefris",
+      "type_corps": "planete",
+      "souche_vie": [
+        "C",
+        "X"
+      ],
+      "especes": [
+        "Nefrisien indigène (C toxique-résistante)",
+        "Mercenaires / ingénieurs impériaux",
+        "Corrompu Eau Sombre (X)"
+      ],
+      "gravite": "0.94 g",
+      "atmosphere": "toxique localement, masque requis",
+      "tech_niveau": 3,
+      "tech_label": "Hétérogène (primitive à avancée)",
+      "magie": "Normale (spiritualité tribale)",
+      "civilisation": "tribus guérilla toxique-résistante (primitive rusée, tech récupérée) + Empire bloqué",
+      "affiliation": "contesté (Empire bloqué en orbites et têtes de pont, jamais soumis)",
+      "statut": "documenté + notes auteur 2026-10-19",
+      "notes": "Nom local : Nefris. Jamais soumis : Empire bloqué en orbites et têtes de pont. Tribus guérilla toxique-résistante, tech récupérée.",
+      "source": "livre_10.html:834-871 + notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Nefris",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        },
+        {
+          "titre": "Lore — Overview (note Nefris)",
+          "url": "Killtime/Killtime/lore/Killtime%20Universe%20Overview.html"
+        },
+        {
+          "titre": "Tome I — manuscrit",
+          "url": "Killtime/Killtime/manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html"
+        }
+      ],
+      "_nx": 443.3163964949133,
+      "_ny": 414.43436213162374
+    },
+    {
+      "id": "base-nefris",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major",
+      "zone_eliane": "Zone 02",
+      "planete": "Base Astéroïde de Nefris",
+      "type_corps": "station",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [
+        "Résistance (équipage C)"
+      ],
+      "gravite": "micro-g",
+      "atmosphere": "artificielle",
+      "tech_niveau": 4,
+      "tech_label": "orbitale clandestine",
+      "magie": "Variable",
+      "civilisation": "avant-poste",
+      "affiliation": "Résistance",
+      "statut": "documenté",
+      "source": "livre_10.html:968-983",
+      "liens": [
+        {
+          "titre": "Livre X §40.3 — Base",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Lore — Overview",
+          "url": "Killtime/Killtime/lore/Killtime%20Universe%20Overview.html"
+        }
+      ],
+      "_nx": 380,
+      "_ny": 425
+    },
+    {
+      "id": "cleia",
+      "systeme": "Veyla",
+      "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)",
+      "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)",
+      "planete": "Cléia",
+      "type_corps": "planete",
+      "souche_vie": [
+        "C+X",
+        "X"
+      ],
+      "especes": [
+        "Cléienne (C+X : ADN-ARN + 3e brin 5e Force, 100% féminine, besoin en eau très inférieur à l'humain)",
+        "Faune des canyons + espèces minérales à tubes (X)"
+      ],
+      "gravite": "0.88 g",
+      "atmosphere": "aride tempérée, faible hydrologie (canyons immenses)",
+      "tech_niveau": 5,
+      "tech_label": "Très Avancée (5)",
+      "magie": "Inhérente (instinctive)",
+      "civilisation": "matriarcat interstellaire",
+      "affiliation": "Royaume Matriarcal indépendant (Empire : prospection sans issue)",
+      "statut": "documenté + notes auteur 2026-10-19",
+      "notes": "Non associée à l'Empire : l'Empire tâte le terrain mais juge les Cléiennes très difficiles à soumettre (magie inhérente C+X, tech 5). Cités-tubes cultivées (espèces minérales en arches immenses), pas d'océans de méthane ; conforme aux visuels Cleya. Orbite circumbinaire autour du couple Mère/Sœur. Noces tous les 7 ans, pendant une saison : oracles télépathiques boostés + poussée de croissance des cités-tubes. Année orbitale : 400 jours ; saison des Noces : 90 jours.",
+      "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Cléia",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre I §2 — Cléien",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 236.5338374187393,
+      "_ny": 97.93009353298052
+    },
+    {
+      "id": "veyla-mere",
+      "systeme": "Veyla",
+      "etoile": "elle-même (primaire)",
+      "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)",
+      "planete": "Veyla-Mère",
+      "type_corps": "etoile",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [],
+      "gravite": "n.d.",
+      "atmosphere": "plasma (photosphère blanche)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle (astre)",
+      "magie": "Inhérente (cœur du culte, flux constant)",
+      "civilisation": "aucune (objet de culte)",
+      "affiliation": "vénérée par Cléia (Mère-Loi)",
+      "statut": "nouveau — notes auteur 2026-10-19",
+      "notes": "L'Aînée : constance, doctrine, protection. Sa constance guide la croissance des tubes-cités. Temps du Droit quand seule. Binaire avec Veyla-Sœur ; Cléia circumbinaire. Noces tous les 7 ans (conjonction, durée : une saison). Cléia : 400 jours, Noces 90 jours.",
+      "source": "notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 287.1902583577705,
+      "_ny": 58.502618514734706
+    },
+    {
+      "id": "veyla-soeur",
+      "systeme": "Veyla",
+      "etoile": "Veyla-Mère (primaire)",
+      "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)",
+      "planete": "Veyla-Sœur",
+      "type_corps": "etoile",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [],
+      "gravite": "n.d.",
+      "atmosphere": "plasma (naine, éclat variable)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle (astre)",
+      "magie": "Variable (capricieuse, vents et cycles des canyons)",
+      "civilisation": "aucune (objet de culte)",
+      "affiliation": "vénérée par Cléia (Sœur-Caprice)",
+      "statut": "nouveau — notes auteur 2026-10-19",
+      "notes": "La Cadette : inspiration, télépathie, vents. Temps du Rêve quand seule. Conjonctions = Noces (oracles). Compagne en binaire ; Noces tous les 7 ans avec la Mère (durée : une saison, oracles + croissance tubes). Cléia : 400 jours, Noces 90 jours.",
+      "source": "notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 347.90405489525676,
+      "_ny": 37.659545836469135
+    },
+    {
+      "id": "kark-sol",
+      "systeme": "Karkjiue",
+      "etoile": "elle-même (primaire)",
+      "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)",
+      "planete": "Kark-Sol",
+      "type_corps": "etoile",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [],
+      "gravite": "n.d.",
+      "atmosphere": "plasma (géante rouge, éruptions)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle (astre)",
+      "magie": "Variable (éruptions)",
+      "civilisation": "aucune",
+      "affiliation": "Primaire de Karkjiue",
+      "statut": "documenté",
+      "notes": "Géante rouge à fortes éruptions.",
+      "source": "atlas_3d.html:628, livre_10.html:722-725",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 316.68360350508675,
+      "_ny": 414.43436213162374
+    },
+    {
+      "id": "karkjiue",
+      "systeme": "Karkjiue",
+      "etoile": "Kark-Sol (géante rouge, éruptions)",
+      "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)",
+      "planete": "Karkjiue",
+      "type_corps": "planete",
+      "souche_vie": [
+        "S",
+        "C"
+      ],
+      "especes": [
+        "Mikyai (S-partielle : écailles silicées thermorésistantes)",
+        "Faune volcanique (S pure)"
+      ],
+      "gravite": "1.28 g",
+      "atmosphere": "volcanique, basalte brûlant",
+      "tech_niveau": 4,
+      "tech_label": "Avancée (blindages & balistique)",
+      "magie": "Impossible (rares exceptions limitées)",
+      "civilisation": "castes militaires",
+      "affiliation": "Protectorat Martial Mikyai",
+      "statut": "documenté",
+      "source": "livre_10.html:908-940, livre_1.html:733-748",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Karkjiue",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre I §2 — Mikyai",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 260.2285210255148,
+      "_ny": 383.88239933229676
+    },
+    {
+      "id": "soleil",
+      "systeme": "Solaire (Sol)",
+      "etoile": "lui-même (primaire)",
+      "zone_eliane": "Zone 01 marge",
+      "planete": "Soleil",
+      "type_corps": "etoile",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [],
+      "gravite": "n.d.",
+      "atmosphere": "plasma (naine jaune G2V)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle (astre)",
+      "magie": "Normale (fond arcanique stable)",
+      "civilisation": "aucune",
+      "affiliation": "Primaire du Sol",
+      "statut": "documenté",
+      "notes": "Référence 1 g. Matrice des déportés de l'An 0.",
+      "source": "atlas_3d.html:629, livre_10.html:728-731",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Système Sol",
+          "url": "livre_10.html#chap-39"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 185.6660238636994,
+      "_ny": 213.89702763289526
+    },
+    {
+      "id": "terre",
+      "systeme": "Solaire (Sol)",
+      "etoile": "Soleil (G2V)",
+      "zone_eliane": "Zone 01 marge",
+      "planete": "Terre",
+      "type_corps": "planete",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [
+        "Humain référence XXIe (matrice des 3000 déportés An 0)"
+      ],
+      "gravite": "1.00 g",
+      "atmosphere": "Azote-Oxygène",
+      "tech_niveau": 3,
+      "tech_label": "Moderne silicium (3)",
+      "magie": "Ignorée / Dormante",
+      "civilisation": "planétaire pré-Warp",
+      "affiliation": "Matrice historique",
+      "statut": "documenté",
+      "source": "atlas_3d.html:711-726, livre_10.html:728-731",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Système Sol",
+          "url": "livre_10.html#chap-39"
+        },
+        {
+          "titre": "Atlas 3D",
+          "url": "atlas_3d.html"
+        }
+      ],
+      "_nx": 201.42420130226378,
+      "_ny": 151.669392192671
+    },
+    {
+      "id": "aurion-prime",
+      "systeme": "Aurion-Forge",
+      "etoile": "elle-même (primaire)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Aurion-Prime",
+      "type_corps": "etoile",
+      "souche_vie": [
+        "G"
+      ],
+      "especes": [],
+      "gravite": "n.d.",
+      "atmosphere": "plasma (naine blanche)",
+      "tech_niveau": 0,
+      "tech_label": "naturelle (astre)",
+      "magie": "Normale (fond arcanique)",
+      "civilisation": "aucune",
+      "affiliation": "Primaire d'Aurion-Forge",
+      "statut": "notes auteur 2026-10-19",
+      "notes": "Étoile du système-forge de Ferron (à documenter).",
+      "source": "notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        }
+      ],
+      "_nx": 412.0959451047431,
+      "_ny": 37.659545836469135
+    },
+    {
+      "id": "ferron",
+      "systeme": "Aurion-Forge",
+      "etoile": "Aurion-Prime (naine blanche)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Ferron",
+      "type_corps": "planete",
+      "souche_vie": [
+        "C",
+        "S"
+      ],
+      "especes": [
+        "Ferronien des chantiers (C industrielle)",
+        "Garnison impériale (multi-souches)"
+      ],
+      "gravite": "1.12 g",
+      "atmosphere": "smogs industriels, masque requis",
+      "tech_niveau": 5,
+      "tech_label": "Très Avancée (5, chantiers Warp)",
+      "magie": "Limitée (réglementée)",
+      "civilisation": "chantiers navals impériaux",
+      "affiliation": "Empire (monde central)",
+      "statut": "notes auteur 2026-10-19",
+      "notes": "Monde-forge central : l'Aeschylus y fut construit sur commande impériale, volé à la livraison par le Capitaine balafré — humiliation impériale, destroyers aux trousses.",
+      "source": "notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        }
+      ],
+      "_nx": 472.80974164222937,
+      "_ny": 58.50261851473465
+    },
+    {
+      "id": "aeschylus",
+      "systeme": "mobile (Avaleur de Mondes)",
+      "etoile": "—",
+      "zone_eliane": "n.d. — mobile (base : Avaleur de Mondes)",
+      "planete": "L'Aeschylus",
+      "type_corps": "vaisseau",
+      "souche_vie": [
+        "C",
+        "S",
+        "C+X"
+      ],
+      "especes": [
+        "Équipage mixte (Capitaine balafré, Sara, Max, Gunther, Babushka)"
+      ],
+      "gravite": "variable",
+      "atmosphere": "artificielle",
+      "tech_niveau": 4.5,
+      "tech_label": "Warp + furtivité arcanique",
+      "magie": "Variable",
+      "civilisation": "équipage clandestin",
+      "affiliation": "Pirates (base : Avaleur de Mondes)",
+      "statut": "documenté + notes auteur 2026-10-19",
+      "notes": "Construit sur Ferron sur commande impériale, livré puis volé par le Capitaine balafré. Passe la majorité de son existence à bord de l'Avaleur de Mondes. Base principale : ventre-refuge-monde de l'Avaleur (dérive lente vers le système digestif, villes près de l'entrée).",
+      "source": "livre_10.html:948-966 + notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre X §40.3 — Vaisseaux",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre XI §44 — Factions",
+          "url": "livre_11.html#chap-44"
+        }
+      ],
+      "_nx": 216.75253673880698,
+      "_ny": 336.6548908338733
+    },
+    {
+      "id": "avaleur",
+      "systeme": "mobile interdimentionnel",
+      "etoile": "—",
+      "zone_eliane": "n.d. — mobile interdimentionnel",
+      "planete": "Avaleur de Mondes",
+      "type_corps": "entite-monde",
+      "souche_vie": [
+        "X"
+      ],
+      "especes": [
+        "Entité ultradimensionnelle (taille système planétaire)"
+      ],
+      "gravite": "variable",
+      "atmosphere": "n.d.",
+      "tech_niveau": 0,
+      "tech_label": "cosmologique (digestion très lente, rayonnements type trou noir + 5e Force)",
+      "magie": "Variable (transits dimensionnels)",
+      "civilisation": "aucune (entité)",
+      "affiliation": "—",
+      "statut": "notes auteur 2026-10-19",
+      "notes": "Entité vivante cosmologique : dérive active, chasse tout ce qui se présente, transits inter-univers et intra-univers par d'autres dimensions. Digestion de matière très très lente avec rayonnements progressifs type trou noir, avec un peu de 5e Force. L'Aeschylus vit dans son ventre-refuge-monde, en dérive très lente vers le système digestif — villes et settlements près de l'entrée.",
+      "source": "notes auteur 2026-10-19",
+      "liens": [
+        {
+          "titre": "Livre XI §46 — Entités cosmiques",
+          "url": "livre_11.html#chap-46"
+        }
+      ],
+      "_nx": 190.96694814183058,
+      "_ny": 277.8696699924559
+    },
+    {
+      "id": "esp-humain",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha (naine jaune stable)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Humain",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Hybris",
+      "magie": "à préciser (cf. Hybris)",
+      "civilisation": "espèce — cf. Hybris",
+      "affiliation": "cf. Hybris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Hybris : Humain (plaines, déportés An 0). Magie/civilisation à affiner.",
+      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Planètes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Régions",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Livre I §2 — Espèces",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Livre XI §45 — Faune",
+          "url": "livre_11.html#chap-45"
+        }
+      ],
+      "hote": "Hybris"
+    },
+    {
+      "id": "esp-nain",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha (naine jaune stable)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Nain",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Hybris",
+      "magie": "à préciser (cf. Hybris)",
+      "civilisation": "espèce — cf. Hybris",
+      "affiliation": "cf. Hybris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Hybris : Nain (montagnard ouest, exilés — corr. 2026-10-19 : non souterrain). Magie/civilisation à affiner.",
+      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Planètes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Régions",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Livre I §2 — Espèces",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Livre XI §45 — Faune",
+          "url": "livre_11.html#chap-45"
+        }
+      ],
+      "hote": "Hybris"
+    },
+    {
+      "id": "esp-taurien",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha (naine jaune stable)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Taurien",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C+"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Hybris",
+      "magie": "à préciser (cf. Hybris)",
+      "civilisation": "espèce — cf. Hybris",
+      "affiliation": "cf. Hybris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Hybris : Taurien (Grande Forêt sud). Magie/civilisation à affiner.",
+      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Planètes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Régions",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Livre I §2 — Espèces",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Livre XI §45 — Faune",
+          "url": "livre_11.html#chap-45"
+        }
+      ],
+      "hote": "Hybris"
+    },
+    {
+      "id": "esp-derek",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha (naine jaune stable)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Derek",
+      "type_corps": "espece",
+      "souche_vie": [
+        "S/C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Hybris",
+      "magie": "à préciser (cf. Hybris)",
+      "civilisation": "espèce — cf. Hybris",
+      "affiliation": "cf. Hybris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Hybris : Derek (indigène cavernes, S/C). Magie/civilisation à affiner.",
+      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Planètes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Régions",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Livre I §2 — Espèces",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Livre XI §45 — Faune",
+          "url": "livre_11.html#chap-45"
+        }
+      ],
+      "hote": "Hybris"
+    },
+    {
+      "id": "esp-geant-titan",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha (naine jaune stable)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Géant/Titan",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C+"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Hybris",
+      "magie": "à préciser (cf. Hybris)",
+      "civilisation": "espèce — cf. Hybris",
+      "affiliation": "cf. Hybris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Hybris : Géant/Titan (Continent Est, C+ hors-trame). Magie/civilisation à affiner.",
+      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Planètes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Régions",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Livre I §2 — Espèces",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Livre XI §45 — Faune",
+          "url": "livre_11.html#chap-45"
+        }
+      ],
+      "hote": "Hybris"
+    },
+    {
+      "id": "esp-faune-d-hybris",
+      "systeme": "Hybris-Prime",
+      "etoile": "Hybris-Alpha (naine jaune stable)",
+      "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)",
+      "planete": "Faune d'Hybris",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C+"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Hybris",
+      "magie": "à préciser (cf. Hybris)",
+      "civilisation": "espèce — cf. Hybris",
+      "affiliation": "cf. Hybris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Hybris : Faune C+ (Bête d'Hybris, faune magique). Magie/civilisation à affiner.",
+      "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Planètes",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Régions",
+          "url": "livre_10.html#chap-41"
+        },
+        {
+          "titre": "Livre I §2 — Espèces",
+          "url": "livre_1.html#chap-2"
+        },
+        {
+          "titre": "Livre XI §45 — Faune",
+          "url": "livre_11.html#chap-45"
+        }
+      ],
+      "hote": "Hybris"
+    },
+    {
+      "id": "esp-vardien-frontalier",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major (binaire rouge-orangée)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Vardien/Frontalier",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Vardis",
+      "magie": "à préciser (cf. Vardis)",
+      "civilisation": "espèce — cf. Vardis",
+      "affiliation": "cf. Vardis",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Vardis : Vardien/Frontalier (C aride). Magie/civilisation à affiner.",
+      "source": "livre_10.html:794-832 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Vardis",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Territoires",
+          "url": "livre_10.html#chap-41"
+        }
+      ],
+      "hote": "Vardis"
+    },
+    {
+      "id": "esp-thalun",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major (binaire rouge-orangée)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Thalun",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Vardis",
+      "magie": "à préciser (cf. Vardis)",
+      "civilisation": "espèce — cf. Vardis",
+      "affiliation": "cf. Vardis",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Vardis : Thalun tribal (C filtrante). Magie/civilisation à affiner.",
+      "source": "livre_10.html:794-832 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Vardis",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Territoires",
+          "url": "livre_10.html#chap-41"
+        }
+      ],
+      "hote": "Vardis"
+    },
+    {
+      "id": "esp-garnison-imperiale-vardis",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major (binaire rouge-orangée)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Garnison impériale (Vardis)",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Vardis",
+      "magie": "à préciser (cf. Vardis)",
+      "civilisation": "espèce — cf. Vardis",
+      "affiliation": "cf. Vardis",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Vardis : Garnison impériale (multi-souches). Magie/civilisation à affiner.",
+      "source": "livre_10.html:794-832 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Vardis",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre X §41 — Territoires",
+          "url": "livre_10.html#chap-41"
+        }
+      ],
+      "hote": "Vardis"
+    },
+    {
+      "id": "esp-nefrisien",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major",
+      "zone_eliane": "Zone 02",
+      "planete": "Nefrisien",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Nefris",
+      "magie": "à préciser (cf. Nefris)",
+      "civilisation": "espèce — cf. Nefris",
+      "affiliation": "cf. Nefris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Nefris : Nefrisien indigène (C toxique-résistante). Magie/civilisation à affiner.",
+      "source": "livre_10.html:834-871 + notes auteur 2026-10-19 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Nefris",
+          "url": "livre_10.html#chap-40"
+        }
+      ],
+      "hote": "Nefris"
+    },
+    {
+      "id": "esp-mercenaires-imperiaux",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major",
+      "zone_eliane": "Zone 02",
+      "planete": "Mercenaires impériaux",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Nefris",
+      "magie": "à préciser (cf. Nefris)",
+      "civilisation": "espèce — cf. Nefris",
+      "affiliation": "cf. Nefris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Nefris : Mercenaires / ingénieurs impériaux. Magie/civilisation à affiner.",
+      "source": "livre_10.html:834-871 + notes auteur 2026-10-19 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Nefris",
+          "url": "livre_10.html#chap-40"
+        }
+      ],
+      "hote": "Nefris"
+    },
+    {
+      "id": "esp-resistance-equipage",
+      "systeme": "Janus",
+      "etoile": "Vardis-Major",
+      "zone_eliane": "Zone 02",
+      "planete": "Résistance (équipage)",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Base Astéroïde de Nefris",
+      "magie": "à préciser (cf. Base Astéroïde de Nefris)",
+      "civilisation": "espèce — cf. Base Astéroïde de Nefris",
+      "affiliation": "cf. Base Astéroïde de Nefris",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Base Astéroïde de Nefris : Résistance (équipage C). Magie/civilisation à affiner.",
+      "source": "livre_10.html:968-983 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40.3 — Base",
+          "url": "livre_10.html#chap-40"
+        }
+      ],
+      "hote": "Base Astéroïde de Nefris"
+    },
+    {
+      "id": "esp-cleienne",
+      "systeme": "Veyla",
+      "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)",
+      "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)",
+      "planete": "Cléienne",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C+X"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Cléia",
+      "magie": "à préciser (cf. Cléia)",
+      "civilisation": "espèce — cf. Cléia",
+      "affiliation": "cf. Cléia",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Cléia : Cléienne (C+X : ADN-ARN + 3e brin 5e Force, 100% féminine, besoin en eau très inférieur à l'humain). Magie/civilisation à affiner.",
+      "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Cléia",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre I §2 — Cléien",
+          "url": "livre_1.html#chap-2"
+        }
+      ],
+      "hote": "Cléia"
+    },
+    {
+      "id": "esp-faune-des-canyons",
+      "systeme": "Veyla",
+      "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)",
+      "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)",
+      "planete": "Faune des canyons",
+      "type_corps": "espece",
+      "souche_vie": [
+        "X"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Cléia",
+      "magie": "à préciser (cf. Cléia)",
+      "civilisation": "espèce — cf. Cléia",
+      "affiliation": "cf. Cléia",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Cléia : Faune des canyons + espèces minérales à tubes (X). Magie/civilisation à affiner.",
+      "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Cléia",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre I §2 — Cléien",
+          "url": "livre_1.html#chap-2"
+        }
+      ],
+      "hote": "Cléia"
+    },
+    {
+      "id": "esp-mikyai",
+      "systeme": "Karkjiue",
+      "etoile": "Kark-Sol (géante rouge, éruptions)",
+      "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)",
+      "planete": "Mikyai",
+      "type_corps": "espece",
+      "souche_vie": [
+        "S"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Karkjiue",
+      "magie": "à préciser (cf. Karkjiue)",
+      "civilisation": "espèce — cf. Karkjiue",
+      "affiliation": "cf. Karkjiue",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Karkjiue : Mikyai (S-partielle : écailles silicées thermorésistantes). Magie/civilisation à affiner.",
+      "source": "livre_10.html:908-940, livre_1.html:733-748 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Karkjiue",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre I §2 — Mikyai",
+          "url": "livre_1.html#chap-2"
+        }
+      ],
+      "hote": "Karkjiue"
+    },
+    {
+      "id": "esp-faune-volcanique",
+      "systeme": "Karkjiue",
+      "etoile": "Kark-Sol (géante rouge, éruptions)",
+      "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)",
+      "planete": "Faune volcanique",
+      "type_corps": "espece",
+      "souche_vie": [
+        "S"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Karkjiue",
+      "magie": "à préciser (cf. Karkjiue)",
+      "civilisation": "espèce — cf. Karkjiue",
+      "affiliation": "cf. Karkjiue",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Karkjiue : Faune volcanique (S pure). Magie/civilisation à affiner.",
+      "source": "livre_10.html:908-940, livre_1.html:733-748 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40 — Karkjiue",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre I §2 — Mikyai",
+          "url": "livre_1.html#chap-2"
+        }
+      ],
+      "hote": "Karkjiue"
+    },
+    {
+      "id": "esp-humain-xxie",
+      "systeme": "Solaire (Sol)",
+      "etoile": "Soleil (G2V)",
+      "zone_eliane": "Zone 01 marge",
+      "planete": "Humain (XXIe)",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Terre",
+      "magie": "à préciser (cf. Terre)",
+      "civilisation": "espèce — cf. Terre",
+      "affiliation": "cf. Terre",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Terre : Humain référence XXIe (matrice des 3000 déportés An 0). Magie/civilisation à affiner.",
+      "source": "atlas_3d.html:711-726, livre_10.html:728-731 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Système Sol",
+          "url": "livre_10.html#chap-39"
+        }
+      ],
+      "hote": "Terre"
+    },
+    {
+      "id": "esp-equipage-de-l-aeschylus",
+      "systeme": "mobile (Avaleur de Mondes)",
+      "etoile": "—",
+      "zone_eliane": "n.d. — mobile (base : Avaleur de Mondes)",
+      "planete": "Équipage de l'Aeschylus",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C",
+        "S",
+        "C+X"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. L'Aeschylus",
+      "magie": "à préciser (cf. L'Aeschylus)",
+      "civilisation": "espèce — cf. L'Aeschylus",
+      "affiliation": "cf. L'Aeschylus",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de L'Aeschylus : Équipage mixte (Capitaine balafré, Sara, Max, Gunther, Babushka). Magie/civilisation à affiner.",
+      "source": "livre_10.html:948-966 + notes auteur 2026-10-19 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §40.3 — Vaisseaux",
+          "url": "livre_10.html#chap-40"
+        },
+        {
+          "titre": "Livre XI §44 — Factions",
+          "url": "livre_11.html#chap-44"
+        }
+      ],
+      "hote": "L'Aeschylus"
+    },
+    {
+      "id": "esp-ferronien",
+      "systeme": "Aurion-Forge",
+      "etoile": "Aurion-Prime (naine blanche)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Ferronien",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Ferron",
+      "magie": "à préciser (cf. Ferron)",
+      "civilisation": "espèce — cf. Ferron",
+      "affiliation": "cf. Ferron",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Ferron : Ferronien des chantiers (C industrielle). Magie/civilisation à affiner.",
+      "source": "notes auteur 2026-10-19 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        }
+      ],
+      "hote": "Ferron"
+    },
+    {
+      "id": "esp-garnison-imperiale-ferron",
+      "systeme": "Aurion-Forge",
+      "etoile": "Aurion-Prime (naine blanche)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "planete": "Garnison impériale (Ferron)",
+      "type_corps": "espece",
+      "souche_vie": [
+        "C"
+      ],
+      "especes": [],
+      "gravite": "—",
+      "atmosphere": "—",
+      "tech_niveau": 0,
+      "tech_label": "cf. Ferron",
+      "magie": "à préciser (cf. Ferron)",
+      "civilisation": "espèce — cf. Ferron",
+      "affiliation": "cf. Ferron",
+      "statut": "notes auteur 2026-10-19 (entrée espèce)",
+      "notes": "Espèce de Ferron : Garnison impériale (multi-souches). Magie/civilisation à affiner.",
+      "source": "notes auteur 2026-10-19 (espèce)",
+      "liens": [
+        {
+          "titre": "Livre X §39 — Systèmes",
+          "url": "livre_10.html#chap-39"
+        }
+      ],
+      "hote": "Ferron"
+    }
+  ],
+  "entites": [
+    {
+      "id": "empire",
+      "nom": "Empire Galactique",
+      "type": "empire",
+      "echelle": "milliers de planètes · centaines de systèmes étoiles",
+      "capitale": "Nexus d'Aurion (Zone 02)",
+      "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)",
+      "statut": "notes auteur 2026-10-19 + canon partiel (livre_10.html:598-627, livre_10.html:646-656)",
+      "notes": "Entité supra-système. Vardis en colonisation + guerre active ; Nefris membre en guerre ; Karkjiue protectorat ; Cléia indépendante (prospection impériale sans issue) ; Hybris indépendant (Mondes Francs).",
+      "source": "notes auteur 2026-10-19"
+    }
+  ],
+  "relations": [
+    {
+      "from": "Empire Galactique",
+      "to": "Vardis",
+      "type": "colonisation",
+      "label": "colonisation en cours",
+      "statut": "auteur"
+    },
+    {
+      "from": "Empire Galactique",
+      "to": "Vardis",
+      "type": "guerre",
+      "label": "guerre active",
+      "statut": "auteur"
+    },
+    {
+      "from": "Empire Galactique",
+      "to": "Nefris",
+      "type": "membre",
+      "label": "membre de l'Empire",
+      "statut": "auteur"
+    },
+    {
+      "from": "Empire Galactique",
+      "to": "Nefris",
+      "type": "guerre",
+      "label": "en guerre contre l'Empire",
+      "statut": "auteur"
+    },
+    {
+      "from": "Vardis",
+      "to": "Nefris",
+      "type": "voisine",
+      "label": "voisines, même système (Vardis-Major)",
+      "statut": "canon"
+    },
+    {
+      "from": "Cléia",
+      "to": "Veyla-Mère",
+      "type": "culte",
+      "label": "vénérée comme la Mère-Loi",
+      "statut": "auteur"
+    },
+    {
+      "from": "Cléia",
+      "to": "Veyla-Sœur",
+      "type": "culte",
+      "label": "vénérée comme la Sœur-Caprice ; Noces = oracles",
+      "statut": "auteur"
+    },
+    {
+      "from": "Empire Galactique",
+      "to": "Karkjiue",
+      "type": "protectorat",
+      "label": "protectorat martial (Mikyais enrôlés)",
+      "statut": "canon"
+    },
+    {
+      "from": "Empire Galactique",
+      "to": "Cléia",
+      "type": "independant",
+      "label": "indépendante — l'Empire tâte le terrain, soumission jugée très difficile",
+      "statut": "auteur"
+    },
+    {
+      "from": "Empire Galactique",
+      "to": "Hybris",
+      "type": "independant",
+      "label": "hors Empire (Mondes Francs)",
+      "statut": "canon"
+    },
+    {
+      "from": "Terre",
+      "to": "Hybris",
+      "type": "origine",
+      "label": "déportation An 0 (~3000)",
+      "statut": "canon"
+    },
+    {
+      "from": "Base Astéroïde de Nefris",
+      "to": "Empire Galactique",
+      "type": "resistance",
+      "label": "résistance orbitale",
+      "statut": "canon"
+    },
+    {
+      "from": "L'Aeschylus",
+      "to": "Empire Galactique",
+      "type": "resistance",
+      "label": "pirates traqués",
+      "statut": "canon"
+    },
+    {
+      "from": "Empire Galactique",
+      "to": "Ferron",
+      "type": "membre",
+      "label": "monde central (chantiers navals)",
+      "statut": "auteur"
+    },
+    {
+      "from": "L'Aeschylus",
+      "to": "Avaleur de Mondes",
+      "type": "base",
+      "label": "base principale (y vit la majorité du temps)",
+      "statut": "auteur"
+    },
+    {
+      "from": "Ferron",
+      "to": "L'Aeschylus",
+      "type": "origine",
+      "label": "construit sur commande impériale, volé à la livraison",
+      "statut": "auteur"
+    }
+  ],
+  "a_completer": [
+    "Avaleur : cartographie des transits dimensionnels + rayonnements digestifs",
+    "Veyla : chiffres orbitaux fins (période Cléia, distance Mère/Sœur, durée saison en jours)",
+    "Nefris : recensement tribus + têtes de pont impériales",
+    "Recensement Empire : centaines de systèmes, milliers de planètes (bien au-delà de l atlas)",
+    "Mars + stations Jupiter (système Sol)",
+    "Lunes Vardis / K-9, astéroïde rebelle Nefris",
+    "Bassins miniers orbitaux Karkjiue",
+    "Zones 05-36 (32 Archontes, Eau Sombre)",
+    "Galaxie Sans Étoiles (X-pure, Minulican)",
+    "Faune détaillée Livre XI + Thaluns + tribus Nefris"
+  ]
+}

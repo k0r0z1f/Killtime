@@ -1396,7 +1396,7 @@
           "id": "RD-198",
           "title": "Scénarios 1-clic, radial, démo 60s, carnet d'écarts",
           "epic": "Arène",
-          "status": "todo",
+          "status": "done",
           "priority": "medium",
           "order": 11,
           "scene": "Killzone_Alpha3",
@@ -1406,7 +1406,7 @@
           "scale": null,
           "suggestedAsset": "Presets arène + DemoDirectorAlpha3 + doc",
           "updated": "2026-10-18",
-          "details": "Clore le terrain sans code lourd : scénarios 1-clic réactions/CaC/positionnement (guetteur + traverseur, postures opportunité, surplomb 1 palier — TryEnterOverwatch/CheckOpportunityBlock/ExecuteChargeAttack vérifiés), checklist radiale (forage, molette, sablier 0 PA, snap, Maj+F9 — rien à coder), re-validation démo 60s (6 beats DemoDirectorAlpha3, watermark, télémétrie, LOS restaurée) + capture OBS, carnet d'écarts Livres exportable (logs toolbar + CombatHUD). Code minimal ; fichiers <800 l. Couvre RD-171/174/175/184/185/186."
+          "details": "FAIT (2026-10-18) : clôture terrain sans code lourd, dev-only, 0 règle modifiée. 1) DevTools/CombatDevArena.Scenarios.cs (189 l.) : SetupScenarioGuet (traverseur à ~4 cases + TryEnterOverwatch 2 PA), SetupScenarioOpportunite (voisin au contact + SetStance 4 postures), SetupScenarioCharge (cible à 3+ cases + verdict éligibilité), helpers purs ScenarioPostureLabel/FromIndex, IsChargeSetupDistance, RadialChecklistText, DemoChecklistText, BuildGapReport (gabarit RD-171/174/175/184/185/186 + logs). 2) DevTools/CombatDevToolbar.Scenarios.cs (73 l., +1 ligne d'appel dans .Cheats.cs 672 l. <800) : 3 boutons 1-clic + checklist radiale (labels seuls) + rappel démo 60s + bouton copie carnet vers presse-papiers. 3) Tests/ArenaScenarioTests.cs : 6/6 verts batchmode EditMode 6000.6.0f1, exit 0, 0 erreur CS (1er run : using Killtime.Tactics.Arena manquant corrigé). Hygiène : ProjectSettings.asset restauré (define SENTIS réécrit par le headless), 0 artefact, .meta générés par l'éditeur. Vérif anti-bogues 2026-10-18 : relecture + 3 durcissements (acteur affiché = PlayerUnit comme les setups, spot à distance exacte ±1, libellé contact honnête si >1 case) + suite EditMode complète 687/687 verte exit 0, 0 erreur CS, ProjectSettings re-restauré. Reste : contrôle en jeu par l'utilisateur (3 scénarios + radial + démo + export carnet), puis board-tests-terrain RD-171→186 débloqué (gate arène tout-done)."
         }
       ]
     },
@@ -2937,7 +2937,7 @@
           "id": "RD-151",
           "title": "Merge refactor/skilltree-cosmos-partial → main (stabilisation)",
           "epic": "Build",
-          "status": "todo",
+          "status": "done",
           "priority": "high",
           "order": 22,
           "scene": "",
@@ -2946,8 +2946,8 @@
           "pos": null,
           "scale": null,
           "suggestedAsset": "git merge + Unity 6000.6.0f1",
-          "details": "Créé 2026-10-13 : la branche refactor/skilltree-cosmos-partial porte ~25 commits / 531 fichiers non mergés vers main (splits UI, Tactics, Audio, DevTools, Core + visualisateurs). Bloque tout test humain représentatif. Check : merge main, recompile éditeur 0 erreur CS, re-run EditMode complet (RD-071), build player OK, ProjectSettings.asset intact, git status propre (aucun artefact batchmode). Prérequis : RD-071/RD-120/RD-122 verts. Bloque : démo RD-026→029 et batches Vol I.",
-          "updated": "2026-10-13"
+          "details": "FAIT (2026-10-18, user) : branche refactor/skilltree-cosmos-partial mergée dans main — commit merge a256707 présent sur main, tip de branche ancêtre de main vérifié (merge-base --is-ancestor OK).",
+          "updated": "2026-10-18"
         },
         {
           "id": "RD-152",

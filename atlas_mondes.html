@@ -1,0 +1,913 @@
+<!DOCTYPE html>
+<html lang="fr" data-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atlas des Mondes — Killtime Tactics</title>
+    <meta name="description" content="Atlas complet et dynamique de tous les mondes : tableau triable, bulles Tech/Magie, donut des souches, réseau systèmes-souches.">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@500;600;700;900&family=JetBrains+Mono:wght@400;500;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <style>
+        /* Pleine largeur : pas de sidebar ni d'inspecteur sur cette page,
+           on annule les marges/maxi du layout Codex (.main-content 1060px). */
+        .content-wrapper { display: block; }
+        .main-content { margin-left: 0; margin-right: 0; max-width: none; padding: 28px 32px 80px; }
+        .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; margin: 18px 0 6px; }
+        .filter-bar input[type="text"], .filter-bar select {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle);
+            color: var(--text-primary); border-radius: 10px; padding: 9px 12px;
+            font-family: var(--font-body); font-size: 13px; outline: none;
+        }
+        .filter-bar input[type="text"] { min-width: 200px; flex: 1; }
+        .filter-bar input:focus, .filter-bar select:focus { border-color: var(--border-glow); }
+        .count-line { font-size: 12px; color: var(--text-muted); margin: 8px 2px; font-family: var(--font-mono); }
+        .view-tabs { display: flex; gap: 6px; flex-wrap: wrap; margin: 14px 0 4px; }
+        .view-tabs button {
+            background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-secondary);
+            border-radius: 10px; padding: 8px 14px; font-size: 12.5px; font-weight: 700; cursor: pointer; font-family: var(--font-body);
+        }
+        .view-tabs button.on { color: var(--text-primary); border-color: var(--arcane-cyan); background: var(--bg-surface-elevated); }
+        .view { display: none; }
+        .view.on { display: block; }
+        .atlas-table-wrap { overflow-x: auto; border: 1px solid var(--border-subtle); border-radius: 14px; }
+        table.atlas { width: 100%; border-collapse: collapse; font-size: 13px; table-layout: auto; }
+        table.atlas th, table.atlas td { overflow-wrap: break-word; hyphens: auto; }
+        /* Largeurs minimales par colonne : le tableau s'étire à 100 % si peu de colonnes,
+           et bascule en scroll horizontal lisible si beaucoup. Aucune cellule écrasée. */
+        table.atlas .col-systeme { min-width: 118px; }
+        table.atlas .col-etoile { min-width: 150px; }
+        table.atlas .col-planete { min-width: 150px; }
+        table.atlas .col-type_corps { min-width: 84px; }
+        table.atlas .col-zone_eliane { min-width: 190px; }
+        table.atlas .col-souche { min-width: 96px; }
+        table.atlas .col-tech_niveau { min-width: 130px; }
+        table.atlas .col-magie { min-width: 140px; }
+        table.atlas .col-civilisation { min-width: 160px; }
+        table.atlas .col-affiliation { min-width: 160px; }
+        table.atlas .col-especes { min-width: 240px; }
+        table.atlas .col-gravite { min-width: 84px; white-space: nowrap; }
+        table.atlas .col-atmosphere { min-width: 170px; }
+        table.atlas .col-statut { min-width: 200px; }
+        table.atlas .col-source { min-width: 200px; }
+        table.atlas .col-liens { min-width: 220px; }
+        table.atlas .col-liens a { color: var(--arcane-cyan); }
+        .rm-btn { background: var(--bg-surface); border: 1px solid var(--border-subtle); color: var(--text-primary);
+            border-radius: 10px; padding: 9px 14px; font-size: 13px; font-weight: 600; cursor: pointer; font-family: var(--font-body); }
+        .rm-btn:hover { border-color: var(--border-glow); }
+        .del-btn { background: transparent; border: 1px solid rgba(244,63,94,.4); color: #fda4af;
+            border-radius: 8px; padding: 3px 9px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; }
+        .del-btn:hover { background: rgba(244,63,94,.15); color: #fff; }
+        .cell-editor { width: 100%; min-width: 120px; background: var(--bg-canvas); border: 1px solid var(--arcane-cyan);
+            color: var(--text-primary); border-radius: 8px; padding: 6px 8px; font-family: var(--font-body); font-size: 13px; outline: none; }
+        textarea.cell-editor { min-height: 56px; resize: vertical; }
+        td[data-k] { cursor: text; }
+        td[data-k]:hover { outline: 1px dashed rgba(56,189,248,.45); outline-offset: -1px; }
+        table.atlas th {
+            text-align: left; padding: 10px 12px; background: var(--bg-surface-elevated);
+            position: sticky; top: 0; white-space: nowrap; user-select: none;
+            font-family: var(--font-title); font-size: 12px; letter-spacing: .04em;
+        }
+        table.atlas th.sortable { cursor: pointer; }
+        table.atlas th.sortable:hover { color: var(--arcane-cyan); }
+        table.atlas td { padding: 10px 12px; border-top: 1px solid var(--border-subtle); vertical-align: top; }
+        table.atlas tr:hover td { background: var(--bg-surface-hover); }
+        .sub { display: block; font-size: 11.5px; color: var(--text-muted); margin-top: 2px; }
+        .souche { display: inline-block; font-family: var(--font-mono); font-size: 11px; font-weight: 700;
+            padding: 2px 8px; border-radius: 99px; margin: 1px 2px; border: 1px solid var(--border-subtle); white-space: nowrap; }
+        .esp { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
+        .todo-list { font-size: 13px; color: var(--text-secondary); }
+        .graph-wrap { border: 1px solid var(--border-subtle); border-radius: 14px; padding: 14px; margin-top: 10px; background: var(--bg-surface); }
+        .graph-wrap svg { width: 100%; height: auto; display: block; }
+        .graph-legend { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; font-size: 12px; color: var(--text-secondary); }
+        .graph-legend .dot { display: inline-block; width: 10px; height: 10px; border-radius: 50%; margin-right: 5px; }
+        #infoPanel { margin-top: 10px; font-size: 13px; color: var(--text-secondary); border-left: 3px solid var(--arcane-cyan);
+            background: rgba(0,0,0,.25); padding: 10px 12px; border-radius: 0 10px 10px 0; line-height: 1.55; }
+        #infoPanel strong { color: var(--text-primary); }
+        .axis { font-family: var(--font-mono); font-size: 10px; fill: var(--text-muted); }
+        .grid { stroke: rgba(255,255,255,.08); stroke-width: 1; }
+        .empire-banner { border: 1px solid rgba(244,63,94,.45); border-radius: 12px; padding: 12px 14px;
+            background: rgba(244,63,94,.07); margin-bottom: 12px; font-size: 13px; line-height: 1.6; color: var(--text-secondary); }
+        .empire-banner strong { color: var(--text-primary); font-family: var(--font-title); font-size: 15px; }
+        .empire-scale { font-family: var(--font-mono); font-size: 12px; color: #fda4af; }
+        .statut { display: inline-block; font-family: var(--font-mono); font-size: 10.5px; font-weight: 700;
+            padding: 1px 7px; border-radius: 99px; border: 1px solid var(--border-subtle); }
+        .statut.canon { color: #6ee7b7; border-color: rgba(16,185,129,.5); }
+        .statut.auteur { color: #fbbf24; border-color: rgba(251,191,36,.5); }
+        details.cols { margin: 6px 2px 0; font-size: 12.5px; color: var(--text-secondary); }
+        details.cols summary { cursor: pointer; font-weight: 700; }
+        details.cols summary:hover { color: var(--text-primary); }
+        #colToggles { display: flex; flex-wrap: wrap; gap: 4px 14px; margin-top: 8px; }
+        #colToggles label { display: inline-flex; align-items: center; gap: 5px; cursor: pointer; }
+        #saveState { display: inline-flex; align-items: center; gap: 7px; font-size: 12.5px; font-weight: 600;
+            padding: 7px 13px; border-radius: 99px; border: 1px solid var(--border-subtle);
+            color: var(--text-secondary); background: var(--bg-surface); white-space: nowrap; }
+        #saveState .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--text-muted); }
+        #saveState.saving .dot { background: #fbbf24; animation: rmPulse 1s infinite; }
+        #saveState.saved .dot { background: #10b981; }
+        #saveState.local .dot { background: #fbbf24; }
+        #saveState.error .dot { background: #f43f5e; }
+        @keyframes rmPulse { 50% { opacity: .35; } }
+        .col-toggle-btn { background: var(--bg-surface-elevated); border: 1px solid var(--border-subtle);
+            color: var(--text-primary); border-radius: 8px; padding: 5px 12px; font-size: 12px; font-weight: 700;
+            cursor: pointer; font-family: var(--font-body); }
+        .col-toggle-btn:hover { border-color: var(--border-glow); }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <header class="topbar">
+            <div class="topbar-left">
+                <a href="tactics_index.html" class="brand">
+                    <div class="brand-icon">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="12 2 2 7 12 12 22 7 12 2" /><polyline points="2 17 12 22 22 17" /><polyline points="2 12 12 17 22 12" /></svg>
+                    </div>
+                    <div class="brand-info"><h1>Killtime Tactics <span class="brand-badge">Atlas</span></h1></div>
+                </a>
+                <nav class="breadcrumbs"><a href="tactics_index.html">Tactics</a><span>/</span><span class="current">Atlas des Mondes</span></nav>
+            </div>
+            <div class="topbar-right">
+                <a href="index.html" class="topbar-site-link"><span>Système RP</span></a>
+                <a href="Killtime/index.html" class="topbar-site-link"><span>Site Killtime</span></a>
+            </div>
+        </header>
+        <div class="content-wrapper">
+            <main class="main-content">
+                <header class="doc-header">
+                    <div class="doc-meta-tags">
+                        <span class="pill-badge cyan">Dynamique</span>
+                        <span class="pill-badge amber" id="atlasVersion">Base &lt;1%</span>
+                        <span class="pill-badge emerald">Canon de référence</span>
+                    </div>
+                    <h1 class="doc-title">Atlas complet des mondes</h1>
+                    <p class="doc-subtitle">Source unique : <code>data/atlas_mondes.json</code> (copie embarquée si <code>file://</code>). Cliquez un en-tête pour trier, une bulle / un nœud pour détailler.</p>
+                    <div class="callout temporal" style="margin-top:14px">
+                        <div class="callout-header">Base canon de référence</div>
+                        <div class="callout-body">Cet atlas est <strong>LA base la plus canon</strong> de tout le contenu : en cas de contradiction avec les Livres, le lore, les scripts Unity ou les visuels, c'est ici que ça tranche. Le reste du contenu doit s'aligner sur ces fiches.</div>
+                    </div>
+                </header>
+                <article class="prose">
+                    <div class="filter-bar">
+                        <input type="text" id="q" placeholder="Filtrer… (monde, espèce, système)">
+                        <select id="fSys"><option value="">Tous systèmes</option></select>
+                        <select id="fSouche"><option value="">Toutes souches</option></select>
+                        <select id="fMagie"><option value="">Toutes magies</option></select>
+                        <select id="fType"><option value="">Tous types</option></select>
+                        <button class="rm-btn" id="reset" type="button">Réinitialiser</button>
+                        <button class="rm-btn" id="addEntry" type="button" title="Ajouter une entrée (autosave)">＋ Entrée</button>
+                        <button class="rm-btn" id="linkFile" type="button" style="display:none" title="Choisir data/atlas_mondes.json sur le disque : les sauvegardes écrivent dedans directement, sans serveur">Lier le fichier</button>
+                        <button class="rm-btn" id="exportJson" type="button" title="Télécharger le JSON courant (pour le replacer dans data/ si besoin)">Exporter</button>
+                        <span id="saveState"><span class="dot"></span><span id="saveLabel">Prêt</span></span>
+                    </div>
+                    <div class="count-line" id="count"></div>
+                    <details class="cols"><summary>Colonnes affichées</summary><div id="colToggles"></div></details>
+                    <div class="view-tabs" id="viewTabs">
+                        <button data-v="table" class="on" type="button">Tableau</button>
+                        <button data-v="bubbles" type="button">Bulles Tech × Magie</button>
+                        <button data-v="donut" type="button">Donut des souches</button>
+                        <button data-v="network" type="button">Réseau systèmes–souches</button>
+                        <button data-v="correl" type="button">Corrélations Empire</button>
+                    </div>
+
+                    <div class="view on" id="view-table">
+                        <div class="atlas-table-wrap">
+                            <table class="atlas" id="atlasTable">
+                                <thead><tr id="headRow"></tr></thead>
+                                <tbody id="rows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div class="view" id="view-bubbles">
+                        <div class="graph-wrap"><div id="bubbles"></div>
+                            <div class="graph-legend" id="bubblesLegend"></div>
+                        </div>
+                    </div>
+
+                    <div class="view" id="view-donut">
+                        <div class="graph-wrap"><div id="donut"></div>
+                            <div class="graph-legend" id="donutLegend"></div>
+                        </div>
+                    </div>
+
+                    <div class="view" id="view-network">
+                        <div class="graph-wrap"><div id="network"></div>
+                            <div class="graph-legend" id="networkLegend"></div>
+                        </div>
+                    </div>
+
+                    <div class="view" id="view-correl">
+                        <div class="graph-wrap">
+                            <div id="empireBanner"></div>
+                            <div id="correl"></div>
+                            <div class="graph-legend" id="correlLegend"></div>
+                        </div>
+                        <div class="atlas-table-wrap" style="margin-top:10px">
+                            <table class="atlas" id="relTable">
+                                <thead><tr>
+                                    <th>De</th><th>Vers</th><th>Lien</th><th>Détail</th><th>Source</th>
+                                </tr></thead>
+                                <tbody id="relRows"></tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <div id="infoPanel">Survolez / cliquez un élément des graphes pour afficher le détail d'un monde.</div>
+
+                    <h2><span class="section-symbol">§</span> Reste à ratisser</h2>
+                    <ul class="todo-list" id="todo"></ul>
+                    <p class="count-line" style="margin-top:14px">P.-S. — Les overviews de l'ancien site Killtime sont conservés intacts à titre d'archive : c'étaient les premières versions, elles ont depuis évolué vers le canon de la présente page, qui fait foi en cas de différence.</p>
+                </article>
+            </main>
+        </div>
+    </div>
+    <script id="atlas-embedded" type="application/json">{"version": 3, "updated": "2026-10-19", "note": "BASE CANON DE RÉFÉRENCE : fait foi sur tout le reste du contenu (livres, lore, scripts, visuels). Socle <1% + notes auteur 2026-10-19. Statut 'canon' = Livres I/X/XI + atlas_3d ; 'auteur' = à confirmer au ratissage.", "souches_ref": {"C": "carbone ADN-ARN ACGT, eau", "C+": "carbone dopé nytharite / 5e Force (perméable)", "C+X": "carbone + 3e brin 5e Force (ex : Cléiennes)", "S": "silicone double-brin BFRMD/PFRMD", "S/C": "hybride silice-carbone (ex : Derek)", "G": "gaz rares / plasmas confinés", "X": "autres : méthane, ammoniac, 5e Force pure, Eau Sombre, artificiel"}, "mondes": [{"id": "hybris", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha (naine jaune stable)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Hybris", "type_corps": "planete", "souche_vie": ["C", "C+", "S/C"], "especes": ["Humain (plaines, déportés An 0)", "Nain (montagnard ouest, exilés — corr. 2026-10-19 : non souterrain)", "Taurien (Grande Forêt sud)", "Derek (indigène cavernes, S/C)", "Géant/Titan (Continent Est, C+ hors-trame)", "Faune C+ (Bête d'Hybris, faune magique)"], "gravite": "1.02 g", "atmosphere": "Azote-Oxygène pure", "tech_niveau": 3.5, "tech_label": "Médiévale à Avancée (3-4)", "magie": "Normale à Inhérente", "civilisation": "planétaire fragmentée (royaumes)", "affiliation": "Indépendant // Mondes Francs", "statut": "documenté", "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978", "liens": [{"titre": "Livre X §40 — Planètes", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Régions", "url": "livre_10.html#chap-41"}, {"titre": "Livre I §2 — Espèces", "url": "livre_1.html#chap-2"}, {"titre": "Livre XI §45 — Faune", "url": "livre_11.html#chap-45"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}, {"titre": "Lore — Prélude Hybris", "url": "Killtime/Killtime/lore/hybris/Hybris%200-Prelude%20Overview.html"}], "_nx": 523.4661625812607, "_ny": 97.9300935329805}, {"id": "hybris-alpha", "systeme": "Hybris-Prime", "etoile": "elle-même (primaire)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Hybris-Alpha", "type_corps": "etoile", "souche_vie": ["G"], "especes": [], "gravite": "n.d.", "atmosphere": "plasma (naine jaune stable)", "tech_niveau": 0, "tech_label": "naturelle (astre)", "magie": "Normale (fond arcanique stable)", "civilisation": "aucune", "affiliation": "Primaire d'Hybris-Prime", "statut": "documenté", "notes": "Naine jaune stable. Foyer d'Hybris et de ses deux lunes arcaniques.", "source": "atlas_3d.html:625, livre_10.html:703-704", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 558.5757986977362, "_ny": 151.66939219267095}, {"id": "lune-nyth1", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha", "zone_eliane": "Zone 01", "planete": "Lune Blanche Nyth-1", "type_corps": "lune", "souche_vie": ["G"], "especes": ["Nuits Blanches (~9 jours) : 5e Force +1 palier, moteurs suralimentés, minage nytharite", "Galères naines : les galeries 'chantent' et attirent les Dereks"], "gravite": "n.d.", "atmosphere": "poussière de nytharite (lumière blanc-lait)", "tech_niveau": 0, "tech_label": "naturelle arcanique", "magie": "Variable (pics aux Nuits Blanches)", "civilisation": "repère calendaire Nythari (Tauriens)", "affiliation": "Hybris", "statut": "notes auteur 2026-10-19", "notes": "Régolithe pâle de nytharite, visible même de jour. Les Nuits Blanches dopent sorts et moteurs — et l'Eau Sombre.", "source": "atlas_3d.html:637-640 + notes auteur 2026-10-19", "liens": [{"titre": "Livre X §40.3 — Lunes", "url": "livre_10.html#chap-40"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 574.3339761363006, "_ny": 213.89702763289517}, {"id": "lune-storm2", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha", "zone_eliane": "Zone 01", "planete": "Lune Électrostatique Storm-2", "type_corps": "lune", "souche_vie": ["G"], "especes": ["Conjonctions d'Orage (~3 ans) : tempêtes arcaniques, pannes arcanotech, TP instables, bêtes énervées", "Prédictions disputées : ingénieurs impériaux vs Nains (paris, sabotages)"], "gravite": "n.d.", "atmosphere": "enveloppe chargée (décharges bleues visibles)", "tech_niveau": 0, "tech_label": "naturelle arcanique", "magie": "Variable (Conjonctions d'Orage)", "civilisation": "présage (Tauriens) + enjeu technique", "affiliation": "Hybris", "statut": "notes auteur 2026-10-19", "notes": "Même phénomène que les crêtes des Montagnes de l'Orage : la montagne 'répond' à la lune.", "source": "atlas_3d.html:637-640 + notes auteur 2026-10-19", "liens": [{"titre": "Livre X §40.3 — Lunes", "url": "livre_10.html#chap-40"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 569.0330518581694, "_ny": 277.86966999245584}, {"id": "vardis-major", "systeme": "Janus", "etoile": "elle-même (binaire)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Vardis-Major", "type_corps": "etoile", "souche_vie": ["G"], "especes": [], "gravite": "n.d.", "atmosphere": "plasma (binaire rouge-orangée)", "tech_niveau": 0, "tech_label": "naturelle (astre)", "magie": "Normale (fond arcanique)", "civilisation": "aucune", "affiliation": "Primaire de Janus", "statut": "documenté", "notes": "Étoile binaire rouge-orangée. Composantes à préciser.", "source": "atlas_3d.html:626, livre_10.html:709-713", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 543.247463261193, "_ny": 336.6548908338732}, {"id": "vardis", "systeme": "Janus", "etoile": "Vardis-Major (binaire rouge-orangée)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Vardis", "type_corps": "planete", "souche_vie": ["C", "S"], "especes": ["Vardien/Frontalier (C aride)", "Thalun tribal (C filtrante)", "Garnison impériale (multi-souches)", "Corrompu Eau Sombre (X)"], "gravite": "1.15 g", "atmosphere": "aride, poussières industrielles", "tech_niveau": 4.5, "tech_label": "Avancée (4-5)", "magie": "Limitée (réglementée)", "civilisation": "colonisation militaire + guerre active", "affiliation": "Empire (colonisation en cours)", "statut": "documenté + notes auteur 2026-10-19", "notes": "Phase de colonisation par l'Empire, guerre active. Garnisons, miradors biométriques, Nexus d'Aurion.", "source": "livre_10.html:794-832", "liens": [{"titre": "Livre X §40 — Vardis", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Territoires", "url": "livre_10.html#chap-41"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}, {"titre": "Lore — Vardis 1771-0", "url": "Killtime/Killtime/lore/locations/Vardis%201771-0%20Overview.html"}, {"titre": "Lore — Territoire impérial", "url": "Killtime/Killtime/lore/vardis/Imperial%20Territory%201775-30.1%20Overview.html"}], "_nx": 499.77147897448526, "_ny": 383.88239933229676}, {"id": "nefris", "systeme": "Janus", "etoile": "Vardis-Major", "zone_eliane": "Zone 02", "planete": "Nefris", "type_corps": "planete", "souche_vie": ["C", "X"], "especes": ["Nefrisien indigène (C toxique-résistante)", "Mercenaires / ingénieurs impériaux", "Corrompu Eau Sombre (X)"], "gravite": "0.94 g", "atmosphere": "toxique localement, masque requis", "tech_niveau": 3, "tech_label": "Hétérogène (primitive à avancée)", "magie": "Normale (spiritualité tribale)", "civilisation": "ruines martiales / tribus + guerre active", "affiliation": "contesté (Empire : membre en rébellion)", "statut": "documenté + notes auteur 2026-10-19", "notes": "Nom local : Nefris. Colonisation + guerre active.", "source": "livre_10.html:834-871 + notes auteur 2026-10-19", "liens": [{"titre": "Livre X §40 — Nefris", "url": "livre_10.html#chap-40"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}, {"titre": "Lore — Overview (note Nefris)", "url": "Killtime/Killtime/lore/Killtime%20Universe%20Overview.html"}, {"titre": "Tome I — manuscrit", "url": "Killtime/Killtime/manuscripts/Killtime%20-%20Volume%20I%20-%20The%20Awakening%20Storm.html"}], "_nx": 443.3163964949133, "_ny": 414.43436213162374}, {"id": "base-nefris", "systeme": "Janus", "etoile": "Vardis-Major", "zone_eliane": "Zone 02", "planete": "Base Astéroïde de Nefris", "type_corps": "station", "souche_vie": ["C"], "especes": ["Résistance (équipage C)"], "gravite": "micro-g", "atmosphere": "artificielle", "tech_niveau": 4, "tech_label": "orbitale clandestine", "magie": "Variable", "civilisation": "avant-poste", "affiliation": "Résistance", "statut": "documenté", "source": "livre_10.html:968-983", "liens": [{"titre": "Livre X §40.3 — Base", "url": "livre_10.html#chap-40"}, {"titre": "Lore — Overview", "url": "Killtime/Killtime/lore/Killtime%20Universe%20Overview.html"}], "_nx": 380, "_ny": 425}, {"id": "cleia", "systeme": "Veyla", "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)", "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)", "planete": "Cléia", "type_corps": "planete", "souche_vie": ["C+X", "X"], "especes": ["Cléienne (C+X : ADN-ARN + 3e brin 5e Force, 100% féminine, besoin en eau très inférieur à l'humain)", "Faune des canyons + espèces minérales à tubes (X)"], "gravite": "0.88 g", "atmosphere": "aride tempérée, faible hydrologie (canyons immenses)", "tech_niveau": 5, "tech_label": "Très Avancée (5)", "magie": "Inhérente (instinctive)", "civilisation": "matriarcat interstellaire", "affiliation": "Royaume Matriarcal indépendant (Empire : prospection sans issue)", "statut": "documenté + notes auteur 2026-10-19", "notes": "Non associée à l'Empire : l'Empire tâte le terrain mais juge les Cléiennes très difficiles à soumettre (magie inhérente C+X, tech 5). Cités-tubes cultivées (espèces minérales en arches immenses), pas d'océans de méthane ; conforme aux visuels Cleya.", "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19", "liens": [{"titre": "Livre X §40 — Cléia", "url": "livre_10.html#chap-40"}, {"titre": "Livre I §2 — Cléien", "url": "livre_1.html#chap-2"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 236.5338374187393, "_ny": 97.93009353298052}, {"id": "veyla-mere", "systeme": "Veyla", "etoile": "elle-même (primaire)", "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)", "planete": "Veyla-Mère", "type_corps": "etoile", "souche_vie": ["G"], "especes": [], "gravite": "n.d.", "atmosphere": "plasma (photosphère blanche)", "tech_niveau": 0, "tech_label": "naturelle (astre)", "magie": "Inhérente (cœur du culte, flux constant)", "civilisation": "aucune (objet de culte)", "affiliation": "vénérée par Cléia (Mère-Loi)", "statut": "nouveau — notes auteur 2026-10-19", "notes": "L'Aînée : constance, doctrine, protection. Sa constance guide la croissance des tubes-cités. Temps du Droit quand seule.", "source": "notes auteur 2026-10-19", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 287.1902583577705, "_ny": 58.502618514734706}, {"id": "veyla-soeur", "systeme": "Veyla", "etoile": "Veyla-Mère (primaire)", "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)", "planete": "Veyla-Sœur", "type_corps": "etoile", "souche_vie": ["G"], "especes": [], "gravite": "n.d.", "atmosphere": "plasma (naine, éclat variable)", "tech_niveau": 0, "tech_label": "naturelle (astre)", "magie": "Variable (capricieuse, vents et cycles des canyons)", "civilisation": "aucune (objet de culte)", "affiliation": "vénérée par Cléia (Sœur-Caprice)", "statut": "nouveau — notes auteur 2026-10-19", "notes": "La Cadette : inspiration, télépathie, vents. Temps du Rêve quand seule. Conjonctions = Noces (oracles).", "source": "notes auteur 2026-10-19", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 347.90405489525676, "_ny": 37.659545836469135}, {"id": "kark-sol", "systeme": "Karkjiue", "etoile": "elle-même (primaire)", "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)", "planete": "Kark-Sol", "type_corps": "etoile", "souche_vie": ["G"], "especes": [], "gravite": "n.d.", "atmosphere": "plasma (géante rouge, éruptions)", "tech_niveau": 0, "tech_label": "naturelle (astre)", "magie": "Variable (éruptions)", "civilisation": "aucune", "affiliation": "Primaire de Karkjiue", "statut": "documenté", "notes": "Géante rouge à fortes éruptions.", "source": "atlas_3d.html:628, livre_10.html:722-725", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 316.68360350508675, "_ny": 414.43436213162374}, {"id": "karkjiue", "systeme": "Karkjiue", "etoile": "Kark-Sol (géante rouge, éruptions)", "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)", "planete": "Karkjiue", "type_corps": "planete", "souche_vie": ["S", "C"], "especes": ["Mikyai (S-partielle : écailles silicées thermorésistantes)", "Faune volcanique (S pure)"], "gravite": "1.28 g", "atmosphere": "volcanique, basalte brûlant", "tech_niveau": 4, "tech_label": "Avancée (blindages & balistique)", "magie": "Impossible (rares exceptions limitées)", "civilisation": "castes militaires", "affiliation": "Protectorat Martial Mikyai", "statut": "documenté", "source": "livre_10.html:908-940, livre_1.html:733-748", "liens": [{"titre": "Livre X §40 — Karkjiue", "url": "livre_10.html#chap-40"}, {"titre": "Livre I §2 — Mikyai", "url": "livre_1.html#chap-2"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 260.2285210255148, "_ny": 383.88239933229676}, {"id": "soleil", "systeme": "Solaire (Sol)", "etoile": "lui-même (primaire)", "zone_eliane": "Zone 01 marge", "planete": "Soleil", "type_corps": "etoile", "souche_vie": ["G"], "especes": [], "gravite": "n.d.", "atmosphere": "plasma (naine jaune G2V)", "tech_niveau": 0, "tech_label": "naturelle (astre)", "magie": "Normale (fond arcanique stable)", "civilisation": "aucune", "affiliation": "Primaire du Sol", "statut": "documenté", "notes": "Référence 1 g. Matrice des déportés de l'An 0.", "source": "atlas_3d.html:629, livre_10.html:728-731", "liens": [{"titre": "Livre X §39 — Système Sol", "url": "livre_10.html#chap-39"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 185.6660238636994, "_ny": 213.89702763289526}, {"id": "terre", "systeme": "Solaire (Sol)", "etoile": "Soleil (G2V)", "zone_eliane": "Zone 01 marge", "planete": "Terre", "type_corps": "planete", "souche_vie": ["C"], "especes": ["Humain référence XXIe (matrice des 3000 déportés An 0)"], "gravite": "1.00 g", "atmosphere": "Azote-Oxygène", "tech_niveau": 3, "tech_label": "Moderne silicium (3)", "magie": "Ignorée / Dormante", "civilisation": "planétaire pré-Warp", "affiliation": "Matrice historique", "statut": "documenté", "source": "atlas_3d.html:711-726, livre_10.html:728-731", "liens": [{"titre": "Livre X §39 — Système Sol", "url": "livre_10.html#chap-39"}, {"titre": "Atlas 3D", "url": "atlas_3d.html"}], "_nx": 201.42420130226378, "_ny": 151.669392192671}, {"id": "aurion-prime", "systeme": "Aurion-Forge", "etoile": "elle-même (primaire)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Aurion-Prime", "type_corps": "etoile", "souche_vie": ["G"], "especes": [], "gravite": "n.d.", "atmosphere": "plasma (naine blanche)", "tech_niveau": 0, "tech_label": "naturelle (astre)", "magie": "Normale (fond arcanique)", "civilisation": "aucune", "affiliation": "Primaire d'Aurion-Forge", "statut": "notes auteur 2026-10-19", "notes": "Étoile du système-forge de Ferron (à documenter).", "source": "notes auteur 2026-10-19", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}], "_nx": 412.0959451047431, "_ny": 37.659545836469135}, {"id": "ferron", "systeme": "Aurion-Forge", "etoile": "Aurion-Prime (naine blanche)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Ferron", "type_corps": "planete", "souche_vie": ["C", "S"], "especes": ["Ferronien des chantiers (C industrielle)", "Garnison impériale (multi-souches)"], "gravite": "1.12 g", "atmosphere": "smogs industriels, masque requis", "tech_niveau": 5, "tech_label": "Très Avancée (5, chantiers Warp)", "magie": "Limitée (réglementée)", "civilisation": "chantiers navals impériaux", "affiliation": "Empire (monde central)", "statut": "notes auteur 2026-10-19", "notes": "Monde-forge central : l'Aeschylus y fut construit sur commande impériale, volé à la livraison par le Capitaine balafré — humiliation impériale, destroyers aux trousses.", "source": "notes auteur 2026-10-19", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}], "_nx": 472.80974164222937, "_ny": 58.50261851473465}, {"id": "aeschylus", "systeme": "mobile (Avaleur de Mondes)", "etoile": "—", "zone_eliane": "n.d. — mobile (base : Avaleur de Mondes)", "planete": "L'Aeschylus", "type_corps": "vaisseau", "souche_vie": ["C", "S", "C+X"], "especes": ["Équipage mixte (Capitaine balafré, Sara, Max, Gunther, Babushka)"], "gravite": "variable", "atmosphere": "artificielle", "tech_niveau": 4.5, "tech_label": "Warp + furtivité arcanique", "magie": "Variable", "civilisation": "équipage clandestin", "affiliation": "Pirates (base : Avaleur de Mondes)", "statut": "documenté + notes auteur 2026-10-19", "notes": "Construit sur Ferron sur commande impériale, livré puis volé par le Capitaine balafré. Passe la majorité de son existence à bord de l'Avaleur de Mondes.", "source": "livre_10.html:948-966 + notes auteur 2026-10-19", "liens": [{"titre": "Livre X §40.3 — Vaisseaux", "url": "livre_10.html#chap-40"}, {"titre": "Livre XI §44 — Factions", "url": "livre_11.html#chap-44"}], "_nx": 216.75253673880698, "_ny": 336.6548908338733}, {"id": "avaleur", "systeme": "n.d. (mobile ?)", "etoile": "—", "zone_eliane": "n.d. (mobile ?)", "planete": "Avaleur de Mondes", "type_corps": "entite-monde", "souche_vie": ["X"], "especes": ["Entité ultradimensionnelle (taille système planétaire)"], "gravite": "variable", "atmosphere": "n.d.", "tech_niveau": 0, "tech_label": "inconnue", "magie": "Inconnue", "civilisation": "aucune (entité)", "affiliation": "—", "statut": "notes auteur 2026-10-19", "notes": "Entité ultradimensionnelle pouvant atteindre la taille d'un système planétaire. L'Aeschylus y vit la majorité du temps. Nature à préciser.", "source": "notes auteur 2026-10-19", "liens": [{"titre": "Livre XI §46 — Entités cosmiques", "url": "livre_11.html#chap-46"}], "_nx": 190.96694814183058, "_ny": 277.8696699924559}, {"id": "esp-humain", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha (naine jaune stable)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Humain", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Hybris", "magie": "à préciser (cf. Hybris)", "civilisation": "espèce — cf. Hybris", "affiliation": "cf. Hybris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Hybris : Humain (plaines, déportés An 0). Magie/civilisation à affiner.", "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)", "liens": [{"titre": "Livre X §40 — Planètes", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Régions", "url": "livre_10.html#chap-41"}, {"titre": "Livre I §2 — Espèces", "url": "livre_1.html#chap-2"}, {"titre": "Livre XI §45 — Faune", "url": "livre_11.html#chap-45"}], "hote": "Hybris"}, {"id": "esp-nain", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha (naine jaune stable)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Nain", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Hybris", "magie": "à préciser (cf. Hybris)", "civilisation": "espèce — cf. Hybris", "affiliation": "cf. Hybris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Hybris : Nain (montagnard ouest, exilés — corr. 2026-10-19 : non souterrain). Magie/civilisation à affiner.", "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)", "liens": [{"titre": "Livre X §40 — Planètes", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Régions", "url": "livre_10.html#chap-41"}, {"titre": "Livre I §2 — Espèces", "url": "livre_1.html#chap-2"}, {"titre": "Livre XI §45 — Faune", "url": "livre_11.html#chap-45"}], "hote": "Hybris"}, {"id": "esp-taurien", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha (naine jaune stable)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Taurien", "type_corps": "espece", "souche_vie": ["C+"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Hybris", "magie": "à préciser (cf. Hybris)", "civilisation": "espèce — cf. Hybris", "affiliation": "cf. Hybris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Hybris : Taurien (Grande Forêt sud). Magie/civilisation à affiner.", "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)", "liens": [{"titre": "Livre X §40 — Planètes", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Régions", "url": "livre_10.html#chap-41"}, {"titre": "Livre I §2 — Espèces", "url": "livre_1.html#chap-2"}, {"titre": "Livre XI §45 — Faune", "url": "livre_11.html#chap-45"}], "hote": "Hybris"}, {"id": "esp-derek", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha (naine jaune stable)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Derek", "type_corps": "espece", "souche_vie": ["S/C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Hybris", "magie": "à préciser (cf. Hybris)", "civilisation": "espèce — cf. Hybris", "affiliation": "cf. Hybris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Hybris : Derek (indigène cavernes, S/C). Magie/civilisation à affiner.", "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)", "liens": [{"titre": "Livre X §40 — Planètes", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Régions", "url": "livre_10.html#chap-41"}, {"titre": "Livre I §2 — Espèces", "url": "livre_1.html#chap-2"}, {"titre": "Livre XI §45 — Faune", "url": "livre_11.html#chap-45"}], "hote": "Hybris"}, {"id": "esp-geant-titan", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha (naine jaune stable)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Géant/Titan", "type_corps": "espece", "souche_vie": ["C+"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Hybris", "magie": "à préciser (cf. Hybris)", "civilisation": "espèce — cf. Hybris", "affiliation": "cf. Hybris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Hybris : Géant/Titan (Continent Est, C+ hors-trame). Magie/civilisation à affiner.", "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)", "liens": [{"titre": "Livre X §40 — Planètes", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Régions", "url": "livre_10.html#chap-41"}, {"titre": "Livre I §2 — Espèces", "url": "livre_1.html#chap-2"}, {"titre": "Livre XI §45 — Faune", "url": "livre_11.html#chap-45"}], "hote": "Hybris"}, {"id": "esp-faune-d-hybris", "systeme": "Hybris-Prime", "etoile": "Hybris-Alpha (naine jaune stable)", "zone_eliane": "Zone 01 — Hybris Sector (Aethelgard)", "planete": "Faune d'Hybris", "type_corps": "espece", "souche_vie": ["C+"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Hybris", "magie": "à préciser (cf. Hybris)", "civilisation": "espèce — cf. Hybris", "affiliation": "cf. Hybris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Hybris : Faune C+ (Bête d'Hybris, faune magique). Magie/civilisation à affiner.", "source": "livre_10.html:755-792, livre_1.html:662-714, livre_11.html:871-978 (espèce)", "liens": [{"titre": "Livre X §40 — Planètes", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Régions", "url": "livre_10.html#chap-41"}, {"titre": "Livre I §2 — Espèces", "url": "livre_1.html#chap-2"}, {"titre": "Livre XI §45 — Faune", "url": "livre_11.html#chap-45"}], "hote": "Hybris"}, {"id": "esp-vardien-frontalier", "systeme": "Janus", "etoile": "Vardis-Major (binaire rouge-orangée)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Vardien/Frontalier", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Vardis", "magie": "à préciser (cf. Vardis)", "civilisation": "espèce — cf. Vardis", "affiliation": "cf. Vardis", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Vardis : Vardien/Frontalier (C aride). Magie/civilisation à affiner.", "source": "livre_10.html:794-832 (espèce)", "liens": [{"titre": "Livre X §40 — Vardis", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Territoires", "url": "livre_10.html#chap-41"}], "hote": "Vardis"}, {"id": "esp-thalun", "systeme": "Janus", "etoile": "Vardis-Major (binaire rouge-orangée)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Thalun", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Vardis", "magie": "à préciser (cf. Vardis)", "civilisation": "espèce — cf. Vardis", "affiliation": "cf. Vardis", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Vardis : Thalun tribal (C filtrante). Magie/civilisation à affiner.", "source": "livre_10.html:794-832 (espèce)", "liens": [{"titre": "Livre X §40 — Vardis", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Territoires", "url": "livre_10.html#chap-41"}], "hote": "Vardis"}, {"id": "esp-garnison-imperiale-vardis", "systeme": "Janus", "etoile": "Vardis-Major (binaire rouge-orangée)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Garnison impériale (Vardis)", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Vardis", "magie": "à préciser (cf. Vardis)", "civilisation": "espèce — cf. Vardis", "affiliation": "cf. Vardis", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Vardis : Garnison impériale (multi-souches). Magie/civilisation à affiner.", "source": "livre_10.html:794-832 (espèce)", "liens": [{"titre": "Livre X §40 — Vardis", "url": "livre_10.html#chap-40"}, {"titre": "Livre X §41 — Territoires", "url": "livre_10.html#chap-41"}], "hote": "Vardis"}, {"id": "esp-nefrisien", "systeme": "Janus", "etoile": "Vardis-Major", "zone_eliane": "Zone 02", "planete": "Nefrisien", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Nefris", "magie": "à préciser (cf. Nefris)", "civilisation": "espèce — cf. Nefris", "affiliation": "cf. Nefris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Nefris : Nefrisien indigène (C toxique-résistante). Magie/civilisation à affiner.", "source": "livre_10.html:834-871 + notes auteur 2026-10-19 (espèce)", "liens": [{"titre": "Livre X §40 — Nefris", "url": "livre_10.html#chap-40"}], "hote": "Nefris"}, {"id": "esp-mercenaires-imperiaux", "systeme": "Janus", "etoile": "Vardis-Major", "zone_eliane": "Zone 02", "planete": "Mercenaires impériaux", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Nefris", "magie": "à préciser (cf. Nefris)", "civilisation": "espèce — cf. Nefris", "affiliation": "cf. Nefris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Nefris : Mercenaires / ingénieurs impériaux. Magie/civilisation à affiner.", "source": "livre_10.html:834-871 + notes auteur 2026-10-19 (espèce)", "liens": [{"titre": "Livre X §40 — Nefris", "url": "livre_10.html#chap-40"}], "hote": "Nefris"}, {"id": "esp-resistance-equipage", "systeme": "Janus", "etoile": "Vardis-Major", "zone_eliane": "Zone 02", "planete": "Résistance (équipage)", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Base Astéroïde de Nefris", "magie": "à préciser (cf. Base Astéroïde de Nefris)", "civilisation": "espèce — cf. Base Astéroïde de Nefris", "affiliation": "cf. Base Astéroïde de Nefris", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Base Astéroïde de Nefris : Résistance (équipage C). Magie/civilisation à affiner.", "source": "livre_10.html:968-983 (espèce)", "liens": [{"titre": "Livre X §40.3 — Base", "url": "livre_10.html#chap-40"}], "hote": "Base Astéroïde de Nefris"}, {"id": "esp-cleienne", "systeme": "Veyla", "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)", "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)", "planete": "Cléienne", "type_corps": "espece", "souche_vie": ["C+X"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Cléia", "magie": "à préciser (cf. Cléia)", "civilisation": "espèce — cf. Cléia", "affiliation": "cf. Cléia", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Cléia : Cléienne (C+X : ADN-ARN + 3e brin 5e Force, 100% féminine, besoin en eau très inférieur à l'humain). Magie/civilisation à affiner.", "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)", "liens": [{"titre": "Livre X §40 — Cléia", "url": "livre_10.html#chap-40"}, {"titre": "Livre I §2 — Cléien", "url": "livre_1.html#chap-2"}], "hote": "Cléia"}, {"id": "esp-faune-des-canyons", "systeme": "Veyla", "etoile": "Veyla-Mère (blanche, flux constant) + Veyla-Sœur (naine compagne)", "zone_eliane": "Zone 03 — Cléia Astra (Selene-Vor)", "planete": "Faune des canyons", "type_corps": "espece", "souche_vie": ["X"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Cléia", "magie": "à préciser (cf. Cléia)", "civilisation": "espèce — cf. Cléia", "affiliation": "cf. Cléia", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Cléia : Faune des canyons + espèces minérales à tubes (X). Magie/civilisation à affiner.", "source": "livre_10.html:873-906, livre_1.html:716-731 + notes auteur 2026-10-19 (espèce)", "liens": [{"titre": "Livre X §40 — Cléia", "url": "livre_10.html#chap-40"}, {"titre": "Livre I §2 — Cléien", "url": "livre_1.html#chap-2"}], "hote": "Cléia"}, {"id": "esp-mikyai", "systeme": "Karkjiue", "etoile": "Kark-Sol (géante rouge, éruptions)", "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)", "planete": "Mikyai", "type_corps": "espece", "souche_vie": ["S"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Karkjiue", "magie": "à préciser (cf. Karkjiue)", "civilisation": "espèce — cf. Karkjiue", "affiliation": "cf. Karkjiue", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Karkjiue : Mikyai (S-partielle : écailles silicées thermorésistantes). Magie/civilisation à affiner.", "source": "livre_10.html:908-940, livre_1.html:733-748 (espèce)", "liens": [{"titre": "Livre X §40 — Karkjiue", "url": "livre_10.html#chap-40"}, {"titre": "Livre I §2 — Mikyai", "url": "livre_1.html#chap-2"}], "hote": "Karkjiue"}, {"id": "esp-faune-volcanique", "systeme": "Karkjiue", "etoile": "Kark-Sol (géante rouge, éruptions)", "zone_eliane": "Zone 04 — Karkjiue Rim (Goroth-Kahn)", "planete": "Faune volcanique", "type_corps": "espece", "souche_vie": ["S"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Karkjiue", "magie": "à préciser (cf. Karkjiue)", "civilisation": "espèce — cf. Karkjiue", "affiliation": "cf. Karkjiue", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Karkjiue : Faune volcanique (S pure). Magie/civilisation à affiner.", "source": "livre_10.html:908-940, livre_1.html:733-748 (espèce)", "liens": [{"titre": "Livre X §40 — Karkjiue", "url": "livre_10.html#chap-40"}, {"titre": "Livre I §2 — Mikyai", "url": "livre_1.html#chap-2"}], "hote": "Karkjiue"}, {"id": "esp-humain-xxie", "systeme": "Solaire (Sol)", "etoile": "Soleil (G2V)", "zone_eliane": "Zone 01 marge", "planete": "Humain (XXIe)", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Terre", "magie": "à préciser (cf. Terre)", "civilisation": "espèce — cf. Terre", "affiliation": "cf. Terre", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Terre : Humain référence XXIe (matrice des 3000 déportés An 0). Magie/civilisation à affiner.", "source": "atlas_3d.html:711-726, livre_10.html:728-731 (espèce)", "liens": [{"titre": "Livre X §39 — Système Sol", "url": "livre_10.html#chap-39"}], "hote": "Terre"}, {"id": "esp-equipage-de-l-aeschylus", "systeme": "mobile (Avaleur de Mondes)", "etoile": "—", "zone_eliane": "n.d. — mobile (base : Avaleur de Mondes)", "planete": "Équipage de l'Aeschylus", "type_corps": "espece", "souche_vie": ["C", "S", "C+X"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. L'Aeschylus", "magie": "à préciser (cf. L'Aeschylus)", "civilisation": "espèce — cf. L'Aeschylus", "affiliation": "cf. L'Aeschylus", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de L'Aeschylus : Équipage mixte (Capitaine balafré, Sara, Max, Gunther, Babushka). Magie/civilisation à affiner.", "source": "livre_10.html:948-966 + notes auteur 2026-10-19 (espèce)", "liens": [{"titre": "Livre X §40.3 — Vaisseaux", "url": "livre_10.html#chap-40"}, {"titre": "Livre XI §44 — Factions", "url": "livre_11.html#chap-44"}], "hote": "L'Aeschylus"}, {"id": "esp-ferronien", "systeme": "Aurion-Forge", "etoile": "Aurion-Prime (naine blanche)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Ferronien", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Ferron", "magie": "à préciser (cf. Ferron)", "civilisation": "espèce — cf. Ferron", "affiliation": "cf. Ferron", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Ferron : Ferronien des chantiers (C industrielle). Magie/civilisation à affiner.", "source": "notes auteur 2026-10-19 (espèce)", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}], "hote": "Ferron"}, {"id": "esp-garnison-imperiale-ferron", "systeme": "Aurion-Forge", "etoile": "Aurion-Prime (naine blanche)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "planete": "Garnison impériale (Ferron)", "type_corps": "espece", "souche_vie": ["C"], "especes": [], "gravite": "—", "atmosphere": "—", "tech_niveau": 0, "tech_label": "cf. Ferron", "magie": "à préciser (cf. Ferron)", "civilisation": "espèce — cf. Ferron", "affiliation": "cf. Ferron", "statut": "notes auteur 2026-10-19 (entrée espèce)", "notes": "Espèce de Ferron : Garnison impériale (multi-souches). Magie/civilisation à affiner.", "source": "notes auteur 2026-10-19 (espèce)", "liens": [{"titre": "Livre X §39 — Systèmes", "url": "livre_10.html#chap-39"}], "hote": "Ferron"}], "entites": [{"id": "empire", "nom": "Empire Galactique", "type": "empire", "echelle": "milliers de planètes · centaines de systèmes étoiles", "capitale": "Nexus d'Aurion (Zone 02)", "zone_eliane": "Zone 02 — Aurion Nexus (Capricius)", "statut": "notes auteur 2026-10-19 + canon partiel (livre_10.html:598-627, livre_10.html:646-656)", "notes": "Entité supra-système. Vardis en colonisation + guerre active ; Nefris membre en guerre ; Karkjiue protectorat ; Cléia indépendante (prospection impériale sans issue) ; Hybris indépendant (Mondes Francs).", "source": "notes auteur 2026-10-19"}], "relations": [{"from": "Empire Galactique", "to": "Vardis", "type": "colonisation", "label": "colonisation en cours", "statut": "auteur"}, {"from": "Empire Galactique", "to": "Vardis", "type": "guerre", "label": "guerre active", "statut": "auteur"}, {"from": "Empire Galactique", "to": "Nefris", "type": "membre", "label": "membre de l'Empire", "statut": "auteur"}, {"from": "Empire Galactique", "to": "Nefris", "type": "guerre", "label": "en guerre contre l'Empire", "statut": "auteur"}, {"from": "Vardis", "to": "Nefris", "type": "voisine", "label": "voisines, même système (Vardis-Major)", "statut": "canon"}, {"from": "Cléia", "to": "Veyla-Mère", "type": "culte", "label": "vénérée comme la Mère-Loi", "statut": "auteur"}, {"from": "Cléia", "to": "Veyla-Sœur", "type": "culte", "label": "vénérée comme la Sœur-Caprice ; Noces = oracles", "statut": "auteur"}, {"from": "Empire Galactique", "to": "Karkjiue", "type": "protectorat", "label": "protectorat martial (Mikyais enrôlés)", "statut": "canon"}, {"from": "Empire Galactique", "to": "Cléia", "type": "independant", "label": "indépendante — l'Empire tâte le terrain, soumission jugée très difficile", "statut": "auteur"}, {"from": "Empire Galactique", "to": "Hybris", "type": "independant", "label": "hors Empire (Mondes Francs)", "statut": "canon"}, {"from": "Terre", "to": "Hybris", "type": "origine", "label": "déportation An 0 (~3000)", "statut": "canon"}, {"from": "Base Astéroïde de Nefris", "to": "Empire Galactique", "type": "resistance", "label": "résistance orbitale", "statut": "canon"}, {"from": "L'Aeschylus", "to": "Empire Galactique", "type": "resistance", "label": "pirates traqués", "statut": "canon"}, {"from": "Empire Galactique", "to": "Ferron", "type": "membre", "label": "monde central (chantiers navals)", "statut": "auteur"}, {"from": "L'Aeschylus", "to": "Avaleur de Mondes", "type": "base", "label": "base principale (y vit la majorité du temps)", "statut": "auteur"}, {"from": "Ferron", "to": "L'Aeschylus", "type": "origine", "label": "construit sur commande impériale, volé à la livraison", "statut": "auteur"}], "a_completer": ["Aeschylus : nom/localisation de l'Avaleur", "Veyla : paramètres orbitaux, cycle des Noces (éclipses Mère/Sœur)", "Nefris : gravité fine, souche, tech, statut local", "Recensement Empire : centaines de systèmes, milliers de planètes (bien au-delà de l'atlas)", "Mars + stations Jupiter (système Sol)", "Lunes Vardis / K-9, astéroïde rebelle Nefris", "Bassins miniers orbitaux Karkjiue", "Zones 05-36 (32 Archontes, Eau Sombre)", "Galaxie Sans Étoiles (X-pure, Minulican)", "Faune détaillée Livre XI + Thaluns + tribus Nefris"]}</script>
+    <script>
+    (function () {
+        var state = { data: [], sortK: "systeme", sortDir: 1, souchesRef: {}, relations: [], entites: [], doc: null };
+        var SCLS = { "C": "s-C", "C+": "s-Cplus", "C+X": "s-CX", "S": "s-S", "S/C": "s-SC", "G": "s-G", "X": "s-X" };
+        var SCOL = { "C": "#10b981", "C+": "#2dd4bf", "C+X": "#38bdf8", "S": "#fbbf24", "S/C": "#fb923c", "G": "#c084fc", "X": "#f43f5e" };
+
+        /* Score magie -> ordonnée (règle documentée, stable) */
+        function magicScore(m) {
+            m = String(m || "");
+            var s = 2.5;
+            if (/Dormante|Ignorée/.test(m)) s = 0.5;
+            else if (/Impossible/.test(m)) s = /Limitée|Normale|Inhérente/.test(m) ? 1.5 : 1;
+            else if (/Inhérente/.test(m)) s = /Normale/.test(m) ? 3.5 : 4;
+            else if (/Normale/.test(m)) s = 3;
+            else if (/Rituelle|Variable/.test(m)) s = 2.5;
+            else if (/Limitée/.test(m)) s = 2;
+            return s;
+        }
+
+        function esc(s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); }
+        function svgEsc(s) { return esc(s); }
+
+        function fillSelect(id, values) {
+            var el = document.getElementById(id);
+            values.sort().forEach(function (v) {
+                var o = document.createElement("option"); o.value = v; o.textContent = v; el.appendChild(o);
+            });
+        }
+
+        function filtered() {
+            var q = document.getElementById("q").value.toLowerCase();
+            var fs = document.getElementById("fSys").value, fso = document.getElementById("fSouche").value;
+            var fm = document.getElementById("fMagie").value, ft = document.getElementById("fType").value;
+            return state.data.filter(function (m) {
+                if (fs && m.systeme !== fs) return false;
+                if (fm && m.magie !== fm) return false;
+                if (ft && m.type_corps !== ft) return false;
+                if (fso && (m.souche_vie || []).indexOf(fso) < 0) return false;
+                if (q) {
+                    var hay = [m.planete, m.alias || "", m.systeme, (m.especes || []).join(" "), (m.souche_vie || []).join(" ")].join(" ").toLowerCase();
+                    if (hay.indexOf(q) < 0) return false;
+                }
+                return true;
+            }).sort(function (a, b) {
+                var col = null;
+                COLUMNS.forEach(function (c) { if (c.k === state.sortK) col = c; });
+                var va = col ? col.sv(a) : "", vb = col ? col.sv(b) : "";
+                if (typeof va === "number" && typeof vb === "number") return (va - vb) * state.sortDir;
+                va = String(va == null ? "" : va).toLowerCase(); vb = String(vb == null ? "" : vb).toLowerCase();
+                return (va < vb ? -1 : va > vb ? 1 : 0) * state.sortDir;
+            });
+        }
+
+        function showInfo(m) {
+            document.getElementById("infoPanel").innerHTML =
+                "<strong>" + esc(m.planete) + "</strong> — " + esc(m.systeme) + " · " + esc(m.type_corps || "") +
+                "<br>Souches : " + (m.souche_vie || []).join(", ") + " · Tech " + esc(m.tech_niveau) + " (" + esc(m.tech_label || "") + ") · Magie " + esc(m.magie) +
+                "<br>Civilisation : " + esc(m.civilisation) + " — " + esc(m.affiliation || "") +
+                "<br>Espèces : " + (m.especes || []).map(esc).join(" ; ");
+        }
+
+        /* ---------- TABLEAU : 15 colonnes triables + visibilité ---------- */
+        function gravScore(m) {
+            var v = parseFloat(String(m.gravite || "").replace(",", "."));
+            return isNaN(v) ? Infinity : v;
+        }
+        function badge(s) {
+            var tip = state.souchesRef[s] || s;
+            return '<span class="souche ' + (SCLS[s] || "") + '" title="' + esc(tip) + '">' + esc(s) + "</span>";
+        }
+        var COLUMNS = [
+            { k: "systeme", label: "Système", vis: 1, sv: function (m) { return m.systeme || ""; }, html: function (m) { return "<strong>" + esc(m.systeme) + "</strong>"; }, ed: "text" },
+            { k: "etoile", label: "Étoile", vis: 0, sv: function (m) { return m.etoile || ""; }, html: function (m) { return esc(m.etoile || "—"); }, ed: "text" },
+            { k: "planete", label: "Monde", vis: 1, sv: function (m) { return m.planete || ""; }, html: function (m) { return "<strong>" + esc(m.planete) + "</strong>" + (m.alias ? "<span class='sub'>alias : " + esc(m.alias) + "</span>" : ""); }, ed: "text" },
+            { k: "type_corps", label: "Type", vis: 1, sv: function (m) { return m.type_corps || ""; }, html: function (m) { return esc(m.type_corps || "—"); }, ed: "type" },
+            { k: "zone_eliane", label: "Zone élienne", vis: 0, sv: function (m) { return m.zone_eliane || ""; }, html: function (m) { return esc(m.zone_eliane || "—"); }, ed: "text" },
+            { k: "souche", label: "Souche(s)", vis: 1, sv: function (m) { return (m.souche_vie || [""])[0]; }, html: function (m) { return (m.souche_vie || []).map(badge).join(""); }, ed: "souches" },
+            { k: "tech_niveau", label: "Tech", vis: 1, sv: function (m) { return m.tech_niveau; }, html: function (m) { return "<strong>" + esc(m.tech_niveau) + "</strong><span class='sub'>" + esc(m.tech_label || "") + "</span>"; }, ed: "num" },
+            { k: "magie", label: "Magie", vis: 1, sv: function (m) { return magicScore(m.magie); }, html: function (m) { return esc(m.magie); }, ed: "text" },
+            { k: "civilisation", label: "Civilisation", vis: 1, sv: function (m) { return m.civilisation || ""; }, html: function (m) { return esc(m.civilisation || "—"); }, ed: "text" },
+            { k: "affiliation", label: "Affiliation", vis: 0, sv: function (m) { return m.affiliation || ""; }, html: function (m) { return esc(m.affiliation || "—"); }, ed: "text" },
+            { k: "especes", label: "Espèces", vis: 1, sv: function (m) { return (m.especes || []).length; }, html: function (m) { if (m.type_corps === "espece") return "<span class='sub'>— est une espèce</span>"; return "<span class='sub'>" + (m.especes || []).length + " entrée(s)</span><span class='esp'>" + (m.especes || []).map(esc).join("<br>") + "</span>"; }, ed: "lines" },
+            { k: "gravite", label: "Gravité", vis: 0, sv: gravScore, html: function (m) { return esc(m.gravite || "n.d."); }, ed: "text" },
+            { k: "atmosphere", label: "Atmosphère", vis: 0, sv: function (m) { return m.atmosphere || ""; }, html: function (m) { return esc(m.atmosphere || "—"); }, ed: "text" },
+            { k: "statut", label: "Statut", vis: 0, sv: function (m) { return m.statut || ""; }, html: function (m) { return esc(m.statut || "—"); }, ed: "text" },
+            { k: "source", label: "Source", vis: 0, sv: function (m) { return m.source || ""; }, html: function (m) { return "<span class='sub'>" + esc(m.source || "—") + "</span>"; }, ed: "text" },
+            { k: "notes", label: "Notes", vis: 0, sv: function (m) { return m.notes || ""; }, html: function (m) { return "<span class='sub'>" + esc(m.notes || "—") + "</span>"; }, ed: "area" },
+            { k: "liens", label: "Liens (hors Tactics)", vis: 1, sv: function (m) { return (m.liens || []).length; }, html: function (m) { return (m.liens || []).map(function (l) { return '<a href="' + esc(l.url) + '">' + esc(l.titre) + "</a>"; }).join("<br>"); }, ed: "links" },
+            { k: "suppr", label: "✕", vis: 1, sv: function () { return ""; }, html: function (m) { return '<button type="button" class="del-btn" data-del="' + esc(m.id) + '" title="Supprimer cette entrée (autosave)">✕</button>'; } }
+        ];
+
+        function visibleCols() { return COLUMNS.filter(function (c) { return c.vis; }); }
+
+        function buildHead() {
+            var tr = document.getElementById("headRow");
+            tr.innerHTML = "";
+            visibleCols().forEach(function (c) {
+                var th = document.createElement("th");
+                th.className = "sortable col-" + c.k;
+                var arrow = (state.sortK === c.k) ? (state.sortDir > 0 ? " ↑" : " ↓") : " ⇅";
+                th.textContent = c.label + arrow;
+                (function (key) {
+                    th.addEventListener("click", function () {
+                        if (state.sortK === key) state.sortDir *= -1;
+                        else { state.sortK = key; state.sortDir = 1; }
+                        renderAll();
+                    });
+                })(c.k);
+                tr.appendChild(th);
+            });
+        }
+
+        function buildToggles() {
+            var box = document.getElementById("colToggles");
+            box.innerHTML = "";
+            var all = document.createElement("div");
+            var bOn = document.createElement("button");
+            bOn.type = "button"; bOn.className = "col-toggle-btn"; bOn.textContent = "Tout cocher";
+            bOn.addEventListener("click", function () {
+                COLUMNS.forEach(function (c) { c.vis = 1; });
+                buildToggles(); renderAll();
+            });
+            var bOff = document.createElement("button");
+            bOff.type = "button"; bOff.className = "col-toggle-btn"; bOff.textContent = "Tout décocher";
+            bOff.addEventListener("click", function () {
+                COLUMNS.forEach(function (c) { c.vis = 0; });
+                buildToggles(); renderAll();
+            });
+            all.appendChild(bOn); all.appendChild(document.createTextNode(" ")); all.appendChild(bOff);
+            box.appendChild(all);
+            COLUMNS.forEach(function (c, i) {
+                var lab = document.createElement("label");
+                var cb = document.createElement("input");
+                cb.type = "checkbox";
+                cb.checked = !!c.vis;
+                (function (idx, box_) {
+                    box_.addEventListener("change", function () {
+                        COLUMNS[idx].vis = box_.checked ? 1 : 0;
+                        renderAll();
+                    });
+                })(i, cb);
+                lab.appendChild(cb);
+                lab.appendChild(document.createTextNode(" " + c.label));
+                box.appendChild(lab);
+            });
+        }
+
+        function renderTable(list) {
+            var cols = visibleCols();
+            buildHead();
+            if (!cols.length) {
+                document.getElementById("rows").innerHTML = "<tr><td style='text-align:center;color:var(--text-muted)'>Aucune colonne visible — cliquez « Tout cocher ».</td></tr>";
+                return;
+            }
+            var html = "";
+            list.forEach(function (m) {
+                html += "<tr>" + cols.map(function (c) {
+                    var attrs = c.ed ? ' data-id="' + esc(m.id) + '" data-k="' + c.k + '" title="Cliquer pour modifier"' : "";
+                    return '<td class="col-' + c.k + '"' + attrs + ">" + c.html(m) + "</td>";
+                }).join("") + "</tr>";
+            });
+            document.getElementById("rows").innerHTML = html || "<tr><td colspan='" + cols.length + "' style='text-align:center;color:var(--text-muted)'>Aucun monde — élargis les filtres.</td></tr>";
+        }
+
+        /* ---------- AUTOSAVE LOCAL (aucun serveur requis) ---------- */
+        var LSKEY = "kt-atlas-mondes";
+        function readLocal() {
+            try {
+                var j = JSON.parse(localStorage.getItem(LSKEY) || "null");
+                return (j && Array.isArray(j.mondes)) ? j : null;
+            } catch (e) { return null; }
+        }
+        function writeLocal() {
+            if (!state.doc) return;
+            try { localStorage.setItem(LSKEY, JSON.stringify(state.doc)); } catch (e) { /* stockage indisponible */ }
+        }
+        /* ---------- SUPPRESSION + AUTOSAVE ---------- */
+        function setSave(mode, label) {
+            var el = document.getElementById("saveState");
+            if (!el) return;
+            el.className = mode || "";
+            document.getElementById("saveLabel").textContent = label || "Prêt";
+        }
+        function saveStatus(msg) {
+            var el = document.getElementById("count");
+            el.textContent = el.textContent + " — " + msg;
+        }
+        function probeServer() {
+            if (location.protocol === "file:") {
+                setSave("local", "file:// : écriture impossible — sers la page en HTTP (« node users/server.js » puis http://localhost:3000/atlas_mondes.html)");
+                return;
+            }
+            var cands = ["api/atlas-mondes", "http://localhost:3000/api/atlas-mondes", "http://127.0.0.1:3000/api/atlas-mondes"];
+            var i = 0;
+            var next = function () {
+                if (i >= cands.length) {
+                    setSave("local", "Serveur injoignable — lance « node users/server.js » (:3000)");
+                    return;
+                }
+                var u = cands[i++];
+                fetch(u).then(function (r) {
+                    if (!r.ok) throw new Error("HTTP " + r.status);
+                    return r.json();
+                }).then(function (j) {
+                    state.apiBase = u;
+                    setSave("saved", "Serveur connecté (" + u.replace("http://", "") + ") — autosave actif");
+                }).catch(next);
+            };
+            next();
+        }
+        function downloadJson(doc, name) {
+            var blob = new Blob([JSON.stringify(doc, null, 2)], { type: "application/json" });
+            var a = document.createElement("a");
+            a.href = URL.createObjectURL(blob);
+            a.download = name || "atlas_mondes.json";
+            document.body.appendChild(a); a.click();
+            setTimeout(function () { URL.revokeObjectURL(a.href); a.remove(); }, 500);
+        }
+        /* Écriture directe via File System Access API (Chrome/Edge, contexte sécurisé) */
+        var fileHandle = null;
+        function setupLinkButton() {
+            var btn = document.getElementById("linkFile");
+            if (!window.showSaveFilePicker) return;
+            btn.style.display = "";
+            btn.addEventListener("click", function () {
+                window.showSaveFilePicker({
+                    suggestedName: "atlas_mondes.json",
+                    types: [{ description: "JSON", accept: { "application/json": [".json"] } }]
+                }).then(function (h) { return h.requestPermission({ mode: "readwrite" }).then(function (p) { return { h: h, p: p }; }); }).then(function (r) {
+                    if (r.p !== "granted") { setSave("error", "Permission refusée"); return; }
+                    fileHandle = r.h;
+                    btn.textContent = "Fichier lié ✓";
+                    setSave("saved", "Fichier lié — sauvegarde directe active");
+                }).catch(function (e) { setSave("error", "Liaison annulée (" + e.message + ")"); });
+            });
+        }
+        function saveToHandle() {
+            if (!fileHandle) return Promise.reject(new Error("pas de fichier lié"));
+            return fileHandle.createWritable().then(function (w) {
+                return w.write(JSON.stringify(state.doc, null, 2)).then(function () { return w.close(); });
+            });
+        }
+        function saveAtlas() {
+            if (!state.doc) return;
+            state.doc.mondes = state.data;
+            state.doc.relations = state.relations;
+            state.doc.updated = new Date().toISOString().slice(0, 10);
+            writeLocal();
+            setSave("saving", "Sauvegarde…");
+            var done = function (where) {
+                setSave("saved", "Sauvé " + new Date().toLocaleTimeString() + " (" + where + ")");
+                saveStatus("sauvegardé " + new Date().toLocaleTimeString() + " (" + where + ")");
+            };
+            saveToHandle().then(function () { done("fichier lié"); }).catch(function () {
+                fetch(state.apiBase || "api/atlas-mondes", {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify(state.doc)
+                }).then(function (r) {
+                    if (!r.ok) throw new Error("HTTP " + r.status);
+                    return r.json();
+                }).then(function () { done("serveur"); }).catch(function (e) {
+                    downloadJson(state.doc);
+                    setSave("error", "Aucune écriture possible — JSON téléchargé (à placer dans data/)");
+                    saveStatus("serveur injoignable et aucun fichier lié (" + e.message + ") — JSON téléchargé, remplace data/atlas_mondes.json");
+                });
+            });
+        }
+        function deleteEntry(id) {
+            var m = null;
+            state.data.forEach(function (x) { if (x.id === id) m = x; });
+            if (!m) return;
+            var rels = (state.relations || []).filter(function (r) { return r.from === m.planete || r.to === m.planete; });
+            var children = state.data.filter(function (x) { return x.hote === m.planete; });
+            var msg = "Supprimer « " + m.planete + " » (" + m.type_corps + ") de l'atlas ?"
+                + (rels.length ? "\nLiens supprimés aussi : " + rels.length : "")
+                + (children.length ? "\nEspèces rattachées supprimées : " + children.map(function (c) { return c.planete; }).join(", ") : "")
+                + "\nBackup .bak côté serveur.";
+            if (!window.confirm(msg)) return;
+            state.data = state.data.filter(function (x) { return x.id !== id && x.hote !== m.planete; });
+            state.relations = (state.relations || []).filter(function (r) { return r.from !== m.planete && r.to !== m.planete; });
+            if (state.doc) { state.doc.mondes = state.data; state.doc.relations = state.relations; }
+            renderAll();
+            saveAtlas();
+        }
+        /* (clic lignes géré par le bloc édition ci-dessus) */
+
+        /* ---------- ÉDITION INLINE + AUTOSAVE ---------- */
+        var editing = null;
+        function rawValue(m, c) {
+            if (c.k === "souche") return (m.souche_vie || []).join(", ");
+            if (c.k === "tech_niveau") return m.tech_niveau;
+            if (c.k === "especes") return (m.especes || []).join("\n");
+            if (c.k === "liens") return (m.liens || []).map(function (l) { return l.titre + " | " + l.url; }).join("\n");
+            return m[c.k] == null ? "" : m[c.k];
+        }
+        function commitEdit() {
+            if (!editing) return;
+            var m = editing.m, c = editing.col, ed = editing.input;
+            var v = ("value" in ed) ? ed.value : ed.textContent;
+            var ok = true;
+            if (c.ed === "num") {
+                v = parseFloat(String(v).replace(",", "."));
+                if (isNaN(v)) { alert("Nombre attendu."); ok = false; }
+            } else if (c.ed === "souches") {
+                v = String(v).split(",").map(function (s) { return s.trim(); }).filter(Boolean);
+                var bad = v.filter(function (s) { return !state.souchesRef[s]; });
+                if (!v.length || bad.length) { alert("Souche(s) inconnue(s) : " + bad.join(", ") + "\nValides : " + Object.keys(state.souchesRef).join(", ")); ok = false; }
+            } else if (c.ed === "lines") {
+                v = String(v).split("\n").map(function (s) { return s.trim(); }).filter(Boolean);
+            } else if (c.ed === "links") {
+                v = [];
+                var lines = String(ed.value).split("\n");
+                for (var i = 0; i < lines.length; i++) {
+                    if (!lines[i].trim()) continue;
+                    var parts = lines[i].split("|");
+                    if (parts.length < 2 || !parts[0].trim() || !parts[1].trim()) { alert("Ligne " + (i + 1) + " : format « titre | url »."); ok = false; break; }
+                    v.push({ titre: parts[0].trim(), url: parts.slice(1).join("|").trim() });
+                }
+            }
+            editing = null;
+            if (!ok) { renderAll(); return; }
+            if (c.k === "souche") m.souche_vie = v;
+            else if (c.k === "especes") m.especes = v;
+            else if (c.k === "liens") m.liens = v;
+            else if (c.k === "tech_niveau") m.tech_niveau = v;
+            else m[c.k] = (c.ed === "type") ? String(v) : String(v);
+            renderAll();
+            saveAtlas();
+        }
+        function cancelEdit() { editing = null; renderAll(); }
+        function startEdit(td, m, c) {
+            if (editing) commitEdit();
+            td.innerHTML = "";
+            var ed;
+            if (c.ed === "area" || c.ed === "lines" || c.ed === "links") {
+                ed = document.createElement("textarea");
+                ed.rows = Math.min(6, Math.max(2, String(rawValue(m, c)).split("\n").length + 1));
+                ed.title = "Ctrl+Entrée pour valider, Échap pour annuler";
+            } else if (c.ed === "type") {
+                ed = document.createElement("select");
+                var types = [];
+                state.data.forEach(function (x) { if (types.indexOf(x.type_corps) < 0) types.push(x.type_corps); });
+                types.forEach(function (t) {
+                    var o = document.createElement("option");
+                    o.value = t; o.textContent = t;
+                    if (t === m.type_corps) o.selected = true;
+                    ed.appendChild(o);
+                });
+            } else {
+                ed = document.createElement("input");
+                ed.type = "text";
+                if (c.ed === "num") ed.setAttribute("inputmode", "decimal");
+                ed.title = "Entrée pour valider, Échap pour annuler";
+            }
+            ed.value = rawValue(m, c);
+            ed.className = "cell-editor";
+            ed.addEventListener("keydown", function (ev) {
+                if (ev.key === "Escape") { ev.stopPropagation(); cancelEdit(); }
+                else if (ev.key === "Enter" && (ed.tagName !== "TEXTAREA" || ev.ctrlKey)) { ev.preventDefault(); commitEdit(); }
+            });
+            ed.addEventListener("blur", function () { if (editing && editing.input === ed && ed.tagName !== "TEXTAREA") commitEdit(); });
+            td.appendChild(ed);
+            editing = { td: td, m: m, col: c, input: ed };
+            try { ed.focus(); if (ed.select) ed.select(); } catch (e) { /* ignore */ }
+        }
+        function findTd(el) {
+            while (el && el !== document) {
+                if (el.getAttribute && el.getAttribute("data-k")) return el;
+                el = el.parentNode;
+            }
+            return null;
+        }
+        document.getElementById("rows").addEventListener("click", function (ev) {
+            var t = ev.target;
+            if (t && t.getAttribute && t.getAttribute("data-del")) { deleteEntry(t.getAttribute("data-del")); return; }
+            if (t && t.tagName === "A") return;
+            var td = findTd(t);
+            if (!td) return;
+            var id = td.getAttribute("data-id"), key = td.getAttribute("data-k");
+            var m = null, c = null;
+            state.data.forEach(function (x) { if (x.id === id) m = x; });
+            COLUMNS.forEach(function (x) { if (x.k === key) c = x; });
+            if (m && c && c.ed) {
+                if (editing && editing.td === td) return;
+                startEdit(td, m, c);
+            }
+        });
+
+        /* ---------- BULLES TECH x MAGIE ---------- */
+        function renderBubbles(list) {
+            var W = 760, H = 440, ML = 150, MR = 20, MT = 20, MB = 44;
+            var X = function (t) { return ML + (t / 6) * (W - ML - MR); };
+            var Y = function (s) { return MT + (1 - s / 4.5) * (H - MT - MB); };
+            var out = "";
+            [0, 1, 2, 3, 4].forEach(function (g) {
+                out += '<line class="grid" x1="' + ML + '" y1="' + Y(g) + '" x2="' + (W - MR) + '" y2="' + Y(g) + '"/>';
+                out += '<text class="axis" x="8" y="' + (Y(g) + 4) + '">' + ["Dormante", "Impossible", "Limitée", "Normale", "Inhérente"][g] + "</text>";
+            });
+            for (var t = 0; t <= 6; t++) {
+                out += '<line class="grid" x1="' + X(t) + '" y1="' + MT + '" x2="' + X(t) + '" y2="' + (H - MB) + '"/>';
+                out += '<text class="axis" x="' + (X(t) - 4) + '" y="' + (H - MB + 18) + '">T' + t + "</text>";
+            }
+            list.forEach(function (m) {
+                var cx = X(m.tech_niveau), cy = Y(magicScore(m.magie));
+                var r = 7 + 3 * (m.especes || []).length, col = SCOL[(m.souche_vie || [""])[0]] || "#94a3b8";
+                out += '<g data-id="' + esc(m.id) + '" class="bubble" style="cursor:pointer">'
+                    + "<title>" + svgEsc(m.planete + " — Tech " + m.tech_niveau + " · " + m.magie) + "</title>"
+                    + '<circle cx="' + cx.toFixed(1) + '" cy="' + cy.toFixed(1) + '" r="' + r + '" fill="' + col + '" fill-opacity="0.55" stroke="' + col + '" stroke-width="2"/>'
+                    + '<text class="axis" x="' + (cx + r + 4).toFixed(1) + '" y="' + (cy + 4).toFixed(1) + '">' + svgEsc(m.planete) + "</text></g>";
+            });
+            document.getElementById("bubbles").innerHTML = '<svg viewBox="0 0 ' + W + " " + H + '">' + out + "</svg>";
+            bindNodes("bubbles");
+        }
+
+        /* ---------- DONUT SOUCHES ---------- */
+        function arc(cx, cy, r, a0, a1) {
+            var x0 = cx + r * Math.cos(a0), y0 = cy + r * Math.sin(a0);
+            var x1 = cx + r * Math.cos(a1), y1 = cy + r * Math.sin(a1);
+            return "M" + x0.toFixed(1) + " " + y0.toFixed(1) + " A" + r + " " + r + " 0 " + ((a1 - a0) > Math.PI ? 1 : 0) + " 1 " + x1.toFixed(1) + " " + y1.toFixed(1);
+        }
+        function renderDonut(list) {
+            var counts = {};
+            list.forEach(function (m) { (m.souche_vie || []).forEach(function (s) { counts[s] = (counts[s] || 0) + 1; }); });
+            var keys = Object.keys(counts).sort(), total = keys.reduce(function (a, k) { return a + counts[k]; }, 0) || 1;
+            var cx = 130, cy = 130, r = 95, a = -Math.PI / 2, out = "";
+            keys.forEach(function (k) {
+                var a1 = a + (counts[k] / total) * Math.PI * 2, col = SCOL[k] || "#94a3b8";
+                out += '<path d="' + arc(cx, cy, r, a, a1) + '" fill="none" stroke="' + col + '" stroke-width="34">'
+                    + "<title>" + svgEsc(k + " : " + counts[k] + " mention(s) — " + (state.souchesRef[k] || "")) + "</title></path>";
+                a = a1;
+            });
+            out += '<text x="' + cx + '" y="' + (cy - 4) + '" text-anchor="middle" style="font:700 22px JetBrains Mono,monospace;fill:var(--text-primary)">' + total + "</text>";
+            out += '<text x="' + cx + '" y="' + (cy + 16) + '" text-anchor="middle" class="axis">mentions</text>';
+            document.getElementById("donut").innerHTML = '<svg viewBox="0 0 260 260">' + out + "</svg>";
+            document.getElementById("donutLegend").innerHTML = keys.map(function (k) {
+                return '<span><span class="dot" style="background:' + (SCOL[k] || "#94a3b8") + '"></span>' + esc(k) + " ×" + counts[k] + " — " + esc(state.souchesRef[k] || "") + "</span>";
+            }).join("");
+        }
+
+        /* ---------- RESEAU SYSTEMES–SOUCHES ---------- */
+        function renderNetwork(list) {
+            var W = 760, H = 460, cx = W / 2, cy = H / 2, R1 = 110, R2 = 195;
+            var souches = [...new Set(list.reduce(function (a, m) { return a.concat(m.souche_vie || []); }, []))].sort();
+            var spos = {}, out = "";
+            souches.forEach(function (s, i) {
+                var a = (i / Math.max(souches.length, 1)) * Math.PI * 2 - Math.PI / 2;
+                spos[s] = [cx + R1 * Math.cos(a), cy + R1 * Math.sin(a)];
+            });
+            list.forEach(function (m, i) {
+                var a = (i / Math.max(list.length, 1)) * Math.PI * 2 - Math.PI / 2 + Math.PI / Math.max(list.length, 1);
+                m._nx = cx + R2 * Math.cos(a); m._ny = cy + R2 * Math.sin(a);
+            });
+            list.forEach(function (m) {
+                (m.souche_vie || []).forEach(function (s) {
+                    if (!spos[s]) return;
+                    out += '<line x1="' + m._nx.toFixed(1) + '" y1="' + m._ny.toFixed(1) + '" x2="' + spos[s][0].toFixed(1) + '" y2="' + spos[s][1].toFixed(1)
+                        + '" stroke="' + (SCOL[s] || "#94a3b8") + '" stroke-width="1.4" stroke-opacity="0.55"/>';
+                });
+            });
+            souches.forEach(function (s) {
+                var p = spos[s], col = SCOL[s] || "#94a3b8";
+                out += '<g><title>' + svgEsc(s + " — " + (state.souchesRef[s] || "")) + "</title>"
+                    + '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="17" fill="' + col + '" fill-opacity="0.25" stroke="' + col + '" stroke-width="2"/>'
+                    + '<text x="' + p[0].toFixed(1) + '" y="' + (p[1] + 4).toFixed(1) + '" text-anchor="middle" style="font:700 11px JetBrains Mono,monospace;fill:#fff">' + svgEsc(s) + "</text></g>";
+            });
+            list.forEach(function (m) {
+                var col = SCOL[(m.souche_vie || [""])[0]] || "#94a3b8";
+                out += '<g data-id="' + esc(m.id) + '" class="pnode" style="cursor:pointer">'
+                    + "<title>" + svgEsc(m.planete + " — " + (m.souche_vie || []).join(", ")) + "</title>"
+                    + '<circle cx="' + m._nx.toFixed(1) + '" cy="' + m._ny.toFixed(1) + '" r="9" fill="#0b1120" stroke="' + col + '" stroke-width="2"/>'
+                    + '<text class="axis" x="' + (m._nx + 12).toFixed(1) + '" y="' + (m._ny + 4).toFixed(1) + '">' + svgEsc(m.planete) + "</text></g>";
+            });
+            document.getElementById("network").innerHTML = '<svg viewBox="0 0 ' + W + " " + H + '">' + out + "</svg>";
+            document.getElementById("networkLegend").innerHTML = '<span><span class="dot" style="background:#38bdf8"></span>pastille centrale = souche de vie</span><span><span class="dot" style="background:#0b1120;border:1px solid #94a3b8"></span>pastille externe = monde (cliquer pour détailler)</span>';
+            bindNodes("network");
+        }
+
+        var RELCOL = { "membre": "#38bdf8", "protectorat": "#fbbf24", "associe": "#2dd4bf", "guerre": "#f43f5e",
+            "colonisation": "#fb923c", "resistance": "#c084fc", "origine": "#10b981", "independant": "#64748b", "voisine": "#7dd3fc", "culte": "#fde68a", "base": "#e2e8f0" };
+
+        /* ---------- CORRELATIONS EMPIRE ---------- */
+        function showEntity(e) {
+            document.getElementById("infoPanel").innerHTML =
+                "<strong>" + esc(e.nom) + "</strong> (" + esc(e.type) + ") — <span class='empire-scale'>" + esc(e.echelle) + "</span>" +
+                "<br>Capitale : " + esc(e.capitale || "—") + " · " + esc(e.zone_eliane || "") +
+                "<br>" + esc(e.notes || "");
+        }
+
+        function renderCorrel(list) {
+            var rels = state.relations || [], ents = state.entites || [];
+            var vis = {};
+            list.forEach(function (m) { vis[m.planete] = true; });
+            (state.entites || []).forEach(function (e) { vis[e.nom] = true; });
+            var kept = rels.filter(function (r) {
+                var empireSide = (r.from === "Empire Galactique" || r.to === "Empire Galactique");
+                var other = r.from === "Empire Galactique" ? r.to : (r.to === "Empire Galactique" ? r.from : null);
+                if (empireSide) return !other || vis[other];
+                return vis[r.from] && vis[r.to];
+            });
+
+            /* Bannière entités */
+            document.getElementById("empireBanner").innerHTML = ents.map(function (e) {
+                return '<div class="empire-banner"><strong>' + esc(e.nom) + "</strong> — <span class='empire-scale'>" + esc(e.echelle) + "</span>"
+                    + "<br>Capitale : " + esc(e.capitale || "—") + " · " + esc(e.zone_eliane || "")
+                    + "<br>" + esc(e.notes || "") + "</div>";
+            }).join("");
+
+            /* Graphe : Empire au centre, nœuds en orbite, arêtes courbées par paire */
+            var W = 760, H = 480, cx = W / 2, cy = H / 2 + 10, R = 185;
+            var nodes = [];
+            kept.forEach(function (r) {
+                [r.from, r.to].forEach(function (n) { if (nodes.indexOf(n) < 0) nodes.push(n); });
+            });
+            var sats = nodes.filter(function (n) { return n !== "Empire Galactique"; });
+            var pos = { "Empire Galactique": [cx, cy] };
+            sats.forEach(function (n, i) {
+                var a = (i / Math.max(sats.length, 1)) * Math.PI * 2 - Math.PI / 2;
+                pos[n] = [cx + R * Math.cos(a), cy + R * Math.sin(a)];
+            });
+            if (sats.length === 0) pos["Empire Galactique"] = [cx, cy];
+            var pairCount = {}, out = "";
+            kept.forEach(function (r) {
+                var a = pos[r.from], b = pos[r.to];
+                if (!a || !b) return;
+                var key = [r.from, r.to].sort().join("|");
+                pairCount[key] = (pairCount[key] || 0) + 1;
+                var off = (pairCount[key] - 1) * 16 - ((kept.filter(function (x) { return [x.from, x.to].sort().join("|") === key; }).length - 1) * 8);
+                var mx = (a[0] + b[0]) / 2, my = (a[1] + b[1]) / 2;
+                var dx = b[0] - a[0], dy = b[1] - a[1], len = Math.sqrt(dx * dx + dy * dy) || 1;
+                var qx = mx - dy / len * (30 + off), qy = my + dx / len * (30 + off);
+                var col = RELCOL[r.type] || "#94a3b8";
+                out += '<path d="M' + a[0].toFixed(1) + " " + a[1].toFixed(1) + " Q" + qx.toFixed(1) + " " + qy.toFixed(1) + " " + b[0].toFixed(1) + " " + b[1].toFixed(1)
+                    + '" fill="none" stroke="' + col + '" stroke-width="2" stroke-opacity="0.8">'
+                    + "<title>" + svgEsc(r.from + " → " + r.to + " : " + r.label + " [" + r.statut + "]") + "</title></path>"
+                    + '<text x="' + qx.toFixed(1) + '" y="' + qy.toFixed(1) + '" text-anchor="middle" class="axis" style="fill:' + col + '">' + svgEsc(r.type) + "</text>";
+            });
+            nodes.forEach(function (n) {
+                var p = pos[n];
+                if (!p) return;
+                var isEmp = n === "Empire Galactique";
+                var col = isEmp ? "#f43f5e" : (function () {
+                    var m = null;
+                    state.data.forEach(function (x) { if (x.planete === n) m = x; });
+                    return m ? (SCOL[(m.souche_vie || [""])[0]] || "#94a3b8") : "#94a3b8";
+                })();
+                out += '<g data-node="' + esc(n) + '" style="cursor:pointer">'
+                    + "<title>" + svgEsc(n) + "</title>"
+                    + '<circle cx="' + p[0].toFixed(1) + '" cy="' + p[1].toFixed(1) + '" r="' + (isEmp ? 22 : 11) + '" fill="#0b1120" stroke="' + col + '" stroke-width="' + (isEmp ? 3 : 2) + '"/>'
+                    + '<text class="axis" x="' + (p[0] + (isEmp ? 26 : 14)).toFixed(1) + '" y="' + (p[1] + 4).toFixed(1) + '">' + svgEsc(n) + "</text></g>";
+            });
+            document.getElementById("correl").innerHTML = '<svg viewBox="0 0 ' + W + " " + H + '">' + out + "</svg>";
+            document.getElementById("correlLegend").innerHTML = Object.keys(RELCOL).map(function (t) {
+                return '<span><span class="dot" style="background:' + RELCOL[t] + '"></span>' + esc(t) + "</span>";
+            }).join("") + '<span><span class="statut canon">canon</span> <span class="statut auteur">auteur</span> = fiabilité du lien</span>';
+            document.querySelectorAll("#correl [data-node]").forEach(function (g) {
+                g.addEventListener("click", function () {
+                    var n = g.getAttribute("data-node"), found = null, ent = null;
+                    state.data.forEach(function (x) { if (x.planete === n) found = x; });
+                    (state.entites || []).forEach(function (x) { if (x.nom === n) ent = x; });
+                    if (found) showInfo(found);
+                    else if (ent) showEntity(ent);
+                });
+            });
+
+            /* Table des liens */
+            document.getElementById("relRows").innerHTML = kept.map(function (r) {
+                var col = RELCOL[r.type] || "#94a3b8";
+                return "<tr><td><strong>" + esc(r.from) + "</strong></td><td><strong>" + esc(r.to) + "</strong></td>"
+                    + '<td><span class="souche" style="color:' + col + ";border-color:" + col + '">' + esc(r.type) + "</span></td>"
+                    + "<td>" + esc(r.label) + "</td>"
+                    + '<td><span class="statut ' + esc(r.statut) + '">' + esc(r.statut) + "</span></td></tr>";
+            }).join("") || "<tr><td colspan='5' style='text-align:center;color:var(--text-muted)'>Aucun lien — élargis les filtres.</td></tr>";
+        }
+
+        function bindNodes(holderId) {
+            document.querySelectorAll("#" + holderId + " [data-id]").forEach(function (g) {
+                g.addEventListener("click", function () {
+                    var id = g.getAttribute("data-id");
+                    var m = null;
+                    state.data.forEach(function (x) { if (x.id === id) m = x; });
+                    if (m) showInfo(m);
+                });
+            });
+        }
+
+        function renderAll() {
+            var list = filtered();
+            var worlds = [], species = [], seenH = {};
+            list.forEach(function (m) { if (m.type_corps === "espece") species.push(m); else { worlds.push(m); seenH[m.id] = 1; } });
+            species.forEach(function (s) {
+                var h = null;
+                state.data.forEach(function (x) { if (x.planete === s.hote) h = x; });
+                if (h && !seenH[h.id]) { seenH[h.id] = 1; worlds.push(h); }
+            });
+            renderTable(list); renderBubbles(worlds); renderDonut(worlds); renderNetwork(worlds); renderCorrel(worlds);
+            document.getElementById("count").textContent = list.length + " / " + state.data.length + " entrées (" + worlds.length + " mondes & " + species.length + " espèces) · tri : " + state.sortK + (state.sortDir > 0 ? " ↑" : " ↓") + (state.source ? " · " + state.source : "");
+            var leg = "";
+            Object.keys(SCOL).forEach(function (k) { leg += '<span><span class="dot" style="background:' + SCOL[k] + '"></span>' + esc(k) + "</span>"; });
+            document.getElementById("bubblesLegend").innerHTML = leg + "<span>taille bulle = nb d'espèces · ordonnée = score magie (Dormante 0 → Inhérente 4)</span>";
+        }
+
+        /* Onglets */
+        document.querySelectorAll("#viewTabs button").forEach(function (b) {
+            b.addEventListener("click", function () {
+                document.querySelectorAll("#viewTabs button").forEach(function (x) { x.classList.remove("on"); });
+                b.classList.add("on");
+                document.querySelectorAll(".view").forEach(function (v) { v.classList.remove("on"); });
+                document.getElementById("view-" + b.getAttribute("data-v")).classList.add("on");
+            });
+        });
+
+        /* Tri géré par buildHead() (en-têtes générées) */
+        ["q", "fSys", "fSouche", "fMagie", "fType"].forEach(function (id) {
+            document.getElementById(id).addEventListener("input", renderAll);
+            document.getElementById(id).addEventListener("change", renderAll);
+        });
+        document.getElementById("addEntry").addEventListener("click", function () {
+            var m = {
+                id: "n-" + Date.now().toString(36),
+                systeme: "—", etoile: "—", zone_eliane: "—",
+                planete: "Nouveau", type_corps: "planete",
+                souche_vie: ["C"], especes: [],
+                gravite: "n.d.", atmosphere: "—",
+                tech_niveau: 0, tech_label: "—",
+                magie: "—", civilisation: "—", affiliation: "—",
+                statut: "notes auteur (nouveau)", source: "", notes: "", liens: []
+            };
+            state.data.push(m);
+            if (state.doc) state.doc.mondes = state.data;
+            renderAll();
+            saveAtlas();
+            var td = document.querySelector('#rows td[data-id="' + m.id + '"][data-k="planete"]');
+            if (td) {
+                var c = null;
+                COLUMNS.forEach(function (x) { if (x.k === "planete") c = x; });
+                if (c) startEdit(td, m, c);
+            }
+        });
+        document.getElementById("reset").addEventListener("click", function () {
+            document.getElementById("q").value = "";
+            ["fSys", "fSouche", "fMagie", "fType"].forEach(function (id) { document.getElementById(id).value = ""; });
+            renderAll();
+        });
+
+        function boot(j, source) {
+            state.doc = j;
+            state.source = source || "fichier";
+            state.data = j.mondes || []; state.souchesRef = j.souches_ref || {};
+            state.relations = j.relations || []; state.entites = j.entites || [];
+            document.getElementById("atlasVersion").textContent = "v" + (j.version || "?") + " · " + state.data.length + " mondes · <1%";
+            fillSelect("fSys", [...new Set(state.data.map(function (m) { return m.systeme; }))]);
+            fillSelect("fSouche", [...new Set(state.data.reduce(function (a, m) { return a.concat(m.souche_vie || []); }, []))]);
+            fillSelect("fMagie", [...new Set(state.data.map(function (m) { return m.magie; }))]);
+            fillSelect("fType", [...new Set(state.data.map(function (m) { return m.type_corps; }))]);
+            document.getElementById("todo").innerHTML = (j.a_completer || []).map(function (t) { return "<li>" + esc(t) + "</li>"; }).join("");
+            buildToggles();
+            renderAll();
+        }
+
+        function embedded() {
+            try {
+                var txt = document.getElementById("atlas-embedded").textContent.replace(/\/\*ATLAS_JSON\*\//, "").trim();
+                if (!txt) return null;
+                return JSON.parse(txt);
+            } catch (e) { return null; }
+        }
+
+        /* En ligne : le fichier fait foi. Le local ne charge QU'hors-ligne. */
+        probeServer();
+        setupLinkButton();
+        document.getElementById("exportJson").addEventListener("click", function () {
+            if (state.doc) downloadJson(state.doc);
+        });
+        fetch("data/atlas_mondes.json").then(function (r) {
+            if (!r.ok) throw new Error("HTTP " + r.status);
+            return r.json();
+        }).then(function (j) { boot(j, "fichier"); }).catch(function () {
+            var loc = readLocal();
+            if (loc) { boot(loc, "version locale (hors-ligne)"); setSave("local", "Hors-ligne — version locale chargée"); return; }
+            var j = embedded();
+            if (j) boot(j, "embarqué");
+            else document.getElementById("rows").innerHTML = "<tr><td colspan='7'>JSON introuvable — servir via HTTP (pas file://).</td></tr>";
+        });
+    })();
+    </script>
+</body>
+</html>

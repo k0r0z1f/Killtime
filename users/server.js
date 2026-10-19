@@ -244,6 +244,10 @@ const server = http.createServer(async (req, res) => {
 
     console.log(`[HTTP ${req.method}] ${cleanPath}`);
 
+    if (cleanPath === '/health' || cleanPath === '/api/health') {
+        return sendJson(res, 200, { status: 'ok' });
+    }
+
     if (isRoute('/api/auth/register')) {
         if (req.method === 'GET') {
             return sendJson(res, 200, { status: 'online', endpoint: '/api/auth/register', method: 'POST' });
@@ -927,6 +931,46 @@ const server = http.createServer(async (req, res) => {
                 const n = body.boards.reduce((m, b) => m + (Array.isArray(b.tasks) ? b.tasks.length : 0), 0);
                 console.log(`[Roadmaps] autosave disque : ${body.boards.length} boards, ${n} tâches.`);
                 return sendJson(res, 200, { success: true, boards: body.boards.length, tasks: n });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    /* ATLAS DES MONDES — autosave disque (PUT /api/atlas-mondes) + sonde (GET) */
+    const ATLAS_PATH = path.join(PUBLIC_DIR, 'data', 'atlas_mondes.json');
+    if (isRoute('/api/atlas-mondes')) {
+        if (req.method === 'GET' || req.method === 'HEAD') {
+            // Sonde de présence pour la pastille d'état de la page Atlas.
+            try {
+                const raw = fs.readFileSync(ATLAS_PATH, 'utf-8');
+                const n = (JSON.parse(raw).mondes || []).length;
+                if (req.method === 'HEAD') { res.writeHead(200); return res.end(); }
+                return sendJson(res, 200, { success: true, endpoint: '/api/atlas-mondes', mondes: n });
+            } catch (e) {
+                return sendJson(res, 500, { error: e.message });
+            }
+        }
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || !Array.isArray(body.mondes)) {
+                    return sendJson(res, 400, { error: 'mondes[] manquant.' });
+                }
+                const json = JSON.stringify(body, null, 2);
+                if (json.length > 4 * 1024 * 1024) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                try { fs.mkdirSync(path.dirname(ATLAS_PATH), { recursive: true }); } catch (e) { /* ignore */ }
+                try {
+                    if (fs.existsSync(ATLAS_PATH)) {
+                        fs.copyFileSync(ATLAS_PATH, ATLAS_PATH + '.bak');
+                    }
+                } catch (e) { /* backup optionnel */ }
+                fs.writeFileSync(ATLAS_PATH, json);
+                console.log(`[Atlas] autosave disque : ${body.mondes.length} entrées.`);
+                return sendJson(res, 200, { success: true, mondes: body.mondes.length });
             } catch (e) {
                 return sendJson(res, 400, { error: e.message });
             }

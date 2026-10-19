@@ -93,7 +93,7 @@ L'intégralité du corpus de règles est distribuée sous forme de documents web
 | **[Livre VII](livre_7.html)** | **Santé, États & Blessures** | 16 États préjudiciables, encaissement, premiers soins |
 | **[Livre VIII](livre_8.html)** | **Arsenal & Arcanotech** | Armes métalliques, lames laser, blindages et pharmacopée |
 | **[Livre IX](livre_9.html)** | **Outils Web Interactifs** | Fiche PJ, Créateur de Sorts, Lanceur de Dés, Chronotrames |
-| **[Livre X](livre_10.html)** | **Atlas des Mondes Connus** | Les 36 Élianes, Hybris, Vardis, Apaphis, Cléia, Karkjiue |
+| **[Livre X](livre_10.html)** | **Atlas des Mondes Connus** | Les 36 Élianes, Hybris, Vardis, Nefris, Cléia, Karkjiue |
 | **[Livre XI](livre_11.html)** | **Bestiaire & Menaces Cosmiques** | Faune, automates impériaux, Disciples, The Minulican, Bosses |
 
 ---

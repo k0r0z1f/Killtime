@@ -167,6 +167,7 @@ namespace Killtime.UI
             DrawVehiclesSection();
             DrawTitansSection();
             DrawDuoTechSection();
+            DrawScenariosSection();
 
             GUILayout.Space(8);
             GUILayout.Label("<b>🖥️ Système & Multitâche (Alt-Tab / Multi-Écran) :</b>");
