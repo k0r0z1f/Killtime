@@ -541,7 +541,7 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
-        /// Livre VI §25.3 : couvert de la cible vue par l'attaquant (None au contact,
+        /// Livre V §21.3 : couvert de la cible vue par l'attaquant (None au contact,
         /// Full si non visible). Utilisé par le HUD (affichage) et ExecuteAttack (blocage).
         /// </summary>
         public CoverType GetCoverToTarget(TacticalUnit attacker, TacticalUnit defender)

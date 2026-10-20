@@ -178,17 +178,17 @@ namespace Killtime.Tactics
                 target.transform,
                 onStrikePoint: () =>
                 {
-                    // Résolution mathématique du coup au moment de l'impact (duel aveugle Livre VI §24.1 :
+                    // Résolution mathématique du coup au moment de l'impact (duel aveugle Livre V §20.1 :
                     // déclarations masquées PA/PE des deux camps, puis révélation simultanée).
                     // Au contact : meilleure compétence de mêlée de l'attaquant
                     // (jamais de Maniement d'Arme imposé à un mains-nues entraîné).
-                    // Règle Livre VI §26.2 : si l'attaquant fait un tir de portée alors que
+                    // Règle Livre V §22.2 : si l'attaquant fait un tir de portée alors que
                     // N'IMPORTE QUEL ennemi est au contact de l'attaquant (pas forcément
                     // la cible), Canon Entravé (-2) s'applique. IsCanonEntrave balaie déjà
                     // tous les ennemis à distance 1, indépendamment de la cible visée.
                     SkillType encounterAttackSkill = attacker.Stats.GetBestMeleeAttackSkill();
                     _combatCalculator.SetContactDistanceState(attacker.IsCanonEntrave());
-                    // Livre VI §25.3 : couvert total (non visible) => attaque impossible.
+                    // Livre V §21.3 : couvert total (non visible) => attaque impossible.
                     CoverType encounterCover = CoverType.None;
                     if (_grid != null && attacker.CurrentCoords.DistanceTo(target.CurrentCoords) > 1)
                         encounterCover = CoverSystem.EvaluateCover(attacker.CurrentCoords, target.CurrentCoords, _grid);

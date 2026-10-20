@@ -35,7 +35,7 @@ namespace Killtime.Core.Dice
         public static bool DevForceFumble = false;
 
         // RD-193 (dev-only, VATS terrain) : rig fin critiques / marges.
-        // Tous à false/null par défaut (Livre II/VI/VII verbatim). Restaurés par ClearDevRig().
+        // Tous à false/null par défaut (Livre II/V/VI verbatim). Restaurés par ClearDevRig().
         public static bool DevForceAttackCrit = false;
         public static bool DevForceAttackFumble = false;
         public static bool DevForceDefenseCrit = false;
@@ -44,7 +44,7 @@ namespace Killtime.Core.Dice
         public static int? DevForcedDifferential = null;
         // Relance de conséquence critique (d2–d24, §8.2) forcée à ce brut.
         public static int? DevForcedCritConsequenceRaw = null;
-        // Tirage d6 de déviation anatomique (Livre VI §26.1) forcé (1–6).
+        // Tirage d6 de déviation anatomique (Livre V §22.1) forcé (1–6).
         public static int? DevForcedDeflectionRoll = null;
 
         public static void ClearDevRig()

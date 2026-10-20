@@ -158,7 +158,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.MedicalSupport:
                 {
-                    // 1. SOUTIEN MÉDICAL D'URGENCE (Livre VII)
+                    // 1. SOUTIEN MÉDICAL D'URGENCE (Livre VI)
                     if (TryExecuteMedicalSupport(unit, visual))
                     {
                         yield return new WaitForSeconds(_actionDelay);
@@ -210,7 +210,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.TacticalRetreat:
                 {
-                    // 2. RETRAITE TACTIQUE SOUS COUVERT (Livre VI §25)
+                    // 2. RETRAITE TACTIQUE SOUS COUVERT (Livre V §21)
                     visual?.SpawnFloatingText("🛡️ [REPLI] Rupture sous Couvert", new Color(1.0f, 0.35f, 0.35f));
                     yield return StartCoroutine(ExecuteCoveredRetreat(unit, frame.Target));
                     yield return new WaitForSeconds(_actionDelay);
@@ -322,7 +322,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.Grenade:
                 {
-                    // 4. GRENADES DE ZONE (Livre VIII §31.3)
+                    // 4. GRENADES DE ZONE (Livre VII §27.3)
                     if (TryThrowGrenadeAI(unit, frame.Posture))
                     {
                         float waitElapsed = 0f;
@@ -383,7 +383,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.ChargeAttack:
                 {
-                    // 6d. CHARGE AU CONTACT (RD-038, Livre VI).
+                    // 6d. CHARGE AU CONTACT (RD-038, Livre V).
                     if (TryExecuteChargeAttack(unit, frame.Target, visual))
                     {
                         float waitElapsed = 0f;
@@ -439,7 +439,7 @@ namespace Killtime.Tactics.AI
 
                 case AIIntent.FlankToCover:
                 {
-                    // 7. MANŒUVRE DE FLANKING & PRISE DE COUVERT AVANT ATTAQUE (Livre VI §25.3)
+                    // 7. MANŒUVRE DE FLANKING & PRISE DE COUVERT AVANT ATTAQUE (Livre V §21.3)
                     if (unit.Stats.CurrentActionPoints >= 3
                         && (frame.TargetCover == CoverType.ThreeQuarters || !frame.InAttackRange))
                     {

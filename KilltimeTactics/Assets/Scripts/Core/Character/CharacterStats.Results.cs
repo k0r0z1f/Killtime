@@ -21,7 +21,7 @@ namespace Killtime.Core.Character
     }
 
     /// <summary>
-    /// RD-083 : résultat des Soins Majeurs (Livre VII §29.1).
+    /// RD-083 : résultat des Soins Majeurs (Livre VI §25.1).
     /// Pur (aucune dépendance Unity) pour tests et logs d'arène.
     /// </summary>
     [Serializable]

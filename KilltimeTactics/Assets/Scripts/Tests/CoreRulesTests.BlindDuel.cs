@@ -15,7 +15,7 @@ namespace Killtime.Tests
         [Test]
         public void TestBlindDuel_StakesDeclaredBeforeAnyRoll_ThenSimultaneousReveal()
         {
-            // Duel aveugle Livres II §7 + VI §24.1 : déclaration attaquant (mise cachée)
+            // Duel aveugle Livres II §7 + VI §20.1 : déclaration attaquant (mise cachée)
             // -> déclaration défenseur à l'aveugle -> révélation simultanée.
             var diceRoller = new DiceRoller(7);
             var calc = new CombatCalculator(diceRoller);

@@ -7,7 +7,7 @@ using Killtime.UI;
 namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
-    /// RD-195 : manœuvres véhicules au menu radial (Livre VI §26.3).
+    /// RD-195 : manœuvres véhicules au menu radial (Livre V §22.3).
     /// Embarquer 2 PA / débarquer 0 PA (soi), écraser au volant (2 PA, ennemi),
     /// cribler le véhicule adverse (2 PA, essentiel Moteur / superficiel Roues,
     /// +100 lourde visible). Pur : délégation à CombatDevArena (rien sans

@@ -16,7 +16,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Registre des véhicules en combat (Livre VI §26.3 — RD-051).
+    /// Registre des véhicules en combat (Livre V §22.3 — RD-051).
     /// Pur C# testable (aucune dépendance Unity) : clés string + refs
     /// CharacterStats comme TitanBossState (RD-087). Purge par ClearCombatState.
     /// </summary>

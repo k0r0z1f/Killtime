@@ -488,6 +488,39 @@ body::before {
     display: flex;
 }
 
+/* ================= ÉTAGÈRES JOUEUR / MJ ================= */
+.nav-section-label {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 14px 12px 6px;
+    font-family: var(--font-mono);
+    font-size: 0.68rem;
+    text-transform: uppercase;
+    letter-spacing: 1.4px;
+    font-weight: 700;
+}
+
+.nav-section-label.joueur {
+    color: var(--arcane-cyan);
+}
+
+.nav-section-label.mj {
+    color: var(--temporal-amber);
+    border-top: 1px solid var(--border-subtle);
+    margin-top: 10px;
+    padding-top: 16px;
+}
+
+.nav-section-count {
+    font-size: 0.62rem;
+    font-weight: 400;
+    letter-spacing: 0.5px;
+    opacity: 0.75;
+    white-space: nowrap;
+}
+
 .nav-item-link {
     display: flex;
     align-items: center;

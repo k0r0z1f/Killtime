@@ -7,16 +7,16 @@ using Killtime.Tactics.Visibility;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Assaut groupé RD-084 §25.2 (sommation offensive, défense unique) — extrait sans modification depuis SpecialManeuverService.cs.
+    /// Assaut groupé RD-084 §21.2 (sommation offensive, défense unique) — extrait sans modification depuis SpecialManeuverService.cs.
     /// </summary>
     public sealed partial class SpecialManeuverService
     {
         // =====================================================================
-        // RD-084 : ATTAQUES COMBINÉES DE GROUPE (Livre VI §25.2) & POURSUITE (§25.1)
+        // RD-084 : ATTAQUES COMBINÉES DE GROUPE (Livre V §21.2) & POURSUITE (§21.1)
         // =====================================================================
 
         /// <summary>
-        /// RD-084 : Attaque combinée de groupe (Livre VI §25.2). Les participants
+        /// RD-084 : Attaque combinée de groupe (Livre V §21.2). Les participants
         /// se synchronisent sur l'initiative du membre le plus lent, chacun
         /// effectue son épreuve (dé de sa compétence + états + mises aveugles),
         /// les résultats totaux s'additionnent face à l'UNIQUE défense de la cible.
@@ -78,7 +78,7 @@ namespace Killtime.Core.Combat
                 DefenseSkill = defenseSkill
             };
             var cfg = Rules.CoreRulesConfig.Instance;
-            // Livre VI §25.2 : « Deux combattants ou plus » — plancher à 2
+            // Livre V §21.2 : « Deux combattants ou plus » — plancher à 2
             // même si la config est abaissée (évite les groupes vides/dégénérés).
             int minMembers = cfg != null ? Math.Max(2, cfg.CombinedAttackMinMembers) : 2;
             int baseCost = cfg != null ? cfg.CombinedAttackAPCost : 2;

@@ -6,7 +6,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Chrono
 {
     /// <summary>
-    /// Capture ponctuelle d'état tactique le long du Fleuve du Temps (Livre V).
+    /// Capture ponctuelle d'état tactique le long du Fleuve du Temps (Livre IX).
     /// Enregistre les PV, PA, statuts et positions des unités à une seconde précise du tour.
     /// </summary>
     [Serializable]

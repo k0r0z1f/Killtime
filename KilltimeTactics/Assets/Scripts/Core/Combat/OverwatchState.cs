@@ -4,7 +4,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Guet / Overwatch (RD-030, Livre VI — Réactions) :
+    /// Guet / Overwatch (RD-030, Livre V — Réactions) :
     /// action 2 PA qui réserve un tir de réaction contre un ennemi agissant
     /// dans le rayon de l'arme pendant le tour adverse.
     ///

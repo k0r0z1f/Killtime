@@ -23,7 +23,7 @@ namespace Killtime.UI
             if (_arena == null) return;
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>🔥 Duo-Tech MJ sans souris (RD-194, Livre VI §25.5) :</b>");
+            GUILayout.Label("<b>🔥 Duo-Tech MJ sans souris (RD-194, Livre V §21.5) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             var initiators = _arena.ListDuoInitiators();

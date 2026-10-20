@@ -119,12 +119,12 @@ namespace Killtime.Core.Character
                 "Immunise contre l'effet de surprise et conserve la réaction défensive complète lors d'une embuscade.");
             RegisterSpec(SkillType.Observation, "Vigilance Réflexe : Oeil de Lynx", "Vigilance Réflexe", false, false,
                 "Acuité visuelle perçante dans l'obscurité.",
-                "Confère +2 aux duels de détection (Observation) du brouillard de guerre (Livre VI §25.4).");
+                "Confère +2 aux duels de détection (Observation) du brouillard de guerre (Livre V §21.4).");
             RegisterSpec(SkillType.Observation, "Vigilance Réflexe : Détection Thermique", "Vigilance Réflexe : Oeil de Lynx", false, false,
                 "Vision infrarouge naturelle.",
                 "Révèle les unités camouflées et invisibles à travers les parois légères.");
             RegisterSpec(SkillType.Observation, "Vigilance Réflexe : Perception Panoramique 360°", "Vigilance Réflexe : Détection Thermique", true, false,
-                "Vigilance totale, sans angle mort (le combat KT voit déjà à 360°, §25.4).",
+                "Vigilance totale, sans angle mort (le combat KT voit déjà à 360°, §21.4).",
                 "Immunité totale aux embuscades et bonus de surprise permanent.");
 
             RegisterSpec(SkillType.Intuition, "Sphère de Résonance", null, false, true,

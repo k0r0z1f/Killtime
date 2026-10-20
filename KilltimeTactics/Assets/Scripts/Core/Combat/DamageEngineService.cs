@@ -118,7 +118,7 @@ namespace Killtime.Core.Combat
                 : "";
             string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{channelText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
-            // Traçabilité Livre VI §24.1 (duel aveugle) : déclarations masquées puis révélation.
+            // Traçabilité Livre V §20.1 (duel aveugle) : déclarations masquées puis révélation.
             // RD-048 : la canalisation consommée à l'attaque est tracée, la punition
             // de progression du défenseur aussi.
             string channelDefTag = ChannelingState.IsChanneling(defender) ? " [Canalisation -1]" : "";
@@ -343,7 +343,7 @@ namespace Killtime.Core.Combat
 
             int absorbed = Math.Min(totalArmor, rawDamage);
             int finalDamage = isThomasSymbioticImmune ? 0 : Math.Max(0, rawDamage - absorbed);
-            // Champs de force portés (Livre VIII §32.2) : la barrière absorbe avant la
+            // Champs de force portés (Livre VII §28.2) : la barrière absorbe avant la
             // chair — aucun choc traumatique tant qu'elle encaisse tout.
             int shieldRemainder = defender.AbsorbShield(finalDamage);
             int shieldAbsorbed = Math.Max(0, finalDamage - shieldRemainder);
@@ -456,7 +456,7 @@ namespace Killtime.Core.Combat
             }
 
             // =====================================================================
-            // RD-082 (Livre VII §28.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
+            // RD-082 (Livre VI §24.4) : DÉCLENCHEMENT DES EFFETS SUR MARGE ÉLEVÉE
             // =====================================================================
             bool bleedApplied = false;
             int bleedDoT = 0;
@@ -592,12 +592,12 @@ namespace Killtime.Core.Combat
 
             if (bleedApplied)
             {
-                log += $" | 🩸 <b>HÉMORRAGIE (Livre VII §28.4)</b> : Saignement (DoT résiduel {bleedDoT})";
+                log += $" | 🩸 <b>HÉMORRAGIE (Livre VI §24.4)</b> : Saignement (DoT résiduel {bleedDoT})";
             }
 
             if (fireApplied)
             {
-                log += $" | 🔥 <b>COMBUSTION (Livre VII §28.4)</b> : En Feu pendant {fireTurns} tour(s)";
+                log += $" | 🔥 <b>COMBUSTION (Livre VI §24.4)</b> : En Feu pendant {fireTurns} tour(s)";
             }
 
             if (!string.IsNullOrEmpty(titanBossTag))
@@ -607,12 +607,12 @@ namespace Killtime.Core.Combat
 
             if (stunApplied)
             {
-                log += " | 😵 <b>ASSOMMEMENT NET (Livre VII §28.4)</b> : Inconscient 1 tour direct";
+                log += " | 😵 <b>ASSOMMEMENT NET (Livre VI §24.4)</b> : Inconscient 1 tour direct";
             }
 
             if (wasDisintegrated)
             {
-                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VII §28.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
+                log += " | ⚛️ <b>DÉSINTÉGRATION TOTALE (Livre VI §24.4 : Diff >= 20 & Destruction 6)</b> : Cible pulvérisée en poussière !";
             }
             else if (fatalRes == FatalBlowResolution.InstantDeath)
             {
@@ -781,7 +781,7 @@ namespace Killtime.Core.Combat
             else if ((target.ActiveStatus & StatusEffect.Sonne) != 0) target.ActiveStatus &= ~StatusEffect.Sonne;
         }
 
-        // RD-051 hook (Livre VI §26.3) : +100 armes lourdes vs véhicules /
+        // RD-051 hook (Livre V §22.3) : +100 armes lourdes vs véhicules /
         // structures. Le duel aveugle standard ne connaît pas de cible véhicule
         // (que des CharacterStats) : l'appelant véhicule (arène, grenades,
         // SpecialManeuverService.StrikeVehicleSubsystem) applique ce bonus via

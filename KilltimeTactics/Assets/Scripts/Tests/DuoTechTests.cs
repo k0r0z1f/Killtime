@@ -262,7 +262,7 @@ namespace Killtime.Tests
             Assert.AreEqual(pa - 2, target.CurrentActionPoints);
         }
 
-        // ==================== RD-085 : TABLE §25.5 (6 MANQUANTES) ====================
+        // ==================== RD-085 : TABLE §21.5 (6 MANQUANTES) ====================
 
         [Test]
         public void TestDuo_RD085_AllNineDefs_CostsAndND()

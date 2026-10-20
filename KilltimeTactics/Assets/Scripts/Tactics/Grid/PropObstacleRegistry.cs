@@ -31,7 +31,7 @@ namespace Killtime.Tactics.Grid
 
     /// <summary>
     /// Registre des accessoires 3D faisant obstacle à la ligne de mire
-    /// (Livre VI §25.3) : piliers, caisses, mobilier, murs props. Reconstruit au
+    /// (Livre V §21.3) : piliers, caisses, mobilier, murs props. Reconstruit au
     /// chargement de carte et à chaque pose/retrait dans l'éditeur ; consulté par
     /// CoverSystem.RayBlocked en plus du marquage node.Cover et du relief.
     /// Les accessoires suspendus (plafond, flottants) passent AU-DESSUS des rayons

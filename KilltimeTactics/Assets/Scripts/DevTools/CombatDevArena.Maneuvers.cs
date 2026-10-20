@@ -86,7 +86,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// Exécute une manœuvre de Charge (RD-038, Livre VI) :
+        /// Exécute une manœuvre de Charge (RD-038, Livre V) :
         /// - Déplacement d'au moins 3 cases vers un voisin libre de la cible.
         /// - Débite les PA de déplacement (+ surcoût éventuel de manœuvre).
         /// - À l'arrivée au contact, exécute immédiatement l'attaque de mêlée (+2 dégâts, -1 défense jusqu'au prochain tour personnel).
@@ -117,7 +117,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// RD-084 : Exécute un assaut groupé (Livre VI §25.2). Les participants
+        /// RD-084 : Exécute un assaut groupé (Livre V §21.2). Les participants
         /// sont synchronisés sur l'initiative du membre le plus lent, leurs
         /// résultats offensifs sommés face à l'unique défense de la cible.
         /// </summary>
@@ -127,7 +127,7 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// RD-084 : Exécute un round de course-poursuite (Livre VI §25.1) :
+        /// RD-084 : Exécute un round de course-poursuite (Livre V §21.1) :
         /// concours d'Athlétisme proie vs poursuivants. Succès proie = distance
         /// maintenue (≥ 1 case), faillite = terrain gagné. À 4 faillites cumulées :
         /// arrêt et capture immédiate (Immobilisé).

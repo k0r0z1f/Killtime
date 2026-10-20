@@ -46,7 +46,7 @@ namespace Killtime.Tests
         [Test]
         public void TestCover_AttackPenaltiesAndFullBlock_MatchesLivreVI253()
         {
-            // Livre VI §25.3 : moitié visible -1, 3/4 couvert -2, non visible = impossible.
+            // Livre V §21.3 : moitié visible -1, 3/4 couvert -2, non visible = impossible.
             var diceRoller = new DiceRoller(99);
             var calc = new CombatCalculator(diceRoller);
             var cfg = Killtime.Core.Rules.CoreRulesConfig.Instance;

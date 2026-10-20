@@ -3,7 +3,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Manœuvres véhicules RD-051 (Livre VI §26.3) — partiel sans modification
+    /// Manœuvres véhicules RD-051 (Livre V §22.3) — partiel sans modification
     /// du cœur SpecialManeuverService : embarquement 2 PA, écrasement piéton,
     /// routage dégâts lourdes vs véhicules. Façade : champs + ctor dans
     /// SpecialManeuverService.cs, contenu dans les autres partiels.

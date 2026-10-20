@@ -7,12 +7,12 @@ using Killtime.Tactics.Visibility;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Course-poursuite RD-084 §25.1 (round proie vs poursuivants) — extrait sans modification depuis SpecialManeuverService.cs.
+    /// Course-poursuite RD-084 §21.1 (round proie vs poursuivants) — extrait sans modification depuis SpecialManeuverService.cs.
     /// </summary>
     public sealed partial class SpecialManeuverService
     {
         /// <summary>
-        /// RD-084 : Round de course-poursuite (Livre VI §25.1). La proie effectue
+        /// RD-084 : Round de course-poursuite (Livre V §21.1). La proie effectue
         /// UNE unique épreuve d'Athlétisme (mises une seule fois), chaque
         /// poursuivant effectue la sienne et se compare à ce total :
         /// réussite de la proie = distance maintenue (≥ 1 case), faillite =

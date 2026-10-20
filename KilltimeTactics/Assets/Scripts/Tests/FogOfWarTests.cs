@@ -9,7 +9,7 @@ using Killtime.Tactics.Visibility;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// Brouillard de guerre asymétrique (Livre VI §25.4) : 360° sans direction
+    /// Brouillard de guerre asymétrique (Livre V §21.4) : 360° sans direction
     /// de vision, portée ENVIRONNEMENTALE (courte 6 / longue 12, jamais les
     /// stats), occlusion par les murs Full (CoverSystem), contact toujours
     /// visible, thermique, modificateurs de détection et rayon de bruit (Ouïe).

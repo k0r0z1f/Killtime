@@ -8,7 +8,7 @@ using Killtime.Core.Combat;
 
 namespace Killtime.Tactics
 {
-    // RD-198 : scénarios terrain 1-clic + carnet d'écarts (Livre VI §24-26).
+    // RD-198 : scénarios terrain 1-clic + carnet d'écarts (Livre V §20-26).
     // Dev-only, 0 règle modifiée : positionne via TeleportTo, arme le guet via
     // TryEnterOverwatch, pose la posture via OpportunityState.SetStance, log +
     // snapshot chrono. Le MJ déclenche ensuite au radial / en jeu.
@@ -63,7 +63,7 @@ namespace Killtime.Tactics
             var sb = new StringBuilder();
             sb.AppendLine("CARNET D'ÉCARTS TERRAIN (RD-198) — code vs Livres");
             sb.AppendLine("Cocher en jeu : [OK] conforme / [ÉCART] + fix à créer.");
-            sb.AppendLine("[ ] RD-171 Réactions §24 : guet 2 PA / 1 tir / purge, opportunité 4 postures + décrochage, garde 1 PA.");
+            sb.AppendLine("[ ] RD-171 Réactions §20 : guet 2 PA / 1 tir / purge, opportunité 4 postures + décrochage, garde 1 PA.");
             sb.AppendLine("[ ] RD-174 Positionnement : surplomb +1 / contrebas -1, charge 3+ cases +2 dégâts, LOS/couverts.");
             sb.AppendLine("[ ] RD-175 CaC : lutte 2 PA + Immobilisé, étranglement Asphyxie, traînée 2 PA, bousculade.");
             sb.AppendLine("[ ] RD-184 Radial : forage, molette, sablier, snap, Maj+F9.");
@@ -89,7 +89,7 @@ namespace Killtime.Tactics
         /// <summary>
         /// RD-171 : guetteur (unité joueur) + traverseur (cible) à ~4 cases, guet armé.
         /// Le MJ déplace ensuite la cible dans le rayon (tour adverse / FullAuto).
-        /// Attendu Livre VI §24 : 1 tir/round, purge au tour, couvert total bloque.
+        /// Attendu Livre V §20 : 1 tir/round, purge au tour, couvert total bloque.
         /// </summary>
         public bool SetupScenarioGuet()
         {

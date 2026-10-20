@@ -10,11 +10,11 @@ using Killtime.Core.Combat;
 namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
-    /// Définitions des 12 Duo-Techs (Livre VI §25.5 + synergies Thomas RD-086) + issues table/tissage. — extrait sans modification depuis DuoTechRegistry.cs.
+    /// Définitions des 12 Duo-Techs (Livre V §21.5 + synergies Thomas RD-086) + issues table/tissage. — extrait sans modification depuis DuoTechRegistry.cs.
     /// </summary>
     public static partial class DuoTechRegistry
     {
-        // --- Coûts verrouillés (Livre VI §25.5, Cinétique + Calcul + départ 1) ---
+        // --- Coûts verrouillés (Livre V §21.5, Cinétique + Calcul + départ 1) ---
         // Sillage 8 | Lacet 5 | Fournaise 7 | Trempe 9 | Railgun 11 |
         // Cisaille 9 | Parallaxe 6 | Mirage 4 | Uppercut 9.
         public static DuoTechDef GetDef(DuoTechId id)
@@ -174,7 +174,7 @@ namespace Killtime.Tactics.CombatUI
         }
 
         /// <summary>
-        /// Les 12 définitions officielles (Livre VI §25.5 + synergies Thomas RD-086) dans l'ordre de la table.
+        /// Les 12 définitions officielles (Livre V §21.5 + synergies Thomas RD-086) dans l'ordre de la table.
         /// </summary>
         public static List<DuoTechDef> GetAllDefs()
         {
@@ -196,7 +196,7 @@ namespace Killtime.Tactics.CombatUI
         }
 
         /// <summary>
-        /// Issue table (§25.5.2) depuis les deux épreuves de synchro :
+        /// Issue table (§21.5.2) depuis les deux épreuves de synchro :
         /// les deux réussissent = Parfaite, une seule = Semi, aucune = Ratée.
         /// </summary>
         public static DuoTechOutcome TableOutcome(bool firstSuccess, bool secondSuccess)

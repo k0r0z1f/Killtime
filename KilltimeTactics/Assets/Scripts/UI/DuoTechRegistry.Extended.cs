@@ -10,12 +10,12 @@ using Killtime.Core.Combat;
 namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
-    /// RD-085 : armure fissurée + résolutions table des 6 Duo-Techs (Livre VI §25.5). — extrait sans modification depuis DuoTechRegistry.cs.
+    /// RD-085 : armure fissurée + résolutions table des 6 Duo-Techs (Livre V §21.5). — extrait sans modification depuis DuoTechRegistry.cs.
     /// </summary>
     public static partial class DuoTechRegistry
     {
         // =====================================================================
-        // RD-085 — ARMURE FISSURÉE (Trempe Inversée, Livre VI §25.5)
+        // RD-085 — ARMURE FISSURÉE (Trempe Inversée, Livre V §21.5)
         // -2 absorption jusqu'à la fin du round suivant. Suivi dans ce registre :
         // ApplyArmorFissure débite, RestoreArmorFissure rembourse (MJ / TurnManager
         // à la fin du round suivant). Testable sans Unity.
@@ -100,7 +100,7 @@ namespace Killtime.Tactics.CombatUI
         }
 
         /// <summary>
-        /// Condition Uppercut (Livre VI §25.5) : cible entravée (étourdie,
+        /// Condition Uppercut (Livre V §21.5) : cible entravée (étourdie,
         /// ralentie ou gelée — gelée lue comme Immobilisé/Sonné/Paralysé, les
         /// entraves dures du compendium) ET à ≤ 50% PV.
         /// </summary>
@@ -121,7 +121,7 @@ namespace Killtime.Tactics.CombatUI
         }
 
         // =====================================================================
-        // RD-085 — RÉSOLUTIONS TABLE (Parfaite / Semi / Ratée, Livre VI §25.5)
+        // RD-085 — RÉSOLUTIONS TABLE (Parfaite / Semi / Ratée, Livre V §21.5)
         // Le WeaveController appelle en binaire (Perfect/Miss) après validation
         // de placement ; le Semi n'existe qu'aux dés (TableOutcome partiel).
         // =====================================================================

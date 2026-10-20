@@ -122,7 +122,7 @@ namespace Killtime.UI
             GUILayout.EndVertical();
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>2. Économie des Points d'Action & Souffle (Livre I & VI) :</b>");
+            GUILayout.Label("<b>2. Économie des Points d'Action & Souffle (Livre I & V) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
             cfg.EmergencyBreathBonusAP = DrawIntSlider("PA Gagnés par Souffle d'Urgence", cfg.EmergencyBreathBonusAP, 1, 5);
             cfg.EmergencyBreathEssoufflementCost = DrawIntSlider("Coût en Essoufflement par Souffle", cfg.EmergencyBreathEssoufflementCost, 1, 3);
@@ -135,7 +135,7 @@ namespace Killtime.UI
             GUILayout.EndVertical();
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>3. Déplacement & Altérations (Livre VII) :</b>");
+            GUILayout.Label("<b>3. Déplacement & Altérations (Livre VI) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
             cfg.BaseMovementAPCost = DrawIntSlider("Coût PA Déplacement Standard / Case", cfg.BaseMovementAPCost, 1, 4);
             cfg.RalentiAPMultiplier = DrawIntSlider("Multiplicateur de Coût d'Action si Ralenti", cfg.RalentiAPMultiplier, 1, 4);
@@ -147,7 +147,7 @@ namespace Killtime.UI
 
         private void DrawCombatAndVATSTab(CoreRulesConfig cfg)
         {
-            GUILayout.Label("<b>1. Passes d'Armes & Coûts d'Action de Base (Livre VI) :</b>");
+            GUILayout.Label("<b>1. Passes d'Armes & Coûts d'Action de Base (Livre V) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
             cfg.BaseAttackAPCost = DrawIntSlider("Coût en PA Attaque Standard", cfg.BaseAttackAPCost, 1, 6);
             cfg.CancelAimPenaltyAPCost = DrawIntSlider("Coût en PA Compensation Visée Chirurgicale", cfg.CancelAimPenaltyAPCost, 1, 4);
@@ -166,7 +166,7 @@ namespace Killtime.UI
             GUILayout.EndVertical();
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>1b. Couvert & Visibilité (Livre VI §25.3) :</b>");
+            GUILayout.Label("<b>1b. Couvert & Visibilité (Livre V §21.3) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
             cfg.HalfCoverAttackPenalty = DrawIntSlider("Malus attaque : moitié visible", cfg.HalfCoverAttackPenalty, -6, 0);
             cfg.ThreeQuartersCoverAttackPenalty = DrawIntSlider("Malus attaque : 3/4 couvert", cfg.ThreeQuartersCoverAttackPenalty, -6, 0);
@@ -193,7 +193,7 @@ namespace Killtime.UI
             GUILayout.EndVertical();
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>2. Matrice Anatomique VATS (Livre VI, Chap. 26) :</b>");
+            GUILayout.Label("<b>2. Matrice Anatomique VATS (Livre V, Chap. 22) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             for (int i = 0; i < cfg.BodyPartRules.Count; i++)

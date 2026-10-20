@@ -99,7 +99,7 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
-        /// RD-084 : Exécute un assaut groupé (Livre VI §25.2). Les participants
+        /// RD-084 : Exécute un assaut groupé (Livre V §21.2). Les participants
         /// sont synchronisés sur l'initiative du membre le plus lent, leurs
         /// résultats offensifs sommés face à l'unique défense de la cible.
         /// </summary>
@@ -121,7 +121,7 @@ namespace Killtime.Tactics.Arena
             int minMembers = CoreRulesConfig.Instance != null ? Math.Max(2, CoreRulesConfig.Instance.CombinedAttackMinMembers) : 2;
             if (members.Count < minMembers)
             {
-                _host.ArenaLog($"⚠️ <b>Assaut groupé impossible</b> : {members.Count} assaillant(s) à portée, {minMembers} minimum requis (Livre VI §25.2).");
+                _host.ArenaLog($"⚠️ <b>Assaut groupé impossible</b> : {members.Count} assaillant(s) à portée, {minMembers} minimum requis (Livre V §21.2).");
                 return;
             }
 
@@ -218,7 +218,7 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
-        /// RD-084 : Exécute un round de course-poursuite (Livre VI §25.1) :
+        /// RD-084 : Exécute un round de course-poursuite (Livre V §21.1) :
         /// concours d'Athlétisme proie vs poursuivants. Succès proie = distance
         /// maintenue (≥ 1 case), faillite = terrain gagné. À 4 faillites cumulées :
         /// arrêt et capture immédiate (Immobilisé).

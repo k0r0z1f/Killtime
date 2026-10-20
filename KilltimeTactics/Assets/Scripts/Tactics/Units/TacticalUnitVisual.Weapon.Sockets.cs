@@ -189,7 +189,7 @@ namespace Killtime.Tactics.Units
         }
 
         /// <summary>
-        /// Règle Livre VII : à l'inconscience / mort, la main s'ouvre et l'arme
+        /// Règle Livre VI : à l'inconscience / mort, la main s'ouvre et l'arme
         /// (ou tout objet tenu) se décroche et tombe au sol en <b>physique réelle</b>
         /// (Rigidbody : gravité, rebond, friction — voir <see cref="DroppedWeaponPickup"/>).
         /// L'item est retiré de l'inventaire du porteur : l'objet au sol devient

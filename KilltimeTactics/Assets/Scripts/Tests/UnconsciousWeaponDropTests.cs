@@ -63,7 +63,7 @@ namespace Killtime.Tests
             sheet.AddItem(rifle);
             var stats = new CharacterStats("K.O. Test", attrs, 0, sheet);
 
-            // K.O. via statut (Livre VII) : plus vivant => doit lâcher.
+            // K.O. via statut (Livre VI) : plus vivant => doit lâcher.
             stats.ApplyStatus(StatusEffect.Inconscient);
             Assert.IsFalse(stats.IsAlive, "Inconscient => IsAlive faux");
             var dropped = sheet.ExtractEquippedItemsForGroundDrop();

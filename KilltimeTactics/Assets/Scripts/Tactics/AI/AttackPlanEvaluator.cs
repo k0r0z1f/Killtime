@@ -80,7 +80,7 @@ namespace Killtime.Tactics.AI
                     int baseCost = cancelAim ? 3 : 2;
                     if (input.AvailableAP < baseCost) continue;
 
-                    // Sanctuarisation de 2 PA si une seconde attaque est possible ce tour (Livre II & VI)
+                    // Sanctuarisation de 2 PA si une seconde attaque est possible ce tour (Livre II & V)
                     bool canAttackAgain = (input.AttacksThisTurn + 1 < input.MaxAttacks)
                         && (input.AvailableAP >= baseCost + 2 + input.ReserveNeeded);
                     int apReservedForNextAttack = canAttackAgain ? 2 : 0;

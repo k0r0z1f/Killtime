@@ -7,7 +7,7 @@ using Killtime.Tactics.Grid;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// Validation du cône de visée rigoureux (Livre VI §25.3) : meilleur coin
+    /// Validation du cône de visée rigoureux (Livre V §21.3) : meilleur coin
     /// attaquant + 28 rayons sur la hauteur de la cible, prismes 3D exacts.
     /// </summary>
     [TestFixture]

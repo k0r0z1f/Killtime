@@ -55,7 +55,7 @@ namespace Killtime.Tactics.Grid
         }
 
         /// <summary>
-        /// Affiche les « raycasts » de détection du couvert (Livre VI §25.3) : le cône
+        /// Affiche les « raycasts » de détection du couvert (Livre V §21.3) : le cône
         /// tiré depuis le meilleur coin de l'attaquant vers les 28 échantillons de la
         /// cible — rayon vert = passe, rouge = bloqué. Couleur de synthèse : vert à
         /// découvert, jaune moitié (-1), orange 3/4 (-2), rouge couvert total.

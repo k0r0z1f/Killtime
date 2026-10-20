@@ -120,7 +120,7 @@ namespace Killtime.Multi
                 destR = finalR,
                 path = vttPath,
                 apCost = apCost,
-                // Brouillard §25.4 : le hub filtre ce paquet par destinataire
+                // Brouillard §21.4 : le hub filtre ce paquet par destinataire
                 // (portée d'ambiance 360° + murs Full depuis au moins un avatar).
                 facingYaw = Killtime.Tactics.Visibility.FogOfWarManager.FacingYawDeg(unit),
                 vision = unit.Stats != null ? Mathf.Clamp(unit.Stats.Attributes.Vision, 1, 6) : 3,

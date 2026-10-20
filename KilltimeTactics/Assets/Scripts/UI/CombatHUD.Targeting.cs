@@ -41,7 +41,7 @@ namespace Killtime.UI
             _activeUnitContextMenuRect = Rect.zero;
         }
 
-        // --- Grenades (Livre VIII §31.3) : viser la case de la cible verrouillée,
+        // --- Grenades (Livre VII §27.3) : viser la case de la cible verrouillée,
         // --- lancer main (2 PA / 8 cases) ou lanceur (3 PA / 20 cases), visée +1 PA.
         private bool _showGrenadeDrawer = false;
         private float _grenadeOpenAnim;
@@ -59,7 +59,7 @@ namespace Killtime.UI
         {
             float width = Mathf.Clamp(Screen.width * 0.34f, 330f, 460f);
             float height = 216f;
-            // Livre VI §25.3 : réserve une ligne d'affichage du couvert si la cible
+            // Livre V §21.3 : réserve une ligne d'affichage du couvert si la cible
             // est à couvert (le bouton TIR est repoussé vers le bas d'autant).
             CoverType preCover = _arena != null ? _arena.GetCoverToTarget(unit, _arena.CurrentTarget) : CoverType.None;
             if (preCover != CoverType.None) height += 18f;
@@ -149,7 +149,7 @@ namespace Killtime.UI
                 : SkillType.Ballistique;
 
             int apCost = _cancelPenaltyWithAP ? 3 : 2;
-            // Livre VI §25.3 : le couvert de la cible est affiché avant le tir
+            // Livre V §21.3 : le couvert de la cible est affiché avant le tir
             // (moitié -1, 3/4 -2, total = tir impossible).
             CoverType hudCover = preCover;
             bool coverBlocks = hudCover == CoverType.Full;

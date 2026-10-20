@@ -40,7 +40,7 @@ namespace Killtime.Core.Combat
         public bool IsCanonEntrave;
         public string CombatLog;
 
-        // --- Livre VI §25.3 : Couvert & Visibilité ---
+        // --- Livre V §21.3 : Couvert & Visibilité ---
         public CoverType Cover;
         public int CoverAttackPenalty;
         public bool BlockedByCover;
@@ -52,7 +52,7 @@ namespace Killtime.Core.Combat
         public bool HasCriticalConsequence;
         public CriticalConsequence CriticalConsequence;
 
-        // RD-082 : Déviation Anatomique Conforme (Livre VI §26.1) & Effets sur Marge Élevée (Livre VII §28.4)
+        // RD-082 : Déviation Anatomique Conforme (Livre V §22.1) & Effets sur Marge Élevée (Livre VI §24.4)
         public int DeflectionRoll;
         public string DeflectionMedicalConsequence;
         public bool WasDisintegrated;

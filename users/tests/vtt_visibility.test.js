@@ -1,5 +1,5 @@
 /* Brouillard de guerre asymétrique — tests du filtre serveur (zéro dépendance).
-   Livre VI §25.4 : 360° (pas de cône), portée d'ambiance, murs Full.
+   Livre V §21.4 : 360° (pas de cône), portée d'ambiance, murs Full.
    Exécution : node --test users/tests/vtt_visibility.test.js */
 'use strict';
 

@@ -516,7 +516,7 @@ namespace Killtime.Tactics.Arena
 
                 case ArenaLayoutType.TacticalBarricades:
                     // Couvertures tactiques réparties pour tester les angles de tir
-                    // (Half -1, ThreeQuarters -2, Full = non visible, Livre VI §25.3)
+                    // (Half -1, ThreeQuarters -2, Full = non visible, Livre V §21.3)
                     grid.SetNodeCover(new HexCoordinates(1, 0), CoverType.Half, true);
                     grid.SetNodeCover(new HexCoordinates(1, -2), CoverType.Full, false);
                     grid.SetNodeCover(new HexCoordinates(-1, 2), CoverType.Half, true);

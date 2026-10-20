@@ -9,7 +9,7 @@ using Killtime.Core.Rules;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-051 : Combat de Véhicules &amp; Sous-systèmes (Livre VI §26.3).
+    /// RD-051 : Combat de Véhicules &amp; Sous-systèmes (Livre V §22.3).
     /// Couvre au niveau pur (VehicleMechanics + VehicleState) : paliers par
     /// gabarit, clamp, essentiel vs superficiel, +100 armes lourdes,
     /// embarquement 2 PA / refus sans PA, écrasement, destruction à 0 PV

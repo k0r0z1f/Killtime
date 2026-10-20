@@ -8,14 +8,14 @@ using Killtime.Tactics.Grid;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Grenades + zones persistantes + tirs de zone (Livres VI, VII, VIII).
+    /// Grenades + zones persistantes + tirs de zone (Livres V, VI, VII).
     /// Facade RD-152 : les types historiques vivent ici (jet/dispersion/degats),
     /// les zones persistantes dans GrenadeSystem.Smoke.cs (RD-041/042/043),
     /// les tirs de zone dans GrenadeSystem.AreaFire.cs (RD-034).
     /// Decoupage move-only, aucune logique modifiee.
     /// </summary>
     /// <summary>
-    /// Ères historiques / technologiques des grenades (Livre VIII §31.3 étendu).
+    /// Ères historiques / technologiques des grenades (Livre VII §27.3 étendu).
     /// Sert au filtre du marché + au fluff + aux placeholders 3D.
     /// </summary>
     public enum GrenadeEra
@@ -29,7 +29,7 @@ namespace Killtime.Core.Combat
         Arcanotech      // Nytharite impériale : graviton, stase, chant
     }
 
-    /// <summary>Familles d'effet de grenade (dégâts + statuts Livre VII).</summary>
+    /// <summary>Familles d'effet de grenade (dégâts + statuts Livre VI).</summary>
     public enum GrenadeEffectKind
     {
         Fragmentation,
@@ -59,12 +59,12 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Règles tactiques des grenades (Livre VI §24 + Livre VIII §31.3).
+    /// Règles tactiques des grenades (Livre V §20 + Livre VII §27.3).
     /// - Main : 2 PA, 8 cases. Lanceur : 3 PA, +bonus portée/précision.
     /// - Visée compensée : +1 PA, annule le malus de distance (-1 / 3 cases au-delà de 4).
     /// - Échec du jet Ballistique (SD 10) => dispersion 1-3 cases (réduite par lanceur/précision).
     /// - Zone : 100% à l'épicentre, -25% par case (min 25%). Shrapnels : flat bonus à distance &gt; 0.
-    /// - Couverture (souffle, Livre VI §25.3) : Half -2, ThreeQuarters -3, Full -4
+    /// - Couverture (souffle, Livre V §21.3) : Half -2, ThreeQuarters -3, Full -4
     ///   (+ bloque les shrapnels si Full). Le mortier lobé ignore Half et ThreeQuarters.
     /// </summary>
     public static class GrenadeRules
@@ -82,7 +82,7 @@ namespace Killtime.Core.Combat
         public const int FullCoverReduction = 4;
 
         /// <summary>
-        /// Réduction de souffle selon le couvert de la case occupée (Livre VI §25.3).
+        /// Réduction de souffle selon le couvert de la case occupée (Livre V §21.3).
         /// Le mortier lobé ignore les couverts partiels (Half, ThreeQuarters), jamais Full.
         /// </summary>
         public static int CoverReductionFor(CoverType cover, bool isMortar)
@@ -228,7 +228,7 @@ namespace Killtime.Core.Combat
 
     /// <summary>
     /// Calculateur pur (testable sans Unity) : précision, dispersion, dégâts de zone,
-    /// shrapnels, couverture, armure, statuts Livre VII. L'arène s'occupe du visuel/sons.
+    /// shrapnels, couverture, armure, statuts Livre VI. L'arène s'occupe du visuel/sons.
     /// </summary>
     public class GrenadeCalculator
     {
@@ -339,8 +339,8 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// Applique armure + couverture + seuils Livre VII à UNE cible. Modifie ses PV/statuts.
-        /// coverLevel : 0=None, 1=Half, 2=Full, 3=ThreeQuarters (Livre VI §25.3).
+        /// Applique armure + couverture + seuils Livre VI à UNE cible. Modifie ses PV/statuts.
+        /// coverLevel : 0=None, 1=Half, 2=Full, 3=ThreeQuarters (Livre V §21.3).
         /// </summary>
         public GrenadeHitResult ResolveHitOnTarget(
             CharacterStats target,
@@ -361,7 +361,7 @@ namespace Killtime.Core.Combat
                 raw = Math.Max(0, raw - grenade.ShrapnelDamage);
             int afterCover = Math.Max(0, raw - coverRed);
 
-            // Champs de force portés (Livre VIII §32.2) : barrière avant armure/chair.
+            // Champs de force portés (Livre VII §28.2) : barrière avant armure/chair.
             // AbsorbShield retourne le RESTE : absorbé = avant - reste.
             int shieldRemainder = target.AbsorbShield(afterCover);
             int shieldAbs = Math.Max(0, afterCover - shieldRemainder);
@@ -490,7 +490,7 @@ namespace Killtime.Core.Combat
             return string.Join("+", names);
         }
 
-        // RD-051 hook (Livre VI §26.3) : souffle vs véhicules/structures —
+        // RD-051 hook (Livre V §22.3) : souffle vs véhicules/structures —
         // +100 si charge lourde (ex. thermobarique, plasma lourd). L'arène
         // applique ce bonus avant VehicleState.DamageSubsystem ; wrapper
         // conservé ici pour traçabilité (cf. DamageEngineService jumeau).

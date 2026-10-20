@@ -8,7 +8,7 @@ using Killtime.Tactics.Arena;
 
 namespace Killtime.Tactics
 {
-    // RD-195 : branchement véhicules en arène (Livre VI §26.3).
+    // RD-195 : branchement véhicules en arène (Livre V §22.3).
     // Socle pur déjà couvert par RD-051 (VehicleMechanics/VehicleState +
     // SpecialManeuverService.Vehicle) : ce partiel ajoute le placement
     // figurine, la trajectoire d'écrasement et les frappes de sous-système

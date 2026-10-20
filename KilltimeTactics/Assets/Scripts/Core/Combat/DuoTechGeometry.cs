@@ -232,7 +232,7 @@ namespace Killtime.Core.Combat
         }
 
         // =====================================================================
-        // RD-085 — VALIDATIONS LIVRE VI §25.5 (pures, sans Unity)
+        // RD-085 — VALIDATIONS LIVRE VI §21.5 (pures, sans Unity)
         // =====================================================================
 
         /// <summary>

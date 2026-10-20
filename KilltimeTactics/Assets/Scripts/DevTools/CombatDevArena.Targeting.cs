@@ -79,13 +79,13 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
-        /// Déclenche une passe d'armes ou tir ciblé selon le duel aveugle officiel (Livres II §7 + VI §24.1) :
+        /// Déclenche une passe d'armes ou tir ciblé selon le duel aveugle officiel (Livres II §7 + VI §20.1) :
         /// déclaration attaquant (mise PA/PE cachée) -> déclaration défenseur à l'aveugle
         /// -> révélation simultanée -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
         /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
         /// </summary>
         /// <summary>
-        /// Livre VI §25.3 : couvert de la cible vue par l'attaquant (None au contact,
+        /// Livre V §21.3 : couvert de la cible vue par l'attaquant (None au contact,
         /// Full si non visible). Utilisé par le HUD (affichage) et ExecuteAttack (blocage).
         /// </summary>
         public CoverType GetCoverToTarget(TacticalUnit attacker, TacticalUnit defender)

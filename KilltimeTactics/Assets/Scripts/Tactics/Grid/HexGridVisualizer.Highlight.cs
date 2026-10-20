@@ -9,7 +9,7 @@ namespace Killtime.Tactics.Grid
     public partial class HexGridVisualizer : MonoBehaviour
     {
         /// <summary>
-        /// Brouillard de guerre asymétrique (§25.4) : cases hors du champ 360° de
+        /// Brouillard de guerre asymétrique (§21.4) : cases hors du champ 360° de
         /// l'escouade (portée d'ambiance + murs Full) plongées dans l'obscurité.
         /// Appelé par FogOfWarManager ; le MJ n'active jamais ce masque.
         /// </summary>
@@ -149,7 +149,7 @@ namespace Killtime.Tactics.Grid
                     c = Color.Lerp(c, new Color(1f, 0.1f, 0.6f, 1f), 0.75f);
                 }
 
-                // Brouillard de guerre (§25.4) : obscurité stricte hors du champ
+                // Brouillard de guerre (§21.4) : obscurité stricte hors du champ
                 // 360° de l'escouade (portée d'ambiance + murs Full). Prioritaire sur
                 // toute autre teinte (portée, chemin, couvert) : l'invisible
                 // reste illisible, même au survol.

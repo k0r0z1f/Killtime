@@ -59,7 +59,7 @@ namespace Killtime.Core.Combat
         /// Étape 0 : prépare le duel aveugle. Paie le coût de base d'attaque uniquement.
         /// Aucun jet n'est lancé, aucune mise n'est engagée, rien n'est révélé.
         /// Retourne null + message d'erreur si l'attaque est impossible (PA insuffisants,
-        /// ou cible totalement à couvert / non visible, Livre VI §25.3).
+        /// ou cible totalement à couvert / non visible, Livre V §21.3).
         /// </summary>
         public AttackDuel BeginDuel(
             CharacterStats attacker,
@@ -87,7 +87,7 @@ namespace Killtime.Core.Combat
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
             var cfg = Rules.CoreRulesConfig.Instance;
 
-            // Livre VI §25.3 : cible totalement à couvert / non visible => attaque impossible.
+            // Livre V §21.3 : cible totalement à couvert / non visible => attaque impossible.
             // Au contact, les combattants se voient : le couvert est ignoré.
             CoverType effectiveCover = cover;
             if (_ctx.IsAtContactDistance && cfg.CoverIgnoredAtContactDistance)

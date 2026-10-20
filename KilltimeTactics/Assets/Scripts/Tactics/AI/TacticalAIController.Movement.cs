@@ -64,7 +64,7 @@ namespace Killtime.Tactics.AI
                 // Couvert défensif : protection contre la riposte
                 CoverType defCoverAgainstTarget = GetCoverLevel(target.CurrentCoords, hex, actor.FootprintType, target.FootprintType, actor);
 
-                // Coordination d'Escouade (Livre VI §25.3) : Verrouillage en Tir Croisé optimisé
+                // Coordination d'Escouade (Livre V §21.3) : Verrouillage en Tir Croisé optimisé
                 float crossfire = 0f;
                 if (isRanged && firingAllies != null)
                 {

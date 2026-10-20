@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "Arsenal Killtime Livre VIII §30-32 — export automatique de ArmoryCatalog.cs. Fichier éditable (UTF-8) ; un override persistentDataPath/Armory.json ou la fenêtre Armurerie (M) prend le pas. Re-générable via tools/export_armory.py.",
+  "source": "Arsenal Killtime Livre VII §26-32 — export automatique de ArmoryCatalog.cs. Fichier éditable (UTF-8) ; un override persistentDataPath/Armory.json ou la fenêtre Armurerie (M) prend le pas. Re-générable via tools/export_armory.py.",
   "items": [
     {
       "name": "Épée Métal Courte",
@@ -1068,7 +1068,7 @@
       "category": "Fusils Laser",
       "placeholder": "RifleLaser",
       "prefab": "SciFiGunHeavy_Blue",
-      "desc": "Cadence soutenue. Canon entravé au contact (Livre VI §26.2).",
+      "desc": "Cadence soutenue. Canon entravé au contact (Livre V §22.2).",
       "rarity": "Militaire",
       "armor": 0,
       "shield": 0,
@@ -2316,7 +2316,7 @@
       "category": "Grenades",
       "placeholder": "Grenade",
       "prefab": "",
-      "desc": "Bulle de Fleuve figé 2 tours (Livre V). Paralyse temporelle.",
+      "desc": "Bulle de Fleuve figé 2 tours (Livre IX). Paralyse temporelle.",
       "rarity": "Prototype",
       "armor": 0,
       "shield": 0,
@@ -4071,7 +4071,7 @@
       "category": "Médical & Outils",
       "placeholder": "Cell",
       "prefab": "",
-      "desc": "Permet chirurgie hors bloc (Livre VII §29).",
+      "desc": "Permet chirurgie hors bloc (Livre VI §25).",
       "rarity": "Militaire",
       "armor": 0,
       "shield": 0,

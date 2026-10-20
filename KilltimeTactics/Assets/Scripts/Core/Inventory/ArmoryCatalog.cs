@@ -5,7 +5,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Inventory
 {
     /// <summary>
-    /// Catalogue exhaustif de l'Armurerie Killtime (Livre VIII, Chap. 30-32).
+    /// Catalogue exhaustif de l'Armurerie Killtime (Livre VII, Chap. 26-32).
     /// Source unique pour : Inventaire PJ (F1/F5), Marché, placeholders 3D.
     /// Données : JSON éditable (Resources/Data/Armory.json, override disque),
     /// repli codé en dur ci-dessous si aucun JSON. Éditeur : fenêtre Armurerie (F12).
@@ -566,7 +566,7 @@ namespace Killtime.Core.Inventory
             // ===== 31.2 Fusils Laser (prefabs réels quand disponibles, sinon placeholder) =====
             Add("Fusil Laser Léger", "3D - 2L - 500P - 1H", 3, 2f, 500, "1H", 10000, ItemType.Weapon, SkillType.Ballistique, "Fusils Laser", "PistolLaser", "Pistolet lourd compact. Trait lumineux instantané.", ItemRarity.Militaire, "SciFiGunLight_Yellow", ammoCapacity: 10, ammoType: "Charge Laser", era: "Futuriste");
             Add("Fusil Laser de Précision", "4D - 2L - 750P - 1H", 4, 2f, 750, "1H", 25000, ItemType.Weapon, SkillType.Ballistique, "Fusils Laser", "PistolLaser", "Visée optique intégrée.", ItemRarity.Militaire, "SciFiGunLight_Blue", ammoCapacity: 10, ammoType: "Charge Laser", era: "Futuriste");
-            Add("Fusil d'Assaut Laser", "4D - 3L - 500P - 2H", 4, 3f, 500, "2H", 20000, ItemType.Weapon, SkillType.Ballistique, "Fusils Laser", "RifleLaser", "Cadence soutenue. Canon entravé au contact (Livre VI §26.2).", ItemRarity.Militaire, "SciFiGunHeavy_Blue", ammoCapacity: 20, ammoType: "Charge Laser", era: "Futuriste");
+            Add("Fusil d'Assaut Laser", "4D - 3L - 500P - 2H", 4, 3f, 500, "2H", 20000, ItemType.Weapon, SkillType.Ballistique, "Fusils Laser", "RifleLaser", "Cadence soutenue. Canon entravé au contact (Livre V §22.2).", ItemRarity.Militaire, "SciFiGunHeavy_Blue", ammoCapacity: 20, ammoType: "Charge Laser", era: "Futuriste");
             Add("Fusil de Sniper Lourd", "5D - 4L - 1000P - 2H", 5, 4f, 1000, "2H", 50000, ItemType.Weapon, SkillType.Ballistique, "Fusils Laser", "SniperLaser", "Portée 1km (20 cases en tactique). Accepte Haute Densité +1D.", ItemRarity.Elite, "SciFiGunHeavy_Black", ammoCapacity: 10, ammoType: "Charge Laser", heavyAmmo: true, era: "Futuriste");
             Add("Deglazer", "+1ec 7D - 4L - 1000P - 2H", 7, 4f, 1000, "2H", 200000, ItemType.Weapon, SkillType.Ballistique, "Fusils Laser", "Deglazer", "Arcanotech de guerre : prisme nytharite pure, +1ec au jet, 7 dégâts à 1km ! Accepte Haute Densité +1D.", ItemRarity.Legendaire, "SciFiGunHeavy_White", bonusEc: 1, ammoCapacity: 10, ammoType: "Charge Laser", heavyAmmo: true, era: "Arcanotech");
 
@@ -608,10 +608,10 @@ namespace Killtime.Core.Inventory
             AddGrenade("Grenade Plasma SG-7", "12D+3d10 - Blast2", 12, 3, 0.7f, 12000, "Futuriste", "Plasma", 2, 2, "EnFeu,Destabilise", 0, "Confinement plasma industriel. Surchauffe + brûlures résiduelles.", ItemRarity.Elite);
             AddGrenade("Grenade Cryo C-9", "8D+2d10 - Blast2", 8, 2, 0.8f, 11000, "Futuriste", "Cryo", 2, 0, "Ralenti,Immobilise", 1, "Azote pressurisé. Ralentit puis fige la zone 1 tour.", ItemRarity.Elite);
             AddGrenade("Grenade Sonique S-3", "4D+1d10 - Blast2", 4, 1, 0.6f, 9000, "Futuriste", "Flash", 2, 0, "Sourd,Etourdi,Sonne", 0, "Canon sonore focalisé. Sonne les cibles non protégées.", ItemRarity.Elite);
-            // Arcanotech (Nytharite impériale, Livres IV/VIII/XI)
+            // Arcanotech (Nytharite impériale, Livres IV/VII/XI)
             AddGrenade("Grenade Nytharite F-31", "12D+4d10 - Blast3", 12, 4, 1.0f, 25000, "Arcanotech", "Plasma", 3, 3, "EnFeu,Destabilise", 0, "Prisme nytharite pure. Signature de la garde impériale.", ItemRarity.Legendaire);
             AddGrenade("Grenade Graviton G-0", "10D+3d10 - Blast2", 10, 3, 1.2f, 30000, "Arcanotech", "Graviton", 2, 0, "ATerre,Ralenti,Immobilise", 1, "Puits gravifique bref. Cloue au sol puis relâche.", ItemRarity.Legendaire);
-            AddGrenade("Grenade Stase Chrono T-0", "0D+1d10 - Blast2", 0, 1, 0.8f, 35000, "Arcanotech", "Stase", 2, 0, "Paralyse,ChronoFracture", 2, "Bulle de Fleuve figé 2 tours (Livre V). Paralyse temporelle.", ItemRarity.Prototype);
+            AddGrenade("Grenade Stase Chrono T-0", "0D+1d10 - Blast2", 0, 1, 0.8f, 35000, "Arcanotech", "Stase", 2, 0, "Paralyse,ChronoFracture", 2, "Bulle de Fleuve figé 2 tours (Livre IX). Paralyse temporelle.", ItemRarity.Prototype);
             AddGrenade("Grenade Pestilentielle Karkjiue", "6D+2d10 - Blast3 - Gaz", 6, 2, 1.0f, 18000, "Arcanotech", "Pestilentielle", 3, 0, "Empoisonne,Saignement", 3, "Spores de Karkjiue (Livre XI). Nuage persistant 3 tours.", ItemRarity.Legendaire);
 
             // ===== 31.3c Lance-grenades (équiper en 2H, 3 PA / tir, +portée/précision) =====
@@ -672,7 +672,7 @@ namespace Killtime.Core.Inventory
             // ===== Médical & Outils (soins hors seringues, artisanat, crochetage) =====
             Add("Bandage Compressif", "Soin 2 PV", 0, 0.3f, 1, "1H", 80, ItemType.Consumable, SkillType.PremiersSoins, "Médical & Outils", "Ration", "Stoppe Saignement léger, +2 PV (1 PA).", stackable: true, heal: 2, era: "Grande Guerre");
             Add("Attelle Rigide", "Fracture", 0, 0.8f, 1, "1H", 150, ItemType.Consumable, SkillType.PremiersSoins, "Médical & Outils", "Ration", "Immobilise un membre (retire Ralenti).", stackable: true, era: "Grande Guerre");
-            Add("Kit de Chirurgie de Campagne", "Bloc opératoire", 0, 6f, 1, "1H", 4500, ItemType.Misc, SkillType.MedecineAvancee, "Médical & Outils", "Cell", "Permet chirurgie hors bloc (Livre VII §29).", ItemRarity.Militaire, era: "Seconde Guerre");
+            Add("Kit de Chirurgie de Campagne", "Bloc opératoire", 0, 6f, 1, "1H", 4500, ItemType.Misc, SkillType.MedecineAvancee, "Médical & Outils", "Cell", "Permet chirurgie hors bloc (Livre VI §25).", ItemRarity.Militaire, era: "Seconde Guerre");
             Add("Kit de Crochetage", "Subterfuge", 0, 0.5f, 1, "1H", 400, ItemType.Misc, SkillType.Subterfuge, "Médical & Outils", "Cell", "Rossignols + sonde. Bonus matériel +1 crochetage.", ItemRarity.Militaire, era: "Poudre Noire");
             Add("Boîte à Outils Arcanotech", "Réparation", 0, 8f, 1, "1H", 1800, ItemType.Misc, SkillType.IngenierieArcanotech, "Médical & Outils", "Cell", "Répare armes, armures, moteurs (Artisanat/Ingénierie).", era: "Arcanotech");
             Add("Menottes Magnétiques", "Entrave", 0, 0.6f, 1, "1H", 600, ItemType.Misc, SkillType.Subterfuge, "Médical & Outils", "Cell", "Immobilisé tant que menotté (évasion FOR/AGI).", ItemRarity.Militaire, era: "Futuriste");

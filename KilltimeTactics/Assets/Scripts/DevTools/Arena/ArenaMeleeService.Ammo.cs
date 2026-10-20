@@ -163,7 +163,7 @@ namespace Killtime.Tactics.Arena
                 Vector3 spawnPos = defender.transform.position;
                 var node = grid != null ? grid.GetNode(defender.CurrentCoords) : null;
                 if (node != null) spawnPos = node.WorldPosition;
-                // L'arme vole à la case du porteur (2 cases au sol selon Livre VI, ici stessa case).
+                // L'arme vole à la case du porteur (2 cases au sol selon Livre V, ici stessa case).
                 DroppedWeaponPickup.SpawnAt(toDrop, spawnPos, defender.Stats.Name);
                 defender.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"🗡️ DÉSARMÉ ! {droppedName}", Color.yellow);
                 _host.ArenaLog($"🗡️ <b>DÉSARMEMENT</b> : {attacker.Stats.Name} arrache <b>{droppedName}</b> à {defender.Stats.Name} (Diff +{result.Differential} ≥ {threshold}) — tombe au sol !");

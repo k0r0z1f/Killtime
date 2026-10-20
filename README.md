@@ -88,11 +88,11 @@ L'intégralité du corpus de règles est distribuée sous forme de documents web
 | **[Livre II](livre_2.html)** | **Paliers de Dés & Épreuves** | Échelle d2-d12+, Seuils de Difficulté (0-34), Critiques |
 | **[Livre III](livre_3.html)** | **Arbres de Compétences** | 3 Branches (Physique, Mentale, Sociale), Spécialisations |
 | **[Livre IV](livre_4.html)** | **5e Force & Magie** | Résonance de la nytharite, moteurs arcaniques, 6 stades psi |
-| **[Livre V](livre_5.html)** | **Temps & Causalité** | Topologie des chronotrames, clairsentience (8 échelons) |
-| **[Livre VI](livre_6.html)** | **Combat Tactique** | Tour de 10s, déplacements, localisation, véhicules |
-| **[Livre VII](livre_7.html)** | **Santé, États & Blessures** | 16 États préjudiciables, encaissement, premiers soins |
-| **[Livre VIII](livre_8.html)** | **Arsenal & Arcanotech** | Armes métalliques, lames laser, blindages et pharmacopée |
-| **[Livre IX](livre_9.html)** | **Outils Web Interactifs** | Fiche PJ, Créateur de Sorts, Lanceur de Dés, Chronotrames |
+| **[Livre IX](livre_9.html)** | **Temps & Causalité** | Topologie des chronotrames, clairsentience (8 échelons) |
+| **[Livre V](livre_5.html)** | **Combat Tactique** | Tour de 10s, déplacements, localisation, véhicules |
+| **[Livre VI](livre_6.html)** | **Santé, États & Blessures** | 16 États préjudiciables, encaissement, premiers soins |
+| **[Livre VII](livre_7.html)** | **Arsenal & Arcanotech** | Armes métalliques, lames laser, blindages et pharmacopée |
+| **[Livre VIII](livre_8.html)** | **Outils Web Interactifs** | Fiche PJ, Créateur de Sorts, Lanceur de Dés, Chronotrames |
 | **[Livre X](livre_10.html)** | **Atlas des Mondes Connus** | Les 36 Élianes, Hybris, Vardis, Nefris, Cléia, Karkjiue |
 | **[Livre XI](livre_11.html)** | **Bestiaire & Menaces Cosmiques** | Faune, automates impériaux, Disciples, The Minulican, Bosses |
 
@@ -109,7 +109,7 @@ L'intégralité du corpus de règles est distribuée sous forme de documents web
 │   └── style.css                  # Design System complet (Dark/Light, Glassmorphism)
 ├── js/
 │   ├── codex.js                   # Moteur de navigation, recherche et thème
-│   └── tools.js                   # Calculateurs interactifs du Livre IX
+│   └── tools.js                   # Calculateurs interactifs du Livre VIII
 ├── cycleServer.sh & start.sh      # Scripts de démarrage du serveur local
 │
 └── Killtime/                      # Sous-projet : Univers narratif & Histoire principale

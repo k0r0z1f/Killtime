@@ -22,7 +22,7 @@ using Killtime.Multi;
 namespace Killtime.Tactics.Visibility
 {
     /// <summary>
-    /// Portée de vue environnementale (Livre VI §25.4) : la distance de vision
+    /// Portée de vue environnementale (Livre V §21.4) : la distance de vision
     /// ne dépend jamais des stats — courte portée en intérieur / obstacles
     /// denses, longue portée en extérieur dégagé (météo claire).
     /// </summary>
@@ -80,7 +80,7 @@ namespace Killtime.Tactics.Visibility
         [Tooltip("Coût en PA d'une tentative d'Observation active contre une cible.")]
         [SerializeField] private int _observationApCost = 1;
 
-        [Header("Portée de Vue (Environnement, Livre VI §25.4)")]
+        [Header("Portée de Vue (Environnement, Livre V §21.4)")]
         [Tooltip("Preset d'ambiance : Courte (intérieur/obstacles, 6 cases) ou Longue (extérieur/météo claire, 12 cases).")]
         [SerializeField] private FogRangePreset _rangePreset = FogRangePreset.LonguePortee;
         [Tooltip("Portée personnalisée (cases). -1 = utilise le preset. Le MJ peut imposer la sienne à la table VTT.")]

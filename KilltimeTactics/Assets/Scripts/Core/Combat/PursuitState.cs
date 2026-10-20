@@ -4,7 +4,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Concours d'Athlétisme de poursuite (RD-084, Livre VI §25.1) :
+    /// Concours d'Athlétisme de poursuite (RD-084, Livre V §21.1) :
     /// échapper à un ou plusieurs ennemis est un concours d'Athlétisme sous
     /// tension. La proie lance son épreuve, chaque poursuivant lance la sienne.
     /// - Réussite de la proie contre un poursuivant : distance maintenue, le

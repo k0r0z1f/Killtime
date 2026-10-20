@@ -26,7 +26,7 @@ namespace Killtime.Tactics.CombatUI
     }
 
     /// <summary>
-    /// Issue table (Livre VI §25.5.2) : double épreuve de synchro.
+    /// Issue table (Livre V §21.5.2) : double épreuve de synchro.
     /// Les deux réussissent = Parfaite ; un seul = Partiel (Semi) ; aucun = Ratée.
     /// Le tissage souris (WeaveController) ne produit que Parfaite/Ratée
     /// (binaire, comme Lacet/Fournaise) : le Partiel n'existe qu'à table (dés).
@@ -51,7 +51,7 @@ namespace Killtime.Tactics.CombatUI
 
         public int TotalCost => DeclareCost + MinaCost + LucasCost + ThomasCost;
 
-        // Table Livre VI §25.5 : ND de synchro + binôme de caracs testées
+        // Table Livre V §21.5 : ND de synchro + binôme de caracs testées
         // (1er = rôle cinétique/physique Mina, 2nd = rôle calcul Lucas).
         public int SyncND = 5;
         public string SyncAttrs = "AGI+INT";

@@ -268,7 +268,7 @@ namespace Killtime.Core.Character
         /// <summary>
         /// RÈGLE CODEX (Livres I-III) : aucun modificateur de caractéristique n'est ajouté au jet.
         /// Les attributs fixent uniquement le rang de base (GetBaseRank) donc le dé lancé.
-        /// Seuls les PA injectés et les malus situationnels (visée, états Livre VII) modifient le total.
+        /// Seuls les PA injectés et les malus situationnels (visée, états Livre VI) modifient le total.
         /// Conservé pour compatibilité : retourne toujours 0.
         /// </summary>
         [Obsolete("Règle Codex : aucun mod de caractéristique ajouté au jet. Les caracs fixent le dé via GetBaseRank. Utilisez GetStatusModifier.")]

@@ -241,7 +241,7 @@ namespace Killtime.Core.Character
             return Inventory.Find(i => i != null && i.IsEquipped && i.Type == ItemType.Weapon);
         }
 
-        /// <summary>Blindage porté (Livre VIII §32) : une seule armure à la fois.</summary>
+        /// <summary>Blindage porté (Livre VII §28) : une seule armure à la fois.</summary>
         public InventoryItem GetEquippedArmor()
         {
             if (Inventory == null) return null;
@@ -256,7 +256,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Règle Livre VII : une unité qui tombe <b>Inconsciente</b> (K.O., coma, mort)
+        /// Règle Livre VI : une unité qui tombe <b>Inconsciente</b> (K.O., coma, mort)
         /// lâche ce qu'elle tient. Extrait TOUTES les armes équipées de l'inventaire
         /// (déséquipées + retirées) et les retourne pour spawn physique au sol.
         /// L'objet au sol devient l'exemplaire unique (loot / ramassage possible).
@@ -297,7 +297,7 @@ namespace Killtime.Core.Character
                 }
             }
 
-            // Un seul blindage porté et un seul champ de force à la fois (Livre VIII §32).
+            // Un seul blindage porté et un seul champ de force à la fois (Livre VII §28).
             if (item.Type == ItemType.Armor)
             {
                 for (int i = 0; i < Inventory.Count; i++)
@@ -346,7 +346,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Consomme 1 dose d'un consommable stackable (Pharma/Médical, Livre VIII §32.3).
+        /// Consomme 1 dose d'un consommable stackable (Pharma/Médical, Livre VII §28.3).
         /// Décrémente Quantity ou retire l'item si dernière dose. Retourne false si introuvable.
         /// </summary>
         public bool ConsumeOne(string itemId)

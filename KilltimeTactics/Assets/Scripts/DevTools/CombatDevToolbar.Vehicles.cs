@@ -20,7 +20,7 @@ namespace Killtime.UI
             if (_arena == null) return;
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>🚙 Véhicules (RD-195, Livre VI §26.3) :</b>");
+            GUILayout.Label("<b>🚙 Véhicules (RD-195, Livre V §22.3) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             HexCoordinates spawnAt = _arena.CurrentTarget != null

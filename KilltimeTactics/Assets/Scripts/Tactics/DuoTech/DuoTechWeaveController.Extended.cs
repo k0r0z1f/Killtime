@@ -14,7 +14,7 @@ namespace Killtime.Tactics.DuoTech
     // Split move-only de DuoTechWeaveController — Extended (RD-085) : CentroidOfT1, BestEnemyNear, ResolveTrempe, ResolveRailgun, ResolveCisaille, ResolveParallaxe, ResolveMirage, MirageThenFinish, ResolveUppercut, SpawnHitFx.
     public partial class DuoTechWeaveController : MonoBehaviour
     {
-        // ============================ RD-085 (Livre VI §25.5) ============================
+        // ============================ RD-085 (Livre V §21.5) ============================
         // Tissage binaire (comme Lacet/Fournaise) : condition de placement
         // validée = Parfaite table, sinon Ratée table (PA perdus). Le Semi
         // n'existe qu'aux dés via DuoTechRegistry.TableOutcome + Resolve*.

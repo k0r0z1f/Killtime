@@ -12,7 +12,7 @@ using Killtime.Tactics.TurnSystem;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-048 Retarder / Tenir / Canalisation (Livre VI — Tours) :
+    /// RD-048 Retarder / Tenir / Canalisation (Livre V — Tours) :
     /// - Tenir (0 PA) : passe en attente, PA conservés, interruption ultérieure.
     /// - Retarder (0 PA) : initiative -2, réinsertion plus tard, 1/round.
     /// - Canalisation (1 PA) : +2 au jet à l'attaque, -1 en défense,

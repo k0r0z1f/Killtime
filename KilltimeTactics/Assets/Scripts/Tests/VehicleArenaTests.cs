@@ -10,7 +10,7 @@ using Killtime.Tactics;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-195 : branchement véhicules en arène (Livre VI §26.3).
+    /// RD-195 : branchement véhicules en arène (Livre V §22.3).
     /// Labels/previews purs de CombatDevArena + séquences déléguées
     /// (embarquer 2 PA, écrasement mobile, frappe +100 lourde, épave =
     /// débarquement forcé). Aucune scène requise (pas de figurine ici).

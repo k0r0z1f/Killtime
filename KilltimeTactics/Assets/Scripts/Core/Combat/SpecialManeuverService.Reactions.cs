@@ -69,7 +69,7 @@ namespace Killtime.Core.Combat
         // La frappe et le balayage sont GRATUITS (skipAttackerCost, réaction seule
         // consommée par l'appelant via OpportunityState). Mise attaquant 0/0
         // (coup réflexe), défense auto. Le blocage est un défi opposé Athlétisme
-        // vs Athlétisme (Livre VI §25.1, course-poursuite) : à l'attaquant (bloqueur).
+        // vs Athlétisme (Livre V §21.1, course-poursuite) : à l'attaquant (bloqueur).
         // =====================================================================
 
         /// <summary>
@@ -125,7 +125,7 @@ namespace Killtime.Core.Combat
 
         /// <summary>
         /// Balayage d'opportunité (variante) : frappe gratuite visant les Jambes
-        /// (À Terre + Ralenti en cas de choc, Livre VI §26). Même coût qu'une frappe.
+        /// (À Terre + Ralenti en cas de choc, Livre V §22). Même coût qu'une frappe.
         /// </summary>
         public DamageResult? ResolveOpportunityTrip(
             CharacterStats reactor,
@@ -170,7 +170,7 @@ namespace Killtime.Core.Combat
         }
 
         // =====================================================================
-        // RD-048 : RETARDER / TENIR / CANALISATION (Livre VI — Tours).
+        // RD-048 : RETARDER / TENIR / CANALISATION (Livre V — Tours).
         // - Tenir : 0 PA, passe en attente (interruption ultérieure).
         // - Retarder : 0 PA, initiative -pénalité (réinsertion par TurnManager).
         // - Canalisation : coût config, +2 au jet à l'attaque, -1 en défense,

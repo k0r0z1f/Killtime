@@ -3,7 +3,7 @@ using System;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Sous-systèmes de véhicule (Livre VI §26.3 — RD-051).
+    /// Sous-systèmes de véhicule (Livre V §22.3 — RD-051).
     /// Essentiels : la destruction d'UNE zone essentielle (PV à 0) détruit l'engin.
     /// Superficiels : perte fonctionnelle sans détruire l'engin.
     /// </summary>
@@ -22,7 +22,7 @@ namespace Killtime.Core.Combat
         Roues
     }
 
-    /// <summary>Paliers de gabarit (Livre VI §26.3 — RD-051).</summary>
+    /// <summary>Paliers de gabarit (Livre V §22.3 — RD-051).</summary>
     public enum VehicleScale
     {
         Velo,       // 1-10 PV (vélo)
@@ -61,7 +61,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Mécaniques pures du combat de véhicules (Livre VI §26.3 — RD-051).
+    /// Mécaniques pures du combat de véhicules (Livre V §22.3 — RD-051).
     /// Aucune dépendance Unity/MonoBehaviour : 100% testable en EditMode.
     /// Pattern TitanBossMechanics : consts = défauts Codex, JSON via CoreRulesConfig.
     /// Cohérence RD-044 (DestructibleEnvironmentRules) : les paliers reprennent la

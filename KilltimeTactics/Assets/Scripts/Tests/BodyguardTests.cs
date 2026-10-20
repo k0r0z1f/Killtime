@@ -8,7 +8,7 @@ using Killtime.Tactics.CombatUI;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-032 : Garde du corps / Interception allié (Livre VI §24.5).
+    /// RD-032 : Garde du corps / Interception allié (Livre V §20.5).
     /// Tenir la Ligne : prendre le coup à la place au contact (<= 1 case),
     /// coût 1 PA réaction. Consomme l'unique réaction du round.
     /// </summary>

@@ -44,14 +44,14 @@ namespace Killtime.Core.Character
 
             int mod = 0;
 
-            // Livre VII : Déstabilisé (-2 à toutes les épreuves, -1 avec Trempe de Fer)
+            // Livre VI : Déstabilisé (-2 à toutes les épreuves, -1 avec Trempe de Fer)
             if (ActiveStatus.HasFlag(StatusEffect.Destabilise))
                 mod -= HasSpecialization("Trempe de Fer") ? 1 : 2;
 
-            // Livre VII : Étourdi (-1 sur tous les jets, ignoré avec Esprit de Granit)
+            // Livre VI : Étourdi (-1 sur tous les jets, ignoré avec Esprit de Granit)
             if (ActiveStatus.HasFlag(StatusEffect.Etourdi) && !HasSpecialization("Trempe de Fer : Esprit de Granit")) mod -= 1;
 
-            // Livre VII : À Terre (-1 attaque — ignoré avec Ignorer la Douleur, -2 défense/esquive)
+            // Livre VI : À Terre (-1 attaque — ignoré avec Ignorer la Douleur, -2 défense/esquive)
             if (ActiveStatus.HasFlag(StatusEffect.ATerre))
             {
                 if (isOffensive)
@@ -60,23 +60,23 @@ namespace Killtime.Core.Character
                     mod -= 2;
             }
 
-            // Livre VII : Aveugle (-4 tirs distance, -2 mêlée et défense)
+            // Livre VI : Aveugle (-4 tirs distance, -2 mêlée et défense)
             if (ActiveStatus.HasFlag(StatusEffect.Aveugle))
             {
                 bool isRanged = (skill == SkillType.Ballistique || skill == SkillType.ProjectilesTir);
                 mod += isRanged ? -4 : -2;
             }
 
-            // Livre VII : Immobilisé (-2 esquive active)
+            // Livre VI : Immobilisé (-2 esquive active)
             if (ActiveStatus.HasFlag(StatusEffect.Immobilise))
             {
                 if (!isOffensive && (skill == SkillType.Esquive || skill == SkillType.Acrobatie)) mod -= 2;
             }
 
-            // Livre VII : Agonisant (-2 détresse vitale / panique)
+            // Livre VI : Agonisant (-2 détresse vitale / panique)
             if (ActiveStatus.HasFlag(StatusEffect.Agonisant)) mod -= 2;
 
-            // RD-083 (Livre VII §29.3) : Poids du Trépas — ressuscité affaibli :
+            // RD-083 (Livre VI §25.3) : Poids du Trépas — ressuscité affaibli :
             // malus sur TOUS les jets pendant (10 - CON) jours réels.
             mod += GetResurrectionSequelaeModifier();
 
@@ -130,7 +130,7 @@ namespace Killtime.Core.Character
         /// <summary>
         /// RÈGLE CODEX (Livres I-III) : le jet = Dé de compétence + PA injectés + malus situationnels.
         /// Aucun modificateur de caractéristique n'est ajouté : les caracs fixent le dé via GetSkillDie.
-        /// Retourne donc uniquement le malus d'états (Livre VII).
+        /// Retourne donc uniquement le malus d'états (Livre VI).
         /// </summary>
         public int GetSkillModifier(SkillType skill, bool isOffensive = true)
         {

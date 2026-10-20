@@ -17,7 +17,7 @@ using Killtime.Tactics.AI;
 namespace Killtime.Tactics.Arena
 {
     /// <summary>
-    /// Passe d'armes principale (duel aveugle Livres II §7 + VI §24.1),
+    /// Passe d'armes principale (duel aveugle Livres II §7 + VI §20.1),
     /// attaque de décor, grappin magnétique. Logique déplacée verbatim
     /// depuis CombatDevArena (ExecuteAttack + 2 routines + obstacle + grappin).
     /// La killcam cinématique reste hébergée par la façade (MonoBehaviour).

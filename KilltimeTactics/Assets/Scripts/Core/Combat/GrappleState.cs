@@ -5,7 +5,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// État partagé de la lutte / grapple au corps-à-corps (RD-039, Livre VI) :
+    /// État partagé de la lutte / grapple au corps-à-corps (RD-039, Livre V) :
     /// maintient les liens d'étreinte entre combattants (grappler et victime).
     ///
     /// Keyé sur <see cref="CharacterStats"/> pour rester dans la couche Core

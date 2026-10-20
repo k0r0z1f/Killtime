@@ -232,7 +232,7 @@ namespace Killtime.Audio
         }
 
         /// <summary>
-        /// Résolution audio directe depuis la structure DamageResult officielle (Livre VI).
+        /// Résolution audio directe depuis la structure DamageResult officielle (Livre V).
         /// Automatise les accents percussifs et l'élévation de tension des stems procéduraux.
         /// </summary>
         public void PlayCombatResult(DamageResult result, Vector3 atPos)

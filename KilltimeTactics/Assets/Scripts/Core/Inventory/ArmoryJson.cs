@@ -7,7 +7,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Inventory
 {
     /// <summary>
-    /// Armurerie Killtime sous JSON éditable (Livre VIII, marché complet).
+    /// Armurerie Killtime sous JSON éditable (Livre VII, marché complet).
     /// Fichier : Assets/Resources/Data/Armory.json ("Data/Armory" en Resources).
     /// Éditable à la main (UTF-8) ou via la fenêtre Armurerie (F12).
     /// Au runtime, un override JSON dans persistentDataPath/Armory.json (sauvegardé

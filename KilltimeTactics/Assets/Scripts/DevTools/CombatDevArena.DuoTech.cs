@@ -11,7 +11,7 @@ using Killtime.Core.Combat;
 
 namespace Killtime.Tactics
 {
-    // RD-194 : Duo-Tech MJ sans souris (Livre VI §25.5 + synergies RD-086).
+    // RD-194 : Duo-Tech MJ sans souris (Livre V §21.5 + synergies RD-086).
     // Paiement atomique + tampon 1/round via DuoTechRegistry (inchangé),
     // résolution table aux grades forcés via Resolve* (Classics/Extended/
     // TriFusion). Tissage souris WeaveController inchangé. Dev-only.

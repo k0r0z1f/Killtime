@@ -7,7 +7,7 @@ using Killtime.Core.Dice;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-039 : Lutte / grapple / traînée corps (Livre VI).
+    /// RD-039 : Lutte / grapple / traînée corps (Livre V).
     /// Prise au corps-à-corps (Athlétisme vs Athlétisme) -> Immobilisé.
     /// Dégagement (duel opposé) vs Relâcher (0 PA).
     /// Étranglement -> Asphyxie (drain PA + dégâts résiduels).

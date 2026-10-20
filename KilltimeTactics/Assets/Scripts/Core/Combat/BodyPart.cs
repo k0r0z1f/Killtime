@@ -1,7 +1,7 @@
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Localisation anatomique chirurgicale du Système RP (Livre VI, Chapitre 26).
+    /// Localisation anatomique chirurgicale du Système RP (Livre V, Chapitre 22).
     /// </summary>
     public enum BodyPart
     {

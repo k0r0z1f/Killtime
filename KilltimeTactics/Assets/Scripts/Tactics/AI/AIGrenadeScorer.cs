@@ -11,7 +11,7 @@ namespace Killtime.Tactics.AI
     /// zone persistante (DoT × tours, alliés masqués ignorés).
     /// Pur C# EditMode : aucune scène, aucun singleton.
     /// Le contrôleur fournit les comptages (foes/allies/LOS/masques) déjà filtrés
-    /// brouillard (fog symétrique §25.4) ; ici seules les formules vivent.
+    /// brouillard (fog symétrique §21.4) ; ici seules les formules vivent.
     /// </summary>
     public static class AIGrenadeScorer
     {

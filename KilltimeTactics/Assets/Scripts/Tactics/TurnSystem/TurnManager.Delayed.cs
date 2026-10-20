@@ -14,7 +14,7 @@ namespace Killtime.Tactics.TurnSystem
     public partial class TurnManager : MonoBehaviour
     {
         // =====================================================================
-        // RD-048 : RETARDER / TENIR / INTERROMPRE (Livre VI — Tours).
+        // RD-048 : RETARDER / TENIR / INTERROMPRE (Livre V — Tours).
         // - Retarder : l'unité active repousse son tour plus tard dans le round
         //   (initiative -pénalité, 1/round), réinsérée après celles qui la
         //   devancent encore. Passe la main à l'unité suivante.

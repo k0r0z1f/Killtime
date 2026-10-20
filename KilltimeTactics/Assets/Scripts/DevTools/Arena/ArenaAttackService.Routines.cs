@@ -69,7 +69,7 @@ namespace Killtime.Tactics.Arena
             // Duel aveugle : Begin (base attaque) puis DÉCLARATION attaquant immédiate
             // (mise cachée, aucun jet lancé). La fenêtre défenseur s'ouvre ensuite en
             // aveugle : le défenseur ne voit ni jet ni mise adverse.
-            // Livre VI §25.3 : couvert évalué sur positions réelles (Full => refus).
+            // Livre V §21.3 : couvert évalué sur positions réelles (Full => refus).
             // RD-036 : ruling hauteur recalculé sur positions réelles (même gate
             // que ExecuteAttack — la routine n'est atteinte qu'après le gate, le
             // mod suffit ici).

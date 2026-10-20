@@ -17,13 +17,13 @@ using Killtime.Tactics.AI;
 namespace Killtime.Tactics.Arena
 {
     /// <summary>
-    /// Passe d'armes principale (ExecuteAttack, duel aveugle Livres II §7 + VI §24.1).
+    /// Passe d'armes principale (ExecuteAttack, duel aveugle Livres II §7 + VI §20.1).
     /// Split move-only : contenu verbatim depuis ArenaAttackService.cs.
     /// </summary>
     public sealed partial class ArenaAttackService
     {
         /// <summary>
-        /// Déclenche une passe d'armes ou tir ciblé selon le duel aveugle officiel (Livres II §7 + VI §24.1) :
+        /// Déclenche une passe d'armes ou tir ciblé selon le duel aveugle officiel (Livres II §7 + VI §20.1) :
         /// déclaration attaquant (mise PA/PE cachée) -> déclaration défenseur à l'aveugle
         /// -> révélation simultanée -> résolution normale. Conforme à l'Axiome Fondateur : résolution par compétence.
         /// defenderBonusAP &lt; 0 = défense réactive auto (besoin réel après révélation de l'attaque).
@@ -201,7 +201,7 @@ namespace Killtime.Tactics.Arena
                 return;
             }
 
-            // Livre VI §25.3 — Couvert & Visibilité : la cible totalement à couvert
+            // Livre V §21.3 — Couvert & Visibilité : la cible totalement à couvert
             // (non visible pour l'attaquant) ne peut pas être attaquée directement.
             CoverType attackCover = _targeting.GetCoverToTarget(attacker, defender);
             if (attackCover == CoverType.Full)
@@ -243,7 +243,7 @@ namespace Killtime.Tactics.Arena
                 }
             }
 
-            // Duel aveugle Livres II §7 + VI §24.1 : les mises (PA bonus + PE) se déclarent
+            // Duel aveugle Livres II §7 + VI §20.1 : les mises (PA bonus + PE) se déclarent
             // AVANT les jets et restent cachées jusqu'à la révélation simultanée.
             // Bonus explicite (>= 0) : mise déclarée du défenseur (fenêtre paramétrage).
             // Bonus auto (< 0) : déclaration aveugle auto (estimation sans voir le jet adverse).

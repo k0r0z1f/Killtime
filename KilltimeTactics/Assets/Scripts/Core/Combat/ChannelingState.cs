@@ -5,7 +5,7 @@ using Killtime.Core.Rules;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Canalisation / Action en Progression (RD-048, Livre VI §24.3) :
+    /// Canalisation / Action en Progression (RD-048, Livre V §20.3) :
     /// un combattant étale son effort sur plusieurs temps (ajuster un tir
     /// dévastateur, canaliser un sort de la 5e Force) pour frapper plus fort.
     ///

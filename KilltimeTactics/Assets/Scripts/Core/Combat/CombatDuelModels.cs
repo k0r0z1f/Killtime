@@ -7,7 +7,7 @@ using Killtime.Tactics.Visibility;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Duel aveugle officiel (Livres II §7 + VI §24.1) :
+    /// Duel aveugle officiel (Livres II §7 + VI §20.1) :
     /// 1. L'attaquant DÉCLARE sa cible, son action (compétence + zone visée) et sa mise
     ///    (coût de base + PA bonus + PE), débités aussitôt. Résultat CACHÉ.
     /// 2. La cible DÉCLARE à l'aveugle son action opposée (compétence défensive ou
@@ -63,14 +63,14 @@ namespace Killtime.Core.Combat
         // RD-048 : Canalisation / Action en Progression (+2 au jet, -1 en défense)
         public bool IsChannelAttack;
         public int ChannelAttackBonus;
-        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VIII §31.2).
+        // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VII §27.2).
         // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
         public int WeaponBonusEc;
         // RD-036 Hauteur / contrebas (palier 1.5 m) : bonus/malus vertical
         // calculé par ElevationAdvantage, additionné à AttackBaseMod.
         public int ElevationAttackMod;
         public string ElevationLabel;
-        // Couvert & visibilité (Livre VI §25.3) : Half -1, ThreeQuarters -2,
+        // Couvert & visibilité (Livre V §21.3) : Half -1, ThreeQuarters -2,
         // Full = cible non visible => attaque impossible (BeginDuel refuse).
         public CoverType Cover;
         public int CoverAttackPenalty;
@@ -108,7 +108,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Résultat d'une attaque combinée de groupe (RD-084, Livre VI §25.2) :
+    /// Résultat d'une attaque combinée de groupe (RD-084, Livre V §21.2) :
     /// sommation des résultats offensifs face à l'unique défense de la cible.
     /// </summary>
     public sealed class CombinedAttackResult
@@ -156,7 +156,7 @@ namespace Killtime.Core.Combat
     }
 
     /// <summary>
-    /// Résultat d'un round de course-poursuite (RD-084, Livre VI §25.1) :
+    /// Résultat d'un round de course-poursuite (RD-084, Livre V §21.1) :
     /// un unique jet de la proie opposé à chaque poursuivant.
     /// </summary>
     public sealed class PursuitRoundResult

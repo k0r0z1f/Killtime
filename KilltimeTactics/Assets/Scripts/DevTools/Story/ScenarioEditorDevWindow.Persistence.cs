@@ -184,7 +184,7 @@ namespace Killtime.Story
             {
                 SceneId = $"nouvelle_scene_{_availableSceneFiles.Count + 1}",
                 Title = "Nouvelle Scène",
-                Volume = "Livre I / Volume 1",
+                Volume = "Livre I / IXolume 1",
                 FirstNodeId = "node_1"
             };
             _data.Nodes.Add(new SceneNodeData

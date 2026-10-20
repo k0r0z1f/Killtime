@@ -9,13 +9,13 @@ using Killtime.Core.Rules;
 namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
-    /// Garde du corps & interception d'allié (RD-032, Livre VI §24.5). — extrait sans modification depuis CombatTechniqueRegistry.cs.
+    /// Garde du corps & interception d'allié (RD-032, Livre V §20.5). — extrait sans modification depuis CombatTechniqueRegistry.cs.
     /// </summary>
     public static partial class CombatTechniqueRegistry
     {
 
         // =====================================================================
-        // GARDE DU CORPS & INTERCEPTION D'ALLIÉ (RD-032, Livre VI §24.5)
+        // GARDE DU CORPS & INTERCEPTION D'ALLIÉ (RD-032, Livre V §20.5)
         // =====================================================================
 
         /// <summary>

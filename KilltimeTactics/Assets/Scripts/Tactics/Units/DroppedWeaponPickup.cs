@@ -127,7 +127,7 @@ namespace Killtime.Tactics.Units
         }
 
         /// <summary>
-        /// Active colliders + Rigidbody avec masse réelle (poids fiche, Livre VIII).
+        /// Active colliders + Rigidbody avec masse réelle (poids fiche, Livre VII).
         /// Idempotent : réutilisable si l'objet est re-lâché.
         /// </summary>
         public void EnsureRealPhysics()
@@ -271,7 +271,7 @@ namespace Killtime.Tactics.Units
 
         /// <summary>
         /// Transfère l'arme du sol vers l'inventaire de l'unité (équipe si main libre).
-        /// Coût Livre VI : 1 PA en combat (gratuit en exploration), anti-spam loot.
+        /// Coût Livre V : 1 PA en combat (gratuit en exploration), anti-spam loot.
         /// Retourne false si trop loin / inconscient / PA insuffisants.
         /// </summary>
         public bool TryPickup(TacticalUnit unit)

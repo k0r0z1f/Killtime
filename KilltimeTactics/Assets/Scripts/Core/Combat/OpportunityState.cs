@@ -4,7 +4,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Réaction choisie face à un désengagement adverse (RD-031, Livre VI §24.4) :
+    /// Réaction choisie face à un désengagement adverse (RD-031, Livre V §20.4) :
     /// quand un ennemi rompt le contact (distance passe de ≤ portée à > portée),
     /// chaque voisin au contact peut dépenser son unique réaction du round pour :
     /// - Strike : frappe gratuite de mêlée (0 PA, duel aveugle auto) — base du hit-and-run ;
@@ -23,10 +23,10 @@ namespace Killtime.Core.Combat
 
     /// <summary>
     /// Attaque d'opportunité / désengagement (RD-031) :
-    /// - 1 réaction d'opportunité par round et par combattant (Livre VI §24 : une
+    /// - 1 réaction d'opportunité par round et par combattant (Livre V §20 : une
     ///   réaction par tour en réponse à une offensive ennemie — ici un désengagement).
     /// - Posture de réaction persistante (choix du joueur/IA pendant son tour).
-    /// - Désengagement sûr (Décrochage, Livre VI §26.2) : 1 PA pour que le prochain
+    /// - Désengagement sûr (Décrochage, Livre V §22.2) : 1 PA pour que le prochain
     ///   déplacement ne provoque aucune réaction.
     /// - Exemption esquive : les spécialisations d'évitement (Roulade de Décrochage,
     ///   Acrobatie d'Évitement) permettent de quitter le contact sans provoquer.
@@ -105,7 +105,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// Paie un Décrochage (Livre VI §26.2 : 1 PA, prochain déplacement sans réaction).
+        /// Paie un Décrochage (Livre V §22.2 : 1 PA, prochain déplacement sans réaction).
         /// Refuse si déjà armé, PA insuffisants ou statuts invalidants.
         /// </summary>
         public static bool RequestSafeDisengage(CharacterStats mover, int apCost, out string error)

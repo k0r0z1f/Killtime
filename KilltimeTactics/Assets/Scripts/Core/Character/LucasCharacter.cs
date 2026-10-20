@@ -201,7 +201,7 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Pare-feu Psychologique");
             sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
 
-            // Arme équipée — dotation catalogue Armurerie/Marché (Livre VIII) :
+            // Arme équipée — dotation catalogue Armurerie/Marché (Livre VII) :
             // lame d'entraînement de la garde (entrée de gamme fiable).
             if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Épée Métal Courte", false))
             {

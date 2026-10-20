@@ -12,7 +12,7 @@ namespace Killtime.Core.Combat
     public sealed partial class SpecialManeuverService
     {
         // =====================================================================
-        // RD-039 : LUTTE, GRAPPLE & ÉTRANGLEMENT (Livre VI — Corps-à-corps)
+        // RD-039 : LUTTE, GRAPPLE & ÉTRANGLEMENT (Livre V — Corps-à-corps)
         // =====================================================================
 
         /// <summary>
@@ -163,7 +163,7 @@ namespace Killtime.Core.Combat
         }
 
         // =====================================================================
-        // RD-040 : BOUSCULADE GÉNÉRIQUE & COUP DE BOUCLIER (Livre VI — Corps-à-corps)
+        // RD-040 : BOUSCULADE GÉNÉRIQUE & COUP DE BOUCLIER (Livre V — Corps-à-corps)
         // =====================================================================
 
         /// <summary>

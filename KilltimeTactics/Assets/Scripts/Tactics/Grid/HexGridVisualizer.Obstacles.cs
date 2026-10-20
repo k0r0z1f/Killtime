@@ -75,7 +75,7 @@ namespace Killtime.Tactics.Grid
             }
             else if (node.Cover == CoverType.ThreeQuarters)
             {
-                // Livre VI §25.3 : barricade haute (3/4 couvert, -2) — plus haute
+                // Livre V §21.3 : barricade haute (3/4 couvert, -2) — plus haute
                 // que le muret Half, moins massive que le mur Full.
                 var tqCover = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 tqCover.name = $"CoverThreeQuarters_{coords.Q}_{coords.R}";
@@ -114,7 +114,7 @@ namespace Killtime.Tactics.Grid
         /// <summary>
         /// Bornes monde réelles des meshes d'obstacles affichés (murets, barricades,
         /// murs) : la vérité visible. Sert au cône de visée pour garantir que tout
-        /// rayon traversant un mesh affiché est bloqué (Livre VI §25.3).
+        /// rayon traversant un mesh affiché est bloqué (Livre V §21.3).
         /// </summary>
         public System.Collections.Generic.List<System.Collections.Generic.KeyValuePair<HexCoordinates, Bounds>> GetObstacleMeshBounds()
         {

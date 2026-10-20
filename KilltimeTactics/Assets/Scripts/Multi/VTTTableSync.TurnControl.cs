@@ -135,7 +135,7 @@ namespace Killtime.Multi
 
         private void ApplyRemoteStateSync(VTTTurnControlPayload payload)
         {
-            // Brouillard §25.4 : la portée d'ambiance du MJ fait foi pour toute la table.
+            // Brouillard §21.4 : la portée d'ambiance du MJ fait foi pour toute la table.
             if (payload.sightRange > 0)
             {
                 try { Killtime.Tactics.Visibility.FogOfWarManager.Instance?.ApplyGMSightRange(payload.sightRange); }

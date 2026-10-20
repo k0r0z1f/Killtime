@@ -48,7 +48,7 @@ namespace Killtime.Core.Inventory
         public float WeightKg = 1.2f;
         public string Description = "Arme balistique conventionnelle.";
 
-        // === Extension Armurerie / Marché (Livre VIII) ===
+        // === Extension Armurerie / Marché (Livre VII) ===
         // Ajoutés avec valeurs par défaut : les JSON existants restent chargeables.
         public int PriceCE = 500;
         public string DlphCode = "";
@@ -62,7 +62,7 @@ namespace Killtime.Core.Inventory
         public bool IsStackable = false;
         public int Quantity = 1;
 
-        // === Extension Grenades & Lanceurs (Livre VIII §31.3 + Arcanotech) ===
+        // === Extension Grenades & Lanceurs (Livre VII §27.3 + Arcanotech) ===
         // Rétro-compatibles : les JSON existants gardent les défauts (non-grenade).
         // IsGrenade : consommable de zone lancé à la main ou via lanceur.
         // IsLauncher : arme qui propulse les grenades (bonus portée/précision).
@@ -79,7 +79,7 @@ namespace Killtime.Core.Inventory
         public int DamageDiceCount = 0;
         // Dégâts de shrapnels secondaires (éclats) : flat additionnel à distance > 0, 0 si aucun.
         public int ShrapnelDamage = 0;
-        // Statuts infligés dans la zone (Livre VII) : "EnFeu,Saignement,Aveugle..." (CSV, vide = aucun).
+        // Statuts infligés dans la zone (Livre VI) : "EnFeu,Saignement,Aveugle..." (CSV, vide = aucun).
         public string GrenadeStatuses = "";
         // Durée de l'effet de zone persistant en tours (fumigène, feu, gaz). 0 = instantané.
         public int ZoneDurationTurns = 0;
@@ -90,7 +90,7 @@ namespace Killtime.Core.Inventory
         // Positif = plus précis (réduit la dispersion), négatif = rustique.
         public int AccuracyBonus = 0;
 
-        // === Munitions & Enrayement (Livre VIII §31-32, RD-033) ===
+        // === Munitions & Enrayement (Livre VII §27-32, RD-033) ===
         // Arme à chargeur : chaque tir Ballistique consomme 1 coup. Capacité 0 = sans munition.
         // AmmoType = fragment de nom de la réserve ("Charge Laser", "Carquois Flèches").
         // LoadedHD = charge Haute Densité chambrée (+1 dégât, sniper/Deglazer).

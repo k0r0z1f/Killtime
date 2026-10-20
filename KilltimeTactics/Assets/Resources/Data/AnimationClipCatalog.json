@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "source": "RD-023 — Liste des clips requis valides game design. Familles : Idle, Marche, Course, Visée, Tir, Blessé, Mort (+ Transitions, Utilitaire). Audit du 2026-09-30 : 17 FBX sous Assets/Resources/Animations + 4 overrides Male + Roundkick.fbx à la racine Resources + 2 modèles (mina, Soldier in equipment). Référentiel game design : Livres I/VII (attributs, 16 états), VI (tour 10s, duel aveugle, couvert), VIII (armurerie DLPH, grenades §31.3), IV (5e Force, sorts).",
+  "source": "RD-023 — Liste des clips requis valides game design. Familles : Idle, Marche, Course, Visée, Tir, Blessé, Mort (+ Transitions, Utilitaire). Audit du 2026-09-30 : 17 FBX sous Assets/Resources/Animations + 4 overrides Male + Roundkick.fbx à la racine Resources + 2 modèles (mina, Soldier in equipment). Référentiel game design : Livres I/VI (attributs, 16 états), VI (tour 10s, duel aveugle, couvert), VIII (armurerie DLPH, grenades §27.3), IV (5e Force, sorts).",
   "updated": "2026-09-30",
   "families": [
     "Idle",
@@ -23,7 +23,7 @@
       "genderVariants": "Root+Male",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI §24 : garde basse hors engagement (IsInCombat=false)",
+      "gameDesignRef": "Livre V §20 : garde basse hors engagement (IsInCombat=false)",
       "codeRef": "TacticalUnitVisual.SetCombatStance(false) / PlayerAnimatorLinker(standingIdle)",
       "fallback": "—",
       "action": "RD-024 : vérifier retarget Mina/Soldier. RD-025 : déjà câblé."
@@ -37,7 +37,7 @@
       "genderVariants": "Root+Male",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI §24.1 duel aveugle : garde par défaut WeaponType 0 (mains nues, épée, pique)",
+      "gameDesignRef": "Livre V §20.1 duel aveugle : garde par défaut WeaponType 0 (mains nues, épée, pique)",
       "codeRef": "TacticalUnitVisual.GetCombatIdleStateName() / WeaponTypeUnarmedLight=0, état défaut du controller",
       "fallback": "—",
       "action": "RD-024 : valider les 2 variantes. RD-025 : déjà câblé."
@@ -51,7 +51,7 @@
       "genderVariants": "Root",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI §25.3 + Livre VIII : posture de visée fusil 2 mains (WeaponType 1), base overwatch RD-030",
+      "gameDesignRef": "Livre V §21.3 + Livre VII : posture de visée fusil 2 mains (WeaponType 1), base overwatch RD-030",
       "codeRef": "TacticalUnitVisual.RifleIdleStateName / IsRifleWeapon() / WeaponTypeRifle=1",
       "fallback": "—",
       "action": "RD-024 : produire variante Male (absente). RD-025 : déjà câblé."
@@ -65,7 +65,7 @@
       "genderVariants": "Root",
       "status": "present_non_cable",
       "priority": "high",
-      "gameDesignRef": "Livre VIII : garde dédiée contondants lourds (WeaponType 2). ECART : clip présent mais état jamais créé dans PlayerAnimatorLinker",
+      "gameDesignRef": "Livre VII : garde dédiée contondants lourds (WeaponType 2). ECART : clip présent mais état jamais créé dans PlayerAnimatorLinker",
       "codeRef": "TacticalUnitVisual.WeaponFightIdleStateName + IsHeavyMeleeWeapon() + GetWeaponType() ; ABSENT de PlayerAnimatorLinker.EnsureRequiredStatesAndTransitions",
       "fallback": "CrossFade direct vers un état sans motion => T-pose / freeze probable sur porteurs de gourdin (sbires Bestiaire : Petite Merde)",
       "action": "RD-025 : créer l'état Weapon Fight Idle + transition (prioritaire). RD-024 : variante Male."
@@ -79,7 +79,7 @@
       "genderVariants": "Root+Male",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI §25 : déplacement tactique au pas, A* hexa, coût PA (WalkSpeedMultiplier)",
+      "gameDesignRef": "Livre V §21 : déplacement tactique au pas, A* hexa, coût PA (WalkSpeedMultiplier)",
       "codeRef": "TacticalUnit.MoveAlongPath + TacticalUnitVisual.CheckWalkingAnimationCapabilities (vitesse naturelle 1.35 m/s)",
       "fallback": "—",
       "action": "RD-024 : valider. RD-025 : déjà câblé (speedParameter WalkSpeedMultiplier)."
@@ -93,7 +93,7 @@
       "genderVariants": "Root",
       "status": "present_redondant",
       "priority": "high",
-      "gameDesignRef": "Livre VI §25 : marche arme en main (poigne 2 mains, ancrage poitrine)",
+      "gameDesignRef": "Livre V §21 : marche arme en main (poigne 2 mains, ancrage poitrine)",
       "codeRef": "TacticalUnitVisual alias Walk With Rifle <-> Rifle Walk To Stop (BindClipToOverride + LoadAnimationClip)",
       "fallback": "—",
       "action": "RD-024 : dédupliquer (garder Rifle Walk To Stop, alias conservé côté code), produire variante Male. RD-025 : déjà câblé."
@@ -107,7 +107,7 @@
       "genderVariants": "Female unisexe (takes renommees RD-024 : 'Medium Run'/'Fast Run' Female + Male, override genre par nom resolvable, swap runtime suivi RD-025)",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI : charge 3+ cases RD-038, sprint bloque le tir ; Élans Sans Drag (MoveSpeed 5.5→8.5 m/s) ; Duo-Tech Sillage Igné (dash Mina).",
+      "gameDesignRef": "Livre V : charge 3+ cases RD-038, sprint bloque le tir ; Élans Sans Drag (MoveSpeed 5.5→8.5 m/s) ; Duo-Tech Sillage Igné (dash Mina).",
       "codeRef": "TacticalUnit.MoveSpeed / RD-038 Charge/sprint ; TacticalUnitVisual.GetLocomotionBand + Speed ; PlayerAnimatorLinker.EnsureLocomotionBlendTree",
       "fallback": "—",
       "action": "RD-025 : cable (2026-10-17). RD-024 : takes renommees (2026-10-17)."
@@ -121,7 +121,7 @@
       "genderVariants": "Root",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VIII : tir Ballistique / fusils laser ; duel aveugle déclaration attaquant",
+      "gameDesignRef": "Livre VII : tir Ballistique / fusils laser ; duel aveugle déclaration attaquant",
       "codeRef": "TacticalUnitVisual.TriggerFiringRifle() / TriggerActionAnimation() si HasRifleEquipped",
       "fallback": "—",
       "action": "RD-024 : variante Male. RD-025 : déjà câblé (TriggerFiringRifle, retour Rifle Idle exit 0.85)."
@@ -135,7 +135,7 @@
       "genderVariants": "Root+Male",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI Chap. 26 ciblage anatomique ; Livre VIII épées/haches/marteaux/piques (ManiementArmes)",
+      "gameDesignRef": "Livre V Chap. 22 ciblage anatomique ; Livre VII épées/haches/marteaux/piques (ManiementArmes)",
       "codeRef": "TacticalUnitVisual.TriggerMeleeAttack() / PlayerAnimatorLinker alias Melee Attack -> Standing Melee Attack",
       "fallback": "—",
       "action": "RD-024 : valider. RD-025 : déjà câblé (TriggerMeleeAttack, one-shot non loopé)."
@@ -149,7 +149,7 @@
       "genderVariants": "Root",
       "status": "present_excentre",
       "priority": "medium",
-      "gameDesignRef": "Livre VI : frappe à mains nues (MainsNues, Arts Martiaux) ; fallback lancer de grenade à la main",
+      "gameDesignRef": "Livre V : frappe à mains nues (MainsNues, Arts Martiaux) ; fallback lancer de grenade à la main",
       "codeRef": "TacticalUnitVisual.TriggerRoundkick() / TriggerGrenadeThrow() fallback / CombatEncounterController onActionStart",
       "fallback": "—",
       "action": "RD-024 : rapatrier sous Animations/Roundkick.fbx (le Linker ne cherche que là + fallback global), garder alias. RD-025 : déjà câblé."
@@ -163,7 +163,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "medium",
-      "gameDesignRef": "Livre VIII §31.3 : lancer main 8 cases / 2 PA vs lance-grenades 20 cases / 3 PA, jet Ballistique SD 10 + dispersion",
+      "gameDesignRef": "Livre VII §27.3 : lancer main 8 cases / 2 PA vs lance-grenades 20 cases / 3 PA, jet Ballistique SD 10 + dispersion",
       "codeRef": "TacticalUnitVisual.TriggerGrenadeThrow() => fallback Roundkick (main) ou Firing Rifle (lanceur)",
       "fallback": "Roundkick (coup de pied pour un lancer : lisible mais faux)",
       "action": "RD-024 : produire 1 geste de lancer (lever de bras + projection). RD-025 : état + trigger."
@@ -177,7 +177,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "medium",
-      "gameDesignRef": "Livre VIII : pistolets (Pistolet Léger Ivoire des conscrits) — tir à 1 main, poigne pistolet déjà gérée côté arme",
+      "gameDesignRef": "Livre VII : pistolets (Pistolet Léger Ivoire des conscrits) — tir à 1 main, poigne pistolet déjà gérée côté arme",
       "codeRef": "TacticalUnitVisual.IsPistolWeapon() existe ; TriggerActionAnimation() route pistolet vers Firing Rifle (2 mains : incohérent)",
       "fallback": "Firing Rifle (épaulé 2 mains pour un pistolet)",
       "action": "RD-024 : produire 1 tir 1 main. RD-025 : router IsPistolWeapon vers le nouvel état."
@@ -205,7 +205,7 @@
       "genderVariants": "Root",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VI §24.1 duel aveugle : déclaration défenseur (parade / encaissement passif) ; spé Bloquer (Garde de Ville)",
+      "gameDesignRef": "Livre V §20.1 duel aveugle : déclaration défenseur (parade / encaissement passif) ; spé Bloquer (Garde de Ville)",
       "codeRef": "TacticalUnitVisual.TriggerBodyBlock() (refusé si !CanDefendActively) / CombatEncounterController + VTTTableSync",
       "fallback": "—",
       "action": "RD-024 : variante Male. RD-025 : déjà câblé (TriggerBodyBlock, retour garde exit 0.85)."
@@ -219,7 +219,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "high",
-      "gameDesignRef": "Livre VII : encaissement CONx2 — un coup sous le seuil doit se VOIR sans mettre à terre (feedback duel aveugle, VATS Tab)",
+      "gameDesignRef": "Livre VI : encaissement CONx2 — un coup sous le seuil doit se VOIR sans mettre à terre (feedback duel aveugle, VATS Tab)",
       "codeRef": "Aucun : les dégâts non-létaux n'ont aucun visuel (seul Body Block = parade active, pas subi)",
       "fallback": "Aucun (téléportation de PV)",
       "action": "RD-024 : produire 1 hit react court interruptible (prioritaire ressenti combat). RD-025 : hook dégâts < encaissement."
@@ -233,7 +233,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "medium",
-      "gameDesignRef": "Livre VII : Sonne (tombe à terre, aucune action), À terre (-1 attaque), Bousculade RD-040 (recul + À terre si mur)",
+      "gameDesignRef": "Livre VI : Sonne (tombe à terre, aucune action), À terre (-1 attaque), Bousculade RD-040 (recul + À terre si mur)",
       "codeRef": "StatusEffect.Sonne / ATerre sans visuel dédié (Falling Back Death = mort, trop définitif)",
       "fallback": "Falling Back Death (confond KO et mort)",
       "action": "RD-024 : produire chute avant/côté non-létale. RD-025 : état tenu par IsKO=false + ATerre."
@@ -247,7 +247,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "medium",
-      "gameDesignRef": "Livre VII : sortie de Sonne/À terre (relevé = action, purge Thomas RD-047)",
+      "gameDesignRef": "Livre VI : sortie de Sonne/À terre (relevé = action, purge Thomas RD-047)",
       "codeRef": "TacticalUnitVisual réveil = CrossFade garde (téléport visuel debout)",
       "fallback": "CrossFade sec vers garde",
       "action": "RD-024 : produire 1 relevé (réutilisable sortie Knockdown). RD-025 : transition Knockdown -> GetUp -> garde."
@@ -261,7 +261,7 @@
       "genderVariants": "Root",
       "status": "present",
       "priority": "high",
-      "gameDesignRef": "Livre VII : létalité CONx5 ; Livre VI : arme lâchée en physique réelle (DroppedWeaponPickup)",
+      "gameDesignRef": "Livre VI : létalité CONx5 ; Livre V : arme lâchée en physique réelle (DroppedWeaponPickup)",
       "codeRef": "TacticalUnitVisual.TriggerFallingBackDeath() + DropHeldItemsWithPhysics() + IsKO ; VTTTableSync + CombatDevArena + CombatEncounterController",
       "fallback": "—",
       "action": "RD-024 : variante Male. RD-025 : déjà câblé (mort depuis tous les états, revive vers garde fusil/poings)."
@@ -275,7 +275,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "low",
-      "gameDesignRef": "Livre VII : Inconscient (coma, KO total) vs mort ; Agonisant (fuite, RD-047) — une seule chute arrière pour tout",
+      "gameDesignRef": "Livre VI : Inconscient (coma, KO total) vs mort ; Agonisant (fuite, RD-047) — une seule chute arrière pour tout",
       "codeRef": "IsKO fige la dernière frame de Falling Back Death (tenue V1 acceptable)",
       "fallback": "Falling Back Death unique",
       "action": "RD-024 (polish) : 2 variantes (avant, côté) + choix selon direction du coup. Non bloquant."
@@ -289,7 +289,7 @@
       "genderVariants": "Root",
       "status": "present",
       "priority": "medium",
-      "gameDesignRef": "Livre VI : prise/relâche de garde (entrée/sortie combat IsInCombat, surprise RD-049)",
+      "gameDesignRef": "Livre V : prise/relâche de garde (entrée/sortie combat IsInCombat, surprise RD-049)",
       "codeRef": "PlayerAnimatorLinker : transitions IsInCombat/WeaponType câblées ; UnitAnimState + CharacterDevWindow preview listent les 4 états",
       "fallback": "—",
       "action": "RD-025 : finir le câblage des 2 transitions Action Idle (clips présents, transitions à vérifier). Non bloquant (CrossFade 0.15s actuel)."
@@ -317,7 +317,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "low",
-      "gameDesignRef": "Livre VI : esquive vs parade (attaque d'opportunité RD-031 si spé)",
+      "gameDesignRef": "Livre V : esquive vs parade (attaque d'opportunité RD-031 si spé)",
       "codeRef": "Aucun (Body Block couvre parade, pas esquive)",
       "fallback": "Body Block",
       "action": "RD-024 (P2) : 1 pas de côté."
@@ -331,7 +331,7 @@
       "genderVariants": "—",
       "status": "missing",
       "priority": "low",
-      "gameDesignRef": "Livre VI §25.3 : moitié / trois-quarts couvert (CoverSystem Cyrus-Beck 28 rayons) — pose basse derrière couvert destructible RD-044",
+      "gameDesignRef": "Livre V §21.3 : moitié / trois-quarts couvert (CoverSystem Cyrus-Beck 28 rayons) — pose basse derrière couvert destructible RD-044",
       "codeRef": "CoverSystem.EvaluateCover sans pose associée",
       "fallback": "Garde debout",
       "action": "RD-024 (P2) : 1 idle accroupi bouclé. Dépend de RD-044."

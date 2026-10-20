@@ -45,7 +45,7 @@ namespace Killtime.Tactics.TurnSystem
         }
 
         /// <summary>
-        /// RD-084 (Livre VI §25.2) : initiative de synchronisation d'un assaut
+        /// RD-084 (Livre V §21.2) : initiative de synchronisation d'un assaut
         /// groupé = celle du membre le plus lent (minimum des totaux roulés).
         /// Les unités sans jet enregistré sont ignorées ; int.MinValue si aucune.
         /// </summary>

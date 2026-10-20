@@ -2,7 +2,7 @@
    CODEX UNIVERSEL — VTT VISIBILITY FILTER (brouillard de guerre asymétrique)
    users/vtt_visibility.js — zéro dépendance, testable via `node --test`.
 
-   Miroir serveur des règles FogOfWarSystem (C#, Livre VI §25.4) :
+   Miroir serveur des règles FogOfWarSystem (C#, Livre V §21.4) :
    - KT voit à 360° : AUCUN cône, aucune direction de vision. Le cap (yaw)
      est ignoré (conservé dans les paquets pour parité, jamais testé).
    - Portée = portée d'ambiance de la room (courte 6 / longue 12, imposée

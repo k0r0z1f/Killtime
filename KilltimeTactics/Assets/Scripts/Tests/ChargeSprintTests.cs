@@ -10,7 +10,7 @@ using Killtime.Tactics.Grid;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-038 : Charge / sprint + attaque (Livre VI §Manœuvres Mobiles).
+    /// RD-038 : Charge / sprint + attaque (Livre V §Manœuvres Mobiles).
     /// - Charge 3+ cases : +2 dégâts d'impact sur frappe au contact (mêlée).
     /// - Malus défensif : -1 en défense jusqu'au début du prochain tour personnel.
     /// - Sprint : tout déplacement de 3+ cases bloque tout tir à distance ce tour.

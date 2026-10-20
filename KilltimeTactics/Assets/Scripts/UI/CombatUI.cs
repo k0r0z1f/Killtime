@@ -5,9 +5,9 @@ namespace Killtime.Tactics.CombatUI
 {
     public enum ActionCategory
     {
-        AttaqueEtPassesDarmes,   // Livre VI : Tirs ciblés, frappes chirurgicales
+        AttaqueEtPassesDarmes,   // Livre V : Tirs ciblés, frappes chirurgicales
         CinquiemeForceEtSorts,   // Livre IV : Arcanotech modulaire (XP = PA)
-        TraumatologieEtSoins,    // Livre VII : Premiers soins, garrot, stimulants
+        TraumatologieEtSoins,    // Livre VI : Premiers soins, garrot, stimulants
         TactiqueEtOrdres,        // Livre III : Intimidation, commandement, garde
         TechniquesDeSpecialisation, // Livre III : Techniques de spécialisation débloquées (2 PA)
         CommandesDev             // Outils de test développeur

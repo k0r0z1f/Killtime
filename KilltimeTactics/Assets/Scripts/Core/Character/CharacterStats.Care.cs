@@ -9,12 +9,12 @@ namespace Killtime.Core.Character
     {
 
         /// <summary>
-        /// Soin par consommable marketplace (Livre VIII §32.3 : seringues, bandage).
+        /// Soin par consommable marketplace (Livre VII §28.3 : seringues, bandage).
         /// Ne réanime pas (IsDead ou Inconscient profond exclu) : la réanimation
         /// reste à la Défibrillation. Plafonné à MaxHealth. Retourne le soin réel.
         /// RD-045 : tout soin stoppe le Saignement (compression + cautérisation).
         /// Empoisonne/EnFeu/Asphyxie exigent un traitement dédié (kit, eau, airway).
-        /// RD-083 (Livre VII §28.3) : SOIN ORDINAIRE — ne lève JAMAIS Souffrant,
+        /// RD-083 (Livre VI §24.3) : SOIN ORDINAIRE — ne lève JAMAIS Souffrant,
         /// même si le montant dépasse CON×2. Seul ApplyMajorCare (Premiers Soins /
         /// Chirurgie en un seul coup >= CON×2) referme la blessure critique.
         /// </summary>
@@ -35,7 +35,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Bonus temporaire d'encaissement (Antidouleurs +2, Livre VIII).
+        /// Bonus temporaire d'encaissement (Antidouleurs +2, Livre VII).
         /// Cumulable en combat, réinitialisé par RecalculateDerivedStats.
         /// </summary>
         public void AddEncaissementBonus(int amount)
@@ -45,11 +45,11 @@ namespace Killtime.Core.Character
         }
 
         // =====================================================================
-        // RD-083 : SOUFFRANT & SOINS MAJEURS (Livre VII §28.3, §29.1)
+        // RD-083 : SOUFFRANT & SOINS MAJEURS (Livre VI §24.3, §25.1)
         // =====================================================================
 
         /// <summary>
-        /// Seuil des Soins Majeurs (Livre VII §29.1) : soin unique >= CON × 2
+        /// Seuil des Soins Majeurs (Livre VI §25.1) : soin unique >= CON × 2
         /// via Premiers Soins / Chirurgie pour refermer la blessure critique.
         /// Paramétrable via CoreRulesConfig.SouffrantMajorCareMultiplier.
         /// </summary>
@@ -73,7 +73,7 @@ namespace Killtime.Core.Character
         public bool IsOrdinaryCareBlockedBySouffrant() => IsSouffrant;
 
         /// <summary>
-        /// Soins Majeurs (Livre VII §29.1) : épreuve de Premiers Soins / Chirurgie
+        /// Soins Majeurs (Livre VI §25.1) : épreuve de Premiers Soins / Chirurgie
         /// au chevet du blessé soignant D'UN SEUL COUP >= CON×2 dégâts.
         /// Soigne les PV (plafond MaxHealth, ne réanime pas) + stoppe le
         /// Saignement comme un soin ordinaire. Si le seuil est atteint et que
@@ -123,7 +123,7 @@ namespace Killtime.Core.Character
         }
 
         // =====================================================================
-        // RD-083 : SÉQUELLE POST-MORTEM (Livre VII §29.3 — Poids du Trépas)
+        // RD-083 : SÉQUELLE POST-MORTEM (Livre VI §25.3 — Poids du Trépas)
         // =====================================================================
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Malus du Poids du Trépas sur tous les jets (Livre VII §29.3 : -1 ec).
+        /// Malus du Poids du Trépas sur tous les jets (Livre VI §25.3 : -1 ec).
         /// 0 si aucune séquelle active. Paramétrable via CoreRulesConfig.
         /// </summary>
         public int GetResurrectionSequelaeModifier(DateTime? nowUtc = null)
@@ -190,7 +190,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Résurrection (Livre VII §29.3) : rappelle l'âme dans la chair.
+        /// Résurrection (Livre VI §25.3) : rappelle l'âme dans la chair.
         /// Lève la mort (IsDead=false, Dernier Souffle purgé), restaure les PV
         /// (défaut 1, défibrillation ; 50% pour Transfusion Symbiotique via
         /// paramètre), dissipe Inconscient/Agonisant, et HORODATE le retour

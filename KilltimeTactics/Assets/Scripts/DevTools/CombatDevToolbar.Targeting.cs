@@ -100,7 +100,7 @@ namespace Killtime.UI
             }
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>2. Anatomie Ciblée (Livre VI, Chap. 26) :</b>");
+            GUILayout.Label("<b>2. Anatomie Ciblée (Livre V, Chap. 22) :</b>");
 
             GUILayout.BeginVertical(GUI.skin.box);
             foreach (BodyPart part in Enum.GetValues(typeof(BodyPart)))
@@ -156,7 +156,7 @@ namespace Killtime.UI
             GUILayout.EndHorizontal();
 
             GUILayout.Space(6);
-            GUILayout.Label("<b>4. Mises du duel aveugle (PA + PE, Livres II §7 + VI §24.1) :</b>");
+            GUILayout.Label("<b>4. Mises du duel aveugle (PA + PE, Livres II §7 + VI §20.1) :</b>");
             GUILayout.Label("<i>Déclarations masquées avant les jets : attaquant puis défenseur (aveugle), révélation simultanée. 1 PA = +1, 1 PE = +1 (plafond Constitution).</i>");
 
             int baseCost = _cancelPenaltyWithAP ? 3 : 2;
@@ -297,7 +297,7 @@ namespace Killtime.UI
             }
             GUILayout.EndHorizontal();
 
-            GUILayout.Label("<i>Déviation d6 forcée (Diff 0 → table Haute/Membres §26.1) :</i>");
+            GUILayout.Label("<i>Déviation d6 forcée (Diff 0 → table Haute/Membres §22.1) :</i>");
             GUILayout.BeginHorizontal();
             int? curDefl = DiceRoller.DevForcedDeflectionRoll;
             int?[] defls = { null, 1, 2, 3, 4, 5, 6 };

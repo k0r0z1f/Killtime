@@ -61,7 +61,7 @@ namespace Killtime.Tactics.Arena
                 var u = units[i];
                 var vis = u.GetComponent<TacticalUnitVisual>();
                 vis?.SetCombatStance(false);
-                // Champs rechargés hors combat (Livre VIII §32.2).
+                // Champs rechargés hors combat (Livre VII §28.2).
                 if (u != null && u.Stats != null) u.Stats.RefillShield();
             }
 

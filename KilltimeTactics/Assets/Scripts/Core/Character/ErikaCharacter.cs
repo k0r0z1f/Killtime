@@ -221,7 +221,7 @@ namespace Killtime.Core.Character
             sheet.UnlockedSpecializations.Add("Sang-Chaud Cleyan");
             sheet.UnlockedSpecializations.Add("Maniement de l'Épée");
 
-            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VIII) :
+            // Équipement officiel — dotation catalogue Armurerie/Marché (Livre VII) :
             // lame courte d'escorte (bâtarde / katana traditionnel, standard des milices).
             if (!ArmoryCatalog.GiveLoadoutItem(sheet, "Épée Métal Standard", false))
             {

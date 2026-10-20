@@ -7,7 +7,7 @@
 
 ## 🌟 Architecture & Fonctionnalités Majeures
 
-### 1. Grille Hexagonale 3D & Couvert Balistique (Livre VI §25.3)
+### 1. Grille Hexagonale 3D & Couvert Balistique (Livre V §21.3)
 - **Topologie Axiale & Cubique** : Coordonnées $(q, r, s)$ avec $q + r + s = 0$.
 - **Pathfinding A\* indexé sur les PA** : Coûts de mouvement déduits de la réserve de combat de 10 secondes.
 - **Cône de Visée Cyrus-Beck 3D Exact** : Évaluation à 28 rayons échantillonnés sur la silhouette adverse depuis le coin le plus avantageux de l'attaquant :
@@ -18,7 +18,7 @@
   - **Au contact direct** ($\le 1$ case) : couvert ignoré par règle d'engagement rapproché.
 - **Obstacles 3D Volumétriques (`PropObstacleRegistry`)** : Prise en compte réelle des boîtes englobantes des accessoires (piliers, caisses, barricades) et du relief pour l'occlusion des tirs.
 
-### 2. Brouillard de Guerre Asymétrique (Livre VI §25.4)
+### 2. Brouillard de Guerre Asymétrique (Livre V §21.4)
 - **Vision à 360° Omnidirectionnelle** : Aucun cône frontal restreint, le regard couvre tout le périmètre tactique.
 - **Portée Environnementale Découplée** : Preset court ($6$ cases en intérieur/bunker) et long ($12$ cases en extérieur dégagé) indépendant des attributs.
 - **Occlusion par Murs Pleins & Relief** : Masque visuel complet (`HexGridVisualizer`) des cases masquées derrière un mur *Full*.
@@ -29,7 +29,7 @@
   - Détection thermique traversant les parois jusqu'à mi-portée.
 - **Sécurité Anti-Maphack VTT** : Filtrage côté serveur (`unit_claim`) des paquets de mouvement pour les clients non-GM.
 
-### 3. Résolution des Combats & Duel Aveugle (Livres I, II, VI, VII)
+### 3. Résolution des Combats & Duel Aveugle (Livres I, II, V, VI)
 - **Économie de Points d'Action** :
   $$\text{PA} = \max(\text{AGI}, \text{INT}) + \text{RAP} + \min(\text{FOR}, \text{AGI}, \text{CON}, \text{RAP}, \text{INT}, \text{ÉRU}, \text{CHA}, \text{INS})$$
 - **Vitalité, Choc & Létalité** :
@@ -37,14 +37,14 @@
   - Maximum Létal : $\text{CON} \times 5$.
   - Essoufflement Maximum (PE) : plafonné strictement à la $\text{CON}$.
   - Souffle d'urgence : $+2$ PA immédiats contre $+1$ PE.
-- **Séquence Officielle du Duel Aveugle (Livres II §7 + VI §24.1)** :
+- **Séquence Officielle du Duel Aveugle (Livres II §7 + VI §20.1)** :
   1. *Déclaration Attaquant* : Cible, zone anatomique visée, mise masquée de PA bonus et de PE (débit immédiat).
   2. *Déclaration Défenseur* : Compétence défensive ou encaissement passif, mise masquée de PA et PE sans connaître le jet adverse.
   3. *Révélation Simultanée* : Lancer simultané des dés polyédriques, calcul du différentiel net ($\Delta$).
-- **Ciblage Anatomique Chirurgical (Livre VI, Chap. 26)** :
+- **Ciblage Anatomique Chirurgical (Livre V, Chap. 22)** :
   - Tête / Crâne, Yeux / Visage, Cou / Trachée, Cœur / Poumons, Torse, Bras Droit, Bras Gauche, Jambes.
   - Déviation automatique sur zone adjacente en cas d'égalité stricte ($\Delta = 0$).
-- **16 Altérations d'État (Livre VII)** : Déstabilisé, Étourdi, Immobilisé, Paralysé, Sonné, À terre, Ralenti, Agonisant, Inconscient, Aveugle, Sourd, Asphyxie, Empoisonné, En Feu, Saignement, Chrono-Fracture.
+- **16 Altérations d'État (Livre VI)** : Déstabilisé, Étourdi, Immobilisé, Paralysé, Sonné, À terre, Ralenti, Agonisant, Inconscient, Aveugle, Sourd, Asphyxie, Empoisonné, En Feu, Saignement, Chrono-Fracture.
 - **Physique Réelle des Armes Lâchées (`DroppedWeaponPickup`)** : Dès qu'une unité tombe inconsciente ou meurt, ses armes équipées sont éjectées de l'inventaire et chutent au sol sous simulation PhysX rigide (ramassables ou projetables au pied).
 
 ### 4. Duo-Tech Tri-Fusion (Lucas-0 & Mina-0)
@@ -59,10 +59,10 @@
   - *Fournaise à Retardement* : Délimitation triangulaire autour d'un ennemi isolé pour implosion ciblée ($5$ bruts, Étourdi, $-2$ PA).
 - **Limite Causale** : $1$ technique Duo-Tech par combattant par round.
 
-### 5. Armurerie Complète, Balistique & Grenades (Livre VIII)
+### 5. Armurerie Complète, Balistique & Grenades (Livre VII)
 - **Notation DLPH Universelle** : Dégâts, Livres (poids), Portée (cases), Mains ($1$H / $2$H).
 - **Catalogue Intégral** : Épées métalliques, marteaux, haches, piques, arcs, épées laser, fusils laser (prefabs réels), armures légères/lourdes, générateurs de champ de force, trousses médicales et rations.
-- **Système Balistique de Grenades (Livre VIII §31.3)** :
+- **Système Balistique de Grenades (Livre VII §27.3)** :
   - Lancer main ($8$ cases, $2$ PA) vs Lance-grenades dédié ($20$ cases, $3$ PA).
   - Jet de précision Ballistique (SD $10$) avec dispersion hexagonale d'écart en cas d'échec.
   - Atténuation radiale du souffle ($-25\%$ par case, plancher à $25\%$) + éclats de shrapnels secondaires.
@@ -142,10 +142,10 @@ KilltimeTactics/
 │ │ ├── LucasCharacter.cs # Voie du Vide Calculant & Architecture Neurale
 │ │ ├── MinaCharacter.cs # Voie de l'Atavisme Cinétique & Éveil Primordial
 │ │ └── ThomasCharacter.cs# Voie de l'Ancre Inébranlable & Commandement
-│ ├── Chrono/ # Snapshots causals, calendrier d'Hybris, Fleuve du Temps (Livre V)
+│ ├── Chrono/ # Snapshots causals, calendrier d'Hybris, Fleuve du Temps (Livre IX)
 │ ├── Combat/ # Résolution duel aveugle, ciblage anatomique, Duo-Tech, grenades
 │ ├── Dice/ # Lanceur probabiliste, échelle de dés (d2 à 2d12+10)
-│ ├── Inventory/ # Catalogue d'armurerie Livre VIII, presets et profils de grip
+│ ├── Inventory/ # Catalogue d'armurerie Livre VII, presets et profils de grip
 │ ├── Rules/ # Configuration persistante des constantes du Codex
 │ └── World/ # Registre géographique officiel des secteurs d'Hybris
 ├── Tactics/ # Couche tactique Unity 3D

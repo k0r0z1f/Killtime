@@ -4,7 +4,7 @@ using UnityEngine;
 namespace Killtime.Tactics.Grid
 {
     /// <summary>
-    /// Niveau d'exposition d'une cible vue par son attaquant (Livre VI §25.3).
+    /// Niveau d'exposition d'une cible vue par son attaquant (Livre V §21.3).
     /// None = entièrement visible (0). Half = à moitié visible (-1 à l'attaque).
     /// ThreeQuarters = aux trois-quarts couvert, seul 1/4 visible (-2 à l'attaque).
     /// Full = totalement à couvert / non visible : attaque directe impossible.

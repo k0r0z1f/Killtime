@@ -36,7 +36,7 @@ namespace Killtime.Tactics.CombatUI
             if (actor == null) return 1;
             var weapon = actor.Sheet?.GetEquippedWeapon();
             if (weapon != null && weapon.RangeInTiles > 0) return weapon.RangeInTiles;
-            return 1; // Mains nues par défaut = portée de contact 1 case (Codex Livre VI)
+            return 1; // Mains nues par défaut = portée de contact 1 case (Codex Livre V)
         }
 
         public static bool IsTargetInRange(TacticalUnit actor, TacticalUnit target)

@@ -349,7 +349,7 @@ namespace Killtime.Multi
                 targetQ = curTarget != null ? curTarget.CurrentCoords.Q : 0,
                 targetR = curTarget != null ? curTarget.CurrentCoords.R : 0,
                 outcome = _turnManager.CurrentOutcome.ToString(),
-                // Brouillard §25.4 : le MJ impose sa portée d'ambiance à la table.
+                // Brouillard §21.4 : le MJ impose sa portée d'ambiance à la table.
                 sightRange = Killtime.Tactics.Visibility.FogOfWarManager.Instance != null
                     ? Killtime.Tactics.Visibility.FogOfWarManager.Instance.CurrentSightRange
                     : Killtime.Tactics.Visibility.FogOfWarSystem.LongSightRange,
@@ -381,7 +381,7 @@ namespace Killtime.Multi
                     isAlive = u.Stats.IsAlive,
                     isDead = u.Stats.IsDead,
                     activeStatus = (int)u.Stats.ActiveStatus,
-                    // Brouillard §25.4 : le hub filtre ce snapshot par
+                    // Brouillard §21.4 : le hub filtre ce snapshot par
                     // destinataire (portée d'ambiance 360° + murs Full).
                     vision = Mathf.Clamp(u.Stats.Attributes.Vision, 1, 6),
                     ouie = Mathf.Clamp(u.Stats.Attributes.Ouie, 1, 6),

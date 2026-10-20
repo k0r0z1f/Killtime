@@ -12,7 +12,7 @@ using Killtime.UI;
 namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
-    /// §1 Attaque & passes d'armes (Livre VI) : frappes, bouclier, charge, assaut groupé, poursuite, grenades, lancer, balise, grappin, menottes, lutte RD-039, Titan RD-052 — extrait sans modification depuis CombatActionRegistry.cs.
+    /// §1 Attaque & passes d'armes (Livre V) : frappes, bouclier, charge, assaut groupé, poursuite, grenades, lancer, balise, grappin, menottes, lutte RD-039, Titan RD-052 — extrait sans modification depuis CombatActionRegistry.cs.
     /// </summary>
     public static partial class CombatActionRegistry
     {
@@ -102,7 +102,7 @@ namespace Killtime.Tactics.CombatUI
                     int minChargeAP = 3 + chargeAtkCost;
                     actions.Add(new CombatAction(
                         $"⚡ Charge au contact ({minChargeAP}+ PA)",
-                        "Manœuvre d'assaut (RD-038, Livre VI) : déplacement d'au moins 3 cases vers un flanc libre de la cible immédiatement suivi d'une frappe au contact (+2 dégâts d'impact, -1 défense jusqu'au prochain tour personnel, tir bloqué ce tour).",
+                        "Manœuvre d'assaut (RD-038, Livre V) : déplacement d'au moins 3 cases vers un flanc libre de la cible immédiatement suivi d'une frappe au contact (+2 dégâts d'impact, -1 défense jusqu'au prochain tour personnel, tir bloqué ce tour).",
                         ActionCategory.AttaqueEtPassesDarmes,
                         minChargeAP,
                         (act, tgt) => arena != null && arena.Pathfinder != null && arena.Pathfinder.CanChargeTarget(act, tgt, 3, chargeAtkCost) && !GrappleState.IsGrappled(act.Stats),
@@ -110,14 +110,14 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
 
-                // RD-084 : Assaut groupé (Livre VI §25.2) — synchronisé sur le plus
+                // RD-084 : Assaut groupé (Livre V §21.2) — synchronisé sur le plus
                 // lent, résultats offensifs sommés face à l'unique défense (armure 1×).
                 {
                     int combinedCost = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.CombinedAttackAPCost : 2;
                     int combinedMin = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.CombinedAttackMinMembers : 2;
                     actions.Add(new CombatAction(
                         $"⚔️ Assaut Groupé ({combinedCost} PA chacun)",
-                        "Attaque combinée (Livre VI §25.2) : les alliés à portée frappent à l'unisson sur l'initiative du membre le plus lent, résultats offensifs sommés face à l'unique défense de la cible — armure et encaissement pulvérisés par le dépassement massif.",
+                        "Attaque combinée (Livre V §21.2) : les alliés à portée frappent à l'unisson sur l'initiative du membre le plus lent, résultats offensifs sommés face à l'unique défense de la cible — armure et encaissement pulvérisés par le dépassement massif.",
                         ActionCategory.AttaqueEtPassesDarmes,
                         combinedCost,
                         (act, tgt) =>
@@ -133,13 +133,13 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
 
-                // RD-084 : Course-poursuite (Livre VI §25.1) — concours d'Athlétisme
+                // RD-084 : Course-poursuite (Livre V §21.1) — concours d'Athlétisme
                 // proie vs poursuivant ; 4 faillites cumulées = capture immédiate.
                 {
                     int pursuitCost = Killtime.Core.Rules.CoreRulesConfig.Instance != null ? Killtime.Core.Rules.CoreRulesConfig.Instance.PursuitAPCost : 1;
                     actions.Add(new CombatAction(
                         $"🏃 Poursuite : gain de terrain ({pursuitCost} PA)",
-                        "Course-poursuite (Livre VI §25.1) : concours d'Athlétisme contre la cible. Réussite de la proie = distance maintenue (≥ 1 case) ; faillite = le poursuivant gagne du terrain. 4 faillites cumulées = proie rattrapée et acculée (arrêt immédiat).",
+                        "Course-poursuite (Livre V §21.1) : concours d'Athlétisme contre la cible. Réussite de la proie = distance maintenue (≥ 1 case) ; faillite = le poursuivant gagne du terrain. 4 faillites cumulées = proie rattrapée et acculée (arrêt immédiat).",
                         ActionCategory.TactiqueEtOrdres,
                         pursuitCost,
                         (act, tgt) => act.Stats.CurrentActionPoints >= pursuitCost && targetIsAlive

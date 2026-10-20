@@ -15,7 +15,7 @@ namespace Killtime.Core.Character
     /// Au runtime, un override JSON dans persistentDataPath/Bestiary.json (sauvegardé
     /// depuis la fenêtre) prend le pas sur le Resources embarqué.
     /// Format volontairement lisible : espèces/profils/skills en NOMS (pas d'ids
-    /// numériques), équipements en NOMS du catalogue d'armurerie (Livre VIII).
+    /// numériques), équipements en NOMS du catalogue d'armurerie (Livre VII).
     /// </summary>
 
     [Serializable]

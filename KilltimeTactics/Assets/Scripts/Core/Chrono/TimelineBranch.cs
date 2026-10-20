@@ -12,7 +12,7 @@ namespace Killtime.Core.Chrono
     }
 
     /// <summary>
-    /// Gestionnaire de causalité et de déroulement des lignes temporelles (Livre V).
+    /// Gestionnaire de causalité et de déroulement des lignes temporelles (Livre IX).
     /// Permet de rembobiner un tour sans paradoxe gratuit ou de prévisualiser l'avenir via Clairsentience.
     /// </summary>
     public class TimelineBranch

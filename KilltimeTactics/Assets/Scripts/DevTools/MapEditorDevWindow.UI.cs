@@ -66,8 +66,8 @@ namespace Killtime.UI
 
             DrawBrushOption(MapBrushType.Inspect, "🔍 Inspecter", "Affiche l'état complet (sol, couverture, plafond, objets).");
             DrawBrushOption(MapBrushType.ClearGround, "⬛ Sol Dégagé", "Restaure un sol plat et praticable.");
-            DrawBrushOption(MapBrushType.HalfCover, "📦 Demi-Couverture", "Muret bas : cible à moitié visible, -1 à l'attaque (Livre VI §25.3).");
-            DrawBrushOption(MapBrushType.ThreeQuartersCover, "🧱 Barricade Haute", "Couvert aux 3/4 : seul 1/4 visible, -2 à l'attaque (Livre VI §25.3).");
+            DrawBrushOption(MapBrushType.HalfCover, "📦 Demi-Couverture", "Muret bas : cible à moitié visible, -1 à l'attaque (Livre V §21.3).");
+            DrawBrushOption(MapBrushType.ThreeQuartersCover, "🧱 Barricade Haute", "Couvert aux 3/4 : seul 1/4 visible, -2 à l'attaque (Livre V §21.3).");
             DrawBrushOption(MapBrushType.FullCover, "🏛️ Couverture Totale", "Mur / pilier : cible non visible, attaque directe impossible.");
             DrawBrushOption(MapBrushType.ImpassableHole, "🕳️ Gouffre / Vide", "Supprime le passage au sol.");
 

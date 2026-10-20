@@ -4,9 +4,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Système de Jeu RP — Livre VI : Combat Tactique & Déplacements</title>
+    <title>Système de Jeu RP — Livre VI : Santé, États & Blessures</title>
     <meta name="description"
-        content="Livre VI du Système de Jeu RP : Le tour de 10 secondes, l'économie dynamique des Points d'Action, l'essoufflement, la localisation anatomique chirurgicale, les poursuites et le combat de véhicules.">
+        content="Livre VI du Système de Jeu RP : Seuils d'encaissement et de mort (Con×2 / Con×5), compendium officiel des 16 états physiologiques et mentaux, altérations de statut, premiers soins et séquelles.">
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,8 +37,7 @@
                     <div class="brand-icon">
                         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                             stroke-width="2">
-                            <circle cx="12" cy="12" r="10" />
-                            <polyline points="12 6 12 12 14 14" />
+                            <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                         </svg>
                     </div>
                     <div class="brand-info">
@@ -48,7 +47,7 @@
                 <nav class="breadcrumbs">
                     <a href="index.html">Codex</a>
                     <span>/</span>
-                    <span class="current">Livre VI : Combat Tactique</span>
+                    <span class="current">Livre VI : Santé, États & Blessures</span>
                 </nav>
             </div>
 
@@ -101,7 +100,7 @@
                 <div class="sidebar-header">
                     <div class="sidebar-title">
                         <span>Table des Matières</span>
-                        <span>9 Livres</span>
+                        <span>11 Livres</span>
                     </div>
                     <div class="sidebar-search-box">
                         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor"
@@ -169,6 +168,11 @@
                         </ul>
                     </div>
 
+                    <!-- CATÉGORIE : MANUEL DU JOUEUR -->
+                    <div class="nav-section-label joueur">
+                        <span class="nav-section-title">Manuel du Joueur</span>
+                        <span class="nav-section-count">L.I - L.VIII</span>
+                    </div>
                     <!-- LIVRE I -->
                     <div class="nav-group">
                         <button class="nav-group-header">
@@ -193,6 +197,8 @@
                             <li><a href="livre_1.html#chap-4" class="nav-item-link"><span>4. Points d'Action &
                                         Dégâts</span></a></li>
                             <li><a href="livre_1.html#chap-5" class="nav-item-link"><span>5. Progression & XP</span></a>
+                            </li>
+                            <li><a href="livre_1.html#chap-fiche" class="nav-item-link"><span>Fiche de PJ Prototype</span></a>
                             </li>
                         </ul>
                     </div>
@@ -284,7 +290,7 @@
                         <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.V</span>
-                                <span>Temps & Causalité</span>
+                                <span>Combat Tactique</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
@@ -294,14 +300,12 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_5.html" class="nav-item-link"><span>Livre V (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Fleuve du Temps &
-                                        Causalité</span></a></li>
-                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Topologie des
-                                        Chronotrames</span></a></li>
-                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Clairsentience (8
-                                        Échelons)</span></a></li>
-                            <li><a href="livre_5.html#chap-23" class="nav-item-link"><span>23. Mécaniques Chronales en
-                                        Jeu</span></a></li>
+                            <li><a href="livre_5.html#chap-20" class="nav-item-link"><span>20. Le Tour de 10s & Économie
+                                        des PA</span></a></li>
+                            <li><a href="livre_5.html#chap-21" class="nav-item-link"><span>21. Déplacements &
+                                        Poursuites</span></a></li>
+                            <li><a href="livre_5.html#chap-22" class="nav-item-link"><span>22. Localisation &
+                                        Véhicules</span></a></li>
                         </ul>
                     </div>
 
@@ -310,34 +314,6 @@
                         <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.VI</span>
-                                <span>Combat Tactique</span>
-                            </div>
-                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
-                                stroke="currentColor" stroke-width="2">
-                                <polyline points="9 18 15 12 9 6" />
-                            </svg>
-                        </button>
-                        <ul class="nav-items-list">
-                            <li><a href="#chap-24" class="nav-item-link active"><span>24. Le Tour de 10s & Économie des
-                                        PA</span><span class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-25" class="nav-item-link"><span>25. Déplacements & Poursuites</span><span
-                                        class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-25-3" class="nav-item-link"><span>25.3 Couvert & Visibilité</span><span
-                                        class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-25-4" class="nav-item-link"><span>25.4 Brouillard de Guerre</span><span
-                                        class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-25-5" class="nav-item-link"><span>25.5 Duo-Tech : Résonance</span><span
-                                        class="nav-item-badge badge-live">Actif</span></a></li>
-                            <li><a href="#chap-26" class="nav-item-link"><span>26. Localisation & Véhicules</span><span
-                                        class="nav-item-badge badge-live">Actif</span></a></li>
-                        </ul>
-                    </div>
-
-                    <!-- LIVRE VII -->
-                    <div class="nav-group">
-                        <button class="nav-group-header">
-                            <div class="group-meta">
-                                <span class="group-tag">L.VII</span>
                                 <span>Santé, États & Blessures</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -346,22 +322,20 @@
                             </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier Dédié)</span><span
-                                        class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Seuils, Encaissement &
-                                        Séquelles</span></a></li>
-                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Compendium des 16 États &
-                                        Effets</span></a></li>
-                            <li><a href="livre_7.html#chap-29" class="nav-item-link"><span>29. Premiers Soins &
-                                        Résurrection</span></a></li>
+                            <li><a href="#chap-23" class="nav-item-link active"><span>23. Seuils, Encaissement &
+                                        Séquelles</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-24" class="nav-item-link"><span>24. Compendium des 16 États &
+                                        Effets</span><span class="nav-item-badge badge-live">Actif</span></a></li>
+                            <li><a href="#chap-25" class="nav-item-link"><span>25. Premiers Soins &
+                                        Résurrection</span><span class="nav-item-badge badge-live">Actif</span></a></li>
                         </ul>
                     </div>
 
-                    <!-- LIVRE VIII -->
+                    <!-- LIVRE VII -->
                     <div class="nav-group">
                         <button class="nav-group-header">
                             <div class="group-meta">
-                                <span class="group-tag">L.VIII</span>
+                                <span class="group-tag">L.VII</span>
                                 <span>Arsenal & Arcanotech</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
@@ -370,23 +344,56 @@
                             </svg>
                         </button>
                         <ul class="nav-items-list">
-                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier
+                            <li><a href="livre_7.html" class="nav-item-link"><span>Livre VII (Fichier
                                         Dédié)</span><span class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Nomenclature & Armes
+                            <li><a href="livre_7.html#chap-26" class="nav-item-link"><span>26. Nomenclature & Armes
                                         Métal</span></a></li>
-                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Épées Laser & Fusils
+                            <li><a href="livre_7.html#chap-27" class="nav-item-link"><span>27. Épées Laser & Fusils
                                         Arcanotech</span></a></li>
-                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Blindages, Écrans &
+                            <li><a href="livre_7.html#chap-28" class="nav-item-link"><span>28. Blindages, Écrans &
                                         Pharmacopée</span></a></li>
                         </ul>
                     </div>
 
+                    <!-- LIVRE VIII -->
+                    <div class="nav-group">
+                        <button class="nav-group-header">
+                            <div class="group-meta">
+                                <span class="group-tag">L.VIII</span>
+                                <span>Outils Web Interactifs</span>
+                            </div>
+                            <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
+                                stroke="currentColor" stroke-width="2">
+                                <polyline points="9 18 15 12 9 6" />
+                            </svg>
+                        </button>
+                        <ul class="nav-items-list">
+                            <li><a href="livre_8.html" class="nav-item-link"><span>Livre VIII (Fichier Dédié)</span><span
+                                        class="nav-item-badge badge-live">Disponible</span></a></li>
+                            <li><a href="livre_8.html#chap-29" class="nav-item-link"><span>29. Créateur de Fiche
+                                        PJ</span></a></li>
+                            <li><a href="livre_8.html#chap-30" class="nav-item-link"><span>30. Atelier de Sorts
+                                        (XP=PA)</span></a></li>
+                            <li><a href="livre_8.html#chap-31" class="nav-item-link"><span>31. Lanceur Polyédrique &
+                                        Critiques</span></a></li>
+                            <li><a href="livre_8.html#chap-32" class="nav-item-link"><span>32. Résolveur de
+                                        Challenges</span></a></li>
+                            <li><a href="livre_8.html#chap-33" class="nav-item-link"><span>33. Simulateur de
+                                        Chronotrames</span></a></li>
+                        </ul>
+                    </div>
+
+                    <!-- CATÉGORIE : GUIDE DU MJ -->
+                    <div class="nav-section-label mj">
+                        <span class="nav-section-title">Guide du MJ</span>
+                        <span class="nav-section-count">L.IX - L.XI</span>
+                    </div>
                     <!-- LIVRE IX -->
                     <div class="nav-group">
                         <button class="nav-group-header">
                             <div class="group-meta">
                                 <span class="group-tag">L.IX</span>
-                                <span>Outils Web Interactifs</span>
+                                <span>Temps & Causalité</span>
                             </div>
                             <svg class="nav-chevron" width="14" height="14" viewBox="0 0 24 24" fill="none"
                                 stroke="currentColor" stroke-width="2">
@@ -396,19 +403,16 @@
                         <ul class="nav-items-list">
                             <li><a href="livre_9.html" class="nav-item-link"><span>Livre IX (Fichier Dédié)</span><span
                                         class="nav-item-badge badge-live">Disponible</span></a></li>
-                            <li><a href="livre_9.html#chap-33" class="nav-item-link"><span>33. Créateur de Fiche
-                                        PJ</span></a></li>
-                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Atelier de Sorts
-                                        (XP=PA)</span></a></li>
-                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Lanceur Polyédrique &
-                                        Critiques</span></a></li>
-                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Résolveur de
-                                        Challenges</span></a></li>
-                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Simulateur de
+                            <li><a href="livre_9.html#chap-34" class="nav-item-link"><span>34. Fleuve du Temps &
+                                        Causalité</span></a></li>
+                            <li><a href="livre_9.html#chap-35" class="nav-item-link"><span>35. Topologie des
                                         Chronotrames</span></a></li>
+                            <li><a href="livre_9.html#chap-36" class="nav-item-link"><span>36. Clairsentience (8
+                                        Échelons)</span></a></li>
+                            <li><a href="livre_9.html#chap-37" class="nav-item-link"><span>37. Mécaniques Chronales en
+                                        Jeu</span></a></li>
                         </ul>
                     </div>
-
                     <!-- LIVRE X -->
                     <div class="nav-group">
                         <button class="nav-group-header">
@@ -475,1155 +479,598 @@
                         <span class="doc-badge-pill">
                             <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor"
                                 stroke-width="2">
-                                <path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z" />
-                                <polyline points="14 2 14 8 20 8" />
+                                <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
                             </svg>
-                            Livre VI — Combat & Manœuvres
+                            Livre VI — Physiologie & Traumatologie
                         </span>
-                        <span class="doc-badge-pill accent">Tactique 10s & Localisation</span>
+                        <span class="doc-badge-pill accent">Seuils Biologiques & Altérations</span>
                         <span class="doc-badge-pill live">Système Validé</span>
                     </div>
 
-                    <h1 class="doc-title">Livre VI : Combat Tactique & Déplacements</h1>
+                    <h1 class="doc-title">Livre VI : Santé, États & Blessures</h1>
                     <p class="doc-lead">
-                        Le combat dans le Système RP est une chorégraphie dynamique et chirurgicale. Ici, aucun tour
-                        n'est passif : chaque seconde correspond à une décision énergétique. Le round de 10 secondes
-                        orchestre les <strong>Points d'Action (PA)</strong> comme monnaie d'échange offensive et
-                        défensive, gère la fatigue par l'<strong>Essoufflement</strong>, récompense la visée anatomique
-                        précise et structure les affrontements à pied comme aux commandes de véhicules blindés.
+                        Dans le Système RP, la vie d'un être ne se résume pas à un compteur arithmétique qui descend
+                        jusqu'à zéro. La chair encaisse, se déchire, s'asphyxie et réagit selon des <strong>seuils
+                            physiologiques stricts</strong> dérivés de la Constitution. Ce livre rassemble les règles
+                        d'encaissement, le seuil létal (<span class="hl-ruby">Constitution &times; 5</span>), le
+                        compendium officiel complet des <strong>16 états et altérations de statut</strong>, la médecine
+                        de premiers soins et le protocole de résurrection.
                     </p>
 
                     <hr class="doc-divider">
 
-                    <!-- ================= CHAPITRE 24 ================= -->
-                    <h2 id="chap-24">
-                        <span class="section-symbol">Chapitre 24.</span>
-                        Le Tour de 10 Secondes & L'Économie des Points d'Action
+                    <!-- ================= CHAPITRE 27 ================= -->
+                    <h2 id="chap-23">
+                        <span class="section-symbol">Chapitre 23.</span>
+                        Seuils Physiologiques, Encaissement & Séquelles
                     </h2>
 
                     <p>
-                        Le temps de combat est découpé en <strong>rounds de 10 secondes réelles</strong>, eux-mêmes
-                        découpés en <strong>tours personnels</strong> suivant l'ordre d'initiative. Durant son propre tour,
-                        chaque participant dépense ses Points d'Action (PA) pour se mouvoir, attaquer,
-                        bloquer, ajuster son tir ou déclencher des sortilèges. <strong>Les PA sont récupérés au début de son
-                        propre tour uniquement</strong> (remise au maximum, sans cumul ni récupération globale au début du round).
-                    </p>
-
-                    <div class="callout temporal">
-                        <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 14 14" />
-                            </svg>
-                            Séquence Fondamentale du Tour de Combat
-                        </div>
-                        <div class="callout-body">
-                            <ol style="margin-bottom: 0;">
-                                <li><strong>Initiative (une seule fois) :</strong> Jet d'initiative basé sur la
-                                    compétence <em>Rapidité d'exécution</em>. L'ordre reste fixe pour tout le combat.</li>
-                                <li><strong>Début du tour personnel :</strong> Quand son initiative arrive, le combattant
-                                    <strong>récupère l'intégralité de sa réserve de PA (remise au maximum, sans cumul)</strong>.
-                                    Il peut alors en premier lieu <strong>reprendre son souffle</strong> (1 PA dépensé = 1 point d'essoufflement effacé).</li>
-                                <li><strong>Actions & Réactions :</strong> Le combattant agit (action principale, déplacements),
-                                    puis les autres peuvent dépenser leurs propres PA / PE en réactions (parades,
-                                    esquives, interruptions) même hors de leur tour.</li>
-                                <li><strong>Itération :</strong> Passer au combattant suivant dans l'ordre d'initiative.
-                                    Chaque combattant ne récupère ses PA qu'au <strong>début de son propre tour</strong>,
-                                    jamais au début du round global.</li>
-                            </ol>
-                        </div>
-                    </div>
-
-                    <h3>24.1 L'Économie des Points d'Action : 1 PA = +1 au Résultat</h3>
-                    <p>
-                        Les PA ne servent pas uniquement à « payer » des actions : ils constituent un fluide d'effort
-                        physique ou magique que le joueur injecte en direct dans ses jets.
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Duel Aveugle : Déclarations Masquées puis Révélation Simultanée</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Mise Attaquant</span> (PA + PE, cachée) &nbsp;vs&nbsp; <span
-                                class="hl-ruby">Mise Défenseur</span> (PA + PE, cachée) &nbsp;➔&nbsp; Révélation simultanée
-                        </div>
-                        <div class="formula-desc">
-                            <strong>Axiome de Confrontation :</strong> L'attaque oppose une compétence offensive (<em>Maniement d'Arme</em>, <em>Ballistique</em>, <em>Mains Nues</em>) à une compétence défensive (<em>Esquive</em>, <em>Défense Corporelle</em>) ou à une cible sans défense.<br>
-                            Chaque PA engagé confère <strong>+1 point direct</strong> au résultat du jet respectif, chaque PE (Essoufflement, plafond Constitution) <strong>+1 point direct</strong> — et les deux mises sont <strong>déclarées à l'aveugle avant tout jet</strong>. Aucun résultat n'est révélé avant que les deux camps aient engagé leur mise. La séquence se déroule impérativement en 3 temps :<br>
-                            <strong>1. Déclaration de l'Attaquant :</strong> L'attaquant désigne sa cible, annonce son action (compétence + zone visée) et engage sa mise : coût de base du coup (2
-                            PA standard, ou 3 PA pour annuler le malus de visée) + PA bonus et/ou PE déclarés (débités aussitôt, +1 / PA, +1 / PE). <em>Exemple : Mains Nues +2 entraînements, FOR 5 = +2 niveaux → 4 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ d8 ➔ <strong>d10</strong>), mise cachée +2 PA.</em> Le résultat reste <strong>caché</strong>.<br>
-                            <strong>2. Déclaration Aveugle de la Cible :</strong> La cible déclare <strong>sans avoir vu ni le jet ni la mise de l'attaquant</strong> si elle engage une défense active ou si elle reste passive :
-                            <ul>
-                                <li><strong>Défense Active (Habituelle) :</strong> Le défenseur annonce sa compétence défensive (<em>Esquive</em> ou <em>Parade / Défense Corporelle</em>, avec malus d'1 niveau de dé si paré à l'arme sans spé Épée) et engage sa mise : coût de base de réaction (1 PA) + PA bonus et/ou PE déclarés (débités aussitôt). <em>Exemple : Esquive 1 entraînement, AGI 5 = +2 niveaux → 3 niveaux depuis d2 (d2 ➔ d4 ➔ d6 ➔ <strong>d8</strong>), mise cachée +1 PA.</em></li>
-                                <li><strong>Défense Passive (Choix Tactique) :</strong> Le défenseur <strong>décide de ne pas se défendre</strong> (pour préserver ses PA ou s'il est surpris). Il ne consomme aucun PA ni PE, ne lance aucun dé, son score de défense est égal à <strong>0</strong>, et l'attaque touche automatiquement avec la marge totale du jet attaquant !</li>
-                            </ul> S'il veut réagir mais n'a aucun PA pour payer la réaction de base
-                            (0 PA), il ne peut réagir activement : il subit une pénalité réflexe de -2.<br>
-                            <strong>3. Révélation Simultanée & Résolution Normale :</strong> Les deux dés sont lancés <strong>ensemble</strong> avec les mises déclarées, puis révélés en même temps. Le différentiel net
-                            (Attaque finale − Défense finale) détermine la touche chirurgicale et les dégâts réels, exactement comme prévu (blocage si négatif, déviation si 0, touche + différentiel en dégâts si positif, puis armure, encaissement et états).
-                        </div>
-                    </div>
-
-                    <div class="cards-grid-3">
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Actions Principales</span>
-                                <span class="pill-badge ruby">1 / Tour (Défaut)</span>
-                            </div>
-                            <div class="spec-card-world">Offensif // Temps Fort</div>
-                            <p>
-                                Chaque combattant dispose d'<strong>une action principale par tour</strong>. Les
-                                manœuvres offensives (frapper, tirer, trancher, sort offensif) sont presque
-                                exclusivement des actions principales.<br><br>
-                                <strong>Règle de Maîtrise Exceptionnelle :</strong> Un personnage ayant une compétence
-                                offensive à <strong>2d6 ou plus</strong> (2d6, 2d8, 2d10, 2d12) débloque une <strong>2e
-                                    action principale par tour</strong> avec cette compétence ! Il peut la jouer après
-                                sa 1re action et après le tour d'un autre combattant.
-                            </p>
-                            <div class="spec-card-footer">
-                                <span class="tag-pill ruby">Attaque Majeure</span>
-                                <span class="tag-pill cyan">Double Action à 2d6+</span>
-                            </div>
-                        </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Réactions & Défenses</span>
-                                <span class="pill-badge cyan">1 / Tour (Réactif)</span>
-                            </div>
-                            <div class="spec-card-world">Défensif // Interruption</div>
-                            <p>
-                                Chaque combattant a droit à <strong>une réaction par tour</strong> en réponse à une
-                                offensive ennemie. Une réaction est soit une parade, soit une esquive, soit une manœuvre
-                                non-offensive d'urgence.<br><br>
-                                <strong>Déclaration Aveugle (Règle Normale) :</strong> Chaque camp déclare sa mise (PA bonus + PE) <strong>avant tout jet, sans voir ni le tirage ni la mise adverse</strong> : l'attaquant annonce le premier, puis le défenseur déclare à l'aveugle. Les deux dés sont ensuite lancés et révélés simultanément. Il ne s'agit pas d'une exception, mais du déroulement standard du duel !
-                            </p>
-                            <div class="spec-card-footer">
-                                <span class="tag-pill cyan">Esquive / Parade</span>
-                                <span class="tag-pill green">Mise Aveugle</span>
-                            </div>
-                        </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Guet / Overwatch</span>
-                                <span class="pill-badge amber">2 PA (Réservés)</span>
-                            </div>
-                            <div class="spec-card-world">Réactif // Tir Réservé</div>
-                            <p>
-                                Pendant son propre tour, un combattant armé d'une <strong>arme à distance</strong>
-                                peut dépenser <strong>2 PA</strong> pour se mettre en <strong>guet</strong> : il réserve
-                                un tir de réaction couvrant le <strong>rayon de son arme</strong> (cône à 360°, sans
-                                facing).<br><br>
-                                <strong>Déclenchement :</strong> dès qu'un ennemi agit dans le rayon pendant le tour
-                                adverse, le guetteur lâche <strong>un tir automatique en duel aveugle</strong>
-                                (<em>Ballistique</em> vs <em>Esquive</em>, mises à 0, défense adverse automatique),
-                                puis le guet est <strong>consommé</strong> (1 tir par guet). Le tir est gratuit : les
-                                2 PA ont été payés à la pose.<br><br>
-                                <strong>Fin du guet :</strong> au début du prochain tour personnel du guetteur
-                                (utilisé ou non). <strong>Annulé</strong> si le guetteur est <strong>Étourdi</strong>,
-                                <strong>Paralysé</strong>, Sonné ou Inconscient. Une cible en couvert total ne peut
-                                pas être prise pour cible.
-                            </p>
-                            <div class="spec-card-footer">
-                                <span class="tag-pill amber">2 PA</span>
-                                <span class="tag-pill cyan">Duel Aveugle Auto</span>
-                            </div>
-                        </div>
-                    </div>
-
-                    <h3>24.2 L'Essoufflement : Dépasser ses Limites</h3>
-                    <p>
-                        Lorsqu'un combattant est à court de Points d'Action mais doit absolument réussir une défense
-                        vitale ou porter le coup de grâce, il peut puiser dans ses réserves vitales en prenant des
-                        <strong>Points d'Essoufflement</strong>.
-                    </p>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Mécanique d'Essoufflement</th>
-                                    <th>Règle & Conditions</th>
-                                    <th>Effet Table de Jeu</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Prise d'Essoufflement</strong></td>
-                                    <td>Quand les PA sont épuisés, le joueur peut prendre 1 à N points d'essoufflement.
-                                    </td>
-                                    <td>Chaque point d'essoufflement agit comme +1 PA temporaire sur l'action ou la
-                                        réaction en cours, <strong>déclaré à l'aveugle</strong> au même titre que les PA
-                                        (mise cachée jusqu'à la révélation simultanée).</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Plafond Maximal</strong></td>
-                                    <td>Le total d'essoufflement accumulé <strong>ne peut jamais dépasser la valeur de
-                                            Constitution</strong> du personnage.</td>
-                                    <td>Si le plafond est atteint, le personnage est au bord de l'asphyxie et ne peut
-                                        plus forcer.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Reprendre son Souffle</strong></td>
-                                    <td>Action de début de son propre tour (quand son initiative arrive). Le joueur dépense des PA pour effacer de
-                                        l'essoufflement (maximum Constitution).</td>
-                                    <td>1 PA dépensé à reprendre son souffle = 1 point d'essoufflement effacé
-                                        immédiatement.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Choc Traumatique (&gt; 2 &times; Constitution)</strong></td>
-                                    <td>Quand les dégâts accumulés sur une même zone dépassent le double de la
-                                        Constitution.</td>
-                                    <td>Le personnage gagne <strong>+1 Essoufflement automatique</strong> et doit
-                                        réussir une épreuve de Constitution sous peine de s'effondrer.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h3>24.3 Barème des Coûts en Points d'Action Types</h3>
-                    <div class="cards-grid-3">
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Coût : 1 PA</span>
-                                <span class="pill-badge green">Micro-Action</span>
-                            </div>
-                            <ul style="padding-left: 15px; margin: 10px 0; font-size: 0.9em;">
-                                <li>Se déplacer de 1 case (1 mètre).</li>
-                                <li>Dégainer ou ranger une arme.</li>
-                                <li>Recharger une arme à feu ou un carquois.</li>
-                                <li>Ouvrir ou claquer une porte.</li>
-                                <li><strong>Préparation d'Action :</strong> Dépenser 1 PA pour se préparer confère
-                                    <strong>+2 au jet</strong> de l'action ou défense suivante.
-                                </li>
-                                <li>Annuler la punition d'une visée précise.</li>
-                            </ul>
-                        </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Manœuvres Mobiles</span>
-                                <span class="pill-badge amber">+1 PA Extra</span>
-                            </div>
-                            <ul style="padding-left: 15px; margin: 10px 0; font-size: 0.9em;">
-                                <li><strong>La Charge & le Sprint (RD-038) :</strong> Déplacement d'assaut d'au moins
-                                    <strong>3 cases</strong> menant au contact direct. Confère <strong>+2 dégâts</strong>
-                                    d'impact cinétique sur la frappe de mêlée consécutive, mais expose l'assaillant avec
-                                    <strong>-1 en défense jusqu'au prochain tour personnel</strong>. Tout déplacement
-                                    de 3+ cases (sprint) <strong>bloque le tir</strong> pour le reste du tour en cours.</li>
-                                <li><strong>Le GetAway (Dégagement) :</strong> Action principale (attaque ou parade)
-                                    immédiatement suivie d'un déplacement de fuite coûtant <strong>+1 PA
-                                        supplémentaire</strong>.</li>
-                                <li><strong>Parler en combat :</strong> 2 phrases courtes (~30 mots) sont gratuites par
-                                    round. Chaque phrase additionnelle coûte <strong>1 PA</strong>.</li>
-                            </ul>
-                        </div>
-
-                        <div class="spec-card">
-                            <div class="spec-card-title">
-                                <span>Action en Progression</span>
-                                <span class="pill-badge cyan">Multi-Tours</span>
-                            </div>
-                            <p style="font-size: 0.9em; margin-top: 8px;">
-                                Un combattant peut préparer un coup dévastateur en étalant son effort sur plusieurs
-                                temps (ex: ajuster posément le tir avec 3 PA au tour 1 pour lâcher une frappe
-                                surpuissante au tour 2).<br><br>
-                                <em>Attention :</em> S'il est attaqué pendant sa progression, il défend avec une
-                                <strong>punition de progression de -1</strong>.
-                            </p>
-                        </div>
-                    </div>
-
-                    <div class="callout temporal">
-                        <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 14 14" />
-                            </svg>
-                            Barème des Réactions (Hors de son Tour)
-                        </div>
-                        <div class="callout-body">
-                            <ul style="margin-bottom: 0;">
-                                <li><strong>Parade / Esquive réactive :</strong> coût de base de réaction (<strong>1 PA</strong>) + mises aveugles (PA bonus / PE). Sans PA : réflexe à -2.</li>
-                                <li><strong>Guet / Overwatch :</strong> <strong>2 PA</strong> payés pendant son propre tour (arme à distance requise) : réserve <strong>1 tir automatique en duel aveugle</strong> dans le rayon de l'arme, consommé au premier déclenchement, expiré au prochain tour personnel, annulé si Étourdi / Paralysé.</li>
-                                <li><strong>Opportunité / Désengagement (§24.4) :</strong> quitter le <strong>contact (≤ 1 case)</strong> expose à <strong>1 réaction par voisin ennemi</strong> au contact (1/round chacun) : <strong>Frappe gratuite</strong>, <strong>Poursuite</strong> (1 PA, suit d'1 case), <strong>Blocage</strong> (1 PA, annule le pas, sans grapple, PA remboursés), <strong>Balayage</strong> (gratuit, Jambes). <strong>Décrochage</strong> (1 PA) ou <strong>spé esquive</strong> (Roulade de Décrochage, Acrobatie d'Évitement) : aucun déclenchement.</li>
-                                <li><strong>Garde du corps / Interception (§24.5, RD-032) :</strong> coût de réaction (<strong>1 PA</strong>) : s'interposer au contact (distance ≤ 1 case) pour <strong>prendre le coup à la place d'un allié</strong> visé par une attaque (Tenir la Ligne). Le duel est réorienté vers le protecteur qui encaisse avec son armure et ses compétences défensives.</li>
-                                <li><strong>Lutte / Grapple & Traînée (§24.6, RD-039) :</strong> coût <strong>2 PA</strong> au contact (distance ≤ 1 case) : <strong>duel opposé aveugle Athlétisme vs Athlétisme</strong>. Succès = cible <strong>Immobilisée</strong>. Permet ensuite la <strong>traînée de corps</strong> (2 PA, 1 case) et l'<strong>étranglement</strong> (2 PA, Asphyxie). Dégagement en duel opposé (2 PA) ou relâchement volontaire (0 PA).</li>
-                                <li><strong>Charge & Sprint (§24.7, RD-038) :</strong> assaut d'approche de <strong>3+ cases</strong> au contact : <strong>+2 dégâts</strong> sur l'attaque de mêlée consécutive, <strong>-1 défense</strong> jusqu'au prochain tour personnel. Tout déplacement de 3+ cases (sprint) <strong>bloque le tir</strong> pour le reste du tour en cours.</li>
-                            </ul>
-                        </div>
-                    </div>
-
-                    <h3>24.4 Attaques d'Opportunité & Désengagement (RD-031)</h3>
-                    <p>
-                        Quitter le <strong>contact (distance ≤ 1 case, empreintes incluses)</strong> n'est jamais
-                        gratuit : chaque ennemi au contact dont on rompt l'allonge gagne <strong>1 réaction
-                        d'opportunité</strong>. Rester au contact (pas latéral, rotation) ne provoque rien ;
-                        seuls les pas qui font passer la distance de ≤ 1 à &gt; 1 déclenchent. Base du
-                        <strong>hit-and-run</strong> : frapper puis fuir expose à la riposte, sauf retrait propre.
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Les 4 réactions au contact rompu (1 par combattant et par round)</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Frappe (0 PA)</span> vs <span class="hl-ruby">Poursuite (1 PA)</span> vs <span class="hl-gold">Blocage (1 PA)</span> vs <span class="hl-cyan">Balayage (0 PA)</span>
-                        </div>
-                        <div class="formula-desc">
-                            La posture de réaction se choisit pendant son propre tour (0 PA, persistante).
-                            La frappe et le balayage sont <strong>gratuits</strong> (réaction seule, duel aveugle
-                            automatique, mises à 0, défense adverse automatique).
-                        </div>
-                    </div>
-
-                    <ul>
-                        <li><strong>🗡️ Frappe d'opportunité (0 PA, défaut) :</strong> coup de mêlée réflexe en duel
-                            aveugle auto (compétence de l'arme de contact, sinon Mains Nues). Consomme l'unique
-                            réaction du round.</li>
-                        <li><strong>👣 Poursuite (1 PA) :</strong> au lieu de frapper, suit le fuyard d'<strong>1 case</strong>
-                            (case libérée) en réaction à son déplacement. Sans attaque, sans grapple. Le suivi ne
-                            provoque aucune réaction <strong>d'opportunité</strong> à son tour (pas de ping-pong ;
-                            un <strong>guet</strong> adverse peut toujours tirer sur l'arrivée, RD-030).</li>
-                        <li><strong>🛡️ Blocage (1 PA) :</strong> duel opposé aveugle <strong>Athlétisme vs
-                            Athlétisme</strong> (mises à 0). Victoire du bloqueur = le <strong>pas est annulé</strong>,
-                            sans grapple permanent : le fuyard reste sur sa case et <strong>ses PA de déplacement
-                            sont remboursés</strong> (intégral s'il n'a pas bougé, prorata sinon). Échec = réaction
-                            et PA dépensés, le fuyard passe.</li>
-                        <li><strong>🦵 Balayage (0 PA, variante) :</strong> frappe gratuite visant les
-                            <strong>Jambes</strong> : <strong>À Terre + Ralenti</strong> en cas de choc traumatique,
-                            au lieu de dégâts maximaux. Idéal pour clouer un fuyard.</li>
-                    </ul>
-
-                    <ul>
-                        <li><strong>💨 Décrochage (1 PA, Livre VI §26.2) :</strong> retrait propre payé pendant son tour :
-                            le <strong>prochain déplacement</strong> ne provoque aucune réaction (frappe, poursuite,
-                            blocage, balayage). Expire au prochain tour personnel si inutilisé. L'IA l'utilise pour
-                            ses replis quand ses PA le permettent.</li>
-                        <li><strong>Exemption esquive :</strong> les spécialisations <strong>Roulade de Décrochage</strong>
-                            (et branches) et <strong>Acrobatie d'Évitement</strong> permettent de quitter le contact
-                            <strong>sans provoquer</strong> — base du hit-and-run des duellistes.</li>
-                        <li><strong>Budget :</strong> 1 réaction d'opportunité par round et par combattant, rechargée au
-                            début de son tour personnel. Annulée si Étourdi / Paralysé / Sonné / Inconscient (même
-                            assiette que le guet). Tué en cours de trajet par une frappe : le déplacement s'interrompt
-                            sur la case atteinte.</li>
-                    </ul>
-
-                    <h3>24.5 Garde du Corps & Interception d'Allié (RD-032)</h3>
-                    <p>
-                        La discipline tactique et la protection d'escouade (technique <strong>Mener : Tenir la Ligne !</strong>
-                        ou spécialisation <strong>Garde du corps</strong>) permettent à un combattant situé au
-                        <strong>contact direct (distance ≤ 1 case)</strong> d'un allié attaqué de s'interposer pour
-                        <strong>prendre le coup à sa place</strong>.
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Interception d'allié (1 réaction du round, contact direct)</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Coût : 1 PA (réaction)</span> + <span class="hl-gold">Contact ≤ 1 case</span> ➔ <span class="hl-ruby">Redirection du coup sur le protecteur</span>
-                        </div>
-                        <div class="formula-desc">
-                            Le protecteur dépense 1 PA et consomme son unique réaction du round. Le duel d'attaque est
-                            instantanément réorienté vers lui : il devient le défenseur légitime et encaisse la frappe
-                            avec sa propre armure, son seuil d'encaissement et ses capacités défensives.
-                        </div>
-                    </div>
-
-                    <ul>
-                        <li><strong>🛡️ Prise de coup réflexe (1 PA réaction) :</strong> dès qu'un ennemi déclare une
-                            attaque contre un allié adjacent, le protecteur qualifié (spé <em>Tenir la Ligne</em>,
-                            donneur du bonus de blindage d'escouade ou garde du corps désigné) peut dépenser 1 PA
-                            et sa réaction du round pour absorber l'offensive.</li>
-                        <li><strong>Posture préventive (0 PA) :</strong> pendant son propre tour, le protecteur peut
-                            désigner un allié adjacent via le menu contextuel pour en faire son protégé prioritaire.</li>
-                        <li><strong>Résolution du duel :</strong> l'attaque touche le protecteur. La base de réaction
-                            étant déjà payée lors de l'interposition, le protecteur peut engager ses mises défensives
-                            (ou absorber en encaissement passif). L'allié ciblé initialement n'encourt aucun dégât.</li>
-                        <li><strong>Restrictions :</strong> impossible si le protecteur est neutralisé (Étourdi, Paralysé,
-                            Sonné, Inconscient), s'il a déjà dépensé sa réaction ce round, s'il manque de PA (1 PA de base,
-                            2 PA sous Ralenti), ou si la distance dépasse 1 mètre (1 case).</li>
-                    </ul>
-
-                    <h3>24.6 Lutte, Grapple & Traînée de Corps (RD-039)</h3>
-                    <p>
-                        Alors que la <em>Clé d'Articulation</em> relève d'une technique martiale spécialisée
-                        (Livre III, Mains Nues), la <strong>lutte au corps-à-corps (grapple)</strong> est une
-                        manœuvre physique générique accessible à tout combattant au contact direct
-                        (<strong>distance ≤ 1 case</strong>). Elle permet de ceinturer, clouer sur place,
-                        traîner ou asphyxier un adversaire.
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Manœuvres de Lutte au Corps-à-Corps (Coût : 2 PA, contact)</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Prise (2 PA)</span> ➔ <span class="hl-gold">Immobilisé (duel opposé)</span> ➔ <span class="hl-ruby">Étranglement (Asphyxie) / Traînée (1 case / 2 PA)</span>
-                        </div>
-                        <div class="formula-desc">
-                            La tentative de prise engage un duel opposé aveugle <strong>Athlétisme vs Athlétisme</strong> (mises masquées PA/PE autorisées).
-                            En cas de succès de l'attaquant, la cible subit l'état <strong>Immobilisé</strong> et le lien d'étreinte est enregistré.
-                            La victime peut tenter de se libérer à son tour via un duel opposé, ou le grappler peut relâcher l'emprise gratuitement (0 PA).
-                        </div>
-                    </div>
-
-                    <ul>
-                        <li><strong>🥋 Prise au Corps-à-Corps (2 PA, contact) :</strong> duel opposé aveugle
-                            <strong>Athlétisme</strong> (ou Mains Nues) de l'assaillant contre <strong>Athlétisme</strong>
-                            (ou Défense Corporelle) du défenseur. Victoire de l'assaillant (Diff ≥ 0) = la cible est saisie
-                            et subit l'état <strong>Immobilisé 1 tour</strong> (-2 esquive active, déplacement impossible).
-                            En cas d'échec (Diff &lt; 0), la prise est esquivée ou repoussée.</li>
-                        <li><strong>🔓 Se Libérer de la Prise (2 PA) :</strong> la victime saisie peut tenter de briser
-                            l'étreinte lors de son propre tour via un duel opposé aveugle (meilleure compétence entre
-                            Athlétisme, Mains Nues et Acrobatie vs Athlétisme du grappler). Victoire = l'état Immobilisé
-                            est immédiatement dissipé et la prise est rompue.</li>
-                        <li><strong>🥋 Relâcher la Prise (0 PA) :</strong> le grappler peut rompre volontairement son étreinte
-                            à tout moment pendant son tour, libérant la cible de son immobilisation. Tout déplacement
-                            individuel du grappler rompt automatiquement la prise.</li>
-                        <li><strong>🤼 Traîner le corps (2 PA, 1 case) :</strong> le porteur recule ou pivote vers une case libre
-                            adjacente (coût 2 PA) et tire la victime saisie (ou tout allié/ennemi immobilisé, inconscient ou à terre)
-                            dans la case qu'il vient de libérer. Les deux combattants avancent de concert sans déclencher de réaction
-                            d'opportunité, préservant la distance de contact et le verrou de lutte.</li>
-                        <li><strong>🫁 Étranglement (2 PA, contact) :</strong> compression de la gorge sur cible saisie ou immobilisée
-                            (duel opposé <strong>Athlétisme vs Endurance Physique</strong>). Victoire = 2+ dégâts bruts ignorant
-                            l'armure au cou (trachée) + application du statut <strong>Asphyxie pendant 2 tours</strong>
-                            (drain d'1 PA de réserve par tour et pool de 2 dégâts résiduels dégressifs).</li>
-                        <li><strong>Rupture automatique :</strong> la lutte est immédiatement rompue si le grappler ou la victime
-                            meurt, tombe inconsciente, est sonnée, paralysée ou étourdie.</li>
-                    </ul>
-
-                    <h3>24.7 Charge d'Assaut, Sprint & Verrouillage du Tir (RD-038)</h3>
-                    <p>
-                        La <strong>Charge</strong> et le <strong>Sprint</strong> incarnent l'exploitation de l'élan cinétique
-                        brut sur l'échiquier tactique. Lorsqu'un combattant prend de la vitesse sur une distance
-                        significative (<strong>au moins 3 cases continues</strong>), sa masse en mouvement modifie
-                        radicalement l'équilibre de son offensive et de sa défense.
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Règles de Charge & Sprint (RD-038, Seuil : 3+ cases)</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Assaut 3+ cases</span> ➔ <span class="hl-gold">+2 Dégâts Frappe Mêlée</span> &amp; <span class="hl-ruby">-1 Défense (1 tour)</span> | <span class="hl-amber">Tir Bloqué</span>
-                        </div>
-                        <div class="formula-desc">
-                            Parcourir 3 cases ou plus confère immédiatement <strong>+2 dégâts d'impact brut</strong> sur la première
-                            attaque de contact (mains nues ou arme de mêlée) délivrée lors du même tour. En contrepartie,
-                            le déséquilibre de l'assaut impose une pénalité de <strong>-1 sur tous les jets de défense</strong>
-                            jusqu'au début du prochain tour personnel. L'inertie de course empêche toute visée stable :
-                            <strong>le sprint bloque tout tir à distance pour le reste du tour</strong>.
-                        </div>
-                    </div>
-
-                    <ul>
-                        <li><strong>⚡ Impact de Charge (+2 dégâts) :</strong> le bonus s'applique aux dégâts bruts de l'attaque
-                            de contact (mêlée, mains nues, arme blanche ou contondante). Il est consommé dès la résolution de la frappe.
-                            Il n'augmente pas les tirs à distance.</li>
-                        <li><strong>🛡️ Exposition défensive (-1 défense jusqu'au prochain tour) :</strong> le chargeur s'expose
-                            en brisant sa garde pour maximiser son élan. Tout duel où il se défend (parade, esquive active ou réflexe)
-                            subit un malus de <strong>-1</strong>. Ce malus persiste pendant le reste de son tour et durant les tours
-                            adverses, jusqu'au début de son propre tour personnel suivant (recalage à <code>ResetTurn</code>).</li>
-                        <li><strong>🏃 Verrouillage du Tir (« Sprint bloque tir ce tour ») :</strong> courir à pleine vitesse
-                            (3 cases ou plus) rompt la posture de visée. Toute arme à distance (pistolets, fusils, arcs,
-                            armes de jet) est neutralisée pour le reste du tour en cours. La frappe au corps-à-corps reste
-                            pleinement accessible.</li>
-                        <li><strong>🧭 Pathfinder & Exécution :</strong> l'algorithme <code>HexPathfinder</code> calcule
-                            les trajectoires d'assaut vers les flancs libres de la cible (<code>FindChargePath</code>).
-                            L'action contextuelle <strong>⚡ Charge au contact</strong> permet d'enchaîner en un clic
-                            la course d'approche et la frappe chirurgicale au Torse.</li>
-                    </ul>
-
-                    <!-- ================= CHAPITRE 25 ================= -->
-                    <h2 id="chap-25">
-                        <span class="section-symbol">Chapitre 25.</span>
-                        Déplacements, Poursuites & Attaques de Groupe
-                    </h2>
-
-                    <p>
-                        L'espace tactique est quantifié en cases de 1 mètre. Se déplacer exige une gestion stricte de
-                        ses PA pour ne pas se retrouver sans défense face à une contre-offensive.
-                    </p>
-
-                    <h3>25.1 La Règle de Course & Poursuite : « Se Sauver en Combat »</h3>
-                    <p>
-                        Tenter d'échapper à un ou plusieurs ennemis n'est pas un simple retrait tactique : c'est un
-                        <strong>concours d'Athlétisme sous tension</strong>.
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Mécanique de la Proie et du Poursuivant</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Épreuve Athlétisme (Proie)</span> vs <span class="hl-ruby">Épreuve
-                                Athlétisme (Poursuivant)</span>
-                        </div>
-                        <div class="formula-desc">
-                            La proie lance son épreuve d'Athlétisme (avec injection possible de PA et d'essoufflement)
-                            et note son résultat. Chaque poursuivant lance à son tour son épreuve.
-                        </div>
-                    </div>
-
-                    <ul>
-                        <li><strong>Sur chaque réussite de la proie contre un poursuivant :</strong> La proie maintient
-                            la distance et ne peut pas être approchée à moins de <strong>1 case</strong> par ce
-                            poursuivant, même si la vitesse brute de celui-ci aurait dû l'amener plus loin (ex: Proie
-                            fait 15, Poursuivant fait 7 : le poursuivant reste bloqué à distance).</li>
-                        <li><strong>Sur une faillite de la proie :</strong> Le poursuivant gagne du terrain et réduit la
-                            distance.</li>
-                        <li><strong>Règle d'Arrêt aux 4 Faillites :</strong> Dès que le total cumulé de faillites de la
-                            proie contre l'ensemble des poursuivants atteint <strong>4</strong>, la proie est
-                            définitivement rattrapée et acculée.</li>
-                    </ul>
-
-                    <h3>25.2 Les Attaques Combinées de Groupe</h3>
-                    <p>
-                        Deux combattants ou plus peuvent synchroniser leurs assauts pour briser une défense impénétrable
-                        ou terrasser une créature colossale.
-                    </p>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Paramètre</th>
-                                    <th>Règle Tactique</th>
-                                    <th>Exemple d'Application</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Synchronisation</strong></td>
-                                    <td>Tous les participants doivent <strong>déléguer et caler leur initiative sur
-                                            celle du membre le plus lent</strong> du groupe.</td>
-                                    <td>Un bretteur rapide (Ini 3) attend son compagnon en armure lourde (Ini 1) pour
-                                        frapper à l'unisson à l'Initiative 1.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Sommation des Rangs</strong></td>
-                                    <td>Chaque participant effectue son épreuve. Les résultats totaux
-                                        <strong>s'additionnent face à l'unique défense</strong> de la cible !
-                                    </td>
-                                    <td>Attaquant A (12.5) + Attaquant B (10.5) = <strong>23 total</strong> face à une
-                                        parade ennemie de 10.5. Différentiel massif de <strong>+12.5</strong> !</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Dépassement d'Armure</strong></td>
-                                    <td>Alors que deux attaques séparées auraient pu rebondir individuellement contre
-                                        l'armure et la Constitution, l'attaque combinée pulvérise les défenses.</td>
-                                    <td>Séparés : 1.5 dégât infligé. Ensemble : <strong>10.5 dégâts réels</strong>
-                                        traversant l'armure !</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <h3 id="chap-25-3">25.3 Couvert, Visibilité & Ligne de Mire</h3>
-                    <p>
-                        Un combattant n'est pas toujours offert aux coups : un muret, une barricade ou un pilier
-                        masque tout ou partie de sa silhouette <strong>vue par son attaquant</strong>. Le couvert est
-                        donc toujours <strong>relatif</strong> : la même cible peut être à découvert pour un tireur et
-                        totalement invisible pour un autre placé sous un angle différent.
-                    </p>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Niveau de Couvert</th>
-                                    <th>Silhouette vue par l'attaquant</th>
-                                    <th>Effet sur l'attaque directe</th>
-                                    <th>Exemples</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>À découvert</strong></td>
-                                    <td>Cible entièrement visible</td>
-                                    <td><strong>0</strong> — aucun malus</td>
-                                    <td>Plaine, rue dégagée, arène ouverte.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>À moitié couvert</strong></td>
-                                    <td>Cible à moitié visible</td>
-                                    <td><strong>-1</strong> au total d'attaque</td>
-                                    <td>Muret bas, caisse, capot de véhicule, coin de mur.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Aux trois-quarts couvert</strong></td>
-                                    <td>Seul un quart de la cible dépasse</td>
-                                    <td><strong>-2</strong> au total d'attaque</td>
-                                    <td>Barricade haute, palissade, deux murets ou plus sur la trajectoire.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Couvert total</strong></td>
-                                    <td>Cible non visible pour l'attaquant</td>
-                                    <td><strong>Attaque directe impossible</strong> (aucun PA dépensé)</td>
-                                    <td>Mur plein, pilier massif, paroi blindée barrant la ligne de mire.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Lecture Humaine de la Ligne de Mire : Meilleur Coin ➔ Ce Que Tu Vois ➔ Couvert</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Meilleur coin</span> &nbsp;➔&nbsp; <span class="hl-gold">Ce que tu vois</span> &nbsp;➔&nbsp; <span class="hl-emerald">Surface visible</span> &nbsp;➔&nbsp; <span class="hl-ruby">Couvert</span>
-                        </div>
-                        <div class="formula-desc">
-                            Le personnage occupe <strong>toute sa case</strong> : il se penche toujours du bon côté
-                            pour tirer, jamais « du centre ».<br>
-                            <strong>1. Prends ton meilleur coin :</strong> mets ton œil au <strong>coin de ta
-                            case</strong> qui voit le mieux la cible. Si un seul coin passe, c'est celui-là qui
-                            compte.<br>
-                            <strong>2. Regarde à hauteur de table :</strong> baisse-toi à hauteur des figurines et
-                            vise la silhouette adverse, des pieds au sommet de la tête (1,8 m). Tout ce qui est
-                            entre compte pour de vrai : <strong>muret (genoux, 0,7 m), barricade (ventre, 1,2 m),
-                            mur (caché, 2,2 m), piliers, caisses, mobilier</strong> — même si la case est marquée
-                            à découvert — et le <strong>relief</strong> lui-même : une crête masque aussi bien
-                            qu'un mur.<br>
-                            <strong>3. Combien tu en vois :</strong> <strong>tout le corps</strong> ➔ à découvert
-                            (<strong>0</strong>) ; <strong>la moitié cachée</strong> (jambes derrière un muret, flanc
-                            derrière un coin de mur) ➔ moitié couvert (<strong>-1</strong>) ;
-                            <strong>il ne dépasse qu'une tête, une épaule, une main</strong> (torse caché par une
-                            barricade, deux obstacles en enfilade) ➔ trois-quarts couvert (<strong>-2</strong>) ;
-                            <strong>rien ne dépasse</strong> ➔ couvert total, <strong>attaque directe
-                            impossible</strong>.<br>
-                            En cas de doute : moitié = ça cache jusqu'à la taille, trois-quarts = ça cache jusqu'au
-                            cou.<br>
-                            <strong>Au contact (distance ≤ 1 case)</strong>, les combattants se voient : le couvert est
-                            <strong>ignoré</strong>.
-                        </div>
-                    </div>
-
-                    <ul>
-                        <li><strong>Malus d'attaque, pas bonus de défense :</strong> le -1 / -2 s'applique au
-                            <strong>total d'attaque</strong> (comme le malus de visée anatomique), annoncé en Phase 1
-                            du duel aveugle (§24.1) et tracé dans le journal de combat. Le jet de défense du défenseur
-                            n'est pas modifié.</li>
-                        <li><strong>Cumul tactique :</strong> couvert, punition de visée (-1 ou +1 PA), Canon Entravé
-                            (-2) et mises aveugles (PA / PE) se cumulent. <em>Exemple : un tir à 6 cases sur une cible
-                            aux trois-quarts couverte en visant la tête part à <strong>-3 avant mises</strong>
-                            (-2 couvert, -1 visée).</em></li>
-                        <li><strong>Couvert total :</strong> l'attaque est <strong>refusée avant tout jet et sans
-                            coût</strong> (ni PA de base, ni mise engagée). Seules issues : <strong>se déplacer</strong>
-                            pour retrouver une ligne de mire, contourner l'obstacle, ou passer par un effet de zone.</li>
-                        <li><strong>Effets de zone (grenades, souffles) :</strong> le souffle contourne les obstacles :
-                            le couvert <strong>réduit les dégâts</strong> au lieu d'interdire (muret -2, barricade haute
-                            -3, mur -4 et bloque les éclats). Un tir lobé (mortier) ignore les couverts partiels. Voir
-                            Livre VIII §31.3.</li>
-                    </ul>
-
-                    <div class="callout temporal">
-                        <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 14 14" />
-                            </svg>
-                            Exemple de Table : Tir sous Couvert
-                        </div>
-                        <div class="callout-body">
-                            Mina (Ballistique) vise un garde à 5 cases, accroupi derrière un muret (moitié visible) :
-                            son total d'attaque subit <strong>-1 de couvert</strong>, déclaré en Phase 1 puis révélé
-                            avec les mises. Si le garde recule derrière un pilier (couvert total), le tir devient
-                            <strong>impossible</strong> : Mina doit se déplacer, changer de cible, ou demander un tir
-                            de mortier à son allié.
-                        </div>
-                    </div>
-
-                    <h3 id="chap-25-4">25.4 Brouillard de Guerre Asymétrique</h3>
-                    <p>
-                        En combat, chaque camp ne voit que ce que voient ses combattants : les cases hors de vue
-                        sont plongées dans l'obscurité et les ennemis non détectés sont <strong>invisibles et
-                        impossibles à cibler</strong> — jusqu'à un jet d'Observation réussi ou un tir bruyant.
-                        Le Maître du Jeu, arbitre de la table, voit toujours tout.
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Vision à 360°, limitée seulement par l'environnement</div>
-                        <div class="formula-math">
-                            <span class="hl-emerald">360° tout autour</span> &nbsp;➔&nbsp; <span class="hl-cyan">Le décor décide</span> &nbsp;➔&nbsp; <span class="hl-gold">Mur plein = obscurité</span>
-                        </div>
-                        <div class="formula-desc">
-                            <strong>1. Pas de dos :</strong> en combat, un personnage voit à <strong>360° autour de
-                            lui</strong>. Pas de cône frontal, pas d'angle mort : attaquer « par-derrière » ne donne
-                            aucun bonus.<br>
-                            <strong>2. Pas de limite chiffrée :</strong> tu vois <strong>aussi loin que le décor le
-                            permet</strong>. Pas de courte ou longue portée. Seuls l'<strong>environnement et la
-                            météo</strong> t'arrêtent : mur, pilier, relief, nuit, fumée, tempête, pluie. Le MJ annonce
-                            en début d'affrontement ce qui bouche la vue, et le change quand la situation change.<br>
-                            <strong>3. Tes yeux ne sont pas des jumelles :</strong> Vision et Ouïe ne prolongent jamais
-                            la vue. Ils servent à <strong>repérer</strong> : jet d'<strong>Observation</strong>
-                            (Vision + Instinct), jet d'<strong>Écoute</strong> (Ouïe + Instinct), Discrétion adverse
-                            et révélation au bruit (ci-dessous).<br>
-                            <strong>4. Murs et contact :</strong> un mur plein (<strong>couvert total</strong>, §25.3)
-                            entre l'observateur et la case la plonge dans l'obscurité ; murets et barricades
-                            (moitié, trois-quarts) restent visibles. <strong>Au contact (≤ 1 case), on se voit
-                            toujours.</strong>
-                        </div>
-                    </div>
-
-                    <ul>
-                        <li><strong>Ennemi non détecté = invisible :</strong> silhouette masquée, aucun ciblage
-                            possible (tir, grenade ciblée, sort mono-cible). Seuls les effets de zone aveugles
-                            restent envisageables, sans bonus.</li>
-                        <li><strong>Observation active (1 PA) :</strong> duel opposé <strong>Observation</strong>
-                            (observateur) vs <strong>Discrétion</strong> (cible) : <strong>-1 par case</strong>
-                            au-delà du contact, <strong>-1 / -2 / -4</strong> selon le couvert
-                            (moitié, trois-quarts, total — un couvert total rend l'observation
-                            <strong>impossible</strong>). Réussite ➔ cible <strong>révélée jusqu'à la fin du round
-                            suivant</strong>.                             Spécialités : <strong>Œil de Lynx +2</strong> au duel,
-                            <strong>Détection Thermique +2</strong> et devine une présence juste derrière un mur
-                            plein tout proche.</li>
-                        <li><strong>Tir bruyant = révélé :</strong> tout tir à distance (Ballistique, grenade,
-                            sort offensif — <strong>la mêlée reste silencieuse</strong>) révèle le tireur aux
-                            ennemis situés dans son <strong>rayon d'Ouïe</strong>, jusqu'à la <strong>fin du round
-                            suivant</strong>, sauf mur plein entre les deux.</li>
-                    </ul>
-
-                    <div class="callout temporal">
-                        <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
-                                stroke-width="2">
-                                <circle cx="12" cy="12" r="10" />
-                                <polyline points="12 6 12 12 14 14" />
-                            </svg>
-                            Exemple de Table : Repérage sous Brouillard
-                        </div>
-                        <div class="callout-body">
-                            Par météo claire, Lucas ne voit pas le tireur embusqué à 9 cases :
-                            un pilier (couvert total) barre sa ligne de mire ➔ obscurité. Il dépense
-                            <strong>1 PA</strong> en Observation active, mais à travers un couvert total
-                            l'observation est <strong>impossible</strong> : PA perdu. Le tireur riposte au fusil :
-                            <strong>tir bruyant</strong>, mais le pilier fait toujours mur plein entre eux ➔
-                            toujours invisible. Lucas contourne alors le pilier : le tireur passe à découvert
-                            devant lui ➔ <strong>automatiquement visible</strong>, sans aucun jet.
-                        </div>
-                    </div>
-
-                    <h3 id="chap-25-5">25.5 Duo-Tech : Résonance Dyadique (Règles de Table)</h3>
-                    <p>
-                        Deux combattants aux natures complémentaires — le calcul froid de <strong>Lucas</strong>
-                        (soustraction thermodynamique, pression, zéro absolu) et la chaleur cinétique de
-                        <strong>Mina</strong> (vitesse, décharges corporelles) en sont l'exemple canonique —
-                        peuvent tisser une <strong>action unique à deux voix</strong> : le Duo-Tech. Sur table,
-                        aucun dessin n'est exigé : la synchronisation se tranche par une <strong>double épreuve
-                        de caractéristiques de base</strong> (§25.5.2).
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Séquence du Duo-Tech en 3 Temps</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">1. Condition + Déclaration + Paiement immédiat</span> &nbsp;➔&nbsp;
-                            <span class="hl-gold">2. Double épreuve de synchro (carac de base vs ND)</span> &nbsp;➔&nbsp;
-                            <span class="hl-ruby">3. Parfaite / Semi / Ratée</span>
-                        </div>
-                        <div class="formula-desc">
-                            <strong>1. Condition & déclaration :</strong> le MJ valide la condition de placement du
-                            Duo-Tech visé (alignement, isolement, couloir vide…). Déclarable <strong>à tout moment
-                            pendant le tour personnel de l'un des deux partenaires</strong>, même après avoir déjà
-                            agi. L'initiateur paie <strong>1 PA de départ + son coût de rôle</strong>, le partenaire
-                            paie <strong>son coût de rôle immédiatement</strong> — même s'il n'a pas encore joué ce
-                            round. Pas assez de PA d'un côté = déclaration refusée, aucun débit.<br>
-                            <strong>Action unique :</strong> le Duo-Tech ne consomme l'action principale de personne.
-                            <strong>Limite : 1 Duo-Tech par personnage par round</strong>, initiateur ou partenaire.
-                            Une fois payé, le duo reste <strong>armé sans expiration</strong> jusqu'à exécution ou
-                            annulation — <strong>PA perdus dans les deux cas</strong>, aucun remboursement.<br>
-                            <strong>2. Synchronisation</strong> (§25.5.2) : les deux partenaires lancent leur épreuve
-                            simultanément.<br>
-                            <strong>3. Résolution :</strong> les deux réussissent ➔ <strong>Parfaite</strong> ; un seul
-                            ➔ <strong>Semi-succès</strong> (effet dégradé, décrit par le MJ selon qui a raté) ;
-                            aucun ➔ <strong>Ratée</strong> (PA perdus, rien ne se produit).
-                        </div>
-                    </div>
-
-                    <p>
-                        <strong>Épreuve de synchronisation (remplace tout dessin).</strong> Chaque partenaire lance
-                        le <strong>dé de sa caractéristique de base</strong> attachée à son rôle —
-                        <strong>rôle Cinétique : Agilité</strong>, <strong>rôle Calcul : Intelligence</strong>
-                        (le MJ assigne les rôles pour tout autre binôme) — convertie en dé selon les paliers du
-                        Livre II §6.1 (<strong>sans entraînement</strong> : 1-2 ➔ d2, 3-4 ➔ d4, 5-6 ➔ d6, 7-8 ➔ d8,
-                        9-10 ➔ d10).
-                    </p>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Total de Synchro (par Partenaire)</div>
-                        <div class="formula-math">
-                            <span class="hl-cyan">Dé de caractéristique</span> + <span class="hl-gold">PA injectés (+1 / PA)</span> + <span class="hl-ruby">malus d'états</span> &nbsp;➔&nbsp; vs <strong>ND Synchro du Duo-Tech</strong>
-                        </div>
-                        <div class="formula-desc">
-                            <strong>Aucun modificateur de caractéristique ajouté</strong> (axiome du Livre II) ; les
-                            <strong>malus d'états</strong> (Livre VII) s'appliquent normalement. Un
-                            <strong>maximum naturel</strong> sur le dé vaut <strong>succès automatique</strong> de ce
-                            partenaire. <em>Exception assumée :</em> la synchro teste une caractéristique nue, sans
-                            compétence — aucune compétence ne remplace le fait d'être en phase, et la synchro ne
-                            s'entraîne pas (aucune case de progression cochée, Livre I §5).
-                            Prévoyez <strong>1 à 2 PA injectés</strong> par partenaire : le ND est calibré pour.
-                        </div>
-                    </div>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Duo-Tech</th>
-                                    <th>Condition de Placement</th>
-                                    <th>Coûts (Cinétique + Calcul + départ)</th>
-                                    <th>ND Synchro (Caracs)</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>🔥 Sillage Igné</strong></td>
-                                    <td>2 à 4 ennemis alignés</td>
-                                    <td>3 + 4 + 1 = <strong>8 PA</strong></td>
-                                    <td><span class="pill-badge amber">5</span> (AGI + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>🪢 Lacet de Nytharite</strong></td>
-                                    <td>Cible ayant bougé ce round</td>
-                                    <td>2 + 2 + 1 = <strong>5 PA</strong></td>
-                                    <td><span class="pill-badge amber">5</span> (AGI + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>♨️ Fournaise à Retardement</strong></td>
-                                    <td>Ennemi isolé (rien à ≤ 2 cases)</td>
-                                    <td>3 + 3 + 1 = <strong>7 PA</strong></td>
-                                    <td><span class="pill-badge amber">5</span> (AGI + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>❄️ Trempe Inversée</strong></td>
-                                    <td>Ennemis groupés (≤ 2 cases d'un point)</td>
-                                    <td>4 + 4 + 1 = <strong>9 PA</strong></td>
-                                    <td><span class="pill-badge amber">6</span> (AGI + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>🛤️ Railgun Artisanale</strong></td>
-                                    <td>Couloir vide de 4+ cases, 1 cible dure au bout</td>
-                                    <td>5 + 5 + 1 = <strong>11 PA</strong></td>
-                                    <td><span class="pill-badge ruby">7</span> (FOR + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>✖️ Cisaille Entropique</strong></td>
-                                    <td>Deux axes ennemis qui se croisent (X)</td>
-                                    <td>4 + 4 + 1 = <strong>9 PA</strong></td>
-                                    <td><span class="pill-badge amber">6</span> (AGI + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>⧉ Parallaxe</strong></td>
-                                    <td>Partenaires opposés à 180° autour de la cible</td>
-                                    <td>3 + 2 + 1 = <strong>6 PA</strong></td>
-                                    <td><span class="pill-badge amber">5</span> (AGI + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>🌫️ Mirage à Deux Temps</strong></td>
-                                    <td>Aucune (défensif)</td>
-                                    <td>2 + 1 + 1 = <strong>4 PA</strong></td>
-                                    <td><span class="pill-badge cyan">4</span> (AGI + INT)</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>⬆️ Uppercut Thermobarique</strong></td>
-                                    <td>Cible entravée (étourdie, ralentie ou gelée) à ≤ 50% PV</td>
-                                    <td>4 + 4 + 1 = <strong>9 PA</strong></td>
-                                    <td><span class="pill-badge amber">6</span> (FOR + INT)</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <ul>
-                        <li><strong>🔥 Sillage Igné :</strong> <em>Parfaite</em> — Mina dash gratuitement le long de
-                            la ligne (arrivée = case libre la plus proche si occupée) : <strong>4 bruts</strong> par
-                            cible traversée + <strong>3 feu + En Feu</strong>. <em>Semi</em> — dash + 4 + 1, et Mina
-                            encaisse <strong>2 bruts</strong> (exposée au bout de la ligne). <em>Ratée</em> — PA
-                            perdus, Mina reste sur place.</li>
-                        <li><strong>🪢 Lacet de Nytharite :</strong> <em>Parfaite</em> — cible
-                            <strong>Immobilisée 1 tour</strong>, 0 dégât. <em>Semi</em> —
-                            <strong>Ralenti 1 tour</strong> (coûts doublés). <em>Ratée</em> — la cible glisse hors du
-                            lasso.</li>
-                        <li><strong>♨️ Fournaise à Retardement :</strong> <em>Parfaite</em> — <strong>5 bruts +
-                            Étourdi 1 tour + −2 PA</strong>. <em>Semi</em> — 3 bruts, sans Étourdi. <em>Ratée</em> —
-                            implosion éventée.</li>
-                        <li><strong>❄️ Trempe Inversée :</strong> <em>Parfaite</em> — cibles
-                            <strong>Ralenties 1 tour</strong> et armures fissurées (<strong>−2 absorption</strong>
-                            jusqu'à la fin du round suivant). <em>Semi</em> — Ralenti seul. <em>Ratée</em> — le gel
-                            ne prend pas.</li>
-                        <li><strong>🛤️ Railgun Artisanale :</strong> <em>Parfaite</em> — <strong>8 perforants</strong>
-                            (ignore la moitié de l'armure) sur la cible dure. <em>Semi</em> — 5 bruts, armure
-                            normale. <em>Ratée</em> — le couloir se referme.</li>
-                        <li><strong>✖️ Cisaille Entropique :</strong> <em>Parfaite</em> — <strong>5 bruts +
-                            Saignement</strong> sur chaque cible à l'intersection. <em>Semi</em> — 3 bruts.
-                            <em>Ratée</em> — les branches se désynchronisent.</li>
-                        <li><strong>⧉ Parallaxe :</strong> <em>Parfaite</em> — la cible <strong>ne peut pas se
-                            défendre</strong> (score 0, comme une défense passive §24.1) contre la frappe conjointe
-                            à <strong>4 bruts</strong>. <em>Semi</em> — défense à <strong>−2</strong>. <em>Ratée</em> —
-                            la cible esquive entre les deux temps.</li>
-                        <li><strong>🌫️ Mirage à Deux Temps :</strong> <em>Parfaite</em> — Mina se replace de
-                            <strong>3 cases gratuites</strong> + gagne <strong>une réaction défensive
-                            gratuite</strong> (0 PA) valable jusqu'à son prochain tour. <em>Semi</em> — replacement
-                            seul. <em>Ratée</em> — la pré-vision se brouille.</li>
-                        <li><strong>⬆️ Uppercut Thermobarique :</strong> <em>Parfaite</em> — <strong>7 bruts + À
-                            Terre</strong>. <em>Semi</em> — 4 bruts. <em>Ratée</em> — PA perdus
-                            <strong>+ 1 Essoufflement chacun</strong> (le whiff punit).</li>
-                    </ul>
-
-                    <div class="callout emerald">
-                        <div class="callout-header">
-                            Arbitrage MJ : Pourquoi les Duo-Tech ne Cassent Pas la Table
-                        </div>
-                        <div class="callout-body">
-                            Sauf mention, les dégâts Duo-Tech sont <strong>bruts</strong> (ignorent l'armure) et se
-                            résolvent comme une Clé (Livre III) : si le total dépasse l'Encaissement, appliquez
-                            l'arbre à 0 PV (Livre VII). Le prix réel n'est pas le ND de synchro mais
-                            l'<strong>addition des PA</strong> : 5 à 11 PA cumulés vident ~70% des deux réserves
-                            (héros typique : 11 PA) et interdisent toute réaction derrière — la fenêtre de punition
-                            ennemie est l'équilibreur naturel. Les <strong>conditions de placement strictes</strong>
-                            (alignement, isolement, couloir vide, opposition) font le reste : aucun Duo-Tech ne
-                            fonctionne « partout, tout le temps ».
-                        </div>
-                    </div>
-
-                    <!-- ================= CHAPITRE 26 ================= -->
-                    <h2 id="chap-26">
-                        <span class="section-symbol">Chapitre 26.</span>
-                        Localisation Anatomique & Combat de Véhicules
-                    </h2>
-
-                    <p>
-                        Dans le Système RP, les personnages n'ont pas une jauge de points de vie abstraite. Chaque coup
-                        frappe un membre précis, avec des conséquences physiologiques directes.
-                    </p>
-
-                    <h3>26.1 Cible Visée & Le Différentiel de Touche</h3>
-                    <p>
-                        Un attaquant peut désigner une zone précise du corps (le cœur, les yeux, les poumons, la tête,
-                        les bras, les jambes) :
-                    </p>
-                    <p>
-                        <strong>Rappel officiel :</strong> le total d'attaque comme de défense vaut <strong>Tirage du dé de compétence + PA injectés + malus situationnels</strong>. <strong>Aucun modificateur de caractéristique n'est ajouté</strong> — les caractéristiques ont déjà fixé le dé via le rang de compétence.
-                    </p>
-                    <ul>
-                        <li><strong>Punition de Visée :</strong> Viser un point précis impose <strong>-1 de
-                                punition</strong> sur l'épreuve (ou la dépense préalable de <strong>1 PA</strong> pour
-                            annuler la punition).</li>
-                        <li><strong>Différentiel Positif (Attaque &gt; Défense) :</strong> L'attaque frappe exactement
-                            la partie visée. Le différentiel s'ajoute directement aux dégâts !</li>
-                        <li><strong>Différentiel Égal à 0 (Attaque = Défense) :</strong> Le coup porte, mais la visée
-                            dévie à cause du réflexe défensif. L'attaque inflige ses dégâts de base sur une <strong>zone
-                                aléatoire adjacente</strong> déterminée au dé (ex: 1d4 ou 1d6).</li>
-                        <li><strong>Différentiel Négatif :</strong> Si le total de l'attaque plus les dégâts de l'arme
-                            reste inférieur ou égal à la parade, le coup est <strong>parfaitement bloqué</strong> (aucun
-                            dégât).</li>
-                    </ul>
-
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Tirage Dé</th>
-                                    <th>Déviation Haute (Tête / Torse)</th>
-                                    <th>Déviation Membres</th>
-                                    <th>Conséquence Médicale</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>1</strong></td>
-                                    <td><strong>Yeux / Visage</strong></td>
-                                    <td>Épaule / Clavicule</td>
-                                    <td>Cécité partielle, hémorragie faciale, désorientation.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>2</strong></td>
-                                    <td><strong>Cou / Trachée</strong></td>
-                                    <td>Bras Droit (Porteur d'arme)</td>
-                                    <td>Risque d'asphyxie, perte d'essoufflement immédiate.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>3</strong></td>
-                                    <td><strong>Tête / Boîte Crânienne</strong></td>
-                                    <td>Bras Gauche (Bouclier)</td>
-                                    <td>Commotion, épreuve de Constitution pour rester conscient.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>4</strong></td>
-                                    <td><strong>Poumons / Cœur</strong></td>
-                                    <td>Abdomen / Côtes</td>
-                                    <td>Dégâts massifs, perforation, incapacité respiratoire.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>5-6</strong></td>
-                                    <td><strong>Torse / Dos</strong></td>
-                                    <td>Cuisse / Genou / Jambe</td>
-                                    <td>Encaissement standard, perte de motricité si jambe brisée.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-
-                    <div class="formula-box">
-                        <div class="formula-label">Formule Complète des Dégâts Réels</div>
-                        <div class="formula-math">
-                            <span class="hl-ruby">Dégâts Subis</span> = (Dégâts Arme + Bonus Entraînement + <span
-                                class="hl-cyan">&Delta; Touche</span>) &minus; <span class="hl-gold">Constitution</span>
-                            &minus; <span class="hl-emerald">Armure</span>
-                        </div>
-                        <div class="formula-desc">
-                            Si le total final est inférieur ou égal à zéro, le corps du personnage <strong>encaisse le
-                                choc</strong> grâce à sa musculature et son blindage sans subir de blessure
-                            incapacitante.
-                        </div>
-                    </div>
-
-                    <h3>26.2 La Condition « Canon Entravé » & Combat Rapproché à l'Arme Longue</h3>
-                    <p>
-                        Lorsqu'un combattant équipé d'une arme à distance ou arme longue (fusil laser, carabine, arme à deux mains ou portée &gt; 1) se retrouve au contact direct d'un adversaire conscient (Distance = 1 case), il subit la contrainte spatiale d'encombrement <strong>« Canon Entravé »</strong> :
-                    </p>
-                    <div class="table-container">
-                        <table class="data-table">
-                            <thead>
-                                <tr>
-                                    <th>Manœuvre Tactique au Contact</th>
-                                    <th>Coût en PA</th>
-                                    <th>Compétence</th>
-                                    <th>Résolution Mécanique & Impact</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td><strong>Tir en Rétention</strong></td>
-                                    <td>2 PA</td>
-                                    <td>Ballistique</td>
-                                    <td><strong>Malus net de -2</strong> au jet. En cas de parade adverse réussie (Diff &lt; 0), l'arme est déviée.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Tir Visé de Rétention</strong></td>
-                                    <td>3 PA</td>
-                                    <td>Ballistique</td>
-                                    <td>Dépense <strong>+1 PA</strong> pour annuler le malus de Canon Entravé et autoriser la visée d'un membre.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Coup de Crosse / Canon</strong></td>
-                                    <td>2 PA</td>
-                                    <td>Maniement d'Arme (<em>spé. Armes Contondantes</em>)</td>
-                                    <td>Dégâts bruts réduits (3-4 PV). Si les dégâts dépassent l'Encaissement (CON &times; 2), la cible subit l'état <em>Déstabilisé</em>.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Frappe Martiale (Arts Martiaux)</strong></td>
-                                    <td>2 PA</td>
-                                    <td>Mains Nues</td>
-                                    <td><strong>Exemption totale :</strong> kick ou coup de genou à plein dé sans malus. Déclenche le <em>Refoulement</em> sur choc ou critique.</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>Décrochage (Recul)</strong></td>
-                                    <td>1 PA</td>
-                                    <td>Mouvement</td>
-                                    <td>Recule d'1 case (Distance = 2). Rompt immédiatement la condition <em>Canon Entravé</em>.</td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div class="callout vital">
-                        <div class="callout-header">
-                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                            </svg>
-                            Mécanique de Refoulement (Push-Kick / Knockback)
-                        </div>
-                        <div class="callout-body">
-                            Tout combattant maîtrisant la spécialisation <em>Arts Martiaux</em> qui délivre une frappe à mains nues réussissant avec dépassement de l'Encaissement adverse, sur coup critique ou différentiel net &ge; 4, repousse physiquement la cible d'<strong>1 case en arrière</strong>. Si la case arrière est occupée ou bloquée par un obstacle infranchissable, la cible heurte la paroi et subit immédiatement l'état <strong>Déstabilisé</strong>.
-                        </div>
-                    </div>
-
-                    <h3>26.3 Combat Impliquant des Véhicules</h3>
-                    <p>
-                        Qu'il s'agisse d'une charrette médiévale, d'un tank d'assaut, d'un speeder de combat ou d'un
-                        croiseur stellaire, les règles mécaniques sont unifiées.
+                        La résistance corporelle dépend directement de l'attribut <strong>Constitution (Con)</strong>.
+                        Deux formules fondamentales gouvernent la survie d'un personnage face aux violences du monde :
                     </p>
 
                     <div class="cards-grid-2">
                         <div class="spec-card">
                             <div class="spec-card-title">
-                                <span>Zones Essentielles</span>
-                                <span class="pill-badge ruby">Vitales</span>
+                                <span>Capacité d'Encaissement</span>
+                                <span class="pill-badge cyan">Seuil d'Encaissement</span>
                             </div>
-                            <div class="spec-card-world">Cockpit // Moteur // Cadre // Rails</div>
+                            <div class="spec-card-world">Physiologie // Musculature & Densité Osseuse</div>
+                            <div class="formula-math" style="font-size: 1.25em; margin: 15px 0;">
+                                <span class="hl-cyan">Capacité d'Encaissement</span> = <span
+                                    class="hl-gold">Constitution</span> &times; 2
+                            </div>
                             <p>
-                                La destruction des points de vie d'une zone essentielle <strong>met immédiatement hors
-                                    service le véhicule</strong> (explosion, panne motrice complète ou écrasement
-                                catastrophique).
+                                C'est la quantité maximale de dégâts accumulés sur une même zone anatomique qu'un corps
+                                peut supporter sans défaillance structurelle. Dès que les dégâts cumulés sur une zone
+                                dépassent ce seuil, le personnage subit un <strong>Choc Traumatique</strong> : il gagne
+                                immédiatement <strong>+1 Essoufflement</strong> et doit réussir une épreuve de
+                                Constitution pour ne pas s'effondrer.
                             </p>
                             <div class="spec-card-footer">
-                                <span class="tag-pill ruby">Destruction Véhicule</span>
+                                <span class="tag-pill cyan">Choc Traumatique à > Con &times; 2</span>
                             </div>
                         </div>
 
                         <div class="spec-card">
                             <div class="spec-card-title">
-                                <span>Zones Superficielles</span>
-                                <span class="pill-badge cyan">Systèmes Auxiliaires</span>
+                                <span>Maximum Létal</span>
+                                <span class="pill-badge ruby">Seuil Critique Absolu</span>
                             </div>
-                            <div class="spec-card-world">Guidon // Canons // Passagers // Queue</div>
+                            <div class="spec-card-world">Physiologie // Rupture Organique Totale</div>
+                            <div class="formula-math" style="font-size: 1.25em; margin: 15px 0;">
+                                <span class="hl-ruby">Maximum Létal</span> = <span class="hl-gold">Constitution</span>
+                                &times; 5
+                            </div>
                             <p>
-                                La destruction d'une zone superficielle désactive uniquement l'usage de l'équipement lié
-                                (perte des freins, enrayement de la tourelle laser, dépressurisation d'un pod latéral).
+                                Le seuil au-delà duquel les fonctions vitales cessent immédiatement. Si le total de
+                                dégâts subis par un personnage atteint ou dépasse <span class="hl-ruby">Constitution
+                                    &times; 5</span>, le sujet bascule immédiatement dans l'état <strong>Mort</strong>
+                                (ou nécessite l'activation immédiate d'un <em>Point de Miracle</em> pour être stabilisé
+                                in extremis à l'état <strong>Agonisant</strong>).
                             </p>
                             <div class="spec-card-footer">
-                                <span class="tag-pill cyan">Perte Fonctionnelle</span>
+                                <span class="tag-pill ruby">Arrêt Cardiaque / Trépas</span>
                             </div>
                         </div>
                     </div>
 
-                    <h4>Échelle des Calibres & Seuils de Blindage</h4>
+                    <h3>23.1 Typologie des Dégâts : Bruts, Résiduels & Absolus</h3>
                     <div class="table-container">
                         <table class="data-table">
                             <thead>
                                 <tr>
-                                    <th>Palier de Points de Vie</th>
-                                    <th>Catégorie d'Armement Capable d'Endommager</th>
-                                    <th>Exemples Typiques de Véhicules</th>
+                                    <th>Type de Dégâts</th>
+                                    <th>Définition & Mécanique</th>
+                                    <th>Interaction avec la Constitution & l'Armure</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td><strong>1 à 10 PV</strong></td>
-                                    <td>Mains nues, armes de jet légères, flèches, pistolets</td>
-                                    <td><strong>Vélo :</strong> Guidon (Sup 4pv), Cadre (Ess 6pv), Pédalier (Ess 3pv),
-                                        Roues (Ess 2pv).</td>
+                                    <td><strong>Dégâts Bruts (Physiques)</strong></td>
+                                    <td>Impact direct d'une lame, d'un projectile ou d'une onde de choc.</td>
+                                    <td>Réduits par l'<strong>Armure</strong> puis par la <strong>Constitution</strong>
+                                        de la cible. Si le différentiel après réduction est &le; 0, le personnage
+                                        encaisse sans dommage.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>11 à 50 PV</strong></td>
-                                    <td>Armes de contact lourdes (marteau, hache), explosifs légers</td>
-                                    <td><strong>Charrette :</strong> Conducteur (Ess 30pv), Passagers (Sup 40pv), Roues
-                                        (Ess 15pv).</td>
+                                    <td><strong>Dégâts Résiduels (Continus)</strong></td>
+                                    <td>Hémorragie active (Saignement), brûlures persistantes (En Feu), toxines
+                                        (Empoisonné) ou suffocation (Asphyxie). Posés avec une <strong>valeur
+                                            dégressive</strong> (ex : 3 résiduels).</td>
+                                    <td><strong>Tick en début du tour personnel</strong> de la victime : elle subit la
+                                        valeur résiduelle en PV (ex : 3 PV), puis la valeur <strong>décroît de 1</strong>
+                                        (3 → 2 → 1 → 0 = disparition du statut). <strong>Ignorent l'armure</strong> ;
+                                        En Feu traverse le <strong>bouclier</strong> d'abord ; Asphyxie draine aussi
+                                        <strong>1 PA</strong>. Tout <strong>soin stoppe le Saignement</strong>
+                                        (bandage, seringue, premiers soins) ; Empoisonné / En Feu / Asphyxie exigent un
+                                        traitement dédié (kit de chirurgie, extinction, désobstruction). Sans soin, un
+                                        résiduel <strong>aggravé</strong> (ex : Hémorragie Profonde) croît de +1/tour
+                                        au lieu de décroître.</td>
                                 </tr>
                                 <tr>
-                                    <td><strong>51 à 1 000 PV</strong></td>
-                                    <td>Armes de siège, canons de char, explosifs moyens</td>
-                                    <td><strong>Jet :</strong> Cockpit (Ess 100pv), Moteurs (Sup 90pv), Ailes (Ess
-                                        100pv).<br><strong>Tank :</strong> Canon (Sup 500pv), Corps (Ess 1000pv),
-                                        Chenilles (Ess 300pv).</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>1 001 à 10 000 PV</strong></td>
-                                    <td>Armes lourdes de vaisseaux spatiaux, lasers arcaniques, torpilles</td>
-                                    <td><strong>Porte-avions :</strong> Contrôle (Ess 3000pv), Decks (Sup 6000pv),
-                                        Flancs (Ess 6000pv).<br><strong>Croiseur Spatial (Aeschylus) :</strong> Coque
-                                        (Ess 8000pv), Moteurs (Ess 4000pv), Pods & Lasers (Sup 2000pv).</td>
-                                </tr>
-                                <tr>
-                                    <td><strong>10 001+ PV</strong></td>
-                                    <td>Armement nucléaire, frappe orbitale de Cinquième Force</td>
-                                    <td>Stations spatiales orbitales, forteresses continentales, mégastructures.</td>
+                                    <td><strong>Dégâts Absolus (Arcaniques)</strong></td>
+                                    <td>Ondes gravitationnelles de Cinquième Force, compression subquantique.</td>
+                                    <td><strong>Ignorent totalement</strong> l'armure physique et la Constitution !
+                                        Chaque point de dégât absolu est déduit directement de la jauge vitale.</td>
                                 </tr>
                             </tbody>
                         </table>
                     </div>
 
+                    <h3>23.2 L'Arbre de Résolution de la Chute à 0 PV</h3>
+                    <p>
+                        Lorsqu'une attaque réduit la vitalité d'un combattant à 0 PV ou moins, on compare les dégâts
+                        réels subis lors de ce coup au Seuil d'Encaissement (<code>CON &times; 2</code>) :
+                    </p>
+                    <ul>
+                        <li><strong>Branche 1 : Dégâts &gt; Seuil d'Encaissement (Traumatisme Incompressible) :</strong>
+                            Aucun choix possible.
+                            <ul>
+                                <li><strong>Impact à la Tête / Crâne :</strong> <strong>Mort Instantanée</strong> par
+                                    destruction cérébrale. Seule la dépense automatique d'un <em>Point de Miracle</em>
+                                    permet de survivre in extremis à 1 PV (coma profond).</li>
+                                <li><strong>Impact au Cœur / Cou :</strong> Coma immédiat et agonie rapide (hémorragie
+                                    mortelle en <code>CON / 2</code> tours).</li>
+                                <li><strong>Torse &amp; Membres :</strong> Syncope forcée (état <em>Inconscient</em> et
+                                    <em>À Terre</em> immédiat).
+                                </li>
+                            </ul>
+                        </li>
+                        <li><strong>Branche 2 : Dégâts &le; Seuil d'Encaissement (Choc Contrôlé / Épuisement) :</strong>
+                            Le corps s'éteint par pure décharge vitale. Le combattant choisit :
+                            <ul>
+                                <li><strong>Sombrer (La Syncope Protectrice) :</strong> Évanouissement stable
+                                    (<em>Inconscient</em>, <em>À Terre</em>). Les ennemis se désintéressent de la cible
+                                    au sol.</li>
+                                <li><strong>Dernier Souffle (Le Baroud d'Honneur) :</strong> Refuse l'inconscience
+                                    (<em>À Terre</em>, conscient et <em>Agonisant</em>). Conserve ses PA pour agir, mais
+                                    <strong>chaque action entreprise lui inflige +1 Essoufflement direct</strong>. Si
+                                    son Essoufflement atteint sa Constitution, son métabolisme s'effondre en arrêt
+                                    cardiaque définitif.
+                                </li>
+                            </ul>
+                        </li>
+                    </ul>
+
+                    <h3>23.3 Le Point de Miracle : L'Ultime Rempart contre la Mort</h3>
+                    <p>
+                        Chaque Personnage Joueur (PJ) commence sa carrière avec <strong>1 Point de Miracle</strong>
+                        inscrit sur sa fiche de personnage.
+                    </p>
+                    <div class="callout warning">
+                        <div class="callout-header">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <circle cx="12" cy="12" r="10" />
+                                <line x1="12" y1="8" x2="12" y2="12" />
+                                <line x1="12" y1="16" x2="12.01" y2="16" />
+                            </svg>
+                            Usage Vital du Point de Miracle
+                        </div>
+                        <div class="callout-body">
+                            Lorsqu'un PJ subit un coup mortel ou dépasse son seuil létal (<span
+                                class="hl-ruby">Constitution &times; 5</span>), le joueur peut dépenser son Point de
+                            Miracle. Le coup est providentiellement dévié (la balle ricoche sur un briquet en métal, la
+                            lame glisse sur une boucle de ceinture, un éclat de nytharite absorbe le rayon). Le PJ
+                            échappe à la mort immédiate et reste vivant à <strong>1 point en dessous de son seuil
+                                létal</strong>, mais sombre dans l'inconscience.<br><br>
+                            <em>Régénération :</em> Un Point de Miracle ne se régénère jamais par simple repos. Il ne
+                            peut être racheté qu'avec <strong>20 points d'XP</strong> ou accordé par le Maître de Jeu
+                            lors de l'accomplissement d'un jalon narratif transcendant.
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 28 ================= -->
+                    <h2 id="chap-24">
+                        <span class="section-symbol">Chapitre 24.</span>
+                        Compendium Officiel des 16 États & Effets Tactiques
+                    </h2>
+
+                    <p>
+                        Les états modifient profondément la capacité d'action d'un combattant. Ils sont issus des
+                        archives officielles du système et divisés entre <strong>états préjudiciables</strong>,
+                        <strong>états bénéfiques (buffs)</strong>, <strong>statuts vitaux</strong> et <strong>états
+                            matériels</strong>.
+                    </p>
+
+                    <h3>24.1 États Préjudiciables & Afflictions en Combat</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>État</th>
+                                    <th>Description Physiologique</th>
+                                    <th>Malus & Impact Mécanique</th>
+                                    <th>Durée Typique</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="table-badge ruby">Déstabilisé</span></td>
+                                    <td>Une créature est physiquement débalancée suite à un impact lourd.</td>
+                                    <td><strong>-2 ec</strong> (épreuves de compétence), vitesse de déplacement réduite
+                                        à rampante (1 case = 2 PA).</td>
+                                    <td>Variable (1 à 6 tours en combat).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Étourdi</span></td>
+                                    <td>Une créature a la tête qui tourne ou le regard trouble.</td>
+                                    <td><strong>-1 ec</strong> sur tous les jets.</td>
+                                    <td>Variable (1 à 20 tours en combat).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Immobilisé</span></td>
+                                    <td>Une créature est entravée, prise au piège ou gelée sur place.</td>
+                                    <td><strong>Désavantage :</strong> Impossible d'effectuer la moindre action de
+                                        mouvement.</td>
+                                    <td>Variable (1 à 6 tours en combat).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Paralysé</span></td>
+                                    <td>Système nerveux totalement tétanisé par un choc électrique ou mental.</td>
+                                    <td><strong>Incapacité Totale :</strong> Ne peut faire aucune action ni réaction.
+                                    </td>
+                                    <td>Court (1 à 2 tours en combat).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Sonné</span></td>
+                                    <td>Commotion violente combinant paralysie et perte de conscience brève.</td>
+                                    <td>Ne peut faire aucune action. <strong>La créature tombe immédiatement à
+                                            terre</strong> à son tour.</td>
+                                    <td>Court (1 à 2 tours en combat).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">À terre</span></td>
+                                    <td>Une créature est étendue sur le sol ou agenouillée.</td>
+                                    <td><strong>-1 ec</strong> aux épreuves d'attaque, vitesse rampante. Cible plus
+                                        facile au corps-à-corps.</td>
+                                    <td>Jusqu'à ce que la créature dépense ses PA pour se relever.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Ralenti</span></td>
+                                    <td>Ralentissement musculaire ou distorsion gravitationnelle locale.</td>
+                                    <td><strong>Toute action coûte le DOUBLE de PA</strong> (ex: bouger d'une case coûte
+                                        2 PA au lieu d'1).</td>
+                                    <td>Variable (1 à 5 tours en combat).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Agonisant</span></td>
+                                    <td>La créature a perdu ses moyens vitaux et panique nerveusement.</td>
+                                    <td>Ne peut prendre aucune action raisonnée. Le personnage fuit en courant de
+                                        <strong>6 cases</strong> dans une direction aléatoire (1d8).
+                                    </td>
+                                    <td>Jusqu'à stabilisation médicale.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Canon Entravé</span></td>
+                                    <td>Contrainte spatiale d'encombrement : arme longue tenue avec un ennemi adjacent (dist 1).</td>
+                                    <td><strong>-2 au tir</strong> balistique (annulable pour +1 PA de visée de rétention). Parade à l'arme pénalisée d'un niveau de dé sans spécialisation.</td>
+                                    <td>Tant qu'un adversaire conscient occupe un hexagone adjacent.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>24.1bis États à Dégâts Résiduels (DoT) : tick, aggravation, soin</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>État</th>
+                                    <th>Tick en début de tour personnel</th>
+                                    <th>Soin / Dissipation</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="table-badge ruby">Saignement</span></td>
+                                    <td>Valeur résiduelle en PV directs (ignore armure et bouclier), puis −1/tour.
+                                        Sans valeur posée : 1 PV/tour. Ex : Frappe Jugulaire = entraînements en résiduels.</td>
+                                    <td><strong>Tout soin stoppe</strong> : bandage, seringue, premiers soins, Homéostasie.
+                                        Sinon persiste jusqu'à 0.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Empoisonné</span></td>
+                                    <td>Valeur résiduelle en PV directs (ignore armure et bouclier), puis −1/tour.
+                                        Sans valeur posée : 1 PV/tour.</td>
+                                    <td>Kit de chirurgie / premiers soins + kit, résine de Mina. Seringue seule : non.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">En Feu</span></td>
+                                    <td>Valeur résiduelle (sans valeur : 2 PV/tour), <strong>bouclier d'abord</strong>,
+                                        ignore l'armure, puis −1/tour.</td>
+                                    <td>Extinction (kit + premiers soins), résine de Mina, Coagulation Flash. S'éteint à 0.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge ruby">Asphyxie</span></td>
+                                    <td>Valeur résiduelle en PV (sans valeur : 1 PV/tour) <strong>+ drain de 1 PA</strong>
+                                        sur la réserve rechargée, puis −1/tour.</td>
+                                    <td>Désobstruction (premiers soins + kit), résine de Mina, masque en prévention.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <p>
+                        <strong>Aggravation :</strong> un résiduel aggravé (ex : <em>Hémorragie Profonde</em>) inflige
+                        le double et <strong>croît de +1/tour</strong> au lieu de décroître — seul un soin l'arrête.
+                        <strong>Chute à 0 PV par DoT :</strong> résolution via l'arbre standard (Dernier Souffle possible).
+                    </p>
+
+                    <h3>24.2 États Bénéfiques (Buffs) & Amplificateurs</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>État</th>
+                                    <th>Description Arcanique / Physiologique</th>
+                                    <th>Bonus & Avantages Tactiques</th>
+                                    <th>Durée Typique</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><span class="table-badge cyan">Survolté</span></td>
+                                    <td>Afflux massif d'adrénaline ou stimulation nerveuse arcanique.</td>
+                                    <td><strong>+1 ec</strong> sur tous les tests, <strong>+3 PA</strong>
+                                        supplémentaires par tour !</td>
+                                    <td>1 à 5 tours en combat.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge green">En transe</span></td>
+                                    <td>Harmonie synaptique parfaite, perception en temps ralenti.</td>
+                                    <td><strong>+2 ec</strong> sur tous les jets, <strong>+5 PA</strong> par tour !</td>
+                                    <td>Court (1 à 2 tours en combat).</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge cyan">Accéléré</span></td>
+                                    <td>Distorsion spatiale ou propulsion cinétique des membres.</td>
+                                    <td><strong>Toute action de déplacement coûte la MOITIÉ des PA</strong> (arrondi au
+                                        supérieur).</td>
+                                    <td>1 à 2 tours en combat.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge cyan">Rapide</span></td>
+                                    <td>Foulée amplifiée et réflexes moteurs aiguisés.</td>
+                                    <td><strong>+3 PA réservés exclusivement aux déplacements</strong> à chaque tour.
+                                    </td>
+                                    <td>1 à 6 tours en combat.</td>
+                                </tr>
+                                <tr>
+                                    <td><span class="table-badge amber">Lévitation / En Vol</span></td>
+                                    <td>Répulsion gravitationnelle de Cinquième Force.</td>
+                                    <td>Déplacement aérien libre, coût de déplacement réduit de moitié (-1 ec si le
+                                        sujet n'a pas la spécialisation Aérien ou Acrobate).</td>
+                                    <td>Variable selon la réserve d'énergie.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>24.3 Statuts Vitaux Majeurs : Souffrant, Inconscient & Mort</h3>
+                    <div class="cards-grid-3">
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Inconscient</span>
+                                <span class="pill-badge amber">Inerte</span>
+                            </div>
+                            <div class="spec-card-world">Statut Pur // Syncope / Sommeil</div>
+                            <p style="font-size: 0.9em; margin-top: 10px;">
+                                La créature est endormie ou assommée. Elle ne peut effectuer aucune action ni réaction.
+                                Elle peut être réveillée par une secousse vigoureuse (1 PA d'un allié) ou par
+                                l'application de premiers soins.
+                            </p>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Souffrant</span>
+                                <span class="pill-badge ruby">Blessure Grave</span>
+                            </div>
+                            <div class="spec-card-world">Statut Pur // Traumatisme Ouvert</div>
+                            <p style="font-size: 0.9em; margin-top: 10px;">
+                                Le personnage souffre d'une blessure critique invalidante. <strong>Règle d'Or Médicale
+                                    :</strong> Ce statut <em>ne peut pas être guéri par des soins ordinaires</em>. Il
+                                exige une épreuve de Premiers Soins soignant d'un seul coup au moins <strong><span
+                                        class="hl-ruby">Constitution &times; 2</span> dégâts</strong> !
+                            </p>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Mort</span>
+                                <span class="pill-badge ruby">Trépas Clinique</span>
+                            </div>
+                            <div class="spec-card-world">Statut Pur // Arrêt Métabolique</div>
+                            <p style="font-size: 0.9em; margin-top: 10px;">
+                                La conscience a quitté la chair. Le sujet ne peut plus agir à moins d'un rituel
+                                arcanique de rappel de l'âme ou d'une défibrillation chirurgicale dans les 10 tours
+                                suivant le décès.
+                            </p>
+                        </div>
+                    </div>
+
+                    <h3>24.4 Les Effets Spéciaux Déclenchés sur Épreuve</h3>
+                    <div class="table-container">
+                        <table class="data-table">
+                            <thead>
+                                <tr>
+                                    <th>Effet Déclenché</th>
+                                    <th>Prérequis & Différentiel</th>
+                                    <th>Conséquence Immédiate sur la Cible</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><strong>Repousser</strong></td>
+                                    <td>Différentiel de 1+ en corps-à-corps ou magie</td>
+                                    <td>La cible est repoussée d'autant de cases que le différentiel (max 1 case par
+                                        niveau d'entraînement).</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Refoulement (Push-Kick)</strong></td>
+                                    <td>Arts Martiaux au contact + Choc (&gt; CON &times; 2), Critique ou Diff &ge; 4</td>
+                                    <td>La cible est repoussée d'1 case en arrière (Distance = 2), brisant l'état <em>Canon Entravé</em>. Si la trajectoire est bloquée par un obstacle, la cible subit l'état <em>Déstabilisé</em>.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Attirer</strong></td>
+                                    <td>Différentiel de 1+ avec grappin ou télékinésie</td>
+                                    <td>La cible est attirée vers l'origine d'autant de cases que le différentiel ou
+                                        l'entraînement.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Saigner</strong></td>
+                                    <td>Différentiel de 5+ avec arme tranchante/perforante</td>
+                                    <td>Inflige des <strong>dégâts résiduels</strong> continus égaux au niveau
+                                        d'entraînement à chaque tour.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Brûler</strong></td>
+                                    <td>Différentiel de 5+ avec feu ou plasma</td>
+                                    <td>La cible prend feu et subit des dégâts de brûlure pendant 1 à 3 tours
+                                        consécutifs.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Désarmer</strong></td>
+                                    <td>Différentiel de 5+ et 3 entraînements martiaux</td>
+                                    <td>L'arme tenue par la cible vole à 2 cases d'elle au sol.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Assommer</strong></td>
+                                    <td>Différentiel de 10+ et visée crânienne (niveau 2)</td>
+                                    <td>La cible bascule immédiatement dans l'état <strong>Inconscient</strong> pour 1
+                                        tour minimum.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Posséder</strong></td>
+                                    <td>Différentiel de 10+ en Magie de l'Esprit</td>
+                                    <td>Prend le contrôle des actions de la créature pendant 1 tour. Amnésie totale de
+                                        la victime.</td>
+                                </tr>
+                                <tr>
+                                    <td><strong>Désintégrer</strong></td>
+                                    <td>Différentiel de 20+ et Spécialisation Destruction 6</td>
+                                    <td><strong>Mort instantanée et totale :</strong> la matière de la cible est
+                                        vaporisée sans laisser de dépouille.</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>24.5 Les 5 États des Objets & Équipements</h3>
+                    <div class="cards-grid-2">
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Parfait État & Endommagé</span>
+                                <span class="pill-badge green">Opérationnel</span>
+                            </div>
+                            <ul style="padding-left: 15px; margin-top: 10px; font-size: 0.9em;">
+                                <li><strong>Parfait État :</strong> L'objet est totalement neuf ou réparé à 100%.
+                                    Rendement maximal.</li>
+                                <li><strong>Endommagé :</strong> L'objet a encaissé des impacts ou de l'usure, mais
+                                    conserve toutes ses fonctions nominales.</li>
+                            </ul>
+                        </div>
+
+                        <div class="spec-card">
+                            <div class="spec-card-title">
+                                <span>Jammé, Détruit & Anéanti</span>
+                                <span class="pill-badge ruby">Hors-Service</span>
+                            </div>
+                            <ul style="padding-left: 15px; margin-top: 10px; font-size: 0.9em;">
+                                <li><strong>Jammé (Enrayé) :</strong> Inutilisable temporairement, mais réparable sur le
+                                    terrain en dépensant <strong>2 PA</strong>.</li>
+                                <li><strong>Détruit :</strong> En morceaux et inutilisable, mais restaurable en atelier
+                                    avec pièces de rechange.</li>
+                                <li><strong>Anéanti :</strong> Totalement pulvérisé, irrécupérable et irréparable.</li>
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- ================= CHAPITRE 29 ================= -->
+                    <h2 id="chap-25">
+                        <span class="section-symbol">Chapitre 25.</span>
+                        Premiers Soins, Convalescence & Résurrection
+                    </h2>
+
+                    <p>
+                        Face aux traumatismes du champ de bataille, la médecine d'urgence repose sur la compétence
+                        <strong>Premiers Soins</strong> (liée à l'Érudition ou à l'Intelligence).
+                    </p>
+
+                    <h3>25.1 Protocole de Premiers Soins d'Urgence</h3>
+                    <ul>
+                        <li><strong>Temps d'Action :</strong> Réaliser des premiers soins en combat nécessite <strong>3
+                                PA</strong> d'immobilisation au chevet du blessé.</li>
+                        <li><strong>Stabiliser un Agonisant :</strong> Une réussite sur une épreuve de Premiers Soins
+                            (Difficulté 12) stoppe l'hémorragie et ramène un agonisant à l'état <em>Inconscient
+                                stable</em>.</li>
+                        <li><strong>Levée de l'État Souffrant :</strong> Pour refermer une blessure critique, le médecin
+                            doit obtenir un score suffisant pour soigner en une seule fois une quantité de dégâts égale
+                            ou supérieure à <strong><span class="hl-ruby">Constitution &times; 2</span></strong> de la
+                            victime.</li>
+                    </ul>
+
+                    <h3>25.2 Convalescence Naturelle vs Soins Arcaniques</h3>
+                    <p>
+                        Le repos physiologique permet au corps de réparer ses tissus selon un rythme biologique régulier
+                        :
+                    </p>
+                    <div class="formula-box">
+                        <div class="formula-label">Taux de Récupération Quotidien</div>
+                        <div class="formula-math">
+                            <span class="hl-emerald">Dégâts Récupérés par Nuit</span> = <span
+                                class="hl-gold">Constitution</span> + Niveau d'Endurance
+                        </div>
+                        <div class="formula-desc">
+                            Une nuit de sommeil complète en lieu sûr régénère un montant de dégâts égal à la
+                            Constitution plus le niveau dans la compétence Endurance. Les soins magiques de Cinquième
+                            Force accélèrent ce processus en échange de points d'énergie arcanique.
+                        </div>
+                    </div>
+
+                    <h3>25.3 La Règle de Résurrection & Le Poids du Trépas</h3>
+                    <p>
+                        Dans le Système RP, ramener un être d'entre les morts n'est jamais un acte anodin. Si une magie
+                        suprême ou une réanimation d'urgence parvient à réinsuffler la vie dans un cadavre :
+                    </p>
+                    <div class="callout ruby"
+                        style="border-left: 4px solid var(--ruby-danger); background: rgba(244, 63, 94, 0.05); padding: 15px 20px; margin: 20px 0;">
+                        <div class="callout-header"
+                            style="color: var(--ruby-danger); font-weight: 700; display: flex; align-items: center; gap: 8px;">
+                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor"
+                                stroke-width="2">
+                                <path
+                                    d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z" />
+                                <line x1="12" y1="9" x2="12" y2="13" />
+                                <line x1="12" y1="17" x2="12.01" y2="17" />
+                            </svg>
+                            Le Poids du Retour à la Vie (Séquelle Post-Mortem)
+                        </div>
+                        <div class="callout-body">
+                            Le ressuscité subit une <strong>pénalité de -1 ec sur l'ensemble de ses épreuves</strong>
+                            pendant un nombre de jours réels égal à :
+                            <div
+                                style="margin: 10px 0; font-family: 'JetBrains Mono', monospace; font-weight: 700; color: var(--ruby-danger);">
+                                <span class="hl-ruby">Durée de Convalescence</span> = 10 &minus; <span
+                                    class="hl-gold">Constitution</span> (en jours)
+                            </div>
+                            Un personnage doté d'une Constitution d'acier (ex: 5) ne souffrira que pendant 5 jours,
+                            tandis qu'un être fragile (Constitution 1) restera affaibli durant 9 longues journées avant
+                            que son âme ne soit pleinement réancrée dans sa chair.
+                        </div>
+                    </div>
+
                     <div class="codex-signature">
                         <div class="sig-meta">
                             <strong>LIVRE VI DU CODEX UNIVERSEL</strong><br>
-                            Combat Tactique, Séquence de Round, Localisation & Engins Motorisés<br>
-                            <em>Règles officielles de duel et de bataille pour tous les théâtres d'affrontement.</em>
+                            Traumatologie, Compendium des 16 États & Chirurgie de Champ de Bataille<br>
+                            <em>Validé par les chirurgiens impériaux et les guérisseurs de la Cinquième Force.</em>
                         </div>
                         <div class="sig-stamp">
-                            <span class="stamp-title">COMBAT ENGAGÉ</span>
-                            <span class="stamp-date">TOUR : 10 SECONDES // VALIDÉ</span>
+                            <span class="stamp-title">STATUT BIOLOGIQUE</span>
+                            <span class="stamp-date">HOMOLOGUÉ // PRÊT POUR LA TABLE</span>
                         </div>
                     </div>
 
@@ -1632,13 +1079,13 @@
                         <a href="livre_5.html" class="pagination-btn">
                             <div>
                                 <div class="pagination-label">Livre Précédent</div>
-                                <div class="pagination-title">← Livre V : Temps & Causalité</div>
+                                <div class="pagination-title">← Livre V : Combat Tactique</div>
                             </div>
                         </a>
                         <a href="livre_7.html" class="pagination-btn">
                             <div>
                                 <div class="pagination-label">Livre Suivant</div>
-                                <div class="pagination-title">Livre VII : Santé, États & Blessures →</div>
+                                <div class="pagination-title">Livre VII : Arsenal & Arcanotech →</div>
                             </div>
                         </a>
                     </div>
@@ -1662,12 +1109,9 @@
                         Sur cette page
                     </div>
                     <ul class="toc-on-page">
-                        <li><a href="#chap-24">24. Tour de 10s & Économie des PA</a></li>
-                        <li><a href="#chap-25">25. Déplacements & Poursuites</a></li>
-                        <li><a href="#chap-25-3">25.3 Couvert & Visibilité</a></li>
-                        <li><a href="#chap-25-4">25.4 Brouillard de Guerre</a></li>
-                        <li><a href="#chap-25-5">25.5 Duo-Tech : Résonance</a></li>
-                        <li><a href="#chap-26">26. Localisation & Véhicules</a></li>
+                        <li><a href="#chap-23">23. Seuils & Encaissement</a></li>
+                        <li><a href="#chap-24">24. Compendium des 16 États</a></li>
+                        <li><a href="#chap-25">25. Premiers Soins & Mort</a></li>
                     </ul>
                 </div>
 
@@ -1679,48 +1123,36 @@
                             <line x1="8" y1="21" x2="16" y2="21" />
                             <line x1="12" y1="17" x2="12" y2="21" />
                         </svg>
-                        Télémétrie Tactique
+                        Télémétrie Médicale
                     </div>
                     <div class="telemetry-card">
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Durée Round :</span>
-                            <span class="telemetry-val">10 Secondes</span>
+                            <span class="telemetry-label">Encaissement :</span>
+                            <span class="telemetry-val">Con &times; 2</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Injection PA :</span>
-                            <span class="telemetry-val">+1 au jet / PA</span>
+                            <span class="telemetry-label">Maximum Létal :</span>
+                            <span class="telemetry-val">Con &times; 5</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Report PA :</span>
-                            <span class="telemetry-val">Remise au max à son tour, sans cumul</span>
+                            <span class="telemetry-label">État Souffrant :</span>
+                            <span class="telemetry-val">Soin Con &times; 2 requis</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Essoufflement :</span>
-                            <span class="telemetry-val">Plafond = Constitution</span>
+                            <span class="telemetry-label">Point Miracle :</span>
+                            <span class="telemetry-val">1 (Base PJ)</span>
                         </div>
                         <div class="telemetry-row">
-                            <span class="telemetry-label">Cible Visée :</span>
-                            <span class="telemetry-val">-1 ou 1 PA</span>
-                        </div>
-                        <div class="telemetry-row">
-                            <span class="telemetry-label">Couvert (§25.3) :</span>
-                            <span class="telemetry-val">Moitié -1 / 3/4 -2 / Total impossible</span>
-                        </div>
-                        <div class="telemetry-row">
-                            <span class="telemetry-label">Seuil Choc :</span>
-                            <span class="telemetry-val">> Con &times; 2</span>
-                        </div>
-                        <div class="telemetry-row">
-                            <span class="telemetry-label">Attaque / Tour :</span>
-                            <span class="telemetry-val">1 max (2 si &ge; 2d6)</span>
+                            <span class="telemetry-label">Résurrection :</span>
+                            <span class="telemetry-val">-1 ec (10 - Con) j.</span>
                         </div>
                     </div>
                 </div>
 
                 <div class="next-stage-card">
                     <h5>Prochaine Étape</h5>
-                    <p>Livre VII : Santé, États & Blessures (encaissement vs résiduel, compendium des 16 états
-                        préjudiciables et bénéfiques, soins et séquelles permanentes).</p>
+                    <p>Livre VII : Arsenal & Arcanotech (armes médiévales et modernes, sabres laser 3D/5D, blasters,
+                        armures, boucliers énergétiques et pods de transport).</p>
                     <a href="livre_7.html" class="btn-step"
                         style="text-decoration: none; display: flex; align-items: center; justify-content: space-between;">
                         <span>Consulter Livre VII</span>

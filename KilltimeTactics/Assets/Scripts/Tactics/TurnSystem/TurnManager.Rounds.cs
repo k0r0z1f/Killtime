@@ -164,7 +164,7 @@ namespace Killtime.Tactics.TurnSystem
         }
 
         /// <summary>
-        /// Refresh individuel (Livres I §4 + VI §24) : PA remis au max AU DÉBUT
+        /// Refresh individuel (Livres I §4 + VI §20) : PA remis au max AU DÉBUT
         /// DU TOUR PERSONNEL de l'unité active. Aucun refresh global au début
         /// du round : StartNewRound ne recharge personne, seul StartUnitTurn
         /// recharge l'unité dont l'initiative arrive. L'Essoufflement (Souffle)

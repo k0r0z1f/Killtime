@@ -15,7 +15,7 @@ namespace Killtime.UI
             if (_arena == null) return;
 
             GUILayout.Space(8);
-            GUILayout.Label("<b>🎬 Scénarios terrain 1-clic (RD-198, Livres VI §24-26) :</b>");
+            GUILayout.Label("<b>🎬 Scénarios terrain 1-clic (RD-198, Livres V §20-26) :</b>");
             GUILayout.BeginVertical(GUI.skin.box);
 
             var actor = _arena.PlayerUnit;

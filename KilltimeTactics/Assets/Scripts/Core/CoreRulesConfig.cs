@@ -40,17 +40,17 @@ namespace Killtime.Core.Rules
         public int SenseMin = 1;
         public int SenseMax = 6;
 
-        // --- Livre I & VI : Points d'Action & Souffle ---
-        [Header("Économie d'Action & Souffle (Livre I & VI)")]
+        // --- Livre I & V : Points d'Action & Souffle ---
+        [Header("Économie d'Action & Souffle (Livre I & V)")]
         public int EmergencyBreathBonusAP = 2;
         public int EmergencyBreathEssoufflementCost = 1;
         public float LastBreathAPRatio = 0.5f;
-        // Duel aveugle (Livres II §7 + VI §24) : bonus au total par point
+        // Duel aveugle (Livres II §7 + VI §20) : bonus au total par point
         // d'Essoufflement (PE) engagé dans une déclaration (plafond = Constitution).
         public int DuelPEBonusPerPoint = 1;
 
-        // --- Livre VI : Combat & Passes d'Armes ---
-        [Header("Passes d'Armes & Résolution (Livre VI)")]
+        // --- Livre V : Combat & Passes d'Armes ---
+        [Header("Passes d'Armes & Résolution (Livre V)")]
         public int BaseAttackAPCost = 2;
         public int CancelAimPenaltyAPCost = 1;
         public int BaseReactionAPCost = 1;
@@ -59,15 +59,15 @@ namespace Killtime.Core.Rules
         public int SingleAttackActionLimit = 1;
         public int MultiDiceAttackActionLimit = 2;
 
-        // --- Livre VI §25.3 : Couvert & Visibilité ---
-        [Header("Couvert & Visibilité (Livre VI §25.3)")]
+        // --- Livre V §21.3 : Couvert & Visibilité ---
+        [Header("Couvert & Visibilité (Livre V §21.3)")]
         public int HalfCoverAttackPenalty = -1;
         public int ThreeQuartersCoverAttackPenalty = -2;
         public bool FullCoverBlocksAttack = true;
         public bool CoverIgnoredAtContactDistance = true;
 
-        // --- Livre VI §25.3 : Cône de visée (lecture rigoureuse) ---
-        [Header("Cône de Visée (Livre VI §25.3)")]
+        // --- Livre V §21.3 : Cône de visée (lecture rigoureuse) ---
+        [Header("Cône de Visée (Livre V §21.3)")]
         public float CoverEyeHeight = 1.5f;
         public float CoverBodyHeight = 1.8f;
         public float CoverHalfHeight = 0.7f;
@@ -104,25 +104,25 @@ namespace Killtime.Core.Rules
         public int ChargeDamageBonus = 2;
         [Tooltip("Malus en défense jusqu'au prochain tour personnel après une charge (-1 par défaut).")]
         public int ChargeDefensePenalty = -1;
-        [Tooltip("Coût PA supplémentaire pour la manœuvre de charge déclarée (+1 PA Livre VI §Manœuvres Mobiles).")]
+        [Tooltip("Coût PA supplémentaire pour la manœuvre de charge déclarée (+1 PA Livre V §Manœuvres Mobiles).")]
         public int ChargeManeuverExtraAPCost = 1;
         [Tooltip("Si vrai, le sprint (3+ cases) bloque tout tir à distance pour le reste du tour (RD-038).")]
         public bool SprintBlocksRanged = true;
 
-        // --- RD-084 : Attaques combinées & Poursuite (Livre VI §25.1 & §25.2) ---
-        [Header("Assaut groupé & Poursuite (RD-084, Livre VI §25.1-25.2)")]
-        [Tooltip("Attaquants minimum pour frapper à l'unisson (2 par défaut, Livre VI §25.2).")]
+        // --- RD-084 : Attaques combinées & Poursuite (Livre V §21.1 & §21.2) ---
+        [Header("Assaut groupé & Poursuite (RD-084, Livre V §21.1-25.2)")]
+        [Tooltip("Attaquants minimum pour frapper à l'unisson (2 par défaut, Livre V §21.2).")]
         public int CombinedAttackMinMembers = 2;
         [Tooltip("Coût en PA par participant pour l'attaque combinée (2 par défaut).")]
         public int CombinedAttackAPCost = 2;
-        [Tooltip("Faillites cumulées avant capture immédiate de la proie (4 par défaut, Livre VI §25.1).")]
+        [Tooltip("Faillites cumulées avant capture immédiate de la proie (4 par défaut, Livre V §21.1).")]
         public int PursuitFailuresToCapture = 4;
         [Tooltip("Distance minimale maintenue sur réussite de la proie (1 case par défaut).")]
         public int PursuitMinDistance = 1;
         [Tooltip("Coût en PA d'un round de course-poursuite par participant (1 par défaut).")]
         public int PursuitAPCost = 1;
 
-        // --- RD-048 : Retarder / Tenir / Canalisation (Livre VI — Tours) ---
+        // --- RD-048 : Retarder / Tenir / Canalisation (Livre V — Tours) ---
         [Header("Retarder / Tenir / Canalisation (RD-048)")]
         [Tooltip("Pénalité d'initiative appliquée quand un combattant retarde son tour (-2 par défaut).")]
         public int DelayInitiativePenalty = 2;
@@ -132,11 +132,11 @@ namespace Killtime.Core.Rules
         public int ChannelStartAPCost = 1;
         [Tooltip("Bonus au jet conféré par la canalisation consommée à l'attaque (+2 par défaut, comme la Préparation).")]
         public int ChannelAttackBonus = 2;
-        [Tooltip("Malus en défense tant que le combattant canalise (-1 par défaut, Livre VI §24.3).")]
+        [Tooltip("Malus en défense tant que le combattant canalise (-1 par défaut, Livre V §20.3).")]
         public int ChannelDefensePenalty = -1;
 
-        // --- RD-051 : Véhicules & Sous-systèmes (Livre VI §26.3) ---
-        [Header("Véhicules & Sous-systèmes (Livre VI §26.3 — RD-051)")]
+        // --- RD-051 : Véhicules & Sous-systèmes (Livre V §22.3) ---
+        [Header("Véhicules & Sous-systèmes (Livre V §22.3 — RD-051)")]
         [Tooltip("Coût en PA pour embarquer à bord d'un véhicule (2 par défaut).")]
         public int VehicleEmbarkAPCost = 2;
         [Tooltip("Bonus de dégâts des armes lourdes contre véhicules et structures (+100 par défaut).")]
@@ -150,8 +150,8 @@ namespace Killtime.Core.Rules
         [Tooltip("PV max d'un sous-système de gabarit Croiseur (palier 1001-10000).")]
         public int VehicleHpCroiseurMax = 10000;
 
-        // --- Livre VI, Chap. 26 : VATS Anatomique ---
-        [Header("Anatomie Chirurgicale (Livre VI, Chap. 26)")]
+        // --- Livre V, Chap. 22 : VATS Anatomique ---
+        [Header("Anatomie Chirurgicale (Livre V, Chap. 22)")]
         public List<BodyPartRuleEntry> BodyPartRules = new();
 
         // --- Livre I, III & IV : Progression & Arcanotech ---
@@ -167,16 +167,16 @@ namespace Killtime.Core.Rules
         [Tooltip("Si vrai, chaque réussite coche 1 case de progression dans la compétence utilisée.")]
         public bool EnableSkillProgressTicks = true;
 
-        // --- Déplacement & Statuts (Livre VII) ---
+        // --- Déplacement & Statuts (Livre VI) ---
         [Header("Déplacement & Statuts")]
         public int BaseMovementAPCost = 1;
         public int RalentiAPMultiplier = 2;
 
-        // --- RD-083 : Souffrant & Soins Majeurs (Livre VII §28.3, §29.1, §29.3) ---
-        [Header("Souffrant & Soins Majeurs (Livre VII §28.3/29.1/29.3)")]
+        // --- RD-083 : Souffrant & Soins Majeurs (Livre VI §24.3, §25.1, §25.3) ---
+        [Header("Souffrant & Soins Majeurs (Livre VI §24.3/29.1/29.3)")]
         [Tooltip("Multiplicateur du seuil de Soins Majeurs : soin unique Premiers Soins/Chirurgie >= CON x Multiplicateur pour lever Souffrant.")]
         public int SouffrantMajorCareMultiplier = 2;
-        [Tooltip("Base de jours réels de convalescence post-résurrection : Durée = Base - CON (Livre VII §29.3).")]
+        [Tooltip("Base de jours réels de convalescence post-résurrection : Durée = Base - CON (Livre VI §25.3).")]
         public int ResurrectionSequelaeBaseDays = 10;
         [Tooltip("Malus en ec sur tous les jets pendant la convalescence post-résurrection (-1 par défaut).")]
         public int ResurrectionSequelaePenalty = -1;

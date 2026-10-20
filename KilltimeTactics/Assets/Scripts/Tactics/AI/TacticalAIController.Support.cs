@@ -33,12 +33,12 @@ namespace Killtime.Tactics.AI
                 int dist = actor.CurrentCoords.DistanceTo(ally.CurrentCoords);
                 if (dist > 1) continue;
 
-                // Réanimation proscrite si mort instantanée irréversible (boîte crânienne détruite, Livre VII §30)
+                // Réanimation proscrite si mort instantanée irréversible (boîte crânienne détruite, Livre VI §26)
                 if (!ally.Stats.IsAlive && ally.Stats.LastFatalBlowResolution != FatalBlowResolution.InstantDeath && actor.Stats.CurrentActionPoints >= 4)
                 {
                     if (actor.Stats.ConsumeActionPoints(4))
                     {
-                        // RD-083 : résurrection horodatée (Poids du Trépas §29.3).
+                        // RD-083 : résurrection horodatée (Poids du Trépas §25.3).
                         int convalescence = ally.Stats.ApplyResurrection(1);
                         visual?.SpawnFloatingText("⚡ [RÉANIMATION] Défibrillation (-4 PA)", Color.cyan);
                         ally.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("RÉANIMÉ ! (1 PV)", Color.green);
@@ -296,11 +296,11 @@ namespace Killtime.Tactics.AI
                 }
             }
 
-            // 8. ASSAUT GROUPÉ & POURSUITE (RD-084, Livre VI §25.1-25.2)
+            // 8. ASSAUT GROUPÉ & POURSUITE (RD-084, Livre V §21.1-25.2)
             if (pa >= 2 && _arena != null)
             {
                 // Assaut groupé : cible blindée (armure/encaissement élevés) + alliés
-                // à portée. Seul le membre le plus lent déclenche (synchro §25.2).
+                // à portée. Seul le membre le plus lent déclenche (synchro §21.2).
                 int targetArmor = target.Stats.BaseArmorAbsorption + target.Stats.GetWornArmorBonus();
                 if ((targetArmor >= 4 || target.Stats.EncaissementThreshold >= 6)
                     && _arena.TryResolveCombinedSkill(actor, target, out var combinedSkill))

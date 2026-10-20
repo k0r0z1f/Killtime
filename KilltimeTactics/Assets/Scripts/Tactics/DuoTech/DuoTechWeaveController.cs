@@ -41,7 +41,7 @@ namespace Killtime.Tactics.DuoTech
         private const float FournaiseTargetDist = 2.2f;
         private const int FournaiseIsolationRadius = 2;
 
-        // RD-085 (Livre VI §25.5) : 1 case ≈ 1.7 unité monde.
+        // RD-085 (Livre V §21.5) : 1 case ≈ 1.7 unité monde.
         private const float CaseWorld = 1.7f;
         private const float TrempeCatchDist = 2.5f;
         private const float RailgunMinLengthWorld = 4f * 1.7f;

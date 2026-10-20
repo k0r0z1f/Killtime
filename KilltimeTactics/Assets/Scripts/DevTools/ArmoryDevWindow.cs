@@ -7,7 +7,7 @@ using Killtime.Core.Inventory;
 namespace Killtime.UI
 {
     /// <summary>
-    /// Fenêtre Armurerie (F12) — visualise et édite TOUT le marketplace Livre VIII.
+    /// Fenêtre Armurerie (F12) — visualise et édite TOUT le marketplace Livre VII.
     /// Source : ArmoryCatalog (Resources/Data/Armory.json, override persistentDataPath).
     /// Tout est éditable : identité, prix, dégâts, portée, protections, soins, grenades.
     /// Sauvegarde → override disque (prioritaire au reload). Export → Resources (éditeur).

@@ -103,7 +103,7 @@ namespace Killtime.Tactics
         private float _emptyPATimer;
 
         /// <summary>
-        /// Affiche le « raycast » de détection du couvert (Livre VI §25.3) entre
+        /// Affiche le « raycast » de détection du couvert (Livre V §21.3) entre
         /// l'unité active et la cible courante : vert à découvert, jaune moitié (-1),
         /// orange 3/4 (-2), rouge couvert total (attaque impossible).
         /// </summary>
@@ -521,14 +521,14 @@ namespace Killtime.Tactics
 
 
         // =====================================================================
-        // RD-031 : OPPORTUNITÉ / DÉSENGAGEMENT (Livre VI §24.4) — voir ArenaOverwatchService.
+        // RD-031 : OPPORTUNITÉ / DÉSENGAGEMENT (Livre V §20.4) — voir ArenaOverwatchService.
         // =====================================================================
 
 
 
 
         // =====================================================================
-        // RD-048 : RETARDER / TENIR / CANALISATION (Livre VI — Tours).
+        // RD-048 : RETARDER / TENIR / CANALISATION (Livre V — Tours).
         // =====================================================================
 
 
@@ -542,7 +542,7 @@ namespace Killtime.Tactics
 
         // =====================================================================
         // GRENADES : viser (case) -> lancer (main / lance-grenade) -> dispersion ->
-        // impact -> explosion + shrapnels + statuts (Livre VIII §31.3, Livre VI §24).
+        // impact -> explosion + shrapnels + statuts (Livre VII §27.3, Livre V §20).
         // =====================================================================
 
 
@@ -553,7 +553,7 @@ namespace Killtime.Tactics
         // (ResolveGrenadeBlast déplacé dans ArenaGrenadeService.)
 
         // =====================================================================
-        // ARMES : lancer 2 PA + désarmement Bras Droit fait tomber (Livre VI §24).
+        // ARMES : lancer 2 PA + désarmement Bras Droit fait tomber (Livre V §20).
         // =====================================================================
 
         public const int WeaponThrowAPCost = 2;
@@ -582,7 +582,7 @@ namespace Killtime.Tactics
 
 
         // =========================================================================
-        // RD-084 : ATTAQUES COMBINÉES DE GROUPE (§25.2) & POURSUITE (§25.1)
+        // RD-084 : ATTAQUES COMBINÉES DE GROUPE (§21.2) & POURSUITE (§21.1)
         // =========================================================================
 
 

@@ -7,7 +7,7 @@ using Killtime.Tactics.Visibility;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Progressions organiques (Livre I §5), tables anatomiques (§26.1) et
+    /// Progressions organiques (Livre I §5), tables anatomiques (§22.1) et
     /// prédicats d'armes RD-082. Que des traitements sans état de duel :
     /// dépend uniquement du contexte (dés) — jamais des autres services.
     /// Corps copiés à l'identique depuis l'ancien CombatCalculator.
@@ -44,7 +44,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// Rétro-compatibilité : redirige vers la table d6 exacte du Livre VI §26.1.
+        /// Rétro-compatibilité : redirige vers la table d6 exacte du Livre V §22.1.
         /// </summary>
         private BodyPart GetAdjacentBodyPart(BodyPart targeted)
         {
@@ -61,7 +61,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// Table de déviation d4/d6 chirurgicale officielle (Livre VI §26.1).
+        /// Table de déviation d4/d6 chirurgicale officielle (Livre V §22.1).
         /// </summary>
         public BodyPart ResolveAnatomicalDeflection(BodyPart targeted, out int rollDie, out string medicalConsequence)
         {
@@ -128,7 +128,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// RD-082 (Livre VII §28.4) : Vérifie si l'attaque utilise une arme tranchante ou perçante.
+        /// RD-082 (Livre VI §24.4) : Vérifie si l'attaque utilise une arme tranchante ou perçante.
         /// </summary>
         public static bool IsSlashingOrPiercingAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker)
         {
@@ -167,7 +167,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// RD-082 (Livre VII §28.4) : Vérifie si l'attaque utilise une énergie thermique, feu ou plasma.
+        /// RD-082 (Livre VI §24.4) : Vérifie si l'attaque utilise une énergie thermique, feu ou plasma.
         /// </summary>
         public static bool IsFireOrPlasmaAttack(SkillType skill, Killtime.Core.Inventory.InventoryItem weapon, CharacterStats attacker)
         {
@@ -193,7 +193,7 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
-        /// RD-082 (Livre VII §28.4) : Vérifie si l'assaillant possède la spécialisation Destruction de Rang 6.
+        /// RD-082 (Livre VI §24.4) : Vérifie si l'assaillant possède la spécialisation Destruction de Rang 6.
         /// </summary>
         public static bool HasDestructionTier6(CharacterStats attacker)
         {

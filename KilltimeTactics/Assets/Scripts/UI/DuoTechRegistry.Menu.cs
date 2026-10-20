@@ -261,7 +261,7 @@ namespace Killtime.Tactics.CombatUI
                 ));
             }
 
-            // --- RD-085 : les 6 Duo-Techs Livre VI §25.5 (placement validé au
+            // --- RD-085 : les 6 Duo-Techs Livre V §21.5 (placement validé au
             // tissage par le WeaveController + MJ, pas dans CanDeclare) ---
             var trempe = GetDef(DuoTechId.TrempeInversee);
             if (isEnemy && target.Stats != null && target.Stats.IsAlive)

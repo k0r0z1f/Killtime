@@ -5,7 +5,7 @@ using Killtime.Core.Combat;
 namespace Killtime.Core.Character
 {
     /// <summary>
-    /// Gestion de l'état dynamique d'un personnage en combat (Livre I, VI et VII).
+    /// Gestion de l'état dynamique d'un personnage en combat (Livre I, V et VI).
     /// Intègre la réserve de PA, les seuils d'encaissement et l'arbre de résolution à 0 PV.
     /// </summary>
     [Serializable]
@@ -42,7 +42,7 @@ namespace Killtime.Core.Character
         public int MovesThisTurn { get; private set; }
         public bool HasUsedSecondeRespiration { get; set; }
 
-        // Barrière ablative des champs de force portés (Livre VIII §32.2) : absorbe
+        // Barrière ablative des champs de force portés (Livre VII §28.2) : absorbe
         // les dégâts avant l'armure et la chair. Rechargée hors combat / en début de combat.
         public int MaxShieldHP { get; private set; }
         public int CurrentShieldHP { get; set; }
@@ -57,7 +57,7 @@ namespace Killtime.Core.Character
         // par personnage par round. Remis à 0 à chaque nouveau combat.
         public int LastDuoTechRound { get; set; } = 0;
 
-        // RD-085 (Livre VI §25.5) : Mirage à Deux Temps — réactions défensives
+        // RD-085 (Livre V §21.5) : Mirage à Deux Temps — réactions défensives
         // gratuites (0 PA) gagnées sur Parfaite, valables jusqu'au prochain tour
         // personnel de Mina. Décrémenté par ConsumeFreeDefensiveReaction lors de
         // la prochaine défense active ; expiration du reliquat au MJ / TurnManager.
@@ -177,7 +177,7 @@ namespace Killtime.Core.Character
         }
 
         /// <summary>
-        /// Refresh individuel (Livres I §4 + VI §24) : appelé AU DÉBUT DU TOUR
+        /// Refresh individuel (Livres I §4 + VI §20) : appelé AU DÉBUT DU TOUR
         /// PERSONNEL de l'unité (quand son initiative arrive), jamais au début
         /// du round global. Remise au maximum SANS cumul : les PA restants sont
         /// écrasés. L'Essoufflement persiste : il se soigne via Reprendre son

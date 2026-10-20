@@ -4,7 +4,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Retarder / Tenir l'action (RD-048, Livre VI — Tours) :
+    /// Retarder / Tenir l'action (RD-048, Livre V — Tours) :
     /// - Tenir (Hold, 0 PA) : le combattant passe son tour en conservant ses PA
     ///   restants et se déclare "en attente". Il pourra intervenir juste après
     ///   l'unité active du moment (interruption déclenchée par le joueur/MJ via

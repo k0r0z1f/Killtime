@@ -137,7 +137,7 @@ namespace Killtime.Tests
         [Test]
         public void Cover_ThreeQuartersReducesBetweenHalfAndFull()
         {
-            // Livre VI §25.3 : souffle réduit de 2 (Half), 3 (ThreeQuarters), 4 (Full).
+            // Livre V §21.3 : souffle réduit de 2 (Half), 3 (ThreeQuarters), 4 (Full).
             var calc = new GrenadeCalculator(new DiceRoller(11));
             var g = MakeGrenade(flat: 10, nd10: 0, blast: 2, shrap: 0);
             var target = MakeStats();

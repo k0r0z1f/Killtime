@@ -8,7 +8,7 @@ using Killtime.Core.Dice;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-084 : Attaques combinées de groupe (Livre VI §25.2) & Poursuite (§25.1).
+    /// RD-084 : Attaques combinées de groupe (Livre V §21.2) & Poursuite (§21.1).
     /// Synchro sur le plus lent + sommation vs défense unique (armure 1×).
     /// Concours Athlétisme proie vs poursuivants : maintien à 1 case, +1 faillite
     /// par échec, capture immédiate aux 4 faillites cumulées.

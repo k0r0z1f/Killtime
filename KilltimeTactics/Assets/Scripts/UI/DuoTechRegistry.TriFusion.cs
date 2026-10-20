@@ -10,7 +10,7 @@ using Killtime.Core.Combat;
 namespace Killtime.Tactics.CombatUI
 {
     /// <summary>
-    /// RD-086 — Synergie Tri-Fusion & Ancrage Tellurique de Thomas (Livres IV & VI).
+    /// RD-086 — Synergie Tri-Fusion & Ancrage Tellurique de Thomas (Livres IV & V).
     /// Thomas-0 = ancre tellurique physique : réflexion des ondes cinétiques de
     /// Mina, absorption du contrecoup thermodynamique de Lucas (cf. ThomasCharacter).
     /// 3 synergies table (résolution MJ aux dés via TableOutcome, comme RD-085) :

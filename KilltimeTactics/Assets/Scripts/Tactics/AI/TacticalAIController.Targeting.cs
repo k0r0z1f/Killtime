@@ -231,7 +231,7 @@ namespace Killtime.Tactics.AI
                 if (_mode == CombatAIMode.FullAuto && potential.IsPlayerControlled != actor.IsPlayerControlled) isHostile = true;
                 if (!isHostile) continue;
 
-                // Brouillard de guerre symétrique (§25.4) : l'IA ne cible que ce que
+                // Brouillard de guerre symétrique (§21.4) : l'IA ne cible que ce que
                 // l'acteur voit réellement à 360° (portée d'ambiance + murs
                 // Full), sauf cible révélée au bruit (tirs) ou par Observation.
                 // Le contact (dist <= 1) reste toujours visible des deux côtés.

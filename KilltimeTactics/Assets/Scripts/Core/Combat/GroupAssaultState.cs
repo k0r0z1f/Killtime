@@ -4,7 +4,7 @@ using Killtime.Core.Character;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Attaques combinées de groupe (RD-084, Livre VI §25.2) :
+    /// Attaques combinées de groupe (RD-084, Livre V §21.2) :
     /// deux combattants ou plus synchronisent leurs assauts pour briser une
     /// défense impénétrable. Tous les participants délèguent et calent leur
     /// initiative sur celle du membre le plus lent du groupe, puis chaque

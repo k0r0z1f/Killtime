@@ -1,5 +1,5 @@
 // <copyright file="FogOfWarSystem.cs" company="Killtime Tactics">
-// Brouillard de guerre asymétrique — logique pure testable (Livre I §2-3, Livre VI §25.3).
+// Brouillard de guerre asymétrique — logique pure testable (Livre I §2-3, Livre V §21.3).
 //
 // RÈGLES CODEX (gelées) :
 // - En combat, un personnage voit à 360° autour de lui : AUCUN cône frontal,
@@ -9,7 +9,7 @@
 //   (FogOfWarManager.CurrentSightRange ; presets Courte 6 / Longue 12.)
 // - Les stats de Vision / Ouïe ne servent qu'aux compétences : Observation,
 //   Écoute, jets de détection — jamais à la portée du masque.
-// - Murs (CoverType.Full, Livre VI §25.3) bloquent la vue : si le cône de visée
+// - Murs (CoverType.Full, Livre V §21.3) bloquent la vue : si le cône de visée
 //   attaquant->cible est Full, la case est plongée dans l'obscurité.
 //   Half / ThreeQuarters restent visibles (simple malus d'attaque, pas de masque).
 // - Contact (distance <= 1) : toujours visible (cohérent avec
@@ -119,7 +119,7 @@ namespace Killtime.Tactics.Visibility
 
         /// <summary>
         /// Helper mathématique pur (angle signé), conservé testé mais INUTILISÉ
-        /// par la visibilité : KT voit à 360°, sans direction (Livre VI §25.4).
+        /// par la visibilité : KT voit à 360°, sans direction (Livre V §21.4).
         /// </summary>
         public static bool IsInCone(Vector3 observerWorld, float observerYawDeg, Vector3 targetWorld, FogVisionParams p)
         {
@@ -174,7 +174,7 @@ namespace Killtime.Tactics.Visibility
             return IsCellVisible(observer, observerYawDeg, target, c => grid.GetNode(c), p, grid.HexRadius);
         }
 
-        // Hauteurs du rayon de brouillard (Livre VI §25.3 : œil 1,5 m).
+        // Hauteurs du rayon de brouillard (Livre V §21.3 : œil 1,5 m).
         private const float FogEyeHeight = 1.5f;
         private const float FogAimHeight = 0.9f;
         // Un accessoire moins haut que ça au-dessus du sol ne bouche jamais la vue.
@@ -395,7 +395,7 @@ namespace Killtime.Tactics.Visibility
 
             bool hasLight = optics > 0;
 
-            // L'Œil de Lynx n'étend plus la portée (environnementale, §25.4) :
+            // L'Œil de Lynx n'étend plus la portée (environnementale, §21.4) :
             // acuité dans l'obscurité = +2 au duel de détection (pur bonus skill).
             int mod = BuildDetectionModifier(distance, cover, thermal, isNight, hasLight) + (lynx ? 2 : 0) + optics;
             // ResolveOpposedCheck ne prend pas de modificateur libre : duel à

@@ -22,7 +22,7 @@ namespace Killtime.Tactics.Arena
     public sealed partial class ArenaMeleeService
     {
         /// <summary>
-        /// Exécute une manœuvre de Charge (RD-038, Livre VI) :
+        /// Exécute une manœuvre de Charge (RD-038, Livre V) :
         /// - Déplacement d'au moins 3 cases vers un voisin libre de la cible.
         /// - Débite les PA de déplacement (+ surcoût éventuel de manœuvre).
         /// - À l'arrivée au contact, exécute immédiatement l'attaque de mêlée (+2 dégâts, -1 défense jusqu'au prochain tour personnel).

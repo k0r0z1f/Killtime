@@ -103,7 +103,7 @@ namespace Killtime.Tactics
         /// Le grappin revient (non consommé). Requiert l'outil en poche.
         /// </summary>
         /// <summary>
-        /// Attaque directe contre un obstacle ou élément du décor (Livre VI).
+        /// Attaque directe contre un obstacle ou élément du décor (Livre V).
         /// Applique les dégâts selon le matériau et le type de frappe (Contondant, Tranchant, Perforant, Thermique...).
         /// </summary>
         public bool ExecuteAttackOnObstacle(

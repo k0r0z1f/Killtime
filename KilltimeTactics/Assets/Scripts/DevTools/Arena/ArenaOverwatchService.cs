@@ -405,7 +405,7 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
-        /// RD-031 Décrochage (Livre VI §26.2) : paie 1 PA pour que le prochain
+        /// RD-031 Décrochage (Livre V §22.2) : paie 1 PA pour que le prochain
         /// déplacement de l'unité ne provoque aucune réaction d'opportunité.
         /// </summary>
         public bool TryRequestSafeDisengage(TacticalUnit unit, out string message)

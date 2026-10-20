@@ -6,7 +6,7 @@ using Killtime.Core.Rules;
 namespace Killtime.Tactics.Grid
 {
     /// <summary>
-    /// Paramètres du cône de visée (Livre VI §25.3). Valeurs Codex = hauteurs des
+    /// Paramètres du cône de visée (Livre V §21.3). Valeurs Codex = hauteurs des
     /// obstacles visuels (muret 0.7, barricade 1.2, mur 2.2) et gabarit humain
     /// (œil 1.5, corps 1.8).
     /// </summary>
@@ -62,7 +62,7 @@ namespace Killtime.Tactics.Grid
     }
 
     /// <summary>
-    /// Lecture rigoureuse du couvert & de la visibilité (Livre VI §25.3) :
+    /// Lecture rigoureuse du couvert & de la visibilité (Livre V §21.3) :
     /// - Le personnage occupe toute sa case : l'attaquant tire depuis le COIN de sa
     ///   case le plus avantageux (celui qui laisse le moins de couvert à la cible).
     /// - Depuis ce coin (hauteur des yeux), un CÔNE de rayons balaie la HAUTEUR de
@@ -412,7 +412,7 @@ namespace Killtime.Tactics.Grid
                 }
 
                 // 3) Accessoire 3D (pilier, caisse, mobilier, visuel de couvert) :
-                // dimensions réelles, même si la case est marquée None (Livre VI §25.3).
+                // dimensions réelles, même si la case est marquée None (Livre V §21.3).
                 // Avec bornes mesh : test AABB exact sur la vérité affichée — tout
                 // rayon traversant le mesh visible est bloqué, par construction.
                 if (PropObstacleRegistry.TryGet(stepped, out PropObstacle prop))

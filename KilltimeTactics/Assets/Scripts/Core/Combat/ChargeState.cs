@@ -5,7 +5,7 @@ using Killtime.Core.Rules;
 namespace Killtime.Core.Combat
 {
     /// <summary>
-    /// Gestionnaire d'état de la Charge et du Sprint (RD-038, Livre VI — Manœuvres Mobiles) :
+    /// Gestionnaire d'état de la Charge et du Sprint (RD-038, Livre V — Manœuvres Mobiles) :
     /// - Charge 3+ cases : +2 dégâts sur la prochaine attaque au contact (mêlée),
     ///   -1 en défense jusqu'au début du prochain tour personnel.
     /// - Sprint : tout déplacement de 3+ cases bloque le tir (armes à distance) ce tour.

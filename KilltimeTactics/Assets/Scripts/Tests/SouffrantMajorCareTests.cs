@@ -6,7 +6,7 @@ using Killtime.Core.Character;
 namespace Killtime.Tests
 {
     /// <summary>
-    /// RD-083 : Statut Souffrant & Règle des Soins Majeurs (Livre VII §28.3, §29.1, §29.3).
+    /// RD-083 : Statut Souffrant & Règle des Soins Majeurs (Livre VI §24.3, §25.1, §25.3).
     /// - Souffrant = blessure critique ouverte, statut persistant (pas de tick).
     /// - Soins ordinaires (Heal : seringues/bandages/repos) : rendent des PV mais ne
     ///   lèvent JAMAIS Souffrant, même au-delà de CON×2.

@@ -16,7 +16,7 @@ namespace Killtime.Core.Character
                 || effect == StatusEffect.Empoisonne
                 || effect == StatusEffect.EnFeu
                 || effect == StatusEffect.Asphyxie
-                // RD-083 (Livre VII §28.3) : Souffrant ne s'efface jamais au tick —
+                // RD-083 (Livre VI §24.3) : Souffrant ne s'efface jamais au tick —
                 // seuls des Soins Majeurs (CON×2 en un coup) le lèvent.
                 || effect == StatusEffect.Souffrant;
         }

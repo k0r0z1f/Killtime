@@ -40,7 +40,7 @@ namespace Killtime.Tactics.AI
             if (defCoverAgainstTarget == CoverType.ThreeQuarters) score += 40f;
             else if (defCoverAgainstTarget == CoverType.Half) score += 25f;
 
-            // Tir croisé d'escouade (Livre VI §25.3)
+            // Tir croisé d'escouade (Livre V §21.3)
             if (isRanged)
             {
                 score += crossfireBonus;
