@@ -1,6 +1,6 @@
 {
   "version": 3,
-  "updated": "2026-10-18",
+  "updated": "2026-10-20",
   "activeId": "board-demo-hors-lore",
   "boards": [
     {
@@ -1814,6 +1814,21 @@
           "scale": null,
           "suggestedAsset": "lore/chapters 18-25 + 26-32",
           "details": "Fleuve F11, snapshots rembobinables, embranchements A/B/C/D."
+        },
+        {
+          "id": "RD-200",
+          "title": "Consolidation cosmologie : 36 zones, Empire 22 Ma, Disciples 2 générations, Terre hors-jeu",
+          "epic": "Canon",
+          "status": "done",
+          "priority": "high",
+          "order": 9,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "livre_10.html + livre_5.html + livre_11.html + data/atlas_mondes.json + atlas_3d.html + hybris_history.html",
+          "details": "FAIT (2026-10-20) : zones d'étendue moyenne égale (~23 Gly de côté, exception Zone 02 dilatée), 3 galaxies référencées sur des milliards anonymes, Aurion-Hybris ~1 Gly (Hybris bord Z01), Empire fondé il y a 22 Ma sur vestiges Première Civilisation disparue (saturation Aurion ~-10 Ma, expansion tentaculaire, mondes intouchés dont Terre primitive non impliquée — retcon Origine Déportés), Disciples 2 générations (Terre = prototype divin ~-1 Ga balistique plasma ~c / Air-Feu-Eau = série ver + 5e Force, Feu & Eau dormants infiltrés, fiches Livre XI §46), Livre V §20.3 trous de ver spatiaux, timeline +4 événements, embedded atlas resynchronisé."
         }
       ]
     },
@@ -3012,6 +3027,22 @@
           "suggestedAsset": "Tactics/Visibility + Core/Combat + DevTools/Arena + Audio",
           "details": "Créé 2026-10-18 (suite RD-152 done : 0 fichier >= 800 l. vérifié ce jour sur 531 .cs). Règle dev.md §2 <~800 l. : 10 fichiers en zone rouge 700-782 l., tout ajout les fait basculer — FogOfWarManager 782, ArenaAttackService.Duel 767, DamageEngineService 763, ScenarioEditorDevWindow.SceneTab 743, SkillTreeCosmosWindow.Data 737, CinematicDirector.SceneRoutine 737, ProceduralAudioFactory.Sfx 722, TacticalUnitVisual.Hud 721, DuoTechTests 706 (candidat exception : test), ArmoryCatalog 700. Note : 6/10 sont déjà des partials (Duel, SceneTab, Data, SceneRoutine, Sfx, Hud) -> sous-split ou exception documentée, pas de resplit artificiel. Watchlist 600-700 l. (17 fichiers, ne pas traiter ici) : ArenaGrenadeService 672, MapEditorDevWindow.UI 662, CombatContextMenuUI facade 658, ArenaUnitStore 651, SceneEnvironmentLibrary 651, CombatContextMenuUI.Defense 650, GenerativeMusicEngine.Synths 650, CombatContextMenuUI.Glyphs 647, CombatDevArena 635, WeaponGripProfile 633, BestiaryCatalog 623, CombatContextMenuUI.Attack 622, DroppedWeaponPickup 607, ScenarioEditorDevWindow.Cards.Dialogue 607, TacticalAIController 602, CombatActionRegistry.Self 601. Protocole repris de RD-152 : split move-only en partials (reassemblage byte-identique, 0 doublon, GUID neufs sans collision) ou exception assumée et notée ; preuve batchmode EditMode ciblé exit 0 0 erreur CS, ProjectSettings.asset restauré, 0 artefact, git status propre ; aucun commit agent (dev.md §5) ; contrôle visuel en jeu par l'utilisateur.",
           "updated": "2026-10-18"
+        },
+        {
+          "id": "RD-199",
+          "title": "Atlas des Mondes v4 : complétion intégrale (111 entrées) + 9 vues interactives",
+          "epic": "Codex & Lore",
+          "status": "done",
+          "priority": "high",
+          "order": 27,
+          "scene": "",
+          "placeholderId": "",
+          "primitive": "",
+          "pos": null,
+          "scale": null,
+          "suggestedAsset": "atlas_mondes.html + data/atlas_mondes.json",
+          "details": "FAIT (2026-10-19) : 1) Complétion de data/atlas_mondes.json (v4, 111 entrées dans mondes[], 5 entités supra-planétaires, 30 relations, 47 marqueurs + 18 routes Hybris) à partir des Livres I/X/XI, atlas_3d.html, HybrisWorldMapRegistry.cs, HybrisWorldMapData.cs, Bestiary.json, hybris_history.html et des overviews de lore : 36 Zones Éliennes, 3 Galaxies (Principale, Aurion, Sans Étoiles), Mars/Lune/Stations Jupiter (Sol), Anneau débris Hybris, Ceinture Janus, Satellites Cléia, Bassins miniers Karkjiue, Starlight Voyager, Windfighters d'Haliriel, 7 régions, 25 pôles/royaumes/cités/lacs/ports (Hybris, Vardis, Cléia, Nefris, Karkjiue, Avaleur) et 29 espèces/tribus/boss/automates/entités avec affinage complet des 20 fiches espèces existantes. 2) Amélioration de atlas_mondes.html : bandeau KPI dynamique cliquable, filtres rapides par grande famille, filtre par monde hôte et statut, panneau inspecteur détaillé avec navigation parent/enfants, anti-collision des bulles Tech×Magie, et 4 nouvelles vues (Arbre Cosmique & Systèmes, Carte 2D interactive d'Hybris 47 marqueurs + Lieux, Matrice des Espèces & Bestiaire, Spectre Gravité & Atmosphères).",
+          "updated": "2026-10-19"
         }
       ]
     },
