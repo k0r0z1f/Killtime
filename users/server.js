@@ -938,6 +938,56 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
     }
 
+    /* FINANCEMENT KICKSTARTER — autosave disque (PUT /api/financement) */
+    const FINANCEMENT_PATH = path.join(PUBLIC_DIR, 'data', 'financement.json');
+    if (isRoute('/api/financement')) {
+        if (req.method === 'GET' || req.method === 'HEAD') {
+            // Lecture fraîche pour le kanban financement : jamais cachée (le client
+            // réconcilie localStorage vs disque au chargement).
+            try {
+                if (!fs.existsSync(FINANCEMENT_PATH)) {
+                    return sendJson(res, 404, { error: 'financement.json introuvable.' });
+                }
+                const st = fs.statSync(FINANCEMENT_PATH);
+                const raw = fs.readFileSync(FINANCEMENT_PATH, 'utf-8');
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Cache-Control': 'no-store, must-revalidate',
+                    'Last-Modified': st.mtime.toUTCString()
+                });
+                if (req.method === 'HEAD') return res.end();
+                return res.end(raw);
+            } catch (e) {
+                return sendJson(res, 500, { error: e.message });
+            }
+        }
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || !Array.isArray(body.boards)) {
+                    return sendJson(res, 400, { error: 'boards[] manquant.' });
+                }
+                const json = JSON.stringify(body, null, 2);
+                if (json.length > 4 * 1024 * 1024) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                try { fs.mkdirSync(path.dirname(FINANCEMENT_PATH), { recursive: true }); } catch (e) { /* ignore */ }
+                try {
+                    if (fs.existsSync(FINANCEMENT_PATH)) {
+                        fs.copyFileSync(FINANCEMENT_PATH, FINANCEMENT_PATH + '.bak');
+                    }
+                } catch (e) { /* backup optionnel */ }
+                fs.writeFileSync(FINANCEMENT_PATH, json);
+                const n = body.boards.reduce((m, b) => m + (Array.isArray(b.tasks) ? b.tasks.length : 0), 0);
+                console.log(`[Financement] autosave disque : ${body.boards.length} boards, ${n} tâches.`);
+                return sendJson(res, 200, { success: true, boards: body.boards.length, tasks: n });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
     /* ATLAS DES MONDES — autosave disque (PUT /api/atlas-mondes) + sonde (GET) */
     const ATLAS_PATH = path.join(PUBLIC_DIR, 'data', 'atlas_mondes.json');
     if (isRoute('/api/atlas-mondes')) {
