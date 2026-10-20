@@ -223,6 +223,7 @@ namespace Killtime.Tactics.TurnSystem
             {
                 visual?.TriggerFallingBackDeath();
                 Killtime.Core.Combat.GrappleState.ReleaseGrapple(unit.Stats);
+                Killtime.Core.Combat.PossessionState.ReleasePossession(unit.Stats);
                 return;
             }
 
@@ -266,8 +267,17 @@ namespace Killtime.Tactics.TurnSystem
             // au nouveau tour (effort étalé multi-tours).
             Killtime.Core.Combat.ChannelingState.OnUnitTurnStart(unit.Stats);
 
+            // RD-202 Préparation one-shot : expire si non consommée avant le
+            // tour personnel suivant (pas d'effort étalé) ; Dégagement : la
+            // fenêtre de fuite immédiate expire elle aussi au tour suivant.
+            Killtime.Core.Combat.PreparationState.OnUnitTurnStart(unit.Stats);
+            Killtime.Core.Combat.GetAwayState.OnUnitTurnStart(unit.Stats);
+
             // RD-039 Lutte / Grapple : vérification et maintien des prises au contact.
             Killtime.Core.Combat.GrappleState.OnUnitTurnStart(unit.Stats);
+
+            // RD-204 Possession : la victime joue UN tour sous contrôle puis le lien expire.
+            Killtime.Core.Combat.PossessionState.OnUnitTurnStart(unit.Stats);
 
             // RD-038 Charge & Sprint : expiration du malus défensif (-1 défense) et levée du blocage tir.
             Killtime.Core.Combat.ChargeState.OnUnitTurnStart(unit.Stats);

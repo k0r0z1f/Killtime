@@ -315,8 +315,13 @@ namespace Killtime.Tactics.TurnSystem
             // RD-048 : ... et son attente/retard (tenir/retarder) + sa canalisation.
             if (unit.Stats != null) Killtime.Core.Combat.DelayedTurnState.RemoveUnit(unit.Stats);
             if (unit.Stats != null) Killtime.Core.Combat.ChannelingState.RemoveUnit(unit.Stats);
+            // RD-202 : ... et sa préparation one-shot / fenêtre de dégagement.
+            if (unit.Stats != null) Killtime.Core.Combat.PreparationState.RemoveUnit(unit.Stats);
+            if (unit.Stats != null) Killtime.Core.Combat.GetAwayState.RemoveUnit(unit.Stats);
             // RD-039 : ... et toute prise de lutte active.
             if (unit.Stats != null) Killtime.Core.Combat.GrappleState.ReleaseGrapple(unit.Stats);
+            // RD-204 : ... et toute possession Esprit active.
+            if (unit.Stats != null) Killtime.Core.Combat.PossessionState.ReleasePossession(unit.Stats);
             // RD-038 : ... et ses états de charge et de sprint.
             if (unit.Stats != null) Killtime.Core.Combat.ChargeState.Cancel(unit.Stats);
             // RD-049 : ... et son état de furtivité.
@@ -380,8 +385,13 @@ namespace Killtime.Tactics.TurnSystem
             // RD-048 : aucune attente/retard ni canalisation ne survit non plus.
             Killtime.Core.Combat.DelayedTurnState.ClearAll();
             Killtime.Core.Combat.ChannelingState.ClearAll();
+            // RD-202 : aucune préparation one-shot ni fenêtre de dégagement ne survit non plus.
+            Killtime.Core.Combat.PreparationState.ClearAll();
+            Killtime.Core.Combat.GetAwayState.ClearAll();
             // RD-039 : aucune prise de lutte ne survit à un reset de combat.
             Killtime.Core.Combat.GrappleState.ClearAll();
+            // RD-204 : aucune possession Esprit ne survit à un reset de combat.
+            Killtime.Core.Combat.PossessionState.ClearAll();
             // RD-038 : purge des états de charge et de sprint.
             Killtime.Core.Combat.ChargeState.ClearAll();
             // RD-049 : purge des états de furtivité au reset de combat.

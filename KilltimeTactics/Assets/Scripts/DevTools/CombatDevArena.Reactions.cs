@@ -104,6 +104,24 @@ namespace Killtime.Tactics
         }
 
         /// <summary>
+        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
+        /// l'action ou de la défense suivante (attaque OU parade). One-shot.
+        /// </summary>
+        public bool TryBeginPreparation(TacticalUnit unit, out string message)
+        {
+            return _overwatch.TryBeginPreparation(unit, out message);
+        }
+
+        /// <summary>
+        /// RD-202 Dégagement (Livre V §20.3) : fuite immédiate après attaque ou
+        /// parade résolue (+1 PA de surcharge, trajet payé à part).
+        /// </summary>
+        public bool TryGetAwayMove(TacticalUnit unit, out string message)
+        {
+            return _overwatch.TryGetAwayMove(unit, out message);
+        }
+
+        /// <summary>
         /// RD-048 : notifie une canalisation rompue par des dégâts hors duel
         /// (grenades, zone, DoT) et affiche le retour visuel. Les duels directs
         /// tracent déjà l'interruption dans leur propre journal de combat.

@@ -37,7 +37,14 @@ namespace Killtime.Core.Combat
         public StatusEffect InflictedStatus;
         public FatalBlowResolution FatalResolution;
         public bool CausedKnockback;
+        // RD-204 Attirer en épreuve : rapprochée forcée d'1 case (miroir du knockback).
+        public bool CausedPull;
+        // RD-204 Choc traumatique lourd (Livre V §20.2) : > 2xCON en un coup.
+        public bool TraumaticShockApplied;
+        public bool TraumaticShockConFailed;
         public bool IsCanonEntrave;
+        // RD-201 : coup de crosse (tracé arène / tests).
+        public bool IsButtstroke;
         public string CombatLog;
 
         // --- Livre V §21.3 : Couvert & Visibilité ---

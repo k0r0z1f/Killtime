@@ -73,11 +73,12 @@ namespace Killtime.Core.Combat
             int defenderPE = 0,
             CoverType cover = CoverType.None,
             int weaponBonusEc = 0,
-            bool isNight = false) =>
+            bool isNight = false,
+            bool isButtstroke = false) =>
             _resolution.ResolveTargetedAttack(attacker, defender, targetedPart, attackSkill, defenseSkill,
                 weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend, attackerSpecialization,
                 defenderSpecialization, defenderArmor, attackerBonusAP, defenderBonusAP, attackerPE,
-                defenderPE, cover, weaponBonusEc, isNight);
+                defenderPE, cover, weaponBonusEc, isNight, isButtstroke);
 
         /// <summary>
         /// Surcharge de compatibilité descendante avec injection directe de dés.
@@ -103,11 +104,12 @@ namespace Killtime.Core.Combat
             int defenderPE = 0,
             CoverType cover = CoverType.None,
             int weaponBonusEc = 0,
-            bool isNight = false) =>
+            bool isNight = false,
+            bool isButtstroke = false) =>
             _resolution.ResolveTargetedAttack(attacker, defender, targetedPart, attackDie, attackModifier,
                 defenseDie, defenseModifier, weaponBaseDamage, cancelPenaltyWithAP, defenderArmor,
                 attackerBonusAP, defenderBonusAP, defenderWantsToDefend, attackSkill, defenseSkill,
-                attackerPE, defenderPE, cover, weaponBonusEc, isNight);
+                attackerPE, defenderPE, cover, weaponBonusEc, isNight, isButtstroke);
 
         /// <summary>
         /// Étape 0 : prépare le duel aveugle. Paie le coût de base d'attaque uniquement.
@@ -135,11 +137,12 @@ namespace Killtime.Core.Combat
             bool skipAttackerCost = false,
             int elevationAttackMod = 0,
             string elevationLabel = null,
-            bool isNight = false) =>
+            bool isNight = false,
+            bool isButtstroke = false) =>
             _setup.BeginDuel(attacker, defender, targetedPart, attackDie, attackModifier, defenseDie,
                 defenseModifier, weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend, defenderArmor,
                 attackSkill, defenseSkill, out error, cover, weaponBonusEc, skipAttackerCost,
-                elevationAttackMod, elevationLabel, isNight);
+                elevationAttackMod, elevationLabel, isNight, isButtstroke);
 
         /// <summary>
         /// Étape 0 (variante compétences) : calcule les dés via GetSkillDie + règle non-exclusive,
@@ -163,11 +166,12 @@ namespace Killtime.Core.Combat
             bool skipAttackerCost = false,
             int elevationAttackMod = 0,
             string elevationLabel = null,
-            bool isNight = false) =>
+            bool isNight = false,
+            bool isButtstroke = false) =>
             _setup.BeginSkillDuel(attacker, defender, targetedPart, attackSkill, defenseSkill, weaponBaseDamage,
                 cancelPenaltyWithAP, defenderWantsToDefend, attackerSpecialization, defenderSpecialization,
                 defenderArmor, out error, cover, weaponBonusEc, skipAttackerCost, elevationAttackMod,
-                elevationLabel, isNight);
+                elevationLabel, isNight, isButtstroke);
 
         /// <summary>
         /// Étape 1 : DÉCLARATION de l'attaquant. Engage la mise bonus (PA + PE) AVANT tout jet.
@@ -295,6 +299,22 @@ namespace Killtime.Core.Combat
             _maneuvers.TryBeginChanneling(unit, label, out error);
 
         /// <summary>
+        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
+        /// l'action ou de la défense suivante (attaque OU parade). One-shot,
+        /// consommée au jet suivant. Ne cumule pas avec la canalisation.
+        /// </summary>
+        public bool TryBeginPreparation(CharacterStats unit, out string error) =>
+            _maneuvers.TryBeginPreparation(unit, out error);
+
+        /// <summary>
+        /// RD-202 Dégagement (Livre V §20.3) : fuite immédiate après une attaque
+        /// ou une parade résolue (+1 PA de surcharge, trajet payé à part).
+        /// DISTINCT du Décrochage RD-031 (préventif, sans réaction).
+        /// </summary>
+        public bool TryGetAwayMove(CharacterStats unit, out string error) =>
+            _maneuvers.TryGetAwayMove(unit, out error);
+
+        /// <summary>
         /// Vérifie l'interruption de canalisation après des dégâts nets
         /// (après armure/bouclier) : vrai si la canalisation est rompue.
         /// </summary>
@@ -420,6 +440,51 @@ namespace Killtime.Core.Combat
             int defenderPE = 0,
             bool defenderAutoStakes = false) =>
             _maneuvers.ResolveShoveDuel(attacker, defender, isShieldBash, attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE, defenderAutoStakes);
+
+        /// <summary>
+        /// RD-204 Possession (Livre VI §24.4) : duel opposé aveugle MagieEsprit
+        /// vs MagieEsprit. Diff ≥ 10 (15 si boss) = contrôle 1 tour (PossessionState).
+        /// </summary>
+        public OpposedCheckResult ResolvePossessionDuel(
+            CharacterStats attacker,
+            CharacterStats defender,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolvePossessionDuel(attacker, defender, attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE, defenderAutoStakes);
+
+        /// <summary>
+        /// RD-204 Repousser en épreuve : duel opposé aveugle, Diff ≥ 1 = recul
+        /// forcé d'1 case (CausedKnockback, résolu en arène). Sans dégât.
+        /// </summary>
+        public DamageResult ResolvePushDuel(
+            CharacterStats attacker,
+            CharacterStats defender,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolvePushDuel(attacker, defender, attackerBonusAP, attackerPE,
+                defenderBonusAP, defenderPE, defenderAutoStakes);
+
+        /// <summary>
+        /// RD-204 Attirer en épreuve : miroir de Repousser, Diff ≥ 1 =
+        /// rapprochée forcée d'1 case (CausedPull, application arène à brancher).
+        /// </summary>
+        public DamageResult ResolvePullDuel(
+            CharacterStats attacker,
+            CharacterStats defender,
+            int attackerBonusAP = 0,
+            int attackerPE = 0,
+            int defenderBonusAP = 0,
+            int defenderPE = 0,
+            bool defenderAutoStakes = false) =>
+            _maneuvers.ResolvePullDuel(attacker, defender, attackerBonusAP, attackerPE,
                 defenderBonusAP, defenderPE, defenderAutoStakes);
 
         /// <summary>

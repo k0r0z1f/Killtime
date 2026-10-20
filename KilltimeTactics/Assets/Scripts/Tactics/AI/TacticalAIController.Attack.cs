@@ -37,6 +37,13 @@ namespace Killtime.Tactics.AI
                         }
                         else
                         {
+                            // RD-201 : sans désenrayage possible, repli crosse /
+                            // mains nues au contact entravé avant d'abandonner.
+                            if (TryGetEntraveFallbackStrike(actor, target, out var fbSkill, out var fbDmg, out var fbIsButt))
+                            {
+                                yield return StartCoroutine(ExecuteEntraveFallbackStrike(actor, target, posture, fbSkill, fbDmg, fbIsButt));
+                                yield break;
+                            }
                             _arena?.Log($"⚠️ {actor.Stats.Name} ne peut ni tirer ni désenrayer.");
                             yield break;
                         }
@@ -59,6 +66,13 @@ namespace Killtime.Tactics.AI
                         }
                         else
                         {
+                            // RD-201 : chargeur vide sans réserve, repli crosse /
+                            // mains nues au contact entravé avant d'abandonner.
+                            if (TryGetEntraveFallbackStrike(actor, target, out var fbSkill2, out var fbDmg2, out var fbIsButt2))
+                            {
+                                yield return StartCoroutine(ExecuteEntraveFallbackStrike(actor, target, posture, fbSkill2, fbDmg2, fbIsButt2));
+                                yield break;
+                            }
                             _arena?.Log($"⚠️ {actor.Stats.Name} : chargeur vide, aucune réserve ({mag.AmmoType}).");
                             yield break;
                         }
@@ -173,10 +187,17 @@ namespace Killtime.Tactics.AI
             }
             catch { /* estimation optionnelle */ }
             int entravePen = 0;
+            double entraveCancelBonus = 0;
             try
             {
                 if (actor.IsCanonEntrave() && (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir))
                     entravePen = -2;
+                // RD-201 : le tir visé (+1 PA) annule aussi le -2 d'entrave :
+                // compense l'estimation des plans visés au contact.
+                int contactDist = TitanFootprint.MinDistanceBetweenUnits(
+                    actor.CurrentCoords, actor.FootprintType, target.CurrentCoords, target.FootprintType);
+                if (entravePen != 0 && contactDist <= 1 && target.Stats != null && target.Stats.CanDefendActively())
+                    entraveCancelBonus = -entravePen;
             }
             catch { /* ignore */ }
 
@@ -219,6 +240,7 @@ namespace Killtime.Tactics.AI
                 TargetRapidite = target.Stats.Attributes.Rapidite,
                 TargetHasATerre = (target.Stats.ActiveStatus & StatusEffect.ATerre) != 0,
                 TargetCurrentAP = target.Stats.CurrentActionPoints,
+                EntraveCancelBonus = entraveCancelBonus,
             };
             return AttackPlanEvaluator.Evaluate(
                 in planInput, p => BodyPartInfo.GetInfo(p).DifficultyModifier);
@@ -514,6 +536,82 @@ namespace Killtime.Tactics.AI
         private static bool NearSegment(HexCoordinates a, HexCoordinates b, HexCoordinates c)
         {
             return a.DistanceTo(c) + c.DistanceTo(b) <= a.DistanceTo(b) + 1;
+        }
+
+        /// <summary>
+        /// RD-201 (Livre V §22.2) : repli crosse / mains nues au contact
+        /// entravé quand le tir est impossible (enrayé, chargeur vide sans
+        /// réserve). Retourne faux si l'option ne s'applique pas (pas
+        /// d'entrave, cible inconsciente, PA insuffisants, quota épuisé).
+        /// </summary>
+        private bool TryGetEntraveFallbackStrike(
+            TacticalUnit actor, TacticalUnit target,
+            out SkillType skill, out int baseDamage, out bool isButtstroke)
+        {
+            skill = SkillType.MainsNues;
+            baseDamage = CanonEntraveRules.UnarmedBaseDamage;
+            isButtstroke = false;
+            if (actor == null || actor.Stats == null || target == null || target.Stats == null) return false;
+            if (!target.Stats.CanDefendActively()) return false;
+            if (!actor.IsCanonEntrave()) return false;
+            if (TitanFootprint.MinDistanceBetweenUnits(
+                    actor.CurrentCoords, actor.FootprintType,
+                    target.CurrentCoords, target.FootprintType) > 1) return false;
+            if (actor.Stats.CurrentActionPoints < CanonEntraveRules.ButtstrokeAPCost) return false;
+            var option = CanonEntraveRules.ChooseContactOption(
+                actor.Stats.CurrentActionPoints, false,
+                CanonEntraveRules.HasLongWeapon(actor.Stats),
+                actor.Stats.CanAttackWithSkill(SkillType.MainsNues));
+            if (option == CanonEntraveOption.Buttstroke
+                && actor.Stats.CanAttackWithSkill(SkillType.ManiementArmes))
+            {
+                skill = SkillType.ManiementArmes;
+                baseDamage = CanonEntraveRules.ButtstrokeBaseDamage(
+                    actor.Sheet?.GetEquippedWeapon());
+                isButtstroke = true;
+                return true;
+            }
+            // Repli : si la crosse est indisponible (compétence manquante)
+            // les mains nues restent une option dès qu'elles portent.
+            if (actor.Stats.CanAttackWithSkill(SkillType.MainsNues))
+            {
+                skill = SkillType.MainsNues;
+                baseDamage = CanonEntraveRules.UnarmedBaseDamage;
+                isButtstroke = false;
+                return true;
+            }
+            return false;
+        }
+
+        /// <summary>
+        /// RD-201 : exécute le repli crosse / mains nues (2 PA) puis attend
+        /// la fin de résolution comme une attaque tactique normale.
+        /// </summary>
+        private IEnumerator ExecuteEntraveFallbackStrike(
+            TacticalUnit actor, TacticalUnit target, TacticalPosture posture,
+            SkillType skill, int baseDamage, bool isButtstroke)
+        {
+            var visual = actor.GetComponent<TacticalUnitVisual>();
+            visual?.SpawnFloatingText(
+                isButtstroke ? "🔨 [CROSSE] Canon entravé" : "🥋 [MAINS NUES] Canon entravé",
+                new Color(1f, 0.75f, 0.2f));
+            SkillType defenseSkill = target.Stats.Attributes.Agilite >= target.Stats.Attributes.Force
+                ? SkillType.Esquive
+                : SkillType.DefenseCorporelle;
+            _arena?.ExecuteAttack(
+                BodyPart.Torse, false, skill, defenseSkill, true, null, null,
+                baseDamage, 0, -1, null, null, target, 0, 0, actor,
+                isButtstroke: isButtstroke);
+            if (_arena != null)
+            {
+                float waitElapsed = 0f;
+                while (_arena.IsResolving && waitElapsed < 6f)
+                {
+                    yield return null;
+                    waitElapsed += Time.deltaTime;
+                }
+            }
+            yield return new WaitForSeconds(Mathf.Min(0.4f, _actionDelay * 0.3f));
         }
 
         // =========================================================================

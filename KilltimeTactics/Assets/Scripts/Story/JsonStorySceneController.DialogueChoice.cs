@@ -72,6 +72,8 @@ namespace Killtime.Story.Scenes
             int rank = SkillDefinitions.GetBaseRank(challenge.RequiredSkill, effectiveAttr, false);
             int steps = SkillDefinitions.CharacteristicSteps(rank);
             int training = sheet != null ? sheet.GetSkill(challenge.RequiredSkill).TrainingLevel : 0;
+            // RD-203 (Livre II §7.2) : rang effectif = base (caracs) + entraînements.
+            int skillRank = rank + training;
             DiceType skillDie = SkillDefinitions.DieFromTotalSteps(steps + training);
 
             string skillName = SkillDefinitions.GetDisplayName(challenge.RequiredSkill);
@@ -115,6 +117,32 @@ namespace Killtime.Story.Scenes
                     result = roller.Roll(skillDie, modifier: 0, targetDC: oppTotal);
                     vsLabel = $"{actorName} [{skillName} {skillDie}={result.RawRoll} → {result.Total}] vs {oppName} [{oppSkillName} fixe {oppTotal}]";
                 }
+            }
+            else if (SkillAutoSuccess.IsAutoSuccess(skillRank, challenge.TargetDC))
+            {
+                // RD-203 (Livre II §7) : SD couverte par le rang → pas de jet.
+                // Succès synthétique : le chemin succès standard (effets,
+                // récompenses, routage) s'applique à l'identique, avec traçabilité.
+                string autoLog = SkillAutoSuccess.BuildAutoSuccessLog(skillName, skillRank, challenge.TargetDC);
+                CombatHUD.Instance?.AddAdvancedLog(
+                    $"🎲 <b>[DÉFI]</b> {autoLog}",
+                    LogCategory.Combat,
+                    "[DÉFI]",
+                    Color.green
+                );
+                result = new DiceRollResult
+                {
+                    DieType = skillDie,
+                    RawRoll = 0,
+                    Modifier = 0,
+                    Total = challenge.TargetDC,
+                    TargetDC = challenge.TargetDC,
+                    Differential = 0,
+                    IsSuccess = true,
+                    IsCriticalSuccess = false,
+                    IsCriticalFailure = false
+                };
+                vsLabel = $"{actorName} — <b>SUCCÈS AUTOMATIQUE</b> {skillName} (seuil auto {SkillAutoSuccess.AutoThresholdFor(skillRank)} vs SD {challenge.TargetDC})";
             }
             else
             {

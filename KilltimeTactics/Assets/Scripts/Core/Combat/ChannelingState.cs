@@ -82,6 +82,11 @@ namespace Killtime.Core.Combat
                 error = $"{caster.Name} canalise déjà « {_channels[caster].Label} » : exécutez ou annulez d'abord.";
                 return false;
             }
+            if (PreparationState.IsPrepared(caster))
+            {
+                error = $"{caster.Name} est déjà préparé (RD-202) : la canalisation ne cumule pas avec la préparation (jouez le jet suivant d'abord).";
+                return false;
+            }
             if (!caster.ConsumeActionPoints(apCost))
             {
                 error = $"{caster.Name} n'a pas assez de PA ({caster.CurrentActionPoints}/{apCost}) pour canaliser !";

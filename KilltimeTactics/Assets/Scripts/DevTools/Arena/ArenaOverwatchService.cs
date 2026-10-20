@@ -513,6 +513,54 @@ namespace Killtime.Tactics.Arena
         }
 
         /// <summary>
+        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
+        /// l'action ou de la défense suivante (attaque OU parade). One-shot,
+        /// consommée au jet suivant. Ne cumule pas avec la canalisation.
+        /// </summary>
+        public bool TryBeginPreparation(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (!_calculator.TryBeginPreparation(unit.Stats, out string error))
+            {
+                message = $"⚠️ {error}";
+                _host.ArenaLog(message);
+                return false;
+            }
+            unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🎯 PRÉPARÉ", new Color(0.4f, 1.0f, 0.6f));
+            message = $"🎯 <b>{unit.Stats.Name}</b> prépare son action (-{CoreRulesConfig.Instance.PreparationAPCost} PA) : +{CoreRulesConfig.Instance.PreparationBonus} au jet de l'action ou de la défense suivante (one-shot).";
+            _host.ArenaLog(message);
+            SnapshotRecorder?.Invoke($"Préparation : {unit.Stats.Name}");
+            BroadcastOpportunityState();
+            return true;
+        }
+
+        /// <summary>
+        /// RD-202 Dégagement (Livre V §20.3) : fuite immédiate après une attaque
+        /// ou une parade résolue (+1 PA de surcharge, trajet payé à part via le
+        /// déplacement normal). DISTINCT du Décrochage RD-031 : la fuite peut
+        /// provoquer réactions d'opportunité.
+        /// </summary>
+        public bool TryGetAwayMove(TacticalUnit unit, out string message)
+        {
+            message = "";
+            if (unit == null || unit.Stats == null) return false;
+            if (!_calculator.TryGetAwayMove(unit.Stats, out string error))
+            {
+                message = $"⚠️ {error}";
+                _host.ArenaLog(message);
+                return false;
+            }
+            unit.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
+                $"🏃 DÉGAGEMENT (-{CoreRulesConfig.Instance.GetAwayExtraAPCost} PA)", Color.yellow);
+            message = $"🏃 <b>{unit.Stats.Name}</b> se dégage après sa frappe (+{CoreRulesConfig.Instance.GetAwayExtraAPCost} PA de fuite) : déplacez-le, les réactions adverses restent possibles.";
+            _host.ArenaLog(message);
+            SnapshotRecorder?.Invoke($"Dégagement : {unit.Stats.Name}");
+            BroadcastOpportunityState();
+            return true;
+        }
+
+        /// <summary>
         /// RD-048 : notifie une canalisation rompue par des dégâts hors duel
         /// (grenades, zone, DoT) et affiche le retour visuel. Les duels directs
         /// tracent déjà l'interruption dans leur propre journal de combat.

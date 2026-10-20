@@ -44,25 +44,42 @@ namespace Killtime.Story.Scenes
             if (action.RequiredSkill >= 0 && action.SkillThreshold > 0 && unit != null && unit.Stats != null)
             {
                 var skill = (SkillType)action.RequiredSkill;
-                var die = unit.Stats.GetSkillDie(skill, isOffensive: true);
-                int mod = unit.Stats.GetSkillModifier(skill, isOffensive: true);
-                var roller = new DiceRoller();
-                var roll = roller.Roll(die, mod);
-
-                if (roll.Total < action.SkillThreshold)
+                // RD-203 (Livre II §7.2) : rang effectif = base (caracs) + entraînements.
+                // isOffensive:true comme le chemin jet ci-dessous (même base GetSkillDie).
+                int skillRank = unit.Stats.GetSkillRank(skill, isOffensive: true);
+                // RD-203 (Livre II §7) : seuil couvert par le rang → pas de jet, succès immédiat tracé.
+                if (SkillAutoSuccess.IsAutoSuccess(skillRank, action.SkillThreshold))
                 {
-                    success = false;
-                    resultLog = !string.IsNullOrWhiteSpace(action.FailureLog)
-                        ? action.FailureLog
-                        : $"Échec du test {SkillDefinitions.GetDisplayName(skill)} ({roll.Total} vs SD {action.SkillThreshold}).";
-                    if (KilltimeAudioManager.Instance != null)
-                        KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.7f);
+                    string autoLog = SkillAutoSuccess.BuildAutoSuccessLog(
+                        SkillDefinitions.GetDisplayName(skill), skillRank, action.SkillThreshold);
+                    CombatHUD.Instance?.AddAdvancedLog(
+                        $"✔ {autoLog}", LogCategory.MovementAndTurns, "[ACTION]", Color.green);
+                    resultLog = !string.IsNullOrWhiteSpace(action.SuccessLog)
+                        ? action.SuccessLog
+                        : $"Succès automatique {SkillDefinitions.GetDisplayName(skill)} (seuil auto {SkillAutoSuccess.AutoThresholdFor(skillRank)} vs SD {action.SkillThreshold}) !";
                 }
                 else
                 {
-                    resultLog = !string.IsNullOrWhiteSpace(action.SuccessLog)
-                        ? action.SuccessLog
-                        : $"Succès {SkillDefinitions.GetDisplayName(skill)} validé ({roll.Total} vs SD {action.SkillThreshold}) !";
+                    var die = unit.Stats.GetSkillDie(skill, isOffensive: true);
+                    int mod = unit.Stats.GetSkillModifier(skill, isOffensive: true);
+                    var roller = new DiceRoller();
+                    var roll = roller.Roll(die, mod);
+
+                    if (roll.Total < action.SkillThreshold)
+                    {
+                        success = false;
+                        resultLog = !string.IsNullOrWhiteSpace(action.FailureLog)
+                            ? action.FailureLog
+                            : $"Échec du test {SkillDefinitions.GetDisplayName(skill)} ({roll.Total} vs SD {action.SkillThreshold}).";
+                        if (KilltimeAudioManager.Instance != null)
+                            KilltimeAudioManager.Instance.PlayUI(SoundId.UI_Denied, 0.7f);
+                    }
+                    else
+                    {
+                        resultLog = !string.IsNullOrWhiteSpace(action.SuccessLog)
+                            ? action.SuccessLog
+                            : $"Succès {SkillDefinitions.GetDisplayName(skill)} validé ({roll.Total} vs SD {action.SkillThreshold}) !";
+                    }
                 }
             }
 

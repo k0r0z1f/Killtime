@@ -145,7 +145,9 @@ namespace Killtime.Core.Combat
                 int paidPA = CombatDuelShared.SpendBonusPA(a, bAP);
                 int paidPE = a.SpendDuelPE(bPE);
                 int committed = paidPA + paidPE * cfg.DuelPEBonusPerPoint;
-                var roll = _ctx.DiceRoller.Roll(die, status + committed, cfg.StandardTargetDC);
+                // RD-202 : épreuve préparée = +2 one-shot (consommé ici même, jet immédiat).
+                int prepB = PreparationState.ConsumeBonus(a) ? cfg.PreparationBonus : 0;
+                var roll = _ctx.DiceRoller.Roll(die, status + committed + prepB, cfg.StandardTargetDC);
                 result.AttackRolls.Add(roll);
                 summedAttack += roll.Total;
                 int wBase = (weaponBaseDamages != null && i < weaponBaseDamages.Count) ? weaponBaseDamages[i] : 5;
@@ -153,6 +155,8 @@ namespace Killtime.Core.Combat
             }
             result.SummedAttackTotal = summedAttack;
             result.SummedWeaponBase = summedBase;
+            // RD-202 : chaque assaillant a résolu son épreuve -> fenêtre de fuite.
+            for (int i = 0; i < members.Count; i++) GetAwayState.MarkPostAction(members[i]);
 
             // Unique défense de la cible (réaction de base + mises, ou passif à 0).
             bool wants = defenderWantsToDefend && defender.CanDefendActively();
@@ -197,8 +201,13 @@ namespace Killtime.Core.Combat
                 if (ChargeState.HasDefensePenalty(defender)) penalty += cfg.ChargeDefensePenalty;
                 // RD-048 : punition de progression en canalisation.
                 penalty += ChannelingState.GetDefenseModifier(defender);
-                defRoll = _ctx.DiceRoller.Roll(defDie, defStatus + penalty + defCommitted, cfg.StandardTargetDC);
+                // RD-202 : parade préparée = +2 one-shot (consommé si défense active).
+                int prepDefBonus = PreparationState.ConsumeBonus(defender) ? cfg.PreparationBonus : 0;
+                defRoll = _ctx.DiceRoller.Roll(defDie, defStatus + penalty + prepDefBonus + defCommitted, cfg.StandardTargetDC);
                 result.DefenderDefended = true;
+                // RD-202 : la parade résolue ouvre la fenêtre de fuite au défenseur.
+                GetAwayState.MarkPostAction(defender);
+                result.PreparationDefenseApplied = prepDefBonus > 0;
             }
             else
             {
@@ -223,6 +232,7 @@ namespace Killtime.Core.Combat
             {
                 string blockLog = $"🛡️ <b>ASSAUT GROUPÉ PARÉ</b> : {members.Count} assaillants synchronisés (lenteur : {(result.SlowestMember != null ? result.SlowestMember.Name : "?")}, ini {result.SlowestInitiative}) mais {defender.Name} neutralise la sommation !\n";
                 blockLog += $"   ⚔️ Sommation : {summedAttack} vs Défense unique {defRoll.Total} ➔ <b>Différentiel {differential}</b> — <b>0 dégât</b>.";
+                if (result.PreparationDefenseApplied) blockLog += $"\n   🎯 <b>PRÉPARATION</b> : parade préparée de {defender.Name} (+{cfg.PreparationBonus}, consommée).";
                 blockLog += _progression.ApplySkillProgression(defender, defenseSkill, false);
                 for (int i = 0; i < members.Count; i++) StealthState.BreakStealth(members[i]);
                 result.CombatLog = blockLog;
@@ -306,6 +316,7 @@ namespace Killtime.Core.Combat
                 log += $"   🗡️ {members[i].Name} : {attackSkill} [{r.DieType} tirage {r.RawRoll} + mod {r.Modifier} = <b>{r.Total}</b>]\n";
             }
             log += $"   ➕ <b>SOMMATION OFFENSIVE : {summedAttack}</b> vs <b>DÉFENSE UNIQUE : {(result.DefenderDefended ? defRoll.Total.ToString() : "0 (passif)")}</b> ➔ <b>Différentiel +{differential}</b>\n";
+            if (result.PreparationDefenseApplied) log += $"   🎯 <b>PRÉPARATION</b> : parade préparée de {defender.Name} (+{cfg.PreparationBonus}, consommée)\n";
             log += $"   ⚔️ Dégâts : [{summedBase} (armes cumulées) + {Math.Max(0, differential)} (dépassement) = {rawDamage} bruts] − [Armure {totalArmor} (1×, absorbé {absorbed})]";
             if (shieldAbsorbed > 0) log += $" − [🔮Bouclier {shieldAbsorbed}]";
             log += $" ➔ <b><color=#FF3B5C>{finalDamage} Dégâts Nets</color></b>\n";

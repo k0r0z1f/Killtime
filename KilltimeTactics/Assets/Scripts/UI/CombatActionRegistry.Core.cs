@@ -60,6 +60,19 @@ namespace Killtime.Tactics.CombatUI
             return actor != null && actor.Stats != null && actor.Stats.CurrentActionPoints >= apCost;
         }
 
+        /// <summary>
+        /// RD-201 (Livre V §22.2) : situation de Canon Entravé contre CETTE
+        /// cible — consciente (défense active), au contact (distance ≤ 1),
+        /// attaquant porteur d'une arme longue.
+        /// </summary>
+        internal static bool IsEntraveVsTarget(TacticalUnit actor, TacticalUnit target)
+        {
+            if (actor == null || target == null || actor.Stats == null || target.Stats == null) return false;
+            if (!target.Stats.IsAlive) return false;
+            if (GetDistance(actor, target) > 1) return false;
+            return CanonEntraveRules.IsEntraveSituation(actor.Stats, target.Stats, GetDistance(actor, target));
+        }
+
         private static bool CanAttackTarget(TacticalUnit actor, TacticalUnit target, int apCost)
         {
             if (actor == null || target == null) return false;

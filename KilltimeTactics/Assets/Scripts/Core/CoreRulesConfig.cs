@@ -122,6 +122,17 @@ namespace Killtime.Core.Rules
         [Tooltip("Coût en PA d'un round de course-poursuite par participant (1 par défaut).")]
         public int PursuitAPCost = 1;
 
+        // --- RD-204 : Marges manquantes (Possession, Attirer/Repousser, Choc lourd, Désarmement) ---
+        [Header("Marges RD-204 (Livre V §20.2 & VI §24.4)")]
+        [Tooltip("Différentiel requis en épreuve Esprit pour posséder une cible (10 par défaut).")]
+        public int PossessDifferentialThreshold = 10;
+        [Tooltip("Différentiel requis pour posséder un boss / Titan (15 par défaut).")]
+        public int PossessBossThreshold = 15;
+        [Tooltip("Différentiel requis en épreuve pour Attirer / Repousser (1 par défaut, Refoulement déjà codé).")]
+        public int ForceMoveDifferentialThreshold = 1;
+        [Tooltip("Cases de vol de l'arme désarmée dans l'axe attaquant -> défenseur (2 par défaut).")]
+        public int DisarmDropDistance = 2;
+
         // --- RD-048 : Retarder / Tenir / Canalisation (Livre V — Tours) ---
         [Header("Retarder / Tenir / Canalisation (RD-048)")]
         [Tooltip("Pénalité d'initiative appliquée quand un combattant retarde son tour (-2 par défaut).")]
@@ -134,6 +145,15 @@ namespace Killtime.Core.Rules
         public int ChannelAttackBonus = 2;
         [Tooltip("Malus en défense tant que le combattant canalise (-1 par défaut, Livre V §20.3).")]
         public int ChannelDefensePenalty = -1;
+
+        // --- RD-202 : Préparation & Dégagement (Livre V §20.3) ---
+        [Header("Préparation & Dégagement (RD-202, Livre V §20.3)")]
+        [Tooltip("Coût en PA pour préparer son action suivante (+2 au jet, 1 PA par défaut).")]
+        public int PreparationAPCost = 1;
+        [Tooltip("Bonus au jet conféré par la préparation consommée à l'action ou à la parade suivante (+2 par défaut, one-shot).")]
+        public int PreparationBonus = 2;
+        [Tooltip("Surcoût en PA du déplacement de fuite suivant immédiatement une attaque/parade résolue (+1 par défaut).")]
+        public int GetAwayExtraAPCost = 1;
 
         // --- RD-051 : Véhicules & Sous-systèmes (Livre V §22.3) ---
         [Header("Véhicules & Sous-systèmes (Livre V §22.3 — RD-051)")]
@@ -257,11 +277,20 @@ namespace Killtime.Core.Rules
             PursuitMinDistance = 1;
             PursuitAPCost = 1;
 
+            PossessDifferentialThreshold = 10;
+            PossessBossThreshold = 15;
+            ForceMoveDifferentialThreshold = 1;
+            DisarmDropDistance = 2;
+
             DelayInitiativePenalty = 2;
             HoldAPCost = 0;
             ChannelStartAPCost = 1;
             ChannelAttackBonus = 2;
             ChannelDefensePenalty = -1;
+
+            PreparationAPCost = 1;
+            PreparationBonus = 2;
+            GetAwayExtraAPCost = 1;
 
             VehicleEmbarkAPCost = 2;
             HeavyVsVehicleBonus = 100;

@@ -45,6 +45,10 @@ namespace Killtime.Tactics.AI
         public int TargetRapidite;
         public bool TargetHasATerre;
         public int TargetCurrentAP;
+        // RD-201 : compensation d'estimation au contact entravé. Le tir visé
+        // (+1 PA) annule aussi le -2 d'entrave : +2 aux plans visés quand la
+        // situation s'applique. 0 par défaut = comportement inchangé.
+        public double EntraveCancelBonus;
     }
 
     /// <summary>
@@ -87,7 +91,8 @@ namespace Killtime.Tactics.AI
                     int spendableBonusAP = Mathf.Max(0, input.AvailableAP - baseCost - input.ReserveNeeded - apReservedForNextAttack);
 
                     int aimMod = cancelAim ? 0 : partDifficulty;
-                    double currentAttRoll = input.BaseAttExpected + aimMod;
+                    double currentAttRoll = input.BaseAttExpected + aimMod
+                        + (cancelAim ? input.EntraveCancelBonus : 0);
 
                     // Optimisation de l'injection : quel bonus assure le franchissement d'encaissement ?
                     int chosenBonusAP = 0;

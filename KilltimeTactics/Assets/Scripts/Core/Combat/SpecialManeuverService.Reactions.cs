@@ -206,6 +206,31 @@ namespace Killtime.Core.Combat
         }
 
         /// <summary>
+        /// RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet de
+        /// l'action ou de la défense suivante (attaque OU parade). One-shot :
+        /// consommée au jet suivant, sans malus, sans persistance, sans
+        /// interruption. Ne cumule pas avec la canalisation.
+        /// </summary>
+        public bool TryBeginPreparation(CharacterStats unit, out string error)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return PreparationState.TryPrepare(unit, cfg != null ? cfg.PreparationAPCost : 1, out error);
+        }
+
+        /// <summary>
+        /// RD-202 Dégagement (Livre V §20.3) : déplacement de fuite suivant
+        /// immédiatement une attaque ou une parade résolue (+1 PA de surcharge,
+        /// trajet payé à part). Refuse sans fenêtre (aucune action résolue),
+        /// sans PA ou neutralisé. DISTINCT du Décrochage RD-031 (préventif,
+        /// sans réaction) : la fuite peut provoquer.
+        /// </summary>
+        public bool TryGetAwayMove(CharacterStats unit, out string error)
+        {
+            var cfg = Rules.CoreRulesConfig.Instance;
+            return GetAwayState.TryGetAwayMove(unit, cfg != null ? cfg.GetAwayExtraAPCost : 1, out error);
+        }
+
+        /// <summary>
         /// Vérifie l'interruption de canalisation après des dégâts nets
         /// (après armure/bouclier) : vrai si la canalisation est rompue.
         /// </summary>

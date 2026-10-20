@@ -81,7 +81,8 @@ namespace Killtime.Core.Combat
             bool skipAttackerCost = false,
             int elevationAttackMod = 0,
             string elevationLabel = null,
-            bool isNight = false)
+            bool isNight = false,
+            bool isButtstroke = false)
         {
             error = null;
             var targetInfo = BodyPartInfo.GetInfo(targetedPart);
@@ -103,6 +104,12 @@ namespace Killtime.Core.Combat
             // RD-048 : attaque en canalisant = +2 au jet (consommé à la résolution).
             bool isChannelAttack = ChannelingState.IsChanneling(attacker);
             int channelBonus = isChannelAttack ? ChannelingState.PeekAttackBonus(attacker) : 0;
+            // RD-202 : action préparée = +2 au jet (one-shot, consommé à la résolution).
+            bool isPrepAttack = PreparationState.IsPrepared(attacker);
+            int prepBonus = isPrepAttack ? PreparationState.PeekBonus(attacker) : 0;
+            // RD-202 : parade préparée = +2 en défense (one-shot, consommé si défense active).
+            bool isPrepDefense = PreparationState.IsPrepared(defender);
+            int prepDefBonus = isPrepDefense ? PreparationState.PeekBonus(defender) : 0;
 
             bool isRangedShot = (attackSkill == SkillType.Ballistique || attackSkill == SkillType.ProjectilesTir);
             bool effectiveNight = isNight;
@@ -135,6 +142,7 @@ namespace Killtime.Core.Combat
                 DefenderWantsToDefend = isStealthAttack ? false : defenderWantsToDefend,
                 IsRangedAttack = isRangedShot,
                 IsMartialArtsStrike = (attackSkill == SkillType.MainsNues) && attacker.HasSpecialization("Arts Martiaux"),
+                IsButtstroke = isButtstroke,
                 DefenderUnreactivePenalty = cfg.UnreactiveDefensePenalty,
                 Cover = effectiveCover,
                 CoverAttackPenalty = effectiveCover == CoverType.Half ? cfg.HalfCoverAttackPenalty
@@ -144,12 +152,16 @@ namespace Killtime.Core.Combat
                 StealthAttackBonus = stealthBonus,
                 IsChannelAttack = isChannelAttack,
                 ChannelAttackBonus = channelBonus,
+                IsPreparationAttack = isPrepAttack,
+                PreparationAttackBonus = prepBonus,
+                IsPreparationDefense = isPrepDefense,
+                PreparationDefenseBonus = prepDefBonus,
                 IsNightAttack = effectiveNight,
                 NightAttackMod = nightMod
             };
 
-            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC + hauteur RD-036 + stealth RD-049 + nuit RD-053 + canalisation RD-048.
-            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc) + elevationAttackMod + stealthBonus + nightMod + channelBonus;
+            // Modificateur de base d'attaque (hors mise déclarée) : états + visée + canon entravé + couvert + bonus arme EC + hauteur RD-036 + stealth RD-049 + nuit RD-053 + canalisation RD-048 + préparation RD-202.
+            int baseAtt = attackModifier + duel.CoverAttackPenalty + Math.Max(0, weaponBonusEc) + elevationAttackMod + stealthBonus + nightMod + channelBonus + prepBonus;
             duel.WeaponBonusEc = Math.Max(0, weaponBonusEc);
             duel.ElevationAttackMod = elevationAttackMod;
             duel.ElevationLabel = elevationLabel ?? "";
@@ -222,6 +234,8 @@ namespace Killtime.Core.Combat
             }
             // RD-048 : punition de progression (-1 en défense tant qu'on canalise).
             defBase += ChannelingState.GetDefenseModifier(defender);
+            // RD-202 : parade préparée (+2 one-shot, consommé si défense active).
+            defBase += prepDefBonus;
             duel.DefenseBaseMod = defBase;
 
             return duel;
@@ -249,7 +263,8 @@ namespace Killtime.Core.Combat
             bool skipAttackerCost = false,
             int elevationAttackMod = 0,
             string elevationLabel = null,
-            bool isNight = false)
+            bool isNight = false,
+            bool isButtstroke = false)
         {
             DiceType attackDie = attacker.GetSkillDie(attackSkill, true);
             int attackModifier = attacker.GetStatusModifier(attackSkill, isOffensive: true);
@@ -263,7 +278,7 @@ namespace Killtime.Core.Combat
             }
             return BeginDuel(attacker, defender, targetedPart, attackDie, attackModifier,
                 defenseDie, defenseModifier, weaponBaseDamage, cancelPenaltyWithAP,
-                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover, weaponBonusEc, skipAttackerCost, elevationAttackMod, elevationLabel, isNight);
+                defenderWantsToDefend, defenderArmor, attackSkill, defenseSkill, out error, cover, weaponBonusEc, skipAttackerCost, elevationAttackMod, elevationLabel, isNight, isButtstroke);
         }
 
         /// <summary>
@@ -330,6 +345,8 @@ namespace Killtime.Core.Combat
             }
             // RD-048 : punition de progression en canalisation.
             statusMod += ChannelingState.GetDefenseModifier(duel.Defender);
+            // RD-202 : parade préparée (+2 one-shot, consommé si défense active).
+            statusMod += PreparationState.PeekBonus(duel.Defender);
             duel.DefenseStatusMod = statusMod;
             duel.DefenseBaseMod = statusMod;
             duel.CanDefenderReact = true;

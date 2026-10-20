@@ -46,7 +46,8 @@ namespace Killtime.Tactics.Arena
             string attackerSpecialization,
             string defenderSpecialization,
             Action triggerKick,
-            Action triggerDefense)
+            Action triggerDefense,
+            bool isButtstroke = false)
         {
             var grid = _ctx.Grid;
             var visualizer = _ctx.Visualizer;
@@ -58,6 +59,16 @@ namespace Killtime.Tactics.Arena
             if (equippedWeapon != null && equippedWeapon.BaseDamage > 0)
             {
                 effectiveWeaponDamage = equippedWeapon.BaseDamage;
+            }
+            // RD-201 : mêmes dégâts propres qu'en résolution auto (crosse /
+            // mains nues avec arme longue en main).
+            if (isButtstroke)
+            {
+                effectiveWeaponDamage = CanonEntraveRules.ButtstrokeBaseDamage(equippedWeapon);
+            }
+            else if (attackSkill == SkillType.MainsNues && CanonEntraveRules.HasLongWeapon(equippedWeapon))
+            {
+                effectiveWeaponDamage = weaponBaseDamage;
             }
             int weaponBonusEc2 = equippedWeapon != null ? Math.Max(0, equippedWeapon.AttackBonusEc) : 0;
             // RD-033 : charge Haute Densité chambrée = +1 dégât (sniper/Deglazer).
@@ -82,7 +93,7 @@ namespace Killtime.Tactics.Arena
                 attackSkill, defenseSkill, effectiveWeaponDamage, cancelPenaltyWithAP,
                 false, attackerSpecialization, defenderSpecialization,
                 defender.Stats.BaseArmorAbsorption, out string duelError, defenseCover, weaponBonusEc2,
-                false, defenseRuling.AttackMod, defenseRuling.Label);
+                false, defenseRuling.AttackMod, defenseRuling.Label, isButtstroke: isButtstroke);
 
             if (duel == null)
             {

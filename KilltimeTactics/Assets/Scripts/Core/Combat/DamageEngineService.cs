@@ -12,7 +12,7 @@ namespace Killtime.Core.Combat
     /// Dépend du contexte (dés) et de la progression (tables, statuts).
     /// Corps copié à l'identique depuis l'ancien CombatCalculator.
     /// </summary>
-    public sealed class DamageEngineService
+    public sealed partial class DamageEngineService
     {
         private readonly CombatDuelContext _ctx;
         private readonly CombatProgressionService _progression;
@@ -50,6 +50,18 @@ namespace Killtime.Core.Combat
             string defRollStr;
 
             bool effectiveDefenderWantsToDefend = duel.DefenderWantsToDefend && !duel.IsDefenderIncapacitated;
+
+            // RD-202 Préparation one-shot : consommée au jet suivant, attaque
+            // comme parade active (bonus déjà inclus au BeginDuel). Même parée,
+            // l'attaque consomme l'effort ; seul l'encaissement passif préserve.
+            bool prepAttApplied = duel.IsPreparationAttack && PreparationState.ConsumeBonus(attacker);
+            bool prepDefApplied = effectiveDefenderWantsToDefend && duel.IsPreparationDefense && PreparationState.ConsumeBonus(defender);
+
+            // RD-202 Dégagement : l'attaque résolue ouvre la fenêtre de fuite
+            // immédiate (+1 PA) pour l'assaillant, et pour le défenseur s'il a
+            // activement paré (pas d'exemption d'opportunité, cf. GetAwayState).
+            GetAwayState.MarkPostAction(attacker);
+            if (effectiveDefenderWantsToDefend) GetAwayState.MarkPostAction(defender);
 
             if (!effectiveDefenderWantsToDefend)
             {
@@ -97,7 +109,9 @@ namespace Killtime.Core.Combat
             string aimText = duel.CancelPenaltyWithAP ? "Visée compensée (+1 PA base)" : $"Malus Visée {targetInfo.DifficultyModifier}";
             string paAttText = (attCommittedPA > 0 || attCommittedPE > 0) ? $" + Mise {attCommittedPA} PA + {attCommittedPE} PE (aveugle)" : " + Mise 0 (aveugle)";
             string critAttText = attackRoll.IsCriticalSuccess ? " <color=#FFE600>[CRITIQUE !]</color>" : "";
-            string entraveText = duel.AppliedCanonEntrave
+            string entraveText = duel.IsButtstroke
+                ? " [Crosse : Maniement contondant]"
+                : duel.AppliedCanonEntrave
                 ? (duel.CancelPenaltyWithAP ? " [Canon Entravé : Annulé (+1 PA)]" : " [Canon Entravé : -2 Tir]")
                 : (duel.IsMartialArtsStrike ? " [Arts Martiaux : Exemption Totale]" : "");
             string coverText = duel.Cover == CoverType.Half
@@ -109,6 +123,7 @@ namespace Killtime.Core.Combat
             string elevationText = duel.ElevationAttackMod != 0 ? $" [Hauteur {duel.ElevationAttackMod:+0;-0} {duel.ElevationLabel}]" : "";
             string stealthText = duel.IsStealthAttack ? $" [🥷 Embuscade/Stealth : +{duel.StealthAttackBonus}]" : "";
             string channelText = duel.IsChannelAttack ? $" [⏳ Canalisation : +{duel.ChannelAttackBonus}]" : "";
+            string prepText = duel.IsPreparationAttack ? $" [🎯 Préparation : +{duel.PreparationAttackBonus}]" : "";
             string nightText = duel.NightAttackMod != 0 ? $" [Nuit : {duel.NightAttackMod} Tir (sans lampe/thermique)]" : "";
 
             int normalRef = (attacker.Attributes.Force + attacker.Attributes.Agilite + 1) / 2;
@@ -116,21 +131,23 @@ namespace Killtime.Core.Combat
                     && attacker.Attributes.Magie > normalRef)
                 ? $" [Corps Augmenté : MAG {attacker.Attributes.Magie} (+{SkillDefinitions.CharacteristicSteps(attacker.Attributes.Magie)} paliers)]"
                 : "";
-            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{channelText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
+            string attackRollStr = $"{SkillDefinitions.GetDisplayName(attackSkill)} : {duel.AttackDie} [Tirage {attackRoll.RawRoll} + États {duel.AttackStatusMod} ({statusAttDetail}) + ({aimText}){paAttText}{entraveText}{coverText}{ecText}{elevationText}{stealthText}{channelText}{prepText}{nightText} = Total {attackRoll.Total}]{augText}{critAttText}";
 
             // Traçabilité Livre V §20.1 (duel aveugle) : déclarations masquées puis révélation.
             // RD-048 : la canalisation consommée à l'attaque est tracée, la punition
             // de progression du défenseur aussi.
             string channelDefTag = ChannelingState.IsChanneling(defender) ? " [Canalisation -1]" : "";
+            string prepDefTag = prepDefApplied ? $" [🎯 Préparation +{duel.PreparationDefenseBonus}]" : "";
             string channelAttTag = channelApplied ? $" [⏳ Canalisation « +{duel.ChannelAttackBonus} » consommée]" : (duel.IsChannelAttack ? " [⏳ Canalisation déjà rompue]" : "");
-            string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.{channelAttTag}";
+            string prepAttTag = prepAttApplied ? $" [🎯 Préparation « +{duel.PreparationAttackBonus} » consommée]" : (duel.IsPreparationAttack ? " [🎯 Préparation déjà rompue]" : "");
+            string phaseAtt = $"Phase 1 — Déclaration attaquant : {attacker.Name} désigne {defender.Name} ({targetInfo.DisplayName}), annonce {SkillDefinitions.GetDisplayName(attackSkill)}, engage {duel.BaseAttackCost} PA + mise cachée {attCommittedPA} PA + {attCommittedPE} PE. Résultat caché.{channelAttTag}{prepAttTag}";
             string phaseDef = duel.IsStealthAttack
                 ? $"Phase 2 — Déclaration défenseur (surpris) : {defender.Name} subit l'embuscade depuis le stealth (aucune réaction adverse possible)."
                 : (!effectiveDefenderWantsToDefend
                     ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} encaisse (0 PA, 0 PE), sans voir le jet adverse."
                     : ((duel.CanDefenderReact && duel.DefenderBasePaid)
-                        ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}."
-                        : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}."));
+                        ? $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} annonce {SkillDefinitions.GetDisplayName(defenseSkill)}, engage 1 PA + mise cachée {defCommittedPA} PA + {defCommittedPE} PE, sans voir le jet adverse{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}{prepDefTag}."
+                        : $"Phase 2 — Déclaration défenseur (aveugle) : {defender.Name} sans réaction (0 PA) → {cfg.UnreactiveDefensePenalty} réflexe{(ChargeState.HasDefensePenalty(defender) ? " [Malus Charge -1]" : "")}{channelDefTag}{prepDefTag}."));
 
             // 4. Résolution du Différentiel
             if (effectiveDefenderWantsToDefend && differential < 0)
@@ -420,6 +437,13 @@ namespace Killtime.Core.Combat
                 defender.ApplyStatus(StatusEffect.Sonne, 1);
             }
 
+            // RD-201 (Livre V §22.2) : Crosse — bruts (base + différentiel,
+            // avant armure) > CON x2 (seuil d'encaissement) => Déstabilisé.
+            if (!isThomasSymbioticImmune && duel.IsButtstroke)
+            {
+                CanonEntraveRules.ApplyButtstrokeDestabilise(defender, rawDamage, ref inflictedStatus);
+            }
+
             // Mina-0 : Floraison Cinétique — ronces réflexes sur engagement d'essoufflement au contact
             if (defender.HasSpecialization("Éveil Chlorophyllien : Floraison Cinétique") && defCommittedPE > 0 && _ctx.IsAtContactDistance)
             {
@@ -514,6 +538,16 @@ namespace Killtime.Core.Combat
                 }
             }
 
+            // RD-204 (Livre V §20.2) : choc traumatique lourd — dégâts nets sur
+            // une zone > 2xCON en un coup = +1 Essoufflement auto + épreuve CON.
+            bool traumaticShockApplied = false;
+            bool traumaticShockConFailed = false;
+            string traumaticShockTag = "";
+            if (!isThomasSymbioticImmune && !wasDisintegrated && defender.IsAlive && finalDamage > 0)
+            {
+                traumaticShockTag = ApplyTraumaticShock(defender, finalDamage, out traumaticShockApplied, out traumaticShockConFailed);
+            }
+
             // RD-047 : Test de moral au seuil critique de 28% PV
             MoraleCheckResult moraleRes = default;
             if (!wasDisintegrated && defender.IsAlive && !defender.HasTestedMorale && defender.CurrentHealth > 0)
@@ -573,6 +607,11 @@ namespace Killtime.Core.Combat
             if (exceededEncaissement)
             {
                 log += $" | ⚡ <b>CHOC TRAUMATIQUE</b> (&gt; Encaissement {defender.EncaissementThreshold}) ➔ [{inflictedStatus}]";
+            }
+
+            if (traumaticShockApplied)
+            {
+                log += traumaticShockTag;
             }
 
             if (channelInterrupted)
@@ -636,8 +675,11 @@ namespace Killtime.Core.Combat
                 log += "\n   " + moraleRes.Log;
             }
 
+            // RD-201 (Livre V §22.2) : toute frappe à Mains Nues au contact
+            // refoule sur choc traumatique ou Delta >= 4 (généralisé depuis
+            // la spé Arts Martiaux : l'option Mains Nues l'exige).
             bool causedKnockback = !isThomasSymbioticImmune && (critCausedKnockback
-                || (duel.IsMartialArtsStrike && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4))
+                || (duel.AttackSkill == SkillType.MainsNues && (exceededEncaissement || attackRoll.IsCriticalSuccess || differential >= 4))
                 || (attacker.HasSpecialization("Teep de Rupture") && duel.AttackSkill == SkillType.MainsNues && differential >= 0));
 
             // Livre I §5 : l'attaquant a RÉUSSI (touché, même dévié diff 0) → +1 case de progression.
@@ -670,7 +712,11 @@ namespace Killtime.Core.Combat
                 InflictedStatus = inflictedStatus,
                 FatalResolution = fatalRes,
                 CausedKnockback = causedKnockback,
+                CausedPull = false,
+                TraumaticShockApplied = traumaticShockApplied,
+                TraumaticShockConFailed = traumaticShockConFailed,
                 IsCanonEntrave = duel.AppliedCanonEntrave,
+                IsButtstroke = duel.IsButtstroke,
                 Cover = duel.Cover,
                 CoverAttackPenalty = duel.CoverAttackPenalty,
                 BlockedByCover = false,
@@ -679,106 +725,6 @@ namespace Killtime.Core.Combat
                 ChannelInterrupted = channelInterrupted,
                 InterruptedChannelLabel = interruptedChannelLabel
             };
-        }
-
-        private static void ApplyOffensiveCriticalEffect(
-            CriticalConsequence crit,
-            CharacterStats attacker,
-            CharacterStats defender,
-            ref StatusEffect inflictedStatus,
-            ref bool causedKnockback,
-            ref FatalBlowResolution fatalRes)
-        {
-            switch (crit.Threshold)
-            {
-                case 1:
-                    inflictedStatus |= StatusEffect.ATerre;
-                    defender.ActiveStatus |= StatusEffect.ATerre;
-                    break;
-                case 2:
-                    causedKnockback = true;
-                    break;
-                case 6:
-                    inflictedStatus |= StatusEffect.Etourdi;
-                    defender.ApplyStatus(StatusEffect.Etourdi, 1);
-                    break;
-                case 8:
-                    ClearOneNegativeStatus(attacker);
-                    break;
-                case 9:
-                    attacker.Essoufflement = Math.Max(0, attacker.Essoufflement - 1);
-                    break;
-                case 10:
-                    inflictedStatus |= StatusEffect.Ralenti;
-                    defender.ApplyStatus(StatusEffect.Ralenti, 1);
-                    break;
-                case 12:
-                    inflictedStatus |= StatusEffect.Destabilise;
-                    defender.ApplyStatus(StatusEffect.Destabilise, 1);
-                    break;
-                case 16:
-                    attacker.CurrentActionPoints = Math.Min(attacker.MaxActionPoints, attacker.CurrentActionPoints + 2);
-                    break;
-                case 20:
-                    defender.ApplyResidualDamage(StatusEffect.Saignement, 3);
-                    inflictedStatus |= StatusEffect.Saignement;
-                    defender.ActiveStatus |= StatusEffect.Saignement;
-                    break;
-                case 24:
-                    if (Enum.TryParse<StatusEffect>("Inconscient", out var inc) || Enum.TryParse<StatusEffect>("Inconscience", out inc))
-                    {
-                        inflictedStatus |= inc;
-                        defender.ActiveStatus |= inc;
-                    }
-                    fatalRes = FatalBlowResolution.ForcedUnconscious;
-                    break;
-            }
-        }
-
-        private static void ApplyDefensiveCriticalEffect(
-            CriticalConsequence crit,
-            CharacterStats defender,
-            CharacterStats attacker)
-        {
-            switch (crit.Threshold)
-            {
-                case 1:
-                case 24:
-                    attacker.ActiveStatus |= StatusEffect.ATerre;
-                    break;
-                case 6:
-                    attacker.ApplyStatus(StatusEffect.Etourdi, 1);
-                    break;
-                case 8:
-                    ClearOneNegativeStatus(defender);
-                    break;
-                case 9:
-                    defender.Essoufflement = Math.Max(0, defender.Essoufflement - 1);
-                    break;
-                case 10:
-                    attacker.ApplyStatus(StatusEffect.Ralenti, 1);
-                    break;
-                case 12:
-                    attacker.ApplyStatus(StatusEffect.Destabilise, 1);
-                    break;
-                case 16:
-                    defender.CurrentActionPoints = Math.Min(defender.MaxActionPoints, defender.CurrentActionPoints + 2);
-                    break;
-                case 20:
-                    // Contre-attaque automatique : riposte réflexe infligeant 3 dégâts bruts à l'assaillant
-                    attacker.CurrentHealth = Math.Max(0, attacker.CurrentHealth - 3);
-                    break;
-            }
-        }
-
-        private static void ClearOneNegativeStatus(CharacterStats target)
-        {
-            if (target == null) return;
-            if ((target.ActiveStatus & StatusEffect.Destabilise) != 0) target.ActiveStatus &= ~StatusEffect.Destabilise;
-            else if ((target.ActiveStatus & StatusEffect.Etourdi) != 0) target.ActiveStatus &= ~StatusEffect.Etourdi;
-            else if ((target.ActiveStatus & StatusEffect.Ralenti) != 0) target.ActiveStatus &= ~StatusEffect.Ralenti;
-            else if ((target.ActiveStatus & StatusEffect.ATerre) != 0) target.ActiveStatus &= ~StatusEffect.ATerre;
-            else if ((target.ActiveStatus & StatusEffect.Sonne) != 0) target.ActiveStatus &= ~StatusEffect.Sonne;
         }
 
         // RD-051 hook (Livre V §22.3) : +100 armes lourdes vs véhicules /

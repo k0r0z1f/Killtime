@@ -44,7 +44,8 @@ namespace Killtime.Tactics.Arena
             TacticalUnit explicitTarget = null,
             int attackerPE = 0,
             int defenderPE = 0,
-            TacticalUnit explicitAttacker = null)
+            TacticalUnit explicitAttacker = null,
+            bool isButtstroke = false)
         {
             var turnManager = _ctx.TurnManager;
             var grid = _ctx.Grid;
@@ -346,7 +347,7 @@ namespace Killtime.Tactics.Arena
                 _host.ArenaStartCoroutine(ExecuteAttackWithPlayerDefenseRoutine(
                     attacker, defender, targetedPart, cancelPenaltyWithAP,
                     attackSkill, defenseSkill, weaponBaseDamage, attackerBonusAP, attackerPE,
-                    attackerSpecialization, defenderSpecialization, triggerKickAction, triggerDefenseAction));
+                    attackerSpecialization, defenderSpecialization, triggerKickAction, triggerDefenseAction, isButtstroke));
                 return;
             }
 
@@ -359,6 +360,18 @@ namespace Killtime.Tactics.Arena
                 if (equippedWeapon != null && equippedWeapon.BaseDamage > 0)
                 {
                     effectiveWeaponDamage = equippedWeapon.BaseDamage;
+                }
+                // RD-201 (Livre V §22.2) : la crosse frappe au Maniement avec
+                // ses dégâts propres (3-4 bruts), jamais ceux de l'arme ; un
+                // coup à mains nues avec une arme longue en main frappe avec
+                // la base transmise (pas les dégâts du fusil).
+                if (isButtstroke)
+                {
+                    effectiveWeaponDamage = CanonEntraveRules.ButtstrokeBaseDamage(equippedWeapon);
+                }
+                else if (attackSkill == SkillType.MainsNues && CanonEntraveRules.HasLongWeapon(equippedWeapon))
+                {
+                    effectiveWeaponDamage = weaponBaseDamage;
                 }
                 int weaponBonusEc = equippedWeapon != null ? Math.Max(0, equippedWeapon.AttackBonusEc) : 0;
                 // RD-033 : charge Haute Densité chambrée = +1 dégât (sniper/Deglazer).
@@ -393,7 +406,7 @@ namespace Killtime.Tactics.Arena
                             reactiveDefDie, defender.Stats.GetSkillModifier(defenseSkill, isOffensive: false),
                             effectiveWeaponDamage, cancelPenaltyWithAP, defenderWantsToDefend,
                             defender.Stats.BaseArmorAbsorption, attackSkill, defenseSkill, out duelError, freshCover, weaponBonusEc,
-                            false, elevationRuling.AttackMod, elevationRuling.Label);
+                            false, elevationRuling.AttackMod, elevationRuling.Label, isButtstroke: isButtstroke);
                     }
                     else
                     {
@@ -402,7 +415,7 @@ namespace Killtime.Tactics.Arena
                             attackSkill, defenseSkill, effectiveWeaponDamage, cancelPenaltyWithAP,
                             defenderWantsToDefend, attackerSpecialization, defenderSpecialization,
                             defender.Stats.BaseArmorAbsorption, out duelError, freshCover, weaponBonusEc,
-                            false, elevationRuling.AttackMod, elevationRuling.Label);
+                            false, elevationRuling.AttackMod, elevationRuling.Label, isButtstroke: isButtstroke);
                     }
                     if (duel == null)
                     {
@@ -453,7 +466,8 @@ namespace Killtime.Tactics.Arena
                         attackerPE: attackerPE,
                         defenderPE: defenderPE,
                         cover: freshCover,
-                        weaponBonusEc: weaponBonusEc
+                        weaponBonusEc: weaponBonusEc,
+                        isButtstroke: isButtstroke
                     );
                 }
                 else
@@ -475,7 +489,8 @@ namespace Killtime.Tactics.Arena
                         attackerPE: attackerPE,
                         defenderPE: defenderPE,
                         cover: freshCover,
-                        weaponBonusEc: weaponBonusEc
+                        weaponBonusEc: weaponBonusEc,
+                        isButtstroke: isButtstroke
                     );
                 }
 

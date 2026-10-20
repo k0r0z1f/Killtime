@@ -57,12 +57,21 @@ namespace Killtime.Core.Combat
         public bool IsRangedAttack;
         public bool IsMartialArtsStrike;
         public bool AppliedCanonEntrave;
+        // RD-201 (Livre V §22.2) : coup de crosse au contact (Maniement
+        // contondant 3-4 bruts, Déstabilisé si bruts > CON x2).
+        public bool IsButtstroke;
         // RD-049 : Furtivité / Embuscade (+2 attaque, pas de réaction adverse)
         public bool IsStealthAttack;
         public int StealthAttackBonus;
         // RD-048 : Canalisation / Action en Progression (+2 au jet, -1 en défense)
         public bool IsChannelAttack;
         public int ChannelAttackBonus;
+        // RD-202 : Préparation one-shot (+2 au jet de l'action OU de la
+        // défense suivante, consommée au jet suivant, sans malus ni persistance)
+        public bool IsPreparationAttack;
+        public int PreparationAttackBonus;
+        public bool IsPreparationDefense;
+        public int PreparationDefenseBonus;
         // Bonus d'arme arcanotech au jet (ex: Deglazer +1ec, Livre VII §27.2).
         // Additionné à AttackBaseMod au BeginDuel, tracé dans le log.
         public int WeaponBonusEc;
@@ -141,6 +150,8 @@ namespace Killtime.Core.Combat
         // RD-048 : canalisation interrompue par la sommation (dégât net > encaissement).
         public bool ChannelInterrupted;
         public string InterruptedChannelLabel;
+        // RD-202 : parade préparée consommée par la défense unique (+2 one-shot).
+        public bool PreparationDefenseApplied;
         public string CombatLog;
     }
 

@@ -237,6 +237,28 @@ namespace Killtime.Tactics.CombatUI
                     }
                 ));
 
+                // RD-202 Dégagement (Livre V §20.3) : action principale (attaque OU
+                // parade résolue) immédiatement suivie d'une fuite à +1 PA. La
+                // surcharge se paie ici, le trajet ensuite au coût normal — et la
+                // fuite peut provoquer (DISTINCT du Décrochage préventif ci-dessus).
+                int getAwayCost = Killtime.Core.Rules.CoreRulesConfig.Instance.GetAwayExtraAPCost;
+                actions.Add(new CombatAction(
+                    $"🏃 Dégagement ({getAwayCost} PA : fuite après frappe/parade)",
+                    "Après une attaque ou une parade résolue (Livre V §20.3) : paie la surcharge de fuite, puis déplacez-vous normalement. Les réactions d'opportunité adverses restent possibles.",
+                    ActionCategory.TactiqueEtOrdres,
+                    getAwayCost,
+                    (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                        && GetAwayState.HasWindow(act.Stats)
+                        && act.Stats.CurrentActionPoints >= Killtime.Core.Rules.CoreRulesConfig.Instance.GetAwayExtraAPCost
+                        && !PreparationState.IsCancelledByStatus(act.Stats),
+                    (act, tgt) =>
+                    {
+                        if (arena != null) arena.TryGetAwayMove(act, out _);
+                        else if (new CombatCalculator().TryGetAwayMove(act.Stats, out _))
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🏃 DÉGAGEMENT", Color.yellow);
+                    }
+                ));
+
                 // RD-048 Retarder / Tenir / Canalisation (Livre V — Tours) :
                 // Tenir (0 PA, en attente + interruption), Retarder (-2 init,
                 // 1/round), Canalisation (1 PA, +2 au jet, -1 en défense,
@@ -294,6 +316,30 @@ namespace Killtime.Tactics.CombatUI
                         if (arena != null) arena.TryBeginChanneling(act, "Coup en progression", out _);
                         else if (new CombatCalculator().TryBeginChanneling(act.Stats, "Coup en progression", out _))
                             act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("⏳ CANALISE", Color.magenta);
+                    }
+                ));
+
+                // RD-202 Préparation d'Action (Livre V §20.3) : 1 PA -> +2 au jet
+                // de l'action ou de la défense suivante (attaque OU parade).
+                // One-shot, sans malus, sans persistance, sans interruption —
+                // et sans cumul avec la canalisation (exclusion mutuelle).
+                int prepCost = Killtime.Core.Rules.CoreRulesConfig.Instance.PreparationAPCost;
+                int prepBonus = Killtime.Core.Rules.CoreRulesConfig.Instance.PreparationBonus;
+                actions.Add(new CombatAction(
+                    $"🎯 Préparer l'action ({prepCost} PA : +{prepBonus} au jet suivant)",
+                    $"Se concentre (Livre V §20.3) : +{prepBonus} au jet de l'action ou de la parade suivante. One-shot consommée au jet suivant, ne cumule pas avec la canalisation.",
+                    ActionCategory.TactiqueEtOrdres,
+                    prepCost,
+                    (act, tgt) => act != null && act.Stats != null && act.Stats.IsAlive
+                        && !PreparationState.IsPrepared(act.Stats)
+                        && !ChannelingState.IsChanneling(act.Stats)
+                        && act.Stats.CurrentActionPoints >= Killtime.Core.Rules.CoreRulesConfig.Instance.PreparationAPCost
+                        && !PreparationState.IsCancelledByStatus(act.Stats),
+                    (act, tgt) =>
+                    {
+                        if (arena != null) arena.TryBeginPreparation(act, out _);
+                        else if (new CombatCalculator().TryBeginPreparation(act.Stats, out _))
+                            act.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText("🎯 PRÉPARÉ", Color.green);
                     }
                 ));
 

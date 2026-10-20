@@ -29,7 +29,7 @@ namespace Killtime.Tactics.CombatUI
                     "Frappe générale sur le centre de masse (Torse).",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
+                    (act, tgt) => !IsEntraveVsTarget(act, tgt) && CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
@@ -40,7 +40,7 @@ namespace Killtime.Tactics.CombatUI
                     "Tir chirurgical avec dépense préalable de +1 PA pour annuler le malus de -2.",
                     ActionCategory.AttaqueEtPassesDarmes,
                     3,
-                    (act, tgt) => CanAttackTarget(act, tgt, 3) && CanFireShot(act, tgt),
+                    (act, tgt) => !IsEntraveVsTarget(act, tgt) && CanAttackTarget(act, tgt, 3) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Tete, cancelPenaltyWithAP: true,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
@@ -51,7 +51,7 @@ namespace Killtime.Tactics.CombatUI
                     "Frappe le bras porteur : désarme et fait tomber l'arme au sol si Diff ≥ 4 (≥ 3 Croc, ≥ 2 Fleuret).",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
+                    (act, tgt) => !IsEntraveVsTarget(act, tgt) && CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.BrasDroit, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
@@ -62,10 +62,71 @@ namespace Killtime.Tactics.CombatUI
                     "Impact sur les membres inférieurs pour infliger l'état À Terre et Ralenti.",
                     ActionCategory.AttaqueEtPassesDarmes,
                     2,
-                    (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
+                    (act, tgt) => !IsEntraveVsTarget(act, tgt) && CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
                     (act, tgt) => arena.ExecuteAttack(BodyPart.Jambes, cancelPenaltyWithAP: false,
                         attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
                 ));
+
+                // RD-201 : CANON ENTRAVÉ (Livre V §22.2) — au contact d'un
+                // conscient avec une arme longue, les passes génériques
+                // ci-dessus sont remplacées par les 4 options du Livre :
+                // rétention, visé, crosse, mains nues.
+                if (IsEntraveVsTarget(actor, target))
+                {
+                    SkillType entraveShotSkill = ResolveContactSkill(actor, target);
+                    bool canShootEntrave = entraveShotSkill == SkillType.Ballistique
+                        || entraveShotSkill == SkillType.ProjectilesTir;
+                    if (canShootEntrave)
+                    {
+                        // 1. Tir de rétention (2 PA, -2 conservé).
+                        actions.Add(new CombatAction(
+                            $"🔫 Tir de Rétention (2 PA, -2){AmmoTag(actor, target)}",
+                            "Canon entravé (Livre V §22.2) : tir précipité au contact, malus de -2 conservé.",
+                            ActionCategory.AttaqueEtPassesDarmes,
+                            2,
+                            (act, tgt) => CanAttackTarget(act, tgt, 2) && CanFireShot(act, tgt),
+                            (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false,
+                                attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
+                        ));
+
+                        // 2. Tir visé (3 PA : +1 PA annule le malus, membres autorisés).
+                        AddEntraveAimedShot(actions, actor, target, arena, BodyPart.Tete, "💀 Tir Visé : Tête (3 PA)",
+                            "Canon entravé compensé (+1 PA) : visée chirurgicale autorisée, malus annulé.");
+                        AddEntraveAimedShot(actions, actor, target, arena, BodyPart.BrasDroit, "🎯 Tir Visé : Bras Droit (3 PA)",
+                            "Canon entravé compensé (+1 PA) : désarme si Diff ≥ 4 (≥ 3 Croc, ≥ 2 Fleuret).");
+                        AddEntraveAimedShot(actions, actor, target, arena, BodyPart.Jambes, "🎯 Tir Visé : Jambes (3 PA)",
+                            "Canon entravé compensé (+1 PA) : À Terre et Ralenti sur choc.");
+                    }
+
+                    // 3. Crosse (2 PA, Maniement contondant 3-4 bruts, Déstabilisé si > CON x2).
+                    int crosseDmg = CanonEntraveRules.ButtstrokeBaseDamage(actor.Sheet?.GetEquippedWeapon());
+                    actions.Add(new CombatAction(
+                        $"🔨 Crosse ({crosseDmg} bruts, 2 PA)",
+                        "Canon entravé (Livre V §22.2) : coup de crosse au Maniement (3-4 bruts, sans munition). Déstabilisé si les bruts dépassent CON x2.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && GetDistance(act, tgt) <= 1,
+                        (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false,
+                            attackSkill: SkillType.ManiementArmes,
+                            weaponBaseDamage: CanonEntraveRules.ButtstrokeBaseDamage(act.Sheet?.GetEquippedWeapon()),
+                            attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE,
+                            explicitTarget: tgt, explicitAttacker: act, isButtstroke: true)
+                    ));
+
+                    // 4. Mains Nues (2 PA, exemption totale, Refoulement sur choc / Delta ≥ 4).
+                    actions.Add(new CombatAction(
+                        "🥋 Mains Nues (2 PA, sans entrave)",
+                        "Canon entravé (Livre V §22.2) : frappe à mains nues exempte du malus. Refoulement (1 case) sur choc traumatique ou Delta ≥ 4.",
+                        ActionCategory.AttaqueEtPassesDarmes,
+                        2,
+                        (act, tgt) => act.Stats.CurrentActionPoints >= 2 && targetIsAlive && GetDistance(act, tgt) <= 1,
+                        (act, tgt) => arena.ExecuteAttack(BodyPart.Torse, cancelPenaltyWithAP: false,
+                            attackSkill: SkillType.MainsNues,
+                            weaponBaseDamage: CanonEntraveRules.UnarmedBaseDamage,
+                            attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE,
+                            explicitTarget: tgt, explicitAttacker: act)
+                    ));
+                }
 
                 // RD-040 : Bousculade générique & Coup de bouclier (2 PA, contact)
                 bool hasShield = HasEquippedShield(actor);
@@ -565,6 +626,26 @@ namespace Killtime.Tactics.CombatUI
                     ));
                 }
             }
+        }
+
+        /// <summary>
+        /// RD-201 : ajoute une option de Tir Visé entravé (3 PA, malus annulé,
+        /// visée membre autorisée) au registre.
+        /// </summary>
+        private static void AddEntraveAimedShot(
+            List<CombatAction> actions, TacticalUnit actor, TacticalUnit target,
+            CombatDevArena arena, BodyPart part, string title, string description)
+        {
+            string ammoTag = AmmoTag(actor, target);
+            actions.Add(new CombatAction(
+                $"{title}{ammoTag}",
+                description,
+                ActionCategory.AttaqueEtPassesDarmes,
+                3,
+                (act, tgt) => CanAttackTarget(act, tgt, 3) && CanFireShot(act, tgt),
+                (act, tgt) => arena.ExecuteAttack(part, cancelPenaltyWithAP: true,
+                    attackSkill: ResolveContactSkill(act, tgt), attackerBonusAP: CombatContextMenuUI.CurrentInjectedAP, attackerPE: CombatContextMenuUI.CurrentInjectedPE, explicitTarget: tgt, explicitAttacker: act)
+            ));
         }
     }
 }

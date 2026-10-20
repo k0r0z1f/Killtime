@@ -160,13 +160,31 @@ namespace Killtime.Tactics.Arena
                 sheet.RemoveItem(droppedId);
                 toDrop.IsEquipped = false;
                 defender.NotifyInventoryChanged(true);
+                // RD-204 (Livre V) : l'arme arrachée vole à DisarmDropDistance
+                // cases dans l'axe attaquant -> défenseur (repli : case du porteur).
+                int dropDistance = 2;
+                try
+                {
+                    var cfg = Killtime.Core.Rules.CoreRulesConfig.Instance;
+                    if (cfg != null && cfg.DisarmDropDistance > 0) dropDistance = cfg.DisarmDropDistance;
+                }
+                catch { }
                 Vector3 spawnPos = defender.transform.position;
-                var node = grid != null ? grid.GetNode(defender.CurrentCoords) : null;
-                if (node != null) spawnPos = node.WorldPosition;
-                // L'arme vole à la case du porteur (2 cases au sol selon Livre V, ici stessa case).
+                try
+                {
+                    var dropCoords = DisarmDropRules.ComputeDropCoords(attacker.CurrentCoords, defender.CurrentCoords, dropDistance);
+                    var dropNode = grid != null ? grid.GetNode(dropCoords) : null;
+                    if (dropNode != null) spawnPos = dropNode.WorldPosition;
+                    else
+                    {
+                        var homeNode = grid != null ? grid.GetNode(defender.CurrentCoords) : null;
+                        if (homeNode != null) spawnPos = homeNode.WorldPosition;
+                    }
+                }
+                catch { }
                 DroppedWeaponPickup.SpawnAt(toDrop, spawnPos, defender.Stats.Name);
                 defender.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText($"🗡️ DÉSARMÉ ! {droppedName}", Color.yellow);
-                _host.ArenaLog($"🗡️ <b>DÉSARMEMENT</b> : {attacker.Stats.Name} arrache <b>{droppedName}</b> à {defender.Stats.Name} (Diff +{result.Differential} ≥ {threshold}) — tombe au sol !");
+                _host.ArenaLog($"🗡️ <b>DÉSARMEMENT</b> : {attacker.Stats.Name} arrache <b>{droppedName}</b> à {defender.Stats.Name} (Diff +{result.Differential} ≥ {threshold}) — tombe à {dropDistance} cases !");
                 SnapshotRecorder?.Invoke($"Désarmement : {attacker.Stats.Name} -> {defender.Stats.Name}");
             }
             catch (Exception e) { _host.ArenaLog($"⚠️ Désarmement impossible : {e.Message}"); }

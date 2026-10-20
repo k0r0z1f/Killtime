@@ -988,6 +988,106 @@ const server = http.createServer(async (req, res) => {
         return sendJson(res, 405, { error: 'Méthode non autorisée.' });
     }
 
+    /* REVUE SYSTÈME RP — kanban indépendant (PUT /api/kanban-rp), séparé du kanban Tactics */
+    const KANBAN_RP_PATH = path.join(PUBLIC_DIR, 'data', 'kanban_rp.json');
+    if (isRoute('/api/kanban-rp')) {
+        if (req.method === 'GET' || req.method === 'HEAD') {
+            // Lecture fraîche pour le kanban revue RP : jamais cachée (le client
+            // réconcilie localStorage vs disque au chargement).
+            try {
+                if (!fs.existsSync(KANBAN_RP_PATH)) {
+                    return sendJson(res, 404, { error: 'kanban_rp.json introuvable.' });
+                }
+                const st = fs.statSync(KANBAN_RP_PATH);
+                const raw = fs.readFileSync(KANBAN_RP_PATH, 'utf-8');
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Cache-Control': 'no-store, must-revalidate',
+                    'Last-Modified': st.mtime.toUTCString()
+                });
+                if (req.method === 'HEAD') return res.end();
+                return res.end(raw);
+            } catch (e) {
+                return sendJson(res, 500, { error: e.message });
+            }
+        }
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || !Array.isArray(body.boards)) {
+                    return sendJson(res, 400, { error: 'boards[] manquant.' });
+                }
+                const json = JSON.stringify(body, null, 2);
+                if (json.length > 4 * 1024 * 1024) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                try { fs.mkdirSync(path.dirname(KANBAN_RP_PATH), { recursive: true }); } catch (e) { /* ignore */ }
+                try {
+                    if (fs.existsSync(KANBAN_RP_PATH)) {
+                        fs.copyFileSync(KANBAN_RP_PATH, KANBAN_RP_PATH + '.bak');
+                    }
+                } catch (e) { /* backup optionnel */ }
+                fs.writeFileSync(KANBAN_RP_PATH, json);
+                const n = body.boards.reduce((m, b) => m + (Array.isArray(b.tasks) ? b.tasks.length : 0), 0);
+                console.log(`[KanbanRP] autosave disque : ${body.boards.length} boards, ${n} tâches.`);
+                return sendJson(res, 200, { success: true, boards: body.boards.length, tasks: n });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
+    /* PROJET NARRATIF — kanban indépendant (PUT /api/kanban-narratif), source unique des 2 vues jumelles */
+    const KANBAN_NARRATIF_PATH = path.join(PUBLIC_DIR, 'data', 'kanban_narratif.json');
+    if (isRoute('/api/kanban-narratif')) {
+        if (req.method === 'GET' || req.method === 'HEAD') {
+            // Lecture fraîche pour le kanban narratif : jamais cachée (le client
+            // réconcilie localStorage vs disque au chargement).
+            try {
+                if (!fs.existsSync(KANBAN_NARRATIF_PATH)) {
+                    return sendJson(res, 404, { error: 'kanban_narratif.json introuvable.' });
+                }
+                const st = fs.statSync(KANBAN_NARRATIF_PATH);
+                const raw = fs.readFileSync(KANBAN_NARRATIF_PATH, 'utf-8');
+                res.writeHead(200, {
+                    'Content-Type': 'application/json; charset=utf-8',
+                    'Cache-Control': 'no-store, must-revalidate',
+                    'Last-Modified': st.mtime.toUTCString()
+                });
+                if (req.method === 'HEAD') return res.end();
+                return res.end(raw);
+            } catch (e) {
+                return sendJson(res, 500, { error: e.message });
+            }
+        }
+        if (req.method === 'PUT' || req.method === 'POST') {
+            try {
+                const body = await parseBody(req);
+                if (!body || !Array.isArray(body.boards)) {
+                    return sendJson(res, 400, { error: 'boards[] manquant.' });
+                }
+                const json = JSON.stringify(body, null, 2);
+                if (json.length > 4 * 1024 * 1024) {
+                    return sendJson(res, 413, { error: 'Payload trop volumineux.' });
+                }
+                try { fs.mkdirSync(path.dirname(KANBAN_NARRATIF_PATH), { recursive: true }); } catch (e) { /* ignore */ }
+                try {
+                    if (fs.existsSync(KANBAN_NARRATIF_PATH)) {
+                        fs.copyFileSync(KANBAN_NARRATIF_PATH, KANBAN_NARRATIF_PATH + '.bak');
+                    }
+                } catch (e) { /* backup optionnel */ }
+                fs.writeFileSync(KANBAN_NARRATIF_PATH, json);
+                const n = body.boards.reduce((m, b) => m + (Array.isArray(b.tasks) ? b.tasks.length : 0), 0);
+                console.log(`[KanbanNarratif] autosave disque : ${body.boards.length} boards, ${n} tâches.`);
+                return sendJson(res, 200, { success: true, boards: body.boards.length, tasks: n });
+            } catch (e) {
+                return sendJson(res, 400, { error: e.message });
+            }
+        }
+        return sendJson(res, 405, { error: 'Méthode non autorisée.' });
+    }
+
     /* ATLAS DES MONDES — autosave disque (PUT /api/atlas-mondes) + sonde (GET) */
     const ATLAS_PATH = path.join(PUBLIC_DIR, 'data', 'atlas_mondes.json');
     if (isRoute('/api/atlas-mondes')) {

@@ -54,7 +54,8 @@ namespace Killtime.Core.Combat
             int defenderPE = 0,
             CoverType cover = CoverType.None,
             int weaponBonusEc = 0,
-            bool isNight = false)
+            bool isNight = false,
+            bool isButtstroke = false)
         {
             // RÈGLE CODEX : aucun mod de caractéristique ajouté. Malus d'états uniquement.
             // Le dé offensif applique le Corps Augmenté (Mains Nues : MAG substituable à FOR).
@@ -99,7 +100,8 @@ namespace Killtime.Core.Combat
                 defenderSpecialization: defenderSpecialization,
                 cover: cover,
                 weaponBonusEc: weaponBonusEc,
-                isNight: isNight
+                isNight: isNight,
+                isButtstroke: isButtstroke
             );
         }
 
@@ -127,7 +129,8 @@ namespace Killtime.Core.Combat
             int defenderPE = 0,
             CoverType cover = CoverType.None,
             int weaponBonusEc = 0,
-            bool isNight = false)
+            bool isNight = false,
+            bool isButtstroke = false)
         {
             return ResolveTargetedAttackInternal(
                 attacker: attacker,
@@ -150,7 +153,8 @@ namespace Killtime.Core.Combat
                 defenderSpecialization: null,
                 cover: cover,
                 weaponBonusEc: weaponBonusEc,
-                isNight: isNight
+                isNight: isNight,
+                isButtstroke: isButtstroke
             );
         }
 
@@ -175,7 +179,8 @@ namespace Killtime.Core.Combat
             string defenderSpecialization = null,
             CoverType cover = CoverType.None,
             int weaponBonusEc = 0,
-            bool isNight = false)
+            bool isNight = false,
+            bool isButtstroke = false)
         {
             // --- Duel aveugle : base attaque -> mise attaquant (cachée) ->
             // --- mise défenseur à l'aveugle -> révélation simultanée -> résolution normale.
@@ -183,7 +188,7 @@ namespace Killtime.Core.Combat
                 attacker, defender, targetedPart,
                 attackDie, attackModifier, defenseDie, defenseModifier,
                 weaponBaseDamage, cancelPenaltyWithAP, defenderWantsToDefend,
-                defenderArmor, attackSkill, defenseSkill, out string error, cover, weaponBonusEc, isNight: isNight);
+                defenderArmor, attackSkill, defenseSkill, out string error, cover, weaponBonusEc, isNight: isNight, isButtstroke: isButtstroke);
             if (duel == null)
             {
                 var cfg0 = Rules.CoreRulesConfig.Instance;
@@ -498,14 +503,36 @@ namespace Killtime.Core.Combat
         /// Épreuve simple hors duel (Livre II §7) : jet de compétence vs DC, avec
         /// progression organique automatique sur réussite (Livre I §5).
         /// 1 réussite = 1 case dans CETTE compétence ; piste pleine (cases = base) = +1 XP lié.
+        /// RD-203 : si le SD est &lt;= seuil auto du rang (Débutant 0, Initié 4,
+        /// Avancé 6, Expert 8, Maître 10), pas de jet — réussite immédiate.
         /// </summary>
         public DiceRollResult ResolveSkillCheck(CharacterStats user, SkillType skill, int targetDC, bool isOffensive = false, int extraModifier = 0)
         {
             if (user == null) throw new ArgumentNullException(nameof(user));
-            var cfg = Rules.CoreRulesConfig.Instance;
+            // RD-203 : rang effectif = base (caracs) + entraînements (Livre II §7.2).
+            int skillRank = user.GetSkillRank(skill, isOffensive);
+            if (SkillAutoSuccess.IsAutoSuccess(skillRank, targetDC))
+            {
+                DiceType autoDie = user.GetSkillDie(skill, isOffensive);
+                int mod = user.GetStatusModifier(skill, isOffensive) + extraModifier;
+                if (user.Sheet != null)
+                    CharacterProgressionManager.RegisterSuccessfulSkillUse(user.Sheet, skill, out _, out _, isOffensive);
+                return new DiceRollResult
+                {
+                    DieType = autoDie,
+                    RawRoll = 0,
+                    Modifier = mod,
+                    Total = targetDC,
+                    TargetDC = targetDC,
+                    Differential = 0,
+                    IsSuccess = true,
+                    IsCriticalSuccess = false,
+                    IsCriticalFailure = false
+                };
+            }
             DiceType die = user.GetSkillDie(skill, isOffensive);
-            int mod = user.GetStatusModifier(skill, isOffensive) + extraModifier;
-            var roll = _ctx.DiceRoller.Roll(die, mod, targetDC);
+            int statusMod = user.GetStatusModifier(skill, isOffensive) + extraModifier;
+            var roll = _ctx.DiceRoller.Roll(die, statusMod, targetDC);
             if (roll.IsSuccess && !roll.IsCriticalFailure && user.Sheet != null)
                 CharacterProgressionManager.RegisterSuccessfulSkillUse(user.Sheet, skill, out _, out _, isOffensive);
             return roll;

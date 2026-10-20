@@ -39,12 +39,13 @@ namespace Killtime.Tactics
             TacticalUnit explicitTarget = null,
             int attackerPE = 0,
             int defenderPE = 0,
-            TacticalUnit explicitAttacker = null)
+            TacticalUnit explicitAttacker = null,
+            bool isButtstroke = false)
         {
             _attack.ExecuteAttack(targetedPart, cancelPenaltyWithAP, attackSkill, defenseSkill,
                 defenderWantsToDefend, attackerSpecialization, defenderSpecialization, weaponBaseDamage,
                 attackerBonusAP, defenderBonusAP, attackDie, defenseDie, explicitTarget,
-                attackerPE, defenderPE, explicitAttacker);
+                attackerPE, defenderPE, explicitAttacker, isButtstroke);
         }
 
         private System.Collections.IEnumerator ExecuteAttackRoutine(Action triggerKick, Action triggerDefense, Action resolveImpact)

@@ -42,15 +42,50 @@ namespace Killtime.Story.Scenes
             string actorName = sheet != null ? sheet.Name : "Protagoniste";
             Attributes effectiveAttr = sheet != null ? sheet.GetEffectiveAttributes() : new Attributes();
 
-            int rank = SkillDefinitions.GetBaseRank(check.RequiredSkill, effectiveAttr, false);
-            int steps = SkillDefinitions.CharacteristicSteps(rank);
             int training = sheet != null ? sheet.GetSkill(check.RequiredSkill).TrainingLevel : 0;
+            // RD-203 (Livre II §7.2) : rang effectif = base (caracs) + entraînements.
+            int baseRank = SkillDefinitions.GetBaseRank(check.RequiredSkill, effectiveAttr, false);
+            int skillRank = baseRank + training;
+            string skillName = SkillDefinitions.GetDisplayName(check.RequiredSkill);
+
+            // RD-203 (Livre II §7) : seuil couvert par le rang → pas de jet, succès immédiat tracé.
+            if (SkillAutoSuccess.IsAutoSuccess(skillRank, check.TargetDC))
+            {
+                string autoLog = SkillAutoSuccess.BuildAutoSuccessLog(skillName, skillRank, check.TargetDC);
+                CombatHUD.Instance?.AddAdvancedLog(
+                    $"🎲 <b>[TEST AUTO]</b> {actorName} — {autoLog} ➔ <b>SUCCÈS AUTOMATIQUE</b>",
+                    LogCategory.Combat,
+                    "[PASSİF]",
+                    Color.green
+                );
+
+                actorUnit?.GetComponent<TacticalUnitVisual>()?.SpawnFloatingText(
+                    $"SUCCÈS AUTO [{SkillAutoSuccess.RankLabel(SkillAutoSuccess.ForSkillRank(skillRank))}]", Color.green);
+
+                if (check.SuccessEffects != null && check.SuccessEffects.Count > 0)
+                {
+                    State._director?.ApplyEffects(check.SuccessEffects);
+                }
+
+                if (!string.IsNullOrEmpty(check.SuccessSpeech))
+                {
+                    line.Speech = check.SuccessSpeech;
+                    if (!string.IsNullOrEmpty(check.SuccessStageDirection)) line.StageDirection = check.SuccessStageDirection;
+                }
+
+                if (!string.IsNullOrEmpty(check.SuccessNextLineId))
+                {
+                    line.NextLineId = check.SuccessNextLineId;
+                }
+                return;
+            }
+
+            int steps = SkillDefinitions.CharacteristicSteps(baseRank);
             DiceType die = SkillDefinitions.DieFromTotalSteps(steps + training);
 
             var roller = new DiceRoller();
             var result = roller.Roll(die, modifier: 0, targetDC: check.TargetDC);
 
-            string skillName = SkillDefinitions.GetDisplayName(check.RequiredSkill);
             string outcomeStr = result.IsSuccess ? "SUCCÈS PASSİF" : "ÉCHEC PASSİF";
             Color col = result.IsSuccess ? Color.green : new Color(1.0f, 0.45f, 0.2f);
 
